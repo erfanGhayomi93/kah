@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.flex-center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.flex-justify-center {
+		display: flex;
+		justify-content: center;
+	}
+
+	.flex-items-center {
+		display: flex;
+		align-items: center;
+	}
+
+	.arrow-down:before {
+		border: 4px solid #0000;
+		border-top-color: #868993;
+		content: "";
+		margin-top: -4px;
+		position: absolute;
+		left: 8px;
+		top: 55%;
+	}
+}

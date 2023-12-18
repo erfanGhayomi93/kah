@@ -1,0 +1,53 @@
+.root {
+	background-color: theme("colors.gray.100");
+	border-radius: 6px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	font-size: 13px;
+	left: 0;
+	padding: 16px 0;
+	position: absolute;
+	top: 0;
+	z-index: 99;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	user-select: none;
+}
+
+li.item {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 20px;
+	transition: background-color 150ms linear;
+	-webkit-transition: background-color 150ms linear;
+	-moz-transition: background-color 150ms linear;
+
+	&:not(.active):hover {
+		background-color: theme("colors.gray.500");
+	}
+
+	& > span {
+		font-size: 13px;
+		color: theme("colors.blueViolet.1900");
+	}
+
+	& > svg {
+		max-width: 16px;
+		max-height: 16px;
+		color: theme("colors.blueViolet.1200");
+	}
+}
+
+li.active {
+	background-color: rgb(227, 239, 252);
+}
+
+li.underline {
+	border-bottom: 1px solid theme("colors.blueViolet.200");
+}

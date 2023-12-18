@@ -1,0 +1,62 @@
+{
+	"env": {
+		"browser": true,
+		"es2021": true,
+		"jest": true
+	},
+	"extends": [
+		"standard-with-typescript",
+		"plugin:react/recommended",
+		"next/core-web-vitals",
+		"prettier"
+	],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": [
+		"react"
+	],
+	"rules": {
+		"indent": [
+			"error",
+			"tab"
+		],
+		"no-console": "warn",
+		"semi": "off",
+		"quotes": [
+			"error",
+			"single"
+		],
+		"accessor-pairs": "off",
+		"@typescript-eslint/promise-function-async": "off",
+		"@typescript-eslint/return-await": "off",
+		"@typescript-eslint/no-floating-promises": "off",
+		"@typescript-eslint/no-misused-promises": "off",
+		"no-async-promise-executor": "off",
+		"no-new": "off",
+		"@typescript-eslint/adjacent-overload-signatures": "off",
+		"@typescript-eslint/no-unnecessary-type-assertion": "off",
+		"@next/next/no-document-import-in-page": "off",
+		"react/display-name": "off",
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"@next/next/no-css-tags": "off",
+		"no-useless-return": "off",
+		"@typescript-eslint/no-confusing-void-expression": "off",
+		"no-duplicate-imports": "error",
+		"@typescript-eslint/no-unused-vars": "warn",
+		"react-hooks/exhaustive-deps": "off",
+		"@typescript-eslint/no-unnecessary-type-constraint": "off",
+		"@typescript-eslint/no-dynamic-delete": "off",
+		"no-useless-call": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/space-before-function-paren": "off",
+		"@typescript-eslint/semi": [
+			"error",
+			"always"
+		],
+		"no-tabs": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/indent": "off"
+	}
+}
