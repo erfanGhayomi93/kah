@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-	metadataBase: new URL(process.env.APP_URL as string),
+	metadataBase: new URL(process.env.APP_URL!),
 	title: process.env.APP_TITLE,
 	applicationName: process.env.APP_NAME,
 	description: process.env.APP_DESCRIPTION,
