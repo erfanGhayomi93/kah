@@ -13,7 +13,7 @@ const useLocalstorage = <T extends unknown>(name: string, defaultValue: T): [T, 
 			try {
 				if (value === null) return;
 
-				const formattedValue = JSON.parse(value);
+				const formattedValue = JSON.parse(value) as T;
 				setValue(formattedValue);
 			} catch (e) {
 				//

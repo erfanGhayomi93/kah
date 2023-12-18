@@ -24,7 +24,7 @@ const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
 
 		const tooltipRef = useRef<TooltipElement | null>(null);
 
-		useImperativeHandle(ref, () => childRef.current as HTMLElement);
+		useImperativeHandle(ref, () => childRef.current!);
 
 		useEffect(() => {
 			const eChild = childRef.current;

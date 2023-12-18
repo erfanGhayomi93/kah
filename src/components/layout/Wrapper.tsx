@@ -18,7 +18,7 @@ const Wrapper = ({ children }: IWrapper) => {
 	if (!mount) return null;
 
 	return (
-		<div className='flex flex-col flex-1 overflow-hidden'>
+		<div className='flex flex-col flex-1'>
 			<Header />
 			{children}
 			<Footer />
