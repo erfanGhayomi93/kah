@@ -1,7 +1,15 @@
+import { useAppDispatch } from '@/features/hooks';
+import { toggleAuthenticationModal } from '@/features/slices/modalSlice';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
 const Header = () => {
+	const dispatch = useAppDispatch();
+
+	const showAuthenticationModal = () => {
+		dispatch(toggleAuthenticationModal(true));
+	};
+
 	const navigation = useMemo(
 		() => [
 			{
@@ -29,13 +37,13 @@ const Header = () => {
 	);
 
 	return (
-		<header className='flex-justify-between bg-white h-72 px-32 shadow'>
-			<nav className='flex-items-center gap-56'>
+		<header className='bg-white h-72 px-32 shadow flex-justify-between'>
+			<nav className='gap-56 flex-items-center'>
 				<Link href='/' rel='home'>
 					<h1 className='text-3xl font-bold'>LOGO</h1>
 				</Link>
 
-				<ul className='flex-items-center gap-40'>
+				<ul className='gap-40 flex-items-center'>
 					{navigation.map((item) => (
 						<li key={item.id}>
 							<Link
@@ -49,10 +57,7 @@ const Header = () => {
 				</ul>
 			</nav>
 
-			<button
-				type='button'
-				className='flex-justify-center h-40 rounded bg-primary-300 px-48 font-medium text-gray-300 transition-colors hover:bg-primary-200'
-			>
+			<button onClick={showAuthenticationModal} type='button' className='btn-primary h-40 rounded px-48 font-medium'>
 				ورود
 			</button>
 		</header>

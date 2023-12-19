@@ -1,0 +1,47 @@
+.root {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	backdrop-filter: blur(5px);
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.modal {
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: auto;
+	top: 14%;
+	left: 50%;
+	max-width: 90%;
+	max-height: 90%;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+
+	&.lg {
+		width: 114rem;
+	}
+
+	&.md {
+		width: 80rem;
+	}
+
+	&.sm {
+		width: 50rem;
+	}
+
+	&.xs {
+		width: 40rem;
+	}
+
+	&.xxs {
+		width: 30rem;
+	}
+}

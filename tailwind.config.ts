@@ -15,9 +15,11 @@ const config: Config = {
 		},
 
 		colors: {
-			background: {
-				DEFAULT: 'rgba(255, 255, 255, 1)',
-			},
+			transparent: 'transparent',
+
+			current: 'currentColor',
+
+			white: 'rgba(255, 255, 255, 1)',
 
 			primary: {
 				100: 'rgba(0, 182, 237, 1)',
@@ -31,15 +33,10 @@ const config: Config = {
 				100: 'rgba(242, 242, 242, 1)',
 			},
 
-			border: {
-				100: 'rgba(255, 255, 255, 1)',
-				200: 'rgba(203, 203, 203, 1)',
-			},
-
 			gray: {
 				100: 'rgba(74, 74, 74, 1)',
 				200: 'rgba(175, 175, 175, 1)',
-				300: 'rgba(255, 255, 255, 1)',
+				300: 'rgba(203, 203, 203, 1)',
 			},
 
 			link: {
@@ -115,7 +112,7 @@ const config: Config = {
 	},
 
 	plugins: [
-		plugin(({ addUtilities }) => {
+		plugin(({ addUtilities, theme }) => {
 			addUtilities({
 				'.flex-justify-center': {
 					display: 'flex',
@@ -132,6 +129,26 @@ const config: Config = {
 				'.flex-items-center': {
 					display: 'flex',
 					'align-items': 'center',
+				},
+
+				'.ltr': {
+					direction: 'ltr',
+				},
+
+				'.rtl': {
+					direction: 'rtl',
+				},
+
+				'.btn-primary': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.white'),
+					'background-color': theme('colors.primary.300'),
+					transition: 'background-color 300ms ease-in-out',
+					'&:hover': {
+						'background-color': theme('colors.primary.200'),
+					},
 				},
 			});
 		}),

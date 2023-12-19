@@ -2,6 +2,7 @@ import '@/assets/styles/app.scss';
 import ReduxToolkitRegistry from '@/components/common/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/StyledComponentsRegistry';
 import Wrapper from '@/components/layout/Wrapper';
+import Modals from '@/components/modals/Modals';
 import { getDirection } from '@/utils/helpers';
 import metadata from '../metadata';
 
@@ -16,6 +17,7 @@ const RootLayout = async ({ children }: IRootLayout) => {
 				<StyledComponentsRegistry>
 					<ReduxToolkitRegistry>
 						<Wrapper>{children}</Wrapper>
+						<Modals />
 					</ReduxToolkitRegistry>
 				</StyledComponentsRegistry>
 

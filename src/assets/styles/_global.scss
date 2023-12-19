@@ -15,7 +15,7 @@ body {
 	max-width: 100vw;
 	font-weight: 400;
 	overflow: hidden;
-	background-color: theme('colors.background.DEFAULT');
+	background-color: theme("colors.white");
 
 	&.ew-resize {
 		cursor: ew-resize;
@@ -26,6 +26,16 @@ body {
 		cursor: ns-resize;
 		user-select: none;
 	}
+
+	&::-moz-scrollbar-thumb {
+		background: var(--scrollbar-thumb);
+		border-radius: 3px;
+	}
+
+	/* Scrollbar track */
+	&::-moz-scrollbar-track {
+		background: var(--scrollbar-track);
+	}
 }
 
 button,
@@ -33,6 +43,14 @@ a,
 input,
 textarea {
 	outline: none;
+}
+
+input,
+textarea {
+	color: theme("colors.gray.100");
+	&::placeholder {
+		color: theme("colors.gray.200");
+	}
 }
 
 ::-webkit-scrollbar {
@@ -50,14 +68,14 @@ textarea {
 	background: var(--scrollbar-track);
 }
 
-.custom-scrollbar {
-	&::-moz-scrollbar-thumb {
-		background: var(--scrollbar-thumb);
-		border-radius: 3px;
-	}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 
-	/* Scrollbar track */
-	&::-moz-scrollbar-track {
-		background: var(--scrollbar-track);
-	}
+/* Firefox */
+input[type="number"] {
+	-moz-appearance: textfield;
 }

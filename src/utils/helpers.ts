@@ -54,3 +54,10 @@ export const numberFormatter = (value: number) => {
 		return value;
 	}
 };
+
+export const convertStringToNumber = (inputString: string): string => {
+	const numbersArray = inputString.match(/\d/g);
+	const result = numbersArray ? numbersArray.join('') : '';
+
+	return result;
+};
