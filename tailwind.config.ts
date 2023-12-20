@@ -29,8 +29,12 @@ const config: Config = {
 				500: 'rgba(0, 35, 49, 1)',
 			},
 
-			hover: {
-				100: 'rgba(242, 242, 242, 1)',
+			secondary: {
+				100: 'rgba(255, 79, 37, 1)',
+				200: 'rgba(197, 52, 0, 1)',
+				300: 'rgba(137, 33, 0, 1)',
+				400: 'rgba(81, 16, 0, 1)',
+				500: 'rgba(40, 4, 0, 1)',
 			},
 
 			gray: {
@@ -110,6 +114,10 @@ const config: Config = {
 		transitionTimingFunction: {
 			DEFAULT: 'ease-in-out',
 		},
+
+		fontFamily: {
+			IRANSansFaNum: 'IRANSansFaNum',
+		},
 	},
 
 	plugins: [
@@ -157,12 +165,15 @@ const config: Config = {
 					},
 				},
 
-				'.error-message': {
+				'.validation-message': {
 					position: 'absolute',
 					top: 'calc(100% + 0.8rem)',
 					'font-size': '1.2rem',
 					'font-weight': '400',
 					'padding-right': '1.6rem',
+				},
+
+				'.error-message': {
 					color: theme('colors.error.100'),
 
 					'&:before': {

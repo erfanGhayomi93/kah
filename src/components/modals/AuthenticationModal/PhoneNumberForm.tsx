@@ -5,6 +5,7 @@ import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
 interface Inputs {
 	phoneNumber: string;
+	captcha: string;
 }
 
 const PhoneNumberForm = () => {
@@ -14,8 +15,8 @@ const PhoneNumberForm = () => {
 		handleSubmit,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const onSubmit: SubmitHandler<Inputs> = async ({ phoneNumber }) => {
-		console.log(phoneNumber);
+	const onSubmit: SubmitHandler<Inputs> = async ({ phoneNumber, captcha }) => {
+		console.log(phoneNumber, captcha);
 	};
 
 	return (
@@ -31,7 +32,7 @@ const PhoneNumberForm = () => {
 						return 'شماره همراه نادرست است!';
 					},
 				}}
-				render={({ field, fieldState: { invalid, isTouched, isDirty, error } }) => (
+				render={({ field, fieldState: { invalid, isTouched, error } }) => (
 					<label className='flex flex-col gap-8'>
 						<span className='text-base font-medium text-gray-100'>شماره همراه</span>
 						<div className='relative flex flex-col'>
@@ -47,7 +48,7 @@ const PhoneNumberForm = () => {
 								placeholder='شماره همراه خود را وارد کنید'
 								{...field}
 							/>
-							{isTouched && invalid && <span className='error-message'>{error?.message}</span>}
+							{isTouched && invalid && <span className='validation-message error'>{error?.message}</span>}
 						</div>
 					</label>
 				)}

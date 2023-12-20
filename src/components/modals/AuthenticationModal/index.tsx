@@ -3,7 +3,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { toggleAuthenticationModal } from '@/features/slices/modalSlice';
 import styled from 'styled-components';
 import Modal from '../Modal';
-import PhoneNumberForm from './PhoneNumberForm';
+import OTPForm from './OTPForm';
 
 const Div = styled.div`
 	width: 578px;
@@ -26,11 +26,17 @@ const AuthenticationModal = () => {
 					</button>
 				</div>
 
-				<div className='text-center'>
+				<div className='relative text-center'>
 					<h1 className='text-3xl font-bold text-gray-100'>ورود به کهکشان</h1>
+					<p className='absolute left-1/2 top-56 w-full -translate-x-1/2 transform text-center text-base text-primary-300'>
+						برای شماره موبایل وارد شده حساب کاربری یافت نشد.
+						<br />
+						برای ایجاد حساب، کد تایید را وارد کنید.
+					</p>
 				</div>
 
-				<PhoneNumberForm />
+				{/* <PhoneNumberForm /> */}
+				<OTPForm />
 			</Div>
 		</Modal>
 	);
