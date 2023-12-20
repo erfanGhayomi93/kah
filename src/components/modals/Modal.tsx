@@ -33,9 +33,23 @@ const Modal = ({ portalElement, children, style, classes, size, onClose }: Modal
 		}
 	};
 
+	const onWindowKeyDown = (e: KeyboardEvent, removeListener: () => void) => {
+		try {
+			if (e.key !== 'Escape') return;
+			onClose();
+		} catch (e) {
+			//
+		}
+	};
+
 	useEffect(() => {
 		const controller = new AbortController();
-		window.addEventListener('click', (e) => onWindowClick(e, () => controller.abort()), {
+
+		window.addEventListener('mousedown', (e) => onWindowClick(e, () => controller.abort()), {
+			signal: controller.signal,
+		});
+
+		window.addEventListener('keydown', (e) => onWindowKeyDown(e, () => controller.abort()), {
 			signal: controller.signal,
 		});
 
