@@ -37,6 +37,7 @@ const config: Config = {
 				100: 'rgba(74, 74, 74, 1)',
 				200: 'rgba(175, 175, 175, 1)',
 				300: 'rgba(203, 203, 203, 1)',
+				400: 'rgba(230, 230, 230, 1)',
 			},
 
 			link: {
@@ -146,8 +147,34 @@ const config: Config = {
 					color: theme('colors.white'),
 					'background-color': theme('colors.primary.300'),
 					transition: 'background-color 300ms ease-in-out',
+
 					'&:hover': {
 						'background-color': theme('colors.primary.200'),
+					},
+
+					'&:disabled': {
+						'background-color': theme('colors.primary.400'),
+					},
+				},
+
+				'.error-message': {
+					position: 'absolute',
+					top: 'calc(100% + 0.8rem)',
+					'font-size': '1.2rem',
+					'font-weight': '400',
+					'padding-right': '1.6rem',
+					color: theme('colors.error.100'),
+
+					'&:before': {
+						content: '',
+						position: 'absolute',
+						right: '0',
+						top: '3px',
+						width: '12px',
+						height: '12px',
+						'border-radius': '50%',
+						'background-color': theme('colors.white'),
+						border: `4px solid ${theme('colors.error.100')}`,
 					},
 				},
 			});
