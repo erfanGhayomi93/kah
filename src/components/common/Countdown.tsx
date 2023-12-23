@@ -8,7 +8,16 @@ interface CountdownProps {
 const Countdown = ({ seconds, onFinished }: CountdownProps) => {
 	const [remainingSeconds, setRemainingSeconds] = useState(seconds);
 
+	const formatter = useMemo(() => {
+		const m = String(Math.max(0, Math.floor(remainingSeconds / 60))).padStart(2, '0');
+		const s = String(Math.max(0, Math.floor(remainingSeconds % 60))).padStart(2, '0');
+
+		return `${m}:${s}`;
+	}, [remainingSeconds]);
+
 	useEffect(() => {
+		if (seconds <= 0) return;
+
 		const interval = setInterval(() => {
 			setRemainingSeconds((prevSecs) => {
 				const nextRemainingSeconds = prevSecs - 1;
@@ -25,14 +34,7 @@ const Countdown = ({ seconds, onFinished }: CountdownProps) => {
 		return () => {
 			clearInterval(interval);
 		};
-	}, []);
-
-	const formatter = useMemo(() => {
-		const minutes = String(Math.max(0, Math.floor(remainingSeconds / 60))).padStart(2, '0');
-		const seconds = String(Math.max(0, Math.floor(remainingSeconds % 60))).padStart(2, '0');
-
-		return `${minutes}:${seconds}`;
-	}, [remainingSeconds]);
+	}, [seconds]);
 
 	return formatter;
 };

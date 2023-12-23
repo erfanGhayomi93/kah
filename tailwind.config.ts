@@ -94,6 +94,7 @@ const config: Config = {
 			'0': '0',
 			'4': '0.4rem',
 			'8': '0.8rem',
+			'12': '1.2rem',
 			'16': '1.6rem',
 			'24': '2.4rem',
 			'32': '3.2rem',
@@ -165,15 +166,10 @@ const config: Config = {
 					},
 				},
 
-				'.validation-message': {
-					position: 'absolute',
-					top: 'calc(100% + 0.8rem)',
+				'.i-error': {
 					'font-size': '1.2rem',
 					'font-weight': '400',
 					'padding-right': '1.6rem',
-				},
-
-				'.error-message': {
 					color: theme('colors.error.100'),
 
 					'&:before': {

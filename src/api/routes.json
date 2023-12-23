@@ -1,0 +1,5 @@
+{
+	"option": {
+		"stocks": "https://marketdata-stage.ramandtech.com/option/v1/Watchlist"
+	}
+}

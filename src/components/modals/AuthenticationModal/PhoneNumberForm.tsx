@@ -2,6 +2,7 @@ import Button from '@/components/common/Button';
 import { ArrowLeftSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import Captcha from './common/Captcha';
 
 interface Inputs {
 	phoneNumber: string;
@@ -11,7 +12,7 @@ interface Inputs {
 const PhoneNumberForm = () => {
 	const {
 		control,
-		formState: { isValid },
+		formState: { isValid, touchedFields, errors },
 		handleSubmit,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
@@ -19,8 +20,10 @@ const PhoneNumberForm = () => {
 		console.log(phoneNumber, captcha);
 	};
 
+	const hasCaptcha = true;
+
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex flex-col gap-88 px-64 pt-96'>
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}>
 			<Controller
 				defaultValue=''
 				control={control}
@@ -33,28 +36,33 @@ const PhoneNumberForm = () => {
 					},
 				}}
 				render={({ field, fieldState: { invalid, isTouched, error } }) => (
-					<label className='flex flex-col gap-8'>
-						<span className='text-base font-medium text-gray-100'>شماره همراه</span>
-						<div className='relative flex flex-col'>
-							<input
-								autoFocus
-								type='text'
-								inputMode='numeric'
-								maxLength={12}
-								className={clsx(
-									'bg-transparent ltr h-48 rounded border px-16 text-right',
-									isTouched && invalid ? 'border-error-100' : 'border-gray-300',
-								)}
-								placeholder='شماره همراه خود را وارد کنید'
-								{...field}
-							/>
-							{isTouched && invalid && <span className='validation-message error'>{error?.message}</span>}
-						</div>
+					<label className={clsx('input-box', !(isTouched && invalid) && 'pb-8')}>
+						<span className='label'>شماره همراه</span>
+						<input
+							autoFocus
+							type='text'
+							inputMode='numeric'
+							maxLength={12}
+							className={clsx('input', isTouched && invalid && 'invalid')}
+							placeholder='شماره همراه خود را وارد کنید'
+							{...field}
+						/>
+						{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
 					</label>
 				)}
 			/>
 
-			<Button type='submit' disabled={!isValid} className='btn-primary h-48 gap-4 rounded shadow'>
+			{hasCaptcha && <Captcha control={control} />}
+
+			<Button
+				style={{
+					bottom: hasCaptcha && Object.keys(touchedFields).length > 1 && Object.keys(errors).length > 1 ? '5.6rem' : '11.6rem',
+					width: 'calc(100% - 17.6rem)',
+				}}
+				type='submit'
+				disabled={!isValid}
+				className='!absolute h-48 gap-4 rounded shadow btn-primary'
+			>
 				ادامه
 				<ArrowLeftSVG />
 			</Button>
