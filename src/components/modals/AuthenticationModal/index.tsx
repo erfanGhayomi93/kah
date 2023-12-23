@@ -28,7 +28,7 @@ const AuthenticationModal = () => {
 				{stage !== 'welcome' && (
 					<>
 						<div className='absolute left-24 z-10'>
-							<button type='button' className='text-gray-100'>
+							<button onClick={onCloseModal} type='button' className='text-gray-100'>
 								<XSVG />
 							</button>
 						</div>
