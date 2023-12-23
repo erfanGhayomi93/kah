@@ -10,7 +10,11 @@ interface Inputs {
 	captcha: string;
 }
 
-const OTPForm = () => {
+interface OTPFormProps {
+	submit: () => void;
+}
+
+const OTPForm = ({ submit }: OTPFormProps) => {
 	const {
 		control,
 		formState: { isValid, errors, touchedFields },
@@ -20,7 +24,7 @@ const OTPForm = () => {
 	const [seconds, setSeconds] = useState<number | null>(10);
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ otp, captcha }) => {
-		console.log(otp, captcha);
+		submit();
 	};
 
 	const onFinishedCountdown = () => {

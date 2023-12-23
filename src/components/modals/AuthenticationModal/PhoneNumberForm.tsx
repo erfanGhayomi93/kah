@@ -9,7 +9,11 @@ interface Inputs {
 	captcha: string;
 }
 
-const PhoneNumberForm = () => {
+interface PhoneNumberFormProps {
+	submit: () => void;
+}
+
+const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
 	const {
 		control,
 		formState: { isValid, touchedFields, errors },
@@ -17,7 +21,7 @@ const PhoneNumberForm = () => {
 	} = useForm<Inputs>({ mode: 'onChange' });
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ phoneNumber, captcha }) => {
-		console.log(phoneNumber, captcha);
+		submit();
 	};
 
 	const hasCaptcha = true;
