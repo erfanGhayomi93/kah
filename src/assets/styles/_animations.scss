@@ -1,0 +1,15 @@
+@keyframes spinner-border {
+	to {
+		transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes spinner-border {
+	to {
+		transform: rotate(360deg);
+	}
+}
+@-moz-keyframes spinner-border {
+	to {
+		transform: rotate(360deg);
+	}
+}

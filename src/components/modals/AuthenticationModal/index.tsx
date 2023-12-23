@@ -1,9 +1,8 @@
-import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleAuthenticationModal } from '@/features/slices/modalSlice';
 import styled from 'styled-components';
 import Modal from '../Modal';
-import PhoneNumberForm from './PhoneNumberForm';
+import Welcome from './Welcome';
 
 const Div = styled.div`
 	width: 578px;
@@ -19,18 +18,20 @@ const AuthenticationModal = () => {
 
 	return (
 		<Modal onClose={onCloseModal}>
-			<Div className='bg-white flex flex-col rounded-md p-24'>
-				<div className='mr-auto pb-32'>
+			<Div className='flex flex-col rounded-md bg-white p-24'>
+				{/* <div className='absolute left-24 z-10'>
 					<button type='button' className='text-gray-100'>
 						<XSVG />
 					</button>
 				</div>
 
-				<div className='text-center'>
+				<div style={{ height: '8.8rem' }} className='relative mt-48 text-center'>
 					<h1 className='text-3xl font-bold text-gray-100'>ورود به کهکشان</h1>
-				</div>
+				</div> */}
 
-				<PhoneNumberForm />
+				<Welcome />
+				{/* <PhoneNumberForm /> */}
+				{/* <OTPForm /> */}
 			</Div>
 		</Modal>
 	);

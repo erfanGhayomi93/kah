@@ -29,8 +29,12 @@ const config: Config = {
 				500: 'rgba(0, 35, 49, 1)',
 			},
 
-			hover: {
-				100: 'rgba(242, 242, 242, 1)',
+			secondary: {
+				100: 'rgba(255, 79, 37, 1)',
+				200: 'rgba(197, 52, 0, 1)',
+				300: 'rgba(137, 33, 0, 1)',
+				400: 'rgba(81, 16, 0, 1)',
+				500: 'rgba(40, 4, 0, 1)',
 			},
 
 			gray: {
@@ -90,6 +94,7 @@ const config: Config = {
 			'0': '0',
 			'4': '0.4rem',
 			'8': '0.8rem',
+			'12': '1.2rem',
 			'16': '1.6rem',
 			'24': '2.4rem',
 			'32': '3.2rem',
@@ -109,6 +114,10 @@ const config: Config = {
 
 		transitionTimingFunction: {
 			DEFAULT: 'ease-in-out',
+		},
+
+		fontFamily: {
+			IRANSansFaNum: 'IRANSansFaNum',
 		},
 	},
 
@@ -157,9 +166,7 @@ const config: Config = {
 					},
 				},
 
-				'.error-message': {
-					position: 'absolute',
-					top: 'calc(100% + 0.8rem)',
+				'.i-error': {
 					'font-size': '1.2rem',
 					'font-weight': '400',
 					'padding-right': '1.6rem',

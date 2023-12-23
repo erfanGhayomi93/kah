@@ -1,0 +1,9 @@
+.spinner {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	border: 2px solid theme("colors.primary.200");
+	border-right-color: rgba(0, 0, 0, 0);
+	border-radius: 50%;
+	animation: 750ms linear infinite spinner-border;
+}
