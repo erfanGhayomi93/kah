@@ -14,6 +14,8 @@ const OptionTable = ({ data }: OptionTableProps) => {
 			{
 				headerName: 'نام',
 				colId: 'title',
+				headerClass: 'justify-start',
+				cellClass: 'justify-end',
 				width: 200,
 				valueGetter: ({ data }) => data!.symbolInfo.title,
 			},
