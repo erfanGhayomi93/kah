@@ -1,6 +1,7 @@
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleAuthenticationModal } from '@/features/slices/modalSlice';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
@@ -14,6 +15,8 @@ const Div = styled.div`
 `;
 
 const AuthenticationModal = () => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
 
 	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'welcome'>('phoneNumber');
@@ -34,7 +37,7 @@ const AuthenticationModal = () => {
 						</div>
 
 						<div style={{ height: '8.8rem' }} className='relative mt-48 text-center'>
-							<h1 className='text-3xl font-bold text-gray-100'>ورود به کهکشان</h1>
+							<h1 className='text-3xl font-bold text-gray-100'>{t('authentication_modal.login_to_kahkeshan')}</h1>
 						</div>
 					</>
 				)}

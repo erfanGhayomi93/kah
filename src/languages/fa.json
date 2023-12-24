@@ -1,0 +1,39 @@
+{
+	"common": {
+		"confirm": "تایید",
+		"register": "ثبت",
+		"continue": "ادامه",
+		"ignore": "بی‌خیال"
+	},
+	"header": {
+		"login": "ورود"
+	},
+	"header_navigation": {
+		"home_page": "صفحه اصلی",
+		"watchlist": "دیده‌بان",
+		"contact_us": "تماس با ما",
+		"about_us": "درباره ما"
+	},
+	"authentication_modal": {
+		"login_to_kahkeshan": "ورود به کهکشان",
+		"resend_otp": "ارسال دوباره",
+		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.",
+		"welcome": "به کهکشان خوش آمدید!",
+		"set_password_btn": "تعیین رمز عبور",
+		"set_password_description": "برای تجربه ی کاربری بهتر، می توانید رمز عبور تعیین کنید."
+	},
+	"alerts": {},
+	"i_errors": {
+		"invalid_otp": "کد تایید نادرست است!",
+		"invalid_phone_number": "شماره همراه نادرست است!",
+		"invalid_captcha": "کد وارد شده مطابقت ندارد!"
+	},
+	"inputs": {
+		"captcha": "کد امنیتی",
+		"captcha_placeholder": "کد مقابل را وارد کنید",
+		"phone_number": "کد تایید",
+		"phone_number_placeholder": "شماره همراه خود را وارد کنید",
+		"otp": "کد تایید",
+		"otp_placeholder": "کد ارسال شده به شماره همراه خود را وارد کنید"
+	}
+}

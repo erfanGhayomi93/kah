@@ -5,5 +5,8 @@
 		"source.fixAll.eslint": "explicit",
 		"source.removeUnused": "never",
 		"source.organizeImports": "explicit"
-	}
+	},
+	"cSpell.words": [
+		"kahkeshan"
+	]
 }

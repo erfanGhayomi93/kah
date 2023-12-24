@@ -1,9 +1,12 @@
 import { useAppDispatch } from '@/features/hooks';
 import { toggleAuthenticationModal } from '@/features/slices/modalSlice';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
 const Header = () => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
 
 	const showAuthenticationModal = () => {
@@ -14,22 +17,22 @@ const Header = () => {
 		() => [
 			{
 				id: 'home-page',
-				title: 'صفحه اصلی',
+				title: t('header_navigation.home_page'),
 				href: '/',
 			},
 			{
 				id: 'watchlist',
-				title: 'دیده‌بان',
+				title: t('header_navigation.watchlist'),
 				href: '/watchlist',
 			},
 			{
 				id: 'contact-us',
-				title: 'تماس با ما',
+				title: t('header_navigation.contact_us'),
 				href: '/contact-us',
 			},
 			{
 				id: 'about-us',
-				title: 'درباره ما',
+				title: t('header_navigation.about_us'),
 				href: '/about-us',
 			},
 		],
@@ -37,7 +40,7 @@ const Header = () => {
 	);
 
 	return (
-		<header className='bg-white h-72 px-32 shadow flex-justify-between'>
+		<header className='h-72 bg-white px-32 shadow flex-justify-between'>
 			<nav className='gap-56 flex-items-center'>
 				<Link href='/' rel='home'>
 					<h1 className='text-3xl font-bold'>LOGO</h1>
@@ -57,8 +60,8 @@ const Header = () => {
 				</ul>
 			</nav>
 
-			<button onClick={showAuthenticationModal} type='button' className='btn-primary h-40 rounded px-48 font-medium'>
-				ورود
+			<button onClick={showAuthenticationModal} type='button' className='h-40 rounded px-48 font-medium btn-primary'>
+				{t('header.login')}
 			</button>
 		</header>
 	);
