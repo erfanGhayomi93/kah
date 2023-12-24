@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -18,11 +18,11 @@ const Wrapper = ({ children }: IWrapper) => {
 	if (!mount) return null;
 
 	return (
-		<div className='flex flex-col flex-1'>
+		<Fragment>
 			<Header />
 			{children}
 			<Footer />
-		</div>
+		</Fragment>
 	);
 };
 
