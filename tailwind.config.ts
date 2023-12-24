@@ -21,6 +21,8 @@ const config: Config = {
 
 			white: 'rgba(255, 255, 255, 1)',
 
+			black: 'rgba(35, 38, 41, 1)',
+
 			primary: {
 				100: 'rgba(0, 182, 237, 1)',
 				200: 'rgba(0, 142, 186, 1)',
@@ -98,6 +100,7 @@ const config: Config = {
 			'16': '1.6rem',
 			'24': '2.4rem',
 			'32': '3.2rem',
+			'36': '3.6rem',
 			'40': '4.0rem',
 			'48': '4.8rem',
 			'56': '5.6rem',
