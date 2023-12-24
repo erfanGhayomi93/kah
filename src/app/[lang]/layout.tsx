@@ -1,4 +1,5 @@
 import '@/assets/styles/app.scss';
+import '@/assets/styles/libs.scss';
 import NextIntlClientRegistry from '@/components/common/NextIntlClientRegistry';
 import ReduxToolkitRegistry from '@/components/common/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/StyledComponentsRegistry';

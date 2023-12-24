@@ -1,0 +1,50 @@
+@use "ag-grid-community/styles" as ag;
+@include ag.grid-styles(
+	(
+		themes: (
+			alpine: (
+				// font
+				--ag-font-family: "IRANSansEnNum",
+				--ag-font-size: 12px,
+				// header
+				--ag-header-height: 32px,
+				--ag-header-background-color: rgba(0, 104, 137, 0.2),
+				--ag-header-column-separator-display: false,
+				--ag-header-column-separator-color: rgb(255, 255, 255),
+				// Main Colors
+				--ag-background-color: rgb(255, 255, 255),
+				--ag-foreground-color: rgba(74, 74, 74, 1),
+				--ag-alpine-active-color: #002952,
+				--ag-header-foreground-color: rgba(112, 112, 112, 1),
+				--ag-data-color: rgba(74, 74, 74, 1),
+				--ag-row-hover-color: rgba(234, 244, 254),
+				--ag-odd-row-background-color: rgba(241, 241, 241, 1),
+				// Borders
+				--ag-borders: 0px solid,
+				--ag-border-color: rgb(94, 103, 129),
+				--ag-borders-secondary: 0px solid,
+				--ag-cell-horizontal-border: solid rgb(255, 255, 255),
+				--ag-borders-critical: 0px solid,
+				--ag-row-border-style: solid,
+				--ag-row-border-color: transparent,
+				--ag-row-border-width: 0px,
+
+				// Rows
+				--ag-row-height: 40px,
+				--ag-value-change-value-highlight-background-color: rgb(83, 168, 255, 0.1),
+				// Spacing
+				--ag-grid-size: 3px,
+				--ag-icon-size: 14px,
+				--ag-cell-horizontal-padding: 13px,
+
+				// Input
+				--ag-input-focus-box-shadow: none,
+				--ag-input-focus-border-color: rgb(83, 168, 255)
+			)
+		)
+	)
+);
+
+.ag-rtl .ag-cell {
+	border-left-width: 0;
+}
