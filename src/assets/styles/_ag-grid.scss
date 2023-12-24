@@ -17,7 +17,7 @@
 				--ag-alpine-active-color: #002952,
 				--ag-header-foreground-color: rgba(112, 112, 112, 1),
 				--ag-data-color: rgba(74, 74, 74, 1),
-				--ag-row-hover-color: rgba(234, 244, 254),
+				--ag-row-hover-color: rgba(0, 104, 137, 0.1),
 				--ag-odd-row-background-color: rgba(241, 241, 241, 1),
 				// Borders
 				--ag-borders: 0px solid,
@@ -46,5 +46,30 @@
 );
 
 .ag-rtl .ag-cell {
+	direction: ltr;
 	border-left-width: 0;
+}
+
+.ag-header-row {
+	font-weight: 500 !important;
+}
+
+.ag-header-cell:not(.justify-start, .justify-end) {
+	.ag-header-cell-label {
+		justify-content: center;
+	}
+}
+
+.ag-cell {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&.justify-start {
+		justify-content: flex-start;
+	}
+
+	&.justify-end {
+		justify-content: flex-end;
+	}
 }
