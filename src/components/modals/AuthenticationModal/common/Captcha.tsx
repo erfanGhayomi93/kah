@@ -1,5 +1,6 @@
 import { RefreshSVG } from '@/components/icons';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 
@@ -8,6 +9,8 @@ interface CaptchaProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Captcha = ({ control, ...props }: CaptchaProps) => {
+	const t = useTranslations();
+
 	const [fetching, setFetching] = useState(false);
 
 	const onRefetchCaptcha = () => {
@@ -23,19 +26,20 @@ const Captcha = ({ control, ...props }: CaptchaProps) => {
 			rules={{
 				validate: (value) => {
 					if (!isNaN(Number(value)) && value.length === 6) return undefined;
-					return 'کد وارد شده مطابقت ندارد!';
+					return t('i_errors.invalid_captcha');
 				},
 			}}
 			render={({ field, fieldState: { invalid, isTouched, error } }) => (
 				<label className='input-box'>
-					<span className='label'>کد امنیتی</span>
+					<span className='label'>{t('inputs.captcha')}</span>
 					<div className={clsx('input flex-items-center', isTouched && invalid && 'invalid')}>
 						<input
 							type='text'
 							inputMode='numeric'
 							maxLength={6}
 							className='flex-1'
-							placeholder='کد مقابل را وارد کنید'
+							placeholder={t('inputs.captcha_placeholder')}
+							autoComplete='off'
 							{...field}
 							{...props}
 						/>

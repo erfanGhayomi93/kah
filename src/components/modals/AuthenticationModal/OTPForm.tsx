@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import Captcha from './common/Captcha';
@@ -15,6 +16,8 @@ interface OTPFormProps {
 }
 
 const OTPForm = ({ submit }: OTPFormProps) => {
+	const t = useTranslations();
+
 	const {
 		control,
 		formState: { isValid, errors, touchedFields },
@@ -47,12 +50,12 @@ const OTPForm = ({ submit }: OTPFormProps) => {
 				rules={{
 					validate: (value) => {
 						if (!isNaN(Number(value)) && value.length === 6) return undefined;
-						return 'کد تایید نادرست است!';
+						return t('i_errors.invalid_otp');
 					},
 				}}
 				render={({ field, fieldState: { invalid, isTouched, error } }) => (
 					<label className={clsx('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
-						<span className='label'>کد تایید</span>
+						<span className='label'>{t('inputs.otp')}</span>
 						<div className={clsx('input flex-items-center', isTouched && invalid && 'invalid')}>
 							<input
 								autoFocus
@@ -60,7 +63,8 @@ const OTPForm = ({ submit }: OTPFormProps) => {
 								inputMode='numeric'
 								maxLength={6}
 								className='flex-1'
-								placeholder='کد ارسال شده به شماره همراه خود را وارد کنید'
+								placeholder={t('inputs.otp_placeholder')}
+								autoComplete='off'
 								{...field}
 							/>
 							<div
@@ -78,9 +82,9 @@ const OTPForm = ({ submit }: OTPFormProps) => {
 						</div>
 						{seconds === -1 ? (
 							<div className='flex justify-between'>
-								<span className='i-error'>زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.</span>
+								<span className='i-error'>{t('authentication_modal.resend_otp_description')}</span>
 								<button onClick={onResendOTP} type='button' className='text-tiny text-link underline'>
-									ارسال دوباره
+									{t('authentication_modal.resend_otp')}
 								</button>
 							</div>
 						) : (
@@ -108,7 +112,7 @@ const OTPForm = ({ submit }: OTPFormProps) => {
 				disabled={!isValid}
 				className='!absolute h-48 gap-4 rounded shadow btn-primary'
 			>
-				ثبت
+				{t('common.register')}
 			</Button>
 		</form>
 	);

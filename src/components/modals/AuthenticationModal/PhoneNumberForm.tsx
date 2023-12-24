@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button';
 import { ArrowLeftSVG } from '@/components/icons';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import Captcha from './common/Captcha';
 
@@ -14,6 +15,8 @@ interface PhoneNumberFormProps {
 }
 
 const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
+	const t = useTranslations();
+
 	const {
 		control,
 		formState: { isValid, touchedFields, errors },
@@ -36,19 +39,19 @@ const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
 					validate: (value) => {
 						if (value.length === 12 && /^989\d{9}$/.test(value)) return undefined;
 						if (value.length === 11 && /^09\d{9}$/.test(value)) return undefined;
-						return 'شماره همراه نادرست است!';
+						return t('i_errors.invalid_phone_number');
 					},
 				}}
 				render={({ field, fieldState: { invalid, isTouched, error } }) => (
 					<label className={clsx('input-box', !(isTouched && invalid) && 'pb-8')}>
-						<span className='label'>شماره همراه</span>
+						<span className='label'>{t('inputs.phone_number')}</span>
 						<input
 							autoFocus
 							type='text'
 							inputMode='numeric'
 							maxLength={12}
 							className={clsx('input', isTouched && invalid && 'invalid')}
-							placeholder='شماره همراه خود را وارد کنید'
+							placeholder={t('inputs.phone_number_placeholder')}
 							{...field}
 						/>
 						{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
@@ -67,7 +70,7 @@ const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
 				disabled={!isValid}
 				className='!absolute h-48 gap-4 rounded shadow btn-primary'
 			>
-				ادامه
+				{t('common.continue')}
 				<ArrowLeftSVG />
 			</Button>
 		</form>

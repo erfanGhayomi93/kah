@@ -1,5 +1,7 @@
+const withNextIntl = require('next-intl/plugin')();
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = withNextIntl({
 	webpack(config) {
 		config.module.rules.push({
 			test: /\.svg$/i,
@@ -9,6 +11,6 @@ const nextConfig = {
 
 		return config
 	},
-};
+});
 
 module.exports = nextConfig;
