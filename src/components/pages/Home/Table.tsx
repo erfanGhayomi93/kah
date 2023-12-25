@@ -4,11 +4,11 @@ import { numberFormatter } from '@/utils/helpers';
 import { type ColDef } from '@ag-grid-community/core';
 import { useMemo } from 'react';
 
-interface OptionTableProps {
+interface TableProps {
 	data: Option.Root[];
 }
 
-const OptionTable = ({ data }: OptionTableProps) => {
+const Table = ({ data }: TableProps) => {
 	const COLUMNS: Array<ColDef<Option.Root>> = useMemo(
 		() => [
 			{
@@ -43,6 +43,7 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				headerName: 'O / I TM',
 				colId: 'profitAndLoss',
 				width: 96,
+				cellClass: ({ value }) => ['font-medium', value === 'ITM' ? 'text-success-100' : 'text-error-100'],
 				valueGetter: ({ data }) => {
 					const value = data!.optionWatchlistData.profitAndLoss;
 
@@ -104,6 +105,13 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				headerName: 'رشد',
 				colId: 'growth',
 				width: 88,
+				cellClass: ({ value }) => {
+					const valueAsNumber = Number(value);
+
+					if (valueAsNumber > 0) return 'text-success-100';
+					if (valueAsNumber < 0) return 'text-success-100';
+					return '';
+				},
 				valueGetter: ({ data }) => data!.optionWatchlistData.growth,
 				valueFormatter: ({ value }) => {
 					const valueAsNumber = Number(value);
@@ -124,6 +132,7 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				headerName: 'پرارزش',
 				colId: 'valueContract',
 				width: 88,
+				cellClass: ({ value }) => ['font-medium', value === 'LIQ' ? 'text-success-100' : 'text-error-100'],
 				valueGetter: ({ data }) => data!.optionWatchlistData.valueContract,
 			},
 			{
@@ -140,6 +149,7 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				headerName: 'موقعیت باز زیاد',
 				colId: 'highOpenPosition',
 				width: 120,
+				cellClass: ({ value }) => ['font-medium', value === 'LIQ' ? 'text-success-100' : 'text-error-100'],
 				valueGetter: ({ data }) => data!.optionWatchlistData.highOpenPosition,
 			},
 			{
@@ -178,7 +188,7 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				headerName: 'زمان سررسید',
 				colId: 'daysToContractEndDate',
 				width: 112,
-				className: 'dir-rtl',
+				cellClass: 'rtl',
 				valueGetter: ({ data }) => data!.symbolInfo.daysToContractEndDate,
 				valueFormatter: ({ value }) => `${value} روز`,
 			},
@@ -352,6 +362,7 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				headerName: 'نوع اختیار',
 				colId: 'optionType',
 				width: 88,
+				cellClass: ({ value }) => ['font-medium', value === 'Call' ? 'text-success-100' : 'text-error-100'],
 				valueGetter: ({ data }) => data!.symbolInfo.optionType,
 				valueFormatter: ({ value }) => (value === 'Call' ? 'خرید' : 'فروش'),
 			},
@@ -420,4 +431,4 @@ const OptionTable = ({ data }: OptionTableProps) => {
 	return <AgTable style={{ height: '52.8rem' }} rowData={data} columnDefs={COLUMNS} />;
 };
 
-export default OptionTable;
+export default Table;
