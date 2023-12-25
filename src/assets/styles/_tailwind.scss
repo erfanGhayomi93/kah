@@ -34,13 +34,51 @@
 		justify-content: center;
 		color: theme("colors.white");
 		background-color: theme("colors.primary.300");
-		transition: background-color 300ms ease-in-out;
+		transition:
+			background-color 300ms,
+			color 300ms;
+		-webkit-transition:
+			background-color 300ms,
+			color 300ms;
+		transition-timing-function: ease-in-out;
+		-webkit-transition-timing-function: ease-in-out;
 
 		&:not(:disabled):hover {
-			background-color: theme("colors.primary.200");
+			background-color: theme("colors.primary.400");
 		}
 
 		&:disabled {
+			box-shadow: none !important;
+			background-color: theme("colors.gray.500") !important;
+			color: theme("colors.gray.300") !important;
+		}
+	}
+
+	.btn-primary-outline {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: theme("colors.primary.300");
+		border: 1.5px solid theme("colors.primary.300");
+		transition:
+			background-color 300ms,
+			color 300ms,
+			border-color 300ms;
+		-webkit-transition:
+			background-color 300ms,
+			color 300ms,
+			border-color 300ms;
+		transition-timing-function: ease-in-out;
+		-webkit-transition-timing-function: ease-in-out;
+
+		&:not(:disabled):hover {
+			color: theme("colors.white");
+			border-color: theme("colors.primary.400");
+			background-color: theme("colors.primary.400");
+		}
+
+		&:disabled {
+			box-shadow: none !important;
 			background-color: theme("colors.gray.500") !important;
 			color: theme("colors.gray.300") !important;
 		}

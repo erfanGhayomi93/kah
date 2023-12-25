@@ -17,6 +17,7 @@ const Table = ({ data }: TableProps) => {
 				headerClass: 'justify-start',
 				cellClass: 'justify-end',
 				width: 200,
+				pinned: 'right',
 				valueGetter: ({ data }) => data!.symbolInfo.title,
 			},
 			{
@@ -422,6 +423,13 @@ const Table = ({ data }: TableProps) => {
 				headerName: 'محاسبه 150 درصد',
 				colId: 'calculation150percent',
 				width: 136,
+				valueGetter: ({ data }) => '—',
+			},
+			{
+				headerName: 'عملیات',
+				colId: 'action',
+				width: 80,
+				pinned: 'left',
 				valueGetter: ({ data }) => '—',
 			},
 		],

@@ -147,14 +147,17 @@ const Dropdown = <T extends unknown>({
 		if (!visible || !eChild || !eDropdown) return;
 
 		try {
-			const dropdownWidth = defaultDropdownWidth ?? eDropdown.getBoundingClientRect().width;
+			const dropdownOffset = eDropdown.getBoundingClientRect();
+			const dropdownWidth = defaultDropdownWidth ?? dropdownOffset.width;
+			const dropdownHeight = dropdownOffset.height;
 			const { left, top, height, width } = eChild.getBoundingClientRect();
 
 			const offsetTop = top + height + 1;
 			const offsetLeft = left + width - dropdownWidth;
+			const { innerHeight, innerWidth } = window;
 
-			eDropdown.style.transform = `translate(${Math.max(Math.min(window.innerWidth - dropdownWidth, offsetLeft), 0)}px,${Math.max(
-				offsetTop,
+			eDropdown.style.transform = `translate(${Math.max(Math.min(innerWidth - dropdownWidth, offsetLeft), 0)}px,${Math.max(
+				Math.min(offsetTop + dropdownHeight, innerHeight - dropdownHeight - 1),
 				0,
 			)}px)`;
 			eDropdown.style.maxHeight = `${Math.max(window.innerHeight - offsetTop - 72, 200)}px`;

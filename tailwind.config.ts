@@ -98,6 +98,15 @@ const config: Config = {
 			circle: '50%',
 		},
 
+		borderWidth: {
+			DEFAULT: '1px',
+			half: '1.5px',
+			2: '2px',
+			4: '4px',
+			6: '4px',
+			8: '4px',
+		},
+
 		spacing: {
 			'0': '0',
 			'4': '0.4rem',
@@ -108,6 +117,7 @@ const config: Config = {
 			'32': '3.2rem',
 			'36': '3.6rem',
 			'40': '4.0rem',
+			'44': '4.4rem',
 			'48': '4.8rem',
 			'56': '5.6rem',
 			'64': '6.4rem',
