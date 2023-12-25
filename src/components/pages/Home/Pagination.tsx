@@ -80,7 +80,7 @@ const Pagination = () => {
 				>
 					<button
 						type='button'
-						className='h-32 w-48 rounded border border-gray-100 pl-4 font-IRANSansFaNum text-gray-100 flex-items-center'
+						className='h-32 w-48 rounded-sm border border-gray-100 pl-4 font-IRANSansFaNum text-gray-100 flex-items-center'
 					>
 						<span className='flex-1 text-center'>{pageSetting.pageSize}</span>
 						<ArrowDownSVG width='1.2rem' height='1.2rem' />

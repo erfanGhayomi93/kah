@@ -45,6 +45,10 @@
 	)
 );
 
+.ag-root {
+	border-radius: 8px;
+}
+
 .ag-rtl .ag-cell {
 	direction: ltr;
 	border-left-width: 0;
