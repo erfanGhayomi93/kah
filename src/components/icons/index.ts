@@ -7,6 +7,7 @@ import DoubleArrowLeftSVG from './double-arrow-right.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
 import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
+import MoreOptionsSVG from './more-options.svg';
 import RefreshSVG from './refresh.svg';
 import XSVG from './x.svg';
 
@@ -20,6 +21,7 @@ export {
 	EllipsisVerticalSVG,
 	FileExcelSVG,
 	FilterSVG,
+	MoreOptionsSVG,
 	RefreshSVG,
 	XSVG,
 };

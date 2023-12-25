@@ -1,4 +1,4 @@
-import { CheckListSVG, FileExcelSVG, FilterSVG } from '@/components/icons';
+import { CheckListSVG, FileExcelSVG, FilterSVG, MoreOptionsSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 
 const Toolbar = () => {
@@ -6,7 +6,19 @@ const Toolbar = () => {
 
 	return (
 		<div className='flex-justify-between'>
-			<div className='flex-shrink-0 flex-grow' />
+			<ul className='flex-shrink-0 flex-grow gap-8 flex-items-center'>
+				<li>
+					<button type='button' className='btn-primary-outline h-40 w-36 gap-8 rounded font-medium'>
+						<MoreOptionsSVG width='2.4rem' height='2.4rem' />
+					</button>
+				</li>
+
+				<li>
+					<button type='button' className='h-40 gap-8 rounded px-16 font-medium btn-primary'>
+						{t('option_page.market_overview')}
+					</button>
+				</li>
+			</ul>
 
 			<div className='flex flex-grow-0 gap-8'>
 				<button type='button' className='btn-primary-outline h-40 gap-8 rounded px-16'>
