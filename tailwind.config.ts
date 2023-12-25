@@ -90,11 +90,11 @@ const config: Config = {
 
 		borderRadius: {
 			0: '0',
-			sm: '0.4rem',
-			DEFAULT: '0.8rem',
-			md: '1.6rem',
-			lg: '2.4rem',
-			oval: '99rem',
+			sm: '4px',
+			DEFAULT: '8px',
+			md: '16px',
+			lg: '24px',
+			oval: '9999px',
 			circle: '50%',
 		},
 

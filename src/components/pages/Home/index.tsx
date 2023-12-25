@@ -15,7 +15,7 @@ interface HomeProps {
 
 const Home = ({ data }: HomeProps) => {
 	return (
-		<Main className='p-32'>
+		<Main className='px-32 pt-24'>
 			<div className='flex flex-col gap-24'>
 				<Toolbar />
 				<Table data={data} />
