@@ -1,5 +1,5 @@
 .root {
-	background-color: theme("colors.gray.100");
+	background-color: theme("colors.white");
 	border-radius: 6px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	font-size: 13px;
@@ -34,13 +34,13 @@ li.item {
 
 	& > span {
 		font-size: 13px;
-		color: theme("colors.blueViolet.1900");
+		color: theme("colors.gray.100");
 	}
 
 	& > svg {
 		max-width: 16px;
 		max-height: 16px;
-		color: theme("colors.blueViolet.1200");
+		color: theme("colors.gray.200");
 	}
 }
 
@@ -49,5 +49,5 @@ li.active {
 }
 
 li.underline {
-	border-bottom: 1px solid theme("colors.blueViolet.200");
+	border-bottom: 1px solid theme("colors.gray.300");
 }

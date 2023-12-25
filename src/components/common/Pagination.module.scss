@@ -1,0 +1,56 @@
+.pagination {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+
+	button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 3.2rem;
+		font-size: 1.6rem;
+		font-weight: 400;
+		font-family: "IRANSansFaNum";
+	}
+}
+
+.prev,
+.next {
+	color: theme("colors.gray.200");
+
+	button {
+		gap: 0.4rem;
+
+		&:disabled {
+			color: theme("colors.gray.300");
+		}
+	}
+}
+
+.prev {
+	padding-left: 1.6rem;
+}
+
+.next {
+	padding-right: 1.6rem;
+}
+
+.page {
+	button {
+		border-radius: 0.8rem;
+		width: 3.2rem;
+		background-color: transparent;
+		color: theme("colors.gray.100");
+		transition:
+			background-color 250ms,
+			color 250ms;
+		-webkit-transition:
+			background-color 250ms,
+			color 250ms;
+	}
+
+	&.active button {
+		color: theme("colors.white");
+		background-color: theme("colors.primary.200");
+	}
+}

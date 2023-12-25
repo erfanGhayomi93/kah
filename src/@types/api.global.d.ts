@@ -6,7 +6,6 @@ declare interface ServerResponse<T = unknown> {
 
 declare interface PaginationResponse<T = unknown> {
 	result: T[];
-	totalTotalCount: number;
 	pageNumber: number;
 	totalPages: number;
 	totalCount: number;

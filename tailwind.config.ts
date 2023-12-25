@@ -41,9 +41,11 @@ const config: Config = {
 
 			gray: {
 				100: 'rgba(74, 74, 74, 1)',
-				200: 'rgba(175, 175, 175, 1)',
-				300: 'rgba(203, 203, 203, 1)',
-				400: 'rgba(230, 230, 230, 1)',
+				200: 'rgba(112, 112, 112, 1)',
+				300: 'rgba(175, 175, 175, 1)',
+				400: 'rgba(203, 203, 203, 1)',
+				500: 'rgba(233, 236, 239, 1)',
+				600: 'rgba(242, 242, 242, 1)',
 			},
 
 			link: {
@@ -56,6 +58,10 @@ const config: Config = {
 
 			success: {
 				100: 'rgba(71, 192, 134, 1)',
+			},
+
+			warning: {
+				100: 'rgba(255, 193, 7, 1)',
 			},
 		},
 
@@ -165,7 +171,42 @@ const config: Config = {
 					},
 
 					'&:disabled': {
-						'background-color': theme('colors.primary.400'),
+						'background-color': theme('colors.primary.500'),
+						color: theme('colors.primary.300'),
+					},
+				},
+
+				'.input-box': {
+					display: 'flex',
+					'flex-direction': 'column',
+					gap: '0.8rem',
+
+					'.label': {
+						'font-size': '1.4rem',
+						'font-weight': '500',
+						color: theme('colors.gray.100'),
+					},
+
+					'.input': {
+						'border-radius': '0.8rem',
+						border: `1px solid ${theme('colors.gray.400')}`,
+						height: '4.8rem',
+						padding: '0 1.6rem',
+
+						'&.invalid': {
+							'border-color': theme('colors.error.100'),
+						},
+					},
+
+					'.prefix': {
+						height: '3.2rem',
+						width: '4.4rem',
+						'border-right': `1px solid ${theme('colors.gray.400')}`,
+						'text-align': 'center',
+						'font-family': 'IRANSansFaNum',
+						display: 'flex',
+						'align-items': 'center',
+						'justify-content': 'flex-end',
 					},
 				},
 
