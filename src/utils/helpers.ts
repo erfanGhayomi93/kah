@@ -24,6 +24,8 @@ export const returnIfIsNaN = <T extends unknown>(value: number, defaultValue: T)
 	return value;
 };
 
+export const isBetween = (min: number, value: number, max: number): boolean => value >= min && value <= max;
+
 export const getRndInteger = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };

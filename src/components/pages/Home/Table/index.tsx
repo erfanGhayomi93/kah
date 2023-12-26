@@ -3,6 +3,7 @@ import dayjs from '@/libs/dayjs';
 import { numberFormatter } from '@/utils/helpers';
 import { type ColDef } from '@ag-grid-community/core';
 import { useMemo } from 'react';
+import ActionColumn from './ActionColumn';
 
 interface TableProps {
 	data: Option.Root[];
@@ -430,7 +431,7 @@ const Table = ({ data }: TableProps) => {
 				colId: 'action',
 				width: 80,
 				pinned: 'left',
-				valueGetter: ({ data }) => '—',
+				cellRenderer: ActionColumn,
 			},
 		],
 		[],
