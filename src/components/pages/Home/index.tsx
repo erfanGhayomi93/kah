@@ -1,11 +1,14 @@
 'use client';
 
 import styled from 'styled-components';
-import Pagination from './Pagination';
 import Table from './Table';
 import Toolbar from './Toolbar';
 
 const Main = styled.main`
+	display: flex;
+	flex-direction: column;
+	padding: 2.4rem 3.2rem 0 3.2rem;
+	gap: 2.4rem;
 	min-height: calc(100% - 10.8rem);
 `;
 
@@ -15,12 +18,9 @@ interface HomeProps {
 
 const Home = ({ data }: HomeProps) => {
 	return (
-		<Main className='px-32 pt-24'>
-			<div className='flex flex-col gap-24'>
-				<Toolbar />
-				<Table data={data} />
-				<Pagination />
-			</div>
+		<Main>
+			<Toolbar />
+			<Table data={data} />
 		</Main>
 	);
 };

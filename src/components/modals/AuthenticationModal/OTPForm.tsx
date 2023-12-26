@@ -56,12 +56,13 @@ const OTPForm = ({ submit }: OTPFormProps) => {
 				render={({ field, fieldState: { invalid, isTouched, error } }) => (
 					<label className={clsx('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
 						<span className='label'>{t('inputs.otp')}</span>
-						<div className={clsx('input flex-items-center', isTouched && invalid && 'invalid')}>
+						<div className={clsx('flex-items-center input', isTouched && invalid && 'invalid')}>
 							<input
-								autoFocus
+								title={t('inputs.otp_placeholder')}
 								type='text'
 								inputMode='numeric'
 								maxLength={6}
+								pattern='\d{4,6}'
 								className='flex-1'
 								placeholder={t('inputs.otp_placeholder')}
 								autoComplete='off'

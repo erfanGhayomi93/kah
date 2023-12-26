@@ -1,11 +1,11 @@
 :root {
-	--scrollbar-size: 8px;
+	--scrollbar-size: 12px;
 	--scrollbar-thumb: rgb(217, 217, 217);
 	--scrollbar-track: rgb(255, 255, 255);
 }
 
 html {
-	font-size: 62.5%;
+	font-size: 62.5%; // 16px => 10px
 }
 
 body {
