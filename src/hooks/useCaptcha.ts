@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const useCaptcha = () => {
-	const [captcha, setCaptcha] = useState({
+	const [captcha] = useState({
 		base64String: null,
 		key: null,
 	});

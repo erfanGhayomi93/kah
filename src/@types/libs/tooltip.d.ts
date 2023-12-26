@@ -1,4 +1,4 @@
-namespace AppTooltip {
+declare namespace AppTooltip {
 	export type Placement =
 		| 'top'
 		| 'top-start'

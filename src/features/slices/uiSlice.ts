@@ -1,20 +1,13 @@
 'use client';
 
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { type RootState } from '../store';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface UIState {
-	
+	test: boolean;
 }
 
 const initialState: UIState = {
-	filters: {
-		sort: {
-			colId: 'title',
-			type: 'asc',
-		},
-		defaultSortingType: 'asc',
-	},
+	test: true,
 };
 
 const uiSlice = createSlice({
