@@ -46,6 +46,7 @@ const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
 					<label className={clsx('input-box', !(isTouched && invalid) && 'pb-8')}>
 						<span className='label'>{t('inputs.phone_number')}</span>
 						<input
+							title={t('inputs.phone_number_placeholder')}
 							autoFocus
 							type='text'
 							inputMode='numeric'

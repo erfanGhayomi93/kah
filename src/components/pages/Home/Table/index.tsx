@@ -1,8 +1,8 @@
 import AgTable from '@/components/common/Tables/AgTable';
 import dayjs from '@/libs/dayjs';
 import { numberFormatter } from '@/utils/helpers';
-import { type ColDef } from '@ag-grid-community/core';
-import { useMemo } from 'react';
+import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
 
 interface TableProps {
@@ -10,10 +10,12 @@ interface TableProps {
 }
 
 const Table = ({ data }: TableProps) => {
+	const tableRef = useRef<GridApi<Option.Root>>(null);
+
 	const COLUMNS: Array<ColDef<Option.Root>> = useMemo(
 		() => [
 			{
-				headerName: 'نام',
+				headerName: 'نماد',
 				colId: 'title',
 				headerClass: 'justify-start',
 				cellClass: 'justify-end',
@@ -437,7 +439,15 @@ const Table = ({ data }: TableProps) => {
 		[],
 	);
 
-	return <AgTable style={{ height: '52.8rem' }} rowData={data} columnDefs={COLUMNS} />;
+	return (
+		<AgTable
+			ref={tableRef}
+			style={{ height: 'calc(100vh - 19.6rem)' }}
+			rowData={data}
+			columnDefs={COLUMNS}
+			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
+		/>
+	);
 };
 
 export default Table;

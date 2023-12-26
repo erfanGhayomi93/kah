@@ -32,14 +32,16 @@ const Captcha = ({ control, ...props }: CaptchaProps) => {
 			render={({ field, fieldState: { invalid, isTouched, error } }) => (
 				<label className='input-box'>
 					<span className='label'>{t('inputs.captcha')}</span>
-					<div className={clsx('input flex-items-center', isTouched && invalid && 'invalid')}>
+					<div className={clsx('flex-items-center input', isTouched && invalid && 'invalid')}>
 						<input
+							title={t('inputs.captcha_placeholder')}
 							type='text'
 							inputMode='numeric'
 							maxLength={6}
 							className='flex-1'
 							placeholder={t('inputs.captcha_placeholder')}
 							autoComplete='off'
+							pattern='\d{6,6}'
 							{...field}
 							{...props}
 						/>

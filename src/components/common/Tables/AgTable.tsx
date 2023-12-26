@@ -31,10 +31,11 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 				suppressDragLeaveHidesColumns: true,
 				animateRows: true,
 				enableRtl: true,
+				domLayout: 'normal',
 				rowBuffer: 5,
 				rowHeight: 48,
 				headerHeight: 48,
-				scrollbarWidth: 8,
+				scrollbarWidth: 12,
 				defaultColDef: {
 					suppressMovable: true,
 					sortable: false,
