@@ -3,7 +3,7 @@ import { ArrowLeftSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
-import Captcha from './common/Captcha';
+import Captcha from '../../common/Inputs/Captcha';
 
 interface Inputs {
 	phoneNumber: string;

@@ -102,6 +102,7 @@ const config: Config = {
 		borderWidth: {
 			DEFAULT: '1px',
 			half: '1.5px',
+			0: '0',
 			2: '2px',
 			4: '4px',
 			6: '4px',

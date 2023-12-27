@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/features/hooks';
-import { toggleAuthenticationModal } from '@/features/slices/modalSlice';
+import { toggleLoginModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -10,7 +10,7 @@ const Header = () => {
 	const dispatch = useAppDispatch();
 
 	const showAuthenticationModal = () => {
-		dispatch(toggleAuthenticationModal(true));
+		dispatch(toggleLoginModal(true));
 	};
 
 	const navigation = useMemo(

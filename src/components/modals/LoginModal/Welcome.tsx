@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/features/hooks';
-import { toggleAuthenticationModal } from '@/features/slices/modalSlice';
+import { toggleLoginModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -9,7 +9,7 @@ const Welcome = () => {
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(toggleAuthenticationModal(false));
+		dispatch(toggleLoginModal(false));
 	};
 
 	return (
