@@ -62,8 +62,6 @@ const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
 
 			{hasCaptcha && <Captcha control={control} />}
 
-			{/* <Password control={control} label='رمز جدید' placeholder='رمز عبور جدید خود را وارد کنید' /> */}
-
 			<Button
 				style={{
 					bottom: hasCaptcha && Object.keys(touchedFields).length > 1 && Object.keys(errors).length > 1 ? '5.6rem' : '11.6rem',
