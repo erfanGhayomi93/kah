@@ -1,10 +1,10 @@
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
+import Captcha from '@/components/common/Inputs/Captcha';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
-import Captcha from './common/Captcha';
 
 interface Inputs {
 	otp: string;
