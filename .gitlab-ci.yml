@@ -14,6 +14,24 @@ Deploy-Job:
     #- Stop-WebSite "kahkeshan"
     - Start-WebSite "kahkeshan"
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
+  tags:
+    - Test
+  artifacts:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "Develop"
+stage-Job:
+  stage: deploy
+  script:
+    - npm install
+    - ($env:CI = "false") -and (npm run build)
+    - $date = get-date -format  "dd-MM-yyyy"
+    - mkdir -p "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Import-Module WebAdministration
+    - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse -Verbose "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    #- Stop-WebSite "kahkeshan"
+    - Start-WebSite "kahkeshan"
+    - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
 #    - cd c:\scripts\Clubui\
 #    - .\only4backup
 
