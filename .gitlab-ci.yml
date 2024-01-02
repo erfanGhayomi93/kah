@@ -42,4 +42,4 @@ stage-Job:
     - StageApp
   artifacts:
   rules:
-    - if: $CI_COMMIT_BRANCH == "Stage"
+    - if: $CI_COMMIT_BRANCH == "Stage" 
