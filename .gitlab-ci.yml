@@ -30,6 +30,8 @@ stage-Job:
     - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse -Verbose "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.next" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse -Verbose "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse -Verbose :D:\Stage\UI\kahkeshanUi\importantfile\server.js -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse -Verbose :D:\Stage\UI\kahkeshanUi\importantfile\web.config -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Stop-WebSite "kahkeshan"
     - Start-WebSite "kahkeshan"
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
