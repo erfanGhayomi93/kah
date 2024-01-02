@@ -1,12 +1,12 @@
 'use client';
 
 import { useAppSelector } from '@/features/hooks';
-import AuthenticationModal from './AuthenticationModal';
+import LoginModal from './LoginModal';
 
 const Modals = () => {
-	const { authenticationModal } = useAppSelector((state) => state.modal);
+	const { loginModal, forgetPassword } = useAppSelector((state) => state.modal);
 
-	return [authenticationModal && <AuthenticationModal key='authentication-modal' />];
+	return [loginModal && <LoginModal key='login-modal' />];
 };
 
 export default Modals;

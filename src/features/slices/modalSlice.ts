@@ -4,25 +4,32 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
 export interface ModalState {
-	authenticationModal: boolean;
+	loginModal: boolean;
+	forgetPassword: boolean;
 }
 
 const initialState: ModalState = {
-	authenticationModal: false,
+	loginModal: false,
+	forgetPassword: true,
 };
 
 const modalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
-		toggleAuthenticationModal: (state, { payload }: PayloadAction<ModalState['authenticationModal']>) => {
-			state.authenticationModal = payload;
+		toggleLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
+			state.loginModal = payload;
+		},
+
+		toggleForgetPasswordModal: (state, { payload }: PayloadAction<ModalState['forgetPassword']>) => {
+			state.forgetPassword = payload;
 		},
 	},
 });
 
-export const { toggleAuthenticationModal } = modalSlice.actions;
+export const { toggleLoginModal, toggleForgetPasswordModal } = modalSlice.actions;
 
-export const getAuthenticationModal = (state: RootState) => state.modal.authenticationModal;
+export const getLoginModal = (state: RootState) => state.modal.loginModal;
+export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 
 export default modalSlice.reducer;

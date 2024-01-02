@@ -3,7 +3,7 @@ import { ArrowLeftSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
-import Captcha from './common/Captcha';
+import Captcha from '../../common/Inputs/Captcha';
 
 interface Inputs {
 	phoneNumber: string;
@@ -46,6 +46,7 @@ const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
 					<label className={clsx('input-box', !(isTouched && invalid) && 'pb-8')}>
 						<span className='label'>{t('inputs.phone_number')}</span>
 						<input
+							title={t('inputs.phone_number_placeholder')}
 							autoFocus
 							type='text'
 							inputMode='numeric'

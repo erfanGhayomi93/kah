@@ -5,6 +5,8 @@ import ColumnsSVG from './columns.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
 import DoubleArrowLeftSVG from './double-arrow-right.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
+import EyeSlashSVG from './eye-slash.svg';
+import EyeSVG from './eye.svg';
 import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
 import MoreOptionsSVG from './more-options.svg';
@@ -19,6 +21,8 @@ export {
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,
 	EllipsisVerticalSVG,
+	EyeSVG,
+	EyeSlashSVG,
 	FileExcelSVG,
 	FilterSVG,
 	MoreOptionsSVG,
