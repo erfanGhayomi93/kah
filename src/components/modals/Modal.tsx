@@ -5,14 +5,15 @@ import styles from './Modal.module.scss';
 
 interface ModalProps {
 	portalElement?: HTMLElement;
-	style?: Record<'root' | 'container' | 'modal', React.CSSProperties>;
+	style?: Partial<Record<'root' | 'container' | 'modal', React.CSSProperties>>;
 	size?: 'lg' | 'md' | 'sm' | 'xs' | 'xxs';
 	classes?: RecordClasses<'root' | 'container' | 'modal'>;
 	children: React.ReactNode;
+	top?: string | number;
 	onClose: () => void;
 }
 
-const Modal = ({ portalElement, children, style, classes, size, onClose }: ModalProps) => {
+const Modal = ({ portalElement, children, style, classes, size, top, onClose }: ModalProps) => {
 	const rootRef = useRef<HTMLDivElement>(null);
 
 	const modalRef = useRef<HTMLDivElement>(null);
@@ -59,7 +60,7 @@ const Modal = ({ portalElement, children, style, classes, size, onClose }: Modal
 	return createPortal(
 		<div ref={rootRef} style={style?.root} className={clsx(styles.root, classes?.root)}>
 			<div style={style?.container} className={clsx(styles.container, classes?.container)}>
-				<div ref={modalRef} style={style?.modal} className={clsx(styles.modal, size && styles[size], classes?.modal)}>
+				<div ref={modalRef} style={{ top, ...style?.modal }} className={clsx(styles.modal, size && styles[size], classes?.modal)}>
 					{children}
 				</div>
 			</div>

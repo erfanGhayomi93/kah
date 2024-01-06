@@ -54,11 +54,11 @@ const config: Config = {
 			},
 
 			error: {
-				100: 'rgba(206, 29, 29, 1)',
+				100: 'rgba(220, 53, 69, 1)',
 			},
 
 			success: {
-				100: 'rgba(71, 192, 134, 1)',
+				100: 'rgba(25, 135, 84, 1)',
 			},
 
 			warning: {
@@ -145,6 +145,31 @@ const config: Config = {
 	plugins: [
 		plugin(({ addUtilities, theme }) => {
 			addUtilities({
+				'.ltr': {
+					direction: 'ltr',
+				},
+
+				'.rtl': {
+					direction: 'rtl',
+				},
+
+				'.flex-column': {
+					display: 'flex',
+					'flex-direction': 'column',
+				},
+
+				'.flex-justify-start': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'flex-start',
+				},
+
+				'.flex-justify-end': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'flex-end',
+				},
+
 				'.flex-justify-center': {
 					display: 'flex',
 					'align-items': 'center',
@@ -162,29 +187,46 @@ const config: Config = {
 					'align-items': 'center',
 				},
 
-				'.ltr': {
-					direction: 'ltr',
-				},
-
-				'.rtl': {
-					direction: 'rtl',
-				},
-
 				'.btn-primary': {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.white'),
+					border: '1.5px solid transparent',
 					'background-color': theme('colors.primary.300'),
 					transition: 'background-color 300ms ease-in-out',
 
-					'&:hover': {
-						'background-color': theme('colors.primary.200'),
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.primary.400'),
 					},
 
 					'&:disabled': {
-						'background-color': theme('colors.primary.500'),
-						color: theme('colors.primary.300'),
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-primary-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.primary.300'),
+					'background-color': 'transparent',
+					border: `1.5px solid ${theme('colors.primary.300')}`,
+					transition: 'background-color 300ms, color 300ms, border-color 300ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.primary.400'),
+						'border-color': theme('colors.primary.400'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
 					},
 				},
 
@@ -192,6 +234,11 @@ const config: Config = {
 					display: 'flex',
 					'flex-direction': 'column',
 					gap: '0.8rem',
+
+					input: {
+						'background-color': 'transparent',
+						'border-width': '0px',
+					},
 
 					'.label': {
 						'font-size': '1.4rem',
@@ -223,6 +270,7 @@ const config: Config = {
 				},
 
 				'.i-error': {
+					position: 'relative',
 					'font-size': '1.2rem',
 					'font-weight': '400',
 					'padding-right': '1.6rem',

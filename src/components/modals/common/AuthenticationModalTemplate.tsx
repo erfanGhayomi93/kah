@@ -18,7 +18,7 @@ const Div = styled.div`
 const AuthenticationModalTemplate = ({ title, children, hideTitle, onClose }: AuthenticationModalTemplateProps) => {
 	return (
 		<Modal onClose={onClose}>
-			<Div className='flex flex-col rounded-md bg-white p-24'>
+			<Div className='flex-column rounded-md bg-white p-24'>
 				{!hideTitle && [
 					<div key='close' className='absolute left-24 z-10'>
 						<button onClick={onClose} type='button' className='text-gray-100'>

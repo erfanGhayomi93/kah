@@ -3,7 +3,15 @@
 		"confirm": "تایید",
 		"register": "ثبت",
 		"continue": "ادامه",
-		"ignore": "بی‌خیال"
+		"clear_all": "پاک کردن همه",
+		"ignore": "بی‌خیال",
+		"rial": "ریال",
+		"from": "از",
+		"to": "تا"
+	},
+	"side": {
+		"buy": "خرید",
+		"sell": "فروش"
 	},
 	"header": {
 		"login": "ورود"
@@ -21,6 +29,19 @@
 		"welcome": "به کهکشان خوش آمدید!",
 		"set_password_btn": "تعیین رمز عبور",
 		"set_password_description": "برای تجربه ی کاربری بهتر، می توانید رمز عبور تعیین کنید."
+	},
+	"option_watchlist_filters_modal": {
+		"title": "فیلترها",
+		"base_symbol": "نماد پایه",
+		"type": "نوع",
+		"status": "وضعیت",
+		"end_date": "سر رسید",
+		"contract_size": "اندازه قرارداد",
+		"delta": "دلتا",
+		"status_itm": "ITM",
+		"status_otm": "OTM",
+		"status_atm": "ATM",
+		"minimum_trades_value": "حداقل ارزش معاملات"
 	},
 	"alerts": {},
 	"i_errors": {

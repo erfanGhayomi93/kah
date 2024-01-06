@@ -444,6 +444,10 @@ const Table = ({ data }: TableProps) => {
 		[],
 	);
 
+	const addSymbol = () => {
+		//
+	};
+
 	const dataIsEmpty = data.length === 0;
 
 	return (
@@ -475,7 +479,7 @@ const Table = ({ data }: TableProps) => {
 				<span className='text-base font-medium text-gray-300'>
 					{t.rich('option_page.no_data_table', {
 						symbol: (chunk) => (
-							<button type='button' className='text-link underline'>
+							<button type='button' className='text-link underline' onClick={addSymbol}>
 								{chunk}
 							</button>
 						),
