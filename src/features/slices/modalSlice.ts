@@ -6,11 +6,13 @@ import { type RootState } from '../store';
 export interface ModalState {
 	loginModal: boolean;
 	forgetPassword: boolean;
+	optionFilters: boolean;
 }
 
 const initialState: ModalState = {
 	loginModal: false,
 	forgetPassword: true,
+	optionFilters: false,
 };
 
 const modalSlice = createSlice({
@@ -24,12 +26,17 @@ const modalSlice = createSlice({
 		toggleForgetPasswordModal: (state, { payload }: PayloadAction<ModalState['forgetPassword']>) => {
 			state.forgetPassword = payload;
 		},
+
+		toggleOptionFiltersModal: (state, { payload }: PayloadAction<ModalState['optionFilters']>) => {
+			state.optionFilters = payload;
+		},
 	},
 });
 
-export const { toggleLoginModal, toggleForgetPasswordModal } = modalSlice.actions;
+export const { toggleLoginModal, toggleForgetPasswordModal, toggleOptionFiltersModal } = modalSlice.actions;
 
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
+export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
 
 export default modalSlice.reducer;
