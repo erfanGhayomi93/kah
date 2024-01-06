@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
+import BaseSymbolInput from './inputs/BaseSymbolInput';
 import ContractSizeInput from './inputs/ContractSizeInput';
 import DeltaInput from './inputs/DeltaInput';
 import EndDateInput from './inputs/EndDateInput';
@@ -48,6 +49,11 @@ const Form = () => {
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-48 flex-column'>
 			<div className='gap-32 flex-column'>
+				<div className='gap-8 flex-column'>
+					<span className='flex-1 font-medium text-gray-100'>{t('option_watchlist_filters_modal.base_symbol')}</span>
+					<BaseSymbolInput values={filters.symbols} onChange={(values) => setFilterValue('symbols', values)} />
+				</div>
+
 				<ul className='gap-32 flex-column *:h-40 *:flex-justify-between'>
 					<li>
 						<span className='flex-1 font-medium text-gray-100'>{t('option_watchlist_filters_modal.type')}:</span>

@@ -13,6 +13,7 @@ import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
 import MoreOptionsSVG from './more-options.svg';
 import RefreshSVG from './refresh.svg';
+import SearchSVG from './search.svg';
 import XSVG from './x.svg';
 
 export {
@@ -31,5 +32,6 @@ export {
 	FilterSVG,
 	MoreOptionsSVG,
 	RefreshSVG,
+	SearchSVG,
 	XSVG,
 };
