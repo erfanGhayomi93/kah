@@ -39,7 +39,8 @@
 	"option_page": {
 		"export_excel": "خروجی اکسل",
 		"filter": "فیلتر کنید",
-		"market_overview": "نمای بازار"
+		"market_overview": "نمای بازار",
+		"no_data_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید."
 	},
 	"footer": {
 		"copyright": "© کلیه حقوق این وب سایت متعلق به رامند می باشد."

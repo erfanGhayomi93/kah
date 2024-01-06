@@ -2,6 +2,9 @@ import AgTable from '@/components/common/Tables/AgTable';
 import dayjs from '@/libs/dayjs';
 import { numberFormatter } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
 
@@ -10,6 +13,8 @@ interface TableProps {
 }
 
 const Table = ({ data }: TableProps) => {
+	const t = useTranslations();
+
 	const tableRef = useRef<GridApi<Option.Root>>(null);
 
 	const COLUMNS: Array<ColDef<Option.Root>> = useMemo(
@@ -439,14 +444,45 @@ const Table = ({ data }: TableProps) => {
 		[],
 	);
 
+	const dataIsEmpty = data.length === 0;
+
 	return (
-		<AgTable
-			ref={tableRef}
-			style={{ height: 'calc(100vh - 19.6rem)' }}
-			rowData={data}
-			columnDefs={COLUMNS}
-			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
-		/>
+		<div
+			style={{
+				height: 'calc(100vh - 19.6rem)',
+				maxHeight: dataIsEmpty ? 'calc(100vh - 32rem)' : undefined,
+			}}
+			className='relative'
+		>
+			<AgTable
+				ref={tableRef}
+				suppressHorizontalScroll={dataIsEmpty}
+				className={clsx('h-full', dataIsEmpty && 'overflow-hidden rounded border border-gray-500')}
+				rowData={data}
+				columnDefs={COLUMNS}
+				getRowId={({ data }) => data!.symbolInfo.symbolISIN}
+			/>
+
+			<div
+				className='absolute flex-col gap-32 flex-justify-center'
+				style={{
+					top: 'calc(50% + 4.8rem)',
+					left: '50%',
+					transform: 'translate(-50%, -50%)',
+				}}
+			>
+				<Image width='134' height='120' alt='welcome' src='/static/images/no-data-table.png' />
+				<span className='text-base font-medium text-gray-300'>
+					{t.rich('option_page.no_data_table', {
+						symbol: (chunk) => (
+							<button type='button' className='text-link underline'>
+								{chunk}
+							</button>
+						),
+					})}
+				</span>
+			</div>
+		</div>
 	);
 };
 
