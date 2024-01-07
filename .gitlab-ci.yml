@@ -34,6 +34,7 @@ stage-Job:
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\server.js" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\web.config" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\public" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.env" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Stop-WebSite "kahkeshan"
     - Start-WebSite "kahkeshan"
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
