@@ -1,3 +1,5 @@
+import axios from '@/api/axios';
+import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { ArrowLeftSVG } from '@/components/icons';
 import clsx from 'clsx';
@@ -11,23 +13,49 @@ interface Inputs {
 }
 
 interface PhoneNumberFormProps {
-	submit: () => void;
+	goToOTP: () => void;
+	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 }
 
-const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
+const PhoneNumberForm = ({ setLoginResult, goToOTP }: PhoneNumberFormProps) => {
 	const t = useTranslations();
 
 	const {
 		control,
-		formState: { isValid, touchedFields, errors },
+		formState: { isValid, touchedFields, isSubmitting, errors },
+		setError,
 		handleSubmit,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ phoneNumber, captcha }) => {
-		submit();
+		try {
+			const response = await axios.post<ServerResponse<OAuthAPI.ILoginFirstStep>>(routes.authentication.LoginFirstStep, {
+				mobileNumber: phoneNumber,
+			});
+			const { data } = response;
+			const { state } = data.result;
+
+			if (response.status !== 200 || !data.succeeded || state === 'Fail') throw new Error(data.errors?.[0] ?? '');
+
+			if (state === 'TooManyRequest') {
+				setError('phoneNumber', {
+					message: t('i_errors.too_many_request'),
+					type: 'value',
+				});
+				return;
+			}
+
+			setLoginResult(data.result);
+			if (['NewUser', 'OTP'].includes(state)) goToOTP();
+		} catch (e) {
+			setError('phoneNumber', {
+				message: t('i_errors.undefined_error'),
+				type: 'value',
+			});
+		}
 	};
 
-	const hasCaptcha = true;
+	const hasCaptcha = false;
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}>
@@ -67,6 +95,7 @@ const PhoneNumberForm = ({ submit }: PhoneNumberFormProps) => {
 					bottom: hasCaptcha && Object.keys(touchedFields).length > 1 && Object.keys(errors).length > 1 ? '5.6rem' : '11.6rem',
 					width: 'calc(100% - 17.6rem)',
 				}}
+				loading={isSubmitting}
 				type='submit'
 				disabled={!isValid}
 				className='!absolute h-48 gap-4 rounded shadow btn-primary'

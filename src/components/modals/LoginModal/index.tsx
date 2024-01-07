@@ -12,6 +12,8 @@ const AuthenticationModal = () => {
 
 	const dispatch = useAppDispatch();
 
+	const [loginResult, setLoginResult] = useState<null | OAuthAPI.ILoginFirstStep>(null);
+
 	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'welcome'>('phoneNumber');
 
 	const onCloseModal = () => {
@@ -24,9 +26,11 @@ const AuthenticationModal = () => {
 			title={t('authentication_modal.login_to_kahkeshan')}
 			onClose={onCloseModal}
 		>
+			{stage === 'phoneNumber' && <PhoneNumberForm goToOTP={() => setStage('otp')} setLoginResult={setLoginResult} />}
+			{stage === 'otp' && (
+				<OTPForm loginResult={loginResult} setLoginResult={setLoginResult} goToWelcome={() => setStage('welcome')} />
+			)}
 			{stage === 'welcome' && <Welcome />}
-			{stage === 'phoneNumber' && <PhoneNumberForm submit={() => setStage('otp')} />}
-			{stage === 'otp' && <OTPForm submit={() => setStage('welcome')} />}
 		</AuthenticationModalTemplate>
 	);
 };

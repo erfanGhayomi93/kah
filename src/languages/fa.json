@@ -46,9 +46,11 @@
 	},
 	"alerts": {},
 	"i_errors": {
-		"invalid_otp": "کد تایید نادرست است!",
-		"invalid_phone_number": "شماره همراه نادرست است!",
-		"invalid_captcha": "کد وارد شده مطابقت ندارد!"
+		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
+		"too_many_request": "درخواست بیش از حد مجاز است. لطفا دقایقی دیگر مجددا امتحان کنید.",
+		"invalid_otp": "کد تایید نادرست است.",
+		"invalid_phone_number": "شماره همراه نادرست است.",
+		"invalid_captcha": "کد وارد شده مطابقت ندارد."
 	},
 	"inputs": {
 		"captcha": "کد امنیتی",
