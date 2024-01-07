@@ -1,9 +1,11 @@
+import axios from '@/api/axios';
+import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
 import Captcha from '@/components/common/Inputs/Captcha';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
 interface Inputs {
@@ -12,22 +14,45 @@ interface Inputs {
 }
 
 interface OTPFormProps {
-	submit: () => void;
+	loginResult: null | OAuthAPI.ILoginFirstStep;
+	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
+	goToWelcome: () => void;
 }
 
-const OTPForm = ({ submit }: OTPFormProps) => {
+const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => {
 	const t = useTranslations();
 
 	const {
 		control,
-		formState: { isValid, errors, touchedFields },
+		formState: { isValid, errors, isSubmitting, touchedFields },
 		handleSubmit,
+		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(10);
+	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? null);
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ otp, captcha }) => {
-		submit();
+		if (!loginResult) return;
+
+		try {
+			const response = await axios.post<ServerResponse<OAuthAPI.ISignUp>>(
+				loginResult.state === 'OTP' ? routes.authentication.OtpLogin : routes.authentication.SignUp,
+				{
+					otp,
+					[loginResult.state === 'OTP' ? 'loginToken' : 'signUpToken']: loginResult.nextStepToken ?? '',
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			goToWelcome();
+		} catch (e) {
+			setError('otp', {
+				message: t('i_errors.invalid_otp'),
+				type: 'value',
+			});
+		}
 	};
 
 	const onFinishedCountdown = () => {
@@ -39,7 +64,12 @@ const OTPForm = ({ submit }: OTPFormProps) => {
 		setTimeout(() => setSeconds(10), 2000);
 	};
 
-	const hasCaptcha = true;
+	useEffect(() => {
+		if (!loginResult) return;
+		setSeconds(loginResult.otpRemainSecond);
+	}, [loginResult]);
+
+	const hasCaptcha = false;
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}>
@@ -110,6 +140,7 @@ const OTPForm = ({ submit }: OTPFormProps) => {
 					width: 'calc(100% - 17.6rem)',
 				}}
 				type='submit'
+				loading={isSubmitting}
 				disabled={!isValid}
 				className='!absolute h-48 gap-4 rounded shadow btn-primary'
 			>

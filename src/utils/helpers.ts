@@ -1,3 +1,5 @@
+import dayjs from '@/libs/dayjs';
+
 export const sepNumbers = (num: string): string => {
 	let result = num;
 	if (Number(result) < 1e3) return result;
@@ -62,4 +64,8 @@ export const convertStringToNumber = (inputString: string): string => {
 	const result = numbersArray ? numbersArray.join('') : '';
 
 	return result;
+};
+
+export const getDateAsJalali = (value?: string | number | Date | null) => {
+	return dayjs(value).calendar('jalali').format('YYYY/MM/DD');
 };

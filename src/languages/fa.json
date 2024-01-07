@@ -3,7 +3,15 @@
 		"confirm": "تایید",
 		"register": "ثبت",
 		"continue": "ادامه",
-		"ignore": "بی‌خیال"
+		"clear_all": "پاک کردن همه",
+		"ignore": "بی‌خیال",
+		"rial": "ریال",
+		"from": "از",
+		"to": "تا"
+	},
+	"side": {
+		"buy": "خرید",
+		"sell": "فروش"
 	},
 	"header": {
 		"login": "ورود"
@@ -22,11 +30,27 @@
 		"set_password_btn": "تعیین رمز عبور",
 		"set_password_description": "برای تجربه ی کاربری بهتر، می توانید رمز عبور تعیین کنید."
 	},
+	"option_watchlist_filters_modal": {
+		"title": "فیلترها",
+		"base_symbol": "نماد پایه",
+		"type": "نوع",
+		"status": "وضعیت",
+		"end_date": "سر رسید",
+		"contract_size": "اندازه قرارداد",
+		"base_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"delta": "دلتا",
+		"status_itm": "ITM",
+		"status_otm": "OTM",
+		"status_atm": "ATM",
+		"minimum_trades_value": "حداقل ارزش معاملات"
+	},
 	"alerts": {},
 	"i_errors": {
-		"invalid_otp": "کد تایید نادرست است!",
-		"invalid_phone_number": "شماره همراه نادرست است!",
-		"invalid_captcha": "کد وارد شده مطابقت ندارد!"
+		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
+		"too_many_request": "درخواست بیش از حد مجاز است. لطفا دقایقی دیگر مجددا امتحان کنید.",
+		"invalid_otp": "کد تایید نادرست است.",
+		"invalid_phone_number": "شماره همراه نادرست است.",
+		"invalid_captcha": "کد وارد شده مطابقت ندارد."
 	},
 	"inputs": {
 		"captcha": "کد امنیتی",
@@ -39,7 +63,8 @@
 	"option_page": {
 		"export_excel": "خروجی اکسل",
 		"filter": "فیلتر کنید",
-		"market_overview": "نمای بازار"
+		"market_overview": "نمای بازار",
+		"no_data_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید."
 	},
 	"footer": {
 		"copyright": "© کلیه حقوق این وب سایت متعلق به رامند می باشد."

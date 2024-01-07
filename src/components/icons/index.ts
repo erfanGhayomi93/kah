@@ -1,5 +1,8 @@
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
+import CalendarSVG from './calendar.svg';
+import ChartDownSVG from './chart-down.svg';
+import ChartUpSVG from './chart-up.svg';
 import CheckListSVG from './check-list.svg';
 import ColumnsSVG from './columns.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
@@ -9,13 +12,18 @@ import EyeSlashSVG from './eye-slash.svg';
 import EyeSVG from './eye.svg';
 import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
+import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
 import RefreshSVG from './refresh.svg';
+import SearchSVG from './search.svg';
 import XSVG from './x.svg';
 
 export {
 	ArrowDownSVG,
 	ArrowLeftSVG,
+	CalendarSVG,
+	ChartDownSVG,
+	ChartUpSVG,
 	CheckListSVG,
 	ColumnsSVG,
 	DoubleArrowLeftSVG,
@@ -25,7 +33,9 @@ export {
 	EyeSlashSVG,
 	FileExcelSVG,
 	FilterSVG,
+	ManageSVG,
 	MoreOptionsSVG,
 	RefreshSVG,
+	SearchSVG,
 	XSVG,
 };

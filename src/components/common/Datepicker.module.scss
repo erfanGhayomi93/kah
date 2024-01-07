@@ -1,0 +1,36 @@
+.root {
+	--dp-border-color: theme("colors.gray.400");
+	--dp-icon-color: theme("colors.gray.200");
+	--dp-input-color: theme("colors.gray.100");
+}
+
+.root {
+	height: 4rem;
+	flex: 1;
+	border-radius: 0.8rem;
+	border: 1px solid var(--dp-border-color);
+	display: flex;
+	align-items: center;
+	max-width: 100%;
+}
+
+.icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 2.4rem;
+	width: 4rem;
+	color: var(--dp-icon-color);
+	border-right: 1px solid var(--dp-border-color);
+}
+
+.input {
+	background-color: transparent;
+	height: 100%;
+	padding: 0 0.8rem;
+	text-align: left;
+	direction: ltr;
+	width: 100%;
+	flex: 1;
+	color: var(--dp-input-color);
+}

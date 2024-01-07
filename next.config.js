@@ -10,7 +10,7 @@ const nextConfig = withNextIntl({
 		})
 
 		return config
-	},
+	}
 });
 
 module.exports = nextConfig;

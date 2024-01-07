@@ -29,6 +29,7 @@
 			"single"
 		],
 		"accessor-pairs": "off",
+		"@typescript-eslint/no-unsafe-argument": "off",
 		"@typescript-eslint/restrict-template-expressions": "off",
 		"@typescript-eslint/promise-function-async": "off",
 		"@typescript-eslint/return-await": "off",
