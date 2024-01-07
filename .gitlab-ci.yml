@@ -38,6 +38,9 @@ stage-Job:
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.env" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Stop-WebSite "kahkeshan"
     - Start-WebSite "kahkeshan"
+    - Stop-WebAppPool -Name "kahkeshan"
+    - Start-WebAppPool -Name "kahkeshan"
+
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
 #    - cd c:\scripts\Clubui\
 #    - .\only4backup
