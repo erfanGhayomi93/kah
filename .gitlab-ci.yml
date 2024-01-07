@@ -21,7 +21,7 @@ Deploy-Job:
     - if: $CI_COMMIT_BRANCH == "Develop"
 stage-Job:
   stage: deploy
-  script:
+  script: 
     - npm install
     - ($env:CI = "false") -and (npm run build)
     - $date = get-date -format  "dd-MM-yyyy"
@@ -30,8 +30,9 @@ stage-Job:
     - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.next" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\Stage\UI\kahkeshanUi\importantfile\server.js" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\Stage\UI\kahkeshanUi\importantfile\web.config" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\server.js" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\web.config" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\public" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Stop-WebSite "kahkeshan"
     - Start-WebSite "kahkeshan"
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
