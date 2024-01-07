@@ -40,6 +40,8 @@ stage-Job:
     - Start-WebSite "kahkeshan"
     - Stop-WebAppPool -Name "kahkeshan"
     - Start-WebAppPool -Name "kahkeshan"
+    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*"
+    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui.tmp\*"
 
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
 #    - cd c:\scripts\Clubui\
