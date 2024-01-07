@@ -1,7 +1,9 @@
+import { XSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import styles from './index.module.scss';
 import BaseSymbolInput from './inputs/BaseSymbolInput';
 import ContractSizeInput from './inputs/ContractSizeInput';
 import DeltaInput from './inputs/DeltaInput';
@@ -11,7 +13,9 @@ import StatusInput from './inputs/StatusInput';
 import TypeInput from './inputs/TypeInput';
 
 const InputWrapper = styled.div`
-	flex: 0 0 28.6rem;
+	flex: 0 0 32rem;
+	overflow: hidden;
+	max-width: 100%;
 `;
 
 const initialFilters: IOptionWatchlistFilters = {
@@ -44,6 +48,20 @@ const Form = () => {
 		setFilters(initialFilters);
 	};
 
+	const onRemoveSymbol = (deleteIndex: number) => {
+		setFilterValue(
+			'symbols',
+			filters.symbols.filter((_, index) => index !== deleteIndex),
+		);
+	};
+
+	const displayableSymbols = useMemo(() => {
+		const { symbols } = filters;
+
+		if (symbols.length <= 5) return symbols;
+		return symbols.slice(0, 5);
+	}, [filters.symbols]);
+
 	const clearButtonIsDisabled = JSON.stringify(initialFilters) === JSON.stringify(filters);
 
 	return (
@@ -52,6 +70,20 @@ const Form = () => {
 				<div className='gap-8 flex-column'>
 					<span className='flex-1 font-medium text-gray-100'>{t('option_watchlist_filters_modal.base_symbol')}</span>
 					<BaseSymbolInput values={filters.symbols} onChange={(values) => setFilterValue('symbols', values)} />
+
+					{filters.symbols.length > 0 && (
+						<ul className={styles.tags}>
+							{displayableSymbols.map((item, index) => (
+								<li key={index}>
+									<span className='truncate'>{item}</span>
+									<button onClick={() => onRemoveSymbol(index)} type='button'>
+										<XSVG width='0.8rem' height='0.8rem' />
+									</button>
+								</li>
+							))}
+							{filters.symbols.length > 5 && <li className={styles.count}>+{filters.symbols.length - 5}</li>}
+						</ul>
+					)}
 				</div>
 
 				<ul className='gap-32 flex-column *:h-40 *:flex-justify-between'>

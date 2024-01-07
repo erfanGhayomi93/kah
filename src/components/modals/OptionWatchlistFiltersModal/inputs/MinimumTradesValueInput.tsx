@@ -20,11 +20,11 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 				type='text'
 				inputMode='numeric'
 				maxLength={12}
-				className='h-40 w-full rounded px-8 text-left text-gray-100 ltr'
+				className='h-40 flex-1 rounded px-8 text-left text-gray-100 ltr'
 				value={valueFormatter(value)}
 				onChange={(e) => onChange(Number(convertStringToNumber(e.target.value)))}
 			/>
-			<span className='h-24 min-w-36 border-r border-r-gray-400 text-tiny text-gray-200 flex-justify-center'>{t('common.rial')}</span>
+			<span className='h-24 w-36 border-r border-r-gray-400 text-tiny text-gray-200 flex-justify-center'>{t('common.rial')}</span>
 		</div>
 	);
 };

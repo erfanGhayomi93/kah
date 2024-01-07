@@ -29,7 +29,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 				type='text'
 				inputMode='numeric'
 				maxLength={32}
-				className='h-40 w-full rounded pl-8 text-gray-100 placeholder:text-gray-300'
+				className='h-40 flex-1 rounded pl-8 text-gray-100'
 				placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 				value={term}
 				onChange={(e) => setTerm(e.target.value)}
@@ -39,14 +39,14 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 				<button
 					onClick={onClearTerm}
 					type='button'
-					className='min-w-20 min-h-20 ml-16 rounded-circle bg-gray-100 text-white flex-justify-center'
+					className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-100 text-white flex-justify-center'
 				>
 					<XSVG width='0.8rem' height='0.8rem' />
 				</button>
 			)}
 
 			{values.length > 0 && (
-				<div className='h-24 min-w-40 border-r border-r-gray-400 text-tiny text-gray-200 flex-justify-center'>
+				<div className='h-24 w-40 border-r border-r-gray-400 text-tiny text-gray-200 flex-justify-center'>
 					<span style={{ paddingTop: '2px' }} className='h-24 w-24 rounded-circle bg-primary-200 text-white flex-justify-center'>
 						{values.length}
 					</span>
