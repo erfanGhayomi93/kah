@@ -511,25 +511,27 @@ const Table = ({ data }: TableProps) => {
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			/>
 
-			<div
-				className='absolute flex-col gap-32 flex-justify-center'
-				style={{
-					top: 'calc(50% + 4.8rem)',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
-				}}
-			>
-				<Image width='134' height='120' alt='welcome' src='/static/images/no-data-table.png' />
-				<span className='text-base font-medium text-gray-300'>
-					{t.rich('option_page.no_data_table', {
-						symbol: (chunk) => (
-							<button type='button' className='text-link underline' onClick={addSymbol}>
-								{chunk}
-							</button>
-						),
-					})}
-				</span>
-			</div>
+			{dataIsEmpty && (
+				<div
+					className='absolute flex-col gap-32 flex-justify-center'
+					style={{
+						top: 'calc(50% + 4.8rem)',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+					}}
+				>
+					<Image width='134' height='120' alt='welcome' src='/static/images/no-data-table.png' />
+					<span className='text-base font-medium text-gray-300'>
+						{t.rich('option_page.no_data_table', {
+							symbol: (chunk) => (
+								<button type='button' className='text-link underline' onClick={addSymbol}>
+									{chunk}
+								</button>
+							),
+						})}
+					</span>
+				</div>
+			)}
 		</div>
 	);
 };

@@ -59,3 +59,16 @@ declare namespace Option {
 		subSectorName: null;
 	}
 }
+
+declare namespace OAuthAPI {
+	declare interface ILoginFirstStep {
+		state: 'NewUser' | 'OTP' | 'TooManyRequest' | 'HasPassword' | 'Fail';
+		otpRemainSecond: number;
+		nextStepToken: string | null;
+	}
+
+	declare interface ISignUp {
+		message: string;
+		token: string | null;
+	}
+}
