@@ -5,6 +5,7 @@ Deploy-Job:
   stage: deploy
   script:
     - npm install
+    - npm install express
     - ($env:CI = "false") -and (npm run build)
     - $date = get-date -format  "dd-MM-yyyy"
     - mkdir -p "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
