@@ -17,6 +17,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	border-radius: 0 1.6rem 1.6rem 0;
 	padding: 1.6rem 0;
+	z-index: 9;
 	box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.2);
 	transform: translateX(-100%);
 	-webkit-transform: translateX(-100%);
