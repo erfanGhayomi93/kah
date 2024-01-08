@@ -15,13 +15,9 @@ class ActionColumn implements ICellRendererComp<Option.Root> {
 		this.params = params;
 
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-between gap-4 h-full w-full');
+		this.eGui.setAttribute('class', 'flex-justify-center gap-4 h-full w-full');
 
-		const trashBtn = this.createTrashButton();
-		const addBtn = this.createAddButton();
-
-		this.eGui.appendChild(trashBtn);
-		this.eGui.appendChild(addBtn);
+		this.eGui.appendChild(this.createAddButton());
 	}
 
 	refresh(params: ActionColumnProps) {
@@ -29,20 +25,11 @@ class ActionColumn implements ICellRendererComp<Option.Root> {
 		return true;
 	}
 
-	private createTrashButton(): HTMLButtonElement {
-		const btn = document.createElement('button');
-		btn.setAttribute('class', 'flex-justify-center text-gray-700 rounded');
-		btn.innerHTML =
-			'<svg width="2.4rem" height="2.4rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 4.88889H15.75L14.8214 4H10.1786L9.25 4.88889H6V6.66667H19M6.92857 18.2222C6.92857 18.6937 7.12423 19.1459 7.47252 19.4793C7.8208 19.8127 8.29317 20 8.78571 20H16.2143C16.7068 20 17.1792 19.8127 17.5275 19.4793C17.8758 19.1459 18.0714 18.6937 18.0714 18.2222V7.55556H6.92857V18.2222Z" fill="currentColor" /></svg>';
-
-		return btn;
-	}
-
 	private createAddButton(): HTMLButtonElement {
 		const btn = document.createElement('button');
 		btn.setAttribute('class', 'flex-justify-center text-gray-700 rounded');
 		btn.innerHTML =
-			'<svg width="2.4rem" height="2.4rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.9995 20C11.7036 20 11.4198 19.8824 11.2106 19.6732C11.0013 19.464 10.8838 19.1802 10.8838 18.8842V5.11576C10.8838 4.81984 11.0013 4.53604 11.2106 4.3268C11.4198 4.11755 11.7036 4 11.9995 4C12.2955 4 12.5793 4.11755 12.7885 4.3268C12.9978 4.53604 13.1153 4.81984 13.1153 5.11576V18.8842C13.1153 19.1802 12.9978 19.464 12.7885 19.6732C12.5793 19.8824 12.2955 20 11.9995 20Z" fill="currentColor" /><path d="M18.8842 13.1148H5.11576C4.81984 13.1148 4.53604 12.9973 4.3268 12.788C4.11755 12.5788 4 12.295 4 11.9991C4 11.7031 4.11755 11.4193 4.3268 11.2101C4.53604 11.0009 4.81984 10.8833 5.11576 10.8833H18.8842C19.1802 10.8833 19.464 11.0009 19.6732 11.2101C19.8824 11.4193 20 11.7031 20 11.9991C20 12.295 19.8824 12.5788 19.6732 12.788C19.464 12.9973 19.1802 13.1148 18.8842 13.1148Z" fill="currentColor" /></svg>';
+			'<svg width="1.6rem" height="1.6rem" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.99955 16C7.70363 16 7.41983 15.8824 7.21059 15.6732C7.00134 15.464 6.88379 15.1802 6.88379 14.8842V1.11576C6.88379 0.819842 7.00134 0.536044 7.21059 0.326799C7.41983 0.117553 7.70363 0 7.99955 0C8.29547 0 8.57927 0.117553 8.78851 0.326799C8.99776 0.536044 9.11531 0.819842 9.11531 1.11576V14.8842C9.11531 15.1802 8.99776 15.464 8.78851 15.6732C8.57927 15.8824 8.29547 16 7.99955 16Z" fill="#818486"/><path d="M14.8842 9.11531H1.11576C0.819842 9.11531 0.536044 8.99776 0.326799 8.78851C0.117553 8.57927 0 8.29547 0 7.99955C0 7.70363 0.117553 7.41983 0.326799 7.21059C0.536044 7.00134 0.819842 6.88379 1.11576 6.88379H14.8842C15.1802 6.88379 15.464 7.00134 15.6732 7.21059C15.8824 7.41983 16 7.70363 16 7.99955C16 8.29547 15.8824 8.57927 15.6732 8.78851C15.464 8.99776 15.1802 9.11531 14.8842 9.11531Z" fill="currentColor"/></svg>';
 
 		return btn;
 	}

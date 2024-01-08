@@ -1,25 +1,28 @@
 'use client';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { type RootState } from '../store';
 
 export interface UIState {
-	test: boolean;
+	manageOptionColumns: boolean;
 }
 
 const initialState: UIState = {
-	test: true,
+	manageOptionColumns: false,
 };
 
 const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		//
+		toggleManageOptionColumns: (state, { payload }: PayloadAction<UIState['manageOptionColumns']>) => {
+			state.manageOptionColumns = payload;
+		},
 	},
 });
 
-// export const { setFilterValue, setFiltersValue } = uiSlice.actions;
+export const { toggleManageOptionColumns } = uiSlice.actions;
 
-// export const getOptionFilters = (state: RootState) => state.ui.filters;
+export const getManageOptionColumns = (state: RootState) => state.ui.manageOptionColumns;
 
 export default uiSlice.reducer;
