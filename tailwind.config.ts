@@ -289,6 +289,14 @@ const config: Config = {
 						border: `4px solid ${theme('colors.error.100')}`,
 					},
 				},
+
+				'.left-to-right': {
+					animation: 'left-to-right ease-in-out 300ms 1 alternate forwards',
+				},
+
+				'.right-to-left': {
+					animation: 'right-to-left ease-in-out 300ms 1 alternate forwards',
+				},
 			});
 		}),
 	],

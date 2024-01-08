@@ -3,19 +3,23 @@ import dayjs from '@/libs/dayjs';
 import { numberFormatter } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
+import ManageWatchlistColumns from './ManageWatchlistColumns';
+import NoData from './NoData';
 
 interface TableProps {
 	data: Option.Root[];
 }
 
 const Table = ({ data }: TableProps) => {
-	const t = useTranslations();
-
 	const tableRef = useRef<GridApi<Option.Root>>(null);
+
+	console.log(data);
+
+	const addSymbol = () => {
+		//
+	};
 
 	const COLUMNS: Array<ColDef<Option.Root>> = useMemo(
 		() => [
@@ -488,11 +492,7 @@ const Table = ({ data }: TableProps) => {
 		[],
 	);
 
-	const addSymbol = () => {
-		//
-	};
-
-	const dataIsEmpty = data.length === 0;
+	const dataIsEmpty = !Array.isArray(data) || data.length === 0;
 
 	return (
 		<div
@@ -511,27 +511,9 @@ const Table = ({ data }: TableProps) => {
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			/>
 
-			{dataIsEmpty && (
-				<div
-					className='absolute flex-col gap-32 flex-justify-center'
-					style={{
-						top: 'calc(50% + 4.8rem)',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-					}}
-				>
-					<Image width='134' height='120' alt='welcome' src='/static/images/no-data-table.png' />
-					<span className='text-base font-medium text-gray-300'>
-						{t.rich('option_page.no_data_table', {
-							symbol: (chunk) => (
-								<button type='button' className='text-link underline' onClick={addSymbol}>
-									{chunk}
-								</button>
-							),
-						})}
-					</span>
-				</div>
-			)}
+			<ManageWatchlistColumns />
+
+			{dataIsEmpty && <NoData key='no-data' onAddSymbol={addSymbol} />}
 		</div>
 	);
 };
