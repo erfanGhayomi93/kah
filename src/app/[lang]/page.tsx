@@ -4,6 +4,7 @@ import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = async () => {
 	const data = await getOptionData();
+
 	return <Home data={data} />;
 };
 
