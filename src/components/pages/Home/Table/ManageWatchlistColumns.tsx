@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -18,6 +18,9 @@ const Wrapper = styled.div`
 	border-radius: 0 1.6rem 1.6rem 0;
 	padding: 1.6rem 0;
 	box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.2);
+	transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	-moz-transform: translateX(-100%);
 `;
 
 const Button = styled.button`
@@ -36,6 +39,8 @@ const ManageWatchlistColumns = () => {
 	const dispatch = useAppDispatch();
 
 	const isEnable = useAppSelector(getManageOptionColumns);
+
+	const [rendered, setRendered] = useState(false);
 
 	const [columns, setColumns] = useState<
 		Array<{ id: string; title: string; items: Array<{ id: string; title: string; hide: boolean }> }>
@@ -117,10 +122,12 @@ const ManageWatchlistColumns = () => {
 		}
 	};
 
-	if (!isEnable) return null;
+	useEffect(() => {
+		if (isEnable) setRendered(true);
+	}, [isEnable]);
 
 	return (
-		<Wrapper className='bg-white'>
+		<Wrapper className={clsx('bg-white', isEnable ? 'left-to-right' : rendered && 'right-to-left')}>
 			<div className='relative flex-justify-center'>
 				<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
 				<button className='absolute left-32 text-gray-100' type='button' onClick={onClose}>
