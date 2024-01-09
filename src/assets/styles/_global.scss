@@ -52,9 +52,28 @@ textarea {
 input,
 textarea {
 	color: theme("colors.gray.100");
+	transition: border-color 250ms;
+	-webkit-transition: border-color 250ms;
+	-moz-transition: border-color 250ms;
 
 	&::placeholder {
 		color: theme("colors.gray.300");
+	}
+
+	&:focus {
+		border-color: theme("colors.primary.300") !important;
+	}
+}
+
+.input-group {
+	transition: border-color 250ms;
+	-webkit-transition: border-color 250ms;
+	-moz-transition: border-color 250ms;
+
+	&:focus-within,
+	input:focus,
+	textarea:focus {
+		border-color: theme("colors.primary.300") !important;
 	}
 }
 

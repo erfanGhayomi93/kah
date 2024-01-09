@@ -20,7 +20,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	};
 
 	return (
-		<div className='h-40 flex-1 rounded border border-gray-400 flex-items-center'>
+		<div className='input-group h-40 flex-1 rounded border border-gray-400 flex-items-center'>
 			<span className='px-8 text-gray-100'>
 				<SearchSVG />
 			</span>
