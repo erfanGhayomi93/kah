@@ -12,6 +12,12 @@
 	display: flex;
 	align-items: center;
 	max-width: 100%;
+	transition: border-color 250ms;
+	-webkit-transition: border-color 250ms;
+
+	&:focus-within {
+		--dp-border-color: theme("colors.primary.300");
+	}
 }
 
 .icon {
@@ -22,6 +28,8 @@
 	width: 4rem;
 	color: var(--dp-icon-color);
 	border-right: 1px solid var(--dp-border-color);
+	transition: border-color 250ms;
+	-webkit-transition: border-color 250ms;
 }
 
 .input {

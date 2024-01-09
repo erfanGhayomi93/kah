@@ -67,6 +67,11 @@ declare namespace OAuthAPI {
 		nextStepToken: string | null;
 	}
 
+	declare interface IForgetPasswordFirstStep {
+		otpRemainSecond: number;
+		nextStepToken: string;
+	}
+
 	declare interface ISignUp {
 		message: string;
 		token: string | null;

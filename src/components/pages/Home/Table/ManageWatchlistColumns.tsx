@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -35,6 +35,10 @@ const Button = styled.button`
 `;
 
 const ManageWatchlistColumns = () => {
+	const controllerRef = useRef<AbortController | null>(null);
+
+	const wrapperRef = useRef<HTMLDivElement>(null);
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -112,6 +116,7 @@ const ManageWatchlistColumns = () => {
 	const [columns, setColumns] = useState(initialData);
 
 	const onClose = () => {
+		abort();
 		dispatch(toggleManageOptionColumns(false));
 	};
 
@@ -130,12 +135,37 @@ const ManageWatchlistColumns = () => {
 		}
 	};
 
+	const abort = () => {
+		if (controllerRef.current) controllerRef.current.abort();
+	};
+
+	const onDocumentClick = (e: MouseEvent) => {
+		const eTarget = e.target as HTMLDivElement;
+		const eWrapper = wrapperRef.current;
+		if (!eWrapper || !eTarget) return;
+
+		if (eTarget.isEqualNode(eWrapper) || eWrapper.contains(eTarget)) return;
+
+		onClose();
+		abort();
+	};
+
+	useEffect(() => {
+		const eWrapper = wrapperRef.current;
+		if (!eWrapper || !isEnable) return;
+
+		controllerRef.current = new AbortController();
+		document.addEventListener('click', onDocumentClick, {
+			signal: controllerRef.current.signal,
+		});
+	}, [wrapperRef.current, isEnable]);
+
 	useEffect(() => {
 		if (isEnable) setRendered(true);
 	}, [isEnable]);
 
 	return (
-		<Wrapper className={clsx('bg-white', isEnable ? 'left-to-right' : rendered && 'right-to-left')}>
+		<Wrapper ref={wrapperRef} className={clsx('bg-white', isEnable ? 'left-to-right' : rendered && 'right-to-left')}>
 			<div className='px-32'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
@@ -154,7 +184,7 @@ const ManageWatchlistColumns = () => {
 			<div className='gap-16 overflow-auto px-32 flex-column'>
 				{columns.map((category, categoryIndex) => (
 					<div key={category.id} className={clsx('gap-16 pb-16 flex-column', categoryIndex < 2 && 'border-b border-b-gray-400')}>
-						<h2 className='text-lg font-medium'>{category.title}</h2>
+						<h2 className='text-lg font-medium text-gray-100'>{category.title}</h2>
 
 						<div className='just flex flex-wrap gap-16'>
 							{category.items.map((item, itemIndex) => (

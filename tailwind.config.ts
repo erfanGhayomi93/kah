@@ -19,6 +19,8 @@ const config: Config = {
 
 			current: 'currentColor',
 
+			inherit: 'inherit',
+
 			white: 'rgba(255, 255, 255, 1)',
 
 			black: 'rgba(35, 38, 41, 1)',
@@ -220,8 +222,8 @@ const config: Config = {
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.primary.400'),
-						'border-color': theme('colors.primary.400'),
+						'background-color': theme('colors.primary.300'),
+						'border-color': theme('colors.primary.300'),
 					},
 
 					'&:disabled': {

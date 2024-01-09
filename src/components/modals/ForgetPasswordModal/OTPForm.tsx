@@ -14,12 +14,12 @@ interface Inputs {
 }
 
 interface OTPFormProps {
-	loginResult: null | OAuthAPI.ILoginFirstStep;
-	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
-	goToWelcome: () => void;
+	result: null | OAuthAPI.IForgetPasswordFirstStep;
+	setResult: (value: OAuthAPI.IForgetPasswordFirstStep) => void;
+	goToChangePassword: () => void;
 }
 
-const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => {
+const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -29,24 +29,21 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? null);
+	const [seconds, setSeconds] = useState<number | null>(result?.otpRemainSecond ?? null);
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ otp, captcha }) => {
-		if (!loginResult) return;
+		if (!result) return;
 
 		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.ISignUp>>(
-				loginResult.state === 'OTP' ? routes.authentication.OtpLogin : routes.authentication.SignUp,
-				{
-					otp,
-					[loginResult.state === 'OTP' ? 'loginToken' : 'signUpToken']: loginResult.nextStepToken ?? '',
-				},
-			);
+			const response = await axios.post<ServerResponse<OAuthAPI.ISignUp>>(routes.authentication.ForgetPassword, {
+				otp,
+				forgetPasswordToken: result.nextStepToken ?? '',
+			});
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			goToWelcome();
+			goToChangePassword();
 		} catch (e) {
 			setError('otp', {
 				message: t('i_errors.invalid_otp'),
@@ -65,9 +62,9 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 	};
 
 	useEffect(() => {
-		if (!loginResult) return;
-		setSeconds(loginResult.otpRemainSecond);
-	}, [loginResult]);
+		if (!result) return;
+		setSeconds(result.otpRemainSecond);
+	}, [result]);
 
 	const hasCaptcha = false;
 
