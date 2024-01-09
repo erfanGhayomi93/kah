@@ -15,8 +15,6 @@ interface TableProps {
 const Table = ({ data }: TableProps) => {
 	const tableRef = useRef<GridApi<Option.Root>>(null);
 
-	console.log(data);
-
 	const addSymbol = () => {
 		//
 	};

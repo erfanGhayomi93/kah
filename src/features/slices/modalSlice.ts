@@ -11,7 +11,7 @@ export interface ModalState {
 
 const initialState: ModalState = {
 	loginModal: false,
-	forgetPassword: true,
+	forgetPassword: false,
 	optionFilters: false,
 };
 

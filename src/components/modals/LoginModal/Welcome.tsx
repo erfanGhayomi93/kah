@@ -14,17 +14,17 @@ const Welcome = () => {
 
 	return (
 		<div className='flex flex-1 flex-col items-center justify-between'>
-			<div className='flex-column gap-24'>
+			<div className='gap-24 flex-column'>
 				<Image width='280' height='248' alt='welcome' src='/static/images/successfully-login.png' />
-				<h1 className='text-center text-4xl font-bold text-primary-300'>{t('authentication_modal.welcome')}</h1>
+				<h1 className='text-center text-4xl font-bold text-primary-300'>{t('login_modal.welcome')}</h1>
 			</div>
 
 			<div className='flex w-full flex-col gap-24 px-64'>
-				<h3 className='text-center text-base font-bold text-primary-300'>{t('authentication_modal.set_password_description')}</h3>
+				<h3 className='text-center text-base font-bold text-primary-300'>{t('login_modal.set_password_description')}</h3>
 
-				<div className='flex-column gap-16'>
+				<div className='gap-16 flex-column'>
 					<button type='button' className='h-48 rounded btn-primary'>
-						{t('authentication_modal.set_password_btn')}
+						{t('login_modal.set_password_btn')}
 					</button>
 
 					<button onClick={onCloseModal} type='button' className='font-medium text-primary-300'>

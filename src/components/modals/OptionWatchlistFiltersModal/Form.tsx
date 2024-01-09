@@ -20,8 +20,8 @@ const InputWrapper = styled.div`
 
 const initialFilters: IOptionWatchlistFilters = {
 	symbols: [],
-	type: null,
-	status: null,
+	type: [],
+	status: [],
 	endDate: [null, null],
 	contractSize: [-1, -1],
 	delta: [-1, -1],

@@ -7,7 +7,7 @@ import OTPForm from './OTPForm';
 import PhoneNumberForm from './PhoneNumberForm';
 import Welcome from './Welcome';
 
-const AuthenticationModal = () => {
+const LoginModal = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -21,11 +21,7 @@ const AuthenticationModal = () => {
 	};
 
 	return (
-		<AuthenticationModalTemplate
-			hideTitle={stage === 'welcome'}
-			title={t('authentication_modal.login_to_kahkeshan')}
-			onClose={onCloseModal}
-		>
+		<AuthenticationModalTemplate hideTitle={stage === 'welcome'} title={t('login_modal.title')} onClose={onCloseModal}>
 			{stage === 'phoneNumber' && <PhoneNumberForm goToOTP={() => setStage('otp')} setLoginResult={setLoginResult} />}
 			{stage === 'otp' && (
 				<OTPForm loginResult={loginResult} setLoginResult={setLoginResult} goToWelcome={() => setStage('welcome')} />
@@ -35,4 +31,4 @@ const AuthenticationModal = () => {
 	);
 };
 
-export default AuthenticationModal;
+export default LoginModal;

@@ -19,6 +19,8 @@ const config: Config = {
 
 			current: 'currentColor',
 
+			inherit: 'inherit',
+
 			white: 'rgba(255, 255, 255, 1)',
 
 			black: 'rgba(35, 38, 41, 1)',
@@ -214,14 +216,14 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.primary.300'),
 					'background-color': 'transparent',
-					border: `1.5px solid ${theme('colors.primary.300')}`,
+					border: `2px solid ${theme('colors.primary.300')}`,
 					transition: 'background-color 300ms, color 300ms, border-color 300ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.primary.400'),
-						'border-color': theme('colors.primary.400'),
+						'background-color': theme('colors.primary.300'),
+						'border-color': theme('colors.primary.300'),
 					},
 
 					'&:disabled': {

@@ -22,13 +22,18 @@
 		"contact_us": "تماس با ما",
 		"about_us": "درباره ما"
 	},
-	"authentication_modal": {
-		"login_to_kahkeshan": "ورود به کهکشان",
+	"login_modal": {
+		"title": "ورود به کهکشان",
 		"resend_otp": "ارسال دوباره",
 		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.",
 		"welcome": "به کهکشان خوش آمدید!",
 		"set_password_btn": "تعیین رمز عبور",
 		"set_password_description": "برای تجربه ی کاربری بهتر، می توانید رمز عبور تعیین کنید."
+	},
+	"forget_password_modal": {
+		"title": "فراموشی رمز عبور",
+		"resend_otp": "ارسال دوباره",
+		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید."
 	},
 	"option_watchlist_filters_modal": {
 		"title": "فیلترها",
