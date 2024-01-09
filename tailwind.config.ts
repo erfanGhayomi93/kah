@@ -216,7 +216,7 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.primary.300'),
 					'background-color': 'transparent',
-					border: `1.5px solid ${theme('colors.primary.300')}`,
+					border: `2px solid ${theme('colors.primary.300')}`,
 					transition: 'background-color 300ms, color 300ms, border-color 300ms',
 					'transition-timing-function': 'ease-in-out',
 

@@ -22,12 +22,10 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 	const isATM = value.includes('atm');
 
 	return (
-		<div className='flex-1 gap-8 flex-justify-end *:h-40 *:flex-1 *:gap-8 *:rounded *:border-half *:font-medium *:transition-colors *:flex-justify-center'>
+		<div className='flex-1 gap-8 flex-justify-end *:h-40 *:flex-1 *:gap-8 *:rounded *:border-2 *:font-medium *:transition-colors *:flex-justify-center'>
 			<button
 				onClick={() => onChangeValue('itm')}
-				className={clsx(
-					isITM ? 'border-link bg-link text-white' : 'border-half border-link text-link hover:bg-link hover:text-white',
-				)}
+				className={clsx(isITM ? 'border-link bg-link text-white' : 'border-2 border-link text-link hover:bg-link hover:text-white')}
 			>
 				<span style={{ height: '2px' }} className='w-24 rounded bg-current' />
 				{t('option_watchlist_filters_modal.status_itm')}
@@ -37,7 +35,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				className={clsx(
 					isOTM
 						? 'border-error-100 bg-error-100 text-white'
-						: 'border-half border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
+						: 'border-2 border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
 				)}
 			>
 				<ChartDownSVG />
@@ -48,7 +46,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				className={clsx(
 					isATM
 						? 'border-success-100 bg-success-100 text-white'
-						: 'border-half border-success-100 text-success-100 hover:bg-success-100 hover:text-white',
+						: 'border-2 border-success-100 text-success-100 hover:bg-success-100 hover:text-white',
 				)}
 			>
 				<ChartUpSVG />
