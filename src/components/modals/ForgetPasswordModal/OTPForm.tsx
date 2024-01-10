@@ -35,10 +35,13 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 		if (!result) return;
 
 		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.ISignUp>>(routes.authentication.ForgetPassword, {
-				otp,
-				forgetPasswordToken: result.nextStepToken ?? '',
-			});
+			const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(
+				routes.authentication.ValidateForgetPasswordOTP,
+				{
+					otp,
+					forgetPasswordToken: result.nextStepToken ?? '',
+				},
+			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

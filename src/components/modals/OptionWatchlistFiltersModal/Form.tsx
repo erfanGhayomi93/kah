@@ -86,14 +86,14 @@ const Form = () => {
 					)}
 				</div>
 
-				<ul className='gap-32 flex-column *:h-40 *:flex-justify-between'>
-					<li>
+				<ul className='gap-32 flex-column'>
+					<li className='h-40 flex-justify-between'>
 						<span className='flex-1 font-medium text-gray-100'>{t('option_watchlist_filters_modal.type')}:</span>
 						<InputWrapper>
 							<TypeInput value={filters.type} onChange={(value) => setFilterValue('type', value)} />
 						</InputWrapper>
 					</li>
-					<li>
+					<li className='h-40 flex-justify-between'>
 						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
 							{t('option_watchlist_filters_modal.status')}:
 						</span>
@@ -101,7 +101,7 @@ const Form = () => {
 							<StatusInput value={filters.status} onChange={(value) => setFilterValue('status', value)} />
 						</InputWrapper>
 					</li>
-					<li>
+					<li className='h-40 flex-justify-between'>
 						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
 							{t('option_watchlist_filters_modal.end_date')}:
 						</span>
@@ -109,7 +109,7 @@ const Form = () => {
 							<EndDateInput value={filters.endDate} onChange={(value) => setFilterValue('endDate', value)} />
 						</InputWrapper>
 					</li>
-					<li>
+					<li className='h-40 flex-justify-between'>
 						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
 							{t('option_watchlist_filters_modal.contract_size')}:
 						</span>
@@ -117,7 +117,7 @@ const Form = () => {
 							<ContractSizeInput value={filters.contractSize} onChange={(value) => setFilterValue('contractSize', value)} />
 						</InputWrapper>
 					</li>
-					<li>
+					<li className='h-40 flex-justify-between'>
 						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
 							{t('option_watchlist_filters_modal.delta')}:
 						</span>
@@ -125,7 +125,7 @@ const Form = () => {
 							<DeltaInput value={filters.delta} onChange={(value) => setFilterValue('delta', value)} />
 						</InputWrapper>
 					</li>
-					<li>
+					<li className='flex-justify-between'>
 						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
 							{t('option_watchlist_filters_modal.minimum_trades_value')}:
 						</span>

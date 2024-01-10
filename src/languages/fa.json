@@ -6,6 +6,7 @@
 		"clear_all": "پاک کردن همه",
 		"ignore": "بی‌خیال",
 		"rial": "ریال",
+		"toman": "تومان",
 		"from": "از",
 		"to": "تا"
 	},
@@ -73,7 +74,7 @@
 		"column_open_positions": "موقعیت‌های باز",
 		"column_volume": "حجم",
 		"column_best_buy": "بهترین خرید",
-		"column_better_sell": "بهتری فروش",
+		"column_better_sell": "بهترین فروش",
 		"column_final_price": "قیمت پایانی",
 		"column_gap": "شکاف",
 		"column_final_base_price": "قیمت پایانی پایه",
