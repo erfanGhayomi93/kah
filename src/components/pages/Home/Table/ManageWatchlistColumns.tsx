@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	border-radius: 0 1.6rem 1.6rem 0;
-	padding: 1.6rem 0;
+	padding: 0 0 1.6rem 0;
 	z-index: 9;
 	box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.2);
 `;
@@ -38,14 +38,6 @@ const Button = styled.button`
 	-moz-transition:
 		color 250ms,
 		background-color 250ms;
-`;
-
-const Scroll = styled.div`
-	overflow: auto;
-	display: flex;
-	flex-direction: column;
-	padding: 0 3.2rem;
-	gap: 1.6rem;
 `;
 
 const ManageWatchlistColumns = () => {
@@ -182,8 +174,8 @@ const ManageWatchlistColumns = () => {
 	if (!rendered) return;
 
 	return (
-		<Wrapper ref={wrapperRef} className={clsx('bg-white', isEnable ? 'left-to-right' : 'right-to-left')}>
-			<div className='px-32'>
+		<Wrapper ref={wrapperRef} className={clsx('overflow-auto bg-white', isEnable ? 'left-to-right' : 'right-to-left')}>
+			<div className='sticky top-0 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
 
@@ -198,7 +190,7 @@ const ManageWatchlistColumns = () => {
 				</div>
 			</div>
 
-			<Scroll>
+			<div className='gap-16 px-32 flex-column'>
 				{columns.map((category, categoryIndex) => (
 					<div key={category.id} className={clsx('gap-16 pb-16 flex-column', categoryIndex < 2 && 'border-b border-b-gray-400')}>
 						<h2 className='text-lg font-medium text-gray-100'>{category.title}</h2>
@@ -225,7 +217,7 @@ const ManageWatchlistColumns = () => {
 						</div>
 					</div>
 				))}
-			</Scroll>
+			</div>
 		</Wrapper>
 	);
 };
