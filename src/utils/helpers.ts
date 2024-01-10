@@ -1,3 +1,4 @@
+import Num2Persian from '@/classes/NumToPersian';
 import dayjs from '@/libs/dayjs';
 
 export const sepNumbers = (num: string): string => {
@@ -68,4 +69,18 @@ export const convertStringToNumber = (inputString: string): string => {
 
 export const getDateAsJalali = (value?: string | number | Date | null) => {
 	return dayjs(value).calendar('jalali').format('YYYY/MM/DD');
+};
+
+export const tomanToRial = (v: number): string => {
+	if (isNaN(v) || v <= 0) return '';
+
+	const [integerPart, decimalPart] = String(v / 10).split('.');
+
+	const toman = `${Num2Persian(integerPart)} تومان`;
+	if (!decimalPart) return toman;
+
+	const rial = `${Num2Persian(decimalPart)} ریال`;
+	if (!integerPart) return rial;
+
+	return `${toman} و ${rial}`;
 };
