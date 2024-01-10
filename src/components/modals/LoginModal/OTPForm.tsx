@@ -35,7 +35,7 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 		if (!loginResult) return;
 
 		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.ISignUp>>(
+			const response = await axios.post<ServerResponse<OAuthAPI.IValidateForgetPasswordOTP>>(
 				loginResult.state === 'OTP' ? routes.authentication.OtpLogin : routes.authentication.SignUp,
 				{
 					otp,

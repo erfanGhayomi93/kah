@@ -40,7 +40,7 @@ const Datepicker = ({ classes, value, clearable, onChange, placeholder }: Datepi
 			if (values[2]) values[2] = checkDateValue(values[2], 31);
 
 			const output = values.map((v, i) => {
-				return (v.length === 4 && i === 0) || (v.length === 2 && i === 1) ? `${v}/` : v;
+				return (v.length === 4 && i === 0) || (v.length === 2 && i === 1) ? `${v}‌/‌` : v;
 			});
 
 			return output.join('').substring(0, 14);
@@ -77,7 +77,7 @@ const Datepicker = ({ classes, value, clearable, onChange, placeholder }: Datepi
 				placeholder={placeholder ?? 'xxxx/xx/xx'}
 				className={clsx(styles.input, classes?.input)}
 				value={term}
-				maxLength={10}
+				maxLength={14}
 				onChange={(e) => setTerm(valueFormatter(e.target.value))}
 				data-testid='datepicker'
 				onBlur={onBlurInput}

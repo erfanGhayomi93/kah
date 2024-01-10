@@ -70,7 +70,7 @@ const config: Config = {
 
 		fontSize: {
 			xs: '.8rem',
-			sm: '.1rem',
+			sm: '1rem',
 			tiny: '1.2rem',
 			base: '1.4rem',
 			lg: '1.6rem',
@@ -103,7 +103,7 @@ const config: Config = {
 
 		borderWidth: {
 			DEFAULT: '1px',
-			half: '1.5px',
+			half: '2px',
 			0: '0',
 			2: '2px',
 			4: '4px',
@@ -195,9 +195,9 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.white'),
-					border: '1.5px solid transparent',
+					border: '2px solid transparent',
 					'background-color': theme('colors.primary.300'),
-					transition: 'background-color 300ms ease-in-out',
+					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
 						'background-color': theme('colors.primary.400'),
@@ -217,7 +217,7 @@ const config: Config = {
 					color: theme('colors.primary.300'),
 					'background-color': 'transparent',
 					border: `2px solid ${theme('colors.primary.300')}`,
-					transition: 'background-color 300ms, color 300ms, border-color 300ms',
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
@@ -293,11 +293,11 @@ const config: Config = {
 				},
 
 				'.left-to-right': {
-					animation: 'left-to-right ease-in-out 300ms 1 alternate forwards',
+					animation: 'left-to-right ease-in-out 250ms 1 alternate forwards',
 				},
 
 				'.right-to-left': {
-					animation: 'right-to-left ease-in-out 300ms 1 alternate forwards',
+					animation: 'right-to-left ease-in-out 250ms 1 alternate forwards',
 				},
 			});
 		}),
