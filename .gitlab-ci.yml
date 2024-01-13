@@ -39,6 +39,7 @@ stage-Job:
     - Stop-WebSite "kahkeshan"
     - Start-WebSite "kahkeshan"
     - Stop-WebAppPool -Name "kahkeshan"
+    - Start-Sleep -Seconds 10
     - Start-WebAppPool -Name "kahkeshan"
     - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*"
     - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui.tmp\*"
