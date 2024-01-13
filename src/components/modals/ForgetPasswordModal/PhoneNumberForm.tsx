@@ -29,9 +29,12 @@ const PhoneNumberForm = ({ setResult, goToOTP }: PhoneNumberFormProps) => {
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ phoneNumber, captcha }) => {
 		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(routes.authentication.LoginFirstStep, {
-				mobileNumber: phoneNumber,
-			});
+			const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(
+				routes.authentication.ForgetPasswordFirstStep,
+				{
+					mobileNumber: phoneNumber,
+				},
+			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

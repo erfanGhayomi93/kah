@@ -84,3 +84,43 @@ export const tomanToRial = (v: number): string => {
 
 	return `${toman} و ${rial}`;
 };
+
+export const passwordValidation = (password: string) => {
+	let score = 0;
+	let lowercase = false;
+	let uppercase = false;
+	let numbers = false;
+	let length = false;
+	let char = false;
+
+	if (password.length >= 8) {
+		length = true;
+		score++;
+	}
+
+	if (/[a-z]/.test(password)) {
+		lowercase = true;
+		score++;
+	}
+
+	if (/[A-Z]/.test(password)) {
+		uppercase = true;
+		score++;
+	}
+
+	if (/[0-9]/.test(password)) {
+		numbers = true;
+		score++;
+	}
+
+	if (/\W/.test(password)) {
+		char = true;
+		score++;
+	}
+
+	return { score, lowercase, uppercase, numbers, length, char };
+};
+
+export const base64encode = (value: string) => {
+	return btoa(value);
+};
