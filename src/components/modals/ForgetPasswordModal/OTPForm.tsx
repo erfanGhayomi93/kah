@@ -108,7 +108,7 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 								{seconds ? (
 									<Countdown onFinished={onFinishedCountdown} seconds={seconds} />
 								) : (
-									<div className='spinner h-24 w-24' />
+									<div className='spinner size-24' />
 								)}
 							</div>
 						</div>

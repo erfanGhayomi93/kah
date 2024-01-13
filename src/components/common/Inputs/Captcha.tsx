@@ -47,7 +47,7 @@ const Captcha = ({ control, ...props }: CaptchaProps) => {
 						/>
 						<div className='flex gap-16'>
 							<div className='flex-items-center'>
-								{fetching ? <div className='spinner h-24 w-24' /> : <span className='font-bold'>123456</span>}
+								{fetching ? <div className='spinner size-24' /> : <span className='font-bold'>123456</span>}
 							</div>
 							<button onClick={onRefetchCaptcha} type='button' className='prefix'>
 								<RefreshSVG />
