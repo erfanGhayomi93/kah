@@ -263,12 +263,15 @@ const config: Config = {
 					'.prefix': {
 						height: '3.2rem',
 						width: '4.4rem',
-						'border-right': `1px solid ${theme('colors.gray.400')}`,
 						'text-align': 'center',
 						'font-family': 'IRANSansFaNum',
 						display: 'flex',
 						'align-items': 'center',
 						'justify-content': 'flex-end',
+
+						'&:not(.border-r-0)': {
+							'border-right': `1px solid ${theme('colors.gray.400')}`,
+						},
 					},
 				},
 
@@ -280,7 +283,7 @@ const config: Config = {
 					color: theme('colors.error.100'),
 
 					'&:before': {
-						content: '',
+						content: '""',
 						position: 'absolute',
 						right: '0',
 						top: '3px',
