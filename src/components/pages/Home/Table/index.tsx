@@ -142,6 +142,7 @@ const Table = ({ data }: TableProps) => {
 				headerName: 'ارزش',
 				colId: 'totalValue',
 				initialHide: false,
+				initialSort: 'asc',
 				width: 112,
 				valueGetter: ({ data }) => data!.optionWatchlistData.totalValue,
 				valueFormatter: ({ value }) => {
@@ -484,9 +485,19 @@ const Table = ({ data }: TableProps) => {
 				initialHide: false,
 				width: 80,
 				pinned: 'left',
+				sortable: false,
 				cellRenderer: ActionColumn,
 			},
 		],
+		[],
+	);
+
+	const defaultColDef: ColDef<Option.Root> = useMemo(
+		() => ({
+			suppressMovable: true,
+			sortable: true,
+			resizable: false,
+		}),
 		[],
 	);
 
@@ -506,6 +517,7 @@ const Table = ({ data }: TableProps) => {
 				className={clsx('h-full', dataIsEmpty && 'overflow-hidden rounded border border-gray-500')}
 				rowData={data}
 				columnDefs={COLUMNS}
+				defaultColDef={defaultColDef}
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			/>
 
