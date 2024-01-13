@@ -15,7 +15,7 @@ interface Inputs {
 
 interface OTPFormProps {
 	result: null | OAuthAPI.IForgetPasswordFirstStep;
-	setResult: (value: OAuthAPI.IForgetPasswordFirstStep) => void;
+	setResult: (value: OAuthAPI.IValidateForgetPasswordOTP) => void;
 	goToChangePassword: () => void;
 }
 
@@ -35,7 +35,7 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 		if (!result) return;
 
 		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(
+			const response = await axios.post<ServerResponse<OAuthAPI.IValidateForgetPasswordOTP>>(
 				routes.authentication.ValidateForgetPasswordOTP,
 				{
 					otp,
@@ -46,6 +46,7 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
+			setResult(data.result);
 			goToChangePassword();
 		} catch (e) {
 			setError('otp', {

@@ -73,8 +73,12 @@ declare namespace OAuthAPI {
 	}
 
 	declare interface IValidateForgetPasswordOTP {
-		message: string;
-		token: string | null;
+		nextStepToken: string;
+		responseMessage: string;
+	}
+
+	declare interface IChangeForgottenPassword {
+		result: string;
 	}
 
 	declare interface ISignUp {

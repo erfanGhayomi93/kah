@@ -5,6 +5,7 @@
 		"continue": "ادامه",
 		"clear_all": "پاک کردن همه",
 		"ignore": "بی‌خیال",
+		"cancel": "انصراف",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
@@ -34,7 +35,11 @@
 	"forget_password_modal": {
 		"title": "فراموشی رمز عبور",
 		"resend_otp": "ارسال دوباره",
-		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید."
+		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.",
+		"password_english_words": "حروف انگلیسی",
+		"password_min_chars": "حداقل 8 کاراکتر",
+		"password_include_uppercase_chars": "شامل حروف بزرگ",
+		"password_english_include_number": "شامل عدد"
 	},
 	"option_watchlist_filters_modal": {
 		"title": "فیلترها",
@@ -95,11 +100,16 @@
 		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
 		"too_many_request": "درخواست بیش از حد مجاز است. لطفا دقایقی دیگر مجددا امتحان کنید.",
 		"invalid_otp": "کد تایید نادرست است.",
+		"invalid_repeat_password": "رمز عبور مطابقت ندارد.",
 		"invalid_phone_number": "شماره همراه نادرست است.",
 		"invalid_captcha": "کد وارد شده مطابقت ندارد."
 	},
 	"inputs": {
 		"captcha": "کد امنیتی",
+		"new_password": "رمز عبور جدید",
+		"new_password_placeholder": "رمز عبور جدید خود را وارد کنید",
+		"repeat_new_password": "تکرار رمز عبور",
+		"repeat_new_password_placeholder": "رمز عبور خود را دوباره وارد کنید",
 		"captcha_placeholder": "کد مقابل را وارد کنید",
 		"phone_number": "شماره همراه",
 		"phone_number_placeholder": "شماره همراه خود را وارد کنید",

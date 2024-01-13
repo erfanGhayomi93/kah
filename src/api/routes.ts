@@ -13,6 +13,7 @@ const routes = {
 		PasswordLogin: `${baseUrl}/OAuthAPI/v1/PasswordLogin`,
 		ChangePassword: `${baseUrl}/OAuthAPI/v1/ChangePassword`,
 		ValidateForgetPasswordOTP: `${baseUrl}/OAuthAPI/v1/ValidateForgetPasswordOTP`,
+		ChangeForgottenPassword: `${baseUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
 	},
 };
 
