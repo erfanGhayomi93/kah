@@ -1,6 +1,4 @@
 import AgTable from '@/components/common/Tables/AgTable';
-import dayjs from '@/libs/dayjs';
-import { numberFormatter } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useMemo, useRef } from 'react';
@@ -23,461 +21,277 @@ const Table = ({ data }: TableProps) => {
 		() => [
 			{
 				headerName: 'نماد',
-				colId: 'title',
+				colId: 'symbolTitle',
 				initialHide: false,
-				cellClass: 'justify-end',
 				width: 144,
 				pinned: 'right',
-				valueGetter: ({ data }) => data!.symbolInfo.title,
+				cellClass: 'justify-end',
+				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
 			},
 			{
-				headerName: 'پرمیوم',
+				headerName: 'ارزش معاملات',
+				colId: 'tradeValue',
+				initialHide: false,
+				initialSort: 'asc',
+				valueGetter: ({ data }) => data!.optionWatchlistData.tradeValue,
+			},
+			{
+				headerName: 'آخرین قیمت',
 				colId: 'premium',
 				initialHide: false,
-				width: 80,
 				valueGetter: ({ data }) => data!.optionWatchlistData.premium,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'بلک شولز',
-				colId: 'blackScholes',
-				initialHide: false,
-				width: 96,
-				valueGetter: ({ data }) => data!.optionWatchlistData.blackScholes,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'O / I TM',
-				colId: 'profitAndLoss',
-				initialHide: false,
-				width: 96,
-				cellClass: ({ value }) => ['font-medium', value === 'ITM' ? 'text-success-100' : 'text-error-100'],
-				valueGetter: ({ data }) => {
-					const value = data!.optionWatchlistData.profitAndLoss;
-
-					if (value === 'Profit') return 'ITM';
-					return 'OTM';
-				},
-			},
-			{
-				headerName: 'ارزش زمانی',
-				colId: 'timeValue',
-				initialHide: false,
-				width: 96,
-				valueGetter: ({ data }) => data!.optionWatchlistData.timeValue,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'بازده طی دوره',
-				colId: 'intervalInterest',
-				initialHide: false,
-				width: 120,
-				valueGetter: ({ data }) => data!.optionWatchlistData.intervalInterest,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'بازده موثر سالانه',
-				colId: 'annualEffectiveInterest',
-				initialHide: false,
-				width: 120,
-				valueGetter: ({ data }) => data!.optionWatchlistData.annualEffectiveInterest,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
 			},
 			{
 				headerName: 'دلتا',
 				colId: 'delta',
 				initialHide: false,
-				width: 80,
 				valueGetter: ({ data }) => data!.optionWatchlistData.delta,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
 			},
 			{
-				headerName: 'حجم',
-				colId: 'volume',
+				headerName: 'آخرین قیمت پایه',
+				colId: 'baseSymbolPrice',
 				initialHide: false,
-				width: 88,
-				valueGetter: ({ data }) => data!.optionWatchlistData.volume,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				valueGetter: ({ data }) => data!.optionWatchlistData.baseSymbolPrice,
 			},
 			{
-				headerName: 'رشد',
-				colId: 'growth',
+				headerName: 'سر به سر',
+				colId: 'breakEvenPoint',
 				initialHide: false,
-				width: 88,
-				cellClass: ({ value }) => {
-					const valueAsNumber = Number(value);
-
-					if (valueAsNumber > 0) return 'text-success-100';
-					if (valueAsNumber < 0) return 'text-success-100';
-					return '';
-				},
-				valueGetter: ({ data }) => data!.optionWatchlistData.growth,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				valueGetter: ({ data }) => data!.optionWatchlistData.breakEvenPoint,
 			},
 			{
-				headerName: 'ارزش',
-				colId: 'totalValue',
+				headerName: 'اهرم',
+				colId: 'leverage',
 				initialHide: false,
-				initialSort: 'asc',
-				width: 112,
-				valueGetter: ({ data }) => data!.optionWatchlistData.totalValue,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				valueGetter: ({ data }) => data!.optionWatchlistData.leverage,
 			},
 			{
-				headerName: 'پرارزش',
-				colId: 'valueContract',
-				initialHide: false,
-				width: 88,
-				cellClass: ({ value }) => ['font-medium', value === 'LIQ' ? 'text-success-100' : 'text-error-100'],
-				valueGetter: ({ data }) => data!.optionWatchlistData.valueContract,
-			},
-			{
-				headerName: 'موقعیت های باز',
+				headerName: 'موقعیت‌های باز',
 				colId: 'openPositionCount',
 				initialHide: false,
-				width: 128,
 				valueGetter: ({ data }) => data!.optionWatchlistData.openPositionCount,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
 			},
 			{
-				headerName: 'موقعیت باز زیاد',
-				colId: 'highOpenPosition',
+				headerName: 'نوسان پذیری ضمنی',
+				colId: 'impliedVolatility',
 				initialHide: false,
-				width: 120,
-				cellClass: ({ value }) => ['font-medium', value === 'LIQ' ? 'text-success-100' : 'text-error-100'],
-				valueGetter: ({ data }) => data!.optionWatchlistData.highOpenPosition,
+				valueGetter: ({ data }) => data!.optionWatchlistData.impliedVolatility,
 			},
 			{
-				headerName: 'نوشنال ولیو',
-				colId: 'notionalValue',
+				headerName: 'بلک شولز',
+				colId: 'blackScholes',
 				initialHide: false,
-				width: 112,
-				valueGetter: ({ data }) => data!.optionWatchlistData.notionalValue,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				valueGetter: ({ data }) => data!.optionWatchlistData.blackScholes,
 			},
 			{
-				headerName: 'دارایی پایه',
-				colId: 'baseSymbolTitle',
+				headerName: 'روز مانده',
+				colId: 'dueDays',
 				initialHide: false,
-				width: 96,
-				valueGetter: ({ data }) => data!.symbolInfo.baseSymbolTitle,
-			},
-			{
-				headerName: 'قیمت دارایی پایه',
-				colId: 'lastPrice',
-				initialHide: false,
-				width: 120,
-				valueGetter: ({ data }) => '—',
+				valueGetter: ({ data }) => data!.symbolInfo.dueDays,
 			},
 			{
 				headerName: 'قیمت اعمال',
 				colId: 'strikePrice',
 				initialHide: false,
-				width: 96,
 				valueGetter: ({ data }) => data!.symbolInfo.strikePrice,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'زمان سررسید',
-				colId: 'daysToContractEndDate',
-				initialHide: false,
-				width: 112,
-				cellClass: 'rtl',
-				valueGetter: ({ data }) => data!.symbolInfo.daysToContractEndDate,
-				valueFormatter: ({ value }) => `${value} روز`,
-			},
-			{
-				headerName: 'اهرم خرید',
-				colId: 'callLeverage',
-				initialHide: false,
-				width: 88,
-				valueGetter: ({ data }) => data!.optionWatchlistData.callLeverage,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
 			},
 			{
 				headerName: 'بهترین خرید',
-				colId: 'bestCallPrice',
+				colId: 'bestBuyPrice',
 				initialHide: false,
-				width: 112,
-				valueGetter: ({ data }) => data!.optionWatchlistData.bestCallPrice,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'فاصله تا بلک شولز خرید',
-				colId: 'callToBlackScholes',
-				initialHide: false,
-				width: 176,
-				valueGetter: ({ data }) => data!.optionWatchlistData.callToBlackScholes,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'فاصله تا بلک شولز فروش',
-				colId: 'putToBlackScholes',
-				initialHide: false,
-				width: 176,
-				valueGetter: ({ data }) => data!.optionWatchlistData.putToBlackScholes,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				valueGetter: ({ data }) => data!.optionWatchlistData.bestBuyPrice,
 			},
 			{
 				headerName: 'بهترین فروش',
-				colId: 'bestPutPrice',
+				colId: 'bestBuyPrice',
 				initialHide: false,
-				width: 104,
-				valueGetter: ({ data }) => data!.optionWatchlistData.bestPutPrice,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				valueGetter: ({ data }) => data!.optionWatchlistData.bestSellPrice,
 			},
 			{
-				headerName: 'اهرم فروش',
-				colId: 'putLeverage',
-				initialHide: false,
-				width: 96,
-				valueGetter: ({ data }) => data!.optionWatchlistData.putLeverage,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'نام کامل آپشن',
+				colId: 'symbolTitle',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
 			},
 			{
-				headerName: 'اسپرد',
-				colId: 'spread',
-				initialHide: false,
-				width: 80,
-				valueGetter: ({ data }) => data!.optionWatchlistData.spread,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'نام پایه',
+				colId: 'baseSymbolTitle',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.symbolInfo.baseSymbolTitle,
 			},
 			{
-				headerName: 'وجه تضمین',
-				colId: 'requiredMargin',
-				initialHide: false,
-				width: 104,
-				valueGetter: ({ data }) => data!.optionWatchlistData.requiredMargin,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'قیمت پایانی',
+				colId: 'closingPrice',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.closingPrice,
 			},
 			{
-				headerName: 'حجم خرید حقیقی',
-				colId: 'individualCallVolume',
-				initialHide: false,
-				width: 128,
-				valueGetter: ({ data }) => data!.optionWatchlistData.individualCallVolume,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'نوسان پذیری',
+				colId: 'historicalVolatility',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.historicalVolatility,
 			},
 			{
-				headerName: 'حجم خرید حقوقی',
-				colId: 'legalCallVolume',
-				initialHide: false,
-				width: 136,
-				valueGetter: ({ data }) => data!.optionWatchlistData.legalCallVolume,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'اندازه قرارداد',
+				colId: 'contractSize',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.symbolInfo.contractSize,
 			},
 			{
-				headerName: 'حجم فروش حقیقی',
-				colId: 'individualPutVolume',
-				initialHide: false,
-				width: 136,
-				valueGetter: ({ data }) => data!.optionWatchlistData.individualPutVolume,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
-			},
-			{
-				headerName: 'حجم فروش حقوقی',
-				colId: 'legalPutVolume',
-				initialHide: false,
-				width: 136,
-				valueGetter: ({ data }) => data!.optionWatchlistData.legalPutVolume,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'ارزش زمانی',
+				colId: 'timeValue',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.timeValue,
 			},
 			{
 				headerName: 'تتا',
 				colId: 'theta',
-				initialHide: false,
-				width: 96,
+				initialHide: true,
 				valueGetter: ({ data }) => data!.optionWatchlistData.theta,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
 			},
 			{
-				headerName: 'رو',
-				colId: 'rho',
-				initialHide: false,
-				width: 96,
-				valueGetter: ({ data }) => data!.optionWatchlistData.rho,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'تعداد معاملات روز',
+				colId: 'tradeCount',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.tradeCount,
 			},
 			{
-				headerName: 'وگا',
-				colId: 'vega',
-				initialHide: false,
-				width: 96,
-				valueGetter: ({ data }) => data!.optionWatchlistData.vega,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'تاریخ سررسید',
+				colId: 'contractEndDate',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.symbolInfo.contractEndDate,
+			},
+			{
+				headerName: 'شکاف',
+				colId: 'spread',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.spread,
+			},
+			{
+				headerName: 'اختلاف با بلک شولز',
+				colId: 'blackScholesDifference',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.blackScholesDifference,
+			},
+			{
+				headerName: 'قیمت پایانی پایه',
+				colId: 'baseClosingPrice',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.baseClosingPrice,
 			},
 			{
 				headerName: 'گاما',
 				colId: 'gamma',
-				initialHide: false,
-				width: 96,
+				initialHide: true,
 				valueGetter: ({ data }) => data!.optionWatchlistData.gamma,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
 			},
 			{
-				headerName: 'نام اختیار',
-				colId: 'companyName',
-				initialHide: false,
-				width: 200,
-				valueGetter: ({ data }) => data!.symbolInfo.companyName,
-			},
-			{
-				headerName: 'نوع اختیار',
+				headerName: 'نوع آپشن',
 				colId: 'optionType',
-				initialHide: false,
-				width: 88,
-				cellClass: ({ value }) => ['font-medium', value === 'Call' ? 'text-success-100' : 'text-error-100'],
+				initialHide: true,
 				valueGetter: ({ data }) => data!.symbolInfo.optionType,
-				valueFormatter: ({ value }) => (value === 'Call' ? 'خرید' : 'فروش'),
 			},
 			{
-				headerName: 'نوسان پذیری',
-				colId: 'volatility',
-				initialHide: false,
-				width: 112,
-				valueGetter: ({ data }) => data!.optionWatchlistData.volatility,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'وجه تضمین لازم',
+				colId: 'optionType',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.requiredMargin,
 			},
 			{
-				headerName: 'نوسان پذیری ضمنی خرید',
-				colId: 'callImpliedVolatility',
-				initialHide: false,
-				width: 176,
-				valueGetter: ({ data }) => data!.optionWatchlistData.callImpliedVolatility,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'وجه تضمین اولیه',
+				colId: 'optionType',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.symbolInfo.initialMargin,
 			},
 			{
-				headerName: 'نوسان پذیری ضمنی فروش',
-				colId: 'putImpliedVolatility',
-				initialHide: false,
-				width: 176,
-				valueGetter: ({ data }) => data!.optionWatchlistData.putImpliedVolatility,
-				valueFormatter: ({ value }) => {
-					const valueAsNumber = Number(value);
-					return valueAsNumber === 0 ? '—' : String(numberFormatter(Number(value)));
-				},
+				headerName: 'رو',
+				colId: 'rho',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.rho,
 			},
 			{
-				headerName: 'صنعت',
-				colId: 'sectorTitle',
-				initialHide: false,
-				width: 200,
-				valueGetter: ({ data }) => data!.symbolInfo.sectorTitle,
+				headerName: 'وگا',
+				colId: 'vega',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.vega,
+			},
+			{
+				headerName: 'وگا',
+				colId: 'vega',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.vega,
+			},
+			{
+				headerName: 'رشد',
+				colId: 'growth',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.growth,
+			},
+			{
+				headerName: 'پر ارزش',
+				colId: 'contractValueType',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.contractValueType,
+			},
+			{
+				headerName: 'پر ارزش',
+				colId: 'contractValueType',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.contractValueType,
+			},
+			{
+				headerName: 'موقعیت‌های باز زیاد',
+				colId: 'highOpenPosition',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.highOpenPosition,
 			},
 			{
 				headerName: 'تاریخ آخرین معامله',
-				colId: 'lastTradeDateTime',
-				initialHide: false,
-				width: 136,
-				valueGetter: ({ data }) => data!.optionWatchlistData.lastTradeDateTime,
-				valueFormatter: ({ value }) => {
-					if (typeof value !== 'string') return '—';
-					return dayjs(value).calendar('jalali').format('YYYY/MM/DD');
-				},
+				colId: 'lastTradeDate',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.lastTradeDate,
 			},
 			{
-				headerName: 'محاسبه 120 درصد',
-				colId: 'calculation120percent',
-				initialHide: false,
-				width: 136,
-				valueGetter: ({ data }) => '—',
+				headerName: 'حجم خرید حقوقی',
+				colId: 'legalBuyVolume',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.legalBuyVolume,
 			},
 			{
-				headerName: 'محاسبه 150 درصد',
-				colId: 'calculation150percent',
-				initialHide: false,
-				width: 136,
-				valueGetter: ({ data }) => '—',
+				headerName: 'حجم خرید حقیقی',
+				colId: 'individualBuyVolume',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.individualBuyVolume,
+			},
+			{
+				headerName: 'حجم فروش حقوقی',
+				colId: 'legalSellVolume',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.legalSellVolume,
+			},
+			{
+				headerName: 'حجم فروش حقیقی',
+				colId: 'individualSellVolume',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.individualSellVolume,
+			},
+			{
+				headerName: 'صنعت',
+				colId: 'sectorName',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.symbolInfo.sectorName,
+			},
+			{
+				headerName: 'ارزش مفهومی معاملات',
+				colId: 'notionalValue',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.notionalValue,
+			},
+			{
+				headerName: 'ارزش ذاتی',
+				colId: 'intrinsicValue',
+				initialHide: true,
+				valueGetter: ({ data }) => data!.optionWatchlistData.intrinsicValue,
 			},
 			{
 				headerName: 'عملیات',
@@ -497,6 +311,9 @@ const Table = ({ data }: TableProps) => {
 			suppressMovable: true,
 			sortable: true,
 			resizable: false,
+			cellStyle: ({ column }) => ({
+				backgroundColor: column.getSort() ? 'rgba(0, 104, 137, 0.1)' : '',
+			}),
 		}),
 		[],
 	);
@@ -506,7 +323,7 @@ const Table = ({ data }: TableProps) => {
 	return (
 		<div
 			style={{
-				height: 'calc(100vh - 19.6rem)',
+				height: 'calc(100vh - 25.2rem)',
 				maxHeight: dataIsEmpty ? 'calc(100vh - 32rem)' : undefined,
 			}}
 			className='relative'
