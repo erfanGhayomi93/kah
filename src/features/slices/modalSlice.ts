@@ -1,12 +1,13 @@
 'use client';
 
+import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
 export interface ModalState {
 	loginModal: boolean;
 	forgetPassword: boolean;
-	optionFilters: boolean;
+	optionFilters: false | Partial<IOptionFiltersModal>;
 }
 
 const initialState: ModalState = {

@@ -1,7 +1,7 @@
 interface IOptionWatchlistFilters {
 	symbols: string[];
-	type: Array<'buy' | 'sell'>;
-	status: Array<'itm' | 'otm' | 'atm'>;
+	type: Array<'Call' | 'Put'>;
+	status: Array<'ITM' | 'OTM' | 'ATM'>;
 	endDate: [number | null, number | null];
 	contractSize: [number, number];
 	delta: [number, number];

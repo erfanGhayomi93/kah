@@ -1,37 +1,33 @@
-import axios from '@/api/axios';
-import routes from '@/api/routes';
+import { useOptionWatchlistQuery } from '@/api/queries/optionQueries';
+import ipcMain from '@/classes/IpcMain';
 import AgTable from '@/components/common/Tables/AgTable';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
-import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
 import NoData from './NoData';
 
-const Table = () => {
+interface TableProps {
+	filters: Partial<IOptionWatchlistFilters>;
+	setFilters: React.Dispatch<React.SetStateAction<Partial<IOptionWatchlistFilters>>>;
+}
+
+const Table = ({ filters, setFilters }: TableProps) => {
 	const cWatchlistRef = useRef<Option.Root[]>([]);
 
 	const gridRef = useRef<GridApi<Option.Root>>(null);
 
-	const { data: watchlistData } = useQuery<Option.Root[]>({
-		queryKey: ['optionWatchlistQuery'],
-		queryFn: async () => {
-			try {
-				const response = await axios.get<ServerResponse<Option.Root[]>>(routes.option.Watchlist);
-				const { data } = response;
-
-				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-				return data.result;
-			} catch (e) {
-				return [];
-			}
-		},
+	const { data: watchlistData } = useOptionWatchlistQuery({
+		queryKey: ['optionWatchlistQuery', filters],
 	});
 
 	const addSymbol = () => {
 		//
+	};
+
+	const onFiltersChanged = (newFilters: IOptionWatchlistFilters) => {
+		setFilters(newFilters);
 	};
 
 	const COLUMNS: Array<ColDef<Option.Root>> = useMemo(
@@ -161,7 +157,7 @@ const Table = () => {
 			},
 			{
 				headerName: 'بهترین فروش',
-				colId: 'bestBuyPrice',
+				colId: 'bestSellPrice',
 				initialHide: false,
 				minWidth: 96,
 				cellStyle: {
@@ -255,13 +251,13 @@ const Table = () => {
 			},
 			{
 				headerName: 'وجه تضمین لازم',
-				colId: 'optionType',
+				colId: 'requiredMargin',
 				initialHide: true,
 				valueGetter: ({ data }) => data!.optionWatchlistData.requiredMargin,
 			},
 			{
 				headerName: 'وجه تضمین اولیه',
-				colId: 'optionType',
+				colId: 'initialMargin',
 				initialHide: true,
 				valueGetter: ({ data }) => data!.symbolInfo.initialMargin,
 			},
@@ -278,22 +274,10 @@ const Table = () => {
 				valueGetter: ({ data }) => data!.optionWatchlistData.vega,
 			},
 			{
-				headerName: 'وگا',
-				colId: 'vega',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.vega,
-			},
-			{
 				headerName: 'رشد',
 				colId: 'growth',
 				initialHide: true,
 				valueGetter: ({ data }) => data!.optionWatchlistData.growth,
-			},
-			{
-				headerName: 'پر ارزش',
-				colId: 'contractValueType',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.contractValueType,
 			},
 			{
 				headerName: 'پر ارزش',
@@ -378,6 +362,14 @@ const Table = () => {
 		}),
 		[],
 	);
+
+	useEffect(() => {
+		ipcMain.handle<IOptionWatchlistFilters>('set_option_watchlist_filters', onFiltersChanged);
+
+		return () => {
+			ipcMain.removeChannel('set_option_watchlist_filters');
+		};
+	}, []);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

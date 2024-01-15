@@ -38,6 +38,8 @@ const Modal = ({ portalElement, children, style, classes, size, top, onClose }: 
 		try {
 			if (e.key !== 'Escape') return;
 			onClose();
+
+			removeListener();
 		} catch (e) {
 			//
 		}

@@ -1,7 +1,11 @@
 import { ExcelSVG, FilterSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleOptionFiltersModal } from '@/features/slices/modalSlice';
 import { toggleManageOptionColumns } from '@/features/slices/uiSlice';
+
+interface ActionsProps {
+	onShowFilters: () => void;
+	onExportExcel: () => void;
+}
 
 const OptionWatchlistManagerSVG = () => (
 	<svg width='2.4rem' height='2.4rem' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -28,16 +32,8 @@ const OptionWatchlistManagerSVG = () => (
 	</svg>
 );
 
-const Actions = () => {
+const Actions = ({ onShowFilters, onExportExcel }: ActionsProps) => {
 	const dispatch = useAppDispatch();
-
-	const exportExcel = () => {
-		//
-	};
-
-	const showFilters = () => {
-		dispatch(toggleOptionFiltersModal(true));
-	};
 
 	const manageTableHeaders = () => {
 		dispatch(toggleManageOptionColumns(true));
@@ -46,12 +42,12 @@ const Actions = () => {
 	return (
 		<ul className='flex gap-8'>
 			<li>
-				<button onClick={exportExcel} className='size-40 rounded border border-gray-300 flex-justify-center' type='button'>
+				<button onClick={onExportExcel} className='size-40 rounded border border-gray-300 flex-justify-center' type='button'>
 					<ExcelSVG />
 				</button>
 			</li>
 			<li>
-				<button onClick={showFilters} className='size-40 rounded border border-gray-300 flex-justify-center' type='button'>
+				<button onClick={onShowFilters} className='size-40 rounded border border-gray-300 flex-justify-center' type='button'>
 					<FilterSVG />
 				</button>
 			</li>

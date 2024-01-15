@@ -9,21 +9,21 @@ interface TypeInputProps {
 const TypeInput = ({ value, onChange }: TypeInputProps) => {
 	const t = useTranslations();
 
-	const onChangeValue = (v: 'buy' | 'sell') => {
+	const onChangeValue = (v: 'Call' | 'Put') => {
 		if (value.includes(v)) onChange(value.filter((val) => val !== v));
 		else onChange([...value, v]);
 	};
 
-	const isSell = value.includes('sell');
+	const isSell = value.includes('Put');
 
-	const isBuy = value.includes('buy');
+	const isBuy = value.includes('Call');
 
 	return (
 		<div className='flex-1 gap-8 flex-justify-end *:h-40 *:flex-1 *:rounded *:font-medium'>
-			<button onClick={() => onChangeValue('buy')} className={clsx(isBuy ? 'btn-choose' : 'btn-choose-outline')}>
+			<button type='button' onClick={() => onChangeValue('Call')} className={clsx(isBuy ? 'btn-choose' : 'btn-choose-outline')}>
 				{t('side.buy')}
 			</button>
-			<button onClick={() => onChangeValue('sell')} className={clsx(isSell ? 'btn-choose' : 'btn-choose-outline')}>
+			<button type='button' onClick={() => onChangeValue('Put')} className={clsx(isSell ? 'btn-choose' : 'btn-choose-outline')}>
 				{t('side.sell')}
 			</button>
 		</div>
