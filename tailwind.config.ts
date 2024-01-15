@@ -233,6 +233,49 @@ const config: Config = {
 					},
 				},
 
+				'.btn-choose': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.white'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.primary.200'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.primary.300'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-choose-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.primary.200'),
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.primary.200')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.primary.200'),
+						'border-color': theme('colors.primary.200'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
 				'.input-box': {
 					display: 'flex',
 					'flex-direction': 'column',
