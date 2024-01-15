@@ -1,5 +1,7 @@
 'use client';
 
+import { initialFilters } from '@/components/modals/OptionWatchlistFiltersModal/Form';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Table from './Table';
 import Toolbar from './Toolbar';
@@ -13,10 +15,12 @@ const Main = styled.main`
 `;
 
 const Home = () => {
+	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialFilters);
+
 	return (
 		<Main>
-			<Toolbar />
-			<Table />
+			<Toolbar filters={filters} />
+			<Table filters={filters} setFilters={setFilters} />
 		</Main>
 	);
 };

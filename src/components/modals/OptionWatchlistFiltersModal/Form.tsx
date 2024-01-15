@@ -1,4 +1,7 @@
+import ipcMain from '@/classes/IpcMain';
 import { XSVG } from '@/components/icons';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getOptionFiltersModal, toggleOptionFiltersModal } from '@/features/slices/modalSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
@@ -18,7 +21,7 @@ const InputWrapper = styled.div`
 	max-width: 100%;
 `;
 
-const initialFilters: IOptionWatchlistFilters = {
+export const initialFilters: IOptionWatchlistFilters = {
 	symbols: [],
 	type: [],
 	status: [],
@@ -31,7 +34,11 @@ const initialFilters: IOptionWatchlistFilters = {
 const Form = () => {
 	const t = useTranslations();
 
-	const [filters, setFilters] = useState<IOptionWatchlistFilters>(initialFilters);
+	const dispatch = useAppDispatch();
+
+	const initialModalFilters = useAppSelector(getOptionFiltersModal);
+
+	const [filters, setFilters] = useState<IOptionWatchlistFilters>({ ...initialFilters, ...initialModalFilters });
 
 	const setFilterValue = <T extends keyof IOptionWatchlistFilters>(field: T, value: IOptionWatchlistFilters[T]) => {
 		setFilters((prev) => ({
@@ -40,11 +47,7 @@ const Form = () => {
 		}));
 	};
 
-	const onSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-	};
-
-	const clear = () => {
+	const onClear = () => {
 		setFilters(initialFilters);
 	};
 
@@ -53,6 +56,22 @@ const Form = () => {
 			'symbols',
 			filters.symbols.filter((_, index) => index !== deleteIndex),
 		);
+	};
+
+	const onClose = () => {
+		dispatch(toggleOptionFiltersModal(false));
+	};
+
+	const onSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+
+		try {
+			ipcMain.send('set_option_watchlist_filters', filters);
+		} catch (e) {
+			//
+		} finally {
+			onClose();
+		}
 	};
 
 	const displayableSymbols = useMemo(() => {
@@ -94,46 +113,33 @@ const Form = () => {
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
-							{t('option_watchlist_filters_modal.status')}:
-						</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.status')}:</span>
 						<InputWrapper>
 							<StatusInput value={filters.status} onChange={(value) => setFilterValue('status', value)} />
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
-							{t('option_watchlist_filters_modal.end_date')}:
-						</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.end_date')}:</span>
 						<InputWrapper>
 							<EndDateInput value={filters.endDate} onChange={(value) => setFilterValue('endDate', value)} />
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
-							{t('option_watchlist_filters_modal.contract_size')}:
-						</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.contract_size')}:</span>
 						<InputWrapper>
 							<ContractSizeInput value={filters.contractSize} onChange={(value) => setFilterValue('contractSize', value)} />
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
-							{t('option_watchlist_filters_modal.delta')}:
-						</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.delta')}:</span>
 						<InputWrapper>
 							<DeltaInput value={filters.delta} onChange={(value) => setFilterValue('delta', value)} />
 						</InputWrapper>
 					</li>
 					<li className='flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
-							{t('option_watchlist_filters_modal.minimum_trades_value')}:
-						</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.minimum_trades_value')}:</span>
 						<InputWrapper>
-							<MinimumTradesValueInput
-								value={filters.minimumTradesValue}
-								onChange={(value) => setFilterValue('minimumTradesValue', value)}
-							/>
+							<MinimumTradesValueInput value={filters.minimumTradesValue} onChange={(value) => setFilterValue('minimumTradesValue', value)} />
 						</InputWrapper>
 					</li>
 				</ul>
@@ -142,7 +148,7 @@ const Form = () => {
 			<div className='flex-justify-between'>
 				<button
 					disabled={clearButtonIsDisabled}
-					onClick={clear}
+					onClick={onClear}
 					type='reset'
 					className={clsx('h-40 rounded font-medium', clearButtonIsDisabled ? 'text-gray-300' : 'text-secondary-300')}
 				>

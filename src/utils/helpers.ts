@@ -1,5 +1,7 @@
 import Num2Persian from '@/classes/NumToPersian';
 import dayjs from '@/libs/dayjs';
+import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
+import { type AxiosError } from 'axios';
 
 export const sepNumbers = (num: string): string => {
 	let result = num;
@@ -123,4 +125,11 @@ export const passwordValidation = (password: string) => {
 
 export const base64encode = (value: string) => {
 	return btoa(value);
+};
+
+export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
+	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
+	queryClient?: QueryClient,
+) => {
+	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, queryClient);
 };
