@@ -20,10 +20,10 @@ const TypeInput = ({ value, onChange }: TypeInputProps) => {
 
 	return (
 		<div className='flex-1 gap-8 flex-justify-end *:h-40 *:flex-1 *:rounded *:font-medium'>
-			<button onClick={() => onChangeValue('buy')} className={clsx(isBuy ? 'btn-primary' : 'btn-primary-outline')}>
+			<button onClick={() => onChangeValue('buy')} className={clsx(isBuy ? 'btn-choose' : 'btn-choose-outline')}>
 				{t('side.buy')}
 			</button>
-			<button onClick={() => onChangeValue('sell')} className={clsx(isSell ? 'btn-primary' : 'btn-primary-outline')}>
+			<button onClick={() => onChangeValue('sell')} className={clsx(isSell ? 'btn-choose' : 'btn-choose-outline')}>
 				{t('side.sell')}
 			</button>
 		</div>
