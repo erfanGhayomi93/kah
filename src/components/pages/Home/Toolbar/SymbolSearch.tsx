@@ -2,12 +2,7 @@ import { SearchSVG, XSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 
-interface BaseSymbolInputProps {
-	values: string[];
-	onChange: (values: IOptionWatchlistFilters['symbols']) => void;
-}
-
-const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
+const SymbolSearch = () => {
 	const t = useTranslations();
 
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -20,7 +15,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	};
 
 	return (
-		<div className='input-group h-40 flex-1 rounded border border-gray-400 flex-items-center'>
+		<div style={{ maxWidth: '40rem' }} className='input-group h-40 flex-1 rounded border border-gray-400 flex-items-center'>
 			<span className='px-8 text-gray-100'>
 				<SearchSVG />
 			</span>
@@ -44,16 +39,8 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					<XSVG width='0.8rem' height='0.8rem' />
 				</button>
 			)}
-
-			{values.length > 0 && (
-				<div className='h-24 w-40 border-r border-r-gray-400 text-tiny text-gray-200 flex-justify-center'>
-					<span style={{ paddingTop: '2px' }} className='size-24 rounded-circle bg-primary-200 text-white flex-justify-center'>
-						{values.length}
-					</span>
-				</div>
-			)}
 		</div>
 	);
 };
 
-export default BaseSymbolInput;
+export default SymbolSearch;
