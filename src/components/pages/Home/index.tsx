@@ -12,15 +12,11 @@ const Main = styled.main`
 	min-height: calc(100% - 10.8rem);
 `;
 
-interface HomeProps {
-	data: Option.Root[];
-}
-
-const Home = ({ data }: HomeProps) => {
+const Home = () => {
 	return (
 		<Main>
 			<Toolbar />
-			<Table data={data} />
+			<Table />
 		</Main>
 	);
 };

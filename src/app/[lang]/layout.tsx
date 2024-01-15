@@ -1,6 +1,7 @@
 import '@/assets/styles/app.scss';
 import '@/assets/styles/libs.scss';
 import NextIntlClientRegistry from '@/components/common/NextIntlClientRegistry';
+import QueryClientRegistry from '@/components/common/QueryClientRegistry';
 import ReduxToolkitRegistry from '@/components/common/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/StyledComponentsRegistry';
 import Wrapper from '@/components/layout/Wrapper';
@@ -21,10 +22,12 @@ const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) 
 			<NextIntlClientRegistry>
 				<body>
 					<StyledComponentsRegistry>
-						<ReduxToolkitRegistry>
-							<Wrapper>{children}</Wrapper>
-							<Modals />
-						</ReduxToolkitRegistry>
+						<QueryClientRegistry>
+							<ReduxToolkitRegistry>
+								<Wrapper>{children}</Wrapper>
+								<Modals />
+							</ReduxToolkitRegistry>
+						</QueryClientRegistry>
 					</StyledComponentsRegistry>
 
 					<div id='__tooltip' />

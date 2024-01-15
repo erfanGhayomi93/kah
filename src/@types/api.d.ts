@@ -200,6 +200,10 @@ declare namespace Option {
 		 */
 		notionalValue: number;
 		/**
+		 * O/I TM
+		 */
+		iotm: 'atm' | 'otm' | 'itm';
+		/**
 		 * ارزش ذاتی
 		 */
 		intrinsicValue: number;
@@ -207,6 +211,10 @@ declare namespace Option {
 		 * ارزش معاملات
 		 */
 		tradeValue: number;
+		/**
+		 * حجم معاملات
+		 */
+		tradeVolume: number;
 	}
 }
 
