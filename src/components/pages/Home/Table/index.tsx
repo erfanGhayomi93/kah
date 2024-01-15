@@ -1,17 +1,34 @@
+import axios from '@/api/axios';
+import routes from '@/api/routes';
 import AgTable from '@/components/common/Tables/AgTable';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
 import NoData from './NoData';
 
-interface TableProps {
-	data: Option.Root[];
-}
+const Table = () => {
+	const cWatchlistRef = useRef<Option.Root[]>([]);
 
-const Table = ({ data }: TableProps) => {
-	const tableRef = useRef<GridApi<Option.Root>>(null);
+	const gridRef = useRef<GridApi<Option.Root>>(null);
+
+	const { data: watchlistData } = useQuery<Option.Root[]>({
+		queryKey: ['optionWatchlistQuery'],
+		queryFn: async () => {
+			try {
+				const response = await axios.get<ServerResponse<Option.Root[]>>(routes.option.Watchlist);
+				const { data } = response;
+
+				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+				return data.result;
+			} catch (e) {
+				return [];
+			}
+		},
+	});
 
 	const addSymbol = () => {
 		//
@@ -23,7 +40,7 @@ const Table = ({ data }: TableProps) => {
 				headerName: 'نماد',
 				colId: 'symbolTitle',
 				initialHide: false,
-				width: 144,
+				minWidth: 128,
 				pinned: 'right',
 				cellClass: 'justify-end',
 				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
@@ -32,6 +49,7 @@ const Table = ({ data }: TableProps) => {
 				headerName: 'ارزش معاملات',
 				colId: 'tradeValue',
 				initialHide: false,
+				minWidth: 112,
 				initialSort: 'asc',
 				valueGetter: ({ data }) => data!.optionWatchlistData.tradeValue,
 			},
@@ -39,72 +57,98 @@ const Table = ({ data }: TableProps) => {
 				headerName: 'آخرین قیمت',
 				colId: 'premium',
 				initialHide: false,
+				minWidth: 128,
 				valueGetter: ({ data }) => data!.optionWatchlistData.premium,
 			},
 			{
 				headerName: 'دلتا',
 				colId: 'delta',
 				initialHide: false,
+				minWidth: 56,
 				valueGetter: ({ data }) => data!.optionWatchlistData.delta,
 			},
 			{
 				headerName: 'آخرین قیمت پایه',
 				colId: 'baseSymbolPrice',
 				initialHide: false,
+				minWidth: 128,
 				valueGetter: ({ data }) => data!.optionWatchlistData.baseSymbolPrice,
 			},
 			{
 				headerName: 'سر به سر',
 				colId: 'breakEvenPoint',
 				initialHide: false,
+				minWidth: 96,
 				valueGetter: ({ data }) => data!.optionWatchlistData.breakEvenPoint,
 			},
 			{
 				headerName: 'اهرم',
 				colId: 'leverage',
 				initialHide: false,
+				minWidth: 64,
 				valueGetter: ({ data }) => data!.optionWatchlistData.leverage,
 			},
 			{
 				headerName: 'موقعیت‌های باز',
 				colId: 'openPositionCount',
 				initialHide: false,
+				minWidth: 120,
 				valueGetter: ({ data }) => data!.optionWatchlistData.openPositionCount,
 			},
 			{
-				headerName: 'نوسان پذیری ضمنی',
+				headerName: 'IV',
 				colId: 'impliedVolatility',
 				initialHide: false,
+				minWidth: 64,
 				valueGetter: ({ data }) => data!.optionWatchlistData.impliedVolatility,
+			},
+			{
+				headerName: 'وضعیت',
+				colId: 'iotm',
+				initialHide: false,
+				minWidth: 56,
+				valueGetter: ({ data }) => data!.optionWatchlistData.iotm,
 			},
 			{
 				headerName: 'بلک شولز',
 				colId: 'blackScholes',
-				initialHide: false,
+				initialHide: true,
+				minWidth: 144,
 				valueGetter: ({ data }) => data!.optionWatchlistData.blackScholes,
+			},
+			{
+				headerName: 'حجم',
+				colId: 'tradeVolume',
+				initialHide: false,
+				minWidth: 104,
+				valueGetter: ({ data }) => data!.optionWatchlistData.tradeVolume,
 			},
 			{
 				headerName: 'روز مانده',
 				colId: 'dueDays',
 				initialHide: false,
+				minWidth: 48,
 				valueGetter: ({ data }) => data!.symbolInfo.dueDays,
 			},
 			{
 				headerName: 'قیمت اعمال',
 				colId: 'strikePrice',
 				initialHide: false,
+				minWidth: 96,
 				valueGetter: ({ data }) => data!.symbolInfo.strikePrice,
 			},
 			{
 				headerName: 'بهترین خرید',
 				colId: 'bestBuyPrice',
 				initialHide: false,
+				minWidth: 96,
 				valueGetter: ({ data }) => data!.optionWatchlistData.bestBuyPrice,
 			},
 			{
 				headerName: 'بهترین فروش',
 				colId: 'bestBuyPrice',
 				initialHide: false,
+				minWidth: 96,
 				valueGetter: ({ data }) => data!.optionWatchlistData.bestSellPrice,
 			},
 			{
@@ -297,7 +341,8 @@ const Table = ({ data }: TableProps) => {
 				headerName: 'عملیات',
 				colId: 'action',
 				initialHide: false,
-				width: 80,
+				minWidth: 80,
+				maxWidth: 80,
 				pinned: 'left',
 				sortable: false,
 				cellRenderer: ActionColumn,
@@ -311,28 +356,68 @@ const Table = ({ data }: TableProps) => {
 			suppressMovable: true,
 			sortable: true,
 			resizable: false,
-			cellStyle: ({ column }) => ({
-				backgroundColor: column.getSort() ? 'rgba(0, 104, 137, 0.1)' : '',
-			}),
+			flex: 1,
 		}),
 		[],
 	);
 
-	const dataIsEmpty = !Array.isArray(data) || data.length === 0;
+	useEffect(() => {
+		const eGrid = gridRef.current;
+		if (!eGrid) return;
+
+		const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
+
+		eGrid.setGridOption('suppressHorizontalScroll', dataIsEmpty);
+
+		if (dataIsEmpty) {
+			eGrid.setGridOption('rowData', []);
+			cWatchlistRef.current = [];
+
+			return;
+		}
+
+		const transaction: Record<'add' | 'remove' | 'update', Option.Root[]> = {
+			add: [],
+			remove: [],
+			update: [],
+		};
+
+		const cWatchlistData = cWatchlistRef.current;
+		const length = Math.max(cWatchlistData.length, watchlistData.length);
+		for (let i = 0; i < length; i++) {
+			const newItem = watchlistData[i];
+			if (newItem) {
+				const matchingItem = cWatchlistData.find((item) => item.symbolInfo.symbolISIN === newItem.symbolInfo.symbolISIN);
+				if (matchingItem) transaction.update.push(newItem);
+				else transaction.add.push(newItem);
+			}
+
+			const oldItem = cWatchlistData[i];
+			if (oldItem) {
+				const matchingItem = watchlistData.find((item) => item.symbolInfo.symbolISIN === oldItem.symbolInfo.symbolISIN);
+				if (!matchingItem) transaction.remove.push(oldItem);
+			}
+		}
+
+		eGrid.applyTransactionAsync(transaction);
+		cWatchlistRef.current = watchlistData;
+	}, [watchlistData]);
+
+	const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
 
 	return (
 		<div
 			style={{
-				height: 'calc(100vh - 25.2rem)',
+				height: 'calc(100vh - 26rem)',
 				maxHeight: dataIsEmpty ? 'calc(100vh - 32rem)' : undefined,
 			}}
 			className='relative'
 		>
 			<AgTable
-				ref={tableRef}
+				ref={gridRef}
 				suppressHorizontalScroll={dataIsEmpty}
 				className={clsx('h-full', dataIsEmpty && 'overflow-hidden rounded border border-gray-500')}
-				rowData={data}
+				rowData={watchlistData ?? []}
 				columnDefs={COLUMNS}
 				defaultColDef={defaultColDef}
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}

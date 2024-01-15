@@ -3,16 +3,6 @@
 		transform: rotate(360deg);
 	}
 }
-@-webkit-keyframes spinner-border {
-	to {
-		transform: rotate(360deg);
-	}
-}
-@-moz-keyframes spinner-border {
-	to {
-		transform: rotate(360deg);
-	}
-}
 
 @keyframes left-to-right {
 	from {
@@ -37,5 +27,14 @@
 		transform: translateX(-100%);
 		-webkit-transform: translateX(-100%);
 		-moz-transform: translateX(-100%);
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 100%;
 	}
 }

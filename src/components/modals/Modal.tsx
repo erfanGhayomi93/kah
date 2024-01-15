@@ -58,7 +58,7 @@ const Modal = ({ portalElement, children, style, classes, size, top, onClose }: 
 	}, []);
 
 	return createPortal(
-		<div ref={rootRef} style={style?.root} className={clsx(styles.root, classes?.root)}>
+		<div ref={rootRef} style={{ ...style?.root, animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }} className={clsx(styles.root, classes?.root)}>
 			<div style={style?.container} className={clsx(styles.container, classes?.container)}>
 				<div ref={modalRef} style={{ top, ...style?.modal }} className={clsx(styles.modal, size && styles[size], classes?.modal)}>
 					{children}
