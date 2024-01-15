@@ -107,6 +107,18 @@ const Table = () => {
 				colId: 'iotm',
 				initialHide: false,
 				minWidth: 56,
+				cellClass: ({ value }) => {
+					switch (value.toLowerCase()) {
+						case 'atm':
+							return 'text-lg text-success-100';
+						case 'otm':
+							return 'text-lg text-error-100';
+						case 'itm':
+							return 'text-lg text-primary-100';
+						default:
+							return '';
+					}
+				},
 				valueGetter: ({ data }) => data!.optionWatchlistData.iotm,
 			},
 			{
@@ -142,6 +154,9 @@ const Table = () => {
 				colId: 'bestBuyPrice',
 				initialHide: false,
 				minWidth: 96,
+				cellStyle: {
+					backgroundColor: 'rgba(25, 135, 84, 0.1)',
+				},
 				valueGetter: ({ data }) => data!.optionWatchlistData.bestBuyPrice,
 			},
 			{
@@ -149,6 +164,9 @@ const Table = () => {
 				colId: 'bestBuyPrice',
 				initialHide: false,
 				minWidth: 96,
+				cellStyle: {
+					backgroundColor: 'rgba(220, 53, 69, 0.1)',
+				},
 				valueGetter: ({ data }) => data!.optionWatchlistData.bestSellPrice,
 			},
 			{
