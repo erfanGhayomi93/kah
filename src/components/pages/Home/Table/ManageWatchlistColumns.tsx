@@ -201,11 +201,7 @@ const ManageWatchlistColumns = () => {
 									onClick={() => setHide(categoryIndex, itemIndex, !item.hide)}
 									type='button'
 									key={item.id}
-									className={clsx(
-										item.hide
-											? 'bg-white text-gray-200 shadow-sm hover:bg-primary-200 hover:text-white'
-											: 'bg-primary-200 text-white hover:bg-primary-300',
-									)}
+									className={clsx(item.hide ? 'bg-white text-gray-200 shadow-sm hover:bg-primary-200 hover:text-white' : 'btn-choose')}
 								>
 									{item.title}
 								</Button>
