@@ -4,6 +4,6 @@ interface IOptionWatchlistFilters {
 	status: Array<'ITM' | 'OTM' | 'ATM'>;
 	endDate: [number | null, number | null];
 	contractSize: [number, number];
-	delta: [number, number];
+	delta: [string, string];
 	minimumTradesValue: number;
 }

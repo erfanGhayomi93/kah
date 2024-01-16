@@ -24,11 +24,11 @@ export const useOptionWatchlistQuery = createQuery<Option.Root[], ['optionWatchl
 
 			if (props.minimumTradesValue && props.minimumTradesValue >= 0) params.MinimumTradeValue = props.minimumTradesValue;
 
-			if (Array.isArray(props.symbols)) params.SymbolISINs = props.symbols;
+			if (Array.isArray(props.symbols) && props.symbols.length > 0) params.SymbolISINs = props.symbols;
 
-			if (Array.isArray(props.type)) params.OptionType = props.type;
+			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
 
-			if (Array.isArray(props.status)) params.IOTM = props.status;
+			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
 
 			if (props.endDate) {
 				if (props.endDate[0]) params.FromContractEndDate = new Date(props.endDate[0]).toISOString();
@@ -41,11 +41,30 @@ export const useOptionWatchlistQuery = createQuery<Option.Root[], ['optionWatchl
 			}
 
 			if (props.delta) {
-				if (props.delta[0] >= 0) params.FromDelta = props.delta[0];
-				if (props.delta[1] >= 0) params.ToDelta = props.delta[1];
+				const fromDelta = Number(props.delta[0]);
+				const toDelta = Number(props.delta[1]);
+
+				if (!isNaN(fromDelta)) params.FromDelta = fromDelta;
+				if (!isNaN(toDelta)) params.ToDelta = toDelta;
 			}
 
 			const response = await axios.get<ServerResponse<Option.Root[]>>(routes.option.Watchlist, { params });
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useOptionSymbolColumnsQuery = createQuery<Option.Root[], ['optionSymbolColumnsQuery']>({
+	queryKey: ['optionSymbolColumnsQuery'],
+	queryFn: async ({ queryKey }) => {
+		try {
+			const response = await axios.get<ServerResponse<Option.Root[]>>(routes.option.OptionSymbolColumns);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

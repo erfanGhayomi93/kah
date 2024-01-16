@@ -4,6 +4,6 @@ export interface IOptionFiltersModal {
 	initialStatus?: Array<'ITM' | 'OTM' | 'ATM'>;
 	initialEndDate?: [number | null, number | null];
 	initialContractSize?: [number, number];
-	initialDelta?: [number, number];
+	initialDelta?: [string, string];
 	initialMinimumTradesValue?: number;
 }
