@@ -1,19 +1,24 @@
-const baseUrl = 'https://ramandoauth-stage.ramandtech.com';
+const oauthUrl = 'https://ramandoauth-stage.ramandtech.com';
+const rlcUrl = 'https://marketdata-stage.ramandtech.com';
 
 const routes = {
 	option: {
-		Watchlist: 'https://marketdata-stage.ramandtech.com/kahkeshanoption/v1/Watchlist',
+		Watchlist: `${rlcUrl}/KahkeshanOption/v1/Watchlist`,
+		OptionSymbolSearch: `${rlcUrl}/KahkeshanOption/v1/OptionSymbolSearch`,
+		OptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/OptionSymbolColumns`,
+		ResetOptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/ResetOptionSymbolColumns`,
+		UpdateOptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/UpdateOptionSymbolColumns`,
 	},
 
 	authentication: {
-		LoginFirstStep: `${baseUrl}/OAuthAPI/v1/LoginFirstStep`,
-		ForgetPasswordFirstStep: `${baseUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
-		SignUp: `${baseUrl}/OAuthAPI/v1/SignUp`,
-		OtpLogin: `${baseUrl}/OAuthAPI/v1/OtpLogin`,
-		PasswordLogin: `${baseUrl}/OAuthAPI/v1/PasswordLogin`,
-		ChangePassword: `${baseUrl}/OAuthAPI/v1/ChangePassword`,
-		ValidateForgetPasswordOTP: `${baseUrl}/OAuthAPI/v1/ValidateForgetPasswordOTP`,
-		ChangeForgottenPassword: `${baseUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
+		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
+		ForgetPasswordFirstStep: `${oauthUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
+		SignUp: `${oauthUrl}/OAuthAPI/v1/SignUp`,
+		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
+		PasswordLogin: `${oauthUrl}/OAuthAPI/v1/PasswordLogin`,
+		ChangePassword: `${oauthUrl}/OAuthAPI/v1/ChangePassword`,
+		ValidateForgetPasswordOTP: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOTP`,
+		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
 	},
 };
 

@@ -62,11 +62,27 @@ export const numberFormatter = (value: number) => {
 	}
 };
 
-export const convertStringToNumber = (inputString: string): string => {
+export const convertStringToInteger = (inputString: string): string => {
 	const numbersArray = inputString.match(/\d/g);
 	const result = numbersArray ? numbersArray.join('') : '';
 
 	return result;
+};
+
+export const convertStringToDecimal = (inputString: string): number => {
+	const result = Number(inputString);
+	if (isNaN(result)) return 0;
+	return result;
+};
+
+export const ifIsNaN = (input: number, defaultValue: number): number => {
+	if (isNaN(input)) return defaultValue;
+	return input;
+};
+
+export const ifIsInfinity = (input: number, defaultValue: number): number => {
+	if (isNaN(input) || input === Infinity) return defaultValue;
+	return input;
 };
 
 export const getDateAsJalali = (value?: string | number | Date | null) => {

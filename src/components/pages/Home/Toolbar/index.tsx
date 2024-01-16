@@ -1,6 +1,7 @@
 import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleOptionFiltersModal } from '@/features/slices/modalSlice';
+import { useMemo } from 'react';
 import Actions from './Actions';
 import SymbolSearch from './SymbolSearch';
 import WatchlistList from './WatchlistList';
@@ -15,13 +16,13 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	const onShowFilters = () => {
 		const params: Partial<IOptionFiltersModal> = {};
 
-		params.initialSymbols = filters.symbols;
-		params.initialType = filters.type;
-		params.initialStatus = filters.status;
-		params.initialEndDate = filters.endDate;
-		params.initialContractSize = filters.contractSize;
-		params.initialDelta = filters.delta;
-		params.initialMinimumTradesValue = filters.minimumTradesValue;
+		if (filters.symbols) params.initialSymbols = filters.symbols;
+		if (filters.type) params.initialType = filters.type;
+		if (filters.status) params.initialStatus = filters.status;
+		if (filters.endDate) params.initialEndDate = filters.endDate;
+		if (filters.contractSize) params.initialContractSize = filters.contractSize;
+		if (filters.delta) params.initialDelta = filters.delta;
+		if (filters.minimumTradesValue) params.initialMinimumTradesValue = filters.minimumTradesValue;
 
 		dispatch(toggleOptionFiltersModal(params));
 	};
@@ -30,11 +31,40 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		//
 	};
 
+	const filtersCount = useMemo(() => {
+		let badgeCount = 0;
+
+		if (filters.minimumTradesValue && filters.minimumTradesValue >= 0) badgeCount++;
+
+		if (Array.isArray(filters.symbols) && filters.symbols.length > 0) badgeCount++;
+
+		if (Array.isArray(filters.type) && filters.type.length > 0) badgeCount++;
+
+		if (Array.isArray(filters.status) && filters.status.length > 0) badgeCount++;
+
+		if (filters.endDate) {
+			if (filters.endDate[0]) badgeCount++;
+			if (filters.endDate[1]) badgeCount++;
+		}
+
+		if (filters.contractSize) {
+			if (filters.contractSize[0] >= 0) badgeCount++;
+			if (filters.contractSize[1] >= 0) badgeCount++;
+		}
+
+		if (filters.delta) {
+			if (filters.delta[0] >= 0) badgeCount++;
+			if (filters.delta[1] >= 0) badgeCount++;
+		}
+
+		return badgeCount;
+	}, [JSON.stringify(filters ?? {})]);
+
 	return (
 		<div className='gap-16 flex-column'>
 			<div className='h-40 w-full flex-justify-between'>
 				<SymbolSearch />
-				<Actions onShowFilters={onShowFilters} onExportExcel={onExportExcel} />
+				<Actions filtersCount={filtersCount} onShowFilters={onShowFilters} onExportExcel={onExportExcel} />
 			</div>
 
 			<WatchlistList />

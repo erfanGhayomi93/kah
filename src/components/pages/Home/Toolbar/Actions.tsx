@@ -1,11 +1,24 @@
 import { ExcelSVG, FilterSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleManageOptionColumns } from '@/features/slices/uiSlice';
+import styled from 'styled-components';
 
 interface ActionsProps {
+	filtersCount: number;
 	onShowFilters: () => void;
 	onExportExcel: () => void;
 }
+
+const Badge = styled.span`
+	width: 2.4rem;
+	height: 2.4rem;
+	position: absolute;
+	border-radius: 50%;
+	font-size: 1.4rem;
+	padding-top: 0.3rem;
+	top: -1.4rem;
+	right: -0.8rem;
+`;
 
 const OptionWatchlistManagerSVG = () => (
 	<svg width='2.4rem' height='2.4rem' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -32,7 +45,7 @@ const OptionWatchlistManagerSVG = () => (
 	</svg>
 );
 
-const Actions = ({ onShowFilters, onExportExcel }: ActionsProps) => {
+const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) => {
 	const dispatch = useAppDispatch();
 
 	const manageTableHeaders = () => {
@@ -47,7 +60,8 @@ const Actions = ({ onShowFilters, onExportExcel }: ActionsProps) => {
 				</button>
 			</li>
 			<li>
-				<button onClick={onShowFilters} className='size-40 rounded border border-gray-300 flex-justify-center' type='button'>
+				<button onClick={onShowFilters} className='relative size-40 rounded border border-gray-300 flex-justify-center' type='button'>
+					{filtersCount > 0 && <Badge className='bg-primary-300 text-white'>{filtersCount}</Badge>}
 					<FilterSVG />
 				</button>
 			</li>
