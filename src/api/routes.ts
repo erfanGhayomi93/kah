@@ -3,6 +3,7 @@ const baseUrl = 'https://ramandoauth-stage.ramandtech.com';
 const routes = {
 	option: {
 		Watchlist: 'https://marketdata-stage.ramandtech.com/kahkeshanoption/v1/Watchlist',
+		OptionSymbolSearch: 'https://marketdata-stage.ramandtech.com/KahkeshanOption/v1/OptionSymbolSearch',
 	},
 
 	authentication: {

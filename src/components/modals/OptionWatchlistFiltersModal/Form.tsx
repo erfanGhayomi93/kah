@@ -1,3 +1,4 @@
+import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import ipcMain from '@/classes/IpcMain';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -36,9 +37,17 @@ const Form = () => {
 
 	const dispatch = useAppDispatch();
 
-	const initialModalFilters = useAppSelector(getOptionFiltersModal);
+	const initialModalFilters = useAppSelector(getOptionFiltersModal) as Partial<IOptionFiltersModal>;
 
-	const [filters, setFilters] = useState<IOptionWatchlistFilters>({ ...initialFilters, ...initialModalFilters });
+	const [filters, setFilters] = useState<IOptionWatchlistFilters>({
+		symbols: initialModalFilters.initialSymbols ?? initialFilters.symbols,
+		type: initialModalFilters.initialType ?? initialFilters.type,
+		status: initialModalFilters.initialStatus ?? initialFilters.status,
+		endDate: initialModalFilters.initialEndDate ?? initialFilters.endDate,
+		contractSize: initialModalFilters.initialContractSize ?? initialFilters.contractSize,
+		delta: initialModalFilters.initialDelta ?? initialFilters.delta,
+		minimumTradesValue: initialModalFilters.initialMinimumTradesValue ?? initialFilters.minimumTradesValue,
+	});
 
 	const setFilterValue = <T extends keyof IOptionWatchlistFilters>(field: T, value: IOptionWatchlistFilters[T]) => {
 		setFilters((prev) => ({

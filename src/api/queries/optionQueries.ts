@@ -24,11 +24,11 @@ export const useOptionWatchlistQuery = createQuery<Option.Root[], ['optionWatchl
 
 			if (props.minimumTradesValue && props.minimumTradesValue >= 0) params.MinimumTradeValue = props.minimumTradesValue;
 
-			if (Array.isArray(props.symbols)) params.SymbolISINs = props.symbols;
+			if (Array.isArray(props.symbols) && props.symbols.length > 0) params.SymbolISINs = props.symbols;
 
-			if (Array.isArray(props.type)) params.OptionType = props.type;
+			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
 
-			if (Array.isArray(props.status)) params.IOTM = props.status;
+			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
 
 			if (props.endDate) {
 				if (props.endDate[0]) params.FromContractEndDate = new Date(props.endDate[0]).toISOString();
