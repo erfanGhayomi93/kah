@@ -62,18 +62,9 @@ export const numberFormatter = (value: number) => {
 	}
 };
 
-export const convertStringToInteger = (inputString: string): string => {
-	const numbersArray = inputString.match(/\d/g);
-	const result = numbersArray ? numbersArray.join('') : '';
+export const convertStringToInteger = (inputString: string): string => inputString.replace(/[^\d]/g, '');
 
-	return result;
-};
-
-export const convertStringToDecimal = (inputString: string): number => {
-	const result = Number(inputString);
-	if (isNaN(result)) return 0;
-	return result;
-};
+export const convertStringToDecimal = (inputString: string): string => inputString.replace(/[^0-9.]/g, '');
 
 export const ifIsNaN = (input: number, defaultValue: number): number => {
 	if (isNaN(input)) return defaultValue;
