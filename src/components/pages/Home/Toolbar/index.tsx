@@ -53,8 +53,11 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		}
 
 		if (filters.delta) {
-			if (filters.delta[0] >= 0) badgeCount++;
-			if (filters.delta[1] >= 0) badgeCount++;
+			const fromDelta = filters.delta[0];
+			const toDelta = filters.delta[1];
+
+			if (fromDelta && !isNaN(Number(fromDelta))) badgeCount++;
+			if (toDelta && !isNaN(Number(toDelta))) badgeCount++;
 		}
 
 		return badgeCount;
