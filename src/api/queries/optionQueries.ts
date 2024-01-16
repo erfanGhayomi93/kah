@@ -44,8 +44,8 @@ export const useOptionWatchlistQuery = createQuery<Option.Root[], ['optionWatchl
 				const fromDelta = Number(props.delta[0]);
 				const toDelta = Number(props.delta[1]);
 
-				if (!isNaN(fromDelta)) params.FromDelta = fromDelta;
-				if (!isNaN(toDelta)) params.ToDelta = toDelta;
+				if (fromDelta && !isNaN(fromDelta)) params.FromDelta = fromDelta;
+				if (fromDelta && !isNaN(toDelta)) params.ToDelta = toDelta;
 			}
 
 			const response = await axios.get<ServerResponse<Option.Root[]>>(routes.option.Watchlist, { params });
