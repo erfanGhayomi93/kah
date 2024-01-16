@@ -9,8 +9,8 @@ import Toolbar from './Toolbar';
 const Main = styled.main`
 	display: flex;
 	flex-direction: column;
-	padding: 2.4rem 3.2rem 0 3.2rem;
-	gap: 2.4rem;
+	padding: 1.6rem 3.2rem 0 3.2rem;
+	gap: 1.6rem;
 	min-height: calc(100% - 10.8rem);
 `;
 

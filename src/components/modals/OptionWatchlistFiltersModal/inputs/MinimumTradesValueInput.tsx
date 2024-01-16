@@ -1,4 +1,4 @@
-import { convertStringToNumber, sepNumbers, tomanToRial } from '@/utils/helpers';
+import { convertStringToInteger, sepNumbers, tomanToRial } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
 interface MinimumTradesValueInputProps {
@@ -23,7 +23,7 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 					maxLength={12}
 					className='h-40 flex-1 rounded px-8 text-left text-gray-100 ltr'
 					value={valueFormatter(value)}
-					onChange={(e) => onChange(Number(convertStringToNumber(e.target.value)))}
+					onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
 				/>
 				<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-200 flex-justify-center'>{t('common.rial')}</span>
 			</div>

@@ -28,7 +28,7 @@ export const initialFilters: IOptionWatchlistFilters = {
 	status: [],
 	endDate: [null, null],
 	contractSize: [-1, -1],
-	delta: [-1, -1],
+	delta: ['', ''],
 	minimumTradesValue: -1,
 };
 

@@ -10,12 +10,13 @@ interface ActionsProps {
 }
 
 const Badge = styled.span`
-	width: 1.6rem;
-	height: 1.6rem;
+	width: 2.4rem;
+	height: 2.4rem;
 	position: absolute;
 	border-radius: 50%;
-	font-size: 1rem;
-	top: -0.8rem;
+	font-size: 1.4rem;
+	padding-top: 0.3rem;
+	top: -1.4rem;
 	right: -0.8rem;
 `;
 
