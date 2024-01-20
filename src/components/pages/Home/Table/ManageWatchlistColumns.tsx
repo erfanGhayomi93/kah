@@ -1,3 +1,4 @@
+import { useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
@@ -51,43 +52,105 @@ const ManageWatchlistColumns = () => {
 
 	const isEnable = useAppSelector(getManageOptionColumns);
 
-	const initialData = useMemo<Array<{ id: string; title: string; items: Array<{ id: string; title: string; hide: boolean }> }>>(
+	const initialData = useMemo<
+		Array<{ id: string; title: string; items: Array<{ id: string; title: string; hide: boolean }> }>
+	>(
 		() => [
 			{
 				id: 'symbol_info',
 				title: t('manage_option_watchlist_columns.symbol_info'),
 				items: [
 					{ id: 'column_symbol', title: t('manage_option_watchlist_columns.column_symbol'), hide: true },
-					{ id: 'column_days_left', title: t('manage_option_watchlist_columns.column_days_left'), hide: false },
-					{ id: 'column_price_applied', title: t('manage_option_watchlist_columns.column_price_applied'), hide: true },
-					{ id: 'column_option_full_name', title: t('manage_option_watchlist_columns.column_option_full_name'), hide: false },
-					{ id: 'column_base_name', title: t('manage_option_watchlist_columns.column_base_name'), hide: true },
-					{ id: 'column_contract_size', title: t('manage_option_watchlist_columns.column_contract_size'), hide: true },
+					{
+						id: 'column_days_left',
+						title: t('manage_option_watchlist_columns.column_days_left'),
+						hide: false,
+					},
+					{
+						id: 'column_price_applied',
+						title: t('manage_option_watchlist_columns.column_price_applied'),
+						hide: true,
+					},
+					{
+						id: 'column_option_full_name',
+						title: t('manage_option_watchlist_columns.column_option_full_name'),
+						hide: false,
+					},
+					{
+						id: 'column_base_name',
+						title: t('manage_option_watchlist_columns.column_base_name'),
+						hide: true,
+					},
+					{
+						id: 'column_contract_size',
+						title: t('manage_option_watchlist_columns.column_contract_size'),
+						hide: true,
+					},
 					{
 						id: 'column_total_trades_number',
 						title: t('manage_option_watchlist_columns.column_total_trades_number'),
 						hide: true,
 					},
 					{ id: 'column_due_date', title: t('manage_option_watchlist_columns.column_due_date'), hide: true },
-					{ id: 'column_option_type', title: t('manage_option_watchlist_columns.column_option_type'), hide: false },
-					{ id: 'column_initial_margin', title: t('manage_option_watchlist_columns.column_initial_margin'), hide: false },
-					{ id: 'column_required_margin', title: t('manage_option_watchlist_columns.column_required_margin'), hide: false },
+					{
+						id: 'column_option_type',
+						title: t('manage_option_watchlist_columns.column_option_type'),
+						hide: false,
+					},
+					{
+						id: 'column_initial_margin',
+						title: t('manage_option_watchlist_columns.column_initial_margin'),
+						hide: false,
+					},
+					{
+						id: 'column_required_margin',
+						title: t('manage_option_watchlist_columns.column_required_margin'),
+						hide: false,
+					},
 				],
 			},
 			{
 				id: 'table_details',
 				title: t('manage_option_watchlist_columns.table_details'),
 				items: [
-					{ id: 'column_total_trades_value', title: t('manage_option_watchlist_columns.column_total_trades_value'), hide: true },
-					{ id: 'column_last_price', title: t('manage_option_watchlist_columns.column_last_price'), hide: true },
-					{ id: 'column_last_base_price', title: t('manage_option_watchlist_columns.column_last_base_price'), hide: false },
-					{ id: 'column_final_base_price', title: t('manage_option_watchlist_columns.column_final_base_price'), hide: false },
+					{
+						id: 'column_total_trades_value',
+						title: t('manage_option_watchlist_columns.column_total_trades_value'),
+						hide: true,
+					},
+					{
+						id: 'column_last_price',
+						title: t('manage_option_watchlist_columns.column_last_price'),
+						hide: true,
+					},
+					{
+						id: 'column_last_base_price',
+						title: t('manage_option_watchlist_columns.column_last_base_price'),
+						hide: false,
+					},
+					{
+						id: 'column_final_base_price',
+						title: t('manage_option_watchlist_columns.column_final_base_price'),
+						hide: false,
+					},
 					{ id: 'column_status', title: t('manage_option_watchlist_columns.column_status'), hide: true },
-					{ id: 'column_open_positions', title: t('manage_option_watchlist_columns.column_open_positions'), hide: true },
+					{
+						id: 'column_open_positions',
+						title: t('manage_option_watchlist_columns.column_open_positions'),
+						hide: true,
+					},
 					{ id: 'column_volume', title: t('manage_option_watchlist_columns.column_volume'), hide: true },
 					{ id: 'column_best_buy', title: t('manage_option_watchlist_columns.column_best_buy'), hide: false },
-					{ id: 'column_better_sell', title: t('manage_option_watchlist_columns.column_better_sell'), hide: true },
-					{ id: 'column_final_price', title: t('manage_option_watchlist_columns.column_final_price'), hide: true },
+					{
+						id: 'column_better_sell',
+						title: t('manage_option_watchlist_columns.column_better_sell'),
+						hide: true,
+					},
+					{
+						id: 'column_final_price',
+						title: t('manage_option_watchlist_columns.column_final_price'),
+						hide: true,
+					},
 					{ id: 'column_gap', title: t('manage_option_watchlist_columns.column_gap'), hide: true },
 				],
 			},
@@ -98,9 +161,17 @@ const ManageWatchlistColumns = () => {
 					{ id: 'column_delta', title: t('manage_option_watchlist_columns.column_delta'), hide: true },
 					{ id: 'column_iv', title: t('manage_option_watchlist_columns.column_iv'), hide: false },
 					{ id: 'column_lever', title: t('manage_option_watchlist_columns.column_lever'), hide: true },
-					{ id: 'column_black_shoals', title: t('manage_option_watchlist_columns.column_black_shoals'), hide: true },
+					{
+						id: 'column_black_shoals',
+						title: t('manage_option_watchlist_columns.column_black_shoals'),
+						hide: true,
+					},
 					{ id: 'column_hv', title: t('manage_option_watchlist_columns.column_hv'), hide: false },
-					{ id: 'column_time_value', title: t('manage_option_watchlist_columns.column_time_value'), hide: true },
+					{
+						id: 'column_time_value',
+						title: t('manage_option_watchlist_columns.column_time_value'),
+						hide: true,
+					},
 					{ id: 'column_theta', title: t('manage_option_watchlist_columns.column_theta'), hide: false },
 					{
 						id: 'column_black_shoals_discrepancy',
@@ -110,7 +181,11 @@ const ManageWatchlistColumns = () => {
 					{ id: 'column_gamma', title: t('manage_option_watchlist_columns.column_gamma'), hide: true },
 					{ id: 'column_face', title: t('manage_option_watchlist_columns.column_face'), hide: false },
 					{ id: 'column_vega', title: t('manage_option_watchlist_columns.column_vega'), hide: true },
-					{ id: 'column_break_even_price', title: t('manage_option_watchlist_columns.column_break_even_price'), hide: false },
+					{
+						id: 'column_break_even_price',
+						title: t('manage_option_watchlist_columns.column_break_even_price'),
+						hide: false,
+					},
 				],
 			},
 		],
@@ -120,6 +195,11 @@ const ManageWatchlistColumns = () => {
 	const [rendered, setRendered] = useState(isEnable);
 
 	const [columns, setColumns] = useState(initialData);
+
+	const { data } = useOptionSymbolColumnsQuery({
+		queryKey: ['optionSymbolColumnsQuery'],
+		enabled: rendered,
+	});
 
 	const onClose = () => {
 		abort();
@@ -171,10 +251,13 @@ const ManageWatchlistColumns = () => {
 		else setRendered(true);
 	}, [isEnable]);
 
-	if (!rendered) return;
+	if (!rendered) return null;
 
 	return (
-		<Wrapper ref={wrapperRef} className={clsx('overflow-auto bg-white', isEnable ? 'left-to-right' : 'right-to-left')}>
+		<Wrapper
+			ref={wrapperRef}
+			className={clsx('overflow-auto bg-white', isEnable ? 'left-to-right' : 'right-to-left')}
+		>
 			<div className='sticky top-0 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
@@ -192,7 +275,10 @@ const ManageWatchlistColumns = () => {
 
 			<div className='gap-16 px-32 flex-column'>
 				{columns.map((category, categoryIndex) => (
-					<div key={category.id} className={clsx('gap-16 pb-16 flex-column', categoryIndex < 2 && 'border-b border-b-gray-400')}>
+					<div
+						key={category.id}
+						className={clsx('gap-16 pb-16 flex-column', categoryIndex < 2 && 'border-b border-b-gray-400')}
+					>
 						<h2 className='text-lg font-medium text-gray-100'>{category.title}</h2>
 
 						<div className='flex-wrap gap-16 flex-justify-between'>
@@ -201,7 +287,11 @@ const ManageWatchlistColumns = () => {
 									onClick={() => setHide(categoryIndex, itemIndex, !item.hide)}
 									type='button'
 									key={item.id}
-									className={clsx(item.hide ? 'bg-white text-gray-200 shadow-sm hover:bg-primary-200 hover:text-white' : 'btn-choose')}
+									className={clsx(
+										item.hide
+											? 'bg-white text-gray-200 shadow-sm hover:bg-primary-200 hover:text-white'
+											: 'btn-choose',
+									)}
 								>
 									{item.title}
 								</Button>

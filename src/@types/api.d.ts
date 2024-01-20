@@ -216,6 +216,12 @@ declare namespace Option {
 		 */
 		tradeVolume: number;
 	}
+
+	export interface SymbolSearch {
+		symbolTitle: string;
+		symbolISIN: string;
+		insCode: string;
+	}
 }
 
 declare namespace OAuthAPI {
@@ -240,6 +246,11 @@ declare namespace OAuthAPI {
 	}
 
 	declare interface ISignUp {
+		message: string;
+		token: string | null;
+	}
+
+	declare interface IOtpLogin {
 		message: string;
 		token: string | null;
 	}

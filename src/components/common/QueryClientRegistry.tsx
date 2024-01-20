@@ -8,7 +8,17 @@ interface IQueryClientRegistryProps {
 }
 
 export const QueryClientRegistry = ({ children }: IQueryClientRegistryProps) => {
-	const [queryClient] = useState(() => new QueryClient());
+	const [queryClient] = useState(
+		() =>
+			new QueryClient({
+				defaultOptions: {
+					queries: {
+						refetchOnWindowFocus: false,
+						retry: false,
+					},
+				},
+			}),
+	);
 
 	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
