@@ -75,7 +75,10 @@ Production-Job01:
     - pwd
     - pm2 start npm --name "kahkeshan" -- run preview & pm2 save --force
     - sudo systemctl restart nginx
-    - sudo rm -rf $( ls /etc/kahkeshan-ui --time=creation | tail -n1 )
+    - cd ../
+    - ls -tr | head -n1 | xargs zip 1.zip
+    - mv 1.zip /etc/kahkeshan-backups/
+    - rm -rf $(ls -tr | head -n1)
 
   tags:
     - Runner-KahkeshanUI01
