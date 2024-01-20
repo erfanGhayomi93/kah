@@ -9,7 +9,9 @@
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
-		"to": "تا"
+		"to": "تا",
+		"close": "بستن",
+		"searching": "در حال جستجو"
 	},
 	"side": {
 		"buy": "خرید",
@@ -53,7 +55,9 @@
 		"status_itm": "ITM",
 		"status_otm": "OTM",
 		"status_atm": "ATM",
-		"minimum_trades_value": "حداقل ارزش معاملات"
+		"minimum_trades_value": "حداقل ارزش معاملات",
+		"symbol_not_found": "نماد مورد نظر یافت نشد",
+		"delete_selected_symbols": "حذف همه"
 	},
 	"manage_option_watchlist_columns": {
 		"title": "مدیریت ستون های جدول",

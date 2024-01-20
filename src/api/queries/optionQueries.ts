@@ -15,16 +15,21 @@ interface IOptionWatchlistQuery {
 	IOTM: Array<'ATM' | 'OTM' | 'ITM'>;
 }
 
-export const useOptionWatchlistQuery = createQuery<Option.Root[], ['optionWatchlistQuery', Partial<IOptionWatchlistFilters>]>({
+export const useOptionWatchlistQuery = createQuery<
+	Option.Root[],
+	['optionWatchlistQuery', Partial<IOptionWatchlistFilters>]
+>({
 	queryKey: ['optionWatchlistQuery', {}],
 	queryFn: async ({ queryKey }) => {
 		const [, props] = queryKey;
 		try {
 			const params: Partial<IOptionWatchlistQuery> = {};
 
-			if (props.minimumTradesValue && props.minimumTradesValue >= 0) params.MinimumTradeValue = props.minimumTradesValue;
+			if (props.minimumTradesValue && props.minimumTradesValue >= 0)
+				params.MinimumTradeValue = props.minimumTradesValue;
 
-			if (Array.isArray(props.symbols) && props.symbols.length > 0) params.SymbolISINs = props.symbols;
+			if (Array.isArray(props.symbols) && props.symbols.length > 0)
+				params.SymbolISINs = props.symbols.map((item) => item.symbolISIN);
 
 			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
 
@@ -61,10 +66,32 @@ export const useOptionWatchlistQuery = createQuery<Option.Root[], ['optionWatchl
 });
 
 export const useOptionSymbolColumnsQuery = createQuery<Option.Root[], ['optionSymbolColumnsQuery']>({
+	staleTime: 3e4,
 	queryKey: ['optionSymbolColumnsQuery'],
-	queryFn: async ({ queryKey }) => {
+	queryFn: async () => {
 		try {
 			const response = await axios.get<ServerResponse<Option.Root[]>>(routes.option.OptionSymbolColumns);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useOptionSymbolSearchQuery = createQuery<Option.SymbolSearch[], ['optionSymbolSearchQuery', string]>({
+	staleTime: 18e5,
+	queryKey: ['optionSymbolSearchQuery', ''],
+	queryFn: async ({ queryKey }) => {
+		try {
+			const [, term] = queryKey;
+
+			const response = await axios.get<ServerResponse<Option.SymbolSearch[]>>(routes.option.OptionSymbolSearch, {
+				params: { term },
+			});
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
