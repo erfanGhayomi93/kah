@@ -87,4 +87,7 @@ Production-Job01:
   artifacts:
   rules:
     - if: $CI_COMMIT_BRANCH == "Production"
+#on_failure:
+  #script:
+
 
