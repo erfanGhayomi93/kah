@@ -3,6 +3,7 @@ import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
 import Captcha from '@/components/common/Inputs/Captcha';
+import { setCookie } from '@/utils/cookie';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -35,7 +36,7 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 		if (!loginResult) return;
 
 		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.IValidateForgetPasswordOTP>>(
+			const response = await axios.post<ServerResponse<OAuthAPI.IOtpLogin>>(
 				loginResult.state === 'OTP' ? routes.authentication.OtpLogin : routes.authentication.SignUp,
 				{
 					otp,
@@ -44,7 +45,10 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 			);
 			const { data } = response;
 
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+			if (response.status !== 200 || !data.succeeded || !data.result.token)
+				throw new Error(data.errors?.[0] ?? '');
+
+			setCookie('client_id', data.result.token);
 
 			goToWelcome();
 		} catch (e) {
@@ -72,7 +76,11 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 	const hasCaptcha = false;
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}>
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			method='get'
+			className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}
+		>
 			<Controller
 				defaultValue=''
 				control={control}

@@ -190,6 +190,10 @@ const config: Config = {
 					'align-items': 'center',
 				},
 
+				'.dropdown': {
+					border: `1.5px solid ${theme('colors.primary.200')}`,
+				},
+
 				'.btn-primary': {
 					display: 'flex',
 					'align-items': 'center',
