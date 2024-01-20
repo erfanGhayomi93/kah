@@ -61,7 +61,7 @@ Production-Job01:
     #- npm run build
     #- pm2 delete kahkeshan
     - pm2 list
-    - sudo -S rm -rf /etc/kahkeshan-ui/*
+    - sudo rm -rf /etc/kahkeshan-ui/*
     - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/next.config.js /etc/kahkeshan-ui/
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/node_modules /etc/kahkeshan-ui/
     - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/Package.json /etc/kahkeshan-ui/
