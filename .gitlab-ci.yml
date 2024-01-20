@@ -64,7 +64,7 @@ Production-Job01:
     - sudo ls | sudo  sort -r | sudo head -n 1 > 1
     - pm2 delete kahkeshan && pm2 save --force
     - pm2 list
-    - sudo rm -rf /etc/kahkeshan-ui/*
+    #- sudo rm -rf /etc/kahkeshan-ui/*
     - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js /etc/kahkeshan-ui/$1
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/node_modules /etc/kahkeshan-ui/$1
     - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json /etc/kahkeshan-ui/$1
