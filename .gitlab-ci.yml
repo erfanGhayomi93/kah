@@ -59,18 +59,18 @@ Production-Job01:
   script: 
     - npm install
     - npm run build
-    #- pm2 delete 0
-    #- rm -rf /etc/kahkeshan-ui/*
-    # cp  /next.config.js
-    # cp -rf node_modules
-    # cp /Package.json 
-    # cp -rf public
-    # cp -rf /src
-    # cp /tsconfig.json
-    # cp /.env
-    # cp /.netx
-    # pm2 start 0 & pm2 --save
-    # systemctl restart nginx
+    - pm2 delete 0
+    - rm -rf /etc/kahkeshan-ui/*
+    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/next.config.js /etc/kahkeshan-ui/
+    - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/node_modules /etc/kahkeshan-ui/
+    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/Package.json /etc/kahkeshan-ui/
+    - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/public /etc/kahkeshan-ui/
+    - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/src /etc/kahkeshan-ui/
+    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/tsconfig.json /etc/kahkeshan-ui/
+    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.env /etc/kahkeshan-ui/
+    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.netx /etc/kahkeshan-ui/
+    - pm2 Preview 0 & pm2 --save
+    - systemctl restart nginx
 
   tags:
     - Runner-KahkeshanUI01
