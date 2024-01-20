@@ -77,8 +77,8 @@ Production-Job01:
     - sudo systemctl restart nginx
     - cd ../
     - ls -tr | head -n1 | xargs zip 1.zip
-    - mv 1.zip /etc/kahkeshan-backups/
-    - rm -rf $(ls -tr | head -n1)
+    - sudo mv 1.zip /etc/kahkeshan-backups/
+    - sudo rm -rf $(ls -tr | head -n1)
 
   tags:
     - Runner-KahkeshanUI01
