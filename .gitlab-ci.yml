@@ -61,7 +61,8 @@ Production-Job01:
     - npm run build
     - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo rm -rf !( $(ls -lt --time=creation | grep '^d' | head -n 5 | awk '{print $NF}') )
+    #- sudo rm -rf !( $(ls -lt --time=creation | grep '^d' | head -n 5 | awk '{print $NF}') )
+    - sudo bash -c 'rm -rf !( $(ls -lt --time=creation | grep "^d" | head -n 5 | awk "{print \$NF}") )'
     - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
     - pm2 delete kahkeshan && pm2 save --force
     
