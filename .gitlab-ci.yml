@@ -74,7 +74,7 @@ Production-Job01:
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
     - pm2 start npm --name "kahkeshan" -- run preview & pm2 save --force
     - sudo systemctl restart nginx
-    - sudo rm -rf $( ls --time=creation | tail -n1 )
+    - sudo rm -rf $( ls /etc/kahkeshan-ui --time=creation | tail -n1 )
 
   tags:
     - Runner-KahkeshanUI01
