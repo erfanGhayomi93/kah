@@ -70,7 +70,7 @@ Production-Job01:
     - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json /etc/kahkeshan-ui/
     - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env /etc/kahkeshan-ui/
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next /etc/kahkeshan-ui/
-    - pm2 start npm --name "kahkeshan" -- run preview & pm2 --save
+    - pm2 start npm --name "kahkeshan" -- run preview & pm2 save --force
     - systemctl restart nginx
 
   tags:
