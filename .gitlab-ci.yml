@@ -58,7 +58,7 @@ Production-Job01:
   stage: deploy
   script: 
     - npm install
-    - ($env:CI = "false") -and (npm run build)
+    - npm run build
     #- pm2 delete 0
     #- rm -rf /etc/kahkeshan-ui/*
     # cp  /next.config.js
