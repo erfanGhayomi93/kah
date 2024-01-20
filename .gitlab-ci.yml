@@ -61,17 +61,17 @@ Production-Job01:
     - npm run build
     #- pm2 delete kahkeshan
     - pm2 list
-    - rm -rf /etc/kahkeshan-ui/*
-    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/next.config.js /etc/kahkeshan-ui/
-    - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/node_modules /etc/kahkeshan-ui/
-    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/Package.json /etc/kahkeshan-ui/
-    - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/public /etc/kahkeshan-ui/
-    - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/src /etc/kahkeshan-ui/
-    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/tsconfig.json /etc/kahkeshan-ui/
-    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.env /etc/kahkeshan-ui/
-    - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.netx /etc/kahkeshan-ui/
-    - pm2 Preview kahkeshan & pm2 --save
-    - systemctl restart nginx
+    - sudo rm -rf /etc/kahkeshan-ui/*
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/next.config.js /etc/kahkeshan-ui/
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/node_modules /etc/kahkeshan-ui/
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/Package.json /etc/kahkeshan-ui/
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/public /etc/kahkeshan-ui/
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/src /etc/kahkeshan-ui/
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/tsconfig.json /etc/kahkeshan-ui/
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.env /etc/kahkeshan-ui/
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.netx /etc/kahkeshan-ui/
+    - sudo pm2 Preview kahkeshan & pm2 --save
+    - sudo systemctl restart nginx
 
   tags:
     - Runner-KahkeshanUI01
