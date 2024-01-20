@@ -53,3 +53,42 @@ stage-Job:
   artifacts:
   rules:
     - if: $CI_COMMIT_BRANCH == "Stage" 
+
+Production-Job01:
+  stage: deploy
+  script: 
+    - npm install
+    - npm run build
+    - cd /etc/kahkeshan-ui/
+    - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
+    - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
+    - pm2 delete kahkeshan && pm2 save --force
+    
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js .
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/node_modules .
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json .
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public .
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src .
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json .
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env .
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
+    - pwd
+    - pm2 start npm --name "kahkeshan" -- run preview & pm2 save --force
+    - sudo systemctl restart nginx
+    - cd ../
+    - ls -tr | head -n1 | xargs zip 1.zip
+    - sudo mv 1.zip /etc/kahkeshan-backups/
+    - sudo rm -rf $(ls -tr | head -n1)
+    - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
+    - sudo rm -rf /etc/kahkeshan-backups/1.zip
+    - sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
+
+  tags:
+    - Runner-KahkeshanUI01
+  artifacts:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "Production"
+#on_failure:
+  #script:
+
+
