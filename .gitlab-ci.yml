@@ -61,7 +61,6 @@ Production-Job01:
     - npm run build
     - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    #- ls -lt --time=creation | grep '^d' | tail -n 1 | awk '{print $NF}' | xargs rm -rf
     - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
     - pm2 delete kahkeshan && pm2 save --force
     
@@ -75,6 +74,7 @@ Production-Job01:
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
     - pm2 start npm --name "kahkeshan" -- run preview & pm2 save --force
     - sudo systemctl restart nginx
+    - ls -lt --time=creation | grep '^d' | tail -n 1 | awk '{print $NF}' | xargs rm -rf
 
   tags:
     - Runner-KahkeshanUI01
