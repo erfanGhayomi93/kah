@@ -79,7 +79,7 @@ Production-Job01:
     - ls -tr | head -n1 | xargs zip 1.zip
     - sudo mv 1.zip /etc/kahkeshan-backups/
     - sudo rm -rf $(ls -tr | head -n1)
-    - sudo unzip /etc/kahkeshan-backups/1.zip
+    - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
     - sudo rm -rf /etc/kahkeshan-backups/1.zip
 
   tags:
