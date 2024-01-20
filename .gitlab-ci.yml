@@ -59,7 +59,7 @@ Production-Job01:
   script: 
     - npm install
     - npm run build
-    - pm2 delete 0
+    - pm2 delete kahkeshan
     - rm -rf /etc/kahkeshan-ui/*
     - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/next.config.js /etc/kahkeshan-ui/
     - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/node_modules /etc/kahkeshan-ui/
@@ -69,7 +69,7 @@ Production-Job01:
     - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/tsconfig.json /etc/kahkeshan-ui/
     - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.env /etc/kahkeshan-ui/
     - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/.netx /etc/kahkeshan-ui/
-    - pm2 Preview 0 & pm2 --save
+    - pm2 Preview kahkeshan & pm2 --save
     - systemctl restart nginx
 
   tags:
