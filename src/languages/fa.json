@@ -27,11 +27,13 @@
 		"about_us": "درباره ما"
 	},
 	"login_modal": {
-		"title": "ورود به کهکشان",
+		"login_title": "ورود به کهکشان",
+		"register_title": "ثبت‌نام به کهکشان",
 		"resend_otp": "ارسال دوباره",
-		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.",
 		"welcome": "به کهکشان خوش آمدید!",
 		"set_password_btn": "تعیین رمز عبور",
+		"change_phone_number": "تغییر شماره همراه",
+		"user_not_found": "برای شماره موبایل وارد شده حساب کاربر یافت نشد. برای ایجاد حساب، کد تایید را وارد کنید.",
 		"set_password_description": "برای تجربه ی کاربری بهتر، می توانید رمز عبور تعیین کنید."
 	},
 	"forget_password_modal": {

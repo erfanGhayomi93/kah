@@ -16,11 +16,12 @@ interface Inputs {
 
 interface OTPFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
-	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 	goToWelcome: () => void;
+	goToPhoneNumber: () => void;
+	resendOTP: () => Promise<void>;
 }
 
-const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => {
+const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -30,7 +31,7 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? null);
+	const [seconds, setSeconds] = useState<number | null>(20);
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ otp, captcha }) => {
 		if (!loginResult) return;
@@ -65,7 +66,7 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 
 	const onResendOTP = () => {
 		setSeconds(null);
-		setTimeout(() => setSeconds(10), 2000);
+		resendOTP();
 	};
 
 	useEffect(() => {
@@ -119,16 +120,25 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome }: OTPFormProps) => 
 								)}
 							</div>
 						</div>
-						{seconds === -1 ? (
-							<div className='flex justify-between'>
-								<span className='i-error'>{t('login_modal.resend_otp_description')}</span>
+
+						<div className='flex justify-between'>
+							{seconds && seconds > -1 && isTouched && invalid && (
+								<span className='i-error'>{error?.message}</span>
+							)}
+
+							{seconds === -1 && (
 								<button onClick={onResendOTP} type='button' className='text-tiny text-link underline'>
 									{t('login_modal.resend_otp')}
 								</button>
-							</div>
-						) : (
-							isTouched && invalid && <span className='i-error'>{error?.message}</span>
-						)}
+							)}
+							<button
+								onClick={goToPhoneNumber}
+								type='button'
+								className='mr-auto text-tiny text-link underline'
+							>
+								{t('login_modal.change_phone_number')}
+							</button>
+						</div>
 					</label>
 				)}
 			/>

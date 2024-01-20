@@ -24,6 +24,7 @@
 			"error",
 			"single"
 		],
+		"prefer-promise-reject-errors": "off",
 		"accessor-pairs": "off",
 		"@typescript-eslint/no-unsafe-argument": "off",
 		"@typescript-eslint/restrict-template-expressions": "off",
