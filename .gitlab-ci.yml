@@ -57,8 +57,8 @@ stage-Job:
 Production-Job01:
   stage: deploy
   script: 
-    #- npm install
-    #- npm run build
+    - npm install
+    - npm run build
     #- pm2 delete kahkeshan
     - pm2 list
     - sudo rm -rf /etc/kahkeshan-ui/*
