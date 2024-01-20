@@ -61,7 +61,7 @@ Production-Job01:
     - npm run build
     - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - ls | sort -r | head -n 1 > 1
+    - sudo ls | sudo  sort -r | sudo head -n 1 > 1
     - pm2 delete kahkeshan && pm2 save --force
     - pm2 list
     - sudo rm -rf /etc/kahkeshan-ui/*
