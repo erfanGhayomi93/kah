@@ -59,7 +59,8 @@ Production-Job01:
   script: 
     - npm install
     - npm run build
-    - pm2 delete kahkeshan
+    #- pm2 delete kahkeshan
+    - pm2 list
     - rm -rf /etc/kahkeshan-ui/*
     - cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/next.config.js /etc/kahkeshan-ui/
     - cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.git/node_modules /etc/kahkeshan-ui/
