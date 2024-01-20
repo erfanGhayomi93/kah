@@ -31,7 +31,7 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(20);
+	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? -1);
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ otp, captcha }) => {
 		if (!loginResult) return;
@@ -71,7 +71,7 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 
 	useEffect(() => {
 		if (!loginResult) return;
-		setSeconds(loginResult.otpRemainSecond);
+		setSeconds(loginResult?.otpRemainSecond ?? -1);
 	}, [loginResult]);
 
 	const hasCaptcha = false;
