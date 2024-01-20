@@ -4,6 +4,7 @@ import CalendarSVG from './calendar.svg';
 import ChartDownSVG from './chart-down.svg';
 import ChartUpSVG from './chart-up.svg';
 import CheckListSVG from './check-list.svg';
+import CheckSVG from './check.svg';
 import ColumnsSVG from './columns.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
 import DoubleArrowLeftSVG from './double-arrow-right.svg';
@@ -26,6 +27,7 @@ export {
 	ChartDownSVG,
 	ChartUpSVG,
 	CheckListSVG,
+	CheckSVG,
 	ColumnsSVG,
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,

@@ -1,3 +1,4 @@
+import { getCookie } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
 const axios = AXIOS.create();
@@ -19,16 +20,19 @@ axios.defaults.paramsSerializer = {
 		}
 
 		return queryParams.join('&');
-	}
+	},
 };
 
 axios.interceptors.request.use(
 	(config) => {
+		const clientId = getCookie('client_id');
+		if (clientId) config.headers.Authorization = `Bearer ${clientId}`;
+
 		return config;
 	},
 	async (error) => {
 		return await Promise.reject(error);
-	}
+	},
 );
 
 axios.interceptors.response.use(
@@ -41,7 +45,7 @@ axios.interceptors.response.use(
 		}
 
 		return await Promise.reject(error);
-	}
+	},
 );
 
 export { AxiosError };
