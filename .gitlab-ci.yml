@@ -61,18 +61,19 @@ Production-Job01:
     - npm run build
     - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
+    - ls | sort -r | head -n 1 > 1
     - pm2 delete kahkeshan && pm2 save --force
     - pm2 list
     - sudo rm -rf /etc/kahkeshan-ui/*
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/node_modules /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - cd /etc/kahkeshan-ui/"kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js /etc/kahkeshan-ui/$1
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/node_modules /etc/kahkeshan-ui/$1
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json /etc/kahkeshan-ui/$1
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public /etc/kahkeshan-ui/$1
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src /etc/kahkeshan-ui/$1
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json /etc/kahkeshan-ui/$1
+    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env /etc/kahkeshan-ui/$1
+    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next /etc/kahkeshan-ui/$1
+    - cd /etc/kahkeshan-ui/$1
     - pm2 start npm --name "kahkeshan" -- run preview & pm2 save --force
     - sudo systemctl restart nginx
 
