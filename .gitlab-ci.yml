@@ -53,3 +53,28 @@ stage-Job:
   artifacts:
   rules:
     - if: $CI_COMMIT_BRANCH == "Stage" 
+
+Production-Job01:
+  stage: deploy
+  script: 
+    - npm install
+    - ($env:CI = "false") -and (npm run build)
+    #- pm2 delete 0
+    #- rm -rf /etc/kahkeshan-ui/*
+    # cp  /next.config.js
+    # cp -rf node_modules
+    # cp /Package.json 
+    # cp -rf public
+    # cp -rf /src
+    # cp /tsconfig.json
+    # cp /.env
+    # cp /.netx
+    # pm2 start 0 & pm2 --save
+    # systemctl restart nginx
+
+  tags:
+    - Runner-KahkeshanUI01
+  artifacts:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "Production"
+
