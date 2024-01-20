@@ -59,7 +59,7 @@ Production-Job01:
   script: 
     - npm install
     - npm run build
-    - cd /etc/kahkeshan_ui/
+    - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
     - pm2 delete kahkeshan && pm2 save --force
     - pm2 list
