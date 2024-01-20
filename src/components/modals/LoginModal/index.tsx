@@ -21,12 +21,22 @@ const LoginModal = () => {
 	};
 
 	return (
-		<AuthenticationModalTemplate hideTitle={stage === 'welcome'} title={t('login_modal.title')} onClose={onCloseModal}>
-			{stage === 'phoneNumber' && <PhoneNumberForm goToOTP={() => setStage('otp')} setLoginResult={setLoginResult} />}
-			{stage === 'otp' && (
-				<OTPForm loginResult={loginResult} setLoginResult={setLoginResult} goToWelcome={() => setStage('welcome')} />
+		<AuthenticationModalTemplate
+			hideTitle={stage === 'welcome'}
+			title={t('login_modal.title')}
+			onClose={onCloseModal}
+		>
+			{stage === 'phoneNumber' && (
+				<PhoneNumberForm goToOTP={() => setStage('otp')} setLoginResult={setLoginResult} />
 			)}
-			{stage === 'welcome' && <Welcome />}
+			{stage === 'otp' && (
+				<OTPForm
+					loginResult={loginResult}
+					setLoginResult={setLoginResult}
+					goToWelcome={() => setStage('welcome')}
+				/>
+			)}
+			{stage === 'welcome' && <Welcome loginResult={loginResult} />}
 		</AuthenticationModalTemplate>
 	);
 };
