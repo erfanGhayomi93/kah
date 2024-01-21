@@ -19,7 +19,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 	const gridRef = useRef<GridApi<Option.Root>>(null);
 
-	const { data: watchlistData, isLoading } = useOptionWatchlistQuery({
+	const { data: watchlistData, isFetching } = useOptionWatchlistQuery({
 		queryKey: ['optionWatchlistQuery', filters],
 	});
 
@@ -438,11 +438,15 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			/>
 
-			{isLoading && <Loading />}
+			{isFetching && (
+				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 h-full w-full'>
+					<Loading />
+				</div>
+			)}
 
 			<ManageWatchlistColumns />
 
-			{dataIsEmpty && !isLoading && <NoData key='no-data' onAddSymbol={addSymbol} />}
+			{dataIsEmpty && !isFetching && <NoData key='no-data' onAddSymbol={addSymbol} />}
 		</div>
 	);
 };
