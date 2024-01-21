@@ -63,7 +63,7 @@ Preprd-Job:
     - $date = get-date -format  "dd-MM-yyyy"
     - mkdir -p "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Import-Module WebAdministration
-    - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\.next" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\server.js" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
