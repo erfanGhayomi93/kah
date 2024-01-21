@@ -12,9 +12,9 @@
 				--ag-header-column-separator-display: false,
 				--ag-header-column-separator-color: rgb(255, 255, 255),
 				// Main Colors
-				--ag-background-color: rgb(255, 255, 255),
+				--ag-background-color: rgba(255, 255, 255, 1),
 				--ag-foreground-color: rgba(74, 74, 74, 1),
-				--ag-alpine-active-color: #002952,
+				--ag-alpine-active-color: rgb(0, 41, 82),
 				--ag-header-foreground-color: rgba(112, 112, 112, 1),
 				--ag-data-color: rgba(74, 74, 74, 1),
 				--ag-row-hover-color: rgba(0, 104, 137, 0.1),
@@ -76,4 +76,8 @@
 	&.justify-end {
 		justify-content: flex-end;
 	}
+}
+
+.ag-row-odd.ag-row-hover {
+	background-color: var(--ag-background-color);
 }
