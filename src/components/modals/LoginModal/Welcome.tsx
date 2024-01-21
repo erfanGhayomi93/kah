@@ -5,10 +5,11 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 interface WelcomeProps {
+	isLoggedIn: boolean;
 	loginResult: null | OAuthAPI.ILoginFirstStep;
 }
 
-const Welcome = ({ loginResult }: WelcomeProps) => {
+const Welcome = ({ loginResult, isLoggedIn }: WelcomeProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -17,21 +18,19 @@ const Welcome = ({ loginResult }: WelcomeProps) => {
 		dispatch(toggleLoginModal(false));
 	};
 
-	const isNewUser = loginResult?.state === 'NewUser';
-
 	return (
 		<div className='flex flex-1 flex-col items-center justify-between'>
-			<div className={clsx('flex-1 flex-column flex-justify-center', isNewUser ? 'gap-24' : 'gap-64')}>
+			<div className={clsx('flex-1 flex-column flex-justify-center', isLoggedIn ? 'gap-64' : 'gap-24')}>
 				<Image
-					width={isNewUser ? '280' : '398'}
-					height={isNewUser ? '248' : '350'}
+					width={isLoggedIn ? '398' : '280'}
+					height={isLoggedIn ? '350' : '248'}
 					alt='welcome'
 					src='/static/images/welcome.svg'
 				/>
 				<h1 className='text-center text-4xl font-bold text-primary-300'>{t('login_modal.welcome')}</h1>
 			</div>
 
-			{isNewUser && (
+			{!isLoggedIn && (
 				<div className='flex w-full flex-col gap-24 px-64'>
 					<h3 className='text-center text-base font-bold text-primary-300'>
 						{t('login_modal.set_password_description')}
