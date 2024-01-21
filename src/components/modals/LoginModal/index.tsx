@@ -57,7 +57,7 @@ const LoginModal = () => {
 		});
 	};
 
-	const isLoggedIn = !loginResult || loginResult.state !== 'NewUser';
+	const isLoggedIn = !loginResult || loginResult.state === 'NewUser' || loginResult.state === 'OTP';
 
 	return (
 		<AuthenticationModalTemplate
@@ -75,7 +75,7 @@ const LoginModal = () => {
 					resendOTP={sendOTP}
 				/>
 			)}
-			{stage === 'welcome' && <Welcome loginResult={loginResult} />}
+			{stage === 'welcome' && <Welcome isLoggedIn={isLoggedIn} loginResult={loginResult} />}
 		</AuthenticationModalTemplate>
 	);
 };
