@@ -130,7 +130,7 @@ Production-Job01:
       #- $CI_COMMIT_BRANCH
 #on_failure:
   #script:
-Production-Job01:
+Production-Job02:
   stage: deploy
   script: 
     #- set -e 
