@@ -328,7 +328,7 @@ const config: Config = {
 
 				'.i-error': {
 					position: 'relative',
-					'font-size': '1.2rem',
+					'font-size': '1.4rem',
 					'font-weight': '400',
 					'padding-right': '1.6rem',
 					color: theme('colors.error.100'),

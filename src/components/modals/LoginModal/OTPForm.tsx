@@ -37,11 +37,12 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 		if (!loginResult) return;
 
 		try {
+			const isLoggedIn = loginResult.state === 'OTP' || loginResult.state === 'HasPassword';
 			const response = await axios.post<ServerResponse<OAuthAPI.IOtpLogin>>(
-				loginResult.state === 'OTP' ? routes.authentication.OtpLogin : routes.authentication.SignUp,
+				isLoggedIn ? routes.authentication.OtpLogin : routes.authentication.SignUp,
 				{
 					otp,
-					[loginResult.state === 'OTP' ? 'loginToken' : 'signUpToken']: loginResult.nextStepToken ?? '',
+					[isLoggedIn ? 'loginToken' : 'signUpToken']: loginResult.nextStepToken ?? '',
 				},
 			);
 			const { data } = response;
@@ -128,15 +129,11 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 							)}
 
 							{seconds === -1 && (
-								<button onClick={onResendOTP} type='button' className='text-tiny text-link underline'>
+								<button onClick={onResendOTP} type='button' className='text-base text-link'>
 									{t('login_modal.resend_otp')}
 								</button>
 							)}
-							<button
-								onClick={goToPhoneNumber}
-								type='button'
-								className='mr-auto text-tiny text-link underline'
-							>
+							<button onClick={goToPhoneNumber} type='button' className='mr-auto text-base text-link'>
 								{t('login_modal.change_phone_number')}
 							</button>
 						</div>
@@ -146,7 +143,7 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 
 			{hasCaptcha && <Captcha control={control} />}
 
-			<Button
+			<div
 				style={{
 					bottom:
 						hasCaptcha &&
@@ -155,16 +152,21 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 						(errors.otp ?? seconds === -1) &&
 						errors.captcha
 							? '5.6rem'
-							: '11.6rem',
+							: '8rem',
 					width: 'calc(100% - 17.6rem)',
 				}}
-				type='submit'
-				loading={isSubmitting}
-				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded shadow btn-primary'
+				className='!absolute flex flex-col gap-8 pt-24'
 			>
-				{t('common.register')}
-			</Button>
+				<Button
+					style={{}}
+					type='submit'
+					loading={isSubmitting}
+					disabled={!isValid}
+					className='h-48 rounded shadow btn-primary'
+				>
+					{t('login_modal.login')}
+				</Button>
+			</div>
 		</form>
 	);
 };
