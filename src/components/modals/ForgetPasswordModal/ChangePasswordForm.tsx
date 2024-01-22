@@ -13,12 +13,12 @@ interface Inputs {
 	repeatNewPassword: string;
 }
 
-interface ChangePasswordProps {
+interface ChangePasswordFormProps {
 	result: null | OAuthAPI.IValidateForgetPasswordOtp;
 	goToLogin: () => void;
 }
 
-const ChangePassword = ({ result, goToLogin }: ChangePasswordProps) => {
+const ChangePasswordForm = ({ result, goToLogin }: ChangePasswordFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -126,7 +126,7 @@ const ChangePassword = ({ result, goToLogin }: ChangePasswordProps) => {
 					<input
 						title={t('inputs.repeat_new_password_placeholder')}
 						autoFocus
-						type={passwordVisibility.newPassword ? 'text' : 'password'}
+						type={passwordVisibility.repeatNewPassword ? 'text' : 'password'}
 						inputMode='numeric'
 						maxLength={72}
 						className='flex-1 text-right ltr'
@@ -179,4 +179,4 @@ const ChangePassword = ({ result, goToLogin }: ChangePasswordProps) => {
 	);
 };
 
-export default ChangePassword;
+export default ChangePasswordForm;

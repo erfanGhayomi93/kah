@@ -29,10 +29,14 @@
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
 		"register_title": "ثبت‌نام به کهکشان",
+		"set_password_title": "تعیین رمز عبور",
 		"resend_otp": "ارسال دوباره",
+		"skip_set_password": "دیده‌بان",
 		"welcome": "به کهکشان خوش آمدید!",
 		"set_password_btn": "تعیین رمز عبور",
 		"change_phone_number": "تغییر شماره همراه",
+		"register_password_btn": "ثبت کلمه عبور",
+		"set_password_security_description": "جهت افزایش امنیت حساب کاربری خود، یک رمز عبور وارد نمایید.",
 		"user_not_found": "برای شماره موبایل وارد شده حساب کاربر یافت نشد. برای ایجاد حساب، کد تایید را وارد کنید.",
 		"set_password_description": "برای تجربه ی کاربری بهتر، می توانید رمز عبور تعیین کنید."
 	},
