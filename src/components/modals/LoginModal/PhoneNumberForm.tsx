@@ -11,11 +11,10 @@ interface Inputs {
 }
 
 interface PhoneNumberFormProps {
-	sendOTP: (phoneNumber: string) => Promise<void>;
-	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
+	sendOTP: (pNumber?: string) => Promise<void>;
 }
 
-const PhoneNumberForm = ({ setLoginResult, sendOTP }: PhoneNumberFormProps) => {
+const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 	const t = useTranslations();
 
 	const {

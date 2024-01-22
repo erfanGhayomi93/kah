@@ -20,9 +20,7 @@ const LoginModal = () => {
 
 	const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
 
-	const [stage, setStage] = useState<
-		'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password'
-	>('phoneNumber');
+	const [stage, setStage] = useState<TLoginModalStates>('phoneNumber');
 
 	const onCloseModal = () => {
 		dispatch(toggleLoginModal(false));
@@ -102,9 +100,9 @@ const LoginModal = () => {
 			{stage === 'login-with-otp' && (
 				<OTPForm
 					loginResult={loginResult}
+					setLoginResult={setLoginResult}
 					goToWelcome={() => setStage('welcome')}
 					goToPhoneNumber={onChangePhoneNumber}
-					resendOTP={sendOTP}
 				/>
 			)}
 
@@ -117,7 +115,7 @@ const LoginModal = () => {
 				/>
 			)}
 
-			{stage === 'phoneNumber' && <PhoneNumberForm sendOTP={sendOTP} setLoginResult={setLoginResult} />}
+			{stage === 'phoneNumber' && <PhoneNumberForm sendOTP={sendOTP} />}
 
 			{stage === 'welcome' && (
 				<Welcome goToSetPassword={() => setStage('set-password')} isNeedsToSetPassword={isNeedsToSetPassword} />
