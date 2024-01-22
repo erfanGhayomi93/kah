@@ -23,12 +23,12 @@ const letters = [
 	' دسیلیارد',
 ];
 
-const num2persian = (value: string, showRial = false) => {
-	if (!value || isNaN(Number(value))) return '-';
+const num2persian = (value: string) => {
+	if (!value || isNaN(Number(value))) return '';
 
 	const toman = value.slice(0, -1);
-	const rial = value.slice(-1);
-	if (!toman || toman === '0' || isNaN(Number(toman))) return showRial ? `${rial} ریال` : '';
+	// const rial = value.slice(-1);
+	// if (!toman || toman === '0' || isNaN(Number(toman))) return showRial ? `${rial} ریال` : '';
 
 	const result = [];
 
@@ -46,9 +46,9 @@ const num2persian = (value: string, showRial = false) => {
 			})
 			.join(' و ') + ' تومان';
 
-	if (!showRial || !rial || rial === '0' || isNaN(Number(rial))) return persianToman;
+	// if (!showRial || !rial || rial === '0' || isNaN(Number(rial))) return persianToman;
 
-	return showRial ? `${persianToman} و ${rial} ریال` : persianToman;
+	return /* showRial ? `${persianToman} و ${rial} ریال` : */ persianToman;
 };
 
 export default num2persian;

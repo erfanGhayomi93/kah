@@ -236,9 +236,14 @@ declare namespace OAuthAPI {
 		nextStepToken: string;
 	}
 
-	declare interface IValidateForgetPasswordOTP {
+	declare interface IValidateForgetPasswordOtp {
 		nextStepToken: string;
 		responseMessage: string;
+	}
+
+	declare interface IPasswordLogin {
+		message: string;
+		token: string | null;
 	}
 
 	declare interface IChangeForgottenPassword {

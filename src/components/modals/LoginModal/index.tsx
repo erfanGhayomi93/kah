@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
 import OTPForm from './OTPForm';
+import PasswordForm from './PasswordForm';
 import PhoneNumberForm from './PhoneNumberForm';
 import Welcome from './Welcome';
 
@@ -18,7 +19,7 @@ const LoginModal = () => {
 
 	const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
 
-	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'welcome'>('phoneNumber');
+	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'welcome' | 'password'>('phoneNumber');
 
 	const onCloseModal = () => {
 		dispatch(toggleLoginModal(false));
@@ -44,9 +45,9 @@ const LoginModal = () => {
 				if (response.status !== 200 || !data.succeeded || state === 'Fail')
 					throw new Error(data.errors?.[0] ?? 'TooManyRequest');
 
-				if (['NewUser', 'OTP'].includes(state)) {
+				if (['NewUser', 'OTP', 'HasPassword'].includes(state)) {
 					setLoginResult(data.result);
-					setStage('otp');
+					setStage(state === 'HasPassword' ? 'password' : 'otp');
 					resolve();
 
 					if (pNumber) setPhoneNumber(pNumber);
@@ -57,7 +58,7 @@ const LoginModal = () => {
 		});
 	};
 
-	const isLoggedIn = !loginResult || loginResult.state === 'NewUser' || loginResult.state === 'OTP';
+	const isLoggedIn = !loginResult || ['HasPassword', 'NewUser', 'OTP'].includes(loginResult.state);
 
 	return (
 		<AuthenticationModalTemplate
@@ -73,6 +74,13 @@ const LoginModal = () => {
 					goToWelcome={() => setStage('welcome')}
 					goToPhoneNumber={onChangePhoneNumber}
 					resendOTP={sendOTP}
+				/>
+			)}
+			{stage === 'password' && (
+				<PasswordForm
+					loginResult={loginResult}
+					goToWelcome={() => setStage('welcome')}
+					goToPhoneNumber={onChangePhoneNumber}
 				/>
 			)}
 			{stage === 'welcome' && <Welcome isLoggedIn={isLoggedIn} loginResult={loginResult} />}

@@ -16,6 +16,7 @@ import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
 import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
+import PlusSVG from './plus.svg';
 import RefreshSVG from './refresh.svg';
 import SearchSVG from './search.svg';
 import XSVG from './x.svg';
@@ -39,6 +40,7 @@ export {
 	FilterSVG,
 	ManageSVG,
 	MoreOptionsSVG,
+	PlusSVG,
 	RefreshSVG,
 	SearchSVG,
 	XSVG,
