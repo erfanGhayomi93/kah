@@ -59,24 +59,24 @@ Preprd-Job:
   script: 
     - npm install
     - npm install express
-    - npm run build
+    - ($env:CI = "false") -and (npm run build)
     - $date = get-date -format  "dd-MM-yyyy"
     - mkdir -p "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Import-Module WebAdministration
     - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.next" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\server.js" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\web.config" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\public" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.env" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\.next" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\server.js" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\web.config" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\public" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\.env" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Stop-WebSite "kahkeshan"
     - Start-WebSite "kahkeshan"
     - Stop-WebAppPool -Name "kahkeshan"
     - Start-Sleep -Seconds 10
     - Start-WebAppPool -Name "kahkeshan"
-    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*"
-    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui.tmp\*"
+    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\*"
+    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui.tmp\*"
 
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
 #    - cd c:\scripts\Clubui\
