@@ -21,11 +21,10 @@ interface PasswordFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
 	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 	goToWelcome: () => void;
-	goToPhoneNumber: () => void;
-	goToOTP: () => void;
+	goToLoginWithOTP: () => void;
 }
 
-const PasswordForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber, goToOTP }: PasswordFormProps) => {
+const PasswordForm = ({ loginResult, setLoginResult, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -84,7 +83,7 @@ const PasswordForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumbe
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			setLoginResult(data.result);
-			goToOTP();
+			goToLoginWithOTP();
 		} catch (e) {
 			setError('password', {
 				message: t('i_errors.undefined_error'),

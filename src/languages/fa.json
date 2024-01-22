@@ -33,6 +33,7 @@
 		"resend_otp": "ارسال دوباره",
 		"login": "ورود",
 		"login_with_otp": "ورود با رمز یکبار مصرف",
+		"login_with_password": "ورود با رمز عبور",
 		"forget_password": "فراموشی رمز عبور",
 		"skip_set_password": "دیده‌بان",
 		"welcome": "به کهکشان خوش آمدید!",

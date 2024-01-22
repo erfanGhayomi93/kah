@@ -143,7 +143,7 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 
 			{hasCaptcha && <Captcha control={control} />}
 
-			<Button
+			<div
 				style={{
 					bottom:
 						hasCaptcha &&
@@ -152,16 +152,21 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 						(errors.otp ?? seconds === -1) &&
 						errors.captcha
 							? '5.6rem'
-							: '11.6rem',
+							: '8rem',
 					width: 'calc(100% - 17.6rem)',
 				}}
-				type='submit'
-				loading={isSubmitting}
-				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded shadow btn-primary'
+				className='!absolute flex flex-col gap-8 pt-24'
 			>
-				{t('common.register')}
-			</Button>
+				<Button
+					style={{}}
+					type='submit'
+					loading={isSubmitting}
+					disabled={!isValid}
+					className='h-48 rounded shadow btn-primary'
+				>
+					{t('login_modal.login')}
+				</Button>
+			</div>
 		</form>
 	);
 };
