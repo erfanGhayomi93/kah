@@ -1,5 +1,6 @@
 import { useOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
@@ -18,7 +19,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 	const gridRef = useRef<GridApi<Option.Root>>(null);
 
-	const { data: watchlistData } = useOptionWatchlistQuery({
+	const { data: watchlistData, isFetching } = useOptionWatchlistQuery({
 		queryKey: ['optionWatchlistQuery', filters],
 	});
 
@@ -397,14 +398,18 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		for (let i = 0; i < length; i++) {
 			const newItem = watchlistData[i];
 			if (newItem) {
-				const matchingItem = cWatchlistData.find((item) => item.symbolInfo.symbolISIN === newItem.symbolInfo.symbolISIN);
+				const matchingItem = cWatchlistData.find(
+					(item) => item.symbolInfo.symbolISIN === newItem.symbolInfo.symbolISIN,
+				);
 				if (matchingItem) transaction.update.push(newItem);
 				else transaction.add.push(newItem);
 			}
 
 			const oldItem = cWatchlistData[i];
 			if (oldItem) {
-				const matchingItem = watchlistData.find((item) => item.symbolInfo.symbolISIN === oldItem.symbolInfo.symbolISIN);
+				const matchingItem = watchlistData.find(
+					(item) => item.symbolInfo.symbolISIN === oldItem.symbolInfo.symbolISIN,
+				);
 				if (!matchingItem) transaction.remove.push(oldItem);
 			}
 		}
@@ -433,9 +438,15 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			/>
 
+			{isFetching && (
+				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 h-full w-full'>
+					<Loading />
+				</div>
+			)}
+
 			<ManageWatchlistColumns />
 
-			{dataIsEmpty && <NoData key='no-data' onAddSymbol={addSymbol} />}
+			{dataIsEmpty && !isFetching && <NoData key='no-data' onAddSymbol={addSymbol} />}
 		</div>
 	);
 };

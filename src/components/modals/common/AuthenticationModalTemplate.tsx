@@ -7,6 +7,7 @@ interface AuthenticationModalTemplateProps {
 	title: string | React.ReactNode;
 	children: React.ReactNode;
 	hideTitle?: boolean;
+	description?: string;
 	onClose: () => void;
 }
 
@@ -15,10 +16,16 @@ const Div = styled.div`
 	height: 560px;
 `;
 
-const AuthenticationModalTemplate = ({ title, children, hideTitle, onClose }: AuthenticationModalTemplateProps) => {
+const AuthenticationModalTemplate = ({
+	title,
+	children,
+	hideTitle,
+	description,
+	onClose,
+}: AuthenticationModalTemplateProps) => {
 	return (
 		<Modal onClose={onClose}>
-			<Div className='flex-column rounded-md bg-white p-24'>
+			<Div className='rounded-md bg-white p-24 flex-column'>
 				{!hideTitle && [
 					<div key='close' className='absolute left-24 z-10'>
 						<button onClick={onClose} type='button' className='text-gray-100'>
@@ -28,6 +35,14 @@ const AuthenticationModalTemplate = ({ title, children, hideTitle, onClose }: Au
 
 					<div key='title' style={{ height: '8.8rem' }} className='relative mt-48 text-center'>
 						<h1 className='text-3xl font-bold text-gray-100'>{title}</h1>
+						{description && (
+							<p
+								style={{ maxWidth: '30rem' }}
+								className='mx-auto pt-24 text-center text-base text-primary-300'
+							>
+								{description}
+							</p>
+						)}
 					</div>,
 				]}
 

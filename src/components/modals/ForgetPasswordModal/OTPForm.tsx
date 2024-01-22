@@ -15,7 +15,7 @@ interface Inputs {
 
 interface OTPFormProps {
 	result: null | OAuthAPI.IForgetPasswordFirstStep;
-	setResult: (value: OAuthAPI.IValidateForgetPasswordOTP) => void;
+	setResult: (value: OAuthAPI.IValidateForgetPasswordOtp) => void;
 	goToChangePassword: () => void;
 }
 
@@ -35,8 +35,8 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 		if (!result) return;
 
 		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.IValidateForgetPasswordOTP>>(
-				routes.authentication.ValidateForgetPasswordOTP,
+			const response = await axios.post<ServerResponse<OAuthAPI.IValidateForgetPasswordOtp>>(
+				routes.authentication.ValidateForgetPasswordOtp,
 				{
 					otp,
 					forgetPasswordToken: result.nextStepToken ?? '',
@@ -73,7 +73,11 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 	const hasCaptcha = false;
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}>
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			method='get'
+			className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}
+		>
 			<Controller
 				defaultValue=''
 				control={control}

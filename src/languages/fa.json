@@ -27,11 +27,13 @@
 		"about_us": "درباره ما"
 	},
 	"login_modal": {
-		"title": "ورود به کهکشان",
+		"login_title": "ورود به کهکشان",
+		"register_title": "ثبت‌نام به کهکشان",
 		"resend_otp": "ارسال دوباره",
-		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.",
 		"welcome": "به کهکشان خوش آمدید!",
 		"set_password_btn": "تعیین رمز عبور",
+		"change_phone_number": "تغییر شماره همراه",
+		"user_not_found": "برای شماره موبایل وارد شده حساب کاربر یافت نشد. برای ایجاد حساب، کد تایید را وارد کنید.",
 		"set_password_description": "برای تجربه ی کاربری بهتر، می توانید رمز عبور تعیین کنید."
 	},
 	"forget_password_modal": {
@@ -104,17 +106,20 @@
 		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
 		"too_many_request": "درخواست بیش از حد مجاز است. لطفا دقایقی دیگر مجددا امتحان کنید.",
 		"invalid_otp": "کد تایید نادرست است.",
+		"invalid_password": "رمز عبور نادرست است.",
 		"invalid_repeat_password": "رمز عبور مطابقت ندارد.",
 		"invalid_phone_number": "شماره همراه نادرست است.",
 		"invalid_captcha": "کد وارد شده مطابقت ندارد."
 	},
 	"inputs": {
 		"captcha": "کد امنیتی",
+		"captcha_placeholder": "کد مقابل را وارد کنید",
+		"password": "رمز عبور",
+		"password_placeholder": "رمز عبور خود را وارد کنید",
 		"new_password": "رمز عبور جدید",
 		"new_password_placeholder": "رمز عبور جدید خود را وارد کنید",
 		"repeat_new_password": "تکرار رمز عبور",
 		"repeat_new_password_placeholder": "رمز عبور خود را دوباره وارد کنید",
-		"captcha_placeholder": "کد مقابل را وارد کنید",
 		"phone_number": "شماره همراه",
 		"phone_number_placeholder": "شماره همراه خود را وارد کنید",
 		"otp": "کد تایید",

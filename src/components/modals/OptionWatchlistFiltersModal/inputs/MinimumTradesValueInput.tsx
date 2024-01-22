@@ -1,4 +1,5 @@
-import { convertStringToInteger, sepNumbers, tomanToRial } from '@/utils/helpers';
+import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import num2persian from '@/utils/num2persian';
 import { useTranslations } from 'next-intl';
 
 interface MinimumTradesValueInputProps {
@@ -25,10 +26,12 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 					value={valueFormatter(value)}
 					onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
 				/>
-				<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-200 flex-justify-center'>{t('common.rial')}</span>
+				<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-200 flex-justify-center'>
+					{t('common.rial')}
+				</span>
 			</div>
 
-			<span className='h-16 text-right text-sm text-gray-100'>{tomanToRial(value)}</span>
+			<span className='h-16 text-right text-sm text-gray-100'>{value > 0 && num2persian(String(value))}</span>
 		</div>
 	);
 };
