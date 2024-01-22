@@ -1,5 +1,5 @@
 const oauthUrl = 'https://ramandoauth-stage.ramandtech.com';
-const rlcUrl = 'http://192.168.103.101:7142';
+const rlcUrl = 'https://marketdata-stage.ramandtech.com';
 
 const routes = {
 	option: {
