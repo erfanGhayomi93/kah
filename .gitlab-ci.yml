@@ -108,15 +108,17 @@ Production-Job01:
     - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env .
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
     - pwd
-    - pm2 start npm --name "kahkeshan" -- run preview & pm2 save --force
-    - sudo systemctl restart nginx
-    #- cd ../
-    #- ls -tr | head -n1 | xargs zip 1.zip
-    #- sudo mv 1.zip /etc/kahkeshan-backups/
-    #- sudo rm -rf $(ls -tr | head -n1)
-    #- sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
-    #- sudo rm -rf /etc/kahkeshan-backups/1.zip
-    #- sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
+    - pm2 start npm --name "kahkeshan" -- run preview && pm2 save --force
+    - pm2 describe 0
+    #- sudo systemctl restart nginx
+    - cd ../
+    - pwd
+    - ls -tr | head -n1 | xargs zip 1.zip
+    - sudo mv 1.zip /etc/kahkeshan-backups/
+    - sudo rm -rf $(ls -tr | head -n1)
+    - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
+    - sudo rm -rf /etc/kahkeshan-backups/1.zip
+    - sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
 
   tags:
     - Runner-KahkeshanUI01
