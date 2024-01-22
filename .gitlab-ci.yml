@@ -57,6 +57,7 @@ stage-Job:
 Production-Job01:
   stage: deploy
   script: 
+    - set -e 
     - npm install
     - npm run build
     - cd /etc/kahkeshan-ui/
@@ -88,6 +89,9 @@ Production-Job01:
   artifacts:
   rules:
     - if: $CI_COMMIT_BRANCH == "Production"
+      when: always
+    - exists:
+      - $CI_COMMIT_BRANCH
 #on_failure:
   #script:
 
