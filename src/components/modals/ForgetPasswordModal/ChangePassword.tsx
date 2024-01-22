@@ -14,7 +14,7 @@ interface Inputs {
 }
 
 interface ChangePasswordProps {
-	result: null | OAuthAPI.IValidateForgetPasswordOTP;
+	result: null | OAuthAPI.IValidateForgetPasswordOtp;
 	goToLogin: () => void;
 }
 
@@ -78,7 +78,12 @@ const ChangePassword = ({ result, goToLogin }: ChangePasswordProps) => {
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex flex-1 flex-col gap-24 px-64'>
 			<label className='input-box'>
 				<span className='label'>{t('inputs.new_password')}</span>
-				<div className={clsx('flex-items-center input', touchedFields.newPassword && errors.newPassword?.message && 'invalid')}>
+				<div
+					className={clsx(
+						'flex-items-center input',
+						touchedFields.newPassword && errors.newPassword?.message && 'invalid',
+					)}
+				>
 					<input
 						title={t('inputs.new_password_placeholder')}
 						autoFocus
@@ -135,7 +140,9 @@ const ChangePassword = ({ result, goToLogin }: ChangePasswordProps) => {
 					/>
 
 					<button
-						onClick={() => setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)}
+						onClick={() =>
+							setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
+						}
 						type='button'
 						className='border-r-0 prefix'
 					>
@@ -155,7 +162,12 @@ const ChangePassword = ({ result, goToLogin }: ChangePasswordProps) => {
 				}}
 				className='!absolute flex flex-col gap-8'
 			>
-				<Button loading={isSubmitting} type='submit' disabled={!isValid} className='h-48 rounded shadow btn-primary'>
+				<Button
+					loading={isSubmitting}
+					type='submit'
+					disabled={!isValid}
+					className='h-48 rounded shadow btn-primary'
+				>
 					{t('common.register')}
 				</Button>
 
