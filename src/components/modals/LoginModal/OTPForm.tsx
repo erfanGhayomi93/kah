@@ -49,8 +49,9 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 			if (response.status !== 200 || !data.succeeded || !data.result.token)
 				throw new Error(data.errors?.[0] ?? '');
 
-			setCookie('client_id', data.result.token);
+			if (data.result.message !== 'Successful') throw new Error();
 
+			setCookie('client_id', data.result.token);
 			goToWelcome();
 		} catch (e) {
 			setError('otp', {

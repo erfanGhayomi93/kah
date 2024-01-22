@@ -12,7 +12,9 @@ const ForgetPasswordModal = () => {
 
 	const dispatch = useAppDispatch();
 
-	const [result, setResult] = useState<null | OAuthAPI.IForgetPasswordFirstStep | OAuthAPI.IValidateForgetPasswordOTP>(null);
+	const [result, setResult] = useState<
+		null | OAuthAPI.IForgetPasswordFirstStep | OAuthAPI.IValidateForgetPasswordOtp
+	>(null);
 
 	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password'>('phoneNumber');
 
@@ -35,7 +37,9 @@ const ForgetPasswordModal = () => {
 					goToChangePassword={() => setStage('change-password')}
 				/>
 			)}
-			{stage === 'change-password' && <ChangePassword result={result as OAuthAPI.IValidateForgetPasswordOTP} goToLogin={goToLogin} />}
+			{stage === 'change-password' && (
+				<ChangePassword result={result as OAuthAPI.IValidateForgetPasswordOtp} goToLogin={goToLogin} />
+			)}
 		</AuthenticationModalTemplate>
 	);
 };
