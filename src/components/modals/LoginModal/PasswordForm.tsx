@@ -3,6 +3,8 @@ import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import Captcha from '@/components/common/Inputs/Captcha';
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setCookie } from '@/utils/cookie';
 import { base64encode } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -17,12 +19,16 @@ interface Inputs {
 
 interface PasswordFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
+	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 	goToWelcome: () => void;
 	goToPhoneNumber: () => void;
+	goToOTP: () => void;
 }
 
-const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFormProps) => {
+const PasswordForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber, goToOTP }: PasswordFormProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
 
 	const {
 		control,
@@ -63,6 +69,35 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 		}
 	};
 
+	const loginWithOTP = async () => {
+		if (!loginResult) return;
+
+		try {
+			const response = await axios.post<ServerResponse<OAuthAPI.ISendPasslessOTP>>(
+				routes.authentication.SendPasslessOTP,
+				{
+					token: loginResult.nextStepToken,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			setLoginResult(data.result);
+			goToOTP();
+		} catch (e) {
+			setError('password', {
+				message: t('i_errors.undefined_error'),
+				type: 'value',
+			});
+		}
+	};
+
+	const forgetPassword = () => {
+		dispatch(toggleLoginModal(false));
+		dispatch(toggleForgetPasswordModal(true));
+	};
+
 	useEffect(() => {
 		if (!loginResult) return;
 		setSeconds(loginResult?.otpRemainSecond ?? -1);
@@ -82,7 +117,7 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 				name='password'
 				render={({ field, fieldState: { invalid, isTouched, error } }) => (
 					<label className={clsx('input-box')}>
-						<span className='label'>{t('inputs.repeat_new_password')}</span>
+						<span className='label'>{t('inputs.password')}</span>
 						<div className={clsx('flex-items-center input')}>
 							<input
 								title={t('inputs.password')}
@@ -104,14 +139,19 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 							</button>
 						</div>
 
-						{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
+						<div className='flex justify-between'>
+							{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
+							<button onClick={forgetPassword} type='button' className='mr-auto text-base text-link'>
+								{t('login_modal.forget_password')}
+							</button>
+						</div>
 					</label>
 				)}
 			/>
 
 			{hasCaptcha && <Captcha control={control} />}
 
-			<Button
+			<div
 				style={{
 					bottom:
 						hasCaptcha &&
@@ -120,16 +160,24 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 						(errors.password ?? seconds === -1) &&
 						errors.captcha
 							? '5.6rem'
-							: '11.6rem',
+							: '8rem',
 					width: 'calc(100% - 17.6rem)',
 				}}
-				type='submit'
-				loading={isSubmitting}
-				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded shadow btn-primary'
+				className='!absolute flex flex-col gap-8 pt-24'
 			>
-				{t('common.register')}
-			</Button>
+				<Button
+					type='submit'
+					loading={isSubmitting}
+					disabled={!isValid}
+					className='h-48 rounded shadow btn-primary'
+				>
+					{t('login_modal.login')}
+				</Button>
+
+				<button type='button' onClick={loginWithOTP} className='h-48 font-medium text-primary-300'>
+					{t('login_modal.login_with_otp')}
+				</button>
+			</div>
 		</form>
 	);
 };

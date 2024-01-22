@@ -112,7 +112,9 @@ const LoginModal = () => {
 				<PasswordForm
 					loginResult={loginResult}
 					goToWelcome={() => setStage('welcome')}
+					goToOTP={() => setStage('login-with-otp')}
 					goToPhoneNumber={onChangePhoneNumber}
+					setLoginResult={setLoginResult}
 				/>
 			)}
 

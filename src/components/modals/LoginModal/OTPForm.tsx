@@ -37,11 +37,12 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 		if (!loginResult) return;
 
 		try {
+			const isLoggedIn = loginResult.state === 'OTP' || loginResult.state === 'HasPassword';
 			const response = await axios.post<ServerResponse<OAuthAPI.IOtpLogin>>(
-				loginResult.state === 'OTP' ? routes.authentication.OtpLogin : routes.authentication.SignUp,
+				isLoggedIn ? routes.authentication.OtpLogin : routes.authentication.SignUp,
 				{
 					otp,
-					[loginResult.state === 'OTP' ? 'loginToken' : 'signUpToken']: loginResult.nextStepToken ?? '',
+					[isLoggedIn ? 'loginToken' : 'signUpToken']: loginResult.nextStepToken ?? '',
 				},
 			);
 			const { data } = response;
@@ -128,15 +129,11 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 							)}
 
 							{seconds === -1 && (
-								<button onClick={onResendOTP} type='button' className='text-tiny text-link underline'>
+								<button onClick={onResendOTP} type='button' className='text-base text-link'>
 									{t('login_modal.resend_otp')}
 								</button>
 							)}
-							<button
-								onClick={goToPhoneNumber}
-								type='button'
-								className='mr-auto text-tiny text-link underline'
-							>
+							<button onClick={goToPhoneNumber} type='button' className='mr-auto text-base text-link'>
 								{t('login_modal.change_phone_number')}
 							</button>
 						</div>

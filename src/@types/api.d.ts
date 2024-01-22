@@ -231,6 +231,12 @@ declare namespace OAuthAPI {
 		nextStepToken: string | null;
 	}
 
+	declare interface ISendPasslessOTP {
+		state: 'NewUser' | 'OTP' | 'TooManyRequest' | 'HasPassword' | 'Fail';
+		otpRemainSecond: number;
+		nextStepToken: string | null;
+	}
+
 	declare interface IForgetPasswordFirstStep {
 		otpRemainSecond: number;
 		nextStepToken: string;
@@ -241,9 +247,7 @@ declare namespace OAuthAPI {
 		responseMessage: string;
 	}
 
-	declare interface IChangePassword {
-		message: string;
-	}
+	declare type IChangePassword = string;
 
 	declare interface IPasswordLogin {
 		message: string;

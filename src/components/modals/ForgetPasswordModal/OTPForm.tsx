@@ -119,7 +119,7 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 						{seconds === -1 ? (
 							<div className='flex justify-between'>
 								<span className='i-error'>{t('login_modal.resend_otp_description')}</span>
-								<button onClick={onResendOTP} type='button' className='text-tiny text-link underline'>
+								<button onClick={onResendOTP} type='button' className='text-base text-link'>
 									{t('login_modal.resend_otp')}
 								</button>
 							</div>
