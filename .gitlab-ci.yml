@@ -59,7 +59,7 @@ Preprd-Job:
   script: 
     - npm install
     - npm install express
-    - ($env:CI = "false") -and (npm run build)
+    - npm run build
     - $date = get-date -format  "dd-MM-yyyy"
     - mkdir -p "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
     - Import-Module WebAdministration
