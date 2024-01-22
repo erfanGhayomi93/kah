@@ -89,10 +89,11 @@ export const useOptionSymbolSearchQuery = createQuery<Option.SymbolSearch[], ['o
 		try {
 			const [, term] = queryKey;
 
-			if (typeof term !== 'string' || term.length < 1) return [];
+			const params: Record<string, string> = {};
+			if (term) params.term = term;
 
 			const response = await axios.get<ServerResponse<Option.SymbolSearch[]>>(routes.option.OptionSymbolSearch, {
-				params: { term },
+				params,
 			});
 			const { data } = response;
 

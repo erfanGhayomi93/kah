@@ -37,8 +37,11 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 
 	const [onlyShowTags, setOnlyShowTags] = useState(false);
 
+	const [enabled, setEnabled] = useState(false);
+
 	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
 		queryKey: ['optionSymbolSearchQuery', term],
+		enabled,
 	});
 
 	const { setDebounce } = useDebounce();
@@ -96,6 +99,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 			onClose={() => {
 				setOnlyShowTags(false);
 			}}
+			onOpen={() => setEnabled(true)}
 			renderer={({ setOpen }) => (
 				<div
 					className={clsx(
