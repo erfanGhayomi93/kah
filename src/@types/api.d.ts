@@ -241,6 +241,10 @@ declare namespace OAuthAPI {
 		responseMessage: string;
 	}
 
+	declare interface IChangePassword {
+		message: string;
+	}
+
 	declare interface IPasswordLogin {
 		message: string;
 		token: string | null;
