@@ -52,7 +52,7 @@ const SetPasswordForm = () => {
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			if (data.result.message !== 'Successful') throw new Error();
+			if (data.result !== 'Successful') throw new Error();
 
 			dispatch(setLoggedIn(true));
 			onCloseModal();
