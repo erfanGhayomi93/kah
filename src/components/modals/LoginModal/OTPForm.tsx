@@ -16,12 +16,12 @@ interface Inputs {
 
 interface OTPFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
+	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 	goToWelcome: () => void;
 	goToPhoneNumber: () => void;
-	resendOTP: () => Promise<void>;
 }
 
-const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFormProps) => {
+const OTPForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber }: OTPFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -29,9 +29,10 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 		formState: { isValid, errors, isSubmitting, touchedFields },
 		handleSubmit,
 		setError,
+		clearErrors,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? -1);
+	const [seconds, setSeconds] = useState<number | null>(10);
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ otp, captcha }) => {
 		if (!loginResult) return;
@@ -64,11 +65,35 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 
 	const onFinishedCountdown = () => {
 		setSeconds(-1);
+		clearErrors('otp');
 	};
 
 	const onResendOTP = () => {
+		clearErrors('otp');
 		setSeconds(null);
 		resendOTP();
+	};
+
+	const resendOTP = async () => {
+		if (!loginResult) return;
+
+		try {
+			const response = await axios.post<ServerResponse<OAuthAPI.ISendPasslessOTP>>(
+				routes.authentication.SendPasslessOTP,
+				{
+					token: loginResult.nextStepToken,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			setLoginResult(data.result);
+		} catch (e) {
+			//
+		} finally {
+			clearErrors('otp');
+		}
 	};
 
 	useEffect(() => {
@@ -115,7 +140,7 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 									typeof seconds === 'number' && seconds <= 0 ? 'text-error-100' : 'text-primary-200',
 								)}
 							>
-								{seconds ? (
+								{seconds !== null ? (
 									<Countdown onFinished={onFinishedCountdown} seconds={seconds} />
 								) : (
 									<div className='spinner size-24' />
@@ -124,7 +149,7 @@ const OTPForm = ({ loginResult, resendOTP, goToWelcome, goToPhoneNumber }: OTPFo
 						</div>
 
 						<div className='flex justify-between'>
-							{seconds && seconds > -1 && isTouched && invalid && (
+							{seconds !== null && seconds > -1 && isTouched && invalid && (
 								<span className='i-error'>{error?.message}</span>
 							)}
 
