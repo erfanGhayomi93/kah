@@ -1,4 +1,3 @@
-import Num2Persian from '@/classes/NumToPersian';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
@@ -78,20 +77,6 @@ export const ifIsInfinity = (input: number, defaultValue: number): number => {
 
 export const getDateAsJalali = (value?: string | number | Date | null) => {
 	return dayjs(value).calendar('jalali').format('YYYY/MM/DD');
-};
-
-export const tomanToRial = (v: number): string => {
-	if (isNaN(v) || v <= 0) return '';
-
-	const [integerPart, decimalPart] = String(v / 10).split('.');
-
-	const toman = `${Num2Persian(integerPart)} تومان`;
-	if (!decimalPart) return toman;
-
-	const rial = `${Num2Persian(decimalPart)} ریال`;
-	if (!integerPart) return rial;
-
-	return `${toman} و ${rial}`;
 };
 
 export const passwordValidation = (password: string) => {

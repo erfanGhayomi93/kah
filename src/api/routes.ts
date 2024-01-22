@@ -17,8 +17,9 @@ const routes = {
 		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
 		PasswordLogin: `${oauthUrl}/OAuthAPI/v1/PasswordLogin`,
 		ChangePassword: `${oauthUrl}/OAuthAPI/v1/ChangePassword`,
-		ValidateForgetPasswordOTP: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOTP`,
+		ValidateForgetPasswordOtp: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOtp`,
 		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
+		SendPasslessOTP: `${oauthUrl}/OAuthAPI/v1/SendPasslessOTP`,
 	},
 };
 

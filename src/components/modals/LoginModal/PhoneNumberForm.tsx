@@ -28,7 +28,6 @@ const PhoneNumberForm = ({ setLoginResult, sendOTP }: PhoneNumberFormProps) => {
 	const onSubmit: SubmitHandler<Inputs> = ({ phoneNumber, captcha }) =>
 		new Promise<void>((resolve, reject) => {
 			sendOTP(phoneNumber)
-				.then(() => resolve())
 				.catch((e) => {
 					const { message } = e as Error;
 
@@ -45,8 +44,9 @@ const PhoneNumberForm = ({ setLoginResult, sendOTP }: PhoneNumberFormProps) => {
 								type: 'value',
 							});
 					}
-
-					reject();
+				})
+				.finally(() => {
+					resolve();
 				});
 		});
 
