@@ -3,7 +3,7 @@ import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/m
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
-import ChangePassword from './ChangePassword';
+import ChangePasswordForm from './ChangePasswordForm';
 import OTPForm from './OTPForm';
 import PhoneNumberForm from './PhoneNumberForm';
 
@@ -38,7 +38,7 @@ const ForgetPasswordModal = () => {
 				/>
 			)}
 			{stage === 'change-password' && (
-				<ChangePassword result={result as OAuthAPI.IValidateForgetPasswordOtp} goToLogin={goToLogin} />
+				<ChangePasswordForm result={result as OAuthAPI.IValidateForgetPasswordOtp} goToLogin={goToLogin} />
 			)}
 		</AuthenticationModalTemplate>
 	);

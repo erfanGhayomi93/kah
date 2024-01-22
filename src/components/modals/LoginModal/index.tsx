@@ -3,11 +3,12 @@ import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
 import OTPForm from './OTPForm';
 import PasswordForm from './PasswordForm';
 import PhoneNumberForm from './PhoneNumberForm';
+import SetPasswordForm from './SetPasswordForm';
 import Welcome from './Welcome';
 
 const LoginModal = () => {
@@ -19,7 +20,9 @@ const LoginModal = () => {
 
 	const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
 
-	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'welcome' | 'password'>('phoneNumber');
+	const [stage, setStage] = useState<
+		'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password'
+	>('phoneNumber');
 
 	const onCloseModal = () => {
 		dispatch(toggleLoginModal(false));
@@ -47,7 +50,7 @@ const LoginModal = () => {
 
 				if (['NewUser', 'OTP', 'HasPassword'].includes(state)) {
 					setLoginResult(data.result);
-					setStage(state === 'HasPassword' ? 'password' : 'otp');
+					setStage(state === 'HasPassword' ? 'login-with-password' : 'login-with-otp');
 					resolve();
 
 					if (pNumber) setPhoneNumber(pNumber);
@@ -58,17 +61,45 @@ const LoginModal = () => {
 		});
 	};
 
-	const isLoggedIn = !loginResult || ['HasPassword', 'NewUser', 'OTP'].includes(loginResult.state);
+	const description = useMemo<string | undefined>(() => {
+		if (!loginResult) return undefined;
+
+		const { state } = loginResult;
+
+		if (stage === 'set-password') return t('login_modal.set_password_security_description');
+
+		if (stage === 'login-with-otp' && state === 'NewUser') return t('login_modal.user_not_found');
+
+		return undefined;
+	}, [loginResult, stage]);
+
+	const userState = useMemo(() => {
+		if (!loginResult) return 'Fail';
+		return loginResult.state;
+	}, [loginResult]);
+
+	const isNeedsToSetPassword = ['NewUser', 'OTP'].includes(userState);
 
 	return (
 		<AuthenticationModalTemplate
 			hideTitle={stage === 'welcome'}
-			title={t(isLoggedIn ? 'login_modal.login_title' : 'login_modal.register_title')}
+			title={t(
+				stage === 'set-password'
+					? 'login_modal.set_password_title'
+					: userState === 'NewUser'
+						? 'login_modal.register_title'
+						: 'login_modal.login_title',
+			)}
 			onClose={onCloseModal}
-			description={isLoggedIn ? undefined : t('login_modal.user_not_found')}
+			description={description}
+			styles={{
+				description: {
+					maxWidth: '36.8rem',
+					fontWeight: 700,
+				},
+			}}
 		>
-			{stage === 'phoneNumber' && <PhoneNumberForm sendOTP={sendOTP} setLoginResult={setLoginResult} />}
-			{stage === 'otp' && (
+			{stage === 'login-with-otp' && (
 				<OTPForm
 					loginResult={loginResult}
 					goToWelcome={() => setStage('welcome')}
@@ -76,14 +107,22 @@ const LoginModal = () => {
 					resendOTP={sendOTP}
 				/>
 			)}
-			{stage === 'password' && (
+
+			{stage === 'login-with-password' && (
 				<PasswordForm
 					loginResult={loginResult}
 					goToWelcome={() => setStage('welcome')}
 					goToPhoneNumber={onChangePhoneNumber}
 				/>
 			)}
-			{stage === 'welcome' && <Welcome isLoggedIn={isLoggedIn} loginResult={loginResult} />}
+
+			{stage === 'phoneNumber' && <PhoneNumberForm sendOTP={sendOTP} setLoginResult={setLoginResult} />}
+
+			{stage === 'welcome' && (
+				<Welcome goToSetPassword={() => setStage('set-password')} isNeedsToSetPassword={isNeedsToSetPassword} />
+			)}
+
+			{stage === 'set-password' && <SetPasswordForm />}
 		</AuthenticationModalTemplate>
 	);
 };

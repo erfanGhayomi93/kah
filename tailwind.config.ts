@@ -2,7 +2,11 @@ import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
-	content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
+	content: [
+		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
+	],
 
 	theme: {
 		screens: {
@@ -340,14 +344,6 @@ const config: Config = {
 						'background-color': theme('colors.white'),
 						border: `4px solid ${theme('colors.error.100')}`,
 					},
-				},
-
-				'.left-to-right': {
-					animation: 'left-to-right ease-in-out 250ms 1 alternate forwards',
-				},
-
-				'.right-to-left': {
-					animation: 'right-to-left ease-in-out 250ms 1 alternate forwards',
 				},
 			});
 		}),

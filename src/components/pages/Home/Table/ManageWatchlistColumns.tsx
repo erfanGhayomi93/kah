@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isEnabled: boolean }>`
 	position: fixed;
 	width: 47.2rem;
 	height: calc(100% - 12.4rem);
@@ -20,6 +20,10 @@ const Wrapper = styled.div`
 	padding: 0 0 1.6rem 0;
 	z-index: 9;
 	box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.2);
+	animation: ${({ isEnabled }) =>
+		`${isEnabled ? 'left-to-right' : 'right-to-left'} ease-in-out ${
+			isEnabled ? '700ms' : '600ms'
+		} 1 alternate forwards`};
 `;
 
 const Button = styled.button`
@@ -247,17 +251,14 @@ const ManageWatchlistColumns = () => {
 	}, [wrapperRef.current, rendered]);
 
 	useEffect(() => {
-		if (!isEnable) setTimeout(() => setRendered(false), 300);
+		if (!isEnable) setTimeout(() => setRendered(false), 600);
 		else setRendered(true);
 	}, [isEnable]);
 
 	if (!rendered) return null;
 
 	return (
-		<Wrapper
-			ref={wrapperRef}
-			className={clsx('overflow-auto bg-white', isEnable ? 'left-to-right' : 'right-to-left')}
-		>
+		<Wrapper isEnabled={isEnable} ref={wrapperRef} className='overflow-auto bg-white'>
 			<div className='sticky top-0 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>

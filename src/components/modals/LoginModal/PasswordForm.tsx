@@ -57,7 +57,7 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 			goToWelcome();
 		} catch (e) {
 			setError('password', {
-				message: t('i_errors.invalid_otp'),
+				message: t('i_errors.invalid_password'),
 				type: 'value',
 			});
 		}

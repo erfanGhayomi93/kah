@@ -8,6 +8,7 @@ interface AuthenticationModalTemplateProps {
 	children: React.ReactNode;
 	hideTitle?: boolean;
 	description?: string;
+	styles?: Partial<Record<'description', React.CSSProperties>>;
 	onClose: () => void;
 }
 
@@ -21,6 +22,7 @@ const AuthenticationModalTemplate = ({
 	children,
 	hideTitle,
 	description,
+	styles,
 	onClose,
 }: AuthenticationModalTemplateProps) => {
 	return (
@@ -37,7 +39,7 @@ const AuthenticationModalTemplate = ({
 						<h1 className='text-3xl font-bold text-gray-100'>{title}</h1>
 						{description && (
 							<p
-								style={{ maxWidth: '30rem' }}
+								style={{ maxWidth: '30rem', ...styles?.description }}
 								className='mx-auto pt-24 text-center text-base text-primary-300'
 							>
 								{description}
