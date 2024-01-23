@@ -6,7 +6,7 @@ import Captcha from '@/components/common/Inputs/Captcha';
 import { setCookie } from '@/utils/cookie';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
 interface Inputs {
@@ -24,6 +24,8 @@ interface OTPFormProps {
 const OTPForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber }: OTPFormProps) => {
 	const t = useTranslations();
 
+	const isFirstFetched = useRef<boolean>(false);
+
 	const {
 		control,
 		formState: { isValid, errors, isSubmitting, touchedFields },
@@ -32,7 +34,9 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber }: 
 		clearErrors,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(10);
+	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? -1);
+
+	const [resendOtpToken] = useState<string | null>(loginResult?.nextStepToken ?? null);
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ otp, captcha }) => {
 		if (!loginResult) return;
@@ -68,38 +72,51 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber }: 
 		clearErrors('otp');
 	};
 
-	const onResendOTP = () => {
-		clearErrors('otp');
-		setSeconds(null);
-		resendOTP();
-	};
-
 	const resendOTP = async () => {
 		if (!loginResult) return;
 
 		try {
+			clearErrors('otp');
+			setSeconds(null);
+
 			const response = await axios.post<ServerResponse<OAuthAPI.ISendPasslessOTP>>(
 				routes.authentication.SendPasslessOTP,
 				{
-					token: loginResult.nextStepToken,
+					token: resendOtpToken,
 				},
 			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
+			if (!data.result.nextStepToken)
+				throw new Error(
+					data.result.state === 'TooManyRequest' ? 'i_errors.too_many_request' : 'i_errors.undefined_error',
+				);
+
 			setLoginResult(data.result);
 		} catch (e) {
-			//
-		} finally {
-			clearErrors('otp');
+			setSeconds(-1);
+			setError('otp', {
+				type: 'value',
+				message: t((e as Error).message),
+			});
 		}
 	};
 
 	useEffect(() => {
 		if (!loginResult) return;
-		setSeconds(loginResult?.otpRemainSecond ?? -1);
+
+		const remainSeconds = loginResult.otpRemainSecond;
+		setSeconds(!remainSeconds || remainSeconds < 1 ? -1 : remainSeconds);
 	}, [loginResult]);
+
+	useEffect(() => {
+		if (isFirstFetched.current) return;
+
+		if (!loginResult || loginResult.state === 'HasPassword' || !seconds || seconds < 1) resendOTP();
+		isFirstFetched.current = true;
+	}, []);
 
 	const hasCaptcha = false;
 
@@ -154,7 +171,7 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber }: 
 							)}
 
 							{seconds === -1 && (
-								<button onClick={onResendOTP} type='button' className='text-base text-link'>
+								<button onClick={resendOTP} type='button' className='text-base text-link'>
 									{t('login_modal.resend_otp')}
 								</button>
 							)}
