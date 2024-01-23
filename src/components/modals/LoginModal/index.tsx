@@ -90,12 +90,16 @@ const LoginModal = () => {
 			)}
 			onClose={onCloseModal}
 			description={description}
-			styles={{
-				description: {
-					maxWidth: '36.8rem',
-					fontWeight: 700,
-				},
-			}}
+			styles={
+				stage === 'set-password'
+					? {
+							description: {
+								maxWidth: '36.8rem',
+								fontWeight: 700,
+							},
+						}
+					: undefined
+			}
 		>
 			{stage === 'login-with-otp' && (
 				<OTPForm
@@ -111,7 +115,6 @@ const LoginModal = () => {
 					loginResult={loginResult}
 					goToWelcome={() => setStage('welcome')}
 					goToLoginWithOTP={() => setStage('login-with-otp')}
-					setLoginResult={setLoginResult}
 				/>
 			)}
 

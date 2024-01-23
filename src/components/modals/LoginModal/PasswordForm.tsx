@@ -19,12 +19,11 @@ interface Inputs {
 
 interface PasswordFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
-	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 	goToWelcome: () => void;
 	goToLoginWithOTP: () => void;
 }
 
-const PasswordForm = ({ loginResult, setLoginResult, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
+const PasswordForm = ({ loginResult, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -63,30 +62,6 @@ const PasswordForm = ({ loginResult, setLoginResult, goToWelcome, goToLoginWithO
 		} catch (e) {
 			setError('password', {
 				message: t('i_errors.invalid_password'),
-				type: 'value',
-			});
-		}
-	};
-
-	const loginWithOTP = async () => {
-		if (!loginResult) return;
-
-		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.ISendPasslessOTP>>(
-				routes.authentication.SendPasslessOTP,
-				{
-					token: loginResult.nextStepToken,
-				},
-			);
-			const { data } = response;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			setLoginResult(data.result);
-			goToLoginWithOTP();
-		} catch (e) {
-			setError('password', {
-				message: t('i_errors.undefined_error'),
 				type: 'value',
 			});
 		}
@@ -173,7 +148,7 @@ const PasswordForm = ({ loginResult, setLoginResult, goToWelcome, goToLoginWithO
 					{t('login_modal.login')}
 				</Button>
 
-				<button type='button' onClick={loginWithOTP} className='h-48 font-medium text-primary-300'>
+				<button type='button' onClick={goToLoginWithOTP} className='h-48 font-medium text-primary-300'>
 					{t('login_modal.login_with_otp')}
 				</button>
 			</div>
