@@ -1,5 +1,6 @@
 const oauthUrl = 'https://ramandoauth-stage.ramandtech.com';
 const rlcUrl = 'https://marketdata-stage.ramandtech.com';
+// 172.30.14.12:7142 OptionWatchlist
 
 const routes = {
 	option: {

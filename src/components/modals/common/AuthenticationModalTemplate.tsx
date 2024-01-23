@@ -35,12 +35,12 @@ const AuthenticationModalTemplate = ({
 						</button>
 					</div>,
 
-					<div key='title' style={{ height: '8.8rem' }} className='relative mt-48 text-center'>
+					<div key='title' className='relative mt-24 gap-24 text-center flex-column'>
 						<h1 className='text-3xl font-bold text-gray-100'>{title}</h1>
 						{description && (
 							<p
 								style={{ maxWidth: '30rem', ...styles?.description }}
-								className='mx-auto pt-24 text-center text-base text-primary-300'
+								className='mx-auto text-center text-base text-primary-300'
 							>
 								{description}
 							</p>
