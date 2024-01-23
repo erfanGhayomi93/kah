@@ -107,8 +107,7 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber }: 
 	useEffect(() => {
 		if (!loginResult) return;
 
-		const remainSeconds = loginResult.otpRemainSecond;
-		setSeconds(!remainSeconds || remainSeconds < 1 ? -1 : remainSeconds);
+		setSeconds(loginResult?.otpRemainSecond || null);
 	}, [loginResult]);
 
 	useEffect(() => {
@@ -200,7 +199,6 @@ const OTPForm = ({ loginResult, setLoginResult, goToWelcome, goToPhoneNumber }: 
 				className='!absolute flex flex-col gap-8 pt-24'
 			>
 				<Button
-					style={{}}
 					type='submit'
 					loading={isSubmitting}
 					disabled={!isValid}
