@@ -134,7 +134,7 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 				type='submit'
 				loading={isSubmitting}
 				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded shadow btn-primary'
+				className='!absolute h-48 gap-4 rounded text-lg shadow btn-primary'
 			>
 				{t('common.register')}
 			</Button>

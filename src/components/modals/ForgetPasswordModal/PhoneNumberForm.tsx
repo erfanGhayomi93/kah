@@ -88,7 +88,7 @@ const PhoneNumberForm = ({ setResult, goToOTP }: PhoneNumberFormProps) => {
 				loading={isSubmitting}
 				type='submit'
 				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded shadow btn-primary'
+				className='!absolute h-48 gap-4 rounded text-lg shadow btn-primary'
 			>
 				{t('common.continue')}
 				<ArrowLeftSVG />

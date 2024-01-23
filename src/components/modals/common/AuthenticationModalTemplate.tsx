@@ -8,6 +8,7 @@ interface AuthenticationModalTemplateProps {
 	children: React.ReactNode;
 	hideTitle?: boolean;
 	description?: string;
+	transparent?: boolean;
 	styles?: Partial<Record<'description', React.CSSProperties>>;
 	onClose: () => void;
 }

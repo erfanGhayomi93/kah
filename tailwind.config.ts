@@ -145,7 +145,7 @@ const config: Config = {
 		},
 
 		fontFamily: {
-			IRANSansFaNum: 'IRANSansFaNum',
+			IRANSans: 'IRANSans',
 		},
 	},
 
@@ -306,6 +306,10 @@ const config: Config = {
 						height: '4.8rem',
 						padding: '0 1.6rem',
 
+						'&:focus-within': {
+							'border-color': theme('colors.primary.300'),
+						},
+
 						'&.invalid': {
 							'border-color': theme('colors.error.100'),
 						},
@@ -315,7 +319,6 @@ const config: Config = {
 						height: '3.2rem',
 						width: '4.4rem',
 						'text-align': 'center',
-						'font-family': 'IRANSansFaNum',
 						display: 'flex',
 						'align-items': 'center',
 						'justify-content': 'flex-end',
