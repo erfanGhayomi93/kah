@@ -75,89 +75,91 @@ const ChangePasswordForm = ({ result, goToLogin }: ChangePasswordFormProps) => {
 	}, [newPassword, trigger]);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex flex-1 flex-col gap-24 px-64'>
-			<label className='input-box'>
-				<span className='label'>{t('inputs.new_password')}</span>
-				<div
-					className={clsx(
-						'flex-items-center input',
-						touchedFields.newPassword && errors.newPassword?.message && 'invalid',
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+			<div style={{ marginTop: '5.6rem' }} className='gap-24 flex-column'>
+				<label className='input-box'>
+					<span className='label'>{t('inputs.new_password')}</span>
+					<div
+						className={clsx(
+							'flex-items-center input',
+							touchedFields.newPassword && errors.newPassword?.message && 'invalid',
+						)}
+					>
+						<input
+							title={t('inputs.new_password_placeholder')}
+							autoFocus
+							type={passwordVisibility.newPassword ? 'text' : 'password'}
+							inputMode='numeric'
+							maxLength={72}
+							className='flex-1 text-right ltr'
+							placeholder={t('inputs.new_password_placeholder')}
+							{...register('newPassword')}
+						/>
+
+						<button
+							onClick={() => setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)}
+							type='button'
+							className='border-r-0 prefix'
+						>
+							{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
+						</button>
+					</div>
+
+					<div className='flex-justify-between *:text-tiny'>
+						<span className={passwordRequirements?.lowercase ? 'text-primary-300' : 'text-gray-400'}>
+							{t('forget_password_modal.password_english_words')}
+						</span>
+						<span className={passwordRequirements?.length ? 'text-primary-300' : 'text-gray-400'}>
+							{t('forget_password_modal.password_min_chars')}
+						</span>
+						<span className={passwordRequirements?.uppercase ? 'text-primary-300' : 'text-gray-400'}>
+							{t('forget_password_modal.password_include_uppercase_chars')}
+						</span>
+						<span className={passwordRequirements?.numbers ? 'text-primary-300' : 'text-gray-400'}>
+							{t('forget_password_modal.password_english_include_number')}
+						</span>
+					</div>
+				</label>
+
+				<label className={clsx('input-box')}>
+					<span className='label'>{t('inputs.repeat_new_password')}</span>
+					<div className={clsx('flex-items-center input')}>
+						<input
+							title={t('inputs.repeat_new_password_placeholder')}
+							autoFocus
+							type={passwordVisibility.repeatNewPassword ? 'text' : 'password'}
+							inputMode='numeric'
+							maxLength={72}
+							className='flex-1 text-right ltr'
+							placeholder={t('inputs.repeat_new_password_placeholder')}
+							{...register('repeatNewPassword', {
+								required: true,
+								validate: (val) => {
+									if (newPassword !== val) return t('i_errors.invalid_repeat_password');
+								},
+							})}
+						/>
+
+						<button
+							onClick={() =>
+								setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
+							}
+							type='button'
+							className='border-r-0 prefix'
+						>
+							{passwordVisibility.repeatNewPassword ? <EyeSlashSVG /> : <EyeSVG />}
+						</button>
+					</div>
+
+					{touchedFields.repeatNewPassword && errors.repeatNewPassword?.message && (
+						<span className='i-error'>{errors.repeatNewPassword.message}</span>
 					)}
-				>
-					<input
-						title={t('inputs.new_password_placeholder')}
-						autoFocus
-						type={passwordVisibility.newPassword ? 'text' : 'password'}
-						inputMode='numeric'
-						maxLength={72}
-						className='flex-1 text-right ltr'
-						placeholder={t('inputs.new_password_placeholder')}
-						{...register('newPassword')}
-					/>
-
-					<button
-						onClick={() => setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)}
-						type='button'
-						className='border-r-0 prefix'
-					>
-						{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
-					</button>
-				</div>
-
-				<div className='flex-justify-between *:text-tiny'>
-					<span className={passwordRequirements?.lowercase ? 'text-primary-300' : 'text-gray-400'}>
-						{t('forget_password_modal.password_english_words')}
-					</span>
-					<span className={passwordRequirements?.length ? 'text-primary-300' : 'text-gray-400'}>
-						{t('forget_password_modal.password_min_chars')}
-					</span>
-					<span className={passwordRequirements?.uppercase ? 'text-primary-300' : 'text-gray-400'}>
-						{t('forget_password_modal.password_include_uppercase_chars')}
-					</span>
-					<span className={passwordRequirements?.numbers ? 'text-primary-300' : 'text-gray-400'}>
-						{t('forget_password_modal.password_english_include_number')}
-					</span>
-				</div>
-			</label>
-
-			<label className={clsx('input-box')}>
-				<span className='label'>{t('inputs.repeat_new_password')}</span>
-				<div className={clsx('flex-items-center input')}>
-					<input
-						title={t('inputs.repeat_new_password_placeholder')}
-						autoFocus
-						type={passwordVisibility.repeatNewPassword ? 'text' : 'password'}
-						inputMode='numeric'
-						maxLength={72}
-						className='flex-1 text-right ltr'
-						placeholder={t('inputs.repeat_new_password_placeholder')}
-						{...register('repeatNewPassword', {
-							required: true,
-							validate: (val) => {
-								if (newPassword !== val) return t('i_errors.invalid_repeat_password');
-							},
-						})}
-					/>
-
-					<button
-						onClick={() =>
-							setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
-						}
-						type='button'
-						className='border-r-0 prefix'
-					>
-						{passwordVisibility.repeatNewPassword ? <EyeSlashSVG /> : <EyeSVG />}
-					</button>
-				</div>
-
-				{touchedFields.repeatNewPassword && errors.repeatNewPassword?.message && (
-					<span className='i-error'>{errors.repeatNewPassword.message}</span>
-				)}
-			</label>
+				</label>
+			</div>
 
 			<div
 				style={{
-					bottom: '4.8rem',
+					bottom: '2.4rem',
 					width: 'calc(100% - 17.6rem)',
 				}}
 				className='!absolute flex flex-col gap-8'
@@ -171,7 +173,7 @@ const ChangePasswordForm = ({ result, goToLogin }: ChangePasswordFormProps) => {
 					{t('common.register')}
 				</Button>
 
-				<button type='button' disabled={!isValid} className='h-48 font-medium text-secondary-300'>
+				<button type='button' disabled={!isValid} className='h-48 font-medium text-primary-300'>
 					{t('common.cancel')}
 				</button>
 			</div>

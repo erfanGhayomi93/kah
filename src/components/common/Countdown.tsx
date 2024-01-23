@@ -26,13 +26,17 @@ const Countdown = ({ seconds, onFinished }: CountdownProps) => {
 
 				if (nextRemainingSeconds < 0) {
 					clearInterval(interval);
-					if (prevSecs) onFinished();
+					onFinished();
 					return prevSecs;
 				}
 
 				return nextRemainingSeconds;
 			});
 		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
 	}, [seconds]);
 
 	return formatter;

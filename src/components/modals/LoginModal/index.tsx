@@ -22,13 +22,13 @@ const LoginModal = () => {
 
 	const [stage, setStage] = useState<TLoginModalStates>('phoneNumber');
 
+	const [toast, setToast] = useState<{ type: TLoginModalStates | null; message: string }>({
+		type: null,
+		message: '',
+	});
+
 	const onCloseModal = () => {
 		dispatch(toggleLoginModal(false));
-	};
-
-	const onChangePhoneNumber = () => {
-		setStage('phoneNumber');
-		setLoginResult(null);
 	};
 
 	const sendOTP = (pNumber?: string) => {
@@ -59,6 +59,25 @@ const LoginModal = () => {
 		});
 	};
 
+	const goToPhoneNumber = (alertMessage?: string) => {
+		setStage('phoneNumber');
+		setLoginResult(null);
+
+		if (alertMessage) {
+			setToast({
+				type: 'phoneNumber',
+				message: alertMessage,
+			});
+		}
+	};
+
+	const clearToast = () => {
+		setToast({
+			type: null,
+			message: '',
+		});
+	};
+
 	const description = useMemo<string | undefined>(() => {
 		if (!loginResult) return undefined;
 
@@ -75,6 +94,8 @@ const LoginModal = () => {
 		if (!loginResult) return 'Fail';
 		return loginResult.state;
 	}, [loginResult]);
+
+	const hasDescription = typeof description === 'string';
 
 	const isNeedsToSetPassword = ['NewUser', 'OTP'].includes(userState);
 
@@ -106,7 +127,9 @@ const LoginModal = () => {
 					loginResult={loginResult}
 					setLoginResult={setLoginResult}
 					goToWelcome={() => setStage('welcome')}
-					goToPhoneNumber={onChangePhoneNumber}
+					goToPhoneNumber={goToPhoneNumber}
+					hasDescription={hasDescription}
+					clearToast={clearToast}
 				/>
 			)}
 
