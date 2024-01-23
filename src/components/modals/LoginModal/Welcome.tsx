@@ -3,6 +3,7 @@ import { toggleLoginModal } from '@/features/slices/modalSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 interface WelcomeProps {
 	isNeedsToSetPassword: boolean;
@@ -17,6 +18,18 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 	const onCloseModal = () => {
 		dispatch(toggleLoginModal(false));
 	};
+
+	useEffect(() => {
+		if (isNeedsToSetPassword) return;
+
+		const timer = setTimeout(() => {
+			onCloseModal();
+		}, 2000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, []);
 
 	return (
 		<div className='flex flex-1 flex-col items-center justify-between'>
