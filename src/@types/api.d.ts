@@ -268,3 +268,9 @@ declare namespace OAuthAPI {
 		token: string | null;
 	}
 }
+
+declare namespace User {
+	interface GeneralInformation {
+		mobileNumber: string;
+	}
+}

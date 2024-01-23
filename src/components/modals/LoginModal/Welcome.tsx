@@ -22,18 +22,23 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 	useEffect(() => {
 		if (isNeedsToSetPassword) return;
 
-		const timer = setTimeout(() => {
-			onCloseModal();
-		}, 2000);
+		// const timer = setTimeout(() => {
+		// 	onCloseModal();
+		// }, 2000);
 
-		return () => {
-			clearTimeout(timer);
-		};
+		// return () => {
+		// 	clearTimeout(timer);
+		// };
 	}, []);
 
 	return (
-		<div className='flex flex-1 flex-col items-center justify-between'>
-			<div className={clsx('flex-1 flex-column flex-justify-center', isNeedsToSetPassword ? 'gap-64' : 'gap-24')}>
+		<div className='flex flex-1 flex-col items-center'>
+			<div
+				className={clsx(
+					'flex-1 items-center flex-column',
+					isNeedsToSetPassword ? 'gap-64' : 'justify-center gap-24',
+				)}
+			>
 				<Image
 					width={isNeedsToSetPassword ? '280' : '398'}
 					height={isNeedsToSetPassword ? '248' : '350'}
@@ -44,12 +49,17 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 			</div>
 
 			{isNeedsToSetPassword && (
-				<div className='flex w-full flex-col gap-24 px-64'>
+				<div
+					style={{
+						bottom: '2.4rem',
+					}}
+					className='absolute w-full gap-24 px-64 flex-column'
+				>
 					<h3 className='text-center text-base font-bold text-primary-300'>
 						{t('login_modal.set_password_description')}
 					</h3>
 
-					<div className='gap-16 flex-column'>
+					<div className='w-full gap-16 px-32 flex-column'>
 						<button onClick={goToSetPassword} type='button' className='h-48 rounded btn-primary'>
 							{t('login_modal.set_password_btn')}
 						</button>
