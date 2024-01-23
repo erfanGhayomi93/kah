@@ -102,13 +102,7 @@ const LoginModal = () => {
 	return (
 		<AuthenticationModalTemplate
 			hideTitle={stage === 'welcome'}
-			title={t(
-				stage === 'set-password'
-					? 'login_modal.set_password_title'
-					: userState === 'NewUser'
-						? 'login_modal.register_title'
-						: 'login_modal.login_title',
-			)}
+			title={t(stage === 'set-password' ? 'login_modal.set_password_title' : 'login_modal.login_title')}
 			onClose={onCloseModal}
 			description={description}
 			styles={
@@ -125,6 +119,7 @@ const LoginModal = () => {
 			{stage === 'login-with-otp' && (
 				<OTPForm
 					loginResult={loginResult}
+					phoneNumber={phoneNumber ?? '*'}
 					setLoginResult={setLoginResult}
 					goToWelcome={() => setStage('welcome')}
 					goToPhoneNumber={goToPhoneNumber}

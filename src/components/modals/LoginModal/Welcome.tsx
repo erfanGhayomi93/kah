@@ -22,13 +22,13 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 	useEffect(() => {
 		if (isNeedsToSetPassword) return;
 
-		// const timer = setTimeout(() => {
-		// 	onCloseModal();
-		// }, 2000);
+		const timer = setTimeout(() => {
+			onCloseModal();
+		}, 2000);
 
-		// return () => {
-		// 	clearTimeout(timer);
-		// };
+		return () => {
+			clearTimeout(timer);
+		};
 	}, []);
 
 	return (

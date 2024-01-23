@@ -32,8 +32,8 @@ const ForgetPasswordModal = () => {
 			{stage === 'phoneNumber' && <PhoneNumberForm setResult={setResult} goToOTP={() => setStage('otp')} />}
 			{stage === 'otp' && (
 				<OTPForm
-					result={result as OAuthAPI.IForgetPasswordFirstStep}
 					setResult={setResult}
+					result={result as OAuthAPI.IForgetPasswordFirstStep}
 					goToChangePassword={() => setStage('change-password')}
 				/>
 			)}
