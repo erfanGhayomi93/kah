@@ -128,7 +128,7 @@ const PasswordForm = ({ loginResult, goToWelcome, goToLoginWithOTP }: PasswordFo
 					type='submit'
 					loading={isSubmitting}
 					disabled={!isValid}
-					className='h-48 rounded shadow btn-primary'
+					className='h-48 rounded text-lg shadow btn-primary'
 				>
 					{t('login_modal.login')}
 				</Button>

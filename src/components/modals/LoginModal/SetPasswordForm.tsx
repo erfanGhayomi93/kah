@@ -175,7 +175,7 @@ const SetPasswordForm = () => {
 					loading={isSubmitting}
 					type='submit'
 					disabled={!isValid}
-					className='h-48 rounded shadow btn-primary'
+					className='h-48 rounded text-lg shadow btn-primary'
 				>
 					{t('login_modal.register_password_btn')}
 				</Button>

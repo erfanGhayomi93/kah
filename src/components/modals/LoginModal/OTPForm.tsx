@@ -15,6 +15,7 @@ interface Inputs {
 interface OTPFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
 	hasDescription: boolean;
+	phoneNumber: string;
 	clearToast: () => void;
 	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 	goToWelcome: () => void;
@@ -23,6 +24,7 @@ interface OTPFormProps {
 
 const OTPForm = ({
 	loginResult,
+	phoneNumber,
 	hasDescription,
 	clearToast,
 	setLoginResult,
@@ -143,7 +145,7 @@ const OTPForm = ({
 					}}
 					render={({ field, fieldState: { invalid, isTouched, error } }) => (
 						<label className={clsx('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
-							<span className='label'>{t('inputs.otp')}</span>
+							<span className='label'>{t('inputs.otp_mobile_number', { mobile: phoneNumber })}</span>
 							<div className={clsx('flex-items-center input', isTouched && invalid && 'invalid')}>
 								<input
 									title={t('inputs.otp_placeholder')}
@@ -206,7 +208,7 @@ const OTPForm = ({
 					type='submit'
 					loading={isSubmitting}
 					disabled={!isValid}
-					className='h-48 rounded shadow btn-primary'
+					className='h-48 rounded text-lg shadow btn-primary'
 				>
 					{t('login_modal.login')}
 				</Button>
