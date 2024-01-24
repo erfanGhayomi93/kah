@@ -81,64 +81,101 @@ const SetPasswordForm = () => {
 		trigger('repeatNewPassword');
 	}, [newPassword, trigger]);
 
+	const newPasswordFieldIsTouched = touchedFields?.newPassword;
+
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
 			<div style={{ marginTop: '4.8rem' }} className='gap-24 flex-column'>
-				<label className='input-box'>
-					<span className='label'>{t('inputs.new_password')}</span>
-					<div
-						className={clsx(
-							'flex-items-center input',
-							touchedFields.newPassword && errors.newPassword?.message && 'invalid',
-						)}
-					>
-						<input
-							title={t('inputs.new_password_placeholder')}
-							autoFocus
-							type={passwordVisibility.newPassword ? 'text' : 'password'}
-							inputMode='numeric'
-							maxLength={72}
-							className='flex-1 text-right ltr'
-							placeholder={t('inputs.new_password_placeholder')}
-							{...register('newPassword')}
-						/>
-
-						<button
-							onClick={() => setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)}
-							type='button'
-							className='border-r-0 text-gray-200 prefix'
+				<div className='gap-8 flex-column'>
+					<label className='input-box'>
+						<span className='label'>{t('inputs.password')}</span>
+						<div
+							className={clsx(
+								'flex-items-center input',
+								touchedFields.newPassword && errors.newPassword?.message && 'invalid',
+							)}
 						>
-							{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
-						</button>
-					</div>
+							<input
+								title={t('inputs.password_placeholder')}
+								autoFocus
+								type={passwordVisibility.newPassword ? 'text' : 'password'}
+								inputMode='numeric'
+								maxLength={72}
+								className='flex-1 text-right ltr'
+								placeholder={t('inputs.password_placeholder')}
+								{...register('newPassword')}
+							/>
+
+							<button
+								onClick={() =>
+									setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)
+								}
+								type='button'
+								className='border-r-0 text-gray-200 prefix'
+							>
+								{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
+							</button>
+						</div>
+					</label>
 
 					<div className='gap-4 flex-column'>
 						<div className='flex gap-32'>
-							<span className={passwordRequirements?.lowercase ? 'i-success' : 'i-null'}>
+							<span
+								className={
+									newPasswordFieldIsTouched
+										? passwordRequirements?.lowercase
+											? 'i-success'
+											: 'i-error'
+										: 'i-null'
+								}
+							>
 								{t('forget_password_modal.password_english_words')}
 							</span>
-							<span className={passwordRequirements?.uppercase ? 'i-success' : 'i-null'}>
+							<span
+								className={
+									newPasswordFieldIsTouched
+										? passwordRequirements?.uppercase
+											? 'i-success'
+											: 'i-error'
+										: 'i-null'
+								}
+							>
 								{t('forget_password_modal.password_include_uppercase_chars')}
 							</span>
 						</div>
 
 						<div className='flex gap-32'>
-							<span className={passwordRequirements?.length ? 'i-success' : 'i-null'}>
+							<span
+								className={
+									newPasswordFieldIsTouched
+										? passwordRequirements?.length
+											? 'i-success'
+											: 'i-error'
+										: 'i-null'
+								}
+							>
 								{t('forget_password_modal.password_min_chars')}
 							</span>
-							<span className={passwordRequirements?.numbers ? 'i-success' : 'i-null'}>
+							<span
+								className={
+									newPasswordFieldIsTouched
+										? passwordRequirements?.numbers
+											? 'i-success'
+											: 'i-error'
+										: 'i-null'
+								}
+							>
 								{t('forget_password_modal.password_english_include_number')}
 							</span>
 						</div>
 					</div>
-				</label>
+				</div>
 
 				<label className={clsx('input-box')}>
 					<span className='label'>{t('inputs.repeat_new_password')}</span>
 					<div className={clsx('flex-items-center input')}>
 						<input
 							title={t('inputs.repeat_new_password_placeholder')}
-							autoFocus
 							type={passwordVisibility.repeatNewPassword ? 'text' : 'password'}
 							inputMode='numeric'
 							maxLength={72}

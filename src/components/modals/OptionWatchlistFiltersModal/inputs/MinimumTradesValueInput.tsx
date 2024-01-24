@@ -11,7 +11,7 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 	const t = useTranslations();
 
 	const valueFormatter = (value: number): string => {
-		if (value < 0) return '';
+		if (value <= 0) return '';
 		return sepNumbers(String(value));
 	};
 

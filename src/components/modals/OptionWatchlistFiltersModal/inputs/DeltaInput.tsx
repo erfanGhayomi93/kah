@@ -55,9 +55,9 @@ const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) 
 					onBlur={(e) => onBlurInput(e.target.value, (v) => onChange([fromValue, v]))}
 					maxLength={9}
 					borderClass={
+						toValue !== '0' &&
 						Boolean(fromValue) &&
 						Boolean(toValue) &&
-						toValue !== '0' &&
 						Number(fromValue) > Number(toValue) &&
 						'border-error-100'
 					}
