@@ -44,6 +44,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 					height={isNeedsToSetPassword ? '248' : '350'}
 					alt='welcome'
 					src='/static/images/welcome.svg'
+					quality='1'
 				/>
 				<h1 className='text-center text-4xl font-bold text-primary-300'>{t('login_modal.welcome')}</h1>
 			</div>
