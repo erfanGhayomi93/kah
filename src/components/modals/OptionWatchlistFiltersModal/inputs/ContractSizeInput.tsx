@@ -27,8 +27,8 @@ const Input = ({ borderClass, ...props }: InputProps) => (
 const ContractSizeInput = ({ value: [fromValue, toValue], onChange }: ContractSizeInputProps) => {
 	const t = useTranslations();
 
-	const valueFormatter = (value: number): string => {
-		if (value <= 0) return '';
+	const valueFormatter = (value: string) => {
+		if (!value) return '';
 		return sepNumbers(String(value));
 	};
 
@@ -37,17 +37,18 @@ const ContractSizeInput = ({ value: [fromValue, toValue], onChange }: ContractSi
 			<div className='flex-1 gap-8 flex-items-center'>
 				<span>{t('common.from')}</span>
 				<Input
-					value={valueFormatter(fromValue) || ''}
-					onChange={(e) => onChange([Number(convertStringToInteger(e.target.value)), toValue])}
+					value={valueFormatter(fromValue)}
+					onChange={(e) => onChange([convertStringToInteger(e.target.value), toValue])}
 				/>
 			</div>
 			<div className='flex-1 gap-8 flex-items-center'>
 				<span>{t('common.to')}</span>
 				<Input
-					value={valueFormatter(toValue) || ''}
-					onChange={(e) => onChange([fromValue, Number(convertStringToInteger(e.target.value))])}
+					value={valueFormatter(toValue)}
+					onChange={(e) => onChange([fromValue, convertStringToInteger(e.target.value)])}
 					borderClass={
-						toValue !== 0 &&
+						toValue &&
+						toValue !== '0' &&
 						Boolean(fromValue) &&
 						Boolean(toValue) &&
 						Number(fromValue) > Number(toValue) &&

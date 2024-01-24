@@ -27,13 +27,15 @@ const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) 
 	const t = useTranslations();
 
 	const valueFormatter = (value: string) => {
-		return value.replace(/[^0-9.]/gi, '') || '';
+		return value.replace(/[^0-9.-]/gi, '') || '';
 	};
 
 	const onBlurInput = (value: string, cb: (value: string) => void) => {
 		const valueAsNumber = Number(value);
 
 		if (!valueAsNumber || isNaN(valueAsNumber)) cb('');
+		if (valueAsNumber < -1) cb('-1');
+		if (valueAsNumber > 1) cb('1');
 	};
 
 	return (
@@ -55,6 +57,7 @@ const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) 
 					onBlur={(e) => onBlurInput(e.target.value, (v) => onChange([fromValue, v]))}
 					maxLength={9}
 					borderClass={
+						toValue &&
 						toValue !== '0' &&
 						Boolean(fromValue) &&
 						Boolean(toValue) &&

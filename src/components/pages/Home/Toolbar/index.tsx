@@ -34,7 +34,7 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	const filtersCount = useMemo(() => {
 		let badgeCount = 0;
 
-		if (filters.minimumTradesValue && filters.minimumTradesValue >= 0) badgeCount++;
+		if (filters.minimumTradesValue && Number(filters.minimumTradesValue) >= 0) badgeCount++;
 
 		if (Array.isArray(filters.symbols) && filters.symbols.length > 0) badgeCount++;
 
@@ -48,16 +48,13 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		}
 
 		if (filters.contractSize) {
-			if (filters.contractSize[0] >= 0) badgeCount++;
-			if (filters.contractSize[1] >= 0) badgeCount++;
+			if (filters.contractSize[0] && Number(filters.contractSize[0]) > 0) badgeCount++;
+			if (filters.contractSize[1] && Number(filters.contractSize[1]) > 0) badgeCount++;
 		}
 
 		if (filters.delta) {
-			const fromDelta = filters.delta[0];
-			const toDelta = filters.delta[1];
-
-			if (fromDelta && !isNaN(Number(fromDelta))) badgeCount++;
-			if (toDelta && !isNaN(Number(toDelta))) badgeCount++;
+			if (filters.delta[0] && !isNaN(Number(filters.delta[0]))) badgeCount++;
+			if (filters.delta[1] && !isNaN(Number(filters.delta[1]))) badgeCount++;
 		}
 
 		return badgeCount;
