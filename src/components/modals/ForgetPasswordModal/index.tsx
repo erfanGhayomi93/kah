@@ -7,6 +7,7 @@ import { useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
 import ChangePasswordForm from './ChangePasswordForm';
 import OTPForm from './OTPForm';
+import PasswordChangedSuccessfully from './PasswordChangedSuccessfully';
 import PhoneNumberForm from './PhoneNumberForm';
 
 interface ForgetPasswordModalProps {
@@ -22,7 +23,9 @@ const ForgetPasswordModal = ({ phoneNumber }: ForgetPasswordModalProps) => {
 		null | OAuthAPI.IForgetPasswordFirstStep | OAuthAPI.IValidateForgetPasswordOtp
 	>(null);
 
-	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password'>(phoneNumber ? 'otp' : 'phoneNumber');
+	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password' | 'password-changed-successfully'>(
+		phoneNumber ? 'otp' : 'phoneNumber',
+	);
 
 	const onCloseModal = () => {
 		dispatch(toggleForgetPasswordModal(null));
@@ -68,8 +71,12 @@ const ForgetPasswordModal = ({ phoneNumber }: ForgetPasswordModalProps) => {
 				/>
 			)}
 			{stage === 'change-password' && (
-				<ChangePasswordForm result={result as OAuthAPI.IValidateForgetPasswordOtp} goToLogin={goToLogin} />
+				<ChangePasswordForm
+					result={result as OAuthAPI.IValidateForgetPasswordOtp}
+					onPasswordChanged={() => setStage('password-changed-successfully')}
+				/>
 			)}
+			{stage === 'password-changed-successfully' && <PasswordChangedSuccessfully />}
 		</AuthenticationModalTemplate>
 	);
 };

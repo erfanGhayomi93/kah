@@ -32,7 +32,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 	}, []);
 
 	return (
-		<div className='flex flex-1 flex-col items-center'>
+		<div className='flex-1 items-center flex-column'>
 			<div
 				className={clsx(
 					'flex-1 items-center flex-column',

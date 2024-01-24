@@ -15,10 +15,10 @@ interface Inputs {
 
 interface ChangePasswordFormProps {
 	result: null | OAuthAPI.IValidateForgetPasswordOtp;
-	goToLogin: () => void;
+	onPasswordChanged: () => void;
 }
 
-const ChangePasswordForm = ({ result, goToLogin }: ChangePasswordFormProps) => {
+const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -55,7 +55,7 @@ const ChangePasswordForm = ({ result, goToLogin }: ChangePasswordFormProps) => {
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			goToLogin();
+			onPasswordChanged();
 		} catch (e) {
 			//
 		}
