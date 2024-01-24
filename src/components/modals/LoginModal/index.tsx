@@ -83,8 +83,6 @@ const LoginModal = () => {
 
 		const { state } = loginResult;
 
-		if (stage === 'set-password') return t('login_modal.set_password_security_description');
-
 		if (stage === 'login-with-otp' && state === 'NewUser') return t('login_modal.user_not_found');
 
 		return undefined;
