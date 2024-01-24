@@ -47,6 +47,7 @@ const ContractSizeInput = ({ value: [fromValue, toValue], onChange }: ContractSi
 					value={valueFormatter(toValue) || ''}
 					onChange={(e) => onChange([fromValue, Number(convertStringToInteger(e.target.value))])}
 					borderClass={
+						toValue !== 0 &&
 						Boolean(fromValue) &&
 						Boolean(toValue) &&
 						Number(fromValue) > Number(toValue) &&
