@@ -9,12 +9,13 @@ interface Inputs {
 }
 
 interface PhoneNumberFormProps {
-	sendOTP: (pNumber?: string) => Promise<OAuthAPI.IForgetPasswordFirstStep>;
 	goToOTP: () => void;
+	setPhoneNumber: (phoneNumber: string) => void;
+	sendOTP: (pNumber?: string) => Promise<OAuthAPI.IForgetPasswordFirstStep>;
 	setResult: (value: OAuthAPI.IForgetPasswordFirstStep) => void;
 }
 
-const PhoneNumberForm = ({ setResult, sendOTP, goToOTP }: PhoneNumberFormProps) => {
+const PhoneNumberForm = ({ setResult, setPhoneNumber, sendOTP, goToOTP }: PhoneNumberFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -27,6 +28,7 @@ const PhoneNumberForm = ({ setResult, sendOTP, goToOTP }: PhoneNumberFormProps) 
 	const onSubmit: SubmitHandler<Inputs> = async ({ phoneNumber }) => {
 		sendOTP(phoneNumber)
 			.then(() => {
+				setPhoneNumber(phoneNumber);
 				goToOTP();
 			})
 			.catch(() => {

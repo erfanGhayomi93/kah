@@ -12,13 +12,15 @@ interface Inputs {
 }
 
 interface OTPFormProps {
+	phoneNumber: string;
 	result: null | OAuthAPI.IForgetPasswordFirstStep;
 	sendOTP: (pNumber?: string) => Promise<OAuthAPI.IForgetPasswordFirstStep>;
 	setResult: (value: OAuthAPI.IValidateForgetPasswordOtp) => void;
 	goToChangePassword: () => void;
+	goToPhoneNumber: () => void;
 }
 
-const OTPForm = ({ result, sendOTP, setResult, goToChangePassword }: OTPFormProps) => {
+const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, goToPhoneNumber }: OTPFormProps) => {
 	const t = useTranslations();
 
 	const isFirstFetched = useRef<boolean>(false);
@@ -109,7 +111,8 @@ const OTPForm = ({ result, sendOTP, setResult, goToChangePassword }: OTPFormProp
 					}}
 					render={({ field, fieldState: { invalid, isTouched, error } }) => (
 						<label className={clsx('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
-							<span className='label'>{t('inputs.otp')}</span>
+							<span className='label'>{t('inputs.otp_mobile_number', { mobile: phoneNumber })}</span>
+
 							<div className={clsx('flex-items-center input', isTouched && invalid && 'invalid')}>
 								<input
 									title={t('inputs.otp_placeholder')}
@@ -137,16 +140,22 @@ const OTPForm = ({ result, sendOTP, setResult, goToChangePassword }: OTPFormProp
 									)}
 								</div>
 							</div>
-							{seconds === -1 ? (
-								<div className='flex justify-between'>
-									<span className='i-error'>{t('login_modal.resend_otp_description')}</span>
+
+							<div className='flex justify-between'>
+								{seconds !== null && seconds > -1 && isTouched && invalid && (
+									<span className='i-error'>{error?.message}</span>
+								)}
+
+								{seconds === -1 && (
 									<button onClick={onResendOTP} type='button' className='text-base text-link'>
 										{t('login_modal.resend_otp')}
 									</button>
-								</div>
-							) : (
-								isTouched && invalid && <span className='i-error'>{error?.message}</span>
-							)}
+								)}
+
+								<button onClick={goToPhoneNumber} type='button' className='mr-auto text-base text-link'>
+									{t('login_modal.change_phone_number')}
+								</button>
+							</div>
 						</label>
 					)}
 				/>

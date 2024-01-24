@@ -115,22 +115,22 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 						<div className='flex gap-32'>
 							<span
 								className={
-									newPasswordFieldIsTouched
-										? passwordRequirements?.lowercase
-											? 'i-success'
-											: 'i-error'
-										: 'i-null'
+									passwordRequirements?.lowercase
+										? 'i-success'
+										: newPasswordFieldIsTouched
+											? 'i-error'
+											: 'i-null'
 								}
 							>
 								{t('forget_password_modal.password_english_words')}
 							</span>
 							<span
 								className={
-									newPasswordFieldIsTouched
-										? passwordRequirements?.uppercase
-											? 'i-success'
-											: 'i-error'
-										: 'i-null'
+									passwordRequirements?.uppercase
+										? 'i-success'
+										: newPasswordFieldIsTouched
+											? 'i-error'
+											: 'i-null'
 								}
 							>
 								{t('forget_password_modal.password_include_uppercase_chars')}
@@ -140,22 +140,22 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 						<div className='flex gap-32'>
 							<span
 								className={
-									newPasswordFieldIsTouched
-										? passwordRequirements?.length
-											? 'i-success'
-											: 'i-error'
-										: 'i-null'
+									passwordRequirements?.length
+										? 'i-success'
+										: newPasswordFieldIsTouched
+											? 'i-error'
+											: 'i-null'
 								}
 							>
 								{t('forget_password_modal.password_min_chars')}
 							</span>
 							<span
 								className={
-									newPasswordFieldIsTouched
-										? passwordRequirements?.numbers
-											? 'i-success'
-											: 'i-error'
-										: 'i-null'
+									passwordRequirements?.numbers
+										? 'i-success'
+										: newPasswordFieldIsTouched
+											? 'i-error'
+											: 'i-null'
 								}
 							>
 								{t('forget_password_modal.password_english_include_number')}
