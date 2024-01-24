@@ -65,6 +65,7 @@ const config: Config = {
 
 			success: {
 				100: 'rgba(25, 135, 84, 1)',
+				200: 'rgba(36, 174, 100, 1)',
 			},
 
 			warning: {
@@ -329,23 +330,55 @@ const config: Config = {
 					},
 				},
 
-				'.i-error': {
+				'.i-null,.i-error,.i-success': {
 					position: 'relative',
 					'font-size': '1.4rem',
 					'font-weight': '400',
 					'padding-right': '1.6rem',
-					color: theme('colors.error.100'),
 
-					'&:before': {
+					'&::before': {
 						content: '""',
 						position: 'absolute',
 						right: '0',
-						top: '3px',
+						top: '50%',
+						transform: 'translateY(-50%)',
 						width: '12px',
 						height: '12px',
 						'border-radius': '50%',
-						'background-color': theme('colors.white'),
-						border: `4px solid ${theme('colors.error.100')}`,
+					},
+				},
+
+				'.i-null': {
+					color: theme('colors.gray.300'),
+
+					'&::before': {
+						border: `1px solid ${theme('colors.gray.300')}`,
+					},
+				},
+
+				'.i-error': {
+					color: theme('colors.error.100'),
+
+					'&::before': {
+						border: `1px solid ${theme('colors.error.100')}`,
+						'border-radius': '50%',
+						'background-position': 'center',
+						'background-image': `url(
+							"data:image/svg+xml,<svg width='12px' height='12px' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M10 4L4 10' stroke='rgba(220, 53, 69, 1)' stroke-linecap='round' stroke-linejoin='round'/><path d='M4 4L10 10' stroke='rgba(220, 53, 69, 1)' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+						)`,
+					},
+				},
+
+				'.i-success': {
+					color: theme('colors.success.200'),
+
+					'&::before': {
+						border: `1px solid ${theme('colors.success.200')}`,
+						'border-radius': '50%',
+						'background-position': 'center',
+						'background-image': `url(
+							"data:image/svg+xml,<svg width='12px' height='12px' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3.5 8L4.73309 8.92482C5.16178 9.24634 5.76772 9.17279 6.10705 8.75805L10 4' stroke='rgba(36, 174, 100, 1)' stroke-linecap='round'/></svg>"
+						)`,
 					},
 				},
 			});

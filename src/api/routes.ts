@@ -1,14 +1,14 @@
 const oauthUrl = 'https://ramandoauth-stage.ramandtech.com';
-const rlcUrl = 'https://marketdata-stage.ramandtech.com';
+const rlcUrl = 'https://kahkeshanapi.ramandtech.com';
 // 172.30.14.12:7142 OptionWatchlist
 
 const routes = {
 	option: {
-		Watchlist: `${rlcUrl}/KahkeshanOption/v1/Watchlist`,
-		OptionSymbolSearch: `${rlcUrl}/KahkeshanOption/v1/OptionSymbolSearch`,
-		OptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/OptionSymbolColumns`,
-		ResetOptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/ResetOptionSymbolColumns`,
-		UpdateOptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/UpdateOptionSymbolColumns`,
+		Watchlist: `${rlcUrl}/OptionWatchlist/v1/Watchlist`,
+		OptionSymbolSearch: `${rlcUrl}/OptionWatchlist/v1/OptionSymbolSearch`,
+		OptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/OptionSymbolColumns`,
+		ResetOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/ResetOptionSymbolColumns`,
+		UpdateOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/UpdateOptionSymbolColumns`,
 	},
 
 	authentication: {

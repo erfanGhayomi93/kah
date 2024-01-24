@@ -4,7 +4,7 @@ import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
 interface Inputs {
@@ -13,17 +13,21 @@ interface Inputs {
 
 interface OTPFormProps {
 	result: null | OAuthAPI.IForgetPasswordFirstStep;
+	sendOTP: (pNumber?: string) => Promise<OAuthAPI.IForgetPasswordFirstStep>;
 	setResult: (value: OAuthAPI.IValidateForgetPasswordOtp) => void;
 	goToChangePassword: () => void;
 }
 
-const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
+const OTPForm = ({ result, sendOTP, setResult, goToChangePassword }: OTPFormProps) => {
 	const t = useTranslations();
+
+	const isFirstFetched = useRef<boolean>(false);
 
 	const {
 		control,
-		formState: { isValid, errors, isSubmitting, touchedFields },
+		formState: { isValid, isSubmitting },
 		handleSubmit,
+		clearErrors,
 		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
@@ -56,17 +60,39 @@ const OTPForm = ({ result, setResult, goToChangePassword }: OTPFormProps) => {
 
 	const onFinishedCountdown = () => {
 		setSeconds(-1);
+		clearErrors('otp');
 	};
 
 	const onResendOTP = () => {
 		setSeconds(null);
-		setTimeout(() => setSeconds(10), 2000);
+
+		sendOTP()
+			.then((result) => {
+				//
+			})
+			.catch((e) => {
+				setSeconds(-1);
+				setError('otp', {
+					type: 'value',
+					message: t('i_errors.undefined_error'),
+				});
+			});
 	};
 
 	useEffect(() => {
 		if (!result) return;
-		setSeconds(result.otpRemainSecond);
+
+		setSeconds(result?.otpRemainSecond || null);
 	}, [result]);
+
+	useEffect(() => {
+		if (isFirstFetched.current) return;
+
+		if (!result) {
+			onResendOTP();
+			isFirstFetched.current = true;
+		}
+	}, []);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>

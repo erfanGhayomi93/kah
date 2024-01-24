@@ -106,7 +106,7 @@ const SetPasswordForm = () => {
 						<button
 							onClick={() => setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)}
 							type='button'
-							className='border-r-0 prefix'
+							className='border-r-0 text-gray-200 prefix'
 						>
 							{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
@@ -152,7 +152,7 @@ const SetPasswordForm = () => {
 								setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
 							}
 							type='button'
-							className='border-r-0 prefix'
+							className='border-r-0 text-gray-200 prefix'
 						>
 							{passwordVisibility.repeatNewPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
