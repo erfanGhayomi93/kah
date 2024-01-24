@@ -112,19 +112,24 @@ const SetPasswordForm = () => {
 						</button>
 					</div>
 
-					<div className='flex-justify-between *:text-tiny'>
-						<span className={passwordRequirements?.lowercase ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_english_words')}
-						</span>
-						<span className={passwordRequirements?.length ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_min_chars')}
-						</span>
-						<span className={passwordRequirements?.uppercase ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_include_uppercase_chars')}
-						</span>
-						<span className={passwordRequirements?.numbers ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_english_include_number')}
-						</span>
+					<div className='gap-4 flex-column'>
+						<div className='flex gap-32'>
+							<span className={passwordRequirements?.lowercase ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_english_words')}
+							</span>
+							<span className={passwordRequirements?.uppercase ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_include_uppercase_chars')}
+							</span>
+						</div>
+
+						<div className='flex gap-32'>
+							<span className={passwordRequirements?.length ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_min_chars')}
+							</span>
+							<span className={passwordRequirements?.numbers ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_english_include_number')}
+							</span>
+						</div>
 					</div>
 				</label>
 
@@ -177,7 +182,7 @@ const SetPasswordForm = () => {
 					disabled={!isValid}
 					className='h-48 rounded text-lg shadow btn-primary'
 				>
-					{t('login_modal.register_password_btn')}
+					{t('common.register')}
 				</Button>
 
 				<button type='button' onClick={onCloseModal} className='h-48 font-medium text-primary-300'>

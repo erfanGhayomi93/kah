@@ -16,7 +16,7 @@ const NoData = ({ onAddSymbol }: NoDataProps) => {
 				transform: 'translate(-50%, -50%)',
 			}}
 		>
-			<Image width='134' height='120' alt='welcome' src='/static/images/no-data-table.png' />
+			<Image width='256' height='256' alt='welcome' src='/static/images/no-data-table.png' />
 			<span className='text-base font-medium text-gray-300'>
 				{t.rich('option_page.no_data_table', {
 					symbol: (chunk) => (

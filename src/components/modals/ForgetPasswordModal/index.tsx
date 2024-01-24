@@ -1,7 +1,7 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { toggleForgetPasswordModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
@@ -50,11 +50,6 @@ const ForgetPasswordModal = ({ phoneNumber }: ForgetPasswordModalProps) => {
 				reject();
 			}
 		});
-	};
-
-	const goToLogin = () => {
-		dispatch(toggleLoginModal(true));
-		onCloseModal();
 	};
 
 	return (
