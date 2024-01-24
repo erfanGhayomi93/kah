@@ -14,7 +14,7 @@ interface ForgetPasswordModalProps {
 	phoneNumber?: string;
 }
 
-const ForgetPasswordModal = ({ phoneNumber }: ForgetPasswordModalProps) => {
+const ForgetPasswordModal = ({ phoneNumber: pNumber }: ForgetPasswordModalProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -24,20 +24,22 @@ const ForgetPasswordModal = ({ phoneNumber }: ForgetPasswordModalProps) => {
 	>(null);
 
 	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password' | 'password-changed-successfully'>(
-		phoneNumber ? 'otp' : 'phoneNumber',
+		pNumber ? 'otp' : 'phoneNumber',
 	);
+
+	const [phoneNumber, setPhoneNumber] = useState<string>(pNumber ?? '');
 
 	const onCloseModal = () => {
 		dispatch(toggleForgetPasswordModal(null));
 	};
 
-	const sendOTP = async (pNumber?: string) => {
+	const sendOTP = async (otpPhoneNumber?: string) => {
 		return new Promise<OAuthAPI.IForgetPasswordFirstStep>(async (resolve, reject) => {
 			try {
 				const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(
 					routes.authentication.ForgetPasswordFirstStep,
 					{
-						mobileNumber: pNumber ?? phoneNumber,
+						mobileNumber: otpPhoneNumber ?? phoneNumber,
 					},
 				);
 				const { data } = response;
@@ -55,14 +57,21 @@ const ForgetPasswordModal = ({ phoneNumber }: ForgetPasswordModalProps) => {
 	return (
 		<AuthenticationModalTemplate title={t('forget_password_modal.title')} onClose={onCloseModal}>
 			{stage === 'phoneNumber' && (
-				<PhoneNumberForm setResult={setResult} sendOTP={sendOTP} goToOTP={() => setStage('otp')} />
+				<PhoneNumberForm
+					setResult={setResult}
+					sendOTP={sendOTP}
+					setPhoneNumber={setPhoneNumber}
+					goToOTP={() => setStage('otp')}
+				/>
 			)}
 			{stage === 'otp' && (
 				<OTPForm
+					phoneNumber={phoneNumber}
 					setResult={setResult}
 					sendOTP={sendOTP}
 					result={result as null | OAuthAPI.IForgetPasswordFirstStep}
 					goToChangePassword={() => setStage('change-password')}
+					goToPhoneNumber={() => setStage('phoneNumber')}
 				/>
 			)}
 			{stage === 'change-password' && (

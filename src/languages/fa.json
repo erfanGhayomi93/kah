@@ -42,7 +42,7 @@
 		"set_password_description": "برای تجربه کاربری بهتر، می توانید رمز عبور تعیین کنید."
 	},
 	"forget_password_modal": {
-		"title": "فراموشی رمز عبور",
+		"title": "بازیابی رمز عبور",
 		"resend_otp": "ارسال دوباره",
 		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.",
 		"password_english_words": "حروف انگلیسی",
@@ -133,7 +133,7 @@
 		"phone_number_placeholder": "شماره همراه خود را وارد کنید",
 		"otp": "کد تایید",
 		"otp_mobile_number": "کد تایید ارسال شده به {mobile} را وارد",
-		"otp_placeholder": "کد ارسال شده به شماره همراه خود را وارد کنید"
+		"otp_placeholder": "کد تایید"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
