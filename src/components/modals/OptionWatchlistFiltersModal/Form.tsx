@@ -25,9 +25,9 @@ export const initialFilters: IOptionWatchlistFilters = {
 	type: [],
 	status: [],
 	endDate: [null, null],
-	contractSize: [-1, -1],
+	contractSize: ['', ''],
 	delta: ['', ''],
-	minimumTradesValue: -1,
+	minimumTradesValue: '',
 };
 
 const Form = () => {
@@ -80,45 +80,71 @@ const Form = () => {
 		<form onSubmit={onSubmit} method='get' className='gap-48 flex-column'>
 			<div className='gap-32 flex-column'>
 				<div className='gap-8 flex-column'>
-					<span className='flex-1 font-medium text-gray-100'>{t('option_watchlist_filters_modal.base_symbol')}</span>
-					<BaseSymbolInput values={filters.symbols} onChange={(values) => setFilterValue('symbols', values)} />
+					<span className='flex-1 font-medium text-gray-100'>
+						{t('option_watchlist_filters_modal.base_symbol')}
+					</span>
+					<BaseSymbolInput
+						values={filters.symbols}
+						onChange={(values) => setFilterValue('symbols', values)}
+					/>
 				</div>
 
 				<ul className='gap-32 flex-column'>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 font-medium text-gray-100'>{t('option_watchlist_filters_modal.type')}:</span>
+						<span className='flex-1 font-medium text-gray-100'>
+							{t('option_watchlist_filters_modal.type')}:
+						</span>
 						<InputWrapper>
 							<TypeInput value={filters.type} onChange={(value) => setFilterValue('type', value)} />
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.status')}:</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
+							{t('option_watchlist_filters_modal.status')}:
+						</span>
 						<InputWrapper>
 							<StatusInput value={filters.status} onChange={(value) => setFilterValue('status', value)} />
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.end_date')}:</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
+							{t('option_watchlist_filters_modal.end_date')}:
+						</span>
 						<InputWrapper>
-							<EndDateInput value={filters.endDate} onChange={(value) => setFilterValue('endDate', value)} />
+							<EndDateInput
+								value={filters.endDate}
+								onChange={(value) => setFilterValue('endDate', value)}
+							/>
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.contract_size')}:</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
+							{t('option_watchlist_filters_modal.contract_size')}:
+						</span>
 						<InputWrapper>
-							<ContractSizeInput value={filters.contractSize} onChange={(value) => setFilterValue('contractSize', value)} />
+							<ContractSizeInput
+								value={filters.contractSize}
+								onChange={(value) => setFilterValue('contractSize', value)}
+							/>
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.delta')}:</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
+							{t('option_watchlist_filters_modal.delta')}:
+						</span>
 						<InputWrapper>
 							<DeltaInput value={filters.delta} onChange={(value) => setFilterValue('delta', value)} />
 						</InputWrapper>
 					</li>
 					<li className='flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>{t('option_watchlist_filters_modal.minimum_trades_value')}:</span>
+						<span className='flex-1 whitespace-nowrap font-medium text-gray-100'>
+							{t('option_watchlist_filters_modal.minimum_trades_value')}:
+						</span>
 						<InputWrapper>
-							<MinimumTradesValueInput value={filters.minimumTradesValue} onChange={(value) => setFilterValue('minimumTradesValue', value)} />
+							<MinimumTradesValueInput
+								value={filters.minimumTradesValue}
+								onChange={(value) => setFilterValue('minimumTradesValue', value)}
+							/>
 						</InputWrapper>
 					</li>
 				</ul>
@@ -129,7 +155,10 @@ const Form = () => {
 					disabled={clearButtonIsDisabled}
 					onClick={onClear}
 					type='reset'
-					className={clsx('h-40 rounded font-medium', clearButtonIsDisabled ? 'text-gray-300' : 'text-secondary-300')}
+					className={clsx(
+						'h-40 rounded font-medium',
+						clearButtonIsDisabled ? 'text-gray-300' : 'text-secondary-300',
+					)}
 				>
 					{t('common.clear_all')}
 				</button>

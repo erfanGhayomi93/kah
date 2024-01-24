@@ -10,8 +10,7 @@ interface MinimumTradesValueInputProps {
 const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputProps) => {
 	const t = useTranslations();
 
-	const valueFormatter = (value: number): string => {
-		if (value < 0) return '';
+	const valueFormatter = (value: string) => {
 		return sepNumbers(String(value));
 	};
 
@@ -21,17 +20,19 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 				<input
 					type='text'
 					inputMode='numeric'
-					maxLength={12}
+					maxLength={25}
 					className='h-40 flex-1 rounded px-8 text-left text-gray-100 ltr'
 					value={valueFormatter(value)}
-					onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
+					onChange={(e) => onChange(convertStringToInteger(e.target.value))}
 				/>
 				<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-200 flex-justify-center'>
 					{t('common.rial')}
 				</span>
 			</div>
 
-			<span className='h-16 text-right text-sm text-gray-100'>{value > 0 && num2persian(String(value))}</span>
+			<span className='h-16 text-right text-sm text-gray-100'>
+				{Number(value) > 0 && num2persian(String(value))}
+			</span>
 		</div>
 	);
 };
