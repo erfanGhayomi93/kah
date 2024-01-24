@@ -16,12 +16,13 @@ interface Inputs {
 }
 
 interface PasswordFormProps {
+	phoneNumber: string | null;
 	loginResult: null | OAuthAPI.ILoginFirstStep;
 	goToWelcome: () => void;
 	goToLoginWithOTP: () => void;
 }
 
-const PasswordForm = ({ loginResult, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
+const PasswordForm = ({ loginResult, phoneNumber, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -67,7 +68,15 @@ const PasswordForm = ({ loginResult, goToWelcome, goToLoginWithOTP }: PasswordFo
 
 	const forgetPassword = () => {
 		dispatch(toggleLoginModal(false));
-		dispatch(toggleForgetPasswordModal(true));
+		dispatch(
+			toggleForgetPasswordModal(
+				phoneNumber
+					? {
+							phoneNumber,
+						}
+					: true,
+			),
+		);
 	};
 
 	useEffect(() => {
@@ -100,7 +109,7 @@ const PasswordForm = ({ loginResult, goToWelcome, goToLoginWithOTP }: PasswordFo
 								<button
 									onClick={() => setPasswordIsVisible(!passwordIsVisible)}
 									type='button'
-									className='border-r-0 prefix'
+									className='border-r-0 text-gray-200 prefix'
 								>
 									{passwordIsVisible ? <EyeSlashSVG /> : <EyeSVG />}
 								</button>

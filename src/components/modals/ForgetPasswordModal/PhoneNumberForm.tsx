@@ -1,5 +1,3 @@
-import axios from '@/api/axios';
-import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { ArrowLeftSVG } from '@/components/icons';
 import clsx from 'clsx';
@@ -11,11 +9,12 @@ interface Inputs {
 }
 
 interface PhoneNumberFormProps {
+	sendOTP: (pNumber?: string) => Promise<OAuthAPI.IForgetPasswordFirstStep>;
 	goToOTP: () => void;
 	setResult: (value: OAuthAPI.IForgetPasswordFirstStep) => void;
 }
 
-const PhoneNumberForm = ({ setResult, goToOTP }: PhoneNumberFormProps) => {
+const PhoneNumberForm = ({ setResult, sendOTP, goToOTP }: PhoneNumberFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -26,25 +25,16 @@ const PhoneNumberForm = ({ setResult, goToOTP }: PhoneNumberFormProps) => {
 	} = useForm<Inputs>({ mode: 'onChange' });
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ phoneNumber }) => {
-		try {
-			const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(
-				routes.authentication.ForgetPasswordFirstStep,
-				{
-					mobileNumber: phoneNumber,
-				},
-			);
-			const { data } = response;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			setResult(data.result);
-			goToOTP();
-		} catch (e) {
-			setError('phoneNumber', {
-				message: t('i_errors.undefined_error'),
-				type: 'value',
+		sendOTP(phoneNumber)
+			.then(() => {
+				goToOTP();
+			})
+			.catch(() => {
+				setError('phoneNumber', {
+					message: t('i_errors.undefined_error'),
+					type: 'value',
+				});
 			});
-		}
 	};
 
 	return (

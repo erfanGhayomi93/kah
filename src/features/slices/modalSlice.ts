@@ -4,15 +4,19 @@ import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
+interface IForgetPasswordModal {
+	phoneNumber?: string;
+}
+
 export interface ModalState {
 	loginModal: boolean;
-	forgetPassword: boolean;
+	forgetPassword: IForgetPasswordModal | true | null;
 	optionFilters: false | Partial<IOptionFiltersModal>;
 }
 
 const initialState: ModalState = {
 	loginModal: false,
-	forgetPassword: false,
+	forgetPassword: null,
 	optionFilters: false,
 };
 

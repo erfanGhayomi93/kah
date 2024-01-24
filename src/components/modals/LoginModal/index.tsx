@@ -131,6 +131,7 @@ const LoginModal = () => {
 			{stage === 'login-with-password' && (
 				<PasswordForm
 					loginResult={loginResult}
+					phoneNumber={phoneNumber}
 					goToWelcome={() => setStage('welcome')}
 					goToLoginWithOTP={() => setStage('login-with-otp')}
 				/>

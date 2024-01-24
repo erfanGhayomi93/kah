@@ -49,7 +49,9 @@
 		"password_english_words": "حروف انگلیسی",
 		"password_min_chars": "حداقل 8 کاراکتر",
 		"password_include_uppercase_chars": "شامل حروف بزرگ",
-		"password_english_include_number": "شامل عدد"
+		"password_english_include_number": "شامل عدد",
+		"go_to_homepage": "برو به کهکشان",
+		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت."
 	},
 	"option_watchlist_filters_modal": {
 		"title": "فیلترها",
