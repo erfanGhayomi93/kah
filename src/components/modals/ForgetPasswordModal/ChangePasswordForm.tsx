@@ -99,25 +99,30 @@ const ChangePasswordForm = ({ result, goToLogin }: ChangePasswordFormProps) => {
 						<button
 							onClick={() => setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)}
 							type='button'
-							className='border-r-0 prefix'
+							className='border-r-0 text-gray-200 prefix'
 						>
 							{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
 					</div>
 
-					<div className='flex-justify-between *:text-tiny'>
-						<span className={passwordRequirements?.lowercase ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_english_words')}
-						</span>
-						<span className={passwordRequirements?.length ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_min_chars')}
-						</span>
-						<span className={passwordRequirements?.uppercase ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_include_uppercase_chars')}
-						</span>
-						<span className={passwordRequirements?.numbers ? 'text-primary-300' : 'text-gray-400'}>
-							{t('forget_password_modal.password_english_include_number')}
-						</span>
+					<div className='gap-4 flex-column'>
+						<div className='flex gap-32'>
+							<span className={passwordRequirements?.lowercase ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_english_words')}
+							</span>
+							<span className={passwordRequirements?.uppercase ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_include_uppercase_chars')}
+							</span>
+						</div>
+
+						<div className='flex gap-32'>
+							<span className={passwordRequirements?.length ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_min_chars')}
+							</span>
+							<span className={passwordRequirements?.numbers ? 'i-success' : 'i-null'}>
+								{t('forget_password_modal.password_english_include_number')}
+							</span>
+						</div>
 					</div>
 				</label>
 
@@ -145,7 +150,7 @@ const ChangePasswordForm = ({ result, goToLogin }: ChangePasswordFormProps) => {
 								setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
 							}
 							type='button'
-							className='border-r-0 prefix'
+							className='border-r-0 text-gray-200 prefix'
 						>
 							{passwordVisibility.repeatNewPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
