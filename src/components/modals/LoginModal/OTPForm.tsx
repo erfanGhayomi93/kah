@@ -146,6 +146,7 @@ const OTPForm = ({
 					render={({ field, fieldState: { invalid, isTouched, error } }) => (
 						<label className={clsx('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
 							<span className='label'>{t('inputs.otp_mobile_number', { mobile: phoneNumber })}</span>
+
 							<div className={clsx('flex-items-center input', isTouched && invalid && 'invalid')}>
 								<input
 									title={t('inputs.otp_placeholder')}
@@ -184,6 +185,7 @@ const OTPForm = ({
 										{t('login_modal.resend_otp')}
 									</button>
 								)}
+
 								<button
 									onClick={() => goToPhoneNumber()}
 									type='button'
