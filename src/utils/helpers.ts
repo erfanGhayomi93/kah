@@ -143,3 +143,8 @@ export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey =
 ) => {
 	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, queryClient);
 };
+
+export const URLIsValid = (url: string) => {
+	const regex = new RegExp(url, 'ig');
+	return regex.test(window.location.host);
+};
