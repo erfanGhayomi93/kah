@@ -16,6 +16,7 @@ interface OTPFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
 	hasDescription: boolean;
 	phoneNumber: string;
+	onLoggedIn: () => void;
 	clearToast: () => void;
 	setLoginResult: (value: OAuthAPI.ILoginFirstStep) => void;
 	goToWelcome: () => void;
@@ -27,6 +28,7 @@ const OTPForm = ({
 	phoneNumber,
 	hasDescription,
 	clearToast,
+	onLoggedIn,
 	setLoginResult,
 	goToWelcome,
 	goToPhoneNumber,
@@ -69,6 +71,8 @@ const OTPForm = ({
 			if (data.result.message !== 'Successful') throw new Error();
 
 			setCookie('client_id', data.result.token);
+
+			onLoggedIn();
 			goToWelcome();
 		} catch (e) {
 			setError('otp', {
