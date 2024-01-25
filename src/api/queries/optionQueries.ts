@@ -71,13 +71,33 @@ export const useOptionWatchlistQuery = createQuery<
 	},
 });
 
-export const useOptionSymbolColumnsQuery = createQuery<Option.Root[], ['optionSymbolColumnsQuery']>({
+export const useOptionSymbolColumnsQuery = createQuery<Option.Column[], ['optionSymbolColumnsQuery']>({
 	staleTime: 36e5,
 	queryKey: ['optionSymbolColumnsQuery'],
 	queryFn: async ({ signal }) => {
 		try {
-			const response = await axios.get<ServerResponse<Option.Root[]>>(
+			const response = await axios.get<ServerResponse<Option.Column[]>>(
 				routes.optionWatchlist.OptionSymbolColumns,
+				{ signal },
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], ['defaultOptionSymbolColumnsQuery']>({
+	staleTime: 36e5,
+	queryKey: ['defaultOptionSymbolColumnsQuery'],
+	queryFn: async ({ signal }) => {
+		try {
+			const response = await axios.get<ServerResponse<Option.Column[]>>(
+				routes.optionWatchlist.DefaultOptionSymbolColumns,
 				{ signal },
 			);
 			const { data } = response;
