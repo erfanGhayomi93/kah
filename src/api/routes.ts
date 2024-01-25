@@ -1,6 +1,10 @@
-const oauthUrl = 'https://ramandoauth-stage.ramandtech.com';
-const rlcUrl = 'https://kahkeshanapi-stage.ramandtech.com';
-// 172.30.14.12:7142 OptionWatchlist
+import { URLIsValid } from '@/utils/helpers';
+
+const isStage = URLIsValid('stage');
+const isDev = URLIsValid('localhost');
+
+const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' : 'https://ramandoauth.ramandtech.com';
+const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
 	option: {
@@ -11,7 +15,9 @@ const routes = {
 
 	optionWatchlist: {
 		Watchlist: `${rlcUrl}/OptionWatchlist/v1/Watchlist`,
+		WatchlistByCompanyISIN: `${rlcUrl}/OptionWatchlist/v1/WatchlistByCompanyISIN`,
 		OptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/OptionSymbolColumns`,
+		DefaultOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/DefaultOptionSymbolColumns`,
 		ResetOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/ResetOptionSymbolColumns`,
 		UpdateOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/UpdateOptionSymbolColumns`,
 	},
