@@ -108,6 +108,21 @@
 		"column_face": "رو",
 		"column_vega": "وگا"
 	},
+	"option_chain": {
+		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
+		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
+		"symbol_search_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"no_symbol_found": "نمادی برای نمایش یافت نشد",
+		"no_data_found": "اطلاعاتی برای نمایش یافت نشد",
+		"closing_price": "قیمت پایانی",
+		"trade_volume": "حجم معاملات ",
+		"trade_count": "تعداد معاملات",
+		"trade_value": "ارزش معاملات",
+		"last_trade_date": "آخرین معامله",
+		"avg_volume": "میانگین حجم {days} روزه",
+		"hv": "تلاطم تاریخی HV",
+		"avg_iv": "میانگین وزنی تلاطم ضمنی"
+	},
 	"alerts": {
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."
 	},
@@ -134,6 +149,9 @@
 		"otp": "کد تایید",
 		"otp_mobile_number": "کد تایید ارسال شده به {mobile} را وارد",
 		"otp_placeholder": "کد تایید"
+	},
+	"symbol_search": {
+		"input_placeholder": "نماد مورد نظر خود را جستجو کنید"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",

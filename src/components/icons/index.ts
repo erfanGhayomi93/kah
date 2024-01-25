@@ -14,6 +14,8 @@ import EyeSlashSVG from './eye-slash.svg';
 import EyeSVG from './eye.svg';
 import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
+import GrowDownSVG from './grow-down.svg';
+import GrowUpSVG from './grow-up.svg';
 import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
 import PlusSVG from './plus.svg';
@@ -38,6 +40,8 @@ export {
 	EyeSlashSVG,
 	FileExcelSVG,
 	FilterSVG,
+	GrowDownSVG,
+	GrowUpSVG,
 	ManageSVG,
 	MoreOptionsSVG,
 	PlusSVG,

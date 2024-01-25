@@ -18,11 +18,12 @@ interface Inputs {
 interface PasswordFormProps {
 	phoneNumber: string | null;
 	loginResult: null | OAuthAPI.ILoginFirstStep;
+	onLoggedIn: () => void;
 	goToWelcome: () => void;
 	goToLoginWithOTP: () => void;
 }
 
-const PasswordForm = ({ loginResult, phoneNumber, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
+const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -57,6 +58,8 @@ const PasswordForm = ({ loginResult, phoneNumber, goToWelcome, goToLoginWithOTP 
 			if (data.result.message !== 'Successful') throw new Error();
 
 			setCookie('client_id', data.result.token);
+
+			onLoggedIn();
 			goToWelcome();
 		} catch (e) {
 			setError('password', {

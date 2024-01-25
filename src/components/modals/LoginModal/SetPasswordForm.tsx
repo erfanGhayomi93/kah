@@ -4,7 +4,6 @@ import Button from '@/components/common/Button';
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
-import { setLoggedIn } from '@/features/slices/uiSlice';
 import { base64encode, passwordValidation } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -54,7 +53,6 @@ const SetPasswordForm = () => {
 
 			if (data.result !== 'Successful') throw new Error();
 
-			dispatch(setLoggedIn(true));
 			onCloseModal();
 		} catch (e) {
 			setError('newPassword', {
