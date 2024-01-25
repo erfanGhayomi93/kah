@@ -1,13 +1,20 @@
-import { useAppDispatch } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 const Header = () => {
+	const pathname = usePathname();
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
+
+	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
 	const showAuthenticationModal = () => {
 		dispatch(toggleLoginModal(true));
@@ -16,31 +23,21 @@ const Header = () => {
 	const navigation = useMemo(
 		() => [
 			{
-				id: 'home-page',
-				title: t('header_navigation.home_page'),
-				href: '/',
-			},
-			{
 				id: 'watchlist',
 				title: t('header_navigation.watchlist'),
-				href: '/watchlist',
+				href: '/fa',
 			},
 			{
-				id: 'contact-us',
-				title: t('header_navigation.contact_us'),
-				href: '/contact-us',
-			},
-			{
-				id: 'about-us',
-				title: t('header_navigation.about_us'),
-				href: '/about-us',
+				id: 'option-chain',
+				title: t('header_navigation.option_chain'),
+				href: '/fa/option-chain',
 			},
 		],
 		[],
 	);
 
 	return (
-		<header className='h-72 bg-white px-32 shadow flex-justify-between'>
+		<header className='relative z-10 h-72 bg-white px-32 shadow flex-justify-between'>
 			<nav className='gap-56 flex-items-center'>
 				<Link href='/' rel='home'>
 					<h1 className='text-3xl font-bold'>LOGO</h1>
@@ -51,7 +48,12 @@ const Header = () => {
 						<li key={item.id}>
 							<Link
 								href={item.href}
-								className='p-8 text-lg font-medium text-gray-100 transition-colors hover:text-primary-300'
+								className={clsx(
+									'p-8 text-lg transition-colors',
+									pathname === item.href
+										? 'font-bold text-primary-200'
+										: 'font-medium text-gray-100 hover:text-primary-200',
+								)}
 							>
 								{item.title}
 							</Link>
@@ -60,9 +62,17 @@ const Header = () => {
 				</ul>
 			</nav>
 
-			<button onClick={showAuthenticationModal} type='button' className='h-40 rounded px-48 font-medium btn-primary'>
-				{t('header.login')}
-			</button>
+			{isLoggedIn ? (
+				<span className='text-primary-200'>شما وارد سیستم شده‌اید!</span>
+			) : (
+				<button
+					onClick={showAuthenticationModal}
+					type='button'
+					className='h-40 rounded px-48 font-medium btn-primary'
+				>
+					{t('header.login')}
+				</button>
+			)}
 		</header>
 	);
 };

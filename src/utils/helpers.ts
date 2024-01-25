@@ -2,7 +2,9 @@ import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 
-export const sepNumbers = (num: string): string => {
+export const sepNumbers = (num: string | undefined): string => {
+	if (num === undefined || isNaN(Number(num))) return '−';
+
 	let result = num;
 	if (Number(result) < 1e3) return result;
 
@@ -16,6 +18,31 @@ export const sepNumbers = (num: string): string => {
 	}
 
 	return result;
+};
+
+export const numFormatter = (num: number, formatNavigateNumber = true) => {
+	const suffixes = ['', ' K', ' M', ' B', ' T'];
+	const divisor = 1000;
+	let index = 0;
+	let isNegative = false;
+
+	if (num < 0) {
+		isNegative = true;
+		num = Math.abs(num);
+	}
+
+	while (num >= divisor && index < suffixes.length - 1) {
+		num /= divisor;
+		index++;
+	}
+
+	let formattedNum = num.toFixed(3).replace(/\.?0+$/, '') + suffixes[index];
+
+	if (isNegative) {
+		formattedNum = formatNavigateNumber ? `(${formattedNum})` : `-${formattedNum}`;
+	}
+
+	return `\u200e${formattedNum}`;
 };
 
 export const getDirection = (lang: string): 'rtl' | 'ltr' => {
@@ -50,15 +77,6 @@ export const negativeValueFormatter = (value: number) => {
 export const minusFormatter = (value: number) => {
 	if (value >= 0) return String(value);
 	return `−${Math.abs(value)}`;
-};
-
-export const numberFormatter = (value: number) => {
-	try {
-		if (value < 0) return `−${sepNumbers(String(Math.abs(value)))}`;
-		return sepNumbers(String(value));
-	} catch (e) {
-		return value;
-	}
 };
 
 export const convertStringToInteger = (inputString: string): string => inputString.replace(/[^\d]/g, '');

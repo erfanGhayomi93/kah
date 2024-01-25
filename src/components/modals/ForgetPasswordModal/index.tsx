@@ -1,13 +1,20 @@
+import axios from '@/api/axios';
+import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { toggleForgetPasswordModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
-import ChangePassword from './ChangePassword';
+import ChangePasswordForm from './ChangePasswordForm';
 import OTPForm from './OTPForm';
+import PasswordChangedSuccessfully from './PasswordChangedSuccessfully';
 import PhoneNumberForm from './PhoneNumberForm';
 
-const ForgetPasswordModal = () => {
+interface ForgetPasswordModalProps {
+	phoneNumber?: string;
+}
+
+const ForgetPasswordModal = ({ phoneNumber: pNumber }: ForgetPasswordModalProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -16,30 +23,64 @@ const ForgetPasswordModal = () => {
 		null | OAuthAPI.IForgetPasswordFirstStep | OAuthAPI.IValidateForgetPasswordOtp
 	>(null);
 
-	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password'>('phoneNumber');
+	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password' | 'password-changed-successfully'>(
+		pNumber ? 'otp' : 'phoneNumber',
+	);
+
+	const [phoneNumber, setPhoneNumber] = useState<string>(pNumber ?? '');
 
 	const onCloseModal = () => {
-		dispatch(toggleForgetPasswordModal(false));
+		dispatch(toggleForgetPasswordModal(null));
 	};
 
-	const goToLogin = () => {
-		dispatch(toggleLoginModal(true));
-		dispatch(toggleForgetPasswordModal(false));
+	const sendOTP = async (otpPhoneNumber?: string) => {
+		return new Promise<OAuthAPI.IForgetPasswordFirstStep>(async (resolve, reject) => {
+			try {
+				const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(
+					routes.authentication.ForgetPasswordFirstStep,
+					{
+						mobileNumber: otpPhoneNumber ?? phoneNumber,
+					},
+				);
+				const { data } = response;
+
+				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+				setResult(data.result);
+				resolve(data.result);
+			} catch (e) {
+				reject();
+			}
+		});
 	};
 
 	return (
 		<AuthenticationModalTemplate title={t('forget_password_modal.title')} onClose={onCloseModal}>
-			{stage === 'phoneNumber' && <PhoneNumberForm setResult={setResult} goToOTP={() => setStage('otp')} />}
+			{stage === 'phoneNumber' && (
+				<PhoneNumberForm
+					setResult={setResult}
+					sendOTP={sendOTP}
+					setPhoneNumber={setPhoneNumber}
+					goToOTP={() => setStage('otp')}
+				/>
+			)}
 			{stage === 'otp' && (
 				<OTPForm
-					result={result as OAuthAPI.IForgetPasswordFirstStep}
+					phoneNumber={phoneNumber}
 					setResult={setResult}
+					sendOTP={sendOTP}
+					result={result as null | OAuthAPI.IForgetPasswordFirstStep}
 					goToChangePassword={() => setStage('change-password')}
+					goToPhoneNumber={() => setStage('phoneNumber')}
 				/>
 			)}
 			{stage === 'change-password' && (
-				<ChangePassword result={result as OAuthAPI.IValidateForgetPasswordOtp} goToLogin={goToLogin} />
+				<ChangePasswordForm
+					result={result as OAuthAPI.IValidateForgetPasswordOtp}
+					onPasswordChanged={() => setStage('password-changed-successfully')}
+				/>
 			)}
+			{stage === 'password-changed-successfully' && <PasswordChangedSuccessfully />}
 		</AuthenticationModalTemplate>
 	);
 };

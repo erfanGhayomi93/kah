@@ -11,7 +11,14 @@ const Modals = () => {
 	return [
 		loginModal && <LoginModal key='login-modal' />,
 		optionFilters && <OptionWatchlistFiltersModal key='option-watchlist-filters-modal' />,
-		forgetPassword && <ForgetPasswordModal key='forget-password-modal' />,
+		forgetPassword && (
+			<ForgetPasswordModal
+				key='forget-password-modal'
+				phoneNumber={
+					forgetPassword && typeof forgetPassword === 'object' ? forgetPassword?.phoneNumber : undefined
+				}
+			/>
+		),
 	];
 };
 

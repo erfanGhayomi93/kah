@@ -224,8 +224,35 @@ declare namespace Option {
 	}
 }
 
+declare namespace Symbol {
+	export interface Info {
+		symbolISIN: string;
+		symbolTitle: string;
+		companyName: string;
+		lastTradedPrice: number;
+		tradeVolume: number;
+		tradeValue: number;
+		avgIV: number | null;
+		closingPrice: number;
+		tradeCount: number;
+		lastTradeDate: string;
+		hv: number | null;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		tradePriceVarPreviousTrade: number;
+		tradePriceVarPreviousTradePercent: number;
+		closingPriceVarReferencePrice: number;
+		closingPriceVarReferencePricePercent: number;
+	}
+}
+
 declare namespace OAuthAPI {
 	declare interface ILoginFirstStep {
+		state: 'NewUser' | 'OTP' | 'TooManyRequest' | 'HasPassword' | 'Fail';
+		otpRemainSecond: number;
+		nextStepToken: string | null;
+	}
+
+	declare interface ISendPasslessOTP {
 		state: 'NewUser' | 'OTP' | 'TooManyRequest' | 'HasPassword' | 'Fail';
 		otpRemainSecond: number;
 		nextStepToken: string | null;
@@ -240,6 +267,8 @@ declare namespace OAuthAPI {
 		nextStepToken: string;
 		responseMessage: string;
 	}
+
+	declare type IChangePassword = string;
 
 	declare interface IPasswordLogin {
 		message: string;
@@ -258,5 +287,11 @@ declare namespace OAuthAPI {
 	declare interface IOtpLogin {
 		message: string;
 		token: string | null;
+	}
+}
+
+declare namespace User {
+	interface GeneralInformation {
+		mobileNumber: string;
 	}
 }

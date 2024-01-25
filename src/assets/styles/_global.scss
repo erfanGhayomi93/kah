@@ -9,7 +9,7 @@ html {
 }
 
 body {
-	font-family: "IRANSansFaNum";
+	font-family: "IRANSans";
 	font-size: 1.4rem;
 	min-height: 100vh;
 	height: 100vh;
@@ -18,7 +18,7 @@ body {
 	font-weight: 400;
 	overflow-x: hidden;
 	overflow-y: auto;
-	background-color: theme("colors.white");
+	background-color: theme("colors.gray.600");
 
 	&.ew-resize {
 		cursor: ew-resize;
@@ -45,7 +45,7 @@ button,
 a,
 input,
 textarea {
-	font-family: "IRANSansFaNum";
+	font-family: "IRANSans";
 	outline: none;
 }
 
@@ -65,16 +65,9 @@ textarea {
 	}
 }
 
-.input-group {
-	transition: border-color 250ms;
-	-webkit-transition: border-color 250ms;
-	-moz-transition: border-color 250ms;
-
-	&:focus-within,
-	input:focus,
-	textarea:focus {
-		border-color: theme("colors.primary.300") !important;
-	}
+img {
+	pointer-events: none;
+	user-select: none;
 }
 
 ::-webkit-scrollbar {

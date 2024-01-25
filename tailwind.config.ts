@@ -2,7 +2,11 @@ import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
-	content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
+	content: [
+		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
+	],
 
 	theme: {
 		screens: {
@@ -56,11 +60,12 @@ const config: Config = {
 			},
 
 			error: {
-				100: 'rgba(220, 53, 69, 1)',
+				100: 'rgba(255, 82, 109)',
 			},
 
 			success: {
 				100: 'rgba(25, 135, 84, 1)',
+				200: 'rgba(0, 194, 136, 1)',
 			},
 
 			warning: {
@@ -141,7 +146,7 @@ const config: Config = {
 		},
 
 		fontFamily: {
-			IRANSansFaNum: 'IRANSansFaNum',
+			IRANSans: 'IRANSans',
 		},
 	},
 
@@ -219,6 +224,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.primary.300'),
+					'font-weight': '500',
 					'background-color': 'transparent',
 					border: `2px solid ${theme('colors.primary.300')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
@@ -228,6 +234,94 @@ const config: Config = {
 						color: theme('colors.white'),
 						'background-color': theme('colors.primary.300'),
 						'border-color': theme('colors.primary.300'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-success': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.white'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.success.200'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.success.200'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-success-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.success.200'),
+					'font-weight': '500',
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.success.200')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.success.200'),
+						'border-color': theme('colors.success.200'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-error': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.white'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.error.100'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.error.100'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-error-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.error.100'),
+					'font-weight': '500',
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.error.100')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.error.100'),
+						'border-color': theme('colors.error.100'),
 					},
 
 					'&:disabled': {
@@ -262,6 +356,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.primary.200'),
+					'font-weight': '500',
 					'background-color': 'transparent',
 					border: `2px solid ${theme('colors.primary.200')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
@@ -302,6 +397,10 @@ const config: Config = {
 						height: '4.8rem',
 						padding: '0 1.6rem',
 
+						'&:focus-within': {
+							'border-color': theme('colors.primary.300'),
+						},
+
 						'&.invalid': {
 							'border-color': theme('colors.error.100'),
 						},
@@ -311,7 +410,6 @@ const config: Config = {
 						height: '3.2rem',
 						width: '4.4rem',
 						'text-align': 'center',
-						'font-family': 'IRANSansFaNum',
 						display: 'flex',
 						'align-items': 'center',
 						'justify-content': 'flex-end',
@@ -322,32 +420,62 @@ const config: Config = {
 					},
 				},
 
-				'.i-error': {
+				'.i-null,.i-error,.i-success': {
 					position: 'relative',
-					'font-size': '1.2rem',
+					'font-size': '1.4rem',
 					'font-weight': '400',
 					'padding-right': '1.6rem',
-					color: theme('colors.error.100'),
 
-					'&:before': {
+					'&::before': {
 						content: '""',
 						position: 'absolute',
 						right: '0',
-						top: '3px',
+						top: '50%',
+						transform: 'translateY(-50%)',
 						width: '12px',
 						height: '12px',
 						'border-radius': '50%',
-						'background-color': theme('colors.white'),
-						border: `4px solid ${theme('colors.error.100')}`,
 					},
 				},
 
-				'.left-to-right': {
-					animation: 'left-to-right ease-in-out 250ms 1 alternate forwards',
+				'.i-null': {
+					color: theme('colors.gray.300'),
+
+					'&::before': {
+						border: `1px solid ${theme('colors.gray.300')}`,
+					},
 				},
 
-				'.right-to-left': {
-					animation: 'right-to-left ease-in-out 250ms 1 alternate forwards',
+				'.i-error': {
+					color: theme('colors.error.100'),
+
+					'&::before': {
+						border: `1px solid ${theme('colors.error.100')}`,
+						'border-radius': '50%',
+						'background-position': 'center',
+						'background-image': `url(
+							"data:image/svg+xml,<svg width='12px' height='12px' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M10 4L4 10' stroke='rgba(220, 53, 69, 1)' stroke-linecap='round' stroke-linejoin='round'/><path d='M4 4L10 10' stroke='rgba(220, 53, 69, 1)' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+						)`,
+					},
+				},
+
+				'.i-success': {
+					color: theme('colors.success.200'),
+
+					'&::before': {
+						border: `1px solid ${theme('colors.success.200')}`,
+						'border-radius': '50%',
+						'background-position': 'center',
+						'background-image': `url(
+							"data:image/svg+xml,<svg width='12px' height='12px' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3.5 8L4.73309 8.92482C5.16178 9.24634 5.76772 9.17279 6.10705 8.75805L10 4' stroke='rgba(36, 174, 100, 1)' stroke-linecap='round'/></svg>"
+						)`,
+					},
+				},
+
+				'.center': {
+					left: '50%',
+					top: '50%',
+					transform: 'translate(-50%, -50%)',
 				},
 			});
 		}),

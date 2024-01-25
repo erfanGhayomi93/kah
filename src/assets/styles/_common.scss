@@ -7,3 +7,15 @@
 	border-radius: 50%;
 	animation: 750ms linear infinite spinner-border;
 }
+
+.input-group {
+	transition: border-color 250ms;
+	-webkit-transition: border-color 250ms;
+	-moz-transition: border-color 250ms;
+
+	&:focus-within,
+	input:focus,
+	textarea:focus {
+		border-color: theme("colors.primary.300") !important;
+	}
+}

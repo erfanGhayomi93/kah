@@ -1,8 +1,9 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
-import Captcha from '@/components/common/Inputs/Captcha';
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setCookie } from '@/utils/cookie';
 import { base64encode } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -12,21 +13,24 @@ import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
 interface Inputs {
 	password: string;
-	captcha: string;
 }
 
 interface PasswordFormProps {
+	phoneNumber: string | null;
 	loginResult: null | OAuthAPI.ILoginFirstStep;
+	onLoggedIn: () => void;
 	goToWelcome: () => void;
-	goToPhoneNumber: () => void;
+	goToLoginWithOTP: () => void;
 }
 
-const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFormProps) => {
+const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToLoginWithOTP }: PasswordFormProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
 
 	const {
 		control,
-		formState: { isValid, errors, isSubmitting, touchedFields },
+		formState: { isValid, isSubmitting },
 		handleSubmit,
 		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
@@ -35,7 +39,7 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 
 	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
-	const onSubmit: SubmitHandler<Inputs> = async ({ password, captcha }) => {
+	const onSubmit: SubmitHandler<Inputs> = async ({ password }) => {
 		if (!loginResult) return;
 
 		try {
@@ -54,13 +58,28 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 			if (data.result.message !== 'Successful') throw new Error();
 
 			setCookie('client_id', data.result.token);
+
+			onLoggedIn();
 			goToWelcome();
 		} catch (e) {
 			setError('password', {
-				message: t('i_errors.invalid_otp'),
+				message: t('i_errors.invalid_password'),
 				type: 'value',
 			});
 		}
+	};
+
+	const forgetPassword = () => {
+		dispatch(toggleLoginModal(false));
+		dispatch(
+			toggleForgetPasswordModal(
+				phoneNumber
+					? {
+							phoneNumber,
+						}
+					: true,
+			),
+		);
 	};
 
 	useEffect(() => {
@@ -68,68 +87,68 @@ const PasswordForm = ({ loginResult, goToWelcome, goToPhoneNumber }: PasswordFor
 		setSeconds(loginResult?.otpRemainSecond ?? -1);
 	}, [loginResult]);
 
-	const hasCaptcha = false;
-
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			method='get'
-			className={clsx('flex flex-1 flex-col gap-24 px-64', !hasCaptcha && 'pt-48')}
-		>
-			<Controller
-				defaultValue=''
-				control={control}
-				name='password'
-				render={({ field, fieldState: { invalid, isTouched, error } }) => (
-					<label className={clsx('input-box')}>
-						<span className='label'>{t('inputs.repeat_new_password')}</span>
-						<div className={clsx('flex-items-center input')}>
-							<input
-								title={t('inputs.password')}
-								autoFocus
-								type={passwordIsVisible ? 'text' : 'password'}
-								inputMode='numeric'
-								maxLength={72}
-								className='flex-1 text-right ltr'
-								placeholder={t('inputs.password_placeholder')}
-								{...field}
-							/>
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+			<div style={{ marginTop: '12rem' }} className='gap-24 flex-column'>
+				<Controller
+					defaultValue=''
+					control={control}
+					name='password'
+					render={({ field, fieldState: { invalid, isTouched, error } }) => (
+						<label className={clsx('input-box')}>
+							<span className='label'>{t('inputs.password')}</span>
+							<div className={clsx('flex-items-center input')}>
+								<input
+									title={t('inputs.password')}
+									autoFocus
+									type={passwordIsVisible ? 'text' : 'password'}
+									inputMode='numeric'
+									maxLength={72}
+									className='flex-1 text-right ltr'
+									placeholder={t('inputs.password_placeholder')}
+									{...field}
+								/>
 
-							<button
-								onClick={() => setPasswordIsVisible(!passwordIsVisible)}
-								type='button'
-								className='border-r-0 prefix'
-							>
-								{passwordIsVisible ? <EyeSlashSVG /> : <EyeSVG />}
-							</button>
-						</div>
+								<button
+									onClick={() => setPasswordIsVisible(!passwordIsVisible)}
+									type='button'
+									className='border-r-0 text-gray-200 prefix'
+								>
+									{passwordIsVisible ? <EyeSlashSVG /> : <EyeSVG />}
+								</button>
+							</div>
 
-						{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
-					</label>
-				)}
-			/>
+							<div className='flex justify-between'>
+								{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
+								<button onClick={forgetPassword} type='button' className='mr-auto text-base text-link'>
+									{t('login_modal.forget_password')}
+								</button>
+							</div>
+						</label>
+					)}
+				/>
+			</div>
 
-			{hasCaptcha && <Captcha control={control} />}
-
-			<Button
+			<div
 				style={{
-					bottom:
-						hasCaptcha &&
-						(touchedFields.password ?? seconds === -1) &&
-						touchedFields.captcha &&
-						(errors.password ?? seconds === -1) &&
-						errors.captcha
-							? '5.6rem'
-							: '11.6rem',
+					bottom: '2.4rem',
 					width: 'calc(100% - 17.6rem)',
 				}}
-				type='submit'
-				loading={isSubmitting}
-				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded shadow btn-primary'
+				className='!absolute flex flex-col gap-8 pt-24'
 			>
-				{t('common.register')}
-			</Button>
+				<Button
+					type='submit'
+					loading={isSubmitting}
+					disabled={!isValid}
+					className='h-48 rounded text-lg shadow btn-primary'
+				>
+					{t('login_modal.login')}
+				</Button>
+
+				<button type='button' onClick={goToLoginWithOTP} className='h-48 font-medium text-primary-300'>
+					{t('login_modal.login_with_otp')}
+				</button>
+			</div>
 		</form>
 	);
 };
