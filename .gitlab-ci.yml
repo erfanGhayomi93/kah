@@ -165,5 +165,5 @@ Production-Job02:
     - Runner-KahkeshanUI02
   artifacts:
   rules:
-    - if: $CI_COMMIT_BRANCH == "Production"
+    - if: $CI_COMMIT_BRANCH == "Production" 
 
