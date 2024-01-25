@@ -93,6 +93,7 @@ Production-Job01:
   script: 
     #- set -e 
     - npm install
+    - npm install express
     - npm run build
     - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
