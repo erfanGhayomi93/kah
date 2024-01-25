@@ -1,5 +1,6 @@
-import { useAppDispatch } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -12,6 +13,8 @@ const Header = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
+
+	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
 	const showAuthenticationModal = () => {
 		dispatch(toggleLoginModal(true));
@@ -34,7 +37,7 @@ const Header = () => {
 	);
 
 	return (
-		<header className='h-72 bg-white px-32 shadow flex-justify-between'>
+		<header className='relative z-10 h-72 bg-white px-32 shadow flex-justify-between'>
 			<nav className='gap-56 flex-items-center'>
 				<Link href='/' rel='home'>
 					<h1 className='text-3xl font-bold'>LOGO</h1>
@@ -59,13 +62,17 @@ const Header = () => {
 				</ul>
 			</nav>
 
-			<button
-				onClick={showAuthenticationModal}
-				type='button'
-				className='h-40 rounded px-48 font-medium btn-primary'
-			>
-				{t('header.login')}
-			</button>
+			{isLoggedIn ? (
+				<span className='text-primary-200'>شما وارد سیستم شده‌اید!</span>
+			) : (
+				<button
+					onClick={showAuthenticationModal}
+					type='button'
+					className='h-40 rounded px-48 font-medium btn-primary'
+				>
+					{t('header.login')}
+				</button>
+			)}
 		</header>
 	);
 };

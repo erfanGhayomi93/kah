@@ -108,6 +108,10 @@
 		"column_face": "رو",
 		"column_vega": "وگا"
 	},
+	"option_chain": {
+		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
+		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!"
+	},
 	"alerts": {
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."
 	},

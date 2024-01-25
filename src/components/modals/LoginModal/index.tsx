@@ -2,6 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { setLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
@@ -29,6 +30,10 @@ const LoginModal = () => {
 
 	const onCloseModal = () => {
 		dispatch(toggleLoginModal(false));
+	};
+
+	const onLoggedIn = () => {
+		dispatch(setLoggedIn(true));
 	};
 
 	const sendOTP = (pNumber?: string) => {
@@ -123,6 +128,7 @@ const LoginModal = () => {
 					goToPhoneNumber={goToPhoneNumber}
 					hasDescription={hasDescription}
 					clearToast={clearToast}
+					onLoggedIn={onLoggedIn}
 				/>
 			)}
 
@@ -132,6 +138,7 @@ const LoginModal = () => {
 					phoneNumber={phoneNumber}
 					goToWelcome={() => setStage('welcome')}
 					goToLoginWithOTP={() => setStage('login-with-otp')}
+					onLoggedIn={onLoggedIn}
 				/>
 			)}
 

@@ -18,7 +18,7 @@ const Home = () => {
 	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialFilters);
 
 	return (
-		<Main>
+		<Main className='bg-white'>
 			<Toolbar filters={filters} />
 			<Table filters={filters} setFilters={setFilters} />
 		</Main>
