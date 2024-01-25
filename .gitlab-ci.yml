@@ -109,7 +109,7 @@ Production-Job01:
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
     - pwd
     - pm2 start npm --name "kahkeshan" -- run preview && pm2 save --force
-    - pm2 describe kahkeshan
+    - pm2 describe 0
     #- sudo systemctl restart nginx
     - cd ../
     - pwd
