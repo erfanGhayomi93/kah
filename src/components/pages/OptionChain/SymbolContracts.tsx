@@ -1,33 +1,22 @@
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import NoData from './NoData';
-
-interface WrapperProps extends React.HTMLAttributes<HTMLDivElement> {
-	children?: React.ReactNode;
-	className?: string;
-}
+import NoData from './common/NoData';
+import Section from './common/Section';
 
 interface SymbolContractsProps {
 	selectedSymbol: null | Option.SymbolSearch;
 }
-
-const Wrapper = ({ children, className, style, ...props }: WrapperProps) => (
-	<div style={{ flex: '1.8 1 76rem', ...style }} className={clsx('rounded bg-white', className)} {...props}>
-		{children}
-	</div>
-);
 
 const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 	const t = useTranslations();
 
 	if (!selectedSymbol)
 		return (
-			<Wrapper className='flex-justify-center'>
+			<Section style={{ flex: '1.8 1 76rem' }} className='flex-justify-center'>
 				<NoData text={t('option_chain.select_symbol_from_top_list')} />
-			</Wrapper>
+			</Section>
 		);
 
-	return <div style={{ flex: '1.8 1 76rem' }} className='rounded bg-white' />;
+	return <Section style={{ flex: '1.8 1 76rem' }} />;
 };
 
 export default SymbolContracts;

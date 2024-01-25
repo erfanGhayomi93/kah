@@ -60,12 +60,12 @@ const config: Config = {
 			},
 
 			error: {
-				100: 'rgba(220, 53, 69, 1)',
+				100: 'rgba(255, 82, 109)',
 			},
 
 			success: {
 				100: 'rgba(25, 135, 84, 1)',
-				200: 'rgba(36, 174, 100, 1)',
+				200: 'rgba(0, 194, 136, 1)',
 			},
 
 			warning: {
@@ -224,6 +224,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.primary.300'),
+					'font-weight': '500',
 					'background-color': 'transparent',
 					border: `2px solid ${theme('colors.primary.300')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
@@ -233,6 +234,94 @@ const config: Config = {
 						color: theme('colors.white'),
 						'background-color': theme('colors.primary.300'),
 						'border-color': theme('colors.primary.300'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-success': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.white'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.success.200'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.success.200'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-success-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.success.200'),
+					'font-weight': '500',
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.success.200')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.success.200'),
+						'border-color': theme('colors.success.200'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-error': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.white'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.error.100'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.error.100'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.500')} !important`,
+						color: `${theme('colors.gray.300')} !important`,
+					},
+				},
+
+				'.btn-error-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.error.100'),
+					'font-weight': '500',
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.error.100')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.error.100'),
+						'border-color': theme('colors.error.100'),
 					},
 
 					'&:disabled': {
@@ -267,6 +356,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.primary.200'),
+					'font-weight': '500',
 					'background-color': 'transparent',
 					border: `2px solid ${theme('colors.primary.200')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
@@ -380,6 +470,12 @@ const config: Config = {
 							"data:image/svg+xml,<svg width='12px' height='12px' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3.5 8L4.73309 8.92482C5.16178 9.24634 5.76772 9.17279 6.10705 8.75805L10 4' stroke='rgba(36, 174, 100, 1)' stroke-linecap='round'/></svg>"
 						)`,
 					},
+				},
+
+				'.center': {
+					left: '50%',
+					top: '50%',
+					transform: 'translate(-50%, -50%)',
 				},
 			});
 		}),

@@ -138,9 +138,9 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					{!onlyShowTags && (
 						<Fragment>
 							<div
-								style={{ minHeight: '9.6rem' }}
+								style={{ minHeight: '9.6rem', maxHeight: 'calc(76vh - 28rem)' }}
 								className={clsx(
-									'flex-1 py-8 flex-column',
+									'flex-1 overflow-auto py-8 flex-column',
 									(isLoading || symbolsDataIsEmpty) && 'items-center justify-center',
 								)}
 							>
@@ -159,7 +159,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 												type='button'
 												key={item.symbolISIN}
 												className={clsx(
-													'h-40 text-right transition-colors flex-justify-start',
+													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
 														? 'bg-primary-200 text-white'
 														: 'bg-transparent text-gray-100 hover:bg-primary-300/20',

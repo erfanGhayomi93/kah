@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useLocalstorage } from '@/hooks';
 import styled from 'styled-components';
 import SelectSymbol from './SelectSymbol';
 import SymbolContracts from './SymbolContracts';
@@ -15,7 +15,7 @@ const Main = styled.main`
 `;
 
 const OptionChain = () => {
-	const [selectedSymbol, setSelectedSymbol] = useState<null | Option.SymbolSearch>(null);
+	const [selectedSymbol, setSelectedSymbol] = useLocalstorage<null | Option.SymbolSearch>('selected_symbol', null);
 
 	return (
 		<Main>
