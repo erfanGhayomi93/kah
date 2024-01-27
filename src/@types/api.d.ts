@@ -43,7 +43,7 @@ declare namespace Option {
 		/**
 		 * نوع قرارداد
 		 */
-		type: 'Call' | 'Put';
+		optionType: 'Call' | 'Put';
 		/**
 		 * وجه تضمین اولیه
 		 */
