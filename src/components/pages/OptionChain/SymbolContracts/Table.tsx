@@ -93,7 +93,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				colId: 'iotm-buy',
 				minWidth: 56,
 				cellClass: ({ value }) => {
-					switch (value.toLowerCase()) {
+					switch (value?.toLowerCase()) {
 						case 'atm':
 							return 'text-lg text-success-100';
 						case 'otm':
@@ -101,7 +101,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 						case 'itm':
 							return 'text-lg text-primary-100';
 						default:
-							return '';
+							return '−';
 					}
 				},
 				valueGetter: ({ data }) => data!.buy?.optionWatchlistData.iotm,
@@ -145,7 +145,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				cellStyle: {
 					backgroundColor: 'rgba(220, 53, 69, 0.1)',
 				},
-				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
+				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestSellPrice)),
 			},
 
 			{
@@ -155,7 +155,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				cellStyle: {
 					backgroundColor: 'rgba(25, 135, 84, 0.1)',
 				},
-				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
+				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestBuyPrice)),
 			},
 
 			{
@@ -163,7 +163,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				colId: 'iotm-sell',
 				minWidth: 56,
 				cellClass: ({ value }) => {
-					switch (value.toLowerCase()) {
+					switch (value?.toLowerCase()) {
 						case 'atm':
 							return 'text-lg text-success-100';
 						case 'otm':
@@ -171,31 +171,31 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 						case 'itm':
 							return 'text-lg text-primary-100';
 						default:
-							return '';
+							return '−';
 					}
 				},
-				valueGetter: ({ data }) => data!.buy?.optionWatchlistData.iotm,
+				valueGetter: ({ data }) => data!.sell?.optionWatchlistData.iotm,
 			},
 
 			{
 				headerName: 'موقعیت‌های باز',
 				colId: 'openPositionCount-sell',
 				minWidth: 120,
-				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.openPositionCount)),
+				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.openPositionCount)),
 			},
 
 			{
 				headerName: 'ارزش',
 				colId: 'tradeValue-sell',
 				minWidth: 112,
-				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.tradeValue)),
+				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.tradeValue)),
 			},
 
 			{
 				headerName: 'نماد',
 				colId: 'symbolTitle-sell',
 				minWidth: 128,
-				valueGetter: ({ data }) => data!.buy?.symbolInfo.symbolTitle,
+				valueGetter: ({ data }) => data!.sell?.symbolInfo.symbolTitle ?? '−',
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
 		],
