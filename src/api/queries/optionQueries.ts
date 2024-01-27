@@ -135,3 +135,63 @@ export const useOptionSymbolSearchQuery = createQuery<Option.SymbolSearch[], ['o
 		}
 	},
 });
+
+export const useBaseSettlementDaysQuery = createQuery<
+	Option.BaseSettlementDays[],
+	['baseSettlementDaysQuery', null | string]
+>({
+	staleTime: 18e5,
+	queryKey: ['baseSettlementDaysQuery', null],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const [, baseSymbolIsin] = queryKey;
+
+			const params: Record<string, string> = {};
+			if (baseSymbolIsin) params.baseSymbolIsin = baseSymbolIsin;
+			else return [];
+
+			const response = await axios.get<ServerResponse<Option.BaseSettlementDays[]>>(
+				routes.option.BaseSettlementDays,
+				{
+					params,
+					signal,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useWatchlistBySettlementDateQuery = createQuery<
+	Option.Root[],
+	['watchlistBySettlementDateQuery', null | Record<'settlementDate' | 'baseSymbolISIN', string>]
+>({
+	staleTime: 18e5,
+	queryKey: ['watchlistBySettlementDateQuery', null],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const [, params] = queryKey;
+
+			const response = await axios.get<ServerResponse<Option.Root[]>>(
+				routes.optionWatchlist.WatchlistBySettlementDate,
+				{
+					params,
+					signal,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});

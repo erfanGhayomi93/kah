@@ -125,9 +125,15 @@
 		"avg_volume": "میانگین حجم {days} روزه",
 		"hv": "تلاطم تاریخی HV",
 		"avg_iv": "میانگین وزنی تلاطم ضمنی",
+		"sort_based_on": "مرتب سازی بر اساس",
+		"contract_due_days": "\u200E{dueDays} روز تقویمی، \u200E{workingDaysLeftCount} روز معاملاتی باقی مانده",
+		"one_month_trade_volume": "ارزش معاملات 1 ماه اخیر",
+		"no_contract_found": "قراردادی برای نمایش وجود ندارد",
 		"sort_highest_value_per_day": "بیشترین ارزش روز",
 		"sort_closest_due_date": "نزدیک ترین سررسید",
-		"sort_alphabet": "حروف الفبا"
+		"sort_alphabet": "حروف الفبا",
+		"buy_contracts": "قراردادهای خرید",
+		"sell_contracts": "قراردادهای فروش"
 	},
 	"alerts": {
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."
