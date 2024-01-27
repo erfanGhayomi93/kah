@@ -22,7 +22,7 @@ export const sepNumbers = (num: string | undefined): string => {
 
 export const numFormatter = (num: number, formatNavigateNumber = true) => {
 	const suffixes = ['', ' K', ' M', ' B', ' T'];
-	const divisor = 1000;
+	const divisor = 1e3;
 	let index = 0;
 	let isNegative = false;
 

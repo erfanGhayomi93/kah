@@ -72,7 +72,7 @@ const Portal = ({
 			const { width, height, top, left } = eChild.getBoundingClientRect();
 
 			el.style.width = (defaultPopupWidth ?? width) + 'px';
-			el.style.top = top + height + 'px';
+			el.style.top = top + height + 2 + 'px';
 			if (defaultPopupWidth && defaultPopupWidth !== width) {
 				el.style.width = defaultPopupWidth + 'px';
 				if (defaultPopupWidth > width) el.style.left = left - (defaultPopupWidth - width) + 'px';

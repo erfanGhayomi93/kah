@@ -36,7 +36,7 @@ declare type StocksTableColumns =
 	| 'vega'
 	| 'gamma'
 	| 'title'
-	| 'optionType'
+	| 'type'
 	| 'volatility'
 	| 'callImpliedVolatility'
 	| 'putImpliedVolatility'

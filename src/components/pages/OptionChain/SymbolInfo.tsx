@@ -10,10 +10,12 @@ import styled from 'styled-components';
 import NoData from './common/NoData';
 import Section from './common/Section';
 
+type TValue = string | React.ReactNode;
+
 interface TItem {
 	id: string;
 	title: string;
-	valueFormatter: string | React.ReactNode;
+	valueFormatter: (() => TValue) | TValue;
 }
 
 interface SymbolInfoProps {
@@ -30,8 +32,10 @@ const SymbolState = styled.span`
 
 const ListItem = ({ title, valueFormatter }: TItem) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-base text-gray-200'>{title}</span>
-		<span className='text-base font-medium text-gray-100'>{valueFormatter}</span>
+		<span className='whitespace-nowrap text-base text-gray-200'>{title}</span>
+		<span className='text-base font-medium text-gray-100 ltr'>
+			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
+		</span>
 	</div>
 );
 
@@ -48,6 +52,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 			const {
 				tradeVolume,
+				oneMonthAvgVolume,
 				closingPrice,
 				closingPriceVarReferencePrice,
 				closingPriceVarReferencePricePercent,
@@ -101,20 +106,25 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				[
 					{
 						id: 'avg30',
-						title: t('option_chain.avg_volume', { days: 30 }),
+						title: t('option_chain.avg_volume', { days: oneMonthAvgVolume }),
 						valueFormatter: '−',
 					},
 					{
 						id: 'lastTradeDate',
 						title: t('option_chain.last_trade_date'),
-						valueFormatter: dayjs(lastTradeDate).calendar('jalali').format('ss:mm:HH'),
+						valueFormatter: dayjs(lastTradeDate).calendar('jalali').format('HH:mm:ss'),
 					},
 				],
 				[
 					{
 						id: 'avgIV',
 						title: t('option_chain.avg_iv'),
-						valueFormatter: sepNumbers(String(avgIV)),
+						valueFormatter: () => {
+							const valueAsNumber = Number(avgIV);
+							if (isNaN(valueAsNumber)) return '−';
+
+							return sepNumbers(valueAsNumber.toFixed(2));
+						},
 					},
 					{
 						id: 'hv',
@@ -130,21 +140,21 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 	if (!selectedSymbol)
 		return (
-			<Section style={{ flex: '0 0 56rem' }} className='flex-justify-center'>
+			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='flex-justify-center'>
 				<NoData text={t('option_chain.select_symbol_from_right_list')} />
 			</Section>
 		);
 
 	if (isLoading)
 		return (
-			<Section style={{ flex: '0 0 56rem' }} className='relative'>
+			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
 				<Loading />
 			</Section>
 		);
 
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
-			<Section style={{ flex: '0 0 56rem' }} className='relative'>
+			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
 				<span className='center absolute text-base font-medium text-gray-200'>
 					{t('option_chain.no_data_found')}
 				</span>
@@ -154,7 +164,10 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	const { closingPriceVarReferencePrice } = symbolData;
 
 	return (
-		<Section style={{ flex: '0 0 56rem' }} className='relative px-16 py-12 flex-column'>
+		<Section
+			style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }}
+			className='relative px-16 py-12 flex-column'
+		>
 			<div className='flex justify-between'>
 				<div className='justify-start text-right flex-column'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
@@ -198,11 +211,11 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			</div>
 
 			<div className='gap-16 pb-48 pt-32 flex-justify-between'>
-				<button className='btn-error-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
-					{t('side.sell')}
-				</button>
 				<button className='btn-success-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
 					{t('side.buy')}
+				</button>
+				<button className='btn-error-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
+					{t('side.sell')}
 				</button>
 			</div>
 

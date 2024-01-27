@@ -98,7 +98,12 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				colId: 'impliedVolatility',
 				initialHide: false,
 				minWidth: 64,
-				valueGetter: ({ data }) => data!.optionWatchlistData.impliedVolatility,
+				valueGetter: ({ data }) => {
+					const value = Number(data!.optionWatchlistData.impliedVolatility);
+					if (isNaN(value)) return '−';
+
+					return value.toFixed(2);
+				},
 			},
 			{
 				headerName: 'وضعیت',
@@ -247,9 +252,9 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			},
 			{
 				headerName: 'نوع آپشن',
-				colId: 'optionType',
+				colId: 'type',
 				initialHide: true,
-				valueGetter: ({ data }) => data!.symbolInfo.optionType,
+				valueGetter: ({ data }) => data!.symbolInfo.type,
 			},
 			{
 				headerName: 'وجه تضمین لازم',

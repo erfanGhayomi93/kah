@@ -11,11 +11,13 @@ const routes = {
 		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
 		SymbolInfo: `${rlcUrl}/Option/v1/SymbolInfo`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
+		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
 	},
 
 	optionWatchlist: {
 		Watchlist: `${rlcUrl}/OptionWatchlist/v1/Watchlist`,
 		WatchlistByCompanyISIN: `${rlcUrl}/OptionWatchlist/v1/WatchlistByCompanyISIN`,
+		WatchlistBySettlementDate: `${rlcUrl}/OptionWatchlist/v1/WatchlistBySettlementDate`,
 		OptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/OptionSymbolColumns`,
 		DefaultOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/DefaultOptionSymbolColumns`,
 		ResetOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/ResetOptionSymbolColumns`,
