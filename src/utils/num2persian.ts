@@ -1,4 +1,4 @@
-const letters = [
+export const letters = [
 	'',
 	' هزار',
 	' میلیون',
@@ -36,17 +36,17 @@ const num2persian = (value: string) => {
 	}
 
 	const arrLength = result.length;
-	const persianToman =
-		result
-			.map((item, index) => {
-				const itemAsNumber = Number(item);
-				if (!itemAsNumber) return '';
-				return itemAsNumber + letters[arrLength - 1 - index];
-			})
-			.filter(Boolean)
-			.join(' و ') + ' تومان';
+	const persianToman = result
+		.map((item, index) => {
+			const itemAsNumber = Number(item);
+			if (!itemAsNumber) return '';
+			return itemAsNumber + letters[arrLength - 1 - index];
+		})
+		.filter(Boolean);
 
-	return persianToman;
+	if (persianToman.length === 0) return '0 تومان';
+
+	return persianToman.join(' و ') + ' تومان';
 };
 
 export default num2persian;

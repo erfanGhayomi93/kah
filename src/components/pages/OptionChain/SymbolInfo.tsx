@@ -52,6 +52,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 			const {
 				tradeVolume,
+				oneMonthAvgVolume,
 				closingPrice,
 				closingPriceVarReferencePrice,
 				closingPriceVarReferencePricePercent,
@@ -105,7 +106,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				[
 					{
 						id: 'avg30',
-						title: t('option_chain.avg_volume', { days: 30 }),
+						title: t('option_chain.avg_volume', { days: oneMonthAvgVolume }),
 						valueFormatter: '−',
 					},
 					{
@@ -210,11 +211,11 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			</div>
 
 			<div className='gap-16 pb-48 pt-32 flex-justify-between'>
-				<button className='btn-error-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
-					{t('side.sell')}
-				</button>
 				<button className='btn-success-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
 					{t('side.buy')}
+				</button>
+				<button className='btn-error-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
+					{t('side.sell')}
 				</button>
 			</div>
 

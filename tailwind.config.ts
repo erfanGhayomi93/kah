@@ -57,6 +57,7 @@ const config: Config = {
 
 			link: {
 				DEFAULT: 'rgba(0, 182, 237, 1)',
+				100: 'rgba(229, 238, 255, 1)',
 			},
 
 			error: {

@@ -252,9 +252,9 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			},
 			{
 				headerName: 'نوع آپشن',
-				colId: 'optionType',
+				colId: 'type',
 				initialHide: true,
-				valueGetter: ({ data }) => data!.symbolInfo.optionType,
+				valueGetter: ({ data }) => data!.symbolInfo.type,
 			},
 			{
 				headerName: 'وجه تضمین لازم',

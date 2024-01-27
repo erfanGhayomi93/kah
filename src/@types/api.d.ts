@@ -43,7 +43,7 @@ declare namespace Option {
 		/**
 		 * نوع قرارداد
 		 */
-		optionType: 'Call' | 'Put';
+		type: 'Call' | 'Put';
 		/**
 		 * وجه تضمین اولیه
 		 */
@@ -228,7 +228,7 @@ declare namespace Option {
 		contractEndDate: string;
 		dueDays: number;
 		workingDaysLeftCount: number;
-		oneMonthTradeVolume: number;
+		oneMonthTradeValue: number;
 	}
 
 	export interface Column {
@@ -250,6 +250,7 @@ declare namespace Symbol {
 		tradeValue: number;
 		avgIV: number | null;
 		closingPrice: number;
+		oneMonthAvgVolume: number;
 		tradeCount: number;
 		lastTradeDate: string;
 		hv: number | null;

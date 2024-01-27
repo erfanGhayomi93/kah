@@ -10,7 +10,7 @@ const Main = styled.main`
 	display: flex;
 	flex-direction: column;
 	padding: 2.4rem 3.2rem;
-	gap: 2.4rem;
+	gap: 0.8rem;
 	min-height: calc(100% - 10.8rem);
 `;
 
@@ -19,7 +19,7 @@ const OptionChain = () => {
 
 	return (
 		<Main>
-			<div style={{ flex: '0 0 37.6rem' }} className='flex gap-24'>
+			<div style={{ flex: '0 0 37.6rem' }} className='flex gap-8'>
 				<SelectSymbol selectedSymbol={selectedSymbol} setSelectedSymbol={setSelectedSymbol} />
 				<SymbolInfo selectedSymbol={selectedSymbol} />
 			</div>

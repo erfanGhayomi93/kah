@@ -1,8 +1,9 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
-import NoData from './common/NoData';
-import Section from './common/Section';
+import NoData from '../common/NoData';
+import Section from '../common/Section';
+import Contract from './Contract';
 
 interface SymbolContractsProps {
 	selectedSymbol: null | Option.SymbolSearch;
@@ -36,7 +37,11 @@ const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 			</Section>
 		);
 
-	return <div style={{ flex: '1.8 1 40rem' }} className='flex-column'></div>;
+	return (
+		<div style={{ flex: '1.8 1 40rem' }} className='gap-8 flex-column'>
+			{settlementDays?.map((item) => <Contract key={item.baseSymbolISIN} {...item} />)}
+		</div>
+	);
 };
 
 export default SymbolContracts;
