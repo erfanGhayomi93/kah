@@ -41,13 +41,14 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				pinned: 'right',
 				cellClass: 'justify-end',
 				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
+				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
 			{
 				headerName: 'ارزش معاملات',
 				colId: 'tradeValue',
 				initialHide: false,
 				minWidth: 112,
-				initialSort: 'asc',
+				initialSort: 'desc',
 				valueGetter: ({ data }) => data!.optionWatchlistData.tradeValue,
 			},
 			{
