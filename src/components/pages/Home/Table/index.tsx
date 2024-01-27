@@ -98,7 +98,12 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				colId: 'impliedVolatility',
 				initialHide: false,
 				minWidth: 64,
-				valueGetter: ({ data }) => data!.optionWatchlistData.impliedVolatility,
+				valueGetter: ({ data }) => {
+					const value = Number(data!.optionWatchlistData.impliedVolatility);
+					if (isNaN(value)) return '−';
+
+					return value.toFixed(2);
+				},
 			},
 			{
 				headerName: 'وضعیت',

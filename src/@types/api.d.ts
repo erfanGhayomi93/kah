@@ -223,6 +223,14 @@ declare namespace Option {
 		insCode: string;
 	}
 
+	export interface BaseSettlementDays {
+		baseSymbolISIN: string;
+		contractEndDate: string;
+		dueDays: number;
+		workingDaysLeftCount: number;
+		oneMonthTradeValue: number;
+	}
+
 	export interface Column {
 		id: number;
 		title: string;
@@ -242,6 +250,7 @@ declare namespace Symbol {
 		tradeValue: number;
 		avgIV: number | null;
 		closingPrice: number;
+		oneMonthAvgVolume: number;
 		tradeCount: number;
 		lastTradeDate: string;
 		hv: number | null;

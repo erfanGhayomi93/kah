@@ -5,8 +5,29 @@ import { SearchSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
+import styled from 'styled-components';
 
-type SortDirection = 'sort_highest_value_per_day' | 'sort_closest_due_date' | 'sort_alphabet';
+const Symbol = styled.button`
+	width: 11.2rem;
+	height: 3.2rem;
+	border-radius: 0.8rem;
+	font-size: 1.4rem;
+	padding: 0 1.2rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	@media (max-width: 1280px) {
+		width: 10.4rem;
+	}
+
+	@media (max-width: 992px) {
+		width: 8rem;
+	}
+`;
 
 interface SelectSymbolProps {
 	selectedSymbol: null | Option.SymbolSearch;
@@ -16,31 +37,31 @@ interface SelectSymbolProps {
 const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) => {
 	const t = useTranslations();
 
-	const [symbolTerm, setSymbolTerm] = useState('');
-
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', symbolTerm],
-	});
-
 	const sortingOptions = useMemo<TSelectOptions[]>(
 		() => [
 			{
-				id: 'sort_highest_value_per_day',
+				id: 'MaximumValue',
 				title: t('option_chain.sort_highest_value_per_day'),
 			},
 			{
-				id: 'sort_closest_due_date',
+				id: 'ClosestSettlement',
 				title: t('option_chain.sort_closest_due_date'),
 			},
 			{
-				id: 'sort_alphabet',
+				id: 'Alphabet',
 				title: t('option_chain.sort_alphabet'),
 			},
 		],
 		[],
 	);
 
+	const [symbolTerm, setSymbolTerm] = useState('');
+
 	const [sorting, setSorting] = useState<TSelectOptions>(sortingOptions[0]);
+
+	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
+		queryKey: ['optionSymbolSearchQuery', { term: symbolTerm, orderBy: String(sorting.id) }],
+	});
 
 	const onChangeSorting = (option: TSelectOptions) => {
 		setSorting(option);
@@ -60,9 +81,9 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			<ul className='flex flex-wrap gap-16'>
 				{symbolsData.map((symbol) => (
 					<li key={symbol.symbolISIN}>
-						<button
+						<Symbol
 							className={clsx(
-								'h-32 rounded border px-12 text-base transition-colors flex-justify-center',
+								'border transition-colors',
 								symbol.symbolISIN === selectedSymbol?.symbolISIN
 									? 'border-primary-200 bg-primary-200 text-white'
 									: 'border-gray-400 text-gray-100 hover:border-primary-200 hover:bg-primary-200 hover:text-white',
@@ -71,7 +92,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 							type='button'
 						>
 							{symbol.symbolTitle}
-						</button>
+						</Symbol>
 					</li>
 				))}
 			</ul>
@@ -79,8 +100,8 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 	}, [symbolsData, isFetching, selectedSymbol]);
 
 	return (
-		<div style={{ flex: 1.4 }} className='gap-24 rounded bg-white p-16 flex-column'>
-			<div className='flex-justify-between'>
+		<div className='flex-1 gap-24 rounded bg-white p-16 flex-column'>
+			<div className='gap-24 flex-justify-between'>
 				<label
 					style={{ maxWidth: '40rem' }}
 					className='input-group h-40 flex-1 rounded border border-gray-400 flex-items-center'
@@ -100,8 +121,11 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					/>
 				</label>
 
-				<div style={{ maxWidth: '17.6rem' }} className='flex w-full flex-1 justify-end'>
-					<Select value={sorting} options={sortingOptions} onChange={onChangeSorting} />
+				<div className='gap-8 flex-items-center'>
+					<span className='text-base text-gray-200'>{t('option_chain.sort_based_on')}:</span>
+					<div style={{ width: '17.6rem' }} className='flex flex-1 justify-end'>
+						<Select value={sorting} options={sortingOptions} onChange={onChangeSorting} />
+					</div>
 				</div>
 			</div>
 

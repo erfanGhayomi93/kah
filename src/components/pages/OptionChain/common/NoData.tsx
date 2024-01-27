@@ -6,7 +6,7 @@ interface NoDataProps {
 
 const NoData = ({ text }: NoDataProps) => {
 	return (
-		<div className='items-center gap-16 text-center flex-column'>
+		<div className='h-full items-center justify-center gap-16 text-center flex-column'>
 			<Image width='80' height='80' alt='welcome' src='/static/images/no-data.png' />
 			<span className='text-base font-medium text-gray-300'>{text}</span>
 		</div>
