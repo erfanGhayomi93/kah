@@ -177,9 +177,9 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 								{symbolData.closingPriceVarReferencePrice} (
 								{(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
 								{closingPriceVarReferencePrice >= 0 ? (
-									<GrowUpSVG width='1.6rem' height='1.6rem' />
+									<GrowUpSVG width='1rem' height='1rem' />
 								) : (
-									<GrowDownSVG width='1.6rem' height='1.6rem' />
+									<GrowDownSVG width='1rem' height='1rem' />
 								)}
 							</span>
 							{sepNumbers(String(symbolData.closingPrice))}

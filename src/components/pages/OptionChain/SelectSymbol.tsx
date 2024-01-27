@@ -1,9 +1,12 @@
 import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
+import Select, { type TSelectOptions } from '@/components/common/Select';
 import { SearchSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
+
+type SortDirection = 'sort_highest_value_per_day' | 'sort_closest_due_date' | 'sort_alphabet';
 
 interface SelectSymbolProps {
 	selectedSymbol: null | Option.SymbolSearch;
@@ -18,6 +21,30 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
 		queryKey: ['optionSymbolSearchQuery', symbolTerm],
 	});
+
+	const sortingOptions = useMemo<TSelectOptions[]>(
+		() => [
+			{
+				id: 'sort_highest_value_per_day',
+				title: t('option_chain.sort_highest_value_per_day'),
+			},
+			{
+				id: 'sort_closest_due_date',
+				title: t('option_chain.sort_closest_due_date'),
+			},
+			{
+				id: 'sort_alphabet',
+				title: t('option_chain.sort_alphabet'),
+			},
+		],
+		[],
+	);
+
+	const [sorting, setSorting] = useState<TSelectOptions>(sortingOptions[0]);
+
+	const onChangeSorting = (option: TSelectOptions) => {
+		setSorting(option);
+	};
 
 	const symbols = useMemo(() => {
 		if (isFetching) return <Loading />;
@@ -54,7 +81,10 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 	return (
 		<div style={{ flex: 1.4 }} className='gap-24 rounded bg-white p-16 flex-column'>
 			<div className='flex-justify-between'>
-				<label className='input-group h-40 flex-1 rounded border border-gray-400 flex-items-center'>
+				<label
+					style={{ maxWidth: '40rem' }}
+					className='input-group h-40 flex-1 rounded border border-gray-400 flex-items-center'
+				>
 					<div className='px-8'>
 						<SearchSVG width='2rem' height='2rem' />
 					</div>
@@ -70,7 +100,9 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					/>
 				</label>
 
-				<div className='flex flex-1 justify-end' />
+				<div style={{ maxWidth: '17.6rem' }} className='flex w-full flex-1 justify-end'>
+					<Select value={sorting} options={sortingOptions} onChange={onChangeSorting} />
+				</div>
 			</div>
 
 			<div className='relative h-full'>{symbols}</div>

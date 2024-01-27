@@ -222,6 +222,14 @@ declare namespace Option {
 		symbolISIN: string;
 		insCode: string;
 	}
+
+	export interface Column {
+		id: number;
+		title: string;
+		category: string;
+		isHidden: boolean;
+		order: number;
+	}
 }
 
 declare namespace Symbol {

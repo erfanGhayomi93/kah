@@ -145,6 +145,10 @@ export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey =
 };
 
 export const URLIsValid = (url: string) => {
-	const regex = new RegExp(url, 'ig');
-	return regex.test(window.location.host);
+	try {
+		const regex = new RegExp(url, 'ig');
+		if (window) return regex.test(window.location.host);
+	} catch (e) {
+		return false;
+	}
 };
