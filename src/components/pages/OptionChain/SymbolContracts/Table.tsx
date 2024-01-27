@@ -36,12 +36,11 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 
 			for (let i = 0; i < watchlistData.length; i++) {
 				const item = watchlistData[i];
-				const { strikePrice, type } = item.symbolInfo;
+				const { strikePrice, optionType } = item.symbolInfo;
 
-				if (!(strikePrice in item)) dataObject[strikePrice] = {};
+				if (dataObject?.[strikePrice] === undefined) dataObject[strikePrice] = {};
 
-				if (type === 'Call') dataObject[strikePrice].buy = item;
-				else if (type === 'Put') dataObject[strikePrice].sell = item;
+				dataObject[strikePrice][optionType === 'Put' ? 'sell' : 'buy'] = item;
 			}
 
 			const strikePrices = Object.keys(dataObject);

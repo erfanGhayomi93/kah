@@ -9,7 +9,7 @@ import SymbolInfo from './SymbolInfo';
 const Main = styled.main`
 	display: flex;
 	flex-direction: column;
-	padding: 2.4rem 3.2rem;
+	padding: 0.8rem 3.2rem;
 	gap: 0.8rem;
 	min-height: calc(100% - 10.8rem);
 `;

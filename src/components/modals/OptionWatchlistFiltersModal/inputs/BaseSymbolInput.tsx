@@ -40,7 +40,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	const [enabled, setEnabled] = useState(false);
 
 	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', term],
+		queryKey: ['optionSymbolSearchQuery', { term }],
 		enabled,
 	});
 
