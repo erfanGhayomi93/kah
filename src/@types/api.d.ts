@@ -223,6 +223,14 @@ declare namespace Option {
 		insCode: string;
 	}
 
+	export interface BaseSettlementDays {
+		baseSymbolISIN: string;
+		contractEndDate: string;
+		dueDays: number;
+		workingDaysLeftCount: number;
+		oneMonthTradeVolume: number;
+	}
+
 	export interface Column {
 		id: number;
 		title: string;

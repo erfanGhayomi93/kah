@@ -19,7 +19,7 @@ const OptionChain = () => {
 
 	return (
 		<Main>
-			<div style={{ flex: '1 1.8 42rem' }} className='flex gap-24'>
+			<div style={{ flex: '0 0 37.6rem' }} className='flex gap-24'>
 				<SelectSymbol selectedSymbol={selectedSymbol} setSelectedSymbol={setSelectedSymbol} />
 				<SymbolInfo selectedSymbol={selectedSymbol} />
 			</div>

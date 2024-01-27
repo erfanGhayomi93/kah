@@ -125,6 +125,8 @@
 		"avg_volume": "میانگین حجم {days} روزه",
 		"hv": "تلاطم تاریخی HV",
 		"avg_iv": "میانگین وزنی تلاطم ضمنی",
+		"sort_based_on": "مرتب سازی بر اساس",
+		"no_contract_found": "قراردادی برای نمایش وجود ندارد",
 		"sort_highest_value_per_day": "بیشترین ارزش روز",
 		"sort_closest_due_date": "نزدیک ترین سررسید",
 		"sort_alphabet": "حروف الفبا"
