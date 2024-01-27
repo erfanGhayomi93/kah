@@ -37,31 +37,31 @@ interface SelectSymbolProps {
 const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) => {
 	const t = useTranslations();
 
-	const [symbolTerm, setSymbolTerm] = useState('');
-
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', symbolTerm],
-	});
-
 	const sortingOptions = useMemo<TSelectOptions[]>(
 		() => [
 			{
-				id: 'sort_highest_value_per_day',
+				id: 'MaximumValue',
 				title: t('option_chain.sort_highest_value_per_day'),
 			},
 			{
-				id: 'sort_closest_due_date',
+				id: 'ClosestSettlement',
 				title: t('option_chain.sort_closest_due_date'),
 			},
 			{
-				id: 'sort_alphabet',
+				id: 'Alphabet',
 				title: t('option_chain.sort_alphabet'),
 			},
 		],
 		[],
 	);
 
+	const [symbolTerm, setSymbolTerm] = useState('');
+
 	const [sorting, setSorting] = useState<TSelectOptions>(sortingOptions[0]);
+
+	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
+		queryKey: ['optionSymbolSearchQuery', { term: symbolTerm, orderBy: String(sorting.id) }],
+	});
 
 	const onChangeSorting = (option: TSelectOptions) => {
 		setSorting(option);

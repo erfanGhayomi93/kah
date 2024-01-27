@@ -111,15 +111,19 @@ export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], [
 	},
 });
 
-export const useOptionSymbolSearchQuery = createQuery<Option.SymbolSearch[], ['optionSymbolSearchQuery', string]>({
+export const useOptionSymbolSearchQuery = createQuery<
+	Option.SymbolSearch[],
+	['optionSymbolSearchQuery', Partial<Record<'term' | 'orderBy', string>>]
+>({
 	staleTime: 18e5,
-	queryKey: ['optionSymbolSearchQuery', ''],
+	queryKey: ['optionSymbolSearchQuery', {}],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
-			const [, term] = queryKey;
+			const [, { term, orderBy }] = queryKey;
 
 			const params: Record<string, string> = {};
 			if (term) params.term = term;
+			if (orderBy) params.orderBy = orderBy;
 
 			const response = await axios.get<ServerResponse<Option.SymbolSearch[]>>(routes.option.OptionSymbolSearch, {
 				params,
