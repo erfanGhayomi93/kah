@@ -119,7 +119,7 @@ Production-Job01:
     - sudo rm -rf $(ls -tr | head -n1)
     - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
     - sudo rm -rf /etc/kahkeshan-backups/1.zip
-    - sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
+    #- sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
 
   tags:
     - Runner-KahkeshanUI01
@@ -161,7 +161,7 @@ Production-Job02:
     - sudo rm -rf $(ls -tr | head -n1)
     - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
     - sudo rm -rf /etc/kahkeshan-backups/1.zip
-    - sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
+    #- sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
 
   tags:
     - Runner-KahkeshanUI02
