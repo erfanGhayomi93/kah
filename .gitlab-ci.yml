@@ -141,15 +141,15 @@ Production-Job02:
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
     - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
     - pm2 delete kahkeshan && pm2 save --force
-    - sleep 200
-    - sudo sshpass -p 'Ss@123456' scp manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/next.config.js .
-    - sudo sshpass -p 'Ss@123456' scp -r manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/node_modules .
-    - sudo sshpass -p 'Ss@123456' scp manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/package.json .
-    - sudo sshpass -p 'Ss@123456' scp -r manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/public .
-    - sudo sshpass -p 'Ss@123456' scp -r manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/src .
-    - sudo sshpass -p 'Ss@123456' scp manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/tsconfig.json .
-    - sudo sshpass -p 'Ss@123456' scp -r manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/.env .
-    - sudo sshpass -p 'Ss@123456' scp -r manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/.next .
+    - sleep 20
+    - sudo sshpass -p 'Ss@123456' scp -q manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/next.config.js .
+    - sudo sshpass -p 'Ss@123456' scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/node_modules .
+    - sudo sshpass -p 'Ss@123456' scp -q manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/package.json .
+    - sudo sshpass -p 'Ss@123456' scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/public .
+    - sudo sshpass -p 'Ss@123456' scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/src .
+    - sudo sshpass -p 'Ss@123456' scp -q manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/tsconfig.json .
+    - sudo sshpass -p 'Ss@123456' scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/.env .
+    - sudo sshpass -p 'Ss@123456' scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/.next .
     - pwd
     - pm2 start npm --name "kahkeshan" -- run preview && pm2 save --force
     - pm2 describe kahkeshan
