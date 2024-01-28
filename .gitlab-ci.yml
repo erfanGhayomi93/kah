@@ -142,7 +142,7 @@ Production-Job02:
     - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
     - pm2 delete kahkeshan && pm2 save --force
     - sleep 5
-    - sshpass -p 'Ss@123456' scp -rq root@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/next.config.js .
+    - sshpass -p 'Ss@123456' scp -rv root@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/next.config.js .
     - sshpass -p 'Ss@123456' scp -rq root@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/node_modules .
     - sshpass -p 'Ss@123456' scp -q root@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/package.json .
     - sshpass -p 'Ss@123456' scp -rq root@172.30.1.21:/home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/public .
