@@ -2,6 +2,9 @@ import { useDefaultOptionSymbolColumnsQuery } from '@/api/queries/optionQueries'
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -45,6 +48,14 @@ const Button = styled.button`
 		background-color 250ms;
 `;
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isEnable: getManageOptionColumns(state),
+		isLoggedIn: getIsLoggedIn(state),
+	}),
+);
+
 const ManageWatchlistColumns = () => {
 	const controllerRef = useRef<AbortController | null>(null);
 
@@ -54,13 +65,13 @@ const ManageWatchlistColumns = () => {
 
 	const dispatch = useAppDispatch();
 
-	const isEnable = useAppSelector(getManageOptionColumns);
+	const { isEnable, isLoggedIn } = useAppSelector(getStates);
 
 	const [rendered, setRendered] = useState(isEnable);
 
 	const { data: columnsData } = useDefaultOptionSymbolColumnsQuery({
 		queryKey: ['defaultOptionSymbolColumnsQuery'],
-		enabled: rendered,
+		enabled: rendered && !isLoggedIn,
 	});
 
 	const onClose = () => {

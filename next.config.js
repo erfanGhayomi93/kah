@@ -2,6 +2,7 @@ const withNextIntl = require('next-intl/plugin')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withNextIntl({
+	reactStrictMode: false,
 	webpack(config) {
 		config.module.rules.push({
 			test: /\.svg$/i,

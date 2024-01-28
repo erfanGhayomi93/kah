@@ -28,6 +28,7 @@ const SymbolState = styled.span`
 	height: 0.8rem;
 	outline: 4px solid rgba(25, 135, 84, 0.2);
 	background-color: rgb(25, 135, 84);
+	animation: outline 1s ease-in-out infinite;
 `;
 
 const ListItem = ({ title, valueFormatter }: TItem) => (
@@ -155,7 +156,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
 			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<span className='center absolute text-base font-medium text-gray-200'>
+				<span className='absolute text-base font-medium text-gray-200 center'>
 					{t('option_chain.no_data_found')}
 				</span>
 			</Section>
@@ -211,10 +212,10 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			</div>
 
 			<div className='gap-16 pb-48 pt-32 flex-justify-between'>
-				<button className='btn-success-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
+				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-success-outline' type='button'>
 					{t('side.buy')}
 				</button>
-				<button className='btn-error-outline h-40 flex-1 rounded text-base flex-justify-center' type='button'>
+				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-error-outline' type='button'>
 					{t('side.sell')}
 				</button>
 			</div>

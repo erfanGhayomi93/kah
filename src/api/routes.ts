@@ -26,6 +26,7 @@ const routes = {
 
 	authentication: {
 		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
+		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
 		ForgetPasswordFirstStep: `${oauthUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
 		SignUp: `${oauthUrl}/OAuthAPI/v1/SignUp`,
 		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
