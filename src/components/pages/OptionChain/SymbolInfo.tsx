@@ -13,7 +13,7 @@ import Section from './common/Section';
 type TValue = string | React.ReactNode;
 
 interface ISymbolStateStyledProps {
-	color: string;
+	$color: string;
 }
 
 interface TItem {
@@ -26,26 +26,26 @@ interface SymbolInfoProps {
 	selectedSymbol: null | Option.SymbolSearch;
 }
 
-const pulse = ({ color }: ISymbolStateStyledProps) => keyframes`
+const pulse = ({ $color }: ISymbolStateStyledProps) => keyframes`
 	0% {
 		-webkit-transform: scale(0.95);
 		transform: scale(0.95);
-		-webkit-box-shadow: 0 0 0 0 rgba(${color}, 0.9);
-		box-shadow: 0 0 0 0 rgba(${color}, 0.9);
+		-webkit-box-shadow: 0 0 0 0 rgba(${$color}, 0.9);
+		box-shadow: 0 0 0 0 rgba(${$color}, 0.9);
 	}
 
 	50% {
 		-webkit-transform: scale(1);
 		transform: scale(1);
-		-webkit-box-shadow: 0 0 0 8px rgba(${color}, 0);
-		box-shadow: 0 0 0 8px rgba(${color}, 0);
+		-webkit-box-shadow: 0 0 0 8px rgba(${$color}, 0);
+		box-shadow: 0 0 0 8px rgba(${$color}, 0);
 	}
 
 	100% {
 		-webkit-transform: scale(0.95);
 		transform: scale(0.95);
-		-webkit-box-shadow: 0 0 0 0 rgba(${color}, 0);
-		box-shadow: 0 0 0 0 rgba(${color}, 0);
+		-webkit-box-shadow: 0 0 0 0 rgba(${$color}, 0);
+		box-shadow: 0 0 0 0 rgba(${$color}, 0);
 	}
 `;
 
@@ -63,7 +63,7 @@ const SymbolState = styled.span<ISymbolStateStyledProps>`
 		left: 0%;
 		width: 100%;
 		height: 100%;
-		animation: ${({ color }) => pulse({ color })} 2s infinite;
+		animation: ${({ $color }) => pulse({ $color })} 2s infinite;
 		border-radius: 50%;
 	}
 `;
@@ -210,7 +210,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				<div className='justify-start text-right flex-column'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState
-							color={
+							$color={
 								symbolTradeState === 'Open'
 									? '25, 135, 84'
 									: symbolTradeState === 'Frozen' || symbolTradeState === 'Suspended'
