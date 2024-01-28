@@ -2,6 +2,11 @@ import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
+interface TPaginationInputs {
+	pageNumber: number;
+	pageSize: number;
+}
+
 interface IOptionWatchlistQuery {
 	SymbolISINs: string[];
 	FromContractEndDate: string;
@@ -17,9 +22,9 @@ interface IOptionWatchlistQuery {
 
 export const useOptionWatchlistQuery = createQuery<
 	Option.Root[],
-	['optionWatchlistQuery', Partial<IOptionWatchlistFilters>]
+	['optionWatchlistQuery', Partial<IOptionWatchlistFilters> & TPaginationInputs]
 >({
-	queryKey: ['optionWatchlistQuery', {}],
+	queryKey: ['optionWatchlistQuery', { pageNumber: 1, pageSize: 25 }],
 	queryFn: async ({ queryKey, signal }) => {
 		const [, props] = queryKey;
 		try {

@@ -6,11 +6,15 @@ import { numFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import NoData from './common/NoData';
 import Section from './common/Section';
 
 type TValue = string | React.ReactNode;
+
+interface ISymbolStateStyledProps {
+	color: string;
+}
 
 interface TItem {
 	id: string;
@@ -22,13 +26,46 @@ interface SymbolInfoProps {
 	selectedSymbol: null | Option.SymbolSearch;
 }
 
-const SymbolState = styled.span`
+const pulse = ({ color }: ISymbolStateStyledProps) => keyframes`
+	0% {
+		-webkit-transform: scale(0.95);
+		transform: scale(0.95);
+		-webkit-box-shadow: 0 0 0 0 rgba(${color}, 0.9);
+		box-shadow: 0 0 0 0 rgba(${color}, 0.9);
+	}
+
+	50% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		-webkit-box-shadow: 0 0 0 8px rgba(${color}, 0);
+		box-shadow: 0 0 0 8px rgba(${color}, 0);
+	}
+
+	100% {
+		-webkit-transform: scale(0.95);
+		transform: scale(0.95);
+		-webkit-box-shadow: 0 0 0 0 rgba(${color}, 0);
+		box-shadow: 0 0 0 0 rgba(${color}, 0);
+	}
+`;
+
+const SymbolState = styled.span<ISymbolStateStyledProps>`
 	border-radius: 50%;
 	width: 0.8rem;
 	height: 0.8rem;
-	outline: 4px solid rgba(25, 135, 84, 0.2);
 	background-color: rgb(25, 135, 84);
-	animation: outline 1s ease-in-out infinite;
+	position: relative;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0%;
+		left: 0%;
+		width: 100%;
+		height: 100%;
+		animation: ${({ color }) => pulse({ color })} 2s infinite;
+		border-radius: 50%;
+	}
 `;
 
 const ListItem = ({ title, valueFormatter }: TItem) => (
@@ -162,7 +199,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			</Section>
 		);
 
-	const { closingPriceVarReferencePrice } = symbolData;
+	const { closingPriceVarReferencePrice, symbolTradeState } = symbolData;
 
 	return (
 		<Section
@@ -172,7 +209,15 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			<div className='flex justify-between'>
 				<div className='justify-start text-right flex-column'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
-						<SymbolState />
+						<SymbolState
+							color={
+								symbolTradeState === 'Open'
+									? '25, 135, 84'
+									: symbolTradeState === 'Frozen' || symbolTradeState === 'Suspended'
+										? '255, 82, 109'
+										: '255, 193, 7'
+							}
+						/>
 						<h1 className='text-3xl font-medium text-gray-100'>{symbolData.symbolTitle}</h1>
 					</div>
 
