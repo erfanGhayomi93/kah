@@ -20,7 +20,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	const gridRef = useRef<GridApi<Option.Root>>(null);
 
 	const { data: watchlistData, isFetching } = useOptionWatchlistQuery({
-		queryKey: ['optionWatchlistQuery', filters],
+		queryKey: ['optionWatchlistQuery', { ...filters, pageNumber: 1, pageSize: 25 }],
 	});
 
 	const addSymbol = () => {
@@ -422,7 +422,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 		eGrid.applyTransactionAsync(transaction);
 		cWatchlistRef.current = watchlistData;
-	}, [watchlistData]);
+	}, [JSON.stringify(watchlistData)]);
 
 	const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
 
@@ -437,7 +437,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				ref={gridRef}
 				suppressHorizontalScroll={dataIsEmpty}
 				className={clsx('h-full', dataIsEmpty && 'overflow-hidden rounded border border-gray-500')}
-				rowData={watchlistData ?? []}
+				rowData={[]}
 				columnDefs={COLUMNS}
 				defaultColDef={defaultColDef}
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}

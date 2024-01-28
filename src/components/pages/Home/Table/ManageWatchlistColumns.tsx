@@ -1,13 +1,21 @@
-import { useDefaultOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
+import axios from '@/api/axios';
+import { useDefaultOptionSymbolColumnsQuery, useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
+import routes from '@/api/routes';
+import Loading from '@/components/common/Loading';
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
+import { useDebounce } from '@/hooks';
+import { createSelector } from '@reduxjs/toolkit';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div<{ isEnabled: boolean }>`
+const Wrapper = styled.div<{ $enabled: number }>`
 	position: fixed;
 	width: 47.2rem;
 	height: calc(100% - 12.4rem);
@@ -20,9 +28,9 @@ const Wrapper = styled.div<{ isEnabled: boolean }>`
 	padding: 0 0 1.6rem 0;
 	z-index: 9;
 	box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.2);
-	animation: ${({ isEnabled }) =>
-		`${isEnabled ? 'left-to-right' : 'right-to-left'} ease-in-out ${
-			isEnabled ? '700ms' : '600ms'
+	animation: ${({ $enabled }) =>
+		`${$enabled ? 'left-to-right' : 'right-to-left'} ease-in-out ${
+			$enabled ? '700ms' : '600ms'
 		} 1 alternate forwards`};
 `;
 
@@ -45,6 +53,14 @@ const Button = styled.button`
 		background-color 250ms;
 `;
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isEnable: getManageOptionColumns(state),
+		isLoggedIn: getIsLoggedIn(state),
+	}),
+);
+
 const ManageWatchlistColumns = () => {
 	const controllerRef = useRef<AbortController | null>(null);
 
@@ -54,13 +70,24 @@ const ManageWatchlistColumns = () => {
 
 	const dispatch = useAppDispatch();
 
-	const isEnable = useAppSelector(getManageOptionColumns);
+	const queryClient = useQueryClient();
+
+	const { isEnable, isLoggedIn } = useAppSelector(getStates);
 
 	const [rendered, setRendered] = useState(isEnable);
 
-	const { data: columnsData } = useDefaultOptionSymbolColumnsQuery({
+	const [resetting, setResetting] = useState(false);
+
+	const { setDebounce } = useDebounce();
+
+	const { data: defaultColumnsData, refetch: refetchDefaultColumns } = useDefaultOptionSymbolColumnsQuery({
 		queryKey: ['defaultOptionSymbolColumnsQuery'],
-		enabled: rendered,
+		enabled: rendered && !isLoggedIn,
+	});
+
+	const { data: userColumnsData, refetch: refetchUserColumns } = useOptionSymbolColumnsQuery({
+		queryKey: ['optionSymbolColumnsQuery'],
+		enabled: rendered && isLoggedIn,
 	});
 
 	const onClose = () => {
@@ -68,13 +95,72 @@ const ManageWatchlistColumns = () => {
 		dispatch(toggleManageOptionColumns(false));
 	};
 
+	const resetWatchlistColumns = () =>
+		new Promise<void>(async (resolve, reject) => {
+			try {
+				const response = await axios.post<ServerResponse<boolean>>(
+					routes.optionWatchlist.ResetOptionSymbolColumns,
+				);
+				const { data } = response;
+
+				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+				resolve();
+			} catch (e) {
+				reject();
+			}
+		});
+
 	const onRefresh = () => {
-		//
+		try {
+			setResetting(true);
+
+			setDebounce(() => {
+				resetWatchlistColumns()
+					.then(() => {
+						if (isLoggedIn) refetchUserColumns();
+						else refetchDefaultColumns();
+					})
+					.finally(() => setResetting(false));
+			}, 500);
+		} catch (e) {
+			//
+		}
 	};
 
-	const setHide = (categoryIndex: number, itemIndex: number, hide: boolean) => {
+	const updateCacheColumn = (id: number, isHidden: boolean) => {
 		try {
+			const columnData = JSON.parse(
+				JSON.stringify((isLoggedIn ? userColumnsData : defaultColumnsData) ?? []),
+			) as Option.Column[];
+
+			const specifyColumnIndex = columnData.findIndex((col) => col.id === id);
+
+			columnData[specifyColumnIndex].isHidden = isHidden;
+
+			queryClient.setQueryData(
+				[isLoggedIn ? 'optionSymbolColumnsQuery' : 'defaultOptionSymbolColumnsQuery'],
+				columnData,
+			);
+		} catch (e) {
 			//
+		}
+	};
+
+	const updateServiceColumn = async (id: number, isHidden: boolean) => {
+		try {
+			updateCacheColumn(id, isHidden);
+
+			const response = await axios.post<ServerResponse<boolean>>(
+				routes.optionWatchlist.UpdateOptionSymbolColumns,
+				{
+					id,
+					isHidden,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 		} catch (e) {
 			//
 		}
@@ -99,10 +185,11 @@ const ManageWatchlistColumns = () => {
 		const modifiedColumns: Record<string, Option.Column[]> = {};
 
 		try {
-			if (!columnsData) throw new Error();
+			const data = isLoggedIn ? userColumnsData : defaultColumnsData;
+			if (!data) throw new Error();
 
-			for (let i = 0; i < columnsData.length; i++) {
-				const item = columnsData[i];
+			for (let i = 0; i < data.length; i++) {
+				const item = data[i];
 
 				if (!(item.category in modifiedColumns)) modifiedColumns[item.category] = [];
 
@@ -113,7 +200,7 @@ const ManageWatchlistColumns = () => {
 		} catch (e) {
 			return modifiedColumns;
 		}
-	}, [columnsData]);
+	}, [defaultColumnsData, userColumnsData]);
 
 	useEffect(() => {
 		const eWrapper = wrapperRef.current;
@@ -133,7 +220,7 @@ const ManageWatchlistColumns = () => {
 	if (!rendered) return null;
 
 	return (
-		<Wrapper isEnabled={isEnable} ref={wrapperRef} className='overflow-auto bg-white'>
+		<Wrapper $enabled={Number(isEnable)} ref={wrapperRef} className='overflow-auto bg-white'>
 			<div className='sticky top-0 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
@@ -149,11 +236,17 @@ const ManageWatchlistColumns = () => {
 				</div>
 			</div>
 
-			<div className='gap-16 px-32 flex-column'>
+			<div className='relative h-full gap-16 px-32 flex-column'>
+				{resetting && <Loading />}
+
 				{Object.keys(categories).map((category, categoryIndex) => (
 					<div
 						key={category}
-						className={clsx('gap-16 pb-16 flex-column', categoryIndex < 2 && 'border-b border-b-gray-400')}
+						className={clsx(
+							'gap-16 pb-16 flex-column',
+							resetting && 'pointer-events-none opacity-0',
+							categoryIndex < 2 && 'border-b border-b-gray-400',
+						)}
 					>
 						<h2 className='text-lg font-medium text-gray-100'>
 							{t(`manage_option_watchlist_columns.${category}`)}
@@ -162,7 +255,7 @@ const ManageWatchlistColumns = () => {
 						<div className='flex-wrap gap-16 flex-justify-between'>
 							{categories[category].map((column, columnIndex) => (
 								<Button
-									onClick={() => setHide(categoryIndex, columnIndex, !column.isHidden)}
+									onClick={() => updateServiceColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
 									className={clsx(

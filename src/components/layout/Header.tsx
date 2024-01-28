@@ -1,11 +1,13 @@
+import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { getIsLoggedIn, setLoggedIn } from '@/features/slices/userSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const Header = () => {
 	const pathname = usePathname();
@@ -15,6 +17,10 @@ const Header = () => {
 	const dispatch = useAppDispatch();
 
 	const isLoggedIn = useAppSelector(getIsLoggedIn);
+
+	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
+		queryKey: ['userInformationQuery'],
+	});
 
 	const showAuthenticationModal = () => {
 		dispatch(toggleLoginModal(true));
@@ -35,6 +41,14 @@ const Header = () => {
 		],
 		[],
 	);
+
+	useEffect(() => {
+		try {
+			if (!isLoggedIn && userData?.mobile) dispatch(setLoggedIn(true));
+		} catch (e) {
+			setLoggedIn(false);
+		}
+	}, [userData, isLoggedIn]);
 
 	return (
 		<header className='relative z-10 h-72 bg-white px-32 shadow flex-justify-between'>
@@ -63,11 +77,22 @@ const Header = () => {
 			</nav>
 
 			{isLoggedIn ? (
-				<span className='text-primary-200'>شما وارد سیستم شده‌اید!</span>
+				<Link
+					href='/fa/profile'
+					className={clsx(
+						'p-8 text-lg transition-colors',
+						pathname === '/fa/profile'
+							? 'font-bold text-primary-200'
+							: 'font-medium text-gray-100 hover:text-primary-200',
+					)}
+				>
+					<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
+				</Link>
 			) : (
 				<button
 					onClick={showAuthenticationModal}
 					type='button'
+					disabled={isFetchingUserData}
 					className='h-40 rounded px-48 font-medium btn-primary'
 				>
 					{t('header.login')}
