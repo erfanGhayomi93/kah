@@ -19,7 +19,14 @@ const StyledComponentsRegistry = ({ children }: IStyledComponentsRegistry) => {
 
 	if (typeof window !== 'undefined') return children;
 
-	return <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>{children}</StyleSheetManager>;
+	return (
+		<StyleSheetManager
+			shouldForwardProp={(name) => !name.startsWith('$')}
+			sheet={styledComponentsStyleSheet.instance}
+		>
+			{children}
+		</StyleSheetManager>
+	);
 };
 
 export default StyledComponentsRegistry;

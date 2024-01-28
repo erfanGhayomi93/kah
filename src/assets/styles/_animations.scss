@@ -47,15 +47,3 @@
 		opacity: 0;
 	}
 }
-
-@keyframes outline {
-	0% {
-		outline-width: 6px;
-	}
-	50% {
-		outline-width: 3px;
-	}
-	100% {
-		outline-width: 6px;
-	}
-}

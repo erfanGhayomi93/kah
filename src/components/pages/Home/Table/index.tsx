@@ -20,7 +20,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	const gridRef = useRef<GridApi<Option.Root>>(null);
 
 	const { data: watchlistData, isFetching } = useOptionWatchlistQuery({
-		queryKey: ['optionWatchlistQuery', filters],
+		queryKey: ['optionWatchlistQuery', { ...filters, pageNumber: 1, pageSize: 25 }],
 	});
 
 	const addSymbol = () => {
