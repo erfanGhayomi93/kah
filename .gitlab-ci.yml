@@ -157,9 +157,9 @@ Production-Job02:
     - pwd
     - ls -tr | head -n1 | xargs zip -r 1.zip
     - sudo mv 1.zip /etc/kahkeshan-backups/
-    - sudo rm -rf $(ls -tr | head -n1)
-    - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
-    - sudo rm -rf /etc/kahkeshan-backups/1.zip
+    - sudo rm -rf $(ls -tr | head -n1) > /dev/null 2>&1
+    - sudo unzip -q /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
+    - sudo rm -rf /etc/kahkeshan-backups/1.zip > /dev/null 2>&1
     #- sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
 
   tags:
