@@ -308,7 +308,8 @@ declare namespace OAuthAPI {
 }
 
 declare namespace User {
-	interface GeneralInformation {
-		mobileNumber: string;
+	interface IUserInformation {
+		mobile: string;
+		saveDate: string;
 	}
 }

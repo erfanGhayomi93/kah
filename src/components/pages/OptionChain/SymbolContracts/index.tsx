@@ -18,28 +18,30 @@ const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 
 	if (!selectedSymbol)
 		return (
-			<Section style={{ flex: '1.8 1 40rem' }} className='relative flex-justify-center'>
+			<Section style={{ flex: '1.8 1 48rem' }} className='relative flex-justify-center'>
 				<NoData text={t('option_chain.select_symbol_from_top_list')} />
 			</Section>
 		);
 
 	if (isFetching)
 		return (
-			<div style={{ flex: '1.8 1 40rem' }} className='relative flex flex-column'>
+			<div style={{ flex: '1.8 1 48rem' }} className='relative flex flex-column'>
 				<Loading />
 			</div>
 		);
 
-	if (Array.isArray(settlementDays) && settlementDays.length === 0)
+	if (!settlementDays || (Array.isArray(settlementDays) && settlementDays.length === 0))
 		return (
-			<Section style={{ flex: '1.8 1 40rem' }} className='relative flex-justify-center'>
+			<Section style={{ flex: '1.8 1 48rem' }} className='relative flex-justify-center'>
 				<NoData text={t('option_chain.no_contract_found')} />
 			</Section>
 		);
 
 	return (
-		<div style={{ flex: '1.8 1 40rem' }} className='gap-8 flex-column'>
-			{settlementDays?.map((item) => <Contract key={item.baseSymbolISIN} {...item} />)}
+		<div style={{ flex: '1.8 1 48rem' }} className='gap-8 flex-column'>
+			{settlementDays.map((item, index) => (
+				<Contract key={index} {...item} />
+			))}
 		</div>
 	);
 };
