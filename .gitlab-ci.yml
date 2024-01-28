@@ -135,8 +135,8 @@ Production-Job02:
   stage: deploy
   script: 
     #- set -e 
-    - npm install
-    - npm run build
+    #- npm install
+    #- npm run build
     - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
     - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
