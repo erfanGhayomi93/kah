@@ -72,7 +72,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 
 		if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 			return (
-				<span className='center absolute text-base font-medium text-gray-200'>
+				<span className='absolute text-base font-medium text-gray-200 center'>
 					{t('option_chain.no_symbol_found')}
 				</span>
 			);
@@ -111,6 +111,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					</div>
 
 					<input
+						autoFocus
 						type='text'
 						inputMode='search'
 						className='h-full flex-1 border-none bg-transparent'
