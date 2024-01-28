@@ -9,6 +9,7 @@ import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce } from '@/hooks';
 import { createSelector } from '@reduxjs/toolkit';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -69,6 +70,8 @@ const ManageWatchlistColumns = () => {
 
 	const dispatch = useAppDispatch();
 
+	const queryClient = useQueryClient();
+
 	const { isEnable, isLoggedIn } = useAppSelector(getStates);
 
 	const [rendered, setRendered] = useState(isEnable);
@@ -125,9 +128,39 @@ const ManageWatchlistColumns = () => {
 		}
 	};
 
-	const setHide = (categoryIndex: number, itemIndex: number, hide: boolean) => {
+	const updateCacheColumn = (id: number, isHidden: boolean) => {
 		try {
+			const columnData = JSON.parse(
+				JSON.stringify((isLoggedIn ? userColumnsData : defaultColumnsData) ?? []),
+			) as Option.Column[];
+
+			const specifyColumnIndex = columnData.findIndex((col) => col.id === id);
+
+			columnData[specifyColumnIndex].isHidden = isHidden;
+
+			queryClient.setQueryData(
+				[isLoggedIn ? 'optionSymbolColumnsQuery' : 'defaultOptionSymbolColumnsQuery'],
+				columnData,
+			);
+		} catch (e) {
 			//
+		}
+	};
+
+	const updateServiceColumn = async (id: number, isHidden: boolean) => {
+		try {
+			updateCacheColumn(id, isHidden);
+
+			const response = await axios.post<ServerResponse<boolean>>(
+				routes.optionWatchlist.UpdateOptionSymbolColumns,
+				{
+					id,
+					isHidden,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 		} catch (e) {
 			//
 		}
@@ -222,7 +255,7 @@ const ManageWatchlistColumns = () => {
 						<div className='flex-wrap gap-16 flex-justify-between'>
 							{categories[category].map((column, columnIndex) => (
 								<Button
-									onClick={() => setHide(categoryIndex, columnIndex, !column.isHidden)}
+									onClick={() => updateServiceColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
 									className={clsx(
