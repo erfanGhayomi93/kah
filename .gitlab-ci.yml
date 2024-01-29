@@ -170,5 +170,5 @@ Production-Job02:
       artifacts: true
   artifacts:
   rules:
-    - if: $CI_COMMIT_BRANCH == "Production" 
+    - if: $CI_COMMIT_BRANCH == "Production"
 
