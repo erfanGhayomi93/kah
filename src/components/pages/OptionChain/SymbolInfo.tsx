@@ -113,6 +113,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						title: t('option_chain.closing_price'),
 						valueFormatter: (
 							<span className='gap-4 flex-items-center'>
+								{sepNumbers(String(closingPrice))}
 								<span
 									className={clsx(
 										'text-tiny ltr',
@@ -124,7 +125,6 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 									{closingPriceVarReferencePrice} (
 									{(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
 								</span>
-								{sepNumbers(String(closingPrice))}
 							</span>
 						),
 					},
@@ -144,8 +144,8 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				[
 					{
 						id: 'avg30',
-						title: t('option_chain.avg_volume', { days: oneMonthAvgVolume }),
-						valueFormatter: '−',
+						title: t('option_chain.avg_volume', { days: 30 }),
+						valueFormatter: oneMonthAvgVolume ?? '−',
 					},
 					{
 						id: 'lastTradeDate',
@@ -202,12 +202,9 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	const { closingPriceVarReferencePrice, symbolTradeState } = symbolData;
 
 	return (
-		<Section
-			style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }}
-			className='relative px-16 py-12 flex-column'
-		>
+		<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative py-12 flex-column'>
 			<div className='flex justify-between'>
-				<div className='justify-start text-right flex-column'>
+				<div className='justify-start px-24 text-right flex-column'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState
 							$color={
@@ -221,10 +218,10 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						<h1 className='text-3xl font-medium text-gray-100'>{symbolData.symbolTitle}</h1>
 					</div>
 
-					<h4 className='whitespace-nowrap text-tiny text-gray-100'>{symbolData.companyName}</h4>
+					<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-100'>{symbolData.companyName}</h4>
 				</div>
 
-				<div className='justify-end gap-16 text-left flex-items-center'>
+				<div className='flex flex-1 items-center justify-end gap-16 pb-16 pl-16 text-left'>
 					<div className='gap-8 flex-items-center'>
 						<span
 							className={clsx(
@@ -233,8 +230,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 							)}
 						>
 							<span className='flex items-center text-tiny ltr'>
-								{symbolData.closingPriceVarReferencePrice} (
-								{(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
+								({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
 								{closingPriceVarReferencePrice >= 0 ? (
 									<GrowUpSVG width='1rem' height='1rem' />
 								) : (
@@ -256,7 +252,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				</div>
 			</div>
 
-			<div className='gap-16 pb-48 pt-32 flex-justify-between'>
+			<div className='gap-16 px-24 pb-48 pt-32 flex-justify-between'>
 				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-success-outline' type='button'>
 					{t('side.buy')}
 				</button>
@@ -265,7 +261,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				</button>
 			</div>
 
-			<ul className='flex flex-column'>
+			<ul className='flex px-16 flex-column'>
 				{ordersData.map(([firstItem, secondItem], i) => (
 					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-600')}>
 						<ListItem {...firstItem} />

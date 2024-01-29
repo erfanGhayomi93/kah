@@ -1,6 +1,6 @@
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { toggleLoginModal, toggleLogoutModal } from '@/features/slices/modalSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -8,7 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-import { ArrowDownSVG } from '../icons';
+import Portal from '../common/Portal';
+import { ArrowDownSVG, EditSVG, LogoutSVG, PasswordSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '../icons';
 
 const Header = () => {
 	const pathname = usePathname();
@@ -19,12 +20,16 @@ const Header = () => {
 
 	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
-	const { isFetching: isFetchingUserData } = useUserInformationQuery({
+	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
 	});
 
 	const showAuthenticationModal = () => {
 		dispatch(toggleLoginModal(true));
+	};
+
+	const onLogout = () => {
+		dispatch(toggleLogoutModal(true));
 	};
 
 	const navigation = useMemo(
@@ -44,7 +49,7 @@ const Header = () => {
 	);
 
 	return (
-		<header className='relative z-10 h-72 bg-white px-32 shadow flex-justify-between'>
+		<header className='sticky top-0 z-10 h-72 bg-white px-32 shadow flex-justify-between'>
 			<nav className='gap-56 flex-items-center'>
 				<Link href='/' rel='home'>
 					<h1 className='text-3xl font-bold'>LOGO</h1>
@@ -70,13 +75,110 @@ const Header = () => {
 			</nav>
 
 			{isLoggedIn ? (
-				<button className='gap-8 flex-items-center'>
-					<div className='overflow-hidden rounded-circle bg-link-100'>
-						<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
-					</div>
+				<Portal
+					margin={{
+						y: 24,
+					}}
+					defaultPopupWidth={296}
+					renderer={({ setOpen }) => (
+						<div className='rounded-md bg-white py-16 shadow-tooltip'>
+							<div className='flex h-40 items-start justify-between px-16'>
+								<div className='gap-12 flex-items-center'>
+									<div className='overflow-hidden rounded-circle bg-link-100'>
+										<Image
+											width='40'
+											height='40'
+											alt='profile'
+											src='/static/images/young-boy.png'
+										/>
+									</div>
 
-					<ArrowDownSVG width='1rem' height='1rem' className='text-gray-100' />
-				</button>
+									<div className='gap-2 flex-column'>
+										<h3 className='text-base font-medium'>{t('header.app_user')}</h3>
+										<span className='text-tiny text-gray-200'>{userData?.mobile}</span>
+									</div>
+								</div>
+
+								<button className='text-gray-100' type='button'>
+									<EditSVG width='2rem' height='2rem' />
+								</button>
+							</div>
+
+							<div className='px-16 pb-32 pt-40 flex-items-center'>
+								<button
+									type='button'
+									className='h-32 w-full rounded bg-link-100 text-tiny font-medium text-primary-300 transition-colors flex-justify-center hover:bg-link hover:text-white'
+								>
+									{t('header.set_password')}
+								</button>
+							</div>
+
+							<nav className='gap-24 px-8 flex-column'>
+								<ul className='flex-column'>
+									<li>
+										<button
+											type='button'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+										>
+											<UserCircleSVG width='1.8rem' height='1.8rem' />
+											<span>{t('header.user_account')}</span>
+										</button>
+									</li>
+									<li>
+										<button
+											type='button'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+										>
+											<PasswordSVG width='1.6rem' height='1.6rem' />
+											<span>{t('header.password')}</span>
+										</button>
+									</li>
+									<li>
+										<button
+											type='button'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+										>
+											<SessionHistorySVG width='1.6rem' height='1.6rem' />
+											<span>{t('header.session_history')}</span>
+										</button>
+									</li>
+									<li>
+										<button
+											type='button'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+										>
+											<SettingSVG width='1.6rem' height='1.6rem' />
+											<span>{t('header.setting')}</span>
+										</button>
+									</li>
+								</ul>
+
+								<ul className='flex-column'>
+									<li>
+										<button
+											onClick={onLogout}
+											type='button'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+										>
+											<LogoutSVG width='1.6rem' height='1.6rem' />
+											<span>{t('header.logout')}</span>
+										</button>
+									</li>
+								</ul>
+							</nav>
+						</div>
+					)}
+				>
+					{({ setOpen, open }) => (
+						<button onClick={() => setOpen(!open)} className='gap-8 flex-items-center'>
+							<div className='overflow-hidden rounded-circle bg-link-100'>
+								<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
+							</div>
+
+							<ArrowDownSVG width='1rem' height='1rem' className='text-gray-100' />
+						</button>
+					)}
+				</Portal>
 			) : (
 				<button
 					onClick={showAuthenticationModal}

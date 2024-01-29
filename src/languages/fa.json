@@ -18,7 +18,14 @@
 		"sell": "فروش"
 	},
 	"header": {
-		"login": "ورود"
+		"login": "ورود",
+		"app_user": "کاربر کهکشان",
+		"set_password": "تعیین رمز",
+		"user_account": "حساب کاربری",
+		"password": "رمز عبور",
+		"session_history": "تاریخچه ورود و خروج",
+		"setting": "تنظیمات",
+		"logout": "خروج از حساب کاربری"
 	},
 	"header_navigation": {
 		"watchlist": "دیده‌بان",
@@ -40,6 +47,11 @@
 		"register_password_btn": "ثبت کلمه عبور",
 		"user_not_found": "برای شماره موبایل وارد شده حساب کاربری یافت نشد. برای ایجاد حساب، کد تایید را وارد کنید.",
 		"set_password_description": "برای تجربه کاربری بهتر، می توانید رمز عبور تعیین کنید."
+	},
+	"logout_modal": {
+		"title": "خروج از حساب کاربری",
+		"description": "آیا می‌خواهید از حساب کاربری خود خارج شوید؟",
+		"button": "خروج"
 	},
 	"forget_password_modal": {
 		"title": "بازیابی رمز عبور",
