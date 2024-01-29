@@ -2,10 +2,11 @@ import { useOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
+import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
@@ -75,13 +76,17 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				initialHide: Boolean(modifiedWatchlistColumns?.tradeValue?.isHidden),
 				minWidth: 120,
 				initialSort: 'desc',
-				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.tradeValue)),
+				valueGetter: ({ data }) => numFormatter(data!.optionWatchlistData.tradeValue),
 			},
 			{
 				headerName: 'آخرین قیمت',
 				colId: 'premium',
 				initialHide: Boolean(modifiedWatchlistColumns?.premium?.isHidden),
 				minWidth: 128,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
+					percent: data ? data.optionWatchlistData.premium : 0,
+				}),
 				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.premium)),
 			},
 			{
@@ -96,6 +101,10 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				colId: 'baseSymbolPrice',
 				initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolPrice?.isHidden),
 				minWidth: 128,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
+					percent: data ? data.optionWatchlistData.baseSymbolPrice : 0,
+				}),
 				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.baseSymbolPrice)),
 			},
 			{
