@@ -7,9 +7,13 @@ const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' :
 const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
+	symbol: {
+		SymbolInfo: `${rlcUrl}/Symbol/v1/SymbolInfo`,
+		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
+	},
+
 	option: {
 		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
-		SymbolInfo: `${rlcUrl}/Option/v1/SymbolInfo`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
 		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
 	},

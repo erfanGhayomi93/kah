@@ -1,13 +1,14 @@
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
-import { getIsLoggedIn, setLoggedIn } from '@/features/slices/userSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
+import { ArrowDownSVG } from '../icons';
 
 const Header = () => {
 	const pathname = usePathname();
@@ -18,7 +19,7 @@ const Header = () => {
 
 	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
-	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
+	const { isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
 	});
 
@@ -41,14 +42,6 @@ const Header = () => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		try {
-			if (!isLoggedIn && userData?.mobile) dispatch(setLoggedIn(true));
-		} catch (e) {
-			setLoggedIn(false);
-		}
-	}, [userData, isLoggedIn]);
 
 	return (
 		<header className='relative z-10 h-72 bg-white px-32 shadow flex-justify-between'>
@@ -77,17 +70,13 @@ const Header = () => {
 			</nav>
 
 			{isLoggedIn ? (
-				<Link
-					href='/fa/profile'
-					className={clsx(
-						'p-8 text-lg transition-colors',
-						pathname === '/fa/profile'
-							? 'font-bold text-primary-200'
-							: 'font-medium text-gray-100 hover:text-primary-200',
-					)}
-				>
-					<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
-				</Link>
+				<button className='gap-8 flex-items-center'>
+					<div className='overflow-hidden rounded-circle bg-link-100'>
+						<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
+					</div>
+
+					<ArrowDownSVG width='1rem' height='1rem' className='text-gray-100' />
+				</button>
 			) : (
 				<button
 					onClick={showAuthenticationModal}
