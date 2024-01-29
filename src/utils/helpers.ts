@@ -6,7 +6,6 @@ export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
 	let result = num;
-	if (Number(result) < 1e3) return result;
 
 	try {
 		const objRegex = /(-?[0-9]+)([0-9]{3})/;
