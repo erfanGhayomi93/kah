@@ -80,7 +80,7 @@ const Contract = ({
 					<ArrowDownSVG
 						width='1.2rem'
 						height='1.2rem'
-						style={{ transform: expand ? 'rotate(180deg)' : undefined }}
+						style={{ transform: expand.is ? 'rotate(180deg)' : undefined }}
 						className='text-gray-100 transition-transform'
 					/>
 				</div>
