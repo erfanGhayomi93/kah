@@ -1,3 +1,4 @@
+import { store } from '@/features/store';
 import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
@@ -61,7 +62,7 @@ export const useOptionWatchlistQuery = createQuery<
 				if (toDelta && Number(toDelta) < 1) params.ToDelta = toDelta;
 			}
 
-			const response = await axios.get<ServerResponse<Option.Root[]>>(routes.optionWatchlist.Watchlist, {
+			const response = await axios.get<PaginationResponse<Option.Root[]>>(routes.optionWatchlist.Watchlist, {
 				params,
 				signal,
 			});
@@ -81,10 +82,12 @@ export const useOptionSymbolColumnsQuery = createQuery<Option.Column[], ['option
 	queryKey: ['optionSymbolColumnsQuery'],
 	queryFn: async ({ signal }) => {
 		try {
-			const response = await axios.get<ServerResponse<Option.Column[]>>(
-				routes.optionWatchlist.OptionSymbolColumns,
-				{ signal },
-			);
+			const { loggedIn } = store.getState().user;
+			const route = loggedIn
+				? routes.optionWatchlist.OptionSymbolColumns
+				: routes.optionWatchlist.DefaultOptionSymbolColumns;
+
+			const response = await axios.get<ServerResponse<Option.Column[]>>(route, { signal });
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

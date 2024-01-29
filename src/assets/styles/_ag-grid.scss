@@ -5,7 +5,7 @@
 			alpine: (
 				// font
 				--ag-font-family: "IRANSans",
-				--ag-font-size: 12px,
+				--ag-font-size: 14px,
 				// header
 				--ag-header-height: 32px,
 				--ag-header-background-color: rgba(0, 104, 137, 0.2),
@@ -80,4 +80,8 @@
 
 .ag-row-odd.ag-row-hover {
 	background-color: var(--ag-background-color);
+}
+
+.ag-header-cell-text {
+	font-size: 13px;
 }

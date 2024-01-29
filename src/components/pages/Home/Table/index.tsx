@@ -2,6 +2,9 @@ import { useOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
+import { useWatchlistColumns } from '@/hooks';
+import dayjs from '@/libs/dayjs';
+import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef } from 'react';
@@ -23,6 +26,13 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		queryKey: ['optionWatchlistQuery', { ...filters, pageNumber: 1, pageSize: 25 }],
 	});
 
+	const { data: watchlistColumns } = useWatchlistColumns();
+
+	const dateFormatter = (v: string | number) => {
+		if (v === undefined || v === null) return '−';
+		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
+	};
+
 	const addSymbol = () => {
 		//
 	};
@@ -31,72 +41,89 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		setFilters(newFilters);
 	};
 
+	const modifiedWatchlistColumns = useMemo(() => {
+		const result: Record<string, Option.Column> = {};
+
+		try {
+			if (!watchlistColumns) return result;
+
+			for (let i = 0; i < watchlistColumns.length; i++) {
+				const item = watchlistColumns[i];
+				result[item.title] = item;
+			}
+
+			return result;
+		} catch (e) {
+			return result;
+		}
+	}, [JSON.stringify(watchlistColumns)]);
+
 	const COLUMNS: Array<ColDef<Option.Root>> = useMemo(
 		() => [
 			{
 				headerName: 'نماد',
 				colId: 'symbolTitle',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden),
 				minWidth: 128,
 				pinned: 'right',
-				cellClass: 'justify-end',
+				cellClass: 'justify-end text-base',
 				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
 			{
 				headerName: 'ارزش معاملات',
 				colId: 'tradeValue',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.tradeValue?.isHidden),
 				minWidth: 112,
 				initialSort: 'desc',
-				valueGetter: ({ data }) => data!.optionWatchlistData.tradeValue,
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.tradeValue)),
 			},
 			{
 				headerName: 'آخرین قیمت',
 				colId: 'premium',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.premium?.isHidden),
 				minWidth: 128,
-				valueGetter: ({ data }) => data!.optionWatchlistData.premium,
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.premium)),
 			},
 			{
 				headerName: 'دلتا',
 				colId: 'delta',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.delta?.isHidden),
 				minWidth: 56,
 				valueGetter: ({ data }) => data!.optionWatchlistData.delta,
 			},
 			{
 				headerName: 'آخرین قیمت پایه',
 				colId: 'baseSymbolPrice',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolPrice?.isHidden),
 				minWidth: 128,
-				valueGetter: ({ data }) => data!.optionWatchlistData.baseSymbolPrice,
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.baseSymbolPrice)),
 			},
 			{
 				headerName: 'سر به سر',
 				colId: 'breakEvenPoint',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.breakEvenPoint?.isHidden),
 				minWidth: 96,
-				valueGetter: ({ data }) => data!.optionWatchlistData.breakEvenPoint,
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.breakEvenPoint)),
 			},
 			{
 				headerName: 'اهرم',
 				colId: 'leverage',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.leverage?.isHidden),
 				minWidth: 64,
 				valueGetter: ({ data }) => data!.optionWatchlistData.leverage,
 			},
 			{
 				headerName: 'موقعیت‌های باز',
 				colId: 'openPositionCount',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.openPositionCount?.isHidden),
 				minWidth: 120,
 				valueGetter: ({ data }) => data!.optionWatchlistData.openPositionCount,
 			},
 			{
 				headerName: 'IV',
 				colId: 'impliedVolatility',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.impliedVolatility?.isHidden),
 				minWidth: 64,
 				valueGetter: ({ data }) => {
 					const value = Number(data!.optionWatchlistData.impliedVolatility);
@@ -108,16 +135,16 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			{
 				headerName: 'وضعیت',
 				colId: 'iotm',
-				initialHide: false,
-				minWidth: 56,
+				initialHide: Boolean(modifiedWatchlistColumns?.iotm?.isHidden),
+				minWidth: 96,
 				cellClass: ({ value }) => {
 					switch (value.toLowerCase()) {
 						case 'atm':
-							return 'text-lg text-success-100';
+							return 'text-success-100';
 						case 'otm':
-							return 'text-lg text-error-100';
+							return 'text-error-100';
 						case 'itm':
-							return 'text-lg text-primary-100';
+							return 'text-primary-100';
 						default:
 							return '';
 					}
@@ -127,229 +154,261 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			{
 				headerName: 'بلک شولز',
 				colId: 'blackScholes',
-				initialHide: true,
+				initialHide: Boolean(modifiedWatchlistColumns?.blackScholes?.isHidden),
 				minWidth: 144,
 				valueGetter: ({ data }) => data!.optionWatchlistData.blackScholes,
 			},
 			{
 				headerName: 'حجم',
 				colId: 'tradeVolume',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.tradeVolume?.isHidden),
 				minWidth: 104,
-				valueGetter: ({ data }) => data!.optionWatchlistData.tradeVolume,
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.tradeVolume)),
 			},
 			{
 				headerName: 'روز مانده',
 				colId: 'dueDays',
-				initialHide: false,
-				minWidth: 48,
+				initialHide: Boolean(modifiedWatchlistColumns?.dueDays?.isHidden),
+				minWidth: 72,
 				valueGetter: ({ data }) => data!.symbolInfo.dueDays,
 			},
 			{
 				headerName: 'قیمت اعمال',
 				colId: 'strikePrice',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.strikePrice?.isHidden),
 				minWidth: 96,
-				valueGetter: ({ data }) => data!.symbolInfo.strikePrice,
+				valueGetter: ({ data }) => sepNumbers(String(data!.symbolInfo.strikePrice)),
 			},
 			{
 				headerName: 'بهترین خرید',
 				colId: 'bestBuyPrice',
-				initialHide: false,
-				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.bestBuyPrice?.isHidden),
+				minWidth: 112,
 				cellStyle: {
 					backgroundColor: 'rgba(25, 135, 84, 0.1)',
 				},
-				valueGetter: ({ data }) => data!.optionWatchlistData.bestBuyPrice,
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.bestBuyPrice)),
 			},
 			{
 				headerName: 'بهترین فروش',
 				colId: 'bestSellPrice',
-				initialHide: false,
-				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.bestSellPrice?.isHidden),
+				minWidth: 112,
 				cellStyle: {
 					backgroundColor: 'rgba(220, 53, 69, 0.1)',
 				},
-				valueGetter: ({ data }) => data!.optionWatchlistData.bestSellPrice,
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.bestSellPrice)),
 			},
 			{
 				headerName: 'نام کامل آپشن',
 				colId: 'symbolTitle',
-				initialHide: true,
+				minWidth: 120,
+				cellClass: 'text-base',
+				initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden),
 				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
 			},
 			{
 				headerName: 'نام پایه',
 				colId: 'baseSymbolTitle',
-				initialHide: true,
+				minWidth: 96,
+				cellClass: 'text-base',
+				initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolTitle?.isHidden),
 				valueGetter: ({ data }) => data!.symbolInfo.baseSymbolTitle,
 			},
 			{
 				headerName: 'قیمت پایانی',
 				colId: 'closingPrice',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.closingPrice,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.closingPrice?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.closingPrice)),
 			},
 			{
 				headerName: 'نوسان پذیری',
 				colId: 'historicalVolatility',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.historicalVolatility?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.historicalVolatility,
 			},
 			{
 				headerName: 'اندازه قرارداد',
 				colId: 'contractSize',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.symbolInfo.contractSize,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.contractSize?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.symbolInfo.contractSize)),
 			},
 			{
 				headerName: 'ارزش زمانی',
 				colId: 'timeValue',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.timeValue,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.timeValue?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.timeValue)),
 			},
 			{
 				headerName: 'تتا',
 				colId: 'theta',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.theta?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.theta,
 			},
 			{
 				headerName: 'تعداد معاملات روز',
 				colId: 'tradeCount',
-				initialHide: true,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.tradeCount?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.tradeCount,
 			},
 			{
 				headerName: 'تاریخ سررسید',
 				colId: 'contractEndDate',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.symbolInfo.contractEndDate,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.contractEndDate?.isHidden),
+				valueGetter: ({ data }) => dateFormatter(data!.symbolInfo.contractEndDate),
 			},
 			{
 				headerName: 'شکاف',
 				colId: 'spread',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.spread?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.spread,
 			},
 			{
 				headerName: 'اختلاف با بلک شولز',
 				colId: 'blackScholesDifference',
-				initialHide: true,
+				minWidth: 144,
+				initialHide: Boolean(modifiedWatchlistColumns?.blackScholesDifference?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.blackScholesDifference,
 			},
 			{
 				headerName: 'قیمت پایانی پایه',
 				colId: 'baseClosingPrice',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.baseClosingPrice,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.baseClosingPrice?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.baseClosingPrice)),
 			},
 			{
 				headerName: 'گاما',
 				colId: 'gamma',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.gamma?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.gamma,
 			},
 			{
 				headerName: 'نوع آپشن',
 				colId: 'optionType',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.optionType?.isHidden),
 				valueGetter: ({ data }) => data!.symbolInfo.optionType,
 			},
 			{
 				headerName: 'وجه تضمین لازم',
 				colId: 'requiredMargin',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.requiredMargin,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.requiredMargin?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.requiredMargin)),
 			},
 			{
 				headerName: 'وجه تضمین اولیه',
 				colId: 'initialMargin',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.symbolInfo.initialMargin,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.initialMargin?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.symbolInfo.initialMargin)),
 			},
 			{
 				headerName: 'رو',
 				colId: 'rho',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.rho?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.rho,
 			},
 			{
 				headerName: 'وگا',
 				colId: 'vega',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.vega?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.vega,
 			},
 			{
 				headerName: 'رشد',
 				colId: 'growth',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.growth?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.growth,
 			},
 			{
 				headerName: 'پر ارزش',
 				colId: 'contractValueType',
-				initialHide: true,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.contractValueType?.isHidden),
 				valueGetter: ({ data }) => data!.optionWatchlistData.contractValueType,
 			},
 			{
 				headerName: 'موقعیت‌های باز زیاد',
 				colId: 'highOpenPosition',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.highOpenPosition,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.highOpenPosition?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.highOpenPosition)),
 			},
 			{
 				headerName: 'تاریخ آخرین معامله',
 				colId: 'lastTradeDate',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.lastTradeDate,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.lastTradeDate?.isHidden),
+				valueGetter: ({ data }) => dateFormatter(data!.optionWatchlistData.lastTradeDate),
 			},
 			{
 				headerName: 'حجم خرید حقوقی',
 				colId: 'legalBuyVolume',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.legalBuyVolume,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.legalBuyVolume?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.legalBuyVolume)),
 			},
 			{
 				headerName: 'حجم خرید حقیقی',
 				colId: 'individualBuyVolume',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.individualBuyVolume,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.individualBuyVolume?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.individualBuyVolume)),
 			},
 			{
 				headerName: 'حجم فروش حقوقی',
 				colId: 'legalSellVolume',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.legalSellVolume,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.legalSellVolume?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.legalSellVolume)),
 			},
 			{
 				headerName: 'حجم فروش حقیقی',
 				colId: 'individualSellVolume',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.individualSellVolume,
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.individualSellVolume?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.individualSellVolume)),
 			},
 			{
 				headerName: 'صنعت',
 				colId: 'sectorName',
-				initialHide: true,
+				minWidth: 136,
+				cellClass: 'text-base',
+				initialHide: Boolean(modifiedWatchlistColumns?.sectorName?.isHidden),
 				valueGetter: ({ data }) => data!.symbolInfo.sectorName,
 			},
 			{
 				headerName: 'ارزش مفهومی معاملات',
 				colId: 'notionalValue',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.notionalValue,
+				minWidth: 160,
+				initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.notionalValue)),
 			},
 			{
 				headerName: 'ارزش ذاتی',
 				colId: 'intrinsicValue',
-				initialHide: true,
-				valueGetter: ({ data }) => data!.optionWatchlistData.intrinsicValue,
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.intrinsicValue?.isHidden),
+				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.intrinsicValue)),
 			},
 			{
 				headerName: 'عملیات',
 				colId: 'action',
-				initialHide: false,
+				initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden),
 				minWidth: 80,
 				maxWidth: 80,
 				pinned: 'left',
@@ -380,48 +439,67 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
+		if (!eGrid || !watchlistColumns) return;
+
+		try {
+			for (let i = 0; i < watchlistColumns.length; i++) {
+				const { isHidden, title } = watchlistColumns[i];
+
+				eGrid.setColumnVisible(title, !isHidden);
+			}
+		} catch (e) {
+			//
+		}
+	}, [watchlistColumns]);
+
+	useEffect(() => {
+		const eGrid = gridRef.current;
 		if (!eGrid) return;
 
-		const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
+		try {
+			const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
 
-		eGrid.setGridOption('suppressHorizontalScroll', dataIsEmpty);
+			eGrid.setGridOption('suppressHorizontalScroll', dataIsEmpty);
 
-		if (dataIsEmpty) {
-			eGrid.setGridOption('rowData', []);
-			cWatchlistRef.current = [];
+			if (dataIsEmpty) {
+				eGrid.setGridOption('rowData', []);
+				cWatchlistRef.current = [];
 
-			return;
-		}
-
-		const transaction: Record<'add' | 'remove' | 'update', Option.Root[]> = {
-			add: [],
-			remove: [],
-			update: [],
-		};
-
-		const cWatchlistData = cWatchlistRef.current;
-		const length = Math.max(cWatchlistData.length, watchlistData.length);
-		for (let i = 0; i < length; i++) {
-			const newItem = watchlistData[i];
-			if (newItem) {
-				const matchingItem = cWatchlistData.find(
-					(item) => item.symbolInfo.symbolISIN === newItem.symbolInfo.symbolISIN,
-				);
-				if (matchingItem) transaction.update.push(newItem);
-				else transaction.add.push(newItem);
+				return;
 			}
 
-			const oldItem = cWatchlistData[i];
-			if (oldItem) {
-				const matchingItem = watchlistData.find(
-					(item) => item.symbolInfo.symbolISIN === oldItem.symbolInfo.symbolISIN,
-				);
-				if (!matchingItem) transaction.remove.push(oldItem);
-			}
-		}
+			const transaction: Record<'add' | 'remove' | 'update', Option.Root[]> = {
+				add: [],
+				remove: [],
+				update: [],
+			};
 
-		eGrid.applyTransactionAsync(transaction);
-		cWatchlistRef.current = watchlistData;
+			const cWatchlistData = cWatchlistRef.current;
+			const length = Math.max(cWatchlistData.length, watchlistData.length);
+			for (let i = 0; i < length; i++) {
+				const newItem = watchlistData[i];
+				if (newItem) {
+					const matchingItem = cWatchlistData.find(
+						(item) => item.symbolInfo.symbolISIN === newItem.symbolInfo.symbolISIN,
+					);
+					if (matchingItem) transaction.update.push(newItem);
+					else transaction.add.push(newItem);
+				}
+
+				const oldItem = cWatchlistData[i];
+				if (oldItem) {
+					const matchingItem = watchlistData.find(
+						(item) => item.symbolInfo.symbolISIN === oldItem.symbolInfo.symbolISIN,
+					);
+					if (!matchingItem) transaction.remove.push(oldItem);
+				}
+			}
+
+			eGrid.applyTransactionAsync(transaction);
+			cWatchlistRef.current = watchlistData;
+		} catch (e) {
+			//
+		}
 	}, [JSON.stringify(watchlistData)]);
 
 	const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
@@ -441,6 +519,20 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				columnDefs={COLUMNS}
 				defaultColDef={defaultColDef}
 				getRowId={({ data }) => data!.symbolInfo.symbolISIN}
+				onColumnVisible={({ api, column }) => {
+					try {
+						if (!column) return;
+
+						const colId = column.getColId();
+
+						api.ensureColumnVisible(colId);
+						api.flashCells({
+							columns: [colId],
+						});
+					} catch (e) {
+						//
+					}
+				}}
 			/>
 
 			{isFetching && (

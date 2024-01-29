@@ -8,6 +8,7 @@ import CheckSVG from './check.svg';
 import ColumnsSVG from './columns.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
 import DoubleArrowLeftSVG from './double-arrow-right.svg';
+import EditSVG from './edit.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
 import ExcelSVG from './excel.svg';
 import EyeSlashSVG from './eye-slash.svg';
@@ -16,11 +17,16 @@ import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
+import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
+import PasswordSVG from './password.svg';
 import PlusSVG from './plus.svg';
 import RefreshSVG from './refresh.svg';
 import SearchSVG from './search.svg';
+import SessionHistorySVG from './session-history.svg';
+import SettingSVG from './setting.svg';
+import UserCircleSVG from './user-circle.svg';
 import XSVG from './x.svg';
 
 export {
@@ -34,6 +40,7 @@ export {
 	ColumnsSVG,
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,
+	EditSVG,
 	EllipsisVerticalSVG,
 	ExcelSVG,
 	EyeSVG,
@@ -42,10 +49,15 @@ export {
 	FilterSVG,
 	GrowDownSVG,
 	GrowUpSVG,
+	LogoutSVG,
 	ManageSVG,
 	MoreOptionsSVG,
+	PasswordSVG,
 	PlusSVG,
 	RefreshSVG,
 	SearchSVG,
+	SessionHistorySVG,
+	SettingSVG,
+	UserCircleSVG,
 	XSVG,
 };

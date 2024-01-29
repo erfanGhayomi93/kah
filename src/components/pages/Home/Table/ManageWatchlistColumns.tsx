@@ -1,5 +1,4 @@
 import axios from '@/api/axios';
-import { useDefaultOptionSymbolColumnsQuery, useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { RefreshSVG, XSVG } from '@/components/icons';
@@ -7,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
-import { useDebounce } from '@/hooks';
+import { useDebounce, useWatchlistColumns } from '@/hooks';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -80,15 +79,7 @@ const ManageWatchlistColumns = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const { data: defaultColumnsData, refetch: refetchDefaultColumns } = useDefaultOptionSymbolColumnsQuery({
-		queryKey: ['defaultOptionSymbolColumnsQuery'],
-		enabled: rendered && !isLoggedIn,
-	});
-
-	const { data: userColumnsData, refetch: refetchUserColumns } = useOptionSymbolColumnsQuery({
-		queryKey: ['optionSymbolColumnsQuery'],
-		enabled: rendered && isLoggedIn,
-	});
+	const { data: watchlistColumns, refetch: refetchWatchlistColumns } = useWatchlistColumns();
 
 	const onClose = () => {
 		abort();
@@ -117,10 +108,7 @@ const ManageWatchlistColumns = () => {
 
 			setDebounce(() => {
 				resetWatchlistColumns()
-					.then(() => {
-						if (isLoggedIn) refetchUserColumns();
-						else refetchDefaultColumns();
-					})
+					.then(() => refetchWatchlistColumns())
 					.finally(() => setResetting(false));
 			}, 500);
 		} catch (e) {
@@ -130,9 +118,7 @@ const ManageWatchlistColumns = () => {
 
 	const updateCacheColumn = (id: number, isHidden: boolean) => {
 		try {
-			const columnData = JSON.parse(
-				JSON.stringify((isLoggedIn ? userColumnsData : defaultColumnsData) ?? []),
-			) as Option.Column[];
+			const columnData = JSON.parse(JSON.stringify(watchlistColumns ?? [])) as Option.Column[];
 
 			const specifyColumnIndex = columnData.findIndex((col) => col.id === id);
 
@@ -185,22 +171,21 @@ const ManageWatchlistColumns = () => {
 		const modifiedColumns: Record<string, Option.Column[]> = {};
 
 		try {
-			const data = isLoggedIn ? userColumnsData : defaultColumnsData;
-			if (!data) throw new Error();
+			if (!watchlistColumns) throw new Error();
 
-			for (let i = 0; i < data.length; i++) {
-				const item = data[i];
+			for (let i = 0; i < watchlistColumns.length; i++) {
+				const item = watchlistColumns[i];
 
 				if (!(item.category in modifiedColumns)) modifiedColumns[item.category] = [];
 
-				modifiedColumns[item.category][item.order] = item;
+				modifiedColumns[item.category].push(item);
 			}
 
 			return modifiedColumns;
 		} catch (e) {
 			return modifiedColumns;
 		}
-	}, [defaultColumnsData, userColumnsData]);
+	}, [watchlistColumns]);
 
 	useEffect(() => {
 		const eWrapper = wrapperRef.current;
@@ -213,8 +198,14 @@ const ManageWatchlistColumns = () => {
 	}, [wrapperRef.current, rendered]);
 
 	useEffect(() => {
-		if (!isEnable) setTimeout(() => setRendered(false), 600);
+		let timer: NodeJS.Timeout | null = null;
+
+		if (!isEnable) timer = setTimeout(() => setRendered(false), 600);
 		else setRendered(true);
+
+		return () => {
+			if (timer) clearTimeout(timer);
+		};
 	}, [isEnable]);
 
 	if (!rendered) return null;
