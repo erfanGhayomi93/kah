@@ -180,7 +180,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							</div>
 
 							{!symbolsDataIsEmpty && (
-								<div className='px-16 pb-16'>
+								<div className='px-16 py-16'>
 									<button
 										style={{ width: '14rem' }}
 										className='mr-auto h-40 rounded btn-primary'
