@@ -58,7 +58,7 @@ Preprd-Job:
   stage: deploy
   script: 
     - npm install
-    - npm install express
+    - npm install express 
     - ($env:CI = "false") -and (npm run build)
     - $date = get-date -format  "dd-MM-yyyy"
     - mkdir -p "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
@@ -93,6 +93,7 @@ Production-Job01:
   script: 
     #- set -e 
     - npm install
+    - npm install express
     - npm run build
     - cd /etc/kahkeshan-ui/
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
@@ -109,16 +110,16 @@ Production-Job01:
     - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
     - pwd
     - pm2 start npm --name "kahkeshan" -- run preview && pm2 save --force
-    - pm2 describe 0
+    - pm2 describe kahkeshan
     #- sudo systemctl restart nginx
     - cd ../
     - pwd
-    - ls -tr | head -n1 | xargs zip 1.zip
+    - ls -tr | head -n1 | xargs zip -rq 1.zip
     - sudo mv 1.zip /etc/kahkeshan-backups/
     - sudo rm -rf $(ls -tr | head -n1)
     - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
     - sudo rm -rf /etc/kahkeshan-backups/1.zip
-    - sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
+    #- sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
 
   tags:
     - Runner-KahkeshanUI01
@@ -140,31 +141,34 @@ Production-Job02:
     - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
     - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
     - pm2 delete kahkeshan && pm2 save --force
-    
-    - sudo cp /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/next.config.js .
+    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js .
     - sudo cp -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/node_modules .
-    - sudo cp /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/package.json .
-    - sudo cp -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/public .
-    - sudo cp -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/src .
-    - sudo cp /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/tsconfig.json .
-    - sudo cp /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/.env .
-    - sudo cp -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/.next .
+    - sudo -s sshpass -p Ss@123456 scp -rq  manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json .
+    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public .
+    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src .
+    - sudo -s sshpass -p Ss@123456 scp -rq  manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json .
+    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env .
+    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
     - pwd
     - pm2 start npm --name "kahkeshan" -- run preview && pm2 save --force
-    - pm2 describe 0
+    - pm2 describe kahkeshan
     #- sudo systemctl restart nginx
     - cd ../
     - pwd
-    - ls -tr | head -n1 | xargs zip 1.zip
+    - ls -tr | head -n1 | xargs zip -rq 1.zip
     - sudo mv 1.zip /etc/kahkeshan-backups/
-    - sudo rm -rf $(ls -tr | head -n1)
-    - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
-    - sudo rm -rf /etc/kahkeshan-backups/1.zip
-    - sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
-
+    - sudo rm -rf $(ls -tr | head -n1) > /dev/null 2>&1
+    - sudo unzip -q /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
+    - sudo rm -rf /etc/kahkeshan-backups/1.zip > /dev/null 2>&1
+    #- sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
+  #dependencies:
+  #  - Production-Job01  
   tags:
     - Runner-KahkeshanUI02
+  needs:
+    - job: "Production-Job01"
+      artifacts: true
   artifacts:
   rules:
-    - if: $CI_COMMIT_BRANCH == "Production"
+    - if: $CI_COMMIT_BRANCH == "Production" 
 
