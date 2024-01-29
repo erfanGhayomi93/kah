@@ -29,7 +29,8 @@
 	},
 	"header_navigation": {
 		"watchlist": "دیده‌بان",
-		"option_chain": "زنجیره قراردادها"
+		"option_chain": "زنجیره قراردادها",
+		"saturn": "زحل"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",

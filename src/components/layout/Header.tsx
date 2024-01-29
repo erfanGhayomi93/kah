@@ -51,6 +51,11 @@ const Header = () => {
 				href: '/fa',
 			},
 			{
+				id: 'saturn',
+				title: t('header_navigation.saturn'),
+				href: '/fa/saturn',
+			},
+			{
 				id: 'option-chain',
 				title: t('header_navigation.option_chain'),
 				href: '/fa/option-chain',
