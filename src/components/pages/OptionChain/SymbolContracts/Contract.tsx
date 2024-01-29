@@ -5,7 +5,10 @@ import { useTranslations } from 'next-intl';
 import { useMemo, useRef, useState } from 'react';
 import Table from './Table';
 
-interface ContractProps extends Option.BaseSettlementDays {}
+interface ContractProps extends Option.BaseSettlementDays {
+	expand: boolean;
+	onToggle: () => void;
+}
 
 const Contract = ({
 	baseSymbolISIN,
@@ -13,32 +16,22 @@ const Contract = ({
 	dueDays,
 	workingDaysLeftCount,
 	oneMonthTradeValue,
+	expand,
+	onToggle,
 }: ContractProps) => {
 	const t = useTranslations();
 
 	const timer = useRef<NodeJS.Timeout | null>(null);
 
-	const [expand, setExpand] = useState<Record<'is' | 'loading', boolean>>({
-		is: false,
-		loading: false,
-	});
-
-	const setExpandField = <T extends keyof typeof expand>(field: T, value: boolean) => {
-		setExpand((prev) => ({
-			...prev,
-			[field]: value,
-		}));
-	};
+	const [expanding, setExpanding] = useState(expand);
 
 	const toggleContract = () => {
-		setExpand({
-			is: !expand.is,
-			loading: true,
-		});
+		onToggle();
+		setExpanding(true);
 
 		if (timer.current) clearTimeout(timer.current);
 		timer.current = setTimeout(() => {
-			setExpandField('loading', false);
+			setExpanding(false);
 		}, 250);
 	};
 
@@ -80,7 +73,7 @@ const Contract = ({
 					<ArrowDownSVG
 						width='1.2rem'
 						height='1.2rem'
-						style={{ transform: expand.is ? 'rotate(180deg)' : undefined }}
+						style={{ transform: expand ? 'rotate(180deg)' : undefined }}
 						className='text-gray-100 transition-transform'
 					/>
 				</div>
@@ -89,16 +82,12 @@ const Contract = ({
 			<div
 				className='relative'
 				style={{
-					minHeight: expand.is ? '24rem' : 0,
+					minHeight: expand ? '24rem' : 0,
 					transition: 'min-height 200ms',
 				}}
 			>
-				{expand.is && (
-					<Table
-						expanding={expand.loading}
-						baseSymbolISIN={baseSymbolISIN}
-						contractEndDate={contractEndDate}
-					/>
+				{expand && (
+					<Table expanding={expanding} baseSymbolISIN={baseSymbolISIN} contractEndDate={contractEndDate} />
 				)}
 			</div>
 		</div>

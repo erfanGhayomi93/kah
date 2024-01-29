@@ -151,3 +151,18 @@ export const URLIsValid = (url: string) => {
 		return false;
 	}
 };
+
+export const findStringIn = (term: string, value: string): [string, string, string] => {
+	try {
+		const letterIndex = value.indexOf(term);
+		const termIndex = letterIndex + term.length;
+
+		const matches = value.slice(letterIndex, termIndex);
+		const nomatch1 = value.slice(0, letterIndex);
+		const nomatch2 = value.slice(termIndex, value.length);
+
+		return [nomatch1, matches, nomatch2];
+	} catch (e) {
+		return [value, '', ''];
+	}
+};
