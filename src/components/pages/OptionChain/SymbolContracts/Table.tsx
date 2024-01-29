@@ -63,7 +63,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 
 	const COLUMNS: Array<ColDef<ITableData>> = useMemo(
 		() => [
-			// Buy
+			// * Buy
 
 			{
 				headerName: 'نماد',
@@ -135,7 +135,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.symbolInfo.strikePrice)),
 			},
 
-			// Sell
+			// ! Sell
 
 			{
 				headerName: 'بهترین فروش',
@@ -219,10 +219,10 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 	return (
 		<div className='w-full flex-column'>
 			<div className='flex h-48'>
-				<div className='bg-link-100 flex-1 text-lg font-medium text-gray-100 flex-justify-center'>
+				<div className='flex-1 bg-link-100 text-lg font-medium text-gray-100 flex-justify-center'>
 					{t('option_chain.buy_contracts')}
 				</div>
-				<div className='bg-link-100 flex-1 text-lg font-medium text-gray-100 flex-justify-center'>
+				<div className='flex-1 bg-link-100 text-lg font-medium text-gray-100 flex-justify-center'>
 					{t('option_chain.sell_contracts')}
 				</div>
 			</div>
