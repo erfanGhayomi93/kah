@@ -2,6 +2,7 @@ import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
 import Portal from '@/components/common/Portal';
 import { CheckSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
+import { findStringIn } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
@@ -102,6 +103,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 			onOpen={() => setEnabled(true)}
 			renderer={({ setOpen }) => (
 				<div
+					style={{ height: '59vh' }}
 					className={clsx(
 						'justify-between rounded-b border-x border-b border-primary-200 bg-white flex-column',
 						values.length === 0 &&
@@ -109,7 +111,6 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							!(onlyShowTags && values.length === 0) &&
 							'pt-16',
 					)}
-					style={{ height: '59vh' }}
 				>
 					{values.length > 0 && (
 						<div className='w-full flex-wrap border-b border-link px-16 flex-justify-between'>
@@ -153,17 +154,20 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 									</span>
 								) : (
 									symbolsData!.map((item) => {
-										const isSelected = isSymbolSelected(item.symbolISIN);
+										const { symbolTitle, symbolISIN } = item;
+										const isSelected = isSymbolSelected(symbolISIN);
+										const title = findStringIn(term, symbolTitle);
+
 										return (
 											<button
 												onClick={() => onToggleSymbol(item)}
 												type='button'
-												key={item.symbolISIN}
+												key={symbolISIN}
 												className={clsx(
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
 														? 'bg-primary-200 text-white'
-														: 'bg-transparent text-gray-100 hover:bg-primary-300/20',
+														: 'bg-transparent hover:bg-primary-300/20',
 												)}
 											>
 												<div className='w-32 flex-justify-center'>
@@ -173,7 +177,34 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 														</div>
 													)}
 												</div>
-												<span className='text-inherit'>{item.symbolTitle}</span>
+
+												<div className='inline-block'>
+													<span
+														className={
+															isSelected
+																? 'text-white'
+																: term
+																	? 'text-gray-300'
+																	: 'text-gray-100'
+														}
+													>
+														{title[0]}
+													</span>
+													<span className={isSelected ? 'text-white' : 'text-gray-100'}>
+														{title[1]}
+													</span>
+													<span
+														className={
+															isSelected
+																? 'text-white'
+																: term
+																	? 'text-gray-300'
+																	: 'text-gray-100'
+														}
+													>
+														{title[2]}
+													</span>
+												</div>
 											</button>
 										);
 									})
