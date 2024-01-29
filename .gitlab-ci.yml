@@ -1,6 +1,7 @@
 image : mcr.microsoft.com/dotnet/sdk:latest
 stages:
   - deploy
+  - stage
 Deploy-Job:
   stage: deploy
   script:
@@ -132,7 +133,7 @@ Production-Job01:
 #on_failure:
   #script:
 Production-Job02:
-  stage: deploy
+  stage: stage
   script: 
     #- set -e 
     - npm install
