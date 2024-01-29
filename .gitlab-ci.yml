@@ -133,7 +133,7 @@ Production-Job01:
 #on_failure:
   #script:
 Production-Job02:
-  stage: stage
+  stage: deploy
   script: 
     #- set -e 
     - npm install
@@ -156,7 +156,7 @@ Production-Job02:
     #- sudo systemctl restart nginx
     - cd ../
     - pwd
-    - ls -tr | head -n1 | xargs zip -r 1.zip
+    - ls -tr | head -n1 | xargs zip -rq 1.zip
     - sudo mv 1.zip /etc/kahkeshan-backups/
     - sudo rm -rf $(ls -tr | head -n1) > /dev/null 2>&1
     - sudo unzip -q /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
