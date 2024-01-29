@@ -1,7 +1,6 @@
 image : mcr.microsoft.com/dotnet/sdk:latest
 stages:
   - deploy
-  - stage
 Deploy-Job:
   stage: deploy
   script:
@@ -115,7 +114,7 @@ Production-Job01:
     #- sudo systemctl restart nginx
     - cd ../
     - pwd
-    - ls -tr | head -n1 | xargs zip -r 1.zip
+    - ls -tr | head -n1 | xargs zip -rq 1.zip
     - sudo mv 1.zip /etc/kahkeshan-backups/
     - sudo rm -rf $(ls -tr | head -n1)
     - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
