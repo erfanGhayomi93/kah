@@ -11,7 +11,7 @@ export const useSymbolInfoQuery = createQuery<Symbol.Info | null, ['symbolInfoQu
 
 			if (!symbolIsin) return null;
 
-			const response = await axios.get<ServerResponse<Symbol.Info>>(routes.option.SymbolInfo, {
+			const response = await axios.get<ServerResponse<Symbol.Info>>(routes.symbol.SymbolInfo, {
 				params: { symbolIsin },
 				signal,
 			});
