@@ -1,22 +1,10 @@
-import { useDefaultOptionSymbolColumnsQuery, useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
-import { useUserInformationQuery } from '@/api/queries/userQueries';
+import { WatchlistColumnsContext } from '@/contexts/WatchlistColumnsContext';
+import { useContext } from 'react';
 
 const useWatchlistColumns = () => {
-	const { data, isFetching: isFetchingUserData } = useUserInformationQuery({
-		queryKey: ['userInformationQuery'],
-	});
+	const wcContext = useContext(WatchlistColumnsContext);
 
-	const optionSymbolColumns = useOptionSymbolColumnsQuery({
-		queryKey: ['optionSymbolColumnsQuery'],
-		enabled: !isFetchingUserData && Boolean(data),
-	});
-
-	const defaultWatchlistColumns = useDefaultOptionSymbolColumnsQuery({
-		queryKey: ['defaultOptionSymbolColumnsQuery'],
-		enabled: !isFetchingUserData && !data,
-	});
-
-	return data ? optionSymbolColumns : defaultWatchlistColumns;
+	return wcContext;
 };
 
 export default useWatchlistColumns;

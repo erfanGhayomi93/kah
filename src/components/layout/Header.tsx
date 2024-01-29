@@ -1,7 +1,9 @@
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleLoginModal, toggleLogoutModal } from '@/features/slices/modalSlice';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -11,6 +13,14 @@ import { useMemo } from 'react';
 import Portal from '../common/Portal';
 import { ArrowDownSVG, EditSVG, LogoutSVG, PasswordSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '../icons';
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		isLoggingIn: getIsLoggingIn(state),
+	}),
+);
+
 const Header = () => {
 	const pathname = usePathname();
 
@@ -18,10 +28,11 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const isLoggedIn = useAppSelector(getIsLoggedIn);
+	const { isLoggedIn, isLoggingIn } = useAppSelector(getStates);
 
 	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
+		enabled: !isLoggingIn && isLoggedIn,
 	});
 
 	const showAuthenticationModal = () => {
@@ -183,7 +194,7 @@ const Header = () => {
 				<button
 					onClick={showAuthenticationModal}
 					type='button'
-					disabled={isFetchingUserData}
+					disabled={isFetchingUserData || isLoggingIn}
 					className='h-40 rounded px-48 font-medium btn-primary'
 				>
 					{t('header.login')}

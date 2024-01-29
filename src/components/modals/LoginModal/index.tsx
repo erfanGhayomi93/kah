@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
-import { setLoggedIn } from '@/features/slices/userSlice';
+import { setIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
@@ -33,7 +33,7 @@ const LoginModal = () => {
 	};
 
 	const onLoggedIn = () => {
-		dispatch(setLoggedIn(true));
+		dispatch(setIsLoggedIn(true));
 	};
 
 	const sendOTP = (pNumber?: string) => {

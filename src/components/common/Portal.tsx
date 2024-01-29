@@ -19,6 +19,7 @@ interface PortalProps {
 	margin?: Partial<Record<'x' | 'y', number>>;
 	defaultPopupWidth?: number;
 	className?: ClassesValue;
+	animation?: string;
 }
 
 const Portal = ({
@@ -27,6 +28,7 @@ const Portal = ({
 	onClose,
 	onOpen,
 	portalElement,
+	animation = 'slideDown',
 	defaultOpen,
 	defaultPopupWidth,
 	className,
@@ -132,7 +134,15 @@ const Portal = ({
 			{!disabled &&
 				open &&
 				createPortal(
-					<div ref={onPortalLoad} style={{ position: 'absolute', zIndex: zIndex ?? 99, display: 'none' }}>
+					<div
+						ref={onPortalLoad}
+						style={{
+							position: 'absolute',
+							zIndex: zIndex ?? 99,
+							display: 'none',
+							animation: `${animation} ease-in-out 250ms 1 alternate forwards`,
+						}}
+					>
 						{renderer({ setOpen, open })}
 					</div>,
 					portalElement ?? document.body,

@@ -24,7 +24,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 
 		const timer = setTimeout(() => {
 			onCloseModal();
-		}, 2000);
+		}, 1500);
 
 		return () => {
 			clearTimeout(timer);
