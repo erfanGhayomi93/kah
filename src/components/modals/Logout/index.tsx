@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLogoutModal } from '@/features/slices/modalSlice';
-import { setLoggedIn } from '@/features/slices/userSlice';
+import { setIsLoggedIn } from '@/features/slices/userSlice';
 import { deleteCookie } from '@/utils/cookie';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -33,7 +33,7 @@ const LogoutModal = () => {
 
 	const onLoggedOut = async () => {
 		deleteCookie('client_id');
-		dispatch(setLoggedIn(false));
+		dispatch(setIsLoggedIn(false));
 		onCloseModal();
 	};
 

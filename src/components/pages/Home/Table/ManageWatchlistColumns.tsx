@@ -1,5 +1,3 @@
-import axios from '@/api/axios';
-import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -8,7 +6,6 @@ import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useWatchlistColumns } from '@/hooks';
 import { createSelector } from '@reduxjs/toolkit';
-import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -69,9 +66,7 @@ const ManageWatchlistColumns = () => {
 
 	const dispatch = useAppDispatch();
 
-	const queryClient = useQueryClient();
-
-	const { isEnable, isLoggedIn } = useAppSelector(getStates);
+	const { isEnable } = useAppSelector(getStates);
 
 	const [rendered, setRendered] = useState(isEnable);
 
@@ -79,74 +74,20 @@ const ManageWatchlistColumns = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const { data: watchlistColumns, refetch: refetchWatchlistColumns } = useWatchlistColumns();
+	const { data: watchlistColumns, resetColumns, setHiddenColumn } = useWatchlistColumns();
 
 	const onClose = () => {
 		abort();
 		dispatch(toggleManageOptionColumns(false));
 	};
 
-	const resetWatchlistColumns = () =>
-		new Promise<void>(async (resolve, reject) => {
-			try {
-				const response = await axios.post<ServerResponse<boolean>>(
-					routes.optionWatchlist.ResetOptionSymbolColumns,
-				);
-				const { data } = response;
-
-				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-				resolve();
-			} catch (e) {
-				reject();
-			}
-		});
-
 	const onRefresh = () => {
 		try {
 			setResetting(true);
 
 			setDebounce(() => {
-				resetWatchlistColumns()
-					.then(() => refetchWatchlistColumns())
-					.finally(() => setResetting(false));
+				resetColumns().finally(() => setResetting(false));
 			}, 500);
-		} catch (e) {
-			//
-		}
-	};
-
-	const updateCacheColumn = (id: number, isHidden: boolean) => {
-		try {
-			const columnData = JSON.parse(JSON.stringify(watchlistColumns ?? [])) as Option.Column[];
-
-			const specifyColumnIndex = columnData.findIndex((col) => col.id === id);
-
-			columnData[specifyColumnIndex].isHidden = isHidden;
-
-			queryClient.setQueryData(
-				[isLoggedIn ? 'optionSymbolColumnsQuery' : 'defaultOptionSymbolColumnsQuery'],
-				columnData,
-			);
-		} catch (e) {
-			//
-		}
-	};
-
-	const updateServiceColumn = async (id: number, isHidden: boolean) => {
-		try {
-			updateCacheColumn(id, isHidden);
-
-			const response = await axios.post<ServerResponse<boolean>>(
-				routes.optionWatchlist.UpdateOptionSymbolColumns,
-				{
-					id,
-					isHidden,
-				},
-			);
-			const { data } = response;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 		} catch (e) {
 			//
 		}
@@ -212,7 +153,7 @@ const ManageWatchlistColumns = () => {
 
 	return (
 		<Wrapper $enabled={Number(isEnable)} ref={wrapperRef} className='overflow-auto bg-white'>
-			<div className='sticky top-0 w-full bg-white px-32 pt-16'>
+			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
 
@@ -246,7 +187,7 @@ const ManageWatchlistColumns = () => {
 						<div className='flex-wrap gap-16 flex-justify-between'>
 							{categories[category].map((column, columnIndex) => (
 								<Button
-									onClick={() => updateServiceColumn(column.id, !column.isHidden)}
+									onClick={() => setHiddenColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
 									className={clsx(

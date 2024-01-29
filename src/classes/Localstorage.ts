@@ -44,7 +44,7 @@ export class Localstorage {
 		this._observer.notify(name, null);
 	}
 
-	set(name: string, value: string | number | unknown, notify = true): string {
+	set(name: string, value: string | number | unknown, notify = false): string {
 		if (typeof value !== 'string') {
 			if (typeof value === 'number') value = String(value);
 			else value = JSON.stringify(value);
