@@ -1,26 +1,22 @@
 import { useDefaultOptionSymbolColumnsQuery, useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
-import { useAppSelector } from '@/features/hooks';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
 
 const useWatchlistColumns = () => {
-	const isLoggedIn = useAppSelector(getIsLoggedIn);
-
-	const { isFetching: isFetchingUserData } = useUserInformationQuery({
+	const { data, isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
 	});
 
 	const optionSymbolColumns = useOptionSymbolColumnsQuery({
 		queryKey: ['optionSymbolColumnsQuery'],
-		enabled: !isFetchingUserData && isLoggedIn,
+		enabled: !isFetchingUserData && Boolean(data),
 	});
 
 	const defaultWatchlistColumns = useDefaultOptionSymbolColumnsQuery({
 		queryKey: ['defaultOptionSymbolColumnsQuery'],
-		enabled: !isFetchingUserData && !isLoggedIn,
+		enabled: !isFetchingUserData && !data,
 	});
 
-	return isLoggedIn ? optionSymbolColumns : defaultWatchlistColumns;
+	return data ? optionSymbolColumns : defaultWatchlistColumns;
 };
 
 export default useWatchlistColumns;

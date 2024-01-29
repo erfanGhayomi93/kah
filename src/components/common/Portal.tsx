@@ -16,6 +16,7 @@ interface PortalProps {
 	defaultOpen?: boolean;
 	disabled?: boolean;
 	zIndex?: number;
+	margin?: Partial<Record<'x' | 'y', number>>;
 	defaultPopupWidth?: number;
 	className?: ClassesValue;
 }
@@ -30,6 +31,7 @@ const Portal = ({
 	defaultPopupWidth,
 	className,
 	disabled,
+	margin,
 	zIndex,
 }: PortalProps) => {
 	const childRef = useRef<HTMLElement>(null);
@@ -71,18 +73,34 @@ const Portal = ({
 
 			const { width, height, top, left } = eChild.getBoundingClientRect();
 
-			el.style.width = (defaultPopupWidth ?? width) + 'px';
-			el.style.top = top + height + 2 + 'px';
+			let popupWidth = (defaultPopupWidth ?? width) + 'px';
+
+			const my = margin?.y ?? 0;
+			const mx = margin?.x ?? 0;
+
 			if (defaultPopupWidth && defaultPopupWidth !== width) {
-				el.style.width = defaultPopupWidth + 'px';
-				if (defaultPopupWidth > width) el.style.left = left - (defaultPopupWidth - width) + 'px';
-				else el.style.right = left + width - defaultPopupWidth + 'px';
+				popupWidth = defaultPopupWidth + 'px';
+
+				if (defaultPopupWidth > width) {
+					const valueAsPx = left - (defaultPopupWidth - width);
+
+					if (valueAsPx > 0) el.style.left = valueAsPx + mx + 'px';
+					else el.style.left = left + mx + 'px';
+				} else {
+					const valueAsPx = left + width - defaultPopupWidth;
+
+					if (valueAsPx > 0) el.style.right = valueAsPx - mx + 'px';
+					else el.style.right = valueAsPx - mx + 'px';
+				}
 			} else {
-				el.style.width = width + 'px';
-				el.style.left = left + 'px';
+				popupWidth = width + 'px';
+				el.style.left = left + mx + 'px';
 			}
 
+			el.style.width = popupWidth;
+			el.style.top = top + height + my + 'px';
 			el.style.display = '';
+
 			if (className) el.setAttribute('class', clsx(className));
 		} catch (e) {
 			//

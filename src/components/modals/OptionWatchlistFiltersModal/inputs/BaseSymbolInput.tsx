@@ -40,7 +40,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	const [enabled, setEnabled] = useState(false);
 
 	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', { term }],
+		queryKey: ['optionSymbolSearchQuery', { term, orderBy: 'Alphabet' }],
 		enabled,
 	});
 
@@ -103,12 +103,13 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 			renderer={({ setOpen }) => (
 				<div
 					className={clsx(
-						'flex flex-col rounded-b border-x border-b border-primary-200 bg-white',
+						'justify-between rounded-b border-x border-b border-primary-200 bg-white flex-column',
 						values.length === 0 &&
 							!(isLoading || symbolsDataIsEmpty) &&
 							!(onlyShowTags && values.length === 0) &&
 							'pt-16',
 					)}
+					style={{ height: '59vh' }}
 				>
 					{values.length > 0 && (
 						<div className='w-full flex-wrap border-b border-link px-16 flex-justify-between'>
@@ -140,7 +141,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							<div
 								style={{ minHeight: '9.6rem', maxHeight: 'calc(76vh - 28rem)' }}
 								className={clsx(
-									'flex-1 overflow-auto py-8 flex-column',
+									'flex-1 gap-4 overflow-auto py-8 flex-column',
 									(isLoading || symbolsDataIsEmpty) && 'items-center justify-center',
 								)}
 							>

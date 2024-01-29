@@ -78,7 +78,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			);
 
 		return (
-			<ul className='flex flex-wrap gap-16'>
+			<ul className='flex-wrap gap-16 flex-justify-between'>
 				{symbolsData.map((symbol) => (
 					<li key={symbol.symbolISIN}>
 						<Symbol
@@ -95,6 +95,8 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 						</Symbol>
 					</li>
 				))}
+
+				<li className='flex-1'></li>
 			</ul>
 		);
 	}, [symbolsData, isFetching, selectedSymbol]);

@@ -30,7 +30,6 @@ const routes = {
 
 	authentication: {
 		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
-		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
 		ForgetPasswordFirstStep: `${oauthUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
 		SignUp: `${oauthUrl}/OAuthAPI/v1/SignUp`,
 		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
@@ -39,6 +38,8 @@ const routes = {
 		ValidateForgetPasswordOtp: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOtp`,
 		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
 		SendPasslessOTP: `${oauthUrl}/OAuthAPI/v1/SendPasslessOTP`,
+		Logout: `${oauthUrl}/OAuthAPI/v1/Logout`,
+		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
 	},
 };
 
