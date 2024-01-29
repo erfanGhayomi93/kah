@@ -161,10 +161,13 @@ Production-Job02:
     - sudo unzip -q /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
     - sudo rm -rf /etc/kahkeshan-backups/1.zip > /dev/null 2>&1
     #- sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
-  dependencies:
-    - Production-Job01  
+  #dependencies:
+  #  - Production-Job01  
   tags:
     - Runner-KahkeshanUI02
+  needs:
+    - job: "Production-Job01"
+      artifacts: true
   artifacts:
   rules:
     - if: $CI_COMMIT_BRANCH == "Production" 
