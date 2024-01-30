@@ -25,7 +25,7 @@ axios.defaults.paramsSerializer = {
 
 axios.interceptors.request.use(
 	(config) => {
-		const clientId = getCookie('client_id');
+		const clientId = getCookie(process.env.APP_TOKEN_NAME!);
 		if (clientId) config.headers.Authorization = `Bearer ${clientId}`;
 
 		return config;

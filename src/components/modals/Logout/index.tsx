@@ -32,7 +32,7 @@ const LogoutModal = () => {
 	};
 
 	const onLoggedOut = async () => {
-		deleteCookie('client_id');
+		deleteCookie(process.env.APP_TOKEN_NAME!);
 		dispatch(setIsLoggedIn(false));
 		onCloseModal();
 	};
