@@ -14,6 +14,7 @@ type TValue = string | React.ReactNode;
 
 interface ISymbolStateStyledProps {
 	$color: string;
+	$bgColor: string;
 }
 
 interface TItem {
@@ -53,7 +54,7 @@ const SymbolState = styled.span<ISymbolStateStyledProps>`
 	border-radius: 50%;
 	width: 0.8rem;
 	height: 0.8rem;
-	background-color: rgb(25, 135, 84);
+	background-color: rgb(${({ $bgColor }) => $bgColor});
 	position: relative;
 
 	&::after {
@@ -63,14 +64,14 @@ const SymbolState = styled.span<ISymbolStateStyledProps>`
 		left: 0%;
 		width: 100%;
 		height: 100%;
-		animation: ${({ $color }) => pulse({ $color })} 2s infinite;
+		animation: ${(props) => pulse(props)} 2s infinite;
 		border-radius: 50%;
 	}
 `;
 
 const ListItem = ({ title, valueFormatter }: TItem) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-gray-800 whitespace-nowrap text-base'>{title}</span>
+		<span className='text-gray-900 whitespace-nowrap text-base'>{title}</span>
 		<span className='text-gray-1000 text-base font-medium ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
@@ -112,16 +113,14 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						id: 'closingPrice',
 						title: t('option_chain.closing_price'),
 						valueFormatter: (
-							<span className='gap-4 flex-items-center'>
+							<span
+								className={clsx(
+									'gap-4 flex-items-center',
+									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
+								)}
+							>
 								{sepNumbers(String(closingPrice))}
-								<span
-									className={clsx(
-										'text-tiny ltr',
-										closingPriceVarReferencePricePercent >= 0
-											? 'text-success-200'
-											: 'text-error-100',
-									)}
-								>
+								<span className='text-tiny ltr'>
 									{closingPriceVarReferencePrice} (
 									{(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
 								</span>
@@ -193,7 +192,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
 			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<span className='absolute text-base font-medium text-gray-200 center'>
+				<span className='text-gray-900 absolute text-base font-medium center'>
 					{t('option_chain.no_data_found')}
 				</span>
 			</Section>
@@ -209,7 +208,14 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						<SymbolState
 							$color={
 								symbolTradeState === 'Open'
-									? '25, 135, 84'
+									? '12, 175, 130'
+									: symbolTradeState === 'Frozen' || symbolTradeState === 'Suspended'
+										? '254, 57, 87'
+										: '255, 193, 7'
+							}
+							$bgColor={
+								symbolTradeState === 'Open'
+									? '0, 194, 136'
 									: symbolTradeState === 'Frozen' || symbolTradeState === 'Suspended'
 										? '255, 82, 109'
 										: '255, 193, 7'
@@ -240,9 +246,14 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 							{sepNumbers(String(symbolData.closingPrice))}
 						</span>
 
-						<span className='text-gray-1000 flex items-center gap-4 text-2xl font-bold'>
+						<span
+							className={clsx(
+								'flex items-center gap-4 text-4xl font-bold',
+								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
+							)}
+						>
 							{sepNumbers(String(symbolData.lastTradedPrice))}
-							<span className='text-base font-normal'>{t('common.rial')}</span>
+							<span className='text-gray-900 text-base font-normal'>{t('common.rial')}</span>
 						</span>
 					</div>
 

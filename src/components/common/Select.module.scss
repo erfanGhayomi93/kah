@@ -59,11 +59,10 @@
 	-moz-transition: background-color 250ms;
 
 	&:hover {
-		background-color: theme("colors.secondary.100");
+		background-color: theme("colors.primary.100");
 	}
 
 	&.active {
-		color: theme("colors.white");
-		background-color: theme("colors.primary.400");
+		background-color: theme("colors.secondary.100");
 	}
 }
