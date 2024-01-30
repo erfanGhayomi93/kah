@@ -16,7 +16,7 @@ const Input = ({ borderClass, ...props }: InputProps) => (
 		inputMode='decimal'
 		maxLength={12}
 		className={clsx(
-			'h-40 w-full rounded border px-8 text-left text-gray-100 ltr',
+			'text-gray-1000 h-40 w-full rounded border px-8 text-left ltr',
 			borderClass || 'border-gray-500',
 		)}
 		{...props}

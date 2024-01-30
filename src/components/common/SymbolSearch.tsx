@@ -1,3 +1,4 @@
+import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -21,6 +22,10 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 	const [term, setTerm] = useState('');
 
 	const [focus, setFocus] = useState(false);
+
+	const { data } = useOptionSymbolSearchQuery({
+		queryKey: ['optionSymbolSearchQuery', {term: 'term', orderBy: 'Alphabet' }]
+	});
 
 	const onFocus = (cb: () => void) => {
 		setFocus(true);

@@ -28,8 +28,8 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				onClick={() => onChangeValue('ITM')}
 				className={clsx(
 					isITM
-						? 'border-link bg-link text-white'
-						: 'border-2 border-link text-primary-400 hover:bg-link hover:text-white',
+						? 'border-primary-300 bg-primary-300 text-white'
+						: 'border-2 border-primary-400 text-primary-300 hover:bg-primary-300 hover:text-white',
 				)}
 			>
 				<span style={{ height: '2px' }} className='w-24 rounded bg-current' />
