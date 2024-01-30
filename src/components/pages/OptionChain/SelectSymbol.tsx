@@ -30,8 +30,8 @@ const Symbol = styled.button`
 `;
 
 interface SelectSymbolProps {
-	selectedSymbol: null | Option.SymbolSearch;
-	setSelectedSymbol: React.Dispatch<React.SetStateAction<Option.SymbolSearch | null>>;
+	selectedSymbol: null | string;
+	setSelectedSymbol: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) => {
@@ -84,11 +84,11 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 						<Symbol
 							className={clsx(
 								'border transition-colors',
-								symbol.symbolISIN === selectedSymbol?.symbolISIN
+								symbol.symbolISIN === selectedSymbol
 									? 'border-primary-200 bg-primary-200 text-white'
 									: 'border-gray-400 text-gray-100 hover:border-primary-200 hover:bg-primary-200 hover:text-white',
 							)}
-							onClick={() => setSelectedSymbol(symbol)}
+							onClick={() => setSelectedSymbol(symbol.symbolISIN)}
 							type='button'
 						>
 							{symbol.symbolTitle}

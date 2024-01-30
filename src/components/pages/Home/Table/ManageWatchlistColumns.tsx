@@ -15,7 +15,7 @@ const Wrapper = styled.div<{ $enabled: number }>`
 	position: fixed;
 	width: 47.2rem;
 	height: calc(100% - 12.4rem);
-	top: 8rem;
+	top: 7.2rem;
 	left: 0;
 	gap: 1.6rem;
 	display: flex;

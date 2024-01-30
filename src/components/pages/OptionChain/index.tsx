@@ -15,7 +15,7 @@ const Main = styled.main`
 `;
 
 const OptionChain = () => {
-	const [selectedSymbol, setSelectedSymbol] = useLocalstorage<null | Option.SymbolSearch>('selected_symbol', null);
+	const [selectedSymbol, setSelectedSymbol] = useLocalstorage<null | string>('selected_symbol', null);
 
 	return (
 		<Main>

@@ -1,6 +1,15 @@
 'use client';
 
+import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import Loading from '@/components/common/Loading';
+import { defaultSymbolISIN } from '@/constants';
+import { useLocalstorage } from '@/hooks';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import SymbolContracts from './SymbolContracts/SymbolContracts';
+import SymbolInfo from './SymbolInfo';
+import Toolbar from './Toolbar';
 
 const Main = styled.main`
 	display: flex;
@@ -11,9 +20,51 @@ const Main = styled.main`
 `;
 
 const Saturn = () => {
+	const searchParams = useSearchParams();
+
+	const [baseSymbolContracts, setBaseSymbolContracts] = useState<TSaturnBaseSymbolContracts>([
+		null,
+		null,
+		null,
+		null,
+	]);
+
+	const [selectedSymbol, setSelectedSymbol] = useLocalstorage<string>('selected_symbol', defaultSymbolISIN);
+
+	const { data: baseSymbolInfo, isFetching } = useSymbolInfoQuery({
+		queryKey: [
+			'symbolInfoQuery',
+			searchParams.get('symbolISIN') || (typeof selectedSymbol === 'string' ? selectedSymbol : defaultSymbolISIN),
+		],
+	});
+
+	useEffect(() => {
+		try {
+			const contractISIN = searchParams.get('contractISIN');
+		} catch (e) {
+			//
+		}
+	}, []);
+
+	if (!baseSymbolInfo && isFetching) {
+		return (
+			<Main>
+				<Loading />
+			</Main>
+		);
+	}
+
+	if (!baseSymbolInfo) return null;
+
 	return (
 		<Main>
-			<div />
+			<Toolbar onChangeBaseSymbol={(value) => setSelectedSymbol(value)} />
+			<SymbolInfo symbol={baseSymbolInfo} />
+			<SymbolContracts
+				baseSymbol={baseSymbolInfo}
+				baseSymbolContracts={baseSymbolContracts}
+				onChange={(value) => setBaseSymbolContracts(value)}
+			/>
 		</Main>
 	);
 };

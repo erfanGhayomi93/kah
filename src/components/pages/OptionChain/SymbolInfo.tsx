@@ -23,7 +23,7 @@ interface TItem {
 }
 
 interface SymbolInfoProps {
-	selectedSymbol: null | Option.SymbolSearch;
+	selectedSymbol: null | string;
 }
 
 const pulse = ({ $color }: ISymbolStateStyledProps) => keyframes`
@@ -81,7 +81,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	const t = useTranslations();
 
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
-		queryKey: ['symbolInfoQuery', selectedSymbol?.symbolISIN ?? null],
+		queryKey: ['symbolInfoQuery', selectedSymbol ?? null],
 	});
 
 	const ordersData = useMemo<Array<[TItem, TItem]>>(() => {
@@ -221,7 +221,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 					<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-100'>{symbolData.companyName}</h4>
 				</div>
 
-				<div className='flex flex-1 items-center justify-end gap-16 pb-16 pl-16 text-left'>
+				<div className='flex flex-1 items-center justify-end gap-8 pb-16 pl-16 text-left'>
 					<div className='gap-8 flex-items-center'>
 						<span
 							className={clsx(
@@ -261,7 +261,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				</button>
 			</div>
 
-			<ul className='flex px-16 flex-column'>
+			<ul className='flex px-24 flex-column'>
 				{ordersData.map(([firstItem, secondItem], i) => (
 					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-600')}>
 						<ListItem {...firstItem} />

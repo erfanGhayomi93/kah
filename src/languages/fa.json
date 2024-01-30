@@ -148,6 +148,10 @@
 		"buy_contracts": "قراردادهای خرید",
 		"sell_contracts": "قراردادهای فروش"
 	},
+	"saturn": {
+		"click_to_add_contract": "برای <add>افزودن</add> قرارداد {symbolTitle} کلیک کنید",
+		"save": "ذخیره"
+	},
 	"alerts": {
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."
 	},

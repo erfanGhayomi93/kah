@@ -9,7 +9,8 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Portal from '../common/Portal';
 import { ArrowDownSVG, EditSVG, LogoutSVG, PasswordSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '../icons';
 
@@ -29,6 +30,8 @@ const Header = () => {
 	const dispatch = useAppDispatch();
 
 	const { isLoggedIn, isLoggingIn } = useAppSelector(getStates);
+
+	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
 	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
@@ -65,7 +68,7 @@ const Header = () => {
 	);
 
 	return (
-		<header className='sticky top-0 z-10 h-72 bg-white px-32 shadow flex-justify-between'>
+		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-64 bg-white px-32 shadow flex-justify-between'>
 			<nav className='gap-56 flex-items-center'>
 				<Link href='/' rel='home'>
 					<h1 className='text-3xl font-bold'>LOGO</h1>
@@ -184,6 +187,8 @@ const Header = () => {
 							</nav>
 						</div>
 					)}
+					onOpen={() => setIsDropdownOpened(true)}
+					onClose={() => setIsDropdownOpened(false)}
 				>
 					{({ setOpen, open }) => (
 						<button onClick={() => setOpen(!open)} className='gap-8 flex-items-center'>
@@ -205,6 +210,18 @@ const Header = () => {
 					{t('header.login')}
 				</button>
 			)}
+
+			{isDropdownOpened &&
+				createPortal(
+					<div
+						style={{
+							backgroundColor: 'rgba(0, 0, 0, 0.1)',
+							animation: 'fadeIn ease-in-out 250ms 1 alternate forwards',
+						}}
+						className='fixed left-0 top-0 z-10 size-full'
+					/>,
+					document.body,
+				)}
 		</header>
 	);
 };
