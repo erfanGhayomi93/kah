@@ -60,7 +60,10 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 	const [sorting, setSorting] = useState<TSelectOptions>(sortingOptions[0]);
 
 	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', { term: symbolTerm, orderBy: String(sorting.id) }],
+		queryKey: [
+			'optionSymbolSearchQuery',
+			{ term: symbolTerm, orderBy: String(sorting.id) as 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' },
+		],
 	});
 
 	const onChangeSorting = (option: TSelectOptions) => {
