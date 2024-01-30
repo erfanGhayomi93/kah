@@ -70,8 +70,8 @@ const SymbolState = styled.span<ISymbolStateStyledProps>`
 
 const ListItem = ({ title, valueFormatter }: TItem) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='whitespace-nowrap text-base text-gray-200'>{title}</span>
-		<span className='text-base font-medium text-gray-100 ltr'>
+		<span className='text-gray-800 whitespace-nowrap text-base'>{title}</span>
+		<span className='text-gray-1000 text-base font-medium ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
 	</div>
@@ -215,10 +215,10 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 										: '255, 193, 7'
 							}
 						/>
-						<h1 className='text-3xl font-medium text-gray-100'>{symbolData.symbolTitle}</h1>
+						<h1 className='text-gray-1000 text-3xl font-medium'>{symbolData.symbolTitle}</h1>
 					</div>
 
-					<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-100'>{symbolData.companyName}</h4>
+					<h4 className='text-gray-1000 whitespace-nowrap pr-20 text-tiny'>{symbolData.companyName}</h4>
 				</div>
 
 				<div className='flex flex-1 items-center justify-end gap-8 pb-16 pl-16 text-left'>
@@ -226,7 +226,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						<span
 							className={clsx(
 								'gap-4 flex-items-center',
-								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-100',
+								closingPriceVarReferencePrice >= 0 ? 'text-success-100' : 'text-error-100',
 							)}
 						>
 							<span className='flex items-center text-tiny ltr'>
@@ -240,13 +240,13 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 							{sepNumbers(String(symbolData.closingPrice))}
 						</span>
 
-						<span className='flex items-center gap-4 text-2xl font-bold text-gray-100'>
+						<span className='text-gray-1000 flex items-center gap-4 text-2xl font-bold'>
 							{sepNumbers(String(symbolData.lastTradedPrice))}
 							<span className='text-base font-normal'>{t('common.rial')}</span>
 						</span>
 					</div>
 
-					<button type='button' className='size-24 text-gray-100'>
+					<button type='button' className='text-gray-1000 size-24'>
 						<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 					</button>
 				</div>
@@ -263,7 +263,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 			<ul className='flex px-24 flex-column'>
 				{ordersData.map(([firstItem, secondItem], i) => (
-					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-600')}>
+					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
 						<ListItem {...firstItem} />
 						<ListItem {...secondItem} />
 					</li>

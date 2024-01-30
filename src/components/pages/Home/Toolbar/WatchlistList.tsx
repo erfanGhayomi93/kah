@@ -39,7 +39,7 @@ const WatchlistList = () => {
 			<li>
 				<button
 					type='button'
-					className='size-40 gap-8 rounded font-medium btn-primary-outline'
+					className='btn-primary-100 size-40 gap-8 rounded font-medium'
 					onClick={onAddNewWatchlist}
 				>
 					<PlusSVG width='2.4rem' height='2.4rem' />
@@ -47,7 +47,7 @@ const WatchlistList = () => {
 			</li>
 
 			<li>
-				<button type='button' className='size-40 gap-8 rounded font-medium btn-primary-outline'>
+				<button type='button' className='btn-primary-100 size-40 gap-8 rounded font-medium'>
 					<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 				</button>
 			</li>

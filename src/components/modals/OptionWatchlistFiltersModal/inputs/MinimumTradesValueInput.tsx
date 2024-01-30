@@ -16,7 +16,7 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 
 	return (
 		<div className='flex flex-col gap-4'>
-			<div className='input-group h-full flex-1 rounded border border-gray-400 flex-items-center'>
+			<div className='input-group h-full flex-1 rounded border border-gray-500 flex-items-center'>
 				<input
 					type='text'
 					inputMode='numeric'

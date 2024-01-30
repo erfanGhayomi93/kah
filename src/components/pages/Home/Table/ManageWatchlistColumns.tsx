@@ -14,7 +14,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div<{ $enabled: number }>`
 	position: fixed;
 	width: 47.2rem;
-	height: calc(100% - 12.4rem);
+	height: calc(100% - 11.6rem);
 	top: 7.2rem;
 	left: 0;
 	gap: 1.6rem;
@@ -155,13 +155,13 @@ const ManageWatchlistColumns = () => {
 		<Wrapper $enabled={Number(isEnable)} ref={wrapperRef} className='overflow-auto bg-white'>
 			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
-					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
+					<h1 className='text-gray-1000 text-2xl font-bold'>{t('manage_option_watchlist_columns.title')}</h1>
 
 					<div className='flex gap-24'>
-						<button className='text-gray-100' type='button' onClick={onRefresh}>
+						<button className='text-gray-1000' type='button' onClick={onRefresh}>
 							<RefreshSVG width='2.4rem' height='2.4rem' />
 						</button>
-						<button className='text-gray-100' type='button' onClick={onClose}>
+						<button className='text-gray-1000' type='button' onClick={onClose}>
 							<XSVG width='1.6rem' height='1.6rem' />
 						</button>
 					</div>
@@ -180,7 +180,7 @@ const ManageWatchlistColumns = () => {
 							categoryIndex < 2 && 'border-b border-b-gray-400',
 						)}
 					>
-						<h2 className='text-lg font-medium text-gray-100'>
+						<h2 className='text-gray-1000 text-lg font-medium'>
 							{t(`manage_option_watchlist_columns.${category}`)}
 						</h2>
 
@@ -192,7 +192,7 @@ const ManageWatchlistColumns = () => {
 									key={column.id}
 									className={clsx(
 										column.isHidden
-											? 'bg-white text-gray-200 shadow-sm hover:bg-primary-200 hover:text-white'
+											? 'text-gray-900 bg-white shadow-sm hover:bg-primary-400 hover:text-white'
 											: 'btn-choose',
 									)}
 								>

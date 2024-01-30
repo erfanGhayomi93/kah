@@ -22,6 +22,12 @@ const getStates = createSelector(
 	}),
 );
 
+const Picture = () => (
+	<div className='overflow-hidden rounded-circle bg-secondary-100'>
+		<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
+	</div>
+);
+
 const Header = () => {
 	const pathname = usePathname();
 
@@ -82,8 +88,8 @@ const Header = () => {
 								className={clsx(
 									'p-8 text-lg transition-colors',
 									pathname === item.href
-										? 'font-bold text-primary-200'
-										: 'font-medium text-gray-100 hover:text-primary-200',
+										? 'font-bold text-primary-400'
+										: 'text-gray-1000 font-medium hover:text-primary-400',
 								)}
 							>
 								{item.title}
@@ -103,22 +109,15 @@ const Header = () => {
 						<div className='rounded-md bg-white py-16 shadow-tooltip'>
 							<div className='flex h-40 items-start justify-between px-16'>
 								<div className='gap-12 flex-items-center'>
-									<div className='overflow-hidden rounded-circle bg-link-100'>
-										<Image
-											width='40'
-											height='40'
-											alt='profile'
-											src='/static/images/young-boy.png'
-										/>
-									</div>
+									<Picture />
 
-									<div className='gap-2 flex-column'>
-										<h3 className='text-base font-medium'>{t('header.app_user')}</h3>
-										<span className='text-tiny text-gray-200'>{userData?.mobile}</span>
+									<div className='gap-4 flex-column'>
+										<h3 className='text-gray-1000 text-base font-medium'>{t('header.app_user')}</h3>
+										<span className='text-tiny text-gray-700'>{userData?.mobile}</span>
 									</div>
 								</div>
 
-								<button className='text-gray-100' type='button'>
+								<button className='text-gray-900' type='button'>
 									<EditSVG width='2rem' height='2rem' />
 								</button>
 							</div>
@@ -126,47 +125,51 @@ const Header = () => {
 							<div className='px-16 pb-32 pt-40 flex-items-center'>
 								<button
 									type='button'
-									className='h-32 w-full rounded bg-link-100 text-tiny font-medium text-primary-300 transition-colors flex-justify-center hover:bg-link hover:text-white'
+									className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
 								>
 									{t('header.set_password')}
 								</button>
 							</div>
 
-							<nav className='gap-24 px-8 flex-column'>
+							<nav className='gap-16 px-8 flex-column'>
 								<ul className='flex-column'>
 									<li>
 										<button
 											type='button'
-											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
-											<UserCircleSVG width='1.8rem' height='1.8rem' />
+											<UserCircleSVG className='text-gray-900' width='1.8rem' height='1.8rem' />
 											<span>{t('header.user_account')}</span>
 										</button>
 									</li>
 									<li>
 										<button
 											type='button'
-											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
-											<PasswordSVG width='1.6rem' height='1.6rem' />
+											<PasswordSVG className='text-gray-900' width='1.6rem' height='1.6rem' />
 											<span>{t('header.password')}</span>
 										</button>
 									</li>
 									<li>
 										<button
 											type='button'
-											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
-											<SessionHistorySVG width='1.6rem' height='1.6rem' />
+											<SessionHistorySVG
+												className='text-gray-900'
+												width='1.6rem'
+												height='1.6rem'
+											/>
 											<span>{t('header.session_history')}</span>
 										</button>
 									</li>
 									<li>
 										<button
 											type='button'
-											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
-											<SettingSVG width='1.6rem' height='1.6rem' />
+											<SettingSVG className='text-gray-900' width='1.6rem' height='1.6rem' />
 											<span>{t('header.setting')}</span>
 										</button>
 									</li>
@@ -177,9 +180,9 @@ const Header = () => {
 										<button
 											onClick={onLogout}
 											type='button'
-											className='h-40 w-full gap-12 rounded px-12 text-gray-100 transition-colors flex-justify-start hover:bg-link-100'
+											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
-											<LogoutSVG width='1.6rem' height='1.6rem' />
+											<LogoutSVG className='text-gray-900' width='1.6rem' height='1.6rem' />
 											<span>{t('header.logout')}</span>
 										</button>
 									</li>
@@ -192,11 +195,8 @@ const Header = () => {
 				>
 					{({ setOpen, open }) => (
 						<button onClick={() => setOpen(!open)} className='gap-8 flex-items-center'>
-							<div className='overflow-hidden rounded-circle bg-link-100'>
-								<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
-							</div>
-
-							<ArrowDownSVG width='1rem' height='1rem' className='text-gray-100' />
+							<Picture />
+							<ArrowDownSVG width='1rem' height='1rem' className='text-gray-1000' />
 						</button>
 					)}
 				</Portal>

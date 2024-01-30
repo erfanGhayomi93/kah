@@ -26,7 +26,11 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 			<button
 				type='button'
 				onClick={() => onChangeValue('ITM')}
-				className={clsx(isITM ? 'border-link bg-link text-white' : 'border-2 border-link text-link hover:bg-link hover:text-white')}
+				className={clsx(
+					isITM
+						? 'border-link bg-link text-white'
+						: 'border-2 border-link text-primary-400 hover:bg-link hover:text-white',
+				)}
 			>
 				<span style={{ height: '2px' }} className='w-24 rounded bg-current' />
 				{t('option_watchlist_filters_modal.status_itm')}
@@ -35,7 +39,9 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				type='button'
 				onClick={() => onChangeValue('OTM')}
 				className={clsx(
-					isOTM ? 'border-error-100 bg-error-100 text-white' : 'border-2 border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
+					isOTM
+						? 'border-error-100 bg-error-100 text-white'
+						: 'border-2 border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
 				)}
 			>
 				<ChartDownSVG />

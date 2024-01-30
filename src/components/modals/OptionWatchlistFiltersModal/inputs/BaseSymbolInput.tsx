@@ -131,7 +131,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 
 					{onlyShowTags && values.length === 0 && (
 						<div style={{ minHeight: '9.6rem' }} className='flex-justify-center'>
-							<span className='text-base text-gray-200'>
+							<span className='text-gray-900 text-base'>
 								{t('option_watchlist_filters_modal.symbol_not_found')}
 							</span>
 						</div>
@@ -147,9 +147,9 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 								)}
 							>
 								{isLoading ? (
-									<span className='text-base text-gray-200'>{t('common.searching')}</span>
+									<span className='text-gray-900 text-base'>{t('common.searching')}</span>
 								) : symbolsDataIsEmpty ? (
-									<span className='text-base text-gray-200'>
+									<span className='text-gray-900 text-base'>
 										{t('option_watchlist_filters_modal.symbol_not_found')}
 									</span>
 								) : (
@@ -232,7 +232,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 				<div
 					className={clsx(
 						'input-group h-40 flex-1 border flex-items-center',
-						open ? 'rounded-t border-primary-200' : 'rounded border-gray-400',
+						open ? 'rounded-t border-primary-200' : 'rounded border-gray-500',
 					)}
 				>
 					<span className='px-8 text-gray-100'>

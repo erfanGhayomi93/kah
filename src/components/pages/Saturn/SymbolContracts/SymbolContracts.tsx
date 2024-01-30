@@ -7,7 +7,7 @@ interface SymbolContractsProps {
 }
 
 const SymbolContracts = ({ baseSymbol, baseSymbolContracts, onChange }: SymbolContractsProps) => {
-	const onChangeContract = (index: number, symbol: Symbol.Info | null) => {
+	const onChangeContract = (index: number, symbol: string | null) => {
 		try {
 			if (index > 3) return;
 
@@ -22,10 +22,10 @@ const SymbolContracts = ({ baseSymbol, baseSymbolContracts, onChange }: SymbolCo
 
 	return (
 		<div className='flex flex-wrap gap-8'>
-			{baseSymbolContracts.map((symbol, index) => (
+			{baseSymbolContracts.map((symbolISIN, index) => (
 				<Contract
-					key={symbol?.symbolISIN}
-					symbol={symbol}
+					key={symbolISIN}
+					symbolISIN={symbolISIN}
 					onChange={(value) => onChangeContract(index, value)}
 					baseSymbol={baseSymbol}
 				/>

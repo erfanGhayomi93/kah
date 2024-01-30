@@ -11,7 +11,7 @@ const Main = styled.main`
 	flex-direction: column;
 	padding: 0.8rem 3.2rem 2.4rem 3.2rem;
 	gap: 0.8rem;
-	min-height: calc(100% - 10.8rem);
+	min-height: calc(100% - 10rem);
 `;
 
 const OptionChain = () => {

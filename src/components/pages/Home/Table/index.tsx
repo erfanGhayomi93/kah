@@ -6,8 +6,9 @@ import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRen
 import { useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import { type CellClickedEvent, type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
@@ -19,6 +20,8 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters }: TableProps) => {
+	const router = useRouter();
+
 	const cWatchlistRef = useRef<Option.Root[]>([]);
 
 	const gridRef = useRef<GridApi<Option.Root>>(null);
@@ -40,6 +43,19 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 	const onFiltersChanged = (newFilters: IOptionWatchlistFilters) => {
 		setFilters(newFilters);
+	};
+
+	const onSymbolTitleClicked = ({ data }: CellClickedEvent<Option.Root>) => {
+		try {
+			if (!data) return;
+
+			const { symbolISIN, baseSymbolISIN } = data.symbolInfo;
+
+			if (baseSymbolISIN && symbolISIN)
+				router.push(`fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+		} catch (e) {
+			//
+		}
 	};
 
 	const modifiedWatchlistColumns = useMemo(() => {
@@ -67,6 +83,8 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden ?? true),
 				minWidth: 128,
 				pinned: 'right',
+				cellClass: 'cursor-pointer',
+				onCellClicked: onSymbolTitleClicked,
 				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
@@ -512,7 +530,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	return (
 		<div
 			style={{
-				height: 'calc(100vh - 25.2rem)',
+				height: 'calc(100vh - 23.6rem)',
 			}}
 			className='relative'
 		>

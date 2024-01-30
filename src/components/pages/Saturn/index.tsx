@@ -5,7 +5,7 @@ import Loading from '@/components/common/Loading';
 import { defaultSymbolISIN } from '@/constants';
 import { useLocalstorage } from '@/hooks';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import SymbolContracts from './SymbolContracts/SymbolContracts';
 import SymbolInfo from './SymbolInfo';
@@ -16,7 +16,7 @@ const Main = styled.main`
 	flex-direction: column;
 	padding: 0.8rem 3.2rem 2.4rem 3.2rem;
 	gap: 0.8rem;
-	min-height: calc(100% - 10.8rem);
+	min-height: calc(100% - 10rem);
 `;
 
 const Saturn = () => {
@@ -38,9 +38,12 @@ const Saturn = () => {
 		],
 	});
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		try {
 			const contractISIN = searchParams.get('contractISIN');
+			if (!contractISIN) throw new Error();
+
+			setBaseSymbolContracts([contractISIN, null, null, null]);
 		} catch (e) {
 			//
 		}
