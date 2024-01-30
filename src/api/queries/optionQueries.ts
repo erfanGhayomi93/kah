@@ -118,13 +118,18 @@ export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], [
 
 export const useOptionSymbolSearchQuery = createQuery<
 	Option.SymbolSearch[],
-	['optionSymbolSearchQuery', Partial<Record<'term' | 'orderBy', string>>]
+	[
+		'optionSymbolSearchQuery',
+		Partial<{ term: null | string; orderBy: 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' }>,
+	]
 >({
 	staleTime: 18e5,
 	queryKey: ['optionSymbolSearchQuery', {}],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
 			const [, { term, orderBy }] = queryKey;
+
+			if (term === null) return [];
 
 			const params: Record<string, string> = {};
 			if (term) params.term = term;

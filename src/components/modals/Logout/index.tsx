@@ -49,7 +49,7 @@ const LogoutModal = () => {
 	};
 
 	return (
-		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
 			<Div className='bg-white'>
 				{loading ? (
 					<div className='spinner size-32' />
