@@ -255,17 +255,24 @@ declare namespace Symbol {
 		lastTradedPrice: number;
 		tradeVolume: number;
 		tradeValue: number;
-		avgIV: number | null;
+		avgIV: null | number;
 		closingPrice: number;
-		oneMonthAvgVolume: number;
 		tradeCount: number;
 		lastTradeDate: string;
-		hv: number | null;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		hv: number;
+		symbolTradeState: string;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
 		closingPriceVarReferencePrice: number;
 		closingPriceVarReferencePricePercent: number;
+		oneMonthAvgVolume: string;
+		individualBuyVolume: number;
+		individualSellVolume: number;
+		legalBuyVolume: number;
+		legalSellVolume: number;
+		baseSymbolISIN: null | string;
+		marketUnit: string;
+		isOption: boolean;
 	}
 
 	export interface Search {
@@ -275,6 +282,17 @@ declare namespace Symbol {
 		companyName: string;
 		insCode: null | string;
 		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+	}
+
+	export interface BestLimit {
+		symbolISIN: string;
+		rowIndex: number;
+		bestBuyLimitPrice: number;
+		bestSellLimitPrice: number;
+		bestBuyLimitQuantity: number;
+		bestSellLimitQuantity: number;
+		numberOfOrdersAtBestBuy: number;
+		numberOfOrdersAtBestSell: number;
 	}
 }
 

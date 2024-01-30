@@ -1,14 +1,10 @@
-import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
-import Loading from '@/components/common/Loading';
 import SymbolState from '@/components/common/SymbolState';
-import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
+import { GrowDownSVG, GrowUpSVG, InfoSVG } from '@/components/icons';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import NoData from './common/NoData';
-import Section from './common/Section';
 
 type TValue = string | React.ReactNode;
 
@@ -16,10 +12,6 @@ interface Item {
 	id: string;
 	title: string;
 	valueFormatter: (() => TValue) | TValue;
-}
-
-interface SymbolInfoProps {
-	selectedSymbol: null | string;
 }
 
 const ListItem = ({ title, valueFormatter }: Item) => (
@@ -31,17 +23,56 @@ const ListItem = ({ title, valueFormatter }: Item) => (
 	</div>
 );
 
-const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
+interface IProgressBar {
+	side: 'buy' | 'sell';
+	legalVolume: number;
+	individualVolume: number;
+}
+
+const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 	const t = useTranslations();
 
-	const { data: symbolData, isLoading } = useSymbolInfoQuery({
-		queryKey: ['symbolInfoQuery', selectedSymbol ?? null],
-	});
+	const bgColor = side === 'buy' ? 'bg-success-100' : 'bg-error-100';
+	const bgAlphaColor = side === 'buy' ? 'bg-success-100/10' : 'bg-error-100/10';
+
+	const percent = (individualVolume / (individualVolume + legalVolume)) * 100;
+
+	return (
+		<div className='flex-1 gap-4 flex-column'>
+			<div className='gap-16 flex-justify-center'>
+				<div className='gap-4 flex-items-center'>
+					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgColor}`} />
+					<span className='text-gray-1000 text-base'>
+						{t('saturn.individual')}
+						<span className='text-tiny ltr'> {percent.toFixed(2)}%</span>
+					</span>
+				</div>
+
+				<div className='gap-4 flex-items-center'>
+					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgAlphaColor}`} />
+					<span className='text-gray-1000 text-base'>
+						{t('saturn.legal')}
+						<span className='text-tiny ltr'> {(100 - percent).toFixed(2)}%</span>
+					</span>
+				</div>
+			</div>
+
+			<div className={`min-h-8 flex-1 overflow-hidden rounded-oval rtl ${bgAlphaColor}`}>
+				<div style={{ width: `${percent}%` }} className={`min-h-8 ${bgColor}`} />
+			</div>
+		</div>
+	);
+};
+
+interface SymbolDetailsProps {
+	symbol: Symbol.Info;
+}
+
+const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
+	const t = useTranslations();
 
 	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {
 		try {
-			if (!symbolData) throw new Error();
-
 			const {
 				tradeVolume,
 				oneMonthAvgVolume,
@@ -53,7 +84,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				lastTradeDate,
 				avgIV,
 				hv,
-			} = symbolData;
+			} = symbol;
 
 			return [
 				[
@@ -126,38 +157,25 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 		} catch (error) {
 			return [];
 		}
-	}, [symbolData]);
+	}, [symbol]);
 
-	if (!selectedSymbol)
-		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='flex-justify-center'>
-				<NoData text={t('option_chain.select_symbol_from_right_list')} />
-			</Section>
-		);
-
-	if (isLoading)
-		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<Loading />
-			</Section>
-		);
-
-	if (!symbolData || typeof symbolData !== 'object')
-		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<span className='text-gray-900 absolute text-base font-medium center'>
-					{t('option_chain.no_data_found')}
-				</span>
-			</Section>
-		);
-
-	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
-		symbolData;
+	const {
+		closingPriceVarReferencePrice,
+		symbolTradeState,
+		symbolTitle,
+		closingPrice,
+		lastTradedPrice,
+		companyName,
+		individualBuyVolume,
+		individualSellVolume,
+		legalBuyVolume,
+		legalSellVolume,
+	} = symbol;
 
 	return (
-		<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative py-12 flex-column'>
+		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='gap-40 flex-column'>
 			<div className='flex-column'>
-				<div className='justify-between pl-16 pr-24 flex-items-center'>
+				<div style={{ gap: '7.8rem' }} className='flex-items-center'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState state={symbolTradeState} />
 						<h1 className='text-gray-1000 text-3xl font-medium'>{symbolTitle}</h1>
@@ -190,26 +208,13 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 							{sepNumbers(String(lastTradedPrice))}
 							<span className='text-gray-900 text-base font-normal'>{t('common.rial')}</span>
 						</span>
-
-						<button type='button' className='text-gray-1000 size-24'>
-							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
-						</button>
 					</div>
 				</div>
 
-				<h4 className='text-gray-1000 whitespace-nowrap pr-44 text-tiny'>{companyName}</h4>
+				<h4 className='text-gray-1000 whitespace-nowrap pr-20 text-tiny'>{companyName}</h4>
 			</div>
 
-			<div className='gap-16 px-24 pb-48 pt-32 flex-justify-between'>
-				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-success-outline' type='button'>
-					{t('side.buy')}
-				</button>
-				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-error-outline' type='button'>
-					{t('side.sell')}
-				</button>
-			</div>
-
-			<ul className='flex px-24 flex-column'>
+			<ul className='flex flex-column'>
 				{symbolDetails.map(([firstItem, secondItem], i) => (
 					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
 						<ListItem {...firstItem} />
@@ -217,8 +222,22 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 					</li>
 				))}
 			</ul>
-		</Section>
+
+			<div className='w-full items-center gap-32 flex-justify-between'>
+				<ProgressBar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />
+				<div className='pt-16'>
+					<button
+						type='button'
+						style={{ minWidth: '2.4rem', minHeight: '2.4rem' }}
+						className='text-gray-1000 rounded-sm border border-gray-500 bg-gray-200 flex-justify-center'
+					>
+						<InfoSVG width='1.6rem' height='1.6rem' />
+					</button>
+				</div>
+				<ProgressBar side='sell' individualVolume={individualSellVolume} legalVolume={legalSellVolume} />
+			</div>
+		</div>
 	);
 };
 
-export default SymbolInfo;
+export default SymbolDetails;
