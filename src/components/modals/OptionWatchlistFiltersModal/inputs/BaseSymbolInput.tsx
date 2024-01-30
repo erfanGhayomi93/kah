@@ -9,7 +9,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../index.module.scss';
 
 interface BaseSymbolInputProps {
-	values: Option.SymbolSearch[];
+	values: Option.Search[];
 	onChange: (values: IOptionWatchlistFilters['symbols']) => void;
 }
 
@@ -64,7 +64,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 		if (inputRef.current) inputRef.current.focus();
 	};
 
-	const onToggleSymbol = (symbol: Option.SymbolSearch) => {
+	const onToggleSymbol = (symbol: Option.Search) => {
 		try {
 			const isExists = isSymbolSelected(symbol.symbolISIN);
 

@@ -1,4 +1,4 @@
-import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
+import { useSymbolSearchQuery } from '@/api/queries/symbolQuery';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -6,7 +6,7 @@ import { SearchSVG } from '../icons';
 import Portal from './Portal';
 import styles from './SymbolSearch.module.scss';
 
-type ValueType = Option.SymbolSearch | null;
+type ValueType = Option.Search | null;
 
 type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>;
 
@@ -23,8 +23,8 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 
 	const [focus, setFocus] = useState(false);
 
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', { term: term.length < 2 ? null : term, orderBy: 'Alphabet' }],
+	const { data: symbolsData, isFetching } = useSymbolSearchQuery({
+		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
 	});
 
 	const onSelect = (symbol: ValueType) => {
@@ -69,18 +69,20 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 					);
 
 				return (
-					<ul className={clsx(styles.list, classes?.list)}>
-						{symbolsData.map((symbol) => (
-							<li
-								onMouseUp={() => setOpen(false)}
-								onMouseDown={() => onSelect(symbol)}
-								key={symbol.symbolISIN}
-								className={clsx(styles.item, classes?.item)}
-							>
-								{symbol.symbolTitle}
-							</li>
-						))}
-					</ul>
+					<div className={clsx(styles.list, classes?.list)}>
+						<ul>
+							{symbolsData.map((symbol) => (
+								<li
+									onMouseUp={() => setOpen(false)}
+									onMouseDown={() => onSelect(symbol)}
+									key={symbol.symbolISIN}
+									className={clsx(styles.item, classes?.item)}
+								>
+									{symbol.symbolTitle}
+								</li>
+							))}
+						</ul>
+					</div>
 				);
 			}}
 			onClose={onBlur}

@@ -10,9 +10,9 @@ interface ToolbarProps {
 const Toolbar = ({ onChangeBaseSymbol }: ToolbarProps) => {
 	const t = useTranslations();
 
-	const [symbol] = useState<Option.SymbolSearch | null>(null);
+	const [symbol] = useState<Option.Search | null>(null);
 
-	const onChangeSymbol = (value: Option.SymbolSearch | null) => {
+	const onChangeSymbol = (value: Option.Search | null) => {
 		if (!value) return;
 		onChangeBaseSymbol(value.symbolISIN);
 	};

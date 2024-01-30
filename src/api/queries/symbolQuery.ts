@@ -25,3 +25,27 @@ export const useSymbolInfoQuery = createQuery<Symbol.Info | null, ['symbolInfoQu
 		}
 	},
 });
+
+export const useSymbolSearchQuery = createQuery<Symbol.Search[], ['symbolSearchQuery', null | string]>({
+	staleTime: 18e5,
+	queryKey: ['symbolSearchQuery', null],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const [, term] = queryKey;
+
+			if (term === null) return [];
+
+			const response = await axios.get<ServerResponse<Symbol.Search[]>>(routes.symbol.Search, {
+				params: { term },
+				signal,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});

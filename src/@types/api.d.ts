@@ -221,10 +221,13 @@ declare namespace Option {
 		tradeVolume: number;
 	}
 
-	export interface SymbolSearch {
-		symbolTitle: string;
+	export interface Search {
 		symbolISIN: string;
-		insCode: string;
+		symbolTitle: string;
+		companyISIN: string;
+		companyName: string;
+		insCode: null | string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 	}
 
 	export interface BaseSettlementDays {
@@ -263,6 +266,15 @@ declare namespace Symbol {
 		tradePriceVarPreviousTradePercent: number;
 		closingPriceVarReferencePrice: number;
 		closingPriceVarReferencePricePercent: number;
+	}
+
+	export interface Search {
+		symbolISIN: string;
+		symbolTitle: string;
+		companyISIN: string;
+		companyName: string;
+		insCode: null | string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 	}
 }
 
