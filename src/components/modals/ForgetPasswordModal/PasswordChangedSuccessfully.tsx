@@ -35,7 +35,7 @@ const PasswordChangedSuccessfully = () => {
 				}}
 				className='absolute w-full px-64 flex-column'
 			>
-				<button onClick={onCloseModal} type='button' className='text-lg font-bold text-link'>
+				<button onClick={onCloseModal} type='button' className='text-lg font-bold text-primary-400'>
 					{t('forget_password_modal.go_to_homepage')}
 				</button>
 			</div>

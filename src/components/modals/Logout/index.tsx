@@ -55,17 +55,17 @@ const LogoutModal = () => {
 					<div className='spinner size-32' />
 				) : (
 					<>
-						<h2 className='text-center text-lg font-medium text-gray-100'>{t('logout_modal.title')}</h2>
+						<h2 className='text-gray-1000 text-center text-lg font-medium'>{t('logout_modal.title')}</h2>
 
 						<div className='pb-40 pt-32 text-center'>
-							<p className='text-base text-gray-100'>{t('logout_modal.description')}</p>
+							<p className='text-gray-1000 text-base'>{t('logout_modal.description')}</p>
 						</div>
 
 						<div className='flex w-full justify-between gap-8'>
 							<button
 								onClick={onCloseModal}
 								type='button'
-								className='h-40 flex-1 rounded border border-gray-400 text-base text-gray-300 flex-justify-center'
+								className='text-gray-800 h-40 flex-1 rounded border border-gray-500 text-base flex-justify-center'
 							>
 								{t('common.cancel')}
 							</button>
@@ -73,7 +73,7 @@ const LogoutModal = () => {
 							<button
 								onClick={logout}
 								type='button'
-								className='h-40 flex-1 rounded bg-error-100 text-lg font-medium text-white flex-justify-center'
+								className='h-40 flex-1 rounded text-lg font-medium flex-justify-center btn-error'
 							>
 								{t('logout_modal.button')}
 							</button>

@@ -28,19 +28,19 @@ const WatchlistManagerBtn = styled.button`
 
 		path:nth-child(1),
 		path:nth-child(3) {
-			fill: rgb(0, 142, 186);
+			fill: rgba(0, 87, 255, 1);
 		}
 
 		path:nth-child(2),
 		path:nth-child(4) {
-			fill: rgb(74, 74, 74);
+			fill: rgba(74, 74, 74, 1);
 		}
 	}
 
 	&:hover svg {
 		path:nth-child(1),
 		path:nth-child(3) {
-			fill: rgb(0, 182, 237);
+			fill: rgba(0, 182, 237, 1);
 		}
 
 		path:nth-child(2),
@@ -99,7 +99,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			<li>
 				<ExcelBtn
 					onClick={onExportExcel}
-					className='size-40 rounded border border-gray-300 transition-colors flex-justify-center hover:border-primary-200 hover:bg-primary-200'
+					className='size-40 rounded border border-gray-400 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
 					type='button'
 				>
 					<ExcelSVG />
@@ -108,7 +108,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			<li>
 				<button
 					onClick={onShowFilters}
-					className='relative size-40 rounded border border-gray-300 transition-colors flex-justify-center hover:border-primary-200 hover:bg-primary-200 hover:text-white'
+					className='relative size-40 rounded border border-gray-400 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
 					type='button'
 				>
 					{filtersCount > 0 && <Badge className='bg-primary-300 text-white'>{filtersCount}</Badge>}
@@ -118,7 +118,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			<li>
 				<WatchlistManagerBtn
 					onClick={manageTableHeaders}
-					className='size-40 rounded border border-gray-300 bg-transparent transition-colors flex-justify-center hover:border-primary-200 hover:bg-primary-200'
+					className='size-40 rounded border border-gray-400 bg-transparent transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
 					type='button'
 				>
 					<OptionWatchlistManagerSVG />

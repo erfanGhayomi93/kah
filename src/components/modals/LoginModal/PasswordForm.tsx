@@ -120,7 +120,11 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 
 							<div className='flex justify-between'>
 								{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
-								<button onClick={forgetPassword} type='button' className='mr-auto text-base text-link'>
+								<button
+									onClick={forgetPassword}
+									type='button'
+									className='mr-auto text-base text-primary-400'
+								>
 									{t('login_modal.forget_password')}
 								</button>
 							</div>
@@ -145,7 +149,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 					{t('login_modal.login')}
 				</Button>
 
-				<button type='button' onClick={goToLoginWithOTP} className='h-48 font-medium text-primary-300'>
+				<button type='button' onClick={goToLoginWithOTP} className='h-48 font-medium text-primary-400'>
 					{t('login_modal.login_with_otp')}
 				</button>
 			</div>

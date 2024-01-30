@@ -1,5 +1,6 @@
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
+import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
 import ChartDownSVG from './chart-down.svg';
 import ChartUpSVG from './chart-up.svg';
@@ -32,6 +33,7 @@ import XSVG from './x.svg';
 export {
 	ArrowDownSVG,
 	ArrowLeftSVG,
+	BookmarkSVG,
 	CalendarSVG,
 	ChartDownSVG,
 	ChartUpSVG,
