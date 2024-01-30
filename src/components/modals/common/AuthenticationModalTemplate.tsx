@@ -31,17 +31,17 @@ const AuthenticationModalTemplate = ({
 			<Div className='rounded-md bg-white p-24 flex-column'>
 				{!hideTitle && [
 					<div key='close' className='absolute left-24 z-10'>
-						<button onClick={onClose} type='button' className='text-gray-100'>
+						<button onClick={onClose} type='button' className='text-gray-1000'>
 							<XSVG />
 						</button>
 					</div>,
 
 					<div key='title' className='relative mt-24 gap-24 text-center flex-column'>
-						<h1 className='text-3xl font-bold text-gray-100'>{title}</h1>
+						<h1 className='text-gray-1000 text-3xl font-bold'>{title}</h1>
 						{description && (
 							<p
 								style={{ maxWidth: '30rem', ...styles?.description }}
-								className='mx-auto text-center text-base text-primary-300'
+								className='mx-auto text-center text-base text-primary-400'
 							>
 								{description}
 							</p>

@@ -11,7 +11,7 @@ const Main = styled.main`
 	flex-direction: column;
 	padding: 1.6rem 3.2rem 0 3.2rem;
 	gap: 1.6rem;
-	min-height: calc(100% - 10.8rem);
+	min-height: calc(100% - 10rem);
 `;
 
 const Home = () => {

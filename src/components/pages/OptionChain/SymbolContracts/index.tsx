@@ -7,14 +7,14 @@ import Section from '../common/Section';
 import Contract from './Contract';
 
 interface SymbolContractsProps {
-	selectedSymbol: null | Option.SymbolSearch;
+	selectedSymbol: null | string;
 }
 
 const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 	const t = useTranslations();
 
 	const { data: settlementDays, isFetching } = useBaseSettlementDaysQuery({
-		queryKey: ['baseSettlementDaysQuery', selectedSymbol?.symbolISIN ?? null],
+		queryKey: ['baseSettlementDaysQuery', selectedSymbol ?? null],
 	});
 
 	const [expandedContract, setExpandedContract] = useState<null | Option.BaseSettlementDays>(null);

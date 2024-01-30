@@ -8,9 +8,15 @@ interface IForgetPasswordModal {
 	phoneNumber?: string;
 }
 
+interface IContractSelectorModal {
+	symbolTitle: string;
+	symbolISIN: string;
+}
+
 export interface ModalState {
 	loginModal: boolean;
 	logout: boolean;
+	contractSelector: IContractSelectorModal | null;
 	forgetPassword: IForgetPasswordModal | true | null;
 	optionFilters: false | Partial<IOptionFiltersModal>;
 }
@@ -20,6 +26,7 @@ const initialState: ModalState = {
 	forgetPassword: null,
 	optionFilters: false,
 	logout: false,
+	contractSelector: null,
 };
 
 const modalSlice = createSlice({
@@ -41,15 +48,25 @@ const modalSlice = createSlice({
 		toggleLogoutModal: (state, { payload }: PayloadAction<ModalState['logout']>) => {
 			state.logout = payload;
 		},
+
+		toggleContractSelectorModal: (state, { payload }: PayloadAction<ModalState['contractSelector']>) => {
+			state.contractSelector = payload;
+		},
 	},
 });
 
-export const { toggleLoginModal, toggleForgetPasswordModal, toggleOptionFiltersModal, toggleLogoutModal } =
-	modalSlice.actions;
+export const {
+	toggleLoginModal,
+	toggleForgetPasswordModal,
+	toggleOptionFiltersModal,
+	toggleLogoutModal,
+	toggleContractSelectorModal,
+} = modalSlice.actions;
 
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
+export const getContractSelectorModal = (state: RootState) => state.modal.contractSelector;
 
 export default modalSlice.reducer;

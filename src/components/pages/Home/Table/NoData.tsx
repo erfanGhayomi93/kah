@@ -20,7 +20,7 @@ const NoData = ({ onAddSymbol }: NoDataProps) => {
 			<span className='text-base font-medium text-gray-300'>
 				{t.rich('option_page.no_data_table', {
 					symbol: (chunk) => (
-						<button type='button' className='text-link underline' onClick={onAddSymbol}>
+						<button type='button' className='text-primary-400 underline' onClick={onAddSymbol}>
 							{chunk}
 						</button>
 					),
