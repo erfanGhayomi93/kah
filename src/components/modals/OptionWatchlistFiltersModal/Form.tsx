@@ -155,10 +155,7 @@ const Form = () => {
 					disabled={clearButtonIsDisabled}
 					onClick={onClear}
 					type='reset'
-					className={clsx(
-						'h-40 rounded font-medium',
-						clearButtonIsDisabled ? 'text-gray-300' : 'text-secondary-300',
-					)}
+					className={clsx('h-40 rounded', clearButtonIsDisabled ? 'text-gray-700' : 'text-error-200')}
 				>
 					{t('common.clear_all')}
 				</button>

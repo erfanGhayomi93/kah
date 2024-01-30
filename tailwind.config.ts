@@ -72,10 +72,6 @@ const config: Config = {
 			warning: {
 				100: 'rgba(255, 193, 7, 1)',
 			},
-
-			link: {
-				100: 'rgba(13, 134, 255, 1)',
-			},
 		},
 
 		fontSize: {
@@ -381,17 +377,17 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.primary.200'),
+					color: theme('colors.primary.300'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.primary.200')}`,
+					border: `2px solid ${theme('colors.primary.300')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.primary.200'),
-						'border-color': theme('colors.primary.200'),
+						'background-color': theme('colors.primary.300'),
+						'border-color': theme('colors.primary.300'),
 					},
 
 					'&:disabled': {
