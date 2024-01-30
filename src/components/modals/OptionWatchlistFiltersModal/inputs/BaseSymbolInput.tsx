@@ -2,6 +2,7 @@ import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
 import Portal from '@/components/common/Portal';
 import { CheckSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
+import { findStringIn } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
@@ -40,7 +41,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	const [enabled, setEnabled] = useState(false);
 
 	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', { term }],
+		queryKey: ['optionSymbolSearchQuery', { term, orderBy: 'Alphabet' }],
 		enabled,
 	});
 
@@ -102,8 +103,9 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 			onOpen={() => setEnabled(true)}
 			renderer={({ setOpen }) => (
 				<div
+					style={{ height: onlyShowTags ? undefined : '59vh' }}
 					className={clsx(
-						'flex flex-col rounded-b border-x border-b border-primary-200 bg-white',
+						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
 						values.length === 0 &&
 							!(isLoading || symbolsDataIsEmpty) &&
 							!(onlyShowTags && values.length === 0) &&
@@ -111,7 +113,12 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					)}
 				>
 					{values.length > 0 && (
-						<div className='w-full flex-wrap border-b border-link px-16 flex-justify-between'>
+						<div
+							className={clsx(
+								'w-full flex-wrap px-16 flex-justify-between',
+								!onlyShowTags && 'border-b border-b-gray-500',
+							)}
+						>
 							<ul className={styles.tags}>
 								{values.map((item, index) => (
 									<SelectedSymbol
@@ -129,7 +136,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 
 					{onlyShowTags && values.length === 0 && (
 						<div style={{ minHeight: '9.6rem' }} className='flex-justify-center'>
-							<span className='text-base text-gray-200'>
+							<span className='text-gray-900 text-base'>
 								{t('option_watchlist_filters_modal.symbol_not_found')}
 							</span>
 						</div>
@@ -140,39 +147,69 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							<div
 								style={{ minHeight: '9.6rem', maxHeight: 'calc(76vh - 28rem)' }}
 								className={clsx(
-									'flex-1 overflow-auto py-8 flex-column',
+									'flex-1 gap-4 overflow-auto py-8 flex-column',
 									(isLoading || symbolsDataIsEmpty) && 'items-center justify-center',
 								)}
 							>
 								{isLoading ? (
-									<span className='text-base text-gray-200'>{t('common.searching')}</span>
+									<span className='text-gray-900 text-base'>{t('common.searching')}</span>
 								) : symbolsDataIsEmpty ? (
-									<span className='text-base text-gray-200'>
+									<span className='text-gray-900 text-base'>
 										{t('option_watchlist_filters_modal.symbol_not_found')}
 									</span>
 								) : (
 									symbolsData!.map((item) => {
-										const isSelected = isSymbolSelected(item.symbolISIN);
+										const { symbolTitle, symbolISIN } = item;
+										const isSelected = isSymbolSelected(symbolISIN);
+										const title = findStringIn(term, symbolTitle);
+
 										return (
 											<button
 												onClick={() => onToggleSymbol(item)}
 												type='button'
-												key={item.symbolISIN}
+												key={symbolISIN}
 												className={clsx(
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
-														? 'bg-primary-200 text-white'
-														: 'bg-transparent text-gray-100 hover:bg-primary-300/20',
+														? 'bg-primary-300 text-white'
+														: 'bg-transparent hover:bg-secondary-100',
 												)}
 											>
 												<div className='w-32 flex-justify-center'>
 													{isSelected && (
-														<div className='h-16 w-16 rounded-sm bg-white text-primary-200 flex-justify-center'>
+														<div className='h-16 w-16 rounded-sm bg-white text-primary-400 flex-justify-center'>
 															<CheckSVG />
 														</div>
 													)}
 												</div>
-												<span className='text-inherit'>{item.symbolTitle}</span>
+
+												<div className='inline-block'>
+													<span
+														className={
+															isSelected
+																? 'text-white'
+																: term
+																	? 'text-gray-800'
+																	: 'text-gray-1000'
+														}
+													>
+														{title[0]}
+													</span>
+													<span className={isSelected ? 'text-white' : 'text-gray-1000'}>
+														{title[1]}
+													</span>
+													<span
+														className={
+															isSelected
+																? 'text-white'
+																: term
+																	? 'text-gray-800'
+																	: 'text-gray-1000'
+														}
+													>
+														{title[2]}
+													</span>
+												</div>
 											</button>
 										);
 									})
@@ -200,10 +237,10 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 				<div
 					className={clsx(
 						'input-group h-40 flex-1 border flex-items-center',
-						open ? 'rounded-t border-primary-200' : 'rounded border-gray-400',
+						open ? 'rounded-t border-primary-300' : 'rounded border-gray-500',
 					)}
 				>
-					<span className='px-8 text-gray-100'>
+					<span className='text-gray-1000 px-8'>
 						<SearchSVG />
 					</span>
 					<input
@@ -211,7 +248,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						type='text'
 						inputMode='numeric'
 						maxLength={32}
-						className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-100'
+						className='text-gray-1000 h-40 flex-1 rounded bg-transparent pl-8'
 						placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 						value={term}
 						onFocus={() => setOpen(true)}
@@ -224,7 +261,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							<button
 								onClick={onClearTerm}
 								type='button'
-								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-100 text-white flex-justify-center'
+								className='bg-gray-1000 ml-16 min-h-20 min-w-20 rounded-circle text-white flex-justify-center'
 							>
 								<XSVG width='0.8rem' height='0.8rem' />
 							</button>
@@ -234,11 +271,11 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						<button
 							onClick={() => seeTags(() => setOpen(true))}
 							type='button'
-							className='h-24 w-40 border-r border-r-gray-400 text-tiny text-gray-200 flex-justify-center'
+							className='h-24 w-40 border-r border-r-gray-500 text-tiny text-gray-200 flex-justify-center'
 						>
 							<span
 								style={{ paddingTop: '2px' }}
-								className='size-24 rounded-circle bg-primary-200 text-white flex-justify-center'
+								className='size-24 rounded-circle bg-primary-400 text-white flex-justify-center'
 							>
 								{values.length}
 							</span>

@@ -130,8 +130,8 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				headerName: 'اعمال',
 				colId: 'strikePrice',
 				minWidth: 96,
-				headerClass: 'bg-link-100',
-				cellClass: 'bg-link-100',
+				headerClass: 'bg-white hover:!bg-white shadow',
+				cellClass: 'bg-white shadow',
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.symbolInfo.strikePrice)),
 			},
 
@@ -218,7 +218,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 
 	return (
 		<div className='w-full flex-column'>
-			<div className='flex h-48'>
+			<div className='flex h-48 border-t border-t-gray-500'>
 				<div className='flex-1 text-lg text-success-100 flex-justify-center'>
 					{t('option_chain.buy_contracts')}
 				</div>
@@ -229,7 +229,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 
 			<div style={{ height: (watchlistData.length + 1) * 48, maxHeight: '44rem' }}>
 				<AgTable
-					className='h-full'
+					className='h-full rounded-0'
 					rowData={modifiedData ?? []}
 					columnDefs={COLUMNS}
 					defaultColDef={defaultColDef}

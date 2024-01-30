@@ -17,6 +17,10 @@ declare namespace Option {
 		 */
 		symbolISIN: string;
 		/**
+		 * آیدی نماد پایه
+		 */
+		baseSymbolISIN: string;
+		/**
 		 * روز‌های باقی مانده
 		 */
 		dueDays: number;

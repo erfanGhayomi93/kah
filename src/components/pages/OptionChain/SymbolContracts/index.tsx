@@ -1,20 +1,23 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import NoData from '../common/NoData';
 import Section from '../common/Section';
 import Contract from './Contract';
 
 interface SymbolContractsProps {
-	selectedSymbol: null | Option.SymbolSearch;
+	selectedSymbol: null | string;
 }
 
 const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 	const t = useTranslations();
 
 	const { data: settlementDays, isFetching } = useBaseSettlementDaysQuery({
-		queryKey: ['baseSettlementDaysQuery', selectedSymbol?.symbolISIN ?? null],
+		queryKey: ['baseSettlementDaysQuery', selectedSymbol ?? null],
 	});
+
+	const [expandedContract, setExpandedContract] = useState<null | Option.BaseSettlementDays>(null);
 
 	if (!selectedSymbol)
 		return (
@@ -40,7 +43,14 @@ const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 	return (
 		<div style={{ flex: '1.8 1 48rem' }} className='gap-8 flex-column'>
 			{settlementDays.map((item, index) => (
-				<Contract key={index} {...item} />
+				<Contract
+					key={index}
+					expand={item.contractEndDate === expandedContract?.contractEndDate}
+					onToggle={() =>
+						setExpandedContract(item.contractEndDate === expandedContract?.contractEndDate ? null : item)
+					}
+					{...item}
+				/>
 			))}
 		</div>
 	);

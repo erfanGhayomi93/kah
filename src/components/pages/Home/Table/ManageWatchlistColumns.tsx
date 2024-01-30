@@ -1,5 +1,3 @@
-import axios from '@/api/axios';
-import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -8,7 +6,6 @@ import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useWatchlistColumns } from '@/hooks';
 import { createSelector } from '@reduxjs/toolkit';
-import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -17,8 +14,8 @@ import styled from 'styled-components';
 const Wrapper = styled.div<{ $enabled: number }>`
 	position: fixed;
 	width: 47.2rem;
-	height: calc(100% - 12.4rem);
-	top: 8rem;
+	height: calc(100% - 11.6rem);
+	top: 7.2rem;
 	left: 0;
 	gap: 1.6rem;
 	display: flex;
@@ -69,9 +66,7 @@ const ManageWatchlistColumns = () => {
 
 	const dispatch = useAppDispatch();
 
-	const queryClient = useQueryClient();
-
-	const { isEnable, isLoggedIn } = useAppSelector(getStates);
+	const { isEnable } = useAppSelector(getStates);
 
 	const [rendered, setRendered] = useState(isEnable);
 
@@ -79,74 +74,20 @@ const ManageWatchlistColumns = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const { data: watchlistColumns, refetch: refetchWatchlistColumns } = useWatchlistColumns();
+	const { data: watchlistColumns, resetColumns, setHiddenColumn } = useWatchlistColumns();
 
 	const onClose = () => {
 		abort();
 		dispatch(toggleManageOptionColumns(false));
 	};
 
-	const resetWatchlistColumns = () =>
-		new Promise<void>(async (resolve, reject) => {
-			try {
-				const response = await axios.post<ServerResponse<boolean>>(
-					routes.optionWatchlist.ResetOptionSymbolColumns,
-				);
-				const { data } = response;
-
-				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-				resolve();
-			} catch (e) {
-				reject();
-			}
-		});
-
 	const onRefresh = () => {
 		try {
 			setResetting(true);
 
 			setDebounce(() => {
-				resetWatchlistColumns()
-					.then(() => refetchWatchlistColumns())
-					.finally(() => setResetting(false));
+				resetColumns().finally(() => setResetting(false));
 			}, 500);
-		} catch (e) {
-			//
-		}
-	};
-
-	const updateCacheColumn = (id: number, isHidden: boolean) => {
-		try {
-			const columnData = JSON.parse(JSON.stringify(watchlistColumns ?? [])) as Option.Column[];
-
-			const specifyColumnIndex = columnData.findIndex((col) => col.id === id);
-
-			columnData[specifyColumnIndex].isHidden = isHidden;
-
-			queryClient.setQueryData(
-				[isLoggedIn ? 'optionSymbolColumnsQuery' : 'defaultOptionSymbolColumnsQuery'],
-				columnData,
-			);
-		} catch (e) {
-			//
-		}
-	};
-
-	const updateServiceColumn = async (id: number, isHidden: boolean) => {
-		try {
-			updateCacheColumn(id, isHidden);
-
-			const response = await axios.post<ServerResponse<boolean>>(
-				routes.optionWatchlist.UpdateOptionSymbolColumns,
-				{
-					id,
-					isHidden,
-				},
-			);
-			const { data } = response;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 		} catch (e) {
 			//
 		}
@@ -212,15 +153,15 @@ const ManageWatchlistColumns = () => {
 
 	return (
 		<Wrapper $enabled={Number(isEnable)} ref={wrapperRef} className='overflow-auto bg-white'>
-			<div className='sticky top-0 w-full bg-white px-32 pt-16'>
+			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
-					<h1 className='text-2xl font-bold text-gray-100'>{t('manage_option_watchlist_columns.title')}</h1>
+					<h1 className='text-gray-1000 text-2xl font-bold'>{t('manage_option_watchlist_columns.title')}</h1>
 
 					<div className='flex gap-24'>
-						<button className='text-gray-100' type='button' onClick={onRefresh}>
+						<button className='text-gray-1000' type='button' onClick={onRefresh}>
 							<RefreshSVG width='2.4rem' height='2.4rem' />
 						</button>
-						<button className='text-gray-100' type='button' onClick={onClose}>
+						<button className='text-gray-1000' type='button' onClick={onClose}>
 							<XSVG width='1.6rem' height='1.6rem' />
 						</button>
 					</div>
@@ -239,19 +180,19 @@ const ManageWatchlistColumns = () => {
 							categoryIndex < 2 && 'border-b border-b-gray-400',
 						)}
 					>
-						<h2 className='text-lg font-medium text-gray-100'>
+						<h2 className='text-gray-1000 text-lg font-medium'>
 							{t(`manage_option_watchlist_columns.${category}`)}
 						</h2>
 
 						<div className='flex-wrap gap-16 flex-justify-between'>
 							{categories[category].map((column, columnIndex) => (
 								<Button
-									onClick={() => updateServiceColumn(column.id, !column.isHidden)}
+									onClick={() => setHiddenColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
 									className={clsx(
 										column.isHidden
-											? 'bg-white text-gray-200 shadow-sm hover:bg-primary-200 hover:text-white'
+											? 'text-gray-900 bg-white shadow-sm hover:bg-primary-400 hover:text-white'
 											: 'btn-choose',
 									)}
 								>

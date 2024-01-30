@@ -6,6 +6,7 @@ import ReduxToolkitRegistry from '@/components/common/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/StyledComponentsRegistry';
 import Wrapper from '@/components/layout/Wrapper';
 import Modals from '@/components/modals/Modals';
+import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
 import { getDirection } from '@/utils/helpers';
 import metadata from '../../metadata';
 
@@ -24,8 +25,10 @@ const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) 
 					<StyledComponentsRegistry>
 						<QueryClientRegistry>
 							<ReduxToolkitRegistry>
-								<Wrapper>{children}</Wrapper>
-								<Modals />
+								<WatchlistColumnsProvider>
+									<Wrapper>{children}</Wrapper>
+									<Modals />
+								</WatchlistColumnsProvider>
 							</ReduxToolkitRegistry>
 						</QueryClientRegistry>
 					</StyledComponentsRegistry>

@@ -1,4 +1,3 @@
-import { store } from '@/features/store';
 import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
@@ -82,12 +81,10 @@ export const useOptionSymbolColumnsQuery = createQuery<Option.Column[], ['option
 	queryKey: ['optionSymbolColumnsQuery'],
 	queryFn: async ({ signal }) => {
 		try {
-			const { loggedIn } = store.getState().user;
-			const route = loggedIn
-				? routes.optionWatchlist.OptionSymbolColumns
-				: routes.optionWatchlist.DefaultOptionSymbolColumns;
-
-			const response = await axios.get<ServerResponse<Option.Column[]>>(route, { signal });
+			const response = await axios.get<ServerResponse<Option.Column[]>>(
+				routes.optionWatchlist.OptionSymbolColumns,
+				{ signal },
+			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -121,13 +118,18 @@ export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], [
 
 export const useOptionSymbolSearchQuery = createQuery<
 	Option.SymbolSearch[],
-	['optionSymbolSearchQuery', Partial<Record<'term' | 'orderBy', string>>]
+	[
+		'optionSymbolSearchQuery',
+		Partial<{ term: null | string; orderBy: 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' }>,
+	]
 >({
 	staleTime: 18e5,
 	queryKey: ['optionSymbolSearchQuery', {}],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
 			const [, { term, orderBy }] = queryKey;
+
+			if (term === null) return [];
 
 			const params: Record<string, string> = {};
 			if (term) params.term = term;

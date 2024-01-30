@@ -30,8 +30,8 @@ const Symbol = styled.button`
 `;
 
 interface SelectSymbolProps {
-	selectedSymbol: null | Option.SymbolSearch;
-	setSelectedSymbol: React.Dispatch<React.SetStateAction<Option.SymbolSearch | null>>;
+	selectedSymbol: null | string;
+	setSelectedSymbol: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) => {
@@ -60,7 +60,10 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 	const [sorting, setSorting] = useState<TSelectOptions>(sortingOptions[0]);
 
 	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', { term: symbolTerm, orderBy: String(sorting.id) }],
+		queryKey: [
+			'optionSymbolSearchQuery',
+			{ term: symbolTerm, orderBy: String(sorting.id) as 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' },
+		],
 	});
 
 	const onChangeSorting = (option: TSelectOptions) => {
@@ -78,23 +81,25 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			);
 
 		return (
-			<ul className='flex flex-wrap gap-16'>
+			<ul className='flex-wrap gap-16 flex-justify-between'>
 				{symbolsData.map((symbol) => (
 					<li key={symbol.symbolISIN}>
 						<Symbol
 							className={clsx(
 								'border transition-colors',
-								symbol.symbolISIN === selectedSymbol?.symbolISIN
-									? 'border-primary-200 bg-primary-200 text-white'
-									: 'border-gray-400 text-gray-100 hover:border-primary-200 hover:bg-primary-200 hover:text-white',
+								symbol.symbolISIN === selectedSymbol
+									? 'border-primary-400 bg-primary-400 text-white'
+									: 'text-gray-1000 border-gray-500 hover:border-primary-400 hover:bg-primary-400 hover:text-white',
 							)}
-							onClick={() => setSelectedSymbol(symbol)}
+							onClick={() => setSelectedSymbol(symbol.symbolISIN)}
 							type='button'
 						>
 							{symbol.symbolTitle}
 						</Symbol>
 					</li>
 				))}
+
+				<li className='flex-1'></li>
 			</ul>
 		);
 	}, [symbolsData, isFetching, selectedSymbol]);
@@ -104,9 +109,9 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			<div className='gap-24 flex-justify-between'>
 				<label
 					style={{ maxWidth: '40rem' }}
-					className='input-group h-40 flex-1 rounded border border-gray-400 flex-items-center'
+					className='input-group h-40 flex-1 rounded border border-gray-500 flex-items-center'
 				>
-					<div className='px-8'>
+					<div className='text-gray-800 px-8'>
 						<SearchSVG width='2rem' height='2rem' />
 					</div>
 
@@ -123,7 +128,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 				</label>
 
 				<div className='gap-8 flex-items-center'>
-					<span className='text-base text-gray-200'>{t('option_chain.sort_based_on')}:</span>
+					<span className='text-gray-900 text-base'>{t('option_chain.sort_based_on')}:</span>
 					<div style={{ width: '17.6rem' }} className='flex flex-1 justify-end'>
 						<Select value={sorting} options={sortingOptions} onChange={onChangeSorting} />
 					</div>

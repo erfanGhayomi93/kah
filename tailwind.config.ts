@@ -30,43 +30,43 @@ const config: Config = {
 			black: 'rgba(35, 38, 41, 1)',
 
 			primary: {
-				100: 'rgba(0, 182, 237, 1)',
-				200: 'rgba(0, 142, 186, 1)',
-				300: 'rgba(0, 104, 137, 1)',
-				400: 'rgba(0, 68, 91, 1)',
-				500: 'rgba(0, 35, 49, 1)',
+				100: 'rgba(229, 238, 255, 1)',
+				200: 'rgba(162, 174, 255, 1)',
+				300: 'rgba(51, 121, 255, 1)',
+				400: 'rgba(0, 87, 255, 1)',
+				500: 'rgba(0, 58, 178, 1)',
+				600: 'rgba(0, 31, 106, 1)',
 			},
 
 			secondary: {
-				100: 'rgba(255, 79, 37, 1)',
-				200: 'rgba(197, 52, 0, 1)',
-				300: 'rgba(137, 33, 0, 1)',
-				400: 'rgba(81, 16, 0, 1)',
-				500: 'rgba(40, 4, 0, 1)',
+				100: 'rgba(219, 238, 255, 1)',
+				200: 'rgba(151, 217, 255, 1)',
+				300: 'rgba(0, 182, 237, 1)',
+				400: 'rgba(0, 142, 186, 1)',
+				500: 'rgba(0, 104, 137, 1)',
 			},
 
 			gray: {
-				100: 'rgba(74, 74, 74, 1)',
-				200: 'rgba(112, 112, 112, 1)',
-				300: 'rgba(175, 175, 175, 1)',
-				400: 'rgba(203, 203, 203, 1)',
-				500: 'rgba(233, 236, 239, 1)',
-				600: 'rgba(242, 242, 242, 1)',
-				700: 'rgba(129, 132, 134, 1)',
-			},
-
-			link: {
-				DEFAULT: 'rgba(0, 182, 237, 1)',
-				100: 'rgba(229, 238, 255, 1)',
+				100: 'rgba(255, 255, 255, 1)',
+				200: 'rgba(248, 250, 253, 1)',
+				300: 'rgba(242, 242, 242, 1)',
+				400: 'rgba(233, 236, 239, 1)',
+				500: 'rgba(226, 231, 237, 1)',
+				600: 'rgba(219, 225, 232, 1)',
+				700: 'rgba(166, 169, 173, 1)',
+				800: 'rgba(154, 156, 164, 1)',
+				900: 'rgba(93, 96, 109, 1)',
+				1000: 'rgba(24, 28, 47, 1)',
 			},
 
 			error: {
-				100: 'rgba(255, 82, 109)',
+				100: 'rgba(255, 82, 109, 1)',
+				200: 'rgba(254, 57, 87, 1)',
 			},
 
 			success: {
-				100: 'rgba(25, 135, 84, 1)',
-				200: 'rgba(0, 194, 136, 1)',
+				100: 'rgba(0, 194, 136, 1)',
+				200: 'rgba(12, 175, 130, 1)',
 			},
 
 			warning: {
@@ -206,17 +206,17 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.primary.300'),
+					'background-color': theme('colors.primary.400'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.primary.400'),
+						'background-color': theme('colors.primary.300'),
 					},
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -224,23 +224,44 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.primary.300'),
+					color: theme('colors.primary.400'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.primary.300')}`,
+					border: `2px solid ${theme('colors.primary.400')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.primary.300'),
-						'border-color': theme('colors.primary.300'),
+						'background-color': theme('colors.primary.400'),
+						'border-color': theme('colors.primary.400'),
 					},
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
+					},
+				},
+
+				'.btn-primary-100': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.primary.400'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.primary.100'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.primary.400'),
+						color: theme('colors.white'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -250,7 +271,7 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.success.200'),
+					'background-color': theme('colors.success.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
@@ -259,8 +280,8 @@ const config: Config = {
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -268,23 +289,23 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.success.200'),
+					color: theme('colors.success.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.success.200')}`,
+					border: `2px solid ${theme('colors.success.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.success.200'),
-						'border-color': theme('colors.success.200'),
+						'background-color': theme('colors.success.100'),
+						'border-color': theme('colors.success.100'),
 					},
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -298,13 +319,13 @@ const config: Config = {
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.error.100'),
+						'background-color': theme('colors.error.200'),
 					},
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -327,8 +348,8 @@ const config: Config = {
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -338,17 +359,17 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.primary.200'),
+					'background-color': theme('colors.primary.300'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.primary.300'),
+						'background-color': theme('colors.primary.400'),
 					},
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -356,23 +377,23 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.primary.200'),
+					color: theme('colors.primary.300'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.primary.200')}`,
+					border: `2px solid ${theme('colors.primary.300')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.primary.200'),
-						'border-color': theme('colors.primary.200'),
+						'background-color': theme('colors.primary.300'),
+						'border-color': theme('colors.primary.300'),
 					},
 
 					'&:disabled': {
 						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.500')} !important`,
-						color: `${theme('colors.gray.300')} !important`,
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -389,12 +410,12 @@ const config: Config = {
 					'.label': {
 						'font-size': '1.4rem',
 						'font-weight': '500',
-						color: theme('colors.gray.100'),
+						color: theme('colors.gray.1000'),
 					},
 
 					'.input': {
 						'border-radius': '0.8rem',
-						border: `1px solid ${theme('colors.gray.400')}`,
+						border: `1px solid ${theme('colors.gray.500')}`,
 						height: '4.8rem',
 						padding: '0 1.6rem',
 
@@ -416,7 +437,7 @@ const config: Config = {
 						'justify-content': 'flex-end',
 
 						'&:not(.border-r-0)': {
-							'border-right': `1px solid ${theme('colors.gray.400')}`,
+							'border-right': `1px solid ${theme('colors.gray.500')}`,
 						},
 					},
 				},
@@ -440,10 +461,10 @@ const config: Config = {
 				},
 
 				'.i-null': {
-					color: theme('colors.gray.300'),
+					color: theme('colors.gray.700'),
 
 					'&::before': {
-						border: `1px solid ${theme('colors.gray.300')}`,
+						border: `1px solid ${theme('colors.gray.700')}`,
 					},
 				},
 

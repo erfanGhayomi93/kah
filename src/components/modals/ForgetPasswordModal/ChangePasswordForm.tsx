@@ -104,7 +104,7 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 									setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)
 								}
 								type='button'
-								className='border-r-0 text-gray-200 prefix'
+								className='text-gray-800 border-r-0 prefix'
 							>
 								{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
 							</button>
@@ -187,7 +187,7 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 								setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
 							}
 							type='button'
-							className='border-r-0 text-gray-200 prefix'
+							className='text-gray-800 border-r-0 prefix'
 						>
 							{passwordVisibility.repeatNewPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
@@ -215,7 +215,7 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 					{t('common.register')}
 				</Button>
 
-				<button type='button' disabled={!isValid} className='h-48 font-medium text-primary-300'>
+				<button type='button' disabled={!isValid} className='h-48 font-medium text-primary-400'>
 					{t('common.cancel')}
 				</button>
 			</div>
