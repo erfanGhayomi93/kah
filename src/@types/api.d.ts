@@ -313,6 +313,7 @@ declare namespace OAuthAPI {
 
 declare namespace User {
 	interface IUserInformation {
+		hasPassword: boolean;
 		mobile: string;
 		saveDate: string;
 	}

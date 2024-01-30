@@ -75,7 +75,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 
 		if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 			return (
-				<span className='absolute text-base font-medium text-gray-200 center'>
+				<span className='text-gray-900 absolute text-base font-medium center'>
 					{t('option_chain.no_symbol_found')}
 				</span>
 			);
@@ -88,8 +88,8 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 							className={clsx(
 								'border transition-colors',
 								symbol.symbolISIN === selectedSymbol
-									? 'border-primary-400 bg-primary-400 text-white'
-									: 'text-gray-1000 border-gray-500 hover:border-primary-400 hover:bg-primary-400 hover:text-white',
+									? 'border-primary-400 bg-primary-400 text-white hover:bg-primary-300'
+									: 'text-gray-1000 border-gray-500 hover:border-primary-300 hover:bg-primary-300 hover:text-white',
 							)}
 							onClick={() => setSelectedSymbol(symbol.symbolISIN)}
 							type='button'

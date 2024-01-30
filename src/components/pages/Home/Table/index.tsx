@@ -150,7 +150,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				headerName: 'IV',
 				colId: 'impliedVolatility',
 				initialHide: Boolean(modifiedWatchlistColumns?.impliedVolatility?.isHidden ?? true),
-				minWidth: 64,
+				minWidth: 96,
 				valueGetter: ({ data }) => {
 					const value = Number(data!.optionWatchlistData.impliedVolatility);
 					if (isNaN(value)) return '−';
@@ -165,12 +165,12 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				minWidth: 96,
 				cellClass: ({ value }) => {
 					switch (value.toLowerCase()) {
-						case 'atm':
+						case 'itm':
 							return 'text-success-100';
 						case 'otm':
 							return 'text-error-100';
-						case 'itm':
-							return 'text-primary-100';
+						case 'atm':
+							return 'text-secondary-300';
 						default:
 							return '';
 					}
@@ -211,7 +211,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				initialHide: Boolean(modifiedWatchlistColumns?.bestBuyPrice?.isHidden ?? true),
 				minWidth: 112,
 				cellStyle: {
-					backgroundColor: 'rgba(25, 135, 84, 0.1)',
+					backgroundColor: 'rgba(12, 175, 130, 0.12)',
 				},
 				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.bestBuyPrice)),
 			},
@@ -221,7 +221,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				initialHide: Boolean(modifiedWatchlistColumns?.bestSellPrice?.isHidden ?? true),
 				minWidth: 112,
 				cellStyle: {
-					backgroundColor: 'rgba(220, 53, 69, 0.1)',
+					backgroundColor: 'rgba(254, 57, 87, 0.12)',
 				},
 				valueGetter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.bestSellPrice)),
 			},
