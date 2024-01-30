@@ -3,8 +3,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { toggleOptionFiltersModal } from '@/features/slices/modalSlice';
 import { useMemo } from 'react';
 import Actions from './Actions';
-import SymbolSearch from './SymbolSearch';
-import WatchlistList from './WatchlistList';
+import SelectSymbol from './SelectSymbol';
 
 interface ToolbarProps {
 	filters: Partial<IOptionWatchlistFilters>;
@@ -63,11 +62,11 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	return (
 		<div className='gap-16 flex-column'>
 			<div className='h-40 w-full flex-justify-between'>
-				<SymbolSearch />
+				<SelectSymbol />
 				<Actions filtersCount={filtersCount} onShowFilters={onShowFilters} onExportExcel={onExportExcel} />
 			</div>
 
-			<WatchlistList />
+			{/* <WatchlistList /> */}
 		</div>
 	);
 };

@@ -143,7 +143,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				headerName: 'موقعیت‌های باز',
 				colId: 'openPositionCount',
 				initialHide: Boolean(modifiedWatchlistColumns?.openPositionCount?.isHidden ?? true),
-				minWidth: 120,
+				minWidth: 128,
 				valueGetter: ({ data }) => data!.optionWatchlistData.openPositionCount,
 			},
 			{
@@ -530,7 +530,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	return (
 		<div
 			style={{
-				height: 'calc(100vh - 23.6rem)',
+				height: 'calc(100vh - 18.8rem)',
 			}}
 			className='relative'
 		>

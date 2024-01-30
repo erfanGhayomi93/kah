@@ -180,7 +180,9 @@
 		"otp_placeholder": "کد تایید"
 	},
 	"symbol_search": {
-		"input_placeholder": "نماد مورد نظر خود را جستجو کنید"
+		"input_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"no_symbol_found": "نماد مورد نظر یافت نشد",
+		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",

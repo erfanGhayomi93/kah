@@ -57,7 +57,7 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 
 		if (!isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-success-100');
 		else if (isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-error-100');
-		else if (percent === 0) this.ePercent.setAttribute('class', 'w-max text-tiny text-gray-200');
+		else if (percent === 0) this.ePercent.setAttribute('class', 'w-max text-tiny text-gray-800');
 	}
 }
 
