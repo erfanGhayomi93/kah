@@ -25,15 +25,15 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 		<div className='flex-1 gap-8 flex-justify-end *:h-40 *:flex-1 *:gap-8 *:rounded *:border-2 *:font-medium *:transition-colors *:flex-justify-center'>
 			<button
 				type='button'
-				onClick={() => onChangeValue('ITM')}
+				onClick={() => onChangeValue('ATM')}
 				className={clsx(
-					isITM
+					isATM
 						? 'border-secondary-300 bg-secondary-300 text-white'
 						: 'border-2 border-secondary-300 text-secondary-300 hover:bg-secondary-300 hover:text-white',
 				)}
 			>
 				<span style={{ height: '2px' }} className='w-24 rounded bg-current' />
-				{t('option_watchlist_filters_modal.status_itm')}
+				{t('option_watchlist_filters_modal.status_atm')}
 			</button>
 			<button
 				type='button'
@@ -49,15 +49,15 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 			</button>
 			<button
 				type='button'
-				onClick={() => onChangeValue('ATM')}
+				onClick={() => onChangeValue('ITM')}
 				className={clsx(
-					isATM
+					isITM
 						? 'border-success-100 bg-success-100 text-white'
 						: 'border-2 border-success-100 text-success-100 hover:bg-success-100 hover:text-white',
 				)}
 			>
 				<ChartUpSVG />
-				{t('option_watchlist_filters_modal.status_atm')}
+				{t('option_watchlist_filters_modal.status_itm')}
 			</button>
 		</div>
 	);

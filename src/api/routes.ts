@@ -3,8 +3,12 @@ import { URLIsValid } from '@/utils/helpers';
 const isStage = URLIsValid('stage');
 const isDev = URLIsValid('localhost');
 
-const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' : 'https://ramandoauth.ramandtech.com';
-const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
+const oauthUrl = !(isStage || isDev)
+	? 'https://ramandoauth-stage.ramandtech.com'
+	: 'https://ramandoauth.ramandtech.com';
+const rlcUrl = !(isStage || isDev)
+	? 'https://kahkeshanapi-stage.ramandtech.com'
+	: 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
 	symbol: {

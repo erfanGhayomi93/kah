@@ -111,7 +111,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				colId: 'bestBuyPrice-buy',
 				minWidth: 96,
 				cellStyle: {
-					backgroundColor: 'rgba(25, 135, 84, 0.1)',
+					backgroundColor: 'rgba(12, 175, 130, 0.12)',
 				},
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
 			},
@@ -121,7 +121,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				colId: 'bestSellPrice-buy',
 				minWidth: 96,
 				cellStyle: {
-					backgroundColor: 'rgba(220, 53, 69, 0.1)',
+					backgroundColor: 'rgba(254, 57, 87, 0.12)',
 				},
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
 			},
