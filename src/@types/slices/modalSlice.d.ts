@@ -1,5 +1,5 @@
 export interface IOptionFiltersModal {
-	initialSymbols?: Option.SymbolSearch[];
+	initialSymbols?: Option.Search[];
 	initialType?: Array<'Call' | 'Put'>;
 	initialStatus?: Array<'ITM' | 'OTM' | 'ATM'>;
 	initialEndDate?: [number | null, number | null];

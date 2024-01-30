@@ -117,7 +117,7 @@ export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], [
 });
 
 export const useOptionSymbolSearchQuery = createQuery<
-	Option.SymbolSearch[],
+	Option.Search[],
 	[
 		'optionSymbolSearchQuery',
 		Partial<{ term: null | string; orderBy: 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' }>,
@@ -135,7 +135,7 @@ export const useOptionSymbolSearchQuery = createQuery<
 			if (term) params.term = term;
 			if (orderBy) params.orderBy = orderBy;
 
-			const response = await axios.get<ServerResponse<Option.SymbolSearch[]>>(routes.option.OptionSymbolSearch, {
+			const response = await axios.get<ServerResponse<Option.Search[]>>(routes.option.OptionSymbolSearch, {
 				params,
 				signal,
 			});
