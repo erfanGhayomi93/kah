@@ -1,4 +1,6 @@
 declare namespace Option {
+	export type IOTM = 'atm' | 'otm' | 'itm';
+
 	export interface Root {
 		/**
 		 * اطلاعات نماد
@@ -200,13 +202,13 @@ declare namespace Option {
 		 */
 		lastTradeDate: string;
 		/**
-		 * ارزش مفهومی / ارزش ذاتی
+		 * ارزش مفهومی معاملات / ارزش ذاتی
 		 */
 		notionalValue: number;
 		/**
 		 * O/I TM
 		 */
-		iotm: 'atm' | 'otm' | 'itm';
+		iotm: IOTM;
 		/**
 		 * ارزش ذاتی
 		 */
@@ -245,6 +247,23 @@ declare namespace Option {
 		isHidden: boolean;
 		order: number;
 	}
+
+	export interface CalculativeInfo {
+		breakEvenPoint: number;
+		leverage: number;
+		delta: number;
+		theta: number;
+		gamma: number;
+		vega: number;
+		requiredMargin: number;
+		impliedVolatility: number;
+		historicalVolatility: number;
+		wiv: number;
+		intrinsicValue: number;
+		timeValue: number;
+		iotm: IOTM;
+		initialMargin: number;
+	}
 }
 
 declare namespace Symbol {
@@ -279,6 +298,8 @@ declare namespace Symbol {
 		symbolISIN: string;
 		symbolTitle: string;
 		companyISIN: string;
+		isOption: boolean;
+		marketUnit: string;
 		companyName: string;
 		insCode: null | string;
 		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;

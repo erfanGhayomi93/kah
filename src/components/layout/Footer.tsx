@@ -7,9 +7,9 @@ const Footer = () => {
 	const year = useMemo(() => new Date().getFullYear(), []);
 
 	return (
-		<footer className='h-36 bg-black px-32 flex-justify-between'>
-			<span className='text-tiny font-normal text-white'>{t('footer.copyright')}</span>
-			<span className='text-tiny font-normal text-white'>Copyright © {year} Ramandtech</span>
+		<footer className='h-36 bg-gray-200 px-32 flex-justify-between'>
+			<span className='text-gray-1000 text-tiny font-normal'>{t('footer.copyright')}</span>
+			<span className='text-gray-1000 text-tiny font-normal'>Copyright © {year} Ramandtech</span>
 		</footer>
 	);
 };

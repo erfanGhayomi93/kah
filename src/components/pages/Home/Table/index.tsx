@@ -236,13 +236,13 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				valueGetter: ({ data }) => String(data!.optionWatchlistData.bestSellPrice),
 				valueFormatter: ({ value }) => sepNumbers(value),
 			},
-			{
+			/* {
 				headerName: 'نام کامل آپشن',
-				colId: 'symbolTitle',
+				colId: 'symbolFullTitle',
 				minWidth: 120,
 				initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden ?? true),
 				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
-			},
+			}, */
 			{
 				headerName: 'نام پایه',
 				colId: 'baseSymbolTitle',
@@ -569,6 +569,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		>
 			<AgTable
 				ref={gridRef}
+				alwaysShowVerticalScroll
 				suppressHorizontalScroll={dataIsEmpty}
 				className={clsx('h-full', dataIsEmpty && 'overflow-hidden rounded border border-gray-500')}
 				rowData={[]}

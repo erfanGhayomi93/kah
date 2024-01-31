@@ -89,7 +89,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 								'border transition-colors',
 								symbol.symbolISIN === selectedSymbol
 									? 'border-primary-400 bg-primary-400 text-white hover:bg-primary-300'
-									: 'text-gray-1000 border-gray-500 hover:border-primary-300 hover:bg-primary-300 hover:text-white',
+									: 'text-gray-1000 hover:shadow-none border-gray-500 shadow-sm hover:bg-primary-100',
 							)}
 							onClick={() => setSelectedSymbol(symbol.symbolISIN)}
 							type='button'

@@ -1,6 +1,8 @@
 import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import { MoreOptionsSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
+import Tab from '../common/Tab';
 
 interface MarketDepthProps {
 	symbol: Symbol.Info;
@@ -9,8 +11,21 @@ interface MarketDepthProps {
 const MarketDepth = ({ symbol }: MarketDepthProps) => {
 	const t = useTranslations();
 
+	const tabs = useMemo(
+		() => [
+			{
+				id: 'tab_market_depth',
+				title: t('saturn_page.tab_market_depth'),
+				render: <SymbolPriceTable symbolISIN={symbol.symbolISIN} />,
+			},
+			{ id: 'tab_chart', title: t('saturn_page.tab_chart'), disabled: true, render: null },
+			{ id: 'tab_my_asset', title: t('saturn_page.tab_my_asset'), disabled: true, render: null },
+		],
+		[symbol],
+	);
+
 	return (
-		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='items-end gap-12 flex-column'>
+		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='items-end gap-12 pl-16 flex-column'>
 			<div className='gap-8 flex-items-center'>
 				<button type='button' className='h-32 w-96 rounded btn-error-outline'>
 					{t('side.sell')}
@@ -25,26 +40,8 @@ const MarketDepth = ({ symbol }: MarketDepthProps) => {
 				</button>
 			</div>
 
-			<div className='w-full gap-16 pl-16 flex-column'>
-				<ul className='flex gap-8 border-b border-gray-500'>
-					<li>
-						<button type='button' className='text-gray-1000 px-8 py-12 font-medium'>
-							{t('saturn.market_depth')}
-						</button>
-					</li>
-					<li>
-						<button type='button' className='text-gray-900 px-8 py-12'>
-							{t('saturn.chart')}
-						</button>
-					</li>
-					<li>
-						<button type='button' className='text-gray-900 px-8 py-12'>
-							{t('saturn.my_asset')}
-						</button>
-					</li>
-				</ul>
-
-				<SymbolPriceTable symbolISIN={symbol.symbolISIN} />
+			<div className='w-full gap-16 flex-column'>
+				<Tab data={tabs} />
 			</div>
 		</div>
 	);

@@ -209,3 +209,24 @@ export const useWatchlistBySettlementDateQuery = createQuery<
 		}
 	},
 });
+
+export const useOptionCalculativeInfoQuery = createQuery<
+	Option.CalculativeInfo,
+	['optionCalculativeInfoQuery', string]
+>({
+	staleTime: 18e5,
+	queryKey: ['optionCalculativeInfoQuery', ''],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, symbolISIN] = queryKey;
+
+		const response = await axios.get<ServerResponse<Option.CalculativeInfo>>(routes.option.OptionCalculativeInfo, {
+			params: { symbolISIN },
+			signal,
+		});
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});

@@ -3,7 +3,6 @@ import axios from '../axios';
 import routes from '../routes';
 
 export const useSymbolInfoQuery = createQuery<Symbol.Info | null, ['symbolInfoQuery', string | null]>({
-	refetchOnWindowFocus: true,
 	queryKey: ['symbolInfoQuery', ''],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
@@ -50,13 +49,13 @@ export const useSymbolSearchQuery = createQuery<Symbol.Search[], ['symbolSearchQ
 	},
 });
 
-export const useSymbolBestLimitQuery = createQuery<Symbol.BestLimit, ['symbolBestLimitQuery', string]>({
+export const useSymbolBestLimitQuery = createQuery<Symbol.BestLimit[], ['symbolBestLimitQuery', string]>({
 	staleTime: 18e5,
 	queryKey: ['symbolBestLimitQuery', ''],
 	queryFn: async ({ queryKey, signal }) => {
 		const [, symbolIsin] = queryKey;
 
-		const response = await axios.get<ServerResponse<Symbol.BestLimit>>(routes.symbol.BestLimit, {
+		const response = await axios.get<ServerResponse<Symbol.BestLimit[]>>(routes.symbol.BestLimit, {
 			params: { symbolIsin },
 			signal,
 		});

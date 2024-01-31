@@ -20,28 +20,34 @@ export const sepNumbers = (num: string | undefined): string => {
 };
 
 export const numFormatter = (num: number, formatNavigateNumber = true) => {
-	const suffixes = ['', ' K', ' M', ' B', ' T'];
-	const divisor = 1e3;
-	let index = 0;
-	let isNegative = false;
+	try {
+		if (isNaN(num)) return '−';
 
-	if (num < 0) {
-		isNegative = true;
-		num = Math.abs(num);
+		const suffixes = ['', ' K', ' M', ' B', ' T'];
+		const divisor = 1e3;
+		let index = 0;
+		let isNegative = false;
+
+		if (num < 0) {
+			isNegative = true;
+			num = Math.abs(num);
+		}
+
+		while (num >= divisor && index < suffixes.length - 1) {
+			num /= divisor;
+			index++;
+		}
+
+		let formattedNum = num.toFixed(3).replace(/\.?0+$/, '') + suffixes[index];
+
+		if (isNegative) {
+			formattedNum = formatNavigateNumber ? `(${formattedNum})` : `-${formattedNum}`;
+		}
+
+		return `\u200e${formattedNum}`;
+	} catch (e) {
+		return '−';
 	}
-
-	while (num >= divisor && index < suffixes.length - 1) {
-		num /= divisor;
-		index++;
-	}
-
-	let formattedNum = num.toFixed(3).replace(/\.?0+$/, '') + suffixes[index];
-
-	if (isNegative) {
-		formattedNum = formatNavigateNumber ? `(${formattedNum})` : `-${formattedNum}`;
-	}
-
-	return `\u200e${formattedNum}`;
 };
 
 export const getDirection = (lang: string): 'rtl' | 'ltr' => {

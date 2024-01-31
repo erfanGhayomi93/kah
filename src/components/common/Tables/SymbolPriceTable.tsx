@@ -2,17 +2,22 @@ import { useSymbolBestLimitQuery } from '@/api/queries/symbolQuery';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
-interface RowProps {
-	side: 'buy' | 'sell';
+interface IRowData {
 	price: number;
 	count: number;
 	quantity: number;
 	percent: number;
 }
 
+interface RowProps extends IRowData {
+	side: 'buy' | 'sell';
+}
+
 interface GridProps {
 	side: 'buy' | 'sell';
+	data: IRowData[];
 }
 
 interface SymbolPriceTableProps {
@@ -52,7 +57,7 @@ const Row = ({ side, price, count, quantity, percent }: RowProps) => (
 	</div>
 );
 
-const Grid = ({ side }: GridProps) => {
+const Grid = ({ side, data }: GridProps) => {
 	const t = useTranslations();
 
 	return (
@@ -81,11 +86,9 @@ const Grid = ({ side }: GridProps) => {
 			</div>
 
 			<div className='w-full gap-4 flex-column'>
-				<Row side={side} price={8520} quantity={1e9} count={1520} percent={20} />
-				<Row side={side} price={1760} quantity={1e9} count={1520} percent={40} />
-				<Row side={side} price={438} quantity={1e9} count={1520} percent={60} />
-				<Row side={side} price={6400} quantity={1e9} count={1520} percent={80} />
-				<Row side={side} price={761} quantity={1e9} count={1520} percent={120} />
+				{data.map(({ percent, price, quantity, count }, i) => (
+					<Row key={i} side={side} price={price} quantity={quantity} count={count} percent={percent} />
+				))}
 			</div>
 		</div>
 	);
@@ -97,10 +100,64 @@ const SymbolPriceTable = ({ symbolISIN }: SymbolPriceTableProps) => {
 		enabled: Boolean(symbolISIN),
 	});
 
+	const dataModify: Record<'buy' | 'sell', IRowData[]> = useMemo(() => {
+		const marketData: Record<'buy' | 'sell', IRowData[]> = { buy: [], sell: [] };
+
+		let sumBuyQuantity = 0;
+		let sumSellQuantity = 0;
+
+		try {
+			if (!Array.isArray(data)) throw new Error();
+
+			for (let i = 0; i < data.length; i++) {
+				const item = data[i];
+
+				// Buy
+				marketData.buy.push({
+					count: item.numberOfOrdersAtBestBuy,
+					price: item.bestBuyLimitPrice,
+					quantity: item.bestBuyLimitQuantity,
+					percent: 0,
+				});
+
+				sumBuyQuantity += item.bestBuyLimitQuantity;
+
+				// Sell
+				marketData.sell.push({
+					count: item.numberOfOrdersAtBestSell,
+					price: item.bestSellLimitPrice,
+					quantity: item.bestSellLimitQuantity,
+					percent: 0,
+				});
+
+				sumSellQuantity += item.bestSellLimitQuantity;
+			}
+
+			for (let i = 0; i < data.length; i++) {
+				const bItem = marketData.buy[i];
+				const sItem = marketData.sell[i];
+
+				if (bItem) {
+					const percent = (bItem.quantity * 100) / sumBuyQuantity;
+					if (!isNaN(percent)) marketData.buy[i].percent = percent;
+				}
+
+				if (sItem) {
+					const percent = (sItem.quantity * 100) / sumSellQuantity;
+					if (!isNaN(percent)) marketData.sell[i].percent = percent;
+				}
+			}
+
+			return marketData;
+		} catch (e) {
+			return marketData;
+		}
+	}, [data]);
+
 	return (
 		<div className='flex flex-1 gap-8'>
-			<Grid side='buy' />
-			<Grid side='sell' />
+			<Grid side='buy' data={dataModify.buy} />
+			<Grid side='sell' data={dataModify.sell} />
 		</div>
 	);
 };

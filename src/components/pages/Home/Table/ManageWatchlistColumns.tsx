@@ -191,9 +191,8 @@ const ManageWatchlistColumns = () => {
 									type='button'
 									key={column.id}
 									className={clsx(
-										'',
 										column.isHidden
-											? 'text-gray-900 bg-white shadow-sm hover:bg-primary-100'
+											? 'text-gray-900 hover:shadow-none bg-white shadow-sm hover:bg-primary-100'
 											: 'bg-primary-400 text-white hover:bg-primary-300',
 									)}
 								>
