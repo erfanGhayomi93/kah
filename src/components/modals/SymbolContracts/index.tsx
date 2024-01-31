@@ -180,7 +180,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 			<Div className='bg-white'>
 				<Filters {...states} symbolTitle={symbolTitle} setStatesValue={setStatesValue} />
 
-				<div className='flex flex-1 items-start gap-24 overflow-hidden px-32 pb-48 pt-16'>
+				<div className='flex flex-1 items-start gap-24 overflow-hidden px-32 pb-8 pt-16'>
 					<div style={{ flex: '0 0 18.6rem' }} className='gap-16 overflow-auto flex-column'>
 						{settlementDays?.map((item, index) => (
 							<button
@@ -212,7 +212,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 							suppressRowClickSelection={false}
 							ref={gridRef}
 							rowClass='cursor-pointer'
-							className={clsx('h-full', !watchlistData && 'opacity-0')}
+							className={clsx('h-full', !watchlistData && 'pointer-events-none opacity-0')}
 							rowData={watchlistData ?? []}
 							columnDefs={COLUMNS}
 							defaultColDef={defaultColDef}
