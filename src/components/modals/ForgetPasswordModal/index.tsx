@@ -1,7 +1,7 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleForgetPasswordModal } from '@/features/slices/modalSlice';
+import { toggleForgetPasswordModal, type IForgetPasswordModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
@@ -10,9 +10,7 @@ import OTPForm from './OTPForm';
 import PasswordChangedSuccessfully from './PasswordChangedSuccessfully';
 import PhoneNumberForm from './PhoneNumberForm';
 
-interface ForgetPasswordModalProps {
-	phoneNumber?: string;
-}
+interface ForgetPasswordModalProps extends IForgetPasswordModal {}
 
 const ForgetPasswordModal = ({ phoneNumber: pNumber }: ForgetPasswordModalProps) => {
 	const t = useTranslations();

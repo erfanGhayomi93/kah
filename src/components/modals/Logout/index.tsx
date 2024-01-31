@@ -50,7 +50,7 @@ const LogoutModal = () => {
 
 	return (
 		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
-			<Div className='bg-white'>
+			<Div className='bg-white shadow-tooltip'>
 				{loading ? (
 					<div className='spinner size-32' />
 				) : (
@@ -61,7 +61,7 @@ const LogoutModal = () => {
 							<p className='text-gray-1000 text-base'>{t('logout_modal.description')}</p>
 						</div>
 
-						<div className='flex w-full justify-between gap-8'>
+						<div className='flex w-full justify-between gap-8 px-16'>
 							<button
 								onClick={onCloseModal}
 								type='button'

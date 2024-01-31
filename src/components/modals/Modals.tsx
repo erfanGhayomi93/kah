@@ -5,9 +5,12 @@ import ForgetPasswordModal from './ForgetPasswordModal';
 import LoginModal from './LoginModal';
 import LogoutModal from './Logout';
 import OptionWatchlistFiltersModal from './OptionWatchlistFiltersModal';
+import SymbolContracts from './SymbolContracts';
 
 const Modals = () => {
-	const { loginModal, logout, optionFilters, forgetPassword } = useAppSelector((state) => state.modal);
+	const { loginModal, logout, optionFilters, forgetPassword, symbolContracts } = useAppSelector(
+		(state) => state.modal,
+	);
 
 	return [
 		loginModal && <LoginModal key='login-modal' />,
@@ -21,6 +24,7 @@ const Modals = () => {
 				}
 			/>
 		),
+		symbolContracts && <SymbolContracts key='symbol-contracts' {...symbolContracts} />,
 	];
 };
 

@@ -10,7 +10,7 @@ const SelectSymbol = () => {
 	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (!value) return;
 
-		router.push(`fa/saturn?${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
+		router.push(`/fa/saturn?${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
 	};
 
 	return (
