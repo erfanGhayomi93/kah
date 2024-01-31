@@ -6,7 +6,7 @@ import { SearchSVG } from '../icons';
 import Portal from './Portal';
 import styles from './SymbolSearch.module.scss';
 
-type ValueType = Option.Search | null;
+type ValueType = Symbol.Search | null;
 
 type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>;
 

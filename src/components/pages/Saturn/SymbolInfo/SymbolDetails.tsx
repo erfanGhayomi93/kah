@@ -1,3 +1,4 @@
+import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, InfoSVG } from '@/components/icons';
 import dayjs from '@/libs/dayjs';
@@ -5,23 +6,6 @@ import { numFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-
-type TValue = string | React.ReactNode;
-
-interface Item {
-	id: string;
-	title: string;
-	valueFormatter: (() => TValue) | TValue;
-}
-
-const ListItem = ({ title, valueFormatter }: Item) => (
-	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-gray-900 whitespace-nowrap text-base'>{title}</span>
-		<span className='text-gray-1000 text-base font-medium ltr'>
-			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
-		</span>
-	</div>
-);
 
 interface IProgressBar {
 	side: 'buy' | 'sell';
@@ -43,7 +27,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 				<div className='gap-4 flex-items-center'>
 					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgColor}`} />
 					<span className='text-gray-1000 text-base'>
-						{t('saturn.individual')}
+						{t('saturn_page.individual')}
 						<span className='text-tiny ltr'> {percent.toFixed(2)}%</span>
 					</span>
 				</div>
@@ -51,7 +35,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 				<div className='gap-4 flex-items-center'>
 					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgAlphaColor}`} />
 					<span className='text-gray-1000 text-base'>
-						{t('saturn.legal')}
+						{t('saturn_page.legal')}
 						<span className='text-tiny ltr'> {(100 - percent).toFixed(2)}%</span>
 					</span>
 				</div>
@@ -71,7 +55,7 @@ interface SymbolDetailsProps {
 const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
 
-	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {
+	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
 		try {
 			const {
 				tradeVolume,
@@ -214,14 +198,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 				<h4 className='text-gray-1000 whitespace-nowrap pr-20 text-tiny'>{companyName}</h4>
 			</div>
 
-			<ul className='flex flex-column'>
-				{symbolDetails.map(([firstItem, secondItem], i) => (
-					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
-						<ListItem {...firstItem} />
-						<ListItem {...secondItem} />
-					</li>
-				))}
-			</ul>
+			<SymbolSummary data={symbolDetails} />
 
 			<div className='w-full items-center gap-32 flex-justify-between'>
 				<ProgressBar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />

@@ -15,6 +15,7 @@ const routes = {
 
 	option: {
 		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
+		OptionCalculativeInfo: `${rlcUrl}/OptionWatchlist/v1/OptionCalculativeInfo`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
 		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
 	},
