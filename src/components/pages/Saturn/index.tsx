@@ -1,6 +1,7 @@
 'use client';
 
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import { defaultSymbolISIN } from '@/constants';
 import { useLocalstorage } from '@/hooks';
@@ -42,6 +43,20 @@ const Saturn = () => {
 		],
 	});
 
+	const onContractAdded = (data: Option.Root) => {
+		try {
+			const contracts = [...baseSymbolContracts];
+			const nullableContractIndex = contracts.findIndex((c) => c === null);
+
+			if (nullableContractIndex >= 0) contracts[nullableContractIndex] = data.symbolInfo.symbolISIN;
+			else contracts[0] = data.symbolInfo.symbolISIN;
+
+			setBaseSymbolContracts(contracts);
+		} catch (e) {
+			//
+		}
+	};
+
 	useLayoutEffect(() => {
 		try {
 			const contractISIN = searchParams.get('contractISIN');
@@ -52,6 +67,18 @@ const Saturn = () => {
 			//
 		}
 	}, []);
+
+	useLayoutEffect(() => {
+		try {
+			ipcMain.handle<Option.Root>('saturn_contract_added', onContractAdded);
+
+			return () => {
+				ipcMain.removeHandler('saturn_contract_added', onContractAdded);
+			};
+		} catch (e) {
+			//
+		}
+	}, [baseSymbolContracts]);
 
 	if (!baseSymbolInfo && isFetching) {
 		return (
@@ -64,7 +91,7 @@ const Saturn = () => {
 	if (!baseSymbolInfo)
 		return (
 			<Main>
-				<span className='text-gray-900 absolute text-base font-medium center'>
+				<span className='absolute text-base font-medium text-gray-900 center'>
 					{t('common.an_error_occurred')}
 				</span>
 			</Main>

@@ -73,7 +73,7 @@ const Contract = ({ baseSymbol, symbolISIN, onChange }: ContractProps) => {
 					className='absolute cursor-pointer items-center gap-24 text-center flex-column center'
 				>
 					<Image width='48' height='48' alt='add-symbol' src='/static/images/add-button.png' />
-					<span className='text-gray-1000 text-base'>
+					<span className='text-base text-gray-1000'>
 						{t.rich('saturn_page.click_to_add_contract', {
 							add: (chunks) => (
 								<button type='button' className='text-primary-400'>
@@ -94,7 +94,12 @@ const Contract = ({ baseSymbol, symbolISIN, onChange }: ContractProps) => {
 			</Wrapper>
 		);
 
-	if (!contractInfo) return <Wrapper />;
+	if (!contractInfo)
+		return (
+			<Wrapper>
+				<span className='absolute center'>{t('common.an_error_occurred')}</span>
+			</Wrapper>
+		);
 
 	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
 		contractInfo;
@@ -105,7 +110,7 @@ const Contract = ({ baseSymbol, symbolISIN, onChange }: ContractProps) => {
 				<div style={{ gap: '7.8rem' }} className='flex-justify-between'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-gray-1000 text-3xl font-medium'>{symbolTitle}</h1>
+						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
@@ -133,7 +138,7 @@ const Contract = ({ baseSymbol, symbolISIN, onChange }: ContractProps) => {
 							)}
 						>
 							{sepNumbers(String(lastTradedPrice || 1))}
-							<span className='text-gray-900 text-base font-normal'>{t('common.rial')}</span>
+							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
 					</div>
 
@@ -146,13 +151,13 @@ const Contract = ({ baseSymbol, symbolISIN, onChange }: ContractProps) => {
 							{t('saturn_page.new_position')}
 						</button>
 
-						<button type='button' className='text-gray-1000 size-24'>
+						<button type='button' className='size-24 text-gray-1000'>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>
 					</div>
 				</div>
 
-				<h4 className='text-gray-1000 whitespace-nowrap pr-20 text-tiny'>{companyName}</h4>
+				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
 			<Tab data={tabs} />
