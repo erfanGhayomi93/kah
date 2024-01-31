@@ -316,11 +316,11 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.error.100'),
+					'background-color': theme('colors.error.200'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.error.200'),
+						'background-color': theme('colors.error.100'),
 					},
 
 					'&:disabled': {
