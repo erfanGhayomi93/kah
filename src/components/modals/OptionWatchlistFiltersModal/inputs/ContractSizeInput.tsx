@@ -1,63 +1,12 @@
-import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
-import clsx from 'clsx';
-import { useTranslations } from 'next-intl';
+import PriceSlider from '@/components/common/PriceSlider';
 
 interface ContractSizeInputProps {
 	value: IOptionWatchlistFilters['contractSize'];
 	onChange: (value: IOptionWatchlistFilters['contractSize']) => void;
 }
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	borderClass?: ClassesValue;
-}
-
-const Input = ({ borderClass, ...props }: InputProps) => (
-	<input
-		type='text'
-		inputMode='decimal'
-		maxLength={12}
-		className={clsx(
-			'text-gray-1000 h-40 w-full rounded border px-8 text-left ltr',
-			borderClass || 'border-gray-500',
-		)}
-		{...props}
-	/>
-);
-
 const ContractSizeInput = ({ value: [fromValue, toValue], onChange }: ContractSizeInputProps) => {
-	const t = useTranslations();
-
-	const valueFormatter = (value: string) => {
-		if (!value) return '';
-		return sepNumbers(String(value));
-	};
-
-	return (
-		<div className='flex-1 gap-16 flex-justify-end'>
-			<div className='flex-1 gap-8 flex-items-center'>
-				<span>{t('common.from')}</span>
-				<Input
-					value={valueFormatter(fromValue)}
-					onChange={(e) => onChange([convertStringToInteger(e.target.value), toValue])}
-				/>
-			</div>
-			<div className='flex-1 gap-8 flex-items-center'>
-				<span>{t('common.to')}</span>
-				<Input
-					value={valueFormatter(toValue)}
-					onChange={(e) => onChange([fromValue, convertStringToInteger(e.target.value)])}
-					borderClass={
-						toValue &&
-						toValue !== '0' &&
-						Boolean(fromValue) &&
-						Boolean(toValue) &&
-						Number(fromValue) > Number(toValue) &&
-						'border-error-100'
-					}
-				/>
-			</div>
-		</div>
-	);
+	return <PriceSlider min={1} max={365} showAvg={false} onChange={console.log} value={[-0.5, 0.5]} />;
 };
 
 export default ContractSizeInput;
