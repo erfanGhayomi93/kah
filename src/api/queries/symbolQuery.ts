@@ -49,3 +49,21 @@ export const useSymbolSearchQuery = createQuery<Symbol.Search[], ['symbolSearchQ
 		}
 	},
 });
+
+export const useSymbolBestLimitQuery = createQuery<Symbol.BestLimit, ['symbolBestLimitQuery', string]>({
+	staleTime: 18e5,
+	queryKey: ['symbolBestLimitQuery', ''],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, symbolIsin] = queryKey;
+
+		const response = await axios.get<ServerResponse<Symbol.BestLimit>>(routes.symbol.BestLimit, {
+			params: { symbolIsin },
+			signal,
+		});
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});

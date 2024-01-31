@@ -37,6 +37,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 	};
 
 	const onBlur = () => {
+		setTerm('');
 		setFocus(false);
 	};
 
@@ -46,6 +47,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 				y: 4,
 			}}
 			zIndex={9999}
+			onClose={onBlur}
 			renderer={({ setOpen }) => {
 				if (term.length < 2)
 					return (
@@ -85,7 +87,6 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 					</div>
 				);
 			}}
-			onClose={onBlur}
 		>
 			{({ setOpen, open }) => (
 				<label className={clsx('input-group', styles.root, classes?.root)}>
