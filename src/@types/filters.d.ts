@@ -1,5 +1,5 @@
 interface IOptionWatchlistFilters {
-	symbols: Option.SymbolSearch[];
+	symbols: Option.Search[];
 	type: Array<'Call' | 'Put'>;
 	status: Array<'ITM' | 'OTM' | 'ATM'>;
 	endDate: [number | null, number | null];

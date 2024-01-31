@@ -9,10 +9,10 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Portal from '../common/Portal';
-import { ArrowDownSVG, EditSVG, LogoutSVG, PasswordSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '../icons';
+import { ArrowDownSVG, EditSVG, LogoutSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '../icons';
 
 const getStates = createSelector(
 	(state: RootState) => state,
@@ -73,6 +73,10 @@ const Header = () => {
 		[],
 	);
 
+	useEffect(() => {
+		setIsDropdownOpened(false);
+	}, [isLoggedIn]);
+
 	return (
 		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-64 bg-white px-32 shadow flex-justify-between'>
 			<nav className='gap-56 flex-items-center'>
@@ -117,21 +121,26 @@ const Header = () => {
 									</div>
 								</div>
 
-								<button className='text-gray-900' type='button'>
+								<button
+									className='text-gray-900 transition-colors hover:text-primary-300'
+									type='button'
+								>
 									<EditSVG width='2rem' height='2rem' />
 								</button>
 							</div>
 
-							<div className='px-16 pb-32 pt-40 flex-items-center'>
-								<button
-									type='button'
-									className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
-								>
-									{t('header.set_password')}
-								</button>
-							</div>
+							{!userData?.hasPassword && (
+								<div className='px-16  pt-40 flex-items-center'>
+									<button
+										type='button'
+										className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+									>
+										{t('header.set_password')}
+									</button>
+								</div>
+							)}
 
-							<nav className='gap-16 px-8 flex-column'>
+							<nav className='gap-16 px-8 pt-32 flex-column'>
 								<ul className='flex-column'>
 									<li>
 										<button
@@ -140,15 +149,6 @@ const Header = () => {
 										>
 											<UserCircleSVG className='text-gray-900' width='1.8rem' height='1.8rem' />
 											<span>{t('header.user_account')}</span>
-										</button>
-									</li>
-									<li>
-										<button
-											type='button'
-											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
-										>
-											<PasswordSVG className='text-gray-900' width='1.6rem' height='1.6rem' />
-											<span>{t('header.password')}</span>
 										</button>
 									</li>
 									<li>

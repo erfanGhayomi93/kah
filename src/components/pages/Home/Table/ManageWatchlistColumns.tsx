@@ -185,15 +185,15 @@ const ManageWatchlistColumns = () => {
 						</h2>
 
 						<div className='flex-wrap gap-16 flex-justify-between'>
-							{categories[category].map((column, columnIndex) => (
+							{categories[category].map((column) => (
 								<Button
 									onClick={() => setHiddenColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
 									className={clsx(
 										column.isHidden
-											? 'text-gray-900 bg-white shadow-sm hover:bg-primary-400 hover:text-white'
-											: 'btn-choose',
+											? 'text-gray-900 hover:shadow-none bg-white shadow-sm hover:bg-primary-100'
+											: 'bg-primary-400 text-white hover:bg-primary-300',
 									)}
 								>
 									{t(`manage_option_watchlist_columns.column_${column.title}`)}

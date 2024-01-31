@@ -16,7 +16,7 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 
 	init(params: CellPercentRendererProps) {
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex ltr justify-between overflow-hidden items-center w-full gap-8');
+		this.eGui.setAttribute('class', 'flex-justify-center ltr overflow-hidden text-lg w-full gap-4');
 
 		this.eValue = document.createElement('span');
 		this.eValue.classList.add('w-max');
@@ -55,9 +55,9 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 
 		this.ePercent.textContent = isNegative ? `(${percentage}%)` : `${percentage}%`;
 
-		if (!isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-success-100');
-		else if (isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-error-100');
-		else if (percent === 0) this.ePercent.setAttribute('class', 'w-max text-tiny text-gray-800');
+		if (!isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-tiny text-success-100');
+		else if (isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-tiny text-error-100');
+		else if (percent === 0) this.ePercent.setAttribute('class', 'w-max text-tiny text-tiny text-gray-800');
 	}
 }
 

@@ -24,7 +24,7 @@ const SymbolContracts = ({ baseSymbol, baseSymbolContracts, onChange }: SymbolCo
 		<div className='flex flex-wrap gap-8'>
 			{baseSymbolContracts.map((symbolISIN, index) => (
 				<Contract
-					key={symbolISIN}
+					key={index}
 					symbolISIN={symbolISIN}
 					onChange={(value) => onChangeContract(index, value)}
 					baseSymbol={baseSymbol}

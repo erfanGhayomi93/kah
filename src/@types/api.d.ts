@@ -1,4 +1,6 @@
 declare namespace Option {
+	export type IOTM = 'atm' | 'otm' | 'itm';
+
 	export interface Root {
 		/**
 		 * اطلاعات نماد
@@ -200,13 +202,13 @@ declare namespace Option {
 		 */
 		lastTradeDate: string;
 		/**
-		 * ارزش مفهومی / ارزش ذاتی
+		 * ارزش مفهومی معاملات / ارزش ذاتی
 		 */
 		notionalValue: number;
 		/**
 		 * O/I TM
 		 */
-		iotm: 'atm' | 'otm' | 'itm';
+		iotm: IOTM;
 		/**
 		 * ارزش ذاتی
 		 */
@@ -221,10 +223,13 @@ declare namespace Option {
 		tradeVolume: number;
 	}
 
-	export interface SymbolSearch {
-		symbolTitle: string;
+	export interface Search {
 		symbolISIN: string;
-		insCode: string;
+		symbolTitle: string;
+		companyISIN: string;
+		companyName: string;
+		insCode: null | string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 	}
 
 	export interface BaseSettlementDays {
@@ -242,6 +247,23 @@ declare namespace Option {
 		isHidden: boolean;
 		order: number;
 	}
+
+	export interface CalculativeInfo {
+		breakEvenPoint: number;
+		leverage: number;
+		delta: number;
+		theta: number;
+		gamma: number;
+		vega: number;
+		requiredMargin: number;
+		impliedVolatility: number;
+		historicalVolatility: number;
+		wiv: number;
+		intrinsicValue: number;
+		timeValue: number;
+		iotm: IOTM;
+		initialMargin: number;
+	}
 }
 
 declare namespace Symbol {
@@ -252,17 +274,46 @@ declare namespace Symbol {
 		lastTradedPrice: number;
 		tradeVolume: number;
 		tradeValue: number;
-		avgIV: number | null;
+		avgIV: null | number;
 		closingPrice: number;
-		oneMonthAvgVolume: number;
 		tradeCount: number;
 		lastTradeDate: string;
-		hv: number | null;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		hv: number;
+		symbolTradeState: string;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
 		closingPriceVarReferencePrice: number;
 		closingPriceVarReferencePricePercent: number;
+		oneMonthAvgVolume: string;
+		individualBuyVolume: number;
+		individualSellVolume: number;
+		legalBuyVolume: number;
+		legalSellVolume: number;
+		baseSymbolISIN: null | string;
+		marketUnit: string;
+		isOption: boolean;
+	}
+
+	export interface Search {
+		symbolISIN: string;
+		symbolTitle: string;
+		companyISIN: string;
+		isOption: boolean;
+		marketUnit: string;
+		companyName: string;
+		insCode: null | string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+	}
+
+	export interface BestLimit {
+		symbolISIN: string;
+		rowIndex: number;
+		bestBuyLimitPrice: number;
+		bestSellLimitPrice: number;
+		bestBuyLimitQuantity: number;
+		bestSellLimitQuantity: number;
+		numberOfOrdersAtBestBuy: number;
+		numberOfOrdersAtBestSell: number;
 	}
 }
 
@@ -313,6 +364,7 @@ declare namespace OAuthAPI {
 
 declare namespace User {
 	interface IUserInformation {
+		hasPassword: boolean;
 		mobile: string;
 		saveDate: string;
 	}

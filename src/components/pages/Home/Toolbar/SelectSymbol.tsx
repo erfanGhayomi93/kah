@@ -5,12 +5,12 @@ import { useState } from 'react';
 const SelectSymbol = () => {
 	const router = useRouter();
 
-	const [symbol] = useState<Option.SymbolSearch | null>(null);
+	const [symbol] = useState<Symbol.Search | null>(null);
 
-	const onChangeSymbol = (value: Option.SymbolSearch | null) => {
+	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (!value) return;
 
-		router.push(`fa/saturn?symbolISIN=${value.symbolISIN}`);
+		router.push(`/fa/saturn?${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
 	};
 
 	return (

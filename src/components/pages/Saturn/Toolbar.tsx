@@ -10,26 +10,26 @@ interface ToolbarProps {
 const Toolbar = ({ onChangeBaseSymbol }: ToolbarProps) => {
 	const t = useTranslations();
 
-	const [symbol] = useState<Option.SymbolSearch | null>(null);
+	const [symbol] = useState<Symbol.Search | null>(null);
 
-	const onChangeSymbol = (value: Option.SymbolSearch | null) => {
+	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (!value) return;
 		onChangeBaseSymbol(value.symbolISIN);
 	};
 
 	return (
 		<div className='w-full flex-justify-between'>
-			<div style={{ flex: 1 }} className='rounded bg-white'>
+			<div style={{ flex: 1, maxWidth: '40rem' }} className='rounded bg-white'>
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 			</div>
 
 			<div style={{ flex: 2 }} className='flex-1 gap-8 flex-justify-end'>
 				<button type='button' className='h-40 rounded px-32 btn-primary' disabled>
-					{t('saturn.save')}
+					{t('saturn_page.save')}
 				</button>
 				<button
 					type='button'
-					className='size-40 rounded border border-gray-500 bg-white text-primary-400 text-primary-400 flex-justify-center'
+					className='size-40 rounded border border-gray-500 bg-white text-primary-400 flex-justify-center'
 					disabled
 				>
 					<BookmarkSVG />

@@ -2,8 +2,9 @@ import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { sepNumbers } from '@/utils/helpers';
-import { type ColDef } from '@ag-grid-community/core';
+import { type CellClickedEvent, type ColDef } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import NoData from '../common/NoData';
 
@@ -20,11 +21,29 @@ interface ITableData {
 }
 
 const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
+	const router = useRouter();
+
 	const t = useTranslations();
 
 	const { data: watchlistData, isLoading } = useWatchlistBySettlementDateQuery({
 		queryKey: ['watchlistBySettlementDateQuery', { baseSymbolISIN, settlementDate: contractEndDate }],
 	});
+
+	const onSymbolTitleClicked = ({ data }: CellClickedEvent<ITableData>, side: 'buy' | 'sell') => {
+		try {
+			if (!data) return;
+			const symbolData = data[side];
+
+			if (!symbolData) return;
+
+			const { symbolISIN, baseSymbolISIN } = symbolData.symbolInfo;
+
+			if (baseSymbolISIN && symbolISIN)
+				router.push(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+		} catch (e) {
+			//
+		}
+	};
 
 	const modifiedData: ITableData[] = useMemo(() => {
 		if (!watchlistData) return [];
@@ -69,6 +88,8 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				headerName: 'نماد',
 				colId: 'symbolTitle-buy',
 				minWidth: 128,
+				cellClass: 'cursor-pointer',
+				onCellClicked: (api) => onSymbolTitleClicked(api, 'buy'),
 				valueGetter: ({ data }) => data!.buy?.symbolInfo.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
@@ -111,7 +132,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				colId: 'bestBuyPrice-buy',
 				minWidth: 96,
 				cellStyle: {
-					backgroundColor: 'rgba(25, 135, 84, 0.1)',
+					backgroundColor: 'rgba(12, 175, 130, 0.12)',
 				},
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
 			},
@@ -121,7 +142,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				colId: 'bestSellPrice-buy',
 				minWidth: 96,
 				cellStyle: {
-					backgroundColor: 'rgba(220, 53, 69, 0.1)',
+					backgroundColor: 'rgba(254, 57, 87, 0.12)',
 				},
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
 			},
@@ -193,7 +214,9 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 			{
 				headerName: 'نماد',
 				colId: 'symbolTitle-sell',
+				cellClass: 'cursor-pointer',
 				minWidth: 128,
+				onCellClicked: (api) => onSymbolTitleClicked(api, 'buy'),
 				valueGetter: ({ data }) => data!.sell?.symbolInfo.symbolTitle ?? '−',
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},

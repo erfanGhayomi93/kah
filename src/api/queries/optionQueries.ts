@@ -117,7 +117,7 @@ export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], [
 });
 
 export const useOptionSymbolSearchQuery = createQuery<
-	Option.SymbolSearch[],
+	Option.Search[],
 	[
 		'optionSymbolSearchQuery',
 		Partial<{ term: null | string; orderBy: 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' }>,
@@ -135,7 +135,7 @@ export const useOptionSymbolSearchQuery = createQuery<
 			if (term) params.term = term;
 			if (orderBy) params.orderBy = orderBy;
 
-			const response = await axios.get<ServerResponse<Option.SymbolSearch[]>>(routes.option.OptionSymbolSearch, {
+			const response = await axios.get<ServerResponse<Option.Search[]>>(routes.option.OptionSymbolSearch, {
 				params,
 				signal,
 			});
@@ -207,5 +207,26 @@ export const useWatchlistBySettlementDateQuery = createQuery<
 		} catch (e) {
 			return [];
 		}
+	},
+});
+
+export const useOptionCalculativeInfoQuery = createQuery<
+	Option.CalculativeInfo,
+	['optionCalculativeInfoQuery', string]
+>({
+	staleTime: 18e5,
+	queryKey: ['optionCalculativeInfoQuery', ''],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, symbolISIN] = queryKey;
+
+		const response = await axios.get<ServerResponse<Option.CalculativeInfo>>(routes.option.OptionCalculativeInfo, {
+			params: { symbolISIN },
+			signal,
+		});
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
 	},
 });

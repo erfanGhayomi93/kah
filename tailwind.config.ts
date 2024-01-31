@@ -89,6 +89,7 @@ const config: Config = {
 		},
 
 		boxShadow: {
+			none: 'none',
 			tooltip: '0px 0px 2px 0px rgba(0, 0, 0, 0.16)',
 			sm: '0px 1px 2px 0px rgba(0, 0, 0, 0.1)',
 			DEFAULT: '0px 4px 4px -1px rgba(0, 0, 0, 0.1)',
@@ -203,7 +204,6 @@ const config: Config = {
 				'.btn-primary': {
 					display: 'flex',
 					'align-items': 'center',
-					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
 					'background-color': theme('colors.primary.400'),
@@ -211,6 +211,10 @@ const config: Config = {
 
 					'&:not(:disabled):hover': {
 						'background-color': theme('colors.primary.300'),
+					},
+
+					'&:not(.justify-start,.justify-end)': {
+						'justify-content': 'center',
 					},
 
 					'&:disabled': {
@@ -289,7 +293,7 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.success.100'),
+					color: theme('colors.success.200'),
 					'font-weight': '500',
 					'background-color': 'transparent',
 					border: `2px solid ${theme('colors.success.100')}`,
@@ -315,11 +319,11 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.error.100'),
+					'background-color': theme('colors.error.200'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.error.200'),
+						'background-color': theme('colors.error.100'),
 					},
 
 					'&:disabled': {
@@ -333,7 +337,7 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.error.100'),
+					color: theme('colors.error.200'),
 					'font-weight': '500',
 					'background-color': 'transparent',
 					border: `2px solid ${theme('colors.error.100')}`,

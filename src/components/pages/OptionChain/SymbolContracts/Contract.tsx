@@ -1,6 +1,7 @@
 import { ArrowDownSVG } from '@/components/icons';
 import dayjs from '@/libs/dayjs';
 import { letters } from '@/utils/num2persian';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo, useRef, useState } from 'react';
 import Table from './Table';
@@ -52,23 +53,23 @@ const Contract = ({
 	}, []);
 
 	return (
-		<div className='rounded bg-white flex-column'>
+		<div className={clsx('overflow-hidden rounded bg-white flex-column', expand && 'border border-primary-300')}>
 			<div onClick={toggleContract} className='h-40 w-full cursor-pointer select-none px-16 flex-justify-between'>
 				<div className='flex-1 gap-32 text-right flex-justify-start'>
-					<span style={{ width: '8rem' }} className='text-gray-1000 text-lg'>
+					<span style={{ width: '8rem' }} className='text-lg text-gray-1000'>
 						{calendar}
 					</span>
-					<span className='text-gray-900 text-base'>
+					<span className='text-base text-gray-900'>
 						{t('option_chain.contract_due_days', { dueDays, workingDaysLeftCount })}
 					</span>
 				</div>
 
 				<div className='flex-1 gap-32 flex-justify-end'>
 					<div className='flex items-center gap-8'>
-						<span className='text-gray-900 text-base'>{t('option_chain.one_month_trade_volume')}:</span>
+						<span className='text-base text-gray-900'>{t('option_chain.one_month_trade_volume')}:</span>
 						<span>
-							<span className='text-gray-1000 text-lg font-bold'>{volume}</span>
-							<span className='text-gray-900 text-tiny'>{volumeAsLetter}</span>
+							<span className='text-lg font-bold text-gray-1000'>{volume}</span>
+							<span className='text-tiny text-gray-900'>{volumeAsLetter}</span>
 						</span>
 					</div>
 

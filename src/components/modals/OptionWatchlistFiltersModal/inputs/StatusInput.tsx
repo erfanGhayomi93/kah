@@ -25,22 +25,22 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 		<div className='flex-1 gap-8 flex-justify-end *:h-40 *:flex-1 *:gap-8 *:rounded *:border-2 *:font-medium *:transition-colors *:flex-justify-center'>
 			<button
 				type='button'
-				onClick={() => onChangeValue('ITM')}
+				onClick={() => onChangeValue('ATM')}
 				className={clsx(
-					isITM
-						? 'border-secondary-300 bg-secondary-300 text-white'
+					isATM
+						? 'border-secondary-300 bg-secondary-300 text-white hover:border-secondary-300/10 hover:bg-secondary-300/80'
 						: 'border-2 border-secondary-300 text-secondary-300 hover:bg-secondary-300 hover:text-white',
 				)}
 			>
 				<span style={{ height: '2px' }} className='w-24 rounded bg-current' />
-				{t('option_watchlist_filters_modal.status_itm')}
+				{t('option_watchlist_filters_modal.status_atm')}
 			</button>
 			<button
 				type='button'
 				onClick={() => onChangeValue('OTM')}
 				className={clsx(
 					isOTM
-						? 'border-error-100 bg-error-100 text-white'
+						? 'border-error-100 bg-error-100 text-white hover:border-error-100/10 hover:bg-error-100/80'
 						: 'border-2 border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
 				)}
 			>
@@ -49,15 +49,15 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 			</button>
 			<button
 				type='button'
-				onClick={() => onChangeValue('ATM')}
+				onClick={() => onChangeValue('ITM')}
 				className={clsx(
-					isATM
-						? 'border-success-100 bg-success-100 text-white'
+					isITM
+						? 'border-success-100 bg-success-100 text-white hover:border-success-100/10 hover:bg-success-100/80'
 						: 'border-2 border-success-100 text-success-100 hover:bg-success-100 hover:text-white',
 				)}
 			>
 				<ChartUpSVG />
-				{t('option_watchlist_filters_modal.status_atm')}
+				{t('option_watchlist_filters_modal.status_itm')}
 			</button>
 		</div>
 	);

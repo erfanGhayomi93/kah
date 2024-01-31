@@ -10,10 +10,12 @@ const routes = {
 	symbol: {
 		SymbolInfo: `${rlcUrl}/Symbol/v1/SymbolInfo`,
 		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
+		Search: `${rlcUrl}/Symbol/v1/Search`,
 	},
 
 	option: {
 		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
+		OptionCalculativeInfo: `${rlcUrl}/OptionWatchlist/v1/OptionCalculativeInfo`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
 		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
 	},

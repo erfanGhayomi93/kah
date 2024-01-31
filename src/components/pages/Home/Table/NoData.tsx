@@ -17,7 +17,7 @@ const NoData = ({ onAddSymbol }: NoDataProps) => {
 			}}
 		>
 			<Image width='120' height='120' alt='welcome' src='/static/images/no-data.png' />
-			<span className='text-base font-medium text-gray-300'>
+			<span className='text-gray-900 text-base font-medium'>
 				{t.rich('option_page.no_data_table', {
 					symbol: (chunk) => (
 						<button type='button' className='text-primary-400 underline' onClick={onAddSymbol}>

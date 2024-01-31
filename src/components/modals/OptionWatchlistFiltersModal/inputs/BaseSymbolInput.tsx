@@ -9,7 +9,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../index.module.scss';
 
 interface BaseSymbolInputProps {
-	values: Option.SymbolSearch[];
+	values: Option.Search[];
 	onChange: (values: IOptionWatchlistFilters['symbols']) => void;
 }
 
@@ -64,7 +64,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 		if (inputRef.current) inputRef.current.focus();
 	};
 
-	const onToggleSymbol = (symbol: Option.SymbolSearch) => {
+	const onToggleSymbol = (symbol: Option.Search) => {
 		try {
 			const isExists = isSymbolSelected(symbol.symbolISIN);
 
@@ -106,10 +106,6 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					style={{ height: onlyShowTags ? undefined : '59vh' }}
 					className={clsx(
 						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
-						values.length === 0 &&
-							!(isLoading || symbolsDataIsEmpty) &&
-							!(onlyShowTags && values.length === 0) &&
-							'pt-16',
 					)}
 				>
 					{values.length > 0 && (
@@ -145,7 +141,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					{!onlyShowTags && (
 						<Fragment>
 							<div
-								style={{ minHeight: '9.6rem', maxHeight: 'calc(76vh - 28rem)' }}
+								style={{ minHeight: '9.6rem' }}
 								className={clsx(
 									'flex-1 gap-4 overflow-auto py-8 flex-column',
 									(isLoading || symbolsDataIsEmpty) && 'items-center justify-center',

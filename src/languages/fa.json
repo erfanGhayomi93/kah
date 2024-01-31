@@ -11,7 +11,8 @@
 		"from": "از",
 		"to": "تا",
 		"close": "بستن",
-		"searching": "در حال جستجو"
+		"searching": "در حال جستجو",
+		"an_error_occurred": "خطا در دریافت اطلاعات"
 	},
 	"side": {
 		"buy": "خرید",
@@ -31,6 +32,13 @@
 		"watchlist": "دیده‌بان",
 		"option_chain": "زنجیره قراردادها",
 		"saturn": "زحل"
+	},
+	"symbol_contracts_modal": {
+		"title": "انتخاب قرارداد {symbolTitle}",
+		"contract_search_placeholder": "جستجوی قرارداد",
+		"search_contract": "نوع قرارداد",
+		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}",
+		"end_date": "سررسیدهای"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
@@ -136,6 +144,7 @@
 		"trade_value": "ارزش معاملات",
 		"last_trade_date": "آخرین معامله",
 		"avg_volume": "میانگین حجم {days} روزه",
+		"avg_volume_month": "میانگین حجم ماه",
 		"hv": "تلاطم تاریخی HV",
 		"avg_iv": "میانگین وزنی تلاطم ضمنی",
 		"sort_based_on": "مرتب سازی بر اساس",
@@ -146,11 +155,44 @@
 		"sort_closest_due_date": "نزدیک ترین سررسید",
 		"sort_alphabet": "حروف الفبا",
 		"buy_contracts": "قراردادهای خرید",
-		"sell_contracts": "قراردادهای فروش"
+		"sell_contracts": "قراردادهای فروش",
+		"notional_value": "ارزش مفهومی معاملات",
+		"contract_end_date": "تاریخ سررسید",
+		"open_position": "موقعیت باز",
+		"contract_size": "اندازه قرارداد",
+		"historical_volatility": "بلک شولز HV",
+		"intrinsic_value": "ارزش ذاتی",
+		"theta": "تتا",
+		"delta": "دلتا",
+		"gamma": "گاما",
+		"vega": "وگا",
+		"iotm": "وضعیت مالی",
+		"time_value": "ارزش زمانی",
+		"required_margin": "وجه تضمین",
+		"initial_margin": "وجه تضمین اولیه",
+		"implied_volatility": "IV",
+		"break_even_point": "قیمت سر به سر",
+		"leverage": "اهرم",
+		"w_implied_volatility": "بلک شولز W-IV"
 	},
-	"saturn": {
+	"market_depth": {
+		"count_column": "تعداد",
+		"quantity_column": "حجم",
+		"price_column": "قیمت"
+	},
+	"saturn_page": {
 		"click_to_add_contract": "برای <add>افزودن</add> قرارداد {symbolTitle} کلیک کنید",
-		"save": "ذخیره"
+		"save": "ذخیره",
+		"individual": "حقیقی",
+		"legal": "حقوقی",
+		"tab_market_depth": "عمق بازار",
+		"tab_chart": "نمودار",
+		"tab_my_asset": "دارایی من",
+		"close_position": "بستن موقعیت",
+		"new_position": "موقعیت جدید",
+		"tab_price_information": "اطلاعات قیمتی",
+		"tab_computing_information": "اطلاعات محاسباتی",
+		"tab_open_position": "پوزیشن باز"
 	},
 	"alerts": {
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."

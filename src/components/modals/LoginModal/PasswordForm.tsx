@@ -57,7 +57,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 
 			if (data.result.message !== 'Successful') throw new Error();
 
-			setCookie('client_id', data.result.token);
+			setCookie(process.env.APP_TOKEN_NAME!, data.result.token);
 
 			onLoggedIn();
 			goToWelcome();
