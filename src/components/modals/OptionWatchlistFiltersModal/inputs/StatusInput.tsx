@@ -28,7 +28,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				onClick={() => onChangeValue('ATM')}
 				className={clsx(
 					isATM
-						? 'border-secondary-300 bg-secondary-300 text-white'
+						? 'border-secondary-300 bg-secondary-300 text-white hover:border-secondary-300/10 hover:bg-secondary-300/80'
 						: 'border-2 border-secondary-300 text-secondary-300 hover:bg-secondary-300 hover:text-white',
 				)}
 			>
@@ -40,7 +40,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				onClick={() => onChangeValue('OTM')}
 				className={clsx(
 					isOTM
-						? 'border-error-100 bg-error-100 text-white'
+						? 'border-error-100 bg-error-100 text-white hover:border-error-100/10 hover:bg-error-100/80'
 						: 'border-2 border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
 				)}
 			>
@@ -52,7 +52,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				onClick={() => onChangeValue('ITM')}
 				className={clsx(
 					isITM
-						? 'border-success-100 bg-success-100 text-white'
+						? 'border-success-100 bg-success-100 text-white hover:border-success-100/10 hover:bg-success-100/80'
 						: 'border-2 border-success-100 text-success-100 hover:bg-success-100 hover:text-white',
 				)}
 			>

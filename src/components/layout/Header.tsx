@@ -121,7 +121,10 @@ const Header = () => {
 									</div>
 								</div>
 
-								<button className='text-gray-900' type='button'>
+								<button
+									className='text-gray-900 transition-colors hover:text-primary-300'
+									type='button'
+								>
 									<EditSVG width='2rem' height='2rem' />
 								</button>
 							</div>

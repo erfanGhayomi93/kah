@@ -3,7 +3,7 @@ import Loading from '@/components/common/Loading';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleContractSelectorModal } from '@/features/slices/modalSlice';
+import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -22,7 +22,7 @@ interface ContractProps {
 const Wrapper = ({ children }: { children?: React.ReactNode }) => (
 	<div
 		style={{ flex: 'calc(50% - 1.2rem)', height: '40rem' }}
-		className='relative gap-36 rounded bg-white py-12 pl-16 pr-24 flex-column'
+		className='relative gap-24 rounded bg-white py-12 pl-16 pr-24 flex-column'
 	>
 		{children}
 	</div>
@@ -40,7 +40,7 @@ const Contract = ({ baseSymbol, symbolISIN, onChange }: ContractProps) => {
 
 	const addSymbol = () => {
 		dispatch(
-			toggleContractSelectorModal({
+			toggleSymbolContractsModal({
 				symbolTitle: baseSymbol.symbolTitle,
 				symbolISIN: baseSymbol.symbolISIN,
 			}),
@@ -68,7 +68,10 @@ const Contract = ({ baseSymbol, symbolISIN, onChange }: ContractProps) => {
 	if (!symbolISIN)
 		return (
 			<Wrapper>
-				<div onClick={addSymbol} className='absolute items-center gap-24 text-center flex-column center'>
+				<div
+					onClick={addSymbol}
+					className='absolute cursor-pointer items-center gap-24 text-center flex-column center'
+				>
 					<Image width='48' height='48' alt='add-symbol' src='/static/images/add-button.png' />
 					<span className='text-gray-1000 text-base'>
 						{t.rich('saturn_page.click_to_add_contract', {

@@ -33,6 +33,12 @@
 		"option_chain": "زنجیره قراردادها",
 		"saturn": "زحل"
 	},
+	"symbol_contracts_modal": {
+		"title": "انتخاب قرارداد {symbolTitle}",
+		"contract_search_placeholder": "جستجوی قرارداد",
+		"search_contract": "نوع قرارداد",
+		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}"
+	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
 		"register_title": "ثبت‌نام به کهکشان",

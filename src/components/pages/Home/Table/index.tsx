@@ -52,7 +52,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			const { symbolISIN, baseSymbolISIN } = data.symbolInfo;
 
 			if (baseSymbolISIN && symbolISIN)
-				router.push(`fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+				router.push(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
 		} catch (e) {
 			//
 		}
