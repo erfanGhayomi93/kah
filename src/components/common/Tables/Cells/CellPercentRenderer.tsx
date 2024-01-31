@@ -16,7 +16,7 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 
 	init(params: CellPercentRendererProps) {
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex ltr justify-between overflow-hidden items-center w-full gap-8');
+		this.eGui.setAttribute('class', 'flex-justify-center ltr overflow-hidden w-full gap-12');
 
 		this.eValue = document.createElement('span');
 		this.eValue.classList.add('w-max');

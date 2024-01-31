@@ -4,6 +4,7 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import { defaultSymbolISIN } from '@/constants';
 import { useLocalstorage } from '@/hooks';
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -12,6 +13,7 @@ import SymbolInfo from './SymbolInfo';
 import Toolbar from './Toolbar';
 
 const Main = styled.main`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	padding: 0.8rem 3.2rem 2.4rem 3.2rem;
@@ -20,6 +22,8 @@ const Main = styled.main`
 `;
 
 const Saturn = () => {
+	const t = useTranslations();
+
 	const searchParams = useSearchParams();
 
 	const [baseSymbolContracts, setBaseSymbolContracts] = useState<TSaturnBaseSymbolContracts>([
@@ -57,7 +61,14 @@ const Saturn = () => {
 		);
 	}
 
-	if (!baseSymbolInfo) return null;
+	if (!baseSymbolInfo)
+		return (
+			<Main>
+				<span className='text-gray-900 absolute text-base font-medium center'>
+					{t('common.an_error_occurred')}
+				</span>
+			</Main>
+		);
 
 	return (
 		<Main>

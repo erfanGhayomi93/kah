@@ -89,6 +89,7 @@ const config: Config = {
 		},
 
 		boxShadow: {
+			none: 'none',
 			tooltip: '0px 0px 2px 0px rgba(0, 0, 0, 0.16)',
 			sm: '0px 1px 2px 0px rgba(0, 0, 0, 0.1)',
 			DEFAULT: '0px 4px 4px -1px rgba(0, 0, 0, 0.1)',
