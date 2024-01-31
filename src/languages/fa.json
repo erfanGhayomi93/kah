@@ -37,7 +37,8 @@
 		"title": "انتخاب قرارداد {symbolTitle}",
 		"contract_search_placeholder": "جستجوی قرارداد",
 		"search_contract": "نوع قرارداد",
-		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}"
+		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}",
+		"end_date": "سررسیدهای"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",

@@ -204,7 +204,6 @@ const config: Config = {
 				'.btn-primary': {
 					display: 'flex',
 					'align-items': 'center',
-					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
 					'background-color': theme('colors.primary.400'),
@@ -212,6 +211,10 @@ const config: Config = {
 
 					'&:not(:disabled):hover': {
 						'background-color': theme('colors.primary.300'),
+					},
+
+					'&:not(.justify-start,.justify-end)': {
+						'justify-content': 'center',
 					},
 
 					'&:disabled': {
