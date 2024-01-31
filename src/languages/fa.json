@@ -170,7 +170,10 @@
 		"time_value": "ارزش زمانی",
 		"required_margin": "وجه تضمین",
 		"initial_margin": "وجه تضمین اولیه",
-		"implied_volatility": "بلک شولز W-IV"
+		"implied_volatility": "IV",
+		"break_even_point": "قیمت سر به سر",
+		"leverage": "اهرم",
+		"w_implied_volatility": "بلک شولز W-IV"
 	},
 	"market_depth": {
 		"count_column": "تعداد",
