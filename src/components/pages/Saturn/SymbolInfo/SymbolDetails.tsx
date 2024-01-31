@@ -26,7 +26,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 			<div className='gap-16 flex-justify-center'>
 				<div className='gap-4 flex-items-center'>
 					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgColor}`} />
-					<span className='text-gray-1000 text-base'>
+					<span className='text-base text-gray-1000'>
 						{t('saturn_page.individual')}
 						<span className='text-tiny ltr'> {percent.toFixed(2)}%</span>
 					</span>
@@ -34,7 +34,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 
 				<div className='gap-4 flex-items-center'>
 					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgAlphaColor}`} />
-					<span className='text-gray-1000 text-base'>
+					<span className='text-base text-gray-1000'>
 						{t('saturn_page.legal')}
 						<span className='text-tiny ltr'> {(100 - percent).toFixed(2)}%</span>
 					</span>
@@ -159,10 +159,10 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	return (
 		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='gap-40 flex-column'>
 			<div className='flex-column'>
-				<div style={{ gap: '7.8rem' }} className='flex-items-center'>
+				<div style={{ gap: '7.8rem' }} className='pl-8 flex-justify-between'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-gray-1000 text-3xl font-medium'>{symbolTitle}</h1>
+						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
@@ -190,23 +190,23 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 							)}
 						>
 							{sepNumbers(String(lastTradedPrice))}
-							<span className='text-gray-900 text-base font-normal'>{t('common.rial')}</span>
+							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
 					</div>
 				</div>
 
-				<h4 className='text-gray-1000 whitespace-nowrap pr-20 text-tiny'>{companyName}</h4>
+				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
 			<SymbolSummary data={symbolDetails} />
 
-			<div className='w-full items-center gap-32 flex-justify-between'>
+			<div style={{ gap: '8.8rem' }} className='relative w-full items-center flex-justify-between'>
 				<ProgressBar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />
-				<div className='pt-16'>
+				<div className='absolute left-1/2 -translate-x-1/2 transform pt-24'>
 					<button
 						type='button'
 						style={{ minWidth: '2.4rem', minHeight: '2.4rem' }}
-						className='text-gray-1000 rounded-sm border border-gray-500 bg-gray-200 flex-justify-center'
+						className='rounded-sm border border-gray-500 bg-gray-200 text-gray-1000 flex-justify-center'
 					>
 						<InfoSVG width='1.6rem' height='1.6rem' />
 					</button>

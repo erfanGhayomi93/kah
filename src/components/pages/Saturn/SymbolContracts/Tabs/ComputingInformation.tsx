@@ -2,7 +2,6 @@ import { useOptionCalculativeInfoQuery } from '@/api/queries/optionQueries';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -27,6 +26,7 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				leverage,
 				delta,
 				historicalVolatility,
+				impliedVolatility,
 				theta,
 				intrinsicValue,
 				gamma,
@@ -43,33 +43,20 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'breakEvenPoint',
-						title: t('option_chain.trade_volume'),
+						title: t('option_chain.break_even_point'),
 						valueFormatter: numFormatter(breakEvenPoint),
 					},
 					{
-						id: 'closingPrice',
-						title: t('option_chain.closing_price'),
-						valueFormatter: (
-							<span
-								className={clsx(
-									'gap-4 flex-items-center',
-									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
-								)}
-							>
-								{sepNumbers(String(closingPrice))}
-								<span className='text-tiny ltr'>
-									{closingPriceVarReferencePrice} (
-									{(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
-								</span>
-							</span>
-						),
+						id: 'impliedVolatility',
+						title: t('option_chain.implied_volatility'),
+						valueFormatter: sepNumbers(impliedVolatility.toFixed(2)),
 					},
 				],
 
 				[
 					{
 						id: 'leverage',
-						title: t('option_chain.trade_value'),
+						title: t('option_chain.leverage'),
 						valueFormatter: numFormatter(leverage),
 					},
 					{
@@ -86,8 +73,8 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 						valueFormatter: delta.toFixed(3),
 					},
 					{
-						id: 'impliedVolatility',
-						title: t('option_chain.implied_volatility'),
+						id: 'w_implied_volatility',
+						title: t('option_chain.w_implied_volatility'),
 						valueFormatter: sepNumbers(intrinsicValue.toFixed(3)),
 					},
 				],
