@@ -18,6 +18,7 @@ import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
+import InfoSVG from './info.svg';
 import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
@@ -51,6 +52,7 @@ export {
 	FilterSVG,
 	GrowDownSVG,
 	GrowUpSVG,
+	InfoSVG,
 	LogoutSVG,
 	ManageSVG,
 	MoreOptionsSVG,

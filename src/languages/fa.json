@@ -148,9 +148,19 @@
 		"buy_contracts": "قراردادهای خرید",
 		"sell_contracts": "قراردادهای فروش"
 	},
+	"market_depth": {
+		"count_column": "تعداد",
+		"quantity_column": "حجم",
+		"price_column": "قیمت"
+	},
 	"saturn": {
 		"click_to_add_contract": "برای <add>افزودن</add> قرارداد {symbolTitle} کلیک کنید",
-		"save": "ذخیره"
+		"save": "ذخیره",
+		"individual": "حقیقی",
+		"legal": "حقوقی",
+		"market_depth": "عمق بازار",
+		"chart": "نمودار",
+		"my_asset": "دارایی من"
 	},
 	"alerts": {
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."
