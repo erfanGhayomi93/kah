@@ -3,18 +3,24 @@ import Contract from './Contract';
 interface SymbolContractsProps {
 	baseSymbol: Symbol.Info;
 	baseSymbolContracts: TSaturnBaseSymbolContracts;
-	onChange: (value: TSaturnBaseSymbolContracts) => void;
+	setBaseSymbol: (value: string) => void;
+	setBaseSymbolContracts: (value: TSaturnBaseSymbolContracts) => void;
 }
 
-const SymbolContracts = ({ baseSymbol, baseSymbolContracts, onChange }: SymbolContractsProps) => {
-	const onChangeContract = (index: number, symbol: string | null) => {
+const SymbolContracts = ({
+	baseSymbol,
+	baseSymbolContracts,
+	setBaseSymbol,
+	setBaseSymbolContracts,
+}: SymbolContractsProps) => {
+	const onLoadContract = (contract: Symbol.Info) => {
 		try {
-			if (index > 3) return;
+			if (!contract.baseSymbolISIN) return;
 
-			const symbols: TSaturnBaseSymbolContracts = [...baseSymbolContracts];
-			symbols[index] = symbol;
+			if (contract.baseSymbolISIN === baseSymbol.symbolISIN) return;
 
-			onChange(symbols);
+			setBaseSymbol(contract.baseSymbolISIN);
+			setBaseSymbolContracts([contract.symbolISIN, null, null, null]);
 		} catch (e) {
 			//
 		}
@@ -26,8 +32,8 @@ const SymbolContracts = ({ baseSymbol, baseSymbolContracts, onChange }: SymbolCo
 				<Contract
 					key={index}
 					symbolISIN={symbolISIN}
-					onChange={(value) => onChangeContract(index, value)}
 					baseSymbol={baseSymbol}
+					onLoadContract={(baseSymbolISIN) => onLoadContract(baseSymbolISIN)}
 				/>
 			))}
 		</div>

@@ -563,7 +563,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	return (
 		<div
 			style={{
-				height: 'calc(100vh - 18.8rem)',
+				height: 'calc(100vh - 18rem)',
 			}}
 			className='relative'
 		>
