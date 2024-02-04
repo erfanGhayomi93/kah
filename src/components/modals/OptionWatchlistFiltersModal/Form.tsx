@@ -23,7 +23,7 @@ export const initialFilters: IOptionWatchlistFilters = {
 	symbols: [],
 	type: [],
 	status: [],
-	endDate: [0, 365],
+	dueDays: [0, 365],
 	delta: [-1, 1],
 	minimumTradesValue: '',
 };
@@ -39,7 +39,7 @@ const Form = () => {
 		symbols: initialModalFilters.initialSymbols ?? initialFilters.symbols,
 		type: initialModalFilters.initialType ?? initialFilters.type,
 		status: initialModalFilters.initialStatus ?? initialFilters.status,
-		endDate: initialModalFilters.initialEndDate ?? initialFilters.endDate,
+		dueDays: initialModalFilters.initialDueDays ?? initialFilters.dueDays,
 		delta: initialModalFilters.initialDelta ?? initialFilters.delta,
 		minimumTradesValue: initialModalFilters.initialMinimumTradesValue ?? initialFilters.minimumTradesValue,
 	});
@@ -109,8 +109,8 @@ const Form = () => {
 						</span>
 						<InputWrapper>
 							<EndDateInput
-								value={filters.endDate}
-								onChange={(value) => setFilterValue('endDate', value)}
+								value={filters.dueDays}
+								onChange={(value) => setFilterValue('dueDays', value)}
 							/>
 						</InputWrapper>
 					</li>

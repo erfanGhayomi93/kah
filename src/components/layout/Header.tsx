@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import Portal from '../common/Portal';
+import Popup from '../common/Popup';
 import { ArrowDownSVG, EditSVG, LogoutSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '../icons';
 
 const getStates = createSelector(
@@ -104,7 +104,7 @@ const Header = () => {
 			</nav>
 
 			{isLoggedIn ? (
-				<Portal
+				<Popup
 					margin={{
 						y: 24,
 					}}
@@ -200,7 +200,7 @@ const Header = () => {
 							<ArrowDownSVG width='1rem' height='1rem' className='text-gray-1000' />
 						</button>
 					)}
-				</Portal>
+				</Popup>
 			) : (
 				<button
 					onClick={showAuthenticationModal}

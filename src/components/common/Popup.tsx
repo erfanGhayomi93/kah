@@ -7,7 +7,7 @@ interface IChildrenProps {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface PortalProps {
+interface PopupProps {
 	children: (props: IChildrenProps) => React.ReactElement;
 	renderer: (props: IChildrenProps) => React.ReactElement;
 	onClose?: () => void;
@@ -23,7 +23,7 @@ interface PortalProps {
 	dependency?: string;
 }
 
-const Portal = ({
+const Popup = ({
 	children,
 	renderer,
 	onClose,
@@ -37,7 +37,7 @@ const Portal = ({
 	disabled,
 	margin,
 	zIndex,
-}: PortalProps) => {
+}: PopupProps) => {
 	const childRef = useRef<HTMLElement>(null);
 
 	const popupRef = useRef<HTMLElement | null>(null);
@@ -154,4 +154,4 @@ const Portal = ({
 	);
 };
 
-export default Portal;
+export default Popup;

@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
+import CellContractTitleRenderer from './CellContractTitleRenderer';
 import Filters from './Filters';
 
 interface SymbolContractsProps extends IContractSelectorModal {}
@@ -85,7 +86,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 				headerName: 'نماد',
 				colId: 'symbolTitle-buy',
 				minWidth: 104,
-				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
+				cellRenderer: CellContractTitleRenderer,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
 
@@ -101,15 +102,15 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 				colId: 'iotm-buy',
 				minWidth: 80,
 				cellClass: ({ value }) => {
-					switch (value?.toLowerCase()) {
-						case 'atm':
-							return 'text-lg text-success-100';
-						case 'otm':
-							return 'text-lg text-error-100';
+					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-lg text-primary-100';
+							return 'text-success-100';
+						case 'otm':
+							return 'text-error-100';
+						case 'atm':
+							return 'text-secondary-300';
 						default:
-							return '−';
+							return '';
 					}
 				},
 				valueGetter: ({ data }) => data!.optionWatchlistData.iotm,

@@ -43,6 +43,13 @@ const routes = {
 		Logout: `${oauthUrl}/OAuthAPI/v1/Logout`,
 		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
 	},
+
+	saturn: {
+		GetAllSaturns: `${rlcUrl}/Saturn/v1/GetAllSaturns`,
+		GetSaturn: `${rlcUrl}/Saturn/v1/GetSaturn`,
+		Save: `${rlcUrl}/Saturn/v1/Save`,
+		Pin: `${rlcUrl}/Saturn/v1/Pin`,
+	},
 };
 
 export default routes;

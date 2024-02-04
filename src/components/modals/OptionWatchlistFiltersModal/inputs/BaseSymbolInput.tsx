@@ -1,5 +1,5 @@
 import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
-import Portal from '@/components/common/Portal';
+import Popup from '@/components/common/Popup';
 import { CheckSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
 import { findStringIn } from '@/utils/helpers';
@@ -95,7 +95,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	}, [values]);
 
 	return (
-		<Portal
+		<Popup
 			zIndex={9999}
 			onClose={() => {
 				setOnlyShowTags(false);
@@ -279,7 +279,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					)}
 				</div>
 			)}
-		</Portal>
+		</Popup>
 	);
 };
 

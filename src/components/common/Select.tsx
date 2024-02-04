@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { ArrowDownSVG } from '../icons';
-import Portal from './Portal';
+import Popup from './Popup';
 import styles from './Select.module.scss';
 
 export interface TSelectOptions {
@@ -31,7 +31,7 @@ const Select = ({ value, options, classes, placeholder, clearable, defaultOpen, 
 	const [focusing, setFocusing] = useState(false);
 
 	return (
-		<Portal
+		<Popup
 			zIndex={9999}
 			defaultOpen={defaultOpen}
 			renderer={({ setOpen }) => (
@@ -80,7 +80,7 @@ const Select = ({ value, options, classes, placeholder, clearable, defaultOpen, 
 					/>
 				</div>
 			)}
-		</Portal>
+		</Popup>
 	);
 };
 

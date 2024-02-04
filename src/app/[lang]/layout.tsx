@@ -1,5 +1,6 @@
 import '@/assets/styles/app.scss';
 import '@/assets/styles/libs.scss';
+import LightstreamProvider from '@/components/common/LightstreamProvider';
 import NextIntlClientRegistry from '@/components/common/NextIntlClientRegistry';
 import QueryClientRegistry from '@/components/common/QueryClientRegistry';
 import ReduxToolkitRegistry from '@/components/common/ReduxToolkitRegistry';
@@ -25,10 +26,12 @@ const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) 
 					<StyledComponentsRegistry>
 						<QueryClientRegistry>
 							<ReduxToolkitRegistry>
-								<WatchlistColumnsProvider>
-									<Wrapper>{children}</Wrapper>
-									<Modals />
-								</WatchlistColumnsProvider>
+								<LightstreamProvider>
+									<WatchlistColumnsProvider>
+										<Wrapper>{children}</Wrapper>
+										<Modals />
+									</WatchlistColumnsProvider>
+								</LightstreamProvider>
 							</ReduxToolkitRegistry>
 						</QueryClientRegistry>
 					</StyledComponentsRegistry>

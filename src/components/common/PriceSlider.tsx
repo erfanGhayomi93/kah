@@ -103,15 +103,18 @@ const PriceSlider = ({ min, max, step = 1, value, labels, onChange }: PriceSlide
 					fill='rgb(0, 87, 255)'
 				/>
 
-				<circle
-					ref={circleFromRef}
-					cx='0px'
-					cy='50%'
-					r={CR}
-					fill='rgb(0, 87, 255)'
-					className='cursor-pointer'
-					onMouseDown={(e) => onMouseDown(e, 0)}
-				/>
+				<g filter='url(#filter0_d_2869_12594)'>
+					<circle
+						ref={circleFromRef}
+						cx='0px'
+						cy='50%'
+						r={CR}
+						fill='rgb(0, 87, 255)'
+						className='cursor-pointer'
+						onMouseDown={(e) => onMouseDown(e, 0)}
+					/>
+				</g>
+
 				<circle
 					ref={circleToRef}
 					cx='0px'
