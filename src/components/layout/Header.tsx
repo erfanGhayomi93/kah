@@ -93,7 +93,7 @@ const Header = () => {
 									'p-8 text-lg transition-colors',
 									pathname === item.href
 										? 'font-bold text-primary-400'
-										: 'text-gray-1000 font-medium hover:text-primary-400',
+										: 'font-medium text-gray-1000 hover:text-primary-400',
 								)}
 							>
 								{item.title}
@@ -108,7 +108,10 @@ const Header = () => {
 					margin={{
 						y: 24,
 					}}
+					dependency='.modal__logout'
 					defaultPopupWidth={296}
+					onOpen={() => setIsDropdownOpened(true)}
+					onClose={() => setIsDropdownOpened(false)}
 					renderer={({ setOpen }) => (
 						<div className='rounded-md bg-white py-16 shadow-tooltip'>
 							<div className='flex h-40 items-start justify-between px-16'>
@@ -116,7 +119,7 @@ const Header = () => {
 									<Picture />
 
 									<div className='gap-4 flex-column'>
-										<h3 className='text-gray-1000 text-base font-medium'>{t('header.app_user')}</h3>
+										<h3 className='text-base font-medium text-gray-1000'>{t('header.app_user')}</h3>
 										<span className='text-tiny text-gray-700'>{userData?.mobile}</span>
 									</div>
 								</div>
@@ -145,7 +148,7 @@ const Header = () => {
 									<li>
 										<button
 											type='button'
-											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
 											<UserCircleSVG className='text-gray-900' width='1.8rem' height='1.8rem' />
 											<span>{t('header.user_account')}</span>
@@ -154,7 +157,7 @@ const Header = () => {
 									<li>
 										<button
 											type='button'
-											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
 											<SessionHistorySVG
 												className='text-gray-900'
@@ -167,7 +170,7 @@ const Header = () => {
 									<li>
 										<button
 											type='button'
-											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
 											<SettingSVG className='text-gray-900' width='1.6rem' height='1.6rem' />
 											<span>{t('header.setting')}</span>
@@ -180,7 +183,7 @@ const Header = () => {
 										<button
 											onClick={onLogout}
 											type='button'
-											className='text-gray-1000 h-40 w-full gap-12 rounded px-12 transition-colors flex-justify-start hover:bg-secondary-100'
+											className='h-40 w-full gap-12 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 										>
 											<LogoutSVG className='text-gray-900' width='1.6rem' height='1.6rem' />
 											<span>{t('header.logout')}</span>
@@ -190,8 +193,6 @@ const Header = () => {
 							</nav>
 						</div>
 					)}
-					onOpen={() => setIsDropdownOpened(true)}
-					onClose={() => setIsDropdownOpened(false)}
 				>
 					{({ setOpen, open }) => (
 						<button onClick={() => setOpen(!open)} className='gap-8 flex-items-center'>
