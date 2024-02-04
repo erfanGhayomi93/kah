@@ -7,6 +7,22 @@ const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' :
 const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
+	time: `${rlcUrl}/Time/v1/Time`,
+
+	authentication: {
+		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
+		ForgetPasswordFirstStep: `${oauthUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
+		SignUp: `${oauthUrl}/OAuthAPI/v1/SignUp`,
+		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
+		PasswordLogin: `${oauthUrl}/OAuthAPI/v1/PasswordLogin`,
+		ChangePassword: `${oauthUrl}/OAuthAPI/v1/ChangePassword`,
+		ValidateForgetPasswordOtp: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOtp`,
+		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
+		SendPasslessOTP: `${oauthUrl}/OAuthAPI/v1/SendPasslessOTP`,
+		Logout: `${oauthUrl}/OAuthAPI/v1/Logout`,
+		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
+	},
+
 	symbol: {
 		SymbolInfo: `${rlcUrl}/Symbol/v1/SymbolInfo`,
 		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
@@ -28,20 +44,6 @@ const routes = {
 		DefaultOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/DefaultOptionSymbolColumns`,
 		ResetOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/ResetOptionSymbolColumns`,
 		UpdateOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/UpdateOptionSymbolColumns`,
-	},
-
-	authentication: {
-		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
-		ForgetPasswordFirstStep: `${oauthUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
-		SignUp: `${oauthUrl}/OAuthAPI/v1/SignUp`,
-		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
-		PasswordLogin: `${oauthUrl}/OAuthAPI/v1/PasswordLogin`,
-		ChangePassword: `${oauthUrl}/OAuthAPI/v1/ChangePassword`,
-		ValidateForgetPasswordOtp: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOtp`,
-		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
-		SendPasslessOTP: `${oauthUrl}/OAuthAPI/v1/SendPasslessOTP`,
-		Logout: `${oauthUrl}/OAuthAPI/v1/Logout`,
-		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
 	},
 
 	saturn: {
