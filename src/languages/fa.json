@@ -38,7 +38,8 @@
 		"contract_search_placeholder": "جستجوی قرارداد",
 		"search_contract": "نوع قرارداد",
 		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}",
-		"end_date": "سررسیدهای"
+		"end_date": "سررسیدهای",
+		"select_contract_from_list": "از لیست سمت راست یک سررسید انتخاب کنید!"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",

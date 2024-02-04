@@ -137,7 +137,7 @@ const Portal = ({
 					<div
 						ref={onPortalLoad}
 						style={{
-							position: 'absolute',
+							position: 'fixed',
 							zIndex: zIndex ?? 99,
 							display: 'none',
 							animation: `${animation} ease-in-out 250ms 1 alternate forwards`,
