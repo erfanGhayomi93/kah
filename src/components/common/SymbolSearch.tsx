@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { SearchSVG } from '../icons';
-import Portal from './Portal';
+import Popup from './Popup';
 import styles from './SymbolSearch.module.scss';
 
 type ValueType = Symbol.Search | null;
@@ -42,7 +42,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 	};
 
 	return (
-		<Portal
+		<Popup
 			margin={{
 				y: 4,
 			}}
@@ -107,7 +107,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 					/>
 				</label>
 			)}
-		</Portal>
+		</Popup>
 	);
 };
 

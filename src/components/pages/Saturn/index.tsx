@@ -3,24 +3,15 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
+import Main from '@/components/layout/Main';
 import { defaultSymbolISIN } from '@/constants';
 import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
-import styled from 'styled-components';
 import SymbolContracts from './SymbolContracts/SymbolContracts';
 import SymbolInfo from './SymbolInfo';
 import Toolbar from './Toolbar';
-
-const Main = styled.main`
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	padding: 0.8rem 3.2rem 2.4rem 3.2rem;
-	gap: 0.8rem;
-	min-height: calc(100% - 10rem);
-`;
 
 const Saturn = () => {
 	const t = useTranslations();
@@ -55,6 +46,35 @@ const Saturn = () => {
 		} catch (e) {
 			//
 		}
+	};
+
+	const onChangeSymbol = (symbol: Symbol.Search | null) => {
+		if (!symbol) return;
+
+		const { isOption, symbolISIN } = symbol;
+
+		if (!isOption) {
+			if (selectedSymbol !== symbolISIN) {
+				setSelectedSymbol(symbolISIN);
+				setBaseSymbolContracts([null, null, null, null]);
+			}
+
+			return;
+		}
+
+		const contracts = [...baseSymbolContracts];
+
+		if (contracts.includes(symbolISIN)) return;
+
+		const blankContract = contracts.findIndex((con) => con === null);
+		if (blankContract > -1) {
+			contracts[blankContract] = symbolISIN;
+		} else {
+			contracts.shift();
+			contracts.unshift(symbolISIN);
+		}
+
+		setBaseSymbolContracts(contracts);
 	};
 
 	useLayoutEffect(() => {
@@ -98,13 +118,14 @@ const Saturn = () => {
 		);
 
 	return (
-		<Main>
-			<Toolbar onChangeBaseSymbol={(value) => setSelectedSymbol(value)} />
+		<Main className='gap-8'>
+			<Toolbar setSymbol={onChangeSymbol} />
 			<SymbolInfo symbol={baseSymbolInfo} />
 			<SymbolContracts
 				baseSymbol={baseSymbolInfo}
 				baseSymbolContracts={baseSymbolContracts}
-				onChange={(value) => setBaseSymbolContracts(value)}
+				setBaseSymbol={(value) => setSelectedSymbol(value)}
+				setBaseSymbolContracts={(value) => setBaseSymbolContracts(value)}
 			/>
 		</Main>
 	);

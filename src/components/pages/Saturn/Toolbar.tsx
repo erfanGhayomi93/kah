@@ -4,17 +4,17 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface ToolbarProps {
-	onChangeBaseSymbol: (value: string) => void;
+	setSymbol: (symbol: Symbol.Search | null) => void;
 }
 
-const Toolbar = ({ onChangeBaseSymbol }: ToolbarProps) => {
+const Toolbar = ({ setSymbol }: ToolbarProps) => {
 	const t = useTranslations();
 
 	const [symbol] = useState<Symbol.Search | null>(null);
 
 	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (!value) return;
-		onChangeBaseSymbol(value.symbolISIN);
+		setSymbol(value);
 	};
 
 	return (

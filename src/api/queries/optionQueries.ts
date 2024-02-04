@@ -41,13 +41,13 @@ export const useOptionWatchlistQuery = createQuery<
 			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
 
 			if (props.endDate && props.endDate[1] >= props.endDate[0]) {
-				if (props.endDate[0]) params.FromContractEndDate = String(props.endDate[0]);
-				if (props.endDate[1]) params.ToContractEndDate = String(props.endDate[1]);
+				if (props.endDate[0] > 0) params.FromContractEndDate = String(props.endDate[0]);
+				if (props.endDate[1] < 365) params.ToContractEndDate = String(props.endDate[1]);
 			}
 
 			if (props.delta && props.delta[1] >= props.delta[0]) {
-				params.FromDelta = String(props.delta[0]);
-				params.ToDelta = String(props.delta[1]);
+				if (props.delta[0] > -1) params.FromDelta = String(props.delta[0]);
+				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
 			}
 
 			const response = await axios.get<PaginationResponse<Option.Root[]>>(routes.optionWatchlist.Watchlist, {
