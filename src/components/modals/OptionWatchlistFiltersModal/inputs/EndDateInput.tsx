@@ -1,8 +1,8 @@
 import PriceSlider from '@/components/common/PriceSlider';
 
 interface EndDateInputProps {
-	value: IOptionWatchlistFilters['endDate'];
-	onChange: (value: IOptionWatchlistFilters['endDate']) => void;
+	value: IOptionWatchlistFilters['dueDays'];
+	onChange: (value: IOptionWatchlistFilters['dueDays']) => void;
 }
 
 const EndDateInput = ({ value: [fromEndDate, toEndDate], onChange }: EndDateInputProps) => {

@@ -18,7 +18,7 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		if (filters.symbols) params.initialSymbols = filters.symbols;
 		if (filters.type) params.initialType = filters.type;
 		if (filters.status) params.initialStatus = filters.status;
-		if (filters.endDate) params.initialEndDate = filters.endDate;
+		if (filters.dueDays) params.initialDueDays = filters.dueDays;
 		if (filters.delta) params.initialDelta = filters.delta;
 		if (filters.minimumTradesValue) params.initialMinimumTradesValue = filters.minimumTradesValue;
 
@@ -40,9 +40,9 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 
 		if (Array.isArray(filters.status) && filters.status.length > 0) badgeCount++;
 
-		if (filters.endDate) {
-			if (filters.endDate[0] > 0) badgeCount++;
-			if (filters.endDate[1] < 365) badgeCount++;
+		if (filters.dueDays) {
+			if (filters.dueDays[0] > 0) badgeCount++;
+			if (filters.dueDays[1] < 365) badgeCount++;
 		}
 
 		if (filters.delta) {
