@@ -49,23 +49,29 @@ const LogoutModal = () => {
 	};
 
 	return (
-		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+		<Modal
+			transparent
+			classes={{ root: 'modal__logout' }}
+			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			top='50%'
+			onClose={onCloseModal}
+		>
 			<Div className='bg-white shadow-tooltip'>
 				{loading ? (
 					<div className='spinner size-32' />
 				) : (
 					<>
-						<h2 className='text-gray-1000 text-center text-lg font-medium'>{t('logout_modal.title')}</h2>
+						<h2 className='text-center text-lg font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
 
 						<div className='pb-40 pt-32 text-center'>
-							<p className='text-gray-1000 text-base'>{t('logout_modal.description')}</p>
+							<p className='text-base text-gray-1000'>{t('logout_modal.description')}</p>
 						</div>
 
 						<div className='flex w-full justify-between gap-8 px-16'>
 							<button
 								onClick={onCloseModal}
 								type='button'
-								className='text-gray-800 h-40 flex-1 rounded border border-gray-500 text-base flex-justify-center'
+								className='h-40 flex-1 rounded border border-gray-500 text-base text-gray-800 flex-justify-center'
 							>
 								{t('common.cancel')}
 							</button>
