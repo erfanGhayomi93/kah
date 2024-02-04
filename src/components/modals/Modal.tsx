@@ -60,6 +60,18 @@ const Modal = ({ portalElement, transparent, children, style, classes, size, top
 		return () => controller.abort();
 	}, []);
 
+	useEffect(() => {
+		try {
+			document.body.style.overflow = 'hidden';
+
+			return () => {
+				document.body.style.overflow = '';
+			};
+		} catch (e) {
+			//
+		}
+	}, []);
+
 	return createPortal(
 		<div
 			ref={rootRef}

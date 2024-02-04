@@ -20,14 +20,14 @@ const OptionWatchlistFiltersModal = () => {
 	};
 
 	return (
-		<Modal classes={{ modal: 'rounded-md shadow-section' }} transparent top='9.37%' onClose={onClose}>
+		<Modal classes={{ modal: 'rounded-md shadow-section' }} transparent top='14%' onClose={onClose}>
 			<Div className='gap-24 bg-white px-24 pb-24 pt-16 flex-column'>
 				<div className='flex-justify-center'>
-					<h1 className='text-gray-1000 text-center text-2xl font-bold'>
+					<h1 className='text-center text-2xl font-bold text-gray-1000'>
 						{t('option_watchlist_filters_modal.title')}
 					</h1>
 
-					<button onClick={onClose} type='button' className='text-gray-1000 absolute left-24 z-10'>
+					<button onClick={onClose} type='button' className='absolute left-24 z-10 text-gray-1000'>
 						<XSVG />
 					</button>
 				</div>
