@@ -1,7 +1,10 @@
 import { useAppSelector } from '@/features/hooks';
 import { getLsStatus } from '@/features/slices/uiSlice';
+import { useServerDatetime } from '@/hooks';
+import dayjs from '@/libs/dayjs';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
 const WifiSVG = ({ full }: { full: boolean }) => (
 	<svg width='2.4rem' height='2.4rem' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -27,15 +30,21 @@ const WifiSVG = ({ full }: { full: boolean }) => (
 const Footer = () => {
 	const t = useTranslations();
 
+	const { timestamp } = useServerDatetime();
+
 	const lsStatus = useAppSelector(getLsStatus);
 
+	const [serverTime, serverDate] = useMemo(() => {
+		return dayjs(timestamp).calendar('jalali').format('HH:mm:ss YYYY/MM/DD').split(' ');
+	}, [timestamp]);
+
 	return (
-		<footer className='h-40 border-t border-gray-600 bg-gray-200 px-32 flex-justify-between'>
+		<footer className='h-40 border-t border-gray-600 bg-gray-200 pr-32 flex-justify-between'>
 			<div className='h-full pb-4 flex-justify-start'>
 				<span className='text-tiny font-normal text-gray-1000'>{t('footer.copyright')}</span>
 			</div>
 
-			<div className='h-full flex-justify-end'>
+			<div className='h-full gap-32 flex-justify-end'>
 				<span
 					className={clsx(
 						'flex items-center gap-8 pb-4 transition-colors',
@@ -48,6 +57,15 @@ const Footer = () => {
 				>
 					<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />
 				</span>
+
+				<div className='h-full gap-8 border-r border-gray-600 px-32 ltr flex-justify-center'>
+					<span style={{ fontSize: '1.3rem', width: '4.4rem' }} className='text-left text-gray-900'>
+						{serverTime}
+					</span>
+					<span style={{ fontSize: '1.3rem', width: '5.6rem' }} className='text-right text-gray-900'>
+						{serverDate}
+					</span>
+				</div>
 			</div>
 		</footer>
 	);
