@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
 import BaseSymbolInput from './inputs/BaseSymbolInput';
-import ContractSizeInput from './inputs/ContractSizeInput';
 import DeltaInput from './inputs/DeltaInput';
 import EndDateInput from './inputs/EndDateInput';
 import MinimumTradesValueInput from './inputs/MinimumTradesValueInput';
@@ -24,9 +23,8 @@ export const initialFilters: IOptionWatchlistFilters = {
 	symbols: [],
 	type: [],
 	status: [],
-	endDate: [null, null],
-	contractSize: ['', ''],
-	delta: ['', ''],
+	endDate: [0, 365],
+	delta: [-1, 1],
 	minimumTradesValue: '',
 };
 
@@ -42,7 +40,6 @@ const Form = () => {
 		type: initialModalFilters.initialType ?? initialFilters.type,
 		status: initialModalFilters.initialStatus ?? initialFilters.status,
 		endDate: initialModalFilters.initialEndDate ?? initialFilters.endDate,
-		contractSize: initialModalFilters.initialContractSize ?? initialFilters.contractSize,
 		delta: initialModalFilters.initialDelta ?? initialFilters.delta,
 		minimumTradesValue: initialModalFilters.initialMinimumTradesValue ?? initialFilters.minimumTradesValue,
 	});
@@ -114,17 +111,6 @@ const Form = () => {
 							<EndDateInput
 								value={filters.endDate}
 								onChange={(value) => setFilterValue('endDate', value)}
-							/>
-						</InputWrapper>
-					</li>
-					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-1000'>
-							{t('option_watchlist_filters_modal.contract_size')}:
-						</span>
-						<InputWrapper>
-							<ContractSizeInput
-								value={filters.contractSize}
-								onChange={(value) => setFilterValue('contractSize', value)}
 							/>
 						</InputWrapper>
 					</li>
