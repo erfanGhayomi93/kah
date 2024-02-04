@@ -20,6 +20,7 @@ interface PortalProps {
 	defaultPopupWidth?: number;
 	className?: ClassesValue;
 	animation?: string;
+	dependency?: string;
 }
 
 const Portal = ({
@@ -27,6 +28,7 @@ const Portal = ({
 	renderer,
 	onClose,
 	onOpen,
+	dependency,
 	portalElement,
 	animation = 'slideDown',
 	defaultOpen,
@@ -55,7 +57,8 @@ const Portal = ({
 				eChild.isEqualNode(eTarget) ||
 				eChild.contains(eTarget) ||
 				ePopup.isEqualNode(eTarget) ||
-				ePopup.contains(eTarget)
+				ePopup.contains(eTarget) ||
+				(dependency && eTarget.closest(dependency))
 			)
 				return;
 
