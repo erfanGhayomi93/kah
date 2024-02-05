@@ -98,6 +98,9 @@ const ManageWatchlistColumns = () => {
 	};
 
 	const onDocumentClick = (e: MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
 		const eTarget = e.target as HTMLDivElement;
 		const eWrapper = wrapperRef.current;
 		if (!eWrapper || !eTarget) return;
@@ -135,6 +138,7 @@ const ManageWatchlistColumns = () => {
 		controllerRef.current = new AbortController();
 		document.addEventListener('click', onDocumentClick, {
 			signal: controllerRef.current.signal,
+			capture: true,
 		});
 	}, [wrapperRef.current, rendered]);
 
@@ -155,7 +159,7 @@ const ManageWatchlistColumns = () => {
 		<Wrapper $enabled={Number(isEnable)} ref={wrapperRef} className='overflow-auto bg-white'>
 			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
-					<h1 className='text-gray-1000 text-2xl font-bold'>{t('manage_option_watchlist_columns.title')}</h1>
+					<h1 className='text-2xl font-bold text-gray-1000'>{t('manage_option_watchlist_columns.title')}</h1>
 
 					<div className='flex gap-24'>
 						<button className='text-gray-1000' type='button' onClick={onRefresh}>
@@ -180,7 +184,7 @@ const ManageWatchlistColumns = () => {
 							categoryIndex < 2 && 'border-b border-b-gray-400',
 						)}
 					>
-						<h2 className='text-gray-1000 text-lg font-medium'>
+						<h2 className='text-lg font-medium text-gray-1000'>
 							{t(`manage_option_watchlist_columns.${category}`)}
 						</h2>
 
@@ -192,7 +196,7 @@ const ManageWatchlistColumns = () => {
 									key={column.id}
 									className={clsx(
 										column.isHidden
-											? 'text-gray-900 hover:shadow-none bg-white shadow-sm hover:bg-primary-100'
+											? 'bg-white text-gray-900 shadow-sm hover:bg-primary-100 hover:shadow-none'
 											: 'bg-primary-400 text-white hover:bg-primary-300',
 									)}
 								>
