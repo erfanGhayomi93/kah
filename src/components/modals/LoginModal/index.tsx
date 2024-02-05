@@ -23,7 +23,7 @@ const LoginModal = () => {
 
 	const [stage, setStage] = useState<TLoginModalStates>('phoneNumber');
 
-	const [toast, setToast] = useState<{ type: TLoginModalStates | null; message: string }>({
+	const [, setToast] = useState<{ type: TLoginModalStates | null; message: string }>({
 		type: null,
 		message: '',
 	});
