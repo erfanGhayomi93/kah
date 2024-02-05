@@ -20,11 +20,11 @@ const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) 
 		);
 	};
 
-	const valueFormatter = (value: number) => value.toFixed(2);
+	const valueFormatter = (value: number) => value.toFixed(3);
 
 	return (
 		<PriceSlider
-			step={0.05}
+			step={0.025}
 			min={-1}
 			max={1}
 			onChange={onChangeSlider}
