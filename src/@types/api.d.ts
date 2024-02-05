@@ -369,3 +369,30 @@ declare namespace User {
 		saveDate: string;
 	}
 }
+
+declare namespace Saturn {
+	interface All {
+		id: number;
+		name: string;
+		baseSymbolISIN: string;
+		baseActiveTab: string;
+		saturnDetails: Contract[];
+	}
+
+	interface Contract {
+		detailId: number;
+		optionSymbolISIN: string;
+		order: number;
+		activeTab: string;
+		saturnId: number;
+	}
+
+	interface Single {
+		id: number;
+		name: string;
+		mobile: string;
+		optionSymbolTitles: string;
+		baseSymbolTitle: string;
+		isPinned: boolean;
+	}
+}
