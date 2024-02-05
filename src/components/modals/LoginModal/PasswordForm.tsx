@@ -35,7 +35,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? -1);
+	const [, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? -1);
 
 	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 

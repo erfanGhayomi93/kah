@@ -1,20 +1,20 @@
-import { LightstreamerClient, Subscription, SubscriptionListener } from 'lightstreamer-client-web';
-import { SubscriptionOptions } from './lightstream.d';
+import { Subscription, type LightstreamerClient, type SubscriptionListener } from 'lightstreamer-client-web';
+import { type SubscriptionOptions } from './lightstream.d';
 
 class Subscribe {
-	private connection: LightstreamerClient;
+	private readonly connection: LightstreamerClient;
 	public subscribe: Subscription;
 	public fields: string[];
 	public items: string[];
 
-	private _options: SubscriptionOptions;
+	private readonly _options: SubscriptionOptions;
 	private _handlers: SubscriptionListener = {};
 
 	constructor(connection: LightstreamerClient, options: SubscriptionOptions) {
 		this.connection = connection;
 
-		this.fields = ('fields' in options) ? options.fields : [];
-		this.items = ('items' in options) ? options.items : [];
+		this.fields = 'fields' in options ? options.fields : [];
+		this.items = 'items' in options ? options.items : [];
 		this._options = options;
 
 		/* Initial setup */
@@ -24,7 +24,7 @@ class Subscribe {
 	addEventListener<T extends keyof SubscriptionListener>(channel: T, listener: SubscriptionListener[T]) {
 		this._handlers = {
 			...this._handlers,
-			[channel]: listener
+			[channel]: listener,
 		};
 
 		return this;
@@ -92,7 +92,8 @@ class Subscribe {
 			this.subscribe.setItems(this.items.filter(Boolean));
 			this.subscribe.setFields(this.fields);
 			this.subscribe.setDataAdapter(this._options.dataAdapter);
-			if (this._options.mode === 'MERGE') this.subscribe.setRequestedSnapshot(this._options.snapshot ? 'yes' : 'no');
+			if (this._options.mode === 'MERGE')
+				this.subscribe.setRequestedSnapshot(this._options.snapshot ? 'yes' : 'no');
 
 			this.subscribe.addListener(this._handlers);
 		} catch (e) {
