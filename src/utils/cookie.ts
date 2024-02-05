@@ -41,3 +41,11 @@ export const setCookie = (name: string, value: string, options?: ICookieOptions)
 export const deleteCookie = (name: string) => {
 	document.cookie = `${name}=;path=/;expires=-1`;
 };
+
+// Client ID
+export const getClientId = () => getCookie('kahkeshan_client_id');
+
+export const setClientId = (value: string, options?: ICookieOptions) =>
+	setCookie('kahkeshan_client_id', value, { maxAgeInSeconds: 86400 });
+
+export const deleteClientId = () => deleteCookie('kahkeshan_client_id');

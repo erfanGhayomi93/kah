@@ -3,7 +3,7 @@ import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLogoutModal } from '@/features/slices/modalSlice';
 import { setIsLoggedIn } from '@/features/slices/userSlice';
-import { deleteCookie } from '@/utils/cookie';
+import { deleteClientId } from '@/utils/cookie';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -32,7 +32,7 @@ const LogoutModal = () => {
 	};
 
 	const onLoggedOut = async () => {
-		deleteCookie(process.env.APP_TOKEN_NAME!);
+		deleteClientId();
 		dispatch(setIsLoggedIn(false));
 		onCloseModal();
 	};
