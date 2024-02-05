@@ -15,7 +15,7 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 	};
 
 	return (
-		<div className='flex flex-col gap-4'>
+		<div className='relative flex flex-col gap-4'>
 			<div className='input-group h-full flex-1 rounded border border-gray-500 flex-items-center'>
 				<input
 					type='text'
@@ -25,12 +25,12 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 					value={valueFormatter(value)}
 					onChange={(e) => onChange(convertStringToInteger(e.target.value))}
 				/>
-				<span className='text-gray-900 h-24 w-36 border-r border-r-inherit text-tiny flex-justify-center'>
+				<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-900 flex-justify-center'>
 					{t('common.rial')}
 				</span>
 			</div>
 
-			<span className='text-gray-1000 h-16 text-right text-sm'>
+			<span style={{ top: '4.8rem' }} className='absolute h-16 text-right text-sm text-gray-1000'>
 				{Number(value) > 0 && num2persian(String(value))}
 			</span>
 		</div>
