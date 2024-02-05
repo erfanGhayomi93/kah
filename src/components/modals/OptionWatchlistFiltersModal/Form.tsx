@@ -15,7 +15,6 @@ import TypeInput from './inputs/TypeInput';
 
 const InputWrapper = styled.div`
 	flex: 0 0 32rem;
-	overflow: hidden;
 	max-width: 100%;
 `;
 
@@ -74,7 +73,7 @@ const Form = () => {
 	const clearButtonIsDisabled = JSON.stringify(initialFilters) === JSON.stringify(filters);
 
 	return (
-		<form onSubmit={onSubmit} method='get' className='gap-48 flex-column'>
+		<form onSubmit={onSubmit} method='get' className='gap-64 flex-column'>
 			<div className='gap-32 flex-column'>
 				<div className='gap-8 flex-column'>
 					<span className='flex-1 font-medium text-gray-1000'>

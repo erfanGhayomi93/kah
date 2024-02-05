@@ -7,7 +7,7 @@ interface DeltaInputProps {
 
 const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) => {
 	const onChangeSlider = (value: number, type: 'start' | 'end') => {
-		const formattedValue = Number(value.toFixed(3));
+		const formattedValue = Number(valueFormatter(value));
 
 		onChange(
 			type === 'start'
@@ -20,14 +20,16 @@ const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) 
 		);
 	};
 
+	const valueFormatter = (value: number) => value.toFixed(2);
+
 	return (
 		<PriceSlider
-			labels={['-1', '0', '1']}
 			step={0.05}
 			min={-1}
 			max={1}
 			onChange={onChangeSlider}
 			value={[fromValue, toValue]}
+			valueFormatter={valueFormatter}
 		/>
 	);
 };

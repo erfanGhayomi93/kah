@@ -103,7 +103,9 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 			onOpen={() => setEnabled(true)}
 			renderer={({ setOpen }) => (
 				<div
-					style={{ height: onlyShowTags ? '7.2rem' : 'calc(68.35vh - 16.5rem)' }}
+					style={{
+						height: onlyShowTags ? '7.2rem' : `calc(${(636 / window.innerHeight) * 100}vh - 16.5rem)`,
+					}}
 					className={clsx(
 						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
 					)}
@@ -247,7 +249,10 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-1000'
 						placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 						value={term}
-						onFocus={() => setOpen(true)}
+						onFocus={() => {
+							setOnlyShowTags(false);
+							setOpen(true);
+						}}
 						onChange={(e) => onChangeInput(e.target.value)}
 					/>
 					{isLoading ? (

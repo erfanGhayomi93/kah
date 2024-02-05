@@ -20,13 +20,15 @@ const EndDateInput = ({ value: [fromEndDate, toEndDate], onChange }: EndDateInpu
 		);
 	};
 
+	const valueFormatter = (value: number) => String(Math.round(Number(value.toFixed(3))));
+
 	return (
 		<PriceSlider
-			labels={['1', '365']}
 			min={1}
 			max={365}
 			onChange={onChangeSlider}
 			value={[fromEndDate, toEndDate]}
+			valueFormatter={valueFormatter}
 		/>
 	);
 };

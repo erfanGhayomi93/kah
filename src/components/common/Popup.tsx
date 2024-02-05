@@ -9,7 +9,7 @@ interface IChildrenProps {
 
 interface PopupProps {
 	children: (props: IChildrenProps) => React.ReactElement;
-	renderer: (props: IChildrenProps) => React.ReactElement;
+	renderer: (props: IChildrenProps) => React.ReactElement | null;
 	onClose?: () => void;
 	onOpen?: () => void;
 	portalElement?: HTMLElement;
@@ -30,7 +30,7 @@ const Popup = ({
 	onOpen,
 	dependency,
 	portalElement,
-	animation = 'slideDown',
+	animation = 'slideUp',
 	defaultOpen,
 	defaultPopupWidth,
 	className,
