@@ -79,7 +79,7 @@
 		"base_symbol": "نماد پایه",
 		"type": "نوع",
 		"status": "وضعیت",
-		"end_date": "سر رسید",
+		"end_date": "روز مانده تا سر رسید",
 		"contract_size": "اندازه قرارداد",
 		"base_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
 		"delta": "دلتا",

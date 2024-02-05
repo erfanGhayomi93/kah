@@ -40,14 +40,14 @@ const Footer = () => {
 
 	return (
 		<footer className='h-40 border-t border-gray-600 bg-gray-200 pr-32 flex-justify-between'>
-			<div className='h-full pb-4 flex-justify-start'>
+			<div className='h-full flex-justify-start'>
 				<span className='text-tiny font-normal text-gray-1000'>{t('footer.copyright')}</span>
 			</div>
 
 			<div className='h-full gap-32 flex-justify-end'>
 				<span
 					className={clsx(
-						'flex items-center gap-8 pb-4 transition-colors',
+						'flex items-center gap-8 transition-colors',
 						lsStatus === 'CONNECTING'
 							? 'text-warning-100'
 							: lsStatus === 'DISCONNECTED'

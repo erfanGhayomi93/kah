@@ -1,4 +1,4 @@
-import { getCookie } from '@/utils/cookie';
+import { getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
 const axios = AXIOS.create();
@@ -25,7 +25,7 @@ axios.defaults.paramsSerializer = {
 
 axios.interceptors.request.use(
 	(config) => {
-		const clientId = getCookie(process.env.APP_TOKEN_NAME!);
+		const clientId = getClientId();
 		if (clientId) config.headers.Authorization = `Bearer ${clientId}`;
 
 		return config;

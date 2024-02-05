@@ -1,10 +1,9 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
-import { sepNumbers } from '@/utils/helpers';
+import { openNewTab, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import NoData from '../common/NoData';
 
@@ -21,8 +20,6 @@ interface ITableData {
 }
 
 const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
-	const router = useRouter();
-
 	const t = useTranslations();
 
 	const { data: watchlistData, isLoading } = useWatchlistBySettlementDateQuery({
@@ -39,7 +36,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 			const { symbolISIN, baseSymbolISIN } = symbolData.symbolInfo;
 
 			if (baseSymbolISIN && symbolISIN)
-				router.push(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+				openNewTab(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
 		} catch (e) {
 			//
 		}

@@ -33,7 +33,7 @@ const SymbolContracts = ({
 					key={index}
 					symbolISIN={symbolISIN}
 					baseSymbol={baseSymbol}
-					onLoadContract={(baseSymbolISIN) => onLoadContract(baseSymbolISIN)}
+					onLoadContract={(contract) => onLoadContract(contract)}
 				/>
 			))}
 		</div>
