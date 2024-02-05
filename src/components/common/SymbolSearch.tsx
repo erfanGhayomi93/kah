@@ -21,6 +21,8 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 
 	const [term, setTerm] = useState('');
 
+	const [focusing, setFocusing] = useState(false);
+
 	const { data: symbolsData, isFetching } = useSymbolSearchQuery({
 		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
 	});
@@ -30,10 +32,12 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 	};
 
 	const onFocus = (cb: () => void) => {
+		setFocusing(true);
 		cb();
 	};
 
 	const onBlur = () => {
+		setFocusing(false);
 		setTerm('');
 	};
 
@@ -45,12 +49,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 			zIndex={9999}
 			onClose={onBlur}
 			renderer={({ setOpen }) => {
-				if (term.length < 2)
-					return (
-						<div className={clsx(styles.blankList, classes?.blankList)}>
-							<span>{t('symbol_search.needs_more_than_n_chars', { n: 2 })}</span>
-						</div>
-					);
+				if (term.length < 2) return null;
 
 				if (isFetching)
 					return (
@@ -95,7 +94,11 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 						inputMode='search'
 						className={clsx(styles.input, classes?.input)}
 						maxLength={24}
-						placeholder={t('symbol_search.input_placeholder')}
+						placeholder={
+							focusing
+								? t('symbol_search.needs_more_than_n_chars', { n: 2 })
+								: t('symbol_search.input_placeholder')
+						}
 						onFocus={() => onFocus(() => setOpen(true))}
 						{...inputProps}
 						value={term}
