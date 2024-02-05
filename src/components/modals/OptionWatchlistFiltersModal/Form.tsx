@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
 import BaseSymbolInput from './inputs/BaseSymbolInput';
-import ContractSizeInput from './inputs/ContractSizeInput';
 import DeltaInput from './inputs/DeltaInput';
 import EndDateInput from './inputs/EndDateInput';
 import MinimumTradesValueInput from './inputs/MinimumTradesValueInput';
@@ -16,7 +15,6 @@ import TypeInput from './inputs/TypeInput';
 
 const InputWrapper = styled.div`
 	flex: 0 0 32rem;
-	overflow: hidden;
 	max-width: 100%;
 `;
 
@@ -24,9 +22,8 @@ export const initialFilters: IOptionWatchlistFilters = {
 	symbols: [],
 	type: [],
 	status: [],
-	endDate: [null, null],
-	contractSize: ['', ''],
-	delta: ['', ''],
+	dueDays: [0, 365],
+	delta: [-1, 1],
 	minimumTradesValue: '',
 };
 
@@ -41,8 +38,7 @@ const Form = () => {
 		symbols: initialModalFilters.initialSymbols ?? initialFilters.symbols,
 		type: initialModalFilters.initialType ?? initialFilters.type,
 		status: initialModalFilters.initialStatus ?? initialFilters.status,
-		endDate: initialModalFilters.initialEndDate ?? initialFilters.endDate,
-		contractSize: initialModalFilters.initialContractSize ?? initialFilters.contractSize,
+		dueDays: initialModalFilters.initialDueDays ?? initialFilters.dueDays,
 		delta: initialModalFilters.initialDelta ?? initialFilters.delta,
 		minimumTradesValue: initialModalFilters.initialMinimumTradesValue ?? initialFilters.minimumTradesValue,
 	});
@@ -77,7 +73,7 @@ const Form = () => {
 	const clearButtonIsDisabled = JSON.stringify(initialFilters) === JSON.stringify(filters);
 
 	return (
-		<form onSubmit={onSubmit} method='get' className='gap-48 flex-column'>
+		<form onSubmit={onSubmit} method='get' className='gap-64 flex-column'>
 			<div className='gap-32 flex-column'>
 				<div className='gap-8 flex-column'>
 					<span className='flex-1 font-medium text-gray-1000'>
@@ -112,19 +108,8 @@ const Form = () => {
 						</span>
 						<InputWrapper>
 							<EndDateInput
-								value={filters.endDate}
-								onChange={(value) => setFilterValue('endDate', value)}
-							/>
-						</InputWrapper>
-					</li>
-					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-1000'>
-							{t('option_watchlist_filters_modal.contract_size')}:
-						</span>
-						<InputWrapper>
-							<ContractSizeInput
-								value={filters.contractSize}
-								onChange={(value) => setFilterValue('contractSize', value)}
+								value={filters.dueDays}
+								onChange={(value) => setFilterValue('dueDays', value)}
 							/>
 						</InputWrapper>
 					</li>

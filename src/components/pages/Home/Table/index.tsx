@@ -5,10 +5,10 @@ import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { numFormatter, openNewTab, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
@@ -20,7 +20,7 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters }: TableProps) => {
-	const router = useRouter();
+	const t = useTranslations();
 
 	const cWatchlistRef = useRef<Option.Root[]>([]);
 
@@ -52,7 +52,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			const { symbolISIN, baseSymbolISIN } = data.symbolInfo;
 
 			if (baseSymbolISIN && symbolISIN)
-				router.push(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+				openNewTab(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
 		} catch (e) {
 			//
 		}
@@ -106,7 +106,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
 					percent: data ? data.optionWatchlistData.premium : 0,
 				}),
-				valueGetter: ({ data }) => String(data!.optionWatchlistData.premium),
+				valueGetter: ({ data }) => `${data!.optionWatchlistData.premium}|${data!.optionWatchlistData.premium}`,
 				valueFormatter: ({ value }) => sepNumbers(value),
 			},
 			{
@@ -120,12 +120,13 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				headerName: 'آخرین قیمت پایه',
 				colId: 'baseSymbolPrice',
 				initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolPrice?.isHidden ?? true),
-				minWidth: 128,
+				minWidth: 136,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
 					percent: data ? data.optionWatchlistData.baseSymbolPrice : 0,
 				}),
-				valueGetter: ({ data }) => String(data!.optionWatchlistData.baseSymbolPrice),
+				valueGetter: ({ data }) =>
+					`${data!.optionWatchlistData.baseSymbolPrice}|${data!.optionWatchlistData.baseSymbolPrice}`,
 				valueFormatter: ({ value }) => sepNumbers(value),
 			},
 			{
@@ -170,12 +171,12 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				initialHide: Boolean(modifiedWatchlistColumns?.iotm?.isHidden ?? true),
 				minWidth: 96,
 				cellClass: ({ value }) => {
-					switch (value.toLowerCase()) {
-						case 'itm':
+					switch (value) {
+						case 'ITM':
 							return 'text-success-100';
-						case 'otm':
+						case 'OTM':
 							return 'text-error-100';
-						case 'atm':
+						case 'ATM':
 							return 'text-secondary-300';
 						default:
 							return '';
@@ -203,14 +204,14 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				headerName: 'روز مانده',
 				colId: 'dueDays',
 				initialHide: Boolean(modifiedWatchlistColumns?.dueDays?.isHidden ?? true),
-				minWidth: 72,
+				minWidth: 96,
 				valueGetter: ({ data }) => data!.symbolInfo.dueDays,
 			},
 			{
 				headerName: 'قیمت اعمال',
 				colId: 'strikePrice',
 				initialHide: Boolean(modifiedWatchlistColumns?.strikePrice?.isHidden ?? true),
-				minWidth: 96,
+				minWidth: 112,
 				valueGetter: ({ data }) => String(data!.symbolInfo.strikePrice),
 				valueFormatter: ({ value }) => sepNumbers(value),
 			},
@@ -229,7 +230,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				headerName: 'بهترین فروش',
 				colId: 'bestSellPrice',
 				initialHide: Boolean(modifiedWatchlistColumns?.bestSellPrice?.isHidden ?? true),
-				minWidth: 112,
+				minWidth: 120,
 				cellStyle: {
 					backgroundColor: 'rgba(254, 57, 87, 0.12)',
 				},
@@ -273,7 +274,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			{
 				headerName: 'اندازه قرارداد',
 				colId: 'contractSize',
-				minWidth: 96,
+				minWidth: 112,
 				initialHide: Boolean(modifiedWatchlistColumns?.contractSize?.isHidden ?? true),
 				valueGetter: ({ data }) => String(data!.symbolInfo.contractSize),
 				valueFormatter: ({ value }) => sepNumbers(value),
@@ -304,7 +305,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			{
 				headerName: 'تاریخ سررسید',
 				colId: 'contractEndDate',
-				minWidth: 96,
+				minWidth: 120,
 				initialHide: Boolean(modifiedWatchlistColumns?.contractEndDate?.isHidden ?? true),
 				valueGetter: ({ data }) => data!.symbolInfo.contractEndDate,
 				valueFormatter: ({ value }) => dateFormatter(value),
@@ -344,7 +345,27 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				colId: 'optionType',
 				minWidth: 96,
 				initialHide: Boolean(modifiedWatchlistColumns?.optionType?.isHidden ?? true),
+				cellClass: ({ value }) => {
+					switch (value) {
+						case 'Call':
+							return 'text-success-100';
+						case 'Put':
+							return 'text-error-100';
+						default:
+							return 'text-gray-900';
+					}
+				},
 				valueGetter: ({ data }) => data!.symbolInfo.optionType,
+				valueFormatter: ({ value }) => {
+					switch (value) {
+						case 'Call':
+							return t('side.buy');
+						case 'Put':
+							return t('side.sell');
+						default:
+							return '−';
+					}
+				},
 			},
 			{
 				headerName: 'وجه تضمین لازم',
@@ -563,7 +584,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	return (
 		<div
 			style={{
-				height: 'calc(100vh - 18.8rem)',
+				height: 'calc(100vh - 18rem)',
 			}}
 			className='relative'
 		>

@@ -170,6 +170,8 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 					result = data.result;
 				}
 
+				LocalstorageInstance.set('option_watchlist_columns', result);
+
 				setData(result);
 				resolve(result);
 			} catch (e) {

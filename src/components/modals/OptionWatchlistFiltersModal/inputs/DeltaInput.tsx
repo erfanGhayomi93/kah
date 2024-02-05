@@ -1,30 +1,37 @@
 import PriceSlider from '@/components/common/PriceSlider';
-import clsx from 'clsx';
 
 interface DeltaInputProps {
 	value: IOptionWatchlistFilters['delta'];
 	onChange: (value: IOptionWatchlistFilters['delta']) => void;
 }
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	borderClass?: ClassesValue;
-}
-
-const Input = ({ borderClass, ...props }: InputProps) => (
-	<input
-		type='text'
-		inputMode='decimal'
-		maxLength={12}
-		className={clsx(
-			'h-40 w-full rounded border px-8 text-left text-gray-1000 ltr',
-			borderClass || 'border-gray-500',
-		)}
-		{...props}
-	/>
-);
-
 const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) => {
-	return <PriceSlider min={-1} max={1} onChange={console.log} value={[-0.5, 0.5]} />;
+	const onChangeSlider = (value: number, type: 'start' | 'end') => {
+		const formattedValue = Number(valueFormatter(value));
+
+		onChange(
+			type === 'start'
+				? formattedValue > toValue
+					? [toValue, formattedValue]
+					: [formattedValue, toValue]
+				: formattedValue < fromValue
+					? [formattedValue, fromValue]
+					: [fromValue, formattedValue],
+		);
+	};
+
+	const valueFormatter = (value: number) => value.toFixed(2);
+
+	return (
+		<PriceSlider
+			step={0.05}
+			min={-1}
+			max={1}
+			onChange={onChangeSlider}
+			value={[fromValue, toValue]}
+			valueFormatter={valueFormatter}
+		/>
+	);
 };
 
 export default DeltaInput;

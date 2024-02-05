@@ -7,9 +7,9 @@ interface IChildrenProps {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface PortalProps {
+interface PopupProps {
 	children: (props: IChildrenProps) => React.ReactElement;
-	renderer: (props: IChildrenProps) => React.ReactElement;
+	renderer: (props: IChildrenProps) => React.ReactElement | null;
 	onClose?: () => void;
 	onOpen?: () => void;
 	portalElement?: HTMLElement;
@@ -20,22 +20,24 @@ interface PortalProps {
 	defaultPopupWidth?: number;
 	className?: ClassesValue;
 	animation?: string;
+	dependency?: string;
 }
 
-const Portal = ({
+const Popup = ({
 	children,
 	renderer,
 	onClose,
 	onOpen,
+	dependency,
 	portalElement,
-	animation = 'slideDown',
+	animation = 'slideUp',
 	defaultOpen,
 	defaultPopupWidth,
 	className,
 	disabled,
 	margin,
 	zIndex,
-}: PortalProps) => {
+}: PopupProps) => {
 	const childRef = useRef<HTMLElement>(null);
 
 	const popupRef = useRef<HTMLElement | null>(null);
@@ -55,7 +57,8 @@ const Portal = ({
 				eChild.isEqualNode(eTarget) ||
 				eChild.contains(eTarget) ||
 				ePopup.isEqualNode(eTarget) ||
-				ePopup.contains(eTarget)
+				ePopup.contains(eTarget) ||
+				(dependency && eTarget.closest(dependency))
 			)
 				return;
 
@@ -137,7 +140,7 @@ const Portal = ({
 					<div
 						ref={onPortalLoad}
 						style={{
-							position: 'absolute',
+							position: 'fixed',
 							zIndex: zIndex ?? 99,
 							display: 'none',
 							animation: `${animation} ease-in-out 250ms 1 alternate forwards`,
@@ -151,4 +154,4 @@ const Portal = ({
 	);
 };
 
-export default Portal;
+export default Popup;

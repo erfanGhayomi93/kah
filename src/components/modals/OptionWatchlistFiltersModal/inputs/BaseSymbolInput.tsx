@@ -1,5 +1,5 @@
 import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
-import Portal from '@/components/common/Portal';
+import Popup from '@/components/common/Popup';
 import { CheckSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
 import { findStringIn } from '@/utils/helpers';
@@ -95,7 +95,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	}, [values]);
 
 	return (
-		<Portal
+		<Popup
 			zIndex={9999}
 			onClose={() => {
 				setOnlyShowTags(false);
@@ -103,7 +103,9 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 			onOpen={() => setEnabled(true)}
 			renderer={({ setOpen }) => (
 				<div
-					style={{ height: onlyShowTags ? undefined : '59vh' }}
+					style={{
+						height: onlyShowTags ? '7.2rem' : `calc(${(636 / window.innerHeight) * 100}vh - 16.5rem)`,
+					}}
 					className={clsx(
 						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
 					)}
@@ -132,7 +134,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 
 					{onlyShowTags && values.length === 0 && (
 						<div style={{ minHeight: '9.6rem' }} className='flex-justify-center'>
-							<span className='text-gray-900 text-base'>
+							<span className='text-base text-gray-900'>
 								{t('option_watchlist_filters_modal.symbol_not_found')}
 							</span>
 						</div>
@@ -148,9 +150,9 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 								)}
 							>
 								{isLoading ? (
-									<span className='text-gray-900 text-base'>{t('common.searching')}</span>
+									<span className='text-base text-gray-900'>{t('common.searching')}</span>
 								) : symbolsDataIsEmpty ? (
-									<span className='text-gray-900 text-base'>
+									<span className='text-base text-gray-900'>
 										{t('option_watchlist_filters_modal.symbol_not_found')}
 									</span>
 								) : (
@@ -236,7 +238,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						open ? 'rounded-t border-primary-300' : 'rounded border-gray-500',
 					)}
 				>
-					<span className='text-gray-1000 px-8'>
+					<span className='px-8 text-gray-1000'>
 						<SearchSVG />
 					</span>
 					<input
@@ -244,10 +246,13 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						type='text'
 						inputMode='numeric'
 						maxLength={32}
-						className='text-gray-1000 h-40 flex-1 rounded bg-transparent pl-8'
+						className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-1000'
 						placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 						value={term}
-						onFocus={() => setOpen(true)}
+						onFocus={() => {
+							setOnlyShowTags(false);
+							setOpen(true);
+						}}
 						onChange={(e) => onChangeInput(e.target.value)}
 					/>
 					{isLoading ? (
@@ -257,7 +262,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							<button
 								onClick={onClearTerm}
 								type='button'
-								className='bg-gray-1000 ml-16 min-h-20 min-w-20 rounded-circle text-white flex-justify-center'
+								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-1000 text-white flex-justify-center'
 							>
 								<XSVG width='0.8rem' height='0.8rem' />
 							</button>
@@ -279,7 +284,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					)}
 				</div>
 			)}
-		</Portal>
+		</Popup>
 	);
 };
 

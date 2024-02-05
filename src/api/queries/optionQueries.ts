@@ -9,11 +9,9 @@ interface TPaginationInputs {
 
 interface IOptionWatchlistQuery {
 	SymbolISINs: string[];
-	FromContractEndDate: string;
-	ToContractEndDate: string;
+	FromDueDays: string;
+	ToDueDays: string;
 	MinimumTradeValue: string;
-	FromContractSize: string;
-	ToContractSize: string;
 	FromDelta: string;
 	ToDelta: string;
 	OptionType: Array<'Call' | 'Put'>;
@@ -40,25 +38,14 @@ export const useOptionWatchlistQuery = createQuery<
 
 			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
 
-			if (props.endDate) {
-				if (props.endDate[0]) params.FromContractEndDate = new Date(props.endDate[0]).toISOString();
-				if (props.endDate[1]) params.ToContractEndDate = new Date(props.endDate[1]).toISOString();
+			if (props.dueDays && props.dueDays[1] >= props.dueDays[0]) {
+				if (props.dueDays[0] > 0) params.FromDueDays = String(props.dueDays[0]);
+				if (props.dueDays[1] < 365) params.ToDueDays = String(props.dueDays[1]);
 			}
 
-			if (props.contractSize) {
-				const fromContractSize = props.contractSize[0];
-				const toContractSize = props.contractSize[1];
-
-				if (fromContractSize && Number(fromContractSize) > 0) params.FromContractSize = props.contractSize[0];
-				if (toContractSize && Number(toContractSize) > 0) params.ToContractSize = props.contractSize[1];
-			}
-
-			if (props.delta) {
-				const fromDelta = props.delta[0];
-				const toDelta = props.delta[1];
-
-				if (fromDelta && Number(fromDelta) > -1) params.FromDelta = fromDelta;
-				if (toDelta && Number(toDelta) < 1) params.ToDelta = toDelta;
+			if (props.delta && props.delta[1] >= props.delta[0]) {
+				if (props.delta[0] > -1) params.FromDelta = String(props.delta[0]);
+				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
 			}
 
 			const response = await axios.get<PaginationResponse<Option.Root[]>>(routes.optionWatchlist.Watchlist, {

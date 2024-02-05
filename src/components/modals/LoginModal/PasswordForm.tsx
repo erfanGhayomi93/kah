@@ -4,7 +4,7 @@ import Button from '@/components/common/Button';
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
-import { setCookie } from '@/utils/cookie';
+import { setClientId } from '@/utils/cookie';
 import { base64encode } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -35,7 +35,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 		setError,
 	} = useForm<Inputs>({ mode: 'onChange' });
 
-	const [seconds, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? -1);
+	const [, setSeconds] = useState<number | null>(loginResult?.otpRemainSecond ?? -1);
 
 	const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
@@ -57,7 +57,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 
 			if (data.result.message !== 'Successful') throw new Error();
 
-			setCookie(process.env.APP_TOKEN_NAME!, data.result.token);
+			setClientId(data.result.token);
 
 			onLoggedIn();
 			goToWelcome();

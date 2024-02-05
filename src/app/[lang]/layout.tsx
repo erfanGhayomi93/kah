@@ -1,11 +1,13 @@
 import '@/assets/styles/app.scss';
 import '@/assets/styles/libs.scss';
+import LightstreamProvider from '@/components/common/LightstreamProvider';
 import NextIntlClientRegistry from '@/components/common/NextIntlClientRegistry';
 import QueryClientRegistry from '@/components/common/QueryClientRegistry';
 import ReduxToolkitRegistry from '@/components/common/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/StyledComponentsRegistry';
 import Wrapper from '@/components/layout/Wrapper';
 import Modals from '@/components/modals/Modals';
+import ClockProvider from '@/contexts/ClockContext';
 import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
 import { getDirection } from '@/utils/helpers';
 import metadata from '../../metadata';
@@ -25,10 +27,14 @@ const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) 
 					<StyledComponentsRegistry>
 						<QueryClientRegistry>
 							<ReduxToolkitRegistry>
-								<WatchlistColumnsProvider>
-									<Wrapper>{children}</Wrapper>
-									<Modals />
-								</WatchlistColumnsProvider>
+								<LightstreamProvider>
+									<ClockProvider>
+										<WatchlistColumnsProvider>
+											<Wrapper>{children}</Wrapper>
+											<Modals />
+										</WatchlistColumnsProvider>
+									</ClockProvider>
+								</LightstreamProvider>
 							</ReduxToolkitRegistry>
 						</QueryClientRegistry>
 					</StyledComponentsRegistry>

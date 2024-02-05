@@ -55,6 +55,13 @@ export const getDirection = (lang: string): 'rtl' | 'ltr' => {
 	return 'ltr';
 };
 
+export const openNewTab = (pathname: string) => {
+	const url = new URL(location.href);
+	url.pathname = pathname;
+
+	if (window && url) window.open(decodeURIComponent(url.href), '_blank');
+};
+
 export const returnIfIsNaN = <T extends unknown>(value: number, defaultValue: T) => {
 	if (isNaN(value)) return defaultValue;
 	return value;

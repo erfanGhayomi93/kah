@@ -38,7 +38,8 @@
 		"contract_search_placeholder": "جستجوی قرارداد",
 		"search_contract": "نوع قرارداد",
 		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}",
-		"end_date": "سررسیدهای"
+		"end_date": "سررسیدهای",
+		"select_contract_from_list": "از لیست سمت راست یک سررسید انتخاب کنید!"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
@@ -78,7 +79,7 @@
 		"base_symbol": "نماد پایه",
 		"type": "نوع",
 		"status": "وضعیت",
-		"end_date": "سر رسید",
+		"end_date": "روز مانده تا سر رسید",
 		"contract_size": "اندازه قرارداد",
 		"base_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
 		"delta": "دلتا",

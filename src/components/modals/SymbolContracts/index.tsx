@@ -9,9 +9,11 @@ import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
+import CellContractTitleRenderer from './CellContractTitleRenderer';
 import Filters from './Filters';
 
 interface SymbolContractsProps extends IContractSelectorModal {}
@@ -84,7 +86,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 				headerName: 'نماد',
 				colId: 'symbolTitle-buy',
 				minWidth: 104,
-				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
+				cellRenderer: CellContractTitleRenderer,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
 
@@ -100,15 +102,15 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 				colId: 'iotm-buy',
 				minWidth: 80,
 				cellClass: ({ value }) => {
-					switch (value?.toLowerCase()) {
-						case 'atm':
-							return 'text-lg text-success-100';
-						case 'otm':
-							return 'text-lg text-error-100';
+					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-lg text-primary-100';
+							return 'text-success-100';
+						case 'otm':
+							return 'text-error-100';
+						case 'atm':
+							return 'text-secondary-300';
 						default:
-							return '−';
+							return '';
 					}
 				},
 				valueGetter: ({ data }) => data!.optionWatchlistData.iotm,
@@ -202,7 +204,17 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 					<div className='relative h-full flex-1'>
 						{isLoading && <Loading />}
 
+						{!states.activeSettlement && (
+							<div className='absolute h-full w-full flex-col gap-16 rounded border border-gray-500 text-center flex-justify-center'>
+								<Image width='80' height='80' alt='welcome' src='/static/images/no-data.png' />
+								<span className='text-base font-medium'>
+									{t('symbol_contracts_modal.select_contract_from_list')}
+								</span>
+							</div>
+						)}
+
 						<AgTable
+							ref={gridRef}
 							onSelectionChanged={({ api }) => {
 								const selectedRows = api!.getSelectedRows();
 								if (selectedRows && selectedRows.length > 0)
@@ -210,7 +222,6 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 							}}
 							rowSelection='single'
 							suppressRowClickSelection={false}
-							ref={gridRef}
 							rowClass='cursor-pointer'
 							className={clsx('h-full', !watchlistData && 'pointer-events-none opacity-0')}
 							rowData={watchlistData ?? []}

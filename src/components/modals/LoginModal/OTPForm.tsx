@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
-import { setCookie } from '@/utils/cookie';
+import { setClientId } from '@/utils/cookie';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
@@ -70,7 +70,7 @@ const OTPForm = ({
 
 			if (data.result.message !== 'Successful') throw new Error();
 
-			setCookie(process.env.APP_TOKEN_NAME!, data.result.token);
+			setClientId(data.result.token);
 
 			onLoggedIn();
 			goToWelcome();

@@ -18,8 +18,7 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		if (filters.symbols) params.initialSymbols = filters.symbols;
 		if (filters.type) params.initialType = filters.type;
 		if (filters.status) params.initialStatus = filters.status;
-		if (filters.endDate) params.initialEndDate = filters.endDate;
-		if (filters.contractSize) params.initialContractSize = filters.contractSize;
+		if (filters.dueDays) params.initialDueDays = filters.dueDays;
 		if (filters.delta) params.initialDelta = filters.delta;
 		if (filters.minimumTradesValue) params.initialMinimumTradesValue = filters.minimumTradesValue;
 
@@ -41,19 +40,14 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 
 		if (Array.isArray(filters.status) && filters.status.length > 0) badgeCount++;
 
-		if (filters.endDate) {
-			if (filters.endDate[0]) badgeCount++;
-			if (filters.endDate[1]) badgeCount++;
-		}
-
-		if (filters.contractSize) {
-			if (filters.contractSize[0] && Number(filters.contractSize[0]) > 0) badgeCount++;
-			if (filters.contractSize[1] && Number(filters.contractSize[1]) > 0) badgeCount++;
+		if (filters.dueDays) {
+			if (filters.dueDays[0] > 0) badgeCount++;
+			if (filters.dueDays[1] < 365) badgeCount++;
 		}
 
 		if (filters.delta) {
-			if (filters.delta[0] && !isNaN(Number(filters.delta[0]))) badgeCount++;
-			if (filters.delta[1] && !isNaN(Number(filters.delta[1]))) badgeCount++;
+			if (filters.delta[0] > -1) badgeCount++;
+			if (filters.delta[1] < 1) badgeCount++;
 		}
 
 		return badgeCount;

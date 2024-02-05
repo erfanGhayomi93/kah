@@ -1,25 +1,35 @@
-import Datepicker from '@/components/common/Datepicker';
-import { useTranslations } from 'next-intl';
+import PriceSlider from '@/components/common/PriceSlider';
 
 interface EndDateInputProps {
-	value: IOptionWatchlistFilters['endDate'];
-	onChange: (value: IOptionWatchlistFilters['endDate']) => void;
+	value: IOptionWatchlistFilters['dueDays'];
+	onChange: (value: IOptionWatchlistFilters['dueDays']) => void;
 }
 
 const EndDateInput = ({ value: [fromEndDate, toEndDate], onChange }: EndDateInputProps) => {
-	const t = useTranslations();
+	const onChangeSlider = (value: number, type: 'start' | 'end') => {
+		const formattedValue = Math.round(Number(value.toFixed(3)));
+
+		onChange(
+			type === 'start'
+				? formattedValue > toEndDate
+					? [toEndDate, formattedValue]
+					: [formattedValue, toEndDate]
+				: formattedValue < fromEndDate
+					? [formattedValue, fromEndDate]
+					: [fromEndDate, formattedValue],
+		);
+	};
+
+	const valueFormatter = (value: number) => String(Math.round(Number(value.toFixed(3))));
 
 	return (
-		<div className='flex-1 gap-16 flex-justify-end'>
-			<div className='flex-1 gap-8 flex-items-center'>
-				<span>{t('common.from')}</span>
-				<Datepicker clearable value={fromEndDate} onChange={(value) => onChange([value, toEndDate])} />
-			</div>
-			<div className='flex-1 gap-8 flex-items-center'>
-				<span>{t('common.to')}</span>
-				<Datepicker clearable value={toEndDate} onChange={(value) => onChange([fromEndDate, value])} />
-			</div>
-		</div>
+		<PriceSlider
+			min={1}
+			max={365}
+			onChange={onChangeSlider}
+			value={[fromEndDate, toEndDate]}
+			valueFormatter={valueFormatter}
+		/>
 	);
 };
 
