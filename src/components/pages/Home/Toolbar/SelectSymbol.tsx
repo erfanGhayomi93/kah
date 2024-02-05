@@ -1,16 +1,14 @@
 import SymbolSearch from '@/components/common/SymbolSearch';
-import { useRouter } from 'next/navigation';
+import { openNewTab } from '@/utils/helpers';
 import { useState } from 'react';
 
 const SelectSymbol = () => {
-	const router = useRouter();
-
 	const [symbol] = useState<Symbol.Search | null>(null);
 
 	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (!value) return;
 
-		router.push(`/fa/saturn?${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
+		openNewTab(`/fa/saturn?${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
 	};
 
 	return (
