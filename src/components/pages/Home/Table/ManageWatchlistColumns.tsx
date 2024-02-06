@@ -1,6 +1,8 @@
 import Loading from '@/components/common/Loading';
 import { RefreshSVG, XSVG } from '@/components/icons';
+import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -9,6 +11,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled.div<{ $enabled: number }>`
@@ -22,7 +25,7 @@ const Wrapper = styled.div<{ $enabled: number }>`
 	flex-direction: column;
 	border-radius: 0 1.6rem 1.6rem 0;
 	padding: 0 0 1.6rem 0;
-	z-index: 9;
+	z-index: 999;
 	box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.2);
 	animation: ${({ $enabled }) =>
 		`${$enabled ? 'left-to-right' : 'right-to-left'} ease-in-out ${
@@ -58,8 +61,6 @@ const getStates = createSelector(
 );
 
 const ManageWatchlistColumns = () => {
-	const controllerRef = useRef<AbortController | null>(null);
-
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	const t = useTranslations();
@@ -77,7 +78,6 @@ const ManageWatchlistColumns = () => {
 	const { data: watchlistColumns, resetColumns, setHiddenColumn } = useWatchlistColumns();
 
 	const onClose = () => {
-		abort();
 		dispatch(toggleManageOptionColumns(false));
 	};
 
@@ -86,26 +86,12 @@ const ManageWatchlistColumns = () => {
 			setResetting(true);
 
 			setDebounce(() => {
+				dispatch(setOptionWatchlistColumns(defaultOptionWatchlistColumns));
 				resetColumns().finally(() => setResetting(false));
 			}, 500);
 		} catch (e) {
 			//
 		}
-	};
-
-	const abort = () => {
-		if (controllerRef.current) controllerRef.current.abort();
-	};
-
-	const onDocumentClick = (e: MouseEvent) => {
-		const eTarget = e.target as HTMLDivElement;
-		const eWrapper = wrapperRef.current;
-		if (!eWrapper || !eTarget) return;
-
-		if (eTarget.isEqualNode(eWrapper) || eWrapper.contains(eTarget)) return;
-
-		onClose();
-		abort();
 	};
 
 	const categories = useMemo(() => {
@@ -129,16 +115,6 @@ const ManageWatchlistColumns = () => {
 	}, [watchlistColumns]);
 
 	useEffect(() => {
-		const eWrapper = wrapperRef.current;
-		if (!eWrapper || !isEnable) return;
-
-		controllerRef.current = new AbortController();
-		document.addEventListener('click', onDocumentClick, {
-			signal: controllerRef.current.signal,
-		});
-	}, [wrapperRef.current, rendered]);
-
-	useEffect(() => {
 		let timer: NodeJS.Timeout | null = null;
 
 		if (!isEnable) timer = setTimeout(() => setRendered(false), 600);
@@ -153,9 +129,19 @@ const ManageWatchlistColumns = () => {
 
 	return (
 		<Wrapper $enabled={Number(isEnable)} ref={wrapperRef} className='overflow-auto bg-white'>
+			{isEnable &&
+				createPortal(
+					<div
+						className='fixed right-0 top-0 h-full w-full cursor-default'
+						style={{ zIndex: 99 }}
+						onClick={() => onClose()}
+					/>,
+					document.body,
+				)}
+
 			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
-					<h1 className='text-gray-1000 text-2xl font-bold'>{t('manage_option_watchlist_columns.title')}</h1>
+					<h1 className='text-2xl font-bold text-gray-1000'>{t('manage_option_watchlist_columns.title')}</h1>
 
 					<div className='flex gap-24'>
 						<button className='text-gray-1000' type='button' onClick={onRefresh}>
@@ -180,7 +166,7 @@ const ManageWatchlistColumns = () => {
 							categoryIndex < 2 && 'border-b border-b-gray-400',
 						)}
 					>
-						<h2 className='text-gray-1000 text-lg font-medium'>
+						<h2 className='text-lg font-medium text-gray-1000'>
 							{t(`manage_option_watchlist_columns.${category}`)}
 						</h2>
 
@@ -192,7 +178,7 @@ const ManageWatchlistColumns = () => {
 									key={column.id}
 									className={clsx(
 										column.isHidden
-											? 'text-gray-900 hover:shadow-none bg-white shadow-sm hover:bg-primary-100'
+											? 'bg-white text-gray-900 shadow-sm hover:bg-primary-100 hover:shadow-none'
 											: 'bg-primary-400 text-white hover:bg-primary-300',
 									)}
 								>

@@ -16,7 +16,7 @@ interface PriceSliderProps {
 const Text = styled.text`
 	fill: currentColor;
 	text-anchor: middle;
-	font: 400 1.2rem IRANSans;
+	font: 500 1.4rem IRANSans;
 
 	text:first-child {
 		text-anchor: end;
@@ -43,25 +43,7 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 		x2: 0,
 	});
 
-	const onMouseDown = (e: React.MouseEvent, index: 0 | 1) => {
-		try {
-			const controller = new AbortController();
-
-			window.addEventListener('mousemove', (e) => onMouseMove(e, index), {
-				signal: controller.signal,
-			});
-
-			window.addEventListener('mouseup', (e) => onMouseUp(e, () => controller.abort()), {
-				signal: controller.signal,
-			});
-
-			document.body.style.cursor = 'pointer';
-		} catch (e) {
-			//
-		}
-	};
-
-	const onMouseMove = (e: MouseEvent, index: 0 | 1) => {
+	const movementHandler = (e: MouseEvent | React.MouseEvent, index: 0 | 1) => {
 		try {
 			const eSvg = svgRef.current!;
 
@@ -79,8 +61,62 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 		}
 	};
 
+	const onClickRect = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		const circleFrom = circleFromRef.current;
+		const circleTo = circleToRef.current;
+		const eSvg = svgRef.current;
+		if (!eSvg || !circleFrom || !circleTo) return;
+
+		const { left: svgLeft } = eSvg.getBoundingClientRect();
+		const { left: circleFromLeft } = circleFrom.getBoundingClientRect();
+		const { left: circleToLeft } = circleTo.getBoundingClientRect();
+
+		const pointerOffsetLeft = Math.abs(svgLeft - e.clientX);
+		const circleFromOffsetLeft = Math.abs(circleFromLeft - svgLeft);
+		const circleToOffsetLeft = Math.abs(circleToLeft - svgLeft);
+
+		onMouseDown(
+			e,
+			Math.abs(circleFromOffsetLeft - pointerOffsetLeft) < Math.abs(circleToOffsetLeft - pointerOffsetLeft)
+				? 0
+				: 1,
+		);
+	};
+
+	const onMouseDown = (e: React.MouseEvent, index: 0 | 1) => {
+		try {
+			e.preventDefault();
+
+			const controller = new AbortController();
+
+			window.addEventListener('mousemove', (e) => onMouseMove(e, index), {
+				signal: controller.signal,
+			});
+
+			window.addEventListener('mouseup', (e) => onMouseUp(e, () => controller.abort()), {
+				signal: controller.signal,
+			});
+
+			document.body.style.cursor = 'pointer';
+
+			movementHandler(e, index);
+		} catch (e) {
+			//
+		}
+	};
+
+	const onMouseMove = (e: MouseEvent, index: 0 | 1) => {
+		movementHandler(e, index);
+	};
+
 	const onMouseUp = (e: MouseEvent, cb: () => void) => {
 		try {
+			e.preventDefault();
+			e.stopPropagation();
+
 			cb();
 			document.body.style.cursor = '';
 		} catch (e) {
@@ -106,7 +142,15 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 				height='40'
 				className='relative select-none overflow-visible ltr flex-justify-center'
 			>
-				<rect y='calc(50% - 2px)' width='100%' height='4' rx='2' fill='rgb(237, 238, 241)' />
+				<rect
+					className='cursor-pointer'
+					y='calc(50% - 2px)'
+					width='100%'
+					height='4'
+					rx='2'
+					fill='rgb(237, 238, 241)'
+					onMouseDown={onClickRect}
+				/>
 				<rect
 					ref={percentRef}
 					x={`${Math.min(positionX.x2, positionX.x1)}%`}
@@ -114,6 +158,7 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 					width={`${Math.abs(positionX.x2 - positionX.x1)}%`}
 					height='4'
 					rx='2'
+					className='pointer-events-none'
 					fill='rgb(0, 87, 255)'
 				/>
 
@@ -138,7 +183,10 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 				/>
 
 				<g className='text-gray-1000'>
-					<Text x={`${positionX.x1}%`} y='40'>
+					<Text
+						x={`${Math.min(positionX.x1, positionX.x2 - String(valueFormatter(value[1])).length * 2.5)}%`}
+						y='5'
+					>
 						{valueFormatter(Math.min(value[0], value[1]))}
 					</Text>
 
@@ -149,7 +197,7 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 							</Text>
 						))}
 
-					<Text x={`${positionX.x2}%`} y='40'>
+					<Text x={`${positionX.x2}%`} y='5'>
 						{valueFormatter(Math.max(value[0], value[1]))}
 					</Text>
 				</g>

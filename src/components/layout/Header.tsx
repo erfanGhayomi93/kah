@@ -24,7 +24,7 @@ const getStates = createSelector(
 
 const Picture = () => (
 	<div className='overflow-hidden rounded-circle bg-secondary-100'>
-		<Image width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
+		<Image priority width='40' height='40' alt='profile' src='/static/images/young-boy.png' />
 	</div>
 );
 
