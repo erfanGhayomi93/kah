@@ -5,10 +5,14 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultSymbolISIN } from '@/constants';
+import { useAppSelector } from '@/features/hooks';
+import { getSaturnActiveTemplate } from '@/features/slices/uiSlice';
 import { useLocalstorage } from '@/hooks';
+import { openNewTab } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
+import SavedTemplates from './SavedTemplates';
 import SymbolContracts from './SymbolContracts/SymbolContracts';
 import SymbolInfo from './SymbolInfo';
 import Toolbar from './Toolbar';
@@ -17,6 +21,8 @@ const Saturn = () => {
 	const t = useTranslations();
 
 	const searchParams = useSearchParams();
+
+	const saturnActiveTemplate = useAppSelector(getSaturnActiveTemplate);
 
 	const [baseSymbolContracts, setBaseSymbolContracts] = useState<TSaturnBaseSymbolContracts>([
 		null,
@@ -39,8 +45,16 @@ const Saturn = () => {
 			const contracts = [...baseSymbolContracts];
 			const nullableContractIndex = contracts.findIndex((c) => c === null);
 
-			if (nullableContractIndex >= 0) contracts[nullableContractIndex] = data.symbolInfo.symbolISIN;
-			else contracts[0] = data.symbolInfo.symbolISIN;
+			const { symbolISIN, symbolTitle } = data.symbolInfo;
+
+			const option: Saturn.ContentOption = {
+				symbolISIN,
+				symbolTitle,
+				activeTab: 'price_information',
+			};
+
+			if (nullableContractIndex >= 0) contracts[nullableContractIndex] = option;
+			else contracts[0] = option;
 
 			setBaseSymbolContracts(contracts);
 		} catch (e) {
@@ -49,44 +63,61 @@ const Saturn = () => {
 	};
 
 	const onChangeSymbol = (symbol: Symbol.Search | null) => {
-		if (!symbol) return;
+		if (!symbol || !baseSymbolInfo) return;
 
-		const { isOption, symbolISIN } = symbol;
+		try {
+			const baseSymbolISIN = baseSymbolInfo.symbolISIN;
+			const { isOption, symbolISIN, symbolTitle } = symbol;
 
-		if (!isOption) {
-			if (selectedSymbol !== symbolISIN) {
-				setSelectedSymbol(symbolISIN);
-				setBaseSymbolContracts([null, null, null, null]);
+			if (isOption) {
+				const contracts = [...baseSymbolContracts];
+				if (contracts.find((sym) => sym?.symbolISIN === symbolISIN)) return;
+
+				const option: Saturn.ContentOption = {
+					symbolISIN,
+					symbolTitle,
+					activeTab: 'price_information',
+				};
+
+				const blankContract = contracts.findIndex((con) => con === null);
+				if (blankContract > -1) {
+					contracts[blankContract] = option;
+					setBaseSymbolContracts(contracts);
+				} else {
+					if (symbolISIN) openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
+				}
 			}
 
-			return;
+			if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
+		} catch (e) {
+			//
 		}
-
-		const contracts = [...baseSymbolContracts];
-
-		if (contracts.includes(symbolISIN)) return;
-
-		const blankContract = contracts.findIndex((con) => con === null);
-		if (blankContract > -1) {
-			contracts[blankContract] = symbolISIN;
-		} else {
-			contracts.shift();
-			contracts.unshift(symbolISIN);
-		}
-
-		setBaseSymbolContracts(contracts);
 	};
 
 	useLayoutEffect(() => {
 		try {
 			const contractISIN = searchParams.get('contractISIN');
-			if (!contractISIN) throw new Error();
+			if (!contractISIN || saturnActiveTemplate) throw new Error();
 
-			setBaseSymbolContracts([contractISIN, null, null, null]);
+			// TODO
+			// setBaseSymbolContracts([contractISIN, null, null, null]);
 		} catch (e) {
 			//
 		}
 	}, []);
+
+	useLayoutEffect(() => {
+		try {
+			if (!saturnActiveTemplate) return;
+
+			const { baseSymbolISIN, options } = JSON.parse(saturnActiveTemplate.content) as Saturn.Content;
+
+			setSelectedSymbol(baseSymbolISIN);
+			setBaseSymbolContracts([null, null, null, null]);
+		} catch (e) {
+			//
+		}
+	}, [saturnActiveTemplate]);
 
 	useLayoutEffect(() => {
 		try {
@@ -119,8 +150,13 @@ const Saturn = () => {
 
 	return (
 		<Main className='gap-8'>
-			<Toolbar setSymbol={onChangeSymbol} />
+			<Toolbar
+				baseSymbolContracts={baseSymbolContracts}
+				baseSymbolInfo={baseSymbolInfo}
+				setSymbol={onChangeSymbol}
+			/>
 			<SymbolInfo symbol={baseSymbolInfo} />
+			<SavedTemplates />
 			<SymbolContracts
 				baseSymbol={baseSymbolInfo}
 				baseSymbolContracts={baseSymbolContracts}

@@ -66,7 +66,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			const { symbolISIN, baseSymbolISIN } = data.symbolInfo;
 
 			if (baseSymbolISIN && symbolISIN)
-				openNewTab(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+				openNewTab('/fa/saturn', `symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
 		} catch (e) {
 			//
 		}
