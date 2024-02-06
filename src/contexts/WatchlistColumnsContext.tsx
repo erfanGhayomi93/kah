@@ -17,7 +17,7 @@ interface IWatchlistColumnsContext {
 }
 
 const defaultParams: IWatchlistColumnsContext = {
-	data: LocalstorageInstance.get<Option.Column[]>('option_watchlist_columns', []),
+	data: LocalstorageInstance.get<Option.Column[]>('owc', []),
 	setColumns: () => {},
 	setHiddenColumn: () => {},
 	resetColumns: () =>
@@ -48,7 +48,9 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			dispatch(setIsLoggedIn(true));
+
 			setData(data.result);
+			LocalstorageInstance.set('owc', data.result);
 
 			fetched.current = 'user';
 		} catch (e) {
@@ -61,7 +63,7 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 
 	const fetchDefaultColumns = async () => {
 		try {
-			const storedData = LocalstorageInstance.get<Option.Column[]>('option_watchlist_columns', []);
+			const storedData = LocalstorageInstance.get<Option.Column[]>('owc', []);
 			if (storedData && Array.isArray(storedData) && storedData.length > 0 && 'isHidden' in storedData[0]) {
 				setData(storedData);
 			} else {
@@ -73,6 +75,7 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 				setData(data.result);
+				LocalstorageInstance.set('owc', data.result);
 			}
 		} catch (e) {
 			//
@@ -90,7 +93,7 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 
 				newColumnsData[specifyColumnIndex].isHidden = isHidden;
 
-				LocalstorageInstance.set('option_watchlist_columns', newColumnsData);
+				LocalstorageInstance.set('owc', newColumnsData);
 
 				return newColumnsData;
 			} catch (e) {
@@ -136,7 +139,7 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 	const setColumns = (columns: Option.Column[]) => {
 		try {
 			setData(columns);
-			LocalstorageInstance.set('option_watchlist_columns', data);
+			LocalstorageInstance.set('owc', data);
 		} catch (e) {
 			//
 		}
@@ -170,7 +173,7 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 					result = data.result;
 				}
 
-				LocalstorageInstance.set('option_watchlist_columns', result);
+				LocalstorageInstance.set('owc', result);
 
 				setData(result);
 				resolve(result);

@@ -183,7 +183,10 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 				/>
 
 				<g className='text-gray-1000'>
-					<Text x={`${positionX.x1}%`} y='5'>
+					<Text
+						x={`${Math.min(positionX.x1, positionX.x2 - String(valueFormatter(value[1])).length * 2.5)}%`}
+						y='5'
+					>
 						{valueFormatter(Math.min(value[0], value[1]))}
 					</Text>
 

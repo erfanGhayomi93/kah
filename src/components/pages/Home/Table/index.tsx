@@ -569,7 +569,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				gridApi.applyColumnState({ state: defaultOptionWatchlistColumns, applyOrder: true });
 			}
 		}
-	}, []);
+	}, [watchlistColumnsIndex]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
