@@ -7,7 +7,6 @@
 		"build": "next build",
 		"preview": "next start -p 3002",
 		"lint": "next lint",
-		"publish:main": "br=$(git rev-parse --abbrev-ref HEAD) && git push origin $br:main",
 		"publish:stage": "git push origin main:stage"
 	},
 	"dependencies": {
