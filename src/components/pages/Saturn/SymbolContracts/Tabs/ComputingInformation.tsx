@@ -37,8 +37,6 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				requiredMargin,
 			} = optionData;
 
-			const { closingPrice, closingPriceVarReferencePrice, closingPriceVarReferencePricePercent } = symbol;
-
 			return [
 				[
 					{

@@ -23,15 +23,15 @@ declare interface SymbolContractModalStates {
 
 declare type TOptionWatchlistColumnsState = Array<{
 	colId: OptionWatchlistColumns;
-	width: number;
-	hide: boolean;
-	pinned: 'left' | 'right' | null;
-	sort: 'asc' | 'desc' | null;
-	sortIndex: null;
-	aggFunc: null;
-	rowGroup: boolean;
-	rowGroupIndex: null;
-	pivot: boolean;
-	pivotIndex: null;
-	flex: number;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
 }>;
