@@ -107,7 +107,6 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 				],
 			];
 		} catch (error) {
-			console.log(error);
 			return [];
 		}
 	}, [symbol]);
