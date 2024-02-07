@@ -13,18 +13,14 @@ interface PriceSliderProps {
 	onChange: (value: number, type: 'start' | 'end') => void;
 }
 
+const Group = styled.g`
+	-webkit-filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+`;
+
 const Text = styled.text`
 	fill: currentColor;
-	text-anchor: middle;
 	font: 500 1.4rem IRANSans;
-
-	text:first-child {
-		text-anchor: end;
-	}
-
-	text:last-child {
-		text-anchor: start;
-	}
 `;
 
 const CR = 6;
@@ -134,6 +130,14 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 		});
 	}, [value]);
 
+	const x1Value = valueFormatter(Math.min(value[0], value[1]));
+
+	const x1Text = Math.min(positionX.x1, positionX.x2 - x1Value.length * 2.5);
+
+	const x2Value = valueFormatter(Math.max(value[0], value[1]));
+
+	const x2Text = positionX.x2;
+
 	return (
 		<div className='px-8'>
 			<svg
@@ -162,43 +166,58 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 					fill='rgb(0, 87, 255)'
 				/>
 
-				<circle
-					ref={circleFromRef}
-					cx={`${positionX.x1}%`}
-					cy='50%'
-					r={CR}
-					fill='rgb(0, 87, 255)'
-					className='cursor-pointer'
-					onMouseDown={(e) => onMouseDown(e, 0)}
-				/>
+				<Group>
+					<circle
+						filter='url(#filter0_d_3025_28206)'
+						cx={`${positionX.x1}%`}
+						cy='50%'
+						r='8'
+						fill='rgb(255, 255, 255)'
+					/>
+					<circle
+						ref={circleFromRef}
+						cx={`${positionX.x1}%`}
+						cy='50%'
+						r={CR}
+						fill='rgb(0, 87, 255)'
+						className='cursor-pointer'
+						onMouseDown={(e) => onMouseDown(e, 0)}
+					/>
+				</Group>
 
-				<circle
-					ref={circleToRef}
-					cx={`${positionX.x2}%`}
-					cy='50%'
-					r={CR}
-					fill='rgb(0, 87, 255)'
-					className='cursor-pointer'
-					onMouseDown={(e) => onMouseDown(e, 1)}
-				/>
+				<Group>
+					<circle
+						filter='url(#filter0_d_3025_28206)'
+						cx={`${positionX.x2}%`}
+						cy='50%'
+						r='8'
+						fill='rgb(255, 255, 255)'
+					/>
+					<circle
+						ref={circleToRef}
+						cx={`${positionX.x2}%`}
+						cy='50%'
+						r={CR}
+						fill='rgb(0, 87, 255)'
+						className='cursor-pointer'
+						onMouseDown={(e) => onMouseDown(e, 1)}
+					/>
+				</Group>
 
 				<g className='text-gray-1000'>
-					<Text
-						x={`${Math.min(positionX.x1, positionX.x2 - String(valueFormatter(value[1])).length * 2.5)}%`}
-						y='5'
-					>
-						{valueFormatter(Math.min(value[0], value[1]))}
+					<Text x={`${x1Text}%`} y='5' textAnchor='middle'>
+						{x1Value}
 					</Text>
 
 					{Array.isArray(labels) &&
 						labels.map((label, index) => (
-							<Text key={label} x={`${index === 0 ? 0 : 100 / index}%`} y='40'>
+							<Text key={label} x={`${index === 0 ? 0 : 100 / index}%`} textAnchor='middle' y='40'>
 								{label}
 							</Text>
 						))}
 
-					<Text x={`${positionX.x2}%`} y='5'>
-						{valueFormatter(Math.max(value[0], value[1]))}
+					<Text x={`${x2Text}%`} y='5' textAnchor='middle'>
+						{x2Value}
 					</Text>
 				</g>
 			</svg>

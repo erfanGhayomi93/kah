@@ -104,7 +104,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 			renderer={({ setOpen }) => (
 				<div
 					style={{
-						height: onlyShowTags ? '7.2rem' : `calc(${(636 / window.innerHeight) * 100}vh - 16.5rem)`,
+						height: onlyShowTags ? '100%' : `calc(${(636 / window.innerHeight) * 100}vh - 16.5rem)`,
 					}}
 					className={clsx(
 						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
@@ -113,7 +113,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					{values.length > 0 && (
 						<div
 							className={clsx(
-								'w-full flex-wrap px-16 flex-justify-between',
+								'w-full flex-wrap px-16 pb-12 flex-justify-between',
 								!onlyShowTags && 'border-b border-b-gray-500',
 							)}
 						>
@@ -170,7 +170,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
 														? 'bg-primary-300 text-white'
-														: 'bg-transparent hover:bg-secondary-100',
+														: 'bg-transparent hover:bg-primary-100',
 												)}
 											>
 												<div className='w-32 flex-justify-center'>
@@ -215,7 +215,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							</div>
 
 							{!symbolsDataIsEmpty && (
-								<div className='px-16 py-16'>
+								<div className='border-t border-t-gray-500 px-16 py-16'>
 									<button
 										style={{ width: '14rem' }}
 										className='mr-auto h-40 rounded btn-primary'
@@ -238,7 +238,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						open ? 'rounded-t border-primary-300' : 'rounded border-gray-500',
 					)}
 				>
-					<span className='px-8 text-gray-1000'>
+					<span className='px-8 text-gray-900'>
 						<SearchSVG />
 					</span>
 					<input

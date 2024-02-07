@@ -44,7 +44,7 @@ const Footer = () => {
 				<span className='text-tiny font-normal text-gray-1000'>{t('footer.copyright')}</span>
 			</div>
 
-			<div className='h-full gap-32 flex-justify-end'>
+			<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
 				<span
 					className={clsx(
 						'flex items-center gap-8 transition-colors',

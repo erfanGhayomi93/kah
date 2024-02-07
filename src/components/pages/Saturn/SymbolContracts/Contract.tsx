@@ -9,14 +9,15 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useLayoutEffect, useMemo } from 'react';
-import Tab from '../common/Tab';
+import Tab, { type ITabIem } from '../common/Tab';
 import ComputingInformation from './Tabs/ComputingInformation';
 import PriceInformation from './Tabs/PriceInformation';
 
 interface ContractProps {
 	baseSymbol: Symbol.Info;
-	symbolISIN: string | null;
+	option: Saturn.ContentOption | null;
 	onLoadContract: (contract: Symbol.Info) => void;
+	onChangeContractTab: (tab: Saturn.OptionTab) => void;
 }
 
 const Wrapper = ({ children }: { children?: React.ReactNode }) => (
@@ -28,14 +29,14 @@ const Wrapper = ({ children }: { children?: React.ReactNode }) => (
 	</div>
 );
 
-const Contract = ({ baseSymbol, symbolISIN, onLoadContract }: ContractProps) => {
+const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: ContractProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
 	const { data: contractInfo, isFetching } = useSymbolInfoQuery({
-		queryKey: ['symbolInfoQuery', symbolISIN],
-		enabled: typeof symbolISIN === 'string',
+		queryKey: ['symbolInfoQuery', option === null ? null : option.symbolISIN],
+		enabled: option !== null,
 	});
 
 	const addSymbol = () => {
@@ -47,7 +48,7 @@ const Contract = ({ baseSymbol, symbolISIN, onLoadContract }: ContractProps) => 
 		);
 	};
 
-	const tabs = useMemo(
+	const tabs: Array<ITabIem<Saturn.OptionTab>> = useMemo(
 		() => [
 			{
 				id: 'price_information',
@@ -70,7 +71,7 @@ const Contract = ({ baseSymbol, symbolISIN, onLoadContract }: ContractProps) => 
 		onLoadContract(contractInfo);
 	}, [contractInfo]);
 
-	if (!symbolISIN)
+	if (!option)
 		return (
 			<Wrapper>
 				<div
@@ -165,7 +166,7 @@ const Contract = ({ baseSymbol, symbolISIN, onLoadContract }: ContractProps) => 
 				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
-			<Tab data={tabs} />
+			<Tab activeTab={option.activeTab} data={tabs} onChange={(id) => onChangeContractTab(id)} />
 		</Wrapper>
 	);
 };

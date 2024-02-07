@@ -24,7 +24,7 @@ const EndDateInput = ({ value: [fromEndDate, toEndDate], onChange }: EndDateInpu
 
 	return (
 		<PriceSlider
-			min={1}
+			min={0}
 			max={365}
 			onChange={onChangeSlider}
 			value={[fromEndDate, toEndDate]}

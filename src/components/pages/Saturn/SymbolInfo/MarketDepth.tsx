@@ -2,16 +2,18 @@ import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import { MoreOptionsSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import Tab from '../common/Tab';
+import Tab, { type ITabIem } from '../common/Tab';
 
 interface MarketDepthProps {
 	symbol: Symbol.Info;
+	activeTab: Saturn.SymbolTab;
+	setActiveTab: (tabId: Saturn.SymbolTab) => void;
 }
 
-const MarketDepth = ({ symbol }: MarketDepthProps) => {
+const MarketDepth = ({ symbol, activeTab, setActiveTab }: MarketDepthProps) => {
 	const t = useTranslations();
 
-	const tabs = useMemo(
+	const tabs: Array<ITabIem<Saturn.SymbolTab>> = useMemo(
 		() => [
 			{
 				id: 'tab_market_depth',
@@ -35,13 +37,13 @@ const MarketDepth = ({ symbol }: MarketDepthProps) => {
 					{t('side.buy')}
 				</button>
 
-				<button type='button' className='text-gray-1000 size-24'>
+				<button type='button' className='size-24 text-gray-1000'>
 					<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 				</button>
 			</div>
 
 			<div className='w-full gap-16 flex-column'>
-				<Tab data={tabs} />
+				<Tab activeTab={activeTab} data={tabs} onChange={setActiveTab} />
 			</div>
 		</div>
 	);

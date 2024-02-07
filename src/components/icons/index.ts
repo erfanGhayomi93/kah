@@ -23,6 +23,7 @@ import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
 import PasswordSVG from './password.svg';
+import PinSVG from './pin.svg';
 import PlusSVG from './plus.svg';
 import RefreshSVG from './refresh.svg';
 import SearchSVG from './search.svg';
@@ -57,6 +58,7 @@ export {
 	ManageSVG,
 	MoreOptionsSVG,
 	PasswordSVG,
+	PinSVG,
 	PlusSVG,
 	RefreshSVG,
 	SearchSVG,

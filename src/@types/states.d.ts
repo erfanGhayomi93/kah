@@ -12,7 +12,7 @@ declare type LightstreamStatus =
 	| 'DISCONNECTED:TRYING-RECOVERY'
 	| 'DISCONNECTED';
 
-declare type TSaturnBaseSymbolContracts = (string | null)[];
+declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
 declare interface SymbolContractModalStates {
 	term: string;
