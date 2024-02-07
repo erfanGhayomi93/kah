@@ -1,3 +1,5 @@
+'use client';
+
 import { XSVG } from '@/components/icons';
 import Panel from '@/components/panels/Panel';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';

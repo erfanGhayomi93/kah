@@ -76,7 +76,20 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 	};
 
 	const addContract = () => {
-		if (states.contract) ipcMain.send('saturn_contract_added', states.contract);
+		if (!states.contract) return;
+
+		const {
+			symbolInfo: { symbolISIN, symbolTitle },
+		} = states.contract;
+
+		ipcMain.send('saturn_contract_added', [
+			{
+				symbolISIN,
+				symbolTitle,
+				activeTab: 'price_information',
+			},
+		]);
+
 		onCloseModal();
 	};
 

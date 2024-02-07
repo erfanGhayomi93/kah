@@ -1,6 +1,7 @@
 import axios from '@/api/axios';
 import { useAllSavedTemplatesQuery } from '@/api/queries/saturnQueries';
 import routes from '@/api/routes';
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
@@ -8,6 +9,7 @@ import { useDebounce } from '@/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useMemo } from 'react';
 import Template from './Template';
 
 const Templates = () => {
@@ -53,8 +55,30 @@ const Templates = () => {
 	};
 
 	const onSelect = (item: Saturn.Template) => {
-		dispatch(setSaturnActiveTemplate(item));
+		try {
+			dispatch(setSaturnActiveTemplate(item));
+			if (item.content) {
+				const contracts = JSON.parse(item.content) as Saturn.Content;
+				if (Array.isArray(contracts) && contracts.length > 0) ipcMain.send('saturn_contract_added', contracts);
+			}
+		} catch (e) {
+			//
+		}
 	};
+
+	const sortedTemplates = useMemo(() => {
+		if (!savedTemplates) return [];
+
+		const data: typeof savedTemplates = [];
+
+		for (let i = 0; i < savedTemplates.length; i++) {
+			const item = savedTemplates[i];
+			if (item.isPinned) data.unshift(item);
+			else data.push(item);
+		}
+
+		return data;
+	}, [savedTemplates]);
 
 	if (isFetching)
 		return (
@@ -77,7 +101,7 @@ const Templates = () => {
 
 	return (
 		<ul className='relative flex-1 gap-16 px-24 pt-16 flex-column'>
-			{savedTemplates.map((item) => (
+			{sortedTemplates.map((item) => (
 				<Template
 					key={item.id}
 					{...item}

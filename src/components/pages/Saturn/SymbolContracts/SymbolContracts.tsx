@@ -9,18 +9,42 @@ interface SymbolContractsProps {
 
 const SymbolContracts = ({
 	baseSymbol,
-	baseSymbolContracts,
 	setBaseSymbol,
+	baseSymbolContracts,
 	setBaseSymbolContracts,
 }: SymbolContractsProps) => {
 	const onLoadContract = (contract: Symbol.Info) => {
 		try {
 			if (!contract.baseSymbolISIN) return;
 
-			if (contract.baseSymbolISIN === baseSymbol.symbolISIN) return;
+			const { baseSymbolISIN, symbolISIN, symbolTitle, isOption } = contract;
 
-			setBaseSymbol(contract.baseSymbolISIN);
-			setBaseSymbolContracts([contract.symbolISIN, null, null, null]);
+			if (baseSymbolISIN === baseSymbol.symbolISIN || (baseSymbolISIN === null && isOption)) return;
+
+			setBaseSymbol(baseSymbolISIN);
+			setBaseSymbolContracts([
+				{
+					activeTab: 'price_information',
+					symbolISIN,
+					symbolTitle,
+				},
+				null,
+				null,
+				null,
+			]);
+		} catch (e) {
+			//
+		}
+	};
+
+	const onChangeContractTab = (tab: Saturn.OptionTab, index: number) => {
+		try {
+			const options = JSON.parse(JSON.stringify(baseSymbolContracts)) as typeof baseSymbolContracts;
+
+			if (!options[index]) return;
+			options[index]!.activeTab = tab;
+
+			setBaseSymbolContracts(options);
 		} catch (e) {
 			//
 		}
@@ -28,12 +52,13 @@ const SymbolContracts = ({
 
 	return (
 		<div className='flex flex-wrap gap-8'>
-			{baseSymbolContracts.map((symbolISIN, index) => (
+			{baseSymbolContracts.map((option, index) => (
 				<Contract
 					key={index}
-					symbolISIN={symbolISIN}
+					option={option}
 					baseSymbol={baseSymbol}
 					onLoadContract={(contract) => onLoadContract(contract)}
+					onChangeContractTab={(tab) => onChangeContractTab(tab, index)}
 				/>
 			))}
 		</div>

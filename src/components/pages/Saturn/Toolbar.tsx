@@ -1,19 +1,20 @@
 import SymbolSearch from '@/components/common/SymbolSearch';
 import { BookmarkSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
-import { toggleSaveSaturnTemplate } from '@/features/slices/modalSlice';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleSavedSaturnTemplates } from '@/features/slices/uiSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface ToolbarProps {
-	baseSymbolInfo: Symbol.Info;
-	baseSymbolContracts: TSaturnBaseSymbolContracts;
 	setSymbol: (symbol: Symbol.Search | null) => void;
+	saveTemplate: () => void;
 }
 
-const Toolbar = ({ baseSymbolInfo, baseSymbolContracts, setSymbol }: ToolbarProps) => {
+const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 	const t = useTranslations();
+
+	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
 	const dispatch = useAppDispatch();
 
@@ -22,19 +23,6 @@ const Toolbar = ({ baseSymbolInfo, baseSymbolContracts, setSymbol }: ToolbarProp
 	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (!value) return;
 		setSymbol(value);
-	};
-
-	const saveTemplate = () => {
-		if (!baseSymbolInfo.symbolISIN) return;
-
-		dispatch(
-			toggleSaveSaturnTemplate({
-				baseSymbolISIN: baseSymbolInfo.symbolISIN,
-				baseSymbolTitle: baseSymbolInfo.symbolTitle,
-				activeTab: 'tab_chart',
-				options: baseSymbolContracts.filter(Boolean) as Saturn.ContentOption[],
-			}),
-		);
 	};
 
 	const openSavedTemplates = () => {
@@ -48,7 +36,12 @@ const Toolbar = ({ baseSymbolInfo, baseSymbolContracts, setSymbol }: ToolbarProp
 			</div>
 
 			<div style={{ flex: 2 }} className='flex-1 gap-8 flex-justify-end'>
-				<button onClick={saveTemplate} type='button' className='h-40 rounded px-32 btn-primary'>
+				<button
+					onClick={saveTemplate}
+					type='button'
+					className='h-40 rounded px-32 btn-primary'
+					disabled={!isLoggedIn}
+				>
 					{t('common.save')}
 				</button>
 				<button
