@@ -61,7 +61,7 @@ const LogoutModal = () => {
 					<div className='spinner size-32' />
 				) : (
 					<>
-						<h2 className='text-center text-lg font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
+						<h2 className='text-center text-xl font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
 
 						<div className='pb-40 pt-32 text-center'>
 							<p className='text-base text-gray-1000'>{t('logout_modal.description')}</p>
@@ -71,7 +71,7 @@ const LogoutModal = () => {
 							<button
 								onClick={onCloseModal}
 								type='button'
-								className='h-40 flex-1 rounded border border-gray-500 text-base text-gray-800 flex-justify-center'
+								className='btn-disabled-outline h-40 flex-1 rounded text-lg'
 							>
 								{t('common.cancel')}
 							</button>
@@ -79,7 +79,7 @@ const LogoutModal = () => {
 							<button
 								onClick={logout}
 								type='button'
-								className='h-40 flex-1 rounded text-lg font-medium flex-justify-center btn-error'
+								className='h-40 flex-1 rounded text-lg font-medium btn-error'
 							>
 								{t('logout_modal.button')}
 							</button>
