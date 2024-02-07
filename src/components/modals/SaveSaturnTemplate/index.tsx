@@ -8,11 +8,11 @@ import styled from 'styled-components';
 import Modal from '../Modal';
 
 const Div = styled.div`
-	width: 444px;
+	width: 384px;
 	padding: 1.6rem 2.4rem 2.4rem 2.4rem;
 	border-radius: 16px;
 	display: flex;
-	gap: 4.4rem;
+	gap: 2.4rem;
 	flex-direction: column;
 	align-items: center;
 	text-align: center;
@@ -63,13 +63,15 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 	return (
 		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
 			<Div className='bg-white shadow-tooltip'>
-				<h2 className='text-lg font-medium text-gray-1000'>
+				<h2 className='text-xl font-medium text-gray-1000'>
 					{t('save_saturn_template.save_template', { title: baseSymbolTitle })}
 				</h2>
 
-				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-56 flex-column'>
+				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 flex-column'>
 					<label className='w-full items-start gap-8 flex-column'>
-						<span className='text-base text-gray-1000'>{t('save_saturn_template.input_label')}</span>
+						<span className='text-lg font-medium text-gray-900'>
+							{t('save_saturn_template.input_label')}
+						</span>
 						<input
 							type='text'
 							value={name}
@@ -79,20 +81,16 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 						/>
 					</label>
 
-					<div className='w-full gap-16 flex-justify-center'>
+					<div className='w-full gap-8 flex-justify-center'>
 						<button
 							type='button'
 							onClick={onCloseModal}
-							className='h-40 flex-1 rounded text-center text-lg text-gray-700'
+							className='btn-disabled-outline h-40 flex-1 rounded text-lg'
 						>
 							{t('common.cancel')}
 						</button>
 
-						<button
-							type='submit'
-							style={{ flex: '0 0 25.6rem' }}
-							className='h-40 rounded text-lg btn-primary'
-						>
+						<button type='submit' className='h-40 flex-1 rounded text-lg font-medium btn-primary'>
 							{t('common.save')}
 						</button>
 					</div>

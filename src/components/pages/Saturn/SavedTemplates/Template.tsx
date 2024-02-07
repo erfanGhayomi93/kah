@@ -39,7 +39,7 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 					'size-20 rounded-circle border flex-justify-center',
 					isPinned
 						? 'border-primary-400 bg-primary-400 text-white'
-						: 'border-gray-900 bg-white text-gray-900',
+						: 'border-gray-900 bg-white text-gray-900 transition-colors hover:border-primary-400 hover:text-primary-400',
 				)}
 			>
 				<PinSVG width='2rem' height='2rem' />
@@ -49,7 +49,9 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 				onClick={onSelect}
 				className={clsx(
 					'h-72 flex-1 cursor-pointer items-start justify-center gap-12 rounded border px-16 py-8 transition-colors flex-column',
-					isActive ? 'border-primary-400 bg-primary-400' : 'border-gray-500 bg-gray-200',
+					isActive
+						? 'border-primary-400 bg-primary-400 hover:bg-primary-300'
+						: 'border-gray-500 bg-gray-200 transition-colors hover:bg-primary-100',
 				)}
 			>
 				<h3 className={clsx('text-lg font-medium', isActive ? 'text-white' : 'text-gray-900')}>{name}</h3>
