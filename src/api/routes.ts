@@ -49,8 +49,9 @@ const routes = {
 	saturn: {
 		GetAllSaturns: `${rlcUrl}/Saturn/v1/GetAllSaturns`,
 		GetSaturn: `${rlcUrl}/Saturn/v1/GetSaturn`,
-		Save: `${rlcUrl}/Saturn/v1/Save`,
+		Upsert: `${rlcUrl}/Saturn/v1/Upsert`,
 		Pin: `${rlcUrl}/Saturn/v1/Pin`,
+		Delete: `${rlcUrl}/Saturn/v1/Delete`,
 	},
 };
 

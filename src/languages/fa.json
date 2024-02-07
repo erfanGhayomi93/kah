@@ -3,6 +3,7 @@
 		"confirm": "تایید",
 		"register": "ثبت",
 		"continue": "ادامه",
+		"save": "ذخیره",
 		"clear_all": "پاک کردن همه",
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
@@ -132,6 +133,16 @@
 		"column_gamma": "گاما",
 		"column_rho": "رو",
 		"column_vega": "وگا"
+	},
+	"saved_saturn_templates": {
+		"title": "مدیریت قالب‌های ذخیره شده",
+		"no_data": "قالب ذخیره شده‌ای برای نمایش وجود ندارد!"
+	},
+	"save_saturn_template": {
+		"save_template": "ذخیره صفحه {title}",
+		"input_label": "عنوان",
+		"input_placeholder": "عنوان مورد نظر خود را وارد کنید",
+		"no_data": "قالب ذخیره شده‌ای برای نمایش وجود ندارد!"
 	},
 	"option_chain": {
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",

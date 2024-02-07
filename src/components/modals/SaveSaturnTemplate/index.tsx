@@ -1,0 +1,105 @@
+import axios from '@/api/axios';
+import routes from '@/api/routes';
+import { useAppDispatch } from '@/features/hooks';
+import { toggleSaveSaturnTemplate, type ISaveSaturnTemplate } from '@/features/slices/modalSlice';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import styled from 'styled-components';
+import Modal from '../Modal';
+
+const Div = styled.div`
+	width: 444px;
+	padding: 1.6rem 2.4rem 2.4rem 2.4rem;
+	border-radius: 16px;
+	display: flex;
+	gap: 4.4rem;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+`;
+
+interface SaveSaturnTemplateProps extends ISaveSaturnTemplate {}
+
+const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveSaturnTemplateProps) => {
+	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const [loading, setLoading] = useState(false);
+
+	const [name, setName] = useState('');
+
+	const onCloseModal = () => {
+		dispatch(toggleSaveSaturnTemplate(null));
+	};
+
+	const onSubmit = async (e: React.FormEvent) => {
+		try {
+			e.preventDefault();
+
+			setLoading(true);
+
+			const content = JSON.stringify({
+				baseSymbolTitle,
+				baseSymbolISIN,
+				...props,
+			});
+			const response = await axios.post(routes.saturn.Upsert, {
+				name,
+				content,
+			});
+			const data = response.data;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			onCloseModal();
+		} catch (e) {
+			//
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return (
+		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+			<Div className='bg-white shadow-tooltip'>
+				<h2 className='text-lg font-medium text-gray-1000'>
+					{t('save_saturn_template.save_template', { title: baseSymbolTitle })}
+				</h2>
+
+				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-56 flex-column'>
+					<label className='w-full items-start gap-8 flex-column'>
+						<span className='text-base text-gray-1000'>{t('save_saturn_template.input_label')}</span>
+						<input
+							type='text'
+							value={name}
+							placeholder={t('save_saturn_template.input_placeholder')}
+							className='h-40 w-full rounded border border-gray-500 px-8 text-base'
+							onChange={(e) => setName(e.target.value)}
+						/>
+					</label>
+
+					<div className='w-full gap-16 flex-justify-center'>
+						<button
+							type='button'
+							onClick={onCloseModal}
+							className='h-40 flex-1 rounded text-center text-lg text-gray-700'
+						>
+							{t('common.cancel')}
+						</button>
+
+						<button
+							type='submit'
+							style={{ flex: '0 0 25.6rem' }}
+							className='h-40 rounded text-lg btn-primary'
+						>
+							{t('common.save')}
+						</button>
+					</div>
+				</form>
+			</Div>
+		</Modal>
+	);
+};
+
+export default SaveSaturnTemplate;

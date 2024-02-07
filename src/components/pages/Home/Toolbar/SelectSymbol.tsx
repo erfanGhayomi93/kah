@@ -8,7 +8,7 @@ const SelectSymbol = () => {
 	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (!value) return;
 
-		openNewTab(`/fa/saturn?${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
+		openNewTab('/fa/saturn', `${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
 	};
 
 	return (

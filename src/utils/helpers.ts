@@ -55,9 +55,10 @@ export const getDirection = (lang: string): 'rtl' | 'ltr' => {
 	return 'ltr';
 };
 
-export const openNewTab = (pathname: string) => {
+export const openNewTab = (pathname: string, search = '') => {
 	const url = new URL(location.href);
 	url.pathname = pathname;
+	url.search = search;
 
 	if (window && url) window.open(decodeURIComponent(url.href), '_blank');
 };

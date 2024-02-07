@@ -36,7 +36,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 			const { symbolISIN, baseSymbolISIN } = symbolData.symbolInfo;
 
 			if (baseSymbolISIN && symbolISIN)
-				openNewTab(`/fa/saturn?symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+				openNewTab('/fa/saturn', `symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
 		} catch (e) {
 			//
 		}

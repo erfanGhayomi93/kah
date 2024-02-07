@@ -371,28 +371,27 @@ declare namespace User {
 }
 
 declare namespace Saturn {
-	interface All {
+	type SymbolTab = 'tab_market_depth' | 'tab_chart' | 'tab_my_asset';
+
+	type OptionTab = 'price_information' | 'computing_information' | 'market_depth' | 'open_position';
+
+	interface Template {
 		id: number;
 		name: string;
-		baseSymbolISIN: string;
-		baseActiveTab: string;
-		saturnDetails: Contract[];
-	}
-
-	interface Contract {
-		detailId: number;
-		optionSymbolISIN: string;
-		order: number;
-		activeTab: string;
-		saturnId: number;
-	}
-
-	interface Single {
-		id: number;
-		name: string;
-		mobile: string;
-		optionSymbolTitles: string;
-		baseSymbolTitle: string;
+		content: string;
 		isPinned: boolean;
+	}
+
+	interface ContentOption {
+		symbolTitle: string;
+		symbolISIN: string;
+		activeTab: OptionTab;
+	}
+
+	interface Content {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		activeTab: SymbolTab;
+		options: ContentOption[];
 	}
 }
