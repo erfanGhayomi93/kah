@@ -87,10 +87,10 @@ const ManageWatchlistColumns = () => {
 					<h1 className='text-2xl font-bold text-gray-1000'>{t('manage_option_watchlist_columns.title')}</h1>
 
 					<div className='flex gap-24'>
-						<button className='text-gray-1000' type='button' onClick={onRefresh}>
+						<button className='icon-hover' type='button' onClick={onRefresh}>
 							<RefreshSVG width='2.4rem' height='2.4rem' />
 						</button>
-						<button className='text-gray-1000' type='button' onClick={onClose}>
+						<button className='icon-hover' type='button' onClick={onClose}>
 							<XSVG width='1.6rem' height='1.6rem' />
 						</button>
 					</div>

@@ -44,7 +44,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 					onClick={onCloseModal}
 					style={{ left: '1.6rem' }}
 					type='button'
-					className='absolute top-1/2 -translate-y-1/2 transform p-8 text-gray-1000'
+					className='icon-hover absolute top-1/2 -translate-y-1/2 transform p-8'
 				>
 					<XSVG width='1.6rem' height='1.6rem' />
 				</button>

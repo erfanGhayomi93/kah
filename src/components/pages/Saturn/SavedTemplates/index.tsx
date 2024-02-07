@@ -20,12 +20,12 @@ const SavedTemplates = () => {
 
 	return (
 		<Panel isEnable={isEnabled} onClose={onClose} width='42rem' height='calc(100vh - 8rem)'>
-			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
+			<div className='sticky top-0 z-10 w-full bg-white px-24 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-1000'>{t('saved_saturn_templates.title')}</h1>
 
 					<div className='flex gap-24'>
-						<button className='text-gray-1000' type='button' onClick={onClose}>
+						<button className='icon-hover' type='button' onClick={onClose}>
 							<XSVG width='1.6rem' height='1.6rem' />
 						</button>
 					</div>
