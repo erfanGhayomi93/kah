@@ -1,5 +1,6 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
+import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSaveSaturnTemplate, type ISaveSaturnTemplate } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
@@ -90,9 +91,13 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 							{t('common.cancel')}
 						</button>
 
-						<button type='submit' className='h-40 flex-1 rounded text-lg font-medium btn-primary'>
+						<Button
+							loading={loading}
+							type='submit'
+							className='h-40 flex-1 rounded text-lg font-medium btn-primary'
+						>
 							{t('common.save')}
-						</button>
+						</Button>
 					</div>
 				</form>
 			</Div>
