@@ -48,12 +48,14 @@ const Panel = ({ transparent, width, height, isEnable, children, onClose }: Pane
 	if (!rendered) return null;
 
 	return createPortal(
-		<div
-			style={{ animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }}
-			ref={rootRef}
-			className={styles.root}
-		>
-			{!transparent && <div onClick={onClose} className={styles.bg} />}
+		<div ref={rootRef} className={styles.root}>
+			{!transparent && (
+				<div
+					style={{ animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }}
+					onClick={onClose}
+					className={styles.bg}
+				/>
+			)}
 
 			<Wrapper
 				$enabled={isEnable}
