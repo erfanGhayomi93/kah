@@ -7,7 +7,9 @@ const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' :
 const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
-	time: `${rlcUrl}/Time/v1/Time`,
+	common: {
+		time: `${rlcUrl}/Common/v1/Time`,
+	},
 
 	authentication: {
 		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
@@ -31,19 +33,26 @@ const routes = {
 
 	option: {
 		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
-		OptionCalculativeInfo: `${rlcUrl}/OptionWatchlist/v1/OptionCalculativeInfo`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
 		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
 	},
 
 	optionWatchlist: {
 		Watchlist: `${rlcUrl}/OptionWatchlist/v1/Watchlist`,
-		WatchlistByCompanyISIN: `${rlcUrl}/OptionWatchlist/v1/WatchlistByCompanyISIN`,
 		WatchlistBySettlementDate: `${rlcUrl}/OptionWatchlist/v1/WatchlistBySettlementDate`,
+		OptionCalculativeInfo: `${rlcUrl}/OptionWatchlist/v1/OptionCalculativeInfo`,
 		OptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/OptionSymbolColumns`,
 		DefaultOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/DefaultOptionSymbolColumns`,
 		ResetOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/ResetOptionSymbolColumns`,
 		UpdateOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/UpdateOptionSymbolColumns`,
+		GetAllCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetAllCustomWatchlist`,
+		CreateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/CreateCustomWatchlist`,
+		UpdateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/UpdateCustomWatchlist`,
+		DeleteCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/DeleteCustomWatchlist`,
+		GetCustomWatchlistSymbols: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistSymbols`,
+		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
+		RemoveSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
+		SetActiveWatchlist: `${rlcUrl}/OptionWatchlist/v1/SetActiveWatchlist`,
 	},
 
 	saturn: {
@@ -52,6 +61,8 @@ const routes = {
 		Upsert: `${rlcUrl}/Saturn/v1/Upsert`,
 		Pin: `${rlcUrl}/Saturn/v1/Pin`,
 		Delete: `${rlcUrl}/Saturn/v1/Delete`,
+		SetActive: `${rlcUrl}/Saturn/v1/SetActive`,
+		GetActive: `${rlcUrl}/Saturn/v1/GetActive`,
 	},
 };
 

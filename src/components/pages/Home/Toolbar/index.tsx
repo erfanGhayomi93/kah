@@ -4,6 +4,7 @@ import { toggleOptionFiltersModal } from '@/features/slices/modalSlice';
 import { useMemo } from 'react';
 import Actions from './Actions';
 import SelectSymbol from './SelectSymbol';
+import WatchlistList from './WatchlistList';
 
 interface ToolbarProps {
 	filters: Partial<IOptionWatchlistFilters>;
@@ -60,7 +61,7 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 				<Actions filtersCount={filtersCount} onShowFilters={onShowFilters} onExportExcel={onExportExcel} />
 			</div>
 
-			{/* <WatchlistList /> */}
+			<WatchlistList />
 		</div>
 	);
 };

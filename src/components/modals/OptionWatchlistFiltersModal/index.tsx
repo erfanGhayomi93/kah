@@ -23,7 +23,7 @@ const OptionWatchlistFiltersModal = () => {
 		<Modal classes={{ modal: 'rounded-md shadow-section' }} transparent top='14%' onClose={onClose}>
 			<Div className='gap-24 bg-white px-24 pb-24 pt-16 flex-column'>
 				<div className='flex-justify-center'>
-					<h1 className='text-center text-2xl font-bold text-gray-1000'>
+					<h1 className='text-center text-xl font-medium text-gray-1000'>
 						{t('option_watchlist_filters_modal.title')}
 					</h1>
 

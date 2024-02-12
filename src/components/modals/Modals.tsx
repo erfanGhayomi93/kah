@@ -1,6 +1,7 @@
 'use client';
 
 import { useAppSelector } from '@/features/hooks';
+import AddNewOptionWatchlist from './AddNewOptionWatchlist';
 import ForgetPasswordModal from './ForgetPasswordModal';
 import LoginModal from './LoginModal';
 import LogoutModal from './Logout';
@@ -9,9 +10,15 @@ import SaveSaturnTemplate from './SaveSaturnTemplate';
 import SymbolContracts from './SymbolContracts';
 
 const Modals = () => {
-	const { loginModal, logout, optionFilters, forgetPassword, symbolContracts, saveSaturnTemplate } = useAppSelector(
-		(state) => state.modal,
-	);
+	const {
+		loginModal,
+		logout,
+		optionFilters,
+		forgetPassword,
+		symbolContracts,
+		saveSaturnTemplate,
+		addNewOptionWatchlist,
+	} = useAppSelector((state) => state.modal);
 
 	return [
 		loginModal && <LoginModal key='login-modal' />,
@@ -27,6 +34,7 @@ const Modals = () => {
 		),
 		symbolContracts && <SymbolContracts key='symbol-contracts' {...symbolContracts} />,
 		saveSaturnTemplate !== null && <SaveSaturnTemplate key='save-saturn-template' {...saveSaturnTemplate} />,
+		addNewOptionWatchlist && <AddNewOptionWatchlist key='add-new-option-watchlist' />,
 	];
 };
 
