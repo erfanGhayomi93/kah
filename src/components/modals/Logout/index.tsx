@@ -13,7 +13,6 @@ const Div = styled.div`
 	width: 336px;
 	height: 200px;
 	padding: 1.6rem 1.6rem 2.4rem 1.6rem;
-	border-radius: 16px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -56,7 +55,7 @@ const LogoutModal = () => {
 			top='50%'
 			onClose={onCloseModal}
 		>
-			<Div className='bg-white shadow-tooltip'>
+			<Div className='bg-white'>
 				{loading ? (
 					<div className='spinner size-32' />
 				) : (
@@ -71,7 +70,7 @@ const LogoutModal = () => {
 							<button
 								onClick={onCloseModal}
 								type='button'
-								className='btn-disabled-outline h-40 flex-1 rounded text-lg'
+								className='h-40 flex-1 rounded text-lg btn-disabled-outline'
 							>
 								{t('common.cancel')}
 							</button>

@@ -1,8 +1,9 @@
 import axios from '@/api/axios';
+import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSaveSaturnTemplate, type ISaveSaturnTemplate } from '@/features/slices/modalSlice';
+import { toggleAddNewOptionWatchlist } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -18,9 +19,7 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface SaveSaturnTemplateProps extends ISaveSaturnTemplate {}
-
-const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveSaturnTemplateProps) => {
+const AddNewOptionWatchlist = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -29,28 +28,30 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 
 	const [name, setName] = useState('');
 
+	const { refetch: refetchWatchlistList } = useGetAllCustomWatchlistQuery({
+		queryKey: ['getAllCustomWatchlistQuery'],
+	});
+
 	const onCloseModal = () => {
-		dispatch(toggleSaveSaturnTemplate(null));
+		dispatch(toggleAddNewOptionWatchlist(false));
 	};
 
 	const onSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setLoading(true);
 		try {
-			e.preventDefault();
-
-			setLoading(true);
-
-			const content = JSON.stringify({
-				baseSymbolTitle,
-				baseSymbolISIN,
-				...props,
-			});
-			const response = await axios.post(routes.saturn.Upsert, {
+			const response = await axios.post(routes.optionWatchlist.CreateCustomWatchlist, {
 				name,
-				content,
 			});
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			try {
+				await refetchWatchlistList();
+			} catch (e) {
+				//
+			}
 
 			onCloseModal();
 		} catch (e) {
@@ -59,22 +60,20 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 	};
 
 	return (
-		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
 			<Div className='bg-white'>
-				<h2 className='text-xl font-medium text-gray-1000'>
-					{t('save_saturn_template.save_template', { title: baseSymbolTitle })}
-				</h2>
+				<h2 className='text-xl font-medium text-gray-1000'>{t('add_new_option_watchlist_modal.title')}</h2>
 
 				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 flex-column'>
 					<label className='w-full items-start gap-8 flex-column'>
 						<span className='text-lg font-medium text-gray-900'>
-							{t('save_saturn_template.input_label')}
+							{t('add_new_option_watchlist_modal.input_label')}
 						</span>
 						<input
 							autoFocus
 							type='text'
 							value={name}
-							placeholder={t('save_saturn_template.input_placeholder')}
+							placeholder={t('add_new_option_watchlist_modal.input_placeholder')}
 							className='h-40 w-full rounded border border-gray-500 px-8 text-base'
 							onChange={(e) => setName(e.target.value)}
 						/>
@@ -95,7 +94,7 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 							type='submit'
 							className='h-40 flex-1 rounded text-lg font-medium btn-primary'
 						>
-							{t('common.save')}
+							{t('common.register')}
 						</Button>
 					</div>
 				</form>
@@ -104,4 +103,4 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 	);
 };
 
-export default SaveSaturnTemplate;
+export default AddNewOptionWatchlist;

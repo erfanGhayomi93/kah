@@ -5,12 +5,23 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { useDebounce } from '@/hooks';
+import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import Template from './Template';
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		saturnActiveTemplate: getSaturnActiveTemplate(state),
+		isLoggedIn: getIsLoggedIn(state),
+	}),
+);
 
 const Templates = () => {
 	const t = useTranslations();
@@ -21,10 +32,15 @@ const Templates = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const saturnActiveTemplate = useAppSelector(getSaturnActiveTemplate);
+	const { saturnActiveTemplate, isLoggedIn } = useAppSelector(getStates);
 
-	const { data: savedTemplates, isFetching } = useAllSavedTemplatesQuery({
+	const {
+		data: savedTemplates,
+		isFetching,
+		refetch: refetchSavedTemplates,
+	} = useAllSavedTemplatesQuery({
 		queryKey: ['useAllSavedTemplates'],
+		enabled: isLoggedIn,
 	});
 
 	const onPin = (template: Saturn.Template) => {
@@ -54,13 +70,21 @@ const Templates = () => {
 		}, 100);
 	};
 
-	const onSelect = (item: Saturn.Template) => {
+	const onSelect = async (item: Saturn.Template) => {
 		try {
 			dispatch(setSaturnActiveTemplate(item));
 			if (item.content) {
 				const contracts = JSON.parse(item.content) as Saturn.Content;
 				if (Array.isArray(contracts) && contracts.length > 0) ipcMain.send('saturn_contract_added', contracts);
 			}
+		} catch (e) {
+			//
+		}
+
+		try {
+			await axios.post<ServerResponse<Symbol.Info>>(routes.saturn.SetActive, {
+				id: item.id,
+			});
 		} catch (e) {
 			//
 		}
@@ -80,6 +104,11 @@ const Templates = () => {
 		return data;
 	}, [savedTemplates]);
 
+	useLayoutEffect(() => {
+		if (!isLoggedIn) return;
+		refetchSavedTemplates();
+	}, [isLoggedIn]);
+
 	if (isFetching)
 		return (
 			<div className='relative flex-1'>
@@ -87,7 +116,7 @@ const Templates = () => {
 			</div>
 		);
 
-	if (!Array.isArray(savedTemplates) || savedTemplates.length === 0)
+	if (!isLoggedIn || !Array.isArray(savedTemplates) || savedTemplates.length === 0)
 		return (
 			<div className='relative flex-1'>
 				<div className='absolute flex-col gap-16 flex-justify-center center'>

@@ -7,7 +7,7 @@ export const useTimeQuery = createQuery<string, ['useTimeQuery']>({
 	queryKey: ['useTimeQuery'],
 	queryFn: async ({ signal }) => {
 		try {
-			const response = await axios.get<ServerResponse<string>>(routes.time, { signal });
+			const response = await axios.get<ServerResponse<string>>(routes.common.time, { signal });
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
