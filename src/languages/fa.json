@@ -46,7 +46,7 @@
 	"add_new_option_watchlist_modal": {
 		"title": "افزودن دیده‌بان",
 		"input_label": "عنوان",
-		"input_placeholder": "نام دیدیه‌بان خود را وارد کنید"
+		"input_placeholder": "نام دیده‌بان خود را وارد کنید"
 	},
 	"manage_option_watchlist_modal": {
 		"title": "مدیریت دیده‌بان",
