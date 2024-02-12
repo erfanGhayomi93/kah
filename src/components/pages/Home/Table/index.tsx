@@ -641,7 +641,8 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	return (
 		<div
 			style={{
-				height: 'calc(100vh - 18rem)',
+				maxHeight: 'calc(100vh - 24.8rem)',
+				height: '200vh',
 			}}
 			className='relative'
 		>

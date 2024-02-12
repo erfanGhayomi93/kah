@@ -25,7 +25,7 @@ export const setCookie = (name: string, value: string, options?: ICookieOptions)
 		if (options) {
 			if (options?.domain) newCookie += `; Domain=${options.domain}`;
 			if (options?.maxAgeInSeconds) newCookie += `; Max-Age=${options.maxAgeInSeconds}`;
-			if (options?.path) newCookie += `; Path=${options.path}`;
+			newCookie += `; Path=${options?.path ?? '/'}`;
 			if (options?.sameSite) newCookie += `; SameSite=${options.sameSite}`;
 			if (options?.secure) newCookie += '; Secure';
 			if (options?.partitioned) newCookie += '; Partitioned';

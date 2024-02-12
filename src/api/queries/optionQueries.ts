@@ -206,14 +206,63 @@ export const useOptionCalculativeInfoQuery = createQuery<
 	queryFn: async ({ queryKey, signal }) => {
 		const [, symbolISIN] = queryKey;
 
-		const response = await axios.get<ServerResponse<Option.CalculativeInfo>>(routes.option.OptionCalculativeInfo, {
-			params: { symbolISIN },
-			signal,
-		});
+		const response = await axios.get<ServerResponse<Option.CalculativeInfo>>(
+			routes.optionWatchlist.OptionCalculativeInfo,
+			{
+				params: { symbolISIN },
+				signal,
+			},
+		);
 		const { data } = response;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 		return data.result;
+	},
+});
+
+export const useGetAllCustomWatchlistQuery = createQuery<Option.WatchlistList[], ['getAllCustomWatchlistQuery']>({
+	staleTime: 36e5,
+	queryKey: ['getAllCustomWatchlistQuery'],
+	queryFn: async ({ signal }) => {
+		try {
+			const response = await axios.get<ServerResponse<Option.WatchlistList[]>>(
+				routes.optionWatchlist.GetAllCustomWatchlist,
+				{ signal },
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useGetCustomWatchlistSymbolsQuery = createQuery<
+	Option.Root[],
+	['getCustomWatchlistSymbolsQuery', number | null]
+>({
+	staleTime: 36e5,
+	queryKey: ['getCustomWatchlistSymbolsQuery', null],
+	queryFn: async ({ signal, queryKey }) => {
+		try {
+			const [, watchlistId] = queryKey;
+			if (watchlistId === null) return [];
+
+			const response = await axios.get<ServerResponse<Option.Root[]>>(
+				routes.optionWatchlist.GetCustomWatchlistSymbols,
+				{ signal },
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
 	},
 });

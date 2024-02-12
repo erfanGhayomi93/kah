@@ -264,6 +264,13 @@ declare namespace Option {
 		iotm: IOTM;
 		initialMargin: number;
 	}
+
+	export interface WatchlistList {
+		id: number;
+		name: string;
+		isActive: boolean;
+		isHidden: boolean;
+	}
 }
 
 declare namespace Symbol {

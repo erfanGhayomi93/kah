@@ -58,7 +58,7 @@ const Footer = () => {
 					<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />
 				</span>
 
-				<div className='h-full gap-8 border-r border-gray-600 px-32 ltr flex-justify-center'>
+				<div className='h-full gap-12 border-r border-gray-600 px-32 ltr flex-justify-center'>
 					<span style={{ fontSize: '1.3rem', width: '4.4rem' }} className='text-left text-gray-900'>
 						{serverTime}
 					</span>
