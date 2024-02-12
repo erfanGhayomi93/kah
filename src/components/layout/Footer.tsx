@@ -44,7 +44,7 @@ const Footer = () => {
 				<span className='text-tiny font-normal text-gray-1000'>{t('footer.copyright')}</span>
 			</div>
 
-			<div className='h-full gap-32 flex-justify-end'>
+			<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
 				<span
 					className={clsx(
 						'flex items-center gap-8 transition-colors',
@@ -58,7 +58,7 @@ const Footer = () => {
 					<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />
 				</span>
 
-				<div className='h-full gap-8 border-r border-gray-600 px-32 ltr flex-justify-center'>
+				<div className='h-full gap-12 border-r border-gray-600 px-32 ltr flex-justify-center'>
 					<span style={{ fontSize: '1.3rem', width: '4.4rem' }} className='text-left text-gray-900'>
 						{serverTime}
 					</span>

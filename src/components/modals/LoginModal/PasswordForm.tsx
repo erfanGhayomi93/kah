@@ -112,7 +112,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 								<button
 									onClick={() => setPasswordIsVisible(!passwordIsVisible)}
 									type='button'
-									className='border-r-0 text-gray-200 prefix'
+									className='border-r-0 text-gray-900 prefix'
 								>
 									{passwordIsVisible ? <EyeSlashSVG /> : <EyeSVG />}
 								</button>

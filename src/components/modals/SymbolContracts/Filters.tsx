@@ -36,7 +36,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 	return (
 		<div className='gap-16 flex-column'>
 			<div className='relative h-72 border-b border-gray-500 flex-justify-center'>
-				<h2 className='text-lg font-medium text-gray-1000'>
+				<h2 className='text-xl font-medium text-gray-1000'>
 					{t('symbol_contracts_modal.title', { symbolTitle })}
 				</h2>
 
@@ -44,7 +44,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 					onClick={onCloseModal}
 					style={{ left: '1.6rem' }}
 					type='button'
-					className='absolute top-1/2 -translate-y-1/2 transform p-8 text-gray-1000'
+					className='absolute top-1/2 -translate-y-1/2 transform p-8 icon-hover'
 				>
 					<XSVG width='1.6rem' height='1.6rem' />
 				</button>

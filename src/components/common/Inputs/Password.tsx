@@ -39,7 +39,11 @@ const Password = ({ control, label, ...props }: PasswordProps) => {
 							{...field}
 							{...props}
 						/>
-						<button onClick={() => setShowPassword(!showPassword)} type='button' className='border-0 text-gray-200'>
+						<button
+							onClick={() => setShowPassword(!showPassword)}
+							type='button'
+							className='border-0 text-gray-900'
+						>
 							{showPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
 					</div>

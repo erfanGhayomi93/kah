@@ -3,9 +3,11 @@
 		"confirm": "تایید",
 		"register": "ثبت",
 		"continue": "ادامه",
+		"save": "ذخیره",
 		"clear_all": "پاک کردن همه",
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
+		"delete": "حذف",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
@@ -40,6 +42,17 @@
 		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}",
 		"end_date": "سررسیدهای",
 		"select_contract_from_list": "از لیست سمت راست یک سررسید انتخاب کنید!"
+	},
+	"add_new_option_watchlist_modal": {
+		"title": "افزودن دیده‌بان",
+		"input_label": "عنوان",
+		"input_placeholder": "نام دیدیه‌بان خود را وارد کنید"
+	},
+	"manage_option_watchlist_modal": {
+		"title": "مدیریت دیده‌بان",
+		"watchlist_count": "{count} دیده‌بان",
+		"create_new_watchlist": "دیده‌بان جدید",
+		"new_watchlist_name": "نام جدید دیده‌بان"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
@@ -132,6 +145,16 @@
 		"column_gamma": "گاما",
 		"column_rho": "رو",
 		"column_vega": "وگا"
+	},
+	"saved_saturn_templates": {
+		"title": "مدیریت قالب‌های ذخیره شده",
+		"no_data": "قالب ذخیره شده‌ای برای نمایش وجود ندارد!"
+	},
+	"save_saturn_template": {
+		"save_template": "ذخیره صفحه {title}",
+		"input_label": "عنوان",
+		"input_placeholder": "عنوان مورد نظر خود را وارد کنید",
+		"no_data": "قالب ذخیره شده‌ای برای نمایش وجود ندارد!"
 	},
 	"option_chain": {
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",

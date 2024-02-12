@@ -20,14 +20,15 @@
 
 .modal {
 	position: absolute;
-	overflow-x: hidden;
-	overflow-y: auto;
 	top: 14%;
 	left: 50%;
 	max-width: 95%;
 	max-height: 95%;
+	border-radius: 8px;
+	overflow: hidden;
 	transform: translateX(-50%);
 	-webkit-transform: translateX(-50%);
+	box-shadow: theme("boxShadow.section");
 
 	&.lg {
 		width: 114rem;

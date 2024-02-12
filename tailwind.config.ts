@@ -401,6 +401,29 @@ const config: Config = {
 					},
 				},
 
+				'.btn-disabled-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.gray.800'),
+					border: `1px solid ${theme('colors.gray.500')}`,
+					transition: 'color 250ms ease-in-out, border-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'border-color': theme('colors.gray.900'),
+						color: theme('colors.gray.900'),
+					},
+				},
+
+				'.icon-hover': {
+					color: theme('colors.gray.1000'),
+					transition: 'colors 250ms',
+
+					'&:hover': {
+						color: theme('colors.gray.900'),
+					},
+				},
+
 				'.input-box': {
 					display: 'flex',
 					'flex-direction': 'column',

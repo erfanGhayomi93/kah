@@ -1,37 +1,15 @@
 import Loading from '@/components/common/Loading';
 import { RefreshSVG, XSVG } from '@/components/icons';
+import Panel from '@/components/panels/Panel';
 import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
 import { useDebounce, useWatchlistColumns } from '@/hooks';
-import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
-
-const Wrapper = styled.div<{ $enabled: number }>`
-	position: fixed;
-	width: 47.2rem;
-	height: calc(100% - 11.6rem);
-	top: 7.2rem;
-	left: 0;
-	gap: 1.6rem;
-	display: flex;
-	flex-direction: column;
-	border-radius: 0 1.6rem 1.6rem 0;
-	padding: 0 0 1.6rem 0;
-	z-index: 999;
-	box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.2);
-	animation: ${({ $enabled }) =>
-		`${$enabled ? 'left-to-right' : 'right-to-left'} ease-in-out ${
-			$enabled ? '700ms' : '600ms'
-		} 1 alternate forwards`};
-`;
 
 const Button = styled.button`
 	display: flex;
@@ -52,24 +30,12 @@ const Button = styled.button`
 		background-color 250ms;
 `;
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isEnable: getManageOptionColumns(state),
-		isLoggedIn: getIsLoggedIn(state),
-	}),
-);
-
 const ManageWatchlistColumns = () => {
-	const wrapperRef = useRef<HTMLDivElement>(null);
-
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const { isEnable } = useAppSelector(getStates);
-
-	const [rendered, setRendered] = useState(isEnable);
+	const isEnabled = useAppSelector(getManageOptionColumns);
 
 	const [resetting, setResetting] = useState(false);
 
@@ -114,40 +80,17 @@ const ManageWatchlistColumns = () => {
 		}
 	}, [watchlistColumns]);
 
-	useEffect(() => {
-		let timer: NodeJS.Timeout | null = null;
-
-		if (!isEnable) timer = setTimeout(() => setRendered(false), 600);
-		else setRendered(true);
-
-		return () => {
-			if (timer) clearTimeout(timer);
-		};
-	}, [isEnable]);
-
-	if (!rendered) return null;
-
 	return (
-		<Wrapper $enabled={Number(isEnable)} ref={wrapperRef} className='overflow-auto bg-white'>
-			{isEnable &&
-				createPortal(
-					<div
-						className='fixed right-0 top-0 h-full w-full cursor-default'
-						style={{ zIndex: 99 }}
-						onClick={() => onClose()}
-					/>,
-					document.body,
-				)}
-
+		<Panel transparent isEnable={isEnabled} onClose={onClose} width='47.2rem'>
 			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
 				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
 					<h1 className='text-2xl font-bold text-gray-1000'>{t('manage_option_watchlist_columns.title')}</h1>
 
 					<div className='flex gap-24'>
-						<button className='text-gray-1000' type='button' onClick={onRefresh}>
+						<button className='icon-hover' type='button' onClick={onRefresh}>
 							<RefreshSVG width='2.4rem' height='2.4rem' />
 						</button>
-						<button className='text-gray-1000' type='button' onClick={onClose}>
+						<button className='icon-hover' type='button' onClick={onClose}>
 							<XSVG width='1.6rem' height='1.6rem' />
 						</button>
 					</div>
@@ -199,7 +142,7 @@ const ManageWatchlistColumns = () => {
 					</div>
 				))}
 			</div>
-		</Wrapper>
+		</Panel>
 	);
 };
 

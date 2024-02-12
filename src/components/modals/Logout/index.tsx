@@ -13,7 +13,6 @@ const Div = styled.div`
 	width: 336px;
 	height: 200px;
 	padding: 1.6rem 1.6rem 2.4rem 1.6rem;
-	border-radius: 16px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -56,12 +55,12 @@ const LogoutModal = () => {
 			top='50%'
 			onClose={onCloseModal}
 		>
-			<Div className='bg-white shadow-tooltip'>
+			<Div className='bg-white'>
 				{loading ? (
 					<div className='spinner size-32' />
 				) : (
 					<>
-						<h2 className='text-center text-lg font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
+						<h2 className='text-center text-xl font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
 
 						<div className='pb-40 pt-32 text-center'>
 							<p className='text-base text-gray-1000'>{t('logout_modal.description')}</p>
@@ -71,7 +70,7 @@ const LogoutModal = () => {
 							<button
 								onClick={onCloseModal}
 								type='button'
-								className='h-40 flex-1 rounded border border-gray-500 text-base text-gray-800 flex-justify-center'
+								className='h-40 flex-1 rounded text-lg btn-disabled-outline'
 							>
 								{t('common.cancel')}
 							</button>
@@ -79,7 +78,7 @@ const LogoutModal = () => {
 							<button
 								onClick={logout}
 								type='button'
-								className='h-40 flex-1 rounded text-lg font-medium flex-justify-center btn-error'
+								className='h-40 flex-1 rounded text-lg font-medium btn-error'
 							>
 								{t('logout_modal.button')}
 							</button>

@@ -113,9 +113,9 @@ const Header = () => {
 					onOpen={() => setIsDropdownOpened(true)}
 					onClose={() => setIsDropdownOpened(false)}
 					renderer={({ setOpen }) => (
-						<div className='rounded-md bg-white py-16 shadow-tooltip'>
-							<div className='flex h-40 items-start justify-between px-16'>
-								<div className='gap-12 flex-items-center'>
+						<div className='rounded-md bg-white pb-16 shadow-tooltip'>
+							<div className='flex h-40 items-start justify-between pr-16'>
+								<div className='gap-12 pt-16 flex-items-center'>
 									<Picture />
 
 									<div className='gap-4 flex-column'>
@@ -125,7 +125,7 @@ const Header = () => {
 								</div>
 
 								<button
-									className='text-gray-900 transition-colors hover:text-primary-300'
+									className='p-16 text-gray-900 transition-colors hover:text-primary-300'
 									type='button'
 								>
 									<EditSVG width='2rem' height='2rem' />
@@ -133,7 +133,7 @@ const Header = () => {
 							</div>
 
 							{!userData?.hasPassword && (
-								<div className='px-16  pt-40 flex-items-center'>
+								<div className='px-16 pt-40 flex-items-center'>
 									<button
 										type='button'
 										className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'

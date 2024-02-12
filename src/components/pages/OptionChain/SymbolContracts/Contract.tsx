@@ -3,7 +3,7 @@ import dayjs from '@/libs/dayjs';
 import { letters } from '@/utils/num2persian';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Table from './Table';
 
 interface ContractProps extends Option.BaseSettlementDays {
@@ -21,6 +21,8 @@ const Contract = ({
 	onToggle,
 }: ContractProps) => {
 	const t = useTranslations();
+
+	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	const timer = useRef<NodeJS.Timeout | null>(null);
 
@@ -52,8 +54,23 @@ const Contract = ({
 		return dayjs(contractEndDate).calendar('jalali').format('YYYY/MM/DD');
 	}, []);
 
+	useEffect(() => {
+		setTimeout(() => {
+			const eWrapper = wrapperRef.current;
+			if (!eWrapper || !expand) return;
+
+			eWrapper.scrollIntoView({
+				behavior: 'smooth',
+				block: 'center',
+			});
+		}, 400);
+	}, [expand]);
+
 	return (
-		<div className={clsx('overflow-hidden rounded bg-white flex-column', expand && 'border border-primary-300')}>
+		<div
+			ref={wrapperRef}
+			className={clsx('overflow-hidden rounded bg-white flex-column', expand && 'border border-primary-300')}
+		>
 			<div onClick={toggleContract} className='h-40 w-full cursor-pointer select-none px-16 flex-justify-between'>
 				<div className='flex-1 gap-32 text-right flex-justify-start'>
 					<span style={{ width: '8rem' }} className='text-lg text-gray-1000'>
@@ -85,8 +102,8 @@ const Contract = ({
 			<div
 				className='relative'
 				style={{
-					minHeight: expand ? '24rem' : 0,
-					transition: 'min-height 200ms',
+					height: expand ? '48.8rem' : 0,
+					transition: 'height 200ms',
 				}}
 			>
 				{expand && (
