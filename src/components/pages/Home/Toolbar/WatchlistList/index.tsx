@@ -5,11 +5,22 @@ import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistList } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId, setOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { useDebounce } from '@/hooks';
+import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
 import Watchlist from './Watchlist';
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		optionWatchlistTabId: getOptionWatchlistTabId(state),
+	}),
+);
 
 const WatchlistList = () => {
 	const t = useTranslations();
@@ -18,12 +29,13 @@ const WatchlistList = () => {
 
 	const queryClient = useQueryClient();
 
-	const optionWatchlistTabId = useAppSelector(getOptionWatchlistTabId);
+	const { optionWatchlistTabId, isLoggedIn } = useAppSelector(getStates);
 
 	const { setDebounce } = useDebounce();
 
-	const { data: userCustomWatchlistList } = useGetAllCustomWatchlistQuery({
+	const { data: userCustomWatchlistList, refetch: refetchUserCustomWatchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
+		enabled: false,
 	});
 
 	const onReloadMarketView = () => {
@@ -102,6 +114,10 @@ const WatchlistList = () => {
 			return [defaultWatchlist];
 		}
 	}, [userCustomWatchlistList]);
+
+	useLayoutEffect(() => {
+		if (isLoggedIn) refetchUserCustomWatchlistList();
+	}, [isLoggedIn]);
 
 	useLayoutEffect(() => {
 		const activeWatchlistId = watchlistList.find(({ isActive }) => Boolean(isActive))?.id ?? -1;
