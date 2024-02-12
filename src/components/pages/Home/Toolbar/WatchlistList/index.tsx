@@ -124,7 +124,7 @@ const WatchlistList = () => {
 			<ul className='flex flex-grow-0 gap-8'>
 				<li>
 					<button type='button' className='size-40 rounded btn-primary-outline' onClick={addNewWatchlist}>
-						<PlusSVG width='2.4rem' height='2.4rem' />
+						<PlusSVG width='1.8rem' height='1.8rem' />
 					</button>
 				</li>
 

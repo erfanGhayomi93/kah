@@ -11,7 +11,6 @@ import Modal from '../Modal';
 const Div = styled.div`
 	width: 384px;
 	padding: 1.6rem 2.4rem 2.4rem 2.4rem;
-	border-radius: 16px;
 	display: flex;
 	gap: 2.4rem;
 	flex-direction: column;
@@ -61,7 +60,7 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 
 	return (
 		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
-			<Div className='bg-white shadow-section'>
+			<Div className='bg-white'>
 				<h2 className='text-xl font-medium text-gray-1000'>
 					{t('save_saturn_template.save_template', { title: baseSymbolTitle })}
 				</h2>
@@ -92,6 +91,7 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 
 						<Button
 							loading={loading}
+							disabled={name.length === 0}
 							type='submit'
 							className='h-40 flex-1 rounded text-lg font-medium btn-primary'
 						>

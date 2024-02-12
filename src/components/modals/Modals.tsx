@@ -5,6 +5,7 @@ import AddNewOptionWatchlist from './AddNewOptionWatchlist';
 import ForgetPasswordModal from './ForgetPasswordModal';
 import LoginModal from './LoginModal';
 import LogoutModal from './Logout';
+import ManageOptionWatchlistList from './ManageOptionWatchlistList';
 import OptionWatchlistFiltersModal from './OptionWatchlistFiltersModal';
 import SaveSaturnTemplate from './SaveSaturnTemplate';
 import SymbolContracts from './SymbolContracts';
@@ -18,6 +19,7 @@ const Modals = () => {
 		symbolContracts,
 		saveSaturnTemplate,
 		addNewOptionWatchlist,
+		manageOptionWatchlistList,
 	} = useAppSelector((state) => state.modal);
 
 	return [
@@ -35,6 +37,7 @@ const Modals = () => {
 		symbolContracts && <SymbolContracts key='symbol-contracts' {...symbolContracts} />,
 		saveSaturnTemplate !== null && <SaveSaturnTemplate key='save-saturn-template' {...saveSaturnTemplate} />,
 		addNewOptionWatchlist && <AddNewOptionWatchlist key='add-new-option-watchlist' />,
+		manageOptionWatchlistList && <ManageOptionWatchlistList key='manage-option-watchlist-list' />,
 	];
 };
 

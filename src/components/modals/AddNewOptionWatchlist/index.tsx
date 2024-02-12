@@ -12,7 +12,6 @@ import Modal from '../Modal';
 const Div = styled.div`
 	width: 384px;
 	padding: 1.6rem 2.4rem 2.4rem 2.4rem;
-	border-radius: 16px;
 	display: flex;
 	gap: 2.4rem;
 	flex-direction: column;
@@ -62,7 +61,7 @@ const AddNewOptionWatchlist = () => {
 
 	return (
 		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
-			<Div className='bg-white shadow-section'>
+			<Div className='bg-white'>
 				<h2 className='text-xl font-medium text-gray-1000'>{t('add_new_option_watchlist_modal.title')}</h2>
 
 				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 flex-column'>
@@ -91,6 +90,7 @@ const AddNewOptionWatchlist = () => {
 
 						<Button
 							loading={loading}
+							disabled={name.length === 0}
 							type='submit'
 							className='h-40 flex-1 rounded text-lg font-medium btn-primary'
 						>

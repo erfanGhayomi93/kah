@@ -13,7 +13,11 @@ const Watchlist = ({ onSelect, isActive, name, isHidden }: WatchlistProps) => {
 			<button
 				onClick={onSelect}
 				type='button'
-				className={clsx('h-40 rounded px-16 font-medium', isActive ? 'btn-primary' : 'btn-primary-outline')}
+				style={{ maxWidth: '14rem', minWidth: '6.4rem' }}
+				className={clsx(
+					'h-40 truncate rounded px-16 font-medium',
+					isActive ? 'btn-primary' : 'btn-primary-outline',
+				)}
 			>
 				{name}
 			</button>

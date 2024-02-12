@@ -7,6 +7,7 @@
 		"clear_all": "پاک کردن همه",
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
+		"delete": "حذف",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
@@ -46,6 +47,12 @@
 		"title": "افزودن دیده‌بان",
 		"input_label": "عنوان",
 		"input_placeholder": "نام دیدیه‌بان خود را وارد کنید"
+	},
+	"manage_option_watchlist_modal": {
+		"title": "مدیریت دیده‌بان",
+		"watchlist_count": "{count} دیده‌بان",
+		"create_new_watchlist": "دیده‌بان جدید",
+		"new_watchlist_name": "نام جدید دیده‌بان"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
