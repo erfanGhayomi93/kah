@@ -99,7 +99,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			<li>
 				<ExcelBtn
 					onClick={onExportExcel}
-					className='size-40 rounded border border-gray-400 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
+					className='size-40 rounded border border-gray-500 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
 					type='button'
 				>
 					<ExcelSVG />
@@ -108,7 +108,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			<li>
 				<button
 					onClick={onShowFilters}
-					className='relative size-40 rounded border border-gray-400 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+					className='relative size-40 rounded border border-gray-500 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
 					type='button'
 				>
 					{filtersCount > 0 && <Badge className='bg-primary-300 text-white'>{filtersCount}</Badge>}
@@ -118,7 +118,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			<li>
 				<WatchlistManagerBtn
 					onClick={manageTableHeaders}
-					className='size-40 rounded border border-gray-400 bg-transparent transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
+					className='size-40 rounded border border-gray-500 bg-transparent transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
 					type='button'
 				>
 					<OptionWatchlistManagerSVG />
