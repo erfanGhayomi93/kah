@@ -284,7 +284,6 @@ declare namespace Option {
 	export interface WatchlistList {
 		id: number;
 		name: string;
-		isActive: boolean;
 		isHidden: boolean;
 	}
 }
