@@ -1,5 +1,6 @@
 'use client';
 
+import LocalstorageInstance from '@/classes/Localstorage';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
@@ -8,7 +9,7 @@ export interface TabState {
 }
 
 const initialState: TabState = {
-	optionWatchlistTabId: -1,
+	optionWatchlistTabId: Number(LocalstorageInstance.get('awl', -1)) || -1,
 };
 
 const portfolioSlice = createSlice({
@@ -16,6 +17,7 @@ const portfolioSlice = createSlice({
 	initialState,
 	reducers: {
 		setOptionWatchlistTabId: (state, { payload }: PayloadAction<TabState['optionWatchlistTabId']>) => {
+			LocalstorageInstance.set('awl', payload);
 			state.optionWatchlistTabId = payload;
 		},
 	},

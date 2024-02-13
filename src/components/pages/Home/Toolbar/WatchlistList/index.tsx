@@ -1,6 +1,4 @@
-import axios from '@/api/axios';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
-import routes from '@/api/routes';
 import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistList } from '@/features/slices/modalSlice';
@@ -55,8 +53,6 @@ const WatchlistList = () => {
 			onReloadMarketView();
 			return;
 		}
-
-		setWatchlistActiveTab(watchlist.id);
 	};
 
 	const addNewWatchlist = () => {
@@ -67,42 +63,10 @@ const WatchlistList = () => {
 		dispatch(toggleManageOptionWatchlistList(true));
 	};
 
-	const setWatchlistActiveTab = async (id: number) => {
-		try {
-			const queryKey = ['getAllCustomWatchlistQuery'];
-
-			const watchlistList = JSON.parse(
-				JSON.stringify(queryClient.getQueryData(queryKey) ?? []),
-			) as Option.WatchlistList[];
-			queryClient.setQueryData(
-				queryKey,
-				watchlistList.map((item) => {
-					if (item.id === id) item.isActive = true;
-					else item.isActive = false;
-					return item;
-				}),
-			);
-		} catch (e) {
-			//
-		}
-
-		try {
-			const response = await axios.post(routes.optionWatchlist.SetActiveWatchlist, {
-				id,
-			});
-			const data = response.data;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-		} catch (e) {
-			//
-		}
-	};
-
 	const watchlistList = useMemo(() => {
 		const defaultWatchlist: Option.WatchlistList = {
 			id: -1,
 			name: t('option_page.market_overview'),
-			isActive: false,
 			isHidden: false,
 		};
 
@@ -120,9 +84,13 @@ const WatchlistList = () => {
 	}, [isLoggedIn]);
 
 	useLayoutEffect(() => {
-		const activeWatchlistId = watchlistList.find(({ isActive }) => Boolean(isActive))?.id ?? -1;
-		dispatch(setOptionWatchlistTabId(activeWatchlistId));
-	}, [watchlistList]);
+		try {
+			const isExists = watchlistList.findIndex((item) => !item.isHidden && optionWatchlistTabId === item.id);
+			if (isExists === -1) dispatch(setOptionWatchlistTabId(-1));
+		} catch (e) {
+			//
+		}
+	}, [watchlistList, optionWatchlistTabId]);
 
 	return (
 		<div className='gap-8 flex-justify-between'>

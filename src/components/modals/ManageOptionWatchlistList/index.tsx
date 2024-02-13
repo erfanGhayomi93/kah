@@ -7,7 +7,7 @@ import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistList } from '@/
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Watchlist from './Watchlist';
@@ -117,6 +117,10 @@ const ManageOptionWatchlistList = () => {
 		dispatch(toggleAddNewOptionWatchlist(true));
 	};
 
+	useLayoutEffect(() => {
+		if (Array.isArray(watchlistList) && watchlistList.length === 0) onClose();
+	}, [watchlistList]);
+
 	return (
 		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onClose}>
 			<Div className='justify-between bg-white flex-column'>
@@ -129,7 +133,7 @@ const ManageOptionWatchlistList = () => {
 				</div>
 
 				{!Array.isArray(watchlistList) || watchlistList.length === 0 ? null : (
-					<div className='flex-1 gap-16 overflow-hidden pb-16 pt-40 flex-column'>
+					<div className='flex-1 overflow-hidden pt-40 flex-column'>
 						<div className='px-24'>
 							<div className='border-b border-b-gray-500 pb-12 flex-justify-between'>
 								<span className='text-base font-medium text-gray-900'>
@@ -143,10 +147,11 @@ const ManageOptionWatchlistList = () => {
 							</div>
 						</div>
 
-						<ul className='gap-16 overflow-auto px-24 flex-column'>
-							{watchlistList.map((wl) => (
+						<ul className='relative flex-1 overflow-auto'>
+							{watchlistList.map((wl, index) => (
 								<Watchlist
 									key={wl.id}
+									top={index * 6.4 + 1.6}
 									watchlist={wl}
 									isActive={optionWatchlistTabId === wl.id}
 									isEditing={wl.id === editingWatchlistId}
@@ -157,6 +162,10 @@ const ManageOptionWatchlistList = () => {
 									onVisibilityChange={() => onVisibilityChange(wl)}
 								/>
 							))}
+							<li
+								style={{ top: `${watchlistList.length * 6.4 + 1.2}rem` }}
+								className='absolute left-0 h-4 w-full'
+							/>
 						</ul>
 					</div>
 				)}
