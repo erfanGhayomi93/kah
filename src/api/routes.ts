@@ -48,6 +48,7 @@ const routes = {
 		GetAllCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetAllCustomWatchlist`,
 		CreateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/CreateCustomWatchlist`,
 		UpdateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/UpdateCustomWatchlist`,
+		ChangeHiddenCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/ChangeHiddenCustomWatchlist`,
 		DeleteCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/DeleteCustomWatchlist`,
 		GetCustomWatchlistSymbols: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistSymbols`,
 		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,

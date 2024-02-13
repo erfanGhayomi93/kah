@@ -9,8 +9,8 @@ import styled from 'styled-components';
 import Modal from '../Modal';
 
 const Div = styled.div`
-	width: 384px;
-	padding: 1.6rem 2.4rem 2.4rem 2.4rem;
+	width: 336px;
+	padding: 1.6rem 3.2rem 2.4rem 3.2rem;
 	display: flex;
 	gap: 2.4rem;
 	flex-direction: column;
@@ -73,9 +73,10 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 						<input
 							autoFocus
 							type='text'
+							maxLength={36}
 							value={name}
 							placeholder={t('save_saturn_template.input_placeholder')}
-							className='h-40 w-full rounded border border-gray-500 px-8 text-base'
+							className='h-40 w-full rounded border border-gray-500 px-16 text-base'
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</label>

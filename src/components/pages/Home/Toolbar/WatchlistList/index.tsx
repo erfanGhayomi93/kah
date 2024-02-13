@@ -125,7 +125,7 @@ const WatchlistList = () => {
 	}, [watchlistList]);
 
 	return (
-		<div className='gap-8 flex-items-center'>
+		<div className='gap-8 flex-justify-between'>
 			<ul className='flex flex-grow-0 gap-8'>
 				{watchlistList.map((item) => (
 					<Watchlist
@@ -139,13 +139,21 @@ const WatchlistList = () => {
 
 			<ul className='flex flex-grow-0 gap-8'>
 				<li>
-					<button type='button' className='size-40 rounded btn-primary-outline' onClick={addNewWatchlist}>
+					<button
+						type='button'
+						className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+						onClick={addNewWatchlist}
+					>
 						<PlusSVG width='1.8rem' height='1.8rem' />
 					</button>
 				</li>
 
 				<li>
-					<button onClick={manageWatchlistList} type='button' className='size-40 rounded btn-primary-outline'>
+					<button
+						onClick={manageWatchlistList}
+						type='button'
+						className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+					>
 						<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 					</button>
 				</li>
