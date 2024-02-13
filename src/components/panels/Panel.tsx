@@ -34,6 +34,18 @@ const Panel = ({ transparent, width, height, isEnable, children, onClose }: Pane
 
 	const [rendered, setRendered] = useState(isEnable);
 
+	const onMouseDown = (e: React.MouseEvent) => {
+		try {
+			const eRoot = rootRef.current;
+			if (!eRoot) return;
+
+			const target = e.target as HTMLElement;
+			if (target.isEqualNode(eRoot)) onClose();
+		} catch (e) {
+			//
+		}
+	};
+
 	useLayoutEffect(() => {
 		let timer: NodeJS.Timeout | null = null;
 
@@ -48,13 +60,9 @@ const Panel = ({ transparent, width, height, isEnable, children, onClose }: Pane
 	if (!rendered) return null;
 
 	return createPortal(
-		<div ref={rootRef} className={styles.root}>
+		<div ref={rootRef} onMouseDown={onMouseDown} className={styles.root}>
 			{!transparent && (
-				<div
-					style={{ animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }}
-					onClick={onClose}
-					className={styles.bg}
-				/>
+				<div style={{ animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }} className={styles.bg} />
 			)}
 
 			<Wrapper
