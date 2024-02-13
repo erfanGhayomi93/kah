@@ -169,7 +169,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 												className={clsx(
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
-														? 'bg-primary-300 text-white'
+														? 'bg-primary-400 text-white hover:bg-primary-300'
 														: 'bg-transparent hover:bg-primary-100',
 												)}
 											>

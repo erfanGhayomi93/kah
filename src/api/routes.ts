@@ -53,7 +53,6 @@ const routes = {
 		GetCustomWatchlistSymbols: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistSymbols`,
 		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
 		RemoveSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
-		SetActiveWatchlist: `${rlcUrl}/OptionWatchlist/v1/SetActiveWatchlist`,
 	},
 
 	saturn: {
