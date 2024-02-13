@@ -103,7 +103,7 @@ const Contract = ({
 				className='relative'
 				style={{
 					height: expand ? '48.8rem' : 0,
-					transition: 'height 200ms',
+					transition: 'height 400ms ease-in-out',
 				}}
 			>
 				{expand && (
