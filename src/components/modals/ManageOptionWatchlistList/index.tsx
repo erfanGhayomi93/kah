@@ -1,8 +1,11 @@
+import axios from '@/api/axios';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
-import { PlusSVG, TrashSVG, XSVG } from '@/components/icons';
+import routes from '@/api/routes';
+import { PlusSquareSVG, TrashSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleManageOptionWatchlistList } from '@/features/slices/modalSlice';
+import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistList } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -14,8 +17,12 @@ const Div = styled.div`
 	height: 552px;
 `;
 
+const getAllCustomWatchlistQueryKey: ['getAllCustomWatchlistQuery'] = ['getAllCustomWatchlistQuery'];
+
 const ManageOptionWatchlistList = () => {
 	const t = useTranslations();
+
+	const queryClient = useQueryClient();
 
 	const dispatch = useAppDispatch();
 
@@ -24,8 +31,28 @@ const ManageOptionWatchlistList = () => {
 	const [editingWatchlistId, setEditingWatchlistId] = useState(-1);
 
 	const { data: watchlistList } = useGetAllCustomWatchlistQuery({
-		queryKey: ['getAllCustomWatchlistQuery'],
+		queryKey: getAllCustomWatchlistQueryKey,
 	});
+
+	const updateWatchlistCache = (
+		id: Option.WatchlistList['id'],
+		watchlist: Partial<Omit<Option.WatchlistList, 'id'>>,
+		callback?: (item: Option.WatchlistList) => Option.WatchlistList,
+	) => {
+		try {
+			const data = JSON.parse(JSON.stringify(watchlistList) ?? []) as Option.WatchlistList[];
+
+			queryClient.setQueryData(
+				getAllCustomWatchlistQueryKey,
+				data.map((item) => {
+					if (item.id === id) return { ...item, ...watchlist };
+					return callback ? callback(item) : item;
+				}),
+			);
+		} catch (e) {
+			//
+		}
+	};
 
 	const onClose = () => {
 		dispatch(toggleManageOptionWatchlistList(false));
@@ -35,16 +62,59 @@ const ManageOptionWatchlistList = () => {
 		setEditingWatchlistId(watchlist.id);
 	};
 
-	const onEditEnd = (watchlist: Option.WatchlistList, name: string) => {
-		//
+	const onEditEnd = async (watchlist: Option.WatchlistList, name: string) => {
+		try {
+			updateWatchlistCache(watchlist.id, { name });
+
+			await axios.post(routes.optionWatchlist.UpdateCustomWatchlist, {
+				id: watchlist.id,
+				name,
+			});
+		} catch (e) {
+			//
+		} finally {
+			setEditingWatchlistId(-1);
+		}
 	};
 
-	const onDelete = (watchlist: Option.WatchlistList) => {
-		//
+	const onDelete = async (watchlist: Option.WatchlistList) => {
+		try {
+			const data = JSON.parse(JSON.stringify(watchlistList) ?? []) as Option.WatchlistList[];
+
+			queryClient.setQueryData(
+				getAllCustomWatchlistQueryKey,
+				data.filter((item) => item.id !== watchlist.id),
+			);
+		} catch (e) {
+			//
+		}
+
+		try {
+			await axios.post(routes.optionWatchlist.DeleteCustomWatchlist, {
+				ids: [watchlist.id],
+			});
+		} catch (e) {
+			//
+		}
 	};
 
-	const onVisibilityChange = (watchlist: Option.WatchlistList) => {
-		//
+	const onVisibilityChange = async ({ id, isHidden }: Option.WatchlistList) => {
+		try {
+			const hidden = !isHidden;
+
+			updateWatchlistCache(id, { isHidden: hidden });
+
+			await axios.post(routes.optionWatchlist.ChangeHiddenCustomWatchlist, {
+				id,
+				isHidden: hidden,
+			});
+		} catch (e) {
+			//
+		}
+	};
+
+	const addNewWatchlist = () => {
+		dispatch(toggleAddNewOptionWatchlist(true));
 	};
 
 	return (
@@ -92,9 +162,13 @@ const ManageOptionWatchlistList = () => {
 				)}
 
 				<div className='gap-8 border-t border-t-gray-500 pl-24'>
-					<button className='h-40 gap-8 pr-24 font-medium text-primary-400 flex-items-center' type='button'>
-						<span className='size-16 rounded-sm border-2 border-current text-current flex-justify-center'>
-							<PlusSVG width='1.4rem' height='1.4rem' />
+					<button
+						onClick={addNewWatchlist}
+						className='h-40 gap-8 pr-24 font-medium text-primary-400 flex-items-center'
+						type='button'
+					>
+						<span className='size-16 rounded-sm text-current flex-justify-center'>
+							<PlusSquareSVG width='1.6rem' height='1.6rem' />
 						</span>
 						{t('manage_option_watchlist_modal.create_new_watchlist')}
 					</button>

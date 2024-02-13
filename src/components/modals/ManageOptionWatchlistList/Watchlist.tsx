@@ -1,4 +1,4 @@
-import { DragSVG, EditSVG, EyeSVG, TrashSVG } from '@/components/icons';
+import { DragSVG, EditSVG, EyeSVG, EyeSlashSVG, TrashSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useState } from 'react';
@@ -66,7 +66,7 @@ const Watchlist = ({
 						className={isActive ? 'text-white' : 'text-gray-900'}
 					>
 						{watchlist.isHidden ? (
-							<EyeSVG width='2rem' height='2rem' />
+							<EyeSlashSVG width='2rem' height='2rem' />
 						) : (
 							<EyeSVG width='2rem' height='2rem' />
 						)}
@@ -103,11 +103,7 @@ const Watchlist = ({
 						{t('common.cancel')}
 					</button>
 
-					<button
-						onClick={() => onEditEnd(name)}
-						type='button'
-						className='font-medium text-error-200 flex-justify-center'
-					>
+					<button onClick={onDelete} type='button' className='font-medium text-error-200 flex-justify-center'>
 						{t('common.delete')}
 					</button>
 				</div>
@@ -119,7 +115,11 @@ const Watchlist = ({
 						<EditSVG width='2rem' height='2rem' />
 					</button>
 
-					<button onClick={onDelete} type='button' className='text-gray-1000 flex-justify-center'>
+					<button
+						onClick={() => setIsDeleting(true)}
+						type='button'
+						className='text-gray-1000 flex-justify-center'
+					>
 						<TrashSVG width='2rem' height='2rem' />
 					</button>
 				</div>
