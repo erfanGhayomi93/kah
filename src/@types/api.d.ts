@@ -82,6 +82,22 @@ declare namespace Option {
 		 */
 		premium: number;
 		/**
+		 * درصد آخرین قیمت
+		 */
+		tradePriceVarPreviousTradePercent: number;
+		/**
+		 * درصد آخرین قیمت پایه
+		 */
+		baseTradePriceVarPreviousTradePercent: number;
+		/**
+		 * درصد قیمت پایانی پایه
+		 */
+		baseClosingPriceVarReferencePricePercent: number;
+		/**
+		 * درصد قیمت پایانی
+		 */
+		closingPriceVarReferencePricePercent: number;
+		/**
 		 * قیمت نماد پایه / آخرین قیمت پایه
 		 */
 		baseSymbolPrice: number;

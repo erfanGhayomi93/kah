@@ -95,7 +95,7 @@ const config: Config = {
 			DEFAULT: '0px 4px 4px -1px rgba(0, 0, 0, 0.1)',
 			md: '0px 8px 8px -1 rgba(0, 0, 0, 0.1)',
 			lg: '0px 12px 12px 0px rgba(0, 0, 0, 0.1)',
-			section: '0px 2px 10px 0px rgba(0, 0, 0, 0.2)',
+			section: 'rgba(0, 0, 0, 0.1) 0px 2px 9px 2px',
 		},
 
 		borderRadius: {

@@ -147,11 +147,13 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					minWidth: 128,
 					cellRenderer: CellPercentRenderer,
 					cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
-						percent: data ? data.optionWatchlistData.premium : 0,
+						percent: data ? data.optionWatchlistData.tradePriceVarPreviousTradePercent : 0,
 					}),
 					valueGetter: ({ data }) =>
-						`${data!.optionWatchlistData.premium}|${data!.optionWatchlistData.premium}`,
-					valueFormatter: ({ value }) => sepNumbers(value),
+						`${data!.optionWatchlistData.premium}|${
+							data!.optionWatchlistData.tradePriceVarPreviousTradePercent
+						}`,
+					valueFormatter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.premium)),
 				},
 				{
 					headerName: 'دلتا',
@@ -167,11 +169,13 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					minWidth: 136,
 					cellRenderer: CellPercentRenderer,
 					cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
-						percent: data ? data.optionWatchlistData.baseSymbolPrice : 0,
+						percent: data ? data.optionWatchlistData.baseTradePriceVarPreviousTradePercent : 0,
 					}),
 					valueGetter: ({ data }) =>
-						`${data!.optionWatchlistData.baseSymbolPrice}|${data!.optionWatchlistData.baseSymbolPrice}`,
-					valueFormatter: ({ value }) => sepNumbers(value),
+						`${data!.optionWatchlistData.baseSymbolPrice}|${
+							data!.optionWatchlistData.baseTradePriceVarPreviousTradePercent
+						}`,
+					valueFormatter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.baseSymbolPrice)),
 				},
 				{
 					headerName: 'سر به سر',
