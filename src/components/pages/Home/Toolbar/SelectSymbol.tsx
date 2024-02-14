@@ -12,10 +12,7 @@ const SelectSymbol = () => {
 	};
 
 	return (
-		<div
-			style={{ maxWidth: '40rem' }}
-			className='input-group h-40 flex-1 rounded border border-gray-500 flex-items-center'
-		>
+		<div style={{ maxWidth: '40rem' }} className='h-40 flex-1 rounded border border-gray-500 flex-items-center'>
 			<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 		</div>
 	);

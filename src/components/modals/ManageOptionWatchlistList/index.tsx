@@ -1,16 +1,22 @@
 import axios from '@/api/axios';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
+import Checkbox from '@/components/common/Inputs/Checkbox';
 import { PlusSquareSVG, TrashSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistList } from '@/features/slices/modalSlice';
-import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { getOptionWatchlistTabId, setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useReducer, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Watchlist from './Watchlist';
+
+interface IDeleting {
+	hasStarted: boolean;
+	selected: number[];
+}
 
 const Div = styled.div`
 	width: 472px;
@@ -29,6 +35,23 @@ const ManageOptionWatchlistList = () => {
 	const optionWatchlistTabId = useAppSelector(getOptionWatchlistTabId);
 
 	const [editingWatchlistId, setEditingWatchlistId] = useState(-1);
+
+	const [isDeleting, setIsDeleting] = useReducer(
+		(state: IDeleting, { type, payload }: { type: keyof IDeleting; payload: boolean | number[] }) => {
+			switch (type) {
+				case 'hasStarted':
+					return { ...state, hasStarted: payload as boolean };
+				case 'selected':
+					return { ...state, selected: payload as number[] };
+				default:
+					return state;
+			}
+		},
+		{
+			hasStarted: false,
+			selected: [],
+		},
+	);
 
 	const { data: watchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: getAllCustomWatchlistQueryKey,
@@ -90,7 +113,7 @@ const ManageOptionWatchlistList = () => {
 		}
 
 		try {
-			await axios.post(routes.optionWatchlist.DeleteCustomWatchlist, {
+			axios.post(routes.optionWatchlist.DeleteCustomWatchlist, {
 				ids: [watchlist.id],
 			});
 		} catch (e) {
@@ -98,18 +121,77 @@ const ManageOptionWatchlistList = () => {
 		}
 	};
 
-	const onVisibilityChange = async ({ id, isHidden }: Option.WatchlistList) => {
+	const onVisibilityChange = ({ id, isHidden }: Option.WatchlistList) => {
 		try {
 			const hidden = !isHidden;
 
 			updateWatchlistCache(id, { isHidden: hidden });
 
-			await axios.post(routes.optionWatchlist.ChangeHiddenCustomWatchlist, {
+			axios.post(routes.optionWatchlist.ChangeHiddenCustomWatchlist, {
 				id,
 				isHidden: hidden,
 			});
 		} catch (e) {
 			//
+		}
+	};
+
+	const onSelect = async ({ id, isHidden }: Option.WatchlistList) => {
+		try {
+			dispatch(setOptionWatchlistTabId(id));
+
+			if (isHidden) {
+				updateWatchlistCache(id, { isHidden: false });
+
+				await axios.post(routes.optionWatchlist.ChangeHiddenCustomWatchlist, {
+					id,
+					isHidden: false,
+				});
+			}
+		} catch (e) {
+			//
+		}
+	};
+
+	const onCheckedWatchlist = (watchlist: Option.WatchlistList, checked: boolean) => {
+		if (checked) {
+			setIsDeleting({ type: 'selected', payload: [...isDeleting.selected, watchlist.id] });
+		} else {
+			setIsDeleting({ type: 'selected', payload: isDeleting.selected.filter((id) => id !== watchlist.id) });
+		}
+	};
+
+	const deleteAll = () => {
+		if (isDeleting.selected.length === 0) return;
+
+		try {
+			const data = JSON.parse(JSON.stringify(watchlistList) ?? []) as Option.WatchlistList[];
+
+			queryClient.setQueryData(
+				getAllCustomWatchlistQueryKey,
+				data.filter((item) => !isDeleting.selected.includes(item.id)),
+			);
+
+			setIsDeleting({ type: 'hasStarted', payload: false });
+		} catch (e) {
+			//
+		}
+
+		try {
+			axios.post(routes.optionWatchlist.DeleteCustomWatchlist, {
+				ids: isDeleting.selected,
+			});
+		} catch (e) {
+			//
+		}
+	};
+
+	const toggleAllWatchlist = (checked: boolean) => {
+		if (checked) {
+			if (Array.isArray(watchlistList))
+				setIsDeleting({ type: 'selected', payload: watchlistList.map((wl) => wl.id) });
+		} else {
+			setIsDeleting({ type: 'selected', payload: [] });
 		}
 	};
 
@@ -127,7 +209,7 @@ const ManageOptionWatchlistList = () => {
 				<div className='relative h-56 border-b border-b-gray-500 flex-justify-center'>
 					<h2 className='text-xl font-medium'>{t('manage_option_watchlist_modal.title')}</h2>
 
-					<button onClick={onClose} type='button' className='absolute left-24 z-10 text-gray-900'>
+					<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
 						<XSVG width='1.6rem' height='1.6rem' />
 					</button>
 				</div>
@@ -136,12 +218,29 @@ const ManageOptionWatchlistList = () => {
 					<div className='flex-1 overflow-hidden pt-40 flex-column'>
 						<div className='px-24'>
 							<div className='border-b border-b-gray-500 pb-12 flex-justify-between'>
-								<span className='text-base font-medium text-gray-900'>
-									{t('manage_option_watchlist_modal.watchlist_count', {
-										count: watchlistList.length,
-									})}
-								</span>
-								<button className='text-gray-1000' type='button'>
+								<div className='flex items-center gap-8'>
+									{isDeleting.hasStarted && (
+										<Checkbox
+											checked={isDeleting.selected.length === watchlistList.length}
+											onChange={toggleAllWatchlist}
+											classes={{
+												checkbox: '!size-20 focus:!border-error-100 hover:!border-error-100',
+												checked: '!bg-error-100 !border-error-100',
+											}}
+										/>
+									)}
+									<span className='text-base font-medium text-gray-900'>
+										{t('manage_option_watchlist_modal.watchlist_count', {
+											count: watchlistList.length,
+										})}
+									</span>
+								</div>
+
+								<button
+									onClick={() => setIsDeleting({ type: 'hasStarted', payload: true })}
+									className='text-gray-1000'
+									type='button'
+								>
 									<TrashSVG width='2rem' height='2rem' />
 								</button>
 							</div>
@@ -153,8 +252,11 @@ const ManageOptionWatchlistList = () => {
 									key={wl.id}
 									top={index * 6.4 + 1.6}
 									watchlist={wl}
+									checked={isDeleting.hasStarted ? isDeleting.selected.includes(wl.id) : undefined}
+									onChecked={(checked) => onCheckedWatchlist(wl, checked)}
 									isActive={optionWatchlistTabId === wl.id}
 									isEditing={wl.id === editingWatchlistId}
+									onSelect={() => onSelect(wl)}
 									onEditStart={() => onEditStart(wl)}
 									onEditCancel={() => setEditingWatchlistId(-1)}
 									onEditEnd={(name: string) => onEditEnd(wl, name)}
@@ -170,17 +272,38 @@ const ManageOptionWatchlistList = () => {
 					</div>
 				)}
 
-				<div className='gap-8 border-t border-t-gray-500 pl-24'>
-					<button
-						onClick={addNewWatchlist}
-						className='h-40 gap-8 pr-24 font-medium text-primary-400 flex-items-center'
-						type='button'
-					>
-						<span className='size-16 rounded-sm text-current flex-justify-center'>
-							<PlusSquareSVG width='1.6rem' height='1.6rem' />
-						</span>
-						{t('manage_option_watchlist_modal.create_new_watchlist')}
-					</button>
+				<div className='h-56 gap-8 border-t border-t-gray-500 pl-24 flex-items-center'>
+					{isDeleting.hasStarted ? (
+						<div className='w-full gap-8 flex-justify-end'>
+							<button
+								style={{ width: '8.8rem' }}
+								onClick={() => setIsDeleting({ type: 'hasStarted', payload: false })}
+								className='h-40 rounded btn-disabled-outline'
+								type='button'
+							>
+								{t('common.cancel')}
+							</button>
+							<button
+								style={{ width: '8.8rem' }}
+								onClick={deleteAll}
+								className='h-40 rounded btn-error'
+								type='button'
+							>
+								{t('manage_option_watchlist_modal.delete_all')}
+							</button>
+						</div>
+					) : (
+						<button
+							onClick={addNewWatchlist}
+							className='h-40 gap-8 pr-24 font-medium text-primary-400 flex-items-center'
+							type='button'
+						>
+							<span className='size-16 rounded-sm text-current flex-justify-center'>
+								<PlusSquareSVG width='1.6rem' height='1.6rem' />
+							</span>
+							{t('manage_option_watchlist_modal.create_new_watchlist')}
+						</button>
+					)}
 				</div>
 			</Div>
 		</Modal>
