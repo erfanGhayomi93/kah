@@ -8,6 +8,7 @@ import { type RootState } from '@/features/store';
 import { useDebounce } from '@/hooks';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
 import Watchlist from './Watchlist';
@@ -92,8 +93,10 @@ const WatchlistList = () => {
 		}
 	}, [watchlistList, optionWatchlistTabId]);
 
+	const isDisabled = !Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0;
+
 	return (
-		<div className='gap-8 flex-justify-between'>
+		<div className='gap-8 flex-justify-start'>
 			<ul className='flex flex-grow-0 gap-8'>
 				{watchlistList.map((item) => (
 					<Watchlist
@@ -108,6 +111,7 @@ const WatchlistList = () => {
 			<ul className='flex flex-grow-0 gap-8'>
 				<li>
 					<button
+						disabled={!isLoggedIn}
 						type='button'
 						className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
 						onClick={addNewWatchlist}
@@ -118,9 +122,13 @@ const WatchlistList = () => {
 
 				<li>
 					<button
-						onClick={manageWatchlistList}
 						type='button'
-						className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+						disabled={isDisabled}
+						onClick={manageWatchlistList}
+						className={clsx(
+							'size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center',
+							!isDisabled && 'hover:border-primary-400 hover:bg-primary-400 hover:text-white',
+						)}
 					>
 						<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 					</button>

@@ -50,6 +50,7 @@
 	},
 	"manage_option_watchlist_modal": {
 		"title": "مدیریت دیده‌بان",
+		"delete_all": "حذف همه",
 		"watchlist_count": "{count} دیده‌بان",
 		"create_new_watchlist": "دیده‌بان جدید",
 		"new_watchlist_name": "نام جدید دیده‌بان"

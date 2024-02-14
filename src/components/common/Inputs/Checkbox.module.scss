@@ -26,32 +26,17 @@
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
-	border: 1px solid theme("colors.gray.300");
-	border-radius: 3px;
+	border: 1px solid theme("colors.input");
+	border-radius: 4px;
 	background-color: transparent;
 
 	&.checked {
 		position: relative;
 		border-color: theme("colors.primary.300");
 		background-color: theme("colors.primary.300");
-		color: theme("colors.gray.600");
-
-		&::after {
-			content: "";
-			position: absolute;
-			left: 18%;
-			top: 44%;
-			width: 38%;
-			height: 72%;
-			border: solid currentColor;
-			border-width: 0 2px 2px 0;
-			transform: rotate(45deg) translate(-50%, -50%);
-			-webkit-transform: rotate(45deg) translate(-50%, -50%);
-			-ms-transform: rotate(45deg) translate(-50%, -50%);
-		}
-
-		&:hover {
-			background-color: theme("colors.primary.400");
-		}
+		color: theme("colors.white");
+		background-position: center;
+		background-repeat: no-repeat;
+		background-image: url("data:image/svg+xml,<svg width='12' height='10' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1.66675 4.03968L3.88897 6.26191L8.33341 1.5' stroke='rgb(255,255,255)'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/></svg>");
 	}
 }

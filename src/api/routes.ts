@@ -35,6 +35,8 @@ const routes = {
 		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
 		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
+		GetContractInfoHistory: `${rlcUrl}/Option/v1/GetContractInfoHistory`,
+		GetOpenPositionReport: `${rlcUrl}/Option/v1/GetOpenPositionReport`,
 	},
 
 	optionWatchlist: {
