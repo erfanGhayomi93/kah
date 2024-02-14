@@ -29,6 +29,8 @@ const config: Config = {
 
 			black: 'rgba(35, 38, 41, 1)',
 
+			input: 'rgba(224, 224, 226, 1)',
+
 			primary: {
 				100: 'rgba(229, 238, 255, 1)',
 				200: 'rgba(162, 174, 255, 1)',
@@ -126,6 +128,7 @@ const config: Config = {
 			'16': '1.6rem',
 			'20': '2rem',
 			'24': '2.4rem',
+			'28': '2.8rem',
 			'32': '3.2rem',
 			'36': '3.6rem',
 			'40': '4.0rem',
@@ -417,7 +420,8 @@ const config: Config = {
 
 				'.icon-hover': {
 					color: theme('colors.gray.1000'),
-					transition: 'colors 250ms',
+					transition: 'color 250ms',
+					'-webkit-transition': 'color 250ms',
 
 					'&:hover': {
 						color: theme('colors.gray.900'),
@@ -448,6 +452,10 @@ const config: Config = {
 
 						'&:focus-within': {
 							'border-color': theme('colors.primary.300'),
+						},
+
+						'&:not(:focus-within):hover': {
+							'border-color': `${theme('colors.gray.700')} !important`,
 						},
 
 						'&.invalid': {

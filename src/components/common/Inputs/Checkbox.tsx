@@ -1,17 +1,18 @@
 import clsx from 'clsx';
 import styles from './Checkbox.module.scss';
 
-interface ICheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'checked' | 'onChange'> {
+interface ICheckboxProps
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'checked' | 'onChange'> {
 	classes?: RecordClasses<'root' | 'dark' | 'checkbox' | 'checked' | 'label' | 'text'>;
-	checked: boolean;
 	label?: string | number;
 	disabled?: boolean;
+	checked: boolean;
 	onChange: (checked: boolean) => void;
 }
 
 const Checkbox = ({ classes, disabled, onChange, checked, label, ...props }: ICheckboxProps) => {
 	return (
-		<div className={clsx(styles.root, classes?.root, disabled && styles.disabled)} data-testid='checkbox_component'>
+		<div className={clsx(styles.root, classes?.root, disabled && styles.disabled)}>
 			<label className={clsx(styles.label, classes?.label)}>
 				<input
 					type='checkbox'
