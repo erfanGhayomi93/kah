@@ -4,13 +4,13 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Tab, { type ITabIem } from '../common/Tab';
 
-interface MarketDepthProps {
+interface SymbolTabsProps {
 	symbol: Symbol.Info;
 	activeTab: Saturn.SymbolTab;
 	setActiveTab: (tabId: Saturn.SymbolTab) => void;
 }
 
-const MarketDepth = ({ symbol, activeTab, setActiveTab }: MarketDepthProps) => {
+const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
 
 	const tabs: Array<ITabIem<Saturn.SymbolTab>> = useMemo(
@@ -49,4 +49,4 @@ const MarketDepth = ({ symbol, activeTab, setActiveTab }: MarketDepthProps) => {
 	);
 };
 
-export default MarketDepth;
+export default SymbolTabs;

@@ -18,30 +18,28 @@ export interface ITooltipProps {
 	onHide?: () => void;
 }
 
-const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
-	({ placement, interactive, delay, trigger, followCursor, singleton, offset, element, children, content, onShow, onHide }, ref) => {
-		const childRef = useRef<HTMLElement | null>(null);
+const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, content }, ref) => {
+	const childRef = useRef<HTMLElement | null>(null);
 
-		const tooltipRef = useRef<TooltipElement | null>(null);
+	const tooltipRef = useRef<TooltipElement | null>(null);
 
-		useImperativeHandle(ref, () => childRef.current!);
+	useImperativeHandle(ref, () => childRef.current!);
 
-		useEffect(() => {
-			const eChild = childRef.current;
-			if (!eChild) return;
+	useEffect(() => {
+		const eChild = childRef.current;
+		if (!eChild) return;
 
-			tooltipRef.current = new TooltipElement(eChild);
-			tooltipRef.current.setContent(content);
+		tooltipRef.current = new TooltipElement(eChild);
+		tooltipRef.current.setContent(content);
 
-			TooltipManager.add(tooltipRef.current);
-		}, [childRef.current]);
+		TooltipManager.add(tooltipRef.current);
+	}, [childRef.current]);
 
-		useEffect(() => {
-			if (tooltipRef.current) tooltipRef.current.setContent(content);
-		}, [content]);
+	useEffect(() => {
+		if (tooltipRef.current) tooltipRef.current.setContent(content);
+	}, [content]);
 
-		return cloneElement(children, { ref: childRef });
-	},
-);
+	return cloneElement(children, { ref: childRef });
+});
 
 export default Tooltip;

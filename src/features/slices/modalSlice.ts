@@ -13,14 +13,14 @@ export interface IContractSelectorModal {
 	symbolISIN: string;
 }
 
-export interface ISaveSaturnTemplate extends Saturn.Content {}
+export interface IAddSaturnTemplate extends Saturn.Content {}
 
 export interface ModalState {
 	loginModal: boolean;
 	logout: boolean;
 	addNewOptionWatchlist: boolean;
 	manageOptionWatchlistList: boolean;
-	saveSaturnTemplate: ISaveSaturnTemplate | null;
+	addSaturnTemplate: IAddSaturnTemplate | null;
 	symbolContracts: IContractSelectorModal | null;
 	forgetPassword: IForgetPasswordModal | true | null;
 	optionFilters: false | Partial<IOptionFiltersModal>;
@@ -33,7 +33,7 @@ const initialState: ModalState = {
 	logout: false,
 	addNewOptionWatchlist: false,
 	manageOptionWatchlistList: false,
-	saveSaturnTemplate: null,
+	addSaturnTemplate: null,
 	symbolContracts: null,
 };
 
@@ -61,8 +61,8 @@ const modalSlice = createSlice({
 			state.symbolContracts = payload;
 		},
 
-		toggleSaveSaturnTemplate: (state, { payload }: PayloadAction<ModalState['saveSaturnTemplate']>) => {
-			state.saveSaturnTemplate = payload;
+		toggleSaveSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
+			state.addSaturnTemplate = payload;
 		},
 
 		toggleAddNewOptionWatchlist: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
@@ -94,7 +94,7 @@ export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
 export const getSymbolContractsModal = (state: RootState) => state.modal.symbolContracts;
-export const getSaveSaturnTemplate = (state: RootState) => state.modal.saveSaturnTemplate;
+export const getAddSaturnTemplate = (state: RootState) => state.modal.addSaturnTemplate;
 export const getAddNewOptionWatchlist = (state: RootState) => state.modal.addNewOptionWatchlist;
 export const getManageOptionWatchlistList = (state: RootState) => state.modal.manageOptionWatchlistList;
 
