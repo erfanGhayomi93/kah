@@ -3,7 +3,7 @@ import styles from './Checkbox.module.scss';
 
 interface ICheckboxProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'checked' | 'onChange'> {
-	classes?: RecordClasses<'root' | 'dark' | 'checkbox' | 'checked' | 'label' | 'text'>;
+	classes?: RecordClasses<'root' | 'checkbox' | 'checked' | 'label' | 'text'>;
 	label?: string | number;
 	disabled?: boolean;
 	checked: boolean;

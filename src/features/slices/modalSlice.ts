@@ -4,6 +4,14 @@ import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
+export interface IBuySellModal {
+	symbolTitle: string;
+	symbolISIN: string;
+	side: TBsSides;
+	expand?: boolean;
+	holdAfterOrder?: boolean;
+}
+
 export interface IForgetPasswordModal {
 	phoneNumber?: string;
 }
@@ -21,6 +29,7 @@ export interface ModalState {
 	addNewOptionWatchlist: boolean;
 	manageOptionWatchlistList: boolean;
 	addSaturnTemplate: IAddSaturnTemplate | null;
+	buySell: IBuySellModal | null;
 	symbolContracts: IContractSelectorModal | null;
 	forgetPassword: IForgetPasswordModal | true | null;
 	optionFilters: false | Partial<IOptionFiltersModal>;
@@ -28,11 +37,12 @@ export interface ModalState {
 
 const initialState: ModalState = {
 	loginModal: false,
-	forgetPassword: null,
 	optionFilters: false,
 	logout: false,
 	addNewOptionWatchlist: false,
 	manageOptionWatchlistList: false,
+	forgetPassword: null,
+	buySell: null,
 	addSaturnTemplate: null,
 	symbolContracts: null,
 };
@@ -41,6 +51,10 @@ const modalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
+		toggleBuySellModal: (state, { payload }: PayloadAction<ModalState['buySell']>) => {
+			state.buySell = payload;
+		},
+
 		toggleLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
 			state.loginModal = payload;
 		},
@@ -80,6 +94,7 @@ const modalSlice = createSlice({
 
 export const {
 	toggleLoginModal,
+	toggleBuySellModal,
 	toggleForgetPasswordModal,
 	toggleOptionFiltersModal,
 	toggleLogoutModal,
@@ -91,6 +106,7 @@ export const {
 
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getLogoutModal = (state: RootState) => state.modal.logout;
+export const getBuySellModal = (state: RootState) => state.modal.buySell;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
 export const getSymbolContractsModal = (state: RootState) => state.modal.symbolContracts;

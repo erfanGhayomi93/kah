@@ -104,6 +104,14 @@
 		"symbol_not_found": "نماد مورد نظر یافت نشد",
 		"delete_selected_symbols": "حذف همه"
 	},
+	"bs_modal": {
+		"title": "سفارش {symbolTitle}",
+		"order_validity_date": "اعتبار سفارش",
+		"day": "روز",
+		"hold_form": "نگهداری فرم سفارش",
+		"normal_trade": "معامله ساده",
+		"strategy": "استراتژی"
+	},
 	"manage_option_watchlist_columns": {
 		"title": "مدیریت ستون های جدول",
 		"symbol_info": "اطلاعات نماد",

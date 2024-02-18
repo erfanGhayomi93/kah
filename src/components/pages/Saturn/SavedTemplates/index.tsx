@@ -1,7 +1,7 @@
 'use client';
 
+import Panel from '@/components/common/Panel';
 import { XSVG } from '@/components/icons';
-import Panel from '@/components/panels/Panel';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSavedSaturnTemplates, toggleSavedSaturnTemplates } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
