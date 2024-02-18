@@ -30,17 +30,19 @@ interface PanelProps {
 }
 
 const Panel = ({ transparent, width, height, isEnable, children, onClose }: PanelProps) => {
-	const rootRef = useRef<HTMLDivElement>(null);
+	const panelRef = useRef<HTMLDivElement>(null);
 
 	const [rendered, setRendered] = useState(isEnable);
 
 	const onMouseDown = (e: React.MouseEvent) => {
 		try {
-			const eRoot = rootRef.current;
-			if (!eRoot) return;
+			const ePanel = panelRef.current;
+			if (!ePanel) return;
 
 			const target = e.target as HTMLElement;
-			if (target.isEqualNode(eRoot)) onClose();
+			if (ePanel.isEqualNode(target) || ePanel.contains(target)) return;
+
+			onClose();
 		} catch (e) {
 			//
 		}
@@ -60,12 +62,13 @@ const Panel = ({ transparent, width, height, isEnable, children, onClose }: Pane
 	if (!rendered) return null;
 
 	return createPortal(
-		<div ref={rootRef} onMouseDown={onMouseDown} className={styles.root}>
+		<div onMouseDown={onMouseDown} className={styles.root}>
 			{!transparent && (
 				<div style={{ animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }} className={styles.bg} />
 			)}
 
 			<Wrapper
+				ref={panelRef}
 				$enabled={isEnable}
 				style={{ width, height: height ?? 'calc(100vh - 11.6rem)' }}
 				className='overflow-auto bg-white'
