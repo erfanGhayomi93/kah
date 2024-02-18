@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { useLayoutEffect, useMemo } from 'react';
 import Tab, { type ITabIem } from '../common/Tab';
 import ComputingInformation from './Tabs/ComputingInformation';
+import ContractMarketDepth from './Tabs/ContractMarketDepth';
 import PriceInformation from './Tabs/PriceInformation';
 
 interface ContractProps {
@@ -60,7 +61,11 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 				title: t('saturn_page.tab_computing_information'),
 				render: <ComputingInformation symbol={contractInfo ?? null} />,
 			},
-			{ id: 'market_depth', title: t('saturn_page.tab_market_depth'), disabled: true, render: null },
+			{
+				id: 'market_depth',
+				title: t('saturn_page.tab_market_depth'),
+				render: <ContractMarketDepth symbol={contractInfo ?? null} />,
+			},
 			{ id: 'open_position', title: t('saturn_page.tab_open_position'), disabled: true, render: null },
 		],
 		[contractInfo],

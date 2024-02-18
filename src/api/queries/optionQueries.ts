@@ -9,6 +9,7 @@ interface TPaginationInputs {
 
 interface IOptionWatchlistQuery {
 	SymbolISINs: string[];
+	Id: number;
 	FromDueDays: string;
 	ToDueDays: string;
 	MinimumTradeValue: string;
@@ -20,9 +21,9 @@ interface IOptionWatchlistQuery {
 
 export const useOptionWatchlistQuery = createQuery<
 	Option.Root[],
-	['optionWatchlistQuery', Partial<IOptionWatchlistFilters> & TPaginationInputs]
+	['optionWatchlistQuery', Partial<IOptionWatchlistFilters> & TPaginationInputs & { watchlistId: number }]
 >({
-	queryKey: ['optionWatchlistQuery', { pageNumber: 1, pageSize: 25 }],
+	queryKey: ['optionWatchlistQuery', { watchlistId: -1, pageNumber: 1, pageSize: 25 }],
 	queryFn: async ({ queryKey, signal }) => {
 		const [, props] = queryKey;
 		try {
@@ -48,10 +49,15 @@ export const useOptionWatchlistQuery = createQuery<
 				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
 			}
 
-			const response = await axios.get<PaginationResponse<Option.Root[]>>(routes.optionWatchlist.Watchlist, {
-				params,
-				signal,
-			});
+			if (props.watchlistId > -1) params.Id = props.watchlistId;
+
+			const response = await axios.get<PaginationResponse<Option.Root[]>>(
+				props.watchlistId > -1 ? routes.optionWatchlist.GetCustomWatchlist : routes.optionWatchlist.Watchlist,
+				{
+					params,
+					signal,
+				},
+			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -228,32 +234,6 @@ export const useGetAllCustomWatchlistQuery = createQuery<Option.WatchlistList[],
 		try {
 			const response = await axios.get<ServerResponse<Option.WatchlistList[]>>(
 				routes.optionWatchlist.GetAllCustomWatchlist,
-				{ signal },
-			);
-			const { data } = response;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			return data.result;
-		} catch (e) {
-			return [];
-		}
-	},
-});
-
-export const useGetCustomWatchlistSymbolsQuery = createQuery<
-	Option.Root[],
-	['getCustomWatchlistSymbolsQuery', number | null]
->({
-	staleTime: 36e5,
-	queryKey: ['getCustomWatchlistSymbolsQuery', null],
-	queryFn: async ({ signal, queryKey }) => {
-		try {
-			const [, watchlistId] = queryKey;
-			if (watchlistId === null) return [];
-
-			const response = await axios.get<ServerResponse<Option.Root[]>>(
-				routes.optionWatchlist.GetCustomWatchlistSymbols,
 				{ signal },
 			);
 			const { data } = response;

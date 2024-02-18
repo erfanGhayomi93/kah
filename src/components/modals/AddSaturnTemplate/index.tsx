@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSaveSaturnTemplate, type ISaveSaturnTemplate } from '@/features/slices/modalSlice';
+import { toggleSaveSaturnTemplate, type IAddSaturnTemplate } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -18,9 +18,9 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface SaveSaturnTemplateProps extends ISaveSaturnTemplate {}
+interface AddSaturnTemplateProps extends IAddSaturnTemplate {}
 
-const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveSaturnTemplateProps) => {
+const AddSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: AddSaturnTemplateProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -105,4 +105,4 @@ const SaveSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: SaveS
 	);
 };
 
-export default SaveSaturnTemplate;
+export default AddSaturnTemplate;

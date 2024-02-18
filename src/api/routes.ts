@@ -52,7 +52,7 @@ const routes = {
 		UpdateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/UpdateCustomWatchlist`,
 		ChangeHiddenCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/ChangeHiddenCustomWatchlist`,
 		DeleteCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/DeleteCustomWatchlist`,
-		GetCustomWatchlistSymbols: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistSymbols`,
+		GetCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlist`,
 		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
 		RemoveSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
 	},

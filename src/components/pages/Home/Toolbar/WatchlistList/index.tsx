@@ -72,13 +72,13 @@ const WatchlistList = () => {
 		};
 
 		try {
-			if (!Array.isArray(userCustomWatchlistList)) return [defaultWatchlist];
+			if (!isLoggedIn || !Array.isArray(userCustomWatchlistList)) return [defaultWatchlist];
 
 			return [defaultWatchlist, ...userCustomWatchlistList];
 		} catch (e) {
 			return [defaultWatchlist];
 		}
-	}, [userCustomWatchlistList]);
+	}, [userCustomWatchlistList, isLoggedIn]);
 
 	useLayoutEffect(() => {
 		if (isLoggedIn) refetchUserCustomWatchlistList();
@@ -86,12 +86,20 @@ const WatchlistList = () => {
 
 	useLayoutEffect(() => {
 		try {
-			const isExists = watchlistList.findIndex((item) => !item.isHidden && optionWatchlistTabId === item.id);
-			if (isExists === -1) dispatch(setOptionWatchlistTabId(-1));
+			if (!Array.isArray(userCustomWatchlistList)) return;
+
+			const isExists = userCustomWatchlistList.findIndex(
+				(item) => !item.isHidden && optionWatchlistTabId === item.id,
+			);
+			if (isExists === -1)
+				setOptionWatchlistTabId({
+					id: -1,
+					updateLS: false,
+				});
 		} catch (e) {
 			//
 		}
-	}, [watchlistList, optionWatchlistTabId]);
+	}, [userCustomWatchlistList, optionWatchlistTabId]);
 
 	const isDisabled = !Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0;
 
@@ -108,32 +116,33 @@ const WatchlistList = () => {
 				))}
 			</ul>
 
-			<ul className='flex flex-grow-0 gap-8'>
-				<li>
-					<button
-						disabled={!isLoggedIn}
-						type='button'
-						className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
-						onClick={addNewWatchlist}
-					>
-						<PlusSVG width='1.8rem' height='1.8rem' />
-					</button>
-				</li>
+			{isLoggedIn && (
+				<ul className='flex flex-grow-0 gap-8'>
+					<li>
+						<button
+							type='button'
+							className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+							onClick={addNewWatchlist}
+						>
+							<PlusSVG width='1.8rem' height='1.8rem' />
+						</button>
+					</li>
 
-				<li>
-					<button
-						type='button'
-						disabled={isDisabled}
-						onClick={manageWatchlistList}
-						className={clsx(
-							'size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center',
-							!isDisabled && 'hover:border-primary-400 hover:bg-primary-400 hover:text-white',
-						)}
-					>
-						<MoreOptionsSVG width='2.4rem' height='2.4rem' />
-					</button>
-				</li>
-			</ul>
+					<li>
+						<button
+							type='button'
+							disabled={isDisabled}
+							onClick={manageWatchlistList}
+							className={clsx(
+								'size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center',
+								!isDisabled && 'hover:border-primary-400 hover:bg-primary-400 hover:text-white',
+							)}
+						>
+							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
+						</button>
+					</li>
+				</ul>
+			)}
 		</div>
 	);
 };
