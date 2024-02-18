@@ -1,5 +1,6 @@
 'use client';
 
+import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Main from '@/components/layout/Main';
 import { initialFilters } from '@/components/modals/OptionWatchlistFiltersModal/Form';
@@ -17,11 +18,15 @@ const Home = () => {
 
 	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialFilters);
 
+	const { data: userCustomWatchlistList, refetch: refetchUserCustomWatchlistList } = useGetAllCustomWatchlistQuery({
+		queryKey: ['getAllCustomWatchlistQuery'],
+		enabled: false,
+	});
+
 	useLayoutEffect(() => {
 		try {
 			if (isLoggedIn) {
-				const watchlistId = Number(LocalstorageInstance.get('awl', -1)) || -1;
-				dispatch(setOptionWatchlistTabId(isNaN(watchlistId) ? -1 : watchlistId));
+				refetchUserCustomWatchlistList();
 			} else {
 				dispatch(
 					setOptionWatchlistTabId({
@@ -34,6 +39,26 @@ const Home = () => {
 			//
 		}
 	}, [isLoggedIn]);
+
+	useLayoutEffect(() => {
+		if (!isLoggedIn || !Array.isArray(userCustomWatchlistList)) return;
+
+		try {
+			const watchlistId = Number(LocalstorageInstance.get('awl', -1)) || -1;
+			const isExists = userCustomWatchlistList.findIndex((item) => !item.isHidden && watchlistId === item.id);
+
+			if (isExists === -1) {
+				setOptionWatchlistTabId({
+					id: -1,
+					updateLS: false,
+				});
+			} else {
+				dispatch(setOptionWatchlistTabId(watchlistId));
+			}
+		} catch (e) {
+			//
+		}
+	}, [isLoggedIn, userCustomWatchlistList]);
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>

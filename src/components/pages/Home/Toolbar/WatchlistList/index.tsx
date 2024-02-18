@@ -10,7 +10,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Watchlist from './Watchlist';
 
 const getStates = createSelector(
@@ -32,7 +32,7 @@ const WatchlistList = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const { data: userCustomWatchlistList, refetch: refetchUserCustomWatchlistList } = useGetAllCustomWatchlistQuery({
+	const { data: userCustomWatchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
 		enabled: false,
 	});
@@ -79,27 +79,6 @@ const WatchlistList = () => {
 			return [defaultWatchlist];
 		}
 	}, [userCustomWatchlistList, isLoggedIn]);
-
-	useLayoutEffect(() => {
-		if (isLoggedIn) refetchUserCustomWatchlistList();
-	}, [isLoggedIn]);
-
-	useLayoutEffect(() => {
-		try {
-			if (!Array.isArray(userCustomWatchlistList)) return;
-
-			const isExists = userCustomWatchlistList.findIndex(
-				(item) => !item.isHidden && optionWatchlistTabId === item.id,
-			);
-			if (isExists === -1)
-				setOptionWatchlistTabId({
-					id: -1,
-					updateLS: false,
-				});
-		} catch (e) {
-			//
-		}
-	}, [userCustomWatchlistList, optionWatchlistTabId]);
 
 	const isDisabled = !Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0;
 
