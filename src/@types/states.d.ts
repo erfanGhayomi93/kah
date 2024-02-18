@@ -1,5 +1,7 @@
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
+declare type TBsSides = 'buy' | 'sell';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'
@@ -35,3 +37,9 @@ declare type TOptionWatchlistColumnsState = Array<{
 	pivotIndex?: null;
 	flex?: number;
 }>;
+
+declare interface IBsModalInputs {
+	side: TBsSides;
+	expand: boolean;
+	holdAfterOrder: boolean;
+}
