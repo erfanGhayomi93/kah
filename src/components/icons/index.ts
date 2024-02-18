@@ -1,3 +1,5 @@
+import AngleLeftCircle from './angle-left-circle.svg';
+import AngleLeft from './angle-left.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import BookmarkSVG from './bookmark.svg';
@@ -36,6 +38,8 @@ import UserCircleSVG from './user-circle.svg';
 import XSVG from './x.svg';
 
 export {
+	AngleLeft,
+	AngleLeftCircle,
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	BookmarkSVG,

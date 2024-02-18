@@ -2,6 +2,8 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { toggleBuySellModal } from '@/features/slices/modalSlice';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -24,8 +26,8 @@ interface SymbolInfoProps {
 
 const ListItem = ({ title, valueFormatter }: Item) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-gray-900 whitespace-nowrap text-base'>{title}</span>
-		<span className='text-gray-1000 text-base font-medium ltr'>
+		<span className='whitespace-nowrap text-base text-gray-900'>{title}</span>
+		<span className='text-base font-medium text-gray-1000 ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
 	</div>
@@ -34,9 +36,25 @@ const ListItem = ({ title, valueFormatter }: Item) => (
 const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', selectedSymbol ?? null],
 	});
+
+	const addBsModal = (side: TBsSides) => {
+		if (!symbolData) return;
+
+		const { symbolISIN, symbolTitle } = symbolData;
+
+		dispatch(
+			toggleBuySellModal({
+				side,
+				symbolISIN,
+				symbolTitle,
+			}),
+		);
+	};
 
 	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {
 		try {
@@ -145,7 +163,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
 			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<span className='text-gray-900 absolute text-base font-medium center'>
+				<span className='absolute text-base font-medium text-gray-900 center'>
 					{t('option_chain.no_data_found')}
 				</span>
 			</Section>
@@ -160,7 +178,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				<div className='justify-between pl-16 pr-24 flex-items-center'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-gray-1000 text-3xl font-medium'>{symbolTitle}</h1>
+						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
@@ -188,23 +206,31 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 							)}
 						>
 							{sepNumbers(String(lastTradedPrice))}
-							<span className='text-gray-900 text-base font-normal'>{t('common.rial')}</span>
+							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
 
-						<button type='button' className='text-gray-1000 size-24'>
+						<button type='button' className='size-24 text-gray-1000'>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>
 					</div>
 				</div>
 
-				<h4 className='text-gray-1000 whitespace-nowrap pr-44 text-tiny'>{companyName}</h4>
+				<h4 className='whitespace-nowrap pr-44 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
 			<div className='gap-16 px-24 pb-48 pt-32 flex-justify-between'>
-				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-success-outline' type='button'>
+				<button
+					onClick={() => addBsModal('buy')}
+					className='h-40 flex-1 rounded text-base flex-justify-center btn-success-outline'
+					type='button'
+				>
 					{t('side.buy')}
 				</button>
-				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-error-outline' type='button'>
+				<button
+					onClick={() => addBsModal('sell')}
+					className='h-40 flex-1 rounded text-base flex-justify-center btn-error-outline'
+					type='button'
+				>
 					{t('side.sell')}
 				</button>
 			</div>

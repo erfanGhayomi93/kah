@@ -1,6 +1,6 @@
 import Loading from '@/components/common/Loading';
+import Panel from '@/components/common/Panel';
 import { RefreshSVG, XSVG } from '@/components/icons';
-import Panel from '@/components/panels/Panel';
 import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';

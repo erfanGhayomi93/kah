@@ -1,0 +1,32 @@
+.list {
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid theme("colors.gray.500");
+	position: relative;
+}
+
+.indicator {
+	position: absolute;
+	bottom: -1px;
+	width: 9.6rem;
+	height: 2px;
+	right: 0;
+	border-radius: 1px;
+	background-color: theme("colors.gray.900");
+	border-radius: 2px 2px 0 0;
+	transform: translateX(0);
+	-webkit-transform: translateX(0);
+	-moz-transform: translateX(0);
+	transition:
+		transform 250ms,
+		width 250ms;
+	-webkit-transition:
+		transform 250ms,
+		width 250ms;
+	-moz-transition:
+		transform 250ms,
+		width 250ms;
+	-o-transition:
+		transform 250ms,
+		width 250ms;
+}
