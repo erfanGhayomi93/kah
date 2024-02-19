@@ -32,11 +32,22 @@ const Moveable = forwardRef<HTMLElement, MoveableProps>(({ enabled = true, child
 
 			const { left, top, width, height } = eChild.getBoundingClientRect();
 
+			const { innerWidth, innerHeight } = window;
+
+			if (e.clientX < 0 || e.clientX > innerWidth) {
+				eChild.style.left = `${e.clientX < 0 ? width / 2 : innerWidth - width / 2}px`;
+				return;
+			}
+			if (e.clientY < 0 || e.clientY > innerHeight) {
+				eChild.style.top = `${e.clientY < 0 ? 0 : innerHeight - height}px`;
+				return;
+			}
+
 			let positionX = left + width / 2 + e.movementX;
-			positionX = Math.max(width / 2, Math.min(positionX, window.innerWidth - width / 2));
+			positionX = Math.max(width / 2, Math.min(positionX, innerWidth - width / 2));
 
 			let positionY = top + e.movementY;
-			positionY = Math.max(0, Math.min(positionY, window.innerHeight - height));
+			positionY = Math.max(0, Math.min(positionY, innerHeight - height));
 
 			eChild.style.left = `${positionX}px`;
 			eChild.style.top = `${positionY}px`;

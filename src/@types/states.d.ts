@@ -39,7 +39,19 @@ declare type TOptionWatchlistColumnsState = Array<{
 }>;
 
 declare interface IBsModalInputs {
+	price: number;
+	quantity: number;
 	side: TBsSides;
 	expand: boolean;
 	holdAfterOrder: boolean;
 }
+
+declare type TSetBsModalInputs = <
+	T extends
+		| Partial<IBsModalInputs>
+		| keyof Partial<IBsModalInputs>
+		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+>(
+	options: T,
+	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
+) => void;

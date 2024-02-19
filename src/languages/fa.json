@@ -110,7 +110,8 @@
 		"day": "روز",
 		"hold_form": "نگهداری فرم سفارش",
 		"normal_trade": "معامله ساده",
-		"strategy": "استراتژی"
+		"strategy": "استراتژی",
+		"draft": "پیش‌نویس"
 	},
 	"manage_option_watchlist_columns": {
 		"title": "مدیریت ستون های جدول",

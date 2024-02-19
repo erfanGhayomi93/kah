@@ -1,8 +1,9 @@
 import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
+import Tabs from '@/components/common/Tabs/Tabs';
 import { MoreOptionsSVG } from '@/components/icons';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import Tab, { type ITabIem } from '../common/Tab';
 
 interface SymbolTabsProps {
 	symbol: Symbol.Info;
@@ -13,7 +14,7 @@ interface SymbolTabsProps {
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
 
-	const tabs: Array<ITabIem<Saturn.SymbolTab>> = useMemo(
+	const tabs = useMemo(
 		() => [
 			{
 				id: 'tab_market_depth',
@@ -43,7 +44,21 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 			</div>
 
 			<div className='w-full gap-16 flex-column'>
-				<Tab activeTab={activeTab} data={tabs} onChange={setActiveTab} />
+				<Tabs
+					defaultActiveTab={activeTab}
+					data={tabs}
+					renderTab={(item, activeTab) => (
+						<button
+							className={clsx(
+								'px-8 py-12 transition-colors',
+								item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+							)}
+							type='button'
+						>
+							{item.title}
+						</button>
+					)}
+				/>
 			</div>
 		</div>
 	);

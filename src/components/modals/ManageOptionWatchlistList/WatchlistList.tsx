@@ -139,6 +139,16 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 		}
 	};
 
+	const onDragStart = (e: React.DragEvent, index: number) => {
+		e.dataTransfer.effectAllowed = 'copy';
+		setTimeout(() => setDragItemIndex(index), 0);
+	};
+
+	const onDragEnter = (e: React.DragEvent, index: number) => {
+		draggedOverItem.current = index;
+		e.preventDefault();
+	};
+
 	const handleSort = () => {
 		const draggedOverIndex = draggedOverItem.current;
 		if (dragItemIndex === -1 || draggedOverIndex === -1) return;
@@ -152,17 +162,20 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 			queryClient.setQueryData(getAllCustomWatchlistQueryKey, list);
 		} catch (e) {
 			//
+		} finally {
+			setDragItemIndex(-1);
 		}
 	};
 
 	return (
 		<ul
-			onDragOver={(e) => {
-				e.dataTransfer.dropEffect = 'move';
+			ref={listRef}
+			onDragOver={(e) => e.preventDefault()}
+			onDragEnter={(e) => {
+				e.dataTransfer.dropEffect = 'copy';
 				e.preventDefault();
 			}}
-			ref={listRef}
-			className='relative flex-1 overflow-auto'
+			className='relative flex-1 select-none overflow-auto'
 		>
 			{watchlistList.map((wl, index) => (
 				<Watchlist
@@ -180,13 +193,13 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 					onVisibilityChange={() => onVisibilityChange(wl)}
 					// LI
 					draggable
-					onDragStart={() => setDragItemIndex(index)}
-					onDragEnter={() => (draggedOverItem.current = index)}
-					onDragOver={(e) => e.preventDefault()}
+					onDragStart={(e) => onDragStart(e, index)}
+					onDragEnter={(e) => onDragEnter(e, index)}
 					onDragEnd={handleSort}
 					style={{
 						top: `${index * 6.4 + 1.6}rem`,
 						transition: 'top 250ms ease-in-out, opacity 200ms',
+						opacity: dragItemIndex === index ? 0.5 : 1,
 					}}
 					className='absolute left-0 h-48 w-full select-none border px-24'
 				/>
