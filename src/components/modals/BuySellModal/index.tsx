@@ -27,11 +27,23 @@ const BuySellModal = ({ symbolISIN, symbolTitle, side, expand, holdAfterOrder }:
 		holdAfterOrder: holdAfterOrder ?? true,
 	});
 
-	const setInputValue = <T extends keyof IBsModalInputs>(field: T, value: IBsModalInputs[T]) => {
-		setInputs((prev) => ({
-			...prev,
-			[field]: value,
-		}));
+	const setInputValue: TSetBsModalInputs = (arg1, arg2) => {
+		if (typeof arg1 === 'string') {
+			setInputs((values) => ({
+				...values,
+				[arg1]: arg2,
+			}));
+		} else if (typeof arg1 === 'object') {
+			setInputs((values) => ({
+				...values,
+				...arg1,
+			}));
+		} else if (typeof arg1 === 'function') {
+			setInputs((values) => ({
+				...values,
+				...arg1(values),
+			}));
+		}
 	};
 
 	const onCloseModal = () => {
@@ -42,7 +54,7 @@ const BuySellModal = ({ symbolISIN, symbolTitle, side, expand, holdAfterOrder }:
 		<Modal moveable top='16%' onClose={onCloseModal}>
 			<Div>
 				<Header symbolTitle={symbolTitle} />
-				<Body {...inputs} />
+				<Body {...inputs} setInputValue={setInputValue} />
 				<Footer
 					validityDays={3}
 					hold={inputs.holdAfterOrder}

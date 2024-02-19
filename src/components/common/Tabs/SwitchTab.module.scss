@@ -1,0 +1,36 @@
+.root {
+	position: relative;
+	border: 1px solid theme("colors.gray.500");
+	border-radius: 8px;
+	height: 4rem;
+}
+
+.tabs {
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.rect {
+	position: absolute;
+	height: calc(100% + 2px);
+	width: 14.4rem;
+	top: -1px;
+	right: 0;
+	border-radius: 8px;
+	transition:
+		background-color 250ms ease-in-out,
+		transform 250ms ease-in-out;
+	-webkit-transition:
+		background-color 250ms ease-in-out,
+		transform 250ms ease-in-out;
+	-moz-transition:
+		background-color 250ms ease-in-out,
+		transform 250ms ease-in-out;
+	-o-transition:
+		background-color 250ms ease-in-out,
+		transform 250ms ease-in-out;
+}

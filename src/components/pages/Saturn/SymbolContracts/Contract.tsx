@@ -1,6 +1,7 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import SymbolState from '@/components/common/SymbolState';
+import Tabs from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
@@ -9,7 +10,6 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useLayoutEffect, useMemo } from 'react';
-import Tab, { type ITabIem } from '../common/Tab';
 import ComputingInformation from './Tabs/ComputingInformation';
 import ContractMarketDepth from './Tabs/ContractMarketDepth';
 import PriceInformation from './Tabs/PriceInformation';
@@ -49,7 +49,7 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 		);
 	};
 
-	const tabs: Array<ITabIem<Saturn.OptionTab>> = useMemo(
+	const tabs = useMemo(
 		() => [
 			{
 				id: 'price_information',
@@ -171,7 +171,21 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
-			<Tab activeTab={option.activeTab} data={tabs} onChange={(id) => onChangeContractTab(id)} />
+			<Tabs
+				defaultActiveTab={option.activeTab}
+				data={tabs}
+				renderTab={(item, activeTab) => (
+					<button
+						className={clsx(
+							'px-8 py-12 transition-colors',
+							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+						)}
+						type='button'
+					>
+						{item.title}
+					</button>
+				)}
+			/>
 		</Wrapper>
 	);
 };

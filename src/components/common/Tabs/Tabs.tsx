@@ -10,7 +10,7 @@ export type ITabIem<ID extends string | number, T extends object> = T & {
 interface TabsProps<ID extends string | number, T extends object> {
 	defaultActiveTab: ID;
 	data: Array<ITabIem<ID, T>>;
-	classes?: RecordClasses<'list' | 'item' | 'indicator'>;
+	classes?: RecordClasses<'list' | 'indicator'>;
 	renderTab: (item: ITabIem<ID, T>, activeTab: ID) => React.ReactElement;
 }
 
@@ -27,16 +27,16 @@ const Tabs = <ID extends string | number, T extends object>({
 	const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
 	const handleIndicatorSize = (el: HTMLElement | null) => {
+		const eRoot = rootRef.current;
 		const eIndicator = indicatorRef.current;
-		if (!eIndicator || !el) return;
+		if (!eIndicator || !eRoot || !el) return;
 
 		try {
-			const parentElement = eIndicator.parentElement!;
 			const width = el.offsetWidth;
 			const left = el.offsetLeft;
-			const parentWidth = parentElement.offsetWidth;
+			const rootWidth = eRoot.offsetWidth;
 
-			eIndicator.style.transform = `translateX(-${parentWidth - left - width}px)`;
+			eIndicator.style.transform = `translateX(-${rootWidth - left - width}px)`;
 			eIndicator.style.width = `${width}px`;
 		} catch (e) {
 			//
