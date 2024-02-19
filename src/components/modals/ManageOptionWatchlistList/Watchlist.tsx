@@ -11,7 +11,6 @@ interface WatchlistProps extends LiHTMLAttributes<HTMLLIElement> {
 	isEditing: boolean;
 	isActive: boolean;
 	checked: boolean | undefined;
-	onDragStart: () => void;
 	onSelect: () => void;
 	onEditStart: () => void;
 	onEditCancel: () => void;
