@@ -1,13 +1,13 @@
 import { cloneElement, useLayoutEffect, useRef } from 'react';
 
-interface OutsidePointerDetectorProps {
+interface ClickProps {
 	enabled: boolean;
 	children: React.ReactElement;
 	onClickInside?: () => void;
 	onClickOutside?: () => void;
 }
 
-const OutsidePointerDetector = ({ enabled, children, onClickInside, onClickOutside }: OutsidePointerDetectorProps) => {
+const Click = ({ enabled, children, onClickInside, onClickOutside }: ClickProps) => {
 	const childRef = useRef<HTMLElement>(null);
 
 	const controllerRef = useRef<AbortController>(new AbortController());
@@ -59,4 +59,4 @@ const OutsidePointerDetector = ({ enabled, children, onClickInside, onClickOutsi
 	return cloneElement(children, { ref: childRef });
 };
 
-export default OutsidePointerDetector;
+export default Click;

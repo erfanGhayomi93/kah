@@ -163,8 +163,11 @@ const Saturn = () => {
 			const { baseSymbolISIN, options } = JSON.parse(saturnActiveTemplate.content) as Saturn.Content;
 
 			setSelectedSymbol(baseSymbolISIN);
-			if (Array.isArray(options) && options.length > 0) setBaseSymbolContracts(options);
-			else setBaseSymbolContracts([null, null, null, null]);
+			if (Array.isArray(options) && options.length > 0) {
+				setBaseSymbolContracts([...options, ...Array(4 - options.length).fill(null)]);
+			} else {
+				setBaseSymbolContracts([null, null, null, null]);
+			}
 		} catch (e) {
 			//
 		}

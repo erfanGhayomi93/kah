@@ -48,10 +48,12 @@ const Home = () => {
 			const isExists = userCustomWatchlistList.findIndex((item) => !item.isHidden && watchlistId === item.id);
 
 			if (isExists === -1) {
-				setOptionWatchlistTabId({
-					id: -1,
-					updateLS: false,
-				});
+				dispatch(
+					setOptionWatchlistTabId({
+						id: -1,
+						updateLS: false,
+					}),
+				);
 			} else {
 				dispatch(setOptionWatchlistTabId(watchlistId));
 			}

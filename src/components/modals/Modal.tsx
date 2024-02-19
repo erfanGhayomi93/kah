@@ -41,6 +41,7 @@ const Modal = ({ portalElement, moveable, transparent, children, style, classes,
 	const onWindowKeyDown = (e: KeyboardEvent, removeListener: () => void) => {
 		try {
 			if (e.key !== 'Escape') return;
+
 			onClose();
 
 			removeListener();
@@ -82,7 +83,7 @@ const Modal = ({ portalElement, moveable, transparent, children, style, classes,
 			className={clsx(styles.root, classes?.root, transparent && [styles.transparent, classes?.transparent])}
 		>
 			<div style={style?.container} className={clsx(styles.container, classes?.container)}>
-				<Moveable ref={modalRef} enabled={moveable}>
+				<Moveable ref={modalRef} enabled={moveable ?? false}>
 					<div
 						style={{ top, ...style?.modal }}
 						className={clsx(styles.modal, size && styles[size], classes?.modal)}
