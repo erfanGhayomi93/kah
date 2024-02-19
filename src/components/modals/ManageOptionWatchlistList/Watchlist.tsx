@@ -1,16 +1,17 @@
+import Click from '@/components/common/Click';
 import Checkbox from '@/components/common/Inputs/Checkbox';
-import OutsidePointerDetector from '@/components/common/OutsidePointerDetector';
+import KeyDown from '@/components/common/KeyDown';
 import { DragSVG, EditSVG, EyeSVG, EyeSlashSVG, TrashSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, type LiHTMLAttributes } from 'react';
 
-interface WatchlistProps {
+interface WatchlistProps extends LiHTMLAttributes<HTMLLIElement> {
 	watchlist: Option.WatchlistList;
-	top: number;
 	isEditing: boolean;
 	isActive: boolean;
 	checked: boolean | undefined;
+	onDragStart: () => void;
 	onSelect: () => void;
 	onEditStart: () => void;
 	onEditCancel: () => void;
@@ -21,7 +22,6 @@ interface WatchlistProps {
 }
 
 const Watchlist = ({
-	top,
 	watchlist,
 	isActive,
 	isEditing,
@@ -33,12 +33,40 @@ const Watchlist = ({
 	onDelete,
 	onChecked,
 	onVisibilityChange,
+	...props
 }: WatchlistProps) => {
 	const t = useTranslations();
 
 	const [isDeleting, setIsDeleting] = useState(false);
 
 	const [name, setName] = useState('');
+
+	const onKeyDown = (key: string) => {
+		if (isDeleting) {
+			if (key === 'Escape') {
+				setIsDeleting(false);
+			} else if (key === 'Enter') {
+				onDeleteWatchlist();
+			}
+
+			return;
+		}
+
+		if (isEditing) {
+			if (key === 'Escape') {
+				onEditCancel();
+			} else if (key === 'Enter') {
+				onEditEnd(name);
+			}
+
+			return;
+		}
+	};
+
+	const onDeleteWatchlist = () => {
+		onDelete();
+		setIsDeleting(false);
+	};
 
 	useLayoutEffect(() => {
 		setName('');
@@ -52,11 +80,8 @@ const Watchlist = ({
 	const hasNotCheckbox = checked === undefined;
 
 	return (
-		<li
-			style={{ top: `${top}rem`, transition: 'top 250ms ease-in-out' }}
-			className='absolute left-0 h-48 w-full px-24'
-		>
-			<OutsidePointerDetector enabled={isEditing} onClickOutside={onEditCancel}>
+		<li {...props}>
+			<Click enabled={isEditing} onClickOutside={onEditCancel}>
 				<div className='flex items-center'>
 					<div className='w-28'>
 						{hasNotCheckbox ? (
@@ -65,7 +90,7 @@ const Watchlist = ({
 							</button>
 						) : (
 							<Checkbox
-								checked={checked}
+								checked={Boolean(checked)}
 								onChange={onChecked}
 								classes={{
 									checkbox: '!size-20 focus:!border-error-100 hover:!border-error-100',
@@ -80,6 +105,7 @@ const Watchlist = ({
 							<input
 								autoFocus
 								type='text'
+								maxLength={36}
 								className='h-full flex-1 bg-transparent'
 								placeholder={t('manage_option_watchlist_modal.new_watchlist_name')}
 								value={name}
@@ -110,85 +136,87 @@ const Watchlist = ({
 									<EyeSVG width='2rem' height='2rem' />
 								)}
 							</button>
-							<h3
-								className={clsx(
-									'select-none truncate text-base',
-									isActive ? 'text-white' : 'text-gray-900',
-								)}
-							>
+							<h3 className={clsx('truncate text-base', isActive ? 'text-white' : 'text-gray-900')}>
 								{watchlist.name}
 							</h3>
 						</div>
 					)}
 
-					<div style={{ flex: '0 0 10.4rem' }} className='gap-16 pr-16 flex-justify-end'>
-						{hasNotCheckbox &&
-							isEditing &&
-							!isDeleting && [
-								<button
-									key='cancel-edit'
-									onClick={onEditCancel}
-									type='button'
-									className='text-gray-800 flex-justify-center'
-								>
-									{t('common.cancel')}
-								</button>,
-								<button
-									key='edit'
-									onClick={() => onEditEnd(name)}
-									type='button'
-									className='font-medium text-primary-400 flex-justify-center'
-								>
-									{t('common.register')}
-								</button>,
-							]}
+					<KeyDown
+						enabled={isEditing || isDeleting}
+						dependencies={[name]}
+						keys={['Enter', 'Escape']}
+						onKeyDown={onKeyDown}
+					>
+						<div style={{ flex: '0 0 10.4rem' }} className='gap-16 pr-16 flex-justify-end'>
+							{hasNotCheckbox &&
+								isEditing &&
+								!isDeleting && [
+									<button
+										key='cancel-edit'
+										onClick={onEditCancel}
+										type='button'
+										className='text-gray-800 flex-justify-center'
+									>
+										{t('common.cancel')}
+									</button>,
+									<button
+										key='edit'
+										onClick={() => onEditEnd(name)}
+										type='button'
+										className='font-medium text-primary-400 flex-justify-center'
+									>
+										{t('common.register')}
+									</button>,
+								]}
 
-						{hasNotCheckbox &&
-							!isEditing &&
-							isDeleting && [
-								<button
-									key='cancel-delete'
-									onClick={() => setIsDeleting(false)}
-									type='button'
-									className='text-gray-800 flex-justify-center'
-								>
-									{t('common.cancel')}
-								</button>,
+							{hasNotCheckbox &&
+								!isEditing &&
+								isDeleting && [
+									<button
+										key='cancel-delete'
+										onClick={() => setIsDeleting(false)}
+										type='button'
+										className='text-gray-800 flex-justify-center'
+									>
+										{t('common.cancel')}
+									</button>,
 
-								<button
-									key='delete'
-									onClick={onDelete}
-									type='button'
-									className='font-medium text-error-200 flex-justify-center'
-								>
-									{t('common.delete')}
-								</button>,
-							]}
+									<button
+										key='delete'
+										onClick={onDeleteWatchlist}
+										type='button'
+										className='font-medium text-error-200 flex-justify-center'
+									>
+										{t('common.delete')}
+									</button>,
+								]}
 
-						{hasNotCheckbox &&
-							!isDeleting &&
-							!isEditing && [
-								<button
-									key='edit-req'
-									onClick={onEditStart}
-									type='button'
-									className='text-gray-1000 flex-justify-center'
-								>
-									<EditSVG width='2rem' height='2rem' />
-								</button>,
+							{hasNotCheckbox &&
+								!isDeleting &&
+								!isEditing && [
+									<button
+										key='edit-req'
+										onClick={onEditStart}
+										type='button'
+										className='text-gray-1000 flex-justify-center'
+									>
+										<EditSVG width='2rem' height='2rem' />
+									</button>,
 
-								<button
-									key='delete-req'
-									onClick={() => setIsDeleting(true)}
-									type='button'
-									className='text-gray-1000 flex-justify-center'
-								>
-									<TrashSVG width='2rem' height='2rem' />
-								</button>,
-							]}
-					</div>
+									<button
+										key='delete-req'
+										onClick={() => setIsDeleting(true)}
+										type='button'
+										className='text-gray-1000 flex-justify-center'
+									>
+										<TrashSVG width='2rem' height='2rem' />
+									</button>,
+								]}
+						</div>
+					</KeyDown>
 				</div>
-			</OutsidePointerDetector>
+			</Click>
 		</li>
 	);
 };

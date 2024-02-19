@@ -1,3 +1,5 @@
+import { setIsLoggedIn } from '@/features/slices/userSlice';
+import { store } from '@/features/store';
 import { getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
@@ -39,14 +41,27 @@ axios.interceptors.response.use(
 	(response: AxiosResponse<ServerResponse>) => {
 		return response;
 	},
-	async (error) => {
-		if ((error as AxiosError).response !== undefined) {
-			// const errStatus = error.response.status;
+	async (error: AxiosError) => {
+		if (error.response) {
+			const errStatus = error.response.status;
+
+			switch (errStatus) {
+				case 401:
+					onUnauthorize();
+			}
 		}
 
 		return await Promise.reject(error);
 	},
 );
+
+export const onUnauthorize = () => {
+	try {
+		store.dispatch(setIsLoggedIn(false));
+	} catch (e) {
+		//
+	}
+};
 
 export { AxiosError };
 export default axios;

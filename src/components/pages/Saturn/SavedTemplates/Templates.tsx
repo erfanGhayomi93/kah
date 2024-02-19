@@ -73,6 +73,7 @@ const Templates = () => {
 	const onSelect = async (item: Saturn.Template) => {
 		try {
 			dispatch(setSaturnActiveTemplate(item));
+
 			if (item.content) {
 				const contracts = JSON.parse(item.content) as Saturn.Content;
 				if (Array.isArray(contracts) && contracts.length > 0) ipcMain.send('saturn_contract_added', contracts);
