@@ -1,3 +1,4 @@
+import Click from '@/components/common/Click';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import Tooltip from '@/components/common/Tooltip';
 import {
@@ -12,7 +13,7 @@ import {
 import { rialToToman, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Input from './common/Input';
 
 interface PercentsProps {
@@ -58,6 +59,7 @@ const SimpleTrade = ({
 	price,
 	quantity,
 	symbolType,
+	validityDate,
 	side,
 	priceLock,
 	expand,
@@ -66,6 +68,8 @@ const SimpleTrade = ({
 	setInputValue,
 }: SimpleTradeProps) => {
 	const t = useTranslations();
+
+	const [showValidityDates, setShowValidityDates] = useState(false);
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -87,6 +91,41 @@ const SimpleTrade = ({
 			},
 		],
 		[],
+	);
+
+	const VALIDITY_DATES: Array<{ id: TBsValidityDates; title: string }> = useMemo(
+		() => [
+			{
+				id: 'Day',
+				title: t('bs_modal.validity_date_day'),
+			},
+			{
+				id: 'Week',
+				title: t('bs_modal.validity_date_week'),
+			},
+			{
+				id: 'Month',
+				title: t('bs_modal.validity_date_month'),
+			},
+			{
+				id: 'GoodTillDate',
+				title: t('bs_modal.validity_date_good_till_date'),
+			},
+			{
+				id: 'GoodTillCancelled',
+				title: t('bs_modal.validity_date_good_till_cancelled'),
+			},
+			{
+				id: 'FillAndKill',
+				title: t('bs_modal.validity_date_fill_and_kill'),
+			},
+		],
+		[],
+	);
+
+	const validityDateTitle = useMemo(
+		() => VALIDITY_DATES.find((item) => item.id === validityDate)?.title ?? '−',
+		[validityDate],
 	);
 
 	return (
@@ -216,7 +255,54 @@ const SimpleTrade = ({
 					</div>
 				)}
 
-				{symbolType === 'base' && <div className='gray-box h-40 gap-8 px-8 flex-justify-between'></div>}
+				{symbolType === 'base' && (
+					<Click enabled onClickOutside={() => setShowValidityDates(false)}>
+						<div className='relative'>
+							<div
+								onClick={() => setShowValidityDates(!showValidityDates)}
+								className='gray-box h-40 cursor-pointer select-none gap-8 px-8 flex-justify-between'
+							>
+								<span className='whitespace-nowrap text-base text-gray-900'>
+									{t('bs_modal.validity_date')}
+								</span>
+
+								<span className='gap-4 text-tiny text-primary-400 flex-items-center'>
+									{validityDateTitle}
+									<span className='text-gray-900'>
+										<ArrowUpSVG width='1.2rem' height='1.2rem' />
+									</span>
+								</span>
+							</div>
+
+							{showValidityDates && (
+								<ul
+									style={{ top: 'calc(100% + 0.8rem)' }}
+									className='gray-box absolute left-0 w-full flex-wrap gap-8 py-16 flex-justify-center'
+								>
+									{VALIDITY_DATES.map((item) => (
+										<li style={{ flex: '0 0 8.8rem' }} key={item.id}>
+											<button
+												type='button'
+												onClick={() => {
+													setInputValue('validityDate', item.id);
+													setShowValidityDates(false);
+												}}
+												className={clsx(
+													'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
+													item.id === validityDate
+														? 'border-primary-400 bg-secondary-100 text-primary-400'
+														: 'border-gray-500 text-gray-1000 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
+												)}
+											>
+												{item.title}
+											</button>
+										</li>
+									))}
+								</ul>
+							)}
+						</div>
+					</Click>
+				)}
 			</div>
 
 			<div className='gap-24 flex-column'>
