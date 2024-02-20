@@ -1,13 +1,15 @@
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
+import { ArrowDownSVG, ArrowUpSVG, LockSVG, UnlockSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import Input from './common/Input';
 
 interface SimpleTradeProps extends IBsModalInputs {
 	setInputValue: TSetBsModalInputs;
 }
 
-const SimpleTrade = ({ price, quantity, side, expand, holdAfterOrder, setInputValue }: SimpleTradeProps) => {
+const SimpleTrade = ({ price, quantity, side, priceLock, expand, holdAfterOrder, setInputValue }: SimpleTradeProps) => {
 	const t = useTranslations();
 
 	const onSubmit = (e: React.FormEvent) => {
@@ -49,6 +51,57 @@ const SimpleTrade = ({ price, quantity, side, expand, holdAfterOrder, setInputVa
 						{item.title}
 					</button>
 				)}
+			/>
+
+			<Input
+				label={t('bs_modal.quantity_label')}
+				value={quantity}
+				onChange={(value) => setInputValue('quantity', value)}
+				prepend={
+					<div
+						style={{
+							flex: '0 0 4rem',
+							gap: '0.2rem',
+						}}
+						className='h-full flex-column'
+					>
+						<button
+							type='button'
+							className='flex-1 rounded-sm border border-gray-500 bg-white flex-justify-center'
+						>
+							<ArrowUpSVG width='1.2rem' height='1.2rem' />
+						</button>
+						<button
+							type='button'
+							className='flex-1 rounded-sm border border-gray-500 bg-white flex-justify-center'
+						>
+							<ArrowDownSVG width='1.2rem' height='1.2rem' />
+						</button>
+					</div>
+				}
+			/>
+
+			<Input
+				label={t('bs_modal.price_label')}
+				value={price}
+				onChange={(value) => setInputValue('price', value)}
+				prepend={
+					<button
+						style={{
+							flex: '0 0 4rem',
+						}}
+						className={clsx(
+							'h-full rounded border flex-justify-center',
+							priceLock
+								? 'border-primary-400 bg-secondary-100 text-primary-400'
+								: 'border-gray-500 bg-white text-gray-900',
+						)}
+						type='button'
+						onClick={() => setInputValue('priceLock', !priceLock)}
+					>
+						{priceLock ? <LockSVG width='2rem' height='2rem' /> : <UnlockSVG width='2rem' height='2rem' />}
+					</button>
+				}
 			/>
 
 			<div className='flex gap-8'>

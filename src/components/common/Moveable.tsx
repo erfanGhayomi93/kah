@@ -11,8 +11,6 @@ const Moveable = forwardRef<HTMLElement, MoveableProps>(({ enabled = true, child
 	useImperativeHandle(ref, () => childRef.current!);
 
 	const onMouseDown = (e: MouseEvent) => {
-		e.preventDefault();
-
 		try {
 			if (e.button !== 0) return;
 
