@@ -19,7 +19,7 @@ const Footer = ({ validityDays, hold, onHold }: FooterProps) => {
 
 			{validityDays !== null && (
 				<div className='flex-1 gap-4 text-tiny text-gray-900 flex-justify-end'>
-					<span>{t('bs_modal.order_validity_date')}:</span>
+					<span>{t('bs_modal.validity_date')}:</span>
 					<span>
 						<span className='text-lg font-medium'>{validityDays} </span>
 						{t('bs_modal.day')}

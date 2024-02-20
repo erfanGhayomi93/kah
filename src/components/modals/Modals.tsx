@@ -3,6 +3,7 @@
 import { useAppSelector } from '@/features/hooks';
 import AddNewOptionWatchlist from './AddNewOptionWatchlist';
 import AddSaturnTemplate from './AddSaturnTemplate';
+import AddSymbolToWatchlist from './AddSymbolToWatchlist';
 import BuySellModal from './BuySellModal';
 import ForgetPasswordModal from './ForgetPasswordModal';
 import LoginModal from './LoginModal';
@@ -22,6 +23,7 @@ const Modals = () => {
 		addNewOptionWatchlist,
 		manageOptionWatchlistList,
 		buySell,
+		addSymbolToWatchlist,
 	} = useAppSelector((state) => state.modal);
 
 	return [
@@ -41,6 +43,7 @@ const Modals = () => {
 		addNewOptionWatchlist && <AddNewOptionWatchlist key='add-new-option-watchlist' />,
 		manageOptionWatchlistList && <ManageOptionWatchlistList key='manage-option-watchlist-list' />,
 		buySell && <BuySellModal key='buy-sell-modal' {...buySell} />,
+		addSymbolToWatchlist && <AddSymbolToWatchlist key='add-symbol-to-watchlist' {...buySell} />,
 	];
 };
 
