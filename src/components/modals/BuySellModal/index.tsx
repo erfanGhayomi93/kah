@@ -73,11 +73,11 @@ const BuySellModal = ({
 					onToggle={() => setInputValue('expand', !inputs.expand)}
 				/>
 				<div className='flex flex-1'>
-					<Body {...inputs} setInputValue={setInputValue} />
+					<Body {...inputs} symbolType={symbolType} setInputValue={setInputValue} />
 					{inputs.expand && <SymbolInfo />}
 				</div>
 				<Footer
-					validityDays={1}
+					validityDays={symbolType === 'option' ? 1 : null}
 					hold={inputs.holdAfterOrder}
 					onHold={(checked) => setInputValue('holdAfterOrder', checked)}
 				/>

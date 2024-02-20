@@ -4,7 +4,19 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import SimpleTrade from './SimpleTrade';
 
+interface WrapperProps {
+	children: React.ReactNode;
+	className?: ClassesValue;
+}
+
+const Wrapper = ({ children, className }: WrapperProps) => (
+	<div style={{ flex: '0 0 336px' }} className={clsx('gap-24 overflow-hidden px-16 pb-16 flex-column', className)}>
+		{children}
+	</div>
+);
+
 interface BodyProps extends IBsModalInputs {
+	symbolType: TBsSymbolTypes;
 	setInputValue: TSetBsModalInputs;
 }
 
@@ -28,8 +40,10 @@ const Body = (props: BodyProps) => {
 		[JSON.stringify(props)],
 	);
 
+	if (props.symbolType === 'base') return <Wrapper className='pt-24'>{TABS[0].render}</Wrapper>;
+
 	return (
-		<div style={{ flex: '0 0 336px' }} className='gap-24 overflow-hidden px-16 pb-16 flex-column'>
+		<Wrapper>
 			<Tabs
 				data={TABS}
 				defaultActiveTab='normal'
@@ -46,7 +60,7 @@ const Body = (props: BodyProps) => {
 					</button>
 				)}
 			/>
-		</div>
+		</Wrapper>
 	);
 };
 

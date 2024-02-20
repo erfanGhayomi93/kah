@@ -4,6 +4,8 @@ declare type TBsSides = 'buy' | 'sell';
 
 declare type TBsCollaterals = 'cash' | 'stock';
 
+declare type TBsSymbolTypes = 'base' | 'option';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'

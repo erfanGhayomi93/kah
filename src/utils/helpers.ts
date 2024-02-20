@@ -187,11 +187,7 @@ export const findStringIn = (term: string, value: string): [string, string, stri
 	}
 };
 
-export const downloadFile = (
-	url: string,
-	name: string,
-	params: string | string[][] | Record<string, string> | URLSearchParams | undefined = undefined,
-) =>
+export const downloadFile = (url: string, name: string, params: Record<string, unknown>) =>
 	new Promise<void>((resolve, reject) => {
 		const headers = new Headers();
 		headers.append('Accept', 'application/json, text/plain, */*');
@@ -200,7 +196,10 @@ export const downloadFile = (
 		const clientId = getClientId();
 		if (clientId) headers.append('Authorization', 'Bearer ' + clientId);
 
-		fetch(`${url}?${new URLSearchParams(params)}`, {
+		const serialize = paramsSerializer(params);
+		if (serialize) url += `?${serialize}`;
+
+		fetch(url, {
 			method: 'GET',
 			headers,
 			redirect: 'follow',
@@ -225,3 +224,21 @@ export const downloadFile = (
 			})
 			.catch(reject);
 	});
+
+const paramsSerializer = (params: Record<string, unknown>) => {
+	const queryParams: string[] = [];
+	const keys = Object.keys(params);
+
+	for (let i = 0; i < keys.length; i++) {
+		const key = keys[i];
+		const value = params[key];
+
+		if (Array.isArray(value)) {
+			for (let j = 0; j < value.length; j++) {
+				queryParams.push(`${key}=${value[j]}`);
+			}
+		} else queryParams.push(`${key}=${params[key]}`);
+	}
+
+	return queryParams.join('&');
+};

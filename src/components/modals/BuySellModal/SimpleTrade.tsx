@@ -15,13 +15,49 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Input from './common/Input';
 
+interface PercentsProps {
+	side: TBsSides;
+	onClick: (p: number) => void;
+}
+
+const Percents = ({ side, onClick }: PercentsProps) => {
+	const t = useTranslations();
+
+	const percents = useMemo(() => [25, 50, 75, 100], []);
+
+	return (
+		<div className='flex gap-8'>
+			{percents.map((p) => (
+				<Tooltip
+					key={p}
+					placement='bottom'
+					content={t(`bs_modal.${side === 'buy' ? 'purchase_power_value' : 'asset_value'}`, {
+						v: `${p}%`,
+					})}
+				>
+					<button
+						key={p}
+						type='button'
+						className='gray-box h-28 flex-1 leading-8 text-gray-1000 flex-justify-center'
+						onClick={() => onClick(p)}
+					>
+						{p}%
+					</button>
+				</Tooltip>
+			))}
+		</div>
+	);
+};
+
 interface SimpleTradeProps extends IBsModalInputs {
+	symbolType: TBsSymbolTypes;
 	setInputValue: TSetBsModalInputs;
 }
 
 const SimpleTrade = ({
 	price,
 	quantity,
+	symbolType,
 	side,
 	priceLock,
 	expand,
@@ -53,8 +89,6 @@ const SimpleTrade = ({
 		[],
 	);
 
-	const percents = useMemo(() => [25, 50, 75, 100], []);
-
 	return (
 		<form method='get' onSubmit={onSubmit} className='w-full flex-1 justify-between gap-24 flex-column'>
 			<div className='gap-24 flex-column'>
@@ -79,27 +113,31 @@ const SimpleTrade = ({
 					)}
 				/>
 
-				<Input
-					label={t('bs_modal.quantity_label')}
-					value={quantity}
-					onChange={(value) => setInputValue('quantity', value)}
-					prepend={
-						<div
-							style={{
-								flex: '0 0 4rem',
-								gap: '0.2rem',
-							}}
-							className='h-full flex-column'
-						>
-							<button type='button' className='gray-box flex-1 rounded-sm flex-justify-center'>
-								<ArrowUpSVG width='1.2rem' height='1.2rem' />
-							</button>
-							<button type='button' className='gray-box flex-1 rounded-sm flex-justify-center'>
-								<ArrowDownSVG width='1.2rem' height='1.2rem' />
-							</button>
-						</div>
-					}
-				/>
+				<div className='gap-8 flex-column'>
+					<Input
+						label={t('bs_modal.quantity_label')}
+						value={quantity}
+						onChange={(value) => setInputValue('quantity', value)}
+						prepend={
+							<div
+								style={{
+									flex: '0 0 4rem',
+									gap: '0.2rem',
+								}}
+								className='h-full flex-column'
+							>
+								<button type='button' className='gray-box flex-1 rounded-sm flex-justify-center'>
+									<ArrowUpSVG width='1.2rem' height='1.2rem' />
+								</button>
+								<button type='button' className='gray-box flex-1 rounded-sm flex-justify-center'>
+									<ArrowDownSVG width='1.2rem' height='1.2rem' />
+								</button>
+							</div>
+						}
+					/>
+
+					{side === 'sell' && <Percents side={side} onClick={onClickPercentage} />}
+				</div>
 
 				<Input
 					label={t('bs_modal.price_label')}
@@ -142,58 +180,43 @@ const SimpleTrade = ({
 						</span>
 					</div>
 
-					<div className='flex gap-8'>
-						{percents.map((p) => (
-							<Tooltip
-								key={p}
-								placement='bottom'
-								content={t(`bs_modal.${side === 'buy' ? 'purchase_power_value' : 'asset_value'}`, {
-									v: `${p}%`,
-								})}
-							>
-								<button
-									key={p}
-									type='button'
-									className='gray-box h-28 flex-1 leading-8 text-gray-1000 flex-justify-center'
-									onClick={() => onClickPercentage(p)}
-								>
-									{p}%
-								</button>
-							</Tooltip>
-						))}
-					</div>
+					{side === 'buy' && <Percents side={side} onClick={onClickPercentage} />}
 				</div>
 
-				<div className='h-40 gap-8 flex-items-center'>
-					{side === 'sell' && (
-						<>
-							<button
-								type='button'
-								className={clsx(
-									'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
-									collateral === 'stock'
-										? '!border-primary-400 bg-secondary-100 text-primary-400'
-										: 'text-gray-900 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
-								)}
-							>
-								<SnowFlakeSVG width='2rem' height='2rem' />
-								{t('bs_modal.stock_collateral')}
-							</button>
-							<button
-								type='button'
-								className={clsx(
-									'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
-									collateral === 'cash'
-										? '!border-primary-400 bg-secondary-100 text-primary-400'
-										: 'text-gray-900 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
-								)}
-							>
-								<PayMoneySVG width='2rem' height='2rem' />
-								{t('bs_modal.cash_collateral')}
-							</button>
-						</>
-					)}
-				</div>
+				{symbolType === 'option' && (
+					<div className='h-40 gap-8 flex-items-center'>
+						{side === 'sell' && (
+							<>
+								<button
+									type='button'
+									className={clsx(
+										'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
+										collateral === 'stock'
+											? '!border-primary-400 bg-secondary-100 text-primary-400'
+											: 'text-gray-900 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
+									)}
+								>
+									<SnowFlakeSVG width='2rem' height='2rem' />
+									{t('bs_modal.stock_collateral')}
+								</button>
+								<button
+									type='button'
+									className={clsx(
+										'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
+										collateral === 'cash'
+											? '!border-primary-400 bg-secondary-100 text-primary-400'
+											: 'text-gray-900 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
+									)}
+								>
+									<PayMoneySVG width='2rem' height='2rem' />
+									{t('bs_modal.cash_collateral')}
+								</button>
+							</>
+						)}
+					</div>
+				)}
+
+				{symbolType === 'base' && <div className='gray-box h-40 gap-8 px-8 flex-justify-between'></div>}
 			</div>
 
 			<div className='gap-24 flex-column'>

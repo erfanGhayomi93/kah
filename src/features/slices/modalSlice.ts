@@ -7,7 +7,7 @@ import { type RootState } from '../store';
 export interface IBuySellModal {
 	symbolTitle: string;
 	symbolISIN: string;
-	symbolType: 'base' | 'option';
+	symbolType: TBsSymbolTypes;
 	side: TBsSides;
 	collateral?: TBsCollaterals;
 	expand?: boolean;

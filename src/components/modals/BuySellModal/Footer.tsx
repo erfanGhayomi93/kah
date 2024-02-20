@@ -2,7 +2,7 @@ import Switch from '@/components/common/Inputs/Switch';
 import { useTranslations } from 'next-intl';
 
 interface FooterProps {
-	validityDays: number;
+	validityDays: number | null;
 	hold: boolean;
 	onHold: (checked: boolean) => void;
 }
@@ -17,13 +17,15 @@ const Footer = ({ validityDays, hold, onHold }: FooterProps) => {
 				<span className='text-tiny text-gray-900'>{t('bs_modal.hold_form')}</span>
 			</div>
 
-			<div className='flex-1 gap-4 text-tiny text-gray-900 flex-justify-end'>
-				<span>{t('bs_modal.order_validity_date')}:</span>
-				<span>
-					<span className='text-lg font-medium'>{validityDays} </span>
-					{t('bs_modal.day')}
-				</span>
-			</div>
+			{validityDays !== null && (
+				<div className='flex-1 gap-4 text-tiny text-gray-900 flex-justify-end'>
+					<span>{t('bs_modal.order_validity_date')}:</span>
+					<span>
+						<span className='text-lg font-medium'>{validityDays} </span>
+						{t('bs_modal.day')}
+					</span>
+				</div>
+			)}
 		</div>
 	);
 };
