@@ -66,7 +66,7 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 
 			if (watchlistId !== -1) params.Id = String(watchlistId);
 
-			downloadFile(url, 'watchlist', params);
+			downloadFile(url, 'دیده‌بان کهکشان', params);
 		} catch (e) {
 			//
 		}
