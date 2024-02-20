@@ -4,7 +4,7 @@ import Tooltip from '@/components/common/Tooltip';
 import {
 	ArrowDownSVG,
 	ArrowUpSVG,
-	InfoCircle,
+	InfoCircleSVG,
 	LockSVG,
 	PayMoneySVG,
 	SnowFlakeSVG,
@@ -24,7 +24,7 @@ interface PercentsProps {
 const Percents = ({ side, onClick }: PercentsProps) => {
 	const t = useTranslations();
 
-	const percents = useMemo(() => [25, 50, 75, 100], []);
+	const percents = useMemo(() => [100, 75, 50, 25], []);
 
 	return (
 		<div className='flex gap-8'>
@@ -191,7 +191,7 @@ const SimpleTrade = ({
 								'h-full rounded border transition-colors flex-justify-center',
 								priceLock
 									? 'border-primary-400 bg-secondary-100 text-primary-400'
-									: 'border-gray-500 bg-white text-gray-900',
+									: 'border-gray-500 bg-white text-gray-900 hover:bg-primary-100',
 							)}
 							type='button'
 							onClick={() => setInputValue('priceLock', !priceLock)}
@@ -232,7 +232,7 @@ const SimpleTrade = ({
 										'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
 										collateral === 'stock'
 											? '!border-primary-400 bg-secondary-100 text-primary-400'
-											: 'text-gray-900 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
+											: 'text-gray-900 hover:bg-primary-100',
 									)}
 								>
 									<SnowFlakeSVG width='2rem' height='2rem' />
@@ -244,7 +244,7 @@ const SimpleTrade = ({
 										'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
 										collateral === 'cash'
 											? '!border-primary-400 bg-secondary-100 text-primary-400'
-											: 'text-gray-900 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
+											: 'text-gray-900 hover:bg-primary-100',
 									)}
 								>
 									<PayMoneySVG width='2rem' height='2rem' />
@@ -291,7 +291,7 @@ const SimpleTrade = ({
 													'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
 													item.id === validityDate
 														? 'border-primary-400 bg-secondary-100 text-primary-400'
-														: 'border-gray-500 text-gray-1000 hover:border-primary-400 hover:bg-secondary-100 hover:text-primary-400',
+														: 'border-gray-500 text-gray-1000 hover:bg-primary-100',
 												)}
 											>
 												{item.title}
@@ -307,11 +307,9 @@ const SimpleTrade = ({
 
 			<div className='gap-24 flex-column'>
 				<div className='flex-justify-between'>
-					<span className='text-base text-gray-900'>
+					<span className='gap-8 text-base text-gray-900 flex-items-center'>
 						{t('bs_modal.total_amount')}:
-						<span className='pr-4 text-secondary-300'>
-							<InfoCircle width='1.6rem' height='1.6' />
-						</span>
+						<InfoCircleSVG className='text-secondary-300' width='1.6rem' height='1.6rem' />
 					</span>
 
 					<span className='truncate whitespace-nowrap text-left text-tiny text-gray-900'>

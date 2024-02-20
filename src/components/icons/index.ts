@@ -22,7 +22,7 @@ import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
-import InfoCircle from './info-circle.svg';
+import InfoCircleSVG from './info-circle.svg';
 import InfoSVG from './info.svg';
 import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
@@ -68,7 +68,7 @@ export {
 	FilterSVG,
 	GrowDownSVG,
 	GrowUpSVG,
-	InfoCircle,
+	InfoCircleSVG,
 	InfoSVG,
 	LockSVG,
 	LogoutSVG,

@@ -32,6 +32,7 @@ export interface ModalState {
 	logout: boolean;
 	addNewOptionWatchlist: boolean;
 	manageOptionWatchlistList: boolean;
+	addSymbolToWatchlist: boolean;
 	addSaturnTemplate: IAddSaturnTemplate | null;
 	buySell: IBuySellModal | null;
 	symbolContracts: IContractSelectorModal | null;
@@ -43,6 +44,7 @@ const initialState: ModalState = {
 	loginModal: false,
 	optionFilters: false,
 	logout: false,
+	addSymbolToWatchlist: false,
 	addNewOptionWatchlist: false,
 	manageOptionWatchlistList: false,
 	forgetPassword: null,
@@ -87,6 +89,10 @@ const modalSlice = createSlice({
 			state.addNewOptionWatchlist = payload;
 		},
 
+		toggleAddSymbolToWatchlist: (state, { payload }: PayloadAction<ModalState['addSymbolToWatchlist']>) => {
+			state.addSymbolToWatchlist = payload;
+		},
+
 		toggleManageOptionWatchlistList: (
 			state,
 			{ payload }: PayloadAction<ModalState['manageOptionWatchlistList']>,
@@ -105,6 +111,7 @@ export const {
 	toggleSymbolContractsModal,
 	toggleSaveSaturnTemplate,
 	toggleAddNewOptionWatchlist,
+	toggleAddSymbolToWatchlist,
 	toggleManageOptionWatchlistList,
 } = modalSlice.actions;
 
@@ -117,5 +124,6 @@ export const getSymbolContractsModal = (state: RootState) => state.modal.symbolC
 export const getAddSaturnTemplate = (state: RootState) => state.modal.addSaturnTemplate;
 export const getAddNewOptionWatchlist = (state: RootState) => state.modal.addNewOptionWatchlist;
 export const getManageOptionWatchlistList = (state: RootState) => state.modal.manageOptionWatchlistList;
+export const getAddSymbolToWatchlist = (state: RootState) => state.modal.addSymbolToWatchlist;
 
 export default modalSlice.reducer;
