@@ -4,7 +4,7 @@ import SymbolState from '@/components/common/SymbolState';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
+import { toggleBuySellModal, toggleSymbolContractsModal } from '@/features/slices/modalSlice';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -45,6 +45,21 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 			toggleSymbolContractsModal({
 				symbolTitle: baseSymbol.symbolTitle,
 				symbolISIN: baseSymbol.symbolISIN,
+			}),
+		);
+	};
+
+	const addBsModal = (side: TBsSides) => {
+		if (!contractInfo) return;
+
+		const { symbolISIN, symbolTitle } = contractInfo;
+
+		dispatch(
+			toggleBuySellModal({
+				side,
+				symbolType: 'option',
+				symbolISIN,
+				symbolTitle,
 			}),
 		);
 	};
@@ -154,12 +169,19 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 					</div>
 
 					<div className='gap-8 flex-items-center'>
-						<button type='button' className='h-32 w-96 rounded text-tiny btn-error-outline'>
-							{t('saturn_page.close_position')}
-						</button>
-
-						<button type='button' className='h-32 w-96 rounded text-tiny btn-success-outline'>
+						<button
+							onClick={() => addBsModal('buy')}
+							type='button'
+							className='h-32 w-96 rounded text-tiny btn-success-outline'
+						>
 							{t('saturn_page.new_position')}
+						</button>
+						<button
+							onClick={() => addBsModal('sell')}
+							type='button'
+							className='h-32 w-96 rounded text-tiny btn-error-outline'
+						>
+							{t('saturn_page.close_position')}
 						</button>
 
 						<button type='button' className='size-24 text-gray-1000'>

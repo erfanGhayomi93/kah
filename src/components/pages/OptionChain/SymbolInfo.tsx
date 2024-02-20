@@ -50,6 +50,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 		dispatch(
 			toggleBuySellModal({
 				side,
+				symbolType: 'base',
 				symbolISIN,
 				symbolTitle,
 			}),
