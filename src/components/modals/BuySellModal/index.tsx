@@ -26,6 +26,7 @@ const BuySellModal = ({
 	priceLock,
 	collateral,
 	side,
+	validityDate,
 	expand,
 	holdAfterOrder,
 }: BuySellModalProps) => {
@@ -36,6 +37,7 @@ const BuySellModal = ({
 		quantity: 0,
 		collateral: collateral ?? null,
 		side: side ?? 'buy',
+		validityDate: validityDate ?? 'Day',
 		expand: expand ?? false,
 		priceLock: priceLock ?? false,
 		holdAfterOrder: holdAfterOrder ?? false,

@@ -6,6 +6,8 @@ declare type TBsCollaterals = 'cash' | 'stock';
 
 declare type TBsSymbolTypes = 'base' | 'option';
 
+declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'
@@ -44,6 +46,7 @@ declare type TOptionWatchlistColumnsState = Array<{
 
 declare interface IBsModalInputs {
 	collateral: TBsCollaterals | null;
+	validityDate: TBsValidityDates;
 	price: number;
 	quantity: number;
 	side: TBsSides;

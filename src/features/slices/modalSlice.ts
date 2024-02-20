@@ -8,6 +8,7 @@ export interface IBuySellModal {
 	symbolTitle: string;
 	symbolISIN: string;
 	symbolType: TBsSymbolTypes;
+	validityDate: TBsValidityDates;
 	side: TBsSides;
 	collateral?: TBsCollaterals;
 	expand?: boolean;
