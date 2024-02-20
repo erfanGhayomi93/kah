@@ -29,7 +29,7 @@ const Body = (props: BodyProps) => {
 	);
 
 	return (
-		<div className='flex-1 gap-24 px-16 flex-column'>
+		<div style={{ flex: '0 0 336px' }} className='gap-24 px-16 flex-column'>
 			<Tabs
 				data={TABS}
 				defaultActiveTab='normal'

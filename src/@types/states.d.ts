@@ -42,6 +42,7 @@ declare interface IBsModalInputs {
 	price: number;
 	quantity: number;
 	side: TBsSides;
+	priceLock: boolean;
 	expand: boolean;
 	holdAfterOrder: boolean;
 }

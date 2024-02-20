@@ -9,6 +9,7 @@ export interface IBuySellModal {
 	symbolISIN: string;
 	side: TBsSides;
 	expand?: boolean;
+	priceLock?: boolean;
 	holdAfterOrder?: boolean;
 }
 
