@@ -1,6 +1,11 @@
 import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
-import { useAppDispatch } from '@/features/hooks';
+import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
+import routes from '@/api/routes';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleOptionFiltersModal } from '@/features/slices/modalSlice';
+import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { useDebounce } from '@/hooks';
+import { downloadFile } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Actions from './Actions';
 import SelectSymbol from './SelectSymbol';
@@ -12,6 +17,10 @@ interface ToolbarProps {
 
 const Toolbar = ({ filters }: ToolbarProps) => {
 	const dispatch = useAppDispatch();
+
+	const watchlistId = useAppSelector(getOptionWatchlistTabId);
+
+	const { setDebounce } = useDebounce();
 
 	const onShowFilters = () => {
 		const params: Partial<IOptionFiltersModal> = {};
@@ -27,7 +36,40 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	};
 
 	const onExportExcel = () => {
-		//
+		try {
+			const url =
+				watchlistId === -1
+					? routes.optionWatchlist.WatchlistExcel
+					: routes.optionWatchlist.GetCustomWatchlistExcel;
+
+			const params: Partial<IOptionWatchlistQuery> = {};
+
+			if (filters.minimumTradesValue && Number(filters.minimumTradesValue) >= 0)
+				params.MinimumTradeValue = filters.minimumTradesValue;
+
+			if (Array.isArray(filters.symbols) && filters.symbols.length > 0)
+				params.SymbolISINs = filters.symbols.map((item) => item.symbolISIN);
+
+			if (Array.isArray(filters.type) && filters.type.length > 0) params.OptionType = filters.type;
+
+			if (Array.isArray(filters.status) && filters.status.length > 0) params.IOTM = filters.status;
+
+			if (filters.dueDays && filters.dueDays[1] >= filters.dueDays[0]) {
+				if (filters.dueDays[0] > 0) params.FromDueDays = String(filters.dueDays[0]);
+				if (filters.dueDays[1] < 365) params.ToDueDays = String(filters.dueDays[1]);
+			}
+
+			if (filters.delta && filters.delta[1] >= filters.delta[0]) {
+				if (filters.delta[0] > -1) params.FromDelta = String(filters.delta[0]);
+				if (filters.delta[1] < 1) params.ToDelta = String(filters.delta[1]);
+			}
+
+			if (watchlistId !== -1) params.Id = String(watchlistId);
+
+			downloadFile(url, 'watchlist', params);
+		} catch (e) {
+			//
+		}
 	};
 
 	const filtersCount = useMemo(() => {
@@ -58,7 +100,11 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		<div className='gap-16 flex-column'>
 			<div className='h-40 w-full flex-justify-between'>
 				<SelectSymbol />
-				<Actions filtersCount={filtersCount} onShowFilters={onShowFilters} onExportExcel={onExportExcel} />
+				<Actions
+					filtersCount={filtersCount}
+					onShowFilters={onShowFilters}
+					onExportExcel={() => setDebounce(onExportExcel, 500)}
+				/>
 			</div>
 
 			<WatchlistList />

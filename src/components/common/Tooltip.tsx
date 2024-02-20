@@ -1,7 +1,7 @@
 'use client';
 
 import TooltipManager, { TooltipElement } from '@/classes/Tooltip';
-import { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { cloneElement, forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 
 export interface ITooltipProps {
 	placement?: AppTooltip.Placement;
@@ -18,19 +18,21 @@ export interface ITooltipProps {
 	onHide?: () => void;
 }
 
-const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, content }, ref) => {
+const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, placement, content, offset }, ref) => {
 	const childRef = useRef<HTMLElement | null>(null);
 
 	const tooltipRef = useRef<TooltipElement | null>(null);
 
 	useImperativeHandle(ref, () => childRef.current!);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const eChild = childRef.current;
 		if (!eChild) return;
 
 		tooltipRef.current = new TooltipElement(eChild);
 		tooltipRef.current.setContent(content);
+		if (offset) tooltipRef.current.offset = offset;
+		if (placement) tooltipRef.current.placement = placement;
 
 		TooltipManager.add(tooltipRef.current);
 	}, [childRef.current]);

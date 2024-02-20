@@ -22,12 +22,14 @@ import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
+import InfoCircle from './info-circle.svg';
 import InfoSVG from './info.svg';
 import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
 import PasswordSVG from './password.svg';
+import PayMoneySVG from './pay-money.svg';
 import PinSVG from './pin.svg';
 import PlusSquareSVG from './plus-square.svg';
 import PlusSVG from './plus.svg';
@@ -35,6 +37,7 @@ import RefreshSVG from './refresh.svg';
 import SearchSVG from './search.svg';
 import SessionHistorySVG from './session-history.svg';
 import SettingSVG from './setting.svg';
+import SnowFlakeSVG from './snow-flake.svg';
 import TrashSVG from './trash.svg';
 import UnlockSVG from './unlock.svg';
 import UserCircleSVG from './user-circle.svg';
@@ -65,12 +68,14 @@ export {
 	FilterSVG,
 	GrowDownSVG,
 	GrowUpSVG,
+	InfoCircle,
 	InfoSVG,
 	LockSVG,
 	LogoutSVG,
 	ManageSVG,
 	MoreOptionsSVG,
 	PasswordSVG,
+	PayMoneySVG,
 	PinSVG,
 	PlusSVG,
 	PlusSquareSVG,
@@ -78,6 +83,7 @@ export {
 	SearchSVG,
 	SessionHistorySVG,
 	SettingSVG,
+	SnowFlakeSVG,
 	TrashSVG,
 	UnlockSVG,
 	UserCircleSVG,

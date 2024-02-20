@@ -1,6 +1,8 @@
+import { onUnauthorize } from '@/api/axios';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
+import { getClientId } from './cookie';
 
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
@@ -92,6 +94,10 @@ export const minusFormatter = (value: number) => {
 	return `−${Math.abs(value)}`;
 };
 
+export const rialToToman = (value: number) => {
+	return (value / 10).toFixed(0);
+};
+
 export const convertStringToInteger = (inputString: string): string => inputString.replace(/[^\d]/g, '');
 
 export const convertStringToDecimal = (inputString: string): string => inputString.replace(/[^0-9.]/g, '');
@@ -179,4 +185,60 @@ export const findStringIn = (term: string, value: string): [string, string, stri
 	} catch (e) {
 		return [value, '', ''];
 	}
+};
+
+export const downloadFile = (url: string, name: string, params: Record<string, unknown>) =>
+	new Promise<void>((resolve, reject) => {
+		const headers = new Headers();
+		headers.append('Accept', 'application/json, text/plain, */*');
+		headers.append('Accept-Language', 'en-US,en;q=0.9,fa;q=0.8');
+
+		const clientId = getClientId();
+		if (clientId) headers.append('Authorization', 'Bearer ' + clientId);
+
+		const serialize = paramsSerializer(params);
+		if (serialize) url += `?${serialize}`;
+
+		fetch(url, {
+			method: 'GET',
+			headers,
+			redirect: 'follow',
+		})
+			.then((response) => {
+				try {
+					const statusCode = Number(response.status);
+					if (statusCode === 401) onUnauthorize();
+				} catch (e) {
+					//
+				}
+
+				return response.blob();
+			})
+			.then((blobResponse) => {
+				const a = document.createElement('a');
+				a.download = name;
+				a.href = URL.createObjectURL(blobResponse);
+
+				a.click();
+				resolve();
+			})
+			.catch(reject);
+	});
+
+const paramsSerializer = (params: Record<string, unknown>) => {
+	const queryParams: string[] = [];
+	const keys = Object.keys(params);
+
+	for (let i = 0; i < keys.length; i++) {
+		const key = keys[i];
+		const value = params[key];
+
+		if (Array.isArray(value)) {
+			for (let j = 0; j < value.length; j++) {
+				queryParams.push(`${key}=${value[j]}`);
+			}
+		} else queryParams.push(`${key}=${params[key]}`);
+	}
+
+	return queryParams.join('&');
 };

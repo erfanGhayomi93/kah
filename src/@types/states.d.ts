@@ -2,6 +2,10 @@ declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 
 
 declare type TBsSides = 'buy' | 'sell';
 
+declare type TBsCollaterals = 'cash' | 'stock';
+
+declare type TBsSymbolTypes = 'base' | 'option';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'
@@ -39,6 +43,7 @@ declare type TOptionWatchlistColumnsState = Array<{
 }>;
 
 declare interface IBsModalInputs {
+	collateral: TBsCollaterals | null;
 	price: number;
 	quantity: number;
 	side: TBsSides;

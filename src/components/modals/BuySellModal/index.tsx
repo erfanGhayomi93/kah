@@ -9,7 +9,6 @@ import Header from './Header';
 import SymbolInfo from './SymbolInfo';
 
 const Div = styled.div`
-	height: 612px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -20,16 +19,26 @@ const Div = styled.div`
 
 interface BuySellModalProps extends IBuySellModal {}
 
-const BuySellModal = ({ symbolISIN, symbolTitle, priceLock, side, expand, holdAfterOrder }: BuySellModalProps) => {
+const BuySellModal = ({
+	symbolISIN,
+	symbolTitle,
+	symbolType,
+	priceLock,
+	collateral,
+	side,
+	expand,
+	holdAfterOrder,
+}: BuySellModalProps) => {
 	const dispatch = useAppDispatch();
 
 	const [inputs, setInputs] = useState<IBsModalInputs>({
 		price: 0,
 		quantity: 0,
+		collateral: collateral ?? null,
 		side: side ?? 'buy',
 		expand: expand ?? false,
 		priceLock: priceLock ?? false,
-		holdAfterOrder: holdAfterOrder ?? true,
+		holdAfterOrder: holdAfterOrder ?? false,
 	});
 
 	const setInputValue: TSetBsModalInputs = (arg1, arg2) => {
@@ -64,11 +73,11 @@ const BuySellModal = ({ symbolISIN, symbolTitle, priceLock, side, expand, holdAf
 					onToggle={() => setInputValue('expand', !inputs.expand)}
 				/>
 				<div className='flex flex-1'>
-					<Body {...inputs} setInputValue={setInputValue} />
+					<Body {...inputs} symbolType={symbolType} setInputValue={setInputValue} />
 					{inputs.expand && <SymbolInfo />}
 				</div>
 				<Footer
-					validityDays={3}
+					validityDays={symbolType === 'option' ? 1 : null}
 					hold={inputs.holdAfterOrder}
 					onHold={(checked) => setInputValue('holdAfterOrder', checked)}
 				/>

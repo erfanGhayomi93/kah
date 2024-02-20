@@ -14,6 +14,13 @@ const Moveable = forwardRef<HTMLElement, MoveableProps>(({ enabled = true, child
 		try {
 			if (e.button !== 0) return;
 
+			try {
+				const tagName = (e.target as HTMLElement).tagName;
+				if (['INPUT', 'BUTTON', 'TEXTAREA'].includes(tagName)) return;
+			} catch (e) {
+				//
+			}
+
 			window.addEventListener('mousemove', onMoveModal);
 			window.addEventListener('mouseup', onMouseUp);
 		} catch (e) {

@@ -113,6 +113,12 @@
 		"strategy": "استراتژی",
 		"quantity_label": "تعداد",
 		"price_label": "قیمت",
+		"asset_value": "{v} دارایی",
+		"purchase_power_value": "{v} قدرت خرید",
+		"trade_value_label": "ارزش معامله",
+		"total_amount": "مبلغ کل سفارش",
+		"stock_collateral": "وثیقه با سهم",
+		"cash_collateral": "وثیقه با وجه‌نقد",
 		"draft": "پیش‌نویس"
 	},
 	"manage_option_watchlist_columns": {

@@ -26,7 +26,7 @@ class TooltipElement extends TooltipWrapper {
 
 	private readonly _followCursor: AppTooltip.FollowCursor = false;
 
-	private _offset: AppTooltip.Offset = 0;
+	private _offset: AppTooltip.Offset = [0, 4];
 
 	private _eTooltip?: AppTooltip.Element = undefined;
 
@@ -35,6 +35,8 @@ class TooltipElement extends TooltipWrapper {
 	private _content: HTMLElement | string | null = null;
 
 	private readonly _abortController: AppTooltip.AbortController;
+
+	public isHidden: AppTooltip.Hidden = true;
 
 	constructor(element: AppTooltip.Element) {
 		super();
@@ -58,6 +60,7 @@ class TooltipElement extends TooltipWrapper {
 				'common-tooltip-container common-tooltip-hidden',
 				`common-tooltip-${this._placement}`,
 				this._interactive && 'common-tooltip-interactive',
+				!this.isHidden && 'common-tooltip-animation',
 			),
 		);
 
@@ -76,7 +79,12 @@ class TooltipElement extends TooltipWrapper {
 
 		eTooltip.setAttribute(
 			'class',
-			clsx('common-tooltip-container', `common-tooltip-${this._placement}`, this._interactive && 'common-tooltip-interactive'),
+			clsx(
+				'common-tooltip-container',
+				`common-tooltip-${this._placement}`,
+				this._interactive && 'common-tooltip-interactive',
+				!this.isHidden && 'common-tooltip-animation',
+			),
 		);
 		eTooltip.innerHTML = '';
 
@@ -111,16 +119,18 @@ class TooltipElement extends TooltipWrapper {
 		if (!this._eTooltip) return;
 
 		const offset = this._element.getBoundingClientRect();
-		const { width: tooltipWidth, height: tooltipHeight } = this._eTooltip.getBoundingClientRect();
+		const { width: tooltipWidth } = this._eTooltip.getBoundingClientRect();
 
 		const [paddingX, paddingY] = Array.isArray(this._offset) ? this._offset : [this._offset, this._offset];
 
 		let left = offset.left + offset.width / 2 - tooltipWidth / 2;
-		left += paddingY;
+		left += paddingX;
 		left = Math.max(0, Math.min(window.innerWidth - offset.width, left));
 
-		let top = offset.top - tooltipHeight;
-		top += paddingX - 4;
+		let top =
+			this._placement === 'bottom'
+				? offset.top + offset.height + paddingY
+				: offset.top - offset.height - paddingY;
 		top = Math.max(0, Math.min(window.innerHeight - offset.height, top));
 
 		this._eTooltip.style.transform = `translate(${left}px,${top}px)`;
@@ -212,9 +222,10 @@ class TooltipManager extends TooltipWrapper {
 
 	private _timeout?: AppTooltip.Timeout = null;
 
+	private _hidden: AppTooltip.Hidden = true;
+
 	constructor() {
 		super();
-
 		Object.seal(this);
 	}
 
@@ -255,9 +266,26 @@ class TooltipManager extends TooltipWrapper {
 		this.clearDelay();
 		this._tooltip = tooltip;
 
+		if (!this._hidden) this._tooltip.isHidden = false;
+
 		if (this._tooltip.isActive) {
-			this._tooltip.update();
-			this._tooltip.adjust();
+			if (this._hidden) {
+				this.setDelay(() => {
+					if (!this._tooltip) return;
+
+					this._tooltip.update();
+					this._tooltip.adjust();
+
+					this._hidden = false;
+					this._tooltip.isHidden = false;
+				}, 0);
+			} else {
+				this._tooltip.update();
+				this._tooltip.adjust();
+
+				this._hidden = false;
+				this._tooltip.isHidden = false;
+			}
 		} else {
 			this._tooltip!.create();
 			this._tooltip!.append();
@@ -269,8 +297,13 @@ class TooltipManager extends TooltipWrapper {
 	}
 
 	private onMouseleaveEvent() {
+		if (this._tooltip) this._tooltip.isHidden = true;
+
 		this.setDelay(() => {
-			if (this._tooltip) this._tooltip.hide();
+			this._hidden = true;
+
+			if (!this._tooltip) return;
+			this._tooltip.hide();
 		}, 0);
 	}
 
@@ -285,10 +318,13 @@ class TooltipManager extends TooltipWrapper {
 	setDelay(callback: () => void, delayIndex: number) {
 		if (!this._tooltip) return;
 
+		this.clearDelay();
+
 		const delay = this._tooltip.delay;
 
 		if (typeof delay === 'number' && delay > 0) this._timeout = setTimeout(() => callback(), delay);
-		else if (Array.isArray(delay) && delay[delayIndex] > 0) this._timeout = setTimeout(() => callback(), delay[delayIndex]);
+		else if (Array.isArray(delay) && delay[delayIndex] > 0)
+			this._timeout = setTimeout(() => callback(), delay[delayIndex]);
 		else callback();
 	}
 

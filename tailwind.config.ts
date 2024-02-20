@@ -418,6 +418,15 @@ const config: Config = {
 					},
 				},
 
+				'.gray-box': {
+					border: `1px solid ${theme('colors.gray.500')}`,
+					'background-color': theme('colors.white'),
+
+					'&:not(.rounded-sm)': {
+						'border-radius': '8px',
+					},
+				},
+
 				'.icon-hover': {
 					color: theme('colors.gray.1000'),
 					transition: 'color 250ms',
