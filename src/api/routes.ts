@@ -9,6 +9,8 @@ const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 
 const routes = {
 	common: {
 		time: `${rlcUrl}/Common/v1/Time`,
+		GetBrokers: `${rlcUrl}/Common/v1/GetBrokers`,
+		GetUrl: `${rlcUrl}/Common/v1/GetUrl`,
 	},
 
 	authentication: {
@@ -29,6 +31,7 @@ const routes = {
 		SymbolInfo: `${rlcUrl}/Symbol/v1/SymbolInfo`,
 		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
 		Search: `${rlcUrl}/Symbol/v1/Search`,
+		SymbolHistory: `${rlcUrl}/Symbol/v1/SymbolHistory`,
 	},
 
 	option: {
@@ -41,6 +44,7 @@ const routes = {
 
 	optionWatchlist: {
 		Watchlist: `${rlcUrl}/OptionWatchlist/v1/Watchlist`,
+		WatchlistExcel: `${rlcUrl}/OptionWatchlist/v1/WatchlistExcel`,
 		WatchlistBySettlementDate: `${rlcUrl}/OptionWatchlist/v1/WatchlistBySettlementDate`,
 		OptionCalculativeInfo: `${rlcUrl}/OptionWatchlist/v1/OptionCalculativeInfo`,
 		OptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/OptionSymbolColumns`,
@@ -53,6 +57,7 @@ const routes = {
 		ChangeHiddenCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/ChangeHiddenCustomWatchlist`,
 		DeleteCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/DeleteCustomWatchlist`,
 		GetCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlist`,
+		GetCustomWatchlistExcel: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistExcel`,
 		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
 		RemoveSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
 	},

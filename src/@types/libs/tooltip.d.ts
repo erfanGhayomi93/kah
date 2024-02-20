@@ -23,6 +23,10 @@ declare namespace AppTooltip {
 
 	export type Element = HTMLElement;
 
+	export type Hidden = boolean;
+
+	export type Animation = boolean;
+
 	export type Singleton = boolean;
 
 	export type Offset = number | [number, number];

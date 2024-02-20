@@ -18,7 +18,7 @@ const Input = ({ value, label, prepend, onChange }: InputProps) => {
 
 	return (
 		<div className='flex h-40 items-center gap-8'>
-			<div className='size-full overflow-hidden rounded border border-gray-500 bg-white flex-items-center'>
+			<div className='gray-box size-full overflow-hidden flex-items-center'>
 				<span className='pr-8 text-base text-gray-900'>{label}</span>
 				<input
 					type='text'

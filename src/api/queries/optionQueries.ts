@@ -7,9 +7,9 @@ interface TPaginationInputs {
 	pageSize: number;
 }
 
-interface IOptionWatchlistQuery {
+export interface IOptionWatchlistQuery {
 	SymbolISINs: string[];
-	Id: number;
+	Id: string;
 	FromDueDays: string;
 	ToDueDays: string;
 	MinimumTradeValue: string;
@@ -49,7 +49,7 @@ export const useOptionWatchlistQuery = createQuery<
 				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
 			}
 
-			if (props.watchlistId > -1) params.Id = props.watchlistId;
+			if (props.watchlistId > -1) params.Id = String(props.watchlistId);
 
 			const response = await axios.get<PaginationResponse<Option.Root[]>>(
 				props.watchlistId > -1 ? routes.optionWatchlist.GetCustomWatchlist : routes.optionWatchlist.Watchlist,

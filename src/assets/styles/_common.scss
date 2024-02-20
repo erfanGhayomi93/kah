@@ -9,9 +9,9 @@
 }
 
 .input-group {
-	transition: border-color 250ms ease-in-out;
-	-webkit-transition: border-color 250ms ease-in-out;
-	-moz-transition: border-color 250ms ease-in-out;
+	transition: border-color 200ms ease-in-out;
+	-webkit-transition: border-color 200ms ease-in-out;
+	-moz-transition: border-color 200ms ease-in-out;
 
 	&:focus-within,
 	input:focus,
@@ -22,4 +22,47 @@
 	&:not(:focus-within):hover {
 		border-color: theme("colors.gray.700");
 	}
+}
+
+.common-tooltip-container {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 99999;
+	color: theme("colors.white");
+	background-color: rgba(0, 0, 0, 0.8);
+	padding: 2px 4px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 400;
+	max-width: 196px;
+	transition:
+		opacity 200ms ease-in,
+		transform 200ms ease-in-out;
+	-webkit-transition:
+		opacity 200ms ease-in,
+		transform 200ms ease-in-out;
+
+	&:not(.common-tooltip-interactive) {
+		pointer-events: none;
+	}
+
+	&:not(.common-tooltip-animation) {
+		transition: opacity 200ms ease-in;
+		-webkit-transition: opacity 200ms ease-in;
+	}
+
+	&.common-tooltip-animation {
+		transition:
+			opacity 200ms ease-in,
+			transform 200ms ease-in-out;
+		-webkit-transition:
+			opacity 200ms ease-in,
+			transform 200ms ease-in-out;
+	}
+}
+
+.common-tooltip-hidden {
+	pointer-events: none;
+	opacity: 0;
 }

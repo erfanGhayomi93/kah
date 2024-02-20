@@ -1,6 +1,8 @@
 import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { MoreOptionsSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { toggleBuySellModal } from '@/features/slices/modalSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -13,6 +15,23 @@ interface SymbolTabsProps {
 
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const addBsModal = (side: TBsSides) => {
+		if (!symbol) return;
+
+		const { symbolISIN, symbolTitle } = symbol;
+
+		dispatch(
+			toggleBuySellModal({
+				side,
+				symbolType: 'base',
+				symbolISIN,
+				symbolTitle,
+			}),
+		);
+	};
 
 	const tabs = useMemo(
 		() => [
@@ -30,12 +49,19 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	return (
 		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='items-end gap-12 pl-16 flex-column'>
 			<div className='gap-8 flex-items-center'>
-				<button type='button' className='h-32 w-96 rounded btn-error-outline'>
-					{t('side.sell')}
-				</button>
-
-				<button type='button' className='h-32 w-96 rounded btn-success-outline'>
+				<button
+					onClick={() => addBsModal('buy')}
+					type='button'
+					className='h-32 w-96 rounded btn-success-outline'
+				>
 					{t('side.buy')}
+				</button>
+				<button
+					onClick={() => addBsModal('sell')}
+					type='button'
+					className='h-32 w-96 rounded btn-error-outline'
+				>
+					{t('side.sell')}
 				</button>
 
 				<button type='button' className='size-24 text-gray-1000'>
