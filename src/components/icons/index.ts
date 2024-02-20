@@ -2,6 +2,7 @@ import AngleLeftCircle from './angle-left-circle.svg';
 import AngleLeft from './angle-left.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
+import ArrowUpSVG from './arrow-up.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
 import ChartDownSVG from './chart-down.svg';
@@ -22,6 +23,7 @@ import FilterSVG from './filter.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import InfoSVG from './info.svg';
+import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MoreOptionsSVG from './more-options.svg';
@@ -34,6 +36,7 @@ import SearchSVG from './search.svg';
 import SessionHistorySVG from './session-history.svg';
 import SettingSVG from './setting.svg';
 import TrashSVG from './trash.svg';
+import UnlockSVG from './unlock.svg';
 import UserCircleSVG from './user-circle.svg';
 import XSVG from './x.svg';
 
@@ -42,6 +45,7 @@ export {
 	AngleLeftCircle,
 	ArrowDownSVG,
 	ArrowLeftSVG,
+	ArrowUpSVG,
 	BookmarkSVG,
 	CalendarSVG,
 	ChartDownSVG,
@@ -62,6 +66,7 @@ export {
 	GrowDownSVG,
 	GrowUpSVG,
 	InfoSVG,
+	LockSVG,
 	LogoutSVG,
 	ManageSVG,
 	MoreOptionsSVG,
@@ -74,6 +79,7 @@ export {
 	SessionHistorySVG,
 	SettingSVG,
 	TrashSVG,
+	UnlockSVG,
 	UserCircleSVG,
 	XSVG,
 };

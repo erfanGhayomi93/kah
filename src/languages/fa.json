@@ -111,6 +111,8 @@
 		"hold_form": "نگهداری فرم سفارش",
 		"normal_trade": "معامله ساده",
 		"strategy": "استراتژی",
+		"quantity_label": "تعداد",
+		"price_label": "قیمت",
 		"draft": "پیش‌نویس"
 	},
 	"manage_option_watchlist_columns": {
