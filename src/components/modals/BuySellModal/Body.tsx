@@ -84,11 +84,11 @@ const Body = (props: BodyProps) => {
 				validity: validityDate,
 			});
 
-			toast(t('alerts.ordered_successfully'));
+			toast.success(t('alerts.ordered_successfully'));
 
 			if (!holdAfterOrder) close();
 		} catch (e) {
-			toast(t('alerts.ordered_unsuccessfully'));
+			toast.error(t('alerts.ordered_unsuccessfully'));
 		}
 	};
 
