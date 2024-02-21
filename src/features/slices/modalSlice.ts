@@ -30,11 +30,12 @@ export interface IAddSaturnTemplate extends Saturn.Content {}
 export interface ModalState {
 	loginModal: boolean;
 	logout: boolean;
+	chooseBroker: boolean;
+	buySell: IBuySellModal | null;
 	addNewOptionWatchlist: boolean;
 	manageOptionWatchlistList: boolean;
 	addSymbolToWatchlist: boolean;
 	addSaturnTemplate: IAddSaturnTemplate | null;
-	buySell: IBuySellModal | null;
 	symbolContracts: IContractSelectorModal | null;
 	forgetPassword: IForgetPasswordModal | true | null;
 	optionFilters: false | Partial<IOptionFiltersModal>;
@@ -47,6 +48,7 @@ const initialState: ModalState = {
 	addSymbolToWatchlist: false,
 	addNewOptionWatchlist: false,
 	manageOptionWatchlistList: false,
+	chooseBroker: false,
 	forgetPassword: null,
 	buySell: null,
 	addSaturnTemplate: null,
@@ -89,11 +91,15 @@ const modalSlice = createSlice({
 			state.addNewOptionWatchlist = payload;
 		},
 
-		toggleAddSymbolToWatchlist: (state, { payload }: PayloadAction<ModalState['addSymbolToWatchlist']>) => {
+		toggleAddSymbolToWatchlistModal: (state, { payload }: PayloadAction<ModalState['addSymbolToWatchlist']>) => {
 			state.addSymbolToWatchlist = payload;
 		},
 
-		toggleManageOptionWatchlistList: (
+		toggleChooseBrokerModal: (state, { payload }: PayloadAction<ModalState['chooseBroker']>) => {
+			state.chooseBroker = payload;
+		},
+
+		toggleManageOptionWatchlistListModal: (
 			state,
 			{ payload }: PayloadAction<ModalState['manageOptionWatchlistList']>,
 		) => {
@@ -111,10 +117,12 @@ export const {
 	toggleSymbolContractsModal,
 	toggleSaveSaturnTemplate,
 	toggleAddNewOptionWatchlist,
-	toggleAddSymbolToWatchlist,
-	toggleManageOptionWatchlistList,
+	toggleChooseBrokerModal,
+	toggleAddSymbolToWatchlistModal,
+	toggleManageOptionWatchlistListModal,
 } = modalSlice.actions;
 
+export const getChooseBroker = (state: RootState) => state.modal.chooseBroker;
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getBuySellModal = (state: RootState) => state.modal.buySell;

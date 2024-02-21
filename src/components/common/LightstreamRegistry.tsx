@@ -5,11 +5,11 @@ import { useAppDispatch } from '@/features/hooks';
 import { setLsStatus } from '@/features/slices/uiSlice';
 import { useLayoutEffect } from 'react';
 
-interface LightstreamProviderProps {
+interface LightstreamRegistryProps {
 	children: React.ReactNode;
 }
 
-const LightstreamProvider = ({ children }: LightstreamProviderProps) => {
+const LightstreamRegistry = ({ children }: LightstreamRegistryProps) => {
 	const dispatch = useAppDispatch();
 
 	useLayoutEffect(() => {
@@ -23,4 +23,4 @@ const LightstreamProvider = ({ children }: LightstreamProviderProps) => {
 	return children;
 };
 
-export default LightstreamProvider;
+export default LightstreamRegistry;

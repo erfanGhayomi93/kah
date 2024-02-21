@@ -1,11 +1,11 @@
-import { setIsLoggedIn } from '@/features/slices/userSlice';
+import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
-import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
+import { deleteBrokerClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
-const axios = AXIOS.create();
+const brokerAxios = AXIOS.create();
 
-axios.defaults.paramsSerializer = {
+brokerAxios.defaults.paramsSerializer = {
 	serialize: (params) => {
 		const queryParams: string[] = [];
 		const keys = Object.keys(params);
@@ -25,7 +25,7 @@ axios.defaults.paramsSerializer = {
 	},
 };
 
-axios.interceptors.request.use(
+brokerAxios.interceptors.request.use(
 	(config) => {
 		const clientId = getClientId();
 		if (clientId) config.headers.Authorization = `Bearer ${clientId}`;
@@ -37,7 +37,7 @@ axios.interceptors.request.use(
 	},
 );
 
-axios.interceptors.response.use(
+brokerAxios.interceptors.response.use(
 	(response: AxiosResponse<ServerResponse>) => {
 		return response;
 	},
@@ -57,13 +57,12 @@ axios.interceptors.response.use(
 
 export const onUnauthorize = () => {
 	try {
-		store.dispatch(setIsLoggedIn(false));
+		store.dispatch(setBrokerIsSelected(false));
 		deleteBrokerClientId();
-		deleteClientId();
 	} catch (e) {
 		//
 	}
 };
 
 export { AxiosError };
-export default axios;
+export default brokerAxios;

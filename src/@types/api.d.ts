@@ -390,6 +390,20 @@ declare namespace User {
 		mobile: string;
 		saveDate: string;
 	}
+
+	interface Broker {
+		brokerCode: string;
+		brokerName: string;
+		url: string;
+		urlType: 'Api' | 'Sso';
+	}
+
+	interface BrokerUrl {
+		brokerCode: string;
+		brokerName: string;
+		url: string;
+		urlType: 'Api' | 'Sso';
+	}
 }
 
 declare namespace Saturn {

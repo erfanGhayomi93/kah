@@ -1,16 +1,18 @@
 import '@/assets/styles/app.scss';
 import '@/assets/styles/libs.scss';
-import LightstreamProvider from '@/components/common/LightstreamProvider';
+import BroadcastChannelRegistry from '@/components/common/BroadcastChannelRegistry';
+import LightstreamRegistry from '@/components/common/LightstreamRegistry';
 import NextIntlClientRegistry from '@/components/common/NextIntlClientRegistry';
 import QueryClientRegistry from '@/components/common/QueryClientRegistry';
 import ReduxToolkitRegistry from '@/components/common/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/StyledComponentsRegistry';
+import ToastRegistry from '@/components/common/ToastRegistry';
 import Wrapper from '@/components/layout/Wrapper';
 import Modals from '@/components/modals/Modals';
 import ClockProvider from '@/contexts/ClockContext';
 import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
+import metadata from '@/metadata';
 import { getDirection } from '@/utils/helpers';
-import metadata from '../../metadata';
 
 interface IRootLayout extends INextProps {
 	children: React.ReactNode;
@@ -27,14 +29,18 @@ const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) 
 					<StyledComponentsRegistry>
 						<QueryClientRegistry>
 							<ReduxToolkitRegistry>
-								<LightstreamProvider>
-									<ClockProvider>
-										<WatchlistColumnsProvider>
-											<Wrapper>{children}</Wrapper>
-											<Modals />
-										</WatchlistColumnsProvider>
-									</ClockProvider>
-								</LightstreamProvider>
+								<LightstreamRegistry>
+									<BroadcastChannelRegistry>
+										<ClockProvider>
+											<WatchlistColumnsProvider>
+												<ToastRegistry>
+													<Wrapper>{children}</Wrapper>
+													<Modals />
+												</ToastRegistry>
+											</WatchlistColumnsProvider>
+										</ClockProvider>
+									</BroadcastChannelRegistry>
+								</LightstreamRegistry>
 							</ReduxToolkitRegistry>
 						</QueryClientRegistry>
 					</StyledComponentsRegistry>

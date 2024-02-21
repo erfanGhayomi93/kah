@@ -225,7 +225,7 @@ export const downloadFile = (url: string, name: string, params: Record<string, u
 			.catch(reject);
 	});
 
-const paramsSerializer = (params: Record<string, unknown>) => {
+export const paramsSerializer = (params: Record<string, unknown>) => {
 	const queryParams: string[] = [];
 	const keys = Object.keys(params);
 
@@ -241,4 +241,18 @@ const paramsSerializer = (params: Record<string, unknown>) => {
 	}
 
 	return queryParams.join('&');
+};
+
+export const decodeBrokerUrls = (data: User.BrokerUrl[]) => {
+	const urls: IBrokerUrls = {
+		todayOrders: data[0].url,
+		todayTrades: data[1].url,
+		drafts: data[2].url,
+		createOrder: data[3].url,
+		ordersCount: data[4].url,
+		openOrders: data[5].url,
+		commission: data[6].url,
+	};
+
+	return urls;
 };

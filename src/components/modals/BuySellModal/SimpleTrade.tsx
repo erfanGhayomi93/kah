@@ -53,6 +53,7 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 interface SimpleTradeProps extends IBsModalInputs {
 	symbolType: TBsSymbolTypes;
 	setInputValue: TSetBsModalInputs;
+	onSubmit: () => void;
 }
 
 const SimpleTrade = ({
@@ -66,13 +67,15 @@ const SimpleTrade = ({
 	holdAfterOrder,
 	collateral,
 	setInputValue,
+	onSubmit,
 }: SimpleTradeProps) => {
 	const t = useTranslations();
 
 	const [showValidityDates, setShowValidityDates] = useState(false);
 
-	const onSubmit = (e: React.FormEvent) => {
+	const onSubmitForm = (e: React.FormEvent) => {
 		e.preventDefault();
+		onSubmit();
 	};
 
 	const onClickPercentage = (percent: number) => {
@@ -129,7 +132,7 @@ const SimpleTrade = ({
 	);
 
 	return (
-		<form method='get' onSubmit={onSubmit} className='w-full flex-1 justify-between gap-24 flex-column'>
+		<form method='get' onSubmit={onSubmitForm} className='w-full flex-1 justify-between gap-24 flex-column'>
 			<div className='gap-24 flex-column'>
 				<SwitchTab
 					data={TABS}

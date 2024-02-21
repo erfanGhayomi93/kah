@@ -1,7 +1,7 @@
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistList } from '@/features/slices/modalSlice';
+import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId, setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -61,7 +61,7 @@ const WatchlistList = () => {
 	};
 
 	const manageWatchlistList = () => {
-		dispatch(toggleManageOptionWatchlistList(true));
+		dispatch(toggleManageOptionWatchlistListModal(true));
 	};
 
 	const watchlistList = useMemo(() => {
