@@ -2,8 +2,7 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
-import { toggleBuySellModal } from '@/features/slices/modalSlice';
+import { useTradingFeatures } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -36,7 +35,7 @@ const ListItem = ({ title, valueFormatter }: Item) => (
 const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	const t = useTranslations();
 
-	const dispatch = useAppDispatch();
+	const { addBuySellModal } = useTradingFeatures();
 
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', selectedSymbol ?? null],
@@ -47,14 +46,12 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 		const { symbolISIN, symbolTitle } = symbolData;
 
-		dispatch(
-			toggleBuySellModal({
-				side,
-				symbolType: 'base',
-				symbolISIN,
-				symbolTitle,
-			}),
-		);
+		addBuySellModal({
+			side,
+			symbolType: 'base',
+			symbolISIN,
+			symbolTitle,
+		});
 	};
 
 	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {

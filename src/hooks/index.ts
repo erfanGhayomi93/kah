@@ -5,6 +5,7 @@ import useInputs from './useInputs';
 import useLocalstorage from './useLocalstorage';
 import usePagination from './usePagination';
 import useServerDatetime from './useServerDatetime';
+import useTradingFeatures from './useTradingFeatures';
 import useWatchlistColumns from './useWatchlistColumns';
 
 export {
@@ -15,5 +16,6 @@ export {
 	useLocalstorage,
 	usePagination,
 	useServerDatetime,
+	useTradingFeatures,
 	useWatchlistColumns,
 };

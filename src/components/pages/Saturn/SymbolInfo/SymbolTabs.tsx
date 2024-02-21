@@ -1,8 +1,7 @@
 import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { MoreOptionsSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
-import { toggleBuySellModal } from '@/features/slices/modalSlice';
+import { useTradingFeatures } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -16,21 +15,19 @@ interface SymbolTabsProps {
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
 
-	const dispatch = useAppDispatch();
+	const { addBuySellModal } = useTradingFeatures();
 
 	const addBsModal = (side: TBsSides) => {
 		if (!symbol) return;
 
 		const { symbolISIN, symbolTitle } = symbol;
 
-		dispatch(
-			toggleBuySellModal({
-				side,
-				symbolType: 'base',
-				symbolISIN,
-				symbolTitle,
-			}),
-		);
+		addBuySellModal({
+			side,
+			symbolType: 'base',
+			symbolISIN,
+			symbolTitle,
+		});
 	};
 
 	const tabs = useMemo(

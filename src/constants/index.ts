@@ -1,5 +1,7 @@
 export const defaultSymbolISIN = 'IRO1IKCO0001';
 
+export const broadcastChannel = 'tUFN1pQ1Ry';
+
 export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 	{
 		colId: 'symbolTitle',

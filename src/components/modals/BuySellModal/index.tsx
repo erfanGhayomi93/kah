@@ -74,8 +74,14 @@ const BuySellModal = ({
 					expand={inputs.expand}
 					onToggle={() => setInputValue('expand', !inputs.expand)}
 				/>
-				<div className='flex flex-1'>
-					<Body {...inputs} symbolType={symbolType} setInputValue={setInputValue} />
+				<div className='flex h-full flex-1'>
+					<Body
+						{...inputs}
+						close={onCloseModal}
+						symbolISIN={symbolISIN}
+						symbolType={symbolType}
+						setInputValue={setInputValue}
+					/>
 					{inputs.expand && <SymbolInfo />}
 				</div>
 				<Footer

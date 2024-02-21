@@ -4,7 +4,8 @@ import SymbolState from '@/components/common/SymbolState';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleBuySellModal, toggleSymbolContractsModal } from '@/features/slices/modalSlice';
+import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
+import { useTradingFeatures } from '@/hooks';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -35,6 +36,8 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 
 	const dispatch = useAppDispatch();
 
+	const { addBuySellModal } = useTradingFeatures();
+
 	const { data: contractInfo, isFetching } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', option === null ? null : option.symbolISIN],
 		enabled: option !== null,
@@ -54,14 +57,12 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 
 		const { symbolISIN, symbolTitle } = contractInfo;
 
-		dispatch(
-			toggleBuySellModal({
-				side,
-				symbolType: 'option',
-				symbolISIN,
-				symbolTitle,
-			}),
-		);
+		addBuySellModal({
+			side,
+			symbolType: 'option',
+			symbolISIN,
+			symbolTitle,
+		});
 	};
 
 	const tabs = useMemo(

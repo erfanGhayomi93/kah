@@ -45,7 +45,13 @@ export const deleteCookie = (name: string) => {
 // Client ID
 export const getClientId = () => getCookie('kahkeshan_client_id');
 
-export const setClientId = (value: string, options?: ICookieOptions) =>
-	setCookie('kahkeshan_client_id', value, { maxAgeInSeconds: 86400 });
+export const setClientId = (value: string) => setCookie('kahkeshan_client_id', value, { maxAgeInSeconds: 86400 });
 
 export const deleteClientId = () => deleteCookie('kahkeshan_client_id');
+
+// Broker Client ID
+export const getBrokerClientId = () => getCookie('br_client_id');
+
+export const setBrokerClientId = (value: string) => setCookie('br_client_id', value, { maxAgeInSeconds: 86400 });
+
+export const deleteBrokerClientId = () => deleteCookie('br_client_id');

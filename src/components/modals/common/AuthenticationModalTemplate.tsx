@@ -16,6 +16,10 @@ interface AuthenticationModalTemplateProps {
 const Div = styled.div`
 	width: 578px;
 	height: 560px;
+	display: flex;
+	padding: 2.4rem;
+	flex-direction: column;
+	border-radius: 1.6rem;
 `;
 
 const AuthenticationModalTemplate = ({
@@ -28,7 +32,7 @@ const AuthenticationModalTemplate = ({
 }: AuthenticationModalTemplateProps) => {
 	return (
 		<Modal onClose={onClose}>
-			<Div className='rounded-md bg-white p-24 flex-column'>
+			<Div className='bg-white'>
 				{!hideTitle && [
 					<div key='close' className='absolute left-24 z-10'>
 						<button onClick={onClose} type='button' className='icon-hover'>
