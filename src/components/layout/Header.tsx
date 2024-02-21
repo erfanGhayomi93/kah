@@ -58,31 +58,39 @@ const Header = () => {
 
 	return (
 		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-48 bg-white px-24 shadow flex-justify-between'>
-			<div className='flex-1 gap-32 flex-justify-start'>
-				<span className='gap-8 text-gray-900 flex-items-center'>
-					<WalletSVG width='2.4rem' height='2.4rem' />
-					{t('header.purchase_power')}:
-					<span className='gap-4 flex-items-center'>
-						<span className='text-lg font-medium text-primary-400'>{sepNumbers(String(5e7))}</span>
-						<span className='text-tiny text-gray-700'>{t('common.rial')}</span>
+			{isLoggedIn ? (
+				<div className='flex-1 gap-32 flex-justify-start'>
+					<span className='gap-8 text-gray-900 flex-items-center'>
+						<WalletSVG width='2.4rem' height='2.4rem' />
+						{t('header.purchase_power')}:
+						<span className='gap-4 flex-items-center'>
+							<span className='text-lg font-medium text-primary-400'>{sepNumbers(String(5e7))}</span>
+							<span className='text-tiny text-gray-700'>{t('common.rial')}</span>
+						</span>
 					</span>
-				</span>
 
-				<span className='gap-8 text-gray-900 flex-items-center'>
-					{t('header.status')}:
-					<span className='h-32 gap-4 rounded border border-success-100 bg-success-100/10 px-8 text-success-100 flex-items-center'>
-						<ShieldSVG width='2.4rem' height='2.4rem' />
-						<span className='text-base font-medium'>{t('header.normal_status')}</span>
+					<span className='gap-8 text-gray-900 flex-items-center'>
+						{t('header.status')}:
+						<span className='h-32 gap-4 rounded border border-success-100 bg-success-100/10 px-8 text-success-100 flex-items-center'>
+							<ShieldSVG width='2.4rem' height='2.4rem' />
+							<span className='text-base font-medium'>{t('header.normal_status')}</span>
+						</span>
 					</span>
-				</span>
-			</div>
+				</div>
+			) : (
+				<div className='flex-1'>
+					<h1 className='text-2xl font-medium uppercase text-gray-900'>Logo</h1>
+				</div>
+			)}
 
 			<div className='flex-1 gap-16 flex-justify-end'>
-				<button type='button' className='text-gray-900'>
-					<BellSVG />
-				</button>
+				{isLoggedIn && (
+					<button type='button' className='border-l border-l-gray-500 pl-16 text-gray-900'>
+						<BellSVG />
+					</button>
+				)}
 
-				<div className='gap-16 border-r border-r-gray-500 pr-16 flex-items-center'>
+				<div className='gap-16 flex-items-center'>
 					{isLoggedIn ? (
 						<Popup
 							margin={{
@@ -206,15 +214,17 @@ const Header = () => {
 							onClick={showAuthenticationModal}
 							type='button'
 							disabled={isFetchingUserData || isLoggingIn}
-							className='h-40 rounded px-48 font-medium btn-primary'
+							className='h-36 rounded px-24 font-medium btn-primary'
 						>
 							{t('header.login')}
 						</button>
 					)}
 
-					<button type='button' className='text-error-100'>
-						<OffSVG width='2.4rem' height='2.4rem' />
-					</button>
+					{isLoggedIn && (
+						<button type='button' className='text-error-100'>
+							<OffSVG width='2.4rem' height='2.4rem' />
+						</button>
+					)}
 				</div>
 			</div>
 

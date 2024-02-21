@@ -248,6 +248,18 @@ declare namespace Option {
 		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 	}
 
+	export interface CustomWatchlistSearch {
+		isInWatchlist: boolean;
+		symbolISIN: string;
+		symbolTitle: string;
+		companyISIN: string;
+		companyName: string;
+		insCode: string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		marketUnit: string;
+		isOption: boolean;
+	}
+
 	export interface BaseSettlementDays {
 		baseSymbolISIN: string;
 		contractEndDate: string;
@@ -301,7 +313,7 @@ declare namespace Symbol {
 		tradeCount: number;
 		lastTradeDate: string;
 		hv: number;
-		symbolTradeState: string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
 		closingPriceVarReferencePrice: number;

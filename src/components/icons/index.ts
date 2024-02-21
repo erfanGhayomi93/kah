@@ -33,8 +33,10 @@ import LearnSVG from './learn.svg';
 import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
+import MarketMapSVG from './market-map.svg';
 import MoreOptionsSVG from './more-options.svg';
 import OffSVG from './off.svg';
+import OptionChainSVG from './option-chain.svg';
 import PasswordSVG from './password.svg';
 import PayMoneySVG from './pay-money.svg';
 import PinSVG from './pin.svg';
@@ -43,6 +45,7 @@ import PlusSVG from './plus.svg';
 import ReceptionSVG from './reception.svg';
 import RefreshSVG from './refresh.svg';
 import ReportSVG from './report.svg';
+import SaturnSVG from './saturn.svg';
 import SearchSVG from './search.svg';
 import SessionHistorySVG from './session-history.svg';
 import SettingSVG from './setting.svg';
@@ -55,6 +58,7 @@ import UnlockSVG from './unlock.svg';
 import UserBoldSVG from './user-bold.svg';
 import UserCircleSVG from './user-circle.svg';
 import WalletSVG from './wallet.svg';
+import WatchlistSVG from './watchlist.svg';
 import XSVG from './x.svg';
 
 export {
@@ -93,8 +97,10 @@ export {
 	LockSVG,
 	LogoutSVG,
 	ManageSVG,
+	MarketMapSVG,
 	MoreOptionsSVG,
 	OffSVG,
+	OptionChainSVG,
 	PasswordSVG,
 	PayMoneySVG,
 	PinSVG,
@@ -103,6 +109,7 @@ export {
 	ReceptionSVG,
 	RefreshSVG,
 	ReportSVG,
+	SaturnSVG,
 	SearchSVG,
 	SessionHistorySVG,
 	SettingSVG,
@@ -115,5 +122,6 @@ export {
 	UserBoldSVG,
 	UserCircleSVG,
 	WalletSVG,
+	WatchlistSVG,
 	XSVG,
 };
