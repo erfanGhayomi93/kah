@@ -392,17 +392,17 @@ declare namespace User {
 	}
 
 	interface Broker {
-		brokerCode: string;
-		brokerName: string;
-		url: string;
-		urlType: 'Api' | 'Sso';
+		id: number;
+		brokerCode: string | number;
+		name: string;
+		description: string;
+		logo: null | string;
+		ssoUrl: string;
 	}
 
 	interface BrokerUrl {
-		brokerCode: string;
-		brokerName: string;
+		brokerCode: string | number;
 		url: string;
-		urlType: 'Api' | 'Sso';
 	}
 }
 

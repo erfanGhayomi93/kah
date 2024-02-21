@@ -201,6 +201,13 @@ const config: Config = {
 					'align-items': 'center',
 				},
 
+				'.fit-image': {
+					'background-repeat': 'no-repeat',
+					'background-size': 'cover',
+					'background-position': 'center',
+					'background-attachment': 'local',
+				},
+
 				'.dropdown': {
 					border: `1.5px solid ${theme('colors.primary.200')}`,
 				},

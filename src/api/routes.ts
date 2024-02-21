@@ -10,7 +10,7 @@ const routes = {
 	common: {
 		time: `${rlcUrl}/Common/v1/Time`,
 		GetBrokers: `${rlcUrl}/Common/v1/GetBrokers`,
-		GetUrl: `${rlcUrl}/Common/v1/GetUrl`,
+		GetBrokerApiUrls: `${rlcUrl}/Common/v1/GetBrokerApiUrls`,
 	},
 
 	authentication: {
