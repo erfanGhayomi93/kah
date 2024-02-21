@@ -254,7 +254,7 @@ export const useOptionBaseSymbolSearchQuery = createQuery<
 	]
 >({
 	staleTime: 18e5,
-	queryKey: ['OptionBaseSymbolSearchQuery', {}],
+	queryKey: ['optionBaseSymbolSearchQuery', {}],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
 			const [, { term, orderBy }] = queryKey;
