@@ -30,7 +30,7 @@ const ChooseBroker = () => {
 	};
 
 	const onSelectBroker = (broker: User.Broker) => {
-		if (!broker) return;
+		if (!broker?.url) return;
 
 		const features =
 			'toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=400px,height=600px';

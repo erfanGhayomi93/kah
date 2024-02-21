@@ -29,6 +29,11 @@ declare interface SymbolContractModalStates {
 	activeSettlement: Option.BaseSettlementDays | null;
 }
 
+declare type IBrokerUrls = Record<
+	'todayOrders' | 'todayTrades' | 'drafts' | 'createOrder' | 'ordersCount' | 'openOrders' | 'commission',
+	string
+>;
+
 declare type TOptionWatchlistColumnsState = Array<{
 	colId: OptionWatchlistColumns;
 	width?: number;

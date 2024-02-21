@@ -4,7 +4,7 @@ interface BrokerProps extends User.Broker {
 	onSelect: () => void;
 }
 
-const Broker = ({ brokerCode, brokerName, url, urlType, onSelect }: BrokerProps) => {
+const Broker = ({ brokerName, url, onSelect }: BrokerProps) => {
 	const t = useTranslations();
 
 	return (
@@ -14,7 +14,12 @@ const Broker = ({ brokerCode, brokerName, url, urlType, onSelect }: BrokerProps)
 		>
 			<h2 className='text-base font-medium text-gray-900'>{brokerName}</h2>
 
-			<button onClick={onSelect} type='button' className='h-48 w-full rounded text-base btn-primary'>
+			<button
+				disabled={!url}
+				onClick={onSelect}
+				type='button'
+				className='h-48 w-full rounded text-base btn-primary'
+			>
 				{t('choose_broker_modal.login')}
 			</button>
 		</div>
