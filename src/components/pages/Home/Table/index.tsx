@@ -2,7 +2,8 @@ import { useOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 
-import { useAppSelector } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useLayoutEffect } from 'react';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
@@ -15,6 +16,8 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters }: TableProps) => {
+	const dispatch = useAppDispatch();
+
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
 	const { data: watchlistData, isFetching } = useOptionWatchlistQuery({
@@ -26,7 +29,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	});
 
 	const addSymbol = () => {
-		//
+		dispatch(toggleAddSymbolToWatchlistModal(true));
 	};
 
 	const onFiltersChanged = (newFilters: IOptionWatchlistFilters) => {

@@ -104,6 +104,16 @@
 		"symbol_not_found": "نماد مورد نظر یافت نشد",
 		"delete_selected_symbols": "حذف همه"
 	},
+	"choose_broker_modal": {
+		"title": "انتخاب کارگزاری",
+		"login": "ورود",
+		"description": "برای معامله در کهکشان، یکی از کارگزاری های زیر را انتخاب کنید."
+	},
+	"add_symbol_to_watchlist": {
+		"title": "جستجوی نماد",
+		"no_symbol_found": "نماد مورد نظر یافت نشد",
+		"type_min_chars": "حداقل {n} حرف وارد نمایید."
+	},
 	"bs_modal": {
 		"title": "سفارش {symbolTitle}",
 		"validity_date": "اعتبار سفارش",
@@ -242,9 +252,6 @@
 		"tab_computing_information": "اطلاعات محاسباتی",
 		"tab_open_position": "پوزیشن باز"
 	},
-	"alerts": {
-		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."
-	},
 	"i_errors": {
 		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
 		"too_many_request": "درخواست بیش از حد مجاز است. لطفا دقایقی دیگر مجددا امتحان کنید.",
@@ -287,5 +294,9 @@
 		"prev_page": "صفحه قبل",
 		"next_page": "صفحه بعد",
 		"page_size": "نمایش {size} از {total}"
+	},
+	"alerts": {
+		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید.",
+		"logged_in_successfully_to_broker_account": "با موفقیت وارد حساب کارگزاری خود شدید."
 	}
 }
