@@ -1,10 +1,11 @@
 import axios from '@/api/axios';
-import { useSymbolSearchQuery } from '@/api/queries/symbolQuery';
+import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { EyeSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -22,14 +23,16 @@ const AddSymbolToWatchlist = () => {
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
+	const queryClient = useQueryClient();
+
 	const dispatch = useAppDispatch();
 
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
 
-	const { data: symbolsData, isFetching } = useSymbolSearchQuery({
-		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
+	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
+		queryKey: ['optionSymbolSearchQuery', { term, id: watchlistId }],
 	});
 
 	const onCloseModal = () => {
@@ -47,6 +50,11 @@ const AddSymbolToWatchlist = () => {
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			queryClient.refetchQueries({
+				queryKey: ['optionWatchlistQuery'],
+				exact: false,
+			});
 		} catch (e) {
 			//
 		}

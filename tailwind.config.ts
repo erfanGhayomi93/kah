@@ -31,6 +31,8 @@ const config: Config = {
 
 			input: 'rgba(224, 224, 226, 1)',
 
+			sidebar: 'rgba(15, 21, 39, 1)',
+
 			primary: {
 				100: 'rgba(229, 238, 255, 1)',
 				200: 'rgba(162, 174, 255, 1)',

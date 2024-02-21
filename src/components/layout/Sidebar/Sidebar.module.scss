@@ -3,33 +3,100 @@
 	max-width: 66px;
 	height: 66px;
 	max-height: 66px;
-	overflow: hidden;
 	border: 3px solid transparent;
 	border-radius: 50%;
 	outline: 1px solid rgb(255, 255, 255);
 }
 
-.item {
-	position: relative;
+.list {
+	display: flex;
+	flex-direction: column;
 
-	a {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		height: 5.6rem;
-		padding: 0 2.4rem;
-		gap: 0.8rem;
+	& > li {
+		position: relative;
 
-		span {
-			font-size: 1.4rem;
-			font-weight: 400;
-			color: theme("colors.gray.700");
+		a,
+		button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 5.6rem;
+			padding: 0 2.4rem;
+			gap: 0.8rem;
+			width: 100%;
+
+			span {
+				display: none;
+				white-space: nowrap;
+				font-size: 1.4rem;
+				font-weight: 400;
+				color: theme("colors.gray.700");
+			}
+
+			svg {
+				color: theme("colors.gray.800");
+				min-width: 2.4rem;
+				max-width: 2.4rem;
+				min-height: 2.4rem;
+				max-height: 2.4rem;
+			}
+
+			span.dropdownIcon svg {
+				min-width: 1.4rem;
+				max-width: 1.4rem;
+				min-height: 1.4rem;
+				max-height: 1.4rem;
+			}
 		}
 
-		svg {
-			color: theme("colors.gray.800");
-			width: 2.4rem;
-			height: 2.4rem;
+		ul li {
+			padding-right: 12px;
 		}
+	}
+
+	&.expand > li {
+		a,
+		button {
+			justify-content: flex-start;
+
+			span {
+				display: block;
+			}
+		}
+	}
+
+	&:not(.expand) {
+		& > li ul {
+			display: none;
+		}
+
+		.dropdownIcon {
+			display: none;
+		}
+	}
+}
+
+.toggler {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 4rem;
+	left: -1.6rem;
+	width: 3.2rem;
+	height: 3.2rem;
+	z-index: 99;
+	border-radius: 50%;
+	border: 3px solid theme("colors.white");
+	background-color: theme("colors.sidebar");
+	transition: transform 200ms ease-in;
+	-webkit-transition: transform 200ms ease-in;
+
+	&.expand {
+		transform: rotate(180deg);
+	}
+
+	svg {
+		color: theme("colors.white");
 	}
 }

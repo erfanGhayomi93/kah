@@ -20,7 +20,7 @@ const initialState: UIState = {
 
 	savedSaturnTemplates: false,
 
-	sidebarIsExpand: true,
+	sidebarIsExpand: false,
 
 	saturnActiveTemplate: null,
 
@@ -39,8 +39,8 @@ const uiSlice = createSlice({
 			state.savedSaturnTemplates = payload;
 		},
 
-		toggleSidebar: (state) => {
-			state.sidebarIsExpand = !state.sidebarIsExpand;
+		toggleSidebar: (state, { payload }: PayloadAction<UIState['sidebarIsExpand']>) => {
+			state.sidebarIsExpand = payload;
 		},
 
 		setLsStatus: (state, { payload }: PayloadAction<UIState['lsStatus']>) => {
