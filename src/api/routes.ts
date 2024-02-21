@@ -35,7 +35,7 @@ const routes = {
 	},
 
 	option: {
-		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
+		OptionBaseSymbolSearch: `${rlcUrl}/Option/v1/OptionBaseSymbolSearch`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
 		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
 		GetContractInfoHistory: `${rlcUrl}/Option/v1/GetContractInfoHistory`,
@@ -58,6 +58,7 @@ const routes = {
 		DeleteCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/DeleteCustomWatchlist`,
 		GetCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlist`,
 		GetCustomWatchlistExcel: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistExcel`,
+		CustomWatchlistOptionSearch: `${rlcUrl}/OptionWatchlist/v1/CustomWatchlistOptionSearch`,
 		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
 		RemoveSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
 	},

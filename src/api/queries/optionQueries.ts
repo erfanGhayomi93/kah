@@ -110,28 +110,27 @@ export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], [
 });
 
 export const useOptionSymbolSearchQuery = createQuery<
-	Option.Search[],
-	[
-		'optionSymbolSearchQuery',
-		Partial<{ term: null | string; orderBy: 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' }>,
-	]
+	Option.CustomWatchlistSearch[],
+	['optionSymbolSearchQuery', { term: string; id: number }]
 >({
 	staleTime: 18e5,
-	queryKey: ['optionSymbolSearchQuery', {}],
+	queryKey: ['optionSymbolSearchQuery', { term: '', id: -1 }],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
-			const [, { term, orderBy }] = queryKey;
+			const [, { term, id }] = queryKey;
 
-			if (term === null) return [];
+			if (term.length < 2 || id === -1) return [];
 
-			const params: Record<string, string> = {};
-			if (term) params.term = term;
-			if (orderBy) params.orderBy = orderBy;
-
-			const response = await axios.get<ServerResponse<Option.Search[]>>(routes.option.OptionSymbolSearch, {
-				params,
-				signal,
-			});
+			const response = await axios.get<ServerResponse<Option.CustomWatchlistSearch[]>>(
+				routes.optionWatchlist.CustomWatchlistOptionSearch,
+				{
+					params: {
+						term,
+						Id: id,
+					},
+					signal,
+				},
+			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -236,6 +235,40 @@ export const useGetAllCustomWatchlistQuery = createQuery<Option.WatchlistList[],
 				routes.optionWatchlist.GetAllCustomWatchlist,
 				{ signal },
 			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useOptionBaseSymbolSearchQuery = createQuery<
+	Option.Search[],
+	[
+		'optionBaseSymbolSearchQuery',
+		Partial<{ term: null | string; orderBy: 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' }>,
+	]
+>({
+	staleTime: 18e5,
+	queryKey: ['OptionBaseSymbolSearchQuery', {}],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const [, { term, orderBy }] = queryKey;
+
+			if (term === null) return [];
+
+			const params: Record<string, string> = {};
+			if (term) params.term = term;
+			if (orderBy) params.orderBy = orderBy;
+
+			const response = await axios.get<ServerResponse<Option.Search[]>>(routes.option.OptionBaseSymbolSearch, {
+				params,
+				signal,
+			});
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

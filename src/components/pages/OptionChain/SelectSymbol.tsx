@@ -1,4 +1,4 @@
-import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
+import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
 import Select, { type TSelectOptions } from '@/components/common/Select';
 import { SearchSVG } from '@/components/icons';
@@ -59,9 +59,9 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 
 	const [sorting, setSorting] = useState<TSelectOptions>(sortingOptions[0]);
 
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
+	const { data: symbolsData, isFetching } = useOptionBaseSymbolSearchQuery({
 		queryKey: [
-			'optionSymbolSearchQuery',
+			'optionBaseSymbolSearchQuery',
 			{ term: symbolTerm, orderBy: String(sorting.id) as 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' },
 		],
 	});
