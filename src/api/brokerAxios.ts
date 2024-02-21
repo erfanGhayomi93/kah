@@ -1,6 +1,6 @@
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
-import { deleteBrokerClientId, getClientId } from '@/utils/cookie';
+import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
 const brokerAxios = AXIOS.create();
@@ -27,7 +27,7 @@ brokerAxios.defaults.paramsSerializer = {
 
 brokerAxios.interceptors.request.use(
 	(config) => {
-		const clientId = getClientId();
+		const clientId = getBrokerClientId();
 		if (clientId) config.headers.Authorization = `Bearer ${clientId}`;
 
 		return config;
