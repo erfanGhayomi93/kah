@@ -30,11 +30,11 @@ const ChooseBroker = () => {
 	};
 
 	const onSelectBroker = (broker: User.Broker) => {
-		if (!broker?.url) return;
+		if (!broker?.ssoUrl) return;
 
 		const features =
 			'toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=400px,height=600px';
-		window.open(broker.url, '_blank', features);
+		window.open(broker.ssoUrl, '_blank', features);
 	};
 
 	return (
@@ -56,7 +56,7 @@ const ChooseBroker = () => {
 					</p>
 				</div>
 
-				<div className='relative flex-1 flex-justify-center'>
+				<div className='relative flex-1 gap-16 flex-justify-center'>
 					{isFetching || !Array.isArray(brokersData) ? (
 						<div className='spinner absolute size-48 center' />
 					) : (

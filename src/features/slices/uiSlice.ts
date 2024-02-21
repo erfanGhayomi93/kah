@@ -6,6 +6,8 @@ import { type RootState } from '../store';
 export interface UIState {
 	manageOptionColumns: boolean;
 
+	sidebarIsExpand: boolean;
+
 	savedSaturnTemplates: boolean;
 
 	saturnActiveTemplate: Saturn.Template | null;
@@ -17,6 +19,8 @@ const initialState: UIState = {
 	manageOptionColumns: false,
 
 	savedSaturnTemplates: false,
+
+	sidebarIsExpand: true,
 
 	saturnActiveTemplate: null,
 
@@ -35,6 +39,10 @@ const uiSlice = createSlice({
 			state.savedSaturnTemplates = payload;
 		},
 
+		toggleSidebar: (state) => {
+			state.sidebarIsExpand = !state.sidebarIsExpand;
+		},
+
 		setLsStatus: (state, { payload }: PayloadAction<UIState['lsStatus']>) => {
 			state.lsStatus = payload;
 		},
@@ -45,9 +53,15 @@ const uiSlice = createSlice({
 	},
 });
 
-export const { toggleManageOptionColumns, toggleSavedSaturnTemplates, setSaturnActiveTemplate, setLsStatus } =
-	uiSlice.actions;
+export const {
+	toggleManageOptionColumns,
+	toggleSavedSaturnTemplates,
+	setSaturnActiveTemplate,
+	toggleSidebar,
+	setLsStatus,
+} = uiSlice.actions;
 
+export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
 export const getManageOptionColumns = (state: RootState) => state.ui.manageOptionColumns;
 export const getSavedSaturnTemplates = (state: RootState) => state.ui.savedSaturnTemplates;
 export const getLsStatus = (state: RootState) => state.ui.lsStatus;

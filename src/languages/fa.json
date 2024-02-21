@@ -8,6 +8,7 @@
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
 		"delete": "حذف",
+		"app_user": "کاربر کهکشان",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
@@ -22,12 +23,14 @@
 	},
 	"header": {
 		"login": "ورود",
-		"app_user": "کاربر کهکشان",
+		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
 		"setting": "تنظیمات",
+		"status": "وضعیت",
+		"normal_status": "عادی",
 		"logout": "خروج از حساب کاربری"
 	},
 	"header_navigation": {
