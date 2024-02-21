@@ -1,4 +1,4 @@
-import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
+import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
 import Popup from '@/components/common/Popup';
 import { CheckSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
@@ -40,8 +40,8 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 
 	const [enabled, setEnabled] = useState(false);
 
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', { term, orderBy: 'Alphabet' }],
+	const { data: symbolsData, isFetching } = useOptionBaseSymbolSearchQuery({
+		queryKey: ['optionBaseSymbolSearchQuery', { term, orderBy: 'Alphabet' }],
 		enabled,
 	});
 
