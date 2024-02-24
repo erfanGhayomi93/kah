@@ -1,17 +1,13 @@
 declare namespace AppTooltip {
 	export type Placement =
 		| 'top'
-		| 'top-start'
-		| 'top-end'
+		| 'top-right'
+		| 'top-left'
 		| 'right'
-		| 'right-start'
-		| 'right-end'
 		| 'bottom'
-		| 'bottom-start'
-		| 'bottom-end'
-		| 'left'
-		| 'left-start'
-		| 'left-end';
+		| 'bottom-right'
+		| 'bottom-left'
+		| 'left';
 
 	export type Interactive = boolean;
 
@@ -29,9 +25,11 @@ declare namespace AppTooltip {
 
 	export type Singleton = boolean;
 
+	export type Disabled = boolean;
+
 	export type Offset = number | [number, number];
 
 	export type Timeout = null | NodeJS.Timeout;
 
-	export type AbortController = AbortController;
+	export type Abort = AbortController;
 }

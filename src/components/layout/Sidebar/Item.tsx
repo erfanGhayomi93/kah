@@ -1,63 +1,62 @@
+import Tooltip from '@/components/common/Tooltip';
+import Collapse from '@/components/common/transition/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
-import { toggleSidebar } from '@/features/slices/uiSlice';
+import clsx from 'clsx';
 import Link from 'next/link';
 import { useState } from 'react';
 import styles from './Sidebar.module.scss';
 
-export interface IListItem {
-	label: string;
-	to?: string;
-	icon: JSX.Element;
-	disabled?: boolean;
+interface IListButton {
 	defaultExpand?: boolean;
-	items?: IListItem[];
+	items: TListItem[];
 }
 
-interface ItemProps extends IListItem {}
+interface IListAnchor {
+	to: string;
+}
 
-const Item = ({ label, to, icon, disabled, defaultExpand, items }: ItemProps) => {
-	const [isExpand, setIsExpand] = useState(Boolean(defaultExpand));
+export type TListItem = (IListButton | IListAnchor) & {
+	label: string;
+	icon: JSX.Element;
+	disabled?: boolean;
+};
 
-	const dispatch = useAppDispatch();
+type ItemProps = TListItem & {
+	sidebarIsExpand: boolean;
+};
 
-	const onClickItem = () => {
-		dispatch(toggleSidebar(false));
-	};
+const Item = ({ label, icon, disabled, sidebarIsExpand, ...props }: ItemProps) => {
+	const [isExpand, setIsExpand] = useState(Boolean('defaultExpand' in props ? props.defaultExpand : false));
+
+	const hasDropdown = 'items' in props && props.items.length > 0;
 
 	return (
-		<li>
-			{to ? (
-				<Link href={to} onClick={onClickItem}>
-					{icon}
-					<span>{label}</span>
-				</Link>
-			) : (
-				<button onClick={() => setIsExpand(!isExpand)}>
-					{icon}
-					<span>{label}</span>
-					<span className={styles.dropdownIcon}>
-						<ArrowDownSVG
-							className='transition-transform'
-							style={{ transform: `translate(${isExpand ? 180 : 0}deg)` }}
-						/>
-					</span>
-				</button>
-			)}
+		<Tooltip disabled={sidebarIsExpand} placement='left' content={label}>
+			<li className={clsx(isExpand && styles.expand)}>
+				{'to' in props ? (
+					<Link href={props.to}>
+						{icon}
+						<span>{label}</span>
+					</Link>
+				) : (
+					<button onClick={() => setIsExpand(!isExpand)}>
+						{icon}
+						<span>{label}</span>
+						{hasDropdown && <ArrowDownSVG style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }} />}
+					</button>
+				)}
 
-			{isExpand && items && (
-				<ul>
-					{items.map((item, i) => (
-						<li key={i}>
-							<Link href={item.to ?? ''} onClick={onClickItem}>
-								{item.icon}
-								<span>{item.label}</span>
-							</Link>
-						</li>
-					))}
-				</ul>
-			)}
-		</li>
+				{hasDropdown && (
+					<Collapse enabled={isExpand}>
+						<ul className={clsx(styles.list, isExpand && styles.expand)}>
+							{props.items.map((item, i) => (
+								<Item sidebarIsExpand={sidebarIsExpand} key={i} {...item} />
+							))}
+						</ul>
+					</Collapse>
+				)}
+			</li>
+		</Tooltip>
 	);
 };
 

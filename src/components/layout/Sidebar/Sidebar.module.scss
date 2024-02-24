@@ -31,26 +31,50 @@
 				font-size: 1.4rem;
 				font-weight: 400;
 				color: theme("colors.gray.700");
+				transition: color 250ms ease;
+				-webkit-transition: color 250ms ease;
+				-moz-transition: color 250ms ease;
 			}
 
-			svg {
+			& > svg {
 				color: theme("colors.gray.800");
-				min-width: 2.4rem;
-				max-width: 2.4rem;
-				min-height: 2.4rem;
-				max-height: 2.4rem;
-			}
-
-			span.dropdownIcon svg {
 				min-width: 1.4rem;
 				max-width: 1.4rem;
 				min-height: 1.4rem;
 				max-height: 1.4rem;
+				transition:
+					color 250ms ease,
+					transform 250ms ease;
+				-webkit-transition:
+					color 250ms ease,
+					transform 250ms ease;
+				-moz-transition:
+					color 250ms ease,
+					transform 250ms ease;
+
+				&:first-child {
+					min-width: 2.4rem;
+					max-width: 2.4rem;
+					min-height: 2.4rem;
+					max-height: 2.4rem;
+				}
+			}
+
+			&:hover {
+				span {
+					color: theme("colors.white");
+				}
 			}
 		}
 
-		ul li {
+		ul {
 			padding-right: 12px;
+		}
+	}
+
+	li.expand {
+		button > span {
+			color: theme("colors.white");
 		}
 	}
 
@@ -66,12 +90,16 @@
 	}
 
 	&:not(.expand) {
-		& > li ul {
-			display: none;
-		}
+		& > li {
+			ul {
+				display: none;
+			}
 
-		.dropdownIcon {
-			display: none;
+			button {
+				svg:nth-last-child(1) {
+					display: none;
+				}
+			}
 		}
 	}
 }
@@ -87,8 +115,9 @@
 	height: 3.2rem;
 	z-index: 99;
 	border-radius: 50%;
-	border: 3px solid theme("colors.white");
+	border: 2px solid theme("colors.white");
 	background-color: theme("colors.sidebar");
+	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.16);
 	transition: transform 200ms ease-in;
 	-webkit-transition: transform 200ms ease-in;
 

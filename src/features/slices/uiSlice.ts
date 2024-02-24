@@ -1,5 +1,6 @@
 'use client';
 
+import LocalstorageInstance from '@/classes/Localstorage';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
@@ -20,7 +21,7 @@ const initialState: UIState = {
 
 	savedSaturnTemplates: false,
 
-	sidebarIsExpand: false,
+	sidebarIsExpand: Boolean(LocalstorageInstance.get('s', false)),
 
 	saturnActiveTemplate: null,
 
@@ -40,6 +41,7 @@ const uiSlice = createSlice({
 		},
 
 		toggleSidebar: (state, { payload }: PayloadAction<UIState['sidebarIsExpand']>) => {
+			LocalstorageInstance.set('s', payload);
 			state.sidebarIsExpand = payload;
 		},
 
