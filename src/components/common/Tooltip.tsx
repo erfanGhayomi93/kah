@@ -11,6 +11,7 @@ export interface ITooltipProps {
 	followCursor?: AppTooltip.FollowCursor;
 	singleton?: AppTooltip.Singleton;
 	offset?: AppTooltip.Offset;
+	disabled?: AppTooltip.Disabled;
 	element?: AppTooltip.Element;
 	children: React.ReactElement;
 	content: string;
@@ -18,20 +19,28 @@ export interface ITooltipProps {
 	onHide?: () => void;
 }
 
-const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, placement, content, offset }, ref) => {
+const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, disabled, placement, content, offset }, ref) => {
 	const childRef = useRef<HTMLElement | null>(null);
 
 	const tooltipRef = useRef<TooltipElement | null>(null);
 
 	useImperativeHandle(ref, () => childRef.current!);
 
+	useLayoutEffect(
+		() => () => {
+			if (tooltipRef.current) tooltipRef.current.abortController.abort();
+		},
+		[],
+	);
+
 	useLayoutEffect(() => {
 		const eChild = childRef.current;
-		if (!eChild) return;
+		if (!eChild || tooltipRef.current) return;
 
 		tooltipRef.current = new TooltipElement(eChild);
 		tooltipRef.current.setContent(content);
-		if (offset) tooltipRef.current.offset = offset;
+		tooltipRef.current.disabled = Boolean(disabled);
+		if (offset) tooltipRef.current.setOffset(offset);
 		if (placement) tooltipRef.current.placement = placement;
 
 		TooltipManager.add(tooltipRef.current);
@@ -40,6 +49,18 @@ const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, placement, c
 	useEffect(() => {
 		if (tooltipRef.current) tooltipRef.current.setContent(content);
 	}, [content]);
+
+	useEffect(() => {
+		if (tooltipRef.current) tooltipRef.current.disabled = Boolean(disabled);
+	}, [disabled]);
+
+	useEffect(() => {
+		if (tooltipRef.current && placement) tooltipRef.current.placement = placement;
+	}, [placement]);
+
+	useEffect(() => {
+		if (tooltipRef.current && offset) tooltipRef.current.setOffset(offset);
+	}, [offset]);
 
 	return cloneElement(children, { ref: childRef });
 });

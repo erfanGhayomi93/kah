@@ -20,14 +20,8 @@ import { getSidebarIsExpand, toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import Item, { type IListItem } from './Item';
+import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
-
-interface IItem {
-	label: string;
-	to: string;
-	icon: JSX.Element;
-}
 
 const Sidebar = () => {
 	const t = useTranslations();
@@ -40,7 +34,7 @@ const Sidebar = () => {
 		dispatch(toggleSidebar(!sidebarIsExpand));
 	};
 
-	const items: [IListItem[], IListItem[]] = useMemo(
+	const items: [TListItem[], TListItem[]] = useMemo(
 		() => [
 			[
 				{
@@ -123,7 +117,7 @@ const Sidebar = () => {
 				width: sidebarIsExpand ? '212px' : '56px',
 				transition: 'width 300ms ease-in-out',
 			}}
-			className='bg-sidebar relative pt-24'
+			className={clsx('bg-sidebar relative', sidebarIsExpand ? 'pt-24' : 'pt-16')}
 		>
 			{sidebarIsExpand && (
 				<div className='items-center gap-12 text-center flex-column'>
@@ -131,7 +125,7 @@ const Sidebar = () => {
 						style={{ backgroundImage: 'url("/static/images/young-boy.png")' }}
 						className={clsx('fit-image overflow-hidden', styles.profile)}
 					/>
-					<h3 className='text-base font-medium text-white'>{t('common.app_user')}</h3>
+					<h3 className='whitespace-nowrap text-base font-medium text-white'>{t('common.app_user')}</h3>
 				</div>
 			)}
 
@@ -143,7 +137,7 @@ const Sidebar = () => {
 				{!sidebarIsExpand && (
 					<nav className='flex-column' style={{ paddingBottom: '9.6rem' }}>
 						<ul className={clsx(styles.list, sidebarIsExpand && styles.expand)}>
-							<Item label='حساب کاربری' icon={<UserBoldSVG />} to='/' />
+							<Item label='حساب کاربری' sidebarIsExpand={sidebarIsExpand} icon={<UserBoldSVG />} to='/' />
 						</ul>
 					</nav>
 				)}
@@ -152,7 +146,7 @@ const Sidebar = () => {
 					{items.map((list, i) => (
 						<ul key={i} className={clsx(styles.list, sidebarIsExpand && styles.expand)}>
 							{list.map((item, i) => (
-								<Item key={i} {...item} />
+								<Item key={i} sidebarIsExpand={sidebarIsExpand} {...item} />
 							))}
 						</ul>
 					))}
