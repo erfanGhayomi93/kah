@@ -35,7 +35,7 @@ const Contract = ({
 		if (timer.current) clearTimeout(timer.current);
 		timer.current = setTimeout(() => {
 			setExpanding(false);
-		}, 250);
+		}, 600);
 	};
 
 	const [volume, volumeAsLetter] = useMemo(() => {
@@ -103,7 +103,7 @@ const Contract = ({
 				className='relative'
 				style={{
 					height: expand ? '48.8rem' : 0,
-					transition: 'height 400ms ease-in-out',
+					transition: 'height 600ms ease-in-out',
 				}}
 			>
 				{expand && (
