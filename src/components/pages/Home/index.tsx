@@ -6,15 +6,25 @@ import Main from '@/components/layout/Main';
 import { initialFilters } from '@/components/modals/OptionWatchlistFiltersModal/Form';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useLayoutEffect, useState } from 'react';
 import Table from './Table';
 import Toolbar from './Toolbar';
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		isLoggingIn: getIsLoggingIn(state),
+	}),
+);
+
 const Home = () => {
 	const dispatch = useAppDispatch();
 
-	const isLoggedIn = useAppSelector(getIsLoggedIn);
+	const { isLoggingIn, isLoggedIn } = useAppSelector(getStates);
 
 	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialFilters);
 
@@ -24,6 +34,8 @@ const Home = () => {
 	});
 
 	useLayoutEffect(() => {
+		if (isLoggingIn) return;
+
 		try {
 			if (isLoggedIn) {
 				refetchUserCustomWatchlistList();
@@ -38,10 +50,10 @@ const Home = () => {
 		} catch (e) {
 			//
 		}
-	}, [isLoggedIn]);
+	}, [isLoggedIn, isLoggingIn]);
 
 	useLayoutEffect(() => {
-		if (!isLoggedIn || !Array.isArray(userCustomWatchlistList)) return;
+		if (isLoggingIn || !isLoggedIn || !Array.isArray(userCustomWatchlistList)) return;
 
 		try {
 			const watchlistId = Number(LocalstorageInstance.get('awl', -1)) || -1;
@@ -60,7 +72,7 @@ const Home = () => {
 		} catch (e) {
 			//
 		}
-	}, [isLoggedIn, userCustomWatchlistList]);
+	}, [isLoggedIn, isLoggingIn, userCustomWatchlistList]);
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>

@@ -13,7 +13,6 @@ import {
 	type GridApi,
 	type ICellRendererParams,
 } from '@ag-grid-community/core';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
@@ -620,7 +619,7 @@ const WatchlistTable = ({ data }: WatchlistTableProps) => {
 			ref={gridRef}
 			alwaysShowVerticalScroll
 			suppressHorizontalScroll={dataIsEmpty}
-			className={clsx('h-full', dataIsEmpty && 'overflow-hidden rounded border border-gray-500')}
+			className='h-full border-0'
 			rowData={[]}
 			columnDefs={COLUMNS}
 			defaultColDef={defaultColDef}
