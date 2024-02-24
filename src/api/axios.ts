@@ -1,5 +1,3 @@
-import { setIsLoggedIn } from '@/features/slices/userSlice';
-import { store } from '@/features/store';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
@@ -55,9 +53,8 @@ axios.interceptors.response.use(
 	},
 );
 
-export const onUnauthorize = () => {
+const onUnauthorize = () => {
 	try {
-		store.dispatch(setIsLoggedIn(false));
 		deleteBrokerClientId();
 		deleteClientId();
 	} catch (e) {
@@ -65,5 +62,5 @@ export const onUnauthorize = () => {
 	}
 };
 
-export { AxiosError };
+export { AxiosError, onUnauthorize };
 export default axios;

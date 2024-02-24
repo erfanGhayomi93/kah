@@ -26,7 +26,13 @@ class TooltipElement extends TooltipWrapper {
 
 	private readonly _followCursor: AppTooltip.FollowCursor = false;
 
-	private _offset: AppTooltip.Offset = [0, 4];
+	private _offsetY: AppTooltip.Offset = [0, 4]; // top - bottom
+
+	private _offsetX: AppTooltip.Offset = [4, 0]; // left - right
+
+	private _offsetXY: AppTooltip.Offset = [4, 4]; // top-left - bottom-right
+
+	private _disabled: AppTooltip.Disabled = false;
 
 	private _eTooltip?: AppTooltip.Element = undefined;
 
@@ -34,7 +40,7 @@ class TooltipElement extends TooltipWrapper {
 
 	private _content: HTMLElement | string | null = null;
 
-	private readonly _abortController: AppTooltip.AbortController;
+	private readonly _abortController: AppTooltip.Abort;
 
 	public isHidden: AppTooltip.Hidden = true;
 
@@ -119,18 +125,35 @@ class TooltipElement extends TooltipWrapper {
 		if (!this._eTooltip) return;
 
 		const offset = this._element.getBoundingClientRect();
-		const { width: tooltipWidth } = this._eTooltip.getBoundingClientRect();
+		const { width: tooltipWidth, height: tooltipHeight } = this._eTooltip.getBoundingClientRect();
 
-		const [paddingX, paddingY] = Array.isArray(this._offset) ? this._offset : [this._offset, this._offset];
+		const [paddingX, paddingY] = this.padding;
 
-		let left = offset.left + offset.width / 2 - tooltipWidth / 2;
-		left += paddingX;
+		let left = 0;
+		let top = 0;
+
+		switch (this._placement) {
+			case 'bottom':
+				left = offset.left + offset.width / 2 - tooltipWidth / 2 + paddingX;
+				top = offset.top + offset.height + paddingY;
+				break;
+			case 'top':
+				left = offset.left + offset.width / 2 - tooltipWidth / 2 + paddingX;
+				top = offset.top - offset.height - paddingY;
+				break;
+			case 'left':
+				left = offset.left - tooltipWidth - paddingX;
+				top = offset.top + offset.height / 2 - tooltipHeight / 2 - paddingY;
+				break;
+			case 'right':
+				left = offset.left + offset.width + tooltipWidth + paddingX;
+				top = offset.top + offset.height / 2 - tooltipHeight / 2 - paddingY;
+				break;
+			default:
+				break;
+		}
+
 		left = Math.max(0, Math.min(window.innerWidth - offset.width, left));
-
-		let top =
-			this._placement === 'bottom'
-				? offset.top + offset.height + paddingY
-				: offset.top - offset.height - paddingY;
 		top = Math.max(0, Math.min(window.innerHeight - offset.height, top));
 
 		this._eTooltip.style.transform = `translate(${left}px,${top}px)`;
@@ -145,9 +168,41 @@ class TooltipElement extends TooltipWrapper {
 		else this._id = this._defaultId;
 	}
 
+	public setOffset(value: AppTooltip.Offset, placement?: AppTooltip.Placement) {
+		const p = placement ?? this._placement;
+		this._placement = p;
+
+		switch (p) {
+			case 'top':
+			case 'bottom':
+				this._offsetY = value;
+				break;
+			case 'left':
+			case 'right':
+				this._offsetX = value;
+				break;
+			default:
+				this._offsetXY = value;
+				break;
+		}
+	}
+
 	// Getter
 	public get id() {
 		return this._id;
+	}
+
+	public get padding(): [number, number] {
+		switch (this._placement) {
+			case 'top':
+			case 'bottom':
+				return Array.isArray(this._offsetY) ? this._offsetY : [this._offsetY, this._offsetY];
+			case 'left':
+			case 'right':
+				return Array.isArray(this._offsetX) ? this._offsetX : [this._offsetX, this._offsetX];
+			default:
+				return Array.isArray(this._offsetXY) ? this._offsetXY : [this._offsetXY, this._offsetXY];
+		}
 	}
 
 	public get element() {
@@ -160,10 +215,6 @@ class TooltipElement extends TooltipWrapper {
 
 	public get abortController() {
 		return this._abortController;
-	}
-
-	public get offset() {
-		return this._offset;
 	}
 
 	public get placement() {
@@ -195,9 +246,13 @@ class TooltipElement extends TooltipWrapper {
 		return this._eTooltip;
 	}
 
+	public get disabled() {
+		return this._disabled;
+	}
+
 	// Setter
-	set offset(value: AppTooltip.Offset) {
-		this._offset = value;
+	set disabled(value: AppTooltip.Disabled) {
+		this._disabled = value;
 	}
 
 	set placement(value: AppTooltip.Placement) {
@@ -234,6 +289,10 @@ class TooltipManager extends TooltipWrapper {
 		else if (tooltip.trigger === 'hover') this.addMouseEvents(tooltip);
 	}
 
+	public removeListeners(tooltip: TooltipElement) {
+		tooltip.abortController.abort();
+	}
+
 	// Add events
 	private addMouseEvents(tooltip: TooltipElement) {
 		tooltip.element.addEventListener('mouseenter', () => this.onMouseenterEvent(tooltip), {
@@ -263,8 +322,10 @@ class TooltipManager extends TooltipWrapper {
 
 	// Listeners
 	private onMouseenterEvent(tooltip: TooltipElement) {
-		this.clearDelay();
 		this._tooltip = tooltip;
+		if (this._tooltip.disabled) return;
+
+		this.clearDelay();
 
 		if (!this._hidden) this._tooltip.isHidden = false;
 
@@ -293,6 +354,8 @@ class TooltipManager extends TooltipWrapper {
 				this._tooltip!.unhide();
 				this._tooltip!.adjust();
 			}, 0);
+
+			this._hidden = false;
 		}
 	}
 

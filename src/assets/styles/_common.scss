@@ -37,28 +37,28 @@
 	font-weight: 400;
 	max-width: 196px;
 	transition:
-		opacity 200ms ease-in,
-		transform 200ms ease-in-out;
+		opacity 150ms ease-in,
+		transform 150ms ease-in-out;
 	-webkit-transition:
-		opacity 200ms ease-in,
-		transform 200ms ease-in-out;
+		opacity 150ms ease-in,
+		transform 150ms ease-in-out;
 
 	&:not(.common-tooltip-interactive) {
 		pointer-events: none;
 	}
 
 	&:not(.common-tooltip-animation) {
-		transition: opacity 200ms ease-in;
-		-webkit-transition: opacity 200ms ease-in;
+		transition: opacity 150ms ease-in;
+		-webkit-transition: opacity 150ms ease-in;
 	}
 
 	&.common-tooltip-animation {
 		transition:
-			opacity 200ms ease-in,
-			transform 200ms ease-in-out;
+			opacity 150ms ease-in,
+			transform 150ms ease-in-out;
 		-webkit-transition:
-			opacity 200ms ease-in,
-			transform 200ms ease-in-out;
+			opacity 150ms ease-in,
+			transform 150ms ease-in-out;
 	}
 }
 
