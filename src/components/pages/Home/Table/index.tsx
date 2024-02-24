@@ -2,9 +2,11 @@ import { useOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 
+import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { useTranslations } from 'next-intl';
 import { useLayoutEffect } from 'react';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
 import NoData from './NoData';
@@ -16,15 +18,14 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters }: TableProps) => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
 	const { data: watchlistData, isFetching } = useOptionWatchlistQuery({
-		queryKey: [
-			'optionWatchlistQuery',
-			{ ...filters, watchlistId: watchlistId ?? undefined, pageNumber: 1, pageSize: 25 },
-		],
+		queryKey: ['optionWatchlistQuery', { ...filters, watchlistId: watchlistId ?? -1, pageNumber: 1, pageSize: 25 }],
 		refetchInterval: 3e5,
 	});
 
@@ -47,14 +48,29 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
 
 	return (
-		<div
-			style={{
-				maxHeight: 'calc(100vh - 23.2rem)',
-				height: '200vh',
-			}}
-			className='relative'
-		>
-			<WatchlistTable data={watchlistData} />
+		<div className='relative'>
+			<div
+				className='overflow-hidden rounded border border-gray-500 flex-column'
+				style={{
+					height: 'calc(100dvh - 24rem)',
+					transition: 'height 250ms ease',
+				}}
+			>
+				<WatchlistTable data={watchlistData} />
+
+				{!dataIsEmpty && !isFetching && watchlistId > -1 && (
+					<button
+						onClick={addSymbol}
+						className='h-40 gap-8 border-t border-t-gray-500 pr-24 font-medium text-primary-400 flex-items-center'
+						type='button'
+					>
+						<span className='size-16 rounded-sm text-current flex-justify-center'>
+							<PlusSquareSVG width='1.6rem' height='1.6rem' />
+						</span>
+						{t('option_page.add_symbol')}
+					</button>
+				)}
+			</div>
 
 			{isFetching && (
 				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 h-full w-full'>

@@ -12,14 +12,13 @@ import {
 	SaturnSVG,
 	StrategySVG,
 	TradeSVG,
-	UserBoldSVG,
 	WatchlistSVG,
 } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSidebarIsExpand, toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
 
@@ -30,85 +29,104 @@ const Sidebar = () => {
 
 	const sidebarIsExpand = useAppSelector(getSidebarIsExpand);
 
+	const [expandId, setExpandId] = useState<null | string>('market');
+
 	const toggle = () => {
 		dispatch(toggleSidebar(!sidebarIsExpand));
+	};
+
+	const toggleItem = (id: string) => {
+		setExpandId(expandId === id ? null : id);
 	};
 
 	const items: [TListItem[], TListItem[]] = useMemo(
 		() => [
 			[
 				{
-					label: 'صفحه اصلی',
+					id: 'home_page',
+					label: t('sidebar.home_page'),
 					to: '/fa',
 					icon: <HomeSVG />,
 				},
 				{
-					label: 'دارایی من',
+					id: 'my_assets',
+					label: t('sidebar.my_assets'),
 					to: '',
 					icon: <CoinsSVG />,
 				},
 				{
-					label: 'بازار',
+					id: 'market',
+					label: t('sidebar.market'),
 					icon: <TradeSVG />,
-					defaultExpand: true,
+					isExpand: expandId === 'market',
 					items: [
 						{
-							label: 'دیده‌بان',
+							id: 'watchlist',
+							label: t('sidebar.watchlist'),
 							to: '/fa',
 							icon: <WatchlistSVG />,
 						},
 						{
-							label: 'زنجیره قرارداد',
+							id: 'option_chain',
+							label: t('sidebar.option_chain'),
 							to: '/fa/option-chain',
 							icon: <OptionChainSVG />,
 						},
 						{
-							label: 'زحل',
+							id: 'saturn',
+							label: t('sidebar.saturn'),
 							to: '/fa/saturn',
 							icon: <SaturnSVG />,
 						},
 						{
-							label: 'نقشه بازار',
+							id: 'market_map',
+							label: t('sidebar.market_map'),
 							to: '/fa/market-map',
 							icon: <MarketMapSVG />,
 						},
 					],
 				},
 				{
-					label: 'استراتژی',
+					id: 'strategy',
+					label: t('sidebar.strategy'),
 					to: '',
 					icon: <StrategySVG />,
 				},
 				{
-					label: 'تکنیکال',
+					id: 'technical',
+					label: t('sidebar.technical'),
 					to: '',
 					icon: <DataAnalyticsSVG />,
 				},
 				{
-					label: 'درخواست‌ها',
+					id: 'requests',
+					label: t('sidebar.requests'),
 					to: '',
 					icon: <ReceptionSVG />,
 				},
 				{
-					label: 'گزارش‌ها',
+					id: 'reports',
+					label: t('sidebar.reports'),
 					to: '',
 					icon: <ReportSVG />,
 				},
 			],
 			[
 				{
-					label: 'آموزش',
+					id: 'learn',
+					label: t('sidebar.learn'),
 					to: '',
 					icon: <LearnSVG />,
 				},
 				{
-					label: 'تنظیمات',
+					id: 'setting',
+					label: t('sidebar.setting'),
 					to: '',
 					icon: <CogsSVG />,
 				},
 			],
 		],
-		[],
+		[expandId],
 	);
 
 	return (
@@ -117,36 +135,23 @@ const Sidebar = () => {
 				width: sidebarIsExpand ? '212px' : '56px',
 				transition: 'width 300ms ease-in-out',
 			}}
-			className={clsx('bg-sidebar relative', sidebarIsExpand ? 'pt-24' : 'pt-16')}
+			className='bg-sidebar relative flex-column'
 		>
-			{sidebarIsExpand && (
-				<div className='items-center gap-12 text-center flex-column'>
-					<div
-						style={{ backgroundImage: 'url("/static/images/young-boy.png")' }}
-						className={clsx('fit-image overflow-hidden', styles.profile)}
-					/>
-					<h3 className='whitespace-nowrap text-base font-medium text-white'>{t('common.app_user')}</h3>
-				</div>
-			)}
-
 			<button type='button' onClick={toggle} className={clsx(styles.toggler, sidebarIsExpand && styles.expand)}>
 				<AngleLeft width='1.6rem' height='1.6rem' />
 			</button>
 
-			<div className='h-full flex-column'>
-				{!sidebarIsExpand && (
-					<nav className='flex-column' style={{ paddingBottom: '9.6rem' }}>
-						<ul className={clsx(styles.list, sidebarIsExpand && styles.expand)}>
-							<Item label='حساب کاربری' sidebarIsExpand={sidebarIsExpand} icon={<UserBoldSVG />} to='/' />
-						</ul>
-					</nav>
-				)}
-
-				<nav className={clsx('h-full flex-1 justify-between flex-column', sidebarIsExpand && 'pt-56')}>
+			<div className='flex-1 flex-column'>
+				<nav className='h-full flex-1 justify-between gap-16 py-32 flex-column'>
 					{items.map((list, i) => (
 						<ul key={i} className={clsx(styles.list, sidebarIsExpand && styles.expand)}>
-							{list.map((item, i) => (
-								<Item key={i} sidebarIsExpand={sidebarIsExpand} {...item} />
+							{list.map((item) => (
+								<Item
+									key={item.id}
+									toggle={() => toggleItem(item.id)}
+									sidebarIsExpand={sidebarIsExpand}
+									{...item}
+								/>
 							))}
 						</ul>
 					))}
