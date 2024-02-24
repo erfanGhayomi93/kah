@@ -15,7 +15,7 @@ const Collapse = forwardRef<HTMLElement, CollapseProps>(({ children, enabled }, 
 		if (!eChild) return;
 
 		eChild.style.maxHeight = enabled ? `${eChild.scrollHeight}px` : '0px';
-	}, [enabled]);
+	}, [enabled, childRef.current]);
 
 	return cloneElement(children, {
 		ref: childRef,

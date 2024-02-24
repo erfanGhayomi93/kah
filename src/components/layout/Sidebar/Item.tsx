@@ -3,12 +3,12 @@ import Collapse from '@/components/common/transition/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
-	defaultExpand?: boolean;
 	items: TListItem[];
+	isExpand?: boolean;
 }
 
 interface IListAnchor {
@@ -16,6 +16,7 @@ interface IListAnchor {
 }
 
 export type TListItem = (IListButton | IListAnchor) & {
+	id: string;
 	label: string;
 	icon: JSX.Element;
 	disabled?: boolean;
@@ -23,23 +24,28 @@ export type TListItem = (IListButton | IListAnchor) & {
 
 type ItemProps = TListItem & {
 	sidebarIsExpand: boolean;
+	toggle?: () => void;
 };
 
-const Item = ({ label, icon, disabled, sidebarIsExpand, ...props }: ItemProps) => {
-	const [isExpand, setIsExpand] = useState(Boolean('defaultExpand' in props ? props.defaultExpand : false));
+const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: ItemProps) => {
+	const pathname = usePathname();
 
 	const hasDropdown = 'items' in props && props.items.length > 0;
 
+	const isExpand = Boolean('isExpand' in props && props.isExpand);
+
+	const isActive = 'to' in props && props.to === pathname;
+
 	return (
 		<Tooltip disabled={sidebarIsExpand} placement='left' content={label}>
-			<li className={clsx(isExpand && styles.expand)}>
+			<li className={clsx(isExpand && styles.expand, isActive && styles.active)}>
 				{'to' in props ? (
 					<Link href={props.to}>
 						{icon}
 						<span>{label}</span>
 					</Link>
 				) : (
-					<button onClick={() => setIsExpand(!isExpand)}>
+					<button onClick={toggle}>
 						{icon}
 						<span>{label}</span>
 						{hasDropdown && <ArrowDownSVG style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }} />}

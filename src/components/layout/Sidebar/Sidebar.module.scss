@@ -61,7 +61,8 @@
 			}
 
 			&:hover {
-				span {
+				span,
+				svg {
 					color: theme("colors.white");
 				}
 			}
@@ -76,6 +77,10 @@
 		button > span {
 			color: theme("colors.white");
 		}
+	}
+
+	&.expand {
+		padding-bottom: 1.6rem;
 	}
 
 	&.expand > li {
@@ -102,6 +107,15 @@
 			}
 		}
 	}
+
+	li.active {
+		a {
+			span,
+			svg {
+				color: theme("colors.secondary.300");
+			}
+		}
+	}
 }
 
 .toggler {
@@ -109,8 +123,8 @@
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	top: 4rem;
-	left: -1.6rem;
+	top: 2.4rem;
+	left: -1.8rem;
 	width: 3.2rem;
 	height: 3.2rem;
 	z-index: 99;

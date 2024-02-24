@@ -41,7 +41,13 @@ const Footer = () => {
 	return (
 		<footer className='h-40 border-t border-gray-600 bg-gray-200 pr-32 flex-justify-between'>
 			<div className='h-full flex-justify-start'>
-				<span className='text-tiny font-normal text-gray-1000'>{t('footer.copyright')}</span>
+				<a
+					target='_blank'
+					href='https://ramandtech.com/'
+					className='text-tiny font-normal text-gray-1000 transition-colors hover:text-secondary-300'
+				>
+					{t('footer.copyright')}
+				</a>
 			</div>
 
 			<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
