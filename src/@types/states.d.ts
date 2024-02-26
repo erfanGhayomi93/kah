@@ -30,7 +30,16 @@ declare interface SymbolContractModalStates {
 }
 
 declare type IBrokerUrls = Record<
-	'todayOrders' | 'todayTrades' | 'drafts' | 'createOrder' | 'ordersCount' | 'openOrders' | 'commission',
+	| 'todayOrders'
+	| 'todayTrades'
+	| 'drafts'
+	| 'createOrder'
+	| 'ordersCount'
+	| 'openOrders'
+	| 'commission'
+	| 'userInformation'
+	| 'userRemain'
+	| 'userStatus',
 	string
 >;
 

@@ -1,9 +1,8 @@
 import Tooltip from '@/components/common/Tooltip';
 import Collapse from '@/components/common/transition/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
+import { Link, usePathname } from '@/navigation';
 import clsx from 'clsx';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
@@ -53,7 +52,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: Item
 				)}
 
 				{hasDropdown && (
-					<Collapse enabled={isExpand}>
+					<Collapse enabled={sidebarIsExpand && isExpand}>
 						<ul className={clsx(styles.list, isExpand && styles.expand)}>
 							{props.items.map((item, i) => (
 								<Item sidebarIsExpand={sidebarIsExpand} key={i} {...item} />

@@ -297,8 +297,11 @@
 		"technical": "تکنیکال",
 		"requests": "درخواست‌ها",
 		"reports": "گزارش‌ها",
-		"learn": "آموزش",
-		"setting": "تنظیمات"
+		"deposit_and_withdrawal": "واریز و برداشت",
+		"change_broker": "تغییر کارگزار ناظر",
+		"un_freezing": "فریز و رفع‌فریز",
+		"option_settlement": "تسویه اختیار",
+		"learn": "آموزش"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",

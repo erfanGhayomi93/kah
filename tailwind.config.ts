@@ -336,7 +336,7 @@ const config: Config = {
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.error.100'),
+						'background-color': theme('colors.error.200'),
 					},
 
 					'&:disabled': {

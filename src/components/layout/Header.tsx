@@ -1,22 +1,25 @@
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleLoginModal, toggleLogoutModal } from '@/features/slices/modalSlice';
+import { getUserRemain, getUserStatus } from '@/features/slices/brokerSlice';
+import { toggleForgetPasswordModal, toggleLoginModal, toggleLogoutModal } from '@/features/slices/modalSlice';
 import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Popup from '../common/Popup';
 import {
 	BellSVG,
 	EditSVG,
 	LogoutSVG,
-	OffSVG,
 	SessionHistorySVG,
 	SettingSVG,
 	ShieldSVG,
+	SquareXSVG,
+	TriangleWarningSVG,
 	UserBoldSVG,
 	UserCircleSVG,
 	WalletSVG,
@@ -27,6 +30,8 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		isLoggingIn: getIsLoggingIn(state),
+		userRemain: getUserRemain(state),
+		userStatus: getUserStatus(state),
 	}),
 );
 
@@ -35,7 +40,7 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, isLoggingIn } = useAppSelector(getStates);
+	const { isLoggedIn, isLoggingIn, userRemain, userStatus } = useAppSelector(getStates);
 
 	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
@@ -52,6 +57,19 @@ const Header = () => {
 		dispatch(toggleLogoutModal(true));
 	};
 
+	const setPassword = () => {
+		dispatch(toggleForgetPasswordModal(true));
+	};
+
+	const userStatusIcon = useMemo(() => {
+		if (!userStatus?.remainStatus) return null;
+
+		if (userStatus.remainStatus === 'AtRisk') return <TriangleWarningSVG width='2.4rem' height='2.4rem' />;
+		if (userStatus.remainStatus === 'CallMargin') return <SquareXSVG width='2.4rem' height='2.4rem' />;
+
+		return <ShieldSVG width='2.4rem' height='2.4rem' />;
+	}, [userStatus]);
+
 	useEffect(() => {
 		setIsDropdownOpened(false);
 	}, [isLoggedIn]);
@@ -60,27 +78,40 @@ const Header = () => {
 		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-48 bg-white px-24 shadow flex-justify-between'>
 			{isLoggedIn ? (
 				<div className='flex-1 gap-32 flex-justify-start'>
-					<span className='gap-8 text-gray-900 flex-items-center'>
-						<WalletSVG width='2.4rem' height='2.4rem' />
-						{t('header.purchase_power')}:
-						<span className='gap-4 flex-items-center'>
-							<span className='text-lg font-medium text-primary-400'>{sepNumbers(String(5e7))}</span>
-							<span className='text-tiny text-gray-700'>{t('common.rial')}</span>
+					{userRemain && (
+						<span className='gap-8 text-gray-900 flex-items-center'>
+							<WalletSVG width='2.4rem' height='2.4rem' />
+							{t('header.purchase_power')}:
+							<span className='gap-4 flex-items-center'>
+								<span className='text-lg font-medium text-primary-400'>
+									{sepNumbers(String(userRemain.purchasePower ?? 0))}
+								</span>
+								<span className='text-tiny text-gray-700'>{t('common.rial')}</span>
+							</span>
 						</span>
-					</span>
+					)}
 
-					<span className='gap-8 text-gray-900 flex-items-center'>
-						{t('header.status')}:
-						<span className='h-32 gap-4 rounded border border-success-100 bg-success-100/10 px-8 text-success-100 flex-items-center'>
-							<ShieldSVG width='2.4rem' height='2.4rem' />
-							<span className='text-base font-medium'>{t('header.normal_status')}</span>
+					{userStatus?.remainStatus && (
+						<span className='gap-8 text-gray-900 flex-items-center'>
+							{t('header.status')}:
+							<span
+								className={clsx('h-32 gap-4 rounded border flex-items-center', {
+									'border-success-100 bg-success-100/10 px-8 text-success-100':
+										userStatus.remainStatus === 'Normal',
+									'border-warning-100 bg-warning-100/10 px-8 text-warning-100':
+										userStatus.remainStatus === 'AtRisk',
+									'border-error-100 bg-error-100/10 px-8 text-error-100':
+										userStatus.remainStatus === 'CallMargin',
+								})}
+							>
+								{userStatusIcon}
+								<span className='text-base font-medium'>{t('header.normal_status')}</span>
+							</span>
 						</span>
-					</span>
+					)}
 				</div>
 			) : (
-				<div className='flex-1'>
-					<h1 className='text-2xl font-medium uppercase text-gray-900'>Logo</h1>
-				</div>
+				<div className='flex-1' />
 			)}
 
 			<div className='flex-1 gap-16 flex-justify-end'>
@@ -103,9 +134,9 @@ const Header = () => {
 							renderer={({ setOpen }) => (
 								<div className='rounded-md bg-white pb-16 shadow-tooltip'>
 									<div className='flex h-40 items-start justify-between pr-16'>
-										<div className='fit-image gap-12 pt-16 flex-items-center'>
+										<div className='gap-12 pt-16 flex-items-center fit-image'>
 											<div
-												className='fit-image size-40 rounded-circle'
+												className='size-40 rounded-circle fit-image'
 												style={{ backgroundImage: 'url("/static/images/young-boy.png")' }}
 											/>
 
@@ -129,6 +160,7 @@ const Header = () => {
 										<div className='px-16 pt-40 flex-items-center'>
 											<button
 												type='button'
+												onClick={setPassword}
 												className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
 											>
 												{t('header.set_password')}
@@ -214,15 +246,9 @@ const Header = () => {
 							onClick={showAuthenticationModal}
 							type='button'
 							disabled={isFetchingUserData || isLoggingIn}
-							className='h-36 rounded px-24 font-medium btn-primary'
+							className='h-36 rounded px-40 font-medium btn-primary'
 						>
 							{t('header.login')}
-						</button>
-					)}
-
-					{isLoggedIn && (
-						<button type='button' className='text-error-100'>
-							<OffSVG width='2.4rem' height='2.4rem' />
 						</button>
 					)}
 				</div>
