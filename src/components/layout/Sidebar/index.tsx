@@ -61,7 +61,7 @@ const Sidebar = () => {
 						{
 							id: 'watchlist',
 							label: t('sidebar.watchlist'),
-							to: '/',
+							to: '/watchlist',
 							icon: <WatchlistSVG />,
 						},
 						{

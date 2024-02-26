@@ -52,7 +52,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: Item
 				)}
 
 				{hasDropdown && (
-					<Collapse enabled={isExpand}>
+					<Collapse enabled={sidebarIsExpand && isExpand}>
 						<ul className={clsx(styles.list, isExpand && styles.expand)}>
 							{props.items.map((item, i) => (
 								<Item sidebarIsExpand={sidebarIsExpand} key={i} {...item} />
