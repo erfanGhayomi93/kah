@@ -2,6 +2,7 @@ import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 const brokerAxios = AXIOS.create();
 
@@ -59,6 +60,11 @@ export const onUnauthorize = () => {
 	try {
 		store.dispatch(setBrokerIsSelected(false));
 		deleteBrokerClientId();
+
+		toast.warning('متاسفانه از حساب کارگزاری خود خارج شدید.', {
+			toastId: 'broker_unauthorize',
+			autoClose: 5000,
+		});
 	} catch (e) {
 		//
 	}

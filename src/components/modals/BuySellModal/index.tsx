@@ -17,7 +17,7 @@ const Div = styled.div`
 	-webkit-transition: width 200ms ease-in-out;
 `;
 
-interface BuySellModalProps extends IBuySellModal {}
+interface BuySellModalProps extends IBuySellModal, IBaseModalConfiguration {}
 
 const BuySellModal = ({
 	symbolISIN,
@@ -29,6 +29,7 @@ const BuySellModal = ({
 	validityDate,
 	expand,
 	holdAfterOrder,
+	...props
 }: BuySellModalProps) => {
 	const dispatch = useAppDispatch();
 
@@ -67,7 +68,7 @@ const BuySellModal = ({
 	};
 
 	return (
-		<Modal moveable top='16%' onClose={onCloseModal}>
+		<Modal moveable top='16%' onClose={onCloseModal} {...props}>
 			<Div style={{ width: inputs.expand ? '732px' : '336px' }}>
 				<Header
 					symbolTitle={symbolTitle}

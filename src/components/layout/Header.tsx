@@ -50,15 +50,15 @@ const Header = () => {
 	});
 
 	const showAuthenticationModal = () => {
-		dispatch(toggleLoginModal(true));
+		dispatch(toggleLoginModal({}));
 	};
 
 	const onLogout = () => {
-		dispatch(toggleLogoutModal(true));
+		dispatch(toggleLogoutModal({}));
 	};
 
 	const setPassword = () => {
-		dispatch(toggleForgetPasswordModal(true));
+		dispatch(toggleForgetPasswordModal({}));
 	};
 
 	const userStatusIcon = useMemo(() => {
@@ -105,7 +105,9 @@ const Header = () => {
 								})}
 							>
 								{userStatusIcon}
-								<span className='text-base font-medium'>{t('header.normal_status')}</span>
+								<span className='text-base font-medium'>
+									{t(`header.user_status_${userStatus.remainStatus}`)}
+								</span>
 							</span>
 						</span>
 					)}

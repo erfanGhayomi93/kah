@@ -30,7 +30,9 @@
 		"session_history": "تاریخچه ورود و خروج",
 		"setting": "تنظیمات",
 		"status": "وضعیت",
-		"normal_status": "عادی",
+		"user_status_Normal": "عادی",
+		"user_status_AtRisk": "در خطر",
+		"user_status_CallMargin": "اخطار وجه تضمین",
 		"logout": "خروج از حساب کاربری"
 	},
 	"header_navigation": {
@@ -88,8 +90,7 @@
 		"password_min_chars": "حداقل 8 کاراکتر",
 		"password_include_uppercase_chars": "شامل حروف بزرگ",
 		"password_english_include_number": "شامل عدد",
-		"go_to_homepage": "برو به کهکشان",
-		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت."
+		"go_to_homepage": "برو به کهکشان"
 	},
 	"option_watchlist_filters_modal": {
 		"title": "فیلترها",
@@ -308,7 +309,53 @@
 		"filter": "فیلتر کنید",
 		"market_overview": "نمای بازار",
 		"add_symbol": "افزودن نماد",
-		"no_data_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید."
+		"no_data_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید.",
+		"symbol_title": "نماد",
+		"trade_value": "ارزش معاملات",
+		"premium": "آخرین قیمت",
+		"delta": "دلتا",
+		"base_symbol_price": "آخرین قیمت پایه",
+		"break_even_point": "سر به سر",
+		"leverage": "اهرم",
+		"open_position_count": "موقعیت‌های باز",
+		"implied_volatility": "IV",
+		"iotm": "وضعیت",
+		"black_scholes": "بلک شولز",
+		"trade_volume": "حجم",
+		"due_days": "روز مانده",
+		"strike_price": "قیمت اعمال",
+		"best_buy_price": "بهترین خرید",
+		"best_sell_price": "بهترین فروش",
+		"symbol_full_title": "نام کامل آپشن",
+		"base_symbol_title": "نام پایه",
+		"closing_price": "قیمت پایانی",
+		"historical_volatility": "نوسان پذیری",
+		"contract_size": "اندازه قرارداد",
+		"time_value": "ارزش زمانی",
+		"theta": "تتا",
+		"trade_count": "تعداد معاملات روز",
+		"contract_end_date": "تاریخ سررسید",
+		"spread": "شکاف",
+		"black_scholes_difference": "اختلاف با بلک شولز",
+		"base_closing_price": "قیمت پایانی پایه",
+		"gamma": "گاما",
+		"option_type": "نوع آپشن",
+		"required_margin": "وجه تضمین لازم",
+		"initial_margin": "وجه تضمین اولیه",
+		"rho": "رو",
+		"vega": "وگا",
+		"growth": "رشد",
+		"contract_value_type": "پر ارزش",
+		"high_open_position": "موقعیت‌های باز زیاد",
+		"last_trade_date": "تاریخ آخرین معامله",
+		"legal_buy_volume": "حجم خرید حقوقی",
+		"individual_buy_volume": "حجم خرید حقیقی",
+		"legalSell_volume": "حجم فروش حقوقی",
+		"individual_sell_volume": "حجم فروش حقیقی",
+		"sector_name": "صنعت",
+		"notional_value": "ارزش مفهومی معاملات",
+		"intrinsic_value": "ارزش ذاتی",
+		"action": "عملیات"
 	},
 	"footer": {
 		"copyright": "© کلیه حقوق این وب سایت متعلق به رامند می باشد."
@@ -328,6 +375,7 @@
 		"invalid_price": "قیمت وارد نشده است.",
 		"invalid_quantity": "تعداد وارد نشده است.",
 		"invalid_validity_date": "اعتبار سفارش نامعتبر می‌باشد.",
-		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید."
+		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
+		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت."
 	}
 }

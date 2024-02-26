@@ -55,7 +55,7 @@ const Form = () => {
 	};
 
 	const onClose = () => {
-		dispatch(toggleOptionFiltersModal(false));
+		dispatch(toggleOptionFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {

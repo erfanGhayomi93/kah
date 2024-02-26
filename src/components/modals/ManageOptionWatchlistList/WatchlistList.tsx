@@ -149,7 +149,7 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 		e.preventDefault();
 	};
 
-	const handleSort = () => {
+	const onDragEnd = () => {
 		const draggedOverIndex = draggedOverItem.current;
 		if (dragItemIndex === -1 || draggedOverIndex === -1) return;
 
@@ -160,6 +160,17 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 			list[draggedOverIndex] = temp;
 
 			queryClient.setQueryData(getAllCustomWatchlistQueryKey, list);
+
+			try {
+				const orders: Record<number, number> = {};
+				for (let i = 0; i < list.length; i++) {
+					orders[list[i].id] = i;
+				}
+
+				axios.post(routes.optionWatchlist.UpdateCustomWatchlistOrder, { orders });
+			} catch (e) {
+				//
+			}
 		} catch (e) {
 			//
 		} finally {
@@ -195,7 +206,7 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 					draggable
 					onDragStart={(e) => onDragStart(e, index)}
 					onDragEnter={(e) => onDragEnter(e, index)}
-					onDragEnd={handleSort}
+					onDragEnd={onDragEnd}
 					style={{
 						top: `${index * 6.4 + 1.6}rem`,
 						transition: 'top 250ms ease-in-out, opacity 200ms',

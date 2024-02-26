@@ -24,7 +24,7 @@ const BroadcastChannelRegistry = ({ children }: BroadcastChannelRegistryProps) =
 
 	const onBrokerRegistered = (payload: string) => {
 		try {
-			dispatch(toggleChooseBrokerModal(false));
+			dispatch(toggleChooseBrokerModal(null));
 			dispatch(setBrokerIsSelected(true));
 
 			toast.success(t('alerts.logged_in_successfully_to_broker_account'));

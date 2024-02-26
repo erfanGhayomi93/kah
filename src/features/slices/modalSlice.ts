@@ -4,6 +4,10 @@ import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
+type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IBaseModalConfiguration);
+
+type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
+
 export interface IBuySellModal {
 	symbolTitle: string;
 	symbolISIN: string;
@@ -16,7 +20,7 @@ export interface IBuySellModal {
 	holdAfterOrder?: boolean;
 }
 
-export interface IForgetPasswordModal {
+export interface IForgetPasswordModal extends IBaseModalConfiguration {
 	phoneNumber?: string;
 }
 
@@ -27,28 +31,28 @@ export interface IContractSelectorModal {
 
 export interface IAddSaturnTemplate extends Saturn.Content {}
 
-export interface ModalState {
-	loginModal: boolean;
-	logout: boolean;
-	chooseBroker: boolean;
-	buySell: IBuySellModal | null;
-	addNewOptionWatchlist: boolean;
-	manageOptionWatchlistList: boolean;
-	addSymbolToWatchlist: boolean;
-	addSaturnTemplate: IAddSaturnTemplate | null;
-	symbolContracts: IContractSelectorModal | null;
-	forgetPassword: IForgetPasswordModal | true | null;
-	optionFilters: false | Partial<IOptionFiltersModal>;
-}
+export type ModalState = TBaseModalProps<{
+	loginModal: true;
+	logout: true;
+	chooseBroker: true;
+	buySell: IBuySellModal;
+	addNewOptionWatchlist: true;
+	manageOptionWatchlistList: true;
+	addSymbolToWatchlist: true;
+	addSaturnTemplate: IAddSaturnTemplate;
+	symbolContracts: IContractSelectorModal;
+	forgetPassword: IForgetPasswordModal;
+	optionFilters: Partial<IOptionFiltersModal>;
+}>;
 
 const initialState: ModalState = {
-	loginModal: false,
-	optionFilters: false,
-	logout: false,
-	addSymbolToWatchlist: false,
-	addNewOptionWatchlist: false,
-	manageOptionWatchlistList: false,
-	chooseBroker: false,
+	loginModal: null,
+	optionFilters: null,
+	logout: null,
+	addSymbolToWatchlist: null,
+	addNewOptionWatchlist: null,
+	manageOptionWatchlistList: null,
+	chooseBroker: null,
 	forgetPassword: null,
 	buySell: null,
 	addSaturnTemplate: null,

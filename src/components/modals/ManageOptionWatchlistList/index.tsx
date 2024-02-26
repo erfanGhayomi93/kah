@@ -12,17 +12,19 @@ import styled from 'styled-components';
 import Modal from '../Modal';
 import WatchlistList from './WatchlistList';
 
-interface IDeleting {
-	hasStarted: boolean;
-	selected: number[];
-}
-
 const Div = styled.div`
 	width: 472px;
 	height: 552px;
 `;
 
-const ManageOptionWatchlistList = () => {
+interface IDeleting {
+	hasStarted: boolean;
+	selected: number[];
+}
+
+interface ManageOptionWatchlistListProps extends IBaseModalConfiguration {}
+
+const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -51,7 +53,7 @@ const ManageOptionWatchlistList = () => {
 	});
 
 	const onClose = () => {
-		dispatch(toggleManageOptionWatchlistListModal(false));
+		dispatch(toggleManageOptionWatchlistListModal(null));
 	};
 
 	const deleteAll = () => {
@@ -89,7 +91,7 @@ const ManageOptionWatchlistList = () => {
 	};
 
 	const addNewWatchlist = () => {
-		dispatch(toggleAddNewOptionWatchlist(true));
+		dispatch(toggleAddNewOptionWatchlist({ moveable: true }));
 	};
 
 	useLayoutEffect(() => {
@@ -97,7 +99,13 @@ const ManageOptionWatchlistList = () => {
 	}, [watchlistList]);
 
 	return (
-		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onClose}>
+		<Modal
+			transparent
+			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			top='50%'
+			onClose={onClose}
+			{...props}
+		>
 			<Div className='justify-between bg-white flex-column'>
 				<div className='relative h-56 border-b border-b-gray-500 flex-justify-center'>
 					<h2 className='text-xl font-medium'>{t('manage_option_watchlist_modal.title')}</h2>

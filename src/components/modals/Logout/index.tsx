@@ -19,7 +19,9 @@ const Div = styled.div`
 	justify-content: center;
 `;
 
-const LogoutModal = () => {
+interface LogoutModalProps extends IBaseModalConfiguration {}
+
+const LogoutModal = (props: LogoutModalProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -27,7 +29,7 @@ const LogoutModal = () => {
 	const [loading, setLoading] = useState(false);
 
 	const onCloseModal = () => {
-		dispatch(toggleLogoutModal(false));
+		dispatch(toggleLogoutModal(null));
 	};
 
 	const onLoggedOut = async () => {
@@ -57,6 +59,7 @@ const LogoutModal = () => {
 			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
 			top='50%'
 			onClose={onCloseModal}
+			{...props}
 		>
 			<Div className='bg-white'>
 				{loading ? (
