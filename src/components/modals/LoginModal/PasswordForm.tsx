@@ -70,16 +70,11 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 	};
 
 	const forgetPassword = () => {
-		dispatch(toggleLoginModal(false));
-		dispatch(
-			toggleForgetPasswordModal(
-				phoneNumber
-					? {
-							phoneNumber,
-						}
-					: true,
-			),
-		);
+		const mParams: { phoneNumber?: string } & IBaseModalConfiguration = { animation: false };
+		if (phoneNumber) mParams.phoneNumber = phoneNumber;
+
+		dispatch(toggleLoginModal(null));
+		dispatch(toggleForgetPasswordModal(mParams));
 	};
 
 	useEffect(() => {

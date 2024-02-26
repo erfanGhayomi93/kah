@@ -16,7 +16,7 @@ import Modal from '../Modal';
 import CellContractTitleRenderer from './CellContractTitleRenderer';
 import Filters from './Filters';
 
-interface SymbolContractsProps extends IContractSelectorModal {}
+interface SymbolContractsProps extends IContractSelectorModal, IBaseModalConfiguration {}
 
 const Div = styled.div`
 	width: 88rem;
@@ -28,7 +28,7 @@ const Div = styled.div`
 	gap: 1.6rem;
 `;
 
-const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
+const SymbolContracts = ({ symbolISIN, symbolTitle, ...props }: SymbolContractsProps) => {
 	const gridRef = useRef<GridApi<Option.Root>>(null);
 
 	const t = useTranslations();
@@ -191,7 +191,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle }: SymbolContractsProps) => {
 	}, [JSON.stringify(watchlistData), states]);
 
 	return (
-		<Modal top='7.2rem' onClose={onCloseModal}>
+		<Modal top='7.2rem' onClose={onCloseModal} {...props}>
 			<Div className='bg-white'>
 				<Filters {...states} symbolTitle={symbolTitle} setStatesValue={setStatesValue} />
 

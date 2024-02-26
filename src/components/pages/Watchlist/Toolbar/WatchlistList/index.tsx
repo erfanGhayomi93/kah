@@ -57,11 +57,11 @@ const WatchlistList = () => {
 	};
 
 	const addNewWatchlist = () => {
-		dispatch(toggleAddNewOptionWatchlist(true));
+		dispatch(toggleAddNewOptionWatchlist({}));
 	};
 
 	const manageWatchlistList = () => {
-		dispatch(toggleManageOptionWatchlistListModal(true));
+		dispatch(toggleManageOptionWatchlistListModal({}));
 	};
 
 	const watchlistList = useMemo(() => {

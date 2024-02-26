@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 
-interface AuthenticationModalTemplateProps {
+interface AuthenticationModalTemplateProps extends IBaseModalConfiguration {
 	title: string | React.ReactNode;
 	children: React.ReactNode;
 	hideTitle?: boolean;
@@ -29,9 +29,10 @@ const AuthenticationModalTemplate = ({
 	description,
 	styles,
 	onClose,
+	...props
 }: AuthenticationModalTemplateProps) => {
 	return (
-		<Modal onClose={onClose}>
+		<Modal onClose={onClose} {...props}>
 			<Div className='bg-white'>
 				{!hideTitle && [
 					<div key='close' className='absolute left-24 z-10'>

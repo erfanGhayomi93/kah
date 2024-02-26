@@ -6,6 +6,7 @@ import ArrowUpSVG from './arrow-up.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
+import ChangeBrokerSVG from './change-broker.svg';
 import ChartDownSVG from './chart-down.svg';
 import ChartUpSVG from './chart-up.svg';
 import CheckListSVG from './check-list.svg';
@@ -39,6 +40,7 @@ import OffSVG from './off.svg';
 import OptionChainSVG from './option-chain.svg';
 import PasswordSVG from './password.svg';
 import PayMoneySVG from './pay-money.svg';
+import PayOffSVG from './pay-off.svg';
 import PinSVG from './pin.svg';
 import PlusSquareSVG from './plus-square.svg';
 import PlusSVG from './plus.svg';
@@ -54,6 +56,7 @@ import SnowFlakeSVG from './snow-flake.svg';
 import SquareXSVG from './square-x.svg';
 import StrategySVG from './strategy.svg';
 import TradeSVG from './trade.svg';
+import TransferSVG from './transfer.svg';
 import TrashSVG from './trash.svg';
 import TriangleWarningSVG from './triangle-warning.svg';
 import UnlockSVG from './unlock.svg';
@@ -72,6 +75,7 @@ export {
 	BellSVG,
 	BookmarkSVG,
 	CalendarSVG,
+	ChangeBrokerSVG,
 	ChartDownSVG,
 	ChartUpSVG,
 	CheckListSVG,
@@ -105,6 +109,7 @@ export {
 	OptionChainSVG,
 	PasswordSVG,
 	PayMoneySVG,
+	PayOffSVG,
 	PinSVG,
 	PlusSVG,
 	PlusSquareSVG,
@@ -120,6 +125,7 @@ export {
 	SquareXSVG,
 	StrategySVG,
 	TradeSVG,
+	TransferSVG,
 	TrashSVG,
 	TriangleWarningSVG,
 	UnlockSVG,

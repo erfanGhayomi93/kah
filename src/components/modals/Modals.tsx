@@ -1,6 +1,7 @@
 'use client';
 
 import { useAppSelector } from '@/features/hooks';
+import { Fragment } from 'react';
 import AddNewOptionWatchlist from './AddNewOptionWatchlist';
 import AddSaturnTemplate from './AddSaturnTemplate';
 import AddSymbolToWatchlist from './AddSymbolToWatchlist';
@@ -28,26 +29,28 @@ const Modals = () => {
 		chooseBroker,
 	} = useAppSelector((state) => state.modal);
 
-	return [
-		loginModal && <LoginModal key='login-modal' />,
-		logout && <LogoutModal key='logout-modal' />,
-		optionFilters && <OptionWatchlistFiltersModal key='option-watchlist-filters-modal' />,
-		forgetPassword && (
-			<ForgetPasswordModal
-				key='forget-password-modal'
-				phoneNumber={
-					forgetPassword && typeof forgetPassword === 'object' ? forgetPassword?.phoneNumber : undefined
-				}
-			/>
-		),
-		symbolContracts && <SymbolContracts key='symbol-contracts' {...symbolContracts} />,
-		addSaturnTemplate !== null && <AddSaturnTemplate key='save-saturn-template' {...addSaturnTemplate} />,
-		addNewOptionWatchlist && <AddNewOptionWatchlist key='add-new-option-watchlist' />,
-		manageOptionWatchlistList && <ManageOptionWatchlistList key='manage-option-watchlist-list' />,
-		buySell && <BuySellModal key='buy-sell-modal' {...buySell} />,
-		addSymbolToWatchlist && <AddSymbolToWatchlist key='add-symbol-to-watchlist' {...buySell} />,
-		chooseBroker && <ChooseBroker key='choose-broker' />,
-	];
+	return (
+		<Fragment>
+			{loginModal && <LoginModal {...loginModal} />}
+			{logout && <LogoutModal {...logout} />}
+			{optionFilters && <OptionWatchlistFiltersModal {...optionFilters} />}
+			{symbolContracts && <SymbolContracts {...symbolContracts} />}
+			{addSaturnTemplate !== null && <AddSaturnTemplate {...addSaturnTemplate} />}
+			{addNewOptionWatchlist && <AddNewOptionWatchlist {...addNewOptionWatchlist} />}
+			{manageOptionWatchlistList && <ManageOptionWatchlistList {...manageOptionWatchlistList} />}
+			{buySell && <BuySellModal {...buySell} />}
+			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
+			{chooseBroker && <ChooseBroker {...chooseBroker} />}
+
+			{forgetPassword && (
+				<ForgetPasswordModal
+					phoneNumber={
+						forgetPassword && typeof forgetPassword === 'object' ? forgetPassword?.phoneNumber : undefined
+					}
+				/>
+			)}
+		</Fragment>
+	);
 };
 
 export default Modals;

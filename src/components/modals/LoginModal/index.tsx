@@ -12,7 +12,9 @@ import PhoneNumberForm from './PhoneNumberForm';
 import SetPasswordForm from './SetPasswordForm';
 import Welcome from './Welcome';
 
-const LoginModal = () => {
+interface LoginModalProps extends IBaseModalConfiguration {}
+
+const LoginModal = (props: LoginModalProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -29,7 +31,7 @@ const LoginModal = () => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleLoginModal(false));
+		dispatch(toggleLoginModal(null));
 	};
 
 	const onLoggedIn = () => {
@@ -118,6 +120,7 @@ const LoginModal = () => {
 						}
 					: undefined
 			}
+			{...props}
 		>
 			{stage === 'login-with-otp' && (
 				<OTPForm
