@@ -73,16 +73,6 @@
 		}
 	}
 
-	li.expand {
-		button > span {
-			color: theme("colors.white");
-		}
-	}
-
-	&.expand {
-		padding-bottom: 1.6rem;
-	}
-
 	&.expand > li {
 		a,
 		button {
@@ -90,6 +80,21 @@
 
 			span {
 				display: block;
+			}
+		}
+
+		&.expand {
+			padding-bottom: 2.4rem;
+
+			button {
+				span {
+					font-weight: 500;
+					color: theme("colors.white");
+				}
+
+				svg {
+					color: theme("colors.white");
+				}
 			}
 		}
 	}
@@ -112,6 +117,7 @@
 		a {
 			span,
 			svg {
+				font-weight: 600;
 				color: theme("colors.secondary.300");
 			}
 		}

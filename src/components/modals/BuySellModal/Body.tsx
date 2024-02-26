@@ -1,5 +1,5 @@
 import brokerAxios from '@/api/brokerAxios';
-import { useGetBrokerUrlQuery } from '@/api/queries/commonQueries';
+import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleChooseBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';

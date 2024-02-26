@@ -2,10 +2,11 @@ import { cloneElement, forwardRef, useImperativeHandle, useLayoutEffect, useRef 
 
 interface CollapseProps {
 	enabled: boolean;
+	dependencies?: unknown[];
 	children: React.ReactElement;
 }
 
-const Collapse = forwardRef<HTMLElement, CollapseProps>(({ children, enabled }, ref) => {
+const Collapse = forwardRef<HTMLElement, CollapseProps>(({ children, enabled, dependencies = [] }, ref) => {
 	const childRef = useRef<HTMLElement>(null);
 
 	useImperativeHandle(ref, () => childRef.current!);
@@ -15,7 +16,7 @@ const Collapse = forwardRef<HTMLElement, CollapseProps>(({ children, enabled }, 
 		if (!eChild) return;
 
 		eChild.style.maxHeight = enabled ? `${eChild.scrollHeight}px` : '0px';
-	}, [enabled, childRef.current]);
+	}, [childRef.current, JSON.stringify([enabled, ...dependencies])]);
 
 	return cloneElement(children, {
 		ref: childRef,

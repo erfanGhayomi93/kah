@@ -1,6 +1,5 @@
 import {
 	AngleLeft,
-	CogsSVG,
 	CoinsSVG,
 	DataAnalyticsSVG,
 	HomeSVG,
@@ -45,43 +44,42 @@ const Sidebar = () => {
 				{
 					id: 'home_page',
 					label: t('sidebar.home_page'),
-					to: '/fa',
+					to: '/',
 					icon: <HomeSVG />,
 				},
 				{
 					id: 'my_assets',
 					label: t('sidebar.my_assets'),
-					to: '',
+					to: '/',
 					icon: <CoinsSVG />,
 				},
 				{
 					id: 'market',
 					label: t('sidebar.market'),
 					icon: <TradeSVG />,
-					isExpand: expandId === 'market',
 					items: [
 						{
 							id: 'watchlist',
 							label: t('sidebar.watchlist'),
-							to: '/fa',
+							to: '/watchlist',
 							icon: <WatchlistSVG />,
 						},
 						{
 							id: 'option_chain',
 							label: t('sidebar.option_chain'),
-							to: '/fa/option-chain',
+							to: '/option-chain',
 							icon: <OptionChainSVG />,
 						},
 						{
 							id: 'saturn',
 							label: t('sidebar.saturn'),
-							to: '/fa/saturn',
+							to: '/saturn',
 							icon: <SaturnSVG />,
 						},
 						{
 							id: 'market_map',
 							label: t('sidebar.market_map'),
-							to: '/fa/market-map',
+							to: '/market-map',
 							icon: <MarketMapSVG />,
 						},
 					],
@@ -89,25 +87,50 @@ const Sidebar = () => {
 				{
 					id: 'strategy',
 					label: t('sidebar.strategy'),
-					to: '',
+					to: '/',
 					icon: <StrategySVG />,
 				},
 				{
 					id: 'technical',
 					label: t('sidebar.technical'),
-					to: '',
+					to: '/',
 					icon: <DataAnalyticsSVG />,
 				},
 				{
 					id: 'requests',
 					label: t('sidebar.requests'),
-					to: '',
 					icon: <ReceptionSVG />,
+					items: [
+						{
+							id: 'deposit_and_withdrawal',
+							label: t('sidebar.deposit_and_withdrawal'),
+							to: '/',
+							icon: <WatchlistSVG />,
+						},
+						{
+							id: 'change_broker',
+							label: t('sidebar.change_broker'),
+							to: '/option-chain',
+							icon: <OptionChainSVG />,
+						},
+						{
+							id: 'un_freezing',
+							label: t('sidebar.un_freezing'),
+							to: '/saturn',
+							icon: <SaturnSVG />,
+						},
+						{
+							id: 'option_settlement',
+							label: t('sidebar.option_settlement'),
+							to: '/market-map',
+							icon: <MarketMapSVG />,
+						},
+					],
 				},
 				{
 					id: 'reports',
 					label: t('sidebar.reports'),
-					to: '',
+					to: '/',
 					icon: <ReportSVG />,
 				},
 			],
@@ -115,14 +138,8 @@ const Sidebar = () => {
 				{
 					id: 'learn',
 					label: t('sidebar.learn'),
-					to: '',
+					to: '/',
 					icon: <LearnSVG />,
-				},
-				{
-					id: 'setting',
-					label: t('sidebar.setting'),
-					to: '',
-					icon: <CogsSVG />,
 				},
 			],
 		],
@@ -135,7 +152,7 @@ const Sidebar = () => {
 				width: sidebarIsExpand ? '212px' : '56px',
 				transition: 'width 300ms ease-in-out',
 			}}
-			className='bg-sidebar relative flex-column'
+			className='relative bg-sidebar flex-column'
 		>
 			<button type='button' onClick={toggle} className={clsx(styles.toggler, sidebarIsExpand && styles.expand)}>
 				<AngleLeft width='1.6rem' height='1.6rem' />
@@ -148,6 +165,7 @@ const Sidebar = () => {
 							{list.map((item) => (
 								<Item
 									key={item.id}
+									isExpand={item.id === expandId}
 									toggle={() => toggleItem(item.id)}
 									sidebarIsExpand={sidebarIsExpand}
 									{...item}
