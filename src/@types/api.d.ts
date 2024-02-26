@@ -411,11 +411,6 @@ declare namespace User {
 		logo: null | string;
 		ssoUrl: string;
 	}
-
-	interface BrokerUrl {
-		brokerCode: string | number;
-		url: string;
-	}
 }
 
 declare namespace Saturn {
@@ -441,5 +436,48 @@ declare namespace Saturn {
 		baseSymbolTitle: string;
 		activeTab: SymbolTab;
 		options: ContentOption[];
+	}
+}
+
+declare namespace Broker {
+	export type TRemainStatus = 'Normal' | 'AtRisk' | 'CallMargin';
+
+	interface URL {
+		brokerCode: string | number;
+		url: string;
+	}
+
+	export interface Remain {
+		remainT1: number;
+		remainT2: number;
+		blockValue: number;
+		purchasePower: number;
+		credit: number;
+	}
+
+	export interface Status {
+		remainStatus: TRemainStatus;
+		remainAsset: number;
+		marginValue: number;
+		variationMargin: number | null;
+	}
+
+	export interface User {
+		bourseCode: string;
+		customerTitle: string;
+		email: string;
+		mobilePhone: string;
+		userName: string;
+		twoFactor: boolean;
+		sendMail: boolean;
+		sendSms: boolean;
+		nationalCode: string;
+		userID: number;
+		customerISIN: string;
+		brokerCode: string;
+		isOption: boolean;
+		isOffline: boolean;
+		customerTags: string;
+		ipLocation: string;
 	}
 }

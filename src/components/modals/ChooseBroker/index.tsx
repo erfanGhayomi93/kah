@@ -1,4 +1,4 @@
-import { useGetBrokersQuery } from '@/api/queries/commonQueries';
+import { useGetBrokersQuery } from '@/api/queries/brokerQueries';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleChooseBrokerModal } from '@/features/slices/modalSlice';

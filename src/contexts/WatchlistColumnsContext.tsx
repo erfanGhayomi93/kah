@@ -183,7 +183,7 @@ const WatchlistColumnsProvider = ({ children }: { children: React.ReactNode }) =
 		});
 
 	useLayoutEffect(() => {
-		if (fetched.current === null || (isLoggedIn && fetched.current !== 'user')) fetchUserColumns();
+		if ((fetched.current === null && isLoggedIn) || (isLoggedIn && fetched.current !== 'user')) fetchUserColumns();
 		else if (!isLoggedIn && fetched.current !== 'default') fetchDefaultColumns();
 	}, [isLoggedIn]);
 
