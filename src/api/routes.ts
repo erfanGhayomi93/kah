@@ -55,6 +55,7 @@ const routes = {
 		CreateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/CreateCustomWatchlist`,
 		UpdateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/UpdateCustomWatchlist`,
 		ChangeHiddenCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/ChangeHiddenCustomWatchlist`,
+		UpdateCustomWatchlistOrder: `${rlcUrl}/OptionWatchlist/v1/UpdateCustomWatchlistOrder`,
 		DeleteCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/DeleteCustomWatchlist`,
 		GetCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlist`,
 		GetCustomWatchlistExcel: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistExcel`,
