@@ -56,6 +56,7 @@ const Moveable = forwardRef<HTMLElement, MoveableProps>(({ enabled = true, child
 
 			eChild.style.left = `${positionX}px`;
 			eChild.style.top = `${positionY}px`;
+			eChild.style.transform = '';
 		} catch (e) {
 			//
 		}
