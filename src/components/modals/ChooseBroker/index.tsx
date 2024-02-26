@@ -16,7 +16,9 @@ const Div = styled.div`
 	border-radius: 1.6rem;
 `;
 
-const ChooseBroker = () => {
+interface ChooseBrokerProps extends IBaseModalConfiguration {}
+
+const ChooseBroker = (props: ChooseBrokerProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -26,7 +28,7 @@ const ChooseBroker = () => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleChooseBrokerModal(false));
+		dispatch(toggleChooseBrokerModal(null));
 	};
 
 	const onSelectBroker = (broker: User.Broker) => {
@@ -38,7 +40,7 @@ const ChooseBroker = () => {
 	};
 
 	return (
-		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
 			<Div className='bg-white'>
 				<div key='close' className='absolute left-24 z-10'>
 					<button onClick={onCloseModal} type='button' className='icon-hover'>

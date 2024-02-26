@@ -63,7 +63,7 @@ const SetPasswordForm = () => {
 	};
 
 	const onCloseModal = () => {
-		dispatch(toggleLoginModal(false));
+		dispatch(toggleLoginModal(null));
 	};
 
 	const setFieldPasswordVisibility = <T extends keyof Inputs>(field: T, visibility: boolean) => {

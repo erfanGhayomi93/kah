@@ -4,8 +4,7 @@ import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
 import styles from './Modal.module.scss';
 
-interface ModalProps {
-	moveable?: boolean;
+interface ModalProps extends IBaseModalConfiguration {
 	portalElement?: HTMLElement;
 	style?: Partial<Record<'root' | 'container' | 'modal', React.CSSProperties>>;
 	size?: 'lg' | 'md' | 'sm' | 'xs' | 'xxs';
@@ -16,7 +15,18 @@ interface ModalProps {
 	onClose: () => void;
 }
 
-const Modal = ({ portalElement, moveable, transparent, children, style, classes, size, top, onClose }: ModalProps) => {
+const Modal = ({
+	portalElement,
+	moveable = false,
+	transparent,
+	children,
+	style,
+	classes,
+	size,
+	top,
+	animation,
+	onClose,
+}: ModalProps) => {
 	const rootRef = useRef<HTMLDivElement>(null);
 
 	const modalRef = useRef<HTMLDivElement | null>(null);
@@ -79,11 +89,14 @@ const Modal = ({ portalElement, moveable, transparent, children, style, classes,
 	return createPortal(
 		<div
 			ref={rootRef}
-			style={{ ...style?.root, animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }}
+			style={{
+				...style?.root,
+				animation: animation ? 'fadeIn ease-in-out 250ms 1 alternate forwards' : undefined,
+			}}
 			className={clsx(styles.root, classes?.root, transparent && [styles.transparent, classes?.transparent])}
 		>
 			<div style={style?.container} className={clsx(styles.container, classes?.container)}>
-				<Moveable ref={modalRef} enabled={moveable ?? false}>
+				<Moveable ref={modalRef} enabled={moveable}>
 					<div
 						style={{ top, ...style?.modal }}
 						className={clsx(styles.modal, size && styles[size], classes?.modal)}

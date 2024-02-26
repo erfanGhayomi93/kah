@@ -16,7 +16,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(toggleLoginModal(false));
+		dispatch(toggleLoginModal(null));
 	};
 
 	useEffect(() => {
@@ -56,7 +56,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 					}}
 					className='absolute w-full gap-24 px-64 flex-column'
 				>
-					<h3 className='text-gray-1000 text-center text-base font-bold'>
+					<h3 className='text-center text-base font-bold text-gray-1000'>
 						{t('login_modal.set_password_description')}
 					</h3>
 

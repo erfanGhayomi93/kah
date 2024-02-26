@@ -18,7 +18,9 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-const AddSymbolToWatchlist = () => {
+interface AddSymbolToWatchlistProps extends IBaseModalConfiguration {}
+
+const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
@@ -36,7 +38,7 @@ const AddSymbolToWatchlist = () => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleAddSymbolToWatchlistModal(false));
+		dispatch(toggleAddSymbolToWatchlistModal(null));
 	};
 
 	const onAddSymbol = async (symbol: Symbol.Search) => {
@@ -61,7 +63,7 @@ const AddSymbolToWatchlist = () => {
 	};
 
 	return (
-		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
 			<Div className='bg-white'>
 				<div className='relative h-72 border-b border-gray-500 flex-justify-center'>
 					<h2 className='text-xl font-medium text-gray-1000'>{t('add_symbol_to_watchlist.title')}</h2>

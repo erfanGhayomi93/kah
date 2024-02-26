@@ -18,9 +18,15 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface AddSaturnTemplateProps extends IAddSaturnTemplate {}
+interface AddSaturnTemplateProps extends IAddSaturnTemplate, IBaseModalConfiguration {}
 
-const AddSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: AddSaturnTemplateProps) => {
+const AddSaturnTemplate = ({
+	baseSymbolTitle,
+	baseSymbolISIN,
+	activeTab,
+	options,
+	...props
+}: AddSaturnTemplateProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -42,7 +48,8 @@ const AddSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: AddSat
 			const content = JSON.stringify({
 				baseSymbolTitle,
 				baseSymbolISIN,
-				...props,
+				activeTab,
+				options,
 			});
 			const response = await axios.post(routes.saturn.Upsert, {
 				name,
@@ -59,7 +66,7 @@ const AddSaturnTemplate = ({ baseSymbolTitle, baseSymbolISIN, ...props }: AddSat
 	};
 
 	return (
-		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+		<Modal {...props} style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
 			<Div className='bg-white'>
 				<h2 className='text-xl font-medium text-gray-1000'>
 					{t('save_saturn_template.save_template', { title: baseSymbolTitle })}

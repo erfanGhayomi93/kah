@@ -30,7 +30,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	});
 
 	const addSymbol = () => {
-		dispatch(toggleAddSymbolToWatchlistModal(true));
+		dispatch(toggleAddSymbolToWatchlistModal({}));
 	};
 
 	const onFiltersChanged = (newFilters: IOptionWatchlistFilters) => {

@@ -10,17 +10,19 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-const OptionWatchlistFiltersModal = () => {
+interface OptionWatchlistFiltersModalProps extends IBaseModalConfiguration {}
+
+const OptionWatchlistFiltersModal = (props: OptionWatchlistFiltersModalProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
 	const onClose = () => {
-		dispatch(toggleOptionFiltersModal(false));
+		dispatch(toggleOptionFiltersModal(null));
 	};
 
 	return (
-		<Modal transparent top='14%' onClose={onClose}>
+		<Modal transparent top='14%' onClose={onClose} {...props}>
 			<Div className='gap-40 bg-white flex-column'>
 				<div className='relative h-56 border-b border-b-gray-500 flex-justify-center'>
 					<h2 className='text-xl font-medium'>{t('option_watchlist_filters_modal.title')}</h2>

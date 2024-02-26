@@ -22,6 +22,11 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
+declare interface IBaseModalConfiguration {
+	moveable?: boolean;
+	animation?: boolean;
+}
+
 declare interface SymbolContractModalStates {
 	term: string;
 	contract: null | Option.Root;

@@ -24,9 +24,9 @@ const useTradingFeatures = () => {
 
 	const addBuySellModal = (props: IBuySellModal) => {
 		if (!isLoggedIn) {
-			dispatch(toggleLoginModal(true));
+			dispatch(toggleLoginModal({}));
 		} else if (!brokerIsSelected) {
-			dispatch(toggleChooseBrokerModal(true));
+			dispatch(toggleChooseBrokerModal({}));
 		} else {
 			dispatch(toggleBuySellModal(props));
 		}

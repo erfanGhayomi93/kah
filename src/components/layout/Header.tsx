@@ -50,15 +50,15 @@ const Header = () => {
 	});
 
 	const showAuthenticationModal = () => {
-		dispatch(toggleLoginModal(true));
+		dispatch(toggleLoginModal({}));
 	};
 
 	const onLogout = () => {
-		dispatch(toggleLogoutModal(true));
+		dispatch(toggleLogoutModal({}));
 	};
 
 	const setPassword = () => {
-		dispatch(toggleForgetPasswordModal(true));
+		dispatch(toggleForgetPasswordModal({}));
 	};
 
 	const userStatusIcon = useMemo(() => {
