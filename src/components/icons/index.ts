@@ -51,9 +51,11 @@ import SessionHistorySVG from './session-history.svg';
 import SettingSVG from './setting.svg';
 import ShieldSVG from './shield.svg';
 import SnowFlakeSVG from './snow-flake.svg';
+import SquareXSVG from './square-x.svg';
 import StrategySVG from './strategy.svg';
 import TradeSVG from './trade.svg';
 import TrashSVG from './trash.svg';
+import TriangleWarningSVG from './triangle-warning.svg';
 import UnlockSVG from './unlock.svg';
 import UserBoldSVG from './user-bold.svg';
 import UserCircleSVG from './user-circle.svg';
@@ -115,9 +117,11 @@ export {
 	SettingSVG,
 	ShieldSVG,
 	SnowFlakeSVG,
+	SquareXSVG,
 	StrategySVG,
 	TradeSVG,
 	TrashSVG,
+	TriangleWarningSVG,
 	UnlockSVG,
 	UserBoldSVG,
 	UserCircleSVG,

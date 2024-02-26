@@ -252,6 +252,9 @@ export const decodeBrokerUrls = (data: User.BrokerUrl[]) => {
 		ordersCount: data[4].url,
 		openOrders: data[5].url,
 		commission: data[6].url,
+		userInformation: data[7].url,
+		userRemain: data[8].url,
+		userStatus: data[9].url,
 	};
 
 	return urls;

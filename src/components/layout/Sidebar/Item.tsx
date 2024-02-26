@@ -1,9 +1,8 @@
 import Tooltip from '@/components/common/Tooltip';
 import Collapse from '@/components/common/transition/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
+import { Link, usePathname } from '@/navigation';
 import clsx from 'clsx';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {

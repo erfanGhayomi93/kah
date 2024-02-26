@@ -1,6 +1,6 @@
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleLoginModal, toggleLogoutModal } from '@/features/slices/modalSlice';
+import { toggleForgetPasswordModal, toggleLoginModal, toggleLogoutModal } from '@/features/slices/modalSlice';
 import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { sepNumbers } from '@/utils/helpers';
@@ -13,7 +13,6 @@ import {
 	BellSVG,
 	EditSVG,
 	LogoutSVG,
-	OffSVG,
 	SessionHistorySVG,
 	SettingSVG,
 	ShieldSVG,
@@ -52,6 +51,10 @@ const Header = () => {
 		dispatch(toggleLogoutModal(true));
 	};
 
+	const setPassword = () => {
+		dispatch(toggleForgetPasswordModal(true));
+	};
+
 	useEffect(() => {
 		setIsDropdownOpened(false);
 	}, [isLoggedIn]);
@@ -78,9 +81,7 @@ const Header = () => {
 					</span>
 				</div>
 			) : (
-				<div className='flex-1'>
-					<h1 className='text-2xl font-medium uppercase text-gray-900'>Logo</h1>
-				</div>
+				<div className='flex-1' />
 			)}
 
 			<div className='flex-1 gap-16 flex-justify-end'>
@@ -103,9 +104,9 @@ const Header = () => {
 							renderer={({ setOpen }) => (
 								<div className='rounded-md bg-white pb-16 shadow-tooltip'>
 									<div className='flex h-40 items-start justify-between pr-16'>
-										<div className='fit-image gap-12 pt-16 flex-items-center'>
+										<div className='gap-12 pt-16 flex-items-center fit-image'>
 											<div
-												className='fit-image size-40 rounded-circle'
+												className='size-40 rounded-circle fit-image'
 												style={{ backgroundImage: 'url("/static/images/young-boy.png")' }}
 											/>
 
@@ -129,6 +130,7 @@ const Header = () => {
 										<div className='px-16 pt-40 flex-items-center'>
 											<button
 												type='button'
+												onClick={setPassword}
 												className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
 											>
 												{t('header.set_password')}
@@ -214,15 +216,9 @@ const Header = () => {
 							onClick={showAuthenticationModal}
 							type='button'
 							disabled={isFetchingUserData || isLoggingIn}
-							className='h-36 rounded px-24 font-medium btn-primary'
+							className='h-36 rounded px-40 font-medium btn-primary'
 						>
 							{t('header.login')}
-						</button>
-					)}
-
-					{isLoggedIn && (
-						<button type='button' className='text-error-100'>
-							<OffSVG width='2.4rem' height='2.4rem' />
 						</button>
 					)}
 				</div>

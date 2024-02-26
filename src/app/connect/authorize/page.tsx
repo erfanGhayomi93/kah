@@ -26,7 +26,7 @@ const Page: NextPage<INextProps> = () => {
 		} catch (e) {
 			//
 		} finally {
-			if (process.env.NODE_ENV !== 'development') window.close();
+			window.close();
 		}
 	}, []);
 
