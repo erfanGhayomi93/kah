@@ -105,7 +105,9 @@ const Header = () => {
 								})}
 							>
 								{userStatusIcon}
-								<span className='text-base font-medium'>{t('header.normal_status')}</span>
+								<span className='text-base font-medium'>
+									{t(`header.user_status_${userStatus.remainStatus}`)}
+								</span>
 							</span>
 						</span>
 					)}

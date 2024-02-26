@@ -56,7 +56,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					transition: 'height 250ms ease',
 				}}
 			>
-				<WatchlistTable data={watchlistData} />
+				<WatchlistTable id={watchlistId} data={watchlistData} />
 
 				{!dataIsEmpty && !isFetching && watchlistId > -1 && (
 					<button

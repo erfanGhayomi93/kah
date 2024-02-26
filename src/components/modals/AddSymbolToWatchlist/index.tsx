@@ -60,25 +60,6 @@ const AddSymbolToWatchlist = () => {
 		}
 	};
 
-	const onDeleteSymbol = async (symbol: Symbol.Search) => {
-		try {
-			if (!symbol.symbolISIN || watchlistId === -1) return;
-
-			const response = await axios.post<ServerResponse<string>>(
-				routes.optionWatchlist.RemoveSymbolCustomWatchlist,
-				{
-					id: watchlistId,
-					symbolISIN: symbol.symbolISIN,
-				},
-			);
-			const data = response.data;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-		} catch (e) {
-			//
-		}
-	};
-
 	return (
 		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
 			<Div className='bg-white'>

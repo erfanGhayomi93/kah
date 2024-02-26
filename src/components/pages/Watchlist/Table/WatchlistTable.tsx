@@ -18,10 +18,11 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import ActionColumn from './ActionColumn';
 
 interface WatchlistTableProps {
+	id: number;
 	data: Option.Root[] | undefined;
 }
 
-const WatchlistTable = ({ data }: WatchlistTableProps) => {
+const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const cWatchlistRef = useRef<Option.Root[]>([]);
@@ -517,8 +518,12 @@ const WatchlistTable = ({ data }: WatchlistTableProps) => {
 					minWidth: 80,
 					maxWidth: 80,
 					pinned: 'left',
+					hide: false,
 					sortable: false,
 					cellRenderer: ActionColumn,
+					cellRendererParams: {
+						deletable: id > -1,
+					},
 				},
 			] as Array<ColDef<Option.Root>>,
 		[],
@@ -532,6 +537,13 @@ const WatchlistTable = ({ data }: WatchlistTableProps) => {
 		}),
 		[],
 	);
+
+	useEffect(() => {
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
+
+		gridApi.setGridOption('columnDefs', COLUMNS);
+	}, [id]);
 
 	useLayoutEffect(() => {
 		const gridApi = gridRef.current;
@@ -617,7 +629,6 @@ const WatchlistTable = ({ data }: WatchlistTableProps) => {
 	return (
 		<AgTable
 			ref={gridRef}
-			alwaysShowVerticalScroll
 			suppressHorizontalScroll={dataIsEmpty}
 			className='h-full border-0'
 			rowData={[]}
