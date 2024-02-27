@@ -15,8 +15,8 @@ interface SymbolSummaryProps {
 
 const ListItem = ({ title, valueFormatter }: ListItemProps) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-gray-900 whitespace-nowrap text-base'>{title}</span>
-		<span className='text-gray-1000 text-base font-medium ltr'>
+		<span className='whitespace-nowrap text-base text-gray-900'>{title}</span>
+		<span className='text-base font-medium text-gray-1000 ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
 	</div>

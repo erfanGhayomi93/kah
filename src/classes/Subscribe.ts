@@ -1,4 +1,9 @@
-import { Subscription, type LightstreamerClient, type SubscriptionListener } from 'lightstreamer-client-web';
+import {
+	Subscription,
+	type ItemUpdate,
+	type LightstreamerClient,
+	type SubscriptionListener,
+} from 'lightstreamer-client-web';
 import { type SubscriptionOptions } from './lightstream.d';
 
 class Subscribe {
@@ -101,5 +106,7 @@ class Subscribe {
 		}
 	}
 }
+
+export type { ItemUpdate, Subscribe };
 
 export default Subscribe;
