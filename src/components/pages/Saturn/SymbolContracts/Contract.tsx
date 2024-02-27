@@ -1,6 +1,5 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
-import SymbolState from '@/components/common/SymbolState';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
@@ -128,16 +127,15 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 			</Wrapper>
 		);
 
-	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
-		contractInfo;
+	const { closingPriceVarReferencePrice, symbolTitle, closingPrice, lastTradedPrice, companyName } = contractInfo;
 
 	return (
 		<Wrapper>
 			<div className='flex-column'>
 				<div style={{ gap: '7.8rem' }} className='flex-justify-between'>
-					<div style={{ gap: '1rem' }} className='flex-items-center'>
-						<SymbolState state={symbolTradeState} />
+					<div className='flex-items-start gap-4 flex-column'>
 						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
+						<h4 className='whitespace-nowrap text-tiny text-gray-1000'>{companyName}</h4>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
@@ -190,8 +188,6 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 						</button>
 					</div>
 				</div>
-
-				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
 			<Tabs
