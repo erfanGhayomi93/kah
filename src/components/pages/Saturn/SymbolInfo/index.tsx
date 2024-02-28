@@ -9,7 +9,7 @@ interface SymbolInfoProps {
 
 const SymbolInfo = ({ symbol, activeTab, setActiveTab }: SymbolInfoProps) => {
 	return (
-		<div style={{ maxHeight: '37.6rem' }} className='flex w-full gap-56 rounded bg-white px-24 pb-16 pt-12'>
+		<div style={{ flex: '0 0 34.4rem' }} className='flex w-full gap-56 rounded bg-white px-24 pb-16 pt-12'>
 			<SymbolDetails symbol={symbol} />
 			<SymbolTabs symbol={symbol} activeTab={activeTab} setActiveTab={(tabId) => setActiveTab(tabId)} />
 		</div>

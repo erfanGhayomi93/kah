@@ -38,3 +38,18 @@ export const useSavedTemplateQuery = createQuery<Saturn.Template, ['useSavedTemp
 		return data.result;
 	},
 });
+
+export const useActiveTemplateQuery = createQuery<Saturn.Template, ['useActiveTemplate']>({
+	staleTime: 36e5,
+	queryKey: ['useActiveTemplate'],
+	queryFn: async ({ signal, queryKey }) => {
+		const response = await axios.get<ServerResponse<Saturn.Template>>(routes.saturn.GetActive, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});

@@ -5,7 +5,7 @@ import { GrowDownSVG, GrowUpSVG, InfoSVG } from '@/components/icons';
 import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { divide, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -24,7 +24,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 	const bgColor = side === 'buy' ? 'bg-success-100' : 'bg-error-100';
 	const bgAlphaColor = side === 'buy' ? 'bg-success-100/10' : 'bg-error-100/10';
 
-	const percent = (individualVolume / (individualVolume + legalVolume)) * 100;
+	const percent = divide(individualVolume, individualVolume + legalVolume) * 100;
 
 	return (
 		<div className='flex-1 gap-4 flex-column'>
@@ -67,7 +67,8 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const { subscribe } = useSubscription();
 
 	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
-		const visualSymbol = JSON.parse(JSON.stringify(symbol)) as typeof symbol;
+		const queryKey = ['symbolInfoQuery', symbol === null ? null : symbol.symbolISIN];
+		const visualData = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey))) as Symbol.Info;
 
 		updateInfo.forEachChangedField((fieldName, _b, value) => {
 			try {
@@ -75,14 +76,14 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					const valueAsNumber = Number(value);
 
 					// @ts-expect-error: Lightstream returns the wrong data type
-					symbol[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
+					visualData[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
 				}
 			} catch (e) {
 				//
 			}
 		});
 
-		queryClient.setQueryData(['symbolInfoQuery', visualSymbol.symbolISIN], visualSymbol);
+		queryClient.setQueryData(queryKey, visualData);
 	};
 
 	const lastTradedPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {

@@ -63,24 +63,23 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	};
 
 	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
-		if (!symbolData) return;
-
-		const visualSymbol = JSON.parse(JSON.stringify(symbolData)) as typeof symbolData;
+		const queryKey = ['symbolInfoQuery', selectedSymbol];
+		const visualData = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey))) as Symbol.Info;
 
 		updateInfo.forEachChangedField((fieldName, _b, value) => {
 			try {
-				if (value && fieldName in symbolData) {
+				if (value && fieldName in visualData) {
 					const valueAsNumber = Number(value);
 
 					// @ts-expect-error: Lightstream returns the wrong data type
-					symbol[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
+					visualData[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
 				}
 			} catch (e) {
 				//
 			}
 		});
 
-		queryClient.setQueryData(['symbolInfoQuery', visualSymbol.symbolISIN], visualSymbol);
+		queryClient.setQueryData(queryKey, visualData);
 	};
 
 	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {
