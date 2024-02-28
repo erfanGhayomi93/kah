@@ -376,6 +376,7 @@
 		"invalid_quantity": "تعداد وارد نشده است.",
 		"invalid_validity_date": "اعتبار سفارش نامعتبر می‌باشد.",
 		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
-		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت."
+		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت.",
+		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید."
 	}
 }

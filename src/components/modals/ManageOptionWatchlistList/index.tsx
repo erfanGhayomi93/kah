@@ -161,7 +161,7 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 							<button
 								style={{ width: '8.8rem' }}
 								onClick={() => setIsDeleting({ type: 'hasStarted', payload: false })}
-								className='h-40 rounded btn-disabled-outline'
+								className='h-36 rounded btn-disabled-outline'
 								type='button'
 							>
 								{t('common.cancel')}
@@ -169,7 +169,7 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 							<button
 								style={{ width: '8.8rem' }}
 								onClick={deleteAll}
-								className='h-40 rounded btn-error'
+								className='h-36 rounded btn-error'
 								type='button'
 							>
 								{t('manage_option_watchlist_modal.delete_all')}

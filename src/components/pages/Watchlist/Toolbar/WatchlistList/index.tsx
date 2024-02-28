@@ -8,9 +8,9 @@ import { type RootState } from '@/features/store';
 import { useDebounce } from '@/hooks';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { toast } from 'react-toastify';
 import Watchlist from './Watchlist';
 
 const getStates = createSelector(
@@ -61,6 +61,10 @@ const WatchlistList = () => {
 	};
 
 	const manageWatchlistList = () => {
+		if (!Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0) {
+			toast.warning(t('alerts.add_watchlist'));
+			return;
+		}
 		dispatch(toggleManageOptionWatchlistListModal({}));
 	};
 
@@ -79,8 +83,6 @@ const WatchlistList = () => {
 			return [defaultWatchlist];
 		}
 	}, [userCustomWatchlistList, isLoggedIn]);
-
-	const isDisabled = !Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0;
 
 	return (
 		<div className='gap-8 flex-justify-start'>
@@ -110,12 +112,8 @@ const WatchlistList = () => {
 					<li>
 						<button
 							type='button'
-							disabled={isDisabled}
 							onClick={manageWatchlistList}
-							className={clsx(
-								'size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center',
-								!isDisabled && 'hover:border-primary-400 hover:bg-primary-400 hover:text-white',
-							)}
+							className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
 						>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>
