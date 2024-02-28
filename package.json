@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "next dev -p 3002",
-		"build": "npm run type-check && next build",
+		"build": "next build",
 		"preview": "next start -p 3002",
 		"lint": "next lint",
 		"type-check": "tsc --noEmit",
