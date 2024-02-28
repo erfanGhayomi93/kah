@@ -1,11 +1,16 @@
+import { type ItemUpdate } from '@/classes/Subscribe';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, InfoSVG } from '@/components/icons';
+import usePrevious from '@/hooks/usePrevious';
+import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { divide, numFormatter, sepNumbers } from '@/utils/helpers';
+import { subscribeSymbolInfo } from '@/utils/subscriptions';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 
 interface IProgressBar {
 	side: 'buy' | 'sell';
@@ -19,7 +24,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 	const bgColor = side === 'buy' ? 'bg-success-100' : 'bg-error-100';
 	const bgAlphaColor = side === 'buy' ? 'bg-success-100/10' : 'bg-error-100/10';
 
-	const percent = (individualVolume / (individualVolume + legalVolume)) * 100;
+	const percent = divide(individualVolume, individualVolume + legalVolume) * 100;
 
 	return (
 		<div className='flex-1 gap-4 flex-column'>
@@ -42,7 +47,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 			</div>
 
 			<div className={`min-h-8 flex-1 overflow-hidden rounded-oval rtl ${bgAlphaColor}`}>
-				<div style={{ width: `${percent}%` }} className={`min-h-8 ${bgColor}`} />
+				<div style={{ width: `${percent}%` }} className={`transition-width min-h-8 ${bgColor}`} />
 			</div>
 		</div>
 	);
@@ -54,6 +59,54 @@ interface SymbolDetailsProps {
 
 const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
+
+	const symbolSnapshot = usePrevious(symbol);
+
+	const queryClient = useQueryClient();
+
+	const { subscribe } = useSubscription();
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const queryKey = ['symbolInfoQuery', symbol === null ? null : symbol.symbolISIN];
+		const visualData = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey))) as Symbol.Info;
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				if (value && fieldName in symbol) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Lightstream returns the wrong data type
+					visualData[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			} catch (e) {
+				//
+			}
+		});
+
+		queryClient.setQueryData(queryKey, visualData);
+	};
+
+	const lastTradedPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {
+		if (!symbolSnapshot) return 'equal';
+
+		const newValue = symbol.lastTradedPrice;
+		const oldValue = symbolSnapshot.lastTradedPrice;
+
+		if (newValue === oldValue) return 'equal';
+		if (newValue > oldValue) return 'more';
+		return 'less';
+	}, [symbolSnapshot?.lastTradedPrice, symbol.lastTradedPrice]);
+
+	const closingPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {
+		if (!symbolSnapshot) return 'equal';
+
+		const newValue = symbol.closingPrice;
+		const oldValue = symbolSnapshot.closingPrice;
+
+		if (newValue === oldValue) return 'equal';
+		if (newValue > oldValue) return 'more';
+		return 'less';
+	}, [symbolSnapshot?.lastTradedPrice, symbol.lastTradedPrice]);
 
 	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
 		try {
@@ -84,7 +137,11 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 							<span
 								className={clsx(
 									'gap-4 flex-items-center',
-									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
+									closingPriceIs === 'equal'
+										? 'text-gray-1000'
+										: closingPriceIs === 'more'
+											? 'text-success-100'
+											: 'text-error-100',
 								)}
 							>
 								{sepNumbers(String(closingPrice))}
@@ -141,7 +198,22 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 		} catch (error) {
 			return [];
 		}
-	}, [symbol]);
+	}, [symbol, closingPriceIs]);
+
+	useLayoutEffect(() => {
+		const sub = subscribeSymbolInfo(symbol.symbolISIN, 'symbolData,individualLegal');
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [symbol.symbolISIN]);
+
+	const priceColor =
+		lastTradedPriceIs === 'equal'
+			? 'text-gray-1000'
+			: lastTradedPriceIs === 'more'
+				? 'text-success-100'
+				: 'text-error-100';
 
 	const {
 		closingPriceVarReferencePrice,
@@ -166,29 +238,16 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					</div>
 
 					<div className='gap-8 flex-items-center'>
-						<span
-							className={clsx(
-								'gap-4 flex-items-center',
-								closingPriceVarReferencePrice >= 0 ? 'text-success-100' : 'text-error-100',
-							)}
-						>
+						<span className={clsx('gap-4 flex-items-center', priceColor)}>
 							<span className='flex items-center text-tiny ltr'>
 								({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
-								{closingPriceVarReferencePrice >= 0 ? (
-									<GrowUpSVG width='1rem' height='1rem' />
-								) : (
-									<GrowDownSVG width='1rem' height='1rem' />
-								)}
+								{lastTradedPriceIs === 'more' && <GrowUpSVG width='1rem' height='1rem' />}
+								{lastTradedPriceIs === 'less' && <GrowDownSVG width='1rem' height='1rem' />}
 							</span>
 							{sepNumbers(String(closingPrice))}
 						</span>
 
-						<span
-							className={clsx(
-								'flex items-center gap-4 text-4xl font-bold',
-								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
-							)}
-						>
+						<span className={clsx('flex items-center gap-4 text-4xl font-bold', priceColor)}>
 							{sepNumbers(String(lastTradedPrice))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>

@@ -1,13 +1,15 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
-import SymbolState from '@/components/common/SymbolState';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
-import { useTradingFeatures } from '@/hooks';
+import { useSubscription, useTradingFeatures } from '@/hooks';
 import { sepNumbers } from '@/utils/helpers';
+import { subscribeSymbolInfo } from '@/utils/subscriptions';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useLayoutEffect, useMemo } from 'react';
@@ -34,9 +36,13 @@ const Wrapper = ({ children }: { children?: React.ReactNode }) => (
 const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: ContractProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
 	const dispatch = useAppDispatch();
 
 	const { addBuySellModal } = useTradingFeatures();
+
+	const { subscribe, unsubscribe } = useSubscription();
 
 	const { data: contractInfo, isFetching } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', option === null ? null : option.symbolISIN],
@@ -65,7 +71,33 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 		});
 	};
 
-	const tabs = useMemo(
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const queryKey = ['symbolInfoQuery', option === null ? null : option.symbolISIN];
+			const visualData = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey))) as Symbol.Info;
+
+			if (!visualData) return;
+
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				try {
+					if (value && fieldName in visualData) {
+						const valueAsNumber = Number(value);
+
+						// @ts-expect-error: Lightstream returns the wrong data type
+						visualData[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
+					}
+				} catch (e) {
+					//
+				}
+			});
+
+			queryClient.setQueryData(queryKey, visualData);
+		} catch (e) {
+			//
+		}
+	};
+
+	const tabs: Array<{ id: Saturn.OptionTab; title: string; render: React.ReactNode }> = useMemo(
 		() => [
 			{
 				id: 'price_information',
@@ -86,6 +118,19 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 		],
 		[contractInfo],
 	);
+
+	useLayoutEffect(() => {
+		if (!option?.symbolISIN) {
+			unsubscribe();
+			return;
+		}
+
+		const sub = subscribeSymbolInfo(option.symbolISIN, 'symbolData');
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [option?.symbolISIN]);
 
 	useLayoutEffect(() => {
 		if (!contractInfo) return;
@@ -121,23 +166,17 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 			</Wrapper>
 		);
 
-	if (!contractInfo)
-		return (
-			<Wrapper>
-				<span className='absolute center'>{t('common.an_error_occurred')}</span>
-			</Wrapper>
-		);
-
-	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
-		contractInfo;
+	const closingPriceVarReferencePrice = contractInfo?.closingPriceVarReferencePrice ?? 0;
 
 	return (
 		<Wrapper>
 			<div className='flex-column'>
 				<div style={{ gap: '7.8rem' }} className='flex-justify-between'>
-					<div style={{ gap: '1rem' }} className='flex-items-center'>
-						<SymbolState state={symbolTradeState} />
-						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
+					<div className='flex-items-start gap-4 flex-column'>
+						<h1 className='text-3xl font-medium text-gray-1000'>{contractInfo?.symbolTitle ?? '−'}</h1>
+						<h4 className='whitespace-nowrap text-tiny text-gray-1000'>
+							{contractInfo?.companyName ?? '−'}
+						</h4>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
@@ -155,7 +194,7 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 									<GrowDownSVG width='1rem' height='1rem' />
 								)}
 							</span>
-							{sepNumbers(String(closingPrice))}
+							{sepNumbers(String(contractInfo?.closingPrice ?? 0))}
 						</span>
 
 						<span
@@ -164,7 +203,7 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
 							)}
 						>
-							{sepNumbers(String(lastTradedPrice || 1))}
+							{sepNumbers(String(contractInfo?.lastTradedPrice || 0))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
 					</div>
@@ -190,25 +229,30 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 						</button>
 					</div>
 				</div>
-
-				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
-			<Tabs
-				defaultActiveTab={option.activeTab}
-				data={tabs}
-				renderTab={(item, activeTab) => (
-					<button
-						className={clsx(
-							'px-8 py-12 transition-colors',
-							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
-						)}
-						type='button'
-					>
-						{item.title}
-					</button>
-				)}
-			/>
+			{contractInfo ? (
+				<Tabs
+					defaultActiveTab={option.activeTab}
+					data={tabs}
+					onChange={onChangeContractTab}
+					renderTab={(item, activeTab) => (
+						<button
+							className={clsx(
+								'px-8 py-12 transition-colors',
+								item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+							)}
+							type='button'
+						>
+							{item.title}
+						</button>
+					)}
+				/>
+			) : (
+				<div className='relative flex-1'>
+					<span className='absolute font-medium center'>{t('common.an_error_occurred')}</span>
+				</div>
+			)}
 		</Wrapper>
 	);
 };

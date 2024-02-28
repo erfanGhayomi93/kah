@@ -259,3 +259,11 @@ export const decodeBrokerUrls = (data: Broker.URL[]) => {
 
 	return urls;
 };
+
+export const divide = (arg1: number, arg2: number) => {
+	if (arg1 === arg2) return 1;
+
+	if (arg2 === 0) return 0;
+
+	return arg1 / arg2;
+};

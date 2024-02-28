@@ -12,6 +12,7 @@ interface TabsProps<ID extends string | number, T extends object> {
 	data: Array<ITabIem<ID, T>>;
 	classes?: RecordClasses<'list' | 'indicator'>;
 	renderTab: (item: ITabIem<ID, T>, activeTab: ID) => React.ReactElement;
+	onChange?: (tab: ID) => void;
 }
 
 const Tabs = <ID extends string | number, T extends object>({
@@ -19,6 +20,7 @@ const Tabs = <ID extends string | number, T extends object>({
 	data,
 	classes,
 	renderTab,
+	onChange,
 }: TabsProps<ID, T>) => {
 	const rootRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +53,14 @@ const Tabs = <ID extends string | number, T extends object>({
 		},
 		[indicatorRef.current],
 	);
+
+	useLayoutEffect(() => {
+		try {
+			onChange?.(activeTab);
+		} catch (error) {
+			//
+		}
+	}, [activeTab]);
 
 	useLayoutEffect(() => {
 		try {
