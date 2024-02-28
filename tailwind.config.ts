@@ -145,6 +145,17 @@ const config: Config = {
 			'96': '9.6rem',
 		},
 
+		transitionProperty: {
+			none: 'none',
+			all: 'all',
+			colors: 'color, background-color, border-color',
+			opacity: 'opacity',
+			shadow: 'shadow',
+			transform: 'transform',
+			width: 'width',
+			height: 'height',
+		},
+
 		transitionDuration: {
 			DEFAULT: '250ms',
 		},

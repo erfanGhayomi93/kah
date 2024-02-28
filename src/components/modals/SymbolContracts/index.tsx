@@ -100,7 +100,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle, ...props }: SymbolContractsP
 				colId: 'symbolTitle-buy',
 				minWidth: 104,
 				cellRenderer: CellContractTitleRenderer,
-				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
+				sortable: false,
 			},
 
 			{

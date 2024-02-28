@@ -1,5 +1,6 @@
 'use client';
 
+import { useActiveTemplateQuery } from '@/api/queries/saturnQueries';
 import { symbolInfoQueryFn, useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
@@ -8,7 +9,7 @@ import Main from '@/components/layout/Main';
 import { defaultSymbolISIN } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleSaveSaturnTemplate } from '@/features/slices/modalSlice';
-import { getSaturnActiveTemplate } from '@/features/slices/uiSlice';
+import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
 import { openNewTab } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -42,8 +43,12 @@ const Saturn = () => {
 		searchParams.get('symbolISIN') ?? LocalstorageInstance.get('selected_symbol', defaultSymbolISIN),
 	);
 
-	const { data: baseSymbolInfo, isFetching } = useSymbolInfoQuery({
+	const { data: baseSymbolInfo, isFetching: isFetchingBaseSymbolInfo } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', typeof selectedSymbol === 'string' ? selectedSymbol : defaultSymbolISIN],
+	});
+
+	const { data: activeTemplate, isFetching: isFetchingActiveTemplate } = useActiveTemplateQuery({
+		queryKey: ['useActiveTemplate'],
 	});
 
 	const onContractAdded = (data: Array<{ symbolISIN: string; symbolTitle: string; activeTab: Saturn.OptionTab }>) => {
@@ -86,15 +91,16 @@ const Saturn = () => {
 				};
 
 				const blankContract = contracts.findIndex((con) => con === null);
+
 				if (blankContract > -1) {
 					contracts[blankContract] = option;
 					setBaseSymbolContracts(contracts);
 				} else {
 					if (symbolISIN) openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
 				}
+			} else {
+				if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
 			}
-
-			if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
 		} catch (e) {
 			//
 		}
@@ -188,7 +194,12 @@ const Saturn = () => {
 		}
 	}, [baseSymbolContracts]);
 
-	if (!baseSymbolInfo && isFetching) {
+	useLayoutEffect(() => {
+		if (!activeTemplate) return;
+		dispatch(setSaturnActiveTemplate(activeTemplate));
+	}, [activeTemplate]);
+
+	if (isFetchingBaseSymbolInfo || isFetchingActiveTemplate) {
 		return (
 			<Main>
 				<Loading />
@@ -196,29 +207,29 @@ const Saturn = () => {
 		);
 	}
 
-	if (!baseSymbolInfo)
-		return (
-			<Main>
-				<span className='absolute text-base font-medium text-gray-900 center'>
-					{t('common.an_error_occurred')}
-				</span>
-			</Main>
-		);
-
 	return (
 		<Main className='gap-8'>
 			<Toolbar setSymbol={onChangeSymbol} saveTemplate={saveTemplate} />
-			<SymbolInfo
-				symbol={baseSymbolInfo}
-				activeTab={baseSymbolActiveTab}
-				setActiveTab={(tabId) => setBaseSymbolActiveTab(tabId)}
-			/>
-			<SymbolContracts
-				baseSymbol={baseSymbolInfo}
-				setBaseSymbol={(value) => setSelectedSymbol(value)}
-				baseSymbolContracts={baseSymbolContracts}
-				setBaseSymbolContracts={(value) => setBaseSymbolContracts(value)}
-			/>
+
+			{baseSymbolInfo ? (
+				<>
+					<SymbolInfo
+						symbol={baseSymbolInfo}
+						activeTab={baseSymbolActiveTab}
+						setActiveTab={(tabId) => setBaseSymbolActiveTab(tabId)}
+					/>
+					<SymbolContracts
+						baseSymbol={baseSymbolInfo}
+						setBaseSymbol={(value) => setSelectedSymbol(value)}
+						baseSymbolContracts={baseSymbolContracts}
+						setBaseSymbolContracts={(value) => setBaseSymbolContracts(value)}
+					/>
+				</>
+			) : (
+				<span className='absolute text-base font-medium text-gray-900 center'>
+					{t('common.an_error_occurred')}
+				</span>
+			)}
 		</Main>
 	);
 };

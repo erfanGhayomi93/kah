@@ -1,13 +1,17 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import { type ItemUpdate } from '@/classes/Subscribe';
 import Loading from '@/components/common/Loading';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useTradingFeatures } from '@/hooks';
+import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { subscribeSymbolInfo } from '@/utils/subscriptions';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import NoData from './common/NoData';
 import Section from './common/Section';
 
@@ -35,7 +39,11 @@ const ListItem = ({ title, valueFormatter }: Item) => (
 const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
 	const { addBuySellModal } = useTradingFeatures();
+
+	const { subscribe } = useSubscription();
 
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', selectedSymbol ?? null],
@@ -52,6 +60,26 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			symbolISIN,
 			symbolTitle,
 		});
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const queryKey = ['symbolInfoQuery', selectedSymbol];
+		const visualData = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey))) as Symbol.Info;
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				if (value && fieldName in visualData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Lightstream returns the wrong data type
+					visualData[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			} catch (e) {
+				//
+			}
+		});
+
+		queryClient.setQueryData(queryKey, visualData);
 	};
 
 	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {
@@ -143,6 +171,16 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			return [];
 		}
 	}, [symbolData]);
+
+	useLayoutEffect(() => {
+		if (!selectedSymbol) return;
+
+		const sub = subscribeSymbolInfo(selectedSymbol, 'symbolData');
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [selectedSymbol]);
 
 	if (!selectedSymbol)
 		return (
