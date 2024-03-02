@@ -2,10 +2,12 @@ import { convertStringToDecimal, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import React from 'react';
 
-interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'className' | 'onChange'> {
+interface InputProps
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'className' | 'onChange'> {
 	onChange: (v: string) => void;
 	value: string;
 	prefix: string;
+	placeholder: React.ReactNode;
 }
 
 const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) => {
@@ -29,7 +31,7 @@ const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) =
 				{placeholder}
 			</span>
 
-			<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-900 flex-justify-center'>
+			<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-700 flex-justify-center'>
 				{prefix}
 			</span>
 		</label>

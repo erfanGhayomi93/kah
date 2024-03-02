@@ -14,14 +14,18 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 			<Input
 				value={inputs.premium}
 				onChange={(v) => setInputValue('premium', v)}
-				placeholder={t('black_scholes_modal.premium_placeholder')}
+				placeholder={t.rich('black_scholes_modal.premium_placeholder', {
+					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
+				})}
 				prefix={t('common.rial')}
 			/>
 
 			<Input
 				value={inputs.strikePrice}
 				onChange={(v) => setInputValue('strikePrice', v)}
-				placeholder={t('black_scholes_modal.strike_price_placeholder')}
+				placeholder={t.rich('black_scholes_modal.strike_price_placeholder', {
+					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
+				})}
 				prefix={t('common.rial')}
 			/>
 
@@ -35,7 +39,9 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 			<Input
 				value={inputs.volatility}
 				onChange={(v) => setInputValue('volatility', v)}
-				placeholder={t('black_scholes_modal.volatility_placeholder')}
+				placeholder={t.rich('black_scholes_modal.volatility_placeholder', {
+					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
+				})}
 				prefix='%'
 			/>
 

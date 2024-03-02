@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
+import Calculator from './Calculator';
 import Form from './Form';
 import SelectSymbol from './SelectSymbol';
 
@@ -77,10 +78,9 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 				<div className='flex-1 gap-24 px-24 flex-column'>
 					<SelectSymbol setInputValue={setInputValue} inputs={inputs} />
 
-					<div className='flex flex-1 pb-24'>
+					<div className='flex flex-1 gap-16 pb-24'>
 						<Form setInputValue={setInputValue} inputs={inputs} />
-
-						<div className='flex-1' />
+						<Calculator {...inputs} />
 					</div>
 				</div>
 			</Div>

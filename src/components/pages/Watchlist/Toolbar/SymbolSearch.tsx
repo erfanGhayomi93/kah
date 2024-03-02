@@ -17,7 +17,7 @@ const SymbolSearch = () => {
 	return (
 		<div
 			style={{ maxWidth: '30rem' }}
-			className='input-group h-40 flex-1 rounded border border-gray-500 flex-items-center'
+			className='h-40 flex-1 rounded border border-gray-500 flex-items-center input-group'
 		>
 			<span className='px-8 text-gray-800'>
 				<SearchSVG />
@@ -37,7 +37,7 @@ const SymbolSearch = () => {
 				<button
 					onClick={onClearTerm}
 					type='button'
-					className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-100 text-white flex-justify-center'
+					className='ml-16 min-h-20 min-w-20 rounded-circle bg-white text-white flex-justify-center'
 				>
 					<XSVG width='1rem' height='1rem' />
 				</button>
