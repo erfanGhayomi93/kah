@@ -16,7 +16,7 @@ import Modal from '../Modal';
 import CellContractTitleRenderer from './CellContractTitleRenderer';
 import Filters from './Filters';
 
-interface SymbolContractsProps extends IContractSelectorModal, IBaseModalConfiguration {}
+interface SymbolContractsProps extends IContractSelectorModal {}
 
 const Div = styled.div`
 	width: 88rem;

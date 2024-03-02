@@ -65,7 +65,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 	return (
 		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
 			<Div className='bg-white'>
-				<div className='relative h-72 border-b border-gray-500 flex-justify-center'>
+				<div className='relative h-56 bg-gray-200 flex-justify-center'>
 					<h2 className='text-xl font-medium text-gray-1000'>{t('add_symbol_to_watchlist.title')}</h2>
 
 					<button
@@ -74,7 +74,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 						type='button'
 						className='absolute top-1/2 -translate-y-1/2 transform p-8 icon-hover'
 					>
-						<XSVG width='1.6rem' height='1.6rem' />
+						<XSVG width='2rem' height='2rem' />
 					</button>
 				</div>
 
@@ -106,7 +106,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 								}}
 								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-1000 text-white transition-opacity flex-justify-center'
 							>
-								<XSVG width='0.8rem' height='0.8rem' />
+								<XSVG width='1rem' height='1rem' />
 							</button>
 						)}
 					</div>
@@ -115,16 +115,14 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 						{term.length < 2 ? (
 							<div className='absolute center'>
 								<span className='font-medium text-gray-900'>
-									{t('add_symbol_to_watchlist.type_min_chars', { n: 2 })}
+									{t('common.needs_more_than_n_chars', { n: 2 })}
 								</span>
 							</div>
 						) : isFetching ? (
 							<div className='spinner absolute size-48 center' />
 						) : !Array.isArray(symbolsData) || symbolsData.length === 0 ? (
 							<div className='absolute center'>
-								<span className='font-medium text-gray-900'>
-									{t('add_symbol_to_watchlist.no_symbol_found')}
-								</span>
+								<span className='font-medium text-gray-900'>{t('common.no_symbol_found')}</span>
 							</div>
 						) : (
 							<ul className='h-full gap-4 overflow-auto flex-column'>

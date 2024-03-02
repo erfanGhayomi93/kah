@@ -9,6 +9,10 @@
 	&:not(.transparent) {
 		background-color: rgba(0, 0, 0, 0.1);
 	}
+
+	&.transparent .modal {
+		box-shadow: theme("boxShadow.section");
+	}
 }
 
 .container {
@@ -27,7 +31,6 @@
 	overflow: hidden;
 	transform: translateX(-50%);
 	-webkit-transform: translateX(-50%);
-	box-shadow: theme("boxShadow.section");
 
 	&.lg {
 		width: 114rem;

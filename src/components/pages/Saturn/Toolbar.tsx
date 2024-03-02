@@ -31,7 +31,7 @@ const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 
 	return (
 		<div className='w-full flex-justify-between'>
-			<div style={{ flex: 1, maxWidth: '40rem' }} className='rounded bg-white'>
+			<div style={{ flex: 1, maxWidth: '30rem' }} className='rounded bg-white'>
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 			</div>
 

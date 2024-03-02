@@ -107,11 +107,11 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 			{...props}
 		>
 			<Div className='justify-between bg-white flex-column'>
-				<div className='relative h-56 border-b border-b-gray-500 flex-justify-center'>
+				<div className='relative h-56 bg-gray-200 flex-justify-center'>
 					<h2 className='text-xl font-medium'>{t('manage_option_watchlist_modal.title')}</h2>
 
 					<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
-						<XSVG width='1.6rem' height='1.6rem' />
+						<XSVG width='2rem' height='2rem' />
 					</button>
 				</div>
 
@@ -155,13 +155,13 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 					</div>
 				)}
 
-				<div className='h-56 gap-8 border-t border-t-gray-500 pl-24 flex-items-center'>
+				<div className='h-64 gap-8 border-t border-t-gray-500 pl-24 flex-items-center'>
 					{isDeleting.hasStarted ? (
 						<div className='w-full gap-8 flex-justify-end'>
 							<button
 								style={{ width: '8.8rem' }}
 								onClick={() => setIsDeleting({ type: 'hasStarted', payload: false })}
-								className='h-36 rounded btn-disabled-outline'
+								className='h-40 rounded btn-disabled-outline'
 								type='button'
 							>
 								{t('common.cancel')}
@@ -169,7 +169,7 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 							<button
 								style={{ width: '8.8rem' }}
 								onClick={deleteAll}
-								className='h-36 rounded btn-error'
+								className='h-40 rounded btn-error'
 								type='button'
 							>
 								{t('manage_option_watchlist_modal.delete_all')}

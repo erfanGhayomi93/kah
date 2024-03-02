@@ -5,14 +5,14 @@ import { useState } from 'react';
 import Popup from './Popup';
 import styles from './SymbolSearch.module.scss';
 
-type ValueType = Symbol.Search | null;
+type TSymbolType = Symbol.Search | null;
 
 type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>;
 
 interface SymbolSearchProps extends InputProps {
-	value: ValueType;
+	value: TSymbolType;
 	classes?: RecordClasses<'root' | 'input' | 'search' | 'list' | 'blankList' | 'item'>;
-	onChange: (symbol: ValueType) => void;
+	onChange: (symbol: TSymbolType) => void;
 }
 
 const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchProps) => {
@@ -26,7 +26,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
 	});
 
-	const onSelect = (symbol: ValueType) => {
+	const onSelect = (symbol: TSymbolType) => {
 		onChange(symbol);
 	};
 
@@ -60,7 +60,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 				if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 					return (
 						<div className={clsx(styles.blankList, classes?.blankList)}>
-							<span>{t('symbol_search.no_symbol_found')}</span>
+							<span>{t('common.no_symbol_found')}</span>
 						</div>
 					);
 
@@ -112,7 +112,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 						maxLength={24}
 						placeholder={
 							focusing
-								? t('symbol_search.needs_more_than_n_chars', { n: 2 })
+								? t('common.needs_more_than_n_chars', { n: 2 })
 								: t('symbol_search.input_placeholder')
 						}
 						onFocus={() => onFocus(() => setOpen(true))}

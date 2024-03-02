@@ -17,7 +17,7 @@ const Div = styled.div`
 	-webkit-transition: width 200ms ease-in-out;
 `;
 
-interface BuySellModalProps extends IBuySellModal, IBaseModalConfiguration {}
+interface BuySellModalProps extends IBuySellModal {}
 
 const BuySellModal = ({
 	symbolISIN,

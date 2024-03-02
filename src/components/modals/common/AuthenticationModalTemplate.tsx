@@ -37,7 +37,7 @@ const AuthenticationModalTemplate = ({
 				{!hideTitle && [
 					<div key='close' className='absolute left-24 z-10'>
 						<button onClick={onClose} type='button' className='icon-hover'>
-							<XSVG />
+							<XSVG width='2rem' height='2rem' />
 						</button>
 					</div>,
 

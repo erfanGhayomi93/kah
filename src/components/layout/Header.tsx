@@ -133,7 +133,7 @@ const Header = () => {
 							defaultPopupWidth={296}
 							onOpen={() => setIsDropdownOpened(true)}
 							onClose={() => setIsDropdownOpened(false)}
-							renderer={({ setOpen }) => (
+							renderer={() => (
 								<div className='rounded-md bg-white pb-16 shadow-tooltip'>
 									<div className='flex h-40 items-start justify-between pr-16'>
 										<div className='gap-12 pt-16 flex-items-center fit-image'>

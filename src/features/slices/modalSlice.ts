@@ -8,7 +8,11 @@ type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IB
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
-export interface IBuySellModal {
+export interface IBlackScholes extends IBaseModalConfiguration {
+	symbolISIN?: string;
+}
+
+export interface IBuySellModal extends IBaseModalConfiguration {
 	symbolTitle: string;
 	symbolISIN: string;
 	symbolType: TBsSymbolTypes;
@@ -24,7 +28,7 @@ export interface IForgetPasswordModal extends IBaseModalConfiguration {
 	phoneNumber?: string;
 }
 
-export interface IContractSelectorModal {
+export interface IContractSelectorModal extends IBaseModalConfiguration {
 	symbolTitle: string;
 	symbolISIN: string;
 }
@@ -35,6 +39,7 @@ export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
 	chooseBroker: true;
+	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
 	addNewOptionWatchlist: true;
 	manageOptionWatchlistList: true;
@@ -49,6 +54,7 @@ const initialState: ModalState = {
 	loginModal: null,
 	optionFilters: null,
 	logout: null,
+	blackScholes: {},
 	addSymbolToWatchlist: null,
 	addNewOptionWatchlist: null,
 	manageOptionWatchlistList: null,
@@ -103,6 +109,10 @@ const modalSlice = createSlice({
 			state.chooseBroker = payload;
 		},
 
+		toggleBlackScholesModal: (state, { payload }: PayloadAction<ModalState['blackScholes']>) => {
+			state.blackScholes = payload;
+		},
+
 		toggleManageOptionWatchlistListModal: (
 			state,
 			{ payload }: PayloadAction<ModalState['manageOptionWatchlistList']>,
@@ -118,6 +128,7 @@ export const {
 	toggleForgetPasswordModal,
 	toggleOptionFiltersModal,
 	toggleLogoutModal,
+	toggleBlackScholesModal,
 	toggleSymbolContractsModal,
 	toggleSaveSaturnTemplate,
 	toggleAddNewOptionWatchlist,
@@ -130,6 +141,7 @@ export const getChooseBroker = (state: RootState) => state.modal.chooseBroker;
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getBuySellModal = (state: RootState) => state.modal.buySell;
+export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
 export const getSymbolContractsModal = (state: RootState) => state.modal.symbolContracts;

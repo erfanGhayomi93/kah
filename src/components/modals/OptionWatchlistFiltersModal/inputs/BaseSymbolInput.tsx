@@ -22,7 +22,7 @@ const SelectedSymbol = ({ title, onRemoveSymbol }: SelectedSymbolProps) => (
 	<li>
 		<span className='truncate'>{title}</span>
 		<button onClick={onRemoveSymbol} type='button'>
-			<XSVG width='0.8rem' height='0.8rem' />
+			<XSVG width='1rem' height='1rem' />
 		</button>
 	</li>
 );
@@ -264,7 +264,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 								type='button'
 								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-1000 text-white flex-justify-center'
 							>
-								<XSVG width='0.8rem' height='0.8rem' />
+								<XSVG width='1rem' height='1rem' />
 							</button>
 						)
 					)}

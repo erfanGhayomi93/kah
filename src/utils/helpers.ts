@@ -7,18 +7,9 @@ import { getClientId } from './cookie';
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
-	let result = num;
+	const formattedIntegerPart: string = num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-	try {
-		const objRegex = /(-?[0-9]+)([0-9]{3})/;
-		while (objRegex.test(result)) {
-			result = result.replace(objRegex, '$1,$2');
-		}
-	} catch (e) {
-		//
-	}
-
-	return result;
+	return formattedIntegerPart;
 };
 
 export const numFormatter = (num: number, formatNavigateNumber = true) => {

@@ -564,6 +564,64 @@ const config: Config = {
 					top: '50%',
 					transform: 'translate(-50%, -50%)',
 				},
+
+				'.input-group': {
+					transition: 'border-color 200ms ease-in-out',
+					'-webkit-transition': 'border-color 200ms ease-in-out',
+					'-moz-transition': 'border-color 200ms ease-in-out',
+
+					'&:focus-within,input:focus,textarea:focus': {
+						'border-color': theme('colors.primary.300'),
+
+						'.flexible-placeholder': {
+							color: theme('colors.primary.300'),
+							'font-size': '1.2rem',
+							transform: 'translate(0, -175%)',
+							'-webkit-transform': 'translate(0, -175%)',
+						},
+					},
+
+					'&:not(:focus-within):hover': {
+						'border-color': theme('colors.gray.700'),
+					},
+				},
+
+				'.flexible-placeholder': {
+					position: 'absolute',
+					'font-size': '1.4rem',
+					top: '50%',
+					'font-weight': '400',
+					right: '0.8rem',
+					'background-color': theme('colors.white'),
+					padding: '0 8px',
+					'pointer-events': 'none',
+					color: theme('colors.gray.700'),
+					transform: 'translate(0, -50%)',
+					'-webkit-transform': 'translate(0, -50%)',
+					transition: 'font-size 200ms ease, color 200ms ease-in, transform 200ms ease',
+					'-webkit-transition': 'font-size 200ms ease, color 200ms ease-in, transform 200ms ease',
+
+					'&.active': {
+						'font-size': '1.2rem',
+						color: theme('colors.gray.900'),
+						transform: 'translate(0, -175%)',
+						'-webkit-transform': 'translate(0, -175%)',
+
+						'&.colorful': {
+							color: theme('colors.primary.300'),
+						},
+					},
+				},
+
+				'.spinner': {
+					position: 'relative',
+					display: 'inline-block',
+					'vertical-align': 'middle',
+					border: `2px solid ${theme('colors.primary.200')}`,
+					'border-right-color': 'rgba(0, 0, 0, 0)',
+					'border-radius': '50%',
+					animation: '750ms linear infinite spinner-border',
+				},
 			});
 		}),
 	],

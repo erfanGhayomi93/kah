@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 import AddNewOptionWatchlist from './AddNewOptionWatchlist';
 import AddSaturnTemplate from './AddSaturnTemplate';
 import AddSymbolToWatchlist from './AddSymbolToWatchlist';
+import BlackScholes from './BlackScholes';
 import BuySellModal from './BuySellModal';
 import ChooseBroker from './ChooseBroker';
 import ForgetPasswordModal from './ForgetPasswordModal';
@@ -27,19 +28,31 @@ const Modals = () => {
 		buySell,
 		addSymbolToWatchlist,
 		chooseBroker,
+		blackScholes,
 	} = useAppSelector((state) => state.modal);
 
 	return (
 		<Fragment>
 			{loginModal && <LoginModal {...loginModal} />}
+
 			{logout && <LogoutModal {...logout} />}
+
+			{blackScholes && <BlackScholes {...blackScholes} />}
+
 			{optionFilters && <OptionWatchlistFiltersModal {...optionFilters} />}
+
 			{symbolContracts && <SymbolContracts {...symbolContracts} />}
+
 			{addSaturnTemplate !== null && <AddSaturnTemplate {...addSaturnTemplate} />}
+
 			{addNewOptionWatchlist && <AddNewOptionWatchlist {...addNewOptionWatchlist} />}
+
 			{manageOptionWatchlistList && <ManageOptionWatchlistList {...manageOptionWatchlistList} />}
+
 			{buySell && <BuySellModal {...buySell} />}
+
 			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
+
 			{chooseBroker && <ChooseBroker {...chooseBroker} />}
 
 			{forgetPassword && (

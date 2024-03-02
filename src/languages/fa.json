@@ -14,7 +14,9 @@
 		"from": "از",
 		"to": "تا",
 		"close": "بستن",
+		"no_symbol_found": "نماد مورد نظر یافت نشد",
 		"searching": "در حال جستجو",
+		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
 		"an_error_occurred": "خطا در دریافت اطلاعات"
 	},
 	"side": {
@@ -114,9 +116,7 @@
 		"description": "برای معامله در کهکشان، یکی از کارگزاری های زیر را انتخاب کنید."
 	},
 	"add_symbol_to_watchlist": {
-		"title": "جستجوی نماد",
-		"no_symbol_found": "نماد مورد نظر یافت نشد",
-		"type_min_chars": "حداقل {n} حرف وارد نمایید."
+		"title": "جستجوی نماد"
 	},
 	"bs_modal": {
 		"title": "سفارش {symbolTitle}",
@@ -140,6 +140,26 @@
 		"validity_date_good_till_cancelled": "لغو دستی",
 		"validity_date_fill_and_kill": "انجام و حذف",
 		"draft": "پیش‌نویس"
+	},
+	"black_scholes_modal": {
+		"title": "ماشین حساب آپشن",
+		"base_symbol": "نماد پایه",
+		"contract_end_date": "تاریخ سررسید",
+		"strike_price": "قیمت اعمال",
+		"premium_placeholder": "قیمت دارایی پایه (Premium)",
+		"strike_price_placeholder": "قیمت اعمال (Strike)",
+		"due_days_remaining": "مانده تا سررسید",
+		"volatility_placeholder": "نوسان (Volatility)",
+		"risk_free_profit": "سود بدون ریسک",
+		"contract_price_placeholder": "قیمت قرارداد",
+		"theoretical_price": "قیمت تئوری",
+		"day": "روز",
+		"delta": "دلتا",
+		"gamma": "گاما",
+		"vega": "وگا",
+		"theta": "تتا",
+		"rho": "رو",
+		"implied_volatility": "نوسان پذیری ضمنی"
 	},
 	"manage_option_watchlist_columns": {
 		"title": "مدیریت ستون های جدول",
@@ -198,7 +218,6 @@
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
 		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
 		"symbol_search_placeholder": "نماد مورد نظر خود را جستجو کنید",
-		"no_symbol_found": "نمادی برای نمایش یافت نشد",
 		"no_data_found": "اطلاعاتی برای نمایش یافت نشد",
 		"closing_price": "قیمت پایانی",
 		"trade_volume": "حجم معاملات ",
@@ -281,9 +300,7 @@
 		"otp_placeholder": "کد تایید"
 	},
 	"symbol_search": {
-		"input_placeholder": "نماد مورد نظر خود را جستجو کنید",
-		"no_symbol_found": "نماد مورد نظر یافت نشد",
-		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید"
+		"input_placeholder": "نماد مورد نظر خود را جستجو کنید"
 	},
 	"sidebar": {
 		"account": "پروفایل",
