@@ -1,5 +1,5 @@
 .root {
-	border: 1px solid theme("colors.gray.500");
+	border: 1px solid theme("colors.input");
 	border-radius: 8px;
 	padding: 0 1.6rem 0 1rem;
 	position: relative;
@@ -12,12 +12,16 @@
 	transition: border-color 250ms;
 	user-select: none;
 
-	&.focus {
+	&:not(.disabled).focus {
 		border-color: theme("colors.primary.300");
 	}
 
-	&.clickable {
+	&:not(.disabled).clickable {
 		cursor: pointer;
+	}
+
+	&.disabled {
+		opacity: 0.5;
 	}
 }
 

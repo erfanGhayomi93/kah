@@ -83,7 +83,7 @@ const AddNewOptionWatchlist = (props: AddNewOptionWatchlistProps) => {
 							maxLength={36}
 							value={name}
 							placeholder={t('add_new_option_watchlist_modal.input_placeholder')}
-							className='h-40 w-full rounded border border-gray-500 px-16 text-base'
+							className='h-40 w-full rounded border border-input px-16 text-base'
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</label>

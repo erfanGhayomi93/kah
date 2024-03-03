@@ -17,7 +17,7 @@ const SymbolSearch = () => {
 	return (
 		<div
 			style={{ maxWidth: '30rem' }}
-			className='h-40 flex-1 rounded border border-gray-500 flex-items-center input-group'
+			className='h-40 flex-1 rounded border border-input flex-items-center input-group'
 		>
 			<span className='px-8 text-gray-800'>
 				<SearchSVG />

@@ -21,8 +21,9 @@ type SelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	defaultOpen?: boolean;
 	options: T[];
 	loading?: boolean;
+	disabled?: boolean;
 	classes?: RecordClasses<
-		'root' | 'focus' | 'list' | 'alert' | 'listItem' | 'value' | 'placeholder' | 'icon' | 'active'
+		'root' | 'focus' | 'disabled' | 'list' | 'alert' | 'listItem' | 'value' | 'placeholder' | 'icon' | 'active'
 	>;
 	getOptionId: (option: T) => string | number;
 	getOptionTitle: (option: T) => React.ReactNode;
@@ -33,8 +34,8 @@ const Select = <T,>({
 	options,
 	classes,
 	loading,
+	disabled,
 	placeholder,
-	clearable,
 	defaultOpen,
 	getOptionId,
 	getOptionTitle,
@@ -44,14 +45,13 @@ const Select = <T,>({
 
 	const [focusing, setFocusing] = useState(false);
 
-	const onClear = () => {
-		if (clearable) onChange(null);
-	};
-
 	return (
 		<Popup
 			zIndex={9999}
 			defaultOpen={defaultOpen}
+			disabled={disabled}
+			onOpen={() => setFocusing(true)}
+			onClose={() => setFocusing(false)}
 			renderer={({ setOpen }) => {
 				if (!Array.isArray(options) || options.length === 0)
 					return (
@@ -82,8 +82,6 @@ const Select = <T,>({
 					</ul>
 				);
 			}}
-			onOpen={() => setFocusing(true)}
-			onClose={() => setFocusing(false)}
 		>
 			{({ setOpen, open }) => (
 				<div
@@ -91,7 +89,7 @@ const Select = <T,>({
 					className={cn(
 						styles.root,
 						classes?.root,
-						styles.clickable,
+						disabled ? [styles.disabled, classes?.disabled] : styles.clickable,
 						focusing && [styles.focus, classes?.focus],
 					)}
 				>
