@@ -24,7 +24,7 @@ const Modal = ({
 	classes,
 	size,
 	top,
-	animation,
+	animation = true,
 	onClose,
 }: ModalProps) => {
 	const rootRef = useRef<HTMLDivElement>(null);

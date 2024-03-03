@@ -1,7 +1,7 @@
+import { ArrowDownSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
-import { ArrowDownSVG } from '../../icons';
 import Popup from '../Popup';
 import styles from './Select.module.scss';
 
@@ -136,7 +136,7 @@ const AsyncSelect = <T,>({
 					)}
 
 					{loading ? (
-						<div className='ml-16 min-h-20 min-w-20 spinner' />
+						<div className='min-h-20 min-w-20 spinner' />
 					) : (
 						<ArrowDownSVG
 							width='1.6rem'
