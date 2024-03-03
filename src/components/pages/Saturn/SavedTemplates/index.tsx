@@ -19,7 +19,7 @@ const SavedTemplates = () => {
 	};
 
 	return (
-		<Panel isEnable={isEnabled} onClose={onClose} width='42rem' height='calc(100vh - 8rem)'>
+		<Panel isEnable={isEnabled} onClose={onClose} width='42rem' height='calc(100dvh - 8rem)'>
 			<div className='sticky top-0 z-10 h-56 w-full bg-gray-200 px-24 flex-justify-between'>
 				<h1 className='text-xl font-medium text-gray-900'>{t('saved_saturn_templates.title')}</h1>
 

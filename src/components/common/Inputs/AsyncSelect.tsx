@@ -66,6 +66,7 @@ const AsyncSelect = <T,>({
 	};
 
 	const onOpen = () => {
+		setFocusing(true);
 		if (value) onChangeTerm(getInputValue(value));
 	};
 
