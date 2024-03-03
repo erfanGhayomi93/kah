@@ -18,7 +18,7 @@
 	box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2) inset;
 }
 
-.thumb:after {
+.thumb::after {
 	content: "";
 	position: absolute;
 	top: 50%;
@@ -44,11 +44,11 @@
 	background: theme("colors.primary.400");
 }
 
-.input:checked + .thumb:after {
+.input:checked + .thumb::after {
 	left: calc(100% + 2px);
 	transform: translate(-100%, -50%);
 }
 
-.thumb:active:after {
+.thumb:active::after {
 	width: 20px;
 }

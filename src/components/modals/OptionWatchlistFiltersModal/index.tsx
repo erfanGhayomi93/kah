@@ -24,11 +24,11 @@ const OptionWatchlistFiltersModal = (props: OptionWatchlistFiltersModalProps) =>
 	return (
 		<Modal transparent top='14%' onClose={onClose} {...props}>
 			<Div className='gap-40 bg-white flex-column'>
-				<div className='relative h-56 border-b border-b-gray-500 flex-justify-center'>
+				<div className='relative h-56 bg-gray-200 flex-justify-center'>
 					<h2 className='text-xl font-medium'>{t('option_watchlist_filters_modal.title')}</h2>
 
 					<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
-						<XSVG width='1.6rem' height='1.6rem' />
+						<XSVG width='2rem' height='2rem' />
 					</button>
 				</div>
 

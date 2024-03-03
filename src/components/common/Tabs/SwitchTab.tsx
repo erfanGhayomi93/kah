@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { Fragment, cloneElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import styles from './SwitchTab.module.scss';
 
@@ -72,10 +72,10 @@ const SwitchTab = <T extends object>({
 	}, [rootRef.current]);
 
 	return (
-		<div ref={rootRef} className={clsx(styles.root, classes?.root)}>
-			<div ref={rectRef} className={clsx(styles.rect, classes?.rect)} />
+		<div ref={rootRef} className={cn(styles.root, classes?.root)}>
+			<div ref={rectRef} className={cn(styles.rect, classes?.rect)} />
 
-			<div className={clsx(styles.tabs, classes?.tabs)}>
+			<div className={cn(styles.tabs, classes?.tabs)}>
 				{data.map((item) => (
 					<Fragment key={item.id}>
 						{cloneElement(renderTab(item, activeTab), {

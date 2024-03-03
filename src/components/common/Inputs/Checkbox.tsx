@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import styles from './Checkbox.module.scss';
 
 interface ICheckboxProps
@@ -12,17 +12,17 @@ interface ICheckboxProps
 
 const Checkbox = ({ classes, disabled, onChange, checked, label, ...props }: ICheckboxProps) => {
 	return (
-		<div className={clsx(styles.root, classes?.root, disabled && styles.disabled)}>
-			<label className={clsx(styles.label, classes?.label)}>
+		<div className={cn(styles.root, classes?.root, disabled && styles.disabled)}>
+			<label className={cn(styles.label, classes?.label)}>
 				<input
 					type='checkbox'
 					checked={checked}
 					onChange={disabled ? undefined : () => onChange(!checked)}
-					className={clsx(styles.checkbox, classes?.checkbox, checked && [styles.checked, classes?.checked])}
+					className={cn(styles.checkbox, classes?.checkbox, checked && [styles.checked, classes?.checked])}
 					{...props}
 				/>
 
-				{label && <span className={clsx(styles.text, classes?.text)}>{label}</span>}
+				{label && <span className={cn(styles.text, classes?.text)}>{label}</span>}
 			</label>
 		</div>
 	);

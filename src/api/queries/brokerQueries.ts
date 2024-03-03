@@ -1,3 +1,4 @@
+import { getBrokerClientId } from '@/utils/cookie';
 import { createQuery, decodeBrokerUrls } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
@@ -6,9 +7,11 @@ export const useGetBrokerUrlQuery = createQuery<IBrokerUrls, ['getBrokerUrlQuery
 	staleTime: 36e5,
 	queryKey: ['getBrokerUrlQuery'],
 	queryFn: async ({ signal }) => {
+		const [, brokerCode] = getBrokerClientId();
+
 		const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
 			params: {
-				brokerCode: 189,
+				brokerCode,
 			},
 			signal,
 		});

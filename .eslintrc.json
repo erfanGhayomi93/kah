@@ -26,6 +26,7 @@
 		],
 		"prefer-promise-reject-errors": "off",
 		"accessor-pairs": "off",
+		"@next/next/no-img-element": "off",
 		"n/handle-callback-err": "off",
 		"@typescript-eslint/prefer-nullish-coalescing": "off",
 		"n/no-callback-literal": "off",

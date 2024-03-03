@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import React from 'react';
 
 type TValue = string | React.ReactNode;
@@ -26,7 +26,7 @@ const SymbolSummary = ({ data }: SymbolSummaryProps) => {
 	return (
 		<ul className='flex flex-column'>
 			{data.map(([firstItem, secondItem], i) => (
-				<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
+				<li key={firstItem.id} className={cn('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
 					<ListItem {...firstItem} />
 					<ListItem {...secondItem} />
 				</li>

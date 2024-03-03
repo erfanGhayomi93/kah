@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
 interface TypeInputProps {
@@ -23,14 +23,14 @@ const TypeInput = ({ value, onChange }: TypeInputProps) => {
 			<button
 				type='button'
 				onClick={() => onChangeValue('Call')}
-				className={clsx(isBuy ? 'btn-primary' : 'btn-choose-outline')}
+				className={cn(isBuy ? 'btn-primary' : 'btn-choose-outline')}
 			>
 				{t('side.buy')}
 			</button>
 			<button
 				type='button'
 				onClick={() => onChangeValue('Put')}
-				className={clsx(isSell ? 'btn-primary' : 'btn-choose-outline')}
+				className={cn(isSell ? 'btn-primary' : 'btn-choose-outline')}
 			>
 				{t('side.sell')}
 			</button>

@@ -2,23 +2,16 @@ import { onUnauthorize } from '@/api/axios';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { getClientId } from './cookie';
 
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
-	let result = num;
+	const formattedIntegerPart: string = num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-	try {
-		const objRegex = /(-?[0-9]+)([0-9]{3})/;
-		while (objRegex.test(result)) {
-			result = result.replace(objRegex, '$1,$2');
-		}
-	} catch (e) {
-		//
-	}
-
-	return result;
+	return formattedIntegerPart;
 };
 
 export const numFormatter = (num: number, formatNavigateNumber = true) => {
@@ -156,6 +149,10 @@ export const base64encode = (value: string) => {
 	return btoa(value);
 };
 
+export const base64decode = (value: string) => {
+	return atob(value);
+};
+
 export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
 	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
 	queryClient?: QueryClient,
@@ -266,4 +263,8 @@ export const divide = (arg1: number, arg2: number) => {
 	if (arg2 === 0) return 0;
 
 	return arg1 / arg2;
+};
+
+export const cn = (...args: ClassesValue[]) => {
+	return twMerge(clsx(args));
 };

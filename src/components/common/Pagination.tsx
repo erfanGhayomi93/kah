@@ -1,5 +1,5 @@
 import { usePagination } from '@/hooks';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { DoubleArrowLeftSVG, DoubleArrowRightSVG } from '../icons';
 import styles from './Pagination.module.scss';
@@ -11,7 +11,14 @@ interface PaginationProps extends Record<'totalCount' | 'pageNumber' | 'pageSize
 	onPageChange: (pn: number) => void;
 	onPageSizeChange: (ps: number) => void;
 }
-const Pagination = ({ onPageChange, onPageSizeChange, hasNextPage, hasPreviousPage, totalPages, ...props }: PaginationProps) => {
+const Pagination = ({
+	onPageChange,
+	onPageSizeChange,
+	hasNextPage,
+	hasPreviousPage,
+	totalPages,
+	...props
+}: PaginationProps) => {
 	const t = useTranslations();
 
 	const pag = usePagination({
@@ -38,7 +45,7 @@ const Pagination = ({ onPageChange, onPageSizeChange, hasNextPage, hasPreviousPa
 				</button>
 			</li>
 			{pag.map((pn) => (
-				<li className={clsx(styles.page, pn === props.pageNumber && styles.active)} key={pn}>
+				<li className={cn(styles.page, pn === props.pageNumber && styles.active)} key={pn}>
 					<button
 						disabled={typeof pn === 'string'}
 						onClick={typeof pn === 'string' ? undefined : () => onPageChange(pn)}

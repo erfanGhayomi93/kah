@@ -28,8 +28,14 @@ brokerAxios.defaults.paramsSerializer = {
 
 brokerAxios.interceptors.request.use(
 	(config) => {
-		const clientId = getBrokerClientId();
-		if (clientId) config.headers.Authorization = `Bearer ${clientId}`;
+		try {
+			const [token] = getBrokerClientId();
+			if (token) {
+				config.headers.Authorization = `Bearer ${token}`;
+			}
+		} catch (e) {
+			//
+		}
 
 		return config;
 	},

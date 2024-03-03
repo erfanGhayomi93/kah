@@ -1,6 +1,6 @@
 import Button from '@/components/common/Button';
 import { ArrowLeftSVG } from '@/components/icons';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
@@ -62,7 +62,7 @@ const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 						},
 					}}
 					render={({ field, fieldState: { invalid, isTouched, error } }) => (
-						<label className={clsx('input-box', !(isTouched && invalid) && 'pb-8')}>
+						<label className={cn('input-box', !(isTouched && invalid) && 'pb-8')}>
 							<span className='label'>{t('inputs.phone_number')}</span>
 							<input
 								title={t('inputs.phone_number_placeholder')}
@@ -70,7 +70,7 @@ const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 								type='text'
 								inputMode='numeric'
 								maxLength={12}
-								className={clsx('input', isTouched && invalid && 'invalid')}
+								className={cn('input', isTouched && invalid && 'invalid')}
 								placeholder={t('inputs.phone_number_placeholder')}
 								{...field}
 							/>

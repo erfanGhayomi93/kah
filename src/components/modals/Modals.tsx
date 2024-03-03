@@ -1,18 +1,56 @@
 'use client';
 
 import { useAppSelector } from '@/features/hooks';
+import dynamic from 'next/dynamic';
 import { Fragment } from 'react';
-import AddNewOptionWatchlist from './AddNewOptionWatchlist';
-import AddSaturnTemplate from './AddSaturnTemplate';
-import AddSymbolToWatchlist from './AddSymbolToWatchlist';
-import BuySellModal from './BuySellModal';
-import ChooseBroker from './ChooseBroker';
-import ForgetPasswordModal from './ForgetPasswordModal';
-import LoginModal from './LoginModal';
-import LogoutModal from './Logout';
-import ManageOptionWatchlistList from './ManageOptionWatchlistList';
-import OptionWatchlistFiltersModal from './OptionWatchlistFiltersModal';
-import SymbolContracts from './SymbolContracts';
+
+const AddNewOptionWatchlist = dynamic(() => import('./AddNewOptionWatchlist'), {
+	ssr: false,
+});
+
+const AddSaturnTemplate = dynamic(() => import('./AddSaturnTemplate'), {
+	ssr: false,
+});
+
+const AddSymbolToWatchlist = dynamic(() => import('./AddSymbolToWatchlist'), {
+	ssr: false,
+});
+
+const BlackScholes = dynamic(() => import('./BlackScholes'), {
+	ssr: false,
+});
+
+const BuySellModal = dynamic(() => import('./BuySellModal'), {
+	ssr: false,
+});
+
+const ChooseBroker = dynamic(() => import('./ChooseBroker'), {
+	ssr: false,
+});
+
+const ForgetPasswordModal = dynamic(() => import('./ForgetPasswordModal'), {
+	ssr: false,
+});
+
+const LoginModal = dynamic(() => import('./LoginModal'), {
+	ssr: false,
+});
+
+const LogoutModal = dynamic(() => import('./LogoutModal'), {
+	ssr: false,
+});
+
+const ManageOptionWatchlistList = dynamic(() => import('./ManageOptionWatchlistList'), {
+	ssr: false,
+});
+
+const OptionWatchlistFiltersModal = dynamic(() => import('./OptionWatchlistFiltersModal'), {
+	ssr: false,
+});
+
+const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
+	ssr: false,
+});
 
 const Modals = () => {
 	const {
@@ -27,19 +65,31 @@ const Modals = () => {
 		buySell,
 		addSymbolToWatchlist,
 		chooseBroker,
+		blackScholes,
 	} = useAppSelector((state) => state.modal);
 
 	return (
 		<Fragment>
 			{loginModal && <LoginModal {...loginModal} />}
+
 			{logout && <LogoutModal {...logout} />}
+
+			{blackScholes && <BlackScholes {...blackScholes} />}
+
 			{optionFilters && <OptionWatchlistFiltersModal {...optionFilters} />}
+
 			{symbolContracts && <SymbolContracts {...symbolContracts} />}
+
 			{addSaturnTemplate !== null && <AddSaturnTemplate {...addSaturnTemplate} />}
+
 			{addNewOptionWatchlist && <AddNewOptionWatchlist {...addNewOptionWatchlist} />}
+
 			{manageOptionWatchlistList && <ManageOptionWatchlistList {...manageOptionWatchlistList} />}
+
 			{buySell && <BuySellModal {...buySell} />}
+
 			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
+
 			{chooseBroker && <ChooseBroker {...chooseBroker} />}
 
 			{forgetPassword && (

@@ -2,7 +2,7 @@ import Tooltip from '@/components/common/Tooltip';
 import Collapse from '@/components/common/transition/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import { Link, usePathname } from '@/navigation';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
@@ -37,7 +37,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: Item
 
 	return (
 		<Tooltip disabled={sidebarIsExpand} placement='left' content={label}>
-			<li className={clsx(isExpand && styles.expand, isActive && styles.active)}>
+			<li className={cn(isExpand && styles.expand, isActive && styles.active)}>
 				{'to' in props ? (
 					<Link href={props.to}>
 						{icon}
@@ -53,7 +53,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: Item
 
 				{hasDropdown && (
 					<Collapse enabled={sidebarIsExpand && isExpand}>
-						<ul className={clsx(styles.list, isExpand && styles.expand)}>
+						<ul className={cn(styles.list, isExpand && styles.expand)}>
 							{props.items.map((item, i) => (
 								<Item sidebarIsExpand={sidebarIsExpand} key={i} {...item} />
 							))}

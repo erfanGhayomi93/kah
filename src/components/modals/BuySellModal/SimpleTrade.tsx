@@ -10,8 +10,7 @@ import {
 	SnowFlakeSVG,
 	UnlockSVG,
 } from '@/components/icons';
-import { rialToToman, sepNumbers } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, rialToToman, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import Input from './common/Input';
@@ -39,7 +38,7 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 					<button
 						key={p}
 						type='button'
-						className='gray-box h-28 flex-1 leading-8 text-gray-1000 flex-justify-center'
+						className='h-28 flex-1 leading-8 text-gray-1000 flex-justify-center gray-box'
 						onClick={() => onClick(p)}
 					>
 						{p}%
@@ -144,7 +143,7 @@ const SimpleTrade = ({
 					onChangeTab={(tabId) => setInputValue('side', tabId as TBsSides)}
 					renderTab={(item, activeTab) => (
 						<button
-							className={clsx(
+							className={cn(
 								'h-full flex-1 transition-colors',
 								item.id === activeTab ? 'font-medium text-white' : 'text-gray-700',
 							)}
@@ -168,10 +167,10 @@ const SimpleTrade = ({
 								}}
 								className='h-full flex-column'
 							>
-								<button type='button' className='gray-box flex-1 rounded-sm flex-justify-center'>
+								<button type='button' className='flex-1 rounded-sm flex-justify-center gray-box'>
 									<ArrowUpSVG width='1.2rem' height='1.2rem' />
 								</button>
-								<button type='button' className='gray-box flex-1 rounded-sm flex-justify-center'>
+								<button type='button' className='flex-1 rounded-sm flex-justify-center gray-box'>
 									<ArrowDownSVG width='1.2rem' height='1.2rem' />
 								</button>
 							</div>
@@ -190,7 +189,7 @@ const SimpleTrade = ({
 							style={{
 								flex: '0 0 4rem',
 							}}
-							className={clsx(
+							className={cn(
 								'h-full rounded border transition-colors flex-justify-center',
 								priceLock
 									? 'border-primary-400 bg-secondary-100 text-primary-400'
@@ -209,7 +208,7 @@ const SimpleTrade = ({
 				/>
 
 				<div className='gap-8 flex-column'>
-					<div className='gray-box h-40 gap-8 px-8 flex-justify-between'>
+					<div className='h-40 gap-8 px-8 flex-justify-between gray-box'>
 						<span className='whitespace-nowrap text-base text-gray-900'>
 							{t('bs_modal.trade_value_label')}
 						</span>
@@ -231,8 +230,8 @@ const SimpleTrade = ({
 							<>
 								<button
 									type='button'
-									className={clsx(
-										'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
+									className={cn(
+										'h-full flex-1 gap-8 transition-colors flex-justify-center gray-box',
 										collateral === 'stock'
 											? '!border-primary-400 bg-secondary-100 text-primary-400'
 											: 'text-gray-900 hover:bg-primary-100',
@@ -243,8 +242,8 @@ const SimpleTrade = ({
 								</button>
 								<button
 									type='button'
-									className={clsx(
-										'gray-box h-full flex-1 gap-8 transition-colors flex-justify-center',
+									className={cn(
+										'h-full flex-1 gap-8 transition-colors flex-justify-center gray-box',
 										collateral === 'cash'
 											? '!border-primary-400 bg-secondary-100 text-primary-400'
 											: 'text-gray-900 hover:bg-primary-100',
@@ -263,7 +262,7 @@ const SimpleTrade = ({
 						<div className='relative'>
 							<div
 								onClick={() => setShowValidityDates(!showValidityDates)}
-								className='gray-box h-40 cursor-pointer select-none gap-8 px-8 flex-justify-between'
+								className='h-40 cursor-pointer select-none gap-8 px-8 flex-justify-between gray-box'
 							>
 								<span className='whitespace-nowrap text-base text-gray-900'>
 									{t('bs_modal.validity_date')}
@@ -280,7 +279,7 @@ const SimpleTrade = ({
 							{showValidityDates && (
 								<ul
 									style={{ top: 'calc(100% + 0.8rem)' }}
-									className='gray-box absolute left-0 w-full flex-wrap gap-8 py-16 flex-justify-center'
+									className='absolute left-0 w-full flex-wrap gap-8 py-16 flex-justify-center gray-box'
 								>
 									{VALIDITY_DATES.map((item) => (
 										<li style={{ flex: '0 0 8.8rem' }} key={item.id}>
@@ -290,7 +289,7 @@ const SimpleTrade = ({
 													setInputValue('validityDate', item.id);
 													setShowValidityDates(false);
 												}}
-												className={clsx(
+												className={cn(
 													'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
 													item.id === validityDate
 														? 'border-primary-400 bg-secondary-100 text-primary-400'
@@ -326,7 +325,7 @@ const SimpleTrade = ({
 				<div className='flex gap-8'>
 					<button
 						type='submit'
-						className={clsx(
+						className={cn(
 							'h-40 flex-1 rounded text-base font-medium',
 							side === 'buy' ? 'btn-success' : 'btn-error',
 						)}

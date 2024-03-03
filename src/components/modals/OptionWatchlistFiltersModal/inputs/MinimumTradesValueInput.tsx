@@ -25,7 +25,7 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 					value={valueFormatter(value)}
 					onChange={(e) => onChange(convertStringToInteger(e.target.value))}
 				/>
-				<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-900 flex-justify-center'>
+				<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-700 flex-justify-center'>
 					{t('common.rial')}
 				</span>
 			</div>
