@@ -268,3 +268,57 @@ export const divide = (arg1: number, arg2: number) => {
 export const cn = (...args: ClassesValue[]) => {
 	return twMerge(clsx(args));
 };
+
+export const isEnglish = (str: string): boolean => {
+	return Boolean(str.match(/^[a-zA-Z\s0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/gi));
+};
+
+export const englishToPersian = (str: string): string => {
+	if (!isEnglish(str)) return str;
+	str = str.toLowerCase();
+
+	const keyboards = {
+		q: 'ض',
+		w: 'ص',
+		e: 'ث',
+		r: 'ق',
+		t: 'ف',
+		y: 'غ',
+		u: 'ع',
+		i: 'ه',
+		o: 'خ',
+		p: 'ح',
+		'[': 'ج',
+		']': 'چ',
+		a: 'ش',
+		s: 'س',
+		d: 'ی',
+		f: 'ب',
+		g: 'ل',
+		h: 'ا',
+		j: 'ت',
+		k: 'ن',
+		l: 'م',
+		';': 'ک',
+		// eslint-disable-next-line quotes
+		"'": 'گ',
+		z: 'ظ',
+		x: 'ط',
+		c: 'ز',
+		v: 'ر',
+		b: 'ذ',
+		n: 'د',
+		m: 'ئ',
+		',': 'و',
+		'\\': 'پ',
+	};
+
+	let modifiedWord = '';
+	for (let i = 0; i < str.length; i++) {
+		const letter = str[i];
+
+		modifiedWord += keyboards[letter as keyof typeof keyboards] ?? letter;
+	}
+
+	return modifiedWord;
+};

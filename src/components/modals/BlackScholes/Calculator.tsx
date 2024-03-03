@@ -1,3 +1,4 @@
+import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 
@@ -42,12 +43,12 @@ const Calculator = ({ premium, strikePrice, dueDays, volatility, riskFreeProfit,
 					$side='Call'
 					className='border border-success-100 bg-gray-100 text-base font-bold text-success-100 flex-column'
 				>
-					<Part className='text-lg'>16637</Part>
-					<Part className='bg-success-100/5'>452</Part>
-					<Part className='bg-success-100/5'>435</Part>
-					<Part className='bg-success-100/5'>123</Part>
-					<Part className='bg-success-100/5'>345</Part>
-					<Part className='bg-success-100/5'>7567</Part>
+					<Part className='text-lg'>{sepNumbers('16637')}</Part>
+					<Part className='bg-success-100/5'>{sepNumbers('452')}</Part>
+					<Part className='bg-success-100/5'>{sepNumbers('435')}</Part>
+					<Part className='bg-success-100/5'>{sepNumbers('123')}</Part>
+					<Part className='bg-success-100/5'>{sepNumbers('345')}</Part>
+					<Part className='bg-success-100/5'>{sepNumbers('7567')}</Part>
 				</Section>
 
 				<div className='flex-1 text-base font-medium text-gray-900 flex-column'>
@@ -63,12 +64,12 @@ const Calculator = ({ premium, strikePrice, dueDays, volatility, riskFreeProfit,
 					$side='Put'
 					className='border border-error-100 bg-gray-100 text-base font-bold text-error-100 flex-column'
 				>
-					<Part className='text-lg'>43805</Part>
-					<Part className='bg-error-100/5'>657</Part>
-					<Part className='bg-error-100/5'>567567</Part>
-					<Part className='bg-error-100/5'>6547</Part>
-					<Part className='bg-error-100/5'>456</Part>
-					<Part className='bg-error-100/5'>435</Part>
+					<Part className='text-lg'>{sepNumbers('43805')}</Part>
+					<Part className='bg-error-100/5'>{sepNumbers('657')}</Part>
+					<Part className='bg-error-100/5'>{sepNumbers('567567')}</Part>
+					<Part className='bg-error-100/5'>{sepNumbers('6547')}</Part>
+					<Part className='bg-error-100/5'>{sepNumbers('456')}</Part>
+					<Part className='bg-error-100/5'>{sepNumbers('435')}</Part>
 				</Section>
 			</div>
 

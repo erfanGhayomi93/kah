@@ -101,7 +101,9 @@ const Select = <T,>({
 						</span>
 					)}
 
-					<span className={cn('flexible-placeholder', value && 'active')}>{placeholder}</span>
+					<span className={cn('flexible-placeholder', value && 'active', open && 'colorful')}>
+						{placeholder}
+					</span>
 
 					{loading ? (
 						<div className='ml-16 min-h-20 min-w-20 spinner' />

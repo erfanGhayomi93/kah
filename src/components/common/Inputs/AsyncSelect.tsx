@@ -17,27 +17,33 @@ interface INonClearableProps<T> {
 
 type AsyncSelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	value?: T | null;
-	label: string | React.ReactNode;
+	blankPlaceholder?: string;
+	placeholder: string | React.ReactNode;
 	defaultOpen?: boolean;
 	options: T[];
+	minimumChars?: number;
 	loading?: boolean;
-	classes?: RecordClasses<'root' | 'focus' | 'list' | 'listItem' | 'alert' | 'input' | 'icon' | 'active'>;
+	classes?: RecordClasses<'root' | 'focus' | 'list' | 'value' | 'listItem' | 'alert' | 'input' | 'icon' | 'active'>;
 	term: string;
 	onChangeTerm: (term: string) => void;
 	getOptionId: (option: T) => string | number;
-	getOptionTitle: (option: T | null) => string;
+	getInputValue: (option: T) => string;
+	getOptionTitle: (option: T | null) => React.ReactNode;
 };
 
 const AsyncSelect = <T,>({
 	value,
 	options,
 	classes,
-	label,
+	placeholder,
+	blankPlaceholder,
 	clearable,
 	loading,
 	defaultOpen,
 	term,
+	minimumChars = 0,
 	getOptionId,
+	getInputValue,
 	getOptionTitle,
 	onChangeTerm,
 	onChange,
@@ -47,14 +53,18 @@ const AsyncSelect = <T,>({
 	const [focusing, setFocusing] = useState(false);
 
 	const onClickItem = (option: T, callback: () => void) => {
-		onChangeTerm(getOptionTitle(option));
 		onChange(option);
 		callback();
 	};
 
 	const onClose = () => {
 		setFocusing(false);
-		if (!value) onChangeTerm('');
+		onChangeTerm('');
+	};
+
+	const onOpen = () => {
+		setFocusing(true);
+		if (value) onChangeTerm(getInputValue(value));
 	};
 
 	const onClear = () => {
@@ -66,17 +76,17 @@ const AsyncSelect = <T,>({
 			zIndex={9999}
 			defaultOpen={defaultOpen}
 			renderer={({ setOpen }) => {
-				if (term.length <= 1 || loading)
+				if ((minimumChars && term.length < minimumChars) || loading)
 					return (
 						<div className={cn(styles.alert, classes?.alert)}>
-							{loading ? t('common.searching') : t('common.needs_more_than_n_chars', { n: 2 })}
+							{loading ? t('common.searching') : t('common.needs_more_than_n_chars', { n: minimumChars })}
 						</div>
 					);
 
 				if (!Array.isArray(options) || options.length === 0)
 					return (
 						<div className={cn(styles.alert, classes?.alert)}>
-							<span>{t('common.no_symbol_found')}</span>
+							<span>{blankPlaceholder ?? t('common.no_data')}</span>
 						</div>
 					);
 
@@ -99,7 +109,7 @@ const AsyncSelect = <T,>({
 					</ul>
 				);
 			}}
-			onOpen={() => setFocusing(true)}
+			onOpen={onOpen}
 			onClose={onClose}
 		>
 			{({ setOpen, open }) => (
@@ -107,7 +117,7 @@ const AsyncSelect = <T,>({
 					<input
 						type='text'
 						className={cn(styles.input, classes?.input)}
-						value={focusing ? term : value ? getOptionTitle(value) : term}
+						value={term}
 						onFocus={() => setOpen(true)}
 						onChange={(e) => onChangeTerm(e.target.value)}
 					/>
@@ -118,8 +128,12 @@ const AsyncSelect = <T,>({
 							(value || term.length || focusing) && ['active', focusing && 'colorful'],
 						)}
 					>
-						{label}
+						{placeholder}
 					</span>
+
+					{!focusing && value && (
+						<span className={cn(styles.value, classes?.value)}>{getOptionTitle(value)}</span>
+					)}
 
 					{loading ? (
 						<div className='ml-16 min-h-20 min-w-20 spinner' />
