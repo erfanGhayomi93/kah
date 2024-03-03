@@ -17,7 +17,7 @@ const initialState: UserState = {
 
 	loggingIn: true,
 
-	brokerIsSelected: Boolean(getBrokerClientId()),
+	brokerIsSelected: Boolean(getBrokerClientId()[0]),
 };
 
 const userSlice = createSlice({
