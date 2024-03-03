@@ -2,14 +2,18 @@ import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleBlackScholesModal, type IBlackScholes } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
-import Calculator from './Calculator';
 import Form from './Form';
 import SelectSymbol from './SelectSymbol';
 
 interface BlackScholesProps extends IBlackScholes {}
+
+const Calculator = dynamic(() => import('./Calculator'), {
+	ssr: false,
+});
 
 const Div = styled.div`
 	width: 820px;
@@ -23,8 +27,8 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 
 	const [inputs, setInputs] = useState<IBlackScholesModalStates>({
 		baseSymbol: null,
+		contractEndDate: null,
 		contract: null,
-		selectedStrikePrice: null,
 		premium: '',
 		strikePrice: '',
 		dueDays: '',
@@ -47,15 +51,34 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 	useLayoutEffect(() => {
 		setInputs((prev) => ({
 			...prev,
+			contractEndDate: null,
 			contract: null,
-			selectedStrikePrice: null,
 		}));
 	}, [JSON.stringify(inputs.baseSymbol)]);
 
 	useLayoutEffect(() => {
 		setInputs((prev) => ({
 			...prev,
-			selectedStrikePrice: null,
+			contract: null,
+		}));
+	}, [JSON.stringify(inputs.contractEndDate)]);
+
+	useLayoutEffect(() => {
+		if (!inputs.contract || !inputs.contractEndDate) return;
+
+		const { symbolInfo, optionWatchlistData } = inputs.contract;
+
+		const now = Date.now();
+		const contractEndDate = new Date(inputs.contractEndDate.contractEndDate).getTime();
+
+		setInputs((prev) => ({
+			...prev,
+			premium: String(optionWatchlistData.baseSymbolPrice ?? 0),
+			strikePrice: String(symbolInfo.strikePrice ?? 0),
+			dueDays: (Math.abs(now - contractEndDate) / 1e3 / 24 / 60 / 60).toFixed(0),
+			volatility: String(optionWatchlistData.historicalVolatility ?? 0),
+			riskFreeProfit: '30',
+			contractPrice: String(optionWatchlistData.premium ?? 0),
 		}));
 	}, [JSON.stringify(inputs.contract)]);
 
