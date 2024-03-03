@@ -1,6 +1,7 @@
 'use client';
 
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import ErrorBoundary from '../common/ErrorBoundary';
 import Footer from './Footer';
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -19,16 +20,16 @@ const Wrapper = ({ children }: IWrapper) => {
 	if (!mount) return null;
 
 	return (
-		<Fragment>
+		<ErrorBoundary>
 			<Header />
 			<div style={{ height: 'calc(100vh - 4.8rem)' }} className='flex flex-1'>
 				<Sidebar />
 				<div className='h-full flex-1 justify-between flex-column'>
-					{children}
+					<ErrorBoundary>{children}</ErrorBoundary>
 					<Footer />
 				</div>
 			</div>
-		</Fragment>
+		</ErrorBoundary>
 	);
 };
 
