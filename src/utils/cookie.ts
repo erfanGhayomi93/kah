@@ -53,11 +53,19 @@ export const deleteClientId = () => deleteCookie('kahkeshan_client_id');
 
 // Broker Client ID
 export const getBrokerClientId = (): [string | null, number | null] => {
-	const clientId = getCookie('br_client_id');
+	try {
+		const clientId = getCookie('br_client_id');
 
-	if (clientId) {
-		const [token, brokerCode] = base64decode(clientId).split('^');
-		return [token ?? '', isNaN(Number(brokerCode)) ? -1 : Number(brokerCode)];
+		if (clientId) {
+			const decodedClientId = base64decode(clientId);
+
+			if (decodedClientId) {
+				const [token, brokerCode] = decodedClientId.split('^');
+				return [token ?? '', isNaN(Number(brokerCode)) ? -1 : Number(brokerCode)];
+			}
+		}
+	} catch (e) {
+		deleteBrokerClientId();
 	}
 
 	return [null, null];

@@ -30,7 +30,7 @@ const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) =
 				{placeholder}
 			</span>
 
-			<span className='h-24 w-36 border-r border-r-inherit text-tiny text-gray-700 flex-justify-center'>
+			<span className='h-24 w-36 border-r border-r-gray-500 text-tiny text-gray-700 flex-justify-center'>
 				{prefix}
 			</span>
 		</label>

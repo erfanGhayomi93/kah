@@ -150,7 +150,11 @@ export const base64encode = (value: string) => {
 };
 
 export const base64decode = (value: string) => {
-	return atob(value);
+	try {
+		return atob(value);
+	} catch (e) {
+		return null;
+	}
 };
 
 export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
