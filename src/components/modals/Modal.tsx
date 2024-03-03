@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
@@ -93,13 +93,13 @@ const Modal = ({
 				...style?.root,
 				animation: animation ? 'fadeIn ease-in-out 250ms 1 alternate forwards' : undefined,
 			}}
-			className={clsx(styles.root, classes?.root, transparent && [styles.transparent, classes?.transparent])}
+			className={cn(styles.root, classes?.root, transparent && [styles.transparent, classes?.transparent])}
 		>
-			<div style={style?.container} className={clsx(styles.container, classes?.container)}>
+			<div style={style?.container} className={cn(styles.container, classes?.container)}>
 				<Moveable ref={modalRef} enabled={moveable}>
 					<div
 						style={{ top, ...style?.modal }}
-						className={clsx(styles.modal, size && styles[size], classes?.modal)}
+						className={cn(styles.modal, size && styles[size], classes?.modal)}
 					>
 						{children}
 					</div>

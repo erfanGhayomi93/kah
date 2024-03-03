@@ -1,5 +1,5 @@
 import { PinSVG } from '@/components/icons';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useMemo } from 'react';
 
 interface TemplateProps extends Saturn.Template {
@@ -35,7 +35,7 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 					transform: isPinned ? '' : 'rotate(-45deg)',
 					transition: 'border-color 250ms, background-color 250ms, color 250ms, transform 250ms',
 				}}
-				className={clsx(
+				className={cn(
 					'size-20 rounded-circle border flex-justify-center',
 					isPinned
 						? 'border-primary-400 bg-primary-400 text-white'
@@ -47,19 +47,17 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 
 			<div
 				onClick={onSelect}
-				className={clsx(
+				className={cn(
 					'h-72 flex-1 cursor-pointer items-start justify-center gap-12 rounded border px-16 py-8 transition-colors flex-column',
 					isActive
 						? 'border-primary-400 bg-primary-400 hover:bg-primary-300'
 						: 'border-gray-500 bg-gray-200 transition-colors hover:bg-primary-100',
 				)}
 			>
-				<h3 className={clsx('text-lg font-medium', isActive ? 'text-white' : 'text-gray-900')}>{name}</h3>
+				<h3 className={cn('text-lg font-medium', isActive ? 'text-white' : 'text-gray-900')}>{name}</h3>
 
 				{symbols.length > 0 && (
-					<div
-						className={clsx('flex select-none gap-8 text-tiny', isActive ? 'text-white' : 'text-gray-900')}
-					>
+					<div className={cn('flex select-none gap-8 text-tiny', isActive ? 'text-white' : 'text-gray-900')}>
 						{symbols.map((symbolTitle, i) => (
 							<span key={i}>{symbolTitle}</span>
 						))}

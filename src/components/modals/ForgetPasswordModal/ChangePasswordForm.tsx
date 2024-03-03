@@ -2,8 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
-import { base64encode, passwordValidation } from '@/utils/helpers';
-import clsx from 'clsx';
+import { base64encode, cn, passwordValidation } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -83,7 +82,7 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 					<label className='input-box'>
 						<span className='label'>{t('inputs.new_password')}</span>
 						<div
-							className={clsx(
+							className={cn(
 								'flex-items-center input',
 								touchedFields.newPassword && errors.newPassword?.message && 'invalid',
 							)}
@@ -164,9 +163,9 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 					</div>
 				</div>
 
-				<label className={clsx('input-box')}>
+				<label className={cn('input-box')}>
 					<span className='label'>{t('inputs.repeat_new_password')}</span>
-					<div className={clsx('flex-items-center input')}>
+					<div className={cn('flex-items-center input')}>
 						<input
 							title={t('inputs.repeat_new_password_placeholder')}
 							type={passwordVisibility.repeatNewPassword ? 'text' : 'password'}

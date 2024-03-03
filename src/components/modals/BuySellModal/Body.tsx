@@ -5,7 +5,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { toggleChooseBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -17,7 +17,7 @@ interface WrapperProps {
 }
 
 const Wrapper = ({ children, className }: WrapperProps) => (
-	<div style={{ flex: '0 0 336px' }} className={clsx('gap-24 overflow-hidden px-16 pb-16 flex-column', className)}>
+	<div style={{ flex: '0 0 336px' }} className={cn('gap-24 overflow-hidden px-16 pb-16 flex-column', className)}>
 		{children}
 	</div>
 );
@@ -118,7 +118,7 @@ const Body = (props: BodyProps) => {
 				defaultActiveTab='normal'
 				renderTab={(item, activeTab) => (
 					<button
-						className={clsx(
+						className={cn(
 							'flex-1 pb-8 pt-12 transition-colors',
 							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
 						)}

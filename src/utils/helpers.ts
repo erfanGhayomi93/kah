@@ -2,23 +2,16 @@ import { onUnauthorize } from '@/api/axios';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { getClientId } from './cookie';
 
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
-	let result = num;
+	const formattedIntegerPart: string = num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-	try {
-		const objRegex = /(-?[0-9]+)([0-9]{3})/;
-		while (objRegex.test(result)) {
-			result = result.replace(objRegex, '$1,$2');
-		}
-	} catch (e) {
-		//
-	}
-
-	return result;
+	return formattedIntegerPart;
 };
 
 export const numFormatter = (num: number, formatNavigateNumber = true) => {
@@ -156,6 +149,10 @@ export const base64encode = (value: string) => {
 	return btoa(value);
 };
 
+export const base64decode = (value: string) => {
+	return atob(value);
+};
+
 export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
 	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
 	queryClient?: QueryClient,
@@ -266,4 +263,62 @@ export const divide = (arg1: number, arg2: number) => {
 	if (arg2 === 0) return 0;
 
 	return arg1 / arg2;
+};
+
+export const cn = (...args: ClassesValue[]) => {
+	return twMerge(clsx(args));
+};
+
+export const isEnglish = (str: string): boolean => {
+	return Boolean(str.match(/^[a-zA-Z\s0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/gi));
+};
+
+export const englishToPersian = (str: string): string => {
+	if (!isEnglish(str)) return str;
+	str = str.toLowerCase();
+
+	const keyboards = {
+		q: 'ض',
+		w: 'ص',
+		e: 'ث',
+		r: 'ق',
+		t: 'ف',
+		y: 'غ',
+		u: 'ع',
+		i: 'ه',
+		o: 'خ',
+		p: 'ح',
+		'[': 'ج',
+		']': 'چ',
+		a: 'ش',
+		s: 'س',
+		d: 'ی',
+		f: 'ب',
+		g: 'ل',
+		h: 'ا',
+		j: 'ت',
+		k: 'ن',
+		l: 'م',
+		';': 'ک',
+		// eslint-disable-next-line quotes
+		"'": 'گ',
+		z: 'ظ',
+		x: 'ط',
+		c: 'ز',
+		v: 'ر',
+		b: 'ذ',
+		n: 'د',
+		m: 'ئ',
+		',': 'و',
+		'\\': 'پ',
+	};
+
+	let modifiedWord = '';
+	for (let i = 0; i < str.length; i++) {
+		const letter = str[i];
+
+		modifiedWord += keyboards[letter as keyof typeof keyboards] ?? letter;
+	}
+
+	return modifiedWord;
 };

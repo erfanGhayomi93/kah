@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { Fragment, cloneElement, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import styles from './Tabs.module.scss';
 
@@ -76,7 +76,7 @@ const Tabs = <ID extends string | number, T extends object>({
 
 	return (
 		<Fragment>
-			<div ref={rootRef} className={clsx(styles.list, classes?.list)}>
+			<div ref={rootRef} className={cn(styles.list, classes?.list)}>
 				{data.map((item) => (
 					<Fragment key={item.id}>
 						{cloneElement(renderTab(item, activeTab), {
@@ -87,7 +87,7 @@ const Tabs = <ID extends string | number, T extends object>({
 					</Fragment>
 				))}
 
-				<div ref={indicatorRef} className={clsx(styles.indicator, classes?.indicator)} />
+				<div ref={indicatorRef} className={cn(styles.indicator, classes?.indicator)} />
 			</div>
 
 			{render}

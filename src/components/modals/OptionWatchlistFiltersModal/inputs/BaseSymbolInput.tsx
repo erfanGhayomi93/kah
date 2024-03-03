@@ -2,8 +2,7 @@ import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
 import Popup from '@/components/common/Popup';
 import { CheckSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
-import { findStringIn } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, findStringIn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../index.module.scss';
@@ -22,7 +21,7 @@ const SelectedSymbol = ({ title, onRemoveSymbol }: SelectedSymbolProps) => (
 	<li>
 		<span className='truncate'>{title}</span>
 		<button onClick={onRemoveSymbol} type='button'>
-			<XSVG width='0.8rem' height='0.8rem' />
+			<XSVG width='1rem' height='1rem' />
 		</button>
 	</li>
 );
@@ -106,13 +105,13 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					style={{
 						height: onlyShowTags ? '100%' : `calc(${(636 / window.innerHeight) * 100}vh - 16.5rem)`,
 					}}
-					className={clsx(
+					className={cn(
 						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
 					)}
 				>
 					{values.length > 0 && (
 						<div
-							className={clsx(
+							className={cn(
 								'w-full flex-wrap px-16 pb-12 flex-justify-between',
 								!onlyShowTags && 'border-b border-b-gray-500',
 							)}
@@ -144,7 +143,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						<Fragment>
 							<div
 								style={{ minHeight: '9.6rem' }}
-								className={clsx(
+								className={cn(
 									'flex-1 gap-4 overflow-auto py-8 flex-column',
 									(isLoading || symbolsDataIsEmpty) && 'items-center justify-center',
 								)}
@@ -166,7 +165,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 												onClick={() => onToggleSymbol(item)}
 												type='button'
 												key={symbolISIN}
-												className={clsx(
+												className={cn(
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
 														? 'bg-primary-400 text-white hover:bg-primary-300'
@@ -233,8 +232,8 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 		>
 			{({ setOpen, open }) => (
 				<div
-					className={clsx(
-						'input-group h-40 flex-1 border flex-items-center',
+					className={cn(
+						'h-40 flex-1 border flex-items-center input-group',
 						open ? 'rounded-t border-primary-300' : 'rounded border-gray-500',
 					)}
 				>
@@ -256,7 +255,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						onChange={(e) => onChangeInput(e.target.value)}
 					/>
 					{isLoading ? (
-						<div className='spinner ml-16 min-h-20 min-w-20' />
+						<div className='ml-16 min-h-20 min-w-20 spinner' />
 					) : (
 						term.length > 1 && (
 							<button
@@ -264,7 +263,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 								type='button'
 								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-1000 text-white flex-justify-center'
 							>
-								<XSVG width='0.8rem' height='0.8rem' />
+								<XSVG width='1rem' height='1rem' />
 							</button>
 						)
 					)}

@@ -2,7 +2,7 @@ import Click from '@/components/common/Click';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import KeyDown from '@/components/common/KeyDown';
 import { DragSVG, EditSVG, EyeSVG, EyeSlashSVG, TrashSVG } from '@/components/icons';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useState, type LiHTMLAttributes } from 'react';
 
@@ -114,7 +114,7 @@ const Watchlist = ({
 					) : (
 						<div
 							onClick={onSelect}
-							className={clsx(
+							className={cn(
 								'h-48 flex-1 cursor-pointer gap-8 rounded border px-16 transition-colors flex-justify-start',
 								isActive
 									? 'border-primary-400 bg-primary-400 hover:bg-primary-300'
@@ -135,7 +135,7 @@ const Watchlist = ({
 									<EyeSVG width='2rem' height='2rem' />
 								)}
 							</button>
-							<h3 className={clsx('truncate text-base', isActive ? 'text-white' : 'text-gray-900')}>
+							<h3 className={cn('truncate text-base', isActive ? 'text-white' : 'text-gray-900')}>
 								{watchlist.name}
 							</h3>
 						</div>

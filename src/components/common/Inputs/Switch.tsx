@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import styles from './Switch.module.scss';
 
 interface SwitchProps {
@@ -10,7 +10,7 @@ interface SwitchProps {
 
 const Switch = ({ classes, disabled, checked, onChange }: SwitchProps) => {
 	return (
-		<label className={clsx(styles.root, classes?.root)}>
+		<label className={cn(styles.root, classes?.root)}>
 			<input
 				disabled={disabled}
 				onChange={(e) => onChange(e.target.checked)}
@@ -18,7 +18,7 @@ const Switch = ({ classes, disabled, checked, onChange }: SwitchProps) => {
 				checked={checked}
 				className={styles.input}
 			/>
-			<span className={clsx(styles.thumb, classes?.thumb)} />
+			<span className={cn(styles.thumb, classes?.thumb)} />
 		</label>
 	);
 };

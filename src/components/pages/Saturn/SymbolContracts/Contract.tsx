@@ -5,10 +5,9 @@ import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
-import { sepNumbers } from '@/utils/helpers';
+import { cn, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
-import clsx from 'clsx';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -181,7 +180,7 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 
 					<div className='gap-8 flex-items-center'>
 						<span
-							className={clsx(
+							className={cn(
 								'gap-4 flex-items-center',
 								closingPriceVarReferencePrice >= 0 ? 'text-success-100' : 'text-error-100',
 							)}
@@ -198,7 +197,7 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 						</span>
 
 						<span
-							className={clsx(
+							className={cn(
 								'flex items-center gap-4 text-4xl font-bold',
 								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
 							)}
@@ -238,7 +237,7 @@ const Contract = ({ baseSymbol, option, onChangeContractTab, onLoadContract }: C
 					onChange={onChangeContractTab}
 					renderTab={(item, activeTab) => (
 						<button
-							className={clsx(
+							className={cn(
 								'px-8 py-12 transition-colors',
 								item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
 							)}

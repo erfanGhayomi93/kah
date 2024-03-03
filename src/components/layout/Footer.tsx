@@ -2,7 +2,7 @@ import { useAppSelector } from '@/features/hooks';
 import { getLsStatus } from '@/features/slices/uiSlice';
 import { useServerDatetime } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -52,7 +52,7 @@ const Footer = () => {
 
 			<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
 				<span
-					className={clsx(
+					className={cn(
 						'flex items-center gap-8 transition-colors',
 						lsStatus === 'CONNECTING'
 							? 'text-warning-100'

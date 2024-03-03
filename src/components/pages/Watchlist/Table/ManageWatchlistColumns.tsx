@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
 import { useDebounce, useWatchlistColumns } from '@/hooks';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -82,28 +82,26 @@ const ManageWatchlistColumns = () => {
 
 	return (
 		<Panel transparent isEnable={isEnabled} onClose={onClose} width='47.2rem'>
-			<div className='sticky top-0 z-10 w-full bg-white px-32 pt-16'>
-				<div className='border-b border-b-gray-400 pb-16 flex-justify-between'>
-					<h1 className='text-2xl font-bold text-gray-1000'>{t('manage_option_watchlist_columns.title')}</h1>
+			<div className='sticky top-0 z-10 h-56 w-full bg-gray-200 px-24 flex-justify-between'>
+				<h1 className='text-xl font-medium text-gray-900'>{t('manage_option_watchlist_columns.title')}</h1>
 
-					<div className='flex gap-24'>
-						<button className='icon-hover' type='button' onClick={onRefresh}>
-							<RefreshSVG width='2.4rem' height='2.4rem' />
-						</button>
-						<button className='icon-hover' type='button' onClick={onClose}>
-							<XSVG width='1.6rem' height='1.6rem' />
-						</button>
-					</div>
+				<div className='flex gap-24'>
+					<button className='icon-hover' type='button' onClick={onRefresh}>
+						<RefreshSVG width='2.4rem' height='2.4rem' />
+					</button>
+					<button className='icon-hover' type='button' onClick={onClose}>
+						<XSVG width='2rem' height='2rem' />
+					</button>
 				</div>
 			</div>
 
-			<div className='relative h-full gap-16 px-32 flex-column'>
+			<div className='relative h-full gap-16 overflow-hidden px-32 flex-column'>
 				{resetting && <Loading />}
 
 				{Object.keys(categories).map((category, categoryIndex) => (
 					<div
 						key={category}
-						className={clsx(
+						className={cn(
 							'gap-16 pb-16 flex-column',
 							resetting && 'pointer-events-none opacity-0',
 							categoryIndex < 2 && 'border-b border-b-gray-400',
@@ -119,7 +117,7 @@ const ManageWatchlistColumns = () => {
 									onClick={() => setHiddenColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
-									className={clsx(
+									className={cn(
 										column.isHidden
 											? 'bg-white text-gray-900 shadow-sm hover:bg-primary-100 hover:shadow-none'
 											: 'bg-primary-400 text-white hover:bg-primary-300',

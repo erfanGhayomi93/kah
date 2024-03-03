@@ -83,3 +83,15 @@ declare type TSetBsModalInputs = <
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
 ) => void;
+
+declare interface IBlackScholesModalStates {
+	baseSymbol: Option.Search | null;
+	contractEndDate: Option.BaseSettlementDays | null;
+	contract: Option.Root | null;
+	premium: string;
+	strikePrice: string;
+	dueDays: string;
+	volatility: string;
+	riskFreeProfit: string;
+	contractPrice: string;
+}

@@ -10,7 +10,7 @@ const OptionChain = () => {
 	const [selectedSymbol, setSelectedSymbol] = useLocalstorage<null | string>('selected_symbol', null);
 
 	return (
-		<Main className='gap-8'>
+		<Main style={{ overflowY: 'scroll' }} className='gap-8'>
 			<div style={{ flex: '0 0 37.6rem' }} className='flex gap-8'>
 				<SelectSymbol selectedSymbol={selectedSymbol} setSelectedSymbol={setSelectedSymbol} />
 				<SymbolInfo selectedSymbol={selectedSymbol} />

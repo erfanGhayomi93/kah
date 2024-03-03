@@ -1,5 +1,4 @@
-import { getRndInteger } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, getRndInteger } from '@/utils/helpers';
 
 class TooltipWrapper {
 	private readonly _wrapperId = '__tooltip';
@@ -62,7 +61,7 @@ class TooltipElement extends TooltipWrapper {
 		this._eTooltip.id = this._id;
 		this._eTooltip.setAttribute(
 			'class',
-			clsx(
+			cn(
 				'common-tooltip-container common-tooltip-hidden',
 				`common-tooltip-${this._placement}`,
 				this._interactive && 'common-tooltip-interactive',
@@ -85,7 +84,7 @@ class TooltipElement extends TooltipWrapper {
 
 		eTooltip.setAttribute(
 			'class',
-			clsx(
+			cn(
 				'common-tooltip-container',
 				`common-tooltip-${this._placement}`,
 				this._interactive && 'common-tooltip-interactive',
