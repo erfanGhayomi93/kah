@@ -2,7 +2,7 @@ import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { MoreOptionsSVG } from '@/components/icons';
 import { useTradingFeatures } from '@/hooks';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -72,7 +72,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 					data={tabs}
 					renderTab={(item, activeTab) => (
 						<button
-							className={clsx(
+							className={cn(
 								'px-8 py-12 transition-colors',
 								item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
 							)}

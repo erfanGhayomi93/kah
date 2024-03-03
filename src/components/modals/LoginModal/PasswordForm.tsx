@@ -5,8 +5,7 @@ import { EyeSVG, EyeSlashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setClientId } from '@/utils/cookie';
-import { base64encode } from '@/utils/helpers';
-import clsx from 'clsx';
+import { base64encode, cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
@@ -84,15 +83,17 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+			<input type='hidden' name='username' value={phoneNumber ?? ''} />
+
 			<div style={{ marginTop: '12rem' }} className='gap-24 flex-column'>
 				<Controller
 					defaultValue=''
 					control={control}
 					name='password'
 					render={({ field, fieldState: { invalid, isTouched, error } }) => (
-						<label className={clsx('input-box')}>
+						<label className={cn('input-box')}>
 							<span className='label'>{t('inputs.password')}</span>
-							<div className={clsx('flex-items-center input')}>
+							<div className={cn('flex-items-center input')}>
 								<input
 									title={t('inputs.password')}
 									autoFocus

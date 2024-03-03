@@ -19,7 +19,7 @@ import {
 } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSidebarIsExpand, toggleSidebar } from '@/features/slices/uiSlice';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
@@ -158,14 +158,14 @@ const Sidebar = () => {
 			}}
 			className='relative bg-sidebar flex-column'
 		>
-			<button type='button' onClick={toggle} className={clsx(styles.toggler, sidebarIsExpand && styles.expand)}>
+			<button type='button' onClick={toggle} className={cn(styles.toggler, sidebarIsExpand && styles.expand)}>
 				<AngleLeft width='1.6rem' height='1.6rem' />
 			</button>
 
 			<div className='flex-1 flex-column'>
 				<nav className='h-full flex-1 justify-between gap-16 py-32 flex-column'>
 					{items.map((list, i) => (
-						<ul key={i} className={clsx(styles.list, sidebarIsExpand && styles.expand)}>
+						<ul key={i} className={cn(styles.list, sidebarIsExpand && styles.expand)}>
 							{list.map((item) => (
 								<Item
 									key={item.id}

@@ -1,5 +1,4 @@
-import { getDateAsJalali } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, getDateAsJalali } from '@/utils/helpers';
 import { useState } from 'react';
 import { CalendarSVG } from '../icons';
 import styles from './Datepicker.module.scss';
@@ -70,19 +69,19 @@ const Datepicker = ({ classes, value, clearable, onChange, placeholder }: Datepi
 	};
 
 	return (
-		<div className={clsx(styles.root, classes?.root, clearable && classes?.clearable)}>
+		<div className={cn(styles.root, classes?.root, clearable && classes?.clearable)}>
 			<input
 				type='text'
 				inputMode='numeric'
 				placeholder={placeholder ?? 'xxxx/xx/xx'}
-				className={clsx(styles.input, classes?.input)}
+				className={cn(styles.input, classes?.input)}
 				value={term}
 				maxLength={14}
 				onChange={(e) => setTerm(valueFormatter(e.target.value))}
 				data-testid='datepicker'
 				onBlur={onBlurInput}
 			/>
-			<span className={clsx(styles.icon, classes?.icon)}>
+			<span className={cn(styles.icon, classes?.icon)}>
 				<CalendarSVG />
 			</span>
 		</div>

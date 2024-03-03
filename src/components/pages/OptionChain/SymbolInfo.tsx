@@ -6,10 +6,9 @@ import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useTradingFeatures } from '@/hooks';
 import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
 import NoData from './common/NoData';
@@ -111,7 +110,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						title: t('option_chain.closing_price'),
 						valueFormatter: (
 							<span
-								className={clsx(
+								className={cn(
 									'gap-4 flex-items-center',
 									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
 								)}
@@ -219,7 +218,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 					<div className='gap-8 flex-items-center'>
 						<span
-							className={clsx(
+							className={cn(
 								'gap-4 flex-items-center',
 								closingPriceVarReferencePrice >= 0 ? 'text-success-100' : 'text-error-100',
 							)}
@@ -236,7 +235,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						</span>
 
 						<span
-							className={clsx(
+							className={cn(
 								'flex items-center gap-4 text-4xl font-bold',
 								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
 							)}
@@ -273,7 +272,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 			<ul className='flex px-24 flex-column'>
 				{symbolDetails.map(([firstItem, secondItem], i) => (
-					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
+					<li key={firstItem.id} className={cn('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
 						<ListItem {...firstItem} />
 						<ListItem {...secondItem} />
 					</li>

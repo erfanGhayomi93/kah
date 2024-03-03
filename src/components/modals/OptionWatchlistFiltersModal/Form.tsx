@@ -2,7 +2,7 @@ import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import ipcMain from '@/classes/IpcMain';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOptionFiltersModal, toggleOptionFiltersModal } from '@/features/slices/modalSlice';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -140,7 +140,7 @@ const Form = () => {
 					disabled={clearButtonIsDisabled}
 					onClick={onClear}
 					type='reset'
-					className={clsx(
+					className={cn(
 						'h-40 rounded',
 						clearButtonIsDisabled
 							? 'text-gray-700'

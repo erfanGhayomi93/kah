@@ -1,5 +1,5 @@
 import { useSymbolSearchQuery } from '@/api/queries/symbolQuery';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Popup from './Popup';
@@ -52,27 +52,27 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 
 				if (isFetching)
 					return (
-						<div className={clsx(styles.blankList, classes?.blankList)}>
+						<div className={cn(styles.blankList, classes?.blankList)}>
 							<span>{t('common.searching')}</span>
 						</div>
 					);
 
 				if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 					return (
-						<div className={clsx(styles.blankList, classes?.blankList)}>
+						<div className={cn(styles.blankList, classes?.blankList)}>
 							<span>{t('common.no_symbol_found')}</span>
 						</div>
 					);
 
 				return (
-					<div className={clsx(styles.list, classes?.list)}>
+					<div className={cn(styles.list, classes?.list)}>
 						<ul>
 							{symbolsData.map((symbol) => (
 								<li
 									onMouseUp={() => setOpen(false)}
 									onMouseDown={() => onSelect(symbol)}
 									key={symbol.symbolISIN}
-									className={clsx(styles.item, classes?.item)}
+									className={cn(styles.item, classes?.item)}
 								>
 									{symbol.symbolTitle}
 								</li>
@@ -83,8 +83,8 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 			}}
 		>
 			{({ setOpen, open }) => (
-				<label className={clsx('input-group', styles.root, classes?.root)}>
-					<div className={clsx(styles.search, classes?.search)}>
+				<label className={cn('input-group', styles.root, classes?.root)}>
+					<div className={cn(styles.search, classes?.search)}>
 						<svg
 							width='2.4rem'
 							height='2.4rem'
@@ -108,7 +108,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 					<input
 						type='text'
 						inputMode='search'
-						className={clsx(styles.input, classes?.input)}
+						className={cn(styles.input, classes?.input)}
 						maxLength={24}
 						placeholder={
 							focusing

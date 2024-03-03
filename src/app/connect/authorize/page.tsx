@@ -10,11 +10,12 @@ const Page: NextPage<INextProps> = () => {
 		try {
 			const params = new URLSearchParams(location.search);
 
+			const brokerCode = params.get('brokerCode') ?? '';
 			let clientId = params.get('client_id') ?? '';
 			clientId = clientId.replace(/\s/gi, '+');
 
-			if (clientId) {
-				setBrokerClientId(clientId);
+			if (clientId && brokerCode) {
+				setBrokerClientId(`${clientId}^${brokerCode}`);
 
 				try {
 					const channel = new BroadcastChannel(broadcastChannel);

@@ -1,5 +1,4 @@
-import { convertStringToDecimal, sepNumbers } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, convertStringToDecimal, sepNumbers } from '@/utils/helpers';
 import React from 'react';
 
 interface InputProps
@@ -16,7 +15,7 @@ const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) =
 	};
 
 	return (
-		<label className='input-group relative h-48 rounded border border-gray-500 flex-items-center'>
+		<label className='relative h-48 rounded border border-gray-500 flex-items-center input-group'>
 			<input
 				{...props}
 				type='text'
@@ -27,7 +26,7 @@ const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) =
 				onChange={(e) => onChange(convertStringToDecimal(e.target.value))}
 			/>
 
-			<span className={clsx('flexible-placeholder', value && String(value).length > 0 && 'active')}>
+			<span className={cn('flexible-placeholder', value && String(value).length > 0 && 'active')}>
 				{placeholder}
 			</span>
 

@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect } from 'react';
@@ -34,7 +34,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 	return (
 		<div className='flex-1 items-center flex-column'>
 			<div
-				className={clsx(
+				className={cn(
 					'flex-1 items-center flex-column',
 					isNeedsToSetPassword ? 'gap-64' : 'justify-center gap-24',
 				)}

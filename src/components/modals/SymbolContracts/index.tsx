@@ -5,9 +5,8 @@ import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal, type IContractSelectorModal } from '@/features/slices/modalSlice';
 import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
+import { cn, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -202,7 +201,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle, ...props }: SymbolContractsP
 								type='button'
 								key={index}
 								onClick={() => setStatesValue('activeSettlement', item)}
-								className={clsx(
+								className={cn(
 									'h-48 w-full justify-start rounded border px-16 text-base transition-colors flex-items-center',
 									JSON.stringify(item) === JSON.stringify(states.activeSettlement)
 										? 'justify-start btn-primary'
@@ -236,7 +235,7 @@ const SymbolContracts = ({ symbolISIN, symbolTitle, ...props }: SymbolContractsP
 							rowSelection='single'
 							suppressRowClickSelection={false}
 							rowClass='cursor-pointer'
-							className={clsx('h-full', !watchlistData && 'pointer-events-none opacity-0')}
+							className={cn('h-full', !watchlistData && 'pointer-events-none opacity-0')}
 							rowData={watchlistData ?? []}
 							columnDefs={COLUMNS}
 							defaultColDef={defaultColDef}

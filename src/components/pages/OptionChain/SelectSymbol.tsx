@@ -2,7 +2,7 @@ import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
 import Select from '@/components/common/Inputs/Select';
 import Loading from '@/components/common/Loading';
 import { SearchSVG } from '@/components/icons';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -90,7 +90,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 				{symbolsData.map((symbol) => (
 					<li key={symbol.symbolISIN}>
 						<Symbol
-							className={clsx(
+							className={cn(
 								'border transition-colors',
 								symbol.symbolISIN === selectedSymbol
 									? 'border-primary-400 bg-primary-400 text-white hover:bg-primary-300'
@@ -114,7 +114,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			<div className='gap-24 flex-justify-between'>
 				<label
 					style={{ maxWidth: '30rem' }}
-					className='input-group h-40 flex-1 rounded border border-gray-500 flex-items-center'
+					className='h-40 flex-1 rounded border border-gray-500 flex-items-center input-group'
 				>
 					<div className='px-8 text-gray-900'>
 						<SearchSVG width='2rem' height='2rem' />

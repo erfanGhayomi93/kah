@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 
 interface WatchlistProps extends Option.WatchlistList {
 	isActive: boolean;
@@ -14,7 +14,7 @@ const Watchlist = ({ onSelect, isActive, name, isHidden }: WatchlistProps) => {
 				onClick={onSelect}
 				type='button'
 				style={{ maxWidth: '14rem', minWidth: '6.4rem' }}
-				className={clsx(
+				className={cn(
 					'!block h-40 truncate rounded px-16 font-medium',
 					isActive ? 'btn-primary' : 'btn-primary-outline',
 				)}

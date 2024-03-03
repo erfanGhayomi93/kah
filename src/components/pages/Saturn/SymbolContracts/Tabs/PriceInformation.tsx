@@ -1,7 +1,6 @@
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -39,7 +38,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 						title: t('option_chain.closing_price'),
 						valueFormatter: (
 							<span
-								className={clsx(
+								className={cn(
 									'gap-4 flex-items-center',
 									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
 								)}

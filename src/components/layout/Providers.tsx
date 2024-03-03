@@ -1,12 +1,19 @@
 import BroadcastChannelRegistry from '@/components/common/Registry/BroadcastChannelRegistry';
-import LightstreamRegistry from '@/components/common/Registry/LightstreamRegistry';
 import QueryClientRegistry from '@/components/common/Registry/QueryClientRegistry';
 import ReduxToolkitRegistry from '@/components/common/Registry/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/Registry/StyledComponentsRegistry';
 import ToastRegistry from '@/components/common/ToastRegistry';
-import ClockProvider from '@/contexts/ClockContext';
 import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
+import dynamic from 'next/dynamic';
 import AppMiddleware from '../common/Middlewares/AppMiddleware';
+
+const LightstreamRegistry = dynamic(() => import('../common/Registry/LightstreamRegistry'), {
+	ssr: false,
+});
+
+const ClockProvider = dynamic(() => import('@/contexts/ClockContext'), {
+	ssr: false,
+});
 
 interface ProvidersProps {
 	children: React.ReactNode;

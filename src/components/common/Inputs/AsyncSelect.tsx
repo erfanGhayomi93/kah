@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { ArrowDownSVG } from '../../icons';
@@ -68,25 +68,25 @@ const AsyncSelect = <T,>({
 			renderer={({ setOpen }) => {
 				if (term.length <= 1 || loading)
 					return (
-						<div className={clsx(styles.alert, classes?.alert)}>
+						<div className={cn(styles.alert, classes?.alert)}>
 							{loading ? t('common.searching') : t('common.needs_more_than_n_chars', { n: 2 })}
 						</div>
 					);
 
 				if (!Array.isArray(options) || options.length === 0)
 					return (
-						<div className={clsx(styles.alert, classes?.alert)}>
+						<div className={cn(styles.alert, classes?.alert)}>
 							<span>{t('common.no_symbol_found')}</span>
 						</div>
 					);
 
 				return (
-					<ul className={clsx(styles.list, classes?.list)}>
+					<ul className={cn(styles.list, classes?.list)}>
 						{options.map((option) => (
 							<li
 								onClick={() => onClickItem(option, () => setOpen(false))}
 								key={getOptionId(option)}
-								className={clsx(
+								className={cn(
 									styles.listItem,
 									classes?.listItem,
 									value &&
@@ -103,17 +103,17 @@ const AsyncSelect = <T,>({
 			onClose={onClose}
 		>
 			{({ setOpen, open }) => (
-				<label className={clsx(styles.root, classes?.root, focusing && [styles.focus, classes?.focus])}>
+				<label className={cn(styles.root, classes?.root, focusing && [styles.focus, classes?.focus])}>
 					<input
 						type='text'
-						className={clsx(styles.input, classes?.input)}
+						className={cn(styles.input, classes?.input)}
 						value={focusing ? term : value ? getOptionTitle(value) : term}
 						onFocus={() => setOpen(true)}
 						onChange={(e) => onChangeTerm(e.target.value)}
 					/>
 
 					<span
-						className={clsx(
+						className={cn(
 							'flexible-placeholder',
 							(value || term.length || focusing) && ['active', focusing && 'colorful'],
 						)}
@@ -122,13 +122,13 @@ const AsyncSelect = <T,>({
 					</span>
 
 					{loading ? (
-						<div className='spinner ml-16 min-h-20 min-w-20' />
+						<div className='ml-16 min-h-20 min-w-20 spinner' />
 					) : (
 						<ArrowDownSVG
 							width='1.6rem'
 							height='1.6rem'
 							style={{ transform: open ? 'rotate(180deg)' : undefined }}
-							className={clsx(styles.icon, classes?.icon)}
+							className={cn(styles.icon, classes?.icon)}
 						/>
 					)}
 				</label>

@@ -15,6 +15,7 @@
 		"to": "تا",
 		"close": "بستن",
 		"no_symbol_found": "نماد مورد نظر یافت نشد",
+		"no_data": "اطلاعات مورد نظر یافت نشد",
 		"searching": "در حال جستجو",
 		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
 		"an_error_occurred": "خطا در دریافت اطلاعات"

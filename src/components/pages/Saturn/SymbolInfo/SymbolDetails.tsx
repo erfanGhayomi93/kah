@@ -5,10 +5,9 @@ import { GrowDownSVG, GrowUpSVG, InfoSVG } from '@/components/icons';
 import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
-import { divide, numFormatter, sepNumbers } from '@/utils/helpers';
+import { cn, divide, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
 
@@ -47,7 +46,7 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 			</div>
 
 			<div className={`min-h-8 flex-1 overflow-hidden rounded-oval rtl ${bgAlphaColor}`}>
-				<div style={{ width: `${percent}%` }} className={`transition-width min-h-8 ${bgColor}`} />
+				<div style={{ width: `${percent}%` }} className={`min-h-8 transition-width ${bgColor}`} />
 			</div>
 		</div>
 	);
@@ -135,7 +134,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 						title: t('option_chain.closing_price'),
 						valueFormatter: (
 							<span
-								className={clsx(
+								className={cn(
 									'gap-4 flex-items-center',
 									closingPriceIs === 'equal'
 										? 'text-gray-1000'
@@ -238,7 +237,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					</div>
 
 					<div className='gap-8 flex-items-center'>
-						<span className={clsx('gap-4 flex-items-center', priceColor)}>
+						<span className={cn('gap-4 flex-items-center', priceColor)}>
 							<span className='flex items-center text-tiny ltr'>
 								({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
 								{lastTradedPriceIs === 'more' && <GrowUpSVG width='1rem' height='1rem' />}
@@ -247,7 +246,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 							{sepNumbers(String(closingPrice))}
 						</span>
 
-						<span className={clsx('flex items-center gap-4 text-4xl font-bold', priceColor)}>
+						<span className={cn('flex items-center gap-4 text-4xl font-bold', priceColor)}>
 							{sepNumbers(String(lastTradedPrice))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>

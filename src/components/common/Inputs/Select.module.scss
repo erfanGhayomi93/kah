@@ -51,6 +51,8 @@
 .list {
 	flex-direction: column;
 	gap: 0.4rem;
+	max-height: 40rem;
+	overflow: auto;
 }
 
 .listItem {

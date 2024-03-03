@@ -4,9 +4,8 @@ import { getUserRemain, getUserStatus } from '@/features/slices/brokerSlice';
 import { toggleForgetPasswordModal, toggleLoginModal, toggleLogoutModal } from '@/features/slices/modalSlice';
 import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
-import { sepNumbers } from '@/utils/helpers';
+import { cn, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -95,7 +94,7 @@ const Header = () => {
 						<span className='gap-8 text-gray-900 flex-items-center'>
 							{t('header.status')}:
 							<span
-								className={clsx('h-32 gap-4 rounded border flex-items-center', {
+								className={cn('h-32 gap-4 rounded border flex-items-center', {
 									'border-success-100 bg-success-100/10 px-8 text-success-100':
 										userStatus.remainStatus === 'Normal',
 									'border-warning-100 bg-warning-100/10 px-8 text-warning-100':

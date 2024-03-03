@@ -1,4 +1,5 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { ArrowDownSVG } from '../../icons';
 import Popup from '../Popup';
@@ -20,7 +21,9 @@ type SelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	defaultOpen?: boolean;
 	options: T[];
 	loading?: boolean;
-	classes?: RecordClasses<'root' | 'focus' | 'list' | 'listItem' | 'value' | 'placeholder' | 'icon' | 'active'>;
+	classes?: RecordClasses<
+		'root' | 'focus' | 'list' | 'alert' | 'listItem' | 'value' | 'placeholder' | 'icon' | 'active'
+	>;
 	getOptionId: (option: T) => string | number;
 	getOptionTitle: (option: T) => React.ReactNode;
 };
@@ -29,6 +32,7 @@ const Select = <T,>({
 	value,
 	options,
 	classes,
+	loading,
 	placeholder,
 	clearable,
 	defaultOpen,
@@ -36,6 +40,8 @@ const Select = <T,>({
 	getOptionTitle,
 	onChange,
 }: SelectProps<T>) => {
+	const t = useTranslations();
+
 	const [focusing, setFocusing] = useState(false);
 
 	const onClear = () => {
@@ -46,33 +52,43 @@ const Select = <T,>({
 		<Popup
 			zIndex={9999}
 			defaultOpen={defaultOpen}
-			renderer={({ setOpen }) => (
-				<ul className={clsx(styles.list, classes?.list)}>
-					{options.map((option) => (
-						<li
-							onClick={() => {
-								onChange(option);
-								setOpen(false);
-							}}
-							key={getOptionId(option)}
-							className={clsx(
-								styles.listItem,
-								classes?.listItem,
-								value && getOptionId(option) === getOptionId(value) && [styles.active, classes?.active],
-							)}
-						>
-							{getOptionTitle(option)}
-						</li>
-					))}
-				</ul>
-			)}
+			renderer={({ setOpen }) => {
+				if (!Array.isArray(options) || options.length === 0)
+					return (
+						<div className={cn(styles.alert, classes?.alert)}>
+							<span>{t('common.no_data')}</span>
+						</div>
+					);
+
+				return (
+					<ul className={cn(styles.list, classes?.list)}>
+						{options.map((option) => (
+							<li
+								onClick={() => {
+									onChange(option);
+									setOpen(false);
+								}}
+								key={getOptionId(option)}
+								className={cn(
+									styles.listItem,
+									classes?.listItem,
+									value &&
+										getOptionId(option) === getOptionId(value) && [styles.active, classes?.active],
+								)}
+							>
+								{getOptionTitle(option)}
+							</li>
+						))}
+					</ul>
+				);
+			}}
 			onOpen={() => setFocusing(true)}
 			onClose={() => setFocusing(false)}
 		>
 			{({ setOpen, open }) => (
 				<div
 					onClick={() => setOpen(!open)}
-					className={clsx(
+					className={cn(
 						styles.root,
 						classes?.root,
 						styles.clickable,
@@ -80,19 +96,23 @@ const Select = <T,>({
 					)}
 				>
 					{value && (
-						<span className={clsx(styles.value, classes?.value)}>
+						<span className={cn(styles.value, classes?.value)}>
 							{value ? getOptionTitle(value) : placeholder}
 						</span>
 					)}
 
-					<span className={clsx('flexible-placeholder', value && 'active')}>{placeholder}</span>
+					<span className={cn('flexible-placeholder', value && 'active')}>{placeholder}</span>
 
-					<ArrowDownSVG
-						width='1.6rem'
-						height='1.6rem'
-						style={{ transform: open ? 'rotate(180deg)' : undefined }}
-						className={clsx(styles.icon, classes?.icon)}
-					/>
+					{loading ? (
+						<div className='ml-16 min-h-20 min-w-20 spinner' />
+					) : (
+						<ArrowDownSVG
+							width='1.6rem'
+							height='1.6rem'
+							style={{ transform: open ? 'rotate(180deg)' : undefined }}
+							className={cn(styles.icon, classes?.icon)}
+						/>
+					)}
 				</div>
 			)}
 		</Popup>

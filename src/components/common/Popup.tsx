@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import React, { cloneElement, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -106,7 +106,7 @@ const Popup = ({
 			el.style.top = top + height + my + 'px';
 			el.style.display = '';
 
-			if (className) el.setAttribute('class', clsx(className));
+			if (className) el.setAttribute('class', cn(className));
 		} catch (e) {
 			//
 		}

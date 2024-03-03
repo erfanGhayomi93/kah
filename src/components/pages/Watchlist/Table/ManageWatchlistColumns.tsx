@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
 import { useDebounce, useWatchlistColumns } from '@/hooks';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -101,7 +101,7 @@ const ManageWatchlistColumns = () => {
 				{Object.keys(categories).map((category, categoryIndex) => (
 					<div
 						key={category}
-						className={clsx(
+						className={cn(
 							'gap-16 pb-16 flex-column',
 							resetting && 'pointer-events-none opacity-0',
 							categoryIndex < 2 && 'border-b border-b-gray-400',
@@ -117,7 +117,7 @@ const ManageWatchlistColumns = () => {
 									onClick={() => setHiddenColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
-									className={clsx(
+									className={cn(
 										column.isHidden
 											? 'bg-white text-gray-900 shadow-sm hover:bg-primary-100 hover:shadow-none'
 											: 'bg-primary-400 text-white hover:bg-primary-300',
