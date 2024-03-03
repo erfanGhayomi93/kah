@@ -42,7 +42,7 @@ const Popup = ({
 
 	const popupRef = useRef<HTMLElement | null>(null);
 
-	const [open, setOpen] = useState(Boolean(defaultOpen));
+	const [open, setOpen] = useState(Boolean(!disabled && defaultOpen));
 
 	const onWindowClick = (e: MouseEvent, abort: () => void) => {
 		try {
@@ -112,6 +112,10 @@ const Popup = ({
 		}
 	}, []);
 
+	const handleOpen = () => {
+		if (!disabled) setOpen(true);
+	};
+
 	useEffect(() => {
 		if (!open) return;
 
@@ -123,7 +127,7 @@ const Popup = ({
 
 	useEffect(() => {
 		try {
-			if (open) onOpen?.();
+			if (open && !disabled) onOpen?.();
 			else onClose?.();
 		} catch (e) {
 			//
@@ -132,7 +136,7 @@ const Popup = ({
 
 	return (
 		<React.Fragment>
-			{cloneElement(children({ setOpen, open }), { ref: childRef })}
+			{cloneElement(children({ setOpen: handleOpen, open }), { ref: childRef })}
 
 			{!disabled &&
 				open &&

@@ -53,7 +53,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 			<div className='h-40 px-32 flex-justify-between'>
 				<label
 					style={{ maxWidth: '30rem' }}
-					className='input-group h-40 flex-1 rounded border border-gray-500 flex-items-center'
+					className='h-40 flex-1 rounded border border-input flex-items-center input-group'
 				>
 					<div className='px-8 text-gray-800'>
 						<SearchSVG width='2rem' height='2rem' />
