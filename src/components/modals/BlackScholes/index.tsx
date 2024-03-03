@@ -63,6 +63,25 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 		}));
 	}, [JSON.stringify(inputs.contractEndDate)]);
 
+	useLayoutEffect(() => {
+		if (!inputs.contract || !inputs.contractEndDate) return;
+
+		const { symbolInfo, optionWatchlistData } = inputs.contract;
+
+		const now = Date.now();
+		const contractEndDate = new Date(inputs.contractEndDate.contractEndDate).getTime();
+
+		setInputs((prev) => ({
+			...prev,
+			premium: String(optionWatchlistData.baseSymbolPrice ?? 0),
+			strikePrice: String(symbolInfo.strikePrice ?? 0),
+			dueDays: (Math.abs(now - contractEndDate) / 1e3 / 24 / 60 / 60).toFixed(0),
+			volatility: String(optionWatchlistData.historicalVolatility ?? 0),
+			riskFreeProfit: '30',
+			contractPrice: String(optionWatchlistData.premium ?? 0),
+		}));
+	}, [JSON.stringify(inputs.contract)]);
+
 	return (
 		<Modal
 			style={{ modal: { transform: 'translate(-50%, -50%)', borderRadius: '1.6rem' } }}

@@ -14,9 +14,7 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 			<Input
 				value={inputs.premium}
 				onChange={(v) => setInputValue('premium', v)}
-				placeholder={t.rich('black_scholes_modal.premium_placeholder', {
-					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
-				})}
+				placeholder={t('black_scholes_modal.premium_placeholder')}
 				prefix={t('common.rial')}
 			/>
 
@@ -55,7 +53,9 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 			<Input
 				value={inputs.contractPrice}
 				onChange={(v) => setInputValue('contractPrice', v)}
-				placeholder={t('black_scholes_modal.contract_price_placeholder')}
+				placeholder={t.rich('black_scholes_modal.contract_price_placeholder', {
+					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
+				})}
 				prefix={t('common.rial')}
 			/>
 		</div>
