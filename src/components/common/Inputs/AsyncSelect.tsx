@@ -20,10 +20,13 @@ type AsyncSelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	blankPlaceholder?: string;
 	placeholder: string | React.ReactNode;
 	defaultOpen?: boolean;
+	disabled?: boolean;
 	options: T[];
 	minimumChars?: number;
 	loading?: boolean;
-	classes?: RecordClasses<'root' | 'focus' | 'list' | 'value' | 'listItem' | 'alert' | 'input' | 'icon' | 'active'>;
+	classes?: RecordClasses<
+		'root' | 'focus' | 'disabled' | 'list' | 'value' | 'listItem' | 'alert' | 'input' | 'icon' | 'active'
+	>;
 	term: string;
 	onChangeTerm: (term: string) => void;
 	getOptionId: (option: T) => string | number;
@@ -35,9 +38,9 @@ const AsyncSelect = <T,>({
 	value,
 	options,
 	classes,
+	disabled,
 	placeholder,
 	blankPlaceholder,
-	clearable,
 	loading,
 	defaultOpen,
 	term,
@@ -63,18 +66,16 @@ const AsyncSelect = <T,>({
 	};
 
 	const onOpen = () => {
-		setFocusing(true);
 		if (value) onChangeTerm(getInputValue(value));
-	};
-
-	const onClear = () => {
-		if (clearable) onChange(null);
 	};
 
 	return (
 		<Popup
 			zIndex={9999}
 			defaultOpen={defaultOpen}
+			disabled={disabled}
+			onOpen={onOpen}
+			onClose={onClose}
 			renderer={({ setOpen }) => {
 				if ((minimumChars && term.length < minimumChars) || loading)
 					return (
@@ -109,15 +110,21 @@ const AsyncSelect = <T,>({
 					</ul>
 				);
 			}}
-			onOpen={onOpen}
-			onClose={onClose}
 		>
 			{({ setOpen, open }) => (
-				<label className={cn(styles.root, classes?.root, focusing && [styles.focus, classes?.focus])}>
+				<label
+					className={cn(
+						styles.root,
+						classes?.root,
+						disabled && [styles.disabled, classes?.disabled],
+						focusing && [styles.focus, classes?.focus],
+					)}
+				>
 					<input
 						type='text'
 						className={cn(styles.input, classes?.input)}
 						value={term}
+						disabled={disabled}
 						onFocus={() => setOpen(true)}
 						onChange={(e) => onChangeTerm(e.target.value)}
 					/>

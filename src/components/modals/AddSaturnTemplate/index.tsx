@@ -83,7 +83,7 @@ const AddSaturnTemplate = ({
 							maxLength={36}
 							value={name}
 							placeholder={t('save_saturn_template.input_placeholder')}
-							className='h-40 w-full rounded border border-gray-500 px-16 text-base'
+							className='h-40 w-full rounded border border-input px-16 text-base'
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</label>

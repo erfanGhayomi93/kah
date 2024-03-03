@@ -6,11 +6,12 @@ import { useMemo, useState } from 'react';
 interface SymbolSearchProps {
 	value: IBlackScholesModalStates['contract'];
 	isLoading: boolean;
+	disabled: boolean;
 	options: Option.Root[];
 	onChange: (symbol: IBlackScholesModalStates['contract']) => void;
 }
 
-const ContractSearch = ({ value, isLoading, options, onChange }: SymbolSearchProps) => {
+const ContractSearch = ({ value, disabled, isLoading, options, onChange }: SymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -25,6 +26,7 @@ const ContractSearch = ({ value, isLoading, options, onChange }: SymbolSearchPro
 			options={data}
 			value={value}
 			term={term}
+			disabled={disabled}
 			loading={isLoading}
 			blankPlaceholder={t('black_scholes_modal.no_contract_found')}
 			placeholder={t('black_scholes_modal.contract')}

@@ -114,7 +114,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			<div className='gap-24 flex-justify-between'>
 				<label
 					style={{ maxWidth: '30rem' }}
-					className='h-40 flex-1 rounded border border-gray-500 flex-items-center input-group'
+					className='h-40 flex-1 rounded border border-input flex-items-center input-group'
 				>
 					<div className='px-8 text-gray-900'>
 						<SearchSVG width='2rem' height='2rem' />

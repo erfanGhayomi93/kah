@@ -15,7 +15,7 @@ const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) =
 	};
 
 	return (
-		<label className='relative h-48 rounded border border-gray-500 flex-items-center input-group'>
+		<label className='relative h-48 rounded border border-input flex-items-center input-group'>
 			<input
 				{...props}
 				type='text'
@@ -30,7 +30,7 @@ const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) =
 				{placeholder}
 			</span>
 
-			<span className='h-24 w-36 border-r border-r-gray-500 text-tiny text-gray-700 flex-justify-center'>
+			<span className='h-24 w-36 border-r border-r-input text-tiny text-gray-700 flex-justify-center'>
 				{prefix}
 			</span>
 		</label>
