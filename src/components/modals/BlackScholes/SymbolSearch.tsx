@@ -43,7 +43,6 @@ const SymbolSearch = ({ value, onChange }: SymbolSearchProps) => {
 			placeholder={t('black_scholes_modal.base_symbol')}
 			getOptionId={(option) => option!.symbolISIN}
 			getOptionTitle={(option) => option!.symbolTitle}
-			getInputValue={(option) => option!.symbolTitle}
 			onChangeTerm={setTerm}
 			onChange={onChange}
 			classes={{

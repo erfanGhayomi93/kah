@@ -3,9 +3,13 @@ import '@/assets/styles/libs.scss';
 import NextIntlClientRegistry from '@/components/common/Registry/NextIntlClientRegistry';
 import Providers from '@/components/layout/Providers';
 import Wrapper from '@/components/layout/Wrapper';
-import Modals from '@/components/modals/Modals';
 import metadata from '@/metadata';
 import { getDirection } from '@/utils/helpers';
+import dynamic from 'next/dynamic';
+
+const Modals = dynamic(() => import('@/components/modals/Modals'), {
+	ssr: false,
+});
 
 interface IRootLayout extends INextProps {
 	children: React.ReactNode;
