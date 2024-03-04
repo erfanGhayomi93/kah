@@ -6,11 +6,12 @@ import ContractSearch from './ContractSearch';
 import SymbolSearch from './SymbolSearch';
 
 interface SelectSymbolProps {
+	base: 'base' | 'contract';
 	inputs: IBlackScholesModalStates;
 	setInputValue: <T extends keyof IBlackScholesModalStates>(field: T, value: IBlackScholesModalStates[T]) => void;
 }
 
-const SelectSymbol = ({ inputs, setInputValue }: SelectSymbolProps) => {
+const SelectSymbol = ({ base, inputs, setInputValue }: SelectSymbolProps) => {
 	const t = useTranslations();
 
 	const baseSymbolISINIsSelected = Boolean(inputs.baseSymbol?.symbolISIN);
@@ -42,31 +43,38 @@ const SelectSymbol = ({ inputs, setInputValue }: SelectSymbolProps) => {
 	};
 
 	return (
-		<div className='flex gap-8 border-b border-b-gray-500 py-24'>
-			<div className='flex-1'>
-				<SymbolSearch value={inputs.baseSymbol} onChange={(value) => setInputValue('baseSymbol', value)} />
-			</div>
+		<div className='flex gap-8 border-b border-b-gray-500 pb-24'>
+			{base === 'base' && (
+				<>
+					<div className='flex-1'>
+						<SymbolSearch
+							value={inputs.baseSymbol}
+							onChange={(value) => setInputValue('baseSymbol', value)}
+						/>
+					</div>
 
-			<div className='flex-1'>
-				<Select<IBlackScholesModalStates['contractEndDate']>
-					options={settlementDays ?? []}
-					value={inputs.contractEndDate}
-					loading={isFetchingSettlementDays}
-					placeholder={t('black_scholes_modal.contract_end_date')}
-					getOptionId={(option) => option!.contractEndDate}
-					getOptionTitle={(option) => dateFormatter(option!.contractEndDate)}
-					onChange={(value) => setInputValue('contractEndDate', value)}
-					disabled={!inputs.baseSymbol}
-					classes={{
-						root: '!h-48',
-					}}
-				/>
-			</div>
+					<div className='flex-1'>
+						<Select<IBlackScholesModalStates['contractEndDate']>
+							options={settlementDays ?? []}
+							value={inputs.contractEndDate}
+							loading={isFetchingSettlementDays}
+							placeholder={t('black_scholes_modal.contract_end_date')}
+							getOptionId={(option) => option!.contractEndDate}
+							getOptionTitle={(option) => dateFormatter(option!.contractEndDate)}
+							onChange={(value) => setInputValue('contractEndDate', value)}
+							disabled={!inputs.baseSymbol}
+							classes={{
+								root: '!h-48',
+							}}
+						/>
+					</div>
+				</>
+			)}
 
 			<div className='flex-1'>
 				<ContractSearch
 					isLoading={isLoadingWatchlistData}
-					disabled={!inputs.baseSymbol || !inputs.contractEndDate}
+					disabled={base === 'base' && (!inputs.baseSymbol || !inputs.contractEndDate)}
 					options={watchlistData ?? []}
 					value={inputs.contract}
 					onChange={(value) => setInputValue('contract', value)}

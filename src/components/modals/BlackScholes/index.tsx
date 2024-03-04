@@ -1,12 +1,14 @@
 import { EraserSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleBlackScholesModal, type IBlackScholes } from '@/features/slices/modalSlice';
+import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Form from './Form';
+import SearchBasis from './SearchBasis';
 import SelectSymbol from './SelectSymbol';
 
 interface BlackScholesProps extends IBlackScholes {}
@@ -36,6 +38,8 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
+
+	const [searchBasis, setSearchBasis] = useLocalstorage<'base' | 'contract'>('bst', 'base');
 
 	const [inputs, setInputs] = useState(initialValues);
 
@@ -111,7 +115,8 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 				</div>
 
 				<div className='flex-1 gap-24 px-24 flex-column'>
-					<SelectSymbol setInputValue={setInputValue} inputs={inputs} />
+					<SearchBasis value={searchBasis} onChange={(v) => setSearchBasis(v)} />
+					<SelectSymbol base={searchBasis} setInputValue={setInputValue} inputs={inputs} />
 
 					<div className='flex flex-1 gap-16 pb-24'>
 						<Form setInputValue={setInputValue} inputs={inputs} />
