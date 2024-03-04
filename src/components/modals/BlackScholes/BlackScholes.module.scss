@@ -1,0 +1,41 @@
+.section {
+	position: relative;
+	flex: 0 0 13.2rem;
+	border-radius: 0.8rem;
+	display: flex;
+	flex-direction: column;
+	font-size: 1.4rem;
+	font-weight: 700;
+}
+
+.part {
+	flex: 1;
+	direction: ltr;
+	width: 100%;
+	display: flex;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	justify-content: center;
+	align-items: center;
+
+	&.green {
+		@apply bg-success-100/5;
+	}
+
+	&.red {
+		@apply bg-error-100/5;
+	}
+
+	&.gray {
+		@apply bg-gray-200;
+	}
+}
+
+.fieldset {
+	legend {
+		text-align: left;
+		margin-left: 0.8rem;
+		padding: 0 0.8rem;
+	}
+}

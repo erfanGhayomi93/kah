@@ -219,7 +219,7 @@
 	"option_chain": {
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
 		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
-		"symbol_search_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"symbol_search_placeholder": "جستجو نماد",
 		"no_data_found": "اطلاعاتی برای نمایش یافت نشد",
 		"closing_price": "قیمت پایانی",
 		"trade_volume": "حجم معاملات ",
@@ -302,7 +302,7 @@
 		"otp_placeholder": "کد تایید"
 	},
 	"symbol_search": {
-		"input_placeholder": "نماد مورد نظر خود را جستجو کنید"
+		"input_placeholder": "جستجو نماد"
 	},
 	"sidebar": {
 		"account": "پروفایل",

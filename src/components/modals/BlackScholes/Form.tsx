@@ -16,6 +16,7 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 				onChange={(v) => setInputValue('sharePrice', Number(v))}
 				placeholder={t('black_scholes_modal.share_price_placeholder')}
 				prefix={t('common.rial')}
+				maxLength={10}
 			/>
 
 			<Input
@@ -25,6 +26,7 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
 				})}
 				prefix={t('common.rial')}
+				maxLength={10}
 			/>
 
 			<Input
@@ -32,6 +34,7 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 				onChange={(v) => setInputValue('dueDays', Number(v))}
 				placeholder={t('black_scholes_modal.due_days_remaining')}
 				prefix={t('black_scholes_modal.day')}
+				maxLength={3}
 			/>
 
 			<Input
@@ -41,6 +44,7 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
 				})}
 				prefix='%'
+				maxLength={4}
 			/>
 
 			<Input
@@ -48,6 +52,7 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 				onChange={(v) => setInputValue('riskFreeProfit', v)}
 				placeholder={t('black_scholes_modal.risk_free_profit')}
 				prefix='%'
+				maxLength={4}
 			/>
 
 			<Input
@@ -57,6 +62,7 @@ const Form = ({ inputs, setInputValue }: FormProps) => {
 					chunk: (chunk) => <span className='font-medium opacity-70'>{chunk}</span>,
 				})}
 				prefix={t('common.rial')}
+				maxLength={10}
 			/>
 		</div>
 	);

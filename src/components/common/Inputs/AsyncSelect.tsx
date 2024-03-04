@@ -113,6 +113,7 @@ const AsyncSelect = <T,>({
 			{({ setOpen, open }) => (
 				<label
 					className={cn(
+						'input-group',
 						styles.root,
 						classes?.root,
 						disabled && [styles.disabled, classes?.disabled],
@@ -139,6 +140,10 @@ const AsyncSelect = <T,>({
 					>
 						{placeholder}
 					</span>
+
+					<fieldset className={cn('flexible-fieldset', value && 'active')}>
+						<legend>{placeholder}</legend>
+					</fieldset>
 
 					{mode !== 'typing' && value && (
 						<span

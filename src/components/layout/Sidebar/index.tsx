@@ -5,7 +5,7 @@ import { cn } from '@/utils/helpers';
 import dynamic from 'next/dynamic';
 import styles from './Sidebar.module.scss';
 
-const DynamicContent = dynamic(() => import('./DynamicContent'), {
+const Navbar = dynamic(() => import('./Navbar'), {
 	ssr: false,
 });
 
@@ -30,7 +30,7 @@ const Sidebar = () => {
 				<AngleLeft width='1.6rem' height='1.6rem' />
 			</button>
 
-			<DynamicContent isExpand={isExpand} />
+			<Navbar isExpand={isExpand} />
 		</div>
 	);
 };

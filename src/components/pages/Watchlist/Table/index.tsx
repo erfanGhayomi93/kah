@@ -48,11 +48,11 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
 
 	return (
-		<div className='relative'>
+		<div className='relative overflow-hidden'>
 			<div
 				className='overflow-hidden rounded border border-gray-500 flex-column'
 				style={{
-					height: 'calc(100dvh - 24rem)',
+					height: 'calc(100dvh - 24.8rem)',
 					transition: 'height 250ms ease',
 				}}
 			>
@@ -61,7 +61,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				{!dataIsEmpty && !isFetching && watchlistId > -1 && (
 					<button
 						onClick={addSymbol}
-						className='h-40 gap-8 border-t border-t-gray-500 pr-24 font-medium text-primary-400 flex-items-center'
+						className='min-h-48 gap-8 border-t border-t-gray-500 pr-24 font-medium text-primary-400 flex-items-center'
 						type='button'
 					>
 						<span className='size-16 rounded-sm text-current flex-justify-center'>
