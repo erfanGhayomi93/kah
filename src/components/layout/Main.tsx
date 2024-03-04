@@ -6,8 +6,8 @@ const Main = styled.main`
 	flex-direction: column;
 	padding: 0.8rem 2.4rem 2.4rem 2.4rem;
 	overflow: auto;
-	min-height: calc(100vh - 8.8rem);
-	max-height: calc(100vh - 8.8rem);
+	min-height: calc(100dvh - 8.8rem);
+	max-height: calc(100dvh - 8.8rem);
 `;
 
 export default Main;

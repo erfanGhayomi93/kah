@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import Footer from './Footer';
 import Header from './Header';
+import Orders from './Orders';
 import Sidebar from './Sidebar';
 
 interface IWrapper {
@@ -21,12 +22,22 @@ const Wrapper = ({ children }: IWrapper) => {
 
 	return (
 		<ErrorBoundary>
-			<Header />
-			<div style={{ height: 'calc(100vh - 4.8rem)' }} className='flex flex-1'>
-				<Sidebar />
+			<ErrorBoundary>
+				<Header />
+			</ErrorBoundary>
+			<div style={{ height: 'calc(100dvh - 4.8rem)' }} className='flex flex-1'>
+				<ErrorBoundary>
+					<Sidebar />
+				</ErrorBoundary>
+
 				<div className='h-full flex-1 justify-between flex-column'>
 					<ErrorBoundary>{children}</ErrorBoundary>
-					<Footer />
+					<ErrorBoundary>
+						<Orders />
+					</ErrorBoundary>
+					<ErrorBoundary>
+						<Footer />
+					</ErrorBoundary>
 				</div>
 			</div>
 		</ErrorBoundary>
