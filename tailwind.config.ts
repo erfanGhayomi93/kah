@@ -628,6 +628,7 @@ const config: Config = {
 					position: 'absolute',
 					height: 'calc(100% + 5px)',
 					inset: '-5px 0 0',
+					'pointer-events': 'none',
 					border: `1px solid ${theme('colors.input')}`,
 					'border-radius': '8px',
 					'text-align': 'right',

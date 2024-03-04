@@ -147,6 +147,8 @@
 		"base_symbol": "نماد پایه",
 		"contract_end_date": "تاریخ سررسید",
 		"contract": "قرارداد",
+		"search_basis": "جستجو بر اساس",
+		"symbol_contract": "نماد قرارداد",
 		"share_price_placeholder": "قیمت دارایی پایه",
 		"strike_price_placeholder": "قیمت اعمال <chunk>(Strike)</chunk>",
 		"due_days_remaining": "مانده تا سررسید",
