@@ -1,4 +1,4 @@
-import { XSVG } from '@/components/icons';
+import { EraserSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleBlackScholesModal, type IBlackScholes } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
@@ -15,6 +15,18 @@ const Calculator = dynamic(() => import('./Calculator'), {
 	ssr: false,
 });
 
+const initialValues: IBlackScholesModalStates = {
+	baseSymbol: null,
+	contractEndDate: null,
+	contract: null,
+	premium: 0,
+	strikePrice: 0,
+	dueDays: 0,
+	volatility: '',
+	riskFreeProfit: '',
+	sharePrice: 0,
+};
+
 const Div = styled.div`
 	width: 820px;
 	height: 660px;
@@ -25,17 +37,7 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const [inputs, setInputs] = useState<IBlackScholesModalStates>({
-		baseSymbol: null,
-		contractEndDate: null,
-		contract: null,
-		premium: '',
-		strikePrice: '',
-		dueDays: '',
-		volatility: '',
-		riskFreeProfit: '',
-		contractPrice: '',
-	});
+	const [inputs, setInputs] = useState(initialValues);
 
 	const setInputValue = <T extends keyof IBlackScholesModalStates>(field: T, value: IBlackScholesModalStates[T]) => {
 		setInputs((prev) => ({
@@ -46,6 +48,10 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 
 	const onCloseModal = () => {
 		dispatch(toggleBlackScholesModal(null));
+	};
+
+	const onReset = () => {
+		setInputs(initialValues);
 	};
 
 	useLayoutEffect(() => {
@@ -73,12 +79,12 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 
 		setInputs((prev) => ({
 			...prev,
-			premium: String(optionWatchlistData.baseSymbolPrice ?? 0),
-			strikePrice: String(symbolInfo.strikePrice ?? 0),
-			dueDays: (Math.abs(now - contractEndDate) / 1e3 / 24 / 60 / 60).toFixed(0),
+			sharePrice: optionWatchlistData.baseSymbolPrice ?? 0,
+			strikePrice: symbolInfo.strikePrice ?? 0,
+			dueDays: Math.floor(Math.abs(now - contractEndDate) / 1e3 / 24 / 60 / 60),
 			volatility: String(optionWatchlistData.historicalVolatility ?? 0),
 			riskFreeProfit: '30',
-			contractPrice: String(optionWatchlistData.premium ?? 0),
+			premium: optionWatchlistData.premium ?? 0,
 		}));
 	}, [JSON.stringify(inputs.contract)]);
 
@@ -93,9 +99,15 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 				<div className='relative h-56 bg-gray-200 flex-justify-center'>
 					<h1 className='text-xl font-medium text-gray-900'>{t('black_scholes_modal.title')}</h1>
 
-					<button onClick={onCloseModal} type='button' className='absolute left-24 icon-hover'>
-						<XSVG width='2rem' height='2rem' />
-					</button>
+					<div className='absolute left-24 gap-16 flex-items-center'>
+						<button onClick={onReset} type='button' className='icon-hover'>
+							<EraserSVG width='2rem' height='2rem' />
+						</button>
+
+						<button onClick={onCloseModal} type='button' className='icon-hover'>
+							<XSVG width='2rem' height='2rem' />
+						</button>
+					</div>
 				</div>
 
 				<div className='flex-1 gap-24 px-24 flex-column'>

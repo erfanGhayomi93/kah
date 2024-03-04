@@ -269,7 +269,9 @@ const SimpleTrade = ({
 								</span>
 
 								<span className='gap-4 text-tiny text-primary-400 flex-items-center'>
-									{validityDateTitle}
+									<span className='h-24 rounded border-primary-400 bg-secondary-100 px-8 text-primary-400 flex-items-center'>
+										{validityDateTitle}
+									</span>
 									<span className='text-gray-900'>
 										<ArrowUpSVG width='1.2rem' height='1.2rem' />
 									</span>
