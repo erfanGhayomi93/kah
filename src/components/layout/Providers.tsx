@@ -6,6 +6,7 @@ import ToastRegistry from '@/components/common/ToastRegistry';
 import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
 import dynamic from 'next/dynamic';
 import AppMiddleware from '../common/Middlewares/AppMiddleware';
+import OMSMessages from '../common/Middlewares/OMSMessages';
 
 const LightstreamRegistry = dynamic(() => import('../common/Registry/LightstreamRegistry'), {
 	ssr: false,
@@ -26,13 +27,15 @@ const Providers = ({ children }: ProvidersProps) => {
 				<ReduxToolkitRegistry>
 					<LightstreamRegistry>
 						<BroadcastChannelRegistry>
-							<ClockProvider>
-								<WatchlistColumnsProvider>
-									<ToastRegistry>
-										<AppMiddleware>{children}</AppMiddleware>
-									</ToastRegistry>
-								</WatchlistColumnsProvider>
-							</ClockProvider>
+							<OMSMessages>
+								<ClockProvider>
+									<WatchlistColumnsProvider>
+										<ToastRegistry>
+											<AppMiddleware>{children}</AppMiddleware>
+										</ToastRegistry>
+									</WatchlistColumnsProvider>
+								</ClockProvider>
+							</OMSMessages>
 						</BroadcastChannelRegistry>
 					</LightstreamRegistry>
 				</ReduxToolkitRegistry>
