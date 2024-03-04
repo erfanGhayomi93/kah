@@ -87,6 +87,7 @@ const Select = <T,>({
 				<div
 					onClick={() => setOpen(!open)}
 					className={cn(
+						'input-group',
 						styles.root,
 						classes?.root,
 						disabled ? [styles.disabled, classes?.disabled] : styles.clickable,
@@ -102,6 +103,10 @@ const Select = <T,>({
 					<span className={cn('flexible-placeholder', value && 'active', open && 'colorful')}>
 						{placeholder}
 					</span>
+
+					<fieldset className={cn('flexible-fieldset', value && 'active')}>
+						<legend>{placeholder}</legend>
+					</fieldset>
 
 					{loading ? (
 						<div className='!absolute left-8 min-h-20 min-w-20 spinner' />

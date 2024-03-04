@@ -16,23 +16,32 @@ import {
 	TransferSVG,
 	WatchlistSVG,
 } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { toggleSidebar } from '@/features/slices/uiSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
 
-interface DynamicContentProps {
+interface NavbarProps {
 	isExpand: boolean;
 }
 
-const DynamicContent = ({ isExpand }: DynamicContentProps) => {
+const Navbar = ({ isExpand }: NavbarProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
 
 	const [expandId, setExpandId] = useState<null | string>('market');
 
 	const toggleItem = (id: string) => {
-		setExpandId(expandId === id ? null : id);
+		if (isExpand) {
+			setExpandId(expandId === id ? null : id);
+		} else {
+			dispatch(toggleSidebar(true));
+			setExpandId(id);
+		}
 	};
 
 	const items: [TListItem[], TListItem[]] = useMemo(
@@ -164,4 +173,4 @@ const DynamicContent = ({ isExpand }: DynamicContentProps) => {
 	);
 };
 
-export default DynamicContent;
+export default Navbar;

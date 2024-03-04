@@ -5,8 +5,7 @@
 }
 
 .root {
-	border: 1px solid theme("colors.input");
-	border-radius: 8px;
+	position: relative;
 	height: 4rem;
 	flex: 1;
 	display: flex;

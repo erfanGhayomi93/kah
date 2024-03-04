@@ -575,9 +575,19 @@ const config: Config = {
 
 						'.flexible-placeholder': {
 							color: theme('colors.primary.300'),
+							top: '0',
+							right: '1.6rem !important',
 							'font-size': '1.2rem',
-							transform: 'translate(0, -175%)',
-							'-webkit-transform': 'translate(0, -175%)',
+							transform: 'translateY(calc(-100% + 0.9rem))',
+							'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
+						},
+
+						'.flexible-fieldset': {
+							legend: {
+								padding: '0 0.8rem',
+								'font-size': '1.2rem',
+								'max-width': '100%',
+							},
 						},
 					},
 
@@ -589,26 +599,60 @@ const config: Config = {
 				'.flexible-placeholder': {
 					position: 'absolute',
 					'font-size': '1.4rem',
+					'user-select': 'none',
 					top: '50%',
 					'font-weight': '400',
 					right: '0.8rem',
-					'background-color': theme('colors.white'),
-					padding: '0 8px',
 					'pointer-events': 'none',
 					color: theme('colors.gray.700'),
-					transform: 'translate(0, -50%)',
-					'-webkit-transform': 'translate(0, -50%)',
-					transition: 'font-size 200ms ease, color 200ms ease-in, transform 200ms ease',
-					'-webkit-transition': 'font-size 200ms ease, color 200ms ease-in, transform 200ms ease',
+					transform: 'translateY(-50%)',
+					'-webkit-transform': 'translateY(-50%)',
+					transition: 'font-size 200ms, right 200ms, top 200ms, color 200ms, transform 200ms',
+					'-webkit-transition': 'font-size 200ms, right 200ms, top 200ms, color 200ms, transform 200ms',
 
 					'&.active': {
-						'font-size': '1.2rem',
 						color: theme('colors.gray.900'),
-						transform: 'translate(0, -175%)',
-						'-webkit-transform': 'translate(0, -175%)',
+						top: '0',
+						'font-size': '1.2rem',
+						right: '1.6rem !important',
+						transform: 'translateY(calc(-100% + 0.9rem))',
+						'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
 
 						'&.colorful': {
 							color: theme('colors.primary.300'),
+						},
+					},
+				},
+
+				'.flexible-fieldset': {
+					position: 'absolute',
+					height: 'calc(100% + 5px)',
+					inset: '-5px 0 0',
+					border: `1px solid ${theme('colors.input')}`,
+					'border-radius': '8px',
+					'text-align': 'right',
+					overflow: 'hidden',
+					padding: '0 0.8rem',
+
+					legend: {
+						float: 'unset',
+						width: 'auto',
+						overflow: 'hidden',
+						display: 'block',
+						height: '11px',
+						'font-size': '1.2rem',
+						visibility: 'hidden',
+						'max-width': '0',
+						'white-space': 'nowrap',
+						'-webkit-transition': 'max-width 100ms cubic-bezier(0, 0, 0.2, 1) 0ms, padding 250ms',
+						transition: 'max-width 100ms cubic-bezier(0, 0, 0.2, 1) 0ms, padding 250ms',
+					},
+
+					'&.active': {
+						legend: {
+							padding: '0 0.8rem',
+							'font-size': '1.2rem',
+							'max-width': '100%',
 						},
 					},
 				},
