@@ -1,7 +1,7 @@
 import { ArrowDownSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Popup from '../Popup';
 import styles from './Select.module.scss';
 
@@ -53,7 +53,7 @@ const AsyncSelect = <T,>({
 }: AsyncSelectProps<T>) => {
 	const t = useTranslations();
 
-	const [focusing, setFocusing] = useState(false);
+	const [mode, setMode] = useState<'focusing' | 'typing' | null>(null);
 
 	const onClickItem = (option: T, callback: () => void) => {
 		onChange(option);
@@ -61,14 +61,19 @@ const AsyncSelect = <T,>({
 	};
 
 	const onClose = () => {
-		setFocusing(false);
+		setMode(null);
 		onChangeTerm('');
 	};
 
 	const onOpen = () => {
-		setFocusing(true);
-		if (value) onChangeTerm(getInputValue(value));
+		setMode('focusing');
+		onChangeTerm('');
 	};
+
+	const valueAsString = useMemo(() => {
+		if (value) return getInputValue(value);
+		return '';
+	}, [value]);
 
 	return (
 		<Popup
@@ -118,7 +123,7 @@ const AsyncSelect = <T,>({
 						styles.root,
 						classes?.root,
 						disabled && [styles.disabled, classes?.disabled],
-						focusing && [styles.focus, classes?.focus],
+						mode && [styles.focus, classes?.focus],
 					)}
 				>
 					<input
@@ -127,20 +132,31 @@ const AsyncSelect = <T,>({
 						value={term}
 						disabled={disabled}
 						onFocus={() => setOpen(true)}
-						onChange={(e) => onChangeTerm(e.target.value)}
+						onChange={(e) => {
+							onChangeTerm(e.target.value);
+							setMode('typing');
+						}}
 					/>
 
 					<span
 						className={cn(
 							'flexible-placeholder',
-							(value || term.length || focusing) && ['active', focusing && 'colorful'],
+							(value || term.length || mode) && ['active', mode && 'colorful'],
 						)}
 					>
 						{placeholder}
 					</span>
 
-					{!focusing && value && (
-						<span className={cn(styles.value, classes?.value)}>{getOptionTitle(value)}</span>
+					{mode !== 'typing' && value && (
+						<span
+							className={cn(
+								styles.value,
+								classes?.value,
+								mode === 'focusing' && [styles.focus, classes?.focus],
+							)}
+						>
+							{getOptionTitle(value)}
+						</span>
 					)}
 
 					{loading ? (

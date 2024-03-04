@@ -37,6 +37,10 @@
 	&.placeholder {
 		color: theme("colors.gray.700");
 	}
+
+	&.focus {
+		color: theme("colors.gray.700");
+	}
 }
 
 .icon {
