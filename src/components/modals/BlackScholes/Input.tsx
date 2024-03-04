@@ -1,15 +1,15 @@
 import { cn, convertStringToDecimal, sepNumbers } from '@/utils/helpers';
 import React from 'react';
 
-interface InputProps
+interface InputProps<T extends string | number>
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'className' | 'onChange'> {
 	onChange: (v: string) => void;
-	value: string;
+	value: T;
 	prefix: string;
 	placeholder: React.ReactNode;
 }
 
-const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) => {
+const Input = <T extends string | number>({ value, placeholder, prefix, onChange, ...props }: InputProps<T>) => {
 	const valueFormatter = (value: string) => {
 		return sepNumbers(String(value));
 	};
@@ -22,7 +22,7 @@ const Input = ({ value, placeholder, prefix, onChange, ...props }: InputProps) =
 				inputMode='numeric'
 				maxLength={25}
 				className='h-full flex-1 bg-transparent px-8 text-left ltr'
-				value={value ? valueFormatter(value) : ''}
+				value={value ? valueFormatter(String(value)) : ''}
 				onChange={(e) => onChange(convertStringToDecimal(e.target.value))}
 			/>
 
