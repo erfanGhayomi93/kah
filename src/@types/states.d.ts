@@ -88,10 +88,10 @@ declare interface IBlackScholesModalStates {
 	baseSymbol: Option.Search | null;
 	contractEndDate: Option.BaseSettlementDays | null;
 	contract: Option.Root | null;
-	premium: string;
-	strikePrice: string;
-	dueDays: string;
+	sharePrice: number;
+	strikePrice: number;
+	dueDays: number;
 	volatility: string;
 	riskFreeProfit: string;
-	contractPrice: string;
+	premium: number;
 }

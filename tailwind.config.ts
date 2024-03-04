@@ -449,12 +449,12 @@ const config: Config = {
 				},
 
 				'.icon-hover': {
-					color: theme('colors.gray.1000'),
+					color: theme('colors.gray.900'),
 					transition: 'color 250ms',
 					'-webkit-transition': 'color 250ms',
 
 					'&:hover': {
-						color: theme('colors.gray.900'),
+						color: theme('colors.gray.800'),
 					},
 				},
 

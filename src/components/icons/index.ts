@@ -20,6 +20,7 @@ import DoubleArrowLeftSVG from './double-arrow-right.svg';
 import DragSVG from './drag.svg';
 import EditSVG from './edit.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
+import EraserSVG from './eraser.svg';
 import ExcelSVG from './excel.svg';
 import EyeSlashSVG from './eye-slash.svg';
 import EyeSVG from './eye.svg';
@@ -89,6 +90,7 @@ export {
 	DragSVG,
 	EditSVG,
 	EllipsisVerticalSVG,
+	EraserSVG,
 	ExcelSVG,
 	EyeSVG,
 	EyeSlashSVG,
