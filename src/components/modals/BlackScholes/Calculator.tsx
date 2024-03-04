@@ -125,7 +125,7 @@ const Calculator = (props: CalculatorProps) => {
 				className='flex rounded bg-white text-base ltr'
 			>
 				<Section style={{ flex: '0 0 13.2rem' }} className='h-full flex-justify-center'>
-					<span className='font-bold text-error-100 ltr'>-65.25</span>
+					<span className='font-bold text-error-100 ltr'>−</span>
 				</Section>
 
 				<div className='h-full flex-1 flex-justify-center'>
@@ -133,7 +133,7 @@ const Calculator = (props: CalculatorProps) => {
 				</div>
 
 				<Section className='h-full ltr flex-justify-center'>
-					<span className='font-bold text-success-100'>2.57</span>
+					<span className='font-bold text-success-100'>−</span>
 				</Section>
 			</div>
 		</div>
