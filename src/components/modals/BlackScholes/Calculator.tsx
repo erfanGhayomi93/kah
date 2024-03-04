@@ -1,48 +1,11 @@
 import { blackScholes } from '@/utils/Math/black-scholes';
 import { type IBlackScholesResponse } from '@/utils/Math/type';
-import { sepNumbers } from '@/utils/helpers';
+import { cn, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useState } from 'react';
-import styled from 'styled-components';
+import styles from './BlackScholes.module.scss';
 
 interface CalculatorProps extends IBlackScholesModalStates {}
-
-const Section = styled.div<{ $side?: string }>`
-	position: relative;
-	flex: 0 0 13.2rem;
-	border-radius: 0.8rem;
-	display: flex;
-	flex-direction: column;
-	font-size: 1.4rem;
-	font-weight: 700;
-
-	${({ $side }) =>
-		$side &&
-		`
-	&::after {
-		content: "${$side}";
-		position: absolute;
-		left: 0.8rem;
-		padding: 0 0.8rem;
-		top: -1rem;
-		color: inherit;
-		z-index: 9;
-		background-color: inherit;
-	}
-	`}
-`;
-
-const Part = styled.div`
-	flex: 1;
-	direction: ltr;
-	width: 100%;
-	display: flex;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	justify-content: center;
-	align-items: center;
-`;
 
 const Calculator = (props: CalculatorProps) => {
 	const t = useTranslations();
@@ -92,49 +55,66 @@ const Calculator = (props: CalculatorProps) => {
 	return (
 		<>
 			<div className='flex flex-1'>
-				<Section $side='Call' className='border border-success-100 bg-gray-100 text-success-100'>
-					<Part className='text-lg'>{numFormatter(values.call, 0)}</Part>
-					<Part className='bg-success-100/5'>{numFormatter(values.deltaCall)}</Part>
-					<Part className='bg-success-100/5'>{numFormatter(values.gamma, 7)}</Part>
-					<Part className='bg-success-100/5'>{numFormatter(values.vega)}</Part>
-					<Part className='bg-success-100/5'>{numFormatter(values.thetaCall)}</Part>
-					<Part className='bg-success-100/5'>{numFormatter(values.rhoCall)}</Part>
-				</Section>
+				<fieldset
+					className={cn(
+						'border border-success-100 bg-gray-100 text-success-100',
+						styles.section,
+						styles.fieldset,
+					)}
+				>
+					<legend>Call</legend>
+					<div className={cn('text-lg', styles.part)}>{numFormatter(values.call, 0)}</div>
+					<div className={cn(styles.green, styles.part)}>{numFormatter(values.deltaCall)}</div>
+					<div className={cn(styles.green, styles.part)}>{numFormatter(values.gamma, 7)}</div>
+					<div className={cn(styles.green, styles.part)}>{numFormatter(values.vega)}</div>
+					<div className={cn(styles.green, styles.part)}>{numFormatter(values.thetaCall)}</div>
+					<div className={cn(styles.green, styles.part)}>{numFormatter(values.rhoCall)}</div>
+				</fieldset>
 
-				<div className='flex-1 text-base font-medium text-gray-900 flex-column'>
-					<Part>{t('black_scholes_modal.theoretical_price')}</Part>
-					<Part className='bg-gray-200'>{t('black_scholes_modal.delta')}</Part>
-					<Part className='bg-gray-200'>{t('black_scholes_modal.gamma')}</Part>
-					<Part className='bg-gray-200'>{t('black_scholes_modal.vega')}</Part>
-					<Part className='bg-gray-200'>{t('black_scholes_modal.theta')}</Part>
-					<Part className='bg-gray-200'>{t('black_scholes_modal.rho')}</Part>
+				<div
+					style={{ paddingTop: '2.1rem' }}
+					className='flex-1 text-base font-medium text-gray-900 flex-column'
+				>
+					<div className={styles.part}>{t('black_scholes_modal.theoretical_price')}</div>
+					<div className={cn(styles.gray, styles.part)}>{t('black_scholes_modal.delta')}</div>
+					<div className={cn(styles.gray, styles.part)}>{t('black_scholes_modal.gamma')}</div>
+					<div className={cn(styles.gray, styles.part)}>{t('black_scholes_modal.vega')}</div>
+					<div className={cn(styles.gray, styles.part)}>{t('black_scholes_modal.theta')}</div>
+					<div className={cn(styles.gray, styles.part)}>{t('black_scholes_modal.rho')}</div>
 				</div>
 
-				<Section $side='Put' className='border border-error-100 bg-gray-100 text-error-100'>
-					<Part className='text-lg'>{numFormatter(values.put, 0)}</Part>
-					<Part className='bg-error-100/5'>{numFormatter(values.deltaPut)}</Part>
-					<Part className='bg-error-100/5'>{numFormatter(values.gamma, 7)}</Part>
-					<Part className='bg-error-100/5'>{numFormatter(values.vega)}</Part>
-					<Part className='bg-error-100/5'>{numFormatter(values.thetaPut)}</Part>
-					<Part className='bg-error-100/5'>{numFormatter(values.rhoPut)}</Part>
-				</Section>
+				<fieldset
+					className={cn(
+						'border border-error-100 bg-gray-100 text-error-100',
+						styles.section,
+						styles.fieldset,
+					)}
+				>
+					<legend>Put</legend>
+					<div className={cn('text-lg', styles.part)}>{numFormatter(values.put, 0)}</div>
+					<div className={cn(styles.red, styles.part)}>{numFormatter(values.deltaPut)}</div>
+					<div className={cn(styles.red, styles.part)}>{numFormatter(values.gamma, 7)}</div>
+					<div className={cn(styles.red, styles.part)}>{numFormatter(values.vega)}</div>
+					<div className={cn(styles.red, styles.part)}>{numFormatter(values.thetaPut)}</div>
+					<div className={cn(styles.red, styles.part)}>{numFormatter(values.rhoPut)}</div>
+				</fieldset>
 			</div>
 
 			<div
 				style={{ height: '5.4rem', boxShadow: '0px 2px 11px 0px rgba(0, 0, 0, 0.03)' }}
 				className='flex rounded bg-white text-base ltr'
 			>
-				<Section style={{ flex: '0 0 13.2rem' }} className='h-full flex-justify-center'>
+				<div className={cn('h-full ltr flex-justify-center', styles.section)}>
 					<span className='font-bold text-error-100 ltr'>−</span>
-				</Section>
+				</div>
 
 				<div className='h-full flex-1 flex-justify-center'>
 					<span className='font-medium text-gray-900'>{t('black_scholes_modal.implied_volatility')}</span>
 				</div>
 
-				<Section className='h-full ltr flex-justify-center'>
+				<div className={cn('h-full ltr flex-justify-center', styles.section)}>
 					<span className='font-bold text-success-100'>−</span>
-				</Section>
+				</div>
 			</div>
 		</>
 	);

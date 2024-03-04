@@ -15,7 +15,7 @@ interface SymbolSearchProps extends InputProps {
 	onChange: (symbol: TSymbolType) => void;
 }
 
-const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchProps) => {
+const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: SymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -85,13 +85,7 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 			{({ setOpen, open }) => (
 				<label className={cn('input-group', styles.root, classes?.root)}>
 					<div className={cn(styles.search, classes?.search)}>
-						<svg
-							width='2.4rem'
-							height='2.4rem'
-							viewBox='0 0 24 24'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-						>
+						<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
 							<path
 								className='text-primary-400'
 								d='M21.3023 22C21.2106 22.0002 21.1199 21.9822 21.0352 21.9471C20.9506 21.9119 20.8738 21.8604 20.8093 21.7953L17.0139 18C16.8907 17.8677 16.8236 17.6928 16.8268 17.512C16.83 17.3313 16.9032 17.1588 17.031 17.031C17.1588 16.9032 17.3313 16.83 17.512 16.8268C17.6928 16.8236 17.8677 16.8907 18 17.0139L21.7953 20.8093C21.8927 20.9068 21.9591 21.0311 21.986 21.1663C22.0128 21.3016 21.999 21.4418 21.9463 21.5692C21.8935 21.6966 21.8042 21.8055 21.6896 21.8822C21.5749 21.9588 21.4402 21.9998 21.3023 22Z'
@@ -110,16 +104,22 @@ const SymbolSearch = ({ value, classes, onChange, ...inputProps }: SymbolSearchP
 						inputMode='search'
 						className={cn(styles.input, classes?.input)}
 						maxLength={24}
-						placeholder={
-							focusing
-								? t('common.needs_more_than_n_chars', { n: 2 })
-								: t('symbol_search.input_placeholder')
-						}
 						onFocus={() => onFocus(() => setOpen(true))}
 						{...inputProps}
 						value={term}
 						onChange={(e) => setTerm(e.target.value)}
 					/>
+
+					<span
+						style={{ right: '3.6rem' }}
+						className={cn('flexible-placeholder', value && 'active', open && 'colorful')}
+					>
+						{placeholder ?? t('symbol_search.input_placeholder')}
+					</span>
+
+					<fieldset className={cn('flexible-fieldset', value && 'active')}>
+						<legend>{placeholder ?? t('symbol_search.input_placeholder')}</legend>
+					</fieldset>
 				</label>
 			)}
 		</Popup>
