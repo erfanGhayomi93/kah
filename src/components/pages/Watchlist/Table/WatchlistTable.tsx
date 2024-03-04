@@ -266,13 +266,6 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 					valueGetter: ({ data }) => String(data!.optionWatchlistData.bestSellPrice),
 					valueFormatter: ({ value }) => sepNumbers(value),
 				},
-				/* {
-				headerName: t('option_page.symbol_full_title'),
-				colId: 'symbolFullTitle',
-				minWidth: 120,
-				initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden ?? true),
-				valueGetter: ({ data }) => data!.symbolInfo.symbolTitle,
-			}, */
 				{
 					headerName: t('option_page.base_symbol_title'),
 					colId: 'baseSymbolTitle',
@@ -637,7 +630,6 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 			onColumnMoved={onColumnMoved}
 			onSortChanged={() => storeColumns()}
 			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
-			onGridReady={({ api }) => api.sizeColumnsToFit()}
 			onColumnVisible={({ api, column }) => {
 				try {
 					if (!column) return;

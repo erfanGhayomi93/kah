@@ -54,7 +54,7 @@ const initialState: ModalState = {
 	loginModal: null,
 	optionFilters: null,
 	logout: null,
-	blackScholes: {},
+	blackScholes: null,
 	addSymbolToWatchlist: null,
 	addNewOptionWatchlist: null,
 	manageOptionWatchlistList: null,

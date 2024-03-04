@@ -70,7 +70,7 @@ const Panel = ({ transparent, width, height, isEnable, children, onClose }: Pane
 			<Wrapper
 				ref={panelRef}
 				$enabled={isEnable}
-				style={{ width, height: height ?? 'calc(100vh - 11.6rem)' }}
+				style={{ width, height: height ?? 'calc(100dvh - 11.6rem)' }}
 				className='overflow-auto bg-white'
 			>
 				{children}
