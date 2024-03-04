@@ -18,6 +18,7 @@ const AddSymbolToWatchlist = dynamic(() => import('./AddSymbolToWatchlist'), {
 
 const BlackScholes = dynamic(() => import('./BlackScholes'), {
 	ssr: false,
+	loading: () => <h1>Loading</h1>,
 });
 
 const BuySellModal = dynamic(() => import('./BuySellModal'), {

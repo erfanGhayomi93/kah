@@ -1,7 +1,7 @@
 import { ArrowDownSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Popup from '../Popup';
 import styles from './Select.module.scss';
 
@@ -30,7 +30,6 @@ type AsyncSelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	term: string;
 	onChangeTerm: (term: string) => void;
 	getOptionId: (option: T) => string | number;
-	getInputValue: (option: T) => string;
 	getOptionTitle: (option: T | null) => React.ReactNode;
 };
 
@@ -46,7 +45,6 @@ const AsyncSelect = <T,>({
 	term,
 	minimumChars = 0,
 	getOptionId,
-	getInputValue,
 	getOptionTitle,
 	onChangeTerm,
 	onChange,
@@ -69,11 +67,6 @@ const AsyncSelect = <T,>({
 		setMode('focusing');
 		onChangeTerm('');
 	};
-
-	const valueAsString = useMemo(() => {
-		if (value) return getInputValue(value);
-		return '';
-	}, [value]);
 
 	return (
 		<Popup

@@ -115,7 +115,10 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 
 					<div className='flex flex-1 gap-16 pb-24'>
 						<Form setInputValue={setInputValue} inputs={inputs} />
-						<Calculator {...inputs} />
+
+						<div className='h-full flex-1 justify-between gap-24 rounded-md bg-gray-100 px-24 pb-16 pt-24 flex-column'>
+							<Calculator {...inputs} />
+						</div>
 					</div>
 				</div>
 			</Div>

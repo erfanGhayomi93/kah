@@ -90,7 +90,7 @@ const Calculator = (props: CalculatorProps) => {
 	}, [JSON.stringify(props)]);
 
 	return (
-		<div className='h-full flex-1 justify-between gap-24 rounded-md bg-gray-100 px-24 pb-16 pt-24 flex-column'>
+		<>
 			<div className='flex flex-1'>
 				<Section $side='Call' className='border border-success-100 bg-gray-100 text-success-100'>
 					<Part className='text-lg'>{numFormatter(values.call, 0)}</Part>
@@ -136,7 +136,7 @@ const Calculator = (props: CalculatorProps) => {
 					<span className='font-bold text-success-100'>−</span>
 				</Section>
 			</div>
-		</div>
+		</>
 	);
 };
 

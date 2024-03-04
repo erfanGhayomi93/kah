@@ -30,7 +30,6 @@ const ContractSearch = ({ value, disabled, isLoading, options, onChange }: Symbo
 			loading={isLoading}
 			blankPlaceholder={t('black_scholes_modal.no_contract_found')}
 			placeholder={t('black_scholes_modal.contract')}
-			getInputValue={(option) => option!.symbolInfo.symbolTitle}
 			getOptionId={(option) => option!.symbolInfo.symbolISIN}
 			getOptionTitle={(option) => (
 				<div className='w-full flex-1 flex-justify-between'>
