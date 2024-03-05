@@ -116,3 +116,15 @@ export const subscribeSymbolInfo = (
 		snapshot: true,
 	});
 };
+
+export const subscribePrivateGateWay = (brokerCode: string, customerISIN: string) => {
+	const items = [brokerCode + '_' + customerISIN, brokerCode + '_All'];
+
+	return lightStreamInstance.subscribe({
+		mode: 'RAW',
+		items,
+		fields: ['OMSMessage', 'AdminMessage', 'SystemMessage'],
+		dataAdapter: 'RamandOMSGateway',
+		snapshot: false,
+	});
+};

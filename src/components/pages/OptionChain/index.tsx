@@ -39,7 +39,7 @@ const OptionChain = () => {
 				</Section>
 			</div>
 
-			<Section style={{ flex: '1.8 1 48rem' }} className='relative justify-center gap-8 flex-column'>
+			<Section style={{ flex: '1.8 1 48rem' }} className='relative justify-start gap-8 flex-column'>
 				<SymbolContracts selectedSymbol={selectedSymbol} />
 			</Section>
 		</Main>
