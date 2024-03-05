@@ -30,7 +30,7 @@ const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 	};
 
 	return (
-		<div className='min-h-56 w-full rounded border border-gray-500 bg-white px-16 flex-justify-between'>
+		<div className='min-h-56 w-full overflow-hidden rounded border border-gray-500 bg-white px-16 flex-justify-between'>
 			<div style={{ flex: 1, maxWidth: '30rem' }} className='rounded bg-white'>
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 			</div>

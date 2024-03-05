@@ -1,56 +1,16 @@
 import { type ItemUpdate } from '@/classes/Subscribe';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import SymbolState from '@/components/common/SymbolState';
-import { GrowDownSVG, GrowUpSVG, InfoSVG } from '@/components/icons';
+import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
+import { useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
-import { cn, divide, numFormatter, sepNumbers } from '@/utils/helpers';
+import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
-
-interface IProgressBar {
-	side: 'buy' | 'sell';
-	legalVolume: number;
-	individualVolume: number;
-}
-
-const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
-	const t = useTranslations();
-
-	const bgColor = side === 'buy' ? 'bg-success-100' : 'bg-error-100';
-	const bgAlphaColor = side === 'buy' ? 'bg-success-100/10' : 'bg-error-100/10';
-
-	const percent = divide(individualVolume, individualVolume + legalVolume) * 100;
-
-	return (
-		<div className='flex-1 gap-4 flex-column'>
-			<div className='gap-16 flex-justify-center'>
-				<div className='gap-4 flex-items-center'>
-					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgColor}`} />
-					<span className='text-base text-gray-1000'>
-						{t('saturn_page.individual')}
-						<span className='text-tiny ltr'> {percent.toFixed(2)}%</span>
-					</span>
-				</div>
-
-				<div className='gap-4 flex-items-center'>
-					<span style={{ width: '6px', height: '6px' }} className={`rounded-circle ${bgAlphaColor}`} />
-					<span className='text-base text-gray-1000'>
-						{t('saturn_page.legal')}
-						<span className='text-tiny ltr'> {(100 - percent).toFixed(2)}%</span>
-					</span>
-				</div>
-			</div>
-
-			<div className={`min-h-8 flex-1 overflow-hidden rounded-oval rtl ${bgAlphaColor}`}>
-				<div style={{ width: `${percent}%` }} className={`min-h-8 transition-width ${bgColor}`} />
-			</div>
-		</div>
-	);
-};
 
 interface SymbolDetailsProps {
 	symbol: Symbol.Info;
@@ -64,6 +24,8 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const queryClient = useQueryClient();
 
 	const { subscribe } = useSubscription();
+
+	const { addBuySellModal } = useTradingFeatures();
 
 	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
 		const queryKey = ['symbolInfoQuery', symbol === null ? null : symbol.symbolISIN];
@@ -83,6 +45,19 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 		});
 
 		queryClient.setQueryData(queryKey, visualData);
+	};
+
+	const addBsModal = (side: TBsSides) => {
+		if (!symbol) return;
+
+		const { symbolISIN, symbolTitle } = symbol;
+
+		addBuySellModal({
+			side,
+			symbolType: 'base',
+			symbolISIN,
+			symbolTitle,
+		});
 	};
 
 	const lastTradedPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {
@@ -214,29 +189,23 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 				? 'text-success-100'
 				: 'text-error-100';
 
-	const {
-		closingPriceVarReferencePrice,
-		symbolTradeState,
-		symbolTitle,
-		closingPrice,
-		lastTradedPrice,
-		companyName,
-		individualBuyVolume,
-		individualSellVolume,
-		legalBuyVolume,
-		legalSellVolume,
-	} = symbol;
+	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
+		symbol;
 
 	return (
-		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='gap-40 flex-column'>
-			<div className='flex-column'>
-				<div style={{ gap: '7.8rem' }} className='pl-8 flex-justify-between'>
-					<div style={{ gap: '1rem' }} className='flex-items-center'>
-						<SymbolState state={symbolTradeState} />
-						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
+		<div className='flex-column'>
+			<div className='gap-40 pb-56 flex-column'>
+				<div className='flex-justify-between'>
+					<div className='flex-column'>
+						<div style={{ gap: '1rem' }} className='flex-items-center'>
+							<SymbolState state={symbolTradeState} />
+							<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
+						</div>
+
+						<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 					</div>
 
-					<div className='gap-8 flex-items-center'>
+					<div className='h-fit gap-8 flex-items-center'>
 						<span className={cn('gap-4 flex-items-center', priceColor)}>
 							<span className='flex items-center text-tiny ltr'>
 								({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
@@ -253,24 +222,17 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					</div>
 				</div>
 
-				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
+				<div className='flex gap-8'>
+					<button onClick={() => addBsModal('buy')} type='button' className='h-40 flex-1 rounded btn-success'>
+						{t('side.buy')}
+					</button>
+					<button onClick={() => addBsModal('sell')} type='button' className='h-40 flex-1 rounded btn-error'>
+						{t('side.sell')}
+					</button>
+				</div>
 			</div>
 
 			<SymbolSummary data={symbolDetails} />
-
-			<div style={{ gap: '8.8rem' }} className='relative w-full items-center flex-justify-between'>
-				<ProgressBar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />
-				<div className='absolute left-1/2 -translate-x-1/2 transform pt-24'>
-					<button
-						type='button'
-						style={{ minWidth: '2.4rem', minHeight: '2.4rem' }}
-						className='rounded-sm border border-gray-500 bg-gray-200 text-gray-1000 flex-justify-center'
-					>
-						<InfoSVG width='1.6rem' height='1.6rem' />
-					</button>
-				</div>
-				<ProgressBar side='sell' individualVolume={individualSellVolume} legalVolume={legalSellVolume} />
-			</div>
 		</div>
 	);
 };

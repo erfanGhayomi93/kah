@@ -110,7 +110,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 	}, [symbolsData, isFetching, selectedSymbol]);
 
 	return (
-		<div className='flex-1 gap-24 rounded bg-white p-16 flex-column'>
+		<>
 			<div className='gap-24 flex-justify-between'>
 				<label
 					style={{ maxWidth: '30rem' }}
@@ -149,7 +149,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			</div>
 
 			<div className='relative h-full'>{symbols}</div>
-		</div>
+		</>
 	);
 };
 
