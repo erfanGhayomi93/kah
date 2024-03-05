@@ -2,6 +2,7 @@
 
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import LocalstorageInstance from '@/classes/Localstorage';
+import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { initialFilters } from '@/components/modals/OptionWatchlistFiltersModal/Form';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -9,9 +10,14 @@ import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { createSelector } from '@reduxjs/toolkit';
+import dynamic from 'next/dynamic';
 import { useLayoutEffect, useState } from 'react';
-import Table from './Table';
 import Toolbar from './Toolbar';
+
+const Table = dynamic(() => import('./Table'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 const getStates = createSelector(
 	(state: RootState) => state,
@@ -77,7 +83,10 @@ const Home = () => {
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
 			<Toolbar filters={filters} />
-			<Table filters={filters} setFilters={setFilters} />
+
+			<div className='relative flex-1 overflow-hidden'>
+				<Table filters={filters} setFilters={setFilters} />
+			</div>
 		</Main>
 	);
 };

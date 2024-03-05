@@ -27,7 +27,7 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 	}, [content]);
 
 	return (
-		<div className='w-full gap-16 flex-justify-between'>
+		<li className='w-full gap-16 overflow-hidden flex-justify-between'>
 			<button
 				onClick={onPin}
 				type='button'
@@ -48,7 +48,7 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 			<div
 				onClick={onSelect}
 				className={cn(
-					'h-72 flex-1 cursor-pointer items-start justify-center gap-12 rounded border px-16 py-8 transition-colors flex-column',
+					'h-72 flex-1 cursor-pointer items-start justify-center gap-12 overflow-hidden rounded border px-16 py-8 transition-colors flex-column',
 					isActive
 						? 'border-primary-400 bg-primary-400 hover:bg-primary-300'
 						: 'border-gray-500 bg-gray-200 transition-colors hover:bg-primary-100',
@@ -64,7 +64,7 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 					</div>
 				)}
 			</div>
-		</div>
+		</li>
 	);
 };
 
