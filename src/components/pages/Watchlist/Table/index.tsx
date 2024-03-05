@@ -48,7 +48,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
 
 	return (
-		<div className='relative overflow-hidden'>
+		<>
 			<div
 				className='overflow-hidden rounded border border-gray-500 flex-column'
 				style={{
@@ -81,7 +81,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			<ManageWatchlistColumns />
 
 			{dataIsEmpty && !isFetching && <NoData key='no-data' onAddSymbol={addSymbol} />}
-		</div>
+		</>
 	);
 };
 

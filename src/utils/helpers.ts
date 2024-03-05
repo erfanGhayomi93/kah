@@ -1,4 +1,5 @@
 import { onUnauthorize } from '@/api/axios';
+import { getDateMilliseconds } from '@/constants';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
@@ -325,4 +326,22 @@ export const englishToPersian = (str: string): string => {
 	}
 
 	return modifiedWord;
+};
+
+export const toISOStringWithoutChangeTime = (d: Date): string => {
+	const timezoneOffsetInMinutes = d.getTimezoneOffset() * 60000;
+	const utcDate = new Date(d.getTime() - timezoneOffsetInMinutes);
+
+	const isoString = utcDate.toISOString();
+	return isoString;
+};
+
+export const dateConverter = (v: 'Week' | 'Month' | 'Year') => {
+	let timestamp = Date.now();
+
+	if (v === 'Week') timestamp += getDateMilliseconds.Week;
+	else if (v === 'Month') timestamp += getDateMilliseconds.Month;
+	else if (v === 'Year') timestamp += getDateMilliseconds.Year;
+
+	return timestamp;
 };

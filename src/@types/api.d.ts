@@ -481,3 +481,10 @@ declare namespace Broker {
 		ipLocation: string;
 	}
 }
+
+declare namespace Order {
+	export interface Response {
+		clientKey: string;
+		response: string;
+	}
+}
