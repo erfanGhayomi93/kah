@@ -71,16 +71,14 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 				</>
 			)}
 
-			<div className='flex-1'>
-				<ContractSearch
-					basis={basis}
-					isLoading={isLoadingWatchlistData}
-					disabled={!inputs.baseSymbol || !inputs.contractEndDate}
-					options={watchlistData ?? []}
-					value={inputs.contract}
-					onChange={(value) => setInputValue('contract', value)}
-				/>
-			</div>
+			<ContractSearch
+				basis={basis}
+				isLoading={isLoadingWatchlistData}
+				disabled={!inputs.baseSymbol || !inputs.contractEndDate}
+				options={watchlistData ?? []}
+				value={inputs.contract}
+				onChange={(value) => setInputValue('contract', value)}
+			/>
 		</div>
 	);
 };

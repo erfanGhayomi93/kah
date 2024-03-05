@@ -13,33 +13,13 @@ const routes = {
 		GetBrokerApiUrls: `${rlcUrl}/Common/v1/GetBrokerApiUrls`,
 	},
 
-	authentication: {
-		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
-		ForgetPasswordFirstStep: `${oauthUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
-		SignUp: `${oauthUrl}/OAuthAPI/v1/SignUp`,
-		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
-		PasswordLogin: `${oauthUrl}/OAuthAPI/v1/PasswordLogin`,
-		ChangePassword: `${oauthUrl}/OAuthAPI/v1/ChangePassword`,
-		ValidateForgetPasswordOtp: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOtp`,
-		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
-		SendPasslessOTP: `${oauthUrl}/OAuthAPI/v1/SendPasslessOTP`,
-		Logout: `${oauthUrl}/OAuthAPI/v1/Logout`,
-		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
-	},
-
-	symbol: {
-		SymbolInfo: `${rlcUrl}/Symbol/v1/SymbolInfo`,
-		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
-		Search: `${rlcUrl}/Symbol/v1/Search`,
-		SymbolHistory: `${rlcUrl}/Symbol/v1/SymbolHistory`,
-	},
-
 	option: {
 		OptionBaseSymbolSearch: `${rlcUrl}/Option/v1/OptionBaseSymbolSearch`,
 		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
 		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
 		GetContractInfoHistory: `${rlcUrl}/Option/v1/GetContractInfoHistory`,
 		GetOpenPositionReport: `${rlcUrl}/Option/v1/GetOpenPositionReport`,
+		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
 	},
 
 	optionWatchlist: {
@@ -62,6 +42,27 @@ const routes = {
 		CustomWatchlistOptionSearch: `${rlcUrl}/OptionWatchlist/v1/CustomWatchlistOptionSearch`,
 		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
 		RemoveSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
+	},
+
+	authentication: {
+		LoginFirstStep: `${oauthUrl}/OAuthAPI/v1/LoginFirstStep`,
+		ForgetPasswordFirstStep: `${oauthUrl}/OAuthAPI/v1/ForgetPasswordFirstStep`,
+		SignUp: `${oauthUrl}/OAuthAPI/v1/SignUp`,
+		OtpLogin: `${oauthUrl}/OAuthAPI/v1/OtpLogin`,
+		PasswordLogin: `${oauthUrl}/OAuthAPI/v1/PasswordLogin`,
+		ChangePassword: `${oauthUrl}/OAuthAPI/v1/ChangePassword`,
+		ValidateForgetPasswordOtp: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOtp`,
+		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
+		SendPasslessOTP: `${oauthUrl}/OAuthAPI/v1/SendPasslessOTP`,
+		Logout: `${oauthUrl}/OAuthAPI/v1/Logout`,
+		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
+	},
+
+	symbol: {
+		SymbolInfo: `${rlcUrl}/Symbol/v1/SymbolInfo`,
+		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
+		Search: `${rlcUrl}/Symbol/v1/Search`,
+		SymbolHistory: `${rlcUrl}/Symbol/v1/SymbolHistory`,
 	},
 
 	saturn: {
