@@ -141,7 +141,7 @@ const AsyncSelect = <T,>({
 						{placeholder}
 					</span>
 
-					<fieldset className={cn('flexible-fieldset', value && 'active')}>
+					<fieldset className={cn('flexible-fieldset', (mode || value) && 'active')}>
 						<legend>{placeholder}</legend>
 					</fieldset>
 

@@ -30,7 +30,7 @@ const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 	};
 
 	return (
-		<div className='w-full flex-justify-between'>
+		<div className='min-h-56 w-full rounded border border-gray-500 bg-white px-16 flex-justify-between'>
 			<div style={{ flex: 1, maxWidth: '30rem' }} className='rounded bg-white'>
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 			</div>
@@ -46,7 +46,7 @@ const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 				</button>
 				<button
 					type='button'
-					className='size-40 rounded border border-gray-500 bg-white text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+					className='size-40 rounded bg-white text-primary-400 shadow transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
 					onClick={openSavedTemplates}
 				>
 					<BookmarkSVG />

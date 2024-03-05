@@ -109,17 +109,15 @@ export const useDefaultOptionSymbolColumnsQuery = createQuery<Option.Column[], [
 	},
 });
 
-export const useOptionSymbolSearchQuery = createQuery<
+export const useCustomWatchlistSymbolSearch = createQuery<
 	Option.CustomWatchlistSearch[],
-	['optionSymbolSearchQuery', { term: string; id: number }]
+	['customWatchlistSymbolSearch', { term: string; id: number }]
 >({
 	staleTime: 18e5,
-	queryKey: ['optionSymbolSearchQuery', { term: '', id: -1 }],
+	queryKey: ['customWatchlistSymbolSearch', { term: '', id: -1 }],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
 			const [, { term, id }] = queryKey;
-
-			if (term.length < 2 || id === -1) return [];
 
 			const response = await axios.get<ServerResponse<Option.CustomWatchlistSearch[]>>(
 				routes.optionWatchlist.CustomWatchlistOptionSearch,
@@ -274,6 +272,20 @@ export const useOptionBaseSymbolSearchQuery = createQuery<
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useOptionSymbolSearchQuery = createQuery<Option.Root[], ['optionSymbolSearchQuery', string]>({
+	staleTime: 18e5,
+	queryKey: ['optionSymbolSearchQuery', ''],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const [, term] = queryKey;
+
+			return [];
 		} catch (e) {
 			return [];
 		}
