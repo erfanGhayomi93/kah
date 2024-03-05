@@ -5,7 +5,7 @@ import styles from './Panel.module.scss';
 
 const Wrapper = styled.div<{ $enabled: boolean }>`
 	position: fixed;
-	top: 7.2rem;
+	top: 5.6rem;
 	left: 0;
 	gap: 1.6rem;
 	display: flex;
@@ -70,7 +70,7 @@ const Panel = ({ transparent, width, height, isEnable, children, onClose }: Pane
 			<Wrapper
 				ref={panelRef}
 				$enabled={isEnable}
-				style={{ width, height: height ?? 'calc(100dvh - 11.6rem)' }}
+				style={{ width, height: height ?? 'calc(100dvh - 6.4rem)' }}
 				className='overflow-auto bg-white'
 			>
 				{children}

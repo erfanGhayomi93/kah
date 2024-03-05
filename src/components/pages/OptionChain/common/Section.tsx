@@ -6,7 +6,7 @@ interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Section = ({ children, className, style, ...props }: SectionProps) => (
-	<div style={style} className={cn('rounded bg-white', className)} {...props}>
+	<div style={style} className={cn(className)} {...props}>
 		{children}
 	</div>
 );

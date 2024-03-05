@@ -269,7 +269,7 @@ const SimpleTrade = ({
 								</span>
 
 								<span className='gap-4 text-tiny text-primary-400 flex-items-center'>
-									<span className='h-24 rounded border-primary-400 bg-secondary-100 px-8 text-primary-400 flex-items-center'>
+									<span className='h-24 rounded border border-primary-400 bg-secondary-100 px-8 text-primary-400 flex-items-center'>
 										{validityDateTitle}
 									</span>
 									<span className='text-gray-900'>

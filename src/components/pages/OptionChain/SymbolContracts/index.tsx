@@ -3,7 +3,6 @@ import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import NoData from '../common/NoData';
-import Section from '../common/Section';
 import Contract from './Contract';
 
 interface SymbolContractsProps {
@@ -19,41 +18,23 @@ const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 
 	const [expandedContract, setExpandedContract] = useState<null | Option.BaseSettlementDays>(null);
 
-	if (!selectedSymbol)
-		return (
-			<Section style={{ flex: '1.8 1 48rem' }} className='relative flex-justify-center'>
-				<NoData text={t('option_chain.select_symbol_from_top_list')} />
-			</Section>
-		);
+	if (!selectedSymbol) return <NoData text={t('option_chain.select_symbol_from_top_list')} />;
 
-	if (isFetching)
-		return (
-			<div style={{ flex: '1.8 1 48rem' }} className='relative flex flex-column'>
-				<Loading />
-			</div>
-		);
+	if (isFetching) return <Loading />;
 
 	if (!settlementDays || (Array.isArray(settlementDays) && settlementDays.length === 0))
-		return (
-			<Section style={{ flex: '1.8 1 48rem' }} className='relative flex-justify-center'>
-				<NoData text={t('option_chain.no_contract_found')} />
-			</Section>
-		);
+		return <NoData text={t('option_chain.no_contract_found')} />;
 
-	return (
-		<div style={{ flex: '1.8 1 48rem' }} className='gap-8 flex-column'>
-			{settlementDays.map((item, index) => (
-				<Contract
-					key={index}
-					expand={item.contractEndDate === expandedContract?.contractEndDate}
-					onToggle={() =>
-						setExpandedContract(item.contractEndDate === expandedContract?.contractEndDate ? null : item)
-					}
-					{...item}
-				/>
-			))}
-		</div>
-	);
+	return settlementDays.map((item, index) => (
+		<Contract
+			key={index}
+			expand={item.contractEndDate === expandedContract?.contractEndDate}
+			onToggle={() =>
+				setExpandedContract(item.contractEndDate === expandedContract?.contractEndDate ? null : item)
+			}
+			{...item}
+		/>
+	));
 };
 
 export default SymbolContracts;
