@@ -50,19 +50,24 @@ const SymbolContracts = ({
 		}
 	};
 
-	return (
-		<div className='flex flex-wrap gap-8'>
-			{baseSymbolContracts.map((option, index) => (
-				<Contract
-					key={index}
-					option={option}
-					baseSymbol={baseSymbol}
-					onLoadContract={(contract) => onLoadContract(contract)}
-					onChangeContractTab={(tab) => onChangeContractTab(tab, index)}
-				/>
-			))}
-		</div>
-	);
+	const onClose = (i: number) => {
+		const options = JSON.parse(JSON.stringify(baseSymbolContracts)) as typeof baseSymbolContracts;
+
+		options[i] = null;
+
+		setBaseSymbolContracts(options);
+	};
+
+	return baseSymbolContracts.map((option, index) => (
+		<Contract
+			key={index}
+			option={option}
+			baseSymbol={baseSymbol}
+			close={() => onClose(index)}
+			onLoadContract={(contract) => onLoadContract(contract)}
+			onChangeContractTab={(tab) => onChangeContractTab(tab, index)}
+		/>
+	));
 };
 
 export default SymbolContracts;

@@ -12,7 +12,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
 import NoData from './common/NoData';
-import Section from './common/Section';
 
 type TValue = string | React.ReactNode;
 
@@ -181,34 +180,22 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 		subscribe(sub);
 	}, [selectedSymbol]);
 
-	if (!selectedSymbol)
-		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='flex-justify-center'>
-				<NoData text={t('option_chain.select_symbol_from_right_list')} />
-			</Section>
-		);
+	if (!selectedSymbol) return <NoData text={t('option_chain.select_symbol_from_right_list')} />;
 
-	if (isLoading)
-		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<Loading />
-			</Section>
-		);
+	if (isLoading) return <Loading />;
 
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<span className='absolute text-base font-medium text-gray-900 center'>
-					{t('option_chain.no_data_found')}
-				</span>
-			</Section>
+			<span className='absolute text-base font-medium text-gray-900 center'>
+				{t('option_chain.no_data_found')}
+			</span>
 		);
 
 	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
 		symbolData;
 
 	return (
-		<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative py-12 flex-column'>
+		<>
 			<div className='flex-column'>
 				<div className='justify-between pl-16 pr-24 flex-items-center'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
@@ -278,7 +265,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 					</li>
 				))}
 			</ul>
-		</Section>
+		</>
 	);
 };
 

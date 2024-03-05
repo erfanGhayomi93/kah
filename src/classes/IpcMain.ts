@@ -10,11 +10,15 @@ class IpcMain {
 	}
 
 	removeHandler<T>(channel: string, handler: (arg: T) => void) {
-		const handlers = this._channels[channel][0];
-		for (let i = 0; i < handlers.length; i++) {
-			const listener = handlers[i];
+		try {
+			const handlers = this._channels[channel][0];
+			for (let i = 0; i < handlers.length; i++) {
+				const listener = handlers[i];
 
-			if (listener.toString() === handler.toString()) this._channels[channel].splice(i, 1);
+				if (listener.toString() === handler.toString()) this._channels[channel][0].splice(i, 1);
+			}
+		} catch (e) {
+			//
 		}
 	}
 
@@ -34,31 +38,45 @@ class IpcMain {
 	}
 
 	removeAllChannels(...channels: string[]) {
-		for (let i = 0; i < channels.length; i++) {
-			this._channels[channels[i]] = [[], null];
-			delete this._channels[channels[i]];
+		try {
+			for (let i = 0; i < channels.length; i++) {
+				this._channels[channels[i]] = [[], null];
+				delete this._channels[channels[i]];
+			}
+		} catch (e) {
+			//
 		}
 	}
 
 	handle<T>(channel: string, listener: ListenerType<T>) {
-		if (!(channel in this._channels)) this._channels[channel] = [[], null];
-
-		this._channels[channel][0].push(listener as ListenerType);
+		try {
+			this._createChannel(channel);
+			this._channels[channel][0].push(listener as ListenerType);
+		} catch (error) {
+			//
+		}
 	}
 
 	handleAsync<T, R>(channel: string, listener: AsyncListenerType<T, R>) {
-		if (!(channel in this._channels)) this._channels[channel] = [[], null];
-
-		this._channels[channel][1] = listener as AsyncListenerType;
+		try {
+			this._createChannel(channel);
+			this._channels[channel][1] = listener as AsyncListenerType;
+		} catch (error) {
+			//
+		}
 	}
 
 	send<T>(channel: string, arg?: T) {
-		const ch = this._channels[channel];
-		if (!Array.isArray(ch)) return;
+		try {
+			const ch = this._channels[channel][0];
+			if (!Array.isArray(ch)) return;
 
-		ch[0].forEach((l) => {
-			l.call(null, arg);
-		});
+			ch.forEach((l) => {
+				l.call(null, arg);
+			});
+		} catch (e) {
+			//
+		}
 	}
 
 	sendAsync<T, R>(channel: string, arg?: T): Promise<R | undefined> {
@@ -78,6 +96,10 @@ class IpcMain {
 				reject();
 			}
 		});
+	}
+
+	private _createChannel(cName: string) {
+		if (!(cName in this._channels)) this._channels[cName] = [[], null];
 	}
 }
 

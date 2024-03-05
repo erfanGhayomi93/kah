@@ -193,7 +193,6 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 					key={wl.id}
 					watchlist={wl}
 					checked={isDeleting.hasStarted ? isDeleting.selected.includes(wl.id) : undefined}
-					isActive={optionWatchlistTabId === wl.id}
 					isEditing={wl.id === editingWatchlistId}
 					onChecked={(checked) => onCheckedWatchlist(wl, checked)}
 					onSelect={() => onSelect(wl)}
@@ -212,7 +211,7 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 						transition: 'top 250ms ease-in-out, opacity 200ms',
 						opacity: dragItemIndex === index ? 0.5 : 1,
 					}}
-					className='absolute left-0 h-48 w-full select-none border px-24'
+					className='absolute left-0 h-48 w-full select-none px-24'
 				/>
 			))}
 			<li style={{ top: `${watchlistList.length * 6.4 + 1.2}rem` }} className='absolute left-0 h-4 w-full' />

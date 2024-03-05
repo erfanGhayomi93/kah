@@ -80,7 +80,8 @@ class TooltipElement extends TooltipWrapper {
 	}
 
 	public update() {
-		const eTooltip = this._eTooltip!;
+		const eTooltip = this._eTooltip;
+		if (!eTooltip) return;
 
 		eTooltip.setAttribute(
 			'class',

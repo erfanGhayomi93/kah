@@ -9,7 +9,6 @@ import { useLayoutEffect, useState, type LiHTMLAttributes } from 'react';
 interface WatchlistProps extends LiHTMLAttributes<HTMLLIElement> {
 	watchlist: Option.WatchlistList;
 	isEditing: boolean;
-	isActive: boolean;
 	checked: boolean | undefined;
 	onSelect: () => void;
 	onEditStart: () => void;
@@ -22,7 +21,6 @@ interface WatchlistProps extends LiHTMLAttributes<HTMLLIElement> {
 
 const Watchlist = ({
 	watchlist,
-	isActive,
 	isEditing,
 	checked,
 	onEditStart,
@@ -78,6 +76,8 @@ const Watchlist = ({
 
 	const hasNotCheckbox = checked === undefined;
 
+	const isActive = false;
+
 	return (
 		<li {...props}>
 			<Click enabled={isEditing} onClickOutside={onEditCancel}>
@@ -113,7 +113,10 @@ const Watchlist = ({
 						</div>
 					) : (
 						<div
-							onClick={onSelect}
+							onClick={(e) => {
+								e.stopPropagation();
+								onVisibilityChange();
+							}}
 							className={cn(
 								'h-48 flex-1 cursor-pointer gap-8 rounded border px-16 transition-colors flex-justify-start',
 								isActive
@@ -121,14 +124,7 @@ const Watchlist = ({
 									: 'border-gray-500 bg-gray-200 transition-colors hover:bg-primary-100',
 							)}
 						>
-							<button
-								onClick={(e) => {
-									e.stopPropagation();
-									onVisibilityChange();
-								}}
-								type='button'
-								className={isActive ? 'text-white' : 'text-gray-900'}
-							>
+							<button type='button' className={isActive ? 'text-white' : 'text-gray-900'}>
 								{watchlist.isHidden ? (
 									<EyeSlashSVG width='2rem' height='2rem' />
 								) : (
