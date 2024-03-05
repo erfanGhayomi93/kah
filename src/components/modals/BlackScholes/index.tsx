@@ -59,6 +59,10 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 	};
 
 	useLayoutEffect(() => {
+		setInputValue('contract', null);
+	}, [searchBasis]);
+
+	useLayoutEffect(() => {
 		setInputs((prev) => ({
 			...prev,
 			contractEndDate: null,

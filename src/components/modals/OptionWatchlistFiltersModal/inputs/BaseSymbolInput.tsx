@@ -63,7 +63,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 		if (inputRef.current) inputRef.current.focus();
 	};
 
-	const onToggleSymbol = (symbol: Option.Search) => {
+	const onToggleSymbol = (symbol: Option.BaseSearch) => {
 		try {
 			const isExists = isSymbolSelected(symbol.symbolISIN);
 

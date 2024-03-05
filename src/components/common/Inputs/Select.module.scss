@@ -49,17 +49,19 @@
 	left: 0.8rem;
 }
 
-.list,
+.box,
 .alert {
 	border-radius: 0.8rem;
 	background-color: theme("colors.white");
 	box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
 	padding: 0.8rem 0;
 	z-index: 9999;
-	display: flex;
 }
 
 .list {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 	flex-direction: column;
 	gap: 0.4rem;
 	max-height: 29.6rem;
@@ -108,6 +110,7 @@
 }
 
 .alert {
+	display: flex;
 	min-height: 7.2rem;
 	max-height: 7.2rem;
 	font-size: 1.2rem;

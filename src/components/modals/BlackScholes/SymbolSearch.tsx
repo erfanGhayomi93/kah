@@ -34,7 +34,7 @@ const SymbolSearch = ({ value, onChange }: SymbolSearchProps) => {
 	}, []);
 
 	return (
-		<AsyncSelect<Option.Search>
+		<AsyncSelect<Option.BaseSearch>
 			options={data}
 			term={term}
 			value={value}
