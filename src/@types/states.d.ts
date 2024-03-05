@@ -85,7 +85,7 @@ declare type TSetBsModalInputs = <
 ) => void;
 
 declare interface IBlackScholesModalStates {
-	baseSymbol: Option.Search | null;
+	baseSymbol: Option.BaseSearch | null;
 	contractEndDate: Option.BaseSettlementDays | null;
 	contract: Option.Root | null;
 	sharePrice: number;

@@ -245,7 +245,7 @@ export const useGetAllCustomWatchlistQuery = createQuery<Option.WatchlistList[],
 });
 
 export const useOptionBaseSymbolSearchQuery = createQuery<
-	Option.Search[],
+	Option.BaseSearch[],
 	[
 		'optionBaseSymbolSearchQuery',
 		Partial<{ term: null | string; orderBy: 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' }>,
@@ -263,10 +263,13 @@ export const useOptionBaseSymbolSearchQuery = createQuery<
 			if (term) params.term = term;
 			if (orderBy) params.orderBy = orderBy;
 
-			const response = await axios.get<ServerResponse<Option.Search[]>>(routes.option.OptionBaseSymbolSearch, {
-				params,
-				signal,
-			});
+			const response = await axios.get<ServerResponse<Option.BaseSearch[]>>(
+				routes.option.OptionBaseSymbolSearch,
+				{
+					params,
+					signal,
+				},
+			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -278,14 +281,22 @@ export const useOptionBaseSymbolSearchQuery = createQuery<
 	},
 });
 
-export const useOptionSymbolSearchQuery = createQuery<Option.Root[], ['optionSymbolSearchQuery', string]>({
+export const useOptionSymbolSearchQuery = createQuery<Option.Search[], ['optionSymbolSearchQuery', string]>({
 	staleTime: 18e5,
 	queryKey: ['optionSymbolSearchQuery', ''],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
 			const [, term] = queryKey;
 
-			return [];
+			const response = await axios.get<ServerResponse<Option.Search[]>>(routes.option.OptionSymbolSearch, {
+				params: { term },
+				signal,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
 		} catch (e) {
 			return [];
 		}

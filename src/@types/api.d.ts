@@ -239,13 +239,25 @@ declare namespace Option {
 		tradeVolume: number;
 	}
 
-	export interface Search {
+	export interface BaseSearch {
 		symbolISIN: string;
 		symbolTitle: string;
 		companyISIN: string;
 		companyName: string;
 		insCode: null | string;
 		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+	}
+
+	export interface Search {
+		strikePrice: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		companyISIN: string;
+		companyName: string;
+		insCode: string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		marketUnit: string;
+		isOption: boolean;
 	}
 
 	export interface CustomWatchlistSearch {

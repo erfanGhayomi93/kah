@@ -25,7 +25,7 @@ type AsyncSelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	minimumChars?: number;
 	loading?: boolean;
 	classes?: RecordClasses<
-		'root' | 'focus' | 'disabled' | 'list' | 'value' | 'listItem' | 'alert' | 'input' | 'icon' | 'active'
+		'root' | 'focus' | 'disabled' | 'box' | 'list' | 'value' | 'listItem' | 'alert' | 'input' | 'icon' | 'active'
 	>;
 	term: string;
 	onChangeTerm: (term: string) => void;
@@ -91,22 +91,27 @@ const AsyncSelect = <T,>({
 					);
 
 				return (
-					<ul className={cn(styles.list, classes?.list)}>
-						{options.map((option) => (
-							<li
-								onClick={() => onClickItem(option, () => setOpen(false))}
-								key={getOptionId(option)}
-								className={cn(
-									styles.listItem,
-									classes?.listItem,
-									value &&
-										getOptionId(option) === getOptionId(value) && [styles.active, classes?.active],
-								)}
-							>
-								{getOptionTitle(option)}
-							</li>
-						))}
-					</ul>
+					<div className={cn(styles.box, classes?.box)}>
+						<ul className={cn(styles.list, classes?.list)}>
+							{options.map((option) => (
+								<li
+									onClick={() => onClickItem(option, () => setOpen(false))}
+									key={getOptionId(option)}
+									className={cn(
+										styles.listItem,
+										classes?.listItem,
+										value &&
+											getOptionId(option) === getOptionId(value) && [
+												styles.active,
+												classes?.active,
+											],
+									)}
+								>
+									{getOptionTitle(option)}
+								</li>
+							))}
+						</ul>
+					</div>
 				);
 			}}
 		>
