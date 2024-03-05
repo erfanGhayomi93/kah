@@ -576,17 +576,20 @@ const config: Config = {
 						'.flexible-placeholder': {
 							color: theme('colors.primary.300'),
 							top: '0',
-							right: '1.6rem !important',
+							right: '1.25rem !important',
 							'font-size': '1.2rem',
 							transform: 'translateY(calc(-100% + 0.9rem))',
 							'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
 						},
 
 						'.flexible-fieldset': {
+							'border-color': theme('colors.primary.300'),
+
 							legend: {
-								padding: '0 0.8rem',
 								'font-size': '1.2rem',
 								'max-width': '100%',
+								'-webkit-transition': 'max-width 500ms',
+								transition: 'max-width 500ms',
 							},
 						},
 					},
@@ -614,7 +617,7 @@ const config: Config = {
 						color: theme('colors.gray.900'),
 						top: '0',
 						'font-size': '1.2rem',
-						right: '1.6rem !important',
+						right: '1.25rem !important',
 						transform: 'translateY(calc(-100% + 0.9rem))',
 						'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
 
@@ -634,26 +637,39 @@ const config: Config = {
 					'text-align': 'right',
 					overflow: 'hidden',
 					padding: '0 0.8rem',
+					'-webkit-transition': 'border-color 250ms',
+					transition: 'border-color 250ms',
 
 					legend: {
 						float: 'unset',
 						width: 'auto',
 						overflow: 'hidden',
-						display: 'block',
+						display: 'inline-block',
 						height: '11px',
 						'font-size': '1.2rem',
 						visibility: 'hidden',
 						'max-width': '0',
 						'white-space': 'nowrap',
-						'-webkit-transition': 'max-width 100ms cubic-bezier(0, 0, 0.2, 1) 0ms, padding 250ms',
-						transition: 'max-width 100ms cubic-bezier(0, 0, 0.2, 1) 0ms, padding 250ms',
+						'-webkit-transition': 'max-width 100ms',
+						transition: 'max-width 100ms',
+
+						'&::after': {
+							content: '"\\00A0"',
+							position: 'relative',
+						},
+
+						'&::before': {
+							content: '"\\00A0"',
+							position: 'relative',
+						},
 					},
 
 					'&.active': {
 						legend: {
-							padding: '0 0.8rem',
 							'font-size': '1.2rem',
 							'max-width': '100%',
+							'-webkit-transition': 'max-width 500ms',
+							transition: 'max-width 500ms',
 						},
 					},
 				},
