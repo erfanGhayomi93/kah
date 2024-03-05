@@ -19,7 +19,7 @@
 	white-space: nowrap;
 }
 
-.checkbox {
+.radiobox {
 	appearance: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -27,16 +27,24 @@
 	width: 1.6rem;
 	height: 1.6rem;
 	border: 1px solid theme("colors.input");
-	border-radius: 4px;
+	border-radius: 50%;
 	background-color: transparent;
+	padding: 3px;
 
 	&.checked {
+		border: 1px solid theme("colors.primary.400");
 		position: relative;
-		border-color: theme("colors.primary.300");
-		background-color: theme("colors.primary.300");
-		color: theme("colors.white");
-		background-position: center;
-		background-repeat: no-repeat;
-		background-image: url("data:image/svg+xml,<svg width='12' height='10' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1.66675 4.03968L3.88897 6.26191L8.33341 1.5' stroke='rgb(255,255,255)'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/></svg>");
+
+		&::after {
+			content: "";
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			border-radius: 50%;
+			width: 100%;
+			height: 100%;
+			border: 4px solid theme("colors.primary.400");
+			transform: translate(-50%, -50%);
+		}
 	}
 }

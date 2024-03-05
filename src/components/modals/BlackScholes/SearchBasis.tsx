@@ -1,3 +1,4 @@
+import Radiobox from '@/components/common/Inputs/Radiobox';
 import { useTranslations } from 'next-intl';
 
 interface SearchBasisProps {
@@ -12,20 +13,17 @@ const SearchBasis = ({ value, onChange }: SearchBasisProps) => {
 		<div className='flex gap-32 pt-20 text-base'>
 			<span className='text-gray-900'>{t('black_scholes_modal.search_basis')}:</span>
 
-			<label className='gap-8 flex-items-center'>
-				<input type='radio' value='base' checked={value === 'base'} onChange={() => onChange('base')} />
-				<span>{t('black_scholes_modal.base_symbol')}</span>
-			</label>
+			<Radiobox
+				checked={value === 'base'}
+				onChange={(checked) => checked && onChange('base')}
+				label={t('black_scholes_modal.base_symbol')}
+			/>
 
-			<label className='gap-8 flex-items-center'>
-				<input
-					type='radio'
-					value='contract'
-					checked={value === 'contract'}
-					onChange={() => onChange('contract')}
-				/>
-				<span>{t('black_scholes_modal.symbol_contract')}</span>
-			</label>
+			<Radiobox
+				checked={value === 'contract'}
+				onChange={(checked) => checked && onChange('contract')}
+				label={t('black_scholes_modal.symbol_contract')}
+			/>
 		</div>
 	);
 };

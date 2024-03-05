@@ -1,5 +1,5 @@
 import axios from '@/api/axios';
-import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
+import { useCustomWatchlistSymbolSearch } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { EyeSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -33,8 +33,8 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 
 	const [term, setTerm] = useState('');
 
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', { term, id: watchlistId }],
+	const { data: symbolsData, isFetching } = useCustomWatchlistSymbolSearch({
+		queryKey: ['customWatchlistSymbolSearch', { term, id: watchlistId }],
 	});
 
 	const onCloseModal = () => {
@@ -79,7 +79,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 				</div>
 
 				<div className='flex-1 gap-24 overflow-hidden rounded p-24 flex-column'>
-					<div className='input-group h-40 rounded border border-gray-500 flex-items-center'>
+					<div className='h-40 rounded border border-gray-500 flex-items-center input-group'>
 						<span className='px-8 text-gray-900'>
 							<SearchSVG />
 						</span>
@@ -95,7 +95,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 						/>
 
 						{isFetching ? (
-							<div className='spinner ml-16 min-h-20 min-w-20' />
+							<div className='ml-16 min-h-20 min-w-20 spinner' />
 						) : (
 							<button
 								onClick={() => setTerm('')}
@@ -119,7 +119,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 								</span>
 							</div>
 						) : isFetching ? (
-							<div className='spinner absolute size-48 center' />
+							<div className='absolute size-48 center spinner' />
 						) : !Array.isArray(symbolsData) || symbolsData.length === 0 ? (
 							<div className='absolute center'>
 								<span className='font-medium text-gray-900'>{t('common.no_symbol_found')}</span>

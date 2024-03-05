@@ -6,12 +6,12 @@ import ContractSearch from './ContractSearch';
 import SymbolSearch from './SymbolSearch';
 
 interface SelectSymbolProps {
-	base: 'base' | 'contract';
+	basis: 'base' | 'contract';
 	inputs: IBlackScholesModalStates;
 	setInputValue: <T extends keyof IBlackScholesModalStates>(field: T, value: IBlackScholesModalStates[T]) => void;
 }
 
-const SelectSymbol = ({ base, inputs, setInputValue }: SelectSymbolProps) => {
+const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 	const t = useTranslations();
 
 	const baseSymbolISINIsSelected = Boolean(inputs.baseSymbol?.symbolISIN);
@@ -20,7 +20,7 @@ const SelectSymbol = ({ base, inputs, setInputValue }: SelectSymbolProps) => {
 
 	const { data: settlementDays, isFetching: isFetchingSettlementDays } = useBaseSettlementDaysQuery({
 		queryKey: ['baseSettlementDaysQuery', inputs.baseSymbol?.symbolISIN ?? null],
-		enabled: baseSymbolISINIsSelected,
+		enabled: basis === 'base' && baseSymbolISINIsSelected,
 	});
 
 	const { data: watchlistData, isLoading: isLoadingWatchlistData } = useWatchlistBySettlementDateQuery({
@@ -33,7 +33,7 @@ const SelectSymbol = ({ base, inputs, setInputValue }: SelectSymbolProps) => {
 					}
 				: null,
 		],
-		enabled: baseSymbolISINIsSelected && contractEndDateIsSelected,
+		enabled: basis === 'base' && baseSymbolISINIsSelected && contractEndDateIsSelected,
 	});
 
 	const dateFormatter = (d: string) => {
@@ -44,7 +44,7 @@ const SelectSymbol = ({ base, inputs, setInputValue }: SelectSymbolProps) => {
 
 	return (
 		<div className='flex gap-8 border-b border-b-gray-500 pb-24'>
-			{base === 'base' && (
+			{basis === 'base' && (
 				<>
 					<div className='flex-1'>
 						<SymbolSearch
@@ -73,8 +73,9 @@ const SelectSymbol = ({ base, inputs, setInputValue }: SelectSymbolProps) => {
 
 			<div className='flex-1'>
 				<ContractSearch
+					basis={basis}
 					isLoading={isLoadingWatchlistData}
-					disabled={base === 'base' && (!inputs.baseSymbol || !inputs.contractEndDate)}
+					disabled={!inputs.baseSymbol || !inputs.contractEndDate}
 					options={watchlistData ?? []}
 					value={inputs.contract}
 					onChange={(value) => setInputValue('contract', value)}

@@ -26,7 +26,7 @@ interface ContractProps {
 const Wrapper = ({ children }: { children?: React.ReactNode }) => (
 	<div
 		style={{ flex: 'calc(50% - 1.2rem)', height: '40rem' }}
-		className='relative gap-24 rounded bg-white py-12 pl-16 pr-24 flex-column'
+		className='relative gap-24 rounded border border-gray-500 bg-white py-12 pl-16 pr-24 flex-column'
 	>
 		{children}
 	</div>
