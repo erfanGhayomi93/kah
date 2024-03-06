@@ -596,6 +596,10 @@ const config: Config = {
 
 					'&:not(:focus-within):hover': {
 						'border-color': theme('colors.gray.700'),
+
+						'.flexible-fieldset': {
+							'border-color': theme('colors.gray.700'),
+						},
 					},
 				},
 
