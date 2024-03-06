@@ -130,7 +130,7 @@ const Body = (props: BodyProps) => {
 				renderTab={(item, activeTab) => (
 					<button
 						className={cn(
-							'flex-1 pb-8 pt-12 transition-colors',
+							'flex-1 p-8 transition-colors',
 							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
 						)}
 						type='button'

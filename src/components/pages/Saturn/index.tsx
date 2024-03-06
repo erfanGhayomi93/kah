@@ -20,6 +20,7 @@ import Toolbar from './Toolbar';
 
 const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
 	ssr: false,
+	loading: () => <Loading />,
 });
 
 const SymbolInfo = dynamic(() => import('./SymbolInfo'), {
@@ -213,18 +214,16 @@ const Saturn = () => {
 	}
 
 	return (
-		<Main className='gap-8 !px-8'>
+		<Main className='gap-8 !pl-0 !pr-8'>
 			<Toolbar setSymbol={onChangeSymbol} saveTemplate={saveTemplate} />
 
 			{baseSymbolInfo ? (
-				<div className='flex flex-1 gap-8'>
+				<div className='flex flex-1 gap-8 overflow-hidden'>
 					<div
 						style={{
 							flex: '5',
-							height: 'calc(100dvh - 16.8rem)',
-							top: '3.2rem',
 						}}
-						className='sticky w-full flex-1 gap-48 rounded border border-gray-500 bg-white px-16 pb-16 pt-8 flex-column'
+						className='relative size-full flex-1 gap-48 rounded border border-gray-500 bg-white px-16 pb-16 pt-8 flex-column'
 					>
 						<SymbolInfo
 							symbol={baseSymbolInfo}
@@ -233,7 +232,7 @@ const Saturn = () => {
 						/>
 					</div>
 
-					<div style={{ flex: '7' }} className='gap-8 flex-column'>
+					<div style={{ flex: '7' }} className='relative gap-8 overflow-auto rounded flex-column'>
 						<SymbolContracts
 							baseSymbol={baseSymbolInfo}
 							setBaseSymbol={(value) => setSelectedSymbol(value)}
