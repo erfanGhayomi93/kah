@@ -70,7 +70,11 @@ class Subscription {
 	}
 
 	private _OMSMessage(message: Record<number, string>) {
-		console.log(message);
+		// 208 ? 208 : 22 + 200
+		// const clientKey = message[12],
+		// orderStatus = message[22],
+		// orderMessageType = message[200],
+		// orderMessage = message[208];
 	}
 
 	private _AdminMessage(message: Record<number, string>) {

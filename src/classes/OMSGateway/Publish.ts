@@ -14,7 +14,7 @@ class Publish {
 
 	private _isSending: boolean = false;
 
-	private readonly _debounce = 1000;
+	private readonly _debounce = 310;
 
 	start() {
 		if (this.queue.length === 0) return;
