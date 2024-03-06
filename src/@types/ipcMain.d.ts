@@ -5,4 +5,5 @@ declare interface IpcMainChannels {
 		activeTab: Saturn.OptionTab;
 	}>;
 	send_order: IOFields;
+	set_option_watchlist_filters: IOptionWatchlistFilters;
 }

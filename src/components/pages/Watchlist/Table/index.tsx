@@ -38,7 +38,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle<IOptionWatchlistFilters>('set_option_watchlist_filters', onFiltersChanged);
+		ipcMain.handle('set_option_watchlist_filters', onFiltersChanged);
 
 		return () => {
 			ipcMain.removeChannel('set_option_watchlist_filters');

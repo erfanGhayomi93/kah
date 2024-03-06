@@ -1,37 +1,28 @@
 import { type TOrder } from './Order';
 
-interface IForcibleOrder {
-	startSending: true;
-	force: true;
-	forceType: 'push' | 'unshift';
+interface IAddOrderConfiguration {
+	startSending: boolean;
+	type: 'push' | 'unshift';
 }
-
-interface IInQueueOrder {
-	startSending: true;
-	force: false;
-}
-
-interface IInStoreOrder {
-	startSending?: false;
-}
-
-type TAddOrderConfiguration = IInQueueOrder | IInStoreOrder | IForcibleOrder;
 
 class Publish {
-	private store: TOrder[] = []; // Pre-QUEUE
-
 	private queue: TOrder[] = []; // QUEUE
 
 	private readonly sent = new Map<string, TOrder>(); // After-QUEUE
 
 	private _sendingIndex: number = -1;
 
+	private _isSending: boolean = false;
+
 	private readonly _debounce = 1000;
 
 	start() {
-		this._delay(() => {
-			if (this.queue.length === 0) return;
+		if (this.queue.length === 0) return;
 
+		if (this._isSending) return;
+		else this._isSending = true;
+
+		this._delay(() => {
 			this._sendingIndex = 0;
 			this.send(this.order);
 		});
@@ -51,62 +42,39 @@ class Publish {
 					resolve(result);
 				})
 				.catch(reject)
-				.finally(() => {
-					if (!this.queue[this._sendingIndex + 1]) this._end();
-					else this._sendNextOrder();
-				});
+				.finally(() => this._sendNextOrder());
 		});
 	}
 
-	add(orders: TOrder[], options?: TAddOrderConfiguration) {
-		this.store.push(...orders);
+	add(orders: TOrder[], options?: IAddOrderConfiguration) {
+		if (options?.type === 'unshift') this.queue.unshift(...orders);
+		else this.queue.push(...orders);
 
-		if (options?.startSending) {
-			if (options.force || this.queue.length === 0)
-				this._setQueueAndStart(options.force ? options.forceType : 'push');
-			else this.start();
-		}
+		if (options?.startSending) this.start();
 	}
 
 	addAndStart(orders: TOrder[]) {
-		this.add(orders, { startSending: true, force: false });
+		this.add(orders, { startSending: true, type: 'push' });
 	}
 
 	private _end() {
-		if (this.store.length > 0 || this.queue.length > 0) {
-			this._setQueueAndStart();
-		} else {
-			this._reset();
-		}
-	}
+		this._isSending = false;
 
-	private _setQueueAndStart(type: IForcibleOrder['forceType'] = 'push') {
-		if (type === 'push') this.queue.push(...this.store);
-		else this.queue.unshift(...this.store);
-		this.store = [];
-
-		this.start();
+		if (this.queue.length > 0) this.start();
+		else this._reset();
 	}
 
 	private _sendNextOrder() {
-		delete this.queue[this._sendingIndex];
+		this.queue.splice(this._sendingIndex, 1);
 
 		this._sendingIndex++;
-		this._delay(() => this.send(this.order));
-	}
-
-	private _resetStore() {
-		this.store = [];
-	}
-
-	private _resetQueue() {
-		this.queue = [];
+		if (this.order) this._delay(() => this.order && this.send(this.order));
+		else this._end();
 	}
 
 	private _reset() {
 		this._sendingIndex = -1;
-		this._resetStore();
-		this._resetQueue();
+		this.queue = [];
 	}
 
 	private _delay(callback: () => void) {

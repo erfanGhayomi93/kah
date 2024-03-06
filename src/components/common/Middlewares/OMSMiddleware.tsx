@@ -86,7 +86,7 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 				if (!brokerUrls) throw new Error();
 
 				const order = OMSGateway.createOrder().toQueue().setFields(fields).setURL(brokerUrls.createOrder);
-				OMSGateway.publish().add([order], { startSending: true, force: false });
+				OMSGateway.publish().addAndStart([order]);
 
 				reject();
 			} catch (e) {
