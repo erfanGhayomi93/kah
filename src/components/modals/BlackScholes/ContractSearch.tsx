@@ -20,7 +20,7 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 
 	const [term, setTerm] = useState('');
 
-	const [isLoadingOption, setIsLoadingOption] = useState(true);
+	const [symbol, setSymbol] = useState<Option.Root | Option.Search | null>(null);
 
 	const { data: optionData, isLoading: isLoadingOptionData } = useOptionSymbolSearchQuery({
 		queryKey: ['optionSymbolSearchQuery', term],
@@ -28,25 +28,44 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 	});
 
 	const onSelect = async (symbol: Option.Root | Option.Search) => {
-		if ('symbolInfo' in symbol) onChange(symbol);
-		else {
-			setIsLoadingOption(true);
+		setSymbol(symbol);
 
+		const params: NonNullable<IBlackScholesModalStates['contract']> = {
+			baseSymbolPrice: 0,
+			contractEndDate: 0,
+			premium: 0,
+			historicalVolatility: 0,
+			strikePrice: 0,
+		};
+
+		if ('symbolInfo' in symbol) {
+			params.baseSymbolPrice = symbol.optionWatchlistData.baseSymbolPrice;
+			params.contractEndDate = new Date(symbol.symbolInfo.contractEndDate).getTime();
+			params.premium = symbol.optionWatchlistData.premium;
+			params.historicalVolatility = symbol.optionWatchlistData.historicalVolatility;
+			params.strikePrice = symbol.symbolInfo.strikePrice;
+		} else {
 			try {
-				const response = await axios.get<ServerResponse<Symbol.Info>>(routes.symbol.SymbolInfo, {
-					params: { symbolIsin: symbol.symbolISIN },
+				const response = await axios.get<ServerResponse<Option.Root>>(routes.optionWatchlist.Watchlist, {
+					params: { SymbolISINs: symbol.symbolISIN },
 				});
 				const { data } = response;
 
 				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-				// if (data.result) onChange(data.result);
+				// const { result } = data;
+
+				params.baseSymbolPrice = 0;
+				params.contractEndDate = Date.now();
+				params.premium = 0;
+				params.historicalVolatility = 0;
+				params.strikePrice = 0;
 			} catch (e) {
 				//
-			} finally {
-				setIsLoadingOption(false);
 			}
 		}
+
+		onChange(params);
 	};
 
 	const data = useMemo(() => {
@@ -60,7 +79,7 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 		<div className='relative flex-1'>
 			<AsyncSelect<Option.Root | Option.Search>
 				options={data}
-				value={value}
+				value={symbol}
 				term={term}
 				disabled={basis === 'base' && disabled}
 				loading={basis === 'base' ? isLoading : isLoadingOptionData}
@@ -85,8 +104,6 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 					root: '!h-48',
 				}}
 			/>
-
-			{isLoadingOption && <div className='size-24 spinner' />}
 		</div>
 	);
 };

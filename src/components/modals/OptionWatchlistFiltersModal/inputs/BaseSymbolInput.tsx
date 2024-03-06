@@ -8,7 +8,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../index.module.scss';
 
 interface BaseSymbolInputProps {
-	values: Option.Search[];
+	values: Option.BaseSearch[];
 	onChange: (values: IOptionWatchlistFilters['symbols']) => void;
 }
 
