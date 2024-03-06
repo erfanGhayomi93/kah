@@ -105,7 +105,7 @@ const Select = <T,>({
 						'input-group',
 						styles.root,
 						classes?.root,
-						disabled ? [styles.disabled, classes?.disabled] : styles.clickable,
+						disabled ? ['disabled', styles.disabled, classes?.disabled] : styles.clickable,
 						focusing && [styles.focus, classes?.focus],
 					)}
 				>
@@ -128,12 +128,14 @@ const Select = <T,>({
 					{loading ? (
 						<div className='!absolute left-8 min-h-20 min-w-20 spinner' />
 					) : (
-						<ArrowDownSVG
-							width='1.6rem'
-							height='1.6rem'
+						<button
+							type='button'
 							style={{ transform: open ? 'rotate(180deg)' : undefined }}
 							className={cn(styles.icon, classes?.icon)}
-						/>
+							onClick={() => setOpen(!open)}
+						>
+							<ArrowDownSVG width='1.6rem' height='1.6rem' />
+						</button>
 					)}
 				</div>
 			)}

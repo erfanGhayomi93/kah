@@ -594,7 +594,7 @@ const config: Config = {
 						},
 					},
 
-					'&:not(:focus-within):hover': {
+					'&:not(:focus-within,.disabled):hover': {
 						'border-color': theme('colors.gray.700'),
 
 						'.flexible-fieldset': {
