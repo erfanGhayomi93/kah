@@ -1,4 +1,5 @@
 import { onUnauthorize } from '@/api/axios';
+import ipcMain from '@/classes/IpcMain';
 import { getDateMilliseconds } from '@/constants';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
@@ -92,7 +93,8 @@ export const rialToToman = (value: number) => {
 	return (value / 10).toFixed(0);
 };
 
-export const convertStringToInteger = (inputString: string): string => inputString.replace(/[^\d]/g, '');
+export const convertStringToInteger = (inputString: string): string =>
+	toEnglishNumber(inputString).replace(/[^\d]/g, '');
 
 export const convertStringToDecimal = (inputString: string): string => inputString.replace(/[^0-9.]/g, '');
 
@@ -345,3 +347,25 @@ export const dateConverter = (v: 'Week' | 'Month' | 'Year') => {
 
 	return timestamp;
 };
+
+export const toEnglishNumber = (str: string): string => {
+	const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+	const arabicNumbers = [/٠/g, /١/g, /٢/g, /٣/g, /٤/g, /٥/g, /٦/g, /٧/g, /٨/g, /٩/g];
+
+	for (let i = 0; i < 10; i++) {
+		str = str.replace(persianNumbers[i], String(i)).replace(arabicNumbers[i], String(i));
+	}
+
+	return str;
+};
+
+export const createOrder = (fields: IpcMainChannels['send_order']) =>
+	new Promise<Order.Response>((resolve, reject) => {
+		return ipcMain
+			.sendAsync<Order.Response>('send_order', fields)
+			.then((response) => {
+				if (response) resolve(response);
+				else reject();
+			})
+			.catch(reject);
+	});

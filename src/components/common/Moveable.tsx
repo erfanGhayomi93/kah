@@ -16,7 +16,7 @@ const Moveable = forwardRef<HTMLElement, MoveableProps>(({ enabled = true, child
 
 			try {
 				const tagName = (e.target as HTMLElement).tagName;
-				if (['INPUT', 'BUTTON', 'TEXTAREA'].includes(tagName)) return;
+				if (['INPUT', 'BUTTON', 'TEXTAREA', 'LABEL'].includes(tagName)) return;
 			} catch (e) {
 				//
 			}

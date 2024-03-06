@@ -156,6 +156,7 @@ const SimpleTrade = ({
 
 				<div className='gap-8 flex-column'>
 					<Input
+						autoFocus
 						label={t('bs_modal.quantity_label')}
 						value={quantity}
 						onChange={(value) => setInputValue('quantity', value)}

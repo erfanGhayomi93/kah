@@ -1,11 +1,10 @@
-import brokerAxios from '@/api/brokerAxios';
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleChooseBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
-import { cn } from '@/utils/helpers';
+import { cn, createOrder, dateConverter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -67,7 +66,10 @@ const Body = (props: BodyProps) => {
 
 			cb();
 		} catch (e) {
-			toast.error(t(`alerts.${(e as Error).message}`));
+			const { message } = e as Error;
+			toast.error(t(`alerts.${message}`), {
+				toastId: message,
+			});
 		}
 	};
 
@@ -76,19 +78,28 @@ const Body = (props: BodyProps) => {
 			if (!brokerUrls) return;
 
 			const { price, quantity, validityDate, symbolISIN, side, holdAfterOrder, close } = props;
-			await brokerAxios.post(brokerUrls.createOrder, {
+			const params: IpcMainChannels['send_order'] = {
 				symbolISIN,
 				quantity,
 				price,
 				orderSide: side,
 				validity: validityDate,
-			});
+				validityDate: 0,
+			};
 
-			toast.success(t('alerts.ordered_successfully'));
+			if (params.validity === 'Month' || params.validity === 'Week')
+				params.validityDate = dateConverter(params.validity);
+
+			await createOrder(params);
+			toast.success(t('alerts.ordered_successfully'), {
+				toastId: 'ordered_successfully',
+			});
 
 			if (!holdAfterOrder) close();
 		} catch (e) {
-			toast.error(t('alerts.ordered_unsuccessfully'));
+			toast.error(t('alerts.ordered_unsuccessfully'), {
+				toastId: 'ordered_unsuccessfully',
+			});
 		}
 	};
 

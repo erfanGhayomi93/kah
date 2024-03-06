@@ -1,4 +1,4 @@
-import { cn, convertStringToDecimal, sepNumbers } from '@/utils/helpers';
+import { cn, convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import React from 'react';
 
 interface InputProps<T extends string | number>
@@ -10,8 +10,16 @@ interface InputProps<T extends string | number>
 }
 
 const Input = <T extends string | number>({ value, placeholder, prefix, onChange, ...props }: InputProps<T>) => {
-	const valueFormatter = (value: string) => {
+	const valueFormatter = (value: number | string) => {
+		if (!value) return '';
 		return sepNumbers(String(value));
+	};
+
+	const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const valueAsNumber = Number(convertStringToInteger(e.target.value));
+		if (valueAsNumber >= Number.MAX_SAFE_INTEGER) return;
+
+		onChange(String(valueAsNumber));
 	};
 
 	const isActive = value && String(value).length > 0;
@@ -23,8 +31,8 @@ const Input = <T extends string | number>({ value, placeholder, prefix, onChange
 				type='text'
 				inputMode='numeric'
 				className='h-full flex-1 bg-transparent px-8 text-left ltr'
-				value={value ? valueFormatter(String(value)) : ''}
-				onChange={(e) => onChange(convertStringToDecimal(e.target.value))}
+				value={valueFormatter(value)}
+				onChange={onChangeValue}
 			/>
 
 			<span className={cn('flexible-placeholder', isActive && 'active')}>{placeholder}</span>

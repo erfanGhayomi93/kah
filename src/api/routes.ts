@@ -24,6 +24,7 @@ const routes = {
 
 	optionWatchlist: {
 		Watchlist: `${rlcUrl}/OptionWatchlist/v1/Watchlist`,
+		WatchlistInfoBySymbolISIN: `${rlcUrl}/OptionWatchlist/v1/WatchlistInfoBySymbolISIN`,
 		WatchlistExcel: `${rlcUrl}/OptionWatchlist/v1/WatchlistExcel`,
 		WatchlistBySettlementDate: `${rlcUrl}/OptionWatchlist/v1/WatchlistBySettlementDate`,
 		OptionCalculativeInfo: `${rlcUrl}/OptionWatchlist/v1/OptionCalculativeInfo`,

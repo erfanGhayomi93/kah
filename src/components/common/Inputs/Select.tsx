@@ -23,7 +23,17 @@ type SelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	loading?: boolean;
 	disabled?: boolean;
 	classes?: RecordClasses<
-		'root' | 'focus' | 'disabled' | 'list' | 'alert' | 'listItem' | 'value' | 'placeholder' | 'icon' | 'active'
+		| 'root'
+		| 'focus'
+		| 'disabled'
+		| 'box'
+		| 'list'
+		| 'alert'
+		| 'listItem'
+		| 'value'
+		| 'placeholder'
+		| 'icon'
+		| 'active'
 	>;
 	getOptionId: (option: T) => string | number;
 	getOptionTitle: (option: T) => React.ReactNode;
@@ -61,25 +71,30 @@ const Select = <T,>({
 					);
 
 				return (
-					<ul className={cn(styles.list, classes?.list)}>
-						{options.map((option) => (
-							<li
-								onClick={() => {
-									onChange(option);
-									setOpen(false);
-								}}
-								key={getOptionId(option)}
-								className={cn(
-									styles.listItem,
-									classes?.listItem,
-									value &&
-										getOptionId(option) === getOptionId(value) && [styles.active, classes?.active],
-								)}
-							>
-								{getOptionTitle(option)}
-							</li>
-						))}
-					</ul>
+					<div className={cn(styles.box, classes?.box)}>
+						<ul className={cn(styles.list, classes?.list)}>
+							{options.map((option) => (
+								<li
+									onClick={() => {
+										onChange(option);
+										setOpen(false);
+									}}
+									key={getOptionId(option)}
+									className={cn(
+										styles.listItem,
+										classes?.listItem,
+										value &&
+											getOptionId(option) === getOptionId(value) && [
+												styles.active,
+												classes?.active,
+											],
+									)}
+								>
+									{getOptionTitle(option)}
+								</li>
+							))}
+						</ul>
+					</div>
 				);
 			}}
 		>
@@ -100,11 +115,13 @@ const Select = <T,>({
 						</span>
 					)}
 
-					<span className={cn('flexible-placeholder', value && 'active', open && 'colorful')}>
-						{placeholder}
-					</span>
+					{placeholder && (
+						<span className={cn('flexible-placeholder', value && 'active', open && 'colorful')}>
+							{placeholder}
+						</span>
+					)}
 
-					<fieldset className={cn('flexible-fieldset', value && 'active')}>
+					<fieldset className={cn('flexible-fieldset', placeholder && value && 'active')}>
 						<legend>{placeholder}</legend>
 					</fieldset>
 
