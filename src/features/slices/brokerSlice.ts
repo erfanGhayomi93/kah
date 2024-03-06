@@ -4,7 +4,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
 export interface BrokerState {
-	userData: Broker.User | null;
+	userInfo: Broker.User | null;
 
 	userStatus: Broker.Status | null;
 
@@ -12,7 +12,7 @@ export interface BrokerState {
 }
 
 const initialState: BrokerState = {
-	userData: null,
+	userInfo: null,
 
 	userStatus: null,
 
@@ -23,8 +23,8 @@ const brokerSlice = createSlice({
 	name: 'broker',
 	initialState,
 	reducers: {
-		setUserData: (state, { payload }: PayloadAction<BrokerState['userData']>) => {
-			state.userData = payload;
+		setUserInfo: (state, { payload }: PayloadAction<BrokerState['userInfo']>) => {
+			state.userInfo = payload;
 		},
 
 		setUserStatus: (state, { payload }: PayloadAction<BrokerState['userStatus']>) => {
@@ -37,9 +37,9 @@ const brokerSlice = createSlice({
 	},
 });
 
-export const { setUserData, setUserStatus, setUserRemain } = brokerSlice.actions;
+export const { setUserInfo, setUserStatus, setUserRemain } = brokerSlice.actions;
 
-export const getUserData = (state: RootState) => state.broker.userData;
+export const getUserInfo = (state: RootState) => state.broker.userInfo;
 export const getUserStatus = (state: RootState) => state.broker.userStatus;
 export const getUserRemain = (state: RootState) => state.broker.userRemain;
 

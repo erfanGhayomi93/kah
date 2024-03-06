@@ -78,7 +78,7 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 	}, [JSON.stringify(inputs.contractEndDate)]);
 
 	useLayoutEffect(() => {
-		if (!inputs.contract || !inputs.contractEndDate) return;
+		if (!inputs.contract) return;
 
 		const { baseSymbolPrice, contractEndDate, historicalVolatility, premium, strikePrice } = inputs.contract;
 

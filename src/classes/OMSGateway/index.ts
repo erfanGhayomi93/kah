@@ -21,7 +21,7 @@ class OMS {
 		return this._subscription;
 	}
 
-	order() {
+	createOrder() {
 		return this._order;
 	}
 }

@@ -3,7 +3,7 @@ import { type TOrder } from './Order';
 interface IForcibleOrder {
 	startSending: true;
 	force: true;
-	forceType: 'push' | 'shift';
+	forceType: 'push' | 'unshift';
 }
 
 interface IInQueueOrder {
@@ -26,13 +26,15 @@ class Publish {
 
 	private _sendingIndex: number = -1;
 
-	private readonly _debounce = 320;
+	private readonly _debounce = 1000;
 
 	start() {
-		if (this.queue.length === 0) return;
+		this._delay(() => {
+			if (this.queue.length === 0) return;
 
-		this._sendingIndex = 0;
-		this.send(this.order);
+			this._sendingIndex = 0;
+			this.send(this.order);
+		});
 	}
 
 	send(order: TOrder | undefined) {
@@ -60,8 +62,9 @@ class Publish {
 		this.store.push(...orders);
 
 		if (options?.startSending) {
-			if (options.force || this.queue.length === 0) this._setQueueAndStart();
-			else this._delay(() => this.start());
+			if (options.force || this.queue.length === 0)
+				this._setQueueAndStart(options.force ? options.forceType : 'push');
+			else this.start();
 		}
 	}
 
@@ -70,23 +73,25 @@ class Publish {
 	}
 
 	private _end() {
-		if (this.store.length > 0 && this.queue.length === 0) {
+		if (this.store.length > 0 || this.queue.length > 0) {
 			this._setQueueAndStart();
 		} else {
 			this._reset();
 		}
 	}
 
-	private _setQueueAndStart() {
-		this.queue.push(...this.store);
+	private _setQueueAndStart(type: IForcibleOrder['forceType'] = 'push') {
+		if (type === 'push') this.queue.push(...this.store);
+		else this.queue.unshift(...this.store);
 		this.store = [];
 
-		this._delay(() => this.start());
+		this.start();
 	}
 
 	private _sendNextOrder() {
-		this._sendingIndex++;
+		delete this.queue[this._sendingIndex];
 
+		this._sendingIndex++;
 		this._delay(() => this.send(this.order));
 	}
 

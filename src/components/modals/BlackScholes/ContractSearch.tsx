@@ -8,14 +8,13 @@ import { useMemo, useState } from 'react';
 
 interface SymbolSearchProps {
 	basis: 'base' | 'contract';
-	value: IBlackScholesModalStates['contract'];
 	isLoading: boolean;
 	disabled: boolean;
 	options: Option.Root[];
 	onChange: (symbol: IBlackScholesModalStates['contract']) => void;
 }
 
-const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }: SymbolSearchProps) => {
+const ContractSearch = ({ basis, disabled, isLoading, options, onChange }: SymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -30,42 +29,40 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 	const onSelect = async (symbol: Option.Root | Option.Search) => {
 		setSymbol(symbol);
 
-		const params: NonNullable<IBlackScholesModalStates['contract']> = {
-			baseSymbolPrice: 0,
-			contractEndDate: 0,
-			premium: 0,
-			historicalVolatility: 0,
-			strikePrice: 0,
-		};
+		let result: Option.Root | null = null;
 
 		if ('symbolInfo' in symbol) {
-			params.baseSymbolPrice = symbol.optionWatchlistData.baseSymbolPrice;
-			params.contractEndDate = new Date(symbol.symbolInfo.contractEndDate).getTime();
-			params.premium = symbol.optionWatchlistData.premium;
-			params.historicalVolatility = symbol.optionWatchlistData.historicalVolatility;
-			params.strikePrice = symbol.symbolInfo.strikePrice;
+			result = symbol;
 		} else {
 			try {
-				const response = await axios.get<ServerResponse<Option.Root>>(routes.optionWatchlist.Watchlist, {
-					params: { SymbolISINs: symbol.symbolISIN },
-				});
+				const response = await axios.get<ServerResponse<Option.Root>>(
+					routes.optionWatchlist.WatchlistInfoBySymbolISIN,
+					{
+						params: { symbolISIN: symbol.symbolISIN },
+					},
+				);
 				const { data } = response;
 
 				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-				// const { result } = data;
-
-				params.baseSymbolPrice = 0;
-				params.contractEndDate = Date.now();
-				params.premium = 0;
-				params.historicalVolatility = 0;
-				params.strikePrice = 0;
+				result = data.result;
 			} catch (e) {
 				//
 			}
 		}
 
-		onChange(params);
+		try {
+			if (!result) return;
+			onChange({
+				baseSymbolPrice: result.optionWatchlistData.baseSymbolPrice,
+				contractEndDate: new Date(result.symbolInfo.contractEndDate).getTime(),
+				premium: result.optionWatchlistData.premium,
+				historicalVolatility: result.optionWatchlistData.historicalVolatility,
+				strikePrice: result.symbolInfo.strikePrice,
+			});
+		} catch (e) {
+			//
+		}
 	};
 
 	const data = useMemo(() => {
