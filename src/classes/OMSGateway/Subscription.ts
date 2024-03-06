@@ -24,7 +24,7 @@ class Subscription {
 		if (!this._brokerCode || !this._customerISIN) return;
 
 		this._sub = subscribePrivateGateWay(this._brokerCode, this._customerISIN)
-			.addEventListener('onItemUpdate', (updateInfo) => this.onMessage(updateInfo))
+			.addEventListener('onItemUpdate', (updateInfo) => this._onMessage(updateInfo))
 			.start();
 	}
 
@@ -35,7 +35,7 @@ class Subscription {
 		this._sub = null;
 	}
 
-	onMessage(updateInfo: ItemUpdate) {
+	private _onMessage(updateInfo: ItemUpdate) {
 		updateInfo.forEachChangedField((fieldName, _, value) => {
 			try {
 				if (value) {

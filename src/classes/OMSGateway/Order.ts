@@ -2,37 +2,28 @@ import brokerAxios from '@/api/brokerAxios';
 
 type TOrderState = 'QUEUE' | 'SENDING' | 'SENT' | 'INITIAL';
 
-interface IValidity {
-	validity: Extract<TBsValidityDates, 'GoodTillDate' | 'Week' | 'Month'>;
-	validityDate: number;
-}
-
-interface INonValidityDate {
-	validity: Exclude<TBsValidityDates, 'GoodTillDate' | 'Week' | 'Month'>;
-}
-
-type IFields = (IValidity | INonValidityDate) & {
-	symbolISIN: string;
-	quantity: number;
-	price: number;
-	side: 'buy' | 'sell';
-};
-
 class Order {
 	private _state: TOrderState = 'INITIAL';
 
-	private _fields: IFields | null = null;
+	private _fields: IOFields | null = null;
 
 	private _url: string | null = null;
 
 	private _clientKey: string | null = null;
 
-	inQueue() {
+	toQueue() {
 		this._state = 'QUEUE';
+		return this;
 	}
 
-	setFields(fields: IFields) {
+	setFields(fields: IOFields) {
 		this._fields = fields;
+		if (['Week', 'Month'].includes(this._fields.validity)) {
+			this._fields.validity = 'GoodTillDate';
+		}
+
+		if (this._fields.validity !== 'GoodTillDate') this._fields.validityDate = -1;
+
 		return this;
 	}
 
@@ -51,7 +42,10 @@ class Order {
 					return;
 				}
 
-				const response = await brokerAxios.post<ServerResponse<Order.Response>>(this._url, this._fields);
+				const params: Partial<IOFields> = { ...this._fields };
+				if (params.validityDate === -1) delete params.validityDate;
+
+				const response = await brokerAxios.post<ServerResponse<Order.Response>>(this._url, params);
 				const { data } = response;
 
 				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

@@ -189,10 +189,7 @@ const Saturn = () => {
 
 	useLayoutEffect(() => {
 		try {
-			ipcMain.handle<Array<{ symbolISIN: string; symbolTitle: string; activeTab: Saturn.OptionTab }>>(
-				'saturn_contract_added',
-				onContractAdded,
-			);
+			ipcMain.handle('saturn_contract_added', onContractAdded);
 
 			return () => {
 				ipcMain.removeHandler('saturn_contract_added', onContractAdded);

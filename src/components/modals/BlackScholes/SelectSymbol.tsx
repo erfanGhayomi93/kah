@@ -76,7 +76,6 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 				isLoading={isLoadingWatchlistData}
 				disabled={!inputs.baseSymbol || !inputs.contractEndDate}
 				options={watchlistData ?? []}
-				value={inputs.contract}
 				onChange={(value) => setInputValue('contract', value)}
 			/>
 		</div>
