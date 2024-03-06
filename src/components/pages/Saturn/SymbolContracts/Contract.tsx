@@ -200,7 +200,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 		<Wrapper>
 			<div className='justify-start flex-column'>
 				<div className='flex justify-between'>
-					<div className='flex-items-start gap-4 flex-column'>
+					<div className='flex-items-start flex-column'>
 						<h1 className='text-3xl font-medium text-gray-1000'>{contractInfo?.symbolTitle ?? '−'}</h1>
 						<h4 className='whitespace-nowrap text-tiny text-gray-1000'>
 							{contractInfo?.companyName ?? '−'}
