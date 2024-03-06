@@ -80,19 +80,19 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 	useLayoutEffect(() => {
 		if (!inputs.contract || !inputs.contractEndDate) return;
 
-		const { symbolInfo, optionWatchlistData } = inputs.contract;
+		const { baseSymbolPrice, contractEndDate, historicalVolatility, premium, strikePrice } = inputs.contract;
 
 		const now = Date.now();
-		const contractEndDate = new Date(inputs.contractEndDate.contractEndDate).getTime();
+		const dueDays = Math.floor(Math.abs(now - new Date(contractEndDate).getTime()) / 1e3 / 24 / 60 / 60);
 
 		setInputs((prev) => ({
 			...prev,
-			sharePrice: optionWatchlistData.baseSymbolPrice ?? 0,
-			strikePrice: symbolInfo.strikePrice ?? 0,
-			dueDays: Math.floor(Math.abs(now - contractEndDate) / 1e3 / 24 / 60 / 60),
-			volatility: String(optionWatchlistData.historicalVolatility ?? 0),
+			sharePrice: baseSymbolPrice ?? 0,
+			strikePrice: strikePrice ?? 0,
+			dueDays,
+			volatility: String(historicalVolatility ?? 0),
 			riskFreeProfit: '30',
-			premium: optionWatchlistData.premium ?? 0,
+			premium: premium ?? 0,
 		}));
 	}, [JSON.stringify(inputs.contract)]);
 
