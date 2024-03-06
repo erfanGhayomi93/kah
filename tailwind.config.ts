@@ -29,6 +29,10 @@ const config: Config = {
 
 			black: 'rgba(35, 38, 41, 1)',
 
+			input: 'rgba(224, 224, 226, 1)',
+
+			sidebar: 'rgba(15, 21, 39, 1)',
+
 			primary: {
 				100: 'rgba(229, 238, 255, 1)',
 				200: 'rgba(162, 174, 255, 1)',
@@ -47,7 +51,7 @@ const config: Config = {
 			},
 
 			gray: {
-				100: 'rgba(255, 255, 255, 1)',
+				100: 'rgba(252, 253, 254, 1)',
 				200: 'rgba(248, 250, 253, 1)',
 				300: 'rgba(242, 242, 242, 1)',
 				400: 'rgba(233, 236, 239, 1)',
@@ -95,6 +99,7 @@ const config: Config = {
 			DEFAULT: '0px 4px 4px -1px rgba(0, 0, 0, 0.1)',
 			md: '0px 8px 8px -1 rgba(0, 0, 0, 0.1)',
 			lg: '0px 12px 12px 0px rgba(0, 0, 0, 0.1)',
+			card: '0px 2px 11px 0px rgba(0, 0, 0, 0.05)',
 			section: 'rgba(0, 0, 0, 0.1) 0px 2px 9px 2px',
 		},
 
@@ -126,6 +131,7 @@ const config: Config = {
 			'16': '1.6rem',
 			'20': '2rem',
 			'24': '2.4rem',
+			'28': '2.8rem',
 			'32': '3.2rem',
 			'36': '3.6rem',
 			'40': '4.0rem',
@@ -137,6 +143,17 @@ const config: Config = {
 			'80': '8.0rem',
 			'88': '8.8rem',
 			'96': '9.6rem',
+		},
+
+		transitionProperty: {
+			none: 'none',
+			all: 'all',
+			colors: 'color, background-color, border-color',
+			opacity: 'opacity',
+			shadow: 'shadow',
+			transform: 'transform',
+			width: 'width',
+			height: 'height',
 		},
 
 		transitionDuration: {
@@ -195,6 +212,13 @@ const config: Config = {
 				'.flex-items-center': {
 					display: 'flex',
 					'align-items': 'center',
+				},
+
+				'.fit-image': {
+					'background-repeat': 'no-repeat',
+					'background-size': 'cover',
+					'background-position': 'center',
+					'background-attachment': 'local',
 				},
 
 				'.dropdown': {
@@ -319,11 +343,11 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.error.200'),
+					'background-color': theme('colors.error.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.error.100'),
+						'background-color': theme('colors.error.200'),
 					},
 
 					'&:disabled': {
@@ -415,12 +439,22 @@ const config: Config = {
 					},
 				},
 
+				'.gray-box': {
+					border: `1px solid ${theme('colors.gray.500')}`,
+					'background-color': theme('colors.white'),
+
+					'&:not(.rounded-sm)': {
+						'border-radius': '8px',
+					},
+				},
+
 				'.icon-hover': {
-					color: theme('colors.gray.1000'),
-					transition: 'colors 250ms',
+					color: theme('colors.gray.900'),
+					transition: 'color 250ms',
+					'-webkit-transition': 'color 250ms',
 
 					'&:hover': {
-						color: theme('colors.gray.900'),
+						color: theme('colors.gray.800'),
 					},
 				},
 
@@ -448,6 +482,10 @@ const config: Config = {
 
 						'&:focus-within': {
 							'border-color': theme('colors.primary.300'),
+						},
+
+						'&:not(:focus-within):hover': {
+							'border-color': `${theme('colors.gray.700')} !important`,
 						},
 
 						'&.invalid': {
@@ -525,6 +563,125 @@ const config: Config = {
 					left: '50%',
 					top: '50%',
 					transform: 'translate(-50%, -50%)',
+				},
+
+				'.input-group': {
+					transition: 'border-color 200ms ease-in-out',
+					'-webkit-transition': 'border-color 200ms ease-in-out',
+					'-moz-transition': 'border-color 200ms ease-in-out',
+
+					'&:focus-within,input:focus,textarea:focus': {
+						'border-color': theme('colors.primary.300'),
+
+						'.flexible-placeholder': {
+							color: theme('colors.primary.300'),
+							top: '0',
+							right: '1.25rem !important',
+							'font-size': '1.2rem',
+							transform: 'translateY(calc(-100% + 0.9rem))',
+							'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
+						},
+
+						'.flexible-fieldset': {
+							'border-color': theme('colors.primary.300'),
+
+							legend: {
+								'font-size': '1.2rem',
+								'max-width': '100%',
+								'-webkit-transition': 'max-width 500ms',
+								transition: 'max-width 500ms',
+							},
+						},
+					},
+
+					'&:not(:focus-within):hover': {
+						'border-color': theme('colors.gray.700'),
+					},
+				},
+
+				'.flexible-placeholder': {
+					position: 'absolute',
+					'font-size': '1.4rem',
+					'user-select': 'none',
+					top: '50%',
+					'font-weight': '400',
+					right: '0.8rem',
+					'pointer-events': 'none',
+					color: theme('colors.gray.700'),
+					transform: 'translateY(-50%)',
+					'-webkit-transform': 'translateY(-50%)',
+					transition: 'font-size 200ms, right 200ms, top 200ms, color 200ms, transform 200ms',
+					'-webkit-transition': 'font-size 200ms, right 200ms, top 200ms, color 200ms, transform 200ms',
+
+					'&.active': {
+						color: theme('colors.gray.900'),
+						top: '0',
+						'font-size': '1.2rem',
+						right: '1.25rem !important',
+						transform: 'translateY(calc(-100% + 0.9rem))',
+						'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
+
+						'&.colorful': {
+							color: theme('colors.primary.300'),
+						},
+					},
+				},
+
+				'.flexible-fieldset': {
+					position: 'absolute',
+					height: 'calc(100% + 5px)',
+					inset: '-5px 0 0',
+					'pointer-events': 'none',
+					border: `1px solid ${theme('colors.input')}`,
+					'border-radius': '8px',
+					'text-align': 'right',
+					overflow: 'hidden',
+					padding: '0 0.8rem',
+					'-webkit-transition': 'border-color 250ms',
+					transition: 'border-color 250ms',
+
+					legend: {
+						float: 'unset',
+						width: 'auto',
+						overflow: 'hidden',
+						display: 'inline-block',
+						height: '11px',
+						'font-size': '1.2rem',
+						visibility: 'hidden',
+						'max-width': '0',
+						'white-space': 'nowrap',
+						'-webkit-transition': 'max-width 100ms',
+						transition: 'max-width 100ms',
+
+						'&::after': {
+							content: '"\\00A0"',
+							position: 'relative',
+						},
+
+						'&::before': {
+							content: '"\\00A0"',
+							position: 'relative',
+						},
+					},
+
+					'&.active': {
+						legend: {
+							'font-size': '1.2rem',
+							'max-width': '100%',
+							'-webkit-transition': 'max-width 500ms',
+							transition: 'max-width 500ms',
+						},
+					},
+				},
+
+				'.spinner': {
+					position: 'relative',
+					display: 'inline-block',
+					'vertical-align': 'middle',
+					border: `2px solid ${theme('colors.primary.200')}`,
+					'border-right-color': 'rgba(0, 0, 0, 0)',
+					'border-radius': '50%',
+					animation: '750ms linear infinite spinner-border',
 				},
 			});
 		}),

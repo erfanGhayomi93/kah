@@ -1,4 +1,4 @@
-import { getClientId } from '@/utils/cookie';
+import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
 const axios = AXIOS.create();
@@ -39,14 +39,28 @@ axios.interceptors.response.use(
 	(response: AxiosResponse<ServerResponse>) => {
 		return response;
 	},
-	async (error) => {
-		if ((error as AxiosError).response !== undefined) {
-			// const errStatus = error.response.status;
+	async (error: AxiosError) => {
+		if (error.response) {
+			const errStatus = error.response.status;
+
+			switch (errStatus) {
+				case 401:
+					onUnauthorize();
+			}
 		}
 
 		return await Promise.reject(error);
 	},
 );
 
-export { AxiosError };
+const onUnauthorize = () => {
+	try {
+		deleteBrokerClientId();
+		deleteClientId();
+	} catch (e) {
+		//
+	}
+};
+
+export { AxiosError, onUnauthorize };
 export default axios;

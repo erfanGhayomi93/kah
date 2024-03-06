@@ -1,14 +1,17 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import { type ItemUpdate } from '@/classes/Subscribe';
 import Loading from '@/components/common/Loading';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
+import { useTradingFeatures } from '@/hooks';
+import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
+import { subscribeSymbolInfo } from '@/utils/subscriptions';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import NoData from './common/NoData';
-import Section from './common/Section';
 
 type TValue = string | React.ReactNode;
 
@@ -24,8 +27,8 @@ interface SymbolInfoProps {
 
 const ListItem = ({ title, valueFormatter }: Item) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-gray-900 whitespace-nowrap text-base'>{title}</span>
-		<span className='text-gray-1000 text-base font-medium ltr'>
+		<span className='whitespace-nowrap text-base text-gray-900'>{title}</span>
+		<span className='text-base font-medium text-gray-1000 ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
 	</div>
@@ -34,9 +37,48 @@ const ListItem = ({ title, valueFormatter }: Item) => (
 const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
+	const { addBuySellModal } = useTradingFeatures();
+
+	const { subscribe } = useSubscription();
+
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', selectedSymbol ?? null],
 	});
+
+	const addBsModal = (side: TBsSides) => {
+		if (!symbolData) return;
+
+		const { symbolISIN, symbolTitle } = symbolData;
+
+		addBuySellModal({
+			side,
+			symbolType: 'base',
+			symbolISIN,
+			symbolTitle,
+		});
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const queryKey = ['symbolInfoQuery', selectedSymbol];
+		const visualData = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey))) as Symbol.Info;
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				if (value && fieldName in visualData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Lightstream returns the wrong data type
+					visualData[fieldName as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			} catch (e) {
+				//
+			}
+		});
+
+		queryClient.setQueryData(queryKey, visualData);
+	};
 
 	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {
 		try {
@@ -67,7 +109,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						title: t('option_chain.closing_price'),
 						valueFormatter: (
 							<span
-								className={clsx(
+								className={cn(
 									'gap-4 flex-items-center',
 									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
 								)}
@@ -128,44 +170,42 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 		}
 	}, [symbolData]);
 
-	if (!selectedSymbol)
-		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='flex-justify-center'>
-				<NoData text={t('option_chain.select_symbol_from_right_list')} />
-			</Section>
-		);
+	useLayoutEffect(() => {
+		if (!selectedSymbol) return;
 
-	if (isLoading)
-		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<Loading />
-			</Section>
-		);
+		const sub = subscribeSymbolInfo(selectedSymbol, 'symbolData');
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [selectedSymbol]);
+
+	if (!selectedSymbol) return <NoData text={t('option_chain.select_symbol_from_right_list')} />;
+
+	if (isLoading) return <Loading />;
 
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
-			<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative'>
-				<span className='text-gray-900 absolute text-base font-medium center'>
-					{t('option_chain.no_data_found')}
-				</span>
-			</Section>
+			<span className='absolute text-base font-medium text-gray-900 center'>
+				{t('option_chain.no_data_found')}
+			</span>
 		);
 
 	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
 		symbolData;
 
 	return (
-		<Section style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }} className='relative py-12 flex-column'>
+		<>
 			<div className='flex-column'>
 				<div className='justify-between pl-16 pr-24 flex-items-center'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-gray-1000 text-3xl font-medium'>{symbolTitle}</h1>
+						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
 						<span
-							className={clsx(
+							className={cn(
 								'gap-4 flex-items-center',
 								closingPriceVarReferencePrice >= 0 ? 'text-success-100' : 'text-error-100',
 							)}
@@ -182,42 +222,50 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						</span>
 
 						<span
-							className={clsx(
+							className={cn(
 								'flex items-center gap-4 text-4xl font-bold',
 								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
 							)}
 						>
 							{sepNumbers(String(lastTradedPrice))}
-							<span className='text-gray-900 text-base font-normal'>{t('common.rial')}</span>
+							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
 
-						<button type='button' className='text-gray-1000 size-24'>
+						<button type='button' className='size-24 text-gray-1000'>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>
 					</div>
 				</div>
 
-				<h4 className='text-gray-1000 whitespace-nowrap pr-44 text-tiny'>{companyName}</h4>
+				<h4 className='whitespace-nowrap pr-44 text-tiny text-gray-1000'>{companyName}</h4>
 			</div>
 
 			<div className='gap-16 px-24 pb-48 pt-32 flex-justify-between'>
-				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-success-outline' type='button'>
+				<button
+					onClick={() => addBsModal('buy')}
+					className='h-40 flex-1 rounded text-base flex-justify-center btn-success-outline'
+					type='button'
+				>
 					{t('side.buy')}
 				</button>
-				<button className='h-40 flex-1 rounded text-base flex-justify-center btn-error-outline' type='button'>
+				<button
+					onClick={() => addBsModal('sell')}
+					className='h-40 flex-1 rounded text-base flex-justify-center btn-error-outline'
+					type='button'
+				>
 					{t('side.sell')}
 				</button>
 			</div>
 
 			<ul className='flex px-24 flex-column'>
 				{symbolDetails.map(([firstItem, secondItem], i) => (
-					<li key={firstItem.id} className={clsx('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
+					<li key={firstItem.id} className={cn('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
 						<ListItem {...firstItem} />
 						<ListItem {...secondItem} />
 					</li>
 				))}
 			</ul>
-		</Section>
+		</>
 	);
 };
 

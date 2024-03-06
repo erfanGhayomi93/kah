@@ -1,0 +1,152 @@
+.profile {
+	width: 66px;
+	max-width: 66px;
+	height: 66px;
+	max-height: 66px;
+	border: 3px solid transparent;
+	border-radius: 50%;
+	outline: 1px solid rgb(255, 255, 255);
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+	& > li {
+		position: relative;
+
+		a,
+		button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 5.6rem;
+			padding: 0 2.4rem;
+			gap: 0.8rem;
+			width: 100%;
+
+			span {
+				display: none;
+				white-space: nowrap;
+				font-size: 1.4rem;
+				font-weight: 400;
+				color: theme("colors.gray.700");
+				transition: color 250ms ease;
+				-webkit-transition: color 250ms ease;
+				-moz-transition: color 250ms ease;
+			}
+
+			& > svg {
+				color: theme("colors.gray.800");
+				min-width: 1.4rem;
+				max-width: 1.4rem;
+				min-height: 1.4rem;
+				max-height: 1.4rem;
+				transition:
+					color 250ms ease,
+					transform 250ms ease;
+				-webkit-transition:
+					color 250ms ease,
+					transform 250ms ease;
+				-moz-transition:
+					color 250ms ease,
+					transform 250ms ease;
+
+				&:first-child {
+					min-width: 2.4rem;
+					max-width: 2.4rem;
+					min-height: 2.4rem;
+					max-height: 2.4rem;
+				}
+			}
+
+			&:hover {
+				span,
+				svg {
+					color: theme("colors.white");
+				}
+			}
+		}
+
+		ul {
+			padding-right: 2.4rem;
+		}
+	}
+
+	&.expand > li {
+		a,
+		button {
+			justify-content: flex-start;
+
+			span {
+				display: block;
+			}
+		}
+
+		&.expand {
+			padding-bottom: 2.4rem;
+
+			button {
+				span {
+					font-weight: 500;
+					color: theme("colors.white");
+				}
+
+				svg {
+					color: theme("colors.white");
+				}
+			}
+		}
+	}
+
+	&:not(.expand) {
+		& > li {
+			ul {
+				display: none;
+			}
+
+			button {
+				svg:nth-last-child(1) {
+					display: none;
+				}
+			}
+		}
+	}
+
+	li.active {
+		a {
+			span,
+			svg {
+				font-weight: 600;
+				color: theme("colors.secondary.300");
+			}
+		}
+	}
+}
+
+.toggler {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 2.4rem;
+	left: -1.8rem;
+	width: 3.2rem;
+	height: 3.2rem;
+	z-index: 99;
+	border-radius: 50%;
+	border: 2px solid theme("colors.white");
+	background-color: theme("colors.sidebar");
+	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.16);
+	transition: transform 200ms ease-in;
+	-webkit-transition: transform 200ms ease-in;
+
+	&.expand {
+		transform: rotate(180deg);
+	}
+
+	svg {
+		color: theme("colors.white");
+	}
+}

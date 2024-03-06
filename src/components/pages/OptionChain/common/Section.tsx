@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 
 interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
 	children?: React.ReactNode;
@@ -6,7 +6,7 @@ interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Section = ({ children, className, style, ...props }: SectionProps) => (
-	<div style={style} className={clsx('rounded bg-white', className)} {...props}>
+	<div style={style} className={cn(className)} {...props}>
 		{children}
 	</div>
 );

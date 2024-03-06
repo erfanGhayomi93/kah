@@ -1,109 +1,86 @@
-import clsx from 'clsx';
-import React, { cloneElement, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import { cloneElement, forwardRef, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 
 interface MoveableProps {
+	enabled?: boolean;
 	children: React.ReactElement;
-	classes?: Partial<Record<'root', ClassesValue>>;
 }
 
-const Moveable = ({ classes, children }: MoveableProps) => {
-	const containerRef = useRef<HTMLElement | undefined>(undefined);
+const Moveable = forwardRef<HTMLElement, MoveableProps>(({ enabled = true, children }, ref) => {
+	const childRef = useRef<HTMLElement>(null);
 
-	const onModalLoad = (el: HTMLDivElement) => {
-		if (!el) return;
+	useImperativeHandle(ref, () => childRef.current!);
 
+	const onMouseDown = (e: MouseEvent) => {
 		try {
-			containerRef.current = el ?? null;
+			if (e.button !== 0) return;
 
-			const { innerWidth, innerHeight } = window;
-			const { width, height } = el.getBoundingClientRect();
+			try {
+				const tagName = (e.target as HTMLElement).tagName;
+				if (['INPUT', 'BUTTON', 'TEXTAREA', 'LABEL'].includes(tagName)) return;
+			} catch (e) {
+				//
+			}
 
-			const positionX = innerWidth / 2 - width / 2;
-			const positionY = innerHeight / 2 - height / 2;
-
-			el.style.left = `${positionX}px`;
-			el.style.top = `${positionY}px`;
-			el.style.opacity = '1';
-
-			/* Move with header */
-			const moveableElement = el.querySelector('.moveable') as HTMLElement | undefined;
-			if (moveableElement) moveableElement.addEventListener('mousedown', onDragModal);
+			window.addEventListener('mousemove', onMoveModal);
+			window.addEventListener('mouseup', onMouseUp);
 		} catch (e) {
 			//
 		}
-	};
-
-	const onDropModal = () => {
-		try {
-			document.body.style.cursor = 'auto';
-		} catch (e) {
-			//
-		}
-
-		window.removeEventListener('mouseup', onDropModal);
-		window.removeEventListener('mousemove', onMoveModal);
 	};
 
 	const onMoveModal = (e: MouseEvent) => {
-		const modal = containerRef.current;
-		if (!modal) return;
-
 		try {
-			const modalHeaderHeight = 40;
+			const eChild = childRef.current;
+			if (!eChild) return;
 
-			const { clientX, clientY } = e;
-			const { width, height } = modal.getBoundingClientRect();
+			eChild.style.cursor = 'move';
 
-			let positionX = clientX - width / 2;
-			let positionY = clientY - modalHeaderHeight / 2;
+			const { left, top, width, height } = eChild.getBoundingClientRect();
 
-			if (positionX < 0) positionX = 0;
-			else if (positionX > window.innerWidth - width) positionX = window.innerWidth - width;
+			const { innerWidth, innerHeight } = window;
 
-			if (positionY < 0) positionY = 0;
-			else if (positionY > window.innerHeight - height) positionY = window.innerHeight - height;
+			if (e.clientX < 0 || e.clientX > innerWidth) {
+				eChild.style.left = `${e.clientX < 0 ? width / 2 : innerWidth - width / 2}px`;
+				return;
+			}
+			if (e.clientY < 0 || e.clientY > innerHeight) {
+				eChild.style.top = `${e.clientY < 0 ? 0 : innerHeight - height}px`;
+				return;
+			}
 
-			modal.style.left = positionX + 'px';
-			modal.style.top = positionY + 'px';
+			let positionX = left + width / 2 + e.movementX;
+			positionX = Math.max(width / 2, Math.min(positionX, innerWidth - width / 2));
+
+			let positionY = top + e.movementY;
+			positionY = Math.max(0, Math.min(positionY, innerHeight - height));
+
+			eChild.style.left = `${positionX}px`;
+			eChild.style.top = `${positionY}px`;
+			eChild.style.transform = '';
 		} catch (e) {
 			//
 		}
 	};
 
-	const onDragModal = (e: MouseEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
+	const onMouseUp = () => {
+		if (childRef.current) childRef.current.style.cursor = '';
 
-		try {
-			const modal = containerRef.current;
-			if (!modal) return;
-
-			const code = e.button ?? e.which ?? 0;
-			if (code !== 0) return;
-
-			document.body.style.cursor = 'move';
-
-			window.addEventListener('mouseup', onDropModal);
-			window.addEventListener('mousemove', onMoveModal);
-		} catch (e) {
-			document.body.style.cursor = 'auto';
-		}
+		window.removeEventListener('mousemove', onMoveModal);
+		window.removeEventListener('mouseup', onMouseUp);
 	};
 
-	return createPortal(
-		<div
-			ref={onModalLoad}
-			style={{
-				position: 'absolute',
-				zIndex: '9999',
-			}}
-			className={clsx(classes?.root)}
-		>
-			{cloneElement(children, { ref: containerRef })}
-		</div>,
-		document.getElementById('__MODAL') ?? document.body,
-	);
-};
+	useLayoutEffect(() => {
+		const eChild = childRef.current;
+		if (!eChild || !enabled) return;
+
+		eChild.addEventListener('mousedown', onMouseDown);
+
+		return () => {
+			eChild.removeEventListener('mousedown', onMouseDown);
+		};
+	}, [childRef.current, enabled]);
+
+	return cloneElement(children, { ref: childRef });
+});
 
 export default Moveable;

@@ -4,6 +4,11 @@ import LocalstorageInstance from '@/classes/Localstorage';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
+interface IOptionWatchlistTabIdPayload {
+	id: TabState['optionWatchlistTabId'];
+	updateLS: boolean;
+}
+
 export interface TabState {
 	optionWatchlistTabId: number;
 }
@@ -16,9 +21,17 @@ const portfolioSlice = createSlice({
 	name: 'tab',
 	initialState,
 	reducers: {
-		setOptionWatchlistTabId: (state, { payload }: PayloadAction<TabState['optionWatchlistTabId']>) => {
-			LocalstorageInstance.set('awl', payload);
-			state.optionWatchlistTabId = payload;
+		setOptionWatchlistTabId: (
+			state,
+			{ payload }: PayloadAction<IOptionWatchlistTabIdPayload | TabState['optionWatchlistTabId']>,
+		) => {
+			if (typeof payload === 'number') {
+				LocalstorageInstance.set('awl', payload);
+				state.optionWatchlistTabId = payload;
+			} else {
+				if (payload.updateLS) LocalstorageInstance.set('awl', payload);
+				state.optionWatchlistTabId = payload.id;
+			}
 		},
 	},
 });

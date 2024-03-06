@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import brokerSlice from './slices/brokerSlice';
 import modalSlice from './slices/modalSlice';
 import tabSlice from './slices/tabSlice';
 import tableSlice from './slices/tableSlice';
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
 	ui: uiSlice,
 	modal: modalSlice,
 	user: userSlice,
+	broker: brokerSlice,
 	table: tableSlice,
 	tab: tabSlice,
 });

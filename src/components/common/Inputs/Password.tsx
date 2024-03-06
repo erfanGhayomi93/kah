@@ -1,5 +1,5 @@
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Controller, type Control } from 'react-hook-form';
@@ -28,7 +28,7 @@ const Password = ({ control, label, ...props }: PasswordProps) => {
 			render={({ field, fieldState: { invalid, isTouched, error } }) => (
 				<label className='input-box'>
 					<span className='label'>{label}</span>
-					<div className={clsx('!pl-12 flex-items-center input', isTouched && invalid && 'invalid')}>
+					<div className={cn('!pl-12 flex-items-center input', isTouched && invalid && 'invalid')}>
 						<input
 							title={t('inputs.captcha_placeholder')}
 							type={showPassword ? 'text' : 'password'}

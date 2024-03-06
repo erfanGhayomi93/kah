@@ -1,5 +1,7 @@
 export const defaultSymbolISIN = 'IRO1IKCO0001';
 
+export const broadcastChannel = 'tUFN1pQ1Ry';
+
 export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 	{
 		colId: 'symbolTitle',
@@ -140,3 +142,10 @@ export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 		colId: 'action',
 	},
 ];
+
+export const getDateMilliseconds = {
+	Day: 864e5,
+	Week: 6048e5,
+	Month: 2592e6,
+	Year: 31536e6,
+};

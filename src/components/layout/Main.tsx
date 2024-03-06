@@ -4,10 +4,10 @@ const Main = styled.main`
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	padding: 0.8rem 3.2rem 2.4rem 3.2rem;
+	padding: 0.8rem 2.4rem 0.8rem 2.4rem;
 	overflow: auto;
-	min-height: calc(100vh - 10.4rem);
-	max-height: calc(100vh - 10.4rem);
+	min-height: calc(100dvh - 8.8rem);
+	max-height: calc(100dvh - 8.8rem);
 `;
 
 export default Main;

@@ -1,5 +1,13 @@
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
+declare type TBsSides = 'buy' | 'sell';
+
+declare type TBsCollaterals = 'cash' | 'stock';
+
+declare type TBsSymbolTypes = 'base' | 'option';
+
+declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'
@@ -14,12 +22,31 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
+declare interface IBaseModalConfiguration {
+	moveable?: boolean;
+	animation?: boolean;
+}
+
 declare interface SymbolContractModalStates {
 	term: string;
 	contract: null | Option.Root;
 	contractType: Record<'id' | 'title', string>;
 	activeSettlement: Option.BaseSettlementDays | null;
 }
+
+declare type IBrokerUrls = Record<
+	| 'todayOrders'
+	| 'todayTrades'
+	| 'drafts'
+	| 'createOrder'
+	| 'ordersCount'
+	| 'openOrders'
+	| 'commission'
+	| 'userInformation'
+	| 'userRemain'
+	| 'userStatus',
+	string
+>;
 
 declare type TOptionWatchlistColumnsState = Array<{
 	colId: OptionWatchlistColumns;
@@ -35,3 +62,42 @@ declare type TOptionWatchlistColumnsState = Array<{
 	pivotIndex?: null;
 	flex?: number;
 }>;
+
+declare interface IBsModalInputs {
+	collateral: TBsCollaterals | null;
+	validityDate: TBsValidityDates;
+	price: number;
+	quantity: number;
+	side: TBsSides;
+	priceLock: boolean;
+	expand: boolean;
+	holdAfterOrder: boolean;
+}
+
+declare type TSetBsModalInputs = <
+	T extends
+		| Partial<IBsModalInputs>
+		| keyof Partial<IBsModalInputs>
+		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+>(
+	options: T,
+	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
+) => void;
+
+declare interface IBlackScholesModalStates {
+	baseSymbol: Option.BaseSearch | null;
+	contractEndDate: Option.BaseSettlementDays | null;
+	contract: {
+		baseSymbolPrice: number;
+		strikePrice: number;
+		contractEndDate: number;
+		historicalVolatility: number;
+		premium: number;
+	} | null;
+	sharePrice: number;
+	strikePrice: number;
+	dueDays: number;
+	volatility: string;
+	riskFreeProfit: string;
+	premium: number;
+}

@@ -5,8 +5,7 @@
 }
 
 .root {
-	border: 1px solid theme("colors.gray.500");
-	border-radius: 8px;
+	position: relative;
 	height: 4rem;
 	flex: 1;
 	display: flex;
@@ -35,7 +34,7 @@
 .blankList {
 	border-radius: 8px;
 	position: relative;
-	border: 1px solid theme("colors.gray.500");
+	border: 1px solid theme("colors.input");
 	background-color: theme("colors.white");
 	box-shadow: theme("boxShadow.tooltip");
 	z-index: 99;

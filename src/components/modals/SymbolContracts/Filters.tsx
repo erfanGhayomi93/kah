@@ -1,4 +1,4 @@
-import Select from '@/components/common/Select';
+import Select from '@/components/common/Inputs/Select';
 import { SearchSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
@@ -35,7 +35,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 
 	return (
 		<div className='gap-16 flex-column'>
-			<div className='relative h-72 border-b border-gray-500 flex-justify-center'>
+			<div className='relative h-56 bg-gray-200 flex-justify-center'>
 				<h2 className='text-xl font-medium text-gray-1000'>
 					{t('symbol_contracts_modal.title', { symbolTitle })}
 				</h2>
@@ -46,14 +46,14 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 					type='button'
 					className='absolute top-1/2 -translate-y-1/2 transform p-8 icon-hover'
 				>
-					<XSVG width='1.6rem' height='1.6rem' />
+					<XSVG width='2rem' height='2rem' />
 				</button>
 			</div>
 
 			<div className='h-40 px-32 flex-justify-between'>
 				<label
-					style={{ maxWidth: '36rem' }}
-					className='input-group h-40 flex-1 rounded border border-gray-500 flex-items-center'
+					style={{ maxWidth: '30rem' }}
+					className='h-40 flex-1 rounded border border-input flex-items-center input-group'
 				>
 					<div className='px-8 text-gray-800'>
 						<SearchSVG width='2rem' height='2rem' />
@@ -75,10 +75,12 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 						{t('symbol_contracts_modal.search_contract')}:
 					</span>
 
-					<Select
+					<Select<typeof contractType>
 						value={contractType}
 						options={contractTypes}
 						onChange={(option) => setStatesValue('contractType', option as Record<'id' | 'title', string>)}
+						getOptionId={(option) => option.id}
+						getOptionTitle={(option) => option.title}
 					/>
 				</div>
 			</div>

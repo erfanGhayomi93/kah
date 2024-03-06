@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
@@ -110,10 +110,10 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 						},
 					}}
 					render={({ field, fieldState: { invalid, isTouched, error } }) => (
-						<label className={clsx('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
+						<label className={cn('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
 							<span className='label'>{t('inputs.otp_mobile_number', { mobile: phoneNumber })}</span>
 
-							<div className={clsx('flex-items-center input', isTouched && invalid && 'invalid')}>
+							<div className={cn('flex-items-center input', isTouched && invalid && 'invalid')}>
 								<input
 									title={t('inputs.otp_placeholder')}
 									type='text'
@@ -126,7 +126,7 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 									{...field}
 								/>
 								<div
-									className={clsx(
+									className={cn(
 										'prefix',
 										typeof seconds === 'number' && seconds <= 0
 											? 'text-error-100'
@@ -136,7 +136,7 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 									{seconds ? (
 										<Countdown onFinished={onFinishedCountdown} seconds={seconds} />
 									) : (
-										<div className='spinner size-24' />
+										<div className='size-24 spinner' />
 									)}
 								</div>
 							</div>

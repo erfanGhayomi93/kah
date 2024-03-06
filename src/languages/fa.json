@@ -8,12 +8,16 @@
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
 		"delete": "حذف",
+		"app_user": "کاربر کهکشان",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
 		"to": "تا",
 		"close": "بستن",
+		"no_symbol_found": "نماد مورد نظر یافت نشد",
+		"no_data": "اطلاعات مورد نظر یافت نشد",
 		"searching": "در حال جستجو",
+		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
 		"an_error_occurred": "خطا در دریافت اطلاعات"
 	},
 	"side": {
@@ -22,12 +26,16 @@
 	},
 	"header": {
 		"login": "ورود",
-		"app_user": "کاربر کهکشان",
+		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
 		"setting": "تنظیمات",
+		"status": "وضعیت",
+		"user_status_Normal": "عادی",
+		"user_status_AtRisk": "در خطر",
+		"user_status_CallMargin": "اخطار وجه تضمین",
 		"logout": "خروج از حساب کاربری"
 	},
 	"header_navigation": {
@@ -50,6 +58,7 @@
 	},
 	"manage_option_watchlist_modal": {
 		"title": "مدیریت دیده‌بان",
+		"delete_all": "حذف همه",
 		"watchlist_count": "{count} دیده‌بان",
 		"create_new_watchlist": "دیده‌بان جدید",
 		"new_watchlist_name": "نام جدید دیده‌بان"
@@ -84,8 +93,7 @@
 		"password_min_chars": "حداقل 8 کاراکتر",
 		"password_include_uppercase_chars": "شامل حروف بزرگ",
 		"password_english_include_number": "شامل عدد",
-		"go_to_homepage": "برو به کهکشان",
-		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت."
+		"go_to_homepage": "برو به کهکشان"
 	},
 	"option_watchlist_filters_modal": {
 		"title": "فیلترها",
@@ -102,6 +110,60 @@
 		"minimum_trades_value": "حداقل ارزش معاملات",
 		"symbol_not_found": "نماد مورد نظر یافت نشد",
 		"delete_selected_symbols": "حذف همه"
+	},
+	"choose_broker_modal": {
+		"title": "انتخاب کارگزاری",
+		"login": "ورود",
+		"description": "برای معامله در کهکشان، یکی از کارگزاری های زیر را انتخاب کنید."
+	},
+	"add_symbol_to_watchlist": {
+		"title": "جستجوی نماد"
+	},
+	"bs_modal": {
+		"title": "سفارش {symbolTitle}",
+		"validity_date": "اعتبار سفارش",
+		"day": "روز",
+		"hold_form": "نگهداری فرم سفارش",
+		"normal_trade": "معامله ساده",
+		"strategy": "استراتژی",
+		"quantity_label": "تعداد",
+		"price_label": "قیمت",
+		"asset_value": "{v} دارایی",
+		"purchase_power_value": "{v} قدرت خرید",
+		"trade_value_label": "ارزش معامله",
+		"total_amount": "مبلغ کل سفارش",
+		"stock_collateral": "وثیقه با سهم",
+		"cash_collateral": "وثیقه با وجه‌نقد",
+		"validity_date_day": "یک روز",
+		"validity_date_week": "یک هفته",
+		"validity_date_month": "یک ماه",
+		"validity_date_good_till_date": "انتخاب تاریخ",
+		"validity_date_good_till_cancelled": "لغو دستی",
+		"validity_date_fill_and_kill": "انجام و حذف",
+		"draft": "پیش‌نویس"
+	},
+	"black_scholes_modal": {
+		"title": "ماشین حساب آپشن",
+		"base_symbol": "نماد پایه",
+		"contract_end_date": "تاریخ سررسید",
+		"contract": "قرارداد",
+		"search_basis": "جستجو بر اساس",
+		"symbol_contract": "نماد قرارداد",
+		"share_price_placeholder": "قیمت دارایی پایه",
+		"strike_price_placeholder": "قیمت اعمال <chunk>(Strike)</chunk>",
+		"due_days_remaining": "مانده تا سررسید",
+		"volatility_placeholder": "نوسان <chunk>(Volatility)</chunk>",
+		"risk_free_profit": "سود بدون ریسک",
+		"premium_placeholder": "قیمت قرارداد <chunk>(Premium)</chunk>",
+		"theoretical_price": "قیمت تئوری",
+		"no_contract_found": "قرارداد مورد نظر یافت نشد",
+		"day": "روز",
+		"delta": "دلتا",
+		"gamma": "گاما",
+		"vega": "وگا",
+		"theta": "تتا",
+		"rho": "رو",
+		"implied_volatility": "نوسان پذیری ضمنی"
 	},
 	"manage_option_watchlist_columns": {
 		"title": "مدیریت ستون های جدول",
@@ -159,8 +221,7 @@
 	"option_chain": {
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
 		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
-		"symbol_search_placeholder": "نماد مورد نظر خود را جستجو کنید",
-		"no_symbol_found": "نمادی برای نمایش یافت نشد",
+		"symbol_search_placeholder": "جستجو نماد",
 		"no_data_found": "اطلاعاتی برای نمایش یافت نشد",
 		"closing_price": "قیمت پایانی",
 		"trade_volume": "حجم معاملات ",
@@ -218,9 +279,6 @@
 		"tab_computing_information": "اطلاعات محاسباتی",
 		"tab_open_position": "پوزیشن باز"
 	},
-	"alerts": {
-		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید."
-	},
 	"i_errors": {
 		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
 		"too_many_request": "درخواست بیش از حد مجاز است. لطفا دقایقی دیگر مجددا امتحان کنید.",
@@ -246,15 +304,79 @@
 		"otp_placeholder": "کد تایید"
 	},
 	"symbol_search": {
-		"input_placeholder": "نماد مورد نظر خود را جستجو کنید",
-		"no_symbol_found": "نماد مورد نظر یافت نشد",
-		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید"
+		"input_placeholder": "جستجو نماد"
+	},
+	"sidebar": {
+		"account": "پروفایل",
+		"home_page": "صفحه اصلی",
+		"my_assets": "دارایی من",
+		"market": "بازار",
+		"watchlist": "دیده‌بان",
+		"option_chain": "زنجیره قرارداد",
+		"saturn": "زحل",
+		"market_map": "نقشه بازار",
+		"strategy": "استراتژی",
+		"technical": "تکنیکال",
+		"requests": "درخواست‌ها",
+		"reports": "گزارش‌ها",
+		"deposit_and_withdrawal": "واریز و برداشت",
+		"change_broker": "تغییر کارگزار ناظر",
+		"un_freezing": "فریز و رفع‌فریز",
+		"option_settlement": "تسویه اختیار",
+		"learn": "آموزش"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
 		"filter": "فیلتر کنید",
 		"market_overview": "نمای بازار",
-		"no_data_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید."
+		"add_symbol": "افزودن نماد",
+		"no_data_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید.",
+		"symbol_title": "نماد",
+		"trade_value": "ارزش معاملات",
+		"premium": "آخرین قیمت",
+		"delta": "دلتا",
+		"base_symbol_price": "آخرین قیمت پایه",
+		"break_even_point": "سر به سر",
+		"leverage": "اهرم",
+		"open_position_count": "موقعیت‌های باز",
+		"implied_volatility": "IV",
+		"iotm": "وضعیت",
+		"black_scholes": "بلک شولز",
+		"trade_volume": "حجم",
+		"due_days": "روز مانده",
+		"strike_price": "قیمت اعمال",
+		"best_buy_price": "بهترین خرید",
+		"best_sell_price": "بهترین فروش",
+		"symbol_full_title": "نام کامل آپشن",
+		"base_symbol_title": "نام پایه",
+		"closing_price": "قیمت پایانی",
+		"historical_volatility": "نوسان پذیری",
+		"contract_size": "اندازه قرارداد",
+		"time_value": "ارزش زمانی",
+		"theta": "تتا",
+		"trade_count": "تعداد معاملات روز",
+		"contract_end_date": "تاریخ سررسید",
+		"spread": "شکاف",
+		"black_scholes_difference": "اختلاف با بلک شولز",
+		"base_closing_price": "قیمت پایانی پایه",
+		"gamma": "گاما",
+		"option_type": "نوع آپشن",
+		"required_margin": "وجه تضمین لازم",
+		"initial_margin": "وجه تضمین اولیه",
+		"rho": "رو",
+		"vega": "وگا",
+		"growth": "رشد",
+		"contract_value_type": "پر ارزش",
+		"high_open_position": "موقعیت‌های باز زیاد",
+		"last_trade_date": "تاریخ آخرین معامله",
+		"legal_buy_volume": "حجم خرید حقوقی",
+		"individual_buy_volume": "حجم خرید حقیقی",
+		"legalSell_volume": "حجم فروش حقوقی",
+		"individual_sell_volume": "حجم فروش حقیقی",
+		"sector_name": "صنعت",
+		"notional_value": "ارزش مفهومی معاملات",
+		"intrinsic_value": "ارزش ذاتی",
+		"action": "عملیات"
 	},
 	"footer": {
 		"copyright": "© کلیه حقوق این وب سایت متعلق به رامند می باشد."
@@ -263,5 +385,19 @@
 		"prev_page": "صفحه قبل",
 		"next_page": "صفحه بعد",
 		"page_size": "نمایش {size} از {total}"
+	},
+	"alerts": {
+		"ordered_successfully": "سفارش شما با موفقیت ثبت شد.",
+		"ordered_unsuccessfully": "ارسال خطا با مشکل مواجه شد.",
+		"login_to_your_account": "ابتدا وارد حساب خود شوید",
+		"broker_error": "خطا در ارتباط با کارگزاری",
+		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید.",
+		"logged_in_successfully_to_broker_account": "با موفقیت وارد حساب کارگزاری خود شدید.",
+		"invalid_price": "قیمت وارد نشده است.",
+		"invalid_quantity": "تعداد وارد نشده است.",
+		"invalid_validity_date": "اعتبار سفارش نامعتبر می‌باشد.",
+		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
+		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت.",
+		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید."
 	}
 }

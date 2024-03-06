@@ -1,8 +1,8 @@
-import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
+import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
+import Select from '@/components/common/Inputs/Select';
 import Loading from '@/components/common/Loading';
-import Select, { type TSelectOptions } from '@/components/common/Select';
 import { SearchSVG } from '@/components/icons';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -28,6 +28,11 @@ const Symbol = styled.button`
 		width: 8rem;
 	}
 `;
+
+interface TSelectOptions {
+	id: string | number;
+	title: string | React.ReactNode;
+}
 
 interface SelectSymbolProps {
 	selectedSymbol: null | string;
@@ -59,9 +64,9 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 
 	const [sorting, setSorting] = useState<TSelectOptions>(sortingOptions[0]);
 
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
+	const { data: symbolsData, isFetching } = useOptionBaseSymbolSearchQuery({
 		queryKey: [
-			'optionSymbolSearchQuery',
+			'optionBaseSymbolSearchQuery',
 			{ term: symbolTerm, orderBy: String(sorting.id) as 'MaximumValue' | 'ClosestSettlement' | 'Alphabet' },
 		],
 	});
@@ -76,7 +81,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 		if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 			return (
 				<span className='absolute text-base font-medium text-gray-900 center'>
-					{t('option_chain.no_symbol_found')}
+					{t('common.no_symbol_found')}
 				</span>
 			);
 
@@ -85,7 +90,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 				{symbolsData.map((symbol) => (
 					<li key={symbol.symbolISIN}>
 						<Symbol
-							className={clsx(
+							className={cn(
 								'border transition-colors',
 								symbol.symbolISIN === selectedSymbol
 									? 'border-primary-400 bg-primary-400 text-white hover:bg-primary-300'
@@ -105,38 +110,46 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 	}, [symbolsData, isFetching, selectedSymbol]);
 
 	return (
-		<div className='flex-1 gap-24 rounded bg-white p-16 flex-column'>
+		<>
 			<div className='gap-24 flex-justify-between'>
 				<label
-					style={{ maxWidth: '40rem' }}
-					className='input-group h-40 flex-1 rounded border border-gray-500 flex-items-center'
+					style={{ maxWidth: '30rem' }}
+					className='relative h-40 flex-1 rounded border border-input flex-items-center input-group'
 				>
 					<div className='px-8 text-gray-900'>
 						<SearchSVG width='2rem' height='2rem' />
 					</div>
 
 					<input
-						autoFocus
 						type='text'
 						inputMode='search'
 						className='h-full flex-1 border-none bg-transparent'
 						maxLength={24}
-						placeholder={t('option_chain.symbol_search_placeholder')}
 						value={symbolTerm}
 						onChange={(e) => setSymbolTerm(e.target.value)}
 					/>
+
+					<span style={{ right: '3.6rem' }} className={cn('flexible-placeholder', symbolTerm && 'active')}>
+						{t('option_chain.symbol_search_placeholder')}
+					</span>
 				</label>
 
 				<div className='gap-8 flex-items-center'>
 					<span className='text-base text-gray-900'>{t('option_chain.sort_based_on')}:</span>
 					<div style={{ width: '17.6rem' }} className='flex flex-1 justify-end'>
-						<Select value={sorting} options={sortingOptions} onChange={onChangeSorting} />
+						<Select<TSelectOptions>
+							value={sorting}
+							options={sortingOptions}
+							onChange={onChangeSorting}
+							getOptionId={(option) => option.id}
+							getOptionTitle={(option) => option.title}
+						/>
 					</div>
 				</div>
 			</div>
 
 			<div className='relative h-full'>{symbols}</div>
-		</div>
+		</>
 	);
 };
 

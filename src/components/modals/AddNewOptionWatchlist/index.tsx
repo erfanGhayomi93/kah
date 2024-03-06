@@ -19,7 +19,9 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-const AddNewOptionWatchlist = () => {
+interface AddNewOptionWatchlistProps extends IBaseModalConfiguration {}
+
+const AddNewOptionWatchlist = (props: AddNewOptionWatchlistProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -33,7 +35,7 @@ const AddNewOptionWatchlist = () => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleAddNewOptionWatchlist(false));
+		dispatch(toggleAddNewOptionWatchlist(null));
 	};
 
 	const onSubmit = async (e: React.FormEvent) => {
@@ -60,7 +62,13 @@ const AddNewOptionWatchlist = () => {
 	};
 
 	return (
-		<Modal transparent style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal}>
+		<Modal
+			transparent
+			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			top='50%'
+			onClose={onCloseModal}
+			{...props}
+		>
 			<Div className='bg-white'>
 				<h2 className='text-xl font-medium text-gray-1000'>{t('add_new_option_watchlist_modal.title')}</h2>
 
@@ -75,7 +83,7 @@ const AddNewOptionWatchlist = () => {
 							maxLength={36}
 							value={name}
 							placeholder={t('add_new_option_watchlist_modal.input_placeholder')}
-							className='h-40 w-full rounded border border-gray-500 px-16 text-base'
+							className='h-40 w-full rounded border border-input px-16 text-base'
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</label>

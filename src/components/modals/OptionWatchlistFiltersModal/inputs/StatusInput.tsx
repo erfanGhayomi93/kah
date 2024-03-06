@@ -1,5 +1,5 @@
 import { ChartDownSVG, ChartUpSVG } from '@/components/icons';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
 interface StatusInputProps {
@@ -26,7 +26,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 			<button
 				type='button'
 				onClick={() => onChangeValue('ATM')}
-				className={clsx(
+				className={cn(
 					isATM
 						? 'border-secondary-300 bg-secondary-300 text-white hover:border-secondary-300/10 hover:bg-secondary-300/80'
 						: 'border-2 border-secondary-300 text-secondary-300 hover:bg-secondary-300 hover:text-white',
@@ -38,7 +38,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 			<button
 				type='button'
 				onClick={() => onChangeValue('OTM')}
-				className={clsx(
+				className={cn(
 					isOTM
 						? 'border-error-100 bg-error-100 text-white hover:border-error-100/10 hover:bg-error-100/80'
 						: 'border-2 border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
@@ -50,7 +50,7 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 			<button
 				type='button'
 				onClick={() => onChangeValue('ITM')}
-				className={clsx(
+				className={cn(
 					isITM
 						? 'border-success-100 bg-success-100 text-white hover:border-success-100/10 hover:bg-success-100/80'
 						: 'border-2 border-success-100 text-success-100 hover:bg-success-100 hover:text-white',

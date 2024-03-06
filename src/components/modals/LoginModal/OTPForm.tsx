@@ -3,7 +3,7 @@ import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
 import { setClientId } from '@/utils/cookie';
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
@@ -148,10 +148,10 @@ const OTPForm = ({
 						},
 					}}
 					render={({ field, fieldState: { invalid, isTouched, error } }) => (
-						<label className={clsx('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
+						<label className={cn('input-box', !((isTouched && invalid) || seconds === -1) && 'pb-8')}>
 							<span className='label'>{t('inputs.otp_mobile_number', { mobile: phoneNumber })}</span>
 
-							<div className={clsx('flex-items-center input', isTouched && invalid && 'invalid')}>
+							<div className={cn('flex-items-center input', isTouched && invalid && 'invalid')}>
 								<input
 									title={t('inputs.otp_placeholder')}
 									type='text'
@@ -164,7 +164,7 @@ const OTPForm = ({
 									{...field}
 								/>
 								<div
-									className={clsx(
+									className={cn(
 										'prefix',
 										typeof seconds === 'number' && seconds <= 0
 											? 'text-error-100'
@@ -174,7 +174,7 @@ const OTPForm = ({
 									{seconds !== null ? (
 										<Countdown onFinished={onFinishedCountdown} seconds={seconds} />
 									) : (
-										<div className='spinner size-24' />
+										<div className='size-24 spinner' />
 									)}
 								</div>
 							</div>

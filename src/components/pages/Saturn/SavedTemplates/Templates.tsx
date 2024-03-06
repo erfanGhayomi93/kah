@@ -1,7 +1,6 @@
 import axios from '@/api/axios';
 import { useAllSavedTemplatesQuery } from '@/api/queries/saturnQueries';
 import routes from '@/api/routes';
-import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
@@ -71,15 +70,7 @@ const Templates = () => {
 	};
 
 	const onSelect = async (item: Saturn.Template) => {
-		try {
-			dispatch(setSaturnActiveTemplate(item));
-			if (item.content) {
-				const contracts = JSON.parse(item.content) as Saturn.Content;
-				if (Array.isArray(contracts) && contracts.length > 0) ipcMain.send('saturn_contract_added', contracts);
-			}
-		} catch (e) {
-			//
-		}
+		dispatch(setSaturnActiveTemplate(item));
 
 		try {
 			await axios.post<ServerResponse<Symbol.Info>>(routes.saturn.SetActive, {

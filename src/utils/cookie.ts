@@ -1,3 +1,5 @@
+import { base64decode, base64encode } from './helpers';
+
 interface ICookieOptions {
 	secure?: boolean;
 	sameSite?: 'Lax' | 'Strict' | 'None';
@@ -45,7 +47,31 @@ export const deleteCookie = (name: string) => {
 // Client ID
 export const getClientId = () => getCookie('kahkeshan_client_id');
 
-export const setClientId = (value: string, options?: ICookieOptions) =>
-	setCookie('kahkeshan_client_id', value, { maxAgeInSeconds: 86400 });
+export const setClientId = (value: string) => setCookie('kahkeshan_client_id', value, { maxAgeInSeconds: 86400 });
 
 export const deleteClientId = () => deleteCookie('kahkeshan_client_id');
+
+// Broker Client ID
+export const getBrokerClientId = (): [string | null, number | null] => {
+	try {
+		const clientId = getCookie('br_client_id');
+
+		if (clientId) {
+			const decodedClientId = base64decode(clientId);
+
+			if (decodedClientId) {
+				const [token, brokerCode] = decodedClientId.split('^');
+				return [token ?? '', isNaN(Number(brokerCode)) ? -1 : Number(brokerCode)];
+			}
+		}
+	} catch (e) {
+		deleteBrokerClientId();
+	}
+
+	return [null, null];
+};
+
+export const setBrokerClientId = (value: string) =>
+	setCookie('br_client_id', base64encode(value), { maxAgeInSeconds: 86400 });
+
+export const deleteBrokerClientId = () => deleteCookie('br_client_id');

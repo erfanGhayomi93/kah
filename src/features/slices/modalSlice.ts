@@ -4,36 +4,64 @@ import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
-export interface IForgetPasswordModal {
+type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IBaseModalConfiguration);
+
+type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
+
+export interface IBlackScholes extends IBaseModalConfiguration {
+	symbolISIN?: string;
+}
+
+export interface IBuySellModal extends IBaseModalConfiguration {
+	symbolTitle: string;
+	symbolISIN: string;
+	symbolType: TBsSymbolTypes;
+	validityDate?: TBsValidityDates;
+	side: TBsSides;
+	collateral?: TBsCollaterals;
+	expand?: boolean;
+	priceLock?: boolean;
+	holdAfterOrder?: boolean;
+}
+
+export interface IForgetPasswordModal extends IBaseModalConfiguration {
 	phoneNumber?: string;
 }
 
-export interface IContractSelectorModal {
+export interface IContractSelectorModal extends IBaseModalConfiguration {
 	symbolTitle: string;
 	symbolISIN: string;
 }
 
-export interface ISaveSaturnTemplate extends Saturn.Content {}
+export interface IAddSaturnTemplate extends Saturn.Content {}
 
-export interface ModalState {
-	loginModal: boolean;
-	logout: boolean;
-	addNewOptionWatchlist: boolean;
-	manageOptionWatchlistList: boolean;
-	saveSaturnTemplate: ISaveSaturnTemplate | null;
-	symbolContracts: IContractSelectorModal | null;
-	forgetPassword: IForgetPasswordModal | true | null;
-	optionFilters: false | Partial<IOptionFiltersModal>;
-}
+export type ModalState = TBaseModalProps<{
+	loginModal: true;
+	logout: true;
+	chooseBroker: true;
+	blackScholes: IBlackScholes;
+	buySell: IBuySellModal;
+	addNewOptionWatchlist: true;
+	manageOptionWatchlistList: true;
+	addSymbolToWatchlist: true;
+	addSaturnTemplate: IAddSaturnTemplate;
+	symbolContracts: IContractSelectorModal;
+	forgetPassword: IForgetPasswordModal;
+	optionFilters: Partial<IOptionFiltersModal>;
+}>;
 
 const initialState: ModalState = {
-	loginModal: false,
+	loginModal: null,
+	optionFilters: null,
+	logout: null,
+	blackScholes: null,
+	addSymbolToWatchlist: null,
+	addNewOptionWatchlist: null,
+	manageOptionWatchlistList: null,
+	chooseBroker: null,
 	forgetPassword: null,
-	optionFilters: false,
-	logout: false,
-	addNewOptionWatchlist: false,
-	manageOptionWatchlistList: false,
-	saveSaturnTemplate: null,
+	buySell: null,
+	addSaturnTemplate: null,
 	symbolContracts: null,
 };
 
@@ -41,6 +69,10 @@ const modalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
+		toggleBuySellModal: (state, { payload }: PayloadAction<ModalState['buySell']>) => {
+			state.buySell = payload;
+		},
+
 		toggleLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
 			state.loginModal = payload;
 		},
@@ -61,15 +93,27 @@ const modalSlice = createSlice({
 			state.symbolContracts = payload;
 		},
 
-		toggleSaveSaturnTemplate: (state, { payload }: PayloadAction<ModalState['saveSaturnTemplate']>) => {
-			state.saveSaturnTemplate = payload;
+		toggleSaveSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
+			state.addSaturnTemplate = payload;
 		},
 
 		toggleAddNewOptionWatchlist: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
 			state.addNewOptionWatchlist = payload;
 		},
 
-		toggleManageOptionWatchlistList: (
+		toggleAddSymbolToWatchlistModal: (state, { payload }: PayloadAction<ModalState['addSymbolToWatchlist']>) => {
+			state.addSymbolToWatchlist = payload;
+		},
+
+		toggleChooseBrokerModal: (state, { payload }: PayloadAction<ModalState['chooseBroker']>) => {
+			state.chooseBroker = payload;
+		},
+
+		toggleBlackScholesModal: (state, { payload }: PayloadAction<ModalState['blackScholes']>) => {
+			state.blackScholes = payload;
+		},
+
+		toggleManageOptionWatchlistListModal: (
 			state,
 			{ payload }: PayloadAction<ModalState['manageOptionWatchlistList']>,
 		) => {
@@ -80,22 +124,30 @@ const modalSlice = createSlice({
 
 export const {
 	toggleLoginModal,
+	toggleBuySellModal,
 	toggleForgetPasswordModal,
 	toggleOptionFiltersModal,
 	toggleLogoutModal,
+	toggleBlackScholesModal,
 	toggleSymbolContractsModal,
 	toggleSaveSaturnTemplate,
 	toggleAddNewOptionWatchlist,
-	toggleManageOptionWatchlistList,
+	toggleChooseBrokerModal,
+	toggleAddSymbolToWatchlistModal,
+	toggleManageOptionWatchlistListModal,
 } = modalSlice.actions;
 
+export const getChooseBroker = (state: RootState) => state.modal.chooseBroker;
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getLogoutModal = (state: RootState) => state.modal.logout;
+export const getBuySellModal = (state: RootState) => state.modal.buySell;
+export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
 export const getSymbolContractsModal = (state: RootState) => state.modal.symbolContracts;
-export const getSaveSaturnTemplate = (state: RootState) => state.modal.saveSaturnTemplate;
+export const getAddSaturnTemplate = (state: RootState) => state.modal.addSaturnTemplate;
 export const getAddNewOptionWatchlist = (state: RootState) => state.modal.addNewOptionWatchlist;
 export const getManageOptionWatchlistList = (state: RootState) => state.modal.manageOptionWatchlistList;
+export const getAddSymbolToWatchlist = (state: RootState) => state.modal.addSymbolToWatchlist;
 
 export default modalSlice.reducer;

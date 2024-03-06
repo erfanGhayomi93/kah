@@ -1,5 +1,6 @@
 'use client';
 
+import { useActiveTemplateQuery } from '@/api/queries/saturnQueries';
 import { symbolInfoQueryFn, useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
@@ -8,15 +9,23 @@ import Main from '@/components/layout/Main';
 import { defaultSymbolISIN } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleSaveSaturnTemplate } from '@/features/slices/modalSlice';
-import { getSaturnActiveTemplate } from '@/features/slices/uiSlice';
+import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
 import { openNewTab } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
-import SymbolContracts from './SymbolContracts/SymbolContracts';
-import SymbolInfo from './SymbolInfo';
 import Toolbar from './Toolbar';
+
+const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
+	ssr: false,
+});
+
+const SymbolInfo = dynamic(() => import('./SymbolInfo'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 const Saturn = () => {
 	const t = useTranslations();
@@ -42,8 +51,12 @@ const Saturn = () => {
 		searchParams.get('symbolISIN') ?? LocalstorageInstance.get('selected_symbol', defaultSymbolISIN),
 	);
 
-	const { data: baseSymbolInfo, isFetching } = useSymbolInfoQuery({
+	const { data: baseSymbolInfo, isFetching: isFetchingBaseSymbolInfo } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', typeof selectedSymbol === 'string' ? selectedSymbol : defaultSymbolISIN],
+	});
+
+	const { data: activeTemplate, isFetching: isFetchingActiveTemplate } = useActiveTemplateQuery({
+		queryKey: ['useActiveTemplate'],
 	});
 
 	const onContractAdded = (data: Array<{ symbolISIN: string; symbolTitle: string; activeTab: Saturn.OptionTab }>) => {
@@ -86,15 +99,16 @@ const Saturn = () => {
 				};
 
 				const blankContract = contracts.findIndex((con) => con === null);
+
 				if (blankContract > -1) {
 					contracts[blankContract] = option;
 					setBaseSymbolContracts(contracts);
 				} else {
 					if (symbolISIN) openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
 				}
+			} else {
+				if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
 			}
-
-			if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
 		} catch (e) {
 			//
 		}
@@ -163,8 +177,11 @@ const Saturn = () => {
 			const { baseSymbolISIN, options } = JSON.parse(saturnActiveTemplate.content) as Saturn.Content;
 
 			setSelectedSymbol(baseSymbolISIN);
-			if (Array.isArray(options) && options.length > 0) setBaseSymbolContracts(options);
-			else setBaseSymbolContracts([null, null, null, null]);
+			if (Array.isArray(options) && options.length > 0) {
+				setBaseSymbolContracts([...options, ...Array(4 - options.length).fill(null)]);
+			} else {
+				setBaseSymbolContracts([null, null, null, null]);
+			}
 		} catch (e) {
 			//
 		}
@@ -172,10 +189,7 @@ const Saturn = () => {
 
 	useLayoutEffect(() => {
 		try {
-			ipcMain.handle<Array<{ symbolISIN: string; symbolTitle: string; activeTab: Saturn.OptionTab }>>(
-				'saturn_contract_added',
-				onContractAdded,
-			);
+			ipcMain.handle('saturn_contract_added', onContractAdded);
 
 			return () => {
 				ipcMain.removeHandler('saturn_contract_added', onContractAdded);
@@ -185,7 +199,12 @@ const Saturn = () => {
 		}
 	}, [baseSymbolContracts]);
 
-	if (!baseSymbolInfo && isFetching) {
+	useLayoutEffect(() => {
+		if (!activeTemplate) return;
+		dispatch(setSaturnActiveTemplate(activeTemplate));
+	}, [activeTemplate]);
+
+	if (isFetchingBaseSymbolInfo || isFetchingActiveTemplate) {
 		return (
 			<Main>
 				<Loading />
@@ -193,29 +212,41 @@ const Saturn = () => {
 		);
 	}
 
-	if (!baseSymbolInfo)
-		return (
-			<Main>
+	return (
+		<Main className='gap-8 !px-8'>
+			<Toolbar setSymbol={onChangeSymbol} saveTemplate={saveTemplate} />
+
+			{baseSymbolInfo ? (
+				<div className='flex flex-1 gap-8'>
+					<div
+						style={{
+							flex: '5',
+							height: 'calc(100dvh - 16.8rem)',
+							top: '3.2rem',
+						}}
+						className='sticky w-full flex-1 gap-48 rounded border border-gray-500 bg-white px-16 pb-16 pt-8 flex-column'
+					>
+						<SymbolInfo
+							symbol={baseSymbolInfo}
+							activeTab={baseSymbolActiveTab}
+							setActiveTab={(tabId) => setBaseSymbolActiveTab(tabId)}
+						/>
+					</div>
+
+					<div style={{ flex: '7' }} className='gap-8 flex-column'>
+						<SymbolContracts
+							baseSymbol={baseSymbolInfo}
+							setBaseSymbol={(value) => setSelectedSymbol(value)}
+							baseSymbolContracts={baseSymbolContracts}
+							setBaseSymbolContracts={(value) => setBaseSymbolContracts(value)}
+						/>
+					</div>
+				</div>
+			) : (
 				<span className='absolute text-base font-medium text-gray-900 center'>
 					{t('common.an_error_occurred')}
 				</span>
-			</Main>
-		);
-
-	return (
-		<Main className='gap-8'>
-			<Toolbar setSymbol={onChangeSymbol} saveTemplate={saveTemplate} />
-			<SymbolInfo
-				symbol={baseSymbolInfo}
-				activeTab={baseSymbolActiveTab}
-				setActiveTab={(tabId) => setBaseSymbolActiveTab(tabId)}
-			/>
-			<SymbolContracts
-				baseSymbol={baseSymbolInfo}
-				setBaseSymbol={(value) => setSelectedSymbol(value)}
-				baseSymbolContracts={baseSymbolContracts}
-				setBaseSymbolContracts={(value) => setBaseSymbolContracts(value)}
-			/>
+			)}
 		</Main>
 	);
 };

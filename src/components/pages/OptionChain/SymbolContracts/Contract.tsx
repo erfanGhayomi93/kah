@@ -1,7 +1,7 @@
 import { ArrowDownSVG } from '@/components/icons';
 import dayjs from '@/libs/dayjs';
+import { cn } from '@/utils/helpers';
 import { letters } from '@/utils/num2persian';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Table from './Table';
@@ -35,7 +35,7 @@ const Contract = ({
 		if (timer.current) clearTimeout(timer.current);
 		timer.current = setTimeout(() => {
 			setExpanding(false);
-		}, 250);
+		}, 600);
 	};
 
 	const [volume, volumeAsLetter] = useMemo(() => {
@@ -69,7 +69,7 @@ const Contract = ({
 	return (
 		<div
 			ref={wrapperRef}
-			className={clsx('overflow-hidden rounded bg-white flex-column', expand && 'border border-primary-300')}
+			className={cn('overflow-hidden rounded bg-white flex-column', expand && 'border border-primary-300')}
 		>
 			<div onClick={toggleContract} className='h-40 w-full cursor-pointer select-none px-16 flex-justify-between'>
 				<div className='flex-1 gap-32 text-right flex-justify-start'>
@@ -103,7 +103,7 @@ const Contract = ({
 				className='relative'
 				style={{
 					height: expand ? '48.8rem' : 0,
-					transition: 'height 400ms ease-in-out',
+					transition: 'height 600ms ease-in-out',
 				}}
 			>
 				{expand && (

@@ -239,13 +239,37 @@ declare namespace Option {
 		tradeVolume: number;
 	}
 
-	export interface Search {
+	export interface BaseSearch {
 		symbolISIN: string;
 		symbolTitle: string;
 		companyISIN: string;
 		companyName: string;
 		insCode: null | string;
 		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+	}
+
+	export interface Search {
+		strikePrice: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		companyISIN: string;
+		companyName: string;
+		insCode: string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		marketUnit: string;
+		isOption: boolean;
+	}
+
+	export interface CustomWatchlistSearch {
+		isInWatchlist: boolean;
+		symbolISIN: string;
+		symbolTitle: string;
+		companyISIN: string;
+		companyName: string;
+		insCode: string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		marketUnit: string;
+		isOption: boolean;
 	}
 
 	export interface BaseSettlementDays {
@@ -301,7 +325,7 @@ declare namespace Symbol {
 		tradeCount: number;
 		lastTradeDate: string;
 		hv: number;
-		symbolTradeState: string;
+		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
 		closingPriceVarReferencePrice: number;
@@ -390,6 +414,15 @@ declare namespace User {
 		mobile: string;
 		saveDate: string;
 	}
+
+	interface Broker {
+		id: number;
+		brokerCode: string | number;
+		name: string;
+		description: string;
+		logo: null | string;
+		ssoUrl: string;
+	}
 }
 
 declare namespace Saturn {
@@ -415,5 +448,55 @@ declare namespace Saturn {
 		baseSymbolTitle: string;
 		activeTab: SymbolTab;
 		options: ContentOption[];
+	}
+}
+
+declare namespace Broker {
+	export type TRemainStatus = 'Normal' | 'AtRisk' | 'CallMargin';
+
+	interface URL {
+		brokerCode: string | number;
+		url: string;
+	}
+
+	export interface Remain {
+		remainT1: number;
+		remainT2: number;
+		blockValue: number;
+		purchasePower: number;
+		credit: number;
+	}
+
+	export interface Status {
+		remainStatus: TRemainStatus;
+		remainAsset: number;
+		marginValue: number;
+		variationMargin: number | null;
+	}
+
+	export interface User {
+		bourseCode: string;
+		customerTitle: string;
+		email: string;
+		mobilePhone: string;
+		userName: string;
+		twoFactor: boolean;
+		sendMail: boolean;
+		sendSms: boolean;
+		nationalCode: string;
+		userID: number;
+		customerISIN: string;
+		brokerCode: string;
+		isOption: boolean;
+		isOffline: boolean;
+		customerTags: string;
+		ipLocation: string;
+	}
+}
+
+declare namespace Order {
+	export interface Response {
+		clientKey: string;
+		response: string;
 	}
 }

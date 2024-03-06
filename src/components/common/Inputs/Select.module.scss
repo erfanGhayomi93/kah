@@ -1,0 +1,121 @@
+.root {
+	border-radius: 8px;
+	padding: 0 1.6rem 0 1rem;
+	position: relative;
+	height: 4rem;
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.6rem;
+	transition: border-color 250ms;
+	user-select: none;
+
+	&:not(.disabled).focus {
+		border-color: theme("colors.primary.300");
+	}
+
+	&:not(.disabled).clickable {
+		cursor: pointer;
+	}
+
+	&.disabled {
+		opacity: 0.5;
+	}
+}
+
+.value {
+	position: absolute;
+	width: calc(100% - 4.8rem);
+	z-index: 10;
+	font-size: 1.3rem;
+	font-weight: 400;
+	color: theme("colors.gray.1000");
+	pointer-events: none;
+
+	&.placeholder {
+		color: theme("colors.gray.700");
+	}
+
+	&.focus {
+		color: theme("colors.gray.700");
+	}
+}
+
+.icon {
+	position: absolute;
+	color: theme("colors.gray.700");
+	transition: transform 250ms;
+	left: 0.8rem;
+}
+
+.box,
+.alert {
+	border-radius: 0.8rem;
+	background-color: theme("colors.white");
+	box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+	padding: 0.8rem 0;
+	z-index: 9999;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	flex-direction: column;
+	gap: 0.4rem;
+	max-height: 29.6rem;
+	overflow: auto;
+}
+
+.listItem {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	min-height: 4rem;
+	max-height: 4rem;
+	padding: 0 0.8rem;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 1.4rem;
+	font-weight: 400;
+	text-align: right;
+	background-color: transparent;
+	color: theme("colors.gray.1000");
+	transition: background-color 250ms;
+	-webkit-transition: background-color 250ms;
+	-moz-transition: background-color 250ms;
+
+	&:hover {
+		background-color: theme("colors.primary.100");
+	}
+
+	&.active {
+		background-color: theme("colors.secondary.100");
+	}
+}
+
+.input {
+	position: relative;
+	z-index: 9;
+	font-size: 1.3rem;
+	border: none;
+	background-color: transparent;
+	flex: 1;
+	height: 100%;
+}
+
+.alert {
+	display: flex;
+	min-height: 7.2rem;
+	max-height: 7.2rem;
+	font-size: 1.2rem;
+	font-weight: 500;
+	justify-content: center;
+	color: theme("colors.gray.800");
+	align-items: center;
+}
