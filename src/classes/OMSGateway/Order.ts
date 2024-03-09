@@ -43,7 +43,7 @@ class Order {
 				}
 
 				const params: Partial<IOFields> = { ...this._fields };
-				if (params.validityDate === -1) delete params.validityDate;
+				if (params.validityDate === undefined || params.validityDate <= 0) delete params.validityDate;
 
 				const response = await brokerAxios.post<ServerResponse<Order.Response>>(this._url, params);
 				const { data } = response;

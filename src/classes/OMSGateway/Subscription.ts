@@ -1,3 +1,4 @@
+import { refetchActiveOrderTab } from '@/utils/orders';
 import { subscribePrivateGateWay } from '@/utils/subscriptions';
 import { toast } from 'react-toastify';
 import { type ItemUpdate, type Subscribe } from '../Subscribe';
@@ -91,6 +92,8 @@ class Subscription {
 			if (['OnBoard', 'Canceled'].includes(orderStatus)) messageText = orderStatusMessage;
 			else messageText = orderStatusMessage + orderErrorMessage;
 		}
+
+		refetchActiveOrderTab();
 
 		toast[messageType](messageText, {
 			autoClose: 3500,

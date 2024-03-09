@@ -1,5 +1,6 @@
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 const axios = AXIOS.create();
 
@@ -55,8 +56,17 @@ axios.interceptors.response.use(
 
 const onUnauthorize = () => {
 	try {
+		const clientId = getClientId();
+
 		deleteBrokerClientId();
 		deleteClientId();
+
+		if (clientId) {
+			toast.warning('متاسفانه از حساب خود خارج شدید.', {
+				toastId: 'broker_unauthorize',
+				autoClose: 5000,
+			});
+		}
 	} catch (e) {
 		//
 	}

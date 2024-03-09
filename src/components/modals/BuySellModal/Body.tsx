@@ -4,7 +4,8 @@ import { useAppDispatch } from '@/features/hooks';
 import { toggleChooseBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
-import { cn, createOrder, dateConverter } from '@/utils/helpers';
+import { cn, dateConverter } from '@/utils/helpers';
+import { createDraft, createOrder } from '@/utils/orders';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -73,7 +74,7 @@ const Body = (props: BodyProps) => {
 		}
 	};
 
-	const onSubmit = async () => {
+	const sendOrder = async () => {
 		try {
 			if (!brokerUrls) return;
 
@@ -103,12 +104,42 @@ const Body = (props: BodyProps) => {
 		}
 	};
 
+	const sendDraft = async () => {
+		try {
+			if (!brokerUrls) return;
+
+			const { price, quantity, validityDate, symbolISIN, side, holdAfterOrder, close } = props;
+			const params: IpcMainChannels['send_order'] = {
+				symbolISIN,
+				quantity,
+				price,
+				orderSide: side,
+				validity: validityDate,
+				validityDate: 0,
+			};
+
+			if (params.validity === 'Month' || params.validity === 'Week')
+				params.validityDate = dateConverter(params.validity);
+
+			await createDraft(params);
+			toast.success(t('alerts.draft_successfully'), {
+				toastId: 'draft_successfully',
+			});
+
+			if (!holdAfterOrder) close();
+		} catch (e) {
+			toast.error(t('alerts.draft_unsuccessfully'), {
+				toastId: 'draft_unsuccessfully',
+			});
+		}
+	};
+
 	const TABS = useMemo(
 		() => [
 			{
 				id: 'normal',
 				title: t('bs_modal.normal_trade'),
-				render: <SimpleTrade {...props} onSubmit={validation(onSubmit)} />,
+				render: <SimpleTrade {...props} createDraft={sendDraft} onSubmit={validation(sendOrder)} />,
 			},
 			{
 				id: 'strategy',
