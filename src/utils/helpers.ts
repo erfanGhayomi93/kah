@@ -250,7 +250,7 @@ export const paramsSerializer = (params: Record<string, unknown>) => {
 export const decodeBrokerUrls = (data: Broker.URL[]) => {
 	const urls: IBrokerUrls = {
 		todayOrders: data[0].url,
-		todayTrades: data[1].url,
+		executedOrders: data[1].url,
 		drafts: data[2].url,
 		createOrder: data[3].url,
 		ordersCount: data[4].url,
@@ -259,6 +259,7 @@ export const decodeBrokerUrls = (data: Broker.URL[]) => {
 		userInformation: data[7].url,
 		userRemain: data[8].url,
 		userStatus: data[9].url,
+		optionOrders: data[10].url,
 	};
 
 	return urls;

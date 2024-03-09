@@ -381,6 +381,13 @@
 	"footer": {
 		"copyright": "© کلیه حقوق این وب سایت متعلق به رامند می باشد."
 	},
+	"orders": {
+		"open_orders": "سفارش‌های باز",
+		"today_orders": "سفارش‌های امروز",
+		"executed_orders": "سفارش‌های انجام‌شده",
+		"option_orders": "موقعیت‌های باز",
+		"draft": "پیش‌نویس"
+	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
 		"next_page": "صفحه بعد",
