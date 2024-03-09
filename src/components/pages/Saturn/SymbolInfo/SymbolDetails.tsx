@@ -2,6 +2,8 @@ import { type ItemUpdate } from '@/classes/Subscribe';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
@@ -18,6 +20,8 @@ interface SymbolDetailsProps {
 
 const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
+
+	const brokerURLs = useAppSelector(getBrokerURLs);
 
 	const symbolSnapshot = usePrevious(symbol);
 
@@ -194,7 +198,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 	return (
 		<div className='flex-column'>
-			<div className='gap-40 pb-56 flex-column'>
+			<div className={cn('gap-40 flex-column', brokerURLs ? 'pb-32' : 'pb-56')}>
 				<div className='flex-justify-between'>
 					<div className='flex-column'>
 						<div style={{ gap: '1rem' }} className='flex-items-center'>

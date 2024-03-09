@@ -1,11 +1,11 @@
 'use client';
 
-import brokerAxios from '@/api/brokerAxios';
+import { useUserInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ipcMain from '@/classes/IpcMain';
 import OMSGateway from '@/classes/OMSGateway';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getUserInfo, setUserInfo, setUserRemain, setUserStatus } from '@/features/slices/brokerSlice';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { getBrokerClientId } from '@/utils/cookie';
@@ -15,9 +15,8 @@ import { useLayoutEffect } from 'react';
 const getStates = createSelector(
 	(state: RootState) => state,
 	(state) => ({
-		isLoggedIn: getIsLoggedIn(state),
-		userInfo: getUserInfo(state),
-		brokerIsSelected: getBrokerIsSelected(state),
+		isLoggedIn: getIsLoggedIn(state) && getBrokerIsSelected(state),
+		brokerURLs: getBrokerURLs(state),
 	}),
 );
 
@@ -26,66 +25,24 @@ interface OMSMiddlewareProps {
 }
 
 const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
-	const dispatch = useAppDispatch();
+	const { brokerURLs, isLoggedIn } = useAppSelector(getStates);
 
-	const { userInfo, isLoggedIn, brokerIsSelected } = useAppSelector(getStates);
-
-	const { data: brokerUrls } = useGetBrokerUrlQuery({
+	useGetBrokerUrlQuery({
 		queryKey: ['getBrokerUrlQuery'],
 		enabled: isLoggedIn,
 	});
 
-	const fetchUserInfo = async () => {
-		try {
-			const response = await brokerAxios.get<ServerResponse<Broker.User>>(brokerUrls!.userInformation);
-			const data = response.data;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			const { result } = data;
-
-			if (result && typeof result === 'object') dispatch(setUserInfo(data.result));
-		} catch (e) {
-			//
-		}
-	};
-
-	const fetchUserRemains = async () => {
-		try {
-			const response = await brokerAxios.get<ServerResponse<Broker.Remain>>(brokerUrls!.userRemain);
-			const data = response.data;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			const { result } = data;
-
-			if (result && typeof result === 'object') dispatch(setUserRemain(data.result));
-		} catch (e) {
-			//
-		}
-	};
-
-	const fetchUserStatus = async () => {
-		try {
-			const response = await brokerAxios.get<ServerResponse<Broker.Status>>(brokerUrls!.userStatus);
-			const data = response.data;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			const { result } = data;
-
-			if (result && typeof result === 'object') dispatch(setUserStatus(data.result));
-		} catch (e) {
-			//
-		}
-	};
+	const { data: userInfo } = useUserInfoQuery({
+		queryKey: ['userInfoQuery'],
+		enabled: Boolean(brokerURLs),
+	});
 
 	const createOrder = (fields: IpcMainChannels['send_order']) =>
 		new Promise<Order.Response>((resolve, reject) => {
 			try {
-				if (!brokerUrls) throw new Error();
+				if (!brokerURLs) throw new Error();
 
-				const order = OMSGateway.createOrder().toQueue().setFields(fields).setURL(brokerUrls.createOrder);
+				const order = OMSGateway.createOrder().toQueue().setFields(fields).setURL(brokerURLs.createOrder);
 				OMSGateway.publish().addAndStart([order]);
 
 				reject();
@@ -95,24 +52,16 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 		});
 
 	useLayoutEffect(() => {
-		if (!brokerUrls) return;
+		if (!brokerURLs) return;
 		ipcMain.handleAsync('send_order', createOrder);
 
 		return () => {
 			ipcMain.removeAsyncHandler('send_order');
 		};
-	}, [JSON.stringify(brokerUrls)]);
+	}, [JSON.stringify(brokerURLs)]);
 
 	useLayoutEffect(() => {
-		if (!brokerIsSelected || !brokerUrls) return;
-
-		fetchUserInfo();
-		fetchUserRemains();
-		fetchUserStatus();
-	}, [brokerIsSelected, brokerUrls]);
-
-	useLayoutEffect(() => {
-		if (!userInfo) return;
+		if (!brokerURLs || !userInfo) return;
 
 		// Subscription
 		const [, brokerCode] = getBrokerClientId();
@@ -120,7 +69,7 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 
 		// Publish
 		OMSGateway.publish().start();
-	}, [JSON.stringify(userInfo)]);
+	}, [JSON.stringify(brokerURLs)]);
 
 	return children;
 };
