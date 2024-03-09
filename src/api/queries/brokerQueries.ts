@@ -1,3 +1,5 @@
+import { setBrokerURLs } from '@/features/slices/brokerSlice';
+import { store } from '@/features/store';
 import { getBrokerClientId } from '@/utils/cookie';
 import { createQuery, decodeBrokerUrls } from '@/utils/helpers';
 import axios from '../axios';
@@ -19,7 +21,10 @@ export const useGetBrokerUrlQuery = createQuery<IBrokerUrls, ['getBrokerUrlQuery
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-		return decodeBrokerUrls(data.result);
+		const urls = decodeBrokerUrls(data.result);
+
+		store.dispatch(setBrokerURLs(urls));
+		return urls;
 	},
 });
 

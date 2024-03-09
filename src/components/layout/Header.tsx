@@ -1,6 +1,7 @@
+import { useUserRemainQuery, useUserStatusQuery } from '@/api/queries/brokerPrivateQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getUserRemain, getUserStatus } from '@/features/slices/brokerSlice';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import {
 	toggleBlackScholesModal,
 	toggleForgetPasswordModal,
@@ -34,8 +35,7 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		isLoggingIn: getIsLoggingIn(state),
-		userRemain: getUserRemain(state),
-		userStatus: getUserStatus(state),
+		brokerURLs: getBrokerURLs(state),
 	}),
 );
 
@@ -44,13 +44,23 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, isLoggingIn, userRemain, userStatus } = useAppSelector(getStates);
+	const { isLoggedIn, isLoggingIn, brokerURLs } = useAppSelector(getStates);
 
 	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
 	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
 		enabled: !isLoggingIn && isLoggedIn,
+	});
+
+	const { data: userStatus } = useUserStatusQuery({
+		queryKey: ['userStatusQuery'],
+		enabled: Boolean(brokerURLs),
+	});
+
+	const { data: userRemain } = useUserRemainQuery({
+		queryKey: ['userRemainQuery'],
+		enabled: Boolean(brokerURLs),
 	});
 
 	const showAuthenticationModal = () => {

@@ -1,10 +1,14 @@
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
+declare type TOptionSides = 'put' | 'call';
+
 declare type TBsSides = 'buy' | 'sell';
 
 declare type TBsCollaterals = 'cash' | 'stock';
 
 declare type TBsSymbolTypes = 'base' | 'option';
+
+declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | 'option_orders' | 'draft';
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
@@ -36,12 +40,13 @@ declare interface SymbolContractModalStates {
 
 declare type IBrokerUrls = Record<
 	| 'todayOrders'
-	| 'todayTrades'
+	| 'executedOrders'
 	| 'drafts'
 	| 'createOrder'
 	| 'ordersCount'
 	| 'openOrders'
 	| 'commission'
+	| 'optionOrders'
 	| 'userInformation'
 	| 'userRemain'
 	| 'userStatus',
