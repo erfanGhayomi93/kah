@@ -32,7 +32,7 @@ const Orders = () => {
 					className='absolute bottom-0 left-0 w-full pl-8 flex-column'
 					style={{
 						transition: 'height 250ms ease-in',
-						height: ordersIsExpand ? '30rem' : '5.6rem',
+						height: ordersIsExpand ? '36rem' : '5.6rem',
 					}}
 				>
 					<div className='relative flex-1 overflow-hidden rounded bg-white shadow-tooltip flex-column'>

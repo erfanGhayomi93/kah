@@ -50,6 +50,7 @@ declare type IBrokerUrls = Record<
 	| 'userInformation'
 	| 'userRemain'
 	| 'userStatus',
+	'createDraft',
 	string
 >;
 

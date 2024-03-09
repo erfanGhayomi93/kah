@@ -552,7 +552,7 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 		}
 	}, [watchlistColumnsIndex]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const eGrid = gridRef.current;
 		if (!eGrid) return;
 

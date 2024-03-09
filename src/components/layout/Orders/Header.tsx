@@ -3,6 +3,7 @@ import { ArrowUpSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOrdersIsExpand, toggleOrdersIsExpand } from '@/features/slices/uiSlice';
 import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -66,13 +67,13 @@ const Header = ({ tab, setTab }: HeaderProps) => {
 							onClick={() => setTab(order.id)}
 							type='button'
 							className={cn(
-								'h-40 gap-10 rounded px-12 text-tiny transition-colors flex-justify-center',
+								'h-40 gap-10 rounded px-12 transition-colors flex-justify-center',
 								tab === order.id ? 'bg-secondary-100 text-gray-1000' : 'text-gray-700',
 							)}
 						>
 							{order.title}
 							<span
-								className={cn(
+								className={clsx(
 									'h-22 min-w-22 rounded-oval text-tiny transition-colors flex-justify-center',
 									tab === order.id ? 'bg-primary-400 text-white' : 'bg-gray-400 text-gray-700',
 								)}

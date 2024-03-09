@@ -68,9 +68,17 @@
 	}
 }
 
-.ag-rtl .ag-cell {
+.ag-rtl .ag-cell:not(.ltr, .rtl) {
 	direction: ltr;
 	border-left-width: 0;
+}
+
+.ag-cell.ltr {
+	direction: ltr;
+}
+
+.ag-cell.rtl {
+	direction: rtl;
 }
 
 .ag-header-row {

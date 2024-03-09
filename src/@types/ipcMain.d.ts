@@ -6,4 +6,5 @@ declare interface IpcMainChannels {
 	}>;
 	send_order: IOFields;
 	set_option_watchlist_filters: IOptionWatchlistFilters;
+	refetch_active_order_tab: undefined;
 }
