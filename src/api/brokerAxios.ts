@@ -1,3 +1,4 @@
+import { setBrokerURLs } from '@/features/slices/brokerSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
@@ -65,12 +66,17 @@ brokerAxios.interceptors.response.use(
 export const onUnauthorize = () => {
 	try {
 		store.dispatch(setBrokerIsSelected(false));
+		store.dispatch(setBrokerURLs(null));
+
+		const [token, brokerCode] = getBrokerClientId();
 		deleteBrokerClientId();
 
-		toast.warning('متاسفانه از حساب کارگزاری خود خارج شدید.', {
-			toastId: 'broker_unauthorize',
-			autoClose: 5000,
-		});
+		if (token && brokerCode) {
+			toast.warning('متاسفانه از حساب کارگزاری خود خارج شدید.', {
+				toastId: 'broker_unauthorize',
+				autoClose: 5000,
+			});
+		}
 	} catch (e) {
 		//
 	}

@@ -682,7 +682,7 @@ declare namespace Order {
 
 	export interface OptionOrder {
 		orderId: number;
-		side: TOptionSides;
+		side: 'Call' | 'Put';
 		canClosePosition: boolean;
 		availableClosePosition: number;
 		customerISIN: string;
