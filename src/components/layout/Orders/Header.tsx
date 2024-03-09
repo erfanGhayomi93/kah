@@ -58,13 +58,18 @@ const Header = ({ tab, setTab }: HeaderProps) => {
 		dispatch(toggleOrdersIsExpand());
 	};
 
+	const onSelectTab = (tabId: TOrdersTab) => {
+		setTab(tabId);
+		if (!ordersIsExpand) toggle();
+	};
+
 	return (
 		<div className='h-56 bg-white px-8 flex-justify-between'>
 			<ul className='flex-1 flex-justify-start'>
 				{tabs.map((order, index) => (
 					<li key={index}>
 						<button
-							onClick={() => setTab(order.id)}
+							onClick={() => onSelectTab(order.id)}
 							type='button'
 							className={cn(
 								'h-40 gap-10 rounded px-12 transition-colors flex-justify-center',
