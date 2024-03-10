@@ -234,7 +234,7 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 					colId: 'dueDays',
 					initialHide: Boolean(modifiedWatchlistColumns?.dueDays?.isHidden ?? true),
 					minWidth: 96,
-					valueGetter: ({ data }) => data!.symbolInfo.dueDays,
+					valueGetter: ({ data }) => Math.max(0, data!.symbolInfo.dueDays),
 				},
 				{
 					headerName: t('option_page.strike_price'),

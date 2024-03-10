@@ -260,6 +260,10 @@ export const decodeBrokerUrls = (data: Broker.URL[]) => {
 		userStatus: data[9].url,
 		optionOrders: data[10].url,
 		createDraft: data[11].url,
+		deleteDraft: data[12].url,
+		deleteOrder: data[13].url,
+		groupDeleteDraft: data[14].url,
+		groupDeleteOrder: data[15].url,
 	};
 
 	return urls;
