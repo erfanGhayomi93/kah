@@ -26,21 +26,30 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 
 	detailsBtn() {
 		const btn = this.createDetails();
-		btn.onclick = () => this.params.showDetails(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.showDetails(this.params.data!);
+		};
 
 		return btn;
 	}
 
 	editBtn() {
 		const btn = this.createEdit();
-		btn.onclick = () => this.params.onEdit(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.onEdit(this.params.data!);
+		};
 
 		return btn;
 	}
 
 	deleteBtn() {
 		const btn = this.createTrash();
-		btn.onclick = () => this.params.onDelete(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.onDelete(this.params.data!);
+		};
 
 		return btn;
 	}

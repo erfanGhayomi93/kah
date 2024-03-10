@@ -13,18 +13,21 @@ export interface IBlackScholes extends IBaseModalConfiguration {
 }
 
 export interface IBuySellModal extends IBaseModalConfiguration {
+	id?: number;
+	mode: TBsModes;
 	symbolTitle: string;
 	symbolISIN: string;
 	symbolType: TBsSymbolTypes;
-	initialValidity?: TBsValidityDates;
-	initialValidityDate?: number;
-	initialPrice?: number;
-	initialQuantity?: number;
 	side: TBsSides;
+	type?: TBsTypes;
 	collateral?: TBsCollaterals;
 	expand?: boolean;
 	priceLock?: boolean;
 	holdAfterOrder?: boolean;
+	initialValidity?: TBsValidityDates;
+	initialValidityDate?: number;
+	initialPrice?: number;
+	initialQuantity?: number;
 }
 
 export interface IForgetPasswordModal extends IBaseModalConfiguration {

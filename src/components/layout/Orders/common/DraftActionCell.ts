@@ -26,28 +26,40 @@ class DraftActionCell extends ActionCell implements ICellRendererComp<Order.Draf
 
 	sendBtn() {
 		const btn = this.createSend();
-		btn.onclick = () => this.params.onSend(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.onSend(this.params.data!);
+		};
 
 		return btn;
 	}
 
 	copyBtn() {
 		const btn = this.createCopy();
-		btn.onclick = () => this.params.onCopy(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.onCopy(this.params.data!);
+		};
 
 		return btn;
 	}
 
 	editBtn() {
 		const btn = this.createEdit();
-		btn.onclick = () => this.params.onEdit(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.onEdit(this.params.data!);
+		};
 
 		return btn;
 	}
 
 	deleteBtn() {
 		const btn = this.createTrash();
-		btn.onclick = () => this.params.onDelete(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.onDelete(this.params.data!);
+		};
 
 		return btn;
 	}

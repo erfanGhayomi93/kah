@@ -45,8 +45,8 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 			await createOrder(params);
 			deleteDraft([id]);
 
-			toast.success(t('alerts.ordered_successfully'), {
-				toastId: 'ordered_successfully',
+			toast.success(t('alerts.order_successfully_created'), {
+				toastId: 'order_successfully_created',
 			});
 		} catch (e) {
 			//
@@ -58,13 +58,26 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 	};
 
 	const onEdit = (order: Order.DraftOrder) => {
-		//
+		addBuySellModal({
+			id: order.id,
+			side: order.side === 'Buy' ? 'buy' : 'sell',
+			symbolType: 'base',
+			type: 'draft',
+			mode: 'edit',
+			symbolISIN: order.symbolISIN,
+			symbolTitle: order.symbolTitle,
+			initialPrice: order.price,
+			initialQuantity: order.quantity,
+			initialValidity: order.validity,
+			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+		});
 	};
 
 	const onCopy = (order: Order.DraftOrder) => {
 		addBuySellModal({
 			side: order.side === 'Buy' ? 'buy' : 'sell',
 			symbolType: 'base',
+			mode: 'create',
 			symbolISIN: order.symbolISIN,
 			symbolTitle: order.symbolTitle,
 			initialPrice: order.price,
@@ -102,13 +115,6 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 							return '';
 					}
 				},
-			},
-			{
-				colId: 'order_status',
-				headerName: t('orders.order_status'),
-				minWidth: 200,
-				valueFormatter: () => t('orders.draft'),
-				cellClass: 'text-secondary-300',
 			},
 			{
 				colId: 'count',

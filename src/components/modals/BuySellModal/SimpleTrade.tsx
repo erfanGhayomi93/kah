@@ -50,13 +50,17 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 };
 
 interface SimpleTradeProps extends IBsModalInputs {
+	id: number | undefined;
 	symbolType: TBsSymbolTypes;
+	type: TBsTypes;
+	mode: TBsModes;
 	setInputValue: TSetBsModalInputs;
 	createDraft: () => void;
 	onSubmit: () => void;
 }
 
 const SimpleTrade = ({
+	id,
 	price,
 	quantity,
 	symbolType,
@@ -64,6 +68,8 @@ const SimpleTrade = ({
 	validityDate,
 	side,
 	priceLock,
+	type,
+	mode,
 	expand,
 	holdAfterOrder,
 	collateral,
@@ -336,16 +342,18 @@ const SimpleTrade = ({
 							side === 'buy' ? 'btn-success' : 'btn-error',
 						)}
 					>
-						{t(`side.${side}`)}
+						{t(`bs_modal.${mode}_${type}_${side}`)}
 					</button>
 
-					<button
-						onClick={createDraft}
-						type='button'
-						className='h-40 rounded border border-secondary-300 bg-white px-16 text-base text-secondary-300'
-					>
-						{t('bs_modal.draft')}
-					</button>
+					{mode === 'create' && type === 'order' && (
+						<button
+							onClick={createDraft}
+							type='button'
+							className='h-40 rounded border border-secondary-300 bg-white px-16 text-base text-secondary-300'
+						>
+							{t('bs_modal.draft')}
+						</button>
+					)}
 				</div>
 			</div>
 		</form>
