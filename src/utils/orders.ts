@@ -4,14 +4,8 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { store } from '@/features/store';
 
 export const createOrder = (fields: IpcMainChannels['send_order']) =>
-	new Promise<Order.Response>((resolve, reject) => {
-		return ipcMain
-			.sendAsync<Order.Response>('send_order', fields)
-			.then((response) => {
-				if (response) resolve(response);
-				else reject();
-			})
-			.catch(reject);
+	new Promise<Order.Response | undefined>((resolve, reject) => {
+		return ipcMain.sendAsync<Order.Response>('send_order', fields).then(resolve).catch(reject);
 	});
 
 export const createOrders = (orders: IpcMainChannels['send_orders']) => ipcMain.send('send_orders', orders);

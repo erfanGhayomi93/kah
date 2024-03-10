@@ -39,14 +39,12 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 	});
 
 	const createOrder = (fields: IpcMainChannels['send_order']) =>
-		new Promise<Order.Response>((resolve, reject) => {
+		new Promise<Order.Response | undefined>((resolve, reject) => {
 			try {
 				if (!brokerURLs) throw new Error();
 
 				const order = OMSGateway.createOrder().toQueue().setFields(fields).setURL(brokerURLs.createOrder);
-				OMSGateway.publish().addAndStart([order]);
-
-				reject();
+				OMSGateway.publish().addAndStart([order]).then(resolve).catch(reject);
 			} catch (e) {
 				reject();
 			}
