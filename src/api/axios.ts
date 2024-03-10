@@ -17,7 +17,7 @@ axios.defaults.paramsSerializer = {
 				for (let j = 0; j < value.length; j++) {
 					queryParams.push(`${key}=${value[j]}`);
 				}
-			} else queryParams.push(`${key}=${params[key]}`);
+			} else if (value !== undefined) queryParams.push(`${key}=${params[key]}`);
 		}
 
 		return queryParams.join('&');

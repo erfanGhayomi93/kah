@@ -1,21 +1,43 @@
+import ipcMain from '@/classes/IpcMain';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
+import { editableOrdersStatus } from '@/constants';
 import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
+import { deleteOrder } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import NoData from '../NoData';
+import OrderActionCell from '../common/OrderActionCell';
+import SymbolTitleCell from '../common/SymbolTitleCell';
+import SymbolTitleHeader from '../common/SymbolTitleHeader';
 
 type TOrders = Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
 
 interface OrderTableProps {
+	setSelectedRows: (orders: Order.TOrder[]) => void;
 	tab: TOrdersTab;
 	data: TOrders[];
+	loading: boolean;
 }
 
-const OrderTable = ({ tab, data }: OrderTableProps) => {
+const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<TOrders>>(null);
+
+	const onDelete = (order: TOrders) => {
+		deleteOrder([order.orderId]);
+	};
+
+	const onEdit = (order: TOrders) => {
+		//
+	};
+
+	const showDetails = (order: TOrders) => {
+		//
+	};
 
 	const columnDefs = useMemo<Array<ColDef<TOrders>>>(
 		() => [
@@ -23,6 +45,10 @@ const OrderTable = ({ tab, data }: OrderTableProps) => {
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
 				cellClass: 'justify-end text-right',
+				pinned: 'right',
+				headerComponent: SymbolTitleHeader,
+				cellRenderer: SymbolTitleCell,
+				checkboxSelection: ({ data }) => editableOrdersStatus.includes(data!.orderStatus),
 				valueGetter: ({ data }) => data!.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
@@ -30,7 +56,7 @@ const OrderTable = ({ tab, data }: OrderTableProps) => {
 				colId: 'order_side',
 				headerName: t('orders.order_side'),
 				valueGetter: ({ data }) => data!.orderSide,
-				valueFormatter: ({ value }) => (value === 'buy' ? t('side.buy') : t('side.sell')),
+				valueFormatter: ({ value }) => (value === 'Buy' ? t('side.buy') : t('side.sell')),
 				cellClass: ({ data }) => {
 					switch (data!.orderSide) {
 						case 'Buy':
@@ -130,6 +156,18 @@ const OrderTable = ({ tab, data }: OrderTableProps) => {
 					return t('validity_date.' + validity.toLowerCase());
 				},
 			},
+			{
+				colId: 'action',
+				headerName: t('orders.action'),
+				minWidth: 140,
+				maxWidth: 140,
+				cellRenderer: OrderActionCell,
+				cellRendererParams: {
+					onDelete,
+					onEdit,
+					showDetails,
+				},
+			},
 		],
 		[JSON.stringify(data)],
 	);
@@ -144,6 +182,21 @@ const OrderTable = ({ tab, data }: OrderTableProps) => {
 		[],
 	);
 
+	const unselectAll = () => {
+		const eGrid = gridRef.current;
+		if (!eGrid) return;
+
+		eGrid.deselectAll();
+	};
+
+	useLayoutEffect(() => {
+		ipcMain.handle('deselect_orders', unselectAll);
+
+		return () => {
+			ipcMain.removeHandler('deselect_orders', unselectAll);
+		};
+	}, []);
+
 	useEffect(() => {
 		const eGrid = gridRef.current;
 		if (!eGrid) return;
@@ -156,18 +209,29 @@ const OrderTable = ({ tab, data }: OrderTableProps) => {
 	}, [data]);
 
 	return (
-		<AgTable<TOrders>
-			ref={gridRef}
-			rowData={data}
-			rowHeight={40}
-			headerHeight={48}
-			columnDefs={columnDefs}
-			defaultColDef={defaultColDef}
-			suppressRowClickSelection={false}
-			rowClass='cursor-pointer'
-			className='h-full border-0'
-			rowSelection='multiple'
-		/>
+		<>
+			<AgTable<TOrders>
+				suppressRowClickSelection
+				ref={gridRef}
+				rowData={data}
+				rowHeight={40}
+				headerHeight={48}
+				columnDefs={columnDefs}
+				defaultColDef={defaultColDef}
+				onSelectionChanged={(e) => setSelectedRows(e.api.getSelectedRows() ?? [])}
+				className='h-full border-0'
+				rowSelection='multiple'
+			/>
+
+			{(loading || data.length === 0) && (
+				<div
+					className='absolute left-0 size-full flex-justify-center'
+					style={{ backdropFilter: 'blur(2px)', top: '48px', height: 'calc(100% - 48px)', zIndex: 9 }}
+				>
+					{loading ? <Loading /> : data.length === 0 ? <NoData /> : null}
+				</div>
+			)}
+		</>
 	);
 };
 

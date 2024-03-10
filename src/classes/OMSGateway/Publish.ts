@@ -54,7 +54,14 @@ class Publish {
 	}
 
 	addAndStart(orders: TOrder[]) {
-		this.add(orders, { startSending: true, type: 'push' });
+		return new Promise<Order.Response | undefined>(async (resolve, reject) => {
+			try {
+				this.add(orders, { startSending: true, type: 'push' });
+				resolve(undefined);
+			} catch (e) {
+				reject();
+			}
+		});
 	}
 
 	private _end() {

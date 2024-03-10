@@ -60,7 +60,10 @@ class IpcMain {
 		}
 	}
 
-	handleAsync<R, T extends TChannel = TChannel>(channel: T, listener: AsyncListenerType<IpcMainChannels[T], R>) {
+	handleAsync<R, T extends TChannel = TChannel>(
+		channel: T,
+		listener: AsyncListenerType<IpcMainChannels[T], R | undefined>,
+	) {
 		try {
 			this._createChannel(channel);
 			this._channels[channel]![1] = listener as AsyncListenerType;

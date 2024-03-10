@@ -50,6 +50,7 @@ import RefreshSVG from './refresh.svg';
 import ReportSVG from './report.svg';
 import SaturnSVG from './saturn.svg';
 import SearchSVG from './search.svg';
+import SendFillSVG from './send-fill.svg';
 import SessionHistorySVG from './session-history.svg';
 import SettingSVG from './setting.svg';
 import ShieldSVG from './shield.svg';
@@ -58,6 +59,7 @@ import SquareXSVG from './square-x.svg';
 import StrategySVG from './strategy.svg';
 import TradeSVG from './trade.svg';
 import TransferSVG from './transfer.svg';
+import TrashFillSVG from './trash-fill.svg';
 import TrashSVG from './trash.svg';
 import TriangleWarningSVG from './triangle-warning.svg';
 import UnlockSVG from './unlock.svg';
@@ -120,6 +122,7 @@ export {
 	ReportSVG,
 	SaturnSVG,
 	SearchSVG,
+	SendFillSVG,
 	SessionHistorySVG,
 	SettingSVG,
 	ShieldSVG,
@@ -128,6 +131,7 @@ export {
 	StrategySVG,
 	TradeSVG,
 	TransferSVG,
+	TrashFillSVG,
 	TrashSVG,
 	TriangleWarningSVG,
 	UnlockSVG,

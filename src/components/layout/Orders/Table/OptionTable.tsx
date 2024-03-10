@@ -1,17 +1,28 @@
+import ipcMain from '@/classes/IpcMain';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import NoData from '../NoData';
+import OptionActionCell from '../common/OptionActionCell';
+import SymbolTitleCell from '../common/SymbolTitleCell';
+import SymbolTitleHeader from '../common/SymbolTitleHeader';
 
 interface OptionTableProps {
 	data: Order.OptionOrder[];
+	loading: boolean;
 }
 
-const OptionTable = ({ data }: OptionTableProps) => {
+const OptionTable = ({ loading, data }: OptionTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Order.OptionOrder>>(null);
+
+	const showDetails = (order: Order.OptionOrder) => {
+		//
+	};
 
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(
 		() => [
@@ -19,6 +30,10 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
 				cellClass: 'justify-end text-right',
+				headerComponent: SymbolTitleHeader,
+				cellRenderer: SymbolTitleCell,
+				pinned: 'right',
+				checkboxSelection: false,
 				valueGetter: ({ data }) => data!.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
@@ -75,6 +90,16 @@ const OptionTable = ({ data }: OptionTableProps) => {
 				flex: 1,
 				valueGetter: ({ data }) => Math.max(0, data!.remainDays),
 			},
+			{
+				colId: 'action',
+				headerName: t('orders.action'),
+				minWidth: 140,
+				maxWidth: 140,
+				cellRenderer: OptionActionCell,
+				cellRendererParams: {
+					showDetails,
+				},
+			},
 		],
 		[JSON.stringify(data)],
 	);
@@ -89,6 +114,21 @@ const OptionTable = ({ data }: OptionTableProps) => {
 		[],
 	);
 
+	const unselectAll = () => {
+		const eGrid = gridRef.current;
+		if (!eGrid) return;
+
+		eGrid.deselectAll();
+	};
+
+	useLayoutEffect(() => {
+		ipcMain.handle('deselect_orders', unselectAll);
+
+		return () => {
+			ipcMain.removeHandler('deselect_orders', unselectAll);
+		};
+	}, []);
+
 	useEffect(() => {
 		const eGrid = gridRef.current;
 		if (!eGrid) return;
@@ -101,18 +141,28 @@ const OptionTable = ({ data }: OptionTableProps) => {
 	}, [data]);
 
 	return (
-		<AgTable<Order.OptionOrder>
-			ref={gridRef}
-			rowData={data}
-			rowHeight={40}
-			headerHeight={48}
-			columnDefs={columnDefs}
-			defaultColDef={defaultColDef}
-			suppressRowClickSelection={false}
-			rowClass='cursor-pointer'
-			className='h-full border-0'
-			rowSelection='multiple'
-		/>
+		<>
+			<AgTable<Order.OptionOrder>
+				ref={gridRef}
+				rowData={data}
+				rowHeight={40}
+				headerHeight={48}
+				columnDefs={columnDefs}
+				defaultColDef={defaultColDef}
+				suppressRowClickSelection={false}
+				className='h-full border-0'
+				rowSelection='multiple'
+			/>
+
+			{(loading || data.length === 0) && (
+				<div
+					className='absolute left-0 size-full flex-justify-center'
+					style={{ backdropFilter: 'blur(2px)', top: '48px', height: 'calc(100% - 48px)', zIndex: 9 }}
+				>
+					{loading ? <Loading /> : data.length === 0 ? <NoData /> : null}
+				</div>
+			)}
+		</>
 	);
 };
 

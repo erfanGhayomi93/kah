@@ -149,3 +149,5 @@ export const getDateMilliseconds = {
 	Month: 2592e6,
 	Year: 31536e6,
 };
+
+export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];

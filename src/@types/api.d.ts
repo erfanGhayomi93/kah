@@ -524,16 +524,6 @@ declare namespace Order {
 		| 'OnCancelingWithBroker'
 		| 'TradeCancel';
 
-	export type ValidityType =
-		| 'GoodTillDate'
-		| 'FillAndKill'
-		| 'GoodTillCancelled'
-		| 'Day'
-		| 'SlidingValidity'
-		| 'Session'
-		| 'Month'
-		| 'Week';
-
 	export type FormType = 'Web' | 'Mobile' | 'BrokerTrader' | 'ClientApi' | 'MarketMaker' | 'Admin' | 'Supervisor';
 
 	export type Types = 'MarketOrder' | 'LimitOrder' | 'MarketToLimitOrder' | 'MarketOnOpeningOrder' | 'StopOrder';
@@ -543,6 +533,8 @@ declare namespace Order {
 	export type OrderSourceType = 'Account' | 'Portfolio' | 'Position' | 'Found';
 
 	export type Side = 'Buy' | 'Sell';
+
+	export type TOrder = OpenOrder | TodayOrder | ExecutedOrder | DraftOrder | OptionOrder;
 
 	export interface Response {
 		clientKey: string;
@@ -565,7 +557,7 @@ declare namespace Order {
 		orderOrigin: string;
 		parentOrderId: number;
 		orderType: Types;
-		validity: ValidityType;
+		validity: TBsValidityDates;
 		validityDate: string;
 		orderFrom: FormType;
 		orderAction: ActionType | 0;
@@ -605,7 +597,7 @@ declare namespace Order {
 		orderOrigin: string;
 		parentOrderId: number;
 		orderType: Types;
-		validity: ValidityType;
+		validity: TBsValidityDates;
 		validityDate: string;
 		orderFrom: FormType;
 		orderAction: ActionType | 0;
@@ -644,7 +636,7 @@ declare namespace Order {
 		orderOrigin: string;
 		parentOrderId: number;
 		orderType: Types;
-		validity: ValidityType;
+		validity: TBsValidityDates;
 		validityDate: string;
 		orderFrom: FormType;
 		orderAction: ActionType | 0;
@@ -674,7 +666,7 @@ declare namespace Order {
 		price: number;
 		quantity: number;
 		side: Side;
-		validity: ValidityType;
+		validity: TBsValidityDates;
 		validityDate: string;
 		date: string;
 		blockType?: OrderSourceType;

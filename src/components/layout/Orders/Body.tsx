@@ -11,17 +11,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useLayoutEffect, useMemo } from 'react';
 
-const OrderTable = dynamic(() => import('./OrderTable'), {
+const OrderTable = dynamic(() => import('./Table/OrderTable'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
 
-const DraftTable = dynamic(() => import('./DraftTable'), {
+const DraftTable = dynamic(() => import('./Table/DraftTable'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
 
-const OptionTable = dynamic(() => import('./OptionTable'), {
+const OptionTable = dynamic(() => import('./Table/OptionTable'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -99,6 +99,10 @@ const Body = ({ tab }: BodyProps) => {
 		queryClient.setQueryData(['brokerOrdersCountQuery'], { ...cache, ...data });
 	};
 
+	const setSelectedRows = (orders: Order.TOrder[]) => {
+		if (Array.isArray(orders)) ipcMain.send('set_selected_orders', orders);
+	};
+
 	const ordersData = useMemo<Order.OpenOrder[] | Order.ExecutedOrder[] | Order.TodayOrder[]>(() => {
 		switch (tab) {
 			case 'open_orders':
@@ -152,18 +156,27 @@ const Body = ({ tab }: BodyProps) => {
 	return (
 		<div style={{ height: '36rem' }} className='relative flex-1 border-t border-t-gray-500 bg-white px-16 py-8'>
 			{tab === 'option_orders' ? (
-				<OptionTable data={optionOrdersData ?? []} />
+				<OptionTable data={optionOrdersData ?? []} loading={isFetchingOptionOrders} />
 			) : tab === 'draft' ? (
-				<DraftTable data={draftOrdersData ?? []} />
+				<DraftTable
+					setSelectedRows={setSelectedRows}
+					data={draftOrdersData ?? []}
+					loading={isFetchingDraftOrders}
+				/>
 			) : (
-				<OrderTable tab={tab} data={ordersData} />
+				<OrderTable
+					setSelectedRows={setSelectedRows}
+					tab={tab}
+					data={ordersData}
+					loading={
+						tab === 'executed_orders'
+							? isFetchingExecutedOrders
+							: tab === 'open_orders'
+								? isFetchingOpenOrders
+								: isFetchingTodayOrders
+					}
+				/>
 			)}
-
-			{(isFetchingOpenOrders ||
-				isFetchingTodayOrders ||
-				isFetchingExecutedOrders ||
-				isFetchingDraftOrders ||
-				isFetchingOptionOrders) && <Loading />}
 		</div>
 	);
 };
