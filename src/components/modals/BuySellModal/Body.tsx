@@ -80,17 +80,18 @@ const Body = (props: BodyProps) => {
 		try {
 			if (!brokerUrls) return;
 
-			const { price, quantity, validityDate, symbolISIN, side, holdAfterOrder, close } = props;
+			const { price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
 			const params: IpcMainChannels['send_order'] = {
 				symbolISIN,
 				quantity,
 				price,
 				orderSide: side,
-				validity: validityDate,
-				validityDate: 0,
+				validity,
+				validityDate,
 			};
 
-			if (params.validity === 'Month' || params.validity === 'Week')
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
 				params.validityDate = dateConverter(params.validity);
 
 			await createOrder(params);
@@ -101,7 +102,7 @@ const Body = (props: BodyProps) => {
 			if (!holdAfterOrder) {
 				close();
 				dispatch(setOrdersIsExpand(true));
-				LocalstorageInstance.set('ot', 'open_orders', true);
+				LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'open_orders', true);
 			}
 		} catch (e) {
 			toast.error(t('alerts.ordered_unsuccessfully'), {
@@ -114,17 +115,18 @@ const Body = (props: BodyProps) => {
 		try {
 			if (!brokerUrls) return;
 
-			const { price, quantity, validityDate, symbolISIN, side, holdAfterOrder, close } = props;
+			const { price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
 			const params: IpcMainChannels['send_order'] = {
 				symbolISIN,
 				quantity,
 				price,
 				orderSide: side,
-				validity: validityDate,
+				validity,
 				validityDate: 0,
 			};
 
-			if (params.validity === 'Month' || params.validity === 'Week')
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
 				params.validityDate = dateConverter(params.validity);
 
 			await createDraft(params);

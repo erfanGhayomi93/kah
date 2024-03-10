@@ -4,10 +4,12 @@ import AgTable from '@/components/common/Tables/AgTable';
 import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
 import { editableOrdersStatus } from '@/constants';
 import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
+import { deleteOrder } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import NoData from '../NoData';
+import OrderActionCell from '../common/OrderActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';
 
@@ -24,6 +26,18 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<TOrders>>(null);
+
+	const onDelete = (order: TOrders) => {
+		deleteOrder([order.orderId]);
+	};
+
+	const onEdit = (order: TOrders) => {
+		//
+	};
+
+	const showDetails = (order: TOrders) => {
+		//
+	};
 
 	const columnDefs = useMemo<Array<ColDef<TOrders>>>(
 		() => [
@@ -142,6 +156,18 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 					return t('validity_date.' + validity.toLowerCase());
 				},
 			},
+			{
+				colId: 'action',
+				headerName: t('orders.action'),
+				minWidth: 140,
+				maxWidth: 140,
+				cellRenderer: OrderActionCell,
+				cellRendererParams: {
+					onDelete,
+					onEdit,
+					showDetails,
+				},
+			},
 		],
 		[JSON.stringify(data)],
 	);
@@ -193,7 +219,6 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 				columnDefs={columnDefs}
 				defaultColDef={defaultColDef}
 				onSelectionChanged={(e) => setSelectedRows(e.api.getSelectedRows() ?? [])}
-				rowClass='cursor-pointer'
 				className='h-full border-0'
 				rowSelection='multiple'
 			/>

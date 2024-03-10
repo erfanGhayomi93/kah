@@ -26,7 +26,10 @@ const BuySellModal = ({
 	priceLock,
 	collateral,
 	side,
-	validityDate,
+	initialValidity,
+	initialValidityDate,
+	initialPrice,
+	initialQuantity,
 	expand,
 	holdAfterOrder,
 	...props
@@ -34,11 +37,12 @@ const BuySellModal = ({
 	const dispatch = useAppDispatch();
 
 	const [inputs, setInputs] = useState<IBsModalInputs>({
-		price: 0,
-		quantity: 0,
+		price: initialPrice ?? 0,
+		quantity: initialQuantity ?? 0,
 		collateral: collateral ?? null,
 		side: side ?? 'buy',
-		validityDate: validityDate ?? 'Day',
+		validity: initialValidity ?? 'Day',
+		validityDate: initialValidityDate ?? 0,
 		expand: expand ?? false,
 		priceLock: priceLock ?? false,
 		holdAfterOrder: holdAfterOrder ?? false,
