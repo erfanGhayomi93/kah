@@ -547,7 +547,7 @@
 		"ordered_unsuccessfully": "ارسال سفارش با خطا مواجه شد.",
 		"draft_successfully": "پیش‌نویس شما با موفقیت ثبت شد.",
 		"draft_unsuccessfully": "ارسال پیش‌نویس با خطا مواجه شد.",
-		"login_to_your_account": "ابتدا وارد حساب خود شوید",
+		"login_to_your_account": "ابتدا وارد حساب کاربری خود شوید",
 		"broker_error": "خطا در ارتباط با کارگزاری",
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید.",
 		"logged_in_successfully_to_broker_account": "با موفقیت وارد حساب کارگزاری خود شدید.",
