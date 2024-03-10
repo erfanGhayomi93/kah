@@ -4,6 +4,7 @@ import { useUserInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ipcMain from '@/classes/IpcMain';
 import OMSGateway from '@/classes/OMSGateway';
+import type Order from '@/classes/OMSGateway/Order';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
@@ -51,12 +52,26 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 			}
 		});
 
+	const createOrders = (fields: IpcMainChannels['send_orders']) => {
+		if (!brokerURLs) throw new Error();
+
+		const orders: Order[] = [];
+		for (let i = 0; i < fields.length; i++) {
+			orders.push(OMSGateway.createOrder().toQueue().setFields(fields[i]).setURL(brokerURLs.createOrder));
+		}
+
+		OMSGateway.publish().addAndStart(orders);
+	};
+
 	useLayoutEffect(() => {
 		if (!brokerURLs) return;
+
 		ipcMain.handleAsync('send_order', createOrder);
+		ipcMain.handle('send_orders', createOrders);
 
 		return () => {
 			ipcMain.removeAsyncHandler('send_order');
+			ipcMain.removeAsyncHandler('send_orders');
 		};
 	}, [JSON.stringify(brokerURLs)]);
 

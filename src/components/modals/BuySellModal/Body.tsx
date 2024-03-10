@@ -1,7 +1,9 @@
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
+import LocalstorageInstance from '@/classes/Localstorage';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleChooseBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { cn, dateConverter } from '@/utils/helpers';
@@ -96,7 +98,11 @@ const Body = (props: BodyProps) => {
 				toastId: 'ordered_successfully',
 			});
 
-			if (!holdAfterOrder) close();
+			if (!holdAfterOrder) {
+				close();
+				dispatch(setOrdersIsExpand(true));
+				LocalstorageInstance.set('ot', 'open_orders', true);
+			}
 		} catch (e) {
 			toast.error(t('alerts.ordered_unsuccessfully'), {
 				toastId: 'ordered_unsuccessfully',
@@ -126,7 +132,11 @@ const Body = (props: BodyProps) => {
 				toastId: 'draft_successfully',
 			});
 
-			if (!holdAfterOrder) close();
+			if (!holdAfterOrder) {
+				close();
+				dispatch(setOrdersIsExpand(true));
+				LocalstorageInstance.set('ot', 'draft', true);
+			}
 		} catch (e) {
 			toast.error(t('alerts.draft_unsuccessfully'), {
 				toastId: 'draft_unsuccessfully',

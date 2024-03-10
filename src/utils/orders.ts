@@ -14,7 +14,9 @@ export const createOrder = (fields: IpcMainChannels['send_order']) =>
 			.catch(reject);
 	});
 
-export const createDraft = (fields: IpcMainChannels['send_order']) =>
+export const createOrders = (orders: IpcMainChannels['send_orders']) => ipcMain.send('send_orders', orders);
+
+export const createDraft = (order: IpcMainChannels['send_order']) =>
 	new Promise<number>(async (resolve, reject) => {
 		const urls = getBrokerURLs(store.getState());
 		if (!urls) {
@@ -24,12 +26,64 @@ export const createDraft = (fields: IpcMainChannels['send_order']) =>
 
 		try {
 			const response = await brokerAxios.post<ServerResponse<number>>(urls.createDraft, {
-				price: fields.price,
-				quantity: fields.quantity,
-				side: fields.orderSide,
-				symbolISIN: fields.symbolISIN,
-				validity: fields.validity,
-				validityDate: fields.validityDate <= 0 ? null : fields.validityDate,
+				price: order.price,
+				quantity: order.quantity,
+				side: order.orderSide,
+				symbolISIN: order.symbolISIN,
+				validity: order.validity,
+				validityDate: order.validityDate <= 0 ? undefined : order.validityDate,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			refetchActiveOrderTab();
+			resolve(data.result);
+		} catch (e) {
+			reject();
+		}
+	});
+
+export const deleteOrder = (ids: number[]) =>
+	new Promise<boolean>(async (resolve, reject) => {
+		const urls = getBrokerURLs(store.getState());
+		if (!urls || ids.length === 0) {
+			reject();
+			return;
+		}
+
+		try {
+			const isSingle = ids.length === 1;
+			const url = isSingle ? urls.deleteOrder : urls.groupDeleteOrder;
+
+			const response = await brokerAxios.post<ServerResponse<boolean>>(url, {
+				orderId: isSingle ? ids[0] : ids,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			refetchActiveOrderTab();
+			resolve(data.result);
+		} catch (e) {
+			reject();
+		}
+	});
+
+export const deleteDraft = (ids: number[]) =>
+	new Promise<boolean>(async (resolve, reject) => {
+		const urls = getBrokerURLs(store.getState());
+		if (!urls || ids.length === 0) {
+			reject();
+			return;
+		}
+
+		try {
+			const isSingle = ids.length === 1;
+			const url = isSingle ? urls.deleteDraft : urls.groupDeleteDraft;
+
+			const response = await brokerAxios.post<ServerResponse<boolean>>(url, {
+				ordersDraftId: isSingle ? ids[0] : ids,
 			});
 			const { data } = response;
 

@@ -1,8 +1,8 @@
 export type Observer<T> = (data: T) => void;
 
 export interface IChannel<T> {
-	channel: string
-	subscribers: Array<Observer<T>>
+	channel: string;
+	subscribers: Array<Observer<T>>;
 }
 
 class Observable<T> {
@@ -10,7 +10,8 @@ class Observable<T> {
 
 	subscribe(channelName: string, subscriber: Observer<T>): void {
 		let channel = this.channels.find((c) => c.channel === channelName);
-		if (channel !== undefined) {
+
+		if (!channel) {
 			channel = { channel: channelName, subscribers: [] };
 			this.channels.push(channel);
 		}
@@ -34,7 +35,9 @@ class Observable<T> {
 	notify(channelName: string, data: T): void {
 		const channel = this.channels.find((c) => c.channel === channelName);
 		if (channel !== undefined) {
-			channel.subscribers.forEach((subscriber) => { subscriber(data); });
+			channel.subscribers.forEach((subscriber) => {
+				subscriber(data);
+			});
 		}
 	}
 }

@@ -57,6 +57,10 @@ const uiSlice = createSlice({
 			state.saturnActiveTemplate = payload;
 		},
 
+		setOrdersIsExpand: (state, { payload }: PayloadAction<UIState['ordersIsExpand']>) => {
+			state.ordersIsExpand = payload;
+		},
+
 		toggleOrdersIsExpand: (state) => {
 			state.ordersIsExpand = !state.ordersIsExpand;
 		},
@@ -69,6 +73,7 @@ export const {
 	setSaturnActiveTemplate,
 	toggleSidebar,
 	toggleOrdersIsExpand,
+	setOrdersIsExpand,
 	setLsStatus,
 } = uiSlice.actions;
 

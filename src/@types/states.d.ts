@@ -48,6 +48,10 @@ declare type IBrokerUrls = Record<
 	| 'commission'
 	| 'optionOrders'
 	| 'userInformation'
+	| 'deleteDraft'
+	| 'deleteOrder'
+	| 'groupDeleteDraft'
+	| 'groupDeleteOrder'
 	| 'userRemain'
 	| 'userStatus',
 	'createDraft',

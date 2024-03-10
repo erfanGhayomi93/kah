@@ -1,11 +1,14 @@
 import { useBrokerOrdersCountQuery } from '@/api/queries/brokerPrivateQueries';
-import { ArrowUpSVG } from '@/components/icons';
+import ipcMain from '@/classes/IpcMain';
+import { ArrowUpSVG, SendFillSVG, TrashFillSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOrdersIsExpand, toggleOrdersIsExpand } from '@/features/slices/uiSlice';
-import { cn } from '@/utils/helpers';
+import { cn, dateConverter } from '@/utils/helpers';
+import { createOrders, deleteDraft, deleteOrder } from '@/utils/orders';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
+import styles from './Orders.module.scss';
 
 interface HeaderProps {
 	tab: TOrdersTab;
@@ -18,6 +21,8 @@ const Header = ({ tab, setTab }: HeaderProps) => {
 	const dispatch = useAppDispatch();
 
 	const ordersIsExpand = useAppSelector(getOrdersIsExpand);
+
+	const [selectedRows, setSelectedRows] = useState<Order.TOrder[]>([]);
 
 	const { data: ordersCount } = useBrokerOrdersCountQuery({
 		queryKey: ['brokerOrdersCountQuery'],
@@ -63,6 +68,61 @@ const Header = ({ tab, setTab }: HeaderProps) => {
 		if (!ordersIsExpand) toggle();
 	};
 
+	const onSelectRows = (orders: Order.TOrder[]) => {
+		setSelectedRows(orders);
+	};
+
+	const onDeleteAll = () => {
+		if (selectedRows.length === 0) return;
+
+		const ids = selectedRows.map((item) => ('orderId' in item ? item.orderId : item.id));
+
+		if (tab === 'draft') deleteDraft(ids);
+		else deleteOrder(ids);
+	};
+
+	const onSendAll = () => {
+		if (tab !== 'draft' || selectedRows.length === 0) return;
+
+		const orders: IpcMainChannels['send_orders'] = [];
+
+		for (let i = 0; i < selectedRows.length; i++) {
+			const draftOrder = selectedRows[i] as Order.DraftOrder;
+
+			const params: IpcMainChannels['send_order'] = {
+				symbolISIN: draftOrder.symbolISIN,
+				quantity: draftOrder.quantity,
+				price: draftOrder.price,
+				orderSide: draftOrder.side === 'Buy' ? 'buy' : 'sell',
+				validity: draftOrder.validity,
+				validityDate: 0,
+			};
+
+			if (params.validity === 'Month' || params.validity === 'Week')
+				params.validityDate = dateConverter(params.validity);
+
+			orders.push(params);
+		}
+
+		createOrders(orders);
+		onDeleteAll();
+
+		ipcMain.send('deselect_orders');
+		setSelectedRows([]);
+	};
+
+	useLayoutEffect(() => {
+		ipcMain.handle('set_selected_orders', onSelectRows);
+
+		return () => {
+			ipcMain.removeHandler('set_selected_orders', onSelectRows);
+		};
+	}, []);
+
+	useLayoutEffect(() => {
+		setSelectedRows([]);
+	}, [tab]);
+
 	return (
 		<div className='h-56 bg-white px-8 flex-justify-between'>
 			<ul className='flex-1 flex-justify-start'>
@@ -90,15 +150,35 @@ const Header = ({ tab, setTab }: HeaderProps) => {
 				))}
 			</ul>
 
-			<ul className='flex-justify-end'>
+			<ul className={styles.toolbar}>
+				{!['option_orders', 'executed_orders'].includes(tab) && (
+					<>
+						<li>
+							<button onClick={onDeleteAll} disabled={selectedRows.length === 0} type='button'>
+								<TrashFillSVG width='2rem' height='2rem' />
+								{selectedRows.length > 0 && <span className={styles.badge}>{selectedRows.length}</span>}
+							</button>
+						</li>
+						{tab === 'draft' && (
+							<li>
+								<button onClick={onSendAll} disabled={selectedRows.length === 0} type='button'>
+									<SendFillSVG width='2rem' height='2rem' />
+									{selectedRows.length > 0 && (
+										<span className={styles.badge}>{selectedRows.length}</span>
+									)}
+								</button>
+							</li>
+						)}
+					</>
+				)}
+
 				<li>
-					<button onClick={toggle} className='py-12 pl-8 pr-48 flex-justify-end' type='button'>
-						<span
-							style={{ transform: `rotate(${ordersIsExpand ? 180 : 0}deg)` }}
-							className='size-24 text-gray-900 transition-transform flex-justify-center'
-						>
-							<ArrowUpSVG width='1.6rem' height='1.6rem' />
-						</span>
+					<button
+						style={{ transform: `rotate(${ordersIsExpand ? 180 : 0}deg)` }}
+						onClick={toggle}
+						type='button'
+					>
+						<ArrowUpSVG width='1.6rem' height='1.6rem' />
 					</button>
 				</li>
 			</ul>
