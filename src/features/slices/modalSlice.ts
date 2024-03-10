@@ -16,7 +16,10 @@ export interface IBuySellModal extends IBaseModalConfiguration {
 	symbolTitle: string;
 	symbolISIN: string;
 	symbolType: TBsSymbolTypes;
-	validityDate?: TBsValidityDates;
+	initialValidity?: TBsValidityDates;
+	initialValidityDate?: number;
+	initialPrice?: number;
+	initialQuantity?: number;
 	side: TBsSides;
 	collateral?: TBsCollaterals;
 	expand?: boolean;

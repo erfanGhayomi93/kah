@@ -1,11 +1,15 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
-import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
+import { useTradingFeatures } from '@/hooks';
+import { dateConverter, dateFormatter, days, sepNumbers } from '@/utils/helpers';
+import { createOrder, deleteDraft } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
 import NoData from '../NoData';
+import DraftActionCell from '../common/DraftActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';
 
@@ -19,6 +23,56 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Order.DraftOrder>>(null);
+
+	const { addBuySellModal } = useTradingFeatures();
+
+	const onSend = async (order: Order.DraftOrder) => {
+		try {
+			const { id, price, quantity, validityDate, validity, symbolISIN, side } = order;
+			const params: IpcMainChannels['send_order'] = {
+				symbolISIN,
+				quantity,
+				price,
+				orderSide: side === 'Buy' ? 'buy' : 'sell',
+				validity,
+				validityDate: 0,
+			};
+
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
+				params.validityDate = dateConverter(params.validity);
+
+			await createOrder(params);
+			deleteDraft([id]);
+
+			toast.success(t('alerts.ordered_successfully'), {
+				toastId: 'ordered_successfully',
+			});
+		} catch (e) {
+			//
+		}
+	};
+
+	const onDelete = (order: Order.DraftOrder) => {
+		deleteDraft([order.id]);
+	};
+
+	const onEdit = (order: Order.DraftOrder) => {
+		//
+	};
+
+	const onCopy = (order: Order.DraftOrder) => {
+		addBuySellModal({
+			side: order.side === 'Buy' ? 'buy' : 'sell',
+			symbolType: 'base',
+			symbolISIN: order.symbolISIN,
+			symbolTitle: order.symbolTitle,
+			initialPrice: order.price,
+			initialQuantity: order.quantity,
+			initialValidity: order.validity,
+			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+		});
+	};
 
 	const columnDefs = useMemo<Array<ColDef<Order.DraftOrder>>>(
 		() => [
@@ -93,6 +147,19 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 					return t('validity_date.' + validity.toLowerCase());
 				},
 			},
+			{
+				colId: 'action',
+				headerName: t('orders.action'),
+				minWidth: 160,
+				maxWidth: 160,
+				cellRenderer: DraftActionCell,
+				cellRendererParams: {
+					onSend,
+					onDelete,
+					onEdit,
+					onCopy,
+				},
+			},
 		],
 		[JSON.stringify(data)],
 	);
@@ -144,7 +211,6 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				defaultColDef={defaultColDef}
 				suppressRowClickSelection={false}
 				onSelectionChanged={(e) => setSelectedRows(e.api.getSelectedRows() ?? [])}
-				rowClass='cursor-pointer'
 				className='h-full border-0'
 				rowSelection='multiple'
 			/>

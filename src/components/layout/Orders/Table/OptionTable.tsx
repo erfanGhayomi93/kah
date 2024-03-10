@@ -6,6 +6,7 @@ import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import NoData from '../NoData';
+import OptionActionCell from '../common/OptionActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';
 
@@ -18,6 +19,10 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Order.OptionOrder>>(null);
+
+	const showDetails = (order: Order.OptionOrder) => {
+		//
+	};
 
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(
 		() => [
@@ -85,6 +90,16 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				flex: 1,
 				valueGetter: ({ data }) => Math.max(0, data!.remainDays),
 			},
+			{
+				colId: 'action',
+				headerName: t('orders.action'),
+				minWidth: 140,
+				maxWidth: 140,
+				cellRenderer: OptionActionCell,
+				cellRendererParams: {
+					showDetails,
+				},
+			},
 		],
 		[JSON.stringify(data)],
 	);
@@ -135,7 +150,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				columnDefs={columnDefs}
 				defaultColDef={defaultColDef}
 				suppressRowClickSelection={false}
-				rowClass='cursor-pointer'
 				className='h-full border-0'
 				rowSelection='multiple'
 			/>

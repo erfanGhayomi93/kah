@@ -98,7 +98,8 @@ const Header = ({ tab, setTab }: HeaderProps) => {
 				validityDate: 0,
 			};
 
-			if (params.validity === 'Month' || params.validity === 'Week')
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(draftOrder.validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
 				params.validityDate = dateConverter(params.validity);
 
 			orders.push(params);

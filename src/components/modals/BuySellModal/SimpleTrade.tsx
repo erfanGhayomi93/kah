@@ -60,6 +60,7 @@ const SimpleTrade = ({
 	price,
 	quantity,
 	symbolType,
+	validity,
 	validityDate,
 	side,
 	priceLock,
@@ -128,7 +129,7 @@ const SimpleTrade = ({
 	);
 
 	const validityDateTitle = useMemo(
-		() => VALIDITY_DATES.find((item) => item.id === validityDate)?.title ?? '−',
+		() => VALIDITY_DATES.find((item) => item.id === validity)?.title ?? '−',
 		[validityDate],
 	);
 
@@ -291,12 +292,12 @@ const SimpleTrade = ({
 											<button
 												type='button'
 												onClick={() => {
-													setInputValue('validityDate', item.id);
+													setInputValue('validity', item.id);
 													setShowValidityDates(false);
 												}}
 												className={cn(
 													'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
-													item.id === validityDate
+													item.id === validity
 														? 'border-primary-400 bg-secondary-100 text-primary-400'
 														: 'border-gray-500 text-gray-1000 hover:bg-primary-100',
 												)}

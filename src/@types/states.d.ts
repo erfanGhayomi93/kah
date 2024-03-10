@@ -75,7 +75,8 @@ declare type TOptionWatchlistColumnsState = Array<{
 
 declare interface IBsModalInputs {
 	collateral: TBsCollaterals | null;
-	validityDate: TBsValidityDates;
+	validity: TBsValidityDates;
+	validityDate: number;
 	price: number;
 	quantity: number;
 	side: TBsSides;
