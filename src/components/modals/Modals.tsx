@@ -53,6 +53,10 @@ const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
 	ssr: false,
 });
 
+const OrderDetails = dynamic(() => import('./OrderDetails'), {
+	ssr: false,
+});
+
 const Modals = () => {
 	const {
 		loginModal,
@@ -67,6 +71,7 @@ const Modals = () => {
 		addSymbolToWatchlist,
 		chooseBroker,
 		blackScholes,
+		orderDetails,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -92,6 +97,8 @@ const Modals = () => {
 			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
 
 			{chooseBroker && <ChooseBroker {...chooseBroker} />}
+
+			{orderDetails && <OrderDetails {...orderDetails} />}
 
 			{forgetPassword && (
 				<ForgetPasswordModal

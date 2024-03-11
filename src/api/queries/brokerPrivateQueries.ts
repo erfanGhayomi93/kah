@@ -68,7 +68,7 @@ export const useBrokerOrdersCountQuery = createQuery<Broker.OrdersCount | null, 
 });
 
 export const useOpenOrdersQuery = createQuery<Order.OpenOrder[] | null, ['openOrdersQuery']>({
-	staleTime: 18e5,
+	staleTime: 6e4,
 	queryKey: ['openOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -84,7 +84,7 @@ export const useOpenOrdersQuery = createQuery<Order.OpenOrder[] | null, ['openOr
 });
 
 export const useTodayOrdersQuery = createQuery<Order.TodayOrder[] | null, ['openOrdersQuery']>({
-	staleTime: 18e5,
+	staleTime: 6e4,
 	queryKey: ['openOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -100,7 +100,7 @@ export const useTodayOrdersQuery = createQuery<Order.TodayOrder[] | null, ['open
 });
 
 export const useExecutedOrdersQuery = createQuery<Order.ExecutedOrder[] | null, ['executedOrdersQuery']>({
-	staleTime: 18e5,
+	staleTime: 6e4,
 	queryKey: ['executedOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -116,7 +116,7 @@ export const useExecutedOrdersQuery = createQuery<Order.ExecutedOrder[] | null, 
 });
 
 export const useDraftOrdersQuery = createQuery<Order.DraftOrder[] | null, ['draftOrdersQuery']>({
-	staleTime: 18e5,
+	staleTime: 6e4,
 	queryKey: ['draftOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -132,7 +132,7 @@ export const useDraftOrdersQuery = createQuery<Order.DraftOrder[] | null, ['draf
 });
 
 export const useOptionOrdersQuery = createQuery<Order.OptionOrder[] | null, ['optionOrdersQuery']>({
-	staleTime: 18e5,
+	staleTime: 6e4,
 	queryKey: ['optionOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());

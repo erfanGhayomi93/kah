@@ -1,4 +1,5 @@
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
+import Tooltip from '@/components/common/Tooltip';
 import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
@@ -119,23 +120,27 @@ const WatchlistList = () => {
 
 			<ul className='flex flex-grow-0 gap-8'>
 				<li>
-					<button
-						type='button'
-						className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
-						onClick={addNewWatchlist}
-					>
-						<PlusSVG width='1.8rem' height='1.8rem' />
-					</button>
+					<Tooltip placement='top' content={t('option_page.add_new_watchlist')}>
+						<button
+							type='button'
+							className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+							onClick={addNewWatchlist}
+						>
+							<PlusSVG width='1.8rem' height='1.8rem' />
+						</button>
+					</Tooltip>
 				</li>
 
 				<li>
-					<button
-						type='button'
-						onClick={manageWatchlistList}
-						className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
-					>
-						<MoreOptionsSVG width='2.4rem' height='2.4rem' />
-					</button>
+					<Tooltip placement='top' content={t('option_page.manage_watchlist_list')}>
+						<button
+							type='button'
+							onClick={manageWatchlistList}
+							className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+						>
+							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
+						</button>
+					</Tooltip>
 				</li>
 			</ul>
 		</div>

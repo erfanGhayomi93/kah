@@ -1,6 +1,7 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
+import { useAppDispatch } from '@/features/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
@@ -18,10 +19,17 @@ interface OptionTableProps {
 const OptionTable = ({ loading, data }: OptionTableProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const gridRef = useRef<GridApi<Order.OptionOrder>>(null);
 
 	const showDetails = (order: Order.OptionOrder) => {
-		//
+		// dispatch(
+		// 	toggleOrderDetailsModal({
+		// 		order,
+		// 		symbolType: 'option',
+		// 	}),
+		// );
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(

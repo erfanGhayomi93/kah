@@ -3,6 +3,9 @@ import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
 import { editableOrdersStatus } from '@/constants';
+import { useAppDispatch } from '@/features/hooks';
+import { toggleOrderDetailsModal } from '@/features/slices/modalSlice';
+import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { deleteOrder } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -25,18 +28,38 @@ interface OrderTableProps {
 const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const gridRef = useRef<GridApi<TOrders>>(null);
+
+	const { addBuySellModal } = useTradingFeatures();
 
 	const onDelete = (order: TOrders) => {
 		deleteOrder([order.orderId]);
 	};
 
 	const onEdit = (order: TOrders) => {
-		//
+		addBuySellModal({
+			id: order.orderId,
+			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
+			symbolType: 'base',
+			type: 'order',
+			mode: 'edit',
+			symbolISIN: order.symbolISIN,
+			symbolTitle: order.symbolTitle,
+			initialPrice: order.price,
+			initialQuantity: order.quantity,
+			initialValidity: order.validity,
+			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+		});
 	};
 
 	const showDetails = (order: TOrders) => {
-		//
+		dispatch(
+			toggleOrderDetailsModal({
+				order,
+			}),
+		);
 	};
 
 	const columnDefs = useMemo<Array<ColDef<TOrders>>>(
@@ -135,7 +158,9 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 			{
 				colId: 'commission',
 				headerName: t('orders.commission'),
-				valueGetter: () => '−',
+				headerComponent: RialTemplate,
+				valueGetter: ({ data }) => data!.price * data!.quantity - data!.orderVolume,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'validity',
@@ -147,13 +172,13 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 						const tt = new Date(validityDate).getTime();
 						const d = days(Date.now(), tt);
 
-						if (d === 0) return t('validity_date.today');
-						if (d === 1) return t('validity_date.tomorrow');
+						if (d === 0) return t('validity_date.Today');
+						if (d === 1) return t('validity_date.Tomorrow');
 
 						return dateFormatter(tt, 'date');
 					}
 
-					return t('validity_date.' + validity.toLowerCase());
+					return t(`validity_date.${validity}`);
 				},
 			},
 			{

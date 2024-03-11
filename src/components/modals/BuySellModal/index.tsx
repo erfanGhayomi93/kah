@@ -20,12 +20,15 @@ const Div = styled.div`
 interface BuySellModalProps extends IBuySellModal {}
 
 const BuySellModal = ({
+	id,
 	symbolISIN,
 	symbolTitle,
 	symbolType,
 	priceLock,
 	collateral,
 	side,
+	mode = 'create',
+	type = 'order',
 	initialValidity,
 	initialValidityDate,
 	initialPrice,
@@ -82,6 +85,9 @@ const BuySellModal = ({
 				<div className='flex h-full flex-1'>
 					<Body
 						{...inputs}
+						id={id}
+						mode={mode}
+						type={type}
 						close={onCloseModal}
 						symbolISIN={symbolISIN}
 						symbolType={symbolType}

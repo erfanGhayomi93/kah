@@ -74,6 +74,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 
 		addBuySellModal({
 			side,
+			mode: 'create',
 			symbolType: 'option',
 			symbolISIN,
 			symbolTitle,

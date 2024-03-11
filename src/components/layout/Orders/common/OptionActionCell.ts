@@ -20,7 +20,10 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 
 	detailsBtn() {
 		const btn = this.createDetails();
-		btn.onclick = () => this.params.showDetails(this.params.data!);
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.showDetails(this.params.data!);
+		};
 
 		return btn;
 	}

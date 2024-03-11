@@ -264,6 +264,8 @@ export const decodeBrokerUrls = (data: Broker.URL[]) => {
 		deleteOrder: data[13].url,
 		groupDeleteDraft: data[14].url,
 		groupDeleteOrder: data[15].url,
+		updateDraft: data[16].url,
+		updateOrder: data[17].url,
 	};
 
 	return urls;
