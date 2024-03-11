@@ -52,7 +52,7 @@ const Body = (props: BodyProps) => {
 			}
 
 			const bClientId = getBrokerClientId();
-			if (!bClientId) {
+			if (!bClientId[0]) {
 				dispatch(setBrokerIsSelected(false));
 				dispatch(toggleChooseBrokerModal({}));
 				throw new Error('broker_error');

@@ -144,13 +144,13 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 						const tt = new Date(validityDate).getTime();
 						const d = days(Date.now(), tt);
 
-						if (d === 0) return t('validity_date.today');
-						if (d === 1) return t('validity_date.tomorrow');
+						if (d === 0) return t('validity_date.Today');
+						if (d === 1) return t('validity_date.Tomorrow');
 
 						return dateFormatter(tt, 'date');
 					}
 
-					return t('validity_date.' + validity.toLowerCase());
+					return t(`validity_date.${validity}`);
 				},
 			},
 			{

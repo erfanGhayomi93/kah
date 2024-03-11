@@ -108,27 +108,27 @@ const SimpleTrade = ({
 		() => [
 			{
 				id: 'Day',
-				title: t('bs_modal.validity_date_day'),
+				title: t('validity_date.Day'),
 			},
 			{
 				id: 'Week',
-				title: t('bs_modal.validity_date_week'),
+				title: t('validity_date.Week'),
 			},
 			{
 				id: 'Month',
-				title: t('bs_modal.validity_date_month'),
+				title: t('validity_date.Month'),
 			},
 			{
 				id: 'GoodTillDate',
-				title: t('bs_modal.validity_date_good_till_date'),
+				title: t('validity_date.GoodTillDate'),
 			},
 			{
 				id: 'GoodTillCancelled',
-				title: t('bs_modal.validity_date_good_till_cancelled'),
+				title: t('validity_date.GoodTillCancelled'),
 			},
 			{
 				id: 'FillAndKill',
-				title: t('bs_modal.validity_date_fill_and_kill'),
+				title: t('validity_date.FillAndKill'),
 			},
 		],
 		[],

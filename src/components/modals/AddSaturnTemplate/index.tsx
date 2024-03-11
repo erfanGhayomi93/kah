@@ -18,7 +18,7 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface AddSaturnTemplateProps extends IAddSaturnTemplate, IBaseModalConfiguration {}
+interface AddSaturnTemplateProps extends IAddSaturnTemplate {}
 
 const AddSaturnTemplate = ({
 	baseSymbolTitle,
