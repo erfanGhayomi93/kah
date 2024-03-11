@@ -3,6 +3,7 @@ import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleChoiceCollateralModal } from '@/features/slices/modalSlice';
+import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
@@ -24,6 +25,8 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 
 	const gridRef = useRef<GridApi<Order.OptionOrder>>(null);
 
+	const { addBuySellModal } = useTradingFeatures();
+
 	const showDetails = (order: Order.OptionOrder) => {
 		// dispatch(
 		// 	toggleOrderDetailsModal({
@@ -34,7 +37,17 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 	};
 
 	const onClosePosition = (order: Order.OptionOrder) => {
-		//
+		addBuySellModal({
+			side: order.side === 'Call' ? 'sell' : 'buy',
+			symbolType: 'option',
+			type: 'order',
+			mode: 'create',
+			symbolISIN: order.symbolISIN,
+			symbolTitle: order.symbolTitle,
+			initialQuantity: order.availableClosePosition,
+			switchable: false,
+			initialValidity: 'Day',
+		});
 	};
 
 	const onChangeCollateral = (order: Order.OptionOrder) => {

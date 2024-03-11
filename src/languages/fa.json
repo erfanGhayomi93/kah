@@ -424,7 +424,22 @@
 		"physical_settlement_date": "تسویه فیزیکی",
 		"strike_price": "قیمت اعمال",
 		"remain_days": "روز‌های باقی‌مانده تا سررسید",
-		"action": "عملیات"
+		"action": "عملیات",
+		"delete_order": "حذف سفارش",
+		"delete_orders": "حذف سفارش‌ها",
+		"delete_draft": "حذف پیش‌نویس",
+		"delete_drafts": "حذف پیش‌نویس‌ها",
+		"delete_order_confirm": "آیا از حذف سفارش \"{title}\" اطمینان دارید؟",
+		"delete_orders_confirm": "آیا از حذف سفارش‌های انتخاب شده، اطمینان دارید؟",
+		"delete_draft_confirm": "آیا از حذف پیش‌نویس \"{title}\" اطمینان دارید؟",
+		"delete_drafts_confirm": "آیا از حذف پیش‌نویس‌های انتخاب شده، اطمینان دارید؟"
+	},
+	"choice_collateral_modal": {
+		"title": "انتخاب وثیقه",
+		"stock_collateral": "وثیقه سهم",
+		"cash_collateral": "وثیقه وجه نقد",
+		"select_collateral": "لطفا نوع وثیقه مورد نظر خود را انتخاب کنید",
+		"collateral_details": "وثیقه مبلغ <p>{price}</p> ریال، بابت ضمانت موقعیت <t>{title}</t>"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",

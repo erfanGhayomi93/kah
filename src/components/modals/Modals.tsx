@@ -3,6 +3,8 @@
 import { useAppSelector } from '@/features/hooks';
 import dynamic from 'next/dynamic';
 import { Fragment } from 'react';
+import ChoiceCollateral from './ChoiceCollateral';
+import Confirm from './Confirm';
 
 const AddNewOptionWatchlist = dynamic(() => import('./AddNewOptionWatchlist'), {
 	ssr: false,
@@ -74,6 +76,8 @@ const Modals = () => {
 		buySell,
 		addSymbolToWatchlist,
 		choiceBroker,
+		confirm,
+		choiceCollateral,
 		blackScholes,
 		moveSymbolToWatchlist,
 		orderDetails,
@@ -102,6 +106,10 @@ const Modals = () => {
 			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
 
 			{choiceBroker && <ChoiceBroker {...choiceBroker} />}
+
+			{choiceCollateral && <ChoiceCollateral {...choiceCollateral} />}
+
+			{confirm && <Confirm {...confirm} />}
 
 			{orderDetails && <OrderDetails {...orderDetails} />}
 

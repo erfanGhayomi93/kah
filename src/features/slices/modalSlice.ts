@@ -15,6 +15,7 @@ export interface IBlackScholes extends IBaseModalConfiguration {
 export interface IBuySellModal extends IBaseModalConfiguration {
 	id?: number;
 	mode: TBsModes;
+	switchable?: boolean;
 	symbolTitle: string;
 	symbolISIN: string;
 	symbolType: TBsSymbolTypes;
@@ -54,10 +55,22 @@ export interface IChoiceCollateral extends IBaseModalConfiguration {
 	order: Order.OptionOrder;
 }
 
+export interface IConfirmModal extends IBaseModalConfiguration {
+	title: React.ReactNode;
+	description: React.ReactNode;
+	onSubmit?: () => void;
+	onCancel?: () => void;
+	confirm: {
+		label: string;
+		type: 'success' | 'error' | 'primary';
+	};
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
 	choiceBroker: true;
+	confirm: IConfirmModal;
 	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
 	orderDetails: IOrderDetailsModal;
@@ -75,6 +88,7 @@ export type ModalState = TBaseModalProps<{
 const initialState: ModalState = {
 	loginModal: null,
 	optionFilters: null,
+	confirm: null,
 	moveSymbolToWatchlist: null,
 	logout: null,
 	blackScholes: null,
@@ -108,6 +122,10 @@ const modalSlice = createSlice({
 
 		toggleChoiceCollateralModal: (state, { payload }: PayloadAction<ModalState['choiceCollateral']>) => {
 			state.choiceCollateral = payload;
+		},
+
+		setConfirmModal: (state, { payload }: PayloadAction<ModalState['confirm']>) => {
+			state.confirm = payload;
 		},
 
 		toggleLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
@@ -167,6 +185,7 @@ export const {
 	toggleOptionFiltersModal,
 	toggleLogoutModal,
 	toggleBlackScholesModal,
+	setConfirmModal,
 	toggleSymbolContractsModal,
 	toggleSaveSaturnTemplate,
 	toggleAddNewOptionWatchlist,
@@ -183,6 +202,7 @@ export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getMoveSymbolToWatchlistModal = (state: RootState) => state.modal.moveSymbolToWatchlist;
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getBuySellModal = (state: RootState) => state.modal.buySell;
+export const getConfirmModal = (state: RootState) => state.modal.confirm;
 export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
