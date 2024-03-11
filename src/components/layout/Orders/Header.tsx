@@ -2,6 +2,7 @@ import { useBrokerOrdersCountQuery } from '@/api/queries/brokerPrivateQueries';
 import ipcMain from '@/classes/IpcMain';
 import { ArrowUpSVG, SendFillSVG, TrashFillSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setConfirmModal } from '@/features/slices/modalSlice';
 import { getOrdersIsExpand, toggleOrdersIsExpand } from '@/features/slices/uiSlice';
 import { cn, dateConverter } from '@/utils/helpers';
 import { createOrders, deleteDraft, deleteOrder } from '@/utils/orders';
@@ -78,8 +79,20 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 
 		const ids = selectedRows.map((item) => ('orderId' in item ? item.orderId : item.id));
 
-		if (tab === 'draft') deleteDraft(ids);
-		else deleteOrder(ids);
+		dispatch(
+			setConfirmModal({
+				title: t(`orders.delete_${tab === 'draft' ? 'drafts' : 'orders'}`),
+				description: t(`orders.delete_${tab === 'draft' ? 'drafts' : 'orders'}_confirm`),
+				onSubmit: () => {
+					if (tab === 'draft') deleteDraft(ids);
+					else deleteOrder(ids);
+				},
+				confirm: {
+					label: t('common.delete'),
+					type: 'error',
+				},
+			}),
+		);
 	};
 
 	const onSendAll = () => {

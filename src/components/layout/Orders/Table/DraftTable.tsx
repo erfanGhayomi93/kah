@@ -1,6 +1,8 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
+import { useAppDispatch } from '@/features/hooks';
+import { setConfirmModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateConverter, dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { createOrder, deleteDraft } from '@/utils/orders';
@@ -23,6 +25,8 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Order.DraftOrder>>(null);
+
+	const dispatch = useAppDispatch();
 
 	const { addBuySellModal } = useTradingFeatures();
 
@@ -54,7 +58,17 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 	};
 
 	const onDelete = (order: Order.DraftOrder) => {
-		deleteDraft([order.id]);
+		dispatch(
+			setConfirmModal({
+				title: t('orders.delete_draft'),
+				description: t('orders.delete_draft_confirm', { title: order.symbolTitle }),
+				onSubmit: () => deleteDraft([order.id]),
+				confirm: {
+					label: t('common.delete'),
+					type: 'error',
+				},
+			}),
+		);
 	};
 
 	const onEdit = (order: Order.DraftOrder) => {

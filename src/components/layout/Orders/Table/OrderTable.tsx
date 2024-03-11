@@ -4,7 +4,7 @@ import AgTable from '@/components/common/Tables/AgTable';
 import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
 import { editableOrdersStatus } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleOrderDetailsModal } from '@/features/slices/modalSlice';
+import { setConfirmModal, toggleOrderDetailsModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { deleteOrder } from '@/utils/orders';
@@ -35,7 +35,17 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	const { addBuySellModal } = useTradingFeatures();
 
 	const onDelete = (order: TOrders) => {
-		deleteOrder([order.orderId]);
+		dispatch(
+			setConfirmModal({
+				title: t('orders.delete_draft'),
+				description: t('orders.delete_draft_confirm', { title: order.symbolTitle }),
+				onSubmit: () => deleteOrder([order.orderId]),
+				confirm: {
+					label: t('common.delete'),
+					type: 'error',
+				},
+			}),
+		);
 	};
 
 	const onEdit = (order: TOrders) => {

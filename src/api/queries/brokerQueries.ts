@@ -5,29 +5,31 @@ import { createQuery, decodeBrokerUrls } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
-export const useGetBrokerUrlQuery = createQuery<IBrokerUrls, ['getBrokerUrlQuery']>({
+export const useGetBrokerUrlQuery = createQuery<IBrokerUrls | null, ['getBrokerUrlQuery']>({
 	staleTime: 36e5,
 	queryKey: ['getBrokerUrlQuery'],
 	queryFn: async ({ signal }) => {
 		const [, brokerCode] = getBrokerClientId();
+		if (!brokerCode) return null;
 
-		// eslint-disable-next-line no-console
-		if (!brokerCode) console.error(new Error('Broker code not defined!'));
+		try {
+			const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
+				params: {
+					brokerCode: brokerCode ?? 189,
+				},
+				signal,
+			});
+			const data = response.data;
 
-		const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
-			params: {
-				brokerCode: brokerCode ?? 189,
-			},
-			signal,
-		});
-		const data = response.data;
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+			const urls = decodeBrokerUrls(data.result);
 
-		const urls = decodeBrokerUrls(data.result);
-
-		store.dispatch(setBrokerURLs(urls));
-		return urls;
+			store.dispatch(setBrokerURLs(urls));
+			return urls;
+		} catch (e) {
+			return null;
+		}
 	},
 });
 

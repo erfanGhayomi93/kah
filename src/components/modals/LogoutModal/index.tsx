@@ -56,14 +56,14 @@ const LogoutModal = (props: LogoutModalProps) => {
 		<Modal
 			transparent
 			classes={{ root: 'modal__logout' }}
-			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			style={{ modal: { transform: 'translate(-50%, -50%)', borderRadius: '1.6rem' } }}
 			top='50%'
 			onClose={onCloseModal}
 			{...props}
 		>
 			<Div className='bg-white'>
 				{loading ? (
-					<div className='spinner size-32' />
+					<div className='size-32 spinner' />
 				) : (
 					<>
 						<h2 className='text-center text-xl font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
