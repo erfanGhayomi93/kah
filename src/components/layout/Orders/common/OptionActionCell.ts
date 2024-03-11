@@ -15,7 +15,7 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 	init(params: OptionActionCellProps) {
 		this.params = params;
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center text-gray-900 gap-16');
+		this.eGui.setAttribute('class', 'flex-justify-center text-gray-900 gap-8');
 
 		this.eGui.appendChild(this.collateralBtn());
 		this.eGui.appendChild(this.closePositionBtn());
@@ -34,9 +34,16 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 
 	collateralBtn() {
 		const btn = this.blockType === 'Portfolio' ? this.createStockCollateral() : this.createCashCollateral();
+		const isDisabled = this.isSwapDisabled;
+
+		if (isDisabled) {
+			btn.classList.add('text-gray-700');
+			btn.disabled = true;
+		}
+
 		btn.onclick = (e) => {
 			e.stopPropagation();
-			this.params.onChangeCollateral(this.params.data!);
+			if (!isDisabled) this.params.onChangeCollateral(this.params.data!);
 		};
 
 		return btn;
@@ -58,6 +65,10 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 
 	get blockType() {
 		return this.params.data!.blockType;
+	}
+
+	get isSwapDisabled() {
+		return Boolean(this.params.data?.side === 'Call' || !this.params.data?.isFreeze);
 	}
 
 	refresh(params: OptionActionCellProps) {

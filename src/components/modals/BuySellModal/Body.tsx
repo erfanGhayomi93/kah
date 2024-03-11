@@ -27,6 +27,7 @@ const Wrapper = ({ children, className }: WrapperProps) => (
 interface BodyProps extends IBsModalInputs {
 	id: number | undefined;
 	symbolISIN: string;
+	switchable: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
@@ -68,7 +69,7 @@ const Body = (props: BodyProps) => {
 
 			if (symbolType === 'base' && !validity) throw new Error('invalid_validity_date');
 
-			if (symbolType === 'option' && !collateral) throw new Error('invalid_collateral');
+			if (symbolType === 'option' && props.side === 'sell' && !collateral) throw new Error('invalid_collateral');
 
 			cb();
 		} catch (e) {

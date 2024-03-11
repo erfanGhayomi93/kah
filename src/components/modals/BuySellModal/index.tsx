@@ -27,6 +27,7 @@ const BuySellModal = ({
 	priceLock,
 	collateral,
 	side,
+	switchable = true,
 	mode = 'create',
 	type = 'order',
 	initialValidity,
@@ -85,6 +86,7 @@ const BuySellModal = ({
 				<div className='flex h-full flex-1'>
 					<Body
 						{...inputs}
+						switchable={switchable}
 						id={id}
 						mode={mode}
 						type={type}

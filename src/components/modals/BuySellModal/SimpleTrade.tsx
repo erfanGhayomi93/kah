@@ -1,19 +1,12 @@
-import Click from '@/components/common/Click';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import Tooltip from '@/components/common/Tooltip';
-import {
-	ArrowDownSVG,
-	ArrowUpSVG,
-	InfoCircleSVG,
-	LockSVG,
-	PayMoneySVG,
-	SnowFlakeSVG,
-	UnlockSVG,
-} from '@/components/icons';
+import { ArrowDownSVG, ArrowUpSVG, InfoCircleSVG, LockSVG, UnlockSVG } from '@/components/icons';
 import { cn, rialToToman, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Input from './common/Input';
+import SelectCollateral from './common/SelectColateral';
+import ValidityDate from './common/ValidityDate';
 
 interface PercentsProps {
 	side: TBsSides;
@@ -54,6 +47,7 @@ interface SimpleTradeProps extends IBsModalInputs {
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
+	switchable: boolean;
 	setInputValue: TSetBsModalInputs;
 	createDraft: () => void;
 	onSubmit: () => void;
@@ -65,6 +59,7 @@ const SimpleTrade = ({
 	quantity,
 	symbolType,
 	validity,
+	switchable,
 	validityDate,
 	side,
 	priceLock,
@@ -78,8 +73,6 @@ const SimpleTrade = ({
 	onSubmit,
 }: SimpleTradeProps) => {
 	const t = useTranslations();
-
-	const [showValidityDates, setShowValidityDates] = useState(false);
 
 	const onSubmitForm = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -95,48 +88,15 @@ const SimpleTrade = ({
 			{
 				id: 'buy',
 				title: t('side.buy'),
+				disabled: !switchable && side === 'sell',
 			},
 			{
 				id: 'sell',
 				title: t('side.sell'),
+				disabled: !switchable && side === 'buy',
 			},
 		],
 		[],
-	);
-
-	const VALIDITY_DATES: Array<{ id: TBsValidityDates; title: string }> = useMemo(
-		() => [
-			{
-				id: 'Day',
-				title: t('validity_date.Day'),
-			},
-			{
-				id: 'Week',
-				title: t('validity_date.Week'),
-			},
-			{
-				id: 'Month',
-				title: t('validity_date.Month'),
-			},
-			{
-				id: 'GoodTillDate',
-				title: t('validity_date.GoodTillDate'),
-			},
-			{
-				id: 'GoodTillCancelled',
-				title: t('validity_date.GoodTillCancelled'),
-			},
-			{
-				id: 'FillAndKill',
-				title: t('validity_date.FillAndKill'),
-			},
-		],
-		[],
-	);
-
-	const validityDateTitle = useMemo(
-		() => VALIDITY_DATES.find((item) => item.id === validity)?.title ?? '−',
-		[validityDate],
 	);
 
 	return (
@@ -157,6 +117,7 @@ const SimpleTrade = ({
 								item.id === activeTab ? 'font-medium text-white' : 'text-gray-700',
 							)}
 							type='button'
+							disabled={item.disabled}
 						>
 							{item.title}
 						</button>
@@ -237,85 +198,13 @@ const SimpleTrade = ({
 				{symbolType === 'option' && (
 					<div className='h-40 gap-8 flex-items-center'>
 						{side === 'sell' && (
-							<>
-								<button
-									type='button'
-									className={cn(
-										'h-full flex-1 gap-8 transition-colors flex-justify-center gray-box',
-										collateral === 'stock'
-											? '!border-primary-400 bg-secondary-100 text-primary-400'
-											: 'text-gray-900 hover:bg-primary-100',
-									)}
-								>
-									<SnowFlakeSVG width='2rem' height='2rem' />
-									{t('bs_modal.stock_collateral')}
-								</button>
-								<button
-									type='button'
-									className={cn(
-										'h-full flex-1 gap-8 transition-colors flex-justify-center gray-box',
-										collateral === 'cash'
-											? '!border-primary-400 bg-secondary-100 text-primary-400'
-											: 'text-gray-900 hover:bg-primary-100',
-									)}
-								>
-									<PayMoneySVG width='2rem' height='2rem' />
-									{t('bs_modal.cash_collateral')}
-								</button>
-							</>
+							<SelectCollateral value={collateral} onChange={(v) => setInputValue('collateral', v)} />
 						)}
 					</div>
 				)}
 
 				{symbolType === 'base' && (
-					<Click enabled onClickOutside={() => setShowValidityDates(false)}>
-						<div className='relative'>
-							<div
-								onClick={() => setShowValidityDates(!showValidityDates)}
-								className='h-40 cursor-pointer select-none gap-8 px-8 flex-justify-between gray-box'
-							>
-								<span className='whitespace-nowrap text-base text-gray-900'>
-									{t('bs_modal.validity_date')}
-								</span>
-
-								<span className='gap-8 text-tiny text-primary-400 flex-items-center'>
-									<span className='h-24 rounded border border-primary-400 bg-secondary-100 px-8 text-primary-400 flex-items-center'>
-										{validityDateTitle}
-									</span>
-									<span className='text-gray-900'>
-										<ArrowUpSVG width='1.2rem' height='1.2rem' />
-									</span>
-								</span>
-							</div>
-
-							{showValidityDates && (
-								<ul
-									style={{ top: 'calc(100% + 0.8rem)' }}
-									className='absolute left-0 w-full flex-wrap gap-8 py-16 flex-justify-center gray-box'
-								>
-									{VALIDITY_DATES.map((item) => (
-										<li style={{ flex: '0 0 8.8rem' }} key={item.id}>
-											<button
-												type='button'
-												onClick={() => {
-													setInputValue('validity', item.id);
-													setShowValidityDates(false);
-												}}
-												className={cn(
-													'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
-													item.id === validity
-														? 'border-primary-400 bg-secondary-100 text-primary-400'
-														: 'border-gray-500 text-gray-1000 hover:bg-primary-100',
-												)}
-											>
-												{item.title}
-											</button>
-										</li>
-									))}
-								</ul>
-							)}
-						</div>
-					</Click>
+					<ValidityDate value={validity} onChange={(v) => setInputValue('validity', v)} />
 				)}
 			</div>
 
