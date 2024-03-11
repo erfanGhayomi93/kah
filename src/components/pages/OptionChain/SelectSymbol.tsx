@@ -81,7 +81,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 		if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 			return (
 				<span className='absolute text-base font-medium text-gray-900 center'>
-					{t('common.no_symbol_found')}
+					{t('common.symbol_not_found')}
 				</span>
 			);
 

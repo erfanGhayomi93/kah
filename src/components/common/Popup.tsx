@@ -1,5 +1,5 @@
 import { cn } from '@/utils/helpers';
-import React, { cloneElement, useCallback, useEffect, useRef, useState } from 'react';
+import React, { cloneElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface IChildrenProps {
@@ -116,13 +116,29 @@ const Popup = ({
 		if (!disabled) setOpen(true);
 	};
 
-	useEffect(() => {
+	const onWindowBlur = () => {
+		setOpen(false);
+	};
+
+	useLayoutEffect(() => {
 		if (!open) return;
 
 		const controller = new AbortController();
 		window.addEventListener('click', (e) => onWindowClick(e, () => controller.abort()), {
 			signal: controller.signal,
 		});
+
+		return () => controller.abort();
+	}, [open]);
+
+	useLayoutEffect(() => {
+		const controller = new AbortController();
+
+		window.addEventListener('blur', onWindowBlur, {
+			signal: controller.signal,
+		});
+
+		return () => controller.abort();
 	}, [open]);
 
 	useEffect(() => {

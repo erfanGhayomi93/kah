@@ -25,7 +25,7 @@ const BuySellModal = dynamic(() => import('./BuySellModal'), {
 	ssr: false,
 });
 
-const ChooseBroker = dynamic(() => import('./ChooseBroker'), {
+const ChoiceBroker = dynamic(() => import('./ChoiceBroker'), {
 	ssr: false,
 });
 
@@ -57,6 +57,10 @@ const OrderDetails = dynamic(() => import('./OrderDetails'), {
 	ssr: false,
 });
 
+const MoveSymbolToWatchlist = dynamic(() => import('./MoveSymbolToWatchlist'), {
+	ssr: false,
+});
+
 const Modals = () => {
 	const {
 		loginModal,
@@ -69,8 +73,9 @@ const Modals = () => {
 		manageOptionWatchlistList,
 		buySell,
 		addSymbolToWatchlist,
-		chooseBroker,
+		choiceBroker,
 		blackScholes,
+		moveSymbolToWatchlist,
 		orderDetails,
 	} = useAppSelector((state) => state.modal);
 
@@ -96,9 +101,11 @@ const Modals = () => {
 
 			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
 
-			{chooseBroker && <ChooseBroker {...chooseBroker} />}
+			{choiceBroker && <ChoiceBroker {...choiceBroker} />}
 
 			{orderDetails && <OrderDetails {...orderDetails} />}
+
+			{moveSymbolToWatchlist && <MoveSymbolToWatchlist {...moveSymbolToWatchlist} />}
 
 			{forgetPassword && (
 				<ForgetPasswordModal

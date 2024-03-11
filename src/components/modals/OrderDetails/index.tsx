@@ -1,6 +1,6 @@
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleManageOptionWatchlistListModal, type IOrderDetailsModal } from '@/features/slices/modalSlice';
+import { toggleOrderDetailsModal, type IOrderDetailsModal } from '@/features/slices/modalSlice';
 import { cn, dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
@@ -21,7 +21,7 @@ const OrderDetails = ({ order, ...props }: OrderDetailsProps) => {
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(toggleManageOptionWatchlistListModal(null));
+		dispatch(toggleOrderDetailsModal(null));
 	};
 
 	const numFormatter = (v: number) => {

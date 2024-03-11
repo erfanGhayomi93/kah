@@ -132,15 +132,15 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 			},
 			{
 				colId: 'executed',
-				headerName: t('orders.executed'),
+				headerName: t('orders.executed_and_remain_orders'),
 				valueGetter: ({ data }) => data!.sumExecuted ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
-			},
-			{
-				colId: 'remain',
-				headerName: t('orders.remain'),
-				valueGetter: ({ data }) => Math.max(0, data!.quantity - data!.sumExecuted) ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				minWidth: 160,
+				valueFormatter: ({ data }) => {
+					const executed = data!.sumExecuted;
+					const remain = Math.max(0, data!.quantity - executed) ?? 0;
+
+					return `(${sepNumbers(String(remain))}) ${sepNumbers(String(executed))}`;
+				},
 			},
 			{
 				colId: 'amount',
@@ -159,7 +159,7 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 				colId: 'commission',
 				headerName: t('orders.commission'),
 				headerComponent: RialTemplate,
-				valueGetter: ({ data }) => data!.price * data!.quantity - data!.orderVolume,
+				valueGetter: ({ data }) => Math.abs(data!.price * data!.quantity - data!.orderVolume),
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{

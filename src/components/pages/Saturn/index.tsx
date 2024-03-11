@@ -20,6 +20,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Toolbar from './Toolbar';
 
 const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
@@ -95,32 +96,41 @@ const Saturn = () => {
 	};
 
 	const onChangeSymbol = (symbol: Symbol.Search | null) => {
-		if (!symbol || !baseSymbolInfo) return;
+		if (!symbol) {
+			toast.error(t('alerts.symbol_not_found'));
+			return;
+		}
 
 		try {
-			const baseSymbolISIN = baseSymbolInfo.symbolISIN;
 			const { isOption, symbolISIN, symbolTitle } = symbol;
 
-			if (isOption) {
-				const contracts = [...baseSymbolContracts];
-				if (contracts.find((sym) => sym?.symbolISIN === symbolISIN)) return;
+			if (baseSymbolInfo) {
+				const baseSymbolISIN = baseSymbolInfo.symbolISIN;
 
-				const option: Saturn.ContentOption = {
-					symbolISIN,
-					symbolTitle,
-					activeTab: 'price_information',
-				};
+				if (isOption) {
+					const contracts = [...baseSymbolContracts];
+					if (contracts.find((sym) => sym?.symbolISIN === symbolISIN)) return;
 
-				const blankContract = contracts.findIndex((con) => con === null);
+					const option: Saturn.ContentOption = {
+						symbolISIN,
+						symbolTitle,
+						activeTab: 'price_information',
+					};
 
-				if (blankContract > -1) {
-					contracts[blankContract] = option;
-					setBaseSymbolContracts(contracts);
+					const blankContract = contracts.findIndex((con) => con === null);
+
+					if (blankContract > -1) {
+						contracts[blankContract] = option;
+						setBaseSymbolContracts(contracts);
+					} else {
+						if (symbolISIN)
+							openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
+					}
 				} else {
-					if (symbolISIN) openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
+					if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
 				}
 			} else {
-				if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
+				openNewTab('/fa/saturn', `${isOption ? 'contractISIN' : 'symbolISIN'}=${symbol.symbolISIN}`);
 			}
 		} catch (e) {
 			//
@@ -257,8 +267,8 @@ const Saturn = () => {
 					</div>
 				</div>
 			) : (
-				<span className='absolute text-base font-medium text-gray-900 center'>
-					{t('common.an_error_occurred')}
+				<span className='absolute text-base font-bold text-gray-900 center'>
+					{t('common.symbol_not_found')}
 				</span>
 			)}
 

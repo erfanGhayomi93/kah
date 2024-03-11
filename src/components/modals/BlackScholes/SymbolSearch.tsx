@@ -39,7 +39,7 @@ const SymbolSearch = ({ value, onChange }: SymbolSearchProps) => {
 			term={term}
 			value={value}
 			loading={isLoading}
-			blankPlaceholder={t('common.no_symbol_found')}
+			blankPlaceholder={t('common.symbol_not_found')}
 			placeholder={t('black_scholes_modal.base_symbol')}
 			getOptionId={(option) => option!.symbolISIN}
 			getOptionTitle={(option) => option!.symbolTitle}
