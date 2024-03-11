@@ -14,7 +14,7 @@
 		"from": "از",
 		"to": "تا",
 		"close": "بستن",
-		"no_symbol_found": "نماد مورد نظر یافت نشد",
+		"symbol_not_found": "نماد مورد نظر یافت نشد",
 		"no_data": "داده‌ای جهت نمایش یافت نشد",
 		"searching": "در حال جستجو",
 		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
@@ -412,7 +412,7 @@
 		"order_status": "وضعیت سفارش",
 		"count": "تعداد",
 		"price": "قیمت",
-		"executed": "انجام شده",
+		"executed_and_remain_orders": "انجام‌شده / (باقی‌مانده)",
 		"remain": "باقی‌مانده",
 		"amount": "مبلغ",
 		"save_date": "تاریخ ثبت",
@@ -570,6 +570,8 @@
 		"edit": "ویرایش"
 	},
 	"alerts": {
+		"watchlist_symbol_removed_successfully": "نماد \"{symbolTitle}\" با موفقیت از دیده‌بان حذف شد.",
+		"watchlist_symbol_added_successfully": "نماد \"{symbolTitle}\" با موفقیت به دیده‌بان اضافه شد.",
 		"order_successfully_created": "سفارش شما با موفقیت ثبت شد.",
 		"order_unsuccessfully_created": "ارسال سفارش با خطا مواجه شد.",
 		"draft_successfully_created": "پیش‌نویس شما با موفقیت ثبت شد.",
@@ -587,6 +589,7 @@
 		"invalid_validity_date": "اعتبار سفارش نامعتبر می‌باشد.",
 		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
 		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت.",
+		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
 		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید."
 	}
 }

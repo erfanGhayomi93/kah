@@ -11,9 +11,12 @@ export const useGetBrokerUrlQuery = createQuery<IBrokerUrls, ['getBrokerUrlQuery
 	queryFn: async ({ signal }) => {
 		const [, brokerCode] = getBrokerClientId();
 
+		// eslint-disable-next-line no-console
+		if (!brokerCode) console.error(new Error('Broker code not defined!'));
+
 		const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
 			params: {
-				brokerCode,
+				brokerCode: brokerCode ?? 189,
 			},
 			signal,
 		});

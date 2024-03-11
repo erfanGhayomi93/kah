@@ -1,7 +1,10 @@
+import axios from '@/api/axios';
+import routes from '@/api/routes';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
@@ -13,8 +16,10 @@ import {
 	type GridApi,
 	type ICellRendererParams,
 } from '@ag-grid-community/core';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
 import ActionColumn from './ActionColumn';
 
 interface WatchlistTableProps {
@@ -24,6 +29,8 @@ interface WatchlistTableProps {
 
 const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 	const t = useTranslations();
+
+	const queryClient = useQueryClient();
 
 	const cWatchlistRef = useRef<Option.Root[]>([]);
 
@@ -77,6 +84,62 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 	const dateFormatter = (v: string | number) => {
 		if (v === undefined || v === null) return '−';
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
+	};
+
+	const onDelete = async (symbol: Option.Root) => {
+		try {
+			const { symbolISIN, symbolTitle } = symbol.symbolInfo;
+
+			try {
+				const gridApi = gridRef.current;
+				if (gridApi) {
+					const queryKey = ['optionWatchlistQuery', { watchlistId: id ?? -1 }];
+
+					queryClient.setQueriesData(
+						{
+							exact: false,
+							queryKey,
+						},
+						(c) => {
+							return (c as Option.Root[]).filter((item) => item.symbolInfo.symbolISIN !== symbolISIN);
+						},
+					);
+				}
+			} catch (e) {
+				//
+			}
+
+			await axios.post(routes.optionWatchlist.RemoveSymbolCustomWatchlist, {
+				id,
+				symbolISIN,
+			});
+
+			const toastId = 'watchlist_symbol_removed_successfully';
+			if (toast.isActive(toastId)) {
+				toast.update(toastId, {
+					render: t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }),
+					autoClose: 2500,
+				});
+			} else {
+				toast.success(t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }), {
+					toastId: 'watchlist_symbol_removed_successfully',
+					autoClose: 2500,
+				});
+			}
+		} catch (e) {
+			//
+		}
+	};
+
+	const onAdd = (symbol: Option.Root) => {
+		const { symbolISIN, symbolTitle } = symbol.symbolInfo;
+
+		dispatch(
+			toggleMoveSymbolToWatchlistModal({
+				symbolISIN,
+				symbolTitle,
+			}),
+		);
 	};
 
 	const modifiedWatchlistColumns = useMemo(() => {
@@ -515,6 +578,8 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 					sortable: false,
 					cellRenderer: ActionColumn,
 					cellRendererParams: {
+						onAdd,
+						onDelete,
 						deletable: id > -1,
 					},
 				},
@@ -535,10 +600,31 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 
-		gridApi.setGridOption('columnDefs', COLUMNS);
+		const actionColumn = gridApi.getColumn('action');
+		if (!actionColumn) return;
+
+		const colDef: ColDef<Option.Root> = {
+			headerName: t('option_page.action'),
+			colId: 'action',
+			initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
+			minWidth: 80,
+			maxWidth: 80,
+			pinned: 'left',
+			hide: false,
+			sortable: false,
+			resizable: false,
+			cellRenderer: ActionColumn,
+			cellRendererParams: {
+				onAdd,
+				onDelete,
+				deletable: id > -1,
+			},
+		};
+
+		actionColumn.setColDef(colDef, colDef);
 	}, [id]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 

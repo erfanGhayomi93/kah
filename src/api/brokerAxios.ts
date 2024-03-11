@@ -1,8 +1,9 @@
 import { setBrokerURLs } from '@/features/slices/brokerSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
-import { getBrokerClientId } from '@/utils/cookie';
+import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 const brokerAxios = AXIOS.create();
 
@@ -67,15 +68,15 @@ export const onUnauthorize = () => {
 		store.dispatch(setBrokerIsSelected(false));
 		store.dispatch(setBrokerURLs(null));
 
-		// const [token, brokerCode] = getBrokerClientId();
-		// deleteBrokerClientId();
+		const [token, brokerCode] = getBrokerClientId();
+		deleteBrokerClientId();
 
-		// if (token && brokerCode) {
-		// 	toast.warning('متاسفانه از حساب کارگزاری خود خارج شدید.', {
-		// 		toastId: 'broker_unauthorize',
-		// 		autoClose: 5000,
-		// 	});
-		// }
+		if (token && brokerCode) {
+			toast.warning('متاسفانه از حساب کارگزاری خود خارج شدید.', {
+				toastId: 'broker_unauthorize',
+				autoClose: 5000,
+			});
+		}
 	} catch (e) {
 		//
 	}

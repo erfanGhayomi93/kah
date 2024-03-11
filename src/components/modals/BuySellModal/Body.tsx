@@ -2,7 +2,7 @@ import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChooseBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { toggleChoiceBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
@@ -54,7 +54,7 @@ const Body = (props: BodyProps) => {
 			const bClientId = getBrokerClientId();
 			if (!bClientId[0]) {
 				dispatch(setBrokerIsSelected(false));
-				dispatch(toggleChooseBrokerModal({}));
+				dispatch(toggleChoiceBrokerModal({}));
 				throw new Error('broker_error');
 			}
 

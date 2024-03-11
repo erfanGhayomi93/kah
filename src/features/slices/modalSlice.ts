@@ -45,16 +45,27 @@ export interface IOrderDetailsModal extends IBaseModalConfiguration {
 	order: Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
 }
 
+export interface IMoveSymbolToWatchlistModal extends IBaseModalConfiguration {
+	symbolTitle: string;
+	symbolISIN: string;
+}
+
+export interface IChoiceCollateral extends IBaseModalConfiguration {
+	order: Order.OptionOrder;
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
-	chooseBroker: true;
+	choiceBroker: true;
 	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
 	orderDetails: IOrderDetailsModal;
 	addNewOptionWatchlist: true;
 	manageOptionWatchlistList: true;
 	addSymbolToWatchlist: true;
+	choiceCollateral: IChoiceCollateral;
+	moveSymbolToWatchlist: IMoveSymbolToWatchlistModal;
 	addSaturnTemplate: IAddSaturnTemplate;
 	symbolContracts: IContractSelectorModal;
 	forgetPassword: IForgetPasswordModal;
@@ -64,13 +75,15 @@ export type ModalState = TBaseModalProps<{
 const initialState: ModalState = {
 	loginModal: null,
 	optionFilters: null,
+	moveSymbolToWatchlist: null,
 	logout: null,
 	blackScholes: null,
 	orderDetails: null,
 	addSymbolToWatchlist: null,
 	addNewOptionWatchlist: null,
 	manageOptionWatchlistList: null,
-	chooseBroker: null,
+	choiceBroker: null,
+	choiceCollateral: null,
 	forgetPassword: null,
 	buySell: null,
 	addSaturnTemplate: null,
@@ -85,8 +98,16 @@ const modalSlice = createSlice({
 			state.buySell = payload;
 		},
 
+		toggleMoveSymbolToWatchlistModal: (state, { payload }: PayloadAction<ModalState['moveSymbolToWatchlist']>) => {
+			state.moveSymbolToWatchlist = payload;
+		},
+
 		toggleOrderDetailsModal: (state, { payload }: PayloadAction<ModalState['orderDetails']>) => {
 			state.orderDetails = payload;
+		},
+
+		toggleChoiceCollateralModal: (state, { payload }: PayloadAction<ModalState['choiceCollateral']>) => {
+			state.choiceCollateral = payload;
 		},
 
 		toggleLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
@@ -121,8 +142,8 @@ const modalSlice = createSlice({
 			state.addSymbolToWatchlist = payload;
 		},
 
-		toggleChooseBrokerModal: (state, { payload }: PayloadAction<ModalState['chooseBroker']>) => {
-			state.chooseBroker = payload;
+		toggleChoiceBrokerModal: (state, { payload }: PayloadAction<ModalState['choiceBroker']>) => {
+			state.choiceBroker = payload;
 		},
 
 		toggleBlackScholesModal: (state, { payload }: PayloadAction<ModalState['blackScholes']>) => {
@@ -149,13 +170,17 @@ export const {
 	toggleSymbolContractsModal,
 	toggleSaveSaturnTemplate,
 	toggleAddNewOptionWatchlist,
-	toggleChooseBrokerModal,
+	toggleChoiceBrokerModal,
+	toggleMoveSymbolToWatchlistModal,
+	toggleChoiceCollateralModal,
 	toggleAddSymbolToWatchlistModal,
 	toggleManageOptionWatchlistListModal,
 } = modalSlice.actions;
 
-export const getChooseBroker = (state: RootState) => state.modal.chooseBroker;
+export const getChoiceBroker = (state: RootState) => state.modal.choiceBroker;
+export const getChoiceCollateral = (state: RootState) => state.modal.choiceCollateral;
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
+export const getMoveSymbolToWatchlistModal = (state: RootState) => state.modal.moveSymbolToWatchlist;
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getBuySellModal = (state: RootState) => state.modal.buySell;
 export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
