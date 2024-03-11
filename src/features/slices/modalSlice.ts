@@ -13,18 +13,21 @@ export interface IBlackScholes extends IBaseModalConfiguration {
 }
 
 export interface IBuySellModal extends IBaseModalConfiguration {
+	id?: number;
+	mode: TBsModes;
 	symbolTitle: string;
 	symbolISIN: string;
 	symbolType: TBsSymbolTypes;
-	initialValidity?: TBsValidityDates;
-	initialValidityDate?: number;
-	initialPrice?: number;
-	initialQuantity?: number;
 	side: TBsSides;
+	type?: TBsTypes;
 	collateral?: TBsCollaterals;
 	expand?: boolean;
 	priceLock?: boolean;
 	holdAfterOrder?: boolean;
+	initialValidity?: TBsValidityDates;
+	initialValidityDate?: number;
+	initialPrice?: number;
+	initialQuantity?: number;
 }
 
 export interface IForgetPasswordModal extends IBaseModalConfiguration {
@@ -36,7 +39,11 @@ export interface IContractSelectorModal extends IBaseModalConfiguration {
 	symbolISIN: string;
 }
 
-export interface IAddSaturnTemplate extends Saturn.Content {}
+export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
+
+export interface IOrderDetailsModal extends IBaseModalConfiguration {
+	order: Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
+}
 
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
@@ -44,6 +51,7 @@ export type ModalState = TBaseModalProps<{
 	chooseBroker: true;
 	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
+	orderDetails: IOrderDetailsModal;
 	addNewOptionWatchlist: true;
 	manageOptionWatchlistList: true;
 	addSymbolToWatchlist: true;
@@ -58,6 +66,7 @@ const initialState: ModalState = {
 	optionFilters: null,
 	logout: null,
 	blackScholes: null,
+	orderDetails: null,
 	addSymbolToWatchlist: null,
 	addNewOptionWatchlist: null,
 	manageOptionWatchlistList: null,
@@ -74,6 +83,10 @@ const modalSlice = createSlice({
 	reducers: {
 		toggleBuySellModal: (state, { payload }: PayloadAction<ModalState['buySell']>) => {
 			state.buySell = payload;
+		},
+
+		toggleOrderDetailsModal: (state, { payload }: PayloadAction<ModalState['orderDetails']>) => {
+			state.orderDetails = payload;
 		},
 
 		toggleLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
@@ -128,6 +141,7 @@ const modalSlice = createSlice({
 export const {
 	toggleLoginModal,
 	toggleBuySellModal,
+	toggleOrderDetailsModal,
 	toggleForgetPasswordModal,
 	toggleOptionFiltersModal,
 	toggleLogoutModal,
@@ -150,6 +164,7 @@ export const getOptionFiltersModal = (state: RootState) => state.modal.optionFil
 export const getSymbolContractsModal = (state: RootState) => state.modal.symbolContracts;
 export const getAddSaturnTemplate = (state: RootState) => state.modal.addSaturnTemplate;
 export const getAddNewOptionWatchlist = (state: RootState) => state.modal.addNewOptionWatchlist;
+export const getOrderDetails = (state: RootState) => state.modal.orderDetails;
 export const getManageOptionWatchlistList = (state: RootState) => state.modal.manageOptionWatchlistList;
 export const getAddSymbolToWatchlist = (state: RootState) => state.modal.addSymbolToWatchlist;
 

@@ -1,3 +1,4 @@
+import { editableOrdersStatus } from '@/constants';
 import { type ICellRendererComp, type ICellRendererParams } from 'ag-grid-community';
 import ActionCell from './ActionCell';
 
@@ -26,21 +27,45 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 
 	detailsBtn() {
 		const btn = this.createDetails();
-		btn.onclick = () => this.params.showDetails(this.params.data!);
+
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.showDetails(this.params.data!);
+		};
 
 		return btn;
 	}
 
 	editBtn() {
 		const btn = this.createEdit();
-		btn.onclick = () => this.params.onEdit(this.params.data!);
+		const isEnable = this.editable;
+
+		if (!isEnable) {
+			btn.disabled = true;
+			btn.classList.add('text-gray-700');
+		}
+
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			if (isEnable) this.params.onEdit(this.params.data!);
+		};
 
 		return btn;
 	}
 
 	deleteBtn() {
 		const btn = this.createTrash();
-		btn.onclick = () => this.params.onDelete(this.params.data!);
+		const isEnable = this.editable;
+
+		if (!isEnable) {
+			btn.disabled = true;
+			btn.classList.add('text-gray-700');
+		}
+
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			if (isEnable) this.params.onDelete(this.params.data!);
+		};
 
 		return btn;
 	}
@@ -52,6 +77,10 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 	refresh(params: OrderActionCellProps) {
 		this.params = params;
 		return true;
+	}
+
+	get editable() {
+		return editableOrdersStatus.includes(this.params.data!.orderStatus);
 	}
 }
 

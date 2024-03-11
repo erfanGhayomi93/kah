@@ -54,6 +54,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 		addBuySellModal({
 			side,
+			mode: 'create',
 			symbolType: 'base',
 			symbolISIN,
 			symbolTitle,

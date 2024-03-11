@@ -8,6 +8,10 @@ declare type TBsCollaterals = 'cash' | 'stock';
 
 declare type TBsSymbolTypes = 'base' | 'option';
 
+declare type TBsModes = 'create' | 'edit';
+
+declare type TBsTypes = 'draft' | 'order';
+
 declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | 'option_orders' | 'draft';
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
@@ -52,6 +56,8 @@ declare type IBrokerUrls = Record<
 	| 'deleteOrder'
 	| 'groupDeleteDraft'
 	| 'groupDeleteOrder'
+	| 'updateDraft'
+	| 'updateOrder'
 	| 'userRemain'
 	| 'userStatus',
 	'createDraft',

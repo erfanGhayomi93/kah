@@ -45,8 +45,8 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 			await createOrder(params);
 			deleteDraft([id]);
 
-			toast.success(t('alerts.ordered_successfully'), {
-				toastId: 'ordered_successfully',
+			toast.success(t('alerts.order_successfully_created'), {
+				toastId: 'order_successfully_created',
 			});
 		} catch (e) {
 			//
@@ -58,13 +58,26 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 	};
 
 	const onEdit = (order: Order.DraftOrder) => {
-		//
+		addBuySellModal({
+			id: order.id,
+			side: order.side === 'Buy' ? 'buy' : 'sell',
+			symbolType: 'base',
+			type: 'draft',
+			mode: 'edit',
+			symbolISIN: order.symbolISIN,
+			symbolTitle: order.symbolTitle,
+			initialPrice: order.price,
+			initialQuantity: order.quantity,
+			initialValidity: order.validity,
+			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+		});
 	};
 
 	const onCopy = (order: Order.DraftOrder) => {
 		addBuySellModal({
 			side: order.side === 'Buy' ? 'buy' : 'sell',
 			symbolType: 'base',
+			mode: 'create',
 			symbolISIN: order.symbolISIN,
 			symbolTitle: order.symbolTitle,
 			initialPrice: order.price,
@@ -104,13 +117,6 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				},
 			},
 			{
-				colId: 'order_status',
-				headerName: t('orders.order_status'),
-				minWidth: 200,
-				valueFormatter: () => t('orders.draft'),
-				cellClass: 'text-secondary-300',
-			},
-			{
 				colId: 'count',
 				headerName: t('orders.count'),
 				valueGetter: ({ data }) => data!.quantity ?? 0,
@@ -138,13 +144,13 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 						const tt = new Date(validityDate).getTime();
 						const d = days(Date.now(), tt);
 
-						if (d === 0) return t('validity_date.today');
-						if (d === 1) return t('validity_date.tomorrow');
+						if (d === 0) return t('validity_date.Today');
+						if (d === 1) return t('validity_date.Tomorrow');
 
 						return dateFormatter(tt, 'date');
 					}
 
-					return t('validity_date.' + validity.toLowerCase());
+					return t(`validity_date.${validity}`);
 				},
 			},
 			{

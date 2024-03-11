@@ -25,7 +25,7 @@ class TooltipElement extends TooltipWrapper {
 
 	private readonly _followCursor: AppTooltip.FollowCursor = false;
 
-	private _offsetY: AppTooltip.Offset = [0, 4]; // top - bottom
+	private _offsetY: AppTooltip.Offset = [0, -4]; // top - bottom
 
 	private _offsetX: AppTooltip.Offset = [4, 0]; // left - right
 

@@ -50,13 +50,17 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 };
 
 interface SimpleTradeProps extends IBsModalInputs {
+	id: number | undefined;
 	symbolType: TBsSymbolTypes;
+	type: TBsTypes;
+	mode: TBsModes;
 	setInputValue: TSetBsModalInputs;
 	createDraft: () => void;
 	onSubmit: () => void;
 }
 
 const SimpleTrade = ({
+	id,
 	price,
 	quantity,
 	symbolType,
@@ -64,6 +68,8 @@ const SimpleTrade = ({
 	validityDate,
 	side,
 	priceLock,
+	type,
+	mode,
 	expand,
 	holdAfterOrder,
 	collateral,
@@ -102,27 +108,27 @@ const SimpleTrade = ({
 		() => [
 			{
 				id: 'Day',
-				title: t('bs_modal.validity_date_day'),
+				title: t('validity_date.Day'),
 			},
 			{
 				id: 'Week',
-				title: t('bs_modal.validity_date_week'),
+				title: t('validity_date.Week'),
 			},
 			{
 				id: 'Month',
-				title: t('bs_modal.validity_date_month'),
+				title: t('validity_date.Month'),
 			},
 			{
 				id: 'GoodTillDate',
-				title: t('bs_modal.validity_date_good_till_date'),
+				title: t('validity_date.GoodTillDate'),
 			},
 			{
 				id: 'GoodTillCancelled',
-				title: t('bs_modal.validity_date_good_till_cancelled'),
+				title: t('validity_date.GoodTillCancelled'),
 			},
 			{
 				id: 'FillAndKill',
-				title: t('bs_modal.validity_date_fill_and_kill'),
+				title: t('validity_date.FillAndKill'),
 			},
 		],
 		[],
@@ -336,16 +342,18 @@ const SimpleTrade = ({
 							side === 'buy' ? 'btn-success' : 'btn-error',
 						)}
 					>
-						{t(`side.${side}`)}
+						{t(`bs_modal.${mode}_${type}_${side}`)}
 					</button>
 
-					<button
-						onClick={createDraft}
-						type='button'
-						className='h-40 rounded border border-secondary-300 bg-white px-16 text-base text-secondary-300'
-					>
-						{t('bs_modal.draft')}
-					</button>
+					{mode === 'create' && type === 'order' && (
+						<button
+							onClick={createDraft}
+							type='button'
+							className='h-40 rounded border border-secondary-300 bg-white px-16 text-base text-secondary-300'
+						>
+							{t('bs_modal.draft')}
+						</button>
+					)}
 				</div>
 			</div>
 		</form>
