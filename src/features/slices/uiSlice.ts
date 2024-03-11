@@ -14,12 +14,16 @@ export interface UIState {
 	saturnActiveTemplate: Saturn.Template | null;
 
 	lsStatus: LightstreamStatus;
+
+	ordersIsExpand: boolean;
 }
 
 const initialState: UIState = {
 	manageOptionColumns: false,
 
 	savedSaturnTemplates: false,
+
+	ordersIsExpand: false,
 
 	sidebarIsExpand: Boolean(LocalstorageInstance.get('s', false)),
 
@@ -52,6 +56,14 @@ const uiSlice = createSlice({
 		setSaturnActiveTemplate: (state, { payload }: PayloadAction<UIState['saturnActiveTemplate']>) => {
 			state.saturnActiveTemplate = payload;
 		},
+
+		setOrdersIsExpand: (state, { payload }: PayloadAction<UIState['ordersIsExpand']>) => {
+			state.ordersIsExpand = payload;
+		},
+
+		toggleOrdersIsExpand: (state) => {
+			state.ordersIsExpand = !state.ordersIsExpand;
+		},
 	},
 });
 
@@ -60,10 +72,13 @@ export const {
 	toggleSavedSaturnTemplates,
 	setSaturnActiveTemplate,
 	toggleSidebar,
+	toggleOrdersIsExpand,
+	setOrdersIsExpand,
 	setLsStatus,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
+export const getOrdersIsExpand = (state: RootState) => state.ui.ordersIsExpand;
 export const getManageOptionColumns = (state: RootState) => state.ui.manageOptionColumns;
 export const getSavedSaturnTemplates = (state: RootState) => state.ui.savedSaturnTemplates;
 export const getLsStatus = (state: RootState) => state.ui.lsStatus;

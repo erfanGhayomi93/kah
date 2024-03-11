@@ -14,7 +14,7 @@ class Publish {
 
 	private _isSending: boolean = false;
 
-	private readonly _debounce = 1000;
+	private readonly _debounce = 310;
 
 	start() {
 		if (this.queue.length === 0) return;
@@ -54,7 +54,14 @@ class Publish {
 	}
 
 	addAndStart(orders: TOrder[]) {
-		this.add(orders, { startSending: true, type: 'push' });
+		return new Promise<Order.Response | undefined>(async (resolve, reject) => {
+			try {
+				this.add(orders, { startSending: true, type: 'push' });
+				resolve(undefined);
+			} catch (e) {
+				reject();
+			}
+		});
 	}
 
 	private _end() {

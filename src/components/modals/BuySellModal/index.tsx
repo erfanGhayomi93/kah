@@ -20,13 +20,20 @@ const Div = styled.div`
 interface BuySellModalProps extends IBuySellModal {}
 
 const BuySellModal = ({
+	id,
 	symbolISIN,
 	symbolTitle,
 	symbolType,
 	priceLock,
 	collateral,
 	side,
-	validityDate,
+	switchable = true,
+	mode = 'create',
+	type = 'order',
+	initialValidity,
+	initialValidityDate,
+	initialPrice,
+	initialQuantity,
 	expand,
 	holdAfterOrder,
 	...props
@@ -34,11 +41,12 @@ const BuySellModal = ({
 	const dispatch = useAppDispatch();
 
 	const [inputs, setInputs] = useState<IBsModalInputs>({
-		price: 0,
-		quantity: 0,
+		price: initialPrice ?? 0,
+		quantity: initialQuantity ?? 0,
 		collateral: collateral ?? null,
 		side: side ?? 'buy',
-		validityDate: validityDate ?? 'Day',
+		validity: initialValidity ?? 'Day',
+		validityDate: initialValidityDate ?? 0,
 		expand: expand ?? false,
 		priceLock: priceLock ?? false,
 		holdAfterOrder: holdAfterOrder ?? false,
@@ -78,6 +86,10 @@ const BuySellModal = ({
 				<div className='flex h-full flex-1'>
 					<Body
 						{...inputs}
+						switchable={switchable}
+						id={id}
+						mode={mode}
+						type={type}
 						close={onCloseModal}
 						symbolISIN={symbolISIN}
 						symbolType={symbolType}

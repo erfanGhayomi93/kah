@@ -1,7 +1,7 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import Tabs from '@/components/common/Tabs/Tabs';
-import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG, XSVG } from '@/components/icons';
+import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
@@ -19,7 +19,6 @@ import PriceInformation from './Tabs/PriceInformation';
 
 interface WrapperProps {
 	children?: React.ReactNode;
-	isEmpty?: boolean;
 }
 
 interface ContractProps {
@@ -30,12 +29,12 @@ interface ContractProps {
 	onChangeContractTab: (tab: Saturn.OptionTab) => void;
 }
 
-const Wrapper = ({ isEmpty, children }: WrapperProps) => (
+const Wrapper = ({ children }: WrapperProps) => (
 	<div
 		style={{
-			flex: '0 0 40.8rem',
+			flex: '1 0 39.2rem',
 		}}
-		className='relative gap-24 rounded border border-gray-500 bg-white py-12 pl-16 pr-24 flex-column'
+		className='relative gap-16 rounded border border-gray-500 bg-white pb-12 pl-16 pr-24 pt-12 flex-column'
 	>
 		{children}
 	</div>
@@ -75,6 +74,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 
 		addBuySellModal({
 			side,
+			mode: 'create',
 			symbolType: 'option',
 			symbolISIN,
 			symbolTitle,
@@ -160,7 +160,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 
 	if (!option)
 		return (
-			<Wrapper isEmpty>
+			<Wrapper>
 				<div
 					onClick={addSymbol}
 					className='absolute cursor-pointer items-center gap-24 text-center flex-column center'
@@ -182,7 +182,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 
 	if (isFetching)
 		return (
-			<Wrapper isEmpty>
+			<Wrapper>
 				<Loading />
 			</Wrapper>
 		);
@@ -198,17 +198,17 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 
 	return (
 		<Wrapper>
-			<div className='justify-start flex-column'>
-				<div className='flex justify-between'>
-					<div className='flex-items-start gap-4 flex-column'>
-						<h1 className='text-3xl font-medium text-gray-1000'>{contractInfo?.symbolTitle ?? '−'}</h1>
-						<h4 className='whitespace-nowrap text-tiny text-gray-1000'>
-							{contractInfo?.companyName ?? '−'}
-						</h4>
-					</div>
+			<div className='justify-start pb-8 flex-column'>
+				<div className='flex items-start justify-between'>
+					<div className='flex flex-1 justify-between gap-16'>
+						<div className='flex-items-start flex-column'>
+							<h1 className='text-3xl font-medium text-gray-1000'>{contractInfo?.symbolTitle ?? '−'}</h1>
+							<h4 className='whitespace-nowrap text-tiny text-gray-1000'>
+								{contractInfo?.companyName ?? '−'}
+							</h4>
+						</div>
 
-					<div className='h-fit gap-8 flex-items-center'>
-						<div className='gap-8 flex-items-center'>
+						<div className='h-fit gap-8 flex-items-center'>
 							<span className={cn('gap-4 flex-items-center', priceColor)}>
 								<span className='flex items-center text-tiny ltr'>
 									({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
@@ -223,12 +223,30 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 								<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 							</span>
 						</div>
+					</div>
 
-						<button type='button' className='size-24 text-gray-900'>
-							<MoreOptionsSVG width='2.2rem' height='2.2rem' />
-						</button>
+					<div className='flex-1 gap-8 pt-4 flex-justify-end'>
+						<div className='gap-8 pl-16 flex-items-center'>
+							<button
+								type='button'
+								onClick={() => addBsModal('buy')}
+								style={{ width: '9.6rem' }}
+								className='h-32 rounded !border text-tiny flex-justify-center btn-success-outline'
+							>
+								{t('saturn_page.new_position')}
+							</button>
 
-						<button onClick={close} type='button' className='size-24 text-gray-900'>
+							<button
+								type='button'
+								onClick={() => addBsModal('sell')}
+								style={{ width: '9.6rem' }}
+								className='h-32 rounded !border text-tiny flex-justify-center btn-error-outline'
+							>
+								{t('saturn_page.close_position')}
+							</button>
+						</div>
+
+						<button onClick={close} type='button' className='size-24 icon-hover'>
 							<XSVG width='2rem' height='2rem' />
 						</button>
 					</div>
@@ -243,7 +261,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 					renderTab={(item, activeTab) => (
 						<button
 							className={cn(
-								'px-8 py-12 transition-colors',
+								'p-8 transition-colors',
 								item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
 							)}
 							type='button'

@@ -1,7 +1,7 @@
 import { useGetBrokersQuery } from '@/api/queries/brokerQueries';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChooseBrokerModal } from '@/features/slices/modalSlice';
+import { toggleChoiceBrokerModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 import Modal from '../Modal';
@@ -16,9 +16,9 @@ const Div = styled.div`
 	border-radius: 1.6rem;
 `;
 
-interface ChooseBrokerProps extends IBaseModalConfiguration {}
+interface ChoiceBrokerProps extends IBaseModalConfiguration {}
 
-const ChooseBroker = (props: ChooseBrokerProps) => {
+const ChoiceBroker = (props: ChoiceBrokerProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -28,7 +28,7 @@ const ChooseBroker = (props: ChooseBrokerProps) => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleChooseBrokerModal(null));
+		dispatch(toggleChoiceBrokerModal(null));
 	};
 
 	const onSelectBroker = (broker: User.Broker) => {
@@ -60,7 +60,7 @@ const ChooseBroker = (props: ChooseBrokerProps) => {
 
 				<div className='relative flex-1 gap-16 flex-justify-center'>
 					{isFetching || !Array.isArray(brokersData) ? (
-						<div className='spinner absolute size-48 center' />
+						<div className='absolute size-48 center spinner' />
 					) : (
 						brokersData.map((broker) => (
 							<Broker key={broker.brokerCode} {...broker} onSelect={() => onSelectBroker(broker)} />
@@ -72,4 +72,4 @@ const ChooseBroker = (props: ChooseBrokerProps) => {
 	);
 };
 
-export default ChooseBroker;
+export default ChoiceBroker;

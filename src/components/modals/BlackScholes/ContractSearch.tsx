@@ -4,17 +4,18 @@ import routes from '@/api/routes';
 import AsyncSelect from '@/components/common/Inputs/AsyncSelect';
 import { englishToPersian, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 
 interface SymbolSearchProps {
 	basis: 'base' | 'contract';
 	isLoading: boolean;
 	disabled: boolean;
 	options: Option.Root[];
+	value: IBlackScholesModalStates['contract'];
 	onChange: (symbol: IBlackScholesModalStates['contract']) => void;
 }
 
-const ContractSearch = ({ basis, disabled, isLoading, options, onChange }: SymbolSearchProps) => {
+const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }: SymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -71,6 +72,10 @@ const ContractSearch = ({ basis, disabled, isLoading, options, onChange }: Symbo
 		if (!term) return options;
 		return options.filter((o) => o.symbolInfo.symbolTitle.includes(englishToPersian(term)));
 	}, [term, basis, optionData, options]);
+
+	useLayoutEffect(() => {
+		if (value === null) setSymbol(null);
+	}, [value]);
 
 	return (
 		<div className='relative flex-1'>

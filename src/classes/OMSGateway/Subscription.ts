@@ -1,4 +1,6 @@
+import { refetchActiveOrderTab } from '@/utils/orders';
 import { subscribePrivateGateWay } from '@/utils/subscriptions';
+import { toast } from 'react-toastify';
 import { type ItemUpdate, type Subscribe } from '../Subscribe';
 
 class Subscription {
@@ -39,6 +41,8 @@ class Subscription {
 		updateInfo.forEachChangedField((fieldName, _, value) => {
 			try {
 				if (value) {
+					console.log(value);
+
 					const m = this._beautify(value);
 
 					if (fieldName === 'OMSMessage') this._OMSMessage(m);
@@ -70,7 +74,30 @@ class Subscription {
 	}
 
 	private _OMSMessage(message: Record<number, string>) {
-		console.log(message);
+		// 208 ? 208 : 22 + 200
+		// const clientKey = message[12];
+		const orderStatus = message[22];
+		const orderMessageType = message[200];
+		const orderMessage = message[208];
+
+		if (['OnCanceling', 'OnSending', 'InOMSQueue'].includes(orderStatus)) return;
+
+		const messageType: 'success' | 'error' = orderStatus === 'Error' ? 'error' : 'success';
+		let messageText = orderMessage ?? '';
+
+		if (!orderMessage) {
+			const orderStatusMessage = orderStatus;
+			const orderErrorMessage = orderMessageType ? `: ${orderMessageType}` : '';
+
+			if (['OnBoard', 'Canceled'].includes(orderStatus)) messageText = orderStatusMessage;
+			else messageText = orderStatusMessage + orderErrorMessage;
+		}
+
+		refetchActiveOrderTab();
+
+		toast[messageType](messageText, {
+			autoClose: 3500,
+		});
 	}
 
 	private _AdminMessage(message: Record<number, string>) {

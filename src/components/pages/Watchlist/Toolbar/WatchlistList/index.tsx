@@ -1,7 +1,12 @@
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
+import Tooltip from '@/components/common/Tooltip';
 import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
+import {
+	toggleAddNewOptionWatchlist,
+	toggleLoginModal,
+	toggleManageOptionWatchlistListModal,
+} from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId, setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -57,10 +62,26 @@ const WatchlistList = () => {
 	};
 
 	const addNewWatchlist = () => {
+		if (!isLoggedIn) {
+			dispatch(toggleLoginModal({}));
+			toast.error(t('alerts.login_to_your_account'), {
+				toastId: 'login_to_your_account',
+			});
+			return;
+		}
+
 		dispatch(toggleAddNewOptionWatchlist({}));
 	};
 
 	const manageWatchlistList = () => {
+		if (!isLoggedIn) {
+			dispatch(toggleLoginModal({}));
+			toast.error(t('alerts.login_to_your_account'), {
+				toastId: 'login_to_your_account',
+			});
+			return;
+		}
+
 		if (!Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0) {
 			toast.warning(t('alerts.add_watchlist'));
 			return;
@@ -97,9 +118,9 @@ const WatchlistList = () => {
 				))}
 			</ul>
 
-			{isLoggedIn && (
-				<ul className='flex flex-grow-0 gap-8'>
-					<li>
+			<ul className='flex flex-grow-0 gap-8'>
+				<li>
+					<Tooltip placement='top' content={t('option_page.add_new_watchlist')}>
 						<button
 							type='button'
 							className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
@@ -107,9 +128,11 @@ const WatchlistList = () => {
 						>
 							<PlusSVG width='1.8rem' height='1.8rem' />
 						</button>
-					</li>
+					</Tooltip>
+				</li>
 
-					<li>
+				<li>
+					<Tooltip placement='top' content={t('option_page.manage_watchlist_list')}>
 						<button
 							type='button'
 							onClick={manageWatchlistList}
@@ -117,9 +140,9 @@ const WatchlistList = () => {
 						>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>
-					</li>
-				</ul>
-			)}
+					</Tooltip>
+				</li>
+			</ul>
 		</div>
 	);
 };

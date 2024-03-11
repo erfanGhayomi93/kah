@@ -1,6 +1,7 @@
+import { useUserRemainQuery, useUserStatusQuery } from '@/api/queries/brokerPrivateQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getUserRemain, getUserStatus } from '@/features/slices/brokerSlice';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import {
 	toggleBlackScholesModal,
 	toggleForgetPasswordModal,
@@ -12,6 +13,7 @@ import { type RootState } from '@/features/store';
 import { cn, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Popup from '../common/Popup';
@@ -34,8 +36,7 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		isLoggingIn: getIsLoggingIn(state),
-		userRemain: getUserRemain(state),
-		userStatus: getUserStatus(state),
+		brokerURLs: getBrokerURLs(state),
 	}),
 );
 
@@ -44,13 +45,23 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, isLoggingIn, userRemain, userStatus } = useAppSelector(getStates);
+	const { isLoggedIn, isLoggingIn, brokerURLs } = useAppSelector(getStates);
 
 	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
 	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
 		enabled: !isLoggingIn && isLoggedIn,
+	});
+
+	const { data: userStatus } = useUserStatusQuery({
+		queryKey: ['userStatusQuery'],
+		enabled: Boolean(brokerURLs),
+	});
+
+	const { data: userRemain } = useUserRemainQuery({
+		queryKey: ['userRemainQuery'],
+		enabled: Boolean(brokerURLs),
 	});
 
 	const showAuthenticationModal = () => {
@@ -84,6 +95,9 @@ const Header = () => {
 
 	return (
 		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-48 bg-white px-24 shadow flex-justify-between'>
+			<div className='pl-32'>
+				<Image width='32' height='32' alt='Favicon' src='/static/icons/favicon.png' />
+			</div>
 			{isLoggedIn ? (
 				<div className='flex-1 gap-32 flex-justify-start'>
 					{userRemain && (
@@ -123,7 +137,6 @@ const Header = () => {
 			) : (
 				<div className='flex-1' />
 			)}
-
 			<div className='flex-1 gap-16 flex-justify-end'>
 				<button
 					onClick={openBlackScholesModal}
@@ -311,7 +324,6 @@ const Header = () => {
 					)}
 				</div>
 			</div>
-
 			{isDropdownOpened &&
 				createPortal(
 					<div

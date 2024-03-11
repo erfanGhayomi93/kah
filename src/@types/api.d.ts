@@ -492,11 +492,212 @@ declare namespace Broker {
 		customerTags: string;
 		ipLocation: string;
 	}
+
+	export interface OrdersCount {
+		openOrderCnt: number;
+		todayOrderCnt: number;
+		executedOrderCnt: number;
+		orderDraftCnt: number;
+		orderOptionCount: number;
+	}
 }
 
 declare namespace Order {
+	export type StatusType =
+		| 'InOMSQueu'
+		| 'OnSending'
+		| 'Error'
+		| 'DeleteByEngine'
+		| 'OnBoard'
+		| 'Canceled'
+		| 'OnModifyFrom'
+		| 'OnModifyTo'
+		| 'Modified'
+		| 'OnBoardModify'
+		| 'PartOfTheOrderDone'
+		| 'OrderDone'
+		| 'OnCanceling'
+		| 'OnModifyError'
+		| 'OnCancelError'
+		| 'Expired'
+		| 'RejectByGAP'
+		| 'OnCancelingWithBroker'
+		| 'TradeCancel';
+
+	export type FormType = 'Web' | 'Mobile' | 'BrokerTrader' | 'ClientApi' | 'MarketMaker' | 'Admin' | 'Supervisor';
+
+	export type Types = 'MarketOrder' | 'LimitOrder' | 'MarketToLimitOrder' | 'MarketOnOpeningOrder' | 'StopOrder';
+
+	export type ActionType = 'CreateOrder' | 'ModifyOrder' | 'CancelOrder' | 'ExpireOrder';
+
+	export type OrderSourceType = 'Account' | 'Portfolio' | 'Position' | 'Found';
+
+	export type Side = 'Buy' | 'Sell';
+
+	export type TOrder = OpenOrder | TodayOrder | ExecutedOrder | DraftOrder | OptionOrder;
+
 	export interface Response {
 		clientKey: string;
 		response: string;
+	}
+
+	export interface OpenOrder {
+		orderId: number;
+		userName: null | string;
+		customerISIN: string;
+		marketUnit: string;
+		symbolISIN: string;
+		price: number;
+		orderVolume: number;
+		triggerPrice: number;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		quantity: number;
+		orderSide: Side;
+		orderOrigin: string;
+		parentOrderId: number;
+		orderType: Types;
+		validity: TBsValidityDates;
+		validityDate: string;
+		orderFrom: FormType;
+		orderAction: ActionType | 0;
+		orderMinimumQuantity: number;
+		orderDateTime: string;
+		hostOrderNumber: null | string;
+		expectedRemainingQuantity: number;
+		sumExecuted: number;
+		symbolTitle: string;
+		position: number;
+		valuePosition: number;
+		lastTradePrice: number;
+		orderStatus: StatusType;
+		lastErrorCode: string | null;
+		customErrorMsg: string | null;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		tradeDetails: TradeDetailsType;
+		isEditable: boolean;
+		blockType: OrderSourceType;
+	}
+
+	export interface TodayOrder {
+		clientKey: string;
+		orderId: number;
+		userName: null | string;
+		customerISIN: string;
+		marketUnit: string;
+		symbolISIN: string;
+		price: number;
+		orderVolume: number;
+		triggerPrice: number;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		quantity: number;
+		orderSide: Side;
+		orderOrigin: string;
+		parentOrderId: number;
+		orderType: Types;
+		validity: TBsValidityDates;
+		validityDate: string;
+		orderFrom: FormType;
+		orderAction: ActionType | 0;
+		orderMinimumQuantity: number;
+		orderDateTime: string;
+		hostOrderNumber: null | string;
+		expectedRemainingQuantity: number;
+		sumExecuted: number;
+		symbolTitle: string;
+		position: number;
+		valuePosition: number;
+		lastTradePrice: number;
+		orderStatus: StatusType;
+		lastErrorCode: string | null;
+		customErrorMsg: string | null;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		tradeDetails: TradeDetailsType;
+		isEditable: boolean;
+		blockType: OrderSourceType;
+	}
+
+	export interface ExecutedOrder {
+		orderId: number;
+		userName: null | string;
+		customerISIN: string;
+		marketUnit: string;
+		symbolISIN: string;
+		price: number;
+		orderVolume: number;
+		triggerPrice: number;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		quantity: number;
+		orderSide: Side;
+		orderOrigin: string;
+		parentOrderId: number;
+		orderType: Types;
+		validity: TBsValidityDates;
+		validityDate: string;
+		orderFrom: FormType;
+		orderAction: ActionType | 0;
+		orderMinimumQuantity: number;
+		orderDateTime: string;
+		hostOrderNumber: null | string;
+		expectedRemainingQuantity: number;
+		sumExecuted: number;
+		symbolTitle: string;
+		position: number;
+		valuePosition: number;
+		lastTradePrice: number;
+		orderStatus: StatusType;
+		lastErrorCode: string | null;
+		customErrorMsg: string | null;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		tradeDetails: TradeDetailsType;
+		isEditable: boolean;
+		blockType: OrderSourceType;
+	}
+
+	export interface DraftOrder {
+		id: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		price: number;
+		quantity: number;
+		side: Side;
+		validity: TBsValidityDates;
+		validityDate: string;
+		date: string;
+		blockType?: OrderSourceType;
+	}
+
+	export interface OptionOrder {
+		orderId: number;
+		side: 'Call' | 'Put';
+		canClosePosition: boolean;
+		availableClosePosition: number;
+		customerISIN: string;
+		symbolISIN: string;
+		positionCount: number;
+		blockedMargin: number;
+		blockedAsset: number;
+		variationMargin: number;
+		physicalSettlementDate: string;
+		cashSettlementDate: string;
+		contractSize: number;
+		strikePrice: number;
+		finalPrice: number;
+		gainedPortfolioLoss: number;
+		profitLoss_ClosingPrice: number;
+		profitLoss_ClosingPricePercent: number;
+		profitLoss_LastPrice: number;
+		profitLoss_LastPricePercent: number;
+		remainDays: number;
+		symbolTitle: string;
+		companyISIN: string;
+		isFreeze: boolean;
+		isSwapped: boolean;
+		blockType: OrderSourceType;
 	}
 }

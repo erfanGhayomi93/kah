@@ -8,3 +8,13 @@ declare type IOFields = {
 	validity: TBsValidityDates;
 	validityDate: number;
 };
+
+declare type IOFieldsWithID = {
+	id: number;
+	symbolISIN: string;
+	quantity: number;
+	price: number;
+	orderSide: 'buy' | 'sell';
+	validity: TBsValidityDates;
+	validityDate: number;
+};

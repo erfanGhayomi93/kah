@@ -1,10 +1,18 @@
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
+declare type TOptionSides = 'put' | 'call';
+
 declare type TBsSides = 'buy' | 'sell';
 
 declare type TBsCollaterals = 'cash' | 'stock';
 
 declare type TBsSymbolTypes = 'base' | 'option';
+
+declare type TBsModes = 'create' | 'edit';
+
+declare type TBsTypes = 'draft' | 'order';
+
+declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | 'option_orders' | 'draft';
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
@@ -36,15 +44,23 @@ declare interface SymbolContractModalStates {
 
 declare type IBrokerUrls = Record<
 	| 'todayOrders'
-	| 'todayTrades'
+	| 'executedOrders'
 	| 'drafts'
 	| 'createOrder'
 	| 'ordersCount'
 	| 'openOrders'
 	| 'commission'
+	| 'optionOrders'
 	| 'userInformation'
+	| 'deleteDraft'
+	| 'deleteOrder'
+	| 'groupDeleteDraft'
+	| 'groupDeleteOrder'
+	| 'updateDraft'
+	| 'updateOrder'
 	| 'userRemain'
 	| 'userStatus',
+	'createDraft',
 	string
 >;
 
@@ -65,7 +81,8 @@ declare type TOptionWatchlistColumnsState = Array<{
 
 declare interface IBsModalInputs {
 	collateral: TBsCollaterals | null;
-	validityDate: TBsValidityDates;
+	validity: TBsValidityDates;
+	validityDate: number;
 	price: number;
 	quantity: number;
 	side: TBsSides;

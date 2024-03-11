@@ -1,0 +1,54 @@
+.toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+
+	& > li {
+		position: relative;
+		padding: 0 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		button {
+			height: 2.4rem;
+			color: theme("colors.gray.900");
+			height: 2.4rem;
+
+			&:not(:disabled) {
+				cursor: pointer;
+			}
+
+			&:disabled {
+				color: theme("colors.gray.700");
+			}
+		}
+
+		&:not(:first-child)::after {
+			content: "";
+			position: absolute;
+			height: 1.6rem;
+			width: 1px;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 0;
+			background-color: theme("colors.gray.500");
+		}
+	}
+}
+
+.badge {
+	position: absolute;
+	width: 2rem;
+	height: 2rem;
+	bottom: calc(100% - 0.6rem);
+	right: 0.6rem;
+	border-radius: 50%;
+	font-size: 1.2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid theme("colors.white");
+	background-color: theme("colors.primary.400");
+	color: theme("colors.white");
+}

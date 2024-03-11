@@ -1,5 +1,4 @@
 import { onUnauthorize } from '@/api/axios';
-import ipcMain from '@/classes/IpcMain';
 import { getDateMilliseconds } from '@/constants';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
@@ -250,7 +249,7 @@ export const paramsSerializer = (params: Record<string, unknown>) => {
 export const decodeBrokerUrls = (data: Broker.URL[]) => {
 	const urls: IBrokerUrls = {
 		todayOrders: data[0].url,
-		todayTrades: data[1].url,
+		executedOrders: data[1].url,
 		drafts: data[2].url,
 		createOrder: data[3].url,
 		ordersCount: data[4].url,
@@ -259,6 +258,14 @@ export const decodeBrokerUrls = (data: Broker.URL[]) => {
 		userInformation: data[7].url,
 		userRemain: data[8].url,
 		userStatus: data[9].url,
+		optionOrders: data[10].url,
+		createDraft: data[11].url,
+		deleteDraft: data[12].url,
+		deleteOrder: data[13].url,
+		groupDeleteDraft: data[14].url,
+		groupDeleteOrder: data[15].url,
+		updateDraft: data[16].url,
+		updateOrder: data[17].url,
 	};
 
 	return urls;
@@ -359,13 +366,23 @@ export const toEnglishNumber = (str: string): string => {
 	return str;
 };
 
-export const createOrder = (fields: IpcMainChannels['send_order']) =>
-	new Promise<Order.Response>((resolve, reject) => {
-		return ipcMain
-			.sendAsync<Order.Response>('send_order', fields)
-			.then((response) => {
-				if (response) resolve(response);
-				else reject();
-			})
-			.catch(reject);
-	});
+export const days = (ct: number, tt: number) => {
+	const now = Date.now();
+	const target = new Date(tt).getTime();
+	const days = Math.floor((target - now) / 864e5);
+
+	return days;
+};
+
+export const dateFormatter = (v: string | number, format: 'date' | 'time' | 'datetime' = 'datetime') => {
+	const formats: Record<typeof format, string> = {
+		time: 'HH:mm',
+		date: 'YYYY/MM/DD',
+		datetime: 'YYYY/MM/DD HH:mm',
+	};
+
+	const d = dayjs(v).calendar('jalali');
+	if (d.isValid()) return d.format(formats[format]);
+
+	return '−';
+};

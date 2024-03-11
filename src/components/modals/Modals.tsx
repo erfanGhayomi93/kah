@@ -3,6 +3,8 @@
 import { useAppSelector } from '@/features/hooks';
 import dynamic from 'next/dynamic';
 import { Fragment } from 'react';
+import ChoiceCollateral from './ChoiceCollateral';
+import Confirm from './Confirm';
 
 const AddNewOptionWatchlist = dynamic(() => import('./AddNewOptionWatchlist'), {
 	ssr: false,
@@ -25,7 +27,7 @@ const BuySellModal = dynamic(() => import('./BuySellModal'), {
 	ssr: false,
 });
 
-const ChooseBroker = dynamic(() => import('./ChooseBroker'), {
+const ChoiceBroker = dynamic(() => import('./ChoiceBroker'), {
 	ssr: false,
 });
 
@@ -53,6 +55,14 @@ const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
 	ssr: false,
 });
 
+const OrderDetails = dynamic(() => import('./OrderDetails'), {
+	ssr: false,
+});
+
+const MoveSymbolToWatchlist = dynamic(() => import('./MoveSymbolToWatchlist'), {
+	ssr: false,
+});
+
 const Modals = () => {
 	const {
 		loginModal,
@@ -65,8 +75,12 @@ const Modals = () => {
 		manageOptionWatchlistList,
 		buySell,
 		addSymbolToWatchlist,
-		chooseBroker,
+		choiceBroker,
+		confirm,
+		choiceCollateral,
 		blackScholes,
+		moveSymbolToWatchlist,
+		orderDetails,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -91,7 +105,15 @@ const Modals = () => {
 
 			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
 
-			{chooseBroker && <ChooseBroker {...chooseBroker} />}
+			{choiceBroker && <ChoiceBroker {...choiceBroker} />}
+
+			{choiceCollateral && <ChoiceCollateral {...choiceCollateral} />}
+
+			{confirm && <Confirm {...confirm} />}
+
+			{orderDetails && <OrderDetails {...orderDetails} />}
+
+			{moveSymbolToWatchlist && <MoveSymbolToWatchlist {...moveSymbolToWatchlist} />}
 
 			{forgetPassword && (
 				<ForgetPasswordModal

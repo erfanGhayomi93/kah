@@ -127,9 +127,11 @@ const config: Config = {
 			'0': '0',
 			'4': '0.4rem',
 			'8': '0.8rem',
+			'10': '1rem',
 			'12': '1.2rem',
 			'16': '1.6rem',
 			'20': '2rem',
+			'22': '2.2rem',
 			'24': '2.4rem',
 			'28': '2.8rem',
 			'32': '3.2rem',
@@ -594,8 +596,12 @@ const config: Config = {
 						},
 					},
 
-					'&:not(:focus-within):hover': {
+					'&:not(:focus-within,.disabled):hover': {
 						'border-color': theme('colors.gray.700'),
+
+						'.flexible-fieldset': {
+							'border-color': theme('colors.gray.700'),
+						},
 					},
 				},
 

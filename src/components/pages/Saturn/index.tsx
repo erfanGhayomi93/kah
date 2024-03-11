@@ -6,26 +6,40 @@ import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
+import Orders from '@/components/layout/Orders';
 import { defaultSymbolISIN } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { toggleSaveSaturnTemplate } from '@/features/slices/modalSlice';
 import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
-import { openNewTab } from '@/utils/helpers';
+import { type RootState } from '@/features/store';
+import { cn, openNewTab } from '@/utils/helpers';
+import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Toolbar from './Toolbar';
 
 const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
 	ssr: false,
+	loading: () => <Loading />,
 });
 
 const SymbolInfo = dynamic(() => import('./SymbolInfo'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		saturnActiveTemplate: getSaturnActiveTemplate(state),
+		brokerURLs: getBrokerURLs(state),
+	}),
+);
 
 const Saturn = () => {
 	const t = useTranslations();
@@ -36,7 +50,7 @@ const Saturn = () => {
 
 	const searchParams = useSearchParams();
 
-	const saturnActiveTemplate = useAppSelector(getSaturnActiveTemplate);
+	const { saturnActiveTemplate, brokerURLs } = useAppSelector(getStates);
 
 	const [baseSymbolContracts, setBaseSymbolContracts] = useState<TSaturnBaseSymbolContracts>([
 		null,
@@ -82,32 +96,41 @@ const Saturn = () => {
 	};
 
 	const onChangeSymbol = (symbol: Symbol.Search | null) => {
-		if (!symbol || !baseSymbolInfo) return;
+		if (!symbol) {
+			toast.error(t('alerts.symbol_not_found'));
+			return;
+		}
 
 		try {
-			const baseSymbolISIN = baseSymbolInfo.symbolISIN;
 			const { isOption, symbolISIN, symbolTitle } = symbol;
 
-			if (isOption) {
-				const contracts = [...baseSymbolContracts];
-				if (contracts.find((sym) => sym?.symbolISIN === symbolISIN)) return;
+			if (baseSymbolInfo) {
+				const baseSymbolISIN = baseSymbolInfo.symbolISIN;
 
-				const option: Saturn.ContentOption = {
-					symbolISIN,
-					symbolTitle,
-					activeTab: 'price_information',
-				};
+				if (isOption) {
+					const contracts = [...baseSymbolContracts];
+					if (contracts.find((sym) => sym?.symbolISIN === symbolISIN)) return;
 
-				const blankContract = contracts.findIndex((con) => con === null);
+					const option: Saturn.ContentOption = {
+						symbolISIN,
+						symbolTitle,
+						activeTab: 'price_information',
+					};
 
-				if (blankContract > -1) {
-					contracts[blankContract] = option;
-					setBaseSymbolContracts(contracts);
+					const blankContract = contracts.findIndex((con) => con === null);
+
+					if (blankContract > -1) {
+						contracts[blankContract] = option;
+						setBaseSymbolContracts(contracts);
+					} else {
+						if (symbolISIN)
+							openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
+					}
 				} else {
-					if (symbolISIN) openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
+					if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
 				}
 			} else {
-				if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
+				openNewTab('/fa/saturn', `${isOption ? 'contractISIN' : 'symbolISIN'}=${symbol.symbolISIN}`);
 			}
 		} catch (e) {
 			//
@@ -213,18 +236,19 @@ const Saturn = () => {
 	}
 
 	return (
-		<Main className='gap-8 !px-8'>
+		<Main className='gap-8 !pb-0 !pl-0 !pr-8'>
 			<Toolbar setSymbol={onChangeSymbol} saveTemplate={saveTemplate} />
 
 			{baseSymbolInfo ? (
-				<div className='flex flex-1 gap-8'>
+				<div className='flex flex-1 gap-8 overflow-hidden'>
 					<div
 						style={{
 							flex: '5',
-							height: 'calc(100dvh - 16.8rem)',
-							top: '3.2rem',
 						}}
-						className='sticky w-full flex-1 gap-48 rounded border border-gray-500 bg-white px-16 pb-16 pt-8 flex-column'
+						className={cn(
+							'relative size-full flex-1 rounded bg-white px-16 pb-16 pt-8 flex-column',
+							brokerURLs ? 'gap-32' : 'gap-40',
+						)}
 					>
 						<SymbolInfo
 							symbol={baseSymbolInfo}
@@ -233,7 +257,7 @@ const Saturn = () => {
 						/>
 					</div>
 
-					<div style={{ flex: '7' }} className='gap-8 flex-column'>
+					<div style={{ flex: '7' }} className='relative gap-8 overflow-auto rounded flex-column'>
 						<SymbolContracts
 							baseSymbol={baseSymbolInfo}
 							setBaseSymbol={(value) => setSelectedSymbol(value)}
@@ -243,10 +267,12 @@ const Saturn = () => {
 					</div>
 				</div>
 			) : (
-				<span className='absolute text-base font-medium text-gray-900 center'>
-					{t('common.an_error_occurred')}
+				<span className='absolute text-base font-bold text-gray-900 center'>
+					{t('common.symbol_not_found')}
 				</span>
 			)}
+
+			<Orders />
 		</Main>
 	);
 };

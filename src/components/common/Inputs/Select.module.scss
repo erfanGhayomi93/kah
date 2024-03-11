@@ -43,10 +43,12 @@
 }
 
 .icon {
+	cursor: pointer;
 	position: absolute;
 	color: theme("colors.gray.700");
 	transition: transform 250ms;
 	left: 0.8rem;
+	z-index: 99;
 }
 
 .box,

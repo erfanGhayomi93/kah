@@ -1,10 +1,13 @@
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
+import LocalstorageInstance from '@/classes/Localstorage';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChooseBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { toggleChoiceBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
-import { cn, createOrder, dateConverter } from '@/utils/helpers';
+import { cn, dateConverter } from '@/utils/helpers';
+import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
@@ -22,8 +25,12 @@ const Wrapper = ({ children, className }: WrapperProps) => (
 );
 
 interface BodyProps extends IBsModalInputs {
+	id: number | undefined;
 	symbolISIN: string;
+	switchable: boolean;
 	symbolType: TBsSymbolTypes;
+	type: TBsTypes;
+	mode: TBsModes;
 	close: () => void;
 	setInputValue: TSetBsModalInputs;
 }
@@ -46,23 +53,23 @@ const Body = (props: BodyProps) => {
 			}
 
 			const bClientId = getBrokerClientId();
-			if (!bClientId) {
+			if (!bClientId[0]) {
 				dispatch(setBrokerIsSelected(false));
-				dispatch(toggleChooseBrokerModal({}));
+				dispatch(toggleChoiceBrokerModal({}));
 				throw new Error('broker_error');
 			}
 
 			if (!brokerUrls) throw new Error('broker_error');
 
-			const { price, quantity, validityDate, collateral, symbolType } = props;
+			const { price, quantity, validity, collateral, symbolType } = props;
 
 			if (!price) throw new Error('invalid_price');
 
 			if (!quantity) throw new Error('invalid_quantity');
 
-			if (symbolType === 'base' && !validityDate) throw new Error('invalid_validity_date');
+			if (symbolType === 'base' && !validity) throw new Error('invalid_validity_date');
 
-			if (symbolType === 'option' && !collateral) throw new Error('invalid_collateral');
+			if (symbolType === 'option' && props.side === 'sell' && !collateral) throw new Error('invalid_collateral');
 
 			cb();
 		} catch (e) {
@@ -73,32 +80,150 @@ const Body = (props: BodyProps) => {
 		}
 	};
 
-	const onSubmit = async () => {
+	const onSubmit = () => {
+		if (props.mode === 'create') sendOrder();
+		else if (props.mode === 'edit' && props.type === 'order') editOrder();
+		if (props.mode === 'edit' && props.type === 'draft') editDraft();
+	};
+
+	const sendOrder = async () => {
 		try {
 			if (!brokerUrls) return;
 
-			const { price, quantity, validityDate, symbolISIN, side, holdAfterOrder, close } = props;
-			const params: IpcMainChannels['send_order'] = {
+			const { price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			const params: IOFields = {
 				symbolISIN,
 				quantity,
 				price,
 				orderSide: side,
-				validity: validityDate,
-				validityDate: 0,
+				validity,
+				validityDate,
 			};
 
-			if (params.validity === 'Month' || params.validity === 'Week')
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
 				params.validityDate = dateConverter(params.validity);
 
 			await createOrder(params);
-			toast.success(t('alerts.ordered_successfully'), {
-				toastId: 'ordered_successfully',
+			toast.success(t('alerts.order_successfully_created'), {
+				toastId: 'order_successfully_created',
 			});
 
-			if (!holdAfterOrder) close();
+			if (!holdAfterOrder) {
+				close();
+				dispatch(setOrdersIsExpand(true));
+				LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'open_orders', true);
+			}
 		} catch (e) {
-			toast.error(t('alerts.ordered_unsuccessfully'), {
-				toastId: 'ordered_unsuccessfully',
+			toast.error(t('alerts.order_unsuccessfully_created'), {
+				toastId: 'order_unsuccessfully_created',
+			});
+		}
+	};
+
+	const sendDraft = async () => {
+		try {
+			if (!brokerUrls) return;
+
+			const { price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			const params: IOFields = {
+				symbolISIN,
+				quantity,
+				price,
+				orderSide: side,
+				validity,
+				validityDate: 0,
+			};
+
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
+				params.validityDate = dateConverter(params.validity);
+
+			await createDraft(params);
+			toast.success(t('alerts.draft_successfully_created'), {
+				toastId: 'draft_successfully_created',
+			});
+
+			if (!holdAfterOrder) {
+				close();
+				dispatch(setOrdersIsExpand(true));
+				LocalstorageInstance.set('ot', 'draft', true);
+			}
+		} catch (e) {
+			toast.error(t('alerts.draft_unsuccessfully_created'), {
+				toastId: 'draft_unsuccessfully_created',
+			});
+		}
+	};
+
+	const editOrder = async () => {
+		try {
+			if (!brokerUrls) return;
+
+			const { id, price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			const params: IOFieldsWithID = {
+				id: id ?? -1,
+				symbolISIN,
+				quantity,
+				price,
+				orderSide: side,
+				validity,
+				validityDate,
+			};
+
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
+				params.validityDate = dateConverter(params.validity);
+
+			await updateOrder(params);
+			toast.success(t('alerts.order_successfully_edited'), {
+				toastId: 'order_successfully_edited',
+			});
+
+			if (!holdAfterOrder) {
+				close();
+				dispatch(setOrdersIsExpand(true));
+				LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'open_orders', true);
+			}
+		} catch (e) {
+			toast.error(t('alerts.order_unsuccessfully_edited'), {
+				toastId: 'order_unsuccessfully_edited',
+			});
+		}
+	};
+
+	const editDraft = async () => {
+		if (!brokerUrls) return;
+
+		try {
+			const { id, price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			const params: IOFieldsWithID = {
+				id: id ?? -1,
+				symbolISIN,
+				quantity,
+				price,
+				orderSide: side,
+				validity,
+				validityDate,
+			};
+
+			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
+			else if (params.validity === 'Month' || params.validity === 'Week')
+				params.validityDate = dateConverter(params.validity);
+
+			await updateDraft(params);
+			toast.success(t('alerts.draft_successfully_edited'), {
+				toastId: 'draft_successfully_edited',
+			});
+
+			if (!holdAfterOrder) {
+				close();
+				dispatch(setOrdersIsExpand(true));
+				LocalstorageInstance.set('ot', 'draft', true);
+			}
+		} catch (error) {
+			toast.error(t('alerts.draft_unsuccessfully_edited'), {
+				toastId: 'draft_unsuccessfully_edited',
 			});
 		}
 	};
@@ -108,7 +233,7 @@ const Body = (props: BodyProps) => {
 			{
 				id: 'normal',
 				title: t('bs_modal.normal_trade'),
-				render: <SimpleTrade {...props} onSubmit={validation(onSubmit)} />,
+				render: <SimpleTrade {...props} createDraft={sendDraft} onSubmit={validation(onSubmit)} />,
 			},
 			{
 				id: 'strategy',
@@ -130,7 +255,7 @@ const Body = (props: BodyProps) => {
 				renderTab={(item, activeTab) => (
 					<button
 						className={cn(
-							'flex-1 pb-8 pt-12 transition-colors',
+							'flex-1 p-8 transition-colors',
 							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
 						)}
 						type='button'

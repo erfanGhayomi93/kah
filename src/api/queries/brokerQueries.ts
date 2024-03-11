@@ -1,25 +1,35 @@
+import { setBrokerURLs } from '@/features/slices/brokerSlice';
+import { store } from '@/features/store';
 import { getBrokerClientId } from '@/utils/cookie';
 import { createQuery, decodeBrokerUrls } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
-export const useGetBrokerUrlQuery = createQuery<IBrokerUrls, ['getBrokerUrlQuery']>({
+export const useGetBrokerUrlQuery = createQuery<IBrokerUrls | null, ['getBrokerUrlQuery']>({
 	staleTime: 36e5,
 	queryKey: ['getBrokerUrlQuery'],
 	queryFn: async ({ signal }) => {
 		const [, brokerCode] = getBrokerClientId();
+		if (!brokerCode) return null;
 
-		const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
-			params: {
-				brokerCode,
-			},
-			signal,
-		});
-		const data = response.data;
+		try {
+			const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
+				params: {
+					brokerCode: brokerCode ?? 189,
+				},
+				signal,
+			});
+			const data = response.data;
 
-		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-		return decodeBrokerUrls(data.result);
+			const urls = decodeBrokerUrls(data.result);
+
+			store.dispatch(setBrokerURLs(urls));
+			return urls;
+		} catch (e) {
+			return null;
+		}
 	},
 });
 

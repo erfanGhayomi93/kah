@@ -1,13 +1,13 @@
 import axios from '@/api/axios';
 import { useCustomWatchlistSymbolSearch } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
-import { EyeSVG, SearchSVG, XSVG } from '@/components/icons';
+import { EyeSVG, EyeSlashSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 
@@ -33,6 +33,8 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 
 	const [term, setTerm] = useState('');
 
+	const [symbols, setSymbols] = useState<string[]>([]);
+
 	const { data: symbolsData, isFetching } = useCustomWatchlistSymbolSearch({
 		queryKey: ['customWatchlistSymbolSearch', { term, id: watchlistId }],
 	});
@@ -45,6 +47,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 		try {
 			if (!symbol.symbolISIN || watchlistId === -1) return;
 
+			setSymbols((prev) => [...prev, symbol.symbolISIN]);
 			const response = await axios.post<ServerResponse<string>>(routes.optionWatchlist.AddSymbolCustomWatchlist, {
 				id: watchlistId,
 				symbolISINs: [symbol.symbolISIN],
@@ -54,13 +57,14 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			queryClient.refetchQueries({
-				queryKey: ['optionWatchlistQuery'],
-				exact: false,
+				queryKey: ['optionWatchlistQuery', { watchlistId }],
 			});
 		} catch (e) {
 			//
 		}
 	};
+
+	const hasChanged = useCallback((symbolISIN: string) => symbols.includes(symbolISIN), [symbols]);
 
 	return (
 		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
@@ -122,7 +126,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 							<div className='absolute size-48 center spinner' />
 						) : !Array.isArray(symbolsData) || symbolsData.length === 0 ? (
 							<div className='absolute center'>
-								<span className='font-medium text-gray-900'>{t('common.no_symbol_found')}</span>
+								<span className='font-medium text-gray-900'>{t('common.symbol_not_found')}</span>
 							</div>
 						) : (
 							<ul className='h-full gap-4 overflow-auto flex-column'>
@@ -137,7 +141,17 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 												{item.symbolTitle}
 											</span>
 											<span className='text-base font-medium text-gray-900'>
-												<EyeSVG width='2rem' height='2rem' />
+												{item.isInWatchlist ? (
+													hasChanged(item.symbolISIN) ? (
+														<EyeSVG width='2.4rem' height='2.4rem' />
+													) : (
+														<EyeSlashSVG width='2.4rem' height='2.4rem' />
+													)
+												) : hasChanged(item.symbolISIN) ? (
+													<EyeSlashSVG width='2.4rem' height='2.4rem' />
+												) : (
+													<EyeSVG width='2.4rem' height='2.4rem' />
+												)}
 											</span>
 										</button>
 									</li>

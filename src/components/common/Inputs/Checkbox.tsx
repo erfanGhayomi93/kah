@@ -18,7 +18,11 @@ const Checkbox = ({ classes, disabled, onChange, checked, label, ...props }: ICh
 					type='checkbox'
 					checked={checked}
 					onChange={disabled ? undefined : () => onChange(!checked)}
-					className={cn(styles.checkbox, classes?.checkbox, checked && [styles.checked, classes?.checked])}
+					className={cn(
+						styles.checkbox,
+						classes?.checkbox,
+						checked && ['i-checked', styles.checked, classes?.checked],
+					)}
 					{...props}
 				/>
 

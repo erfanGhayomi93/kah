@@ -81,7 +81,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 		if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 			return (
 				<span className='absolute text-base font-medium text-gray-900 center'>
-					{t('common.no_symbol_found')}
+					{t('common.symbol_not_found')}
 				</span>
 			);
 
@@ -114,7 +114,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 			<div className='gap-24 flex-justify-between'>
 				<label
 					style={{ maxWidth: '30rem' }}
-					className='relative h-40 flex-1 rounded border border-input flex-items-center input-group'
+					className='relative h-40 flex-1 rounded flex-items-center input-group'
 				>
 					<div className='px-8 text-gray-900'>
 						<SearchSVG width='2rem' height='2rem' />
@@ -132,6 +132,10 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					<span style={{ right: '3.6rem' }} className={cn('flexible-placeholder', symbolTerm && 'active')}>
 						{t('option_chain.symbol_search_placeholder')}
 					</span>
+
+					<fieldset className={cn('flexible-fieldset', symbolTerm && 'active')}>
+						<legend>{t('option_chain.symbol_search_placeholder')}</legend>
+					</fieldset>
 				</label>
 
 				<div className='gap-8 flex-items-center'>

@@ -1,7 +1,7 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getOptionWatchlistTabId, setOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { useAppDispatch } from '@/features/hooks';
+import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useRef, useState } from 'react';
 import Watchlist from './Watchlist';
@@ -30,8 +30,6 @@ const WatchlistList = ({ watchlistList, isDeleting, setIsDeleting }: WatchlistLi
 	const queryClient = useQueryClient();
 
 	const dispatch = useAppDispatch();
-
-	const optionWatchlistTabId = useAppSelector(getOptionWatchlistTabId);
 
 	const [editingWatchlistId, setEditingWatchlistId] = useState(-1);
 
