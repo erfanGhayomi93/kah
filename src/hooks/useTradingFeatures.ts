@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
 	toggleBuySellModal,
-	toggleChooseBrokerModal,
+	toggleChoiceBrokerModal,
 	toggleLoginModal,
 	type IBuySellModal,
 } from '@/features/slices/modalSlice';
@@ -26,7 +26,7 @@ const useTradingFeatures = () => {
 		if (!isLoggedIn) {
 			dispatch(toggleLoginModal({}));
 		} else if (!brokerIsSelected) {
-			dispatch(toggleChooseBrokerModal({}));
+			dispatch(toggleChoiceBrokerModal({}));
 		} else {
 			dispatch(toggleBuySellModal(props));
 		}

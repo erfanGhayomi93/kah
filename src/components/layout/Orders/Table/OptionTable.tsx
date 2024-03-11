@@ -2,6 +2,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
+import { toggleChoiceCollateralModal } from '@/features/slices/modalSlice';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
@@ -30,6 +31,18 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 		// 		symbolType: 'option',
 		// 	}),
 		// );
+	};
+
+	const onClosePosition = (order: Order.OptionOrder) => {
+		//
+	};
+
+	const onChangeCollateral = (order: Order.OptionOrder) => {
+		dispatch(
+			toggleChoiceCollateralModal({
+				order,
+			}),
+		);
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(
@@ -106,6 +119,8 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				cellRenderer: OptionActionCell,
 				cellRendererParams: {
 					showDetails,
+					onClosePosition,
+					onChangeCollateral,
 				},
 			},
 		],

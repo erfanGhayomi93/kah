@@ -61,7 +61,7 @@ const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: 
 				if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 					return (
 						<div className={cn(styles.blankList, classes?.blankList)}>
-							<span>{t('common.no_symbol_found')}</span>
+							<span>{t('common.symbol_not_found')}</span>
 						</div>
 					);
 

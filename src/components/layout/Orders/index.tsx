@@ -36,7 +36,7 @@ const Orders = () => {
 					}}
 				>
 					<div className='relative flex-1 overflow-hidden rounded bg-white shadow-tooltip flex-column'>
-						<Header tab={activeTab} setTab={setActiveTab} />
+						<Header isExpand={ordersIsExpand} tab={activeTab} setTab={setActiveTab} />
 						{ordersIsExpand && <Body tab={activeTab} />}
 					</div>
 				</div>

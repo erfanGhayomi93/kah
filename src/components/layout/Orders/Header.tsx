@@ -11,11 +11,12 @@ import { useLayoutEffect, useMemo, useState } from 'react';
 import styles from './Orders.module.scss';
 
 interface HeaderProps {
+	isExpand: boolean;
 	tab: TOrdersTab;
 	setTab: (tav: TOrdersTab) => void;
 }
 
-const Header = ({ tab, setTab }: HeaderProps) => {
+const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -152,7 +153,7 @@ const Header = ({ tab, setTab }: HeaderProps) => {
 			</ul>
 
 			<ul className={styles.toolbar}>
-				{!['option_orders', 'executed_orders'].includes(tab) && (
+				{isExpand && !['option_orders', 'executed_orders'].includes(tab) && (
 					<>
 						<li>
 							<button onClick={onDeleteAll} disabled={selectedRows.length === 0} type='button'>

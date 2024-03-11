@@ -54,8 +54,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			queryClient.refetchQueries({
-				queryKey: ['optionWatchlistQuery'],
-				exact: false,
+				queryKey: ['optionWatchlistQuery', { watchlistId }],
 			});
 		} catch (e) {
 			//
@@ -122,7 +121,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 							<div className='absolute size-48 center spinner' />
 						) : !Array.isArray(symbolsData) || symbolsData.length === 0 ? (
 							<div className='absolute center'>
-								<span className='font-medium text-gray-900'>{t('common.no_symbol_found')}</span>
+								<span className='font-medium text-gray-900'>{t('common.symbol_not_found')}</span>
 							</div>
 						) : (
 							<ul className='h-full gap-4 overflow-auto flex-column'>
