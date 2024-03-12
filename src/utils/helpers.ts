@@ -386,3 +386,15 @@ export const dateFormatter = (v: string | number, format: 'date' | 'time' | 'dat
 
 	return '−';
 };
+
+export const getCodalLink = (symbolTitle?: string): string => {
+	return symbolTitle
+		? `http://www.codal.ir/ReportList.aspx?search&Symbol=${encodeURI(symbolTitle)}`
+		: 'http://www.codal.ir';
+};
+
+export const getTSELink = (insCode?: number | string): string => {
+	return insCode
+		? `http://tsetmc.com/Loader.aspx?ParTree=151311&i=${encodeURI(String(insCode))}`
+		: 'http://tsetmc.com';
+};

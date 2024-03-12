@@ -240,16 +240,6 @@ const SimpleTrade = ({
 				</div>
 
 				<div className='flex gap-8'>
-					<button
-						type='submit'
-						className={cn(
-							'h-40 flex-1 rounded text-base font-medium',
-							side === 'buy' ? 'btn-success' : 'btn-error',
-						)}
-					>
-						{t(`bs_modal.${mode}_${type}_${side}`)}
-					</button>
-
 					{mode === 'create' && type === 'order' && (
 						<button
 							onClick={createDraft}
@@ -259,6 +249,16 @@ const SimpleTrade = ({
 							{t('bs_modal.draft')}
 						</button>
 					)}
+
+					<button
+						type='submit'
+						className={cn(
+							'h-40 flex-1 rounded text-base font-medium',
+							side === 'buy' ? 'btn-success' : 'btn-error',
+						)}
+					>
+						{t(`bs_modal.${mode}_${type}_${side}`)}
+					</button>
 				</div>
 			</div>
 		</form>

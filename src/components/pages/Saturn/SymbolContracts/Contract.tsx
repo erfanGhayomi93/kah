@@ -1,7 +1,7 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import Tabs from '@/components/common/Tabs/Tabs';
-import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
+import { ClosePositionSVG, GrowDownSVG, GrowUpSVG, PlusSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
@@ -13,6 +13,7 @@ import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useLayoutEffect, useMemo } from 'react';
+import SymbolContextMenu from '../common/SymbolContextMenu';
 import ComputingInformation from './Tabs/ComputingInformation';
 import ContractMarketDepth from './Tabs/ContractMarketDepth';
 import PriceInformation from './Tabs/PriceInformation';
@@ -34,7 +35,7 @@ const Wrapper = ({ children }: WrapperProps) => (
 		style={{
 			flex: '1 0 39.2rem',
 		}}
-		className='relative gap-16 rounded border border-gray-500 bg-white pb-12 pl-16 pr-24 pt-12 flex-column'
+		className='relative gap-16 rounded border border-gray-500 bg-white px-16 pb-12 pt-12 flex-column'
 	>
 		{children}
 	</div>
@@ -202,8 +203,13 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 				<div className='flex items-start justify-between'>
 					<div className='flex flex-1 justify-between gap-16'>
 						<div className='flex-items-start flex-column'>
-							<h1 className='text-3xl font-medium text-gray-1000'>{contractInfo?.symbolTitle ?? '−'}</h1>
-							<h4 className='whitespace-nowrap text-tiny text-gray-1000'>
+							<div className='flex items-center gap-8'>
+								<SymbolContextMenu symbol={contractInfo ?? null} />
+								<h1 className='text-3xl font-medium text-gray-1000'>
+									{contractInfo?.symbolTitle ?? '−'}
+								</h1>
+							</div>
+							<h4 className='whitespace-nowrap pr-32 text-tiny text-gray-1000'>
 								{contractInfo?.companyName ?? '−'}
 							</h4>
 						</div>
@@ -225,24 +231,22 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 						</div>
 					</div>
 
-					<div className='flex-1 gap-8 pt-4 flex-justify-end'>
-						<div className='gap-8 pl-16 flex-items-center'>
+					<div className='flex-1 gap-16 pt-4 flex-justify-end'>
+						<div className='gap-8 flex-items-center'>
 							<button
 								type='button'
 								onClick={() => addBsModal('buy')}
-								style={{ width: '9.6rem' }}
-								className='h-32 rounded !border text-tiny flex-justify-center btn-success-outline'
+								className='size-32 rounded !border text-tiny flex-justify-center btn-success-outline'
 							>
-								{t('saturn_page.new_position')}
+								<PlusSVG width='2rem' height='2rem' />
 							</button>
 
 							<button
 								type='button'
 								onClick={() => addBsModal('sell')}
-								style={{ width: '9.6rem' }}
-								className='h-32 rounded !border text-tiny flex-justify-center btn-error-outline'
+								className='btn-gray-outline size-32 rounded !border text-tiny flex-justify-center'
 							>
-								{t('saturn_page.close_position')}
+								<ClosePositionSVG width='2rem' height='2rem' />
 							</button>
 						</div>
 
