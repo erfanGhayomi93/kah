@@ -74,6 +74,11 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 		setSelectedRows(orders);
 	};
 
+	const deleteAll = (ids: number[]) => {
+		if (tab === 'draft') deleteDraft(ids);
+		else deleteOrder(ids);
+	};
+
 	const onDeleteAll = () => {
 		if (selectedRows.length === 0) return;
 
@@ -83,10 +88,7 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 			setConfirmModal({
 				title: t(`orders.delete_${tab === 'draft' ? 'drafts' : 'orders'}`),
 				description: t(`orders.delete_${tab === 'draft' ? 'drafts' : 'orders'}_confirm`),
-				onSubmit: () => {
-					if (tab === 'draft') deleteDraft(ids);
-					else deleteOrder(ids);
-				},
+				onSubmit: () => deleteAll(ids),
 				confirm: {
 					label: t('common.delete'),
 					type: 'error',
@@ -120,7 +122,9 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 		}
 
 		createOrders(orders);
-		onDeleteAll();
+
+		const ids = selectedRows.map((item) => ('orderId' in item ? item.orderId : item.id));
+		deleteAll(ids);
 
 		ipcMain.send('deselect_orders');
 		setSelectedRows([]);
