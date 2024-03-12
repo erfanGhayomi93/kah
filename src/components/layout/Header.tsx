@@ -1,21 +1,25 @@
 import { useUserRemainQuery, useUserStatusQuery } from '@/api/queries/brokerPrivateQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { getBrokerURLs, setBrokerURLs } from '@/features/slices/brokerSlice';
 import {
+	setConfirmModal,
 	toggleBlackScholesModal,
+	toggleBuySellModal,
 	toggleForgetPasswordModal,
 	toggleLoginModal,
 	toggleLogoutModal,
 } from '@/features/slices/modalSlice';
-import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
+import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn, setBrokerIsSelected } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
+import { deleteBrokerClientId } from '@/utils/cookie';
 import { cn, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { toast } from 'react-toastify';
 import Popup from '../common/Popup';
 import {
 	BellSVG,
@@ -37,6 +41,7 @@ const getStates = createSelector(
 		isLoggedIn: getIsLoggedIn(state),
 		isLoggingIn: getIsLoggingIn(state),
 		brokerURLs: getBrokerURLs(state),
+		brokerIsSelected: getBrokerIsSelected(state),
 	}),
 );
 
@@ -45,7 +50,7 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, isLoggingIn, brokerURLs } = useAppSelector(getStates);
+	const { isLoggedIn, isLoggingIn, brokerURLs, brokerIsSelected } = useAppSelector(getStates);
 
 	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
@@ -74,6 +79,29 @@ const Header = () => {
 
 	const setPassword = () => {
 		dispatch(toggleForgetPasswordModal({}));
+	};
+
+	const logoutBroker = (callback: () => void) => {
+		dispatch(
+			setConfirmModal({
+				title: t('header.logout_broker'),
+				description: t('header.logout_broker_description'),
+				confirm: {
+					label: t('header.exit'),
+					type: 'error',
+				},
+				onSubmit: () => {
+					dispatch(setBrokerIsSelected(false));
+					dispatch(setBrokerURLs(null));
+					dispatch(toggleBuySellModal(null));
+					deleteBrokerClientId();
+
+					toast.success(t('alerts.logged_out_successfully'));
+
+					callback();
+				},
+			}),
+		);
 	};
 
 	const openBlackScholesModal = () => {
@@ -202,7 +230,7 @@ const Header = () => {
 							defaultPopupWidth={296}
 							onOpen={() => setIsDropdownOpened(true)}
 							onClose={() => setIsDropdownOpened(false)}
-							renderer={() => (
+							renderer={({ setOpen }) => (
 								<div className='rounded-md bg-white pb-16 shadow-tooltip'>
 									<div className='flex h-40 items-start justify-between pr-16'>
 										<div className='gap-12 pt-16 flex-items-center fit-image'>
@@ -227,15 +255,27 @@ const Header = () => {
 										</button>
 									</div>
 
-									{!userData?.hasPassword && (
+									{(!userData?.hasPassword || brokerIsSelected) && (
 										<div className='px-16 pt-40 flex-items-center'>
-											<button
-												type='button'
-												onClick={setPassword}
-												className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
-											>
-												{t('header.set_password')}
-											</button>
+											{!userData?.hasPassword && (
+												<button
+													type='button'
+													onClick={setPassword}
+													className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+												>
+													{t('header.set_password')}
+												</button>
+											)}
+
+											{brokerIsSelected && (
+												<button
+													type='button'
+													onClick={() => logoutBroker(() => setOpen(false))}
+													className='h-32 w-full rounded border border-error-100 bg-error-100/10 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
+												>
+													{t('header.logout_broker')}
+												</button>
+											)}
 										</div>
 									)}
 
@@ -324,6 +364,7 @@ const Header = () => {
 					)}
 				</div>
 			</div>
+
 			{isDropdownOpened &&
 				createPortal(
 					<div
