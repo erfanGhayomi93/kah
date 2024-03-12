@@ -32,6 +32,7 @@
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
 		"logout_broker": "خروج از حساب کارگزاری",
+		"login_broker": "ورود به کارگزاری",
 		"logout_broker_description": "آیا از خروج خود مطمئن هستید؟",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
