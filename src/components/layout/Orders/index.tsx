@@ -1,9 +1,11 @@
-import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
 import { getOrdersIsExpand } from '@/features/slices/uiSlice';
+import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { useLocalstorage } from '@/hooks';
+import { createSelector } from '@reduxjs/toolkit';
 import dynamic from 'next/dynamic';
 import Header from './Header';
 
@@ -12,16 +14,20 @@ const Body = dynamic(() => import('./Body'), {
 	loading: () => <Loading />,
 });
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state) && getBrokerIsSelected(state),
+		ordersIsExpand: getOrdersIsExpand(state),
+	}),
+);
+
 const Orders = () => {
-	const ordersIsExpand = useAppSelector(getOrdersIsExpand);
+	const { isLoggedIn, ordersIsExpand } = useAppSelector(getStates);
 
 	const [activeTab, setActiveTab] = useLocalstorage<TOrdersTab>('ot', 'open_orders');
 
-	const { data: brokerUrls } = useGetBrokerUrlQuery({
-		queryKey: ['getBrokerUrlQuery'],
-	});
-
-	if (!brokerUrls) return null;
+	if (!isLoggedIn) return null;
 
 	return (
 		<ErrorBoundary>

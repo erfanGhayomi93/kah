@@ -11,6 +11,7 @@ import ChartDownSVG from './chart-down.svg';
 import ChartUpSVG from './chart-up.svg';
 import CheckListSVG from './check-list.svg';
 import CheckSVG from './check.svg';
+import ClosePositionSVG from './close-position.svg';
 import CogsSVG from './cogs.svg';
 import CoinsSVG from './coins.svg';
 import ColumnsSVG from './columns.svg';
@@ -83,6 +84,7 @@ export {
 	ChartUpSVG,
 	CheckListSVG,
 	CheckSVG,
+	ClosePositionSVG,
 	CogsSVG,
 	CoinsSVG,
 	ColumnsSVG,

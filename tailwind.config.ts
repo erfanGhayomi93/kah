@@ -274,6 +274,53 @@ const config: Config = {
 					},
 				},
 
+				'.btn-gray': {
+					display: 'flex',
+					'align-items': 'center',
+					color: theme('colors.white'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.gray.900'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.gray.800'),
+					},
+
+					'&:not(.justify-start,.justify-end)': {
+						'justify-content': 'center',
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
+					},
+				},
+
+				'.btn-gray-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.gray.900'),
+					'font-weight': '500',
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.gray.900')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.gray.900'),
+						'border-color': theme('colors.gray.900'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
+					},
+				},
+
 				'.btn-primary-100': {
 					display: 'flex',
 					'align-items': 'center',
