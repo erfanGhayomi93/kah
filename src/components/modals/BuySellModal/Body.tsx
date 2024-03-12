@@ -1,3 +1,4 @@
+import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Tabs from '@/components/common/Tabs/Tabs';
@@ -31,6 +32,7 @@ interface BodyProps extends IBsModalInputs {
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
+	commission: Record<'buy' | 'sell' | 'default', number>;
 	close: () => void;
 	setInputValue: TSetBsModalInputs;
 }
@@ -42,6 +44,10 @@ const Body = (props: BodyProps) => {
 
 	const { data: brokerUrls } = useGetBrokerUrlQuery({
 		queryKey: ['getBrokerUrlQuery'],
+	});
+
+	const { data: userRemain } = useUserRemainQuery({
+		queryKey: ['userRemainQuery'],
 	});
 
 	const validation = (cb: () => void) => () => {
@@ -233,7 +239,14 @@ const Body = (props: BodyProps) => {
 			{
 				id: 'normal',
 				title: t('bs_modal.normal_trade'),
-				render: <SimpleTrade {...props} createDraft={sendDraft} onSubmit={validation(onSubmit)} />,
+				render: (
+					<SimpleTrade
+						{...props}
+						userRemain={userRemain ?? null}
+						createDraft={sendDraft}
+						onSubmit={validation(onSubmit)}
+					/>
+				),
 			},
 			{
 				id: 'strategy',
@@ -242,7 +255,7 @@ const Body = (props: BodyProps) => {
 				disabled: true,
 			},
 		],
-		[JSON.stringify(props), brokerUrls],
+		[JSON.stringify(props), JSON.stringify(userRemain), brokerUrls],
 	);
 
 	if (props.symbolType === 'base') return <Wrapper className='pt-24'>{TABS[0].render}</Wrapper>;
