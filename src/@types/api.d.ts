@@ -325,6 +325,7 @@ declare namespace Symbol {
 		tradeCount: number;
 		lastTradeDate: string;
 		hv: number;
+		insCode: number;
 		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
