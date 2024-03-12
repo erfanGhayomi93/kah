@@ -3,6 +3,7 @@ import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs, setBrokerURLs } from '@/features/slices/brokerSlice';
 import {
+	setConfirmModal,
 	toggleBlackScholesModal,
 	toggleBuySellModal,
 	toggleForgetPasswordModal,
@@ -11,12 +12,14 @@ import {
 } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn, setBrokerIsSelected } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
+import { deleteBrokerClientId } from '@/utils/cookie';
 import { cn, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { toast } from 'react-toastify';
 import Popup from '../common/Popup';
 import {
 	BellSVG,
@@ -78,10 +81,27 @@ const Header = () => {
 		dispatch(toggleForgetPasswordModal({}));
 	};
 
-	const logoutBroker = () => {
-		dispatch(setBrokerIsSelected(false));
-		dispatch(setBrokerURLs(null));
-		dispatch(toggleBuySellModal(null));
+	const logoutBroker = (callback: () => void) => {
+		dispatch(
+			setConfirmModal({
+				title: t('header.logout_broker'),
+				description: t('header.logout_broker_description'),
+				confirm: {
+					label: t('header.exit'),
+					type: 'error',
+				},
+				onSubmit: () => {
+					dispatch(setBrokerIsSelected(false));
+					dispatch(setBrokerURLs(null));
+					dispatch(toggleBuySellModal(null));
+					deleteBrokerClientId();
+
+					toast.success(t('alerts.logged_out_successfully'));
+
+					callback();
+				},
+			}),
+		);
 	};
 
 	const openBlackScholesModal = () => {
@@ -210,7 +230,7 @@ const Header = () => {
 							defaultPopupWidth={296}
 							onOpen={() => setIsDropdownOpened(true)}
 							onClose={() => setIsDropdownOpened(false)}
-							renderer={() => (
+							renderer={({ setOpen }) => (
 								<div className='rounded-md bg-white pb-16 shadow-tooltip'>
 									<div className='flex h-40 items-start justify-between pr-16'>
 										<div className='gap-12 pt-16 flex-items-center fit-image'>
@@ -250,7 +270,7 @@ const Header = () => {
 											{brokerIsSelected && (
 												<button
 													type='button'
-													onClick={logoutBroker}
+													onClick={() => logoutBroker(() => setOpen(false))}
 													className='h-32 w-full rounded border border-error-100 bg-error-100/10 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
 												>
 													{t('header.logout_broker')}

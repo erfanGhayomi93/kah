@@ -28,9 +28,11 @@
 	},
 	"header": {
 		"login": "ورود",
+		"exit": "خروج",
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
 		"logout_broker": "خروج از حساب کارگزاری",
+		"logout_broker_description": "آیا از خروج خود مطمئن هستید؟",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
@@ -588,6 +590,7 @@
 		"edit": "ویرایش"
 	},
 	"alerts": {
+		"logged_out_successfully": "با موفقیت از حساب خود خارج شدید.",
 		"watchlist_symbol_removed_successfully": "نماد \"{symbolTitle}\" با موفقیت از دیده‌بان حذف شد.",
 		"watchlist_symbol_added_successfully": "نماد \"{symbolTitle}\" با موفقیت به دیده‌بان اضافه شد.",
 		"order_successfully_created": "سفارش شما با موفقیت ثبت شد.",
