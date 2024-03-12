@@ -1,7 +1,9 @@
 'use client';
 
+import axios from '@/api/axios';
 import { useActiveTemplateQuery } from '@/api/queries/saturnQueries';
 import { symbolInfoQueryFn, useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import routes from '@/api/routes';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
@@ -71,6 +73,7 @@ const Saturn = () => {
 
 	const { data: activeTemplate, isLoading: isLoadingActiveTemplate } = useActiveTemplateQuery({
 		queryKey: ['useActiveTemplate'],
+		enabled: Boolean(!searchParams.get('symbolISIN') && !searchParams.get('symbolISIN')),
 	});
 
 	const onContractAdded = (data: Array<{ symbolISIN: string; symbolTitle: string; activeTab: Saturn.OptionTab }>) => {
@@ -152,6 +155,29 @@ const Saturn = () => {
 		);
 	};
 
+	const updateTemplate = async () => {
+		if (!baseSymbolInfo || !saturnActiveTemplate) return;
+
+		try {
+			const { symbolISIN, symbolTitle } = baseSymbolInfo;
+
+			const content = JSON.stringify({
+				baseSymbolTitle: symbolTitle,
+				baseSymbolISIN: symbolISIN,
+				activeTab: baseSymbolActiveTab,
+				options: baseSymbolContracts,
+			});
+
+			await axios.post(routes.saturn.Upsert, {
+				id: saturnActiveTemplate.id,
+				name: saturnActiveTemplate.name,
+				content,
+			});
+		} catch (e) {
+			//
+		}
+	};
+
 	const fetchContractISIN = async (contractISIN: string) => {
 		try {
 			const data = await queryClient.fetchQuery({
@@ -177,6 +203,18 @@ const Saturn = () => {
 			//
 		}
 	};
+
+	const onBeforeUnload = (e: BeforeUnloadEvent) => {
+		if (saturnActiveTemplate === null) e.preventDefault();
+	};
+
+	useLayoutEffect(() => {
+		window.addEventListener('beforeunload', onBeforeUnload);
+
+		return () => {
+			window.removeEventListener('beforeunload', onBeforeUnload);
+		};
+	}, [saturnActiveTemplate]);
 
 	useLayoutEffect(() => {
 		try {
@@ -220,12 +258,20 @@ const Saturn = () => {
 		} catch (e) {
 			//
 		}
-	}, [baseSymbolContracts]);
+	}, [JSON.stringify(baseSymbolContracts)]);
 
 	useLayoutEffect(() => {
 		if (!activeTemplate) return;
 		dispatch(setSaturnActiveTemplate(activeTemplate));
 	}, [activeTemplate]);
+
+	useLayoutEffect(() => {
+		try {
+			updateTemplate();
+		} catch (e) {
+			//
+		}
+	}, [JSON.stringify(baseSymbolContracts), baseSymbolActiveTab]);
 
 	if (isLoadingBaseSymbolInfo || isLoadingActiveTemplate) {
 		return (
