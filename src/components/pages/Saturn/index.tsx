@@ -65,11 +65,11 @@ const Saturn = () => {
 		searchParams.get('symbolISIN') ?? LocalstorageInstance.get('selected_symbol', defaultSymbolISIN),
 	);
 
-	const { data: baseSymbolInfo, isFetching: isFetchingBaseSymbolInfo } = useSymbolInfoQuery({
+	const { data: baseSymbolInfo, isLoading: isLoadingBaseSymbolInfo } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', typeof selectedSymbol === 'string' ? selectedSymbol : defaultSymbolISIN],
 	});
 
-	const { data: activeTemplate, isFetching: isFetchingActiveTemplate } = useActiveTemplateQuery({
+	const { data: activeTemplate, isLoading: isLoadingActiveTemplate } = useActiveTemplateQuery({
 		queryKey: ['useActiveTemplate'],
 	});
 
@@ -227,7 +227,7 @@ const Saturn = () => {
 		dispatch(setSaturnActiveTemplate(activeTemplate));
 	}, [activeTemplate]);
 
-	if (isFetchingBaseSymbolInfo || isFetchingActiveTemplate) {
+	if (isLoadingBaseSymbolInfo || isLoadingActiveTemplate) {
 		return (
 			<Main>
 				<Loading />

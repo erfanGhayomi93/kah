@@ -85,7 +85,7 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 						{
 							id: 'market_map',
 							label: t('sidebar.market_map'),
-							to: '/market-map',
+							to: '/',
 							icon: <MarketMapSVG />,
 						},
 					],
@@ -128,7 +128,7 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 						{
 							id: 'option_settlement',
 							label: t('sidebar.option_settlement'),
-							to: '/market-map',
+							to: '/',
 							icon: <PayOffSVG />,
 						},
 					],

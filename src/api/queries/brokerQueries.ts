@@ -10,7 +10,7 @@ export const useGetBrokerUrlQuery = createQuery<IBrokerUrls | null, ['getBrokerU
 	queryKey: ['getBrokerUrlQuery'],
 	queryFn: async ({ signal }) => {
 		const [, brokerCode] = getBrokerClientId();
-		if (!brokerCode) return null;
+		if (!brokerCode || brokerCode <= 0) return null;
 
 		try {
 			const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
