@@ -30,6 +30,7 @@
 		"login": "ورود",
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
+		"logout_broker": "خروج از حساب کارگزاری",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
@@ -38,7 +39,7 @@
 		"user_status_Normal": "عادی",
 		"user_status_AtRisk": "در خطر",
 		"user_status_CallMargin": "اخطار وجه تضمین",
-		"logout": "خروج از حساب کاربری"
+		"logout": "خروج از حساب کاربری کهکشان"
 	},
 	"header_navigation": {
 		"watchlist": "دیده‌بان",

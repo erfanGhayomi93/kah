@@ -1,14 +1,15 @@
 import { useUserRemainQuery, useUserStatusQuery } from '@/api/queries/brokerPrivateQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { getBrokerURLs, setBrokerURLs } from '@/features/slices/brokerSlice';
 import {
 	toggleBlackScholesModal,
+	toggleBuySellModal,
 	toggleForgetPasswordModal,
 	toggleLoginModal,
 	toggleLogoutModal,
 } from '@/features/slices/modalSlice';
-import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
+import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn, setBrokerIsSelected } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { cn, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
@@ -37,6 +38,7 @@ const getStates = createSelector(
 		isLoggedIn: getIsLoggedIn(state),
 		isLoggingIn: getIsLoggingIn(state),
 		brokerURLs: getBrokerURLs(state),
+		brokerIsSelected: getBrokerIsSelected(state),
 	}),
 );
 
@@ -45,7 +47,7 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, isLoggingIn, brokerURLs } = useAppSelector(getStates);
+	const { isLoggedIn, isLoggingIn, brokerURLs, brokerIsSelected } = useAppSelector(getStates);
 
 	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
@@ -74,6 +76,12 @@ const Header = () => {
 
 	const setPassword = () => {
 		dispatch(toggleForgetPasswordModal({}));
+	};
+
+	const logoutBroker = () => {
+		dispatch(setBrokerIsSelected(false));
+		dispatch(setBrokerURLs(null));
+		dispatch(toggleBuySellModal(null));
 	};
 
 	const openBlackScholesModal = () => {
@@ -227,15 +235,27 @@ const Header = () => {
 										</button>
 									</div>
 
-									{!userData?.hasPassword && (
+									{(!userData?.hasPassword || brokerIsSelected) && (
 										<div className='px-16 pt-40 flex-items-center'>
-											<button
-												type='button'
-												onClick={setPassword}
-												className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
-											>
-												{t('header.set_password')}
-											</button>
+											{!userData?.hasPassword && (
+												<button
+													type='button'
+													onClick={setPassword}
+													className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+												>
+													{t('header.set_password')}
+												</button>
+											)}
+
+											{brokerIsSelected && (
+												<button
+													type='button'
+													onClick={logoutBroker}
+													className='h-32 w-full rounded border border-error-100 bg-error-100/10 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
+												>
+													{t('header.logout_broker')}
+												</button>
+											)}
 										</div>
 									)}
 
@@ -324,6 +344,7 @@ const Header = () => {
 					)}
 				</div>
 			</div>
+
 			{isDropdownOpened &&
 				createPortal(
 					<div
