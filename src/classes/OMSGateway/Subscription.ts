@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { refetchActiveOrderTab } from '@/utils/orders';
 import { subscribePrivateGateWay } from '@/utils/subscriptions';
 import { toast } from 'react-toastify';

@@ -500,6 +500,14 @@ declare namespace Broker {
 		orderDraftCnt: number;
 		orderOptionCount: number;
 	}
+
+	export interface Commission {
+		marketTitle: string;
+		marketUnitTitle: string;
+		commissionType: string;
+		buyCommission: number;
+		sellCommission: number;
+	}
 }
 
 declare namespace Order {

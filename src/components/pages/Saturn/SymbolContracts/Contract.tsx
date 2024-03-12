@@ -51,7 +51,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 
 	const { subscribe, unsubscribe } = useSubscription();
 
-	const { data: contractInfo, isFetching } = useSymbolInfoQuery({
+	const { data: contractInfo, isLoading } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', option === null ? null : option.symbolISIN],
 		enabled: option !== null,
 	});
@@ -180,7 +180,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 			</Wrapper>
 		);
 
-	if (isFetching)
+	if (isLoading)
 		return (
 			<Wrapper>
 				<Loading />

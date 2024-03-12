@@ -32,7 +32,7 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 						key={p}
 						type='button'
 						className='h-28 flex-1 leading-8 text-gray-1000 flex-justify-center gray-box'
-						onClick={() => onClick(p)}
+						onClick={() => onClick(p / 100)}
 					>
 						{p}%
 					</button>
@@ -48,6 +48,8 @@ interface SimpleTradeProps extends IBsModalInputs {
 	type: TBsTypes;
 	mode: TBsModes;
 	switchable: boolean;
+	commission: Record<'buy' | 'sell' | 'default', number>;
+	userRemain: Broker.Remain | null;
 	setInputValue: TSetBsModalInputs;
 	createDraft: () => void;
 	onSubmit: () => void;
@@ -60,7 +62,10 @@ const SimpleTrade = ({
 	symbolType,
 	validity,
 	switchable,
+	value,
 	validityDate,
+	commission,
+	userRemain,
 	side,
 	priceLock,
 	type,
@@ -80,7 +85,18 @@ const SimpleTrade = ({
 	};
 
 	const onClickPercentage = (percent: number) => {
-		//
+		try {
+			if (side === 'buy') {
+				if (userRemain) setInputValue('value', userRemain.purchasePower * percent);
+				return;
+			}
+
+			if (side === 'sell') {
+				// TODO: Calculate
+			}
+		} catch (e) {
+			//
+		}
 	};
 
 	const TABS = useMemo(
@@ -186,7 +202,7 @@ const SimpleTrade = ({
 
 						<span className='truncate whitespace-nowrap text-left text-tiny text-gray-900'>
 							<span className='pl-4 text-base font-medium text-gray-1000 ltr'>
-								{sepNumbers(String(BigInt(price * quantity)))}
+								{sepNumbers(String(value))}
 							</span>
 							{t('common.rial')}
 						</span>
