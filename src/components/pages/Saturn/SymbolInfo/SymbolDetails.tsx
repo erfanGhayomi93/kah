@@ -13,6 +13,7 @@ import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
+import SymbolContextMenu from '../common/SymbolContextMenu';
 
 interface SymbolDetailsProps {
 	symbol: Symbol.Info;
@@ -224,6 +225,8 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 							{sepNumbers(String(lastTradedPrice))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
+
+						<SymbolContextMenu symbol={symbol ?? null} />
 					</div>
 				</div>
 

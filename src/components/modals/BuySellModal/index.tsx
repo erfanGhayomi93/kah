@@ -1,15 +1,21 @@
 import { useCommissionsQuery } from '@/api/queries/brokerPrivateQueries';
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleBuySellModal, type IBuySellModal } from '@/features/slices/modalSlice';
-import { divide } from '@/utils/helpers';
+import { cn, divide } from '@/utils/helpers';
+import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
-import SymbolInfo from './SymbolInfo';
+
+const SymbolInfo = dynamic(() => import('./SymbolInfo'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 const Div = styled.div`
 	display: flex;
@@ -167,8 +173,17 @@ const BuySellModal = ({
 					symbolTitle={symbolTitle}
 					expand={inputs.expand}
 					onToggle={() => setInputValue('expand', !inputs.expand)}
+					onClose={onCloseModal}
 				/>
 				<div className='flex h-full flex-1'>
+					<div
+						className={cn(
+							'relative w-full flex-1 overflow-hidden',
+							inputs.expand && 'border-l border-l-gray-500',
+						)}
+					>
+						{inputs.expand && <SymbolInfo />}
+					</div>
 					<Body
 						{...inputs}
 						commission={commission}
@@ -181,7 +196,6 @@ const BuySellModal = ({
 						symbolType={symbolType}
 						setInputValue={setInputValue}
 					/>
-					{inputs.expand && <SymbolInfo />}
 				</div>
 				<Footer
 					validityDays={symbolType === 'option' ? 1 : null}
