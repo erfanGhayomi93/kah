@@ -21,8 +21,6 @@ const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: 
 
 	const [term, setTerm] = useState('');
 
-	const [focusing, setFocusing] = useState(false);
-
 	const { data: symbolsData, isFetching } = useSymbolSearchQuery({
 		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
 	});
@@ -32,12 +30,10 @@ const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: 
 	};
 
 	const onFocus = (cb: () => void) => {
-		setFocusing(true);
 		cb();
 	};
 
 	const onBlur = () => {
-		setFocusing(false);
 		setTerm('');
 	};
 

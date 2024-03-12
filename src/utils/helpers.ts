@@ -246,7 +246,7 @@ export const paramsSerializer = (params: Record<string, unknown>) => {
 	return queryParams.join('&');
 };
 
-export const decodeBrokerUrls = (data: Broker.URL[]) => {
+export const decodeBrokerUrls = (data: Broker.URL[]): IBrokerUrls => {
 	const urls: IBrokerUrls = {
 		todayOrders: data[0].url,
 		executedOrders: data[1].url,

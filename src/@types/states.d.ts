@@ -59,8 +59,8 @@ declare type IBrokerUrls = Record<
 	| 'updateDraft'
 	| 'updateOrder'
 	| 'userRemain'
-	| 'userStatus',
-	'createDraft',
+	| 'userStatus'
+	| 'createDraft',
 	string
 >;
 
@@ -85,6 +85,7 @@ declare interface IBsModalInputs {
 	validityDate: number;
 	price: number;
 	quantity: number;
+	value: BigInt | number;
 	side: TBsSides;
 	priceLock: boolean;
 	expand: boolean;

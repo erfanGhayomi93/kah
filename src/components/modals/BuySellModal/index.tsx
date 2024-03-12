@@ -1,6 +1,9 @@
+import { useCommissionsQuery } from '@/api/queries/brokerPrivateQueries';
+import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleBuySellModal, type IBuySellModal } from '@/features/slices/modalSlice';
-import { useState } from 'react';
+import { divide } from '@/utils/helpers';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Body from './Body';
@@ -40,9 +43,18 @@ const BuySellModal = ({
 }: BuySellModalProps) => {
 	const dispatch = useAppDispatch();
 
+	const { data: symbolData } = useSymbolInfoQuery({
+		queryKey: ['symbolInfoQuery', symbolISIN],
+	});
+
+	const { data: commissions } = useCommissionsQuery({
+		queryKey: ['commissionsQuery'],
+	});
+
 	const [inputs, setInputs] = useState<IBsModalInputs>({
 		price: initialPrice ?? 0,
 		quantity: initialQuantity ?? 0,
+		value: 0,
 		collateral: collateral ?? null,
 		side: side ?? 'buy',
 		validity: initialValidity ?? 'Day',
@@ -54,6 +66,10 @@ const BuySellModal = ({
 
 	const setInputValue: TSetBsModalInputs = (arg1, arg2) => {
 		if (typeof arg1 === 'string') {
+			if (arg1 === 'price') return onChangePrice(arg2 as number);
+			if (arg1 === 'quantity') return onChangeQuantity(arg2 as number);
+			if (arg1 === 'value') return onChangeValue(arg2 as number);
+
 			setInputs((values) => ({
 				...values,
 				[arg1]: arg2,
@@ -75,6 +91,75 @@ const BuySellModal = ({
 		dispatch(toggleBuySellModal(null));
 	};
 
+	const onChangePrice = (price: number): void => {
+		let value = price * inputs.quantity;
+		value += Math.round(value * commission.default);
+
+		setInputs((values) => ({
+			...values,
+			price,
+			value,
+		}));
+	};
+
+	const onChangeQuantity = (quantity: number): void => {
+		let value = inputs.price * quantity;
+		value += Math.round(value * commission.default);
+
+		setInputs((values) => ({
+			...values,
+			quantity,
+			value,
+		}));
+	};
+
+	const onChangeValue = (value: number): void => {
+		const { price } = inputs;
+		const estimatedQuantity = Math.max(divide(value, price), 0);
+
+		const valuePerQuantity = price + price * commission.default;
+
+		let defaultValue = estimatedQuantity * price;
+		defaultValue += commission.default * defaultValue;
+
+		const remainValue = Math.floor(divide(defaultValue - value, valuePerQuantity));
+		const realQuantity = Math.floor(Math.max(estimatedQuantity - remainValue, 0));
+
+		defaultValue = realQuantity * price;
+		defaultValue += Math.round(commission.default * defaultValue);
+
+		setInputs((prev) => ({
+			...prev,
+			quantity: realQuantity,
+			value: defaultValue,
+		}));
+	};
+
+	const commission = useMemo<Record<'default' | 'buy' | 'sell', number>>(() => {
+		const result: Record<'default' | 'buy' | 'sell', number> = { default: 0, buy: 0, sell: 0 };
+
+		if (!commissions || !symbolData) return result;
+
+		if (!symbolData.marketUnit) {
+			// eslint-disable-next-line no-console
+			console.error(`MarketUnit not defined: ${symbolData.marketUnit}`);
+			return result;
+		}
+
+		const comm = commissions.find((item) => item.marketUnitTitle === symbolData.marketUnit);
+		if (!comm) {
+			// eslint-disable-next-line no-console
+			console.error(`MarketUnit not found: ${symbolData.marketUnit}`);
+			return result;
+		}
+
+		result.sell = comm.sellCommission;
+		result.buy = comm.buyCommission;
+		result.default = side === 'buy' ? result.buy : result.sell;
+
+		return result;
+	}, [JSON.stringify(commissions), side, symbolData?.marketUnit]);
+
 	return (
 		<Modal moveable top='16%' onClose={onCloseModal} {...props}>
 			<Div style={{ width: inputs.expand ? '732px' : '336px' }}>
@@ -86,6 +171,7 @@ const BuySellModal = ({
 				<div className='flex h-full flex-1'>
 					<Body
 						{...inputs}
+						commission={commission}
 						switchable={switchable}
 						id={id}
 						mode={mode}

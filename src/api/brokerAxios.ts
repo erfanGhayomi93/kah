@@ -1,4 +1,5 @@
 import { setBrokerURLs } from '@/features/slices/brokerSlice';
+import { toggleBuySellModal } from '@/features/slices/modalSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
@@ -67,11 +68,12 @@ export const onUnauthorize = () => {
 	try {
 		store.dispatch(setBrokerIsSelected(false));
 		store.dispatch(setBrokerURLs(null));
+		store.dispatch(toggleBuySellModal(null));
 
-		const [token, brokerCode] = getBrokerClientId();
+		const [token] = getBrokerClientId();
 		deleteBrokerClientId();
 
-		if (token && brokerCode) {
+		if (token) {
 			toast.warning('متاسفانه از حساب کارگزاری خود خارج شدید.', {
 				toastId: 'broker_unauthorize',
 				autoClose: 5000,
