@@ -6,6 +6,7 @@ import {
 	setConfirmModal,
 	toggleBlackScholesModal,
 	toggleBuySellModal,
+	toggleChoiceBrokerModal,
 	toggleForgetPasswordModal,
 	toggleLoginModal,
 	toggleLogoutModal,
@@ -102,6 +103,12 @@ const Header = () => {
 				},
 			}),
 		);
+	};
+
+	const loginBroker = (callback: () => void) => {
+		dispatch(toggleChoiceBrokerModal({}));
+
+		callback();
 	};
 
 	const openBlackScholesModal = () => {
@@ -255,7 +262,7 @@ const Header = () => {
 										</button>
 									</div>
 
-									{(!userData?.hasPassword || brokerIsSelected) && (
+									{(!userData?.hasPassword || !brokerIsSelected || brokerIsSelected) && (
 										<div className='px-16 pt-40 flex-items-center'>
 											{!userData?.hasPassword && (
 												<button
@@ -267,13 +274,21 @@ const Header = () => {
 												</button>
 											)}
 
-											{brokerIsSelected && (
+											{brokerIsSelected ? (
 												<button
 													type='button'
 													onClick={() => logoutBroker(() => setOpen(false))}
 													className='h-32 w-full rounded border border-error-100 bg-error-100/10 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
 												>
 													{t('header.logout_broker')}
+												</button>
+											) : (
+												<button
+													type='button'
+													onClick={() => loginBroker(() => setOpen(false))}
+													className='h-32 w-full rounded border border-primary-400 bg-primary-400/10 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+												>
+													{t('header.login_broker')}
 												</button>
 											)}
 										</div>
