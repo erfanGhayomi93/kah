@@ -69,18 +69,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 	return (
 		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
 			<Div className='bg-white'>
-				<div className='relative h-56 bg-gray-200 flex-justify-center'>
-					<h2 className='text-xl font-medium text-gray-1000'>{t('add_symbol_to_watchlist.title')}</h2>
-
-					<button
-						onClick={onCloseModal}
-						style={{ left: '1.6rem' }}
-						type='button'
-						className='absolute top-1/2 -translate-y-1/2 transform p-8 icon-hover'
-					>
-						<XSVG width='2rem' height='2rem' />
-					</button>
-				</div>
+				<Modal.Header label={t('add_symbol_to_watchlist.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 gap-24 overflow-hidden rounded p-24 flex-column'>
 					<div className='h-40 rounded border border-gray-500 flex-items-center input-group'>

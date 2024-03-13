@@ -1,6 +1,6 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
-import Tabs from '@/components/common/Tabs/Tabs';
+import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { ClosePositionSVG, GrowDownSVG, GrowUpSVG, PlusSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
@@ -11,12 +11,25 @@ import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useLayoutEffect, useMemo } from 'react';
 import SymbolContextMenu from '../common/SymbolContextMenu';
-import ComputingInformation from './Tabs/ComputingInformation';
-import ContractMarketDepth from './Tabs/ContractMarketDepth';
-import PriceInformation from './Tabs/PriceInformation';
+
+const PriceInformation = dynamic(() => import('./Tabs/PriceInformation'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+const ComputingInformation = dynamic(() => import('./Tabs/ComputingInformation'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+const ContractMarketDepth = dynamic(() => import('./Tabs/ContractMarketDepth'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 interface WrapperProps {
 	children?: React.ReactNode;
@@ -108,22 +121,22 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 		}
 	};
 
-	const tabs: Array<{ id: Saturn.OptionTab; title: string; render: React.ReactNode }> = useMemo(
+	const tabs: Array<ITabIem<Saturn.OptionTab, { title: string }>> = useMemo(
 		() => [
 			{
 				id: 'price_information',
 				title: t('saturn_page.tab_price_information'),
-				render: <PriceInformation symbol={contractInfo ?? null} />,
+				render: () => <PriceInformation symbol={contractInfo ?? null} />,
 			},
 			{
 				id: 'computing_information',
 				title: t('saturn_page.tab_computing_information'),
-				render: <ComputingInformation symbol={contractInfo ?? null} />,
+				render: () => <ComputingInformation symbol={contractInfo ?? null} />,
 			},
 			{
 				id: 'market_depth',
 				title: t('saturn_page.tab_market_depth'),
-				render: <ContractMarketDepth symbol={contractInfo ?? null} />,
+				render: () => <ContractMarketDepth symbol={contractInfo ?? null} />,
 			},
 			{ id: 'open_position', title: t('saturn_page.tab_open_position'), disabled: true, render: null },
 		],
@@ -262,6 +275,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 					defaultActiveTab={option.activeTab}
 					data={tabs}
 					onChange={onChangeContractTab}
+					wrapper={({ children }) => <div className='relative flex-1'>{children}</div>}
 					renderTab={(item, activeTab) => (
 						<button
 							className={cn(
