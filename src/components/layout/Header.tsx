@@ -263,7 +263,7 @@ const Header = () => {
 									</div>
 
 									{(!userData?.hasPassword || !brokerIsSelected || brokerIsSelected) && (
-										<div className='px-16 pt-40 flex-items-center'>
+										<div className='flex-col px-16 pt-40 flex-items-center'>
 											{!userData?.hasPassword && (
 												<button
 													type='button'

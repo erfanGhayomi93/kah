@@ -1,31 +1,31 @@
-import Tabs from '@/components/common/Tabs/Tabs';
+import Loading from '@/components/common/Loading';
+import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
-import MarketDepth from './Tabs/MarketDepth';
 
-interface ITab {
-	id: Saturn.SymbolTab;
-	title: string;
-	render: React.ReactNode;
-	disabled?: boolean;
-}
+const MarketDepth = dynamic(() => import('./Tabs/MarketDepth'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 interface SymbolTabsProps {
 	symbol: Symbol.Info;
 	activeTab: Saturn.SymbolTab;
 	setActiveTab: (tabId: Saturn.SymbolTab) => void;
 }
+type TTab = ITabIem<Saturn.SymbolTab, { title: string }>;
 
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
 
-	const tabs = useMemo<ITab[]>(
+	const tabs = useMemo<TTab[]>(
 		() => [
 			{
 				id: 'tab_market_depth',
 				title: t('saturn_page.tab_market_depth'),
-				render: <MarketDepth symbol={symbol} />,
+				render: () => <MarketDepth symbol={symbol} />,
 			},
 			{ id: 'tab_chart', title: t('saturn_page.tab_chart'), disabled: true, render: null },
 			{ id: 'tab_my_asset', title: t('saturn_page.tab_my_asset'), disabled: true, render: null },
@@ -35,11 +35,12 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 
 	return (
 		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='items-end gap-12 pl-16 flex-column'>
-			<div className='w-full gap-16 flex-column'>
-				<Tabs<Saturn.SymbolTab, ITab>
+			<div className='relative w-full flex-1 gap-16 flex-column'>
+				<Tabs<Saturn.SymbolTab, TTab>
 					onChange={(tab) => setActiveTab(tab)}
 					defaultActiveTab={activeTab}
 					data={tabs}
+					wrapper={({ children }) => <div className='relative flex-1'>{children}</div>}
 					renderTab={(item, activeTab) => (
 						<button
 							className={cn(

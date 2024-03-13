@@ -1,14 +1,20 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
+import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleForgetPasswordModal, toggleLoginModal, type IForgetPasswordModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
-import ChangePasswordForm from './ChangePasswordForm';
 import OTPForm from './OTPForm';
 import PhoneNumberForm from './PhoneNumberForm';
+
+const ChangePasswordForm = dynamic(() => import('./ChangePasswordForm'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 interface ForgetPasswordModalProps extends IForgetPasswordModal {}
 
@@ -79,6 +85,7 @@ const ForgetPasswordModal = ({ phoneNumber: pNumber, ...props }: ForgetPasswordM
 			)}
 			{stage === 'change-password' && (
 				<ChangePasswordForm
+					phoneNumber={phoneNumber}
 					result={result as OAuthAPI.IValidateForgetPasswordOtp}
 					onPasswordChanged={onPasswordChanged}
 				/>

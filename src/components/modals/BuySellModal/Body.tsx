@@ -239,7 +239,7 @@ const Body = (props: BodyProps) => {
 			{
 				id: 'normal',
 				title: t('bs_modal.normal_trade'),
-				render: (
+				render: () => (
 					<SimpleTrade
 						{...props}
 						userRemain={userRemain ?? null}
@@ -258,7 +258,7 @@ const Body = (props: BodyProps) => {
 		[JSON.stringify(props), JSON.stringify(userRemain), brokerUrls],
 	);
 
-	if (props.symbolType === 'base') return <Wrapper className='pt-24'>{TABS[0].render}</Wrapper>;
+	if (props.symbolType === 'base') return <Wrapper className='pt-24'>{TABS[0].render?.()}</Wrapper>;
 
 	return (
 		<Wrapper>

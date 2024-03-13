@@ -1,4 +1,10 @@
-import Contract from './Contract';
+import Loading from '@/components/common/Loading';
+import dynamic from 'next/dynamic';
+
+const Contract = dynamic(() => import('./Contract'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 interface SymbolContractsProps {
 	baseSymbol: Symbol.Info;
@@ -57,6 +63,8 @@ const SymbolContracts = ({
 
 		setBaseSymbolContracts(options);
 	};
+
+	if (baseSymbolContracts.length === 0) return null;
 
 	return baseSymbolContracts.map((option, index) => (
 		<Contract

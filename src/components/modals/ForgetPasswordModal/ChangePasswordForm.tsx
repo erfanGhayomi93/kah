@@ -13,11 +13,12 @@ interface Inputs {
 }
 
 interface ChangePasswordFormProps {
+	phoneNumber: string;
 	result: null | OAuthAPI.IValidateForgetPasswordOtp;
 	onPasswordChanged: () => void;
 }
 
-const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormProps) => {
+const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged }: ChangePasswordFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -78,6 +79,8 @@ const ChangePasswordForm = ({ result, onPasswordChanged }: ChangePasswordFormPro
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
 			<div style={{ marginTop: '5.6rem' }} className='gap-24 flex-column'>
+				<input type='hidden' name='username' value={phoneNumber ?? ''} />
+
 				<div className='gap-8 flex-column'>
 					<label className='input-box'>
 						<span className='label'>{t('inputs.new_password')}</span>
