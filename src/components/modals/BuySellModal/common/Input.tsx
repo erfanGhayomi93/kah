@@ -1,4 +1,4 @@
-import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import React from 'react';
 
 interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
@@ -10,17 +10,23 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, '
 
 const Input = ({ value, label, prepend, onChange, ...inputProps }: InputProps) => {
 	const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const valueAsNumber = Number(convertStringToInteger(e.target.value));
+		const element = e.target;
+		const value = element.value;
+		const valueAsNumber = Number(convertStringToInteger(value));
+
 		if (valueAsNumber >= Number.MAX_SAFE_INTEGER) return;
-
 		onChange(valueAsNumber);
-	};
-
-	const onCopy = (e: React.ClipboardEvent<HTMLInputElement>) => {
-		e.preventDefault();
 
 		try {
-			e.clipboardData.setData('text/plain', String(value));
+			const caret = element.selectionStart;
+
+			if (caret && caret !== value.length) {
+				const diffLength = valueFormatter(valueAsNumber).length - value.length;
+				window.requestAnimationFrame(() => {
+					element.selectionStart = caret + diffLength;
+					element.selectionEnd = caret + diffLength;
+				});
+			}
 		} catch (e) {
 			//
 		}
@@ -37,7 +43,7 @@ const Input = ({ value, label, prepend, onChange, ...inputProps }: InputProps) =
 				<span className='pr-8 text-base text-gray-900'>{label}</span>
 				<input
 					{...inputProps}
-					onCopy={onCopy}
+					onCopy={(e) => copyNumberToClipboard(e, value)}
 					type='text'
 					maxLength={19}
 					inputMode='numeric'
