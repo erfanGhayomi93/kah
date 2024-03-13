@@ -33,7 +33,7 @@
 		"set_password": "تعیین رمز",
 		"logout_broker": "خروج از حساب کارگزاری",
 		"login_broker": "ورود به کارگزاری",
-		"logout_broker_description": "آیا از خروج خود مطمئن هستید؟",
+		"logout_broker_description": "پس از خروج از حساب، عملیات معاملاتی مرتبط با کارگزاری امکان پذیر نخواهد بود.",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
@@ -68,6 +68,9 @@
 		"watchlist_count": "{count} دیده‌بان",
 		"create_new_watchlist": "دیده‌بان جدید",
 		"new_watchlist_name": "نام جدید دیده‌بان"
+	},
+	"move_symbol_to_watchlist": {
+		"title": "افزودن نماد {symbolTitle}"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",

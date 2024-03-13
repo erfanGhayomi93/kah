@@ -2,6 +2,7 @@ import { cn } from '@/utils/helpers';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
+import { XSVG } from '../icons';
 import styles from './Modal.module.scss';
 
 interface ModalProps extends IBaseModalConfiguration {
@@ -12,6 +13,11 @@ interface ModalProps extends IBaseModalConfiguration {
 	children: React.ReactNode;
 	top?: string | number;
 	transparent?: boolean;
+	onClose: () => void;
+}
+
+interface ModalHeaderProps {
+	label: React.ReactNode;
 	onClose: () => void;
 }
 
@@ -110,4 +116,17 @@ const Modal = ({
 	);
 };
 
+const Header = ({ label, onClose }: ModalHeaderProps) => (
+	<div className='relative h-56 bg-gray-200 flex-justify-center'>
+		<h2 className='text-xl font-medium'>{label}</h2>
+
+		<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
+			<XSVG width='2rem' height='2rem' />
+		</button>
+	</div>
+);
+
+Modal.Header = Header;
+
+export { Header };
 export default Modal;
