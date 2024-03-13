@@ -1,4 +1,4 @@
-import { PayMoneySVG, SnowFlakeSVG, XSVG } from '@/components/icons';
+import { PayMoneySVG, SnowFlakeSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleChoiceCollateralModal, type IChoiceCollateral } from '@/features/slices/modalSlice';
 import { sepNumbers } from '@/utils/helpers';
@@ -35,18 +35,7 @@ const ChoiceCollateral = ({ order, ...props }: ChoiceCollateralProps) => {
 	return (
 		<Modal moveable transparent onClose={onCloseModal} {...props}>
 			<Div className='justify-between bg-white flex-column'>
-				<div className='relative h-56 bg-gray-200 flex-justify-center'>
-					<h2 className='text-xl font-medium text-gray-1000'>{t('choice_collateral_modal.title')}</h2>
-
-					<button
-						onClick={onCloseModal}
-						style={{ left: '1.6rem' }}
-						type='button'
-						className='absolute top-1/2 -translate-y-1/2 transform p-8 icon-hover'
-					>
-						<XSVG width='2rem' height='2rem' />
-					</button>
-				</div>
+				<Modal.Header label={t('choice_collateral_modal.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 justify-between p-16 pt-40 flex-column'>
 					<div className='flex-1 items-center gap-24 text-center flex-column'>

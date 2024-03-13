@@ -5,6 +5,7 @@ import { EyeSVG, EyeSlashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
 import { base64encode, cn, passwordValidation } from '@/utils/helpers';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -14,10 +15,16 @@ interface Inputs {
 	repeatNewPassword: string;
 }
 
-const SetPasswordForm = () => {
+interface SetPasswordFormProps {
+	phoneNumber: string;
+}
+
+const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
+
+	const queryClient = useQueryClient();
 
 	const {
 		formState: { isValid, touchedFields, isSubmitting, errors },
@@ -34,6 +41,23 @@ const SetPasswordForm = () => {
 	});
 
 	const newPassword = watch('newPassword');
+
+	const updateUserInfoCache = () => {
+		try {
+			const queryKey = ['userInformationQuery'];
+
+			let data: User.IUserInformation = queryClient.getQueryData(queryKey)!;
+
+			if (!data) return;
+
+			data = JSON.parse(JSON.stringify(data));
+			data.hasPassword = true;
+
+			queryClient.setQueryData(queryKey, data);
+		} catch (e) {
+			//
+		}
+	};
 
 	const onSubmit: SubmitHandler<Inputs> = async ({ newPassword, repeatNewPassword }) => {
 		if (newPassword !== repeatNewPassword)
@@ -52,6 +76,7 @@ const SetPasswordForm = () => {
 
 			if (data.result !== 'Successful') throw new Error();
 
+			updateUserInfoCache();
 			onCloseModal();
 		} catch (e) {
 			setError('newPassword', {
@@ -83,6 +108,8 @@ const SetPasswordForm = () => {
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
 			<div style={{ marginTop: '4.8rem' }} className='gap-24 flex-column'>
+				<input type='hidden' name='username' value={phoneNumber ?? ''} />
+
 				<div className='gap-8 flex-column'>
 					<label className='input-box'>
 						<span className='label'>{t('inputs.password')}</span>

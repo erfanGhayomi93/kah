@@ -1,16 +1,30 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
+import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleLoginModal } from '@/features/slices/modalSlice';
 import { setIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
 import OTPForm from './OTPForm';
-import PasswordForm from './PasswordForm';
-import PhoneNumberForm from './PhoneNumberForm';
-import SetPasswordForm from './SetPasswordForm';
 import Welcome from './Welcome';
+
+const SetPasswordForm = dynamic(() => import('./SetPasswordForm'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+const PasswordForm = dynamic(() => import('./PasswordForm'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+const PhoneNumberForm = dynamic(() => import('./PhoneNumberForm'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 interface LoginModalProps extends IBaseModalConfiguration {}
 
@@ -151,7 +165,7 @@ const LoginModal = (props: LoginModalProps) => {
 				<Welcome goToSetPassword={() => setStage('set-password')} isNeedsToSetPassword={isNeedsToSetPassword} />
 			)}
 
-			{stage === 'set-password' && <SetPasswordForm />}
+			{stage === 'set-password' && <SetPasswordForm phoneNumber={phoneNumber ?? '*'} />}
 		</AuthenticationModalTemplate>
 	);
 };
