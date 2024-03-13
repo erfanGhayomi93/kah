@@ -4,8 +4,9 @@ import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { toggleLoginModal, toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, openNewTab, sepNumbers } from '@/utils/helpers';
@@ -31,6 +32,8 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
+
+	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
 	const cWatchlistRef = useRef<Option.Root[]>([]);
 
@@ -88,6 +91,12 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 
 	const onDelete = async (symbol: Option.Root) => {
 		try {
+			if (!isLoggedIn) {
+				toast.error(t('alerts.login_to_your_account'));
+				dispatch(toggleLoginModal({}));
+				return;
+			}
+
 			const { symbolISIN, symbolTitle } = symbol.symbolInfo;
 
 			try {
@@ -132,6 +141,12 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 	};
 
 	const onAdd = (symbol: Option.Root) => {
+		if (!isLoggedIn) {
+			toast.error(t('alerts.login_to_your_account'));
+			dispatch(toggleLoginModal({}));
+			return;
+		}
+
 		const { symbolISIN, symbolTitle } = symbol.symbolInfo;
 
 		dispatch(

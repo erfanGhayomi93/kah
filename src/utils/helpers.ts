@@ -398,3 +398,13 @@ export const getTSELink = (insCode?: number | string): string => {
 		? `http://tsetmc.com/Loader.aspx?ParTree=151311&i=${encodeURI(String(insCode))}`
 		: 'http://tsetmc.com';
 };
+
+export const copyNumberToClipboard = (e: React.ClipboardEvent<HTMLElement>, value: number) => {
+	e.preventDefault();
+
+	try {
+		e.clipboardData.setData('text/plain', String(value));
+	} catch (e) {
+		//
+	}
+};
