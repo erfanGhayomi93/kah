@@ -14,7 +14,7 @@ import {
 import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn, setBrokerIsSelected } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { deleteBrokerClientId } from '@/utils/cookie';
-import { cn, sepNumbers } from '@/utils/helpers';
+import { cn, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -140,7 +140,10 @@ const Header = () => {
 							<WalletSVG width='2.4rem' height='2.4rem' />
 							{t('header.purchase_power')}:
 							<span className='gap-4 flex-items-center'>
-								<span className='text-lg font-medium text-primary-400'>
+								<span
+									className='select-all text-lg font-medium text-primary-400 ltr'
+									onCopy={(e) => copyNumberToClipboard(e, userRemain.purchasePower ?? 0)}
+								>
 									{sepNumbers(String(userRemain.purchasePower ?? 0))}
 								</span>
 								<span className='text-tiny text-gray-700'>{t('common.rial')}</span>
