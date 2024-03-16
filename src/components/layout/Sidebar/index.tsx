@@ -22,7 +22,7 @@ const Sidebar = () => {
 		<div
 			style={{
 				width: isExpand ? '18.4rem' : '6rem',
-				transition: 'width 300ms ease-in-out',
+				transition: 'width 300ms',
 				zIndex: 999,
 			}}
 			className='fixed right-0 top-0 h-full bg-sidebar'

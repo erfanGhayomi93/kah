@@ -1,3 +1,4 @@
+import Click from '@/components/common/Click';
 import {
 	DataAnalyticsSVG,
 	HomeSVG,
@@ -35,6 +36,14 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 			dispatch(toggleSidebar(true));
 			setExpandId(id);
 		}
+	};
+
+	const collapseSidebar = () => {
+		dispatch(toggleSidebar(false));
+	};
+
+	const onClickItem = (tagName: 'a' | 'button') => {
+		if (tagName === 'a') collapseSidebar();
 	};
 
 	const items: TListItem[] = useMemo(
@@ -133,26 +142,29 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 	);
 
 	return (
-		<div className='z-10 flex-1 flex-column'>
-			<div className={clsx('px-16 py-12 flex-justify-start', isExpand && 'gap-8')}>
-				<Image width='28' height='28' alt='Favicon' src='/static/icons/favicon.png' />
-				<h2 className={clsx('text-base text-white', !isExpand && 'hidden')}>{t('sidebar.app_name')}</h2>
-			</div>
+		<Click enabled={isExpand} onClickOutside={collapseSidebar}>
+			<div className='z-10 flex-1 select-none flex-column'>
+				<div className={clsx('px-16 py-12 flex-justify-start', isExpand && 'gap-8')}>
+					<Image width='28' height='28' alt='Favicon' src='/static/icons/favicon.png' />
+					<h2 className={clsx('text-base text-white', !isExpand && 'hidden')}>{t('sidebar.app_name')}</h2>
+				</div>
 
-			<nav className='h-full flex-1 justify-between gap-16 py-32 flex-column'>
-				<ul className={cn(styles.list, isExpand && styles.expand)}>
-					{items.map((item) => (
-						<Item
-							key={item.id}
-							isExpand={item.id === expandId}
-							toggle={() => toggleItem(item.id)}
-							sidebarIsExpand={isExpand}
-							{...item}
-						/>
-					))}
-				</ul>
-			</nav>
-		</div>
+				<nav className='h-full flex-1 justify-between gap-16 py-32 flex-column'>
+					<ul className={cn(styles.list, isExpand && styles.expand)}>
+						{items.map((item) => (
+							<Item
+								key={item.id}
+								isExpand={item.id === expandId}
+								toggle={() => toggleItem(item.id)}
+								sidebarIsExpand={isExpand}
+								onClick={onClickItem}
+								{...item}
+							/>
+						))}
+					</ul>
+				</nav>
+			</div>
+		</Click>
 	);
 };
 
