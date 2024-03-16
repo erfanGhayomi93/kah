@@ -3,7 +3,7 @@
 import Main from '@/components/layout/Main';
 
 const OptionChain = () => {
-	return <Main style={{ overflowY: 'scroll' }} className='gap-8'></Main>;
+	return <Main></Main>;
 };
 
 export default OptionChain;

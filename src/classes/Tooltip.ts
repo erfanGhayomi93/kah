@@ -253,6 +253,9 @@ class TooltipElement extends TooltipWrapper {
 	// Setter
 	set disabled(value: AppTooltip.Disabled) {
 		this._disabled = value;
+
+		if (value && this.isActive) this.hide();
+		else if (!value && !this.isActive) this.unhide();
 	}
 
 	set placement(value: AppTooltip.Placement) {

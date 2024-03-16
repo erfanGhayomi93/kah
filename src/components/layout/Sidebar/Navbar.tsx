@@ -1,25 +1,18 @@
 import {
-	ChangeBrokerSVG,
-	CoinsSVG,
 	DataAnalyticsSVG,
 	HomeSVG,
-	LearnSVG,
-	MarketMapSVG,
-	OptionChainSVG,
-	PayOffSVG,
+	MoneySVG,
 	ReceptionSVG,
 	ReportSVG,
-	SaturnSVG,
-	SnowFlakeSVG,
 	StrategySVG,
-	TradeSVG,
-	TransferSVG,
-	WatchlistSVG,
+	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
@@ -44,136 +37,120 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 		}
 	};
 
-	const items: [TListItem[], TListItem[]] = useMemo(
+	const items: TListItem[] = useMemo(
 		() => [
-			[
-				{
-					id: 'home_page',
-					label: t('sidebar.home_page'),
-					to: '/',
-					icon: <HomeSVG />,
-				},
-				{
-					id: 'my_assets',
-					label: t('sidebar.my_assets'),
-					to: '/',
-					icon: <CoinsSVG />,
-				},
-				{
-					id: 'market',
-					label: t('sidebar.market'),
-					icon: <TradeSVG />,
-					items: [
-						{
-							id: 'watchlist',
-							label: t('sidebar.watchlist'),
-							to: '/watchlist',
-							icon: <WatchlistSVG />,
-						},
-						{
-							id: 'option_chain',
-							label: t('sidebar.option_chain') + ' 1',
-							to: '/option-chain-old',
-							icon: <OptionChainSVG />,
-						},
-						{
-							id: 'option_chain',
-							label: t('sidebar.option_chain') + ' 2',
-							to: '/option-chain',
-							icon: <OptionChainSVG />,
-						},
-						{
-							id: 'saturn',
-							label: t('sidebar.saturn'),
-							to: '/saturn',
-							icon: <SaturnSVG />,
-						},
-						{
-							id: 'market_map',
-							label: t('sidebar.market_map'),
-							to: '/',
-							icon: <MarketMapSVG />,
-						},
-					],
-				},
-				{
-					id: 'strategy',
-					label: t('sidebar.strategy'),
-					to: '/',
-					icon: <StrategySVG />,
-				},
-				{
-					id: 'technical',
-					label: t('sidebar.technical'),
-					to: '/',
-					icon: <DataAnalyticsSVG />,
-				},
-				{
-					id: 'requests',
-					label: t('sidebar.requests'),
-					icon: <ReceptionSVG />,
-					items: [
-						{
-							id: 'deposit_and_withdrawal',
-							label: t('sidebar.deposit_and_withdrawal'),
-							to: '/',
-							icon: <TransferSVG />,
-						},
-						{
-							id: 'change_broker',
-							label: t('sidebar.change_broker'),
-							to: '/option-chain',
-							icon: <ChangeBrokerSVG />,
-						},
-						{
-							id: 'un_freezing',
-							label: t('sidebar.un_freezing'),
-							to: '/saturn',
-							icon: <SnowFlakeSVG />,
-						},
-						{
-							id: 'option_settlement',
-							label: t('sidebar.option_settlement'),
-							to: '/',
-							icon: <PayOffSVG />,
-						},
-					],
-				},
-				{
-					id: 'reports',
-					label: t('sidebar.reports'),
-					to: '/',
-					icon: <ReportSVG />,
-				},
-			],
-			[
-				{
-					id: 'learn',
-					label: t('sidebar.learn'),
-					to: '/',
-					icon: <LearnSVG />,
-				},
-			],
+			{
+				id: 'home_page',
+				label: t('sidebar.home_page'),
+				to: '/',
+				icon: <HomeSVG />,
+			},
+			{
+				id: 'my_assets',
+				label: t('sidebar.my_assets'),
+				to: '/',
+				icon: <MoneySVG />,
+			},
+			{
+				id: 'market',
+				label: t('sidebar.market'),
+				icon: <TvTradeSVG />,
+				items: [
+					{
+						id: 'watchlist',
+						label: t('sidebar.watchlist'),
+						to: '/watchlist',
+					},
+					{
+						id: 'option_chain',
+						label: t('sidebar.option_chain') + ' 1',
+						to: '/option-chain-old',
+					},
+					{
+						id: 'option_chain',
+						label: t('sidebar.option_chain') + ' 2',
+						to: '/option-chain',
+					},
+					{
+						id: 'saturn',
+						label: t('sidebar.saturn'),
+						to: '/saturn',
+					},
+					{
+						id: 'market_map',
+						label: t('sidebar.market_map'),
+						to: '/',
+					},
+				],
+			},
+			{
+				id: 'strategy',
+				label: t('sidebar.strategy'),
+				to: '/',
+				icon: <StrategySVG />,
+			},
+			{
+				id: 'technical',
+				label: t('sidebar.technical'),
+				to: '/',
+				icon: <DataAnalyticsSVG />,
+			},
+			{
+				id: 'requests',
+				label: t('sidebar.requests'),
+				icon: <ReceptionSVG />,
+				items: [
+					{
+						id: 'deposit_and_withdrawal',
+						label: t('sidebar.deposit_and_withdrawal'),
+						to: '/',
+					},
+					{
+						id: 'change_broker',
+						label: t('sidebar.change_broker'),
+						to: '/option-chain',
+					},
+					{
+						id: 'un_freezing',
+						label: t('sidebar.un_freezing'),
+						to: '/saturn',
+					},
+					{
+						id: 'option_settlement',
+						label: t('sidebar.option_settlement'),
+						to: '/',
+					},
+				],
+			},
+			{
+				id: 'reports',
+				label: t('sidebar.reports'),
+				to: '/',
+				icon: <ReportSVG />,
+			},
 		],
 		[expandId],
 	);
 
 	return (
-		<div className='flex-1 flex-column'>
+		<div className='z-10 flex-1 flex-column'>
+			<div className={clsx('px-16 py-12 flex-justify-start', isExpand && 'gap-8')}>
+				<Image width='28' height='28' alt='Favicon' src='/static/icons/favicon.png' />
+				<h2 className={clsx('text-base text-white', !isExpand && 'hidden')}>{t('sidebar.app_name')}</h2>
+			</div>
+
 			<nav className='h-full flex-1 justify-between gap-16 py-32 flex-column'>
-				{items.map((list, i) => (
-					<ul key={i} className={cn(styles.list, isExpand && styles.expand)}>
-						{list.map((item) => (
-							<Item
-								key={item.id}
-								isExpand={item.id === expandId}
-								toggle={() => toggleItem(item.id)}
-								sidebarIsExpand={isExpand}
-								{...item}
-							/>
-						))}
-					</ul>
-				))}
+				<ul className={cn(styles.list, isExpand && styles.expand)}>
+					{items.map((item) => (
+						<Item
+							key={item.id}
+							isExpand={item.id === expandId}
+							toggle={() => toggleItem(item.id)}
+							sidebarIsExpand={isExpand}
+							{...item}
+						/>
+					))}
+				</ul>
 			</nav>
 		</div>
 	);
