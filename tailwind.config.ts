@@ -33,6 +33,10 @@ const config: Config = {
 
 			sidebar: 'rgba(15, 21, 39, 1)',
 
+			info: {
+				DEFAULT: 'rgba(83, 168, 255, 1)',
+			},
+
 			primary: {
 				100: 'rgba(229, 238, 255, 1)',
 				200: 'rgba(162, 174, 255, 1)',

@@ -21,15 +21,15 @@ const Wrapper = ({ children }: IWrapper) => {
 
 	return (
 		<ErrorBoundary>
-			<ErrorBoundary>
-				<Header />
-			</ErrorBoundary>
-			<div style={{ height: 'calc(100dvh - 4.8rem)' }} className='flex flex-1'>
+			<div className='flex h-screen'>
 				<ErrorBoundary>
 					<Sidebar />
 				</ErrorBoundary>
 
 				<div className='h-full flex-1 justify-between gap-8 flex-column'>
+					<ErrorBoundary>
+						<Header />
+					</ErrorBoundary>
 					<ErrorBoundary>{children}</ErrorBoundary>
 					<ErrorBoundary>
 						<Footer />
