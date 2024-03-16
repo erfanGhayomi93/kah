@@ -1,5 +1,5 @@
-import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
-import React from 'react';
+import { cn, convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
+import React, { useMemo } from 'react';
 
 interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
 	value: number;
@@ -21,7 +21,7 @@ const Input = ({ value, label, prepend, onChange, ...inputProps }: InputProps) =
 			const caret = element.selectionStart;
 
 			if (caret && caret !== value.length) {
-				const diffLength = valueFormatter(valueAsNumber).length - value.length;
+				const diffLength = valueFormatter.length - value.length;
 				window.requestAnimationFrame(() => {
 					element.selectionStart = caret + diffLength;
 					element.selectionEnd = caret + diffLength;
@@ -32,26 +32,31 @@ const Input = ({ value, label, prepend, onChange, ...inputProps }: InputProps) =
 		}
 	};
 
-	const valueFormatter = (value: number) => {
+	const valueFormatter = useMemo(() => {
 		if (!value) return '';
 		return sepNumbers(String(value));
-	};
+	}, [value]);
 
 	return (
 		<div className='flex h-40 items-center gap-8'>
-			<div className='size-full overflow-hidden flex-items-center gray-box'>
-				<span className='pr-8 text-base text-gray-900'>{label}</span>
+			<label className='relative size-full rounded bg-white flex-items-center input-group'>
 				<input
 					{...inputProps}
 					onCopy={(e) => copyNumberToClipboard(e, value)}
 					type='text'
 					maxLength={19}
 					inputMode='numeric'
-					value={valueFormatter(value)}
+					value={valueFormatter}
 					onChange={onChangeValue}
-					className='h-full flex-1 px-8 text-left ltr'
+					className='h-full flex-1 border-0 bg-transparent px-8 text-left ltr'
 				/>
-			</div>
+
+				<span className={cn('flexible-placeholder', valueFormatter && 'active')}>{label}</span>
+
+				<fieldset className={cn('flexible-fieldset', valueFormatter && 'active')}>
+					<legend>{label}</legend>
+				</fieldset>
+			</label>
 
 			{prepend}
 		</div>

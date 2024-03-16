@@ -72,7 +72,13 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 						},
 						{
 							id: 'option_chain',
-							label: t('sidebar.option_chain'),
+							label: t('sidebar.option_chain') + ' 1',
+							to: '/option-chain-old',
+							icon: <OptionChainSVG />,
+						},
+						{
+							id: 'option_chain',
+							label: t('sidebar.option_chain') + ' 2',
 							to: '/option-chain',
 							icon: <OptionChainSVG />,
 						},

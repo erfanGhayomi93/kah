@@ -1,4 +1,3 @@
-import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -7,7 +6,6 @@ import dynamic from 'next/dynamic';
 
 const Container = dynamic(() => import('./Container'), {
 	ssr: false,
-	loading: () => <Loading />,
 });
 
 const getStates = createSelector(

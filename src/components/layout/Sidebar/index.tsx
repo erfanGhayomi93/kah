@@ -21,7 +21,7 @@ const Sidebar = () => {
 	return (
 		<div
 			style={{
-				width: isExpand ? '212px' : '56px',
+				width: isExpand ? '21.2rem' : '5.6rem',
 				transition: 'width 300ms ease-in-out',
 			}}
 			className='relative bg-sidebar flex-column'
