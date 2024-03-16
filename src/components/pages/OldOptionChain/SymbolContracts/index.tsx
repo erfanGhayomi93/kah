@@ -18,12 +18,12 @@ const SymbolContracts = ({ selectedSymbol }: SymbolContractsProps) => {
 
 	const [expandedContract, setExpandedContract] = useState<null | Option.BaseSettlementDays>(null);
 
-	if (!selectedSymbol) return <NoData text={t('option_chain.select_symbol_from_top_list')} />;
+	if (!selectedSymbol) return <NoData text={t('old_option_chain.select_symbol_from_top_list')} />;
 
 	if (isFetching) return <Loading />;
 
 	if (!settlementDays || (Array.isArray(settlementDays) && settlementDays.length === 0))
-		return <NoData text={t('option_chain.no_contract_found')} />;
+		return <NoData text={t('old_option_chain.no_contract_found')} />;
 
 	return settlementDays.map((item, index) => (
 		<Contract

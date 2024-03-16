@@ -234,16 +234,16 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 	if (isLoading || expanding) return <Loading />;
 
 	if (!Array.isArray(watchlistData) || watchlistData.length === 0)
-		return <NoData text={t('option_chain.no_contract_found')} />;
+		return <NoData text={t('old_option_chain.no_contract_found')} />;
 
 	return (
 		<div className='w-full flex-column'>
 			<div className='flex h-48 border-t border-t-gray-500'>
 				<div className='flex-1 text-lg text-success-100 flex-justify-center'>
-					{t('option_chain.buy_contracts')}
+					{t('old_option_chain.buy_contracts')}
 				</div>
 				<div className='flex-1 text-lg text-error-100 flex-justify-center'>
-					{t('option_chain.sell_contracts')}
+					{t('old_option_chain.sell_contracts')}
 				</div>
 			</div>
 
