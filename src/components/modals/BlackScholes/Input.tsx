@@ -16,10 +16,26 @@ const Input = <T extends string | number>({ value, placeholder, prefix, onChange
 	};
 
 	const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const valueAsNumber = Number(convertStringToInteger(e.target.value));
-		if (valueAsNumber >= Number.MAX_SAFE_INTEGER) return;
+		const element = e.target;
+		const value = element.value;
+		const valueAsNumber = Number(convertStringToInteger(value));
 
+		if (valueAsNumber >= Number.MAX_SAFE_INTEGER) return;
 		onChange(String(valueAsNumber));
+
+		try {
+			const caret = element.selectionStart;
+
+			if (caret && caret !== value.length) {
+				const diffLength = valueFormatter(valueAsNumber).length - value.length;
+				window.requestAnimationFrame(() => {
+					element.selectionStart = caret + diffLength;
+					element.selectionEnd = caret + diffLength;
+				});
+			}
+		} catch (e) {
+			//
+		}
 	};
 
 	const isActive = value && String(value).length > 0;

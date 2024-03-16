@@ -5,6 +5,7 @@ import { EyeSVG, EyeSlashSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { cn } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useCallback, useRef, useState } from 'react';
@@ -66,13 +67,15 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 
 	const hasChanged = useCallback((symbolISIN: string) => symbols.includes(symbolISIN), [symbols]);
 
+	const placeholder = t('option_watchlist_filters_modal.base_symbol_placeholder');
+
 	return (
 		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
 			<Div className='bg-white'>
 				<Modal.Header label={t('add_symbol_to_watchlist.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 gap-24 overflow-hidden rounded p-24 flex-column'>
-					<div className='h-40 rounded border border-gray-500 flex-items-center input-group'>
+					<div className='relative h-40 rounded flex-items-center input-group'>
 						<span className='px-8 text-gray-900'>
 							<SearchSVG />
 						</span>
@@ -81,11 +84,18 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 							type='text'
 							inputMode='numeric'
 							maxLength={32}
-							className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-1000'
-							placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
+							className='h-40 flex-1 pl-8 text-gray-1000'
 							value={term}
 							onChange={(e) => setTerm(e.target.value)}
 						/>
+
+						<span style={{ right: '3.6rem' }} className={cn('flexible-placeholder', term && 'active')}>
+							{placeholder}
+						</span>
+
+						<fieldset className={cn('flexible-fieldset', term && 'active')}>
+							<legend>{placeholder}</legend>
+						</fieldset>
 
 						{isFetching ? (
 							<div className='ml-16 min-h-20 min-w-20 spinner' />
