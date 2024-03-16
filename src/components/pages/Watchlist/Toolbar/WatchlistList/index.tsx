@@ -106,7 +106,7 @@ const WatchlistList = () => {
 	}, [userCustomWatchlistList, isLoggedIn]);
 
 	return (
-		<div className='gap-8 flex-justify-start'>
+		<div className='select-none gap-8 flex-justify-start'>
 			<ul className='flex flex-grow-0 gap-8'>
 				{watchlistList.map((item) => (
 					<Watchlist

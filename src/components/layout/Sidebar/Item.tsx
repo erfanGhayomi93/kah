@@ -3,6 +3,7 @@ import Collapse from '@/components/common/transition/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import { Link, usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
+import { useMemo } from 'react';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
@@ -23,28 +24,38 @@ export type TListItem = (IListButton | IListAnchor) & {
 
 type ItemProps = TListItem & {
 	sidebarIsExpand: boolean;
+	onClick?: (tagName: 'a' | 'button') => void;
 	toggle?: () => void;
 };
 
-const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: ItemProps) => {
+const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...props }: ItemProps) => {
 	const pathname = usePathname();
+
+	const isActive = useMemo(() => {
+		if ('to' in props) return props.to === pathname;
+
+		return !sidebarIsExpand && props.items.findIndex((item) => 'to' in item && item.to === pathname) > -1;
+	}, [pathname, sidebarIsExpand]);
 
 	const hasDropdown = 'items' in props && props.items.length > 0;
 
 	const isExpand = Boolean('isExpand' in props && props.isExpand);
 
-	const isActive = 'to' in props && props.to === pathname;
-
 	return (
 		<Tooltip disabled={sidebarIsExpand} placement='left' content={label}>
 			<li className={cn(isExpand && styles.expand, isActive && styles.active)}>
 				{'to' in props ? (
-					<Link href={props.to}>
+					<Link onClick={() => onClick?.('a')} href={props.to}>
 						{icon}
 						<span>{label}</span>
 					</Link>
 				) : (
-					<button onClick={toggle}>
+					<button
+						onClick={() => {
+							toggle?.();
+							onClick?.('button');
+						}}
+					>
 						{icon}
 						<span>{label}</span>
 						{hasDropdown && <ArrowDownSVG style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }} />}
@@ -55,7 +66,13 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: Item
 					<Collapse padding={16} enabled={sidebarIsExpand && isExpand}>
 						<ul className={cn(styles.list, isExpand && styles.expand)}>
 							{props.items.map((item, i) => (
-								<Item sidebarIsExpand={sidebarIsExpand} key={i} {...item} />
+								<Item
+									sidebarIsExpand={sidebarIsExpand}
+									key={i}
+									toggle={toggle}
+									onClick={onClick}
+									{...item}
+								/>
 							))}
 						</ul>
 					</Collapse>
