@@ -17,7 +17,6 @@ import { deleteBrokerClientId } from '@/utils/cookie';
 import { cn, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-toastify';
@@ -130,9 +129,6 @@ const Header = () => {
 
 	return (
 		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-48 bg-white px-24 shadow flex-justify-between'>
-			<div className='pl-32'>
-				<Image width='32' height='32' alt='Favicon' src='/static/icons/favicon.png' />
-			</div>
 			{isLoggedIn ? (
 				<div className='flex-1 gap-32 flex-justify-start'>
 					{userRemain && (

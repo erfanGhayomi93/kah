@@ -17,7 +17,7 @@ interface IListAnchor {
 export type TListItem = (IListButton | IListAnchor) & {
 	id: string;
 	label: string;
-	icon: JSX.Element;
+	icon?: JSX.Element;
 	disabled?: boolean;
 };
 
@@ -52,7 +52,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: Item
 				)}
 
 				{hasDropdown && (
-					<Collapse enabled={sidebarIsExpand && isExpand}>
+					<Collapse padding={16} enabled={sidebarIsExpand && isExpand}>
 						<ul className={cn(styles.list, isExpand && styles.expand)}>
 							{props.items.map((item, i) => (
 								<Item sidebarIsExpand={sidebarIsExpand} key={i} {...item} />

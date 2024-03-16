@@ -205,7 +205,7 @@ const Layout = ({
 	}, [JSON.stringify(baseSymbolContracts), baseSymbolActiveTab]);
 
 	return (
-		<div className='flex flex-1 gap-8 overflow-hidden'>
+		<div className='flex flex-1 gap-8 overflow-hidden pb-8'>
 			<div
 				style={{
 					flex: '5',
