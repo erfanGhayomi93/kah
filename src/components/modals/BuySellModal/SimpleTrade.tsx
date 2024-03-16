@@ -211,7 +211,7 @@ const SimpleTrade = ({
 					{side === 'buy' && <Percents side={side} onClick={onClickPercentage} />}
 				</div>
 
-				{symbolType === 'option' && (
+				{symbolType === 'option' && (switchable || (!switchable && side === 'sell')) && (
 					<div className='h-40 gap-8 flex-items-center'>
 						{side === 'sell' && (
 							<SelectCollateral value={collateral} onChange={(v) => setInputValue('collateral', v)} />

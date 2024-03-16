@@ -4,6 +4,7 @@ import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleAddNewOptionWatchlist } from '@/features/slices/modalSlice';
+import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -11,9 +12,8 @@ import Modal from '../Modal';
 
 const Div = styled.div`
 	width: 336px;
-	padding: 1.6rem 3.2rem 2.4rem 3.2rem;
 	display: flex;
-	gap: 2.4rem;
+	gap: 3.6rem;
 	flex-direction: column;
 	align-items: center;
 	text-align: center;
@@ -61,6 +61,8 @@ const AddNewOptionWatchlist = (props: AddNewOptionWatchlistProps) => {
 		}
 	};
 
+	const placeholder = t('add_new_option_watchlist_modal.input_placeholder');
+
 	return (
 		<Modal
 			transparent
@@ -70,22 +72,24 @@ const AddNewOptionWatchlist = (props: AddNewOptionWatchlistProps) => {
 			{...props}
 		>
 			<Div className='bg-white'>
-				<h2 className='text-xl font-medium text-gray-1000'>{t('add_new_option_watchlist_modal.title')}</h2>
+				<Modal.Header onClose={onCloseModal} label={t('add_new_option_watchlist_modal.title')} />
 
-				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 flex-column'>
-					<label className='w-full items-start gap-8 flex-column'>
-						<span className='text-lg font-medium text-gray-900'>
-							{t('add_new_option_watchlist_modal.input_label')}
-						</span>
+				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 px-32 pb-24 flex-column'>
+					<label className='relative h-40 rounded flex-items-center input-group'>
 						<input
 							autoFocus
 							type='text'
 							maxLength={36}
 							value={name}
-							placeholder={t('add_new_option_watchlist_modal.input_placeholder')}
-							className='h-40 w-full rounded border border-input px-16 text-base'
+							className='h-40 w-full rounded px-16 text-base'
 							onChange={(e) => setName(e.target.value)}
 						/>
+
+						<span className={cn('flexible-placeholder', name && 'active')}>{placeholder}</span>
+
+						<fieldset className={cn('flexible-fieldset', name && 'active')}>
+							<legend>{placeholder}</legend>
+						</fieldset>
 					</label>
 
 					<div className='w-full gap-8 flex-justify-center'>
