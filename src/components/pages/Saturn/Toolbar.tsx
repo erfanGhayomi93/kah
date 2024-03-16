@@ -1,4 +1,4 @@
-import SymbolSearch from '@/components/common/SymbolSearch';
+import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { BookmarkSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleSavedSaturnTemplates } from '@/features/slices/uiSlice';

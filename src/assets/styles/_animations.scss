@@ -4,6 +4,15 @@
 	}
 }
 
+@keyframes skeleton-loading {
+	to {
+		background-position-x: 120%;
+	}
+	to {
+		background-position-x: -20%;
+	}
+}
+
 @keyframes left-to-right {
 	from {
 		transform: translateX(-100%);

@@ -19,7 +19,7 @@ class TooltipElement extends TooltipWrapper {
 
 	private _interactive: AppTooltip.Interactive = false;
 
-	private _delay: AppTooltip.Delay = [500, 50];
+	private _delay: AppTooltip.Delay = [500, 100];
 
 	private _trigger: AppTooltip.Trigger = 'hover';
 
@@ -370,7 +370,7 @@ class TooltipManager extends TooltipWrapper {
 
 			if (!this._tooltip) return;
 			this._tooltip.hide();
-		}, 0);
+		}, 1);
 	}
 
 	private onMousemoveEvent(e: MouseEvent) {

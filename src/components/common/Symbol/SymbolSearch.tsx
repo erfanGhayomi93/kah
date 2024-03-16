@@ -2,8 +2,8 @@ import { useSymbolSearchQuery } from '@/api/queries/symbolQuery';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { SearchSVG } from '../icons';
-import Popup from './Popup';
+import { SearchSVG } from '../../icons';
+import Popup from '../Popup';
 import styles from './SymbolSearch.module.scss';
 
 type TSymbolType = Symbol.Search | null;
@@ -92,7 +92,7 @@ const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: 
 						maxLength={24}
 						onFocus={() => onFocus(() => setOpen(true))}
 						{...inputProps}
-						value={term}
+						value={open ? term : value ? value.symbolTitle : term}
 						onChange={(e) => setTerm(e.target.value)}
 					/>
 

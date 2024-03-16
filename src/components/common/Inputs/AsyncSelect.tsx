@@ -15,7 +15,7 @@ interface INonClearableProps<T> {
 	onChange: (option: T) => void;
 }
 
-type AsyncSelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
+export type AsyncSelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	value?: T | null;
 	blankPlaceholder?: string;
 	placeholder: string | React.ReactNode;

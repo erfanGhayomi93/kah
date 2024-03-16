@@ -1,4 +1,4 @@
-import SymbolSearch from '@/components/common/SymbolSearch';
+import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { openNewTab } from '@/utils/helpers';
 import { useState } from 'react';
 

@@ -117,12 +117,12 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 					{
 						id: 'change_broker',
 						label: t('sidebar.change_broker'),
-						to: '/option-chain',
+						to: '/',
 					},
 					{
 						id: 'un_freezing',
 						label: t('sidebar.un_freezing'),
-						to: '/saturn',
+						to: '/',
 					},
 					{
 						id: 'option_settlement',
