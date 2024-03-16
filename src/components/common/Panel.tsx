@@ -26,10 +26,10 @@ interface PanelProps {
 	width: string;
 	height?: string;
 	transparent?: boolean;
-	children?: React.ReactNode;
+	render: () => React.ReactNode;
 }
 
-const Panel = ({ transparent, width, height, isEnable, children, onClose }: PanelProps) => {
+const Panel = ({ transparent, width, height, isEnable, render, onClose }: PanelProps) => {
 	const panelRef = useRef<HTMLDivElement>(null);
 
 	const [rendered, setRendered] = useState(isEnable);
@@ -73,7 +73,7 @@ const Panel = ({ transparent, width, height, isEnable, children, onClose }: Pane
 				style={{ width, height: height ?? 'calc(100dvh - 6.4rem)' }}
 				className='overflow-auto bg-white'
 			>
-				{children}
+				{render()}
 			</Wrapper>
 		</div>,
 		document.body,
