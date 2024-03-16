@@ -154,7 +154,8 @@ $nav-color: rgb(28, 48, 85);
 	}
 
 	li.active {
-		a {
+		& > a,
+		& > button {
 			span,
 			svg {
 				color: theme("colors.info.DEFAULT") !important;

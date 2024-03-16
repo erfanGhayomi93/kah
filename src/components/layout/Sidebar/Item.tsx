@@ -3,6 +3,7 @@ import Collapse from '@/components/common/transition/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import { Link, usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
+import { useMemo } from 'react';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
@@ -29,11 +30,15 @@ type ItemProps = TListItem & {
 const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, ...props }: ItemProps) => {
 	const pathname = usePathname();
 
+	const isActive = useMemo(() => {
+		if ('to' in props) return props.to === pathname;
+
+		return !sidebarIsExpand && props.items.findIndex((item) => 'to' in item && item.to === pathname) > -1;
+	}, [pathname, sidebarIsExpand]);
+
 	const hasDropdown = 'items' in props && props.items.length > 0;
 
 	const isExpand = Boolean('isExpand' in props && props.isExpand);
-
-	const isActive = 'to' in props && props.to === pathname;
 
 	return (
 		<Tooltip disabled={sidebarIsExpand} placement='left' content={label}>
