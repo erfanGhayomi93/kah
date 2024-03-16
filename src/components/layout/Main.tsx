@@ -1,12 +1,14 @@
-import styled from 'styled-components';
+import clsx from 'clsx';
+import styles from './Main.module.scss';
 
-const Main = styled.main`
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	padding: 0.8rem 2.4rem 0.8rem 2.4rem;
-	overflow: auto;
-	flex: 1;
-`;
+interface MainProps extends React.HTMLAttributes<HTMLDivElement> {
+	children?: React.ReactNode;
+}
+
+const Main = ({ children, className, ...props }: MainProps) => (
+	<div {...props} className={clsx(styles.root, className)}>
+		{children}
+	</div>
+);
 
 export default Main;
