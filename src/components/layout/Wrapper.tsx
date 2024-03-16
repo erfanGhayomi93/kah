@@ -1,5 +1,7 @@
 'use client';
 
+import { useAppSelector } from '@/features/hooks';
+import { getSidebarIsExpand } from '@/features/slices/uiSlice';
 import React, { useEffect, useState } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import Footer from './Footer';
@@ -11,6 +13,8 @@ interface IWrapper {
 }
 
 const Wrapper = ({ children }: IWrapper) => {
+	const sidebarIsExpand = useAppSelector(getSidebarIsExpand);
+
 	const [mount, setMounted] = useState(false);
 
 	useEffect(() => {
@@ -26,7 +30,7 @@ const Wrapper = ({ children }: IWrapper) => {
 					<Sidebar />
 				</ErrorBoundary>
 
-				<div className='h-full flex-1 justify-between gap-8 flex-column'>
+				<div style={{ paddingRight: '6rem' }} className='h-full flex-1 justify-between flex-column'>
 					<ErrorBoundary>
 						<Header />
 					</ErrorBoundary>

@@ -23,14 +23,17 @@ const Sidebar = () => {
 			style={{
 				width: isExpand ? '18.4rem' : '6rem',
 				transition: 'width 300ms ease-in-out',
+				zIndex: 999,
 			}}
-			className='relative bg-sidebar flex-column'
+			className='fixed right-0 top-0 h-full bg-sidebar'
 		>
-			<button type='button' onClick={toggle} className={cn(styles.toggler, isExpand && styles.expand)}>
-				<AngleLeft width='1.6rem' height='1.6rem' />
-			</button>
+			<div className='relative h-full flex-column'>
+				<button type='button' onClick={toggle} className={cn(styles.toggler, isExpand && styles.expand)}>
+					<AngleLeft width='1.6rem' height='1.6rem' />
+				</button>
 
-			<Navbar isExpand={isExpand} />
+				<Navbar isExpand={isExpand} />
+			</div>
 		</div>
 	);
 };
