@@ -5,6 +5,7 @@ import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useLayoutEffect } from 'react';
 
 interface ToolbarProps {
 	inputs: OptionChainFilters;
@@ -26,13 +27,17 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 		return d.locale('fa').format('DD MMMM');
 	};
 
+	useLayoutEffect(() => {
+		if (Array.isArray(settlementDays)) setInputValue('settlementDay', settlementDays[0]);
+	}, [settlementDays, JSON.stringify(inputs.baseSymbol)]);
+
 	return (
 		<div style={{ flex: '0 0 5.6rem' }} className='flex-1 rounded bg-white px-16 flex-justify-between'>
 			<div className='gap-24 flex-items-center'>
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch
 						value={inputs.baseSymbol}
-						onChange={(value) => setInputValue('baseSymbol', value)}
+						onChange={(symbol) => setInputValue('baseSymbol', symbol)}
 					/>
 				</div>
 
