@@ -1,7 +1,7 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
-import { ClosePositionSVG, GrowDownSVG, GrowUpSVG, PlusSVG, XSVG } from '@/components/icons';
+import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
@@ -247,19 +247,21 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 					<div className='flex-1 gap-16 pt-4 flex-justify-end'>
 						<div className='gap-8 flex-items-center'>
 							<button
+								style={{ width: '11rem' }}
 								type='button'
 								onClick={() => addBsModal('buy')}
 								className='size-32 rounded !border text-tiny flex-justify-center btn-success-outline'
 							>
-								<PlusSVG width='2rem' height='2rem' />
+								{t('saturn_page.new_position')}
 							</button>
 
 							<button
+								style={{ width: '11rem' }}
 								type='button'
 								onClick={() => addBsModal('sell')}
-								className='btn-gray-outline size-32 rounded !border text-tiny flex-justify-center'
+								className='size-32 rounded !border text-tiny flex-justify-center btn-error-outline'
 							>
-								<ClosePositionSVG width='2rem' height='2rem' />
+								{t('saturn_page.close_position')}
 							</button>
 						</div>
 

@@ -83,6 +83,11 @@ class TooltipElement extends TooltipWrapper {
 		const eTooltip = this._eTooltip;
 		if (!eTooltip) return;
 
+		if (this.disabled) {
+			if (this.isActive) this.hide();
+			return;
+		}
+
 		eTooltip.setAttribute(
 			'class',
 			cn(
