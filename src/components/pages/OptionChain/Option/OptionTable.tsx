@@ -3,13 +3,20 @@ import AgTable from '@/components/common/Tables/AgTable';
 import { openNewTab, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
 
 interface ITableData {
 	strikePrice: string;
 	buy?: Option.Root;
 	sell?: Option.Root;
 }
+
+type TRowOverlay = null | {
+	x: number;
+	y: number;
+	data: ITableData;
+};
 
 interface OptionTableProps {
 	settlementDay: Option.BaseSettlementDays;
@@ -20,6 +27,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
+
+	const [rowHoverId, setRowHoverId] = useState<number>(-1);
 
 	const { data: watchlistData } = useWatchlistBySettlementDateQuery({
 		queryKey: [
@@ -47,6 +56,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const COLUMNS: Array<ColDef<ITableData> | ColGroupDef<ITableData>> = useMemo(
 		() => [
 			{
+				groupId: 'call',
 				headerName: t('option_chain.call_contracts'),
 				headerClass: 'call',
 				children: [
@@ -112,6 +122,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			},
 
 			{
+				groupId: 'strike',
 				headerName: '',
 				headerClass: '!bg-white !border-b-0',
 				children: [
@@ -122,12 +133,18 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						maxWidth: 132,
 						cellClass: 'strike-price',
 						headerClass: 'strike-price',
-						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.symbolInfo.strikePrice)),
+						valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						cellRenderer: StrikePriceCellRenderer,
+						cellRendererParams: {
+							activeRowId: rowHoverId,
+						},
 					},
 				],
 			},
 
 			{
+				groupId: 'put',
 				headerName: t('option_chain.put_contracts'),
 				headerClass: 'put',
 				children: [
@@ -241,6 +258,33 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		}
 	}, [watchlistData]);
 
+	useEffect(() => {
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
+
+		const column = gridApi.getColumn('strikePrice');
+		if (!column) return;
+
+		const colDef: ColDef<ITableData> = {
+			headerName: 'اعمال',
+			colId: 'strikePrice',
+			minWidth: 132,
+			maxWidth: 132,
+			cellClass: 'strike-price',
+			headerClass: 'strike-price',
+			resizable: false,
+			sortable: false,
+			valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
+			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			cellRenderer: StrikePriceCellRenderer,
+			cellRendererParams: {
+				activeRowId: rowHoverId,
+			},
+		};
+
+		column.setColDef(colDef, colDef);
+	}, [rowHoverId]);
+
 	useLayoutEffect(() => {
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
@@ -258,6 +302,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			className='flex-1 rounded-0'
 			rowData={modifiedData ?? []}
 			columnDefs={COLUMNS}
+			onCellMouseOver={(e) => setRowHoverId(e.node.rowIndex ?? -1)}
+			onCellMouseOut={() => setRowHoverId(-1)}
 			suppressRowVirtualisation
 			suppressColumnVirtualisation
 			defaultColDef={defaultColDef}
