@@ -21,7 +21,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
-	const { data: watchlistData, isFetching } = useWatchlistBySettlementDateQuery({
+	const { data: watchlistData } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
 			{ baseSymbolISIN, settlementDate: settlementDay?.contractEndDate },

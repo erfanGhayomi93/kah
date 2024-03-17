@@ -39,8 +39,8 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 				<div className='gap-8 flex-items-center'>
 					{isFetching ? (
 						<>
-							<div className='skeleton h-40 w-80 rounded' />
-							<div className='skeleton h-40 w-80 rounded' />
+							<div className='skeleton h-40 w-88 rounded' />
+							<div className='skeleton h-40 w-88 rounded' />
 						</>
 					) : (
 						<ul className='flex gap-8'>
@@ -50,7 +50,7 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 										onClick={() => setInputValue('settlementDay', item)}
 										type='button'
 										className={clsx(
-											'h-40 w-80 rounded border transition-colors',
+											'h-40 w-88 rounded border transition-colors',
 											inputs.settlementDay?.contractEndDate === item.contractEndDate
 												? 'font-medium btn-primary-100'
 												: 'border-gray-500 text-gray-900 hover:border-primary-100 hover:bg-primary-100',

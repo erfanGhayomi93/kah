@@ -1,7 +1,5 @@
 'use client';
 
-import { useAppSelector } from '@/features/hooks';
-import { getSidebarIsExpand } from '@/features/slices/uiSlice';
 import React, { useEffect, useState } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import Footer from './Footer';
@@ -13,8 +11,6 @@ interface IWrapper {
 }
 
 const Wrapper = ({ children }: IWrapper) => {
-	const sidebarIsExpand = useAppSelector(getSidebarIsExpand);
-
 	const [mount, setMounted] = useState(false);
 
 	useEffect(() => {
