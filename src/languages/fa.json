@@ -289,7 +289,11 @@
 		"select_symbol_first": "برای شروع، نماد پایه مورد نظر خود را جستجو کنید!",
 		"base_symbol": "نماد پایه",
 		"base_symbol_info": "جزئیات نماد پایه",
-		"total_open_contracts": "کل قراردادهای باز"
+		"total_open_contracts": "کل قراردادهای باز",
+		"open_contracts_count": "تعداد قراردادهای باز",
+		"call_contracts": "قراردادهای خرید",
+		"put_contracts": "قراردادهای فروش",
+		"contract_due_days": "\u200E{dueDays} روز تقویمی، \u200E{workingDaysLeftCount} روز معاملاتی باقی مانده"
 	},
 	"market_depth": {
 		"count_column": "تعداد",

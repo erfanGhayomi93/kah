@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 const OptionInfo = dynamic(() => import('./OptionInfo'), {
 	ssr: false,
+	loading: () => <div className='skeleton h-40 w-full rounded' />,
 });
 
 const OptionTable = dynamic(() => import('./OptionTable'), {
@@ -14,17 +15,20 @@ const OptionTable = dynamic(() => import('./OptionTable'), {
 
 interface OptionProps {
 	settlementDay: null | Option.BaseSettlementDays;
+	baseSymbolISIN: null | string;
 }
 
-const Option = ({ settlementDay }: OptionProps) => {
+const Option = ({ settlementDay, baseSymbolISIN }: OptionProps) => {
 	const t = useTranslations();
 
 	return (
 		<div className='flex-1 gap-8 rounded flex-column'>
-			{settlementDay ? (
+			{settlementDay && baseSymbolISIN ? (
 				<>
-					<OptionInfo />
-					<OptionTable />
+					<OptionInfo settlementDay={settlementDay} />
+					<div className='relative flex-1 overflow-hidden rounded bg-white flex-column'>
+						<OptionTable settlementDay={settlementDay} baseSymbolISIN={baseSymbolISIN} />
+					</div>
 				</>
 			) : (
 				<div className='flex flex-1 justify-center rounded bg-white'>

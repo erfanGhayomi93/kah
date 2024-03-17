@@ -41,7 +41,6 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 						<>
 							<div className='skeleton h-40 w-80 rounded' />
 							<div className='skeleton h-40 w-80 rounded' />
-							<div className='skeleton h-40 w-80 rounded' />
 						</>
 					) : (
 						<ul className='flex gap-8'>
@@ -53,8 +52,8 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 										className={clsx(
 											'h-40 w-80 rounded border transition-colors',
 											inputs.settlementDay?.contractEndDate === item.contractEndDate
-												? 'btn-primary-100'
-												: 'border-gray-500 text-gray-900 hover:bg-secondary-100',
+												? 'font-medium btn-primary-100'
+												: 'border-gray-500 text-gray-900 hover:border-primary-100 hover:bg-primary-100',
 										)}
 									>
 										{dateFormatter(item.contractEndDate)}
