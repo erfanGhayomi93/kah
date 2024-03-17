@@ -29,7 +29,7 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 
 	useLayoutEffect(() => {
 		if (Array.isArray(settlementDays)) setInputValue('settlementDay', settlementDays[0]);
-	}, [settlementDays, inputs.settlementDay, JSON.stringify(inputs.baseSymbol)]);
+	}, [settlementDays, JSON.stringify(inputs.baseSymbol)]);
 
 	return (
 		<div style={{ flex: '0 0 5.6rem' }} className='flex-1 rounded bg-white px-16 flex-justify-between'>
