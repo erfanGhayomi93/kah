@@ -4,7 +4,7 @@
 	--scrollbar-track: transparent;
 	--skeleton-from-bg: rgb(243, 245, 247);
 	--skeleton-to-bg: rgb(224, 230, 235);
-	--skeleton-bg: rgb(226, 229, 239);
+	--skeleton-bg: theme("colors.gray.500");
 }
 
 ::selection {
