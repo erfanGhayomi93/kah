@@ -1,17 +1,9 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
-import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { openNewTab, sepNumbers } from '@/utils/helpers';
-import { type CellClickedEvent, type ColDef } from '@ag-grid-community/core';
+import { type CellClickedEvent, type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import NoData from '../common/NoData';
-
-interface TableProps {
-	baseSymbolISIN: string;
-	contractEndDate: string;
-	expanding: boolean;
-}
+import { useLayoutEffect, useMemo, useRef } from 'react';
 
 interface ITableData {
 	strikePrice: string;
@@ -19,11 +11,21 @@ interface ITableData {
 	sell?: Option.Root;
 }
 
-const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
+interface OptionTableProps {
+	settlementDay: Option.BaseSettlementDays;
+	baseSymbolISIN: string;
+}
+
+const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const t = useTranslations();
 
-	const { data: watchlistData, isLoading } = useWatchlistBySettlementDateQuery({
-		queryKey: ['watchlistBySettlementDateQuery', { baseSymbolISIN, settlementDate: contractEndDate }],
+	const gridRef = useRef<GridApi<ITableData>>(null);
+
+	const { data: watchlistData } = useWatchlistBySettlementDateQuery({
+		queryKey: [
+			'watchlistBySettlementDateQuery',
+			{ baseSymbolISIN, settlementDate: settlementDay?.contractEndDate },
+		],
 	});
 
 	const onSymbolTitleClicked = ({ data }: CellClickedEvent<ITableData>, side: 'buy' | 'sell') => {
@@ -41,41 +43,6 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 			//
 		}
 	};
-
-	const modifiedData: ITableData[] = useMemo(() => {
-		if (!watchlistData) return [];
-
-		const dataAsArray: ITableData[] = [];
-
-		try {
-			const dataObject: Record<string | number, Partial<Record<'buy' | 'sell', Option.Root>>> = {};
-
-			for (let i = 0; i < watchlistData.length; i++) {
-				const item = watchlistData[i];
-				const { strikePrice, optionType } = item.symbolInfo;
-
-				if (dataObject?.[strikePrice] === undefined) dataObject[strikePrice] = {};
-
-				dataObject[strikePrice][optionType === 'Put' ? 'sell' : 'buy'] = item;
-			}
-
-			const strikePrices = Object.keys(dataObject);
-			for (let i = 0; i < strikePrices.length; i++) {
-				const strikePrice = strikePrices[i];
-				const item = dataObject[strikePrice];
-
-				dataAsArray.push({
-					strikePrice: String(strikePrice),
-					buy: item?.buy,
-					sell: item?.sell,
-				});
-			}
-
-			return dataAsArray;
-		} catch (e) {
-			return dataAsArray;
-		}
-	}, [watchlistData]);
 
 	const COLUMNS: Array<ColDef<ITableData>> = useMemo(
 		() => [
@@ -147,9 +114,9 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 			{
 				headerName: 'اعمال',
 				colId: 'strikePrice',
-				minWidth: 96,
-				headerClass: 'bg-white hover:!bg-white shadow',
-				cellClass: 'bg-white shadow',
+				minWidth: 132,
+				maxWidth: 132,
+				headerClass: 'border-b border-b-gray-500',
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.symbolInfo.strikePrice)),
 			},
 
@@ -231,33 +198,74 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 		[],
 	);
 
-	if (isLoading || expanding) return <Loading />;
+	const modifiedData: ITableData[] = useMemo(() => {
+		if (!watchlistData) return [];
 
-	if (!Array.isArray(watchlistData) || watchlistData.length === 0)
-		return <NoData text={t('old_option_chain.no_contract_found')} />;
+		const dataAsArray: ITableData[] = [];
+
+		try {
+			const dataObject: Record<string | number, Partial<Record<'buy' | 'sell', Option.Root>>> = {};
+
+			for (let i = 0; i < watchlistData.length; i++) {
+				const item = watchlistData[i];
+				const { strikePrice, optionType } = item.symbolInfo;
+
+				if (dataObject?.[strikePrice] === undefined) dataObject[strikePrice] = {};
+
+				dataObject[strikePrice][optionType === 'Put' ? 'sell' : 'buy'] = item;
+			}
+
+			const strikePrices = Object.keys(dataObject);
+			for (let i = 0; i < strikePrices.length; i++) {
+				const strikePrice = strikePrices[i];
+				const item = dataObject[strikePrice];
+
+				dataAsArray.push({
+					strikePrice: String(strikePrice),
+					buy: item?.buy,
+					sell: item?.sell,
+				});
+			}
+
+			return dataAsArray;
+		} catch (e) {
+			return dataAsArray;
+		}
+	}, [watchlistData]);
+
+	useLayoutEffect(() => {
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
+
+		try {
+			gridApi.setGridOption('rowData', watchlistData);
+		} catch (e) {
+			//
+		}
+	}, [watchlistData]);
 
 	return (
-		<div className='w-full flex-column'>
-			<div className='flex h-48 border-t border-t-gray-500'>
-				<div className='flex-1 text-lg text-success-100 flex-justify-center'>
-					{t('old_option_chain.buy_contracts')}
+		<>
+			<div style={{ flex: '0 0 4.8rem' }} className='flex border-b border-b-gray-500 bg-white text-base'>
+				<div className='flex-1 bg-success-100/10 flex-justify-center'>
+					<span className='text-success-100'>{t('option_chain.call_contracts')}</span>
 				</div>
-				<div className='flex-1 text-lg text-error-100 flex-justify-center'>
-					{t('old_option_chain.sell_contracts')}
+				<div style={{ flex: '0 0 13.2rem' }} />
+				<div className='flex-1 bg-error-100/10 flex-justify-center'>
+					<span className='text-error-100'>{t('option_chain.put_contracts')}</span>
 				</div>
 			</div>
 
-			<div style={{ height: (watchlistData.length + 1) * 48, maxHeight: '44rem' }}>
-				<AgTable
-					className='h-full rounded-0'
-					rowData={modifiedData ?? []}
-					columnDefs={COLUMNS}
-					defaultColDef={defaultColDef}
-					getRowId={({ data }) => data!.strikePrice}
-				/>
-			</div>
-		</div>
+			<AgTable<ITableData>
+				ref={gridRef}
+				className='flex-1 rounded-0'
+				rowData={modifiedData ?? []}
+				columnDefs={COLUMNS}
+				defaultColDef={defaultColDef}
+				getRowId={({ data }) => data!.strikePrice}
+			/>
+		</>
 	);
 };
 
-export default Table;
+export default OptionTable;

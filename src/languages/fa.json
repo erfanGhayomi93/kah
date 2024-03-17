@@ -243,7 +243,7 @@
 		"input_placeholder": "نام قالب",
 		"no_data": "قالب ذخیره شده‌ای برای نمایش وجود ندارد!"
 	},
-	"option_chain": {
+	"old_option_chain": {
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
 		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
 		"symbol_search_placeholder": "جستجو نماد",
@@ -284,6 +284,16 @@
 		"break_even_point": "قیمت سر به سر",
 		"leverage": "اهرم",
 		"w_implied_volatility": "بلک شولز W-IV"
+	},
+	"option_chain": {
+		"select_symbol_first": "برای شروع، نماد پایه مورد نظر خود را جستجو کنید!",
+		"base_symbol": "نماد پایه",
+		"base_symbol_info": "جزئیات نماد پایه",
+		"total_open_contracts": "کل قراردادهای باز",
+		"open_contracts_count": "تعداد قراردادهای باز",
+		"call_contracts": "قراردادهای خرید",
+		"put_contracts": "قراردادهای فروش",
+		"contract_due_days": "\u200E{dueDays} روز تقویمی، \u200E{workingDaysLeftCount} روز معاملاتی باقی مانده"
 	},
 	"market_depth": {
 		"count_column": "تعداد",
@@ -329,7 +339,8 @@
 		"otp_placeholder": "کد تایید"
 	},
 	"symbol_search": {
-		"input_placeholder": "جستجو نماد"
+		"input_placeholder": "جستجو نماد",
+		"base_symbol": "نماد پایه"
 	},
 	"sidebar": {
 		"app_name": "کـهـکـشـان",

@@ -330,7 +330,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.primary.400'),
-					border: '2px solid transparent',
+					border: `2px solid ${theme('colors.primary.400')}`,
 					'background-color': theme('colors.primary.100'),
 					transition: 'background-color 250ms ease-in-out',
 
@@ -489,6 +489,22 @@ const config: Config = {
 					'&:not(:disabled):hover': {
 						'border-color': theme('colors.gray.900'),
 						color: theme('colors.gray.900'),
+					},
+				},
+
+				'.btn-info-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.info.DEFAULT'),
+					border: `1px solid ${theme('colors.info.DEFAULT')}`,
+					transition:
+						'color 250ms ease-in-out, background-color 250ms ease-in-out, border-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'border-color': theme('colors.info.DEFAULT'),
+						'background-color': theme('colors.info.DEFAULT'),
+						color: theme('colors.white'),
 					},
 				},
 

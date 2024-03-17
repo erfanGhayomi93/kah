@@ -1,9 +1,9 @@
 import { useBaseSettlementDaysQuery, useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import Select from '@/components/common/Inputs/Select';
+import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
 import dayjs from '@/libs/dayjs';
 import { useTranslations } from 'next-intl';
 import ContractSearch from './ContractSearch';
-import SymbolSearch from './SymbolSearch';
 
 interface SelectSymbolProps {
 	basis: 'base' | 'contract';
@@ -47,9 +47,12 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 			{basis === 'base' && (
 				<>
 					<div className='flex-1'>
-						<SymbolSearch
+						<BaseSymbolSearch
 							value={inputs.baseSymbol}
 							onChange={(value) => setInputValue('baseSymbol', value)}
+							classes={{
+								root: '!h-48',
+							}}
 						/>
 					</div>
 

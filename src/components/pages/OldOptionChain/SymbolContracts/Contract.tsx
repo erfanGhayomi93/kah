@@ -77,13 +77,13 @@ const Contract = ({
 						{calendar}
 					</span>
 					<span className='text-base text-gray-900'>
-						{t('option_chain.contract_due_days', { dueDays, workingDaysLeftCount })}
+						{t('old_option_chain.contract_due_days', { dueDays, workingDaysLeftCount })}
 					</span>
 				</div>
 
 				<div className='flex-1 gap-32 flex-justify-end'>
 					<div className='flex items-center gap-8'>
-						<span className='text-base text-gray-900'>{t('option_chain.one_month_trade_volume')}:</span>
+						<span className='text-base text-gray-900'>{t('old_option_chain.one_month_trade_volume')}:</span>
 						<span>
 							<span className='text-lg font-bold text-gray-1000'>{volume}</span>
 							<span className='text-tiny text-gray-900'>{volumeAsLetter}</span>

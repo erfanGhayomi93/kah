@@ -119,3 +119,17 @@ declare interface IBlackScholesModalStates {
 	riskFreeProfit: string;
 	premium: number;
 }
+
+declare interface IOptionWatchlistFilters {
+	symbols: Option.BaseSearch[];
+	type: Array<'Call' | 'Put'>;
+	status: Array<'ITM' | 'OTM' | 'ATM'>;
+	dueDays: [number, number];
+	delta: [number, number];
+	minimumTradesValue: string;
+}
+
+declare interface OptionChainFilters {
+	baseSymbol: Option.BaseSearch | null;
+	settlementDay: Option.BaseSettlementDays | null;
+}
