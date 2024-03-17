@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import Checkbox from '@/components/common/Inputs/Checkbox';
-import { PlusSquareSVG, TrashSVG, XSVG } from '@/components/icons';
+import { PlusSquareSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
 import { useQueryClient } from '@tanstack/react-query';
@@ -52,7 +52,7 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 		queryKey: ['getAllCustomWatchlistQuery'],
 	});
 
-	const onClose = () => {
+	const onCloseModal = () => {
 		dispatch(toggleManageOptionWatchlistListModal(null));
 	};
 
@@ -95,7 +95,7 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 	};
 
 	useLayoutEffect(() => {
-		if (Array.isArray(watchlistList) && watchlistList.length === 0) onClose();
+		if (Array.isArray(watchlistList) && watchlistList.length === 0) onCloseModal();
 	}, [watchlistList]);
 
 	return (
@@ -103,17 +103,11 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 			transparent
 			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
 			top='50%'
-			onClose={onClose}
+			onClose={onCloseModal}
 			{...props}
 		>
 			<Div className='justify-between bg-white flex-column'>
-				<div className='relative h-56 bg-gray-200 flex-justify-center'>
-					<h2 className='text-xl font-medium'>{t('manage_option_watchlist_modal.title')}</h2>
-
-					<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
-						<XSVG width='2rem' height='2rem' />
-					</button>
-				</div>
+				<Modal.Header label={t('manage_option_watchlist_modal.title')} onClose={onCloseModal} />
 
 				{!Array.isArray(watchlistList) || watchlistList.length === 0 ? null : (
 					<div className='flex-1 overflow-hidden pt-40 flex-column'>

@@ -1,15 +1,17 @@
 import Loading from '@/components/common/Loading';
-import Panel from '@/components/common/Panel';
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { defaultOptionWatchlistColumns } from '@/constants';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { useAppDispatch } from '@/features/hooks';
 import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';
-import { getManageOptionColumns, toggleManageOptionColumns } from '@/features/slices/uiSlice';
 import { useDebounce, useWatchlistColumns } from '@/hooks';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
+
+interface ContainerProps {
+	close: () => void;
+}
 
 const Button = styled.button`
 	display: flex;
@@ -30,22 +32,16 @@ const Button = styled.button`
 		background-color 250ms;
 `;
 
-const ManageWatchlistColumns = () => {
+const Container = ({ close }: ContainerProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
-
-	const isEnabled = useAppSelector(getManageOptionColumns);
-
-	const [resetting, setResetting] = useState(false);
 
 	const { setDebounce } = useDebounce();
 
 	const { data: watchlistColumns, resetColumns, setHiddenColumn } = useWatchlistColumns();
 
-	const onClose = () => {
-		dispatch(toggleManageOptionColumns(false));
-	};
+	const [resetting, setResetting] = useState(false);
 
 	const onRefresh = () => {
 		try {
@@ -81,7 +77,7 @@ const ManageWatchlistColumns = () => {
 	}, [watchlistColumns]);
 
 	return (
-		<Panel transparent isEnable={isEnabled} onClose={onClose} width='47.2rem'>
+		<>
 			<div className='sticky top-0 z-10 h-56 w-full bg-gray-200 px-24 flex-justify-between'>
 				<h1 className='text-xl font-medium text-gray-900'>{t('manage_option_watchlist_columns.title')}</h1>
 
@@ -89,7 +85,7 @@ const ManageWatchlistColumns = () => {
 					<button className='icon-hover' type='button' onClick={onRefresh}>
 						<RefreshSVG width='2.4rem' height='2.4rem' />
 					</button>
-					<button className='icon-hover' type='button' onClick={onClose}>
+					<button className='icon-hover' type='button' onClick={close}>
 						<XSVG width='2rem' height='2rem' />
 					</button>
 				</div>
@@ -140,8 +136,8 @@ const ManageWatchlistColumns = () => {
 					</div>
 				))}
 			</div>
-		</Panel>
+		</>
 	);
 };
 
-export default ManageWatchlistColumns;
+export default Container;

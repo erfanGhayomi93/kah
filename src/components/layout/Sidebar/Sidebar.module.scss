@@ -1,12 +1,4 @@
-.profile {
-	width: 66px;
-	max-width: 66px;
-	height: 66px;
-	max-height: 66px;
-	border: 3px solid transparent;
-	border-radius: 50%;
-	outline: 1px solid rgb(255, 255, 255);
-}
+$nav-color: rgb(28, 48, 85);
 
 .list {
 	display: flex;
@@ -15,14 +7,18 @@
 
 	& > li {
 		position: relative;
+		background-color: transparent;
+		transition: background-color 250ms;
+		-webkit-transition: background-color 250ms;
 
 		a,
 		button {
+			position: relative;
 			display: flex;
 			align-items: center;
-			justify-content: center;
-			height: 5.6rem;
-			padding: 0 2.4rem;
+			justify-content: flex-start;
+			padding: 0 1.8rem;
+			height: 6rem;
 			gap: 0.8rem;
 			width: 100%;
 
@@ -59,6 +55,10 @@
 					min-height: 2.4rem;
 					max-height: 2.4rem;
 				}
+
+				&:last-child {
+					margin-right: auto;
+				}
 			}
 
 			&:hover {
@@ -69,8 +69,45 @@
 			}
 		}
 
+		button {
+			border-bottom: 1px solid transparent;
+			transition: border-color 250ms;
+			-webkit-transition: border-color 250ms;
+		}
+
 		ul {
-			padding-right: 2.4rem;
+			position: relative;
+
+			& > li {
+				a::before {
+					content: "";
+					position: absolute;
+					top: 1.5rem;
+					right: 1.8rem;
+					border-radius: 50%;
+					width: 1rem;
+					height: 1rem;
+					background-color: $nav-color;
+				}
+
+				button,
+				a {
+					padding-right: 4rem;
+					height: 4rem;
+					font-size: 1.2rem;
+				}
+			}
+
+			&::before {
+				content: "";
+				position: absolute;
+				width: 2px;
+				top: 0.8rem;
+				height: calc(100% - 1.6rem);
+				right: 2.2rem;
+				background-color: $nav-color;
+				border-radius: 2px;
+			}
 		}
 	}
 
@@ -85,17 +122,19 @@
 		}
 
 		&.expand {
-			padding-bottom: 2.4rem;
+			background-color: rgba(22, 36, 61, 0.44);
 
 			button {
-				span {
-					font-weight: 500;
-					color: theme("colors.white");
-				}
+				border-bottom: 1px solid rgba($nav-color, 0.35);
 
+				span,
 				svg {
 					color: theme("colors.white");
 				}
+			}
+
+			ul {
+				padding: 0.8rem 0;
 			}
 		}
 	}
@@ -115,11 +154,15 @@
 	}
 
 	li.active {
-		a {
+		& > a,
+		& > button {
 			span,
 			svg {
-				font-weight: 600;
-				color: theme("colors.secondary.300");
+				color: theme("colors.info.DEFAULT") !important;
+			}
+
+			&::before {
+				background-color: theme("colors.info.DEFAULT") !important;
 			}
 		}
 	}
@@ -130,23 +173,21 @@
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	top: 2.4rem;
-	left: -1.8rem;
-	width: 3.2rem;
+	top: 4.4rem;
+	left: -0.6rem;
+	width: 2.2rem;
 	height: 3.2rem;
-	z-index: 99;
-	border-radius: 50%;
-	border: 2px solid theme("colors.white");
+	z-index: 999;
+	border-radius: 0.8rem;
 	background-color: theme("colors.sidebar");
-	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.16);
-	transition: transform 200ms ease-in;
-	-webkit-transition: transform 200ms ease-in;
-
-	&.expand {
-		transform: rotate(180deg);
-	}
 
 	svg {
 		color: theme("colors.white");
+		transition: transform 200ms ease-in;
+		-webkit-transition: transform 200ms ease-in;
+	}
+
+	&.expand > svg {
+		transform: rotate(180deg);
 	}
 }

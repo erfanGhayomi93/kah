@@ -107,12 +107,12 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 				[
 					{
 						id: 'tradeVolume',
-						title: t('option_chain.trade_volume'),
+						title: t('old_option_chain.trade_volume'),
 						valueFormatter: numFormatter(tradeVolume),
 					},
 					{
 						id: 'closingPrice',
-						title: t('option_chain.closing_price'),
+						title: t('old_option_chain.closing_price'),
 						valueFormatter: (
 							<span
 								className={cn(
@@ -136,31 +136,31 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 				[
 					{
 						id: 'tradeValue',
-						title: t('option_chain.trade_value'),
+						title: t('old_option_chain.trade_value'),
 						valueFormatter: numFormatter(tradeValue),
 					},
 					{
 						id: 'tradeCount',
-						title: t('option_chain.trade_count'),
+						title: t('old_option_chain.trade_count'),
 						valueFormatter: sepNumbers(String(tradeCount)),
 					},
 				],
 				[
 					{
 						id: 'avg30',
-						title: t('option_chain.avg_volume', { days: 30 }),
+						title: t('old_option_chain.avg_volume', { days: 30 }),
 						valueFormatter: oneMonthAvgVolume ?? '−',
 					},
 					{
 						id: 'lastTradeDate',
-						title: t('option_chain.last_trade_date'),
+						title: t('old_option_chain.last_trade_date'),
 						valueFormatter: dayjs(lastTradeDate).calendar('jalali').format('HH:mm:ss'),
 					},
 				],
 				[
 					{
 						id: 'avgIV',
-						title: t('option_chain.avg_iv'),
+						title: t('old_option_chain.avg_iv'),
 						valueFormatter: () => {
 							const valueAsNumber = Number(avgIV);
 							if (isNaN(valueAsNumber)) return '−';
@@ -170,7 +170,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					},
 					{
 						id: 'hv',
-						title: t('option_chain.hv'),
+						title: t('old_option_chain.hv'),
 						valueFormatter: sepNumbers(hv?.toFixed(2)),
 					},
 				],

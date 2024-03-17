@@ -41,12 +41,12 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'breakEvenPoint',
-						title: t('option_chain.break_even_point'),
+						title: t('old_option_chain.break_even_point'),
 						valueFormatter: numFormatter(breakEvenPoint),
 					},
 					{
 						id: 'impliedVolatility',
-						title: t('option_chain.implied_volatility'),
+						title: t('old_option_chain.implied_volatility'),
 						valueFormatter: sepNumbers(impliedVolatility.toFixed(2)),
 					},
 				],
@@ -54,12 +54,12 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'leverage',
-						title: t('option_chain.leverage'),
+						title: t('old_option_chain.leverage'),
 						valueFormatter: numFormatter(leverage),
 					},
 					{
 						id: 'historical_volatility',
-						title: t('option_chain.historical_volatility'),
+						title: t('old_option_chain.historical_volatility'),
 						valueFormatter: historicalVolatility,
 					},
 				],
@@ -67,12 +67,12 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'delta',
-						title: t('option_chain.delta'),
+						title: t('old_option_chain.delta'),
 						valueFormatter: delta.toFixed(3),
 					},
 					{
 						id: 'w_implied_volatility',
-						title: t('option_chain.w_implied_volatility'),
+						title: t('old_option_chain.w_implied_volatility'),
 						valueFormatter: sepNumbers(intrinsicValue.toFixed(3)),
 					},
 				],
@@ -80,12 +80,12 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'theta',
-						title: t('option_chain.theta'),
+						title: t('old_option_chain.theta'),
 						valueFormatter: theta.toFixed(3),
 					},
 					{
 						id: 'intrinsicValue',
-						title: t('option_chain.intrinsic_value'),
+						title: t('old_option_chain.intrinsic_value'),
 						valueFormatter: sepNumbers(intrinsicValue.toFixed(3)),
 					},
 				],
@@ -93,12 +93,12 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'gamma',
-						title: t('option_chain.gamma'),
+						title: t('old_option_chain.gamma'),
 						valueFormatter: sepNumbers(gamma.toFixed(3)),
 					},
 					{
 						id: 'timeValue',
-						title: t('option_chain.time_value'),
+						title: t('old_option_chain.time_value'),
 						valueFormatter: dayjs(timeValue).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss'),
 					},
 				],
@@ -106,12 +106,12 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'vega',
-						title: t('option_chain.vega'),
+						title: t('old_option_chain.vega'),
 						valueFormatter: sepNumbers(vega.toFixed(3)),
 					},
 					{
 						id: 'iotm',
-						title: t('option_chain.iotm'),
+						title: t('old_option_chain.iotm'),
 						valueFormatter: iotm,
 					},
 				],
@@ -119,12 +119,12 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				[
 					{
 						id: 'requiredMargin',
-						title: t('option_chain.required_margin'),
+						title: t('old_option_chain.required_margin'),
 						valueFormatter: sepNumbers(String(requiredMargin)),
 					},
 					{
 						id: 'initialMargin',
-						title: t('option_chain.initial_margin'),
+						title: t('old_option_chain.initial_margin'),
 						valueFormatter: sepNumbers(String(initialMargin)),
 					},
 				],

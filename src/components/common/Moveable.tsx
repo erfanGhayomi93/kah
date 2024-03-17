@@ -15,8 +15,12 @@ const Moveable = forwardRef<HTMLElement, MoveableProps>(({ enabled = true, child
 			if (e.button !== 0) return;
 
 			try {
-				const tagName = (e.target as HTMLElement).tagName;
+				const target = e.target as HTMLElement;
+				const tagName = target.tagName;
 				if (['INPUT', 'BUTTON', 'TEXTAREA', 'LABEL'].includes(tagName)) return;
+
+				const tagClosestName = target.closest('LABEL');
+				if (tagClosestName) return;
 			} catch (e) {
 				//
 			}

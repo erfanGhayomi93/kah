@@ -13,7 +13,6 @@ import CheckListSVG from './check-list.svg';
 import CheckSVG from './check.svg';
 import ClosePositionSVG from './close-position.svg';
 import CogsSVG from './cogs.svg';
-import CoinsSVG from './coins.svg';
 import ColumnsSVG from './columns.svg';
 import DataAnalyticsSVG from './data-analytics.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
@@ -32,11 +31,11 @@ import GrowUpSVG from './grow-up.svg';
 import HomeSVG from './home.svg';
 import InfoCircleSVG from './info-circle.svg';
 import InfoSVG from './info.svg';
-import LearnSVG from './learn.svg';
 import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MarketMapSVG from './market-map.svg';
+import MoneySVG from './money.svg';
 import MoreOptionsSVG from './more-options.svg';
 import OffSVG from './off.svg';
 import OptionChainSVG from './option-chain.svg';
@@ -58,11 +57,11 @@ import ShieldSVG from './shield.svg';
 import SnowFlakeSVG from './snow-flake.svg';
 import SquareXSVG from './square-x.svg';
 import StrategySVG from './strategy.svg';
-import TradeSVG from './trade.svg';
 import TransferSVG from './transfer.svg';
 import TrashFillSVG from './trash-fill.svg';
 import TrashSVG from './trash.svg';
 import TriangleWarningSVG from './triangle-warning.svg';
+import TvTradeSVG from './tv-trade.svg';
 import UnlockSVG from './unlock.svg';
 import UserBoldSVG from './user-bold.svg';
 import UserCircleSVG from './user-circle.svg';
@@ -86,7 +85,6 @@ export {
 	CheckSVG,
 	ClosePositionSVG,
 	CogsSVG,
-	CoinsSVG,
 	ColumnsSVG,
 	DataAnalyticsSVG,
 	DoubleArrowLeftSVG,
@@ -105,11 +103,11 @@ export {
 	HomeSVG,
 	InfoCircleSVG,
 	InfoSVG,
-	LearnSVG,
 	LockSVG,
 	LogoutSVG,
 	ManageSVG,
 	MarketMapSVG,
+	MoneySVG,
 	MoreOptionsSVG,
 	OffSVG,
 	OptionChainSVG,
@@ -131,11 +129,11 @@ export {
 	SnowFlakeSVG,
 	SquareXSVG,
 	StrategySVG,
-	TradeSVG,
 	TransferSVG,
 	TrashFillSVG,
 	TrashSVG,
 	TriangleWarningSVG,
+	TvTradeSVG,
 	UnlockSVG,
 	UserBoldSVG,
 	UserCircleSVG,

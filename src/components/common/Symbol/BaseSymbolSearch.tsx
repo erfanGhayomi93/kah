@@ -1,15 +1,15 @@
 import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
-import AsyncSelect from '@/components/common/Inputs/AsyncSelect';
+import AsyncSelect, { type AsyncSelectProps } from '@/components/common/Inputs/AsyncSelect';
 import { englishToPersian } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useState } from 'react';
 
-interface SymbolSearchProps {
+type BaseSymbolSearchProps = Partial<Omit<AsyncSelectProps<Option.BaseSearch>, 'value' | 'onChange'>> & {
 	value: IBlackScholesModalStates['baseSymbol'];
 	onChange: (symbol: IBlackScholesModalStates['baseSymbol']) => void;
-}
+};
 
-const SymbolSearch = ({ value, onChange }: SymbolSearchProps) => {
+const BaseSymbolSearch = ({ value, onChange, ...props }: BaseSymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -35,21 +35,19 @@ const SymbolSearch = ({ value, onChange }: SymbolSearchProps) => {
 
 	return (
 		<AsyncSelect<Option.BaseSearch>
+			value={value}
+			onChange={onChange}
 			options={data}
 			term={term}
-			value={value}
 			loading={isLoading}
 			blankPlaceholder={t('common.symbol_not_found')}
-			placeholder={t('black_scholes_modal.base_symbol')}
+			placeholder={t('symbol_search.base_symbol')}
 			getOptionId={(option) => option!.symbolISIN}
 			getOptionTitle={(option) => option!.symbolTitle}
 			onChangeTerm={setTerm}
-			onChange={onChange}
-			classes={{
-				root: '!h-48',
-			}}
+			{...props}
 		/>
 	);
 };
 
-export default SymbolSearch;
+export default BaseSymbolSearch;

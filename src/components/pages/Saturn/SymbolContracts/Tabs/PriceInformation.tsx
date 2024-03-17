@@ -30,12 +30,12 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 				[
 					{
 						id: 'tradeVolume',
-						title: t('option_chain.trade_volume'),
+						title: t('old_option_chain.trade_volume'),
 						valueFormatter: numFormatter(tradeVolume),
 					},
 					{
 						id: 'closingPrice',
-						title: t('option_chain.closing_price'),
+						title: t('old_option_chain.closing_price'),
 						valueFormatter: (
 							<span
 								className={cn(
@@ -56,12 +56,12 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 				[
 					{
 						id: 'tradeValue',
-						title: t('option_chain.trade_value'),
+						title: t('old_option_chain.trade_value'),
 						valueFormatter: numFormatter(tradeValue),
 					},
 					{
 						id: 'avg30',
-						title: t('option_chain.avg_volume_month'),
+						title: t('old_option_chain.avg_volume_month'),
 						valueFormatter: oneMonthAvgVolume ?? '−',
 					},
 				],
@@ -69,12 +69,12 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 				[
 					{
 						id: 'notionalValue',
-						title: t('option_chain.notional_value'),
+						title: t('old_option_chain.notional_value'),
 						valueFormatter: '−',
 					},
 					{
 						id: 'tradeCount',
-						title: t('option_chain.trade_count'),
+						title: t('old_option_chain.trade_count'),
 						valueFormatter: sepNumbers(String(tradeCount)),
 					},
 				],
@@ -82,12 +82,12 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 				[
 					{
 						id: 'contractEndDate',
-						title: t('option_chain.contract_end_date'),
+						title: t('old_option_chain.contract_end_date'),
 						valueFormatter: () => '−',
 					},
 					{
 						id: 'contractSize',
-						title: t('option_chain.contract_size'),
+						title: t('old_option_chain.contract_size'),
 						valueFormatter: '−',
 					},
 				],
@@ -95,12 +95,12 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 				[
 					{
 						id: 'openPosition',
-						title: t('option_chain.open_position'),
+						title: t('old_option_chain.open_position'),
 						valueFormatter: '−',
 					},
 					{
 						id: 'lastTradeDate',
-						title: t('option_chain.last_trade_date'),
+						title: t('old_option_chain.last_trade_date'),
 						valueFormatter: dayjs(lastTradeDate).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss'),
 					},
 				],

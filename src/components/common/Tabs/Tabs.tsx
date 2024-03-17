@@ -4,13 +4,14 @@ import styles from './Tabs.module.scss';
 
 export type ITabIem<ID extends string | number, T extends object> = T & {
 	id: ID;
-	render: React.ReactNode;
+	render: null | (() => React.ReactElement | JSX.Element);
 };
 
 interface TabsProps<ID extends string | number, T extends object> {
 	defaultActiveTab: ID;
 	data: Array<ITabIem<ID, T>>;
 	classes?: RecordClasses<'list' | 'indicator'>;
+	wrapper?: ({ children }: { children: React.ReactNode }) => React.ReactElement;
 	renderTab: (item: ITabIem<ID, T>, activeTab: ID) => React.ReactElement;
 	onChange?: (tab: ID) => void;
 }
@@ -19,6 +20,7 @@ const Tabs = <ID extends string | number, T extends object>({
 	defaultActiveTab,
 	data,
 	classes,
+	wrapper,
 	renderTab,
 	onChange,
 }: TabsProps<ID, T>) => {
@@ -90,7 +92,7 @@ const Tabs = <ID extends string | number, T extends object>({
 				<div ref={indicatorRef} className={cn(styles.indicator, classes?.indicator)} />
 			</div>
 
-			{render}
+			{wrapper ? wrapper({ children: render?.() }) : render?.()}
 		</Fragment>
 	);
 };

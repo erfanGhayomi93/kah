@@ -273,8 +273,8 @@ export const decodeBrokerUrls = (data: Broker.URL[]): IBrokerUrls => {
 
 export const divide = (arg1: number, arg2: number) => {
 	if (arg1 === arg2) return 1;
-
 	if (arg2 === 0) return 0;
+	if (isNaN(arg1) || isNaN(arg2)) return 0;
 
 	return arg1 / arg2;
 };
@@ -397,4 +397,14 @@ export const getTSELink = (insCode?: number | string): string => {
 	return insCode
 		? `http://tsetmc.com/Loader.aspx?ParTree=151311&i=${encodeURI(String(insCode))}`
 		: 'http://tsetmc.com';
+};
+
+export const copyNumberToClipboard = (e: React.ClipboardEvent<HTMLElement>, value: number) => {
+	e.preventDefault();
+
+	try {
+		e.clipboardData.setData('text/plain', String(value));
+	} catch (e) {
+		//
+	}
 };

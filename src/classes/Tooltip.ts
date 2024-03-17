@@ -19,7 +19,7 @@ class TooltipElement extends TooltipWrapper {
 
 	private _interactive: AppTooltip.Interactive = false;
 
-	private _delay: AppTooltip.Delay = [500, 50];
+	private _delay: AppTooltip.Delay = [500, 100];
 
 	private _trigger: AppTooltip.Trigger = 'hover';
 
@@ -82,6 +82,11 @@ class TooltipElement extends TooltipWrapper {
 	public update() {
 		const eTooltip = this._eTooltip;
 		if (!eTooltip) return;
+
+		if (this.disabled) {
+			if (this.isActive) this.hide();
+			return;
+		}
 
 		eTooltip.setAttribute(
 			'class',
@@ -253,6 +258,9 @@ class TooltipElement extends TooltipWrapper {
 	// Setter
 	set disabled(value: AppTooltip.Disabled) {
 		this._disabled = value;
+
+		if (value && this.isActive) this.hide();
+		else if (!value && !this.isActive) this.unhide();
 	}
 
 	set placement(value: AppTooltip.Placement) {
@@ -367,7 +375,7 @@ class TooltipManager extends TooltipWrapper {
 
 			if (!this._tooltip) return;
 			this._tooltip.hide();
-		}, 0);
+		}, 1);
 	}
 
 	private onMousemoveEvent(e: MouseEvent) {

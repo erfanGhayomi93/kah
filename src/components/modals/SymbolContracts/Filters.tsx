@@ -1,9 +1,10 @@
 import Select from '@/components/common/Inputs/Select';
-import { SearchSVG, XSVG } from '@/components/icons';
+import { SearchSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { Header } from '../Modal';
 
 interface FiltersProps extends SymbolContractModalStates {
 	symbolTitle: string;
@@ -35,20 +36,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 
 	return (
 		<div className='gap-16 flex-column'>
-			<div className='relative h-56 bg-gray-200 flex-justify-center'>
-				<h2 className='text-xl font-medium text-gray-1000'>
-					{t('symbol_contracts_modal.title', { symbolTitle })}
-				</h2>
-
-				<button
-					onClick={onCloseModal}
-					style={{ left: '1.6rem' }}
-					type='button'
-					className='absolute top-1/2 -translate-y-1/2 transform p-8 icon-hover'
-				>
-					<XSVG width='2rem' height='2rem' />
-				</button>
-			</div>
+			<Header label={t('symbol_contracts_modal.title', { symbolTitle })} onClose={onCloseModal} />
 
 			<div className='h-40 px-32 flex-justify-between'>
 				<label

@@ -14,10 +14,9 @@ import {
 import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn, setBrokerIsSelected } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { deleteBrokerClientId } from '@/utils/cookie';
-import { cn, sepNumbers } from '@/utils/helpers';
+import { cn, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-toastify';
@@ -130,9 +129,6 @@ const Header = () => {
 
 	return (
 		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-48 bg-white px-24 shadow flex-justify-between'>
-			<div className='pl-32'>
-				<Image width='32' height='32' alt='Favicon' src='/static/icons/favicon.png' />
-			</div>
 			{isLoggedIn ? (
 				<div className='flex-1 gap-32 flex-justify-start'>
 					{userRemain && (
@@ -140,7 +136,10 @@ const Header = () => {
 							<WalletSVG width='2.4rem' height='2.4rem' />
 							{t('header.purchase_power')}:
 							<span className='gap-4 flex-items-center'>
-								<span className='text-lg font-medium text-primary-400'>
+								<span
+									className='select-all text-lg font-medium text-primary-400 ltr'
+									onCopy={(e) => copyNumberToClipboard(e, userRemain.purchasePower ?? 0)}
+								>
 									{sepNumbers(String(userRemain.purchasePower ?? 0))}
 								</span>
 								<span className='text-tiny text-gray-700'>{t('common.rial')}</span>
@@ -238,8 +237,8 @@ const Header = () => {
 							onOpen={() => setIsDropdownOpened(true)}
 							onClose={() => setIsDropdownOpened(false)}
 							renderer={({ setOpen }) => (
-								<div className='rounded-md bg-white pb-16 shadow-tooltip'>
-									<div className='flex h-40 items-start justify-between pr-16'>
+								<div className='gap-24 rounded-md bg-white pb-16 shadow-tooltip flex-column'>
+									<div className='flex items-start justify-between pb-8 pr-16'>
 										<div className='gap-12 pt-16 flex-items-center fit-image'>
 											<div
 												className='size-40 rounded-circle fit-image'
@@ -262,39 +261,37 @@ const Header = () => {
 										</button>
 									</div>
 
-									{(!userData?.hasPassword || !brokerIsSelected || brokerIsSelected) && (
-										<div className='px-16 pt-40 flex-items-center'>
-											{!userData?.hasPassword && (
-												<button
-													type='button'
-													onClick={setPassword}
-													className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
-												>
-													{t('header.set_password')}
-												</button>
-											)}
+									<div className='flex-col px-16 flex-items-center'>
+										{!userData?.hasPassword && (
+											<button
+												type='button'
+												onClick={setPassword}
+												className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+											>
+												{t('header.set_password')}
+											</button>
+										)}
 
-											{brokerIsSelected ? (
-												<button
-													type='button'
-													onClick={() => logoutBroker(() => setOpen(false))}
-													className='h-32 w-full rounded border border-error-100 bg-error-100/10 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
-												>
-													{t('header.logout_broker')}
-												</button>
-											) : (
-												<button
-													type='button'
-													onClick={() => loginBroker(() => setOpen(false))}
-													className='h-32 w-full rounded border border-primary-400 bg-primary-400/10 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
-												>
-													{t('header.login_broker')}
-												</button>
-											)}
-										</div>
-									)}
+										{brokerIsSelected ? (
+											<button
+												type='button'
+												onClick={() => logoutBroker(() => setOpen(false))}
+												className='h-32 w-full rounded border border-error-100 bg-error-100/10 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
+											>
+												{t('header.logout_broker')}
+											</button>
+										) : (
+											<button
+												type='button'
+												onClick={() => loginBroker(() => setOpen(false))}
+												className='h-32 w-full rounded border border-primary-400 bg-primary-400/10 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+											>
+												{t('header.login_broker')}
+											</button>
+										)}
+									</div>
 
-									<nav className='gap-16 px-8 pt-32 flex-column'>
+									<nav className='gap-16 px-8 flex-column'>
 										<ul className='flex-column'>
 											<li>
 												<button

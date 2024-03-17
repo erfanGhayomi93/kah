@@ -46,15 +46,15 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 		() => [
 			{
 				id: 'MaximumValue',
-				title: t('option_chain.sort_highest_value_per_day'),
+				title: t('old_option_chain.sort_highest_value_per_day'),
 			},
 			{
 				id: 'ClosestSettlement',
-				title: t('option_chain.sort_closest_due_date'),
+				title: t('old_option_chain.sort_closest_due_date'),
 			},
 			{
 				id: 'Alphabet',
-				title: t('option_chain.sort_alphabet'),
+				title: t('old_option_chain.sort_alphabet'),
 			},
 		],
 		[],
@@ -130,16 +130,16 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					/>
 
 					<span style={{ right: '3.6rem' }} className={cn('flexible-placeholder', symbolTerm && 'active')}>
-						{t('option_chain.symbol_search_placeholder')}
+						{t('old_option_chain.symbol_search_placeholder')}
 					</span>
 
 					<fieldset className={cn('flexible-fieldset', symbolTerm && 'active')}>
-						<legend>{t('option_chain.symbol_search_placeholder')}</legend>
+						<legend>{t('old_option_chain.symbol_search_placeholder')}</legend>
 					</fieldset>
 				</label>
 
 				<div className='gap-8 flex-items-center'>
-					<span className='text-base text-gray-900'>{t('option_chain.sort_based_on')}:</span>
+					<span className='text-base text-gray-900'>{t('old_option_chain.sort_based_on')}:</span>
 					<div style={{ width: '17.6rem' }} className='flex flex-1 justify-end'>
 						<Select<TSelectOptions>
 							value={sorting}

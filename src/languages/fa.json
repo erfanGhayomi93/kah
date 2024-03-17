@@ -33,7 +33,7 @@
 		"set_password": "تعیین رمز",
 		"logout_broker": "خروج از حساب کارگزاری",
 		"login_broker": "ورود به کارگزاری",
-		"logout_broker_description": "آیا از خروج خود مطمئن هستید؟",
+		"logout_broker_description": "پس از خروج از حساب، عملیات معاملاتی مرتبط با کارگزاری امکان پذیر نخواهد بود.",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
@@ -59,8 +59,7 @@
 	},
 	"add_new_option_watchlist_modal": {
 		"title": "افزودن دیده‌بان",
-		"input_label": "عنوان",
-		"input_placeholder": "نام دیده‌بان خود را وارد کنید"
+		"input_placeholder": "نام دیده‌بان"
 	},
 	"manage_option_watchlist_modal": {
 		"title": "مدیریت دیده‌بان",
@@ -68,6 +67,9 @@
 		"watchlist_count": "{count} دیده‌بان",
 		"create_new_watchlist": "دیده‌بان جدید",
 		"new_watchlist_name": "نام جدید دیده‌بان"
+	},
+	"move_symbol_to_watchlist": {
+		"title": "افزودن نماد {symbolTitle}"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
@@ -108,7 +110,7 @@
 		"status": "وضعیت",
 		"end_date": "روز مانده تا سر رسید",
 		"contract_size": "اندازه قرارداد",
-		"base_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"base_symbol_placeholder": "جستجو نماد",
 		"delta": "دلتا",
 		"status_itm": "ITM",
 		"status_otm": "OTM",
@@ -238,11 +240,10 @@
 	},
 	"save_saturn_template": {
 		"save_template": "ذخیره صفحه {title}",
-		"input_label": "عنوان",
-		"input_placeholder": "عنوان مورد نظر خود را وارد کنید",
+		"input_placeholder": "نام قالب",
 		"no_data": "قالب ذخیره شده‌ای برای نمایش وجود ندارد!"
 	},
-	"option_chain": {
+	"old_option_chain": {
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
 		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
 		"symbol_search_placeholder": "جستجو نماد",
@@ -283,6 +284,16 @@
 		"break_even_point": "قیمت سر به سر",
 		"leverage": "اهرم",
 		"w_implied_volatility": "بلک شولز W-IV"
+	},
+	"option_chain": {
+		"select_symbol_first": "برای شروع، نماد پایه مورد نظر خود را جستجو کنید!",
+		"base_symbol": "نماد پایه",
+		"base_symbol_info": "جزئیات نماد پایه",
+		"total_open_contracts": "کل قراردادهای باز",
+		"open_contracts_count": "تعداد قراردادهای باز",
+		"call_contracts": "قراردادهای خرید",
+		"put_contracts": "قراردادهای فروش",
+		"contract_due_days": "\u200E{dueDays} روز تقویمی، \u200E{workingDaysLeftCount} روز معاملاتی باقی مانده"
 	},
 	"market_depth": {
 		"count_column": "تعداد",
@@ -328,9 +339,11 @@
 		"otp_placeholder": "کد تایید"
 	},
 	"symbol_search": {
-		"input_placeholder": "جستجو نماد"
+		"input_placeholder": "جستجو نماد",
+		"base_symbol": "نماد پایه"
 	},
 	"sidebar": {
+		"app_name": "کـهـکـشـان",
 		"account": "پروفایل",
 		"home_page": "صفحه اصلی",
 		"my_assets": "دارایی من",
@@ -602,7 +615,7 @@
 		"order_unsuccessfully_edited": "ویرایش سفارش با خطا مواجه شد.",
 		"draft_successfully_edited": "ویرایش پیش‌نویس با موفقیت انجام شد.",
 		"draft_unsuccessfully_edited": "ویرایش پیش‌نویس با خطا مواجه شد.",
-		"login_to_your_account": "ابتدا وارد حساب کاربری خود شوید",
+		"login_to_your_account": "ابتدا وارد حساب کاربری خود شوید.",
 		"broker_error": "خطا در ارتباط با کارگزاری",
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید.",
 		"logged_in_successfully_to_broker_account": "با موفقیت وارد حساب کارگزاری خود شدید.",

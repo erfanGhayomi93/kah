@@ -10,7 +10,7 @@ const MarketDepth = ({ symbol }: MarketDepthProps) => {
 	const { individualBuyVolume, individualSellVolume, legalBuyVolume, legalSellVolume } = symbol;
 
 	return (
-		<div className='gap-40 flex-column'>
+		<div className='relative flex-1 gap-40 flex-column'>
 			<SymbolPriceTable symbolISIN={symbol.symbolISIN} />
 
 			<div style={{ gap: '8.8rem' }} className='relative w-full items-center flex-justify-between'>
