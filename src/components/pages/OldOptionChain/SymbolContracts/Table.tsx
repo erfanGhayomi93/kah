@@ -180,15 +180,15 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				colId: 'iotm-sell',
 				minWidth: 56,
 				cellClass: ({ value }) => {
-					switch (value?.toLowerCase()) {
-						case 'atm':
-							return 'text-lg text-success-100';
-						case 'otm':
-							return 'text-lg text-error-100';
+					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-lg text-primary-100';
+							return 'text-success-100';
+						case 'otm':
+							return 'text-error-100';
+						case 'atm':
+							return 'text-secondary-300';
 						default:
-							return '−';
+							return '';
 					}
 				},
 				valueGetter: ({ data }) => data!.sell?.optionWatchlistData.iotm,

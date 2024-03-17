@@ -184,3 +184,42 @@
 		}
 	}
 }
+
+.ag-header-cell {
+	&.strike-price {
+		border-bottom: 1px solid theme("colors.gray.500");
+		&,
+		&:hover {
+			background-color: theme("colors.white") !important;
+		}
+	}
+}
+
+.ag-row {
+	.ag-cell.strike-price {
+		background-color: theme("colors.white");
+		box-shadow:
+			0 -12px white,
+			0 12px white,
+			-4px 0 12px 0px rgba(198, 203, 209, 0.2),
+			4px 0 12px 0px rgba(198, 203, 209, 0.2);
+	}
+
+	&:last-child {
+		.ag-cell.strike-price {
+			box-shadow:
+				0 -6px white,
+				0 6px 12px 0px rgba(198, 203, 209, 0.05),
+				-4px 0 12px 0px rgba(198, 203, 209, 0.2),
+				4px 0 12px 0px rgba(198, 203, 209, 0.2);
+		}
+	}
+}
+
+.ag-row-hover {
+	z-index: 1;
+	.ag-cell.strike-price {
+		background-color: var(--ag-row-hover-color);
+		box-shadow: none;
+	}
+}

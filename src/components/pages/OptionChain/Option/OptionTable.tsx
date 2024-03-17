@@ -51,7 +51,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			{
 				headerName: 'نماد',
 				colId: 'symbolTitle-buy',
-				minWidth: 128,
+				width: 144,
+				pinned: 'right',
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api, 'buy'),
 				valueGetter: ({ data }) => data!.buy?.symbolInfo.symbolTitle,
@@ -61,21 +62,21 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			{
 				headerName: 'ارزش',
 				colId: 'tradeValue-buy',
-				minWidth: 112,
+				width: 120,
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.tradeValue)),
 			},
 
 			{
 				headerName: 'موقعیت‌های باز',
 				colId: 'openPositionCount-buy',
-				minWidth: 120,
+				width: 144,
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.openPositionCount)),
 			},
 
 			{
 				headerName: 'وضعیت',
 				colId: 'iotm-buy',
-				minWidth: 56,
+				width: 96,
 				cellClass: ({ value }) => {
 					switch (value.toLowerCase()) {
 						case 'itm':
@@ -92,23 +93,19 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			},
 
 			{
-				headerName: 'بهترین خرید',
-				colId: 'bestBuyPrice-buy',
-				minWidth: 96,
-				cellStyle: {
-					backgroundColor: 'rgba(12, 175, 130, 0.12)',
-				},
-				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
+				headerName: 'بهترین فروش',
+				colId: 'bestSellPrice-buy',
+				flex: 1,
+				cellClass: 'text-error-100',
+				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
 			},
 
 			{
-				headerName: 'بهترین فروش',
-				colId: 'bestSellPrice-buy',
-				minWidth: 96,
-				cellStyle: {
-					backgroundColor: 'rgba(254, 57, 87, 0.12)',
-				},
-				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
+				headerName: 'بهترین خرید',
+				colId: 'bestBuyPrice-buy',
+				flex: 1,
+				cellClass: 'text-success-100',
+				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
 			},
 
 			{
@@ -116,7 +113,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 				colId: 'strikePrice',
 				minWidth: 132,
 				maxWidth: 132,
-				headerClass: 'border-b border-b-gray-500',
+				cellClass: 'strike-price',
+				headerClass: 'strike-price',
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.symbolInfo.strikePrice)),
 			},
 
@@ -125,37 +123,33 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			{
 				headerName: 'بهترین فروش',
 				colId: 'bestSellPrice-sell',
-				minWidth: 96,
-				cellStyle: {
-					backgroundColor: 'rgba(220, 53, 69, 0.1)',
-				},
+				flex: 1,
+				cellClass: 'text-error-100',
 				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestSellPrice)),
 			},
 
 			{
 				headerName: 'بهترین خرید',
 				colId: 'bestBuyPrice-sell',
-				minWidth: 96,
-				cellStyle: {
-					backgroundColor: 'rgba(25, 135, 84, 0.1)',
-				},
+				flex: 1,
+				cellClass: 'text-success-100',
 				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestBuyPrice)),
 			},
 
 			{
 				headerName: 'وضعیت',
 				colId: 'iotm-sell',
-				minWidth: 56,
+				width: 96,
 				cellClass: ({ value }) => {
-					switch (value?.toLowerCase()) {
-						case 'atm':
-							return 'text-lg text-success-100';
-						case 'otm':
-							return 'text-lg text-error-100';
+					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-lg text-primary-100';
+							return 'text-success-100';
+						case 'otm':
+							return 'text-error-100';
+						case 'atm':
+							return 'text-secondary-300';
 						default:
-							return '−';
+							return '';
 					}
 				},
 				valueGetter: ({ data }) => data!.sell?.optionWatchlistData.iotm,
@@ -164,14 +158,14 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			{
 				headerName: 'موقعیت‌های باز',
 				colId: 'openPositionCount-sell',
-				minWidth: 120,
+				width: 144,
 				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.openPositionCount)),
 			},
 
 			{
 				headerName: 'ارزش',
 				colId: 'tradeValue-sell',
-				minWidth: 112,
+				width: 120,
 				valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.tradeValue)),
 			},
 
@@ -179,7 +173,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 				headerName: 'نماد',
 				colId: 'symbolTitle-sell',
 				cellClass: 'cursor-pointer',
-				minWidth: 128,
+				width: 144,
+				pinned: 'left',
 				onCellClicked: (api) => onSymbolTitleClicked(api, 'buy'),
 				valueGetter: ({ data }) => data!.sell?.symbolInfo.symbolTitle ?? '−',
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
@@ -193,7 +188,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			suppressMovable: true,
 			sortable: true,
 			resizable: false,
-			flex: 1,
+			flex: 0,
 		}),
 		[],
 	);
@@ -238,11 +233,11 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		if (!gridApi) return;
 
 		try {
-			gridApi.setGridOption('rowData', watchlistData);
+			gridApi.setGridOption('rowData', modifiedData);
 		} catch (e) {
 			//
 		}
-	}, [watchlistData]);
+	}, [modifiedData]);
 
 	return (
 		<>
@@ -261,8 +256,9 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 				className='flex-1 rounded-0'
 				rowData={modifiedData ?? []}
 				columnDefs={COLUMNS}
+				suppressRowVirtualisation
+				suppressColumnVirtualisation
 				defaultColDef={defaultColDef}
-				getRowId={({ data }) => data!.strikePrice}
 			/>
 		</>
 	);
