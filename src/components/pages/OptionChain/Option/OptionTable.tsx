@@ -2,10 +2,12 @@ import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleLoginModal, toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { getIsLoggedIn, getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { useTradingFeatures } from '@/hooks';
 import { openNewTab, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
@@ -21,12 +23,20 @@ interface OptionTableProps {
 	baseSymbolISIN: string;
 }
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		orderBasket: getOrderBasket(state),
+	}),
+);
+
 const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const isLoggedIn = useAppSelector(getIsLoggedIn);
+	const { isLoggedIn, orderBasket } = useAppSelector(getStates);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
@@ -40,6 +50,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			{ baseSymbolISIN, settlementDate: settlementDay?.contractEndDate },
 		],
 	});
+
+	const showLoginModal = () => dispatch(toggleLoginModal({}));
 
 	const onSymbolTitleClicked = ({ data }: CellClickedEvent<ITableData>, side: 'buy' | 'sell') => {
 		try {
@@ -57,12 +69,37 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		}
 	};
 
-	const addSymbolToCard = (data: Option.Root) => {
-		//
+	const addSymbolToBasket = (data: Option.Root, side: TOptionSides) => {
+		if (!isLoggedIn) showLoginModal();
+		else {
+			const i = orderBasket.findIndex(
+				(item) => item.contract.symbolInfo.symbolISIN === data.symbolInfo.symbolISIN,
+			);
+
+			if (i === -1) {
+				dispatch(
+					setOrderBasket([
+						...orderBasket,
+						{
+							symbolISIN: data.symbolInfo.symbolISIN,
+							price: data.optionWatchlistData.closingPrice,
+							contract: data,
+							settlementDay: data.symbolInfo.contractEndDate,
+							side,
+							strikePrice: data.symbolInfo.strikePrice,
+						},
+					]),
+				);
+			}
+		}
+	};
+
+	const removeSymbolFromBasket = (data: Option.Root) => {
+		dispatch(setOrderBasket(orderBasket.filter((item) => item.symbolISIN !== data.symbolInfo.symbolISIN)));
 	};
 
 	const addSymbolToWatchlist = (data: Option.Root) => {
-		if (!isLoggedIn) dispatch(toggleLoginModal({}));
+		if (!isLoggedIn) showLoginModal();
 		else {
 			dispatch(
 				toggleMoveSymbolToWatchlistModal({
@@ -74,7 +111,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	};
 
 	const addAlert = (data: Option.Root) => {
-		//
+		if (!isLoggedIn) showLoginModal();
 	};
 
 	const goToTechnicalChart = (data: Option.Root) => {
@@ -167,8 +204,10 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						cellRenderer: StrikePriceCellRenderer,
 						cellRendererParams: {
 							activeRowId: rowHoverId,
+							basket: [],
 							addBuySellModal,
-							addSymbolToCard,
+							addSymbolToBasket,
+							removeSymbolFromBasket,
 							addSymbolToWatchlist,
 							addAlert,
 							goToTechnicalChart,
@@ -183,19 +222,19 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 				headerClass: 'put',
 				children: [
 					{
-						headerName: 'بهترین فروش',
-						colId: 'bestSellPrice-sell',
-						flex: 1,
-						cellClass: 'text-error-100',
-						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestSellPrice)),
-					},
-
-					{
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-sell',
 						flex: 1,
 						cellClass: 'text-success-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestBuyPrice)),
+					},
+
+					{
+						headerName: 'بهترین فروش',
+						colId: 'bestSellPrice-sell',
+						flex: 1,
+						cellClass: 'text-error-100',
+						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestSellPrice)),
 					},
 
 					{
@@ -312,8 +351,10 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			cellRenderer: StrikePriceCellRenderer,
 			cellRendererParams: {
 				activeRowId: rowHoverId,
+				basket: orderBasket,
 				addBuySellModal,
-				addSymbolToCard,
+				addSymbolToBasket,
+				removeSymbolFromBasket,
 				addSymbolToWatchlist,
 				addAlert,
 				goToTechnicalChart,
@@ -321,7 +362,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		};
 
 		column.setColDef(colDef, colDef);
-	}, [rowHoverId]);
+	}, [rowHoverId, JSON.stringify(orderBasket)]);
 
 	useLayoutEffect(() => {
 		const gridApi = gridRef.current;

@@ -133,3 +133,12 @@ declare interface OptionChainFilters {
 	baseSymbol: Option.BaseSearch | null;
 	settlementDay: Option.BaseSettlementDays | null;
 }
+
+declare interface IOrderBasket {
+	contract: Option.Root;
+	symbolISIN: string;
+	side: TOptionSides;
+	settlementDay: string;
+	strikePrice: number;
+	price: number;
+}
