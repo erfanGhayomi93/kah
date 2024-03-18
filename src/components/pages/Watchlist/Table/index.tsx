@@ -1,16 +1,31 @@
-import { useOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 
+import axios from '@/api/axios';
+import routes from '@/api/routes';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
+import { type AxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
 import NoData from './NoData';
 import WatchlistTable from './WatchlistTable';
+
+interface IOptionWatchlistQuery {
+	SymbolISINs: string[];
+	Id: string;
+	FromDueDays: string;
+	ToDueDays: string;
+	MinimumTradeValue: string;
+	FromDelta: string;
+	ToDelta: string;
+	OptionType: Array<'Call' | 'Put'>;
+	IOTM: Array<'ATM' | 'OTM' | 'ITM'>;
+}
 
 interface TableProps {
 	filters: Partial<IOptionWatchlistFilters>;
@@ -24,9 +39,71 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
-	const { data: watchlistData, isFetching } = useOptionWatchlistQuery({
-		queryKey: ['optionWatchlistQuery', { ...filters, watchlistId: watchlistId ?? -1, pageNumber: 1, pageSize: 25 }],
-		refetchInterval: 3e5,
+	const {
+		data: watchlistData,
+		isLoading,
+		fetchNextPage,
+	} = useInfiniteQuery<
+		PaginationResponse<Option.Root[]>,
+		AxiosError,
+		InfiniteData<PaginationResponse<Option.Root[]>>,
+		['optionWatchlistQuery', Partial<IOptionWatchlistFilters> & { watchlistId: number }],
+		PaginationParams
+	>({
+		queryKey: ['optionWatchlistQuery', { ...filters, watchlistId: watchlistId ?? -1 }],
+		queryFn: async ({ queryKey, pageParam, signal }) => {
+			const [, props] = queryKey;
+			const params: Partial<IOptionWatchlistQuery> = {};
+
+			if (props.minimumTradesValue && Number(props.minimumTradesValue) >= 0)
+				params.MinimumTradeValue = props.minimumTradesValue;
+
+			if (Array.isArray(props.symbols) && props.symbols.length > 0)
+				params.SymbolISINs = props.symbols.map((item) => item.symbolISIN);
+
+			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
+
+			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
+
+			if (props.dueDays && props.dueDays[1] >= props.dueDays[0]) {
+				if (props.dueDays[0] > 0) params.FromDueDays = String(props.dueDays[0]);
+				if (props.dueDays[1] < 365) params.ToDueDays = String(props.dueDays[1]);
+			}
+
+			if (props.delta && props.delta[1] >= props.delta[0]) {
+				if (props.delta[0] > -1) params.FromDelta = String(props.delta[0]);
+				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
+			}
+
+			if (props.watchlistId > -1) params.Id = String(props.watchlistId);
+
+			const response = await axios.get<PaginationResponse<Option.Root[]>>(
+				props.watchlistId > -1 ? routes.optionWatchlist.GetCustomWatchlist : routes.optionWatchlist.Watchlist,
+				{
+					params: {
+						...params,
+						'QueryOption.PageSize': pageParam.pageSize,
+						'QueryOption.PageNumber': pageParam.pageNumber,
+					},
+					signal,
+				},
+			);
+			const { data } = response;
+
+			return data;
+		},
+		getNextPageParam: (lastPage) => ({
+			...lastPage,
+			pageNumber: lastPage.result.length === 0 ? lastPage.pageNumber : lastPage.pageNumber + 1,
+		}),
+		initialPageParam: {
+			pageNumber: 1,
+			pageSize: 20,
+			hasPreviousPage: false,
+			hasNextPage: true,
+			totalCount: -1,
+			totalPages: -1,
+		},
 	});
 
 	const addSymbol = () => {
@@ -45,7 +122,12 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		};
 	}, []);
 
-	const dataIsEmpty = !Array.isArray(watchlistData) || watchlistData.length === 0;
+	const data = useMemo<Option.Root[]>(() => {
+		if (!watchlistData) return [];
+		return watchlistData.pages.reduce<Option.Root[]>((total, currentPage) => [...total, ...currentPage.result], []);
+	}, [watchlistData]);
+
+	const dataIsEmpty = data.length === 0;
 
 	return (
 		<>
@@ -56,9 +138,9 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					transition: 'height 250ms ease',
 				}}
 			>
-				<WatchlistTable id={watchlistId} data={watchlistData} />
+				<WatchlistTable id={watchlistId} data={data} fetchNextPage={fetchNextPage} />
 
-				{!dataIsEmpty && !isFetching && watchlistId > -1 && (
+				{!dataIsEmpty && !isLoading && watchlistId > -1 && (
 					<button
 						onClick={addSymbol}
 						className='min-h-48 gap-8 border-t border-t-gray-500 pr-24 font-medium text-primary-400 flex-items-center'
@@ -72,7 +154,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				)}
 			</div>
 
-			{isFetching && (
+			{isLoading && (
 				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 h-full w-full'>
 					<Loading />
 				</div>
@@ -80,7 +162,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 			<ManageWatchlistColumns />
 
-			{dataIsEmpty && !isFetching && <NoData key='no-data' onAddSymbol={addSymbol} />}
+			{dataIsEmpty && !isLoading && <NoData key='no-data' onAddSymbol={addSymbol} />}
 		</>
 	);
 };

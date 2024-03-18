@@ -2,11 +2,6 @@ import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
-interface TPaginationInputs {
-	pageNumber: number;
-	pageSize: number;
-}
-
 export interface IOptionWatchlistQuery {
 	SymbolISINs: string[];
 	Id: string;
@@ -18,56 +13,6 @@ export interface IOptionWatchlistQuery {
 	OptionType: Array<'Call' | 'Put'>;
 	IOTM: Array<'ATM' | 'OTM' | 'ITM'>;
 }
-
-export const useOptionWatchlistQuery = createQuery<
-	Option.Root[],
-	['optionWatchlistQuery', Partial<IOptionWatchlistFilters> & TPaginationInputs & { watchlistId: number }]
->({
-	queryKey: ['optionWatchlistQuery', { watchlistId: -1, pageNumber: 1, pageSize: 25 }],
-	queryFn: async ({ queryKey, signal }) => {
-		const [, props] = queryKey;
-		try {
-			const params: Partial<IOptionWatchlistQuery> = {};
-
-			if (props.minimumTradesValue && Number(props.minimumTradesValue) >= 0)
-				params.MinimumTradeValue = props.minimumTradesValue;
-
-			if (Array.isArray(props.symbols) && props.symbols.length > 0)
-				params.SymbolISINs = props.symbols.map((item) => item.symbolISIN);
-
-			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
-
-			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
-
-			if (props.dueDays && props.dueDays[1] >= props.dueDays[0]) {
-				if (props.dueDays[0] > 0) params.FromDueDays = String(props.dueDays[0]);
-				if (props.dueDays[1] < 365) params.ToDueDays = String(props.dueDays[1]);
-			}
-
-			if (props.delta && props.delta[1] >= props.delta[0]) {
-				if (props.delta[0] > -1) params.FromDelta = String(props.delta[0]);
-				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
-			}
-
-			if (props.watchlistId > -1) params.Id = String(props.watchlistId);
-
-			const response = await axios.get<PaginationResponse<Option.Root[]>>(
-				props.watchlistId > -1 ? routes.optionWatchlist.GetCustomWatchlist : routes.optionWatchlist.Watchlist,
-				{
-					params,
-					signal,
-				},
-			);
-			const { data } = response;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			return data.result;
-		} catch (e) {
-			return [];
-		}
-	},
-});
 
 export const useOptionSymbolColumnsQuery = createQuery<Option.Column[], ['optionSymbolColumnsQuery']>({
 	staleTime: 36e5,
