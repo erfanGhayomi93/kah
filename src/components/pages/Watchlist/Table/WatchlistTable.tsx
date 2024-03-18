@@ -25,10 +25,11 @@ import ActionColumn from './ActionColumn';
 
 interface WatchlistTableProps {
 	id: number;
-	data: Option.Root[] | undefined;
+	data: Option.Root[] | null;
+	fetchNextPage: () => void;
 }
 
-const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
+const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -725,10 +726,13 @@ const WatchlistTable = ({ id, data }: WatchlistTableProps) => {
 			ref={gridRef}
 			suppressHorizontalScroll={dataIsEmpty}
 			className='h-full border-0'
-			rowData={[]}
 			columnDefs={COLUMNS}
 			defaultColDef={defaultColDef}
 			onColumnMoved={onColumnMoved}
+			onBodyScrollEnd={({ api }) => {
+				const lastRowIndex = api.getLastDisplayedRow();
+				if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
+			}}
 			onSortChanged={() => storeColumns()}
 			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			onColumnVisible={({ api, column }) => {
