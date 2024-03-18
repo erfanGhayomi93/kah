@@ -1,22 +1,20 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import AgTable from '@/components/common/Tables/AgTable';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { toggleLoginModal, toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { useTradingFeatures } from '@/hooks';
 import { openNewTab, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
 
-interface ITableData {
+export interface ITableData {
 	strikePrice: string;
 	buy?: Option.Root;
 	sell?: Option.Root;
 }
-
-type TRowOverlay = null | {
-	x: number;
-	y: number;
-	data: ITableData;
-};
 
 interface OptionTableProps {
 	settlementDay: Option.BaseSettlementDays;
@@ -26,9 +24,15 @@ interface OptionTableProps {
 const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
+	const isLoggedIn = useAppSelector(getIsLoggedIn);
+
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
 	const [rowHoverId, setRowHoverId] = useState<number>(-1);
+
+	const { addBuySellModal } = useTradingFeatures();
 
 	const { data: watchlistData } = useWatchlistBySettlementDateQuery({
 		queryKey: [
@@ -51,6 +55,30 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		} catch (e) {
 			//
 		}
+	};
+
+	const addSymbolToCard = (data: Option.Root) => {
+		//
+	};
+
+	const addSymbolToWatchlist = (data: Option.Root) => {
+		if (!isLoggedIn) dispatch(toggleLoginModal({}));
+		else {
+			dispatch(
+				toggleMoveSymbolToWatchlistModal({
+					symbolISIN: data.symbolInfo.symbolISIN,
+					symbolTitle: data.symbolInfo.symbolTitle,
+				}),
+			);
+		}
+	};
+
+	const addAlert = (data: Option.Root) => {
+		//
+	};
+
+	const goToTechnicalChart = (data: Option.Root) => {
+		//
 	};
 
 	const COLUMNS: Array<ColDef<ITableData> | ColGroupDef<ITableData>> = useMemo(
@@ -104,19 +132,19 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 					},
 
 					{
-						headerName: 'بهترین فروش',
-						colId: 'bestSellPrice-buy',
-						flex: 1,
-						cellClass: 'text-error-100',
-						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
-					},
-
-					{
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-buy',
 						flex: 1,
 						cellClass: 'text-success-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
+					},
+
+					{
+						headerName: 'بهترین فروش',
+						colId: 'bestSellPrice-buy',
+						flex: 1,
+						cellClass: 'text-error-100',
+						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
 					},
 				],
 			},
@@ -131,6 +159,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						colId: 'strikePrice',
 						minWidth: 132,
 						maxWidth: 132,
+						resizable: false,
 						cellClass: 'strike-price',
 						headerClass: 'strike-price',
 						valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
@@ -138,6 +167,11 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						cellRenderer: StrikePriceCellRenderer,
 						cellRendererParams: {
 							activeRowId: rowHoverId,
+							addBuySellModal,
+							addSymbolToCard,
+							addSymbolToWatchlist,
+							addAlert,
+							goToTechnicalChart,
 						},
 					},
 				],
@@ -270,15 +304,19 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			colId: 'strikePrice',
 			minWidth: 132,
 			maxWidth: 132,
+			resizable: false,
 			cellClass: 'strike-price',
 			headerClass: 'strike-price',
-			resizable: false,
-			sortable: false,
 			valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
 			valueFormatter: ({ value }) => sepNumbers(String(value)),
 			cellRenderer: StrikePriceCellRenderer,
 			cellRendererParams: {
 				activeRowId: rowHoverId,
+				addBuySellModal,
+				addSymbolToCard,
+				addSymbolToWatchlist,
+				addAlert,
+				goToTechnicalChart,
 			},
 		};
 
