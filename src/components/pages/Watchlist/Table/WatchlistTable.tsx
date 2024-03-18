@@ -731,7 +731,6 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			onColumnMoved={onColumnMoved}
 			onBodyScrollEnd={({ api }) => {
 				const lastRowIndex = api.getLastDisplayedRow();
-
 				if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
 			}}
 			onSortChanged={() => storeColumns()}
