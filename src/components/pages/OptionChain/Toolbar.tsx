@@ -1,6 +1,8 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
 import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
 import OptionWatchlistManagerSVG from '@/components/icons/OptionWatchlistManagerSVG';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -15,6 +17,8 @@ interface ToolbarProps {
 const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const { data: settlementDays, isFetching } = useBaseSettlementDaysQuery({
 		queryKey: ['baseSettlementDaysQuery', inputs.baseSymbol?.symbolISIN ?? null],
 		enabled: Boolean(inputs.baseSymbol),
@@ -25,6 +29,10 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 		if (!d.isValid()) return '−';
 
 		return d.locale('fa').format('DD MMMM');
+	};
+
+	const openSymbolInfo = () => {
+		if (inputs.baseSymbol) dispatch(setSymbolInfoPanel(inputs.baseSymbol.symbolISIN));
 	};
 
 	useLayoutEffect(() => {
@@ -80,7 +88,7 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 					</div>
 				)}
 
-				<button type='button' className='btn-info-outline h-40 rounded px-16'>
+				<button type='button' onClick={openSymbolInfo} className='h-40 rounded px-16 btn-info-outline'>
 					{t('option_chain.base_symbol_info')}
 				</button>
 

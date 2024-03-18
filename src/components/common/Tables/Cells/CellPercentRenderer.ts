@@ -34,14 +34,10 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 		return this.eGui;
 	}
 
-	// gets called whenever the cell refreshes
 	refresh(params: CellPercentRendererProps) {
-		// set value into cell again
 		this.eValue.textContent = String(this.getValueToDisplay(params));
-
 		this.setPercentage(params.percent);
 
-		// return true to tell the grid we refreshed successfully
 		return true;
 	}
 
