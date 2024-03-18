@@ -73,14 +73,6 @@
 	border-left-width: 0;
 }
 
-.ag-cell.ltr {
-	direction: ltr;
-}
-
-.ag-cell.rtl {
-	direction: rtl;
-}
-
 .ag-header-row {
 	font-weight: 500 !important;
 }
@@ -102,6 +94,14 @@
 
 	&.justify-end {
 		justify-content: flex-end;
+	}
+
+	&.ltr {
+		direction: ltr;
+	}
+
+	&.rtl {
+		direction: rtl;
 	}
 }
 
@@ -197,6 +197,7 @@
 
 .ag-row {
 	.ag-cell.strike-price {
+		overflow: visible;
 		background-color: theme("colors.white");
 		box-shadow:
 			0 -12px white,
