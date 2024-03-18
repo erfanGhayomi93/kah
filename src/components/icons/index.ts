@@ -35,6 +35,7 @@ import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MarketMapSVG from './market-map.svg';
+import MaximizeSVG from './maximize.svg';
 import MoneySVG from './money.svg';
 import MoreOptionsSVG from './more-options.svg';
 import OffSVG from './off.svg';
@@ -107,6 +108,7 @@ export {
 	LogoutSVG,
 	ManageSVG,
 	MarketMapSVG,
+	MaximizeSVG,
 	MoneySVG,
 	MoreOptionsSVG,
 	OffSVG,

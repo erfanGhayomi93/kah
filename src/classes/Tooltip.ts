@@ -19,7 +19,7 @@ class TooltipElement extends TooltipWrapper {
 
 	private _interactive: AppTooltip.Interactive = false;
 
-	private _delay: AppTooltip.Delay = [500, 100];
+	private _delay: AppTooltip.Delay = [0, 100];
 
 	private _trigger: AppTooltip.Trigger = 'hover';
 

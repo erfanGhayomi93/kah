@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import Countdown from '@/components/common/Countdown';
-import { cn } from '@/utils/helpers';
+import { cn, convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
@@ -124,6 +124,7 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 									placeholder={t('inputs.otp_placeholder')}
 									autoComplete='off'
 									{...field}
+									onChange={(e) => field.onChange(convertStringToInteger(e.target.value))}
 								/>
 								<div
 									className={cn(

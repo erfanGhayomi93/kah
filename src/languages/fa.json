@@ -300,6 +300,14 @@
 		"quantity_column": "حجم",
 		"price_column": "قیمت"
 	},
+	"order_basket": {
+		"title": "سبد سفارش",
+		"analyze": "آنالیز",
+		"trade": "معامله",
+		"selected_trade": "{n} معامله انتخاب شده",
+		"delete_order_basket": "حذف سبد سفارش",
+		"empty_order_basket": "سبد سفارش شما خالی شود؟"
+	},
 	"saturn_page": {
 		"click_to_add_contract": "برای <add>افزودن</add> قرارداد {symbolTitle} کلیک کنید",
 		"save": "ذخیره",

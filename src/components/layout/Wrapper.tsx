@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import Footer from './Footer';
 import Header from './Header';
+import OrderBasket from './OrderBasket';
 import Sidebar from './Sidebar';
 
 interface IWrapper {
@@ -31,6 +32,9 @@ const Wrapper = ({ children }: IWrapper) => {
 						<Header />
 					</ErrorBoundary>
 					<ErrorBoundary>{children}</ErrorBoundary>
+					<ErrorBoundary>
+						<OrderBasket />
+					</ErrorBoundary>
 					<ErrorBoundary>
 						<Footer />
 					</ErrorBoundary>

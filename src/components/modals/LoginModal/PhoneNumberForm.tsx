@@ -1,6 +1,6 @@
 import Button from '@/components/common/Button';
 import { ArrowLeftSVG } from '@/components/icons';
-import { cn } from '@/utils/helpers';
+import { cn, convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
@@ -73,6 +73,7 @@ const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 								className={cn('input', isTouched && invalid && 'invalid')}
 								placeholder={t('inputs.phone_number_placeholder')}
 								{...field}
+								onChange={(e) => field.onChange(convertStringToInteger(e.target.value))}
 							/>
 							{isTouched && invalid && <span className='i-error'>{error?.message}</span>}
 						</label>
