@@ -8,6 +8,7 @@ interface OrderActionCellProps extends ICellRendererParams<TOrder, unknown> {
 	onDelete: (order: TOrder) => void;
 	onEdit: (order: TOrder) => void;
 	showDetails: (order: TOrder) => void;
+	onCopy: (order: TOrder) => void;
 }
 
 class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
@@ -22,6 +23,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 
 		this.eGui.appendChild(this.deleteBtn());
 		this.eGui.appendChild(this.editBtn());
+		this.eGui.appendChild(this.copyBtn());
 		this.eGui.appendChild(this.detailsBtn());
 	}
 
@@ -48,6 +50,16 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 		btn.onclick = (e) => {
 			e.stopPropagation();
 			if (isEnable) this.params.onEdit(this.params.data!);
+		};
+
+		return btn;
+	}
+
+	copyBtn() {
+		const btn = this.createCopy();
+		btn.onclick = (e) => {
+			e.stopPropagation();
+			this.params.onCopy(this.params.data!);
 		};
 
 		return btn;

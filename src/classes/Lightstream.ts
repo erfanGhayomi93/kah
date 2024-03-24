@@ -1,3 +1,5 @@
+import routes from '@/api/routes';
+import { getBrokerClientId } from '@/utils/cookie';
 import { LightstreamerClient, type ClientListener } from 'lightstreamer-client-web';
 import Subscribe from './Subscribe';
 import { type SubscriptionOptions } from './lightstream.d';
@@ -10,7 +12,7 @@ class Lightstream {
 	/* Private */
 	private readonly _address: string;
 	private readonly _port: string;
-	private readonly _password: string;
+	private _username: string | 'anonymous' = 'anonymous';
 
 	/* Subscriptions */
 	private readonly _subscriptions: Subscribe[] = [];
@@ -23,18 +25,31 @@ class Lightstream {
 		this.adapter = 'Ramand_Remoter_Adapter';
 
 		/* Private */
-		this._address = 'https://pushengine.ramandtech.com';
+		this._address = routes.pushengine;
 		this._port = '443';
-		this._password = 'anonymous';
+
+		Object.seal(this);
 	}
 
-	start(username = 'anonymous') {
-		this._setup(username);
+	start() {
+		this._setup();
 		this.connection.addListener(this._handlers);
 
 		// connect
 		this._connect();
 		return this;
+	}
+
+	restart() {
+		this._disconnect();
+
+		setTimeout(() => {
+			this.connection.connectionDetails.setUser(this._username);
+			if (this._username === 'anonymous') this.connection.connectionDetails.setPassword('anonymous');
+			else this.setPassword();
+
+			this._connect();
+		}, 250);
 	}
 
 	getStatus() {
@@ -64,28 +79,41 @@ class Lightstream {
 		this.connection.disconnect();
 	}
 
+	setUsername(username: null | string) {
+		this._username = username ?? 'anonymous';
+		return this;
+	}
+
+	setPassword() {
+		const password = getBrokerClientId()[0] ?? 'anonymous';
+		this.connection.connectionDetails.setPassword(password);
+	}
+
 	/* Getters */
 	get serverAddress(): string {
 		return this._address + ':' + this._port;
 	}
 
 	/* Private */
-	private _setup(username: string) {
+	private _setup() {
 		this.connection.connectionDetails.setServerAddress(this.serverAddress);
 		this.connection.connectionDetails.setAdapterSet(this.adapter);
-		this.connection.connectionDetails.setUser(username);
-		this.connection.connectionDetails.setPassword(this._password);
-
-		return {
-			start: (username = 'anonymous') => this.start(username),
-		};
+		this.connection.connectionDetails.setUser(this._username);
+		if (this._username === 'anonymous') this.connection.connectionDetails.setPassword('anonymous');
+		else this.setPassword();
 	}
 
 	private _connect() {
 		if (this.connection) this.connection.connect();
 	}
+
+	private _disconnect() {
+		if (this.connection) this.connection.disconnect();
+	}
 }
 
-const lightStreamInstance = Object.freeze(new Lightstream());
+const lightStreamInstance = new Lightstream();
+
+export type { Lightstream };
 
 export default lightStreamInstance;

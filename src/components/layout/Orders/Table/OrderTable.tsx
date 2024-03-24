@@ -34,6 +34,20 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 
 	const { addBuySellModal } = useTradingFeatures();
 
+	const onCopy = (order: TOrders) => {
+		addBuySellModal({
+			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
+			symbolType: 'base',
+			mode: 'create',
+			symbolISIN: order.symbolISIN,
+			symbolTitle: order.symbolTitle,
+			initialPrice: order.price,
+			initialQuantity: order.quantity,
+			initialValidity: order.validity,
+			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+		});
+	};
+
 	const onDelete = (order: TOrders) => {
 		dispatch(
 			setConfirmModal({
@@ -198,6 +212,7 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 				maxWidth: 140,
 				cellRenderer: OrderActionCell,
 				cellRendererParams: {
+					onCopy,
 					onDelete,
 					onEdit,
 					showDetails,
