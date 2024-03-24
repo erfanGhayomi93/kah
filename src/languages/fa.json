@@ -305,7 +305,7 @@
 		"title": "سبد سفارش",
 		"analyze": "آنالیز",
 		"trade": "معامله",
-		"selected_trade": "{n} معامله انتخاب شده",
+		"selected_trade": "معامله انتخاب شده",
 		"delete_order_basket": "حذف سبد سفارش",
 		"empty_order_basket": "سبد سفارش شما خالی شود؟"
 	},

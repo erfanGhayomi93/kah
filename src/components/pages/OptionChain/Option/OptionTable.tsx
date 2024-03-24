@@ -72,8 +72,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const addSymbolToBasket = (data: Option.Root, side: TOptionSides) => {
 		if (!isLoggedIn) showLoginModal();
 		else {
-			const i = orderBasket.findIndex(
-				(item) => item.contract.symbolInfo.symbolISIN === data.symbolInfo.symbolISIN,
+			const i = orderBasket.findIndex((item, i) =>
+				item.contract ? item.contract.symbolInfo.symbolISIN === data.symbolInfo.symbolISIN : false,
 			);
 
 			if (i === -1) {
@@ -83,6 +83,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						{
 							symbolISIN: data.symbolInfo.symbolISIN,
 							price: data.optionWatchlistData.closingPrice,
+							quantity: 1,
 							contract: data,
 							settlementDay: data.symbolInfo.contractEndDate,
 							side,
