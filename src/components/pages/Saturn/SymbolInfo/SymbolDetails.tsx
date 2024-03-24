@@ -218,11 +218,11 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 								{lastTradedPriceIs === 'more' && <GrowUpSVG width='1rem' height='1rem' />}
 								{lastTradedPriceIs === 'less' && <GrowDownSVG width='1rem' height='1rem' />}
 							</span>
-							{sepNumbers(String(closingPrice))}
+							{sepNumbers(String(closingPrice ?? 0))}
 						</span>
 
 						<span className={cn('flex items-center gap-4 text-4xl font-bold', priceColor)}>
-							{sepNumbers(String(lastTradedPrice))}
+							{sepNumbers(String(lastTradedPrice ?? 0))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
 

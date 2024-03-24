@@ -118,7 +118,7 @@ const Body = (props: BodyProps) => {
 			if (!holdAfterOrder) {
 				close();
 				dispatch(setOrdersIsExpand(true));
-				LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'open_orders', true);
+				LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'today_orders', true);
 			}
 		} catch (e) {
 			toast.error(t('alerts.order_unsuccessfully_created'), {

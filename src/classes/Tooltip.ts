@@ -21,11 +21,13 @@ class TooltipElement extends TooltipWrapper {
 
 	private _delay: AppTooltip.Delay = [0, 100];
 
+	private _animation: AppTooltip.Animation = true;
+
 	private _trigger: AppTooltip.Trigger = 'hover';
 
 	private readonly _followCursor: AppTooltip.FollowCursor = false;
 
-	private _offsetY: AppTooltip.Offset = [0, -4]; // top - bottom
+	private _offsetY: AppTooltip.Offset = [0, 4]; // top - bottom
 
 	private _offsetX: AppTooltip.Offset = [4, 0]; // left - right
 
@@ -65,7 +67,7 @@ class TooltipElement extends TooltipWrapper {
 				'common-tooltip-container common-tooltip-hidden',
 				`common-tooltip-${this._placement}`,
 				this._interactive && 'common-tooltip-interactive',
-				!this.isHidden && 'common-tooltip-animation',
+				!this.isHidden && this._animation && 'common-tooltip-animation',
 			),
 		);
 
@@ -94,7 +96,7 @@ class TooltipElement extends TooltipWrapper {
 				'common-tooltip-container',
 				`common-tooltip-${this._placement}`,
 				this._interactive && 'common-tooltip-interactive',
-				!this.isHidden && 'common-tooltip-animation',
+				!this.isHidden && this._animation && 'common-tooltip-animation',
 			),
 		);
 		eTooltip.innerHTML = '';
@@ -144,7 +146,7 @@ class TooltipElement extends TooltipWrapper {
 				break;
 			case 'top':
 				left = offset.left + offset.width / 2 - tooltipWidth / 2 + paddingX;
-				top = offset.top - offset.height - paddingY;
+				top = offset.top - tooltipHeight - paddingY;
 				break;
 			case 'left':
 				left = offset.left - tooltipWidth - paddingX;
@@ -265,6 +267,10 @@ class TooltipElement extends TooltipWrapper {
 
 	set placement(value: AppTooltip.Placement) {
 		this._placement = value;
+	}
+
+	set animation(value: AppTooltip.Animation) {
+		this._animation = value;
 	}
 
 	set interactive(value: AppTooltip.Interactive) {

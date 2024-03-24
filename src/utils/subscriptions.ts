@@ -24,6 +24,7 @@ export const subscribeSymbolInfo = (
 	const symbolData = [
 		'totalTradeValue',
 		'totalNumberOfSharesTraded',
+		'closingPriceVarReferencePrice',
 		'baseVolume',
 		'firstTradedPrice',
 		'lastTradedPrice',

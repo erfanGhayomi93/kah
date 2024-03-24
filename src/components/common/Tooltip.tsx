@@ -9,7 +9,7 @@ export interface ITooltipProps {
 	delay?: AppTooltip.Delay;
 	trigger?: AppTooltip.Trigger;
 	followCursor?: AppTooltip.FollowCursor;
-	singleton?: AppTooltip.Singleton;
+	animation?: AppTooltip.Animation;
 	offset?: AppTooltip.Offset;
 	disabled?: AppTooltip.Disabled;
 	element?: AppTooltip.Element;
@@ -19,50 +19,57 @@ export interface ITooltipProps {
 	onHide?: () => void;
 }
 
-const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, disabled, placement, content, offset }, ref) => {
-	const childRef = useRef<HTMLElement | null>(null);
+const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
+	({ children, animation = true, disabled, placement, content, offset }, ref) => {
+		const childRef = useRef<HTMLElement | null>(null);
 
-	const tooltipRef = useRef<TooltipElement | null>(null);
+		const tooltipRef = useRef<TooltipElement | null>(null);
 
-	useImperativeHandle(ref, () => childRef.current!);
+		useImperativeHandle(ref, () => childRef.current!);
 
-	useLayoutEffect(
-		() => () => {
-			if (tooltipRef.current) tooltipRef.current.abortController.abort();
-		},
-		[],
-	);
+		useLayoutEffect(
+			() => () => {
+				if (tooltipRef.current) tooltipRef.current.abortController.abort();
+			},
+			[],
+		);
 
-	useLayoutEffect(() => {
-		const eChild = childRef.current;
-		if (!eChild || tooltipRef.current) return;
+		useLayoutEffect(() => {
+			const eChild = childRef.current;
+			if (!eChild || tooltipRef.current) return;
 
-		tooltipRef.current = new TooltipElement(eChild);
-		tooltipRef.current.setContent(content);
-		tooltipRef.current.disabled = Boolean(disabled);
-		if (offset) tooltipRef.current.setOffset(offset);
-		if (placement) tooltipRef.current.placement = placement;
+			tooltipRef.current = new TooltipElement(eChild);
+			tooltipRef.current.setContent(content);
+			tooltipRef.current.disabled = Boolean(disabled);
+			tooltipRef.current.animation = Boolean(animation);
+			if (offset) tooltipRef.current.setOffset(offset);
+			if (placement) tooltipRef.current.placement = placement;
 
-		TooltipManager.add(tooltipRef.current);
-	}, [childRef.current]);
+			TooltipManager.add(tooltipRef.current);
+		}, [childRef.current]);
 
-	useEffect(() => {
-		if (tooltipRef.current) tooltipRef.current.setContent(content);
-	}, [content]);
+		useEffect(() => {
+			if (tooltipRef.current) tooltipRef.current.setContent(content);
+		}, [content]);
 
-	useEffect(() => {
-		if (tooltipRef.current) tooltipRef.current.disabled = Boolean(disabled);
-	}, [disabled]);
+		useEffect(() => {
+			if (tooltipRef.current) tooltipRef.current.disabled = Boolean(disabled);
+		}, [disabled]);
 
-	useEffect(() => {
-		if (tooltipRef.current && placement) tooltipRef.current.placement = placement;
-	}, [placement]);
+		useEffect(() => {
+			if (tooltipRef.current && placement) tooltipRef.current.placement = placement;
+		}, [placement]);
 
-	useEffect(() => {
-		if (tooltipRef.current && offset) tooltipRef.current.setOffset(offset);
-	}, [offset]);
+		useEffect(() => {
+			if (tooltipRef.current && offset) tooltipRef.current.setOffset(offset);
+		}, [offset]);
 
-	return cloneElement(children, { ref: childRef });
-});
+		useEffect(() => {
+			if (tooltipRef.current) tooltipRef.current.animation = Boolean(animation);
+		}, [animation]);
+
+		return cloneElement(children, { ref: childRef });
+	},
+);
 
 export default Tooltip;

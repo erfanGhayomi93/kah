@@ -7,6 +7,7 @@ import usePagination from './usePagination';
 import useServerDatetime from './useServerDatetime';
 import useSubscription from './useSubscription';
 import useTradingFeatures from './useTradingFeatures';
+import useUserInfo from './useUserInfo';
 import useWatchlistColumns from './useWatchlistColumns';
 
 export {
@@ -19,5 +20,6 @@ export {
 	useServerDatetime,
 	useSubscription,
 	useTradingFeatures,
+	useUserInfo,
 	useWatchlistColumns,
 };

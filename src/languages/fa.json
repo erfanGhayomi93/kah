@@ -36,6 +36,7 @@
 		"logout_broker_description": "پس از خروج از حساب، عملیات معاملاتی مرتبط با کارگزاری امکان پذیر نخواهد بود.",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
+		"black_scholes": "ماشین حساب",
 		"session_history": "تاریخچه ورود و خروج",
 		"setting": "تنظیمات",
 		"status": "وضعیت",
@@ -496,7 +497,8 @@
 	},
 	"order_errors": {
 		"Contract_OrderValidity_Must_Be_Less_Than_CashSettlementDate": "تاریخ ثبت سفارش معتبر تا لغو نمی تواند از تاریخ پایان قرارداد اختیار بیشتر باشد.",
-		"Sell_PortfolioBlockType_Is_Not_Allowed_In_Less_PortfolioCount": "",
+		"Sell_PortfolioBlockType_Is_Not_Allowed_In_Less_PortfolioCount": "−",
+		"SelftTrading_Is_Not_Allowed": "−",
 		"SellOrder_Is_Allowed_Only_For_Negative_Remain": "ثبت سفارش فروش فقط با مانده بدهکار امکان پذیر است.",
 		"Buy_Call_Not_Allowed": "شما مجوز اخذ موقعیت خرید اختیار خرید را ندارید.",
 		"Buy_Put_Not_Allowed": "شما مجوز اخذ موقعیت خرید اختیار فروش را ندارید.",

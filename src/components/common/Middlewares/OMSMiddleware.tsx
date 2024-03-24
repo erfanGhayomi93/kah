@@ -1,6 +1,5 @@
 'use client';
 
-import { useUserInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ipcMain from '@/classes/IpcMain';
 import OMSGateway from '@/classes/OMSGateway';
@@ -9,6 +8,7 @@ import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
+import { useUserInfo } from '@/hooks';
 import { getBrokerClientId } from '@/utils/cookie';
 import { createSelector } from '@reduxjs/toolkit';
 import { useLayoutEffect } from 'react';
@@ -33,10 +33,7 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 		enabled: isLoggedIn,
 	});
 
-	const { data: userInfo } = useUserInfoQuery({
-		queryKey: ['userInfoQuery'],
-		enabled: Boolean(brokerURLs),
-	});
+	const { data: userInfo } = useUserInfo();
 
 	const createOrder = (fields: IpcMainChannels['send_order']) =>
 		new Promise<Order.Response | undefined>((resolve, reject) => {
