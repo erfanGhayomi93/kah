@@ -27,7 +27,7 @@ const config: Config = {
 
 			white: 'rgba(255, 255, 255, 1)',
 
-			black: 'rgba(35, 38, 41, 1)',
+			black: 'rgba(0, 0, 0, 1)',
 
 			input: 'rgba(224, 224, 226, 1)',
 

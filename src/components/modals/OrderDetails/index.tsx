@@ -134,7 +134,7 @@ const OrderDetails = ({ order, ...props }: OrderDetailsProps) => {
 						</li>
 						<li>
 							<span className='text-gray-900'>{t('order_details.commission')}:</span>
-							{numFormatter(order.price * order.quantity - order.orderVolume)}
+							{numFormatter(order.orderVolume - order.price * order.quantity)}
 						</li>
 						<li>
 							<span className='text-gray-900'>{t('order_details.validity')}:</span>

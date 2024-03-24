@@ -7,6 +7,8 @@ const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' :
 const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
+	pushengine: 'https://pushengine.ramandtech.com', // isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
+
 	common: {
 		time: `${rlcUrl}/Common/v1/Time`,
 		GetBrokers: `${rlcUrl}/Common/v1/GetBrokers`,
