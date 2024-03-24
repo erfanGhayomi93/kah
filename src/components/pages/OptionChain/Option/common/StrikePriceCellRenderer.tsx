@@ -5,7 +5,7 @@ import { type ITableData } from '../OptionTable';
 
 type StrikePriceCellRendererProps = ICellRendererParams<ITableData, number> & {
 	activeRowId: number;
-	basket: IOrderBasket[];
+	basket: TOrderBasket[];
 	addBuySellModal: (props: IBuySellModal) => void;
 	addSymbolToBasket: (data: Option.Root, side: TOptionSides) => void;
 	removeSymbolFromBasket: (data: Option.Root) => void;
@@ -64,7 +64,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			}
 
 			const eDropdown = document.createElement('ul');
-			eDropdown.setAttribute('class', 'absolute bg-white rounded');
+			eDropdown.setAttribute('class', 'absolute overflow-hidden bg-white rounded');
 			eDropdown.setAttribute('data-side', side);
 			eDropdown.style.boxShadow = '0px 2px 22px 0px rgba(0, 0, 0, 0.07)';
 			eDropdown.style.zIndex = '999';

@@ -272,8 +272,10 @@ const config: Config = {
 					},
 
 					'&:disabled': {
+						'font-weight': '400',
 						'box-shadow': 'none !important',
 						'background-color': `${theme('colors.gray.400')} !important`,
+						'border-color': `${theme('colors.gray.400')} !important`,
 						color: `${theme('colors.gray.800')} !important`,
 					},
 				},

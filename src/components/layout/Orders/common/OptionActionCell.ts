@@ -19,7 +19,7 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 
 		this.eGui.appendChild(this.collateralBtn());
 		this.eGui.appendChild(this.closePositionBtn());
-		this.eGui.appendChild(this.detailsBtn());
+		// this.eGui.appendChild(this.detailsBtn());
 	}
 
 	closePositionBtn() {

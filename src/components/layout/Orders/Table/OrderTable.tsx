@@ -208,8 +208,8 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 			{
 				colId: 'action',
 				headerName: t('orders.action'),
-				minWidth: 140,
-				maxWidth: 140,
+				minWidth: 160,
+				maxWidth: 160,
 				cellRenderer: OrderActionCell,
 				cellRendererParams: {
 					onCopy,
