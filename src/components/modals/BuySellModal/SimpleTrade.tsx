@@ -1,3 +1,4 @@
+import Button from '@/components/common/Button';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import Tooltip from '@/components/common/Tooltip';
 import { ArrowDownSVG, ArrowUpSVG, InfoCircleSVG, LockSVG, UnlockSVG } from '@/components/icons';
@@ -44,6 +45,7 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 
 interface SimpleTradeProps extends IBsModalInputs {
 	id: number | undefined;
+	submitting: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
@@ -63,6 +65,7 @@ const SimpleTrade = ({
 	validity,
 	switchable,
 	value,
+	submitting,
 	validityDate,
 	commission,
 	userRemain,
@@ -250,15 +253,16 @@ const SimpleTrade = ({
 						</button>
 					)}
 
-					<button
+					<Button
 						type='submit'
 						className={cn(
 							'h-40 flex-1 rounded text-base font-medium',
 							side === 'buy' ? 'btn-success' : 'btn-error',
 						)}
+						loading={submitting}
 					>
 						{t(`bs_modal.${mode}_${type}_${side}`)}
-					</button>
+					</Button>
 				</div>
 			</div>
 		</form>

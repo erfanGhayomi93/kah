@@ -1,9 +1,12 @@
 import brokerAxios from '@/api/brokerAxios';
+import ipcMain from '../IpcMain';
 
 type TOrderState = 'QUEUE' | 'SENDING' | 'SENT' | 'INITIAL';
 
 class Order {
 	private _state: TOrderState = 'INITIAL';
+
+	private _uuid: string | undefined = undefined;
 
 	private _fields: IOFields | null = null;
 
@@ -24,6 +27,11 @@ class Order {
 
 		if (this._fields.validity !== 'GoodTillDate') this._fields.validityDate = -1;
 
+		return this;
+	}
+
+	setUUID(id: string) {
+		this._uuid = id;
 		return this;
 	}
 
@@ -52,8 +60,17 @@ class Order {
 
 				this._clientKey = String(data.result.clientKey ?? '');
 
+				ipcMain.send('order_sent', {
+					id: this._uuid,
+					response: data.result,
+				});
+
 				resolve(data.result);
 			} catch (e) {
+				ipcMain.send('order_sent', {
+					id: this._uuid,
+					response: 'error',
+				});
 				reject();
 			} finally {
 				this._state = 'SENT';

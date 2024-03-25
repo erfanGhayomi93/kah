@@ -10,6 +10,7 @@ import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice'
 import { type RootState } from '@/features/store';
 import { useUserInfo } from '@/hooks';
 import { getBrokerClientId } from '@/utils/cookie';
+import { uuidv4 } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useLayoutEffect } from 'react';
 
@@ -36,14 +37,22 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 	const { data: userInfo } = useUserInfo();
 
 	const createOrder = (fields: IpcMainChannels['send_order']) =>
-		new Promise<Order.Response | undefined>((resolve, reject) => {
+		new Promise<string | undefined>((resolve) => {
 			try {
 				if (!brokerURLs) throw new Error();
 
-				const order = OMSGateway.createOrder().toQueue().setFields(fields).setURL(brokerURLs.createOrder);
-				OMSGateway.publish().addAndStart([order]).then(resolve).catch(reject);
+				const uuid = uuidv4();
+				const order = OMSGateway.createOrder()
+					.toQueue()
+					.setUUID(uuid)
+					.setFields(fields)
+					.setURL(brokerURLs.createOrder);
+
+				OMSGateway.publish().addAndStart([order]);
+
+				resolve(uuid);
 			} catch (e) {
-				reject();
+				resolve(undefined);
 			}
 		});
 
@@ -66,9 +75,9 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 
 		return () => {
 			ipcMain.removeAsyncHandler('send_order');
-			ipcMain.removeAsyncHandler('send_orders');
+			ipcMain.removeHandler('send_orders', createOrders);
 		};
-	}, [JSON.stringify(brokerURLs)]);
+	}, [brokerURLs]);
 
 	useLayoutEffect(() => {
 		if (!brokerURLs || !userInfo) return;

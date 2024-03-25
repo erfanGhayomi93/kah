@@ -52,12 +52,10 @@ class IpcMain {
 	}
 
 	handle<T extends TChannel = TChannel>(channel: T, listener: ListenerType<IpcMainChannels[T]>) {
-		try {
-			this._createChannel(channel);
-			this._channels[channel]![0].push(listener as ListenerType);
-		} catch (error) {
-			//
-		}
+		this._createChannel(channel);
+		this._channels[channel]![0].push(listener as ListenerType);
+
+		return () => this.removeHandler(channel, listener);
 	}
 
 	handleAsync<R, T extends TChannel = TChannel>(

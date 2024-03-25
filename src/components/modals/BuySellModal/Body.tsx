@@ -1,5 +1,6 @@
 import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
+import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
@@ -10,7 +11,7 @@ import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { cn, dateConverter } from '@/utils/helpers';
 import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import SimpleTrade from './SimpleTrade';
 
@@ -40,6 +41,10 @@ interface BodyProps extends IBsModalInputs {
 const Body = (props: BodyProps) => {
 	const t = useTranslations();
 
+	const sendingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+	const [submitting, setSubmitting] = useState(false);
+
 	const dispatch = useAppDispatch();
 
 	const { data: brokerUrls } = useGetBrokerUrlQuery({
@@ -49,6 +54,22 @@ const Body = (props: BodyProps) => {
 	const { data: userRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
 	});
+
+	const onOrderMessageReceived = (id: string) => (result: IpcMainChannels['order_sent']) => {
+		if (id !== result.id) return;
+
+		onOrderSentSuccessfully();
+		ipcMain.removeHandler('order_sent', onOrderMessageReceived(id));
+	};
+
+	const addNewHandler = (id: string) => {
+		const removeHandler = ipcMain.handle('order_sent', onOrderMessageReceived(id));
+
+		sendingTimeoutRef.current = setTimeout(() => {
+			onOrderSentSuccessfully();
+			removeHandler();
+		}, 1650);
+	};
 
 	const validation = (cb: () => void) => () => {
 		try {
@@ -96,7 +117,9 @@ const Body = (props: BodyProps) => {
 		try {
 			if (!brokerUrls) return;
 
-			const { price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			setSubmitting(true);
+
+			const { price, quantity, validityDate, validity, symbolISIN, side } = props;
 			const params: IOFields = {
 				symbolISIN,
 				quantity,
@@ -110,21 +133,35 @@ const Body = (props: BodyProps) => {
 			else if (params.validity === 'Month' || params.validity === 'Week')
 				params.validityDate = dateConverter(params.validity);
 
-			await createOrder(params);
-			toast.success(t('alerts.order_successfully_created'), {
-				toastId: 'order_successfully_created',
-			});
+			const uuid = await createOrder(params);
 
-			if (!holdAfterOrder) {
-				close();
-				dispatch(setOrdersIsExpand(true));
-				LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'today_orders', true);
-			}
+			if (uuid) addNewHandler(uuid);
+			else onOrderSentSuccessfully();
 		} catch (e) {
-			toast.error(t('alerts.order_unsuccessfully_created'), {
-				toastId: 'order_unsuccessfully_created',
-			});
+			onOrderSentFailed();
 		}
+	};
+
+	const onOrderSentSuccessfully = () => {
+		setSubmitting(false);
+
+		toast.success(t('alerts.order_successfully_created'), {
+			toastId: 'order_successfully_created',
+		});
+
+		if (!props.holdAfterOrder) {
+			props.close();
+			dispatch(setOrdersIsExpand(true));
+			LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'today_orders', true);
+		}
+	};
+
+	const onOrderSentFailed = () => {
+		setSubmitting(false);
+
+		toast.error(t('alerts.order_unsuccessfully_created'), {
+			toastId: 'order_unsuccessfully_created',
+		});
 	};
 
 	const sendDraft = async () => {
@@ -242,6 +279,7 @@ const Body = (props: BodyProps) => {
 				render: () => (
 					<SimpleTrade
 						{...props}
+						submitting={submitting}
 						userRemain={userRemain ?? null}
 						createDraft={sendDraft}
 						onSubmit={validation(onSubmit)}
@@ -255,7 +293,7 @@ const Body = (props: BodyProps) => {
 				disabled: true,
 			},
 		],
-		[JSON.stringify(props), JSON.stringify(userRemain), brokerUrls],
+		[JSON.stringify(props), JSON.stringify(userRemain), submitting, brokerUrls],
 	);
 
 	if (props.symbolType === 'base') return <Wrapper className='pt-24'>{TABS[0].render?.()}</Wrapper>;

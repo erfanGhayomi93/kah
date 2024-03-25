@@ -75,10 +75,10 @@ const SelectedContracts = ({ data }: SelectedContractsProps) => {
 	const dLength = data.length;
 
 	return (
-		<div style={{ minHeight: '7.2rem' }} className='relative'>
+		<div style={{ minHeight: '8.8rem' }} className='relative'>
 			<ul
 				ref={listRef}
-				style={{ height: (dLength + 1) * 48, maxHeight: '32dvh', transition: 'height 250ms ease' }}
+				style={{ height: (dLength + 1) * 48 - 8, maxHeight: '32dvh', transition: 'height 250ms ease' }}
 				className={clsx('relative h-full flex-column', dLength > 5 && 'overflow-auto')}
 			>
 				{data.map((item, i) => {
