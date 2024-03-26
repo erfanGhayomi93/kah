@@ -305,9 +305,17 @@
 		"title": "سبد سفارش",
 		"analyze": "آنالیز",
 		"trade": "معامله",
-		"selected_trade": "{n} معامله انتخاب شده",
+		"selected_trade": "معامله انتخاب شده",
 		"delete_order_basket": "حذف سبد سفارش",
-		"empty_order_basket": "سبد سفارش شما خالی شود؟"
+		"empty_order_basket": "سبد سفارش شما خالی شود؟",
+		"call": "اختیار خ",
+		"put": "اختیار ف",
+		"bs": "B/S",
+		"end_date": "سررسید",
+		"strike": "اعمال",
+		"type": "نوع",
+		"quantity": "تعداد",
+		"price": "قیمت"
 	},
 	"saturn_page": {
 		"click_to_add_contract": "برای <add>افزودن</add> قرارداد {symbolTitle} کلیک کنید",

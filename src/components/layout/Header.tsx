@@ -240,12 +240,12 @@ const Header = () => {
 										</button>
 									</div>
 
-									<div className='flex-col px-16 flex-items-center'>
+									<div className='flex-col gap-8 px-16 flex-items-center'>
 										{!userData?.hasPassword && (
 											<button
 												type='button'
 												onClick={setPassword}
-												className='h-32 w-full rounded bg-primary-100 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+												className='h-32 w-full rounded border border-primary-400 bg-primary-400/10 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
 											>
 												{t('header.set_password')}
 											</button>

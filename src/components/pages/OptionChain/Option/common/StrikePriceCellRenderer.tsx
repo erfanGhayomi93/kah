@@ -64,7 +64,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			}
 
 			const eDropdown = document.createElement('ul');
-			eDropdown.setAttribute('class', 'absolute bg-white rounded');
+			eDropdown.setAttribute('class', 'absolute overflow-hidden bg-white rounded');
 			eDropdown.setAttribute('data-side', side);
 			eDropdown.style.boxShadow = '0px 2px 22px 0px rgba(0, 0, 0, 0.07)';
 			eDropdown.style.zIndex = '999';
@@ -146,7 +146,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		const btn = document.createElement('button');
 		btn.setAttribute(
 			'class',
-			'size-32 bg-white rounded hover:bg-gray-200 text-base text-gray-900 flex-justify-center  transition-colors',
+			'size-32 bg-white rounded hover:bg-gray-200 text-base text-gray-900 flex-justify-center transition-colors',
 		);
 
 		return btn;
@@ -203,9 +203,16 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		const d = this.createButton();
 		d.type = 'button';
 		d.innerHTML =
-			'<svg width="2.4rem" height="2.4rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 11L12 14L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+			'<svg width="2.4rem" height="2.4rem" class="transition-all" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 11L12 14L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 		d.onclick = (e) => {
 			e.stopPropagation();
+
+			try {
+				d.querySelector('svg')!.classList.toggle('rotate-180');
+			} catch (e) {
+				//
+			}
+
 			this.createDropdown(params, g, side);
 		};
 

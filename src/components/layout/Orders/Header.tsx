@@ -126,16 +126,13 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 		const ids = selectedRows.map((item) => ('orderId' in item ? item.orderId : item.id));
 		deleteAll(ids);
 
-		ipcMain.send('deselect_orders');
+		ipcMain.send('deselect_orders', undefined);
 		setSelectedRows([]);
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle('set_selected_orders', onSelectRows);
-
-		return () => {
-			ipcMain.removeHandler('set_selected_orders', onSelectRows);
-		};
+		const removeHandler = ipcMain.handle('set_selected_orders', onSelectRows);
+		return () => removeHandler();
 	}, []);
 
 	useLayoutEffect(() => {

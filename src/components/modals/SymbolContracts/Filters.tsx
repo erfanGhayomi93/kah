@@ -64,7 +64,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 					</span>
 
 					<Select<typeof contractType>
-						value={contractType}
+						defaultValue={contractType}
 						options={contractTypes}
 						onChange={(option) => setStatesValue('contractType', option as Record<'id' | 'title', string>)}
 						getOptionId={(option) => option.id}

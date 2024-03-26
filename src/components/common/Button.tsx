@@ -10,7 +10,7 @@ const Button = ({ children, className, loading, disabled, ...props }: ButtonProp
 	return (
 		<button
 			role='button'
-			disabled={loading ?? disabled}
+			disabled={disabled ?? loading}
 			className={cn(styles.btn, loading && styles.loading, className)}
 			{...props}
 		>

@@ -1,7 +1,7 @@
 import { ArrowDownSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import Popup from '../Popup';
 import styles from './Select.module.scss';
 
@@ -15,10 +15,11 @@ interface INonClearableProps<T> {
 	onChange: (option: T) => void;
 }
 
-type SelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
-	value?: T | null;
+type SelectProps<T, D> = (IClearableProps<T> | INonClearableProps<T>) & {
+	defaultValue?: D | T | null;
 	placeholder?: string | React.ReactNode;
 	defaultOpen?: boolean;
+	defaultPopupWidth?: number;
 	options: T[];
 	loading?: boolean;
 	disabled?: boolean;
@@ -29,35 +30,51 @@ type SelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 		| 'box'
 		| 'list'
 		| 'alert'
+		| 'border'
 		| 'listItem'
 		| 'value'
 		| 'placeholder'
 		| 'icon'
 		| 'active'
 	>;
-	getOptionId: (option: T) => string | number;
-	getOptionTitle: (option: T) => React.ReactNode;
+	getOptionId: (option: T | D) => string | number;
+	getOptionTitle: (option: T | D) => React.ReactNode;
+	getInputValue?: (option: T | D) => React.ReactNode;
 };
 
-const Select = <T,>({
-	value,
+const Select = <T, D = T>({
+	defaultValue,
 	options,
 	classes,
 	loading,
 	disabled,
+	defaultPopupWidth,
 	placeholder,
 	defaultOpen,
 	getOptionId,
 	getOptionTitle,
+	getInputValue,
 	onChange,
-}: SelectProps<T>) => {
+}: SelectProps<T, D>) => {
 	const t = useTranslations();
 
+	const [value, setValue] = useState<T | D | null>(defaultValue ?? null);
+
 	const [focusing, setFocusing] = useState(false);
+
+	const onChangeValue = (v: T) => {
+		setValue(v);
+		onChange(v);
+	};
+
+	useLayoutEffect(() => {
+		setValue(defaultValue ?? null);
+	}, [defaultValue]);
 
 	return (
 		<Popup
 			zIndex={9999}
+			defaultPopupWidth={defaultPopupWidth}
 			defaultOpen={defaultOpen}
 			disabled={disabled}
 			onOpen={() => setFocusing(true)}
@@ -76,7 +93,7 @@ const Select = <T,>({
 							{options.map((option) => (
 								<li
 									onClick={() => {
-										onChange(option);
+										onChangeValue(option);
 										setOpen(false);
 									}}
 									key={getOptionId(option)}
@@ -105,25 +122,27 @@ const Select = <T,>({
 						'input-group',
 						styles.root,
 						classes?.root,
+						!placeholder && [styles.border, classes?.border],
 						disabled ? ['disabled', styles.disabled, classes?.disabled] : styles.clickable,
 						focusing && [styles.focus, classes?.focus],
 					)}
 				>
 					{value && (
 						<span className={cn(styles.value, classes?.value)}>
-							{value ? getOptionTitle(value) : placeholder}
+							{value ? (getInputValue ? getInputValue(value) : getOptionTitle(value)) : placeholder}
 						</span>
 					)}
 
 					{placeholder && (
-						<span className={cn('flexible-placeholder', value && 'active', open && 'colorful')}>
-							{placeholder}
-						</span>
+						<>
+							<span className={cn('flexible-placeholder', value && 'active', open && 'colorful')}>
+								{placeholder}
+							</span>
+							<fieldset className={cn('flexible-fieldset', placeholder && value && 'active')}>
+								<legend>{placeholder}</legend>
+							</fieldset>
+						</>
 					)}
-
-					<fieldset className={cn('flexible-fieldset', placeholder && value && 'active')}>
-						<legend>{placeholder}</legend>
-					</fieldset>
 
 					{loading ? (
 						<div className='!absolute left-8 min-h-20 min-w-20 spinner' />
