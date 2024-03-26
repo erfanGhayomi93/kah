@@ -276,6 +276,7 @@ declare namespace Option {
 		baseSymbolISIN: string;
 		contractEndDate: string;
 		dueDays: number;
+		openPosition: number;
 		workingDaysLeftCount: number;
 		oneMonthTradeValue: number;
 	}
