@@ -149,4 +149,4 @@ export const deleteDraft = (ids: number[]) =>
 		}
 	});
 
-export const refetchActiveOrderTab = () => ipcMain.send('refetch_active_order_tab');
+export const refetchActiveOrderTab = () => ipcMain.send('refetch_active_order_tab', undefined);

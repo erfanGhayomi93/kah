@@ -240,11 +240,8 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle('deselect_orders', unselectAll);
-
-		return () => {
-			ipcMain.removeHandler('deselect_orders', unselectAll);
-		};
+		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
+		return () => removeHandler();
 	}, []);
 
 	useEffect(() => {

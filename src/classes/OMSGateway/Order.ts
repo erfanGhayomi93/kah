@@ -60,21 +60,21 @@ class Order {
 
 				this._clientKey = String(data.result.clientKey ?? '');
 
-				ipcMain.send('order_sent', {
-					id: this._uuid,
-					response: data.result,
-				});
-
+				this._pushToIpcMain(data.result);
 				resolve(data.result);
 			} catch (e) {
-				ipcMain.send('order_sent', {
-					id: this._uuid,
-					response: 'error',
-				});
+				this._pushToIpcMain('error');
 				reject();
 			} finally {
 				this._state = 'SENT';
 			}
+		});
+	}
+
+	private _pushToIpcMain(result: Order.Response | 'error') {
+		ipcMain.send('order_sent', {
+			id: this._uuid,
+			response: result,
 		});
 	}
 

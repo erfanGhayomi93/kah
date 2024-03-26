@@ -231,6 +231,19 @@ const config: Config = {
 					border: `1.5px solid ${theme('colors.primary.200')}`,
 				},
 
+				'.btn-primary:disabled, .btn-gray:disabled, .btn-primary-100:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
+					{
+						'&:not(.not)': {
+							'box-shadow': 'none !important',
+							'background-color': `${theme('colors.gray.400')} !important`,
+							color: `${theme('colors.gray.800')} !important`,
+						},
+
+						'&.not': {
+							opacity: '0.5',
+						},
+					},
+
 				'.btn-primary': {
 					display: 'flex',
 					'align-items': 'center',
@@ -245,12 +258,6 @@ const config: Config = {
 
 					'&:not(.justify-start,.justify-end)': {
 						'justify-content': 'center',
-					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -295,12 +302,6 @@ const config: Config = {
 					'&:not(.justify-start,.justify-end)': {
 						'justify-content': 'center',
 					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
 				},
 
 				'.btn-gray-outline': {
@@ -340,12 +341,6 @@ const config: Config = {
 						'background-color': theme('colors.primary.400'),
 						color: theme('colors.white'),
 					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
 				},
 
 				'.btn-success': {
@@ -359,12 +354,6 @@ const config: Config = {
 
 					'&:not(:disabled):hover': {
 						'background-color': theme('colors.success.200'),
-					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -404,12 +393,6 @@ const config: Config = {
 					'&:not(:disabled):hover': {
 						'background-color': theme('colors.error.200'),
 					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
 				},
 
 				'.btn-error-outline': {
@@ -447,12 +430,6 @@ const config: Config = {
 
 					'&:not(:disabled):hover': {
 						'background-color': theme('colors.primary.400'),
-					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 

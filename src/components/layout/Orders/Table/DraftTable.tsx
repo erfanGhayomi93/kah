@@ -202,11 +202,8 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle('deselect_orders', unselectAll);
-
-		return () => {
-			ipcMain.removeHandler('deselect_orders', unselectAll);
-		};
+		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
+		return () => removeHandler();
 	}, []);
 
 	useEffect(() => {

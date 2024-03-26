@@ -1,9 +1,9 @@
 import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
-import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Tabs from '@/components/common/Tabs/Tabs';
-import { useAppDispatch } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { toggleChoiceBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
@@ -45,11 +45,9 @@ const Body = (props: BodyProps) => {
 
 	const [submitting, setSubmitting] = useState(false);
 
-	const dispatch = useAppDispatch();
+	const brokerUrls = useAppSelector(getBrokerURLs);
 
-	const { data: brokerUrls } = useGetBrokerUrlQuery({
-		queryKey: ['getBrokerUrlQuery'],
-	});
+	const dispatch = useAppDispatch();
 
 	const { data: userRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
@@ -58,17 +56,18 @@ const Body = (props: BodyProps) => {
 	const onOrderMessageReceived = (id: string) => (result: IpcMainChannels['order_sent']) => {
 		if (id !== result.id) return;
 
+		if (sendingTimeoutRef.current) clearTimeout(sendingTimeoutRef.current);
+
 		onOrderSentSuccessfully();
-		ipcMain.removeHandler('order_sent', onOrderMessageReceived(id));
 	};
 
 	const addNewHandler = (id: string) => {
-		const removeHandler = ipcMain.handle('order_sent', onOrderMessageReceived(id));
+		const removeHandler = ipcMain.handle('order_sent', onOrderMessageReceived(id), { once: true });
 
 		sendingTimeoutRef.current = setTimeout(() => {
 			onOrderSentSuccessfully();
 			removeHandler();
-		}, 1650);
+		}, 2000);
 	};
 
 	const validation = (cb: () => void) => () => {

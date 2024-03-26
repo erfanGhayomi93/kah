@@ -11,7 +11,7 @@ export interface UserState {
 
 	brokerIsSelected: boolean;
 
-	orderBasket: TOrderBasket[];
+	orderBasket: IOrderBasket[];
 }
 
 const initialState: UserState = {

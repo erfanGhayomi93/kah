@@ -256,7 +256,7 @@ const SimpleTrade = ({
 					<Button
 						type='submit'
 						className={cn(
-							'h-40 flex-1 rounded text-base font-medium',
+							'not h-40 flex-1 rounded text-base font-medium',
 							side === 'buy' ? 'btn-success' : 'btn-error',
 						)}
 						loading={submitting}

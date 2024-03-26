@@ -1,7 +1,18 @@
 type TChannel = keyof IpcMainChannels;
 type ListenerType<T = unknown> = (arg: T) => void;
 type AsyncListenerType<T = unknown, R = unknown> = (arg: T) => Promise<R>;
-type TChannels = Record<TChannel, [ListenerType[], AsyncListenerType | null]>;
+type TChannels = Record<TChannel, [ListenerType[], ListenerType[], AsyncListenerType | null]>; // * Handlers, OnceHandlers, AsyncHandlers
+type THandlerCallbackF = () => void;
+
+interface IAsyncHandlerOptions {
+	async?: boolean;
+	signal?: AbortController;
+}
+
+interface IHandlerOptions {
+	once?: boolean;
+	signal?: AbortController;
+}
 
 class IpcMain {
 	private _channels: Partial<TChannels>;
@@ -10,40 +21,21 @@ class IpcMain {
 		this._channels = {};
 	}
 
-	removeHandler<T extends TChannel = TChannel>(channel: T, handler: (arg: IpcMainChannels[T]) => void) {
-		try {
-			const handlers = this._channels[channel]?.[0];
-			if (!handlers) return;
-
-			for (let i = 0; i < handlers.length; i++) {
-				const listener = handlers[i];
-
-				if (listener.toString() === handler.toString()) this._channels[channel]![0].splice(i, 1);
-			}
-		} catch (e) {
-			//
-		}
-	}
-
-	removeAsyncHandler(channel: TChannel) {
-		if (channel in this._channels) this._channels[channel]![1] = null;
-	}
-
 	removeAllHandlers(channel: TChannel) {
-		this._channels[channel] = [[], null];
+		this._channels[channel] = [[], [], null];
 	}
 
 	removeChannel(channel: TChannel) {
 		if (!(channel in this._channels)) return;
 
-		this._channels[channel] = [[], null];
+		this._channels[channel] = [[], [], null];
 		delete this._channels[channel];
 	}
 
 	removeAllChannels(...channels: TChannel[]) {
 		try {
 			for (let i = 0; i < channels.length; i++) {
-				this._channels[channels[i]] = [[], null];
+				this._channels[channels[i]] = [[], [], null];
 				delete this._channels[channels[i]];
 			}
 		} catch (e) {
@@ -51,33 +43,46 @@ class IpcMain {
 		}
 	}
 
-	handle<T extends TChannel = TChannel>(channel: T, listener: ListenerType<IpcMainChannels[T]>) {
-		this._createChannel(channel);
-		this._channels[channel]![0].push(listener as ListenerType);
+	handle<T extends keyof IpcMainChannels>(
+		channel: T,
+		listener: ListenerType<IpcMainChannels[T]>,
+		options?: IHandlerOptions,
+	): THandlerCallbackF;
 
-		return () => this.removeHandler(channel, listener);
-	}
-
-	handleAsync<R, T extends TChannel = TChannel>(
+	handle<T extends keyof IpcMainChannels, R = unknown>(
 		channel: T,
 		listener: AsyncListenerType<IpcMainChannels[T], R | undefined>,
-	) {
-		try {
-			this._createChannel(channel);
-			this._channels[channel]![1] = listener as AsyncListenerType;
-		} catch (error) {
-			//
+		options?: IAsyncHandlerOptions,
+	): THandlerCallbackF;
+
+	handle<T extends keyof IpcMainChannels, R = unknown>(
+		channel: T,
+		listener: ListenerType<IpcMainChannels[T]> | AsyncListenerType<IpcMainChannels[T], R | undefined>,
+		options?: IHandlerOptions | IAsyncHandlerOptions,
+	): THandlerCallbackF {
+		this._createChannel(channel);
+
+		const c = options?.signal ? options.signal : new AbortController();
+
+		if (!options) {
+			return this._handler(channel, listener, c);
 		}
+
+		if ('async' in options && options.async) {
+			return this._asyncHandler(channel, listener as AsyncListenerType<IpcMainChannels[T], R | undefined>, c);
+		}
+
+		if ('once' in options && options.once) {
+			return this._onceHandler(channel, listener, c);
+		}
+
+		return this._handler(channel, listener, c);
 	}
 
-	send<T extends TChannel = TChannel>(channel: T, arg?: IpcMainChannels[T]) {
+	send<T extends TChannel = TChannel>(channel: T, arg: IpcMainChannels[T]) {
 		try {
-			const ch = this._channels[channel]![0];
-			if (!Array.isArray(ch)) return;
-
-			ch.forEach((l) => {
-				l.call(null, arg);
-			});
+			this._send<typeof channel>(this._channels[channel]![0], arg);
+			this._send<typeof channel>(this._channels[channel]![1], arg);
 		} catch (e) {
 			//
 		}
@@ -86,7 +91,7 @@ class IpcMain {
 	sendAsync<R, T extends TChannel = TChannel>(channel: T, arg?: IpcMainChannels[T]): Promise<R | undefined> {
 		return new Promise<R | undefined>(async (resolve, reject) => {
 			try {
-				const asyncHandler = this._channels[channel]![1];
+				const asyncHandler = this._channels[channel]![2];
 				if (!asyncHandler) {
 					resolve(undefined);
 					return;
@@ -102,8 +107,63 @@ class IpcMain {
 		});
 	}
 
+	private _handler<T extends TChannel = TChannel>(
+		channel: T,
+		listener: ListenerType<IpcMainChannels[T]>,
+		controller: AbortController,
+	) {
+		const i = this._channels[channel]![0].push(listener as ListenerType);
+		controller.signal.onabort = () => {
+			this._channels[channel]![0].splice(i, 1);
+		};
+
+		return () => controller.abort();
+	}
+
+	private _onceHandler<T extends TChannel = TChannel>(
+		channel: T,
+		listener: ListenerType<IpcMainChannels[T]>,
+		controller: AbortController,
+	) {
+		const i = this._channels[channel]![1].push(listener as ListenerType);
+		controller.signal.onabort = () => {
+			this._channels[channel]![1].splice(i, 1);
+		};
+
+		return () => controller.abort();
+	}
+
+	private _asyncHandler<T extends TChannel = TChannel, R = unknown>(
+		channel: T,
+		listener: AsyncListenerType<IpcMainChannels[T], R | undefined>,
+		controller: AbortController,
+	) {
+		this._createChannel(channel);
+		this._channels[channel]![2] = listener as AsyncListenerType;
+
+		controller.signal.onabort = () => {
+			this._channels[channel]![2] = null;
+		};
+
+		return () => controller.abort();
+	}
+
 	private _createChannel(cName: TChannel) {
-		if (!(cName in this._channels)) this._channels[cName] = [[], null];
+		if (!(cName in this._channels)) this._channels[cName] = [[], [], null];
+	}
+
+	private _send<T extends TChannel = TChannel>(
+		handlers: Array<ListenerType<IpcMainChannels[T]>>,
+		arg: IpcMainChannels[T],
+	) {
+		if (!Array.isArray(handlers)) return;
+		handlers.forEach((l) => {
+			try {
+				l.call(null, arg);
+			} catch (e) {
+				//
+			}
+		});
 	}
 }
 

@@ -5,7 +5,7 @@ import { toggleLoginModal, toggleMoveSymbolToWatchlistModal } from '@/features/s
 import { getIsLoggedIn, getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useTradingFeatures } from '@/hooks';
-import { openNewTab, sepNumbers } from '@/utils/helpers';
+import { openNewTab, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
@@ -69,11 +69,11 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		}
 	};
 
-	const addSymbolToBasket = (data: Option.Root, side: TOptionSides) => {
+	const addSymbolToBasket = (data: Option.Root, type: TOptionSides) => {
 		if (!isLoggedIn) showLoginModal();
 		else {
 			const i = orderBasket.findIndex((item, i) =>
-				item.contract ? item.contract.symbolInfo.symbolISIN === data.symbolInfo.symbolISIN : false,
+				item.symbolISIN ? item.symbolISIN === data.symbolInfo.symbolISIN : false,
 			);
 
 			if (i === -1) {
@@ -81,12 +81,14 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 					setOrderBasket([
 						...orderBasket,
 						{
+							id: uuidv4(),
 							symbolISIN: data.symbolInfo.symbolISIN,
-							price: data.optionWatchlistData.closingPrice,
-							quantity: 1,
-							contract: data,
+							baseSymbolISIN: data.symbolInfo.baseSymbolISIN,
+							price: data.optionWatchlistData.bestBuyPrice || 1,
+							quantity: data.optionWatchlistData.openPositionCount || 1,
 							settlementDay: data.symbolInfo.contractEndDate,
-							side,
+							type,
+							side: 'buy',
 							strikePrice: data.symbolInfo.strikePrice,
 						},
 					]),
@@ -363,7 +365,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		};
 
 		column.setColDef(colDef, colDef);
-	}, [rowHoverId, JSON.stringify(orderBasket)]);
+	}, [rowHoverId, settlementDay, JSON.stringify(orderBasket)]);
 
 	useLayoutEffect(() => {
 		const gridApi = gridRef.current;

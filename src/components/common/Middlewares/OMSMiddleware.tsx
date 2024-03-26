@@ -70,13 +70,12 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 	useLayoutEffect(() => {
 		if (!brokerURLs) return;
 
-		ipcMain.handleAsync('send_order', createOrder);
-		ipcMain.handle('send_orders', createOrders);
+		const c = new AbortController();
 
-		return () => {
-			ipcMain.removeAsyncHandler('send_order');
-			ipcMain.removeHandler('send_orders', createOrders);
-		};
+		ipcMain.handle('send_order', createOrder, { async: true, signal: c });
+		ipcMain.handle('send_orders', createOrders, { signal: c });
+
+		return () => c.abort();
 	}, [brokerURLs]);
 
 	useLayoutEffect(() => {

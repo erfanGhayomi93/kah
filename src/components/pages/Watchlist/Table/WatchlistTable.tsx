@@ -661,8 +661,6 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		try {
 			const dataIsEmpty = !Array.isArray(data) || data.length === 0;
 
-			eGrid.setGridOption('suppressHorizontalScroll', dataIsEmpty);
-
 			if (dataIsEmpty) {
 				eGrid.setGridOption('rowData', []);
 				cWatchlistRef.current = [];

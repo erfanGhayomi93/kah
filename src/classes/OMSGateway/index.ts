@@ -7,8 +7,6 @@ class OMS {
 
 	private readonly _subscription = new Subscription();
 
-	private readonly _order = new Order();
-
 	constructor() {
 		Object.seal(this);
 	}
@@ -22,7 +20,7 @@ class OMS {
 	}
 
 	createOrder() {
-		return this._order;
+		return new Order();
 	}
 }
 
