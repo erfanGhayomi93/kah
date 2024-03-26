@@ -46,7 +46,9 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 			<div className='flex-1 gap-32 flex-justify-end'>
 				<div className='flex items-center gap-8'>
 					<span className='text-base text-gray-900'>{t('option_chain.open_contracts_count')}:</span>
-					<span className='font-medium text-gray-1000'>{sepNumbers('312754')}</span>
+					<span className='font-medium text-gray-1000'>
+						{sepNumbers(String(settlementDay.openPosition ?? 0))}
+					</span>
 				</div>
 
 				<div className='flex items-center gap-8'>
