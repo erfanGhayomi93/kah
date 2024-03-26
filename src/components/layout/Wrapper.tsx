@@ -27,7 +27,10 @@ const Wrapper = ({ children }: IWrapper) => {
 					<Sidebar />
 				</ErrorBoundary>
 
-				<div style={{ paddingRight: '6rem' }} className='h-full flex-1 justify-between flex-column'>
+				<div
+					style={{ paddingRight: '6rem' }}
+					className='h-full flex-1 justify-between overflow-hidden flex-column'
+				>
 					<ErrorBoundary>
 						<Header />
 					</ErrorBoundary>

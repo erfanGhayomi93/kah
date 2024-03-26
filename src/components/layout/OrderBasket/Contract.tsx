@@ -113,6 +113,7 @@ const Contract = ({
 			baseSymbolISIN,
 			contractEndDate: settlementDay,
 			dueDays: -1,
+			openPosition: -1,
 			workingDaysLeftCount: -1,
 			oneMonthTradeValue: -1,
 		};
