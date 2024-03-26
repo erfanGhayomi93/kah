@@ -18,14 +18,26 @@ interface INonClearableProps<T> {
 export type AsyncSelectProps<T> = (IClearableProps<T> | INonClearableProps<T>) & {
 	value?: T | null;
 	blankPlaceholder?: string;
-	placeholder: string | React.ReactNode;
+	defaultPopupWidth?: number;
+	placeholder?: string | React.ReactNode;
 	defaultOpen?: boolean;
 	disabled?: boolean;
 	options: T[];
 	minimumChars?: number;
 	loading?: boolean;
 	classes?: RecordClasses<
-		'root' | 'focus' | 'disabled' | 'box' | 'list' | 'value' | 'listItem' | 'alert' | 'input' | 'icon' | 'active'
+		| 'root'
+		| 'focus'
+		| 'border'
+		| 'disabled'
+		| 'box'
+		| 'list'
+		| 'value'
+		| 'listItem'
+		| 'alert'
+		| 'input'
+		| 'icon'
+		| 'active'
 	>;
 	term: string;
 	onChangeTerm: (term: string) => void;
@@ -37,6 +49,7 @@ const AsyncSelect = <T,>({
 	value,
 	options,
 	classes,
+	defaultPopupWidth,
 	disabled,
 	placeholder,
 	blankPlaceholder,
@@ -71,6 +84,7 @@ const AsyncSelect = <T,>({
 	return (
 		<Popup
 			zIndex={9999}
+			defaultPopupWidth={defaultPopupWidth}
 			defaultOpen={defaultOpen}
 			disabled={disabled}
 			onOpen={onOpen}
@@ -121,6 +135,7 @@ const AsyncSelect = <T,>({
 						'input-group',
 						styles.root,
 						classes?.root,
+						!placeholder && [styles.border, classes?.border],
 						disabled && ['disabled', styles.disabled, classes?.disabled],
 						mode && [styles.focus, classes?.focus],
 					)}
@@ -137,18 +152,22 @@ const AsyncSelect = <T,>({
 						}}
 					/>
 
-					<span
-						className={cn(
-							'flexible-placeholder',
-							(value || term.length || mode) && ['active', mode && 'colorful'],
-						)}
-					>
-						{placeholder}
-					</span>
+					{placeholder && (
+						<>
+							<span
+								className={cn(
+									'flexible-placeholder',
+									(value || term.length || mode) && ['active', mode && 'colorful'],
+								)}
+							>
+								{placeholder}
+							</span>
 
-					<fieldset className={cn('flexible-fieldset', (mode || value) && 'active')}>
-						<legend>{placeholder}</legend>
-					</fieldset>
+							<fieldset className={cn('flexible-fieldset', (mode || value) && 'active')}>
+								<legend>{placeholder}</legend>
+							</fieldset>
+						</>
+					)}
 
 					{mode !== 'typing' && value && (
 						<span

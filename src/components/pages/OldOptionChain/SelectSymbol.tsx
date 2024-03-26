@@ -142,7 +142,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					<span className='text-base text-gray-900'>{t('old_option_chain.sort_based_on')}:</span>
 					<div style={{ width: '17.6rem' }} className='flex flex-1 justify-end'>
 						<Select<TSelectOptions>
-							value={sorting}
+							defaultValue={sorting}
 							options={sortingOptions}
 							onChange={onChangeSorting}
 							getOptionId={(option) => option.id}

@@ -180,15 +180,8 @@ const Layout = ({
 	}, [saturnActiveTemplate]);
 
 	useLayoutEffect(() => {
-		try {
-			ipcMain.handle('saturn_contract_added', onContractAdded);
-
-			return () => {
-				ipcMain.removeHandler('saturn_contract_added', onContractAdded);
-			};
-		} catch (e) {
-			//
-		}
+		const removeHandler = ipcMain.handle('saturn_contract_added', onContractAdded);
+		return () => removeHandler();
 	}, [JSON.stringify(baseSymbolContracts)]);
 
 	useLayoutEffect(() => {

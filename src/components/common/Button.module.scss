@@ -8,19 +8,18 @@
 
 	&.loading {
 		opacity: 0.5;
-		cursor: progress;
 	}
+}
 
-	.spinner {
-		display: inline-block;
-		min-width: 1.6em;
-		min-height: 1.6em;
-		border: 3px solid rgba(255, 255, 255, 0.25);
-		border-radius: 50%;
-		border-top-color: rgb(255, 255, 255);
-		animation: spinner 1s ease-in-out infinite;
-		-webkit-animation: spinner 1s ease-in-out infinite;
-	}
+.spinner {
+	display: inline-block;
+	min-width: 1.6em;
+	min-height: 1.6em;
+	border: 3px solid rgba(255, 255, 255, 0.25);
+	border-radius: 50%;
+	border-top-color: rgb(255, 255, 255);
+	animation: spinner 1s ease-in-out infinite;
+	-webkit-animation: spinner 1s ease-in-out infinite;
 }
 
 @keyframes spinner {

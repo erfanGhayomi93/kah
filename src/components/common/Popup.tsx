@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 
 interface IChildrenProps {
 	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpen: (v: boolean) => void;
 }
 
 interface PopupProps {
@@ -102,9 +102,20 @@ const Popup = ({
 				el.style.left = left + mx + 'px';
 			}
 
+			const popupTop = top + height + my;
+
 			el.style.width = popupWidth;
-			el.style.top = top + height + my + 'px';
+			el.style.top = `${popupTop}px`;
 			el.style.display = '';
+
+			setTimeout(() => {
+				const popupHeight = el.getBoundingClientRect().height;
+				const maxTop = window.innerHeight - popupHeight - 8;
+
+				if (popupTop > maxTop) {
+					el.style.top = `${maxTop}px`;
+				}
+			});
 
 			if (className) el.setAttribute('class', cn(className));
 		} catch (e) {
@@ -112,8 +123,8 @@ const Popup = ({
 		}
 	}, []);
 
-	const handleOpen = () => {
-		if (!disabled) setOpen(true);
+	const handleOpen = (v: boolean) => {
+		if (!disabled) setOpen(v);
 	};
 
 	const onWindowBlur = () => {
