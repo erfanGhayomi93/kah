@@ -67,7 +67,7 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 
 				{showValidityDates && (
 					<ul
-						style={{ top: 'calc(100% + 0.8rem)' }}
+						style={{ top: 'calc(100% + 0.8rem)', zIndex: 99 }}
 						className='absolute left-0 w-full flex-wrap gap-8 py-16 flex-justify-center gray-box'
 					>
 						{VALIDITY_DATES.map((item) => (
@@ -82,7 +82,7 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 										'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
 										item.id === value
 											? 'border-primary-400 bg-secondary-100 text-primary-400'
-											: 'hover:btn-hover border-gray-500 text-gray-1000',
+											: 'border-gray-500 text-gray-1000 hover:btn-hover',
 									)}
 								>
 									{item.title}

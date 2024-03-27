@@ -12,7 +12,6 @@ import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
-import ManageWatchlistColumns from './ManageWatchlistColumns';
 import NoData from './NoData';
 import WatchlistTable from './WatchlistTable';
 
@@ -148,8 +147,6 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					<Loading />
 				</div>
 			)}
-
-			<ManageWatchlistColumns />
 
 			{dataIsEmpty && !isLoading && <NoData key='no-data' onAddSymbol={addSymbol} />}
 		</>

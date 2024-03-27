@@ -1,3 +1,5 @@
+'use client';
+
 import Loading from '@/components/common/Loading';
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { defaultOptionWatchlistColumns } from '@/constants';

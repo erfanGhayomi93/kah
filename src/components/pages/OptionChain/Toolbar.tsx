@@ -1,6 +1,5 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
 import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
-import OptionWatchlistManagerSVG from '@/components/icons/OptionWatchlistManagerSVG';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
@@ -73,8 +72,8 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 										className={clsx(
 											'h-40 w-88 rounded !border transition-colors',
 											inputs.settlementDay?.contractEndDate === item.contractEndDate
-												? 'no-hover btn-select font-medium'
-												: 'hover:btn-hover border-gray-500 text-gray-900',
+												? 'no-hover font-medium btn-select'
+												: 'border-gray-500 text-gray-900 hover:btn-hover',
 										)}
 									>
 										{dateFormatter(item.contractEndDate)}
@@ -86,8 +85,8 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 				</div>
 			</div>
 
-			<div className='gap-8 flex-items-center'>
-				{inputs.baseSymbol && (
+			{Boolean(inputs.baseSymbol) && (
+				<div className='gap-8 flex-items-center'>
 					<div className='h-40 rounded bg-gray-200 px-8 flex-items-center'>
 						<span className='gap-8 whitespace-nowrap text-base text-gray-900 flex-items-center'>
 							{t('option_chain.total_open_contracts')}:
@@ -96,17 +95,12 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 							</span>
 						</span>
 					</div>
-				)}
 
-				<button type='button' onClick={openSymbolInfo} className='h-40 rounded px-16 btn-info-outline'>
-					{t('option_chain.base_symbol_info')}
-				</button>
-
-				<OptionWatchlistManagerSVG
-					className='size-40 rounded border border-gray-500 bg-transparent transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
-					type='button'
-				/>
-			</div>
+					<button type='button' onClick={openSymbolInfo} className='h-40 rounded px-16 btn-info-outline'>
+						{t('option_chain.base_symbol_info')}
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };

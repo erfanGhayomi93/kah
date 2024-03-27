@@ -4,78 +4,79 @@ import { useAppSelector } from '@/features/hooks';
 import dynamic from 'next/dynamic';
 import { Fragment } from 'react';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
+import AnimatePresence from '../common/animation/AnimatePresence';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
-import Loading from './Loading';
+import ModalLoading from './ModalLoading';
 
 const AddNewOptionWatchlist = dynamic(() => import('./AddNewOptionWatchlist'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const AddSaturnTemplate = dynamic(() => import('./AddSaturnTemplate'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const AddSymbolToWatchlist = dynamic(() => import('./AddSymbolToWatchlist'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const BlackScholes = dynamic(() => import('./BlackScholes'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const BuySellModal = dynamic(() => import('./BuySellModal'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const ChoiceBroker = dynamic(() => import('./ChoiceBroker'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const ForgetPasswordModal = dynamic(() => import('./ForgetPasswordModal'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const LoginModal = dynamic(() => import('./LoginModal'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const LogoutModal = dynamic(() => import('./LogoutModal'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const ManageOptionWatchlistList = dynamic(() => import('./ManageOptionWatchlistList'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const OptionWatchlistFiltersModal = dynamic(() => import('./OptionWatchlistFiltersModal'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const OrderDetails = dynamic(() => import('./OrderDetails'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const MoveSymbolToWatchlist = dynamic(() => import('./MoveSymbolToWatchlist'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ModalLoading />,
 });
 
 const Modals = () => {
@@ -100,75 +101,110 @@ const Modals = () => {
 
 	return (
 		<Fragment>
-			{loginModal && <LoginModal {...loginModal} />}
+			<AnimatePresence isEnable={Boolean(loginModal)}>
+				{(isEnable) => <LoginModal isEnable={isEnable} {...loginModal!} />}
+			</AnimatePresence>
 
-			{logout && <LogoutModal {...logout} />}
+			<AnimatePresence isEnable={Boolean(logout)}>
+				{(isEnable) => <LogoutModal isEnable={isEnable} {...logout!} />}
+			</AnimatePresence>
 
-			{blackScholes && <BlackScholes {...blackScholes} />}
+			<AnimatePresence isEnable={Boolean(confirm)}>
+				{(isEnable) => <Confirm isEnable={isEnable} {...confirm!} />}
+			</AnimatePresence>
 
-			{optionFilters && <OptionWatchlistFiltersModal {...optionFilters} />}
+			<AnimatePresence isEnable={Boolean(blackScholes)}>
+				{(isEnable) => <BlackScholes isEnable={isEnable} {...blackScholes!} />}
+			</AnimatePresence>
 
-			{symbolContracts && <SymbolContracts {...symbolContracts} />}
+			<AnimatePresence isEnable={Boolean(optionFilters)}>
+				{(isEnable) => <OptionWatchlistFiltersModal isEnable={isEnable} {...optionFilters!} />}
+			</AnimatePresence>
 
-			{addSaturnTemplate !== null && (
-				<AuthorizeMiddleware>
-					<AddSaturnTemplate {...addSaturnTemplate} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(symbolContracts)}>
+				{(isEnable) => <SymbolContracts isEnable={isEnable} {...symbolContracts!} />}
+			</AnimatePresence>
 
-			{addNewOptionWatchlist && (
-				<AuthorizeMiddleware>
-					<AddNewOptionWatchlist {...addNewOptionWatchlist} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(choiceBroker)}>
+				{(isEnable) => <ChoiceBroker isEnable={isEnable} {...choiceBroker!} />}
+			</AnimatePresence>
 
-			{manageOptionWatchlistList && (
-				<AuthorizeMiddleware>
-					<ManageOptionWatchlistList {...manageOptionWatchlistList} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(addSaturnTemplate)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware>
+						<AddSaturnTemplate isEnable={isEnable} {...addSaturnTemplate!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{buySell && (
-				<AuthorizeMiddleware broker>
-					<BuySellModal {...buySell} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(addNewOptionWatchlist!)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware>
+						<AddNewOptionWatchlist isEnable={isEnable} {...addNewOptionWatchlist!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{addSymbolToWatchlist && (
-				<AuthorizeMiddleware>
-					<AddSymbolToWatchlist {...addSymbolToWatchlist} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(manageOptionWatchlistList)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware>
+						<ManageOptionWatchlistList isEnable={isEnable} {...manageOptionWatchlistList!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{choiceBroker && <ChoiceBroker {...choiceBroker} />}
+			<AnimatePresence isEnable={Boolean(buySell)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware broker>
+						<BuySellModal isEnable={isEnable} {...buySell!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{choiceCollateral && (
-				<AuthorizeMiddleware>
-					<ChoiceCollateral {...choiceCollateral} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(addSymbolToWatchlist)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware>
+						<AddSymbolToWatchlist isEnable={isEnable} {...addSymbolToWatchlist!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{confirm && <Confirm {...confirm} />}
+			<AnimatePresence isEnable={Boolean(choiceCollateral)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware>
+						<ChoiceCollateral isEnable={isEnable} {...choiceCollateral!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{orderDetails && (
-				<AuthorizeMiddleware broker>
-					<OrderDetails {...orderDetails} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(orderDetails)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware broker>
+						<OrderDetails isEnable={isEnable} {...orderDetails!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{moveSymbolToWatchlist && (
-				<AuthorizeMiddleware>
-					<MoveSymbolToWatchlist {...moveSymbolToWatchlist} />
-				</AuthorizeMiddleware>
-			)}
+			<AnimatePresence isEnable={Boolean(moveSymbolToWatchlist)}>
+				{(isEnable) => (
+					<AuthorizeMiddleware>
+						<MoveSymbolToWatchlist isEnable={isEnable} {...moveSymbolToWatchlist!} />
+					</AuthorizeMiddleware>
+				)}
+			</AnimatePresence>
 
-			{forgetPassword && (
-				<ForgetPasswordModal
-					phoneNumber={
-						forgetPassword && typeof forgetPassword === 'object' ? forgetPassword?.phoneNumber : undefined
-					}
-				/>
-			)}
+			<AnimatePresence isEnable={Boolean(forgetPassword)}>
+				{(isEnable) => (
+					<ForgetPasswordModal
+						isEnable={isEnable}
+						phoneNumber={
+							forgetPassword && typeof forgetPassword === 'object'
+								? forgetPassword?.phoneNumber
+								: undefined
+						}
+					/>
+				)}
+			</AnimatePresence>
 		</Fragment>
 	);
 };
