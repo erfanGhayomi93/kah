@@ -117,7 +117,7 @@ const Watchlist = ({
 								e.stopPropagation();
 								onVisibilityChange();
 							}}
-							className='h-48 flex-1 cursor-pointer gap-8 rounded border border-gray-500 bg-gray-200 px-16 transition-colors flex-justify-start hover:border-primary-100 hover:bg-primary-100'
+							className='hover:btn-hover h-48 flex-1 cursor-pointer gap-8 rounded border border-gray-500 bg-gray-200 px-16 transition-colors flex-justify-start'
 						>
 							<button type='button' className={isActive ? 'text-gray-1000' : 'text-gray-700'}>
 								{watchlist.isHidden ? (

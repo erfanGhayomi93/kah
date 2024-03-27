@@ -1,38 +1,17 @@
 'use client';
 
-import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ipcMain from '@/classes/IpcMain';
 import OMSGateway from '@/classes/OMSGateway';
 import type Order from '@/classes/OMSGateway/Order';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
 import { useUserInfo } from '@/hooks';
 import { getBrokerClientId } from '@/utils/cookie';
 import { uuidv4 } from '@/utils/helpers';
-import { createSelector } from '@reduxjs/toolkit';
 import { useLayoutEffect } from 'react';
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isLoggedIn: getIsLoggedIn(state) && getBrokerIsSelected(state),
-		brokerURLs: getBrokerURLs(state),
-	}),
-);
-
-interface OMSMiddlewareProps {
-	children: React.ReactNode;
-}
-
-const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
-	const { brokerURLs, isLoggedIn } = useAppSelector(getStates);
-
-	useGetBrokerUrlQuery({
-		queryKey: ['getBrokerUrlQuery'],
-		enabled: isLoggedIn,
-	});
+const OMSRegistry = () => {
+	const brokerURLs = useAppSelector(getBrokerURLs);
 
 	const { data: userInfo } = useUserInfo();
 
@@ -89,7 +68,7 @@ const OMSMiddleware = ({ children }: OMSMiddlewareProps) => {
 		OMSGateway.publish().start();
 	}, [JSON.stringify(brokerURLs)]);
 
-	return children;
+	return null;
 };
 
-export default OMSMiddleware;
+export default OMSRegistry;

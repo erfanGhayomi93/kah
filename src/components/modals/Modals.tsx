@@ -3,6 +3,7 @@
 import { useAppSelector } from '@/features/hooks';
 import dynamic from 'next/dynamic';
 import { Fragment } from 'react';
+import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import Loading from './Loading';
@@ -109,25 +110,57 @@ const Modals = () => {
 
 			{symbolContracts && <SymbolContracts {...symbolContracts} />}
 
-			{addSaturnTemplate !== null && <AddSaturnTemplate {...addSaturnTemplate} />}
+			{addSaturnTemplate !== null && (
+				<AuthorizeMiddleware>
+					<AddSaturnTemplate {...addSaturnTemplate} />
+				</AuthorizeMiddleware>
+			)}
 
-			{addNewOptionWatchlist && <AddNewOptionWatchlist {...addNewOptionWatchlist} />}
+			{addNewOptionWatchlist && (
+				<AuthorizeMiddleware>
+					<AddNewOptionWatchlist {...addNewOptionWatchlist} />
+				</AuthorizeMiddleware>
+			)}
 
-			{manageOptionWatchlistList && <ManageOptionWatchlistList {...manageOptionWatchlistList} />}
+			{manageOptionWatchlistList && (
+				<AuthorizeMiddleware>
+					<ManageOptionWatchlistList {...manageOptionWatchlistList} />
+				</AuthorizeMiddleware>
+			)}
 
-			{buySell && <BuySellModal {...buySell} />}
+			{buySell && (
+				<AuthorizeMiddleware broker>
+					<BuySellModal {...buySell} />
+				</AuthorizeMiddleware>
+			)}
 
-			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
+			{addSymbolToWatchlist && (
+				<AuthorizeMiddleware>
+					<AddSymbolToWatchlist {...addSymbolToWatchlist} />
+				</AuthorizeMiddleware>
+			)}
 
 			{choiceBroker && <ChoiceBroker {...choiceBroker} />}
 
-			{choiceCollateral && <ChoiceCollateral {...choiceCollateral} />}
+			{choiceCollateral && (
+				<AuthorizeMiddleware>
+					<ChoiceCollateral {...choiceCollateral} />
+				</AuthorizeMiddleware>
+			)}
 
 			{confirm && <Confirm {...confirm} />}
 
-			{orderDetails && <OrderDetails {...orderDetails} />}
+			{orderDetails && (
+				<AuthorizeMiddleware broker>
+					<OrderDetails {...orderDetails} />
+				</AuthorizeMiddleware>
+			)}
 
-			{moveSymbolToWatchlist && <MoveSymbolToWatchlist {...moveSymbolToWatchlist} />}
+			{moveSymbolToWatchlist && (
+				<AuthorizeMiddleware>
+					<MoveSymbolToWatchlist {...moveSymbolToWatchlist} />
+				</AuthorizeMiddleware>
+			)}
 
 			{forgetPassword && (
 				<ForgetPasswordModal

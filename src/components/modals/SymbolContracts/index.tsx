@@ -204,8 +204,8 @@ const SymbolContracts = ({ symbolISIN, symbolTitle, ...props }: SymbolContractsP
 								className={cn(
 									'h-48 w-full justify-start rounded border px-16 text-base transition-colors flex-items-center',
 									JSON.stringify(item) === JSON.stringify(states.activeSettlement)
-										? 'justify-start btn-primary'
-										: 'border-gray-500 bg-gray-200 text-gray-1000 hover:bg-primary-100',
+										? 'btn-select justify-start font-medium'
+										: 'hover:btn-hover border-gray-500 bg-white text-gray-1000',
 								)}
 							>
 								{t('symbol_contracts_modal.end_date') + ' ' + dayFormatter(item.contractEndDate ?? '')}

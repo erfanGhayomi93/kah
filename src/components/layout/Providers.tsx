@@ -1,20 +1,18 @@
 import BroadcastChannelRegistry from '@/components/common/Registry/BroadcastChannelRegistry';
 import QueryClientRegistry from '@/components/common/Registry/QueryClientRegistry';
-import ReduxToolkitRegistry from '@/components/common/Registry/ReduxToolkitRegistry';
 import StyledComponentsRegistry from '@/components/common/Registry/StyledComponentsRegistry';
 import ToastRegistry from '@/components/common/ToastRegistry';
+import ClockProvider from '@/contexts/ClockContext';
 import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
 import dynamic from 'next/dynamic';
+import AppMiddleware from '../common/Middlewares/AppMiddleware';
+import OMSRegistry from '../common/Registry/OMSRegistry';
 
 const LightstreamRegistry = dynamic(() => import('../common/Registry/LightstreamRegistry'), {
 	ssr: false,
 });
 
-const OMSMiddleware = dynamic(() => import('../common/Middlewares/OMSMiddleware'), {
-	ssr: false,
-});
-
-const ClockProvider = dynamic(() => import('@/contexts/ClockContext'), {
+const ReduxToolkitRegistry = dynamic(() => import('../common/Registry/ReduxToolkitRegistry'), {
 	ssr: false,
 });
 
@@ -28,7 +26,8 @@ const Providers = ({ children }: ProvidersProps) => {
 			<QueryClientRegistry>
 				<ReduxToolkitRegistry>
 					<LightstreamRegistry>
-						<OMSMiddleware>
+						<AppMiddleware>
+							<OMSRegistry />
 							<BroadcastChannelRegistry>
 								<ClockProvider>
 									<WatchlistColumnsProvider>
@@ -36,7 +35,7 @@ const Providers = ({ children }: ProvidersProps) => {
 									</WatchlistColumnsProvider>
 								</ClockProvider>
 							</BroadcastChannelRegistry>
-						</OMSMiddleware>
+						</AppMiddleware>
 					</LightstreamRegistry>
 				</ReduxToolkitRegistry>
 			</QueryClientRegistry>

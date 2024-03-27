@@ -7,7 +7,7 @@ export const useUserInfoQuery = createQuery<Broker.User | null, ['userInfoQuery'
 	staleTime: 18e5,
 	queryKey: ['userInfoQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Broker.User>>(url.userInformation, { signal });
@@ -23,7 +23,7 @@ export const useUserRemainQuery = createQuery<Broker.Remain | null, ['userRemain
 	staleTime: 18e5,
 	queryKey: ['userRemainQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Broker.Remain>>(url.userRemain, { signal });
@@ -39,7 +39,7 @@ export const useUserStatusQuery = createQuery<Broker.Status | null, ['userStatus
 	staleTime: 18e5,
 	queryKey: ['userStatusQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Broker.Status>>(url.userStatus, { signal });
@@ -55,7 +55,7 @@ export const useBrokerOrdersCountQuery = createQuery<Broker.OrdersCount | null, 
 	staleTime: 18e5,
 	queryKey: ['brokerOrdersCountQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Broker.OrdersCount>>(url.ordersCount, { signal });
@@ -71,7 +71,7 @@ export const useOpenOrdersQuery = createQuery<Order.OpenOrder[] | null, ['openOr
 	staleTime: 6e4,
 	queryKey: ['openOrdersQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Order.OpenOrder[]>>(url.openOrders, { signal });
@@ -87,7 +87,7 @@ export const useTodayOrdersQuery = createQuery<Order.TodayOrder[] | null, ['open
 	staleTime: 6e4,
 	queryKey: ['openOrdersQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Order.TodayOrder[]>>(url.todayOrders, { signal });
@@ -103,7 +103,7 @@ export const useExecutedOrdersQuery = createQuery<Order.ExecutedOrder[] | null, 
 	staleTime: 6e4,
 	queryKey: ['executedOrdersQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Order.ExecutedOrder[]>>(url.executedOrders, { signal });
@@ -119,7 +119,7 @@ export const useDraftOrdersQuery = createQuery<Order.DraftOrder[] | null, ['draf
 	staleTime: 6e4,
 	queryKey: ['draftOrdersQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Order.DraftOrder[]>>(url.drafts, { signal });
@@ -135,7 +135,7 @@ export const useOptionOrdersQuery = createQuery<Order.OptionOrder[] | null, ['op
 	staleTime: 6e4,
 	queryKey: ['optionOrdersQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Order.OptionOrder[]>>(url.optionOrders, { signal });
@@ -151,7 +151,7 @@ export const useCommissionsQuery = createQuery<Broker.Commission[] | null, ['com
 	staleTime: 18e5,
 	queryKey: ['commissionsQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
+		const url = getBrokerURLs(store().getState());
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Broker.Commission[]>>(url.commission, { signal });

@@ -15,7 +15,7 @@ export const createOrders = (orders: IOFields[]) => ipcMain.send('send_orders', 
 
 export const createDraft = (order: IOFields) =>
 	new Promise<number>(async (resolve, reject) => {
-		const urls = getBrokerURLs(store.getState());
+		const urls = getBrokerURLs(store().getState());
 		if (!urls) {
 			reject();
 			return;
@@ -43,7 +43,7 @@ export const createDraft = (order: IOFields) =>
 
 export const updateDraft = (order: IOFieldsWithID) =>
 	new Promise<number>(async (resolve, reject) => {
-		const urls = getBrokerURLs(store.getState());
+		const urls = getBrokerURLs(store().getState());
 		if (!urls) {
 			reject();
 			return;
@@ -71,7 +71,7 @@ export const updateDraft = (order: IOFieldsWithID) =>
 
 export const updateOrder = (order: IOFieldsWithID) =>
 	new Promise<number>(async (resolve, reject) => {
-		const urls = getBrokerURLs(store.getState());
+		const urls = getBrokerURLs(store().getState());
 		if (!urls) {
 			reject();
 			return;
@@ -99,7 +99,7 @@ export const updateOrder = (order: IOFieldsWithID) =>
 
 export const deleteOrder = (ids: number[]) =>
 	new Promise<boolean>(async (resolve, reject) => {
-		const urls = getBrokerURLs(store.getState());
+		const urls = getBrokerURLs(store().getState());
 		if (!urls || ids.length === 0) {
 			reject();
 			return;
@@ -125,7 +125,7 @@ export const deleteOrder = (ids: number[]) =>
 
 export const deleteDraft = (ids: number[]) =>
 	new Promise<boolean>(async (resolve, reject) => {
-		const urls = getBrokerURLs(store.getState());
+		const urls = getBrokerURLs(store().getState());
 		if (!urls || ids.length === 0) {
 			reject();
 			return;
