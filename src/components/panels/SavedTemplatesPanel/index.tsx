@@ -2,8 +2,7 @@
 
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setSavedTemplatesPanel } from '@/features/slices/panelSlice';
-import { getSavedSaturnTemplates } from '@/features/slices/uiSlice';
+import { getSavedTemplatesPanel, setSavedTemplatesPanel } from '@/features/slices/panelSlice';
 import dynamic from 'next/dynamic';
 import PanelLoading from '../PanelLoading';
 
@@ -18,7 +17,7 @@ const Container = dynamic(() => import('./Container'), {
 });
 
 const SavedTemplates = () => {
-	const savedSaturnTemplates = useAppSelector(getSavedSaturnTemplates);
+	const savedSaturnTemplates = useAppSelector(getSavedTemplatesPanel);
 
 	const dispatch = useAppDispatch();
 
