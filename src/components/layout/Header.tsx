@@ -129,7 +129,7 @@ const Header = () => {
 
 	useLayoutEffect(() => {
 		if (!brokerURLs) return;
-		console.log(brokerURLs);
+
 		refetchUserStatus();
 		refetchUserRemain();
 	}, [brokerURLs]);
