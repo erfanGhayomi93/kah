@@ -54,8 +54,6 @@ export const { setSaturnActiveTemplate, toggleSidebar, toggleOrdersIsExpand, set
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
 export const getOrdersIsExpand = (state: RootState) => state.ui.ordersIsExpand;
-export const getManageOptionColumns = (state: RootState) => state.ui.manageOptionColumns;
-export const getSavedSaturnTemplates = (state: RootState) => state.ui.savedSaturnTemplates;
 export const getLsStatus = (state: RootState) => state.ui.lsStatus;
 export const getSaturnActiveTemplate = (state: RootState) => state.ui.saturnActiveTemplate;
 
