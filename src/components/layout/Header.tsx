@@ -18,7 +18,7 @@ import { deleteBrokerClientId } from '@/utils/cookie';
 import { cn, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-toastify';
 import Popup from '../common/Popup';
@@ -63,14 +63,14 @@ const Header = () => {
 
 	const { data: userInfo } = useUserInfo();
 
-	const { data: userStatus } = useUserStatusQuery({
+	const { data: userStatus, refetch: refetchUserStatus } = useUserStatusQuery({
 		queryKey: ['userStatusQuery'],
-		enabled: Boolean(brokerURLs),
+		enabled: false,
 	});
 
-	const { data: userRemain } = useUserRemainQuery({
+	const { data: userRemain, refetch: refetchUserRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
-		enabled: Boolean(brokerURLs),
+		enabled: false,
 	});
 
 	const showAuthenticationModal = () => {
@@ -126,6 +126,13 @@ const Header = () => {
 
 		return <ShieldSVG width='2.4rem' height='2.4rem' />;
 	}, [userStatus]);
+
+	useLayoutEffect(() => {
+		if (!brokerURLs) return;
+		console.log(brokerURLs);
+		refetchUserStatus();
+		refetchUserRemain();
+	}, [brokerURLs]);
 
 	useEffect(() => {
 		setIsDropdownOpened(false);

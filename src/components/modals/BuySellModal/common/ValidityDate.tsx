@@ -82,7 +82,7 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 										'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
 										item.id === value
 											? 'border-primary-400 bg-secondary-100 text-primary-400'
-											: 'border-gray-500 text-gray-1000 hover:bg-primary-100',
+											: 'hover:btn-hover border-gray-500 text-gray-1000',
 									)}
 								>
 									{item.title}

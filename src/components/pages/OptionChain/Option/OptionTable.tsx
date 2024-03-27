@@ -1,7 +1,12 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleLoginModal, toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import {
+	toggleChoiceBrokerModal,
+	toggleLoginModal,
+	toggleMoveSymbolToWatchlistModal,
+} from '@/features/slices/modalSlice';
 import { getIsLoggedIn, getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useTradingFeatures } from '@/hooks';
@@ -28,6 +33,7 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		orderBasket: getOrderBasket(state),
+		brokerURLs: getBrokerURLs(state),
 	}),
 );
 
@@ -36,11 +42,11 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, orderBasket } = useAppSelector(getStates);
+	const { isLoggedIn, brokerURLs, orderBasket } = useAppSelector(getStates);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
-	const [rowHoverId, setRowHoverId] = useState<number>(-1);
+	const [activeRowId, setActiveRowId] = useState<number>(-1);
 
 	const { addBuySellModal } = useTradingFeatures();
 
@@ -50,8 +56,6 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			{ baseSymbolISIN, settlementDate: settlementDay?.contractEndDate },
 		],
 	});
-
-	const showLoginModal = () => dispatch(toggleLoginModal({}));
 
 	const onSymbolTitleClicked = ({ data }: CellClickedEvent<ITableData>, side: 'buy' | 'sell') => {
 		try {
@@ -69,10 +73,15 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		}
 	};
 
+	const showLoginModal = () => dispatch(toggleLoginModal({}));
+
+	const showChoiceBrokerModal = () => dispatch(toggleChoiceBrokerModal({}));
+
 	const addSymbolToBasket = (data: Option.Root, type: TOptionSides) => {
 		if (!isLoggedIn) showLoginModal();
+		else if (!brokerURLs) showChoiceBrokerModal();
 		else {
-			const i = orderBasket.findIndex((item, i) =>
+			const i = orderBasket.findIndex((item) =>
 				item.symbolISIN ? item.symbolISIN === data.symbolInfo.symbolISIN : false,
 			);
 
@@ -103,6 +112,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const addSymbolToWatchlist = (data: Option.Root) => {
 		if (!isLoggedIn) showLoginModal();
+		else if (!brokerURLs) showChoiceBrokerModal();
 		else {
 			dispatch(
 				toggleMoveSymbolToWatchlistModal({
@@ -115,6 +125,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const addAlert = (data: Option.Root) => {
 		if (!isLoggedIn) showLoginModal();
+		else if (!brokerURLs) showChoiceBrokerModal();
 	};
 
 	const goToTechnicalChart = (data: Option.Root) => {
@@ -206,7 +217,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						valueFormatter: ({ value }) => sepNumbers(String(value)),
 						cellRenderer: StrikePriceCellRenderer,
 						cellRendererParams: {
-							activeRowId: rowHoverId,
+							activeRowId,
 							basket: [],
 							addBuySellModal,
 							addSymbolToBasket,
@@ -353,7 +364,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			valueFormatter: ({ value }) => sepNumbers(String(value)),
 			cellRenderer: StrikePriceCellRenderer,
 			cellRendererParams: {
-				activeRowId: rowHoverId,
+				activeRowId,
 				basket: orderBasket,
 				addBuySellModal,
 				addSymbolToBasket,
@@ -365,7 +376,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		};
 
 		column.setColDef(colDef, colDef);
-	}, [rowHoverId, settlementDay, JSON.stringify(orderBasket)]);
+	}, [activeRowId, settlementDay, JSON.stringify(orderBasket)]);
 
 	useLayoutEffect(() => {
 		const gridApi = gridRef.current;
@@ -384,8 +395,8 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			className='flex-1 rounded-0'
 			rowData={modifiedData ?? []}
 			columnDefs={COLUMNS}
-			onCellMouseOver={(e) => setRowHoverId(e.node.rowIndex ?? -1)}
-			onCellMouseOut={() => setRowHoverId(-1)}
+			onCellMouseOver={(e) => setActiveRowId(e.node.rowIndex ?? -1)}
+			onCellMouseOut={() => setActiveRowId(-1)}
 			suppressRowVirtualisation
 			suppressColumnVirtualisation
 			defaultColDef={defaultColDef}

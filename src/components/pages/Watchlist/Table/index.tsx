@@ -2,6 +2,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 
 import axios from '@/api/axios';
+import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -14,18 +15,6 @@ import { useLayoutEffect, useMemo } from 'react';
 import ManageWatchlistColumns from './ManageWatchlistColumns';
 import NoData from './NoData';
 import WatchlistTable from './WatchlistTable';
-
-interface IOptionWatchlistQuery {
-	SymbolISINs: string[];
-	Id: string;
-	FromDueDays: string;
-	ToDueDays: string;
-	MinimumTradeValue: string;
-	FromDelta: string;
-	ToDelta: string;
-	OptionType: Array<'Call' | 'Put'>;
-	IOTM: Array<'ATM' | 'OTM' | 'ITM'>;
-}
 
 interface TableProps {
 	filters: Partial<IOptionWatchlistFilters>;

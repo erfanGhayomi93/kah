@@ -217,7 +217,8 @@
 	}
 }
 
-.ag-row-hover {
+.ag-row-hover,
+.ag-row-selected {
 	z-index: 1;
 	.ag-cell.strike-price {
 		background-color: var(--ag-row-hover-color);

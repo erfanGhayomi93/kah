@@ -9,7 +9,6 @@ import {
 	toggleMoveSymbolToWatchlistModal,
 	type IMoveSymbolToWatchlistModal,
 } from '@/features/slices/modalSlice';
-import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
@@ -51,8 +50,6 @@ const MoveSymbolToWatchlist = ({ symbolISIN, symbolTitle, ...props }: MoveSymbol
 			queryClient.refetchQueries({
 				queryKey: ['optionWatchlistQuery', { watchlistId: wl.id }],
 			});
-
-			dispatch(setOptionWatchlistTabId(wl.id));
 		} catch (e) {
 			//
 		}

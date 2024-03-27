@@ -183,7 +183,7 @@ const SimpleTrade = ({
 								'h-full rounded border transition-colors flex-justify-center',
 								priceLock
 									? 'border-primary-400 bg-secondary-100 text-primary-400'
-									: 'border-gray-500 bg-white text-gray-900 hover:bg-primary-100',
+									: 'hover:btn-hover border-gray-500 bg-white text-gray-900',
 							)}
 							type='button'
 							onClick={() => setInputValue('priceLock', !priceLock)}
@@ -256,7 +256,7 @@ const SimpleTrade = ({
 					<Button
 						type='submit'
 						className={cn(
-							'not h-40 flex-1 rounded text-base font-medium',
+							'h-40 flex-1 rounded text-base font-medium not',
 							side === 'buy' ? 'btn-success' : 'btn-error',
 						)}
 						loading={submitting}

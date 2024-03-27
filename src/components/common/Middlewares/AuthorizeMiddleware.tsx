@@ -6,7 +6,7 @@ import { type RootState } from '@/features/store';
 import { createSelector } from '@reduxjs/toolkit';
 import { useLayoutEffect, useState } from 'react';
 
-interface AuthorizeModalMiddlewareProps {
+interface AuthorizeMiddlewareProps {
 	broker?: boolean;
 	children: React.ReactNode;
 }
@@ -20,7 +20,7 @@ const getStates = createSelector(
 	}),
 );
 
-const AuthorizeModalMiddleware = ({ broker, children }: AuthorizeModalMiddlewareProps) => {
+const AuthorizeMiddleware = ({ broker, children }: AuthorizeMiddlewareProps) => {
 	const dispatch = useAppDispatch();
 
 	const [checking, setChecking] = useState(true);
@@ -51,4 +51,4 @@ const AuthorizeModalMiddleware = ({ broker, children }: AuthorizeModalMiddleware
 	return children;
 };
 
-export default AuthorizeModalMiddleware;
+export default AuthorizeMiddleware;
