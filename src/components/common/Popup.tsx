@@ -1,6 +1,7 @@
 import { cn } from '@/utils/helpers';
 import React, { cloneElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import AnimatePresence from './animation/AnimatePresence';
 
 interface IChildrenProps {
 	open: boolean;
@@ -19,7 +20,6 @@ interface PopupProps {
 	margin?: Partial<Record<'x' | 'y', number>>;
 	defaultPopupWidth?: number;
 	className?: ClassesValue;
-	animation?: string;
 	dependency?: string;
 }
 
@@ -30,7 +30,6 @@ const Popup = ({
 	onOpen,
 	dependency,
 	portalElement,
-	animation = 'slideUp',
 	defaultOpen,
 	defaultPopupWidth,
 	className,
@@ -165,22 +164,24 @@ const Popup = ({
 		<React.Fragment>
 			{cloneElement(children({ setOpen: handleOpen, open }), { ref: childRef })}
 
-			{!disabled &&
-				open &&
-				createPortal(
-					<div
-						ref={onPortalLoad}
-						style={{
-							position: 'fixed',
-							zIndex: zIndex ?? 99,
-							display: 'none',
-							animation: `${animation} ease-in-out 250ms 1 alternate forwards`,
-						}}
-					>
-						{renderer({ setOpen, open })}
-					</div>,
-					portalElement ?? document.body,
-				)}
+			<AnimatePresence isEnable={!disabled && open}>
+				{(isEnable) =>
+					createPortal(
+						<div
+							ref={onPortalLoad}
+							style={{
+								position: 'fixed',
+								zIndex: zIndex ?? 99,
+								display: 'none',
+								animation: `${isEnable ? 'slideInDown' : 'slideOutDown'} ease-out 250ms 1 alternate forwards`,
+							}}
+						>
+							{renderer({ setOpen, open })}
+						</div>,
+						portalElement ?? document.body,
+					)
+				}
+			</AnimatePresence>
 		</React.Fragment>
 	);
 };

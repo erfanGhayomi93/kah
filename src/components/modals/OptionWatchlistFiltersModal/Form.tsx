@@ -35,12 +35,12 @@ const Form = () => {
 	const initialModalFilters = useAppSelector(getOptionFiltersModal) as Partial<IOptionFiltersModal>;
 
 	const [filters, setFilters] = useState<IOptionWatchlistFilters>({
-		symbols: initialModalFilters.initialSymbols ?? initialFilters.symbols,
-		type: initialModalFilters.initialType ?? initialFilters.type,
-		status: initialModalFilters.initialStatus ?? initialFilters.status,
-		dueDays: initialModalFilters.initialDueDays ?? initialFilters.dueDays,
-		delta: initialModalFilters.initialDelta ?? initialFilters.delta,
-		minimumTradesValue: initialModalFilters.initialMinimumTradesValue ?? initialFilters.minimumTradesValue,
+		symbols: initialModalFilters?.initialSymbols ?? initialFilters.symbols,
+		type: initialModalFilters?.initialType ?? initialFilters.type,
+		status: initialModalFilters?.initialStatus ?? initialFilters.status,
+		dueDays: initialModalFilters?.initialDueDays ?? initialFilters.dueDays,
+		delta: initialModalFilters?.initialDelta ?? initialFilters.delta,
+		minimumTradesValue: initialModalFilters?.initialMinimumTradesValue ?? initialFilters.minimumTradesValue,
 	});
 
 	const setFilterValue = <T extends keyof IOptionWatchlistFilters>(field: T, value: IOptionWatchlistFilters[T]) => {

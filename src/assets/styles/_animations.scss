@@ -57,7 +57,7 @@
 	}
 }
 
-@keyframes slideDown {
+@keyframes slideInDown {
 	from {
 		opacity: 0;
 		pointer-events: none;
@@ -70,7 +70,20 @@
 	}
 }
 
-@keyframes slideUp {
+@keyframes slideOutDown {
+	from {
+		opacity: 1;
+		pointer-events: none;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		pointer-events: initial;
+		transform: translateY(50px);
+	}
+}
+
+@keyframes slideInUp {
 	from {
 		opacity: 0;
 		pointer-events: none;
@@ -80,5 +93,18 @@
 		opacity: 1;
 		pointer-events: initial;
 		transform: translateY(0);
+	}
+}
+
+@keyframes slideOutUp {
+	from {
+		opacity: 1;
+		pointer-events: none;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		pointer-events: initial;
+		transform: translateY(-50px);
 	}
 }
