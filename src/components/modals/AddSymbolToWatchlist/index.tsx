@@ -134,7 +134,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 										<button
 											onClick={() => onAddSymbol(item)}
 											type='button'
-											className='h-48 w-full px-16 transition-colors flex-justify-between hover:bg-primary-100'
+											className='hover:btn-hover h-48 w-full px-16 transition-colors flex-justify-between'
 										>
 											<span className='text-base font-medium text-gray-1000'>
 												{item.symbolTitle}

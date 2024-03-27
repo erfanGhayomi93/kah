@@ -231,7 +231,7 @@ const config: Config = {
 					border: `1.5px solid ${theme('colors.primary.200')}`,
 				},
 
-				'.btn-primary:disabled, .btn-gray:disabled, .btn-primary-100:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
+				'.btn-primary:disabled, .btn-gray:disabled, .btn-select:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
 					{
 						'&:not(.not)': {
 							'box-shadow': 'none !important',
@@ -328,7 +328,7 @@ const config: Config = {
 					},
 				},
 
-				'.btn-primary-100': {
+				'.btn-select': {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
@@ -341,6 +341,11 @@ const config: Config = {
 						'background-color': theme('colors.primary.400'),
 						color: theme('colors.white'),
 					},
+				},
+
+				'.btn-hover': {
+					'border-color': `${theme('colors.primary.100')} !important`,
+					'background-color': theme('colors.primary.100'),
 				},
 
 				'.btn-success': {

@@ -115,7 +115,7 @@ const Container = ({ close }: ContainerProps) => {
 									key={column.id}
 									className={cn(
 										column.isHidden
-											? 'bg-white text-gray-900 shadow-sm hover:bg-primary-100 hover:shadow-none'
+											? 'hover:btn-hover bg-white text-gray-900 shadow-sm hover:shadow-none'
 											: 'bg-primary-400 text-white hover:bg-primary-300',
 									)}
 								>

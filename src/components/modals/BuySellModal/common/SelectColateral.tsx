@@ -19,7 +19,7 @@ const SelectCollateral = ({ value, onChange }: SelectCollateralProps) => {
 					'h-full flex-1 gap-8 transition-colors flex-justify-center',
 					value === 'stock'
 						? 'rounded border !border-primary-400 bg-secondary-100 text-primary-400'
-						: 'text-gray-900 gray-box hover:bg-primary-100',
+						: 'hover:btn-hover text-gray-900 gray-box',
 				)}
 			>
 				<SnowFlakeSVG width='2rem' height='2rem' />
@@ -32,7 +32,7 @@ const SelectCollateral = ({ value, onChange }: SelectCollateralProps) => {
 					'h-full flex-1 gap-8 transition-colors flex-justify-center',
 					value === 'cash'
 						? 'rounded border !border-primary-400 bg-secondary-100 text-primary-400'
-						: 'text-gray-900 gray-box hover:bg-primary-100',
+						: 'hover:btn-hover text-gray-900 gray-box',
 				)}
 			>
 				<PayMoneySVG width='2rem' height='2rem' />

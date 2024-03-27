@@ -169,7 +169,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
 														? 'bg-primary-400 text-white hover:bg-primary-300'
-														: 'bg-transparent hover:bg-primary-100',
+														: 'hover:btn-hover bg-transparent',
 												)}
 											>
 												<div className='w-32 flex-justify-center'>
