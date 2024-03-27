@@ -1,7 +1,7 @@
 import { ExcelSVG, FilterSVG } from '@/components/icons';
 import OptionWatchlistManagerSVG from '@/components/icons/OptionWatchlistManagerSVG';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleManageOptionColumns } from '@/features/slices/uiSlice';
+import { setManageWatchlistColumnsPanel } from '@/features/slices/panelSlice';
 import styled from 'styled-components';
 
 interface ActionsProps {
@@ -52,8 +52,8 @@ const ExcelBtn = styled.button`
 const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) => {
 	const dispatch = useAppDispatch();
 
-	const manageTableHeaders = () => {
-		dispatch(toggleManageOptionColumns(true));
+	const manageWatchlistColumns = () => {
+		dispatch(setManageWatchlistColumnsPanel(true));
 	};
 
 	return (
@@ -79,7 +79,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			</li>
 			<li>
 				<OptionWatchlistManagerSVG
-					onClick={manageTableHeaders}
+					onClick={manageWatchlistColumns}
 					className='size-40 rounded border border-gray-500 bg-transparent transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
 					type='button'
 				/>

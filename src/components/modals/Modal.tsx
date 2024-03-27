@@ -7,6 +7,7 @@ import styles from './Modal.module.scss';
 
 interface ModalProps extends IBaseModalConfiguration {
 	portalElement?: HTMLElement;
+	isEnable?: boolean;
 	style?: Partial<Record<'root' | 'container' | 'modal', React.CSSProperties>>;
 	size?: 'lg' | 'md' | 'sm' | 'xs' | 'xxs';
 	classes?: RecordClasses<'root' | 'container' | 'modal' | 'transparent'>;
@@ -23,6 +24,7 @@ interface ModalHeaderProps {
 
 const Modal = ({
 	portalElement,
+	isEnable,
 	moveable = false,
 	transparent,
 	children,
@@ -97,7 +99,9 @@ const Modal = ({
 			ref={rootRef}
 			style={{
 				...style?.root,
-				animation: animation ? 'fadeIn ease-in-out 250ms 1 alternate forwards' : undefined,
+				animation: animation
+					? `${isEnable ? 'fadeIn' : 'fadeOut'} ease-in-out 250ms 1 alternate forwards`
+					: undefined,
 			}}
 			className={cn(styles.root, classes?.root, transparent && [styles.transparent, classes?.transparent])}
 		>

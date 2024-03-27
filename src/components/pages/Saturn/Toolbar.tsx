@@ -1,7 +1,7 @@
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { BookmarkSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleSavedSaturnTemplates } from '@/features/slices/uiSlice';
+import { setSavedTemplatesPanel } from '@/features/slices/panelSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 	};
 
 	const openSavedTemplates = () => {
-		dispatch(toggleSavedSaturnTemplates(true));
+		dispatch(setSavedTemplatesPanel(true));
 	};
 
 	return (

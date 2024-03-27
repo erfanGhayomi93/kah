@@ -6,7 +6,7 @@ dayjs.extend(jalaliday);
 dayjs.extend(updateLocale);
 
 dayjs.updateLocale('en', {
-	weekStart: 6
+	weekStart: 6,
 });
 
 export default dayjs;

@@ -1,6 +1,9 @@
+'use client';
+
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getSymbolInfoPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setSavedTemplatesPanel } from '@/features/slices/panelSlice';
+import { getSavedSaturnTemplates } from '@/features/slices/uiSlice';
 import dynamic from 'next/dynamic';
 import PanelLoading from '../PanelLoading';
 
@@ -14,23 +17,23 @@ const Container = dynamic(() => import('./Container'), {
 	loading: () => <Loading />,
 });
 
-const SymbolInfoPanel = () => {
-	const symbolInfoPanel = useAppSelector(getSymbolInfoPanel);
+const SavedTemplates = () => {
+	const savedSaturnTemplates = useAppSelector(getSavedSaturnTemplates);
 
 	const dispatch = useAppDispatch();
 
 	const onClose = () => {
-		dispatch(setSymbolInfoPanel(null));
+		dispatch(setSavedTemplatesPanel(false));
 	};
 
 	return (
 		<Panel
-			isEnable={Boolean(symbolInfoPanel)}
+			isEnable={savedSaturnTemplates}
 			onClose={onClose}
-			render={() => <Container symbolISIN={symbolInfoPanel!} close={onClose} />}
-			width='39.2rem'
+			render={() => <Container close={onClose} />}
+			width='42rem'
 		/>
 	);
 };
 
-export default SymbolInfoPanel;
+export default SavedTemplates;

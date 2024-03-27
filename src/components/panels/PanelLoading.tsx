@@ -1,4 +1,4 @@
-const Loading = () => {
+const PanelLoading = () => {
 	return (
 		<div
 			style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', zIndex: 99 }}
@@ -9,4 +9,4 @@ const Loading = () => {
 	);
 };
 
-export default Loading;
+export default PanelLoading;

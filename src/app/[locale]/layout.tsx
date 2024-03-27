@@ -11,6 +11,10 @@ const Modals = dynamic(() => import('@/components/modals/Modals'), {
 	ssr: false,
 });
 
+const Panels = dynamic(() => import('@/components/panels/Panels'), {
+	ssr: false,
+});
+
 interface IRootLayout extends INextProps {
 	children: React.ReactNode;
 	params: {
@@ -26,6 +30,7 @@ const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) 
 					<Providers>
 						<Wrapper>{children}</Wrapper>
 						<Modals />
+						<Panels />
 					</Providers>
 
 					<div id='__tooltip' />
