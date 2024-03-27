@@ -1,10 +1,8 @@
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
-import { getOrdersIsExpand, getSidebarIsExpand } from '@/features/slices/uiSlice';
-import { type RootState } from '@/features/store';
+import { getOrdersIsExpand } from '@/features/slices/uiSlice';
 import { useLocalstorage } from '@/hooks';
-import { createSelector } from '@reduxjs/toolkit';
 import dynamic from 'next/dynamic';
 import Header from './Header';
 
@@ -13,16 +11,8 @@ const Body = dynamic(() => import('./Body'), {
 	loading: () => <Loading />,
 });
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		ordersIsExpand: getOrdersIsExpand(state),
-		sidebarIsExpand: getSidebarIsExpand(state),
-	}),
-);
-
 const Container = () => {
-	const { ordersIsExpand, sidebarIsExpand } = useAppSelector(getStates);
+	const ordersIsExpand = useAppSelector(getOrdersIsExpand);
 
 	const [activeTab, setActiveTab] = useLocalstorage<TOrdersTab>('ot', 'open_orders');
 
@@ -32,7 +22,7 @@ const Container = () => {
 				<div
 					style={{
 						height: ordersIsExpand ? '37.6rem' : '7.2rem',
-						width: sidebarIsExpand ? 'calc(100% - 21.2rem)' : 'calc(100% - 5.6rem)',
+						width: 'calc(100% - 6rem)',
 						transition: 'height 250ms ease-in, width 300ms ease-in-out',
 						bottom: '4rem',
 					}}

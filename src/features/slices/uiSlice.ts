@@ -4,11 +4,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
 export interface UIState {
-	manageOptionColumns: boolean;
-
 	sidebarIsExpand: boolean;
-
-	savedSaturnTemplates: boolean;
 
 	saturnActiveTemplate: Saturn.Template | null;
 
@@ -18,10 +14,6 @@ export interface UIState {
 }
 
 const initialState: UIState = {
-	manageOptionColumns: false,
-
-	savedSaturnTemplates: false,
-
 	ordersIsExpand: false,
 
 	sidebarIsExpand: false,
@@ -35,14 +27,6 @@ const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		toggleManageOptionColumns: (state, { payload }: PayloadAction<UIState['manageOptionColumns']>) => {
-			state.manageOptionColumns = payload;
-		},
-
-		toggleSavedSaturnTemplates: (state, { payload }: PayloadAction<UIState['savedSaturnTemplates']>) => {
-			state.savedSaturnTemplates = payload;
-		},
-
 		toggleSidebar: (state, { payload }: PayloadAction<UIState['sidebarIsExpand']>) => {
 			state.sidebarIsExpand = payload;
 		},
@@ -65,15 +49,8 @@ const uiSlice = createSlice({
 	},
 });
 
-export const {
-	toggleManageOptionColumns,
-	toggleSavedSaturnTemplates,
-	setSaturnActiveTemplate,
-	toggleSidebar,
-	toggleOrdersIsExpand,
-	setOrdersIsExpand,
-	setLsStatus,
-} = uiSlice.actions;
+export const { setSaturnActiveTemplate, toggleSidebar, toggleOrdersIsExpand, setOrdersIsExpand, setLsStatus } =
+	uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
 export const getOrdersIsExpand = (state: RootState) => state.ui.ordersIsExpand;

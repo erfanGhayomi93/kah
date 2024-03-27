@@ -375,7 +375,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			},
 		};
 
-		column.setColDef(colDef, colDef);
+		column.setColDef(colDef, colDef, 'api');
 	}, [activeRowId, settlementDay, JSON.stringify(orderBasket)]);
 
 	useLayoutEffect(() => {

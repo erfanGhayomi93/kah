@@ -202,9 +202,9 @@ const SymbolContracts = ({ symbolISIN, symbolTitle, ...props }: SymbolContractsP
 								key={index}
 								onClick={() => setStatesValue('activeSettlement', item)}
 								className={cn(
-									'h-48 w-full justify-start rounded border px-16 text-base transition-colors flex-items-center',
+									'h-48 w-full justify-start rounded !border-2 px-16 text-base transition-colors flex-items-center',
 									JSON.stringify(item) === JSON.stringify(states.activeSettlement)
-										? 'btn-select justify-start font-medium'
+										? 'btn-select no-hover justify-start font-medium'
 										: 'hover:btn-hover border-gray-500 bg-white text-gray-1000',
 								)}
 							>

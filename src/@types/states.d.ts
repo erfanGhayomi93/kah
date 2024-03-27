@@ -31,6 +31,7 @@ declare type LightstreamStatus =
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
 declare interface IBaseModalConfiguration {
+	isEnable?: boolean;
 	moveable?: boolean;
 	animation?: boolean;
 }

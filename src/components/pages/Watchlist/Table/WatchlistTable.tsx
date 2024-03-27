@@ -596,6 +596,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					cellRendererParams: {
 						onAdd,
 						onDelete,
+						addable: true,
 						deletable: id > -1,
 					},
 				},
@@ -633,11 +634,12 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			cellRendererParams: {
 				onAdd,
 				onDelete,
+				addable: true,
 				deletable: id > -1,
 			},
 		};
 
-		actionColumn.setColDef(colDef, colDef);
+		actionColumn.setColDef(colDef, colDef, 'api');
 	}, [id]);
 
 	useEffect(() => {
@@ -710,7 +712,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			for (let i = 0; i < watchlistColumns.length; i++) {
 				const { isHidden, title } = watchlistColumns[i];
 
-				eGrid.setColumnVisible(title, !isHidden);
+				eGrid.setColumnsVisible([title], !isHidden);
 			}
 		} catch (e) {
 			//
@@ -728,7 +730,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			defaultColDef={defaultColDef}
 			onColumnMoved={onColumnMoved}
 			onBodyScrollEnd={({ api }) => {
-				const lastRowIndex = api.getLastDisplayedRow();
+				const lastRowIndex = api.getLastDisplayedRowIndex();
 				if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
 			}}
 			onSortChanged={() => storeColumns()}

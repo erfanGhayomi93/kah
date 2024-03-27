@@ -1,5 +1,5 @@
 import Tooltip from '@/components/common/Tooltip';
-import Collapse from '@/components/common/transition/Collapse';
+import Collapse from '@/components/common/animation/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import { Link, usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
