@@ -192,6 +192,21 @@
 		"rho": "رو",
 		"implied_volatility": "نوسان پذیری ضمنی"
 	},
+	"symbol_info_panel": {
+		"contracts": "قراردادها",
+		"symbol_detail": "جزئیات نماد",
+		"open_positions": "موقعیت‌های باز",
+		"market_depth": "عمق بازار",
+		"5_quotes": "پنج مظنه",
+		"individual_and_legal": "حقیقی و حقوقی",
+		"symbol_chart": "نمودار نماد",
+		"co_group": "هم گروهی‌ها",
+		"supervisor_message": "پیام ناظر",
+		"close_position": "بستن موقعیت",
+		"new_position": "موقعیت جدید",
+		"last_traded_price": "آخرین قیمت",
+		"closing_price": "قیمت پایانی"
+	},
 	"manage_option_watchlist_columns": {
 		"title": "مدیریت ستون های جدول",
 		"symbol_info": "اطلاعات نماد",

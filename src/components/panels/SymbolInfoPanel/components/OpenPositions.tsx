@@ -1,22 +1,22 @@
 import { useMemo } from 'react';
 import Section, { type ITabIem } from '../common/Section';
 
-const SupervisorMessages = () => {
+const OpenPositions = () => {
 	const tabs: ITabIem[] = useMemo(
 		() => [
 			{
-				id: 'supervisor_messages',
-				title: 'پیام ناظر',
+				id: 'open_positions',
+				title: 'موقعیت‌های باز',
 			},
 		],
 		[],
 	);
 
 	return (
-		<Section defaultActiveTab='supervisor_messages' tabs={tabs}>
+		<Section defaultActiveTab='open_positions' tabs={tabs}>
 			<div className='px-8 py-16' />
 		</Section>
 	);
 };
 
-export default SupervisorMessages;
+export default OpenPositions;

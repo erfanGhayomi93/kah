@@ -26,7 +26,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 		{
 			portalElement,
 			moveable = false,
-			transparent,
+			transparent = false,
 			children,
 			style,
 			classes,
