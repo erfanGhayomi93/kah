@@ -6,9 +6,9 @@ import { useAppDispatch } from '@/features/hooks';
 import { toggleAddNewOptionWatchlist } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import styled from 'styled-components';
-import Modal from '../Modal';
+import Modal, { Header } from '../Modal';
 
 const Div = styled.div`
 	width: 336px;
@@ -21,7 +21,7 @@ const Div = styled.div`
 
 interface AddNewOptionWatchlistProps extends IBaseModalConfiguration {}
 
-const AddNewOptionWatchlist = (props: AddNewOptionWatchlistProps) => {
+const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistProps>((props, ref) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -70,9 +70,10 @@ const AddNewOptionWatchlist = (props: AddNewOptionWatchlistProps) => {
 			top='50%'
 			onClose={onCloseModal}
 			{...props}
+			ref={ref}
 		>
 			<Div className='bg-white'>
-				<Modal.Header onClose={onCloseModal} label={t('add_new_option_watchlist_modal.title')} />
+				<Header onClose={onCloseModal} label={t('add_new_option_watchlist_modal.title')} />
 
 				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 px-32 pb-24 flex-column'>
 					<label className='relative h-40 rounded flex-items-center input-group'>
@@ -114,6 +115,6 @@ const AddNewOptionWatchlist = (props: AddNewOptionWatchlistProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default AddNewOptionWatchlist;

@@ -1,38 +1,25 @@
 'use client';
 
 import Loading from '@/components/common/Loading';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getSavedTemplatesPanel, setSavedTemplatesPanel } from '@/features/slices/panelSlice';
+import { useAppDispatch } from '@/features/hooks';
+import { setSavedTemplatesPanel } from '@/features/slices/panelSlice';
 import dynamic from 'next/dynamic';
-import PanelLoading from '../PanelLoading';
-
-const Panel = dynamic(() => import('../Panel'), {
-	ssr: false,
-	loading: () => <PanelLoading />,
-});
+import { forwardRef } from 'react';
+import Panel from '../Panel';
 
 const Container = dynamic(() => import('./Container'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
 
-const SavedTemplates = () => {
-	const savedSaturnTemplates = useAppSelector(getSavedTemplatesPanel);
-
+const SavedTemplates = forwardRef<HTMLDivElement>((_, ref) => {
 	const dispatch = useAppDispatch();
 
 	const onClose = () => {
 		dispatch(setSavedTemplatesPanel(false));
 	};
 
-	return (
-		<Panel
-			isEnable={savedSaturnTemplates}
-			onClose={onClose}
-			render={() => <Container close={onClose} />}
-			width='42rem'
-		/>
-	);
-};
+	return <Panel ref={ref} onClose={onClose} render={() => <Container close={onClose} />} width='42rem' />;
+});
 
 export default SavedTemplates;

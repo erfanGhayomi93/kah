@@ -65,10 +65,8 @@ brokerAxios.interceptors.response.use(
 
 export const onUnauthorize = () => {
 	try {
-		const s = store();
-
-		s.dispatch(setBrokerIsSelected(false));
-		s.dispatch(setBrokerURLs(null));
+		store.dispatch(setBrokerIsSelected(false));
+		store.dispatch(setBrokerURLs(null));
 
 		const [token] = getBrokerClientId();
 		deleteBrokerClientId();

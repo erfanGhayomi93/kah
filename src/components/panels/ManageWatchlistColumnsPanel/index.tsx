@@ -1,22 +1,16 @@
 import Loading from '@/components/common/Loading';
-import PanelLoading from '@/components/panels/PanelLoading';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getManageWatchlistColumnsPanel, setManageWatchlistColumnsPanel } from '@/features/slices/panelSlice';
+import { useAppDispatch } from '@/features/hooks';
+import { setManageWatchlistColumnsPanel } from '@/features/slices/panelSlice';
 import dynamic from 'next/dynamic';
-
-const Panel = dynamic(() => import('../Panel'), {
-	ssr: false,
-	loading: () => <PanelLoading />,
-});
+import { forwardRef } from 'react';
+import Panel from '../Panel';
 
 const Container = dynamic(() => import('./Container'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
 
-const ManageWatchlistColumnsPanel = () => {
-	const manageWatchlistColumns = useAppSelector(getManageWatchlistColumnsPanel);
-
+const ManageWatchlistColumnsPanel = forwardRef<HTMLDivElement>((_, ref) => {
 	const dispatch = useAppDispatch();
 
 	const onClose = () => {
@@ -24,14 +18,8 @@ const ManageWatchlistColumnsPanel = () => {
 	};
 
 	return (
-		<Panel
-			isEnable={manageWatchlistColumns}
-			transparent
-			onClose={onClose}
-			width='47.2rem'
-			render={() => <Container close={onClose} />}
-		/>
+		<Panel ref={ref} transparent onClose={onClose} width='47.2rem' render={() => <Container close={onClose} />} />
 	);
-};
+});
 
 export default ManageWatchlistColumnsPanel;
