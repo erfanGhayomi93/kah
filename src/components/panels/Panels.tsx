@@ -1,40 +1,62 @@
 'use client';
 
 import { useAppSelector } from '@/features/hooks';
-import dynamic from 'next/dynamic';
-import { Fragment } from 'react';
+import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import AnimatePresence from '../common/animation/AnimatePresence';
-import ManageWatchlistColumnsPanel from './ManageWatchlistColumnsPanel';
-import Loading from './PanelLoading';
+import ErrorBoundary from '../common/ErrorBoundary';
+import PanelLoading from './PanelLoading';
 
-const SymbolInfoPanel = dynamic(() => import('./SymbolInfoPanel'), {
-	ssr: false,
-	loading: () => <Loading />,
-});
+const ManageWatchlistColumnsPanel = lazy(() => import('./ManageWatchlistColumnsPanel'));
 
-const SavedTemplatesPanel = dynamic(() => import('./SavedTemplatesPanel'), {
-	ssr: false,
-	loading: () => <Loading />,
-});
+const SymbolInfoPanel = lazy(() => import('./SymbolInfoPanel'));
+
+const SavedTemplatesPanel = lazy(() => import('./SavedTemplatesPanel'));
 
 const Panels = () => {
 	const { symbolInfoPanel, savedTemplates, manageWatchlistColumns } = useAppSelector((state) => state.panel);
 
 	return (
 		<Fragment>
-			<AnimatePresence duration={600} isEnable={Boolean(symbolInfoPanel)}>
-				{() => <SymbolInfoPanel />}
-			</AnimatePresence>
+			<PanelAnimatePresence>
+				{symbolInfoPanel !== null && (
+					<PanelSuspense>
+						<SymbolInfoPanel />
+					</PanelSuspense>
+				)}
+			</PanelAnimatePresence>
 
-			<AnimatePresence duration={600} isEnable={manageWatchlistColumns}>
-				{() => <ManageWatchlistColumnsPanel />}
-			</AnimatePresence>
+			<PanelAnimatePresence>
+				{manageWatchlistColumns && (
+					<PanelSuspense>
+						<ManageWatchlistColumnsPanel />
+					</PanelSuspense>
+				)}
+			</PanelAnimatePresence>
 
-			<AnimatePresence duration={600} isEnable={savedTemplates}>
-				{() => <SavedTemplatesPanel />}
-			</AnimatePresence>
+			<PanelAnimatePresence>
+				{savedTemplates && (
+					<PanelSuspense>
+						<SavedTemplatesPanel />
+					</PanelSuspense>
+				)}
+			</PanelAnimatePresence>
 		</Fragment>
 	);
 };
+
+const PanelSuspense = forwardRef<HTMLDivElement, { children: ReactNode }>(({ children }, ref) => (
+	<Suspense fallback={<PanelLoading />}>{children ? cloneElement(children, { ref }) : null}</Suspense>
+));
+
+const PanelAnimatePresence = ({ children }: { children: ReactNode }) => (
+	<ErrorBoundary>
+		<AnimatePresence
+			initial={{ animation: 'slideInLeft', duration: 750 }}
+			exit={{ animation: 'slideOutLeft', duration: 600 }}
+		>
+			{children}
+		</AnimatePresence>
+	</ErrorBoundary>
+);
 
 export default Panels;

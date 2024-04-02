@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { toggleOrderDetailsModal, type IOrderDetailsModal } from '@/features/slices/modalSlice';
 import { cn, dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 
@@ -15,7 +16,7 @@ const Div = styled.div`
 
 interface OrderDetailsProps extends IOrderDetailsModal {}
 
-const OrderDetails = ({ order, ...props }: OrderDetailsProps) => {
+const OrderDetails = forwardRef<HTMLDivElement, OrderDetailsProps>(({ order, ...props }, ref) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -74,6 +75,7 @@ const OrderDetails = ({ order, ...props }: OrderDetailsProps) => {
 			top='50%'
 			onClose={onCloseModal}
 			{...props}
+			ref={ref}
 		>
 			<Div className='gap-8 bg-gray-100 flex-column'>
 				<div className='relative h-56 w-full flex-justify-center'>
@@ -145,6 +147,6 @@ const OrderDetails = ({ order, ...props }: OrderDetailsProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default OrderDetails;

@@ -4,11 +4,11 @@ import { toggleChoiceBrokerModal, toggleLoginModal } from '@/features/slices/mod
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { createSelector } from '@reduxjs/toolkit';
-import { useLayoutEffect, useState } from 'react';
+import { cloneElement, forwardRef, useLayoutEffect, useState } from 'react';
 
 interface AuthorizeMiddlewareProps {
 	broker?: boolean;
-	children: React.ReactNode;
+	children: React.ReactElement;
 }
 
 const getStates = createSelector(
@@ -20,7 +20,7 @@ const getStates = createSelector(
 	}),
 );
 
-const AuthorizeMiddleware = ({ broker, children }: AuthorizeMiddlewareProps) => {
+const AuthorizeMiddleware = forwardRef<HTMLElement, AuthorizeMiddlewareProps>(({ broker, children }, ref) => {
 	const dispatch = useAppDispatch();
 
 	const [checking, setChecking] = useState(true);
@@ -48,7 +48,7 @@ const AuthorizeMiddleware = ({ broker, children }: AuthorizeMiddlewareProps) => 
 	}, [isLoggedIn, brokerIsSelected, brokerURLs]);
 
 	if (checking) return null;
-	return children;
-};
+	return cloneElement(children, { ref });
+});
 
 export default AuthorizeMiddleware;

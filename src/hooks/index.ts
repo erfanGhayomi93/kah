@@ -4,6 +4,7 @@ import useErrors from './useErrors';
 import useInputs from './useInputs';
 import useLocalstorage from './useLocalstorage';
 import usePagination from './usePagination';
+import useProps from './useProps';
 import useServerDatetime from './useServerDatetime';
 import useSubscription from './useSubscription';
 import useTradingFeatures from './useTradingFeatures';
@@ -17,6 +18,7 @@ export {
 	useInputs,
 	useLocalstorage,
 	usePagination,
+	useProps,
 	useServerDatetime,
 	useSubscription,
 	useTradingFeatures,

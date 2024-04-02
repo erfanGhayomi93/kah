@@ -3,6 +3,7 @@ import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleChoiceBrokerModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Broker from './Broker';
@@ -18,7 +19,7 @@ const Div = styled.div`
 
 interface ChoiceBrokerProps extends IBaseModalConfiguration {}
 
-const ChoiceBroker = (props: ChoiceBrokerProps) => {
+const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -40,7 +41,13 @@ const ChoiceBroker = (props: ChoiceBrokerProps) => {
 	};
 
 	return (
-		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
+		<Modal
+			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			top='50%'
+			onClose={onCloseModal}
+			{...props}
+			ref={ref}
+		>
 			<Div className='bg-white'>
 				<div key='close' className='absolute left-24 z-10'>
 					<button onClick={onCloseModal} type='button' className='icon-hover'>
@@ -70,6 +77,6 @@ const ChoiceBroker = (props: ChoiceBrokerProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default ChoiceBroker;

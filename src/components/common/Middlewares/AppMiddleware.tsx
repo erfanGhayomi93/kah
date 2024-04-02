@@ -32,21 +32,20 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 	});
 
 	const onUserLoggedOutFromTheBroker = () => {
-		// queryClient.setQueryData(['userInfoQuery'], null);
-		// queryClient.setQueryData(['userRemainQuery'], null);
-		// queryClient.setQueryData(['userStatusQuery'], null);
-		// queryClient.setQueryData(['brokerOrdersCountQuery'], null);
-		// queryClient.setQueryData(['openOrdersQuery'], null);
-		// queryClient.setQueryData(['openOrdersQuery'], null);
-		// queryClient.setQueryData(['executedOrdersQuery'], null);
-		// queryClient.setQueryData(['draftOrdersQuery'], null);
-		// queryClient.setQueryData(['optionOrdersQuery'], null);
-		// queryClient.setQueryData(['commissionsQuery'], null);
+		queryClient.setQueryData(['userInfoQuery'], null);
+		queryClient.setQueryData(['userRemainQuery'], null);
+		queryClient.setQueryData(['userStatusQuery'], null);
+		queryClient.setQueryData(['brokerOrdersCountQuery'], null);
+		queryClient.setQueryData(['openOrdersQuery'], null);
+		queryClient.setQueryData(['openOrdersQuery'], null);
+		queryClient.setQueryData(['executedOrdersQuery'], null);
+		queryClient.setQueryData(['draftOrdersQuery'], null);
+		queryClient.setQueryData(['optionOrdersQuery'], null);
+		queryClient.setQueryData(['commissionsQuery'], null);
 	};
 
 	useLayoutEffect(() => {
 		if (brokerURLs) return;
-
 		// onUserLoggedOutFromTheBroker();
 	}, [brokerURLs]);
 
