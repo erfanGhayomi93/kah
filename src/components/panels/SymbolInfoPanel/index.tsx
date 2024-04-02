@@ -1,6 +1,6 @@
 import Loading from '@/components/common/Loading';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getSymbolInfoPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dynamic from 'next/dynamic';
 import { forwardRef } from 'react';
 import Panel from '../Panel';
@@ -10,9 +10,11 @@ const Container = dynamic(() => import('./Container'), {
 	loading: () => <Loading />,
 });
 
-const SymbolInfoPanel = forwardRef<HTMLDivElement>((_, ref) => {
-	const symbolInfoPanel = useAppSelector(getSymbolInfoPanel);
+interface SymbolInfoPanelProps {
+	symbolISIN: string;
+}
 
+const SymbolInfoPanel = forwardRef<HTMLDivElement, SymbolInfoPanelProps>(({ symbolISIN }, ref) => {
 	const dispatch = useAppDispatch();
 
 	const onClose = () => {
@@ -23,8 +25,11 @@ const SymbolInfoPanel = forwardRef<HTMLDivElement>((_, ref) => {
 		<Panel
 			ref={ref}
 			onClose={onClose}
-			render={() => <Container symbolISIN={symbolInfoPanel!} close={onClose} />}
+			render={() => <Container symbolISIN={symbolISIN} close={onClose} />}
 			width='39.2rem'
+			classes={{
+				wrapper: '!bg-gray-300',
+			}}
 		/>
 	);
 });

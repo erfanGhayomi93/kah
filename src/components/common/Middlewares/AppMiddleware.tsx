@@ -46,7 +46,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 
 	useLayoutEffect(() => {
 		if (brokerURLs) return;
-		// onUserLoggedOutFromTheBroker();
+		onUserLoggedOutFromTheBroker();
 	}, [brokerURLs]);
 
 	return children;

@@ -9,11 +9,11 @@ interface AnimatePresenceProps {
 	children: ReactNode;
 	exit: IAnimation;
 	initial: IAnimation;
-	eAnimate?: HTMLElement;
+	disabled?: boolean;
 	onRefLoad?: (el: HTMLElement | null) => void;
 }
 
-const AnimatePresence = ({ exit, initial, children, onRefLoad, eAnimate }: AnimatePresenceProps) => {
+const AnimatePresence = ({ exit, initial, children, disabled, onRefLoad }: AnimatePresenceProps) => {
 	const elRef = useRef<HTMLElement | null>(null);
 
 	const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -27,7 +27,7 @@ const AnimatePresence = ({ exit, initial, children, onRefLoad, eAnimate }: Anima
 	};
 
 	const toggleAnimation = () => {
-		if (!elRef.current) return;
+		if (!elRef.current || disabled) return;
 
 		const isInitial = Boolean(children);
 		const { animation, duration } = isInitial ? initial : exit;
@@ -37,10 +37,10 @@ const AnimatePresence = ({ exit, initial, children, onRefLoad, eAnimate }: Anima
 
 	const onElementLoad = useCallback(
 		(el: HTMLElement | null) => {
-			elRef.current = eAnimate ?? el;
+			elRef.current = el;
 
 			try {
-				onRefLoad?.(el);
+				onRefLoad?.(elRef.current);
 			} catch (e) {
 				//
 			}
@@ -49,7 +49,7 @@ const AnimatePresence = ({ exit, initial, children, onRefLoad, eAnimate }: Anima
 
 			toggleAnimation();
 		},
-		[eAnimate, children],
+		[children],
 	);
 
 	useLayoutEffect(() => {
