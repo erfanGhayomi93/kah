@@ -4,7 +4,7 @@ import { toggleBlackScholesModal, type IBlackScholes } from '@/features/slices/m
 import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useLayoutEffect, useState } from 'react';
+import { forwardRef, useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Form from './Form';
@@ -34,7 +34,7 @@ const Div = styled.div`
 	height: 660px;
 `;
 
-const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
+const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN, ...props }, ref) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -98,6 +98,7 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 
 	return (
 		<Modal
+			ref={ref}
 			style={{ modal: { transform: 'translate(-50%, -50%)', borderRadius: '1.6rem' } }}
 			top='50%'
 			onClose={onCloseModal}
@@ -133,6 +134,6 @@ const BlackScholes = ({ symbolISIN, ...props }: BlackScholesProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default BlackScholes;

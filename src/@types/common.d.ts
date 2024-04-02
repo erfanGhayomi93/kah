@@ -9,6 +9,8 @@ declare type ClassesValue =
 	| Record<string, null | boolean | undefined>
 	| ClassesValue[];
 
+declare type ReactNode = null | undefined | false | React.ReactElement;
+
 declare type RecordClasses<T extends string> = Partial<Record<T, ClassesValue>>;
 
 type NestedObject = { [key: string | number]: NestedObject | string | number };

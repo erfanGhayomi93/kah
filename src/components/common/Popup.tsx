@@ -1,7 +1,17 @@
 import { cn } from '@/utils/helpers';
-import React, { cloneElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+	cloneElement,
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 import AnimatePresence from './animation/AnimatePresence';
+import ErrorBoundary from './ErrorBoundary';
 
 interface IChildrenProps {
 	open: boolean;
@@ -14,9 +24,9 @@ interface PopupProps {
 	onClose?: () => void;
 	onOpen?: () => void;
 	portalElement?: HTMLElement;
+	zIndex?: number;
 	defaultOpen?: boolean;
 	disabled?: boolean;
-	zIndex?: number;
 	margin?: Partial<Record<'x' | 'y', number>>;
 	defaultPopupWidth?: number;
 	className?: ClassesValue;
@@ -68,7 +78,7 @@ const Popup = ({
 		}
 	};
 
-	const onPortalLoad = useCallback((el: HTMLDivElement | null) => {
+	const onPortalLoad = useCallback((el: HTMLElement | null) => {
 		popupRef.current = el;
 
 		try {
@@ -164,26 +174,48 @@ const Popup = ({
 		<React.Fragment>
 			{cloneElement(children({ setOpen: handleOpen, open }), { ref: childRef })}
 
-			<AnimatePresence isEnable={!disabled && open}>
-				{(isEnable) =>
-					createPortal(
-						<div
-							ref={onPortalLoad}
-							style={{
-								position: 'fixed',
-								zIndex: zIndex ?? 99,
-								display: 'none',
-								animation: `${isEnable ? 'slideInDown' : 'slideOutDown'} ease-out 250ms 1 alternate forwards`,
-							}}
-						>
+			<ErrorBoundary>
+				<AnimatePresence
+					initial={{ animation: 'fadeInDown' }}
+					exit={{ animation: 'fadeOutDown' }}
+					onRefLoad={onPortalLoad}
+				>
+					{!disabled && open && (
+						<Child zIndex={zIndex} portalElement={portalElement}>
 							{renderer({ setOpen, open })}
-						</div>,
-						portalElement ?? document.body,
-					)
-				}
-			</AnimatePresence>
+						</Child>
+					)}
+				</AnimatePresence>
+			</ErrorBoundary>
 		</React.Fragment>
 	);
 };
+
+const Child = forwardRef<
+	HTMLDivElement,
+	{
+		children: React.ReactNode;
+		portalElement?: HTMLElement;
+		zIndex?: number;
+	}
+>(({ zIndex, portalElement, children }, ref) => {
+	const childRef = useRef<HTMLDivElement | null>(null);
+
+	useImperativeHandle(ref, () => childRef.current!);
+
+	return createPortal(
+		<div
+			ref={childRef}
+			style={{
+				position: 'fixed',
+				zIndex: zIndex ?? 99,
+				display: 'none',
+			}}
+		>
+			{children}
+		</div>,
+		portalElement ?? document.body,
+	);
+});
 
 export default Popup;

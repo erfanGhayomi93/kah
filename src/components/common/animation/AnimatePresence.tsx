@@ -1,32 +1,76 @@
-import { useDebounce } from '@/hooks';
-import { useLayoutEffect, useState } from 'react';
+import { cloneElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
 
-interface AnimatePresenceProps {
-	isEnable: boolean;
+interface IAnimation {
+	animation: string;
 	duration?: number;
-	children?: (isEnabled: boolean) => React.ReactNode;
 }
 
-const AnimatePresence = ({ isEnable, duration = 250, children }: AnimatePresenceProps) => {
-	const { setDebounce, clearDebounce } = useDebounce();
+interface AnimatePresenceProps {
+	children: ReactNode;
+	exit: IAnimation;
+	initial: IAnimation;
+	eAnimate?: HTMLElement;
+	onRefLoad?: (el: HTMLElement | null) => void;
+}
 
-	const [isRender, setIsRender] = useState(isEnable);
+const AnimatePresence = ({ exit, initial, children, onRefLoad, eAnimate }: AnimatePresenceProps) => {
+	const elRef = useRef<HTMLElement | null>(null);
+
+	const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+	const [component, setComponent] = useState<React.ReactElement | null>(children || null);
+
+	const [isRender, setIsRender] = useState(Boolean(children));
+
+	const clearDebounce = () => {
+		if (debounceRef.current) clearTimeout(debounceRef.current);
+	};
+
+	const toggleAnimation = () => {
+		if (!elRef.current) return;
+
+		const isInitial = Boolean(children);
+		const { animation, duration } = isInitial ? initial : exit;
+
+		elRef.current.style.animation = `${animation} ${duration ?? 250}ms 1 forwards ease-in-out`;
+	};
+
+	const onElementLoad = useCallback(
+		(el: HTMLElement | null) => {
+			elRef.current = eAnimate ?? el;
+
+			try {
+				onRefLoad?.(el);
+			} catch (e) {
+				//
+			}
+
+			if (!elRef.current) return;
+
+			toggleAnimation();
+		},
+		[eAnimate, children],
+	);
 
 	useLayoutEffect(() => {
+		const isVisible = Boolean(children);
+
 		clearDebounce();
+		toggleAnimation();
 
-		if (isEnable) {
+		if (isVisible) {
+			setComponent(children as React.ReactElement);
 			setIsRender(true);
-			return;
+		} else {
+			debounceRef.current = setTimeout(() => {
+				setIsRender(false);
+				setComponent(null);
+			}, exit.duration ?? 250);
 		}
-
-		setDebounce(() => {
-			setIsRender(false);
-		}, duration);
-	}, [isEnable]);
+	}, [children]);
 
 	if (!isRender) return null;
-	return children?.(isEnable);
+	return component ? cloneElement(component, { ref: onElementLoad }) : null;
 };
 
 export default AnimatePresence;
