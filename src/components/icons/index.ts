@@ -26,6 +26,7 @@ import EyeSlashSVG from './eye-slash.svg';
 import EyeSVG from './eye.svg';
 import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
+import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import HomeSVG from './home.svg';
@@ -54,6 +55,7 @@ import SaturnSVG from './saturn.svg';
 import SearchSVG from './search.svg';
 import SendFillSVG from './send-fill.svg';
 import SessionHistorySVG from './session-history.svg';
+import SettingSliderSVG from './setting-slider.svg';
 import SettingSVG from './setting.svg';
 import ShieldSVG from './shield.svg';
 import SnowFlakeSVG from './snow-flake.svg';
@@ -100,6 +102,7 @@ export {
 	EyeSlashSVG,
 	FileExcelSVG,
 	FilterSVG,
+	GalaxySVG,
 	GrowDownSVG,
 	GrowUpSVG,
 	HomeSVG,
@@ -129,6 +132,7 @@ export {
 	SendFillSVG,
 	SessionHistorySVG,
 	SettingSVG,
+	SettingSliderSVG,
 	ShieldSVG,
 	SnowFlakeSVG,
 	SquareXSVG,

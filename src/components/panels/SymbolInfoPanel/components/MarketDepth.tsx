@@ -2,24 +2,24 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Section, { type ITabIem } from '../common/Section';
 
-const Chart = () => {
+const MarketDepth = () => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
 		() => [
 			{
-				id: 'symbol_chart',
-				title: t('symbol_info_panel.symbol_chart'),
+				id: 'market_depth',
+				title: t('symbol_info_panel.market_depth'),
 			},
 		],
 		[],
 	);
 
 	return (
-		<Section defaultActiveTab='symbol_chart' tabs={tabs}>
+		<Section defaultActiveTab='market_depth' tabs={tabs}>
 			<div className='px-8 py-16' />
 		</Section>
 	);
 };
 
-export default Chart;
+export default MarketDepth;

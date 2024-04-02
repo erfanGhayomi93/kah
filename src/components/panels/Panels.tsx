@@ -20,7 +20,7 @@ const Panels = () => {
 			<PanelAnimatePresence>
 				{symbolInfoPanel !== null && (
 					<PanelSuspense>
-						<SymbolInfoPanel />
+						<SymbolInfoPanel symbolISIN={symbolInfoPanel} />
 					</PanelSuspense>
 				)}
 			</PanelAnimatePresence>
@@ -51,8 +51,8 @@ const PanelSuspense = forwardRef<HTMLDivElement, { children: ReactNode }>(({ chi
 const PanelAnimatePresence = ({ children }: { children: ReactNode }) => (
 	<ErrorBoundary>
 		<AnimatePresence
-			initial={{ animation: 'slideInLeft', duration: 750 }}
-			exit={{ animation: 'slideOutLeft', duration: 600 }}
+			initial={{ animation: 'fadeInLeft', duration: 750 }}
+			exit={{ animation: 'fadeOutLeft', duration: 600 }}
 		>
 			{children}
 		</AnimatePresence>
