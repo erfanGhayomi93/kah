@@ -1,8 +1,13 @@
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import Section, { type ITabIem } from '../common/Section';
+import Section, { type ITabIem } from '../../common/Section';
+import BaseSymbolDetail from './BaseSymbolDetail';
 
-const SymbolDetail = () => {
+interface SymbolDetailProps {
+	onToggleSymbolDetail: (isExpand: boolean) => void;
+}
+
+const SymbolDetail = ({ onToggleSymbolDetail }: SymbolDetailProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -17,7 +22,7 @@ const SymbolDetail = () => {
 
 	return (
 		<Section defaultActiveTab='symbol_detail' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<BaseSymbolDetail onToggleSymbolDetail={onToggleSymbolDetail} />
 		</Section>
 	);
 };

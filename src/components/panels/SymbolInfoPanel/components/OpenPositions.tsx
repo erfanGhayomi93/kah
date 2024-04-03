@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import NoData from '../common/NoData';
 import Section, { type ITabIem } from '../common/Section';
 
 const OpenPositions = () => {
@@ -14,7 +15,7 @@ const OpenPositions = () => {
 
 	return (
 		<Section defaultActiveTab='open_positions' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<NoData />
 		</Section>
 	);
 };

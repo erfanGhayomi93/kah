@@ -1,8 +1,13 @@
+import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Section, { type ITabIem } from '../common/Section';
 
-const MarketDepth = () => {
+interface MarketDepthProps {
+	symbolISIN: string;
+}
+
+const MarketDepth = ({ symbolISIN }: MarketDepthProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -17,7 +22,9 @@ const MarketDepth = () => {
 
 	return (
 		<Section defaultActiveTab='market_depth' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<div className='px-8 py-16'>
+				<SymbolPriceTable length={3} symbolISIN={symbolISIN} />
+			</div>
 		</Section>
 	);
 };

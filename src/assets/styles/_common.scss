@@ -59,3 +59,12 @@
 	background-size: 200% 100%;
 	animation: 1000ms skeleton-loading ease-in-out infinite;
 }
+
+.react-grid-item:not(.react-draggable-dragging) {
+	transition:
+		top 250ms ease-in,
+		left 250ms ease-in;
+	-webkit-transition:
+		top 250ms ease-in,
+		left 250ms ease-in;
+}

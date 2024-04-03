@@ -47,7 +47,7 @@ const Section = <T extends string = string>({ defaultActiveTab, tabs, children, 
 					))}
 				</ul>
 
-				<button type='button' className='drag text-gray-700'>
+				<button type='button' className='drag-handler text-gray-700'>
 					<DragSVG width='2rem' height='2rem' />
 				</button>
 			</div>
