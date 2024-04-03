@@ -281,6 +281,12 @@ declare namespace Option {
 		oneMonthTradeValue: number;
 	}
 
+	export interface GetOpenPositionReport {
+		baseSymbolISIN: string;
+		date: string;
+		openPositionSum: number;
+	}
+
 	export interface Column {
 		id: number;
 		title: string;
@@ -318,28 +324,50 @@ declare namespace Symbol {
 		symbolISIN: string;
 		symbolTitle: string;
 		companyName: string;
+		insCode: string;
+		exchange: string;
 		lastTradedPrice: number;
-		tradeVolume: number;
-		tradeValue: number;
-		avgIV: null | number;
-		closingPrice: number;
-		tradeCount: number;
-		lastTradeDate: string;
-		hv: number;
-		insCode: number;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
+		closingPrice: number;
 		closingPriceVarReferencePrice: number;
 		closingPriceVarReferencePricePercent: number;
-		oneMonthAvgVolume: string;
+		lowThreshold: number;
+		highThreshold: number;
+		lowPrice: number;
+		highPrice: number;
+		tradeValue: number;
+		tradeVolume: number;
+		cancellationNAV: number;
+		oneMonthAvgVolume: null | number;
+		hv: number;
+		avgIV: number;
+		lastTradeDate: string;
+		openPrice: number;
+		baseVolume: number;
+		tradeCount: number;
+		eps: null | number;
+		pe: null | number;
+		ps: null | number;
+		symbolTradeState: string;
 		individualBuyVolume: number;
+		numberOfIndividualsBuyers: number;
 		individualSellVolume: number;
+		numberOfIndividualsSellers: number;
 		legalBuyVolume: number;
+		numberOfILegalsBuyers: number;
 		legalSellVolume: number;
-		baseSymbolISIN: null | string;
+		numberOfLegalsSellers: number;
+		baseSymbolISIN: string | null;
 		marketUnit: string;
+		notionalValue: number;
+		contractEndDate: string;
+		openPosition: number;
+		contractSize: number;
 		isOption: boolean;
+		oneMonthEfficiency: number;
+		threeMonthEfficiency: number;
+		oneYearEfficiency: number;
 	}
 
 	export interface Search {

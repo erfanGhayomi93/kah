@@ -1,8 +1,13 @@
+import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Section, { type ITabIem } from '../common/Section';
 
-const Quotes = () => {
+interface QuotesProps {
+	symbolISIN: string;
+}
+
+const Quotes = ({ symbolISIN }: QuotesProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -17,7 +22,9 @@ const Quotes = () => {
 
 	return (
 		<Section defaultActiveTab='5_quotes' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<div className='px-8 py-16'>
+				<SymbolPriceTable symbolISIN={symbolISIN} />
+			</div>
 		</Section>
 	);
 };

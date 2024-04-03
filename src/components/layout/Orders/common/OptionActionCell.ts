@@ -2,7 +2,6 @@ import { type ICellRendererComp, type ICellRendererParams } from 'ag-grid-commun
 import ActionCell from './ActionCell';
 
 interface OptionActionCellProps extends ICellRendererParams<Order.OptionOrder, unknown> {
-	showDetails: (order: Order.OptionOrder) => void;
 	onClosePosition: (order: Order.OptionOrder) => void;
 	onChangeCollateral: (order: Order.OptionOrder) => void;
 }
@@ -19,7 +18,6 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 
 		this.eGui.appendChild(this.collateralBtn());
 		this.eGui.appendChild(this.closePositionBtn());
-		// this.eGui.appendChild(this.detailsBtn());
 	}
 
 	closePositionBtn() {
@@ -44,16 +42,6 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 		btn.onclick = (e) => {
 			e.stopPropagation();
 			if (!isDisabled) this.params.onChangeCollateral(this.params.data!);
-		};
-
-		return btn;
-	}
-
-	detailsBtn() {
-		const btn = this.createDetails();
-		btn.onclick = (e) => {
-			e.stopPropagation();
-			this.params.showDetails(this.params.data!);
 		};
 
 		return btn;

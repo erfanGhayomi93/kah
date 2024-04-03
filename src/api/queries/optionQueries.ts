@@ -297,3 +297,31 @@ export const useOptionSymbolSearchQuery = createQuery<Option.Search[], ['optionS
 		}
 	},
 });
+
+export const useOptionOpenPositionQuery = createQuery<
+	Option.GetOpenPositionReport[],
+	['optionOpenPositionQuery', string]
+>({
+	staleTime: 18e5,
+	queryKey: ['optionOpenPositionQuery', ''],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const [, term] = queryKey;
+
+			const response = await axios.get<ServerResponse<Option.GetOpenPositionReport[]>>(
+				routes.option.GetOpenPositionReport,
+				{
+					params: { term },
+					signal,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
