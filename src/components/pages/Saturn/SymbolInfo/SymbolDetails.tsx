@@ -13,7 +13,7 @@ import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
-import SymbolContextMenu from '../common/SymbolContextMenu';
+import SymbolContextMenu from '../../../common/Symbol/SymbolContextMenu';
 
 interface SymbolDetailsProps {
 	symbol: Symbol.Info;

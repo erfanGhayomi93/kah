@@ -14,7 +14,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useLayoutEffect, useMemo } from 'react';
-import SymbolContextMenu from '../common/SymbolContextMenu';
+import SymbolContextMenu from '../../../common/Symbol/SymbolContextMenu';
 
 const PriceInformation = dynamic(() => import('./Tabs/PriceInformation'), {
 	ssr: false,

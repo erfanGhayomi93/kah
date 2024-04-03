@@ -1,13 +1,13 @@
 import { divide } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
-interface IProgressBar {
+interface ProgressbarProps {
 	side: 'buy' | 'sell';
 	legalVolume: number;
 	individualVolume: number;
 }
 
-const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
+const Progressbar = ({ side, individualVolume, legalVolume }: ProgressbarProps) => {
 	const t = useTranslations();
 
 	const bgColor = side === 'buy' ? 'bg-success-100' : 'bg-error-100';
@@ -42,4 +42,4 @@ const ProgressBar = ({ side, individualVolume, legalVolume }: IProgressBar) => {
 	);
 };
 
-export default ProgressBar;
+export default Progressbar;

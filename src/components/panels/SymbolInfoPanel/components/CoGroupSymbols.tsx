@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import NoData from '../common/NoData';
 import Section, { type ITabIem } from '../common/Section';
 
 const CoGroupSymbols = () => {
@@ -17,7 +18,7 @@ const CoGroupSymbols = () => {
 
 	return (
 		<Section defaultActiveTab='co_group' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<NoData />
 		</Section>
 	);
 };

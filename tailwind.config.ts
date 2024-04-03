@@ -173,6 +173,11 @@ const config: Config = {
 		fontFamily: {
 			IRANSans: 'IRANSans',
 		},
+
+		flex: {
+			'1': ' 1 1 0%',
+			'1/2': '0 0 50%',
+		},
 	},
 
 	plugins: [

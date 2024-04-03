@@ -26,7 +26,7 @@ const SymbolInfoPanel = forwardRef<HTMLDivElement, SymbolInfoPanelProps>(({ symb
 			ref={ref}
 			onClose={onClose}
 			render={() => <Container symbolISIN={symbolISIN} close={onClose} />}
-			width='39.2rem'
+			width='400px'
 			classes={{
 				wrapper: '!bg-gray-300',
 			}}

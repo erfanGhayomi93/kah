@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import NoData from '../common/NoData';
 import Section, { type ITabIem } from '../common/Section';
 
 const Chart = () => {
@@ -17,7 +18,7 @@ const Chart = () => {
 
 	return (
 		<Section defaultActiveTab='symbol_chart' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<NoData />
 		</Section>
 	);
 };

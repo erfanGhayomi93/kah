@@ -1,8 +1,13 @@
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import Section, { type ITabIem } from '../common/Section';
+import Section, { type ITabIem } from '../../common/Section';
+import Contracts from './Contracts';
 
-const Contracts = () => {
+interface ContractsProps {
+	symbolISIN: string;
+}
+
+const SymbolContracts = ({ symbolISIN }: ContractsProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -17,9 +22,9 @@ const Contracts = () => {
 
 	return (
 		<Section defaultActiveTab='contracts' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<Contracts symbolISIN={symbolISIN} />
 		</Section>
 	);
 };
 
-export default Contracts;
+export default SymbolContracts;

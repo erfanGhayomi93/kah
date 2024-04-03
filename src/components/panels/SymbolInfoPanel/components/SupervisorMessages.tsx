@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import NoData from '../common/NoData';
 import Section, { type ITabIem } from '../common/Section';
 
 const SupervisorMessages = () => {
@@ -14,7 +15,7 @@ const SupervisorMessages = () => {
 
 	return (
 		<Section defaultActiveTab='supervisor_messages' tabs={tabs}>
-			<div className='px-8 py-16' />
+			<NoData />
 		</Section>
 	);
 };

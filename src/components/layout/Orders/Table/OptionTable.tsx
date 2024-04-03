@@ -27,15 +27,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const showDetails = (order: Order.OptionOrder) => {
-		// dispatch(
-		// 	toggleOrderDetailsModal({
-		// 		order,
-		// 		symbolType: 'option',
-		// 	}),
-		// );
-	};
-
 	const onClosePosition = (order: Order.OptionOrder) => {
 		addBuySellModal({
 			side: order.side === 'Call' ? 'sell' : 'buy',
@@ -131,7 +122,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				maxWidth: 140,
 				cellRenderer: OptionActionCell,
 				cellRendererParams: {
-					showDetails,
 					onClosePosition,
 					onChangeCollateral,
 				},
