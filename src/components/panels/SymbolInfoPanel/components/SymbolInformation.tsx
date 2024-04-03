@@ -1,5 +1,6 @@
+import SymbolContextMenu from '@/components/common/Symbol/SymbolContextMenu';
 import SymbolState from '@/components/common/SymbolState';
-import { GalaxySVG, MoreOptionsSVG } from '@/components/icons';
+import { GalaxySVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
@@ -59,9 +60,7 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 						<GalaxySVG width='2rem' height='2rem' />
 					</Link>
 
-					<button type='button' className='size-20 icon-hover'>
-						<MoreOptionsSVG width='2rem' height='2rem' />
-					</button>
+					<SymbolContextMenu symbol={symbolData} svgSize={20} />
 				</div>
 			</div>
 

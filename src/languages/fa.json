@@ -195,7 +195,7 @@
 	"symbol_info_panel": {
 		"contracts": "قراردادها",
 		"symbol_detail": "جزئیات نماد",
-		"open_positions": "موقعیت‌های باز",
+		"user_open_positions": "موقعیت‌های باز شما",
 		"market_depth": "عمق بازار",
 		"5_quotes": "پنج مظنه",
 		"individual_and_legal": "حقیقی و حقوقی",
@@ -223,14 +223,18 @@
 		"eps": ":EPS",
 		"pe": "P/E",
 		"ps": "P/S",
-		"month_return": "بازده {m} ماه",
-		"year_return": "بازده 1 سال",
+		"month_efficiency": "بازده {m} ماه",
+		"year_efficiency": "بازده 1 سال",
 		"legal": "حقوقی",
 		"individual": "حقیقی",
 		"person": "نفر",
 		"buyer": "خریدار",
 		"seller": "فروشنده",
-		"individual_cash_inflow": "ورود پول حقیقی"
+		"quantity": "تعداد",
+		"price": "قیمت",
+		"symbol_title": "نماد",
+		"individual_cash_inflow": "ورود پول حقیقی",
+		"contract_description": "‎{dueDays} روز تقویمی و ‎{workingDaysLeftCount} روز معاملاتی"
 	},
 	"manage_option_watchlist_columns": {
 		"title": "مدیریت ستون های جدول",

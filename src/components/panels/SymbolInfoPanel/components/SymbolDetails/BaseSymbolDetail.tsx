@@ -1,4 +1,5 @@
 import { ArrowDownSVG } from '@/components/icons';
+import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useState } from 'react';
 
@@ -9,46 +10,96 @@ interface ISymbolItem {
 }
 
 interface BaseSymbolDetailProps {
+	symbolData: Symbol.Info;
 	onToggleSymbolDetail: (isExpand: boolean) => void;
 }
 
-const BaseSymbolDetail = ({ onToggleSymbolDetail }: BaseSymbolDetailProps) => {
+const BaseSymbolDetail = ({ symbolData, onToggleSymbolDetail }: BaseSymbolDetailProps) => {
 	const t = useTranslations();
 
 	const [isExpand, setIsExpand] = useState(false);
 
+	const numFormatter = (v: string | number | null) => {
+		if (v === null) return '−';
+		return sepNumbers(String(v ?? 0));
+	};
+
 	const items: [ISymbolItem[], ISymbolItem[]] = useMemo(
 		() => [
 			[
-				{ id: 'market_ype', title: t('symbol_info_panel.market_ype'), value: '−' },
-				{ id: 'trade_value', title: t('symbol_info_panel.trade_value'), value: '−' },
-				{ id: 'trade_volume', title: t('symbol_info_panel.trade_volume'), value: '−' },
-				{ id: 'nav', title: t('symbol_info_panel.nav'), value: '−' },
-				{ id: 'monthly_average_volume', title: t('symbol_info_panel.monthly_average_volume'), value: '−' },
-				{ id: 'hv', title: t('symbol_info_panel.hv'), value: '−' },
-				{ id: 'wiv', title: t('symbol_info_panel.wiv'), value: '−' },
+				{ id: 'market_ype', title: t('symbol_info_panel.market_ype'), value: symbolData.exchange ?? '−' },
+				{
+					id: 'trade_value',
+					title: t('symbol_info_panel.trade_value'),
+					value: numFormatter(symbolData.tradeValue),
+				},
+				{
+					id: 'trade_volume',
+					title: t('symbol_info_panel.trade_volume'),
+					value: numFormatter(symbolData.tradeVolume),
+				},
+				{ id: 'nav', title: t('symbol_info_panel.nav'), value: numFormatter(symbolData.cancellationNAV) },
+				{
+					id: 'monthly_average_volume',
+					title: t('symbol_info_panel.monthly_average_volume'),
+					value: numFormatter(symbolData.oneMonthAvgVolume),
+				},
+				{ id: 'hv', title: t('symbol_info_panel.hv'), value: numFormatter((symbolData.hv ?? 0).toFixed(2)) },
+				{
+					id: 'wiv',
+					title: t('symbol_info_panel.wiv'),
+					value: numFormatter((symbolData.avgIV ?? 0).toFixed(2)),
+				},
 				{ id: 'stock_price_estimate', title: t('symbol_info_panel.stock_price_estimate'), value: '−' },
-				{ id: 'last_trade', title: t('symbol_info_panel.last_trade'), value: '−' },
+				{
+					id: 'last_trade',
+					title: t('symbol_info_panel.last_trade'),
+					value: numFormatter(symbolData.lastTradedPrice),
+				},
 			],
 			[
-				{ id: 'opening_rice', title: t('symbol_info_panel.opening_rice'), value: '−' },
-				{ id: 'base_volume', title: t('symbol_info_panel.base_volume'), value: '−' },
-				{ id: 'trade_count', title: t('symbol_info_panel.trade_count'), value: '−' },
-				{ id: 'eps', title: t('symbol_info_panel.eps'), value: '−' },
-				{ id: 'pe', title: t('symbol_info_panel.pe'), value: '−' },
-				{ id: 'ps', title: t('symbol_info_panel.ps'), value: '−' },
-				{ id: '1_month_return', title: t('symbol_info_panel.month_return', { m: 1 }), value: '−' },
-				{ id: '3_month_return', title: t('symbol_info_panel.month_return', { m: 3 }), value: '−' },
-				{ id: 'year_return', title: t('symbol_info_panel.year_return'), value: '−' },
+				{
+					id: 'opening_rice',
+					title: t('symbol_info_panel.opening_rice'),
+					value: numFormatter(symbolData.openPrice),
+				},
+				{
+					id: 'base_volume',
+					title: t('symbol_info_panel.base_volume'),
+					value: numFormatter(symbolData.baseVolume),
+				},
+				{
+					id: 'trade_count',
+					title: t('symbol_info_panel.trade_count'),
+					value: numFormatter(symbolData.tradeCount),
+				},
+				{ id: 'eps', title: t('symbol_info_panel.eps'), value: numFormatter(symbolData.eps) },
+				{ id: 'pe', title: t('symbol_info_panel.pe'), value: numFormatter(symbolData.pe) },
+				{ id: 'ps', title: t('symbol_info_panel.ps'), value: numFormatter(symbolData.ps) },
+				{
+					id: '1_month_return',
+					title: t('symbol_info_panel.month_efficiency', { m: 1 }),
+					value: numFormatter(symbolData.oneMonthEfficiency),
+				},
+				{
+					id: '3_month_return',
+					title: t('symbol_info_panel.month_efficiency', { m: 3 }),
+					value: numFormatter(symbolData.threeMonthEfficiency),
+				},
+				{
+					id: 'year_efficiency',
+					title: t('symbol_info_panel.year_efficiency'),
+					value: numFormatter(symbolData.oneYearEfficiency),
+				},
 			],
 		],
-		[],
+		[symbolData],
 	);
 
 	const data = useMemo(() => {
 		if (!isExpand) return items[0];
 		return [...items[0], ...items[1]];
-	}, [isExpand]);
+	}, [items, isExpand]);
 
 	useLayoutEffect(() => {
 		onToggleSymbolDetail(isExpand);
@@ -64,7 +115,7 @@ const BaseSymbolDetail = ({ onToggleSymbolDetail }: BaseSymbolDetailProps) => {
 						key={item.id}
 					>
 						<span className='text-gray-900'>{item.title}:</span>
-						<span className='text-gray-1000'>{item.value}</span>
+						<span className='text-gray-1000 ltr'>{item.value}</span>
 					</li>
 				))}
 			</ul>
@@ -75,8 +126,8 @@ const BaseSymbolDetail = ({ onToggleSymbolDetail }: BaseSymbolDetailProps) => {
 				className='size-24 w-full text-gray-900 flex-justify-center'
 			>
 				<ArrowDownSVG
-					width='1.6rem'
-					height='1.6rem'
+					width='1.4rem'
+					height='1.4rem'
 					className='transition-transform'
 					style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }}
 				/>

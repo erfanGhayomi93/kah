@@ -6,9 +6,10 @@ import Image from 'next/image';
 
 interface SymbolContextMenuProps {
 	symbol: Symbol.Info | null;
+	svgSize?: number;
 }
 
-const SymbolContextMenu = ({ symbol }: SymbolContextMenuProps) => {
+const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => {
 	const t = useTranslations();
 
 	return (
@@ -41,8 +42,8 @@ const SymbolContextMenu = ({ symbol }: SymbolContextMenuProps) => {
 		>
 			{({ setOpen, open }) => (
 				<button
-					onClick={() => setOpen(true)}
-					className='size-24 text-gray-900 flex-justify-center'
+					onClick={() => setOpen(!open)}
+					className={`size-${svgSize} flex-justify-center icon-hover`}
 					type='button'
 				>
 					<MoreOptionsSVG />

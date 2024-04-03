@@ -18,19 +18,20 @@ const Section = <T extends string = string>({ defaultActiveTab, tabs, children, 
 	const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
 	return (
-		<div className='w-full overflow-hidden rounded bg-white'>
+		<div className='size-full overflow-hidden rounded bg-white flex-column'>
 			<div
 				style={{ flex: '0 0 4rem' }}
 				className='overflow-hidden rounded-t bg-gray-200 pl-12 flex-justify-between'
 			>
 				<ul className='flex-1 flex-items-center'>
 					{tabs.map((tab, index) => (
-						<li style={{ flex: '0 0 12rem' }} key={tab.id}>
+						<li key={tab.id}>
 							<button
 								onClick={() => setActiveTab(tab.id)}
 								type='button'
+								style={{ minWidth: '13.6rem' }}
 								className={clsx(
-									'relative h-40 w-full rounded-t text-base flex-justify-center',
+									'relative h-40 w-full rounded-t px-16 text-base flex-justify-center',
 									tab.id === activeTab ? 'bg-white font-medium text-gray-900' : 'text-gray-700',
 								)}
 							>

@@ -2,11 +2,11 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { SettingSliderSVG, XSVG } from '@/components/icons';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import GridLayout, { type Layout } from 'react-grid-layout';
+import BaseSymbolContracts from './components/BaseSymbolContracts';
 import Chart from './components/Chart';
 import CoGroupSymbols from './components/CoGroupSymbols';
-import Contracts from './components/Contracts';
 import IndividualAndLegal from './components/IndividualAndLegal';
 import MarketDepth from './components/MarketDepth';
 import OpenPositions from './components/OpenPositions';
@@ -23,13 +23,15 @@ interface ContainerProps {
 }
 
 const Container = ({ symbolISIN, close }: ContainerProps) => {
+	const gridRef = useRef<GridLayout | null>(null);
+
 	const [layout, setLayout] = useState<Layout[]>([
 		{ x: 0, y: 1, w: 1, h: 6.5, i: 'option_base_symbol_information' },
 		{ x: 0, y: 2, w: 1, h: 19.765, i: 'option_detail' },
 		{ x: 0, y: 3, w: 1, h: 13, i: 'market_depth' },
-		{ x: 0, y: 4, w: 1, h: 27.29, i: 'symbol_detail' }, // 48.47
-		{ x: 0, y: 5, w: 1, h: 19.765, i: 'contracts' },
-		{ x: 0, y: 6, w: 1, h: 19.765, i: 'open_positions' },
+		{ x: 0, y: 4, w: 1, h: 27.29, i: 'symbol_detail' },
+		{ x: 0, y: 5, w: 1, h: 19.765, i: 'base_symbol_contracts' },
+		{ x: 0, y: 6, w: 1, h: 19.765, i: 'user_open_positions' },
 		{ x: 0, y: 7, w: 1, h: 17.235, i: 'quotes' },
 		{ x: 0, y: 8, w: 1, h: 17.647, i: 'individual_and_legal' },
 		{ x: 0, y: 9, w: 1, h: 19.765, i: 'chart' },
@@ -46,9 +48,17 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 	};
 
 	const onToggleSymbolDetail = (isExpand: boolean) => {
-		const l = [...layout];
-		l[3].h = isExpand ? 48.47 : 27.29;
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
 
+		const l = JSON.parse(JSON.stringify(layout)) as typeof layout;
+		const i = l.findIndex((item) => item.i === 'symbol_detail');
+
+		if (i === -1) return;
+
+		l[i].h = isExpand ? 48.47 : 27.29;
+
+		gridApi.setState({ layout: JSON.parse(JSON.stringify(l)) });
 		setLayout(l);
 	};
 
@@ -74,6 +84,8 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 					<div className='relative'>
 						<GridLayout
+							ref={gridRef}
+							onLayoutChange={(l) => setLayout(l)}
 							className='layout'
 							draggableHandle='.drag-handler'
 							isResizable={false}
@@ -109,19 +121,22 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 								: [
 										<div key='symbol_detail'>
 											<ErrorBoundary>
-												<SymbolDetail onToggleSymbolDetail={onToggleSymbolDetail} />
+												<SymbolDetail
+													symbolData={symbolData}
+													onToggleSymbolDetail={onToggleSymbolDetail}
+												/>
 											</ErrorBoundary>
 										</div>,
 
-										<div key='contracts'>
+										<div key='base_symbol_contracts'>
 											<ErrorBoundary>
-												<Contracts />
+												<BaseSymbolContracts symbolISIN={symbolISIN} />
 											</ErrorBoundary>
 										</div>,
 
-										<div key='open_positions'>
+										<div key='user_open_positions'>
 											<ErrorBoundary>
-												<OpenPositions />
+												<OpenPositions symbolISIN={symbolISIN} />
 											</ErrorBoundary>
 										</div>,
 
