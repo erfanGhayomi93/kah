@@ -2,7 +2,7 @@ import ipcMain from '@/classes/IpcMain';
 import Button from '@/components/common/Button';
 import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setConfirmModal, toggleChoiceBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { setChoiceBrokerModal, setConfirmModal, setLoginModal } from '@/features/slices/modalSlice';
 import { getOrderBasket, setBrokerIsSelected, setOrderBasket } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { createOrder } from '@/utils/orders';
@@ -75,14 +75,14 @@ const Basket = () => {
 	const validation = () => {
 		const clientId = getClientId();
 		if (!clientId) {
-			dispatch(toggleLoginModal({}));
+			dispatch(setLoginModal({}));
 			throw new Error('login_to_your_account');
 		}
 
 		const bClientId = getBrokerClientId();
 		if (!bClientId[0]) {
 			dispatch(setBrokerIsSelected(false));
-			dispatch(toggleChoiceBrokerModal({}));
+			dispatch(setChoiceBrokerModal({}));
 			throw new Error('broker_error');
 		}
 	};

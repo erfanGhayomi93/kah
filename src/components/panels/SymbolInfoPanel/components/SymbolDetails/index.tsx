@@ -22,7 +22,7 @@ const SymbolDetail = ({ symbolData, onToggleSymbolDetail }: SymbolDetailProps) =
 	);
 
 	return (
-		<Section defaultActiveTab='symbol_detail' tabs={tabs}>
+		<Section name='symbol_detail' defaultActiveTab='symbol_detail' tabs={tabs}>
 			<BaseSymbolDetail symbolData={symbolData} onToggleSymbolDetail={onToggleSymbolDetail} />
 		</Section>
 	);

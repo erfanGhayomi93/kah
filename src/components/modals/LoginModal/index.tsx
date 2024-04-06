@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { setLoginModal } from '@/features/slices/modalSlice';
 import { setIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -45,7 +45,7 @@ const LoginModal = forwardRef<HTMLDivElement, LoginModalProps>((props, ref) => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleLoginModal(null));
+		dispatch(setLoginModal(null));
 	};
 
 	const onLoggedIn = () => {

@@ -4,7 +4,7 @@ import LocalstorageInstance from '@/classes/Localstorage';
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { toggleChoiceBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
@@ -74,14 +74,14 @@ const Body = (props: BodyProps) => {
 		try {
 			const clientId = getClientId();
 			if (!clientId) {
-				dispatch(toggleLoginModal({}));
+				dispatch(setLoginModal({}));
 				throw new Error('login_to_your_account');
 			}
 
 			const bClientId = getBrokerClientId();
 			if (!bClientId[0]) {
 				dispatch(setBrokerIsSelected(false));
-				dispatch(toggleChoiceBrokerModal({}));
+				dispatch(setChoiceBrokerModal({}));
 				throw new Error('broker_error');
 			}
 

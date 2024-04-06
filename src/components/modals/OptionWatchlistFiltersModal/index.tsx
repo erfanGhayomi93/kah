@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/features/hooks';
-import { toggleOptionFiltersModal } from '@/features/slices/modalSlice';
+import { setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
@@ -18,7 +18,7 @@ const OptionWatchlistFiltersModal = forwardRef<HTMLDivElement, OptionWatchlistFi
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(toggleOptionFiltersModal(null));
+		dispatch(setOptionFiltersModal(null));
 	};
 
 	return (

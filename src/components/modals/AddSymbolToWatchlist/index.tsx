@@ -3,7 +3,7 @@ import { useCustomWatchlistSymbolSearch } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { EyeSVG, EyeSlashSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { cn } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
@@ -41,7 +41,7 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleAddSymbolToWatchlistModal(null));
+		dispatch(setAddSymbolToWatchlistModal(null));
 	};
 
 	const onAddSymbol = async (symbol: Symbol.Search) => {

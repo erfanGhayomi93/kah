@@ -21,7 +21,7 @@ const Quotes = ({ symbolISIN }: QuotesProps) => {
 	);
 
 	return (
-		<Section defaultActiveTab='5_quotes' tabs={tabs}>
+		<Section name='quotes' defaultActiveTab='5_quotes' tabs={tabs}>
 			<div className='px-8 py-16'>
 				<SymbolPriceTable symbolISIN={symbolISIN} />
 			</div>

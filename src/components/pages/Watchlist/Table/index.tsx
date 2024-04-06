@@ -6,7 +6,7 @@ import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
@@ -95,7 +95,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	});
 
 	const addSymbol = () => {
-		dispatch(toggleAddSymbolToWatchlistModal({}));
+		dispatch(setAddSymbolToWatchlistModal({}));
 	};
 
 	const onFiltersChanged = (newFilters: IOptionWatchlistFilters) => {

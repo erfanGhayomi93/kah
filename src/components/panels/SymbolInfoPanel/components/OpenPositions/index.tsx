@@ -21,7 +21,7 @@ const OpenPositions = ({ symbolISIN }: OpenPositionsProps) => {
 	);
 
 	return (
-		<Section defaultActiveTab='user_open_positions' tabs={tabs}>
+		<Section name='user_open_positions' defaultActiveTab='user_open_positions' tabs={tabs}>
 			<UserOpenPositions />
 		</Section>
 	);

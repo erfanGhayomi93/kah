@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleForgetPasswordModal, toggleLoginModal, type IForgetPasswordModal } from '@/features/slices/modalSlice';
+import { setForgetPasswordModal, setLoginModal, type IForgetPasswordModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { forwardRef, useState } from 'react';
@@ -33,14 +33,14 @@ const ForgetPasswordModal = forwardRef<HTMLDivElement, ForgetPasswordModalProps>
 		const [phoneNumber, setPhoneNumber] = useState<string>(pNumber ?? '');
 
 		const onCloseModal = () => {
-			dispatch(toggleForgetPasswordModal(null));
+			dispatch(setForgetPasswordModal(null));
 		};
 
 		const onPasswordChanged = () => {
 			toast.success(t('alerts.password_changed_successfully'), { autoClose: 3500 });
 
-			dispatch(toggleForgetPasswordModal(null));
-			dispatch(toggleLoginModal({ animation: false }));
+			dispatch(setForgetPasswordModal(null));
+			dispatch(setLoginModal({ animation: false }));
 		};
 
 		const sendOTP = async (otpPhoneNumber?: string) => {

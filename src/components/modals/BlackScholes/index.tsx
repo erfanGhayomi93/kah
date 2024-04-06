@@ -1,6 +1,6 @@
 import { EraserSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleBlackScholesModal, type IBlackScholes } from '@/features/slices/modalSlice';
+import { setBlackScholesModal, type IBlackScholes } from '@/features/slices/modalSlice';
 import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -51,7 +51,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 	};
 
 	const onCloseModal = () => {
-		dispatch(toggleBlackScholesModal(null));
+		dispatch(setBlackScholesModal(null));
 	};
 
 	const onReset = () => {

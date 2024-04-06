@@ -2,7 +2,7 @@
 
 import { broadcastChannel } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChoiceBrokerModal } from '@/features/slices/modalSlice';
+import { setChoiceBrokerModal } from '@/features/slices/modalSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect } from 'react';
@@ -24,7 +24,7 @@ const BroadcastChannelRegistry = ({ children }: BroadcastChannelRegistryProps) =
 
 	const onBrokerRegistered = (payload: string) => {
 		try {
-			dispatch(toggleChoiceBrokerModal(null));
+			dispatch(setChoiceBrokerModal(null));
 			dispatch(setBrokerIsSelected(true));
 
 			toast.success(t('alerts.logged_in_successfully_to_broker_account'));

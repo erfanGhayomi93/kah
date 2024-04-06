@@ -32,8 +32,6 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 	const { addBuySellModal } = useTradingFeatures();
 
 	const openBsModal = (side: TBsSides) => {
-		dispatch(setSymbolInfoPanel(null));
-
 		addBuySellModal({
 			mode: 'create',
 			type: 'order',
@@ -56,7 +54,11 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 				</div>
 
 				<div className='gap-8 flex-items-center'>
-					<Link href='/' className='size-20 icon-hover'>
+					<Link
+						href='/saturn'
+						onClick={() => dispatch(setSymbolInfoPanel(null))}
+						className='size-20 icon-hover'
+					>
 						<GalaxySVG width='2rem' height='2rem' />
 					</Link>
 

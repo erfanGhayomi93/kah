@@ -1,7 +1,7 @@
 import Select from '@/components/common/Inputs/Select';
 import { SearchSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
+import { setSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { Header } from '../Modal';
@@ -17,7 +17,7 @@ const Filters = ({ symbolTitle, contractType, term, setStatesValue }: FiltersPro
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(toggleSymbolContractsModal(null));
+		dispatch(setSymbolContractsModal(null));
 	};
 
 	const contractTypes = useMemo(

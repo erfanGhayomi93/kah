@@ -5,8 +5,8 @@ import Loading from '@/components/common/Loading';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import {
-	toggleAddNewOptionWatchlist,
-	toggleMoveSymbolToWatchlistModal,
+	setAddNewOptionWatchlist,
+	setMoveSymbolToWatchlistModal,
 	type IMoveSymbolToWatchlistModal,
 } from '@/features/slices/modalSlice';
 import { useQueryClient } from '@tanstack/react-query';
@@ -36,7 +36,7 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 		});
 
 		const onCloseModal = () => {
-			dispatch(toggleMoveSymbolToWatchlistModal(null));
+			dispatch(setMoveSymbolToWatchlistModal(null));
 		};
 
 		const onSelectWatchlist = async (wl: Option.WatchlistList) => {
@@ -61,7 +61,7 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 		};
 
 		const addNewWatchlist = () => {
-			dispatch(toggleAddNewOptionWatchlist({ moveable: true }));
+			dispatch(setAddNewOptionWatchlist({ moveable: true }));
 		};
 
 		return (

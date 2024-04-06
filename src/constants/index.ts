@@ -1,3 +1,5 @@
+import { type Layout } from 'react-grid-layout';
+
 export const defaultSymbolISIN = 'IRO1IKCO0001';
 
 export const broadcastChannel = 'tUFN1pQ1Ry';
@@ -148,6 +150,85 @@ export const getDateMilliseconds = {
 	Week: 6048e5,
 	Month: 2592e6,
 	Year: 31536e6,
+};
+
+export const initialSymbolInfoPanelGrid: Record<'baseSymbol' | 'option', Layout[]> = {
+	baseSymbol: [
+		{
+			w: 1,
+			h: 27.29,
+			x: 0,
+			y: 0,
+			i: 'symbol_detail',
+			moved: false,
+			static: false,
+		},
+		{
+			w: 1,
+			h: 19.765,
+			x: 0,
+			y: 27.29,
+			i: 'base_symbol_contracts',
+			moved: false,
+			static: false,
+		},
+		{
+			w: 1,
+			h: 19.765,
+			x: 0,
+			y: 47.055,
+			i: 'user_open_positions',
+			moved: false,
+			static: false,
+		},
+		{
+			w: 1,
+			h: 17.235,
+			x: 0,
+			y: 66.82,
+			i: 'quotes',
+			moved: false,
+			static: false,
+		},
+		{
+			w: 1,
+			h: 18.47,
+			x: 0,
+			y: 84.055,
+			i: 'individual_and_legal',
+			moved: false,
+			static: false,
+		},
+		{
+			w: 1,
+			h: 19.765,
+			x: 0,
+			y: 102.525,
+			i: 'chart',
+			moved: false,
+			static: false,
+		},
+		{
+			w: 1,
+			h: 19.765,
+			x: 0,
+			y: 122.29,
+			i: 'same_sector_symbols',
+			moved: false,
+			static: false,
+		},
+		{
+			w: 1,
+			h: 19.765,
+			x: 0,
+			y: 142.055,
+			i: 'supervisor_messages',
+			moved: false,
+			static: false,
+		},
+	],
+
+	option: [],
 };
 
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];

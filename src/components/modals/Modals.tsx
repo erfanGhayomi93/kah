@@ -8,6 +8,7 @@ import AnimatePresence from '../common/animation/AnimatePresence';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import ModalLoading from './ModalLoading';
+import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
 
 const LoginModal = lazy(() => import('./LoginModal'));
 
@@ -51,6 +52,7 @@ const Modals = () => {
 		addSymbolToWatchlist,
 		choiceBroker,
 		confirm,
+		symbolInfoPanelSetting,
 		choiceCollateral,
 		blackScholes,
 		moveSymbolToWatchlist,
@@ -79,6 +81,14 @@ const Modals = () => {
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{symbolInfoPanelSetting && (
+					<ModalSuspense>
+						<SymbolInfoPanelSetting {...symbolInfoPanelSetting} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

@@ -21,7 +21,7 @@ const MarketDepth = ({ symbolISIN }: MarketDepthProps) => {
 	);
 
 	return (
-		<Section defaultActiveTab='market_depth' tabs={tabs}>
+		<Section name='market_depth' defaultActiveTab='market_depth' tabs={tabs}>
 			<div className='px-8 py-16'>
 				<SymbolPriceTable length={3} symbolISIN={symbolISIN} />
 			</div>

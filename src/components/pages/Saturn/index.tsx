@@ -8,7 +8,7 @@ import Main from '@/components/layout/Main';
 import Orders from '@/components/layout/Orders';
 import { defaultSymbolISIN } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSaveSaturnTemplate } from '@/features/slices/modalSlice';
+import { setSaveSaturnTemplate } from '@/features/slices/modalSlice';
 import { openNewTab } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -99,7 +99,7 @@ const Saturn = () => {
 		const { symbolISIN, symbolTitle } = baseSymbolInfo;
 
 		dispatch(
-			toggleSaveSaturnTemplate({
+			setSaveSaturnTemplate({
 				baseSymbolISIN: symbolISIN,
 				baseSymbolTitle: symbolTitle,
 				activeTab: baseSymbolActiveTab,

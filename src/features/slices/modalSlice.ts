@@ -66,10 +66,15 @@ export interface IConfirmModal extends IBaseModalConfiguration {
 	};
 }
 
+export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
+	isOption: boolean;
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
 	choiceBroker: true;
+	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	confirm: IConfirmModal;
 	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
@@ -100,6 +105,7 @@ const initialState: ModalState = {
 	choiceCollateral: null,
 	forgetPassword: null,
 	buySell: null,
+	symbolInfoPanelSetting: null,
 	addSaturnTemplate: null,
 	symbolContracts: null,
 };
@@ -108,19 +114,19 @@ const modalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
-		toggleBuySellModal: (state, { payload }: PayloadAction<ModalState['buySell']>) => {
+		setBuySellModal: (state, { payload }: PayloadAction<ModalState['buySell']>) => {
 			state.buySell = payload;
 		},
 
-		toggleMoveSymbolToWatchlistModal: (state, { payload }: PayloadAction<ModalState['moveSymbolToWatchlist']>) => {
+		setMoveSymbolToWatchlistModal: (state, { payload }: PayloadAction<ModalState['moveSymbolToWatchlist']>) => {
 			state.moveSymbolToWatchlist = payload;
 		},
 
-		toggleOrderDetailsModal: (state, { payload }: PayloadAction<ModalState['orderDetails']>) => {
+		setOrderDetailsModal: (state, { payload }: PayloadAction<ModalState['orderDetails']>) => {
 			state.orderDetails = payload;
 		},
 
-		toggleChoiceCollateralModal: (state, { payload }: PayloadAction<ModalState['choiceCollateral']>) => {
+		setChoiceCollateralModal: (state, { payload }: PayloadAction<ModalState['choiceCollateral']>) => {
 			state.choiceCollateral = payload;
 		},
 
@@ -128,47 +134,51 @@ const modalSlice = createSlice({
 			state.confirm = payload;
 		},
 
-		toggleLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
+		setLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
 			state.loginModal = payload;
 		},
 
-		toggleForgetPasswordModal: (state, { payload }: PayloadAction<ModalState['forgetPassword']>) => {
+		setSymbolInfoPanelSetting: (state, { payload }: PayloadAction<ModalState['symbolInfoPanelSetting']>) => {
+			state.symbolInfoPanelSetting = payload;
+		},
+
+		setForgetPasswordModal: (state, { payload }: PayloadAction<ModalState['forgetPassword']>) => {
 			state.forgetPassword = payload;
 		},
 
-		toggleOptionFiltersModal: (state, { payload }: PayloadAction<ModalState['optionFilters']>) => {
+		setOptionFiltersModal: (state, { payload }: PayloadAction<ModalState['optionFilters']>) => {
 			state.optionFilters = payload;
 		},
 
-		toggleLogoutModal: (state, { payload }: PayloadAction<ModalState['logout']>) => {
+		setLogoutModal: (state, { payload }: PayloadAction<ModalState['logout']>) => {
 			state.logout = payload;
 		},
 
-		toggleSymbolContractsModal: (state, { payload }: PayloadAction<ModalState['symbolContracts']>) => {
+		setSymbolContractsModal: (state, { payload }: PayloadAction<ModalState['symbolContracts']>) => {
 			state.symbolContracts = payload;
 		},
 
-		toggleSaveSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
+		setSaveSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
 
-		toggleAddNewOptionWatchlist: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
+		setAddNewOptionWatchlist: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
 			state.addNewOptionWatchlist = payload;
 		},
 
-		toggleAddSymbolToWatchlistModal: (state, { payload }: PayloadAction<ModalState['addSymbolToWatchlist']>) => {
+		setAddSymbolToWatchlistModal: (state, { payload }: PayloadAction<ModalState['addSymbolToWatchlist']>) => {
 			state.addSymbolToWatchlist = payload;
 		},
 
-		toggleChoiceBrokerModal: (state, { payload }: PayloadAction<ModalState['choiceBroker']>) => {
+		setChoiceBrokerModal: (state, { payload }: PayloadAction<ModalState['choiceBroker']>) => {
 			state.choiceBroker = payload;
 		},
 
-		toggleBlackScholesModal: (state, { payload }: PayloadAction<ModalState['blackScholes']>) => {
+		setBlackScholesModal: (state, { payload }: PayloadAction<ModalState['blackScholes']>) => {
 			state.blackScholes = payload;
 		},
 
-		toggleManageOptionWatchlistListModal: (
+		setManageOptionWatchlistListModal: (
 			state,
 			{ payload }: PayloadAction<ModalState['manageOptionWatchlistList']>,
 		) => {
@@ -178,22 +188,23 @@ const modalSlice = createSlice({
 });
 
 export const {
-	toggleLoginModal,
-	toggleBuySellModal,
-	toggleOrderDetailsModal,
-	toggleForgetPasswordModal,
-	toggleOptionFiltersModal,
-	toggleLogoutModal,
-	toggleBlackScholesModal,
+	setLoginModal,
+	setBuySellModal,
+	setOrderDetailsModal,
+	setForgetPasswordModal,
+	setOptionFiltersModal,
+	setLogoutModal,
+	setBlackScholesModal,
 	setConfirmModal,
-	toggleSymbolContractsModal,
-	toggleSaveSaturnTemplate,
-	toggleAddNewOptionWatchlist,
-	toggleChoiceBrokerModal,
-	toggleMoveSymbolToWatchlistModal,
-	toggleChoiceCollateralModal,
-	toggleAddSymbolToWatchlistModal,
-	toggleManageOptionWatchlistListModal,
+	setSymbolInfoPanelSetting,
+	setSymbolContractsModal,
+	setSaveSaturnTemplate,
+	setAddNewOptionWatchlist,
+	setChoiceBrokerModal,
+	setMoveSymbolToWatchlistModal,
+	setChoiceCollateralModal,
+	setAddSymbolToWatchlistModal,
+	setManageOptionWatchlistListModal,
 } = modalSlice.actions;
 
 export const getChoiceBroker = (state: RootState) => state.modal.choiceBroker;

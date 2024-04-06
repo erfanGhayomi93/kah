@@ -1,6 +1,6 @@
 import { PayMoneySVG, SnowFlakeSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChoiceCollateralModal, type IChoiceCollateral } from '@/features/slices/modalSlice';
+import { setChoiceCollateralModal, type IChoiceCollateral } from '@/features/slices/modalSlice';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -24,7 +24,7 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 	const [value, setValue] = useState<Order.OrderSourceType>(order.blockType);
 
 	const onCloseModal = () => {
-		dispatch(toggleChoiceCollateralModal(null));
+		dispatch(setChoiceCollateralModal(null));
 	};
 
 	const onSubmit = () => {
