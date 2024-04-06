@@ -53,8 +53,8 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 
-		gridApi.setState({ layout: l });
-		LocalstorageInstance.set(isOption ? 'osgl' : 'bsgl', layout);
+		gridApi.setState({ layout: JSON.parse(JSON.stringify(l)) });
+		setLayout(l);
 	};
 
 	const onLayoutChange = (l: Layout[]) => {
@@ -63,18 +63,14 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 	};
 
 	const onToggleSymbolDetail = (isExpand: boolean) => {
-		const gridApi = gridRef.current;
-		if (!gridApi) return;
-
 		const l = JSON.parse(JSON.stringify(layout)) as typeof layout;
-		const i = l.findIndex((item) => item.i === 'symbol_detail');
+		const i = layout.findIndex((item) => item.i === 'symbol_detail');
 
 		if (i === -1) return;
 
 		l[i].h = isExpand ? 48.47 : 27.29;
 
-		gridApi.setState({ layout: JSON.parse(JSON.stringify(l)) });
-		setLayout(l);
+		updateGridLayout(l);
 	};
 
 	const openSetting = () => {
@@ -130,8 +126,8 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 							onLayoutChange={onLayoutChange}
 							className='layout'
 							draggableHandle='.drag-handler'
+							useCSSTransforms
 							isResizable={false}
-							useCSSTransforms={false}
 							compactType='vertical'
 							width={360}
 							allowOverlap={false}
@@ -198,7 +194,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 							{!isOption && [
 								<div key='chart'>
 									<ErrorBoundary>
-										<Chart />
+										<Chart symbolISIN={symbolISIN} />
 									</ErrorBoundary>
 								</div>,
 

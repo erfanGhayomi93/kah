@@ -7,7 +7,7 @@ import Modal, { Header } from '../Modal';
 import Section from './Section';
 
 const Div = styled.div`
-	width: 560px;
+	width: 500px;
 	position: relative;
 `;
 
@@ -81,10 +81,10 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 					<Header label={t('symbol_info_panel_setting.title')} onClose={onCloseModal} />
 
 					<div className='flex-1 flex-column'>
-						<div className='flex-1 gap-16 px-24 pb-16 pt-24 flex-column'>
+						<div className='flex-1 gap-16 p-24 flex-column'>
 							<h3 className='text-tiny text-gray-900'>{t('symbol_info_panel_setting.description')}</h3>
 
-							<div className='gap-24 flex-column'>
+							<ul className='flex flex-wrap justify-start gap-28'>
 								{data.map((item, i) => (
 									<Section
 										key={i}
@@ -94,7 +94,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 										onChecked={onChecked}
 									/>
 								))}
-							</div>
+							</ul>
 						</div>
 						<div className='h-64 gap-8 border-t border-gray-500 px-16 flex-justify-end'>
 							<button

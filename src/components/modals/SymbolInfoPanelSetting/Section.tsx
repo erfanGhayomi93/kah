@@ -1,5 +1,4 @@
 import Checkbox from '@/components/common/Inputs/Checkbox';
-import { DragSVG } from '@/components/icons';
 import Image from 'next/image';
 
 interface SectionProps {
@@ -11,19 +10,17 @@ interface SectionProps {
 
 const Section = ({ title, checked, imgSrc, onChecked }: SectionProps) => {
 	return (
-		<div className='flex-justify-between'>
+		<li
+			style={{ width: '132px', height: '124px' }}
+			className='items-center justify-center gap-8 rounded bg-white shadow-card flex-column'
+		>
 			<div className='gap-8 flex-items-center'>
-				<button type='button' className='drag-handler text-gray-700'>
-					<DragSVG width='2rem' height='2rem' />
-				</button>
-
 				<Checkbox checked={checked} onChange={onChecked} />
-
-				<span className='text-base text-gray-900'>{title}</span>
+				<span className='text-tiny text-gray-900'>{title}</span>
 			</div>
 
 			<Image width='96' height='60' alt='Favicon' src={imgSrc} />
-		</div>
+		</li>
 	);
 };
 
