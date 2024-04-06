@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { toggleChoiceBrokerModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { createSelector } from '@reduxjs/toolkit';
@@ -28,11 +28,11 @@ const AuthorizeMiddleware = forwardRef<HTMLElement, AuthorizeMiddlewareProps>(({
 	const { isLoggedIn, brokerIsSelected, brokerURLs } = useAppSelector(getStates);
 
 	const showUserLoginModal = () => {
-		dispatch(toggleLoginModal({}));
+		dispatch(setLoginModal({}));
 	};
 
 	const showBrokerLoginModal = () => {
-		dispatch(toggleChoiceBrokerModal({}));
+		dispatch(setChoiceBrokerModal({}));
 	};
 
 	useLayoutEffect(() => {

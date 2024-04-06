@@ -24,7 +24,7 @@ const OptionDetail = () => {
 	);
 
 	return (
-		<Section defaultActiveTab={activeTab} tabs={tabs} onChange={setActiveTab}>
+		<Section name='option_detail' defaultActiveTab={activeTab} tabs={tabs} onChange={setActiveTab}>
 			{activeTab === 'price_information' ? <PriceInformation /> : <ComputingInformation />}
 		</Section>
 	);

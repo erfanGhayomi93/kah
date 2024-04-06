@@ -1,5 +1,5 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
-import Loading from '@/components/common/Loading';
+import Loading from '../../common/Loading';
 import NoData from '../../common/NoData';
 import Contract from './Contract';
 
@@ -8,20 +8,15 @@ interface ContractsProps {
 }
 
 const Contracts = ({ symbolISIN }: ContractsProps) => {
-	const { data: baseSettlementDays, isFetching } = useBaseSettlementDaysQuery({
+	const { data: baseSettlementDays, isLoading } = useBaseSettlementDaysQuery({
 		queryKey: ['baseSettlementDaysQuery', symbolISIN],
 	});
 
-	if (isFetching)
-		return (
-			<div className='relative flex-1'>
-				<Loading />
-			</div>
-		);
+	if (isLoading) return <Loading />;
 
 	const data = baseSettlementDays ?? [];
 
-	if (!isFetching && data.length === 0) return <NoData />;
+	if (!isLoading && data.length === 0) return <NoData />;
 
 	return (
 		<div className='h-full overflow-auto'>

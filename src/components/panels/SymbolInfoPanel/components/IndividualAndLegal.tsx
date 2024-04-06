@@ -36,7 +36,7 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 	const isNoData = buyerPercent - sellerPercent === 0;
 
 	return (
-		<Section defaultActiveTab='individual_and_legal' tabs={tabs}>
+		<Section name='individual_and_legal' defaultActiveTab='individual_and_legal' tabs={tabs}>
 			<div className='gap-8 px-8 py-12 flex-column'>
 				<div className='gap-4 pb-40 flex-column'>
 					<div className='flex-justify-between'>

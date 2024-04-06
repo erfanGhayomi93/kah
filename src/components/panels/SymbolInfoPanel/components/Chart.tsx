@@ -17,7 +17,7 @@ const Chart = () => {
 	);
 
 	return (
-		<Section defaultActiveTab='symbol_chart' tabs={tabs}>
+		<Section name='chart' defaultActiveTab='symbol_chart' tabs={tabs}>
 			<NoData />
 		</Section>
 	);

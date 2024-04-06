@@ -52,7 +52,7 @@ class StrikePriceBtnGroup {
 		const btn = document.createElement('button');
 		btn.setAttribute(
 			'class',
-			'size-32 bg-white rounded hover:bg-gray-200 text-base text-gray-900 flex-justify-center transition-colors',
+			'size-32 bg-white rounded text-base text-gray-900 flex-justify-center transition-colors',
 		);
 
 		return btn;
@@ -61,6 +61,7 @@ class StrikePriceBtnGroup {
 	private _createBuyBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
+		btn.classList.add('hover:bg-success-100', 'hover:text-white');
 		btn.textContent = 'B';
 		btn.onclick = (e) => {
 			e.stopPropagation();
@@ -79,6 +80,7 @@ class StrikePriceBtnGroup {
 	private _createSellBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
+		btn.classList.add('hover:bg-error-100', 'hover:text-white');
 		btn.textContent = 'S';
 		btn.onclick = (e) => {
 			e.stopPropagation();
@@ -97,6 +99,7 @@ class StrikePriceBtnGroup {
 	private _createBasketBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
+		btn.classList.add('hover:bg-gray-200');
 		btn.innerHTML = this.isInBasket
 			? '<svg width="2rem" height="2rem" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.18773 4.0097C4.86229 3.68427 4.33465 3.68427 4.00921 4.0097C3.68378 4.33514 3.68378 4.86277 4.00921 5.18822L8.82148 10.0005L4.00926 14.8127C3.68383 15.1381 3.68383 15.6658 4.00926 15.9912C4.3347 16.3166 4.86234 16.3166 5.18777 15.9912L9.99998 11.179L14.8122 15.9912C15.1376 16.3166 15.6653 16.3166 15.9907 15.9912C16.3161 15.6658 16.3161 15.1381 15.9907 14.8127L11.1785 10.0005L15.9908 5.18822C16.3162 4.86277 16.3162 4.33514 15.9908 4.0097C15.6654 3.68427 15.1377 3.68427 14.8123 4.0097L9.99998 8.82197L5.18773 4.0097Z" fill="currentColor" /></svg>'
 			: '<svg width="2.4rem" height="2.4rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.5249 18.7505H8.47494C7.77912 18.7492 7.10537 18.5062 6.56904 18.0629C6.03271 17.6196 5.66715 17.0036 5.53494 16.3205L4.53744 11.1305C4.48642 10.8715 4.49348 10.6044 4.5581 10.3485C4.62273 10.0925 4.74331 9.85412 4.91117 9.6504C5.07903 9.44667 5.28998 9.28271 5.52882 9.17033C5.76767 9.05795 6.02848 8.99994 6.29244 9.00048H17.7074C17.9746 8.9943 18.2396 9.04817 18.4832 9.1581C18.7267 9.26804 18.9424 9.43124 19.1144 9.63566C19.2865 9.84009 19.4104 10.0805 19.4771 10.3392C19.5439 10.598 19.5517 10.8683 19.4999 11.1305L18.5024 16.3205C18.369 17.01 17.998 17.6308 17.4539 18.0749C16.9098 18.5189 16.2272 18.758 15.5249 18.7505Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 5.25L8.25 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 5.25L15.75 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.75 12.75V14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.25 12.75V14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -113,6 +116,7 @@ class StrikePriceBtnGroup {
 	private _createDropdownBtn() {
 		this.eDropdownBtn = this.createBtn();
 		this.eDropdownBtn.type = 'button';
+		this.eDropdownBtn.classList.add('hover:bg-gray-200');
 		this.eDropdownBtn.innerHTML =
 			'<svg width="2.4rem" height="2.4rem" class="transition-transform" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 11L12 14L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 		this.eDropdownSvg = this.eDropdownBtn.querySelector('svg')!;

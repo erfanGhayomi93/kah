@@ -1,6 +1,6 @@
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleOrderDetailsModal, type IOrderDetailsModal } from '@/features/slices/modalSlice';
+import { setOrderDetailsModal, type IOrderDetailsModal } from '@/features/slices/modalSlice';
 import { cn, dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
@@ -22,7 +22,7 @@ const OrderDetails = forwardRef<HTMLDivElement, OrderDetailsProps>(({ order, ...
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(toggleOrderDetailsModal(null));
+		dispatch(setOrderDetailsModal(null));
 	};
 
 	const numFormatter = (v: number) => {

@@ -4,7 +4,7 @@ import AgTable from '@/components/common/Tables/AgTable';
 import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
 import { editableOrdersStatus } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { setConfirmModal, toggleOrderDetailsModal } from '@/features/slices/modalSlice';
+import { setConfirmModal, setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { deleteOrder } from '@/utils/orders';
@@ -80,7 +80,7 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 
 	const showDetails = (order: TOrders) => {
 		dispatch(
-			toggleOrderDetailsModal({
+			setOrderDetailsModal({
 				order,
 			}),
 		);

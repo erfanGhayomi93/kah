@@ -176,7 +176,7 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 				disabled={!isValid}
 				className='!absolute h-48 gap-4 rounded text-lg shadow btn-primary'
 			>
-				{t('common.register')}
+				{t('common.continue')}
 			</Button>
 		</form>
 	);

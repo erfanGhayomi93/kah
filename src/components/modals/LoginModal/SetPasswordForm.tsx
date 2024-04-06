@@ -3,7 +3,7 @@ import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { setLoginModal } from '@/features/slices/modalSlice';
 import { base64encode, cn, passwordValidation } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -87,7 +87,7 @@ const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 	};
 
 	const onCloseModal = () => {
-		dispatch(toggleLoginModal(null));
+		dispatch(setLoginModal(null));
 	};
 
 	const setFieldPasswordVisibility = <T extends keyof Inputs>(field: T, visibility: boolean) => {

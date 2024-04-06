@@ -16,6 +16,19 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
+declare type TSymbolInfoPanelSections =
+	| 'option_base_symbol_information'
+	| 'option_detail'
+	| 'market_depth'
+	| 'symbol_detail'
+	| 'base_symbol_contracts'
+	| 'user_open_positions'
+	| 'quotes'
+	| 'individual_and_legal'
+	| 'chart'
+	| 'same_sector_symbols'
+	| 'supervisor_messages';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'

@@ -1,7 +1,7 @@
 import { useGetBrokersQuery } from '@/api/queries/brokerQueries';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChoiceBrokerModal } from '@/features/slices/modalSlice';
+import { setChoiceBrokerModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
@@ -29,7 +29,7 @@ const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) 
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleChoiceBrokerModal(null));
+		dispatch(setChoiceBrokerModal(null));
 	};
 
 	const onSelectBroker = (broker: User.Broker) => {

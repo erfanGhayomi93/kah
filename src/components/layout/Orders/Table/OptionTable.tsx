@@ -2,7 +2,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChoiceCollateralModal } from '@/features/slices/modalSlice';
+import { setChoiceCollateralModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -43,7 +43,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 
 	const onChangeCollateral = (order: Order.OptionOrder) => {
 		dispatch(
-			toggleChoiceCollateralModal({
+			setChoiceCollateralModal({
 				order,
 			}),
 		);

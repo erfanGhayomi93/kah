@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/features/hooks';
-import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { setLoginModal } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -16,7 +16,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(toggleLoginModal(null));
+		dispatch(setLoginModal(null));
 	};
 
 	useEffect(() => {

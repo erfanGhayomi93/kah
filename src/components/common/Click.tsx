@@ -1,4 +1,4 @@
-import { cloneElement, useLayoutEffect, useRef } from 'react';
+import { cloneElement, useEffect, useRef } from 'react';
 
 interface ClickProps {
 	enabled: boolean;
@@ -42,7 +42,7 @@ const Click = ({ enabled, children, onClickInside, onClickOutside }: ClickProps)
 		return controllerRef.current.signal;
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		abort();
 
 		if (enabled) {

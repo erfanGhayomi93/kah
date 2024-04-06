@@ -37,6 +37,8 @@ import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MarketMapSVG from './market-map.svg';
 import MaximizeSVG from './maximize.svg';
+import MessageCheckSVG from './message-check.svg';
+import MessageDoubleCheckSVG from './message-double-check.svg';
 import MinimizeSVG from './minimize.svg';
 import MoneySVG from './money.svg';
 import MoreOptionsSVG from './more-options.svg';
@@ -113,6 +115,8 @@ export {
 	ManageSVG,
 	MarketMapSVG,
 	MaximizeSVG,
+	MessageCheckSVG,
+	MessageDoubleCheckSVG,
 	MinimizeSVG,
 	MoneySVG,
 	MoreOptionsSVG,

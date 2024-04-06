@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSymbolContractsModal, type IContractSelectorModal } from '@/features/slices/modalSlice';
+import { setSymbolContractsModal, type IContractSelectorModal } from '@/features/slices/modalSlice';
 import dayjs from '@/libs/dayjs';
 import { cn, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -58,7 +58,7 @@ const SymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		});
 
 		const onCloseModal = () => {
-			dispatch(toggleSymbolContractsModal(null));
+			dispatch(setSymbolContractsModal(null));
 		};
 
 		const setStatesValue = <T extends keyof SymbolContractModalStates>(

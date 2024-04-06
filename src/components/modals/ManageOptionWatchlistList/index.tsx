@@ -4,7 +4,7 @@ import routes from '@/api/routes';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import { PlusSquareSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlist, setManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useLayoutEffect, useReducer } from 'react';
@@ -53,7 +53,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleManageOptionWatchlistListModal(null));
+		dispatch(setManageOptionWatchlistListModal(null));
 	};
 
 	const deleteAll = () => {
@@ -91,7 +91,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 	};
 
 	const addNewWatchlist = () => {
-		dispatch(toggleAddNewOptionWatchlist({ moveable: true }));
+		dispatch(setAddNewOptionWatchlist({ moveable: true }));
 	};
 
 	useLayoutEffect(() => {
