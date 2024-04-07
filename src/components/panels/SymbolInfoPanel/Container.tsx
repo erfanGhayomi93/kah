@@ -60,7 +60,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 	const getGridLayout = () => {
 		const layout = symbolInfoPanelGridLayout.filter((item) => {
-			return item.hidden === false && (!('isOption' in item) || item.isOption === Boolean(symbolData?.isOption));
+			return item.hidden === false && (!('isOption' in item) || item.isOption === symbolData?.isOption);
 		});
 		layout.sort((a, b) => a.i - b.i);
 
