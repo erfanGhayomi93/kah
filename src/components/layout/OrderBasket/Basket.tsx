@@ -98,7 +98,7 @@ const Basket = () => {
 			setSubmitting(true);
 			sendOrder(0);
 		} catch (e) {
-			console.error(e);
+			//
 		}
 	};
 
