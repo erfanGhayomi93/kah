@@ -35,7 +35,7 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 
 	return (
 		<Section name='individual_and_legal' defaultActiveTab='individual_and_legal' tabs={tabs}>
-			<div className='gap-24 px-8 py-12 flex-column'>
+			<div className='gap-24 px-8 py-16 flex-column'>
 				<div className='gap-4 flex-column'>
 					<div className='flex-justify-between'>
 						<span className='text-tiny text-success-100'>{numFormatter(buyerPercent)}%</span>
