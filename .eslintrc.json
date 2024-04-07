@@ -24,6 +24,7 @@
 			"error",
 			"single"
 		],
+		"@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
 		"prefer-promise-reject-errors": "off",
 		"accessor-pairs": "off",
 		"@next/next/no-img-element": "off",
