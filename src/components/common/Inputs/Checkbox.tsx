@@ -7,12 +7,12 @@ interface ICheckboxProps
 	label?: string | number;
 	disabled?: boolean;
 	checked: boolean;
-	onChange: (checked: boolean) => void;
+	onChange?: (checked: boolean) => void;
 }
 
 const Checkbox = ({ classes, disabled, checked, label, onChange, ...props }: ICheckboxProps) => {
 	const onChangeVal = () => {
-		if (!disabled) onChange(!checked);
+		if (!disabled) onChange?.(!checked);
 	};
 
 	return (

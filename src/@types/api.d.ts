@@ -329,6 +329,7 @@ declare namespace Symbol {
 		lastTradedPrice: number;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
+		yesterdayClosingPrice: number;
 		closingPrice: number;
 		closingPriceVarReferencePrice: number;
 		closingPriceVarReferencePricePercent: number;
