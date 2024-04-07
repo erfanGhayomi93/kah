@@ -110,7 +110,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 	const isOption = Boolean(symbolData?.isOption);
 
 	return (
-		<div className='h-full px-16 flex-column'>
+		<div className='h-full pl-8 pr-16 flex-column'>
 			<div style={{ flex: '0 0 5.6rem' }} className='flex-justify-between'>
 				<button type='button' onClick={close}>
 					<XSVG width='2rem' className='icon-hover' height='2rem' />

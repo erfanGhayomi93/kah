@@ -99,7 +99,23 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 					},
 				];
 
-			return [];
+			return [
+				{
+					id: 'option_detail',
+					title: t('symbol_info_panel_setting.option_detail'),
+					imgSrc: '/static/images/weoXEM1DSq.png',
+				},
+				{
+					id: 'market_depth',
+					title: t('symbol_info_panel_setting.market_depth'),
+					imgSrc: '/static/images/q4WNQ4Oibv.png',
+				},
+				{
+					id: 'individual_and_legal',
+					title: t('symbol_info_panel_setting.individual_and_legal'),
+					imgSrc: '/static/images/9PlkNy6gfp.png',
+				},
+			];
 		}, [isOption]);
 
 		const isNotHidden = useCallback(
