@@ -1,4 +1,5 @@
 import SymbolContextMenu from '@/components/common/Symbol/SymbolContextMenu';
+import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import SymbolState from '@/components/common/SymbolState';
 import { GalaxySVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
@@ -23,7 +24,12 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 		lastTradedPrice,
 		tradePriceVarPreviousTradePercent,
 		closingPrice,
+		yesterdayClosingPrice,
 		closingPriceVarReferencePricePercent,
+		lowThreshold,
+		highThreshold,
+		highPrice,
+		lowPrice,
 	} = symbolData;
 
 	const t = useTranslations();
@@ -114,7 +120,12 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 				</button>
 			</div>
 
-			<div className='pt-24' />
+			<SymbolPriceSlider
+				yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
+				thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
+				exchangeData={[closingPrice ?? 0, lastTradedPrice ?? 0]}
+				boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
+			/>
 		</div>
 	);
 };
