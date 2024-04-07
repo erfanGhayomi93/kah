@@ -131,6 +131,15 @@ class StrikePriceBtnGroup {
 
 	private createDropdown() {
 		try {
+			const root = document.querySelector('[grid-id="option-chain"]') as HTMLDivElement | null;
+			if (!root) return;
+
+			const btnOffset = this.eDropdownBtn.getBoundingClientRect();
+			const gridOffset = root.getBoundingClientRect();
+
+			const dropdownOriginalTop = btnOffset.top + btnOffset.height + 8;
+			const maxTop = gridOffset.height;
+
 			this.eDropdown = document.createElement('ul');
 			this.eDropdown.setAttribute('class', 'absolute overflow-hidden bg-white rounded');
 			this.eDropdown.setAttribute('data-side', this.side);
@@ -138,7 +147,7 @@ class StrikePriceBtnGroup {
 			this.eDropdown.style.zIndex = '999';
 			this.eDropdown.style.width = '248px';
 			this.eDropdown.style[this.side === 'buy' ? 'left' : 'right'] = '0px';
-			this.eDropdown.style.top = '40px';
+			this.eDropdown.style.top = dropdownOriginalTop > maxTop ? '-148px' : '40px';
 
 			const a = document.createElement('li');
 			const aBtn = document.createElement('button');
@@ -205,7 +214,7 @@ class StrikePriceBtnGroup {
 	private onWindowClick(e: MouseEvent) {
 		const eTarget = e.target as HTMLElement;
 
-		if (!eTarget.isConnected) return;
+		if (!eTarget.isConnected || !this.eDropdown) return;
 
 		if (
 			this.eDropdownBtn.isEqualNode(eTarget) ||

@@ -387,6 +387,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	return (
 		<AgTable<ITableData>
+			gridId='option-chain'
 			ref={gridRef}
 			className='flex-1 rounded-0'
 			rowData={modifiedData ?? []}
