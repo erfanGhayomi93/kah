@@ -208,6 +208,7 @@
 		"closing_price": "قیمت پایانی",
 		"price_information": "اطلاعات قیمتی",
 		"computing_information": "اطلاعات محاسباتی",
+		"base_symbol_information": "اطلاعات نماد پایه",
 		"market_ype": "نوع بازار",
 		"trade_value": "ارزش معاملات",
 		"trade_volume": "حجم معاملات",
@@ -234,7 +235,13 @@
 		"price": "قیمت",
 		"symbol_title": "نماد",
 		"individual_cash_inflow": "ورود پول حقیقی",
-		"contract_description": "‎{dueDays} روز تقویمی و ‎{workingDaysLeftCount} روز معاملاتی"
+		"contract_description": "‎{dueDays} روز تقویمی و ‎{workingDaysLeftCount} روز معاملاتی",
+		"avg_volume_month": "میانگین حجم ماه",
+		"notional_value": "ارزش مفهومی معاملات",
+		"contract_end_date": "تاریخ سررسید",
+		"contract_size": "اندازه قرارداد",
+		"open_position": "موقعیت باز",
+		"last_trade_date": "آخرین معامله"
 	},
 	"same_sector_symbol": {
 		"symbol": "نماد",

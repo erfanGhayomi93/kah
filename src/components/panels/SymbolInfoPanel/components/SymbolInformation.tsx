@@ -14,6 +14,7 @@ interface SymbolInformationProps {
 
 const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 	const {
+		baseSymbolISIN,
 		symbolTradeState,
 		symbolTitle,
 		symbolISIN,
@@ -42,6 +43,11 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 		});
 	};
 
+	const saturnUrl =
+		baseSymbolISIN === null
+			? `/saturn?symbolISIN=${symbolISIN}`
+			: `/saturn?contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`;
+
 	return (
 		<div className='gap-8 rounded bg-white px-8 py-16 flex-column'>
 			<div className='flex items-start justify-between'>
@@ -55,7 +61,8 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 
 				<div className='gap-8 flex-items-center'>
 					<Link
-						href='/saturn'
+						target='_blank'
+						href={saturnUrl}
 						onClick={() => dispatch(setSymbolInfoPanel(null))}
 						className='size-20 icon-hover'
 					>

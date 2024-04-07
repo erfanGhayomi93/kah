@@ -5,11 +5,12 @@ import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRen
 import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setLoginModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, openNewTab, sepNumbers } from '@/utils/helpers';
+import { numFormatter, sepNumbers } from '@/utils/helpers';
 import {
 	type CellClickedEvent,
 	type ColDef,
@@ -61,8 +62,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 			const { symbolISIN, baseSymbolISIN } = data.symbolInfo;
 
-			if (baseSymbolISIN && symbolISIN)
-				openNewTab('/fa/saturn', `symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+			if (baseSymbolISIN && symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
 		} catch (e) {
 			//
 		}

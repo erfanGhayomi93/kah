@@ -1,7 +1,9 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
-import { openNewTab, sepNumbers } from '@/utils/helpers';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -22,6 +24,8 @@ interface ITableData {
 const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const { data: watchlistData, isLoading } = useWatchlistBySettlementDateQuery({
 		queryKey: ['watchlistBySettlementDateQuery', { baseSymbolISIN, settlementDate: contractEndDate }],
 	});
@@ -35,8 +39,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 
 			const { symbolISIN, baseSymbolISIN } = symbolData.symbolInfo;
 
-			if (baseSymbolISIN && symbolISIN)
-				openNewTab('/fa/saturn', `symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+			if (baseSymbolISIN && symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
 		} catch (e) {
 			//
 		}

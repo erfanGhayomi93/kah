@@ -152,20 +152,12 @@ export const getDateMilliseconds = {
 
 export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	{
-		id: 'option_base_symbol_information',
-		height: 448,
+		id: 'option_detail',
+		height: 468,
 		expand: true,
 		hidden: false,
 		isOption: true,
 		i: 0,
-	},
-	{
-		id: 'option_detail',
-		height: 200,
-		expand: true,
-		hidden: false,
-		isOption: true,
-		i: 1,
 	},
 	{
 		id: 'market_depth',
@@ -173,7 +165,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		expand: true,
 		hidden: false,
 		isOption: true,
-		i: 2,
+		i: 1,
 	},
 	{
 		id: 'symbol_detail',
@@ -182,7 +174,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		expand: true,
 		hidden: false,
 		isOption: false,
-		i: 0,
+		i: 2,
 	},
 	{
 		id: 'base_symbol_contracts',

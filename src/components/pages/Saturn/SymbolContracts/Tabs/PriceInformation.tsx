@@ -1,6 +1,7 @@
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import dayjs from '@/libs/dayjs';
-import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
+import { numFormatter, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -10,6 +11,10 @@ interface PriceInformationProps {
 
 const PriceInformation = ({ symbol }: PriceInformationProps) => {
 	const t = useTranslations();
+
+	const dateFormatter = (v: string | null) => {
+		return dayjs(v).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss');
+	};
 
 	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
 		try {
@@ -23,6 +28,10 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 				closingPriceVarReferencePricePercent,
 				tradeValue,
 				tradeCount,
+				contractEndDate,
+				openPosition,
+				notionalValue,
+				contractSize,
 				lastTradeDate,
 			} = symbol;
 
@@ -38,7 +47,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 						title: t('old_option_chain.closing_price'),
 						valueFormatter: (
 							<span
-								className={cn(
+								className={clsx(
 									'gap-4 flex-items-center',
 									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
 								)}
@@ -70,7 +79,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'notionalValue',
 						title: t('old_option_chain.notional_value'),
-						valueFormatter: '−',
+						valueFormatter: numFormatter(notionalValue),
 					},
 					{
 						id: 'tradeCount',
@@ -83,12 +92,12 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'contractEndDate',
 						title: t('old_option_chain.contract_end_date'),
-						valueFormatter: () => '−',
+						valueFormatter: dateFormatter(contractEndDate),
 					},
 					{
 						id: 'contractSize',
 						title: t('old_option_chain.contract_size'),
-						valueFormatter: '−',
+						valueFormatter: numFormatter(contractSize),
 					},
 				],
 
@@ -96,12 +105,12 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'openPosition',
 						title: t('old_option_chain.open_position'),
-						valueFormatter: '−',
+						valueFormatter: numFormatter(openPosition),
 					},
 					{
 						id: 'lastTradeDate',
 						title: t('old_option_chain.last_trade_date'),
-						valueFormatter: dayjs(lastTradeDate).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss'),
+						valueFormatter: dateFormatter(lastTradeDate),
 					},
 				],
 			];

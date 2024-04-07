@@ -48,6 +48,16 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 		dispatch(setSymbolInfoPanelGridLayout(l));
 	};
 
+	const onToggleOptionDetail = (isExpand: boolean) => {
+		const l = JSON.parse(JSON.stringify(symbolInfoPanelGridLayout)) as typeof symbolInfoPanelGridLayout;
+		const i = l.findIndex((item) => item.id === 'option_detail');
+
+		if (i === -1) return;
+
+		l[i].height = isExpand ? 628 : 468;
+		dispatch(setSymbolInfoPanelGridLayout(l));
+	};
+
 	const openSetting = () => {
 		dispatch(
 			setSymbolInfoPanelSetting({
@@ -128,9 +138,17 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 			{symbolData && (
 				<div className='flex-column'>
-					<ErrorBoundary>
-						<SymbolInformation symbolData={symbolData} />
-					</ErrorBoundary>
+					<div className='gap-16 flex-column'>
+						<ErrorBoundary>
+							<SymbolInformation symbolData={symbolData} />
+						</ErrorBoundary>
+
+						{isOption && (
+							<ErrorBoundary>
+								<OptionBaseSymbolInformation symbolData={symbolData} />
+							</ErrorBoundary>
+						)}
+					</div>
 
 					<div className='relative'>
 						<GridLayout
@@ -140,7 +158,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 							useCSSTransforms
 							isResizable={false}
 							compactType='vertical'
-							width={360}
+							width={368}
 							allowOverlap={false}
 							cols={1}
 							margin={[0, MARGIN_BETWEEN_SECTIONS]}
@@ -150,18 +168,13 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 						>
 							{isOption
 								? [
-										isNotHidden('option_base_symbol_information') && (
-											<div key='option_base_symbol_information'>
-												<ErrorBoundary>
-													<OptionBaseSymbolInformation />
-												</ErrorBoundary>
-											</div>
-										),
-
 										isNotHidden('option_detail') && (
 											<div key='option_detail'>
 												<ErrorBoundary>
-													<OptionDetail />
+													<OptionDetail
+														onExpand={onToggleOptionDetail}
+														symbolData={symbolData}
+													/>
 												</ErrorBoundary>
 											</div>
 										),
@@ -180,7 +193,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 												<ErrorBoundary>
 													<SymbolDetail
 														symbolData={symbolData}
-														onToggleSymbolDetail={onToggleSymbolDetail}
+														onExpand={onToggleSymbolDetail}
 													/>
 												</ErrorBoundary>
 											</div>
