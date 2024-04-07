@@ -94,6 +94,7 @@ const ForgetPasswordModal = forwardRef<HTMLDivElement, ForgetPasswordModalProps>
 						phoneNumber={phoneNumber}
 						result={result as OAuthAPI.IValidateForgetPasswordOtp}
 						onPasswordChanged={onPasswordChanged}
+						onCancel={onCloseModal}
 					/>
 				)}
 			</AuthenticationModalTemplate>

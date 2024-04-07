@@ -1,5 +1,3 @@
-import { type Layout } from 'react-grid-layout';
-
 export const defaultSymbolISIN = 'IRO1IKCO0001';
 
 export const broadcastChannel = 'tUFN1pQ1Ry';
@@ -152,83 +150,95 @@ export const getDateMilliseconds = {
 	Year: 31536e6,
 };
 
-export const initialSymbolInfoPanelGrid: Record<'baseSymbol' | 'option', Layout[]> = {
-	baseSymbol: [
-		{
-			w: 1,
-			h: 27.29,
-			x: 0,
-			y: 0,
-			i: 'symbol_detail',
-			moved: false,
-			static: false,
-		},
-		{
-			w: 1,
-			h: 19.765,
-			x: 0,
-			y: 27.29,
-			i: 'base_symbol_contracts',
-			moved: false,
-			static: false,
-		},
-		{
-			w: 1,
-			h: 19.765,
-			x: 0,
-			y: 47.055,
-			i: 'user_open_positions',
-			moved: false,
-			static: false,
-		},
-		{
-			w: 1,
-			h: 17.235,
-			x: 0,
-			y: 66.82,
-			i: 'quotes',
-			moved: false,
-			static: false,
-		},
-		{
-			w: 1,
-			h: 18.47,
-			x: 0,
-			y: 84.055,
-			i: 'individual_and_legal',
-			moved: false,
-			static: false,
-		},
-		{
-			w: 1,
-			h: 19.765,
-			x: 0,
-			y: 102.525,
-			i: 'chart',
-			moved: false,
-			static: false,
-		},
-		{
-			w: 1,
-			h: 19.765,
-			x: 0,
-			y: 122.29,
-			i: 'same_sector_symbols',
-			moved: false,
-			static: false,
-		},
-		{
-			w: 1,
-			h: 19.765,
-			x: 0,
-			y: 142.055,
-			i: 'supervisor_messages',
-			moved: false,
-			static: false,
-		},
-	],
-
-	option: [],
-};
+export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
+	{
+		id: 'option_base_symbol_information',
+		height: 448,
+		expand: true,
+		hidden: false,
+		isOption: true,
+		i: 0,
+	},
+	{
+		id: 'option_detail',
+		height: 200,
+		expand: true,
+		hidden: false,
+		isOption: true,
+		i: 1,
+	},
+	{
+		id: 'market_depth',
+		height: 200,
+		expand: true,
+		hidden: false,
+		isOption: true,
+		i: 2,
+	},
+	{
+		id: 'symbol_detail',
+		// It'll be "808" after expand
+		height: 448,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 0,
+	},
+	{
+		id: 'base_symbol_contracts',
+		height: 320,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 1,
+	},
+	{
+		id: 'user_open_positions',
+		height: 320,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 2,
+	},
+	{
+		id: 'quotes',
+		height: 277,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 3,
+	},
+	{
+		id: 'individual_and_legal',
+		height: 284,
+		expand: true,
+		hidden: false,
+		i: 4,
+	},
+	{
+		id: 'chart',
+		height: 320,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 5,
+	},
+	{
+		id: 'same_sector_symbols',
+		height: 400,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 6,
+	},
+	{
+		id: 'supervisor_messages',
+		height: 360,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 7,
+	},
+];
 
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];

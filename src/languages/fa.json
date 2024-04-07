@@ -98,9 +98,9 @@
 		"title": "بازیابی رمز عبور",
 		"resend_otp": "ارسال دوباره",
 		"resend_otp_description": "زمان شما به پایان رسید، روی ارسال دوباره کلیک کنید.",
-		"password_english_words": "حروف انگلیسی",
+		"password_english_words": "فقط حروف انگلیسی",
 		"password_min_chars": "حداقل 8 کاراکتر",
-		"password_include_uppercase_chars": "شامل حروف بزرگ",
+		"password_include_uppercase_chars": "شامل حروف کوچک و بزرگ",
 		"password_english_include_number": "شامل عدد",
 		"go_to_homepage": "برو به کهکشان"
 	},

@@ -1,6 +1,8 @@
 import { ArrowUpSVG, DragSVG } from '@/components/icons';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 export interface ITabIem<T extends string = string> {
 	id: T;
@@ -16,13 +18,25 @@ interface SectionProps<T extends string> {
 }
 
 const Section = <T extends string = string>({ name, defaultActiveTab, tabs, children, onChange }: SectionProps<T>) => {
+	const dispatch = useAppDispatch();
+
+	const symbolInfoPanelGridLayout = useAppSelector(getSymbolInfoPanelGridLayout);
+
 	const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
-	const [isExpand, setIsExpand] = useState(true);
+	const setIsExpand = (expand?: boolean) => {
+		const l = JSON.parse(JSON.stringify(symbolInfoPanelGridLayout)) as typeof symbolInfoPanelGridLayout;
+		const i = l.findIndex((item) => item.id === name);
 
-	const onExpand = () => {
-		setIsExpand(!isExpand);
+		if (i === -1) return;
+
+		l[i].expand = expand ?? !isExpand;
+		dispatch(setSymbolInfoPanelGridLayout(l));
 	};
+
+	const isExpand = useMemo(() => {
+		return symbolInfoPanelGridLayout.find((item) => item.id === name)?.expand !== false;
+	}, [symbolInfoPanelGridLayout]);
 
 	return (
 		<div
@@ -63,12 +77,12 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 				</ul>
 
 				<div className='gap-8 flex-items-center'>
-					<button type='button' className='text-gray-800' onClick={onExpand}>
+					<button type='button' className='text-gray-800' onClick={() => setIsExpand()}>
 						<ArrowUpSVG
 							width='1.8rem'
 							height='1.8rem'
 							className='transition-transform'
-							style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }}
+							style={{ transform: `rotate(${isExpand ? 0 : 180}deg)` }}
 						/>
 					</button>
 
@@ -78,7 +92,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 				</div>
 			</div>
 
-			{children}
+			{isExpand && children}
 		</div>
 	);
 };

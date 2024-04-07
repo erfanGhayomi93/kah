@@ -43,6 +43,30 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
+declare interface ISymbolInfoPanelGrid {
+	id: TSymbolInfoPanelSections;
+	/**
+	 * Section height as px
+	 */
+	height: number;
+	/**
+	 * is expand
+	 */
+	expand: boolean;
+	/**
+	 * is hidden
+	 */
+	hidden: boolean;
+	/**
+	 * Section index
+	 */
+	i: number;
+	/**
+	 * Option | Not Option | Both
+	 */
+	readonly isOption?: boolean;
+}
+
 declare interface IBaseModalConfiguration {
 	moveable?: boolean;
 	animation?: boolean;
