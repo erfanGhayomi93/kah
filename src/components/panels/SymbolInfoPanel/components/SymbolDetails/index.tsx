@@ -5,10 +5,10 @@ import BaseSymbolDetail from './BaseSymbolDetail';
 
 interface SymbolDetailProps {
 	symbolData: Symbol.Info;
-	onToggleSymbolDetail: (isExpand: boolean) => void;
+	onExpand: (isExpand: boolean) => void;
 }
 
-const SymbolDetail = ({ symbolData, onToggleSymbolDetail }: SymbolDetailProps) => {
+const SymbolDetail = ({ symbolData, onExpand }: SymbolDetailProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -23,7 +23,7 @@ const SymbolDetail = ({ symbolData, onToggleSymbolDetail }: SymbolDetailProps) =
 
 	return (
 		<Section name='symbol_detail' defaultActiveTab='symbol_detail' tabs={tabs}>
-			<BaseSymbolDetail symbolData={symbolData} onToggleSymbolDetail={onToggleSymbolDetail} />
+			<BaseSymbolDetail symbolData={symbolData} onExpand={onExpand} />
 		</Section>
 	);
 };

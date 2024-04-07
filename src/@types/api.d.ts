@@ -359,6 +359,7 @@ declare namespace Symbol {
 		legalSellVolume: number;
 		numberOfLegalsSellers: number;
 		baseSymbolISIN: string | null;
+		baseSymbolTitle: string | null;
 		marketUnit: string;
 		notionalValue: number;
 		contractEndDate: string;

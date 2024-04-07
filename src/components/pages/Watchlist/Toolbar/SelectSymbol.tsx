@@ -1,14 +1,15 @@
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
-import { openNewTab } from '@/utils/helpers';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useState } from 'react';
 
 const SelectSymbol = () => {
+	const dispatch = useAppDispatch();
+
 	const [symbol] = useState<Symbol.Search | null>(null);
 
 	const onChangeSymbol = (value: Symbol.Search | null) => {
-		if (!value) return;
-
-		openNewTab('/fa/saturn', `${value.isOption ? 'contractISIN' : 'symbolISIN'}=${value.symbolISIN}`);
+		if (value?.symbolISIN) dispatch(setSymbolInfoPanel(value.symbolISIN));
 	};
 
 	return (

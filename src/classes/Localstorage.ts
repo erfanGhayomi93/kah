@@ -30,11 +30,11 @@ export class Localstorage {
 				const jsonValue = JSON.parse(result) as T;
 				if (validation) {
 					if (validation(jsonValue)) return jsonValue;
-				}
+				} else return jsonValue;
 			} catch (e) {
 				if (validation) {
 					if (validation(result as T)) return result as T;
-				}
+				} else return result as T;
 			}
 		} catch (e) {
 			//

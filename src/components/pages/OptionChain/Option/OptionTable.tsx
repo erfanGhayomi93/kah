@@ -3,10 +3,11 @@ import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setChoiceBrokerModal, setLoginModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getIsLoggedIn, getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useTradingFeatures } from '@/hooks';
-import { openNewTab, sepNumbers, uuidv4 } from '@/utils/helpers';
+import { sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
@@ -62,8 +63,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 			const { symbolISIN, baseSymbolISIN } = symbolData.symbolInfo;
 
-			if (baseSymbolISIN && symbolISIN)
-				openNewTab('/fa/saturn', `symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+			if (baseSymbolISIN && symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
 		} catch (e) {
 			//
 		}

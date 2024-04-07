@@ -17,6 +17,11 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 		enabled: Boolean(symbol?.symbolISIN),
 	});
 
+	const dateFormatter = (v: string | number | null) => {
+		if (!v) return '−';
+		return dayjs(v).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss');
+	};
+
 	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
 		try {
 			if (!symbol || !optionData) return [];
@@ -99,7 +104,7 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 					{
 						id: 'timeValue',
 						title: t('old_option_chain.time_value'),
-						valueFormatter: dayjs(timeValue).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss'),
+						valueFormatter: dateFormatter(timeValue),
 					},
 				],
 
