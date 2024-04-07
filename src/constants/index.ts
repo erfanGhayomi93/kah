@@ -210,7 +210,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	},
 	{
 		id: 'individual_and_legal',
-		height: 284,
+		height: 306,
 		expand: true,
 		hidden: false,
 		i: 4,
