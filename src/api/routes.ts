@@ -66,6 +66,9 @@ const routes = {
 		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
 		Search: `${rlcUrl}/Symbol/v1/Search`,
 		SymbolHistory: `${rlcUrl}/Symbol/v1/SymbolHistory`,
+		GetSameSectorSymbolsBySymbolISIN: `${rlcUrl}/Symbol/v1/GetSameSectorSymbolsBySymbolISIN`,
+		GetSupervisedMessage: `${rlcUrl}/Symbol/v1/GetSupervisedMessage`,
+		ChartData: `${rlcUrl}/Symbol/v1/ChartData`,
 	},
 
 	saturn: {

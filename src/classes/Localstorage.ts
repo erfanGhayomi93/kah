@@ -19,19 +19,28 @@ export class Localstorage {
 		}
 	}
 
-	get<T extends string | unknown>(name: string, defaultValue: T): T {
+	get<T extends string | unknown>(name: string, defaultValue: T, validation?: (value: T) => boolean): T {
 		try {
 			const result: T | string | undefined = localStorage.getItem(name) ?? undefined;
 			const isString = typeof result === 'string';
 
+			if (!isString) return defaultValue;
+
 			try {
-				return isString ? JSON.parse(result) : defaultValue;
+				const jsonValue = JSON.parse(result) as T;
+				if (validation) {
+					if (validation(jsonValue)) return jsonValue;
+				}
 			} catch (e) {
-				return isString ? (result as T) : defaultValue;
+				if (validation) {
+					if (validation(result as T)) return result as T;
+				}
 			}
 		} catch (e) {
-			return defaultValue;
+			//
 		}
+
+		return defaultValue;
 	}
 
 	has(name: string): boolean {

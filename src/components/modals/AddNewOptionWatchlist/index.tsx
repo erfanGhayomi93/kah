@@ -3,7 +3,7 @@ import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleAddNewOptionWatchlist } from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlist } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
@@ -35,7 +35,7 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleAddNewOptionWatchlist(null));
+		dispatch(setAddNewOptionWatchlist(null));
 	};
 
 	const onSubmit = async (e: React.FormEvent) => {

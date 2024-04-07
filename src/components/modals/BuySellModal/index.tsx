@@ -2,7 +2,7 @@ import { useCommissionsQuery } from '@/api/queries/brokerPrivateQueries';
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleBuySellModal, type IBuySellModal } from '@/features/slices/modalSlice';
+import { setBuySellModal, type IBuySellModal } from '@/features/slices/modalSlice';
 import { cn, divide } from '@/utils/helpers';
 import dynamic from 'next/dynamic';
 import { forwardRef, useMemo, useState } from 'react';
@@ -98,7 +98,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		};
 
 		const onCloseModal = () => {
-			dispatch(toggleBuySellModal(null));
+			dispatch(setBuySellModal(null));
 		};
 
 		const onChangePrice = (price: number): void => {

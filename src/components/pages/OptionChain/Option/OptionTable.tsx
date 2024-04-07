@@ -2,11 +2,7 @@ import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import {
-	toggleChoiceBrokerModal,
-	toggleLoginModal,
-	toggleMoveSymbolToWatchlistModal,
-} from '@/features/slices/modalSlice';
+import { setChoiceBrokerModal, setLoginModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getIsLoggedIn, getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useTradingFeatures } from '@/hooks';
@@ -14,7 +10,7 @@ import { openNewTab, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
 
 export interface ITableData {
@@ -73,9 +69,9 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		}
 	};
 
-	const showLoginModal = () => dispatch(toggleLoginModal({}));
+	const showLoginModal = () => dispatch(setLoginModal({}));
 
-	const showChoiceBrokerModal = () => dispatch(toggleChoiceBrokerModal({}));
+	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
 
 	const addSymbolToBasket = (data: Option.Root, type: TOptionSides) => {
 		if (!isLoggedIn) showLoginModal();
@@ -115,7 +111,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		else if (!brokerURLs) showChoiceBrokerModal();
 		else {
 			dispatch(
-				toggleMoveSymbolToWatchlistModal({
+				setMoveSymbolToWatchlistModal({
 					symbolISIN: data.symbolInfo.symbolISIN,
 					symbolTitle: data.symbolInfo.symbolTitle,
 				}),
@@ -378,7 +374,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		column.setColDef(colDef, colDef, 'api');
 	}, [activeRowId, settlementDay, JSON.stringify(orderBasket)]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 

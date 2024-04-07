@@ -1,7 +1,7 @@
 import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import ipcMain from '@/classes/IpcMain';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getOptionFiltersModal, toggleOptionFiltersModal } from '@/features/slices/modalSlice';
+import { getOptionFiltersModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ const Form = () => {
 	};
 
 	const onClose = () => {
-		dispatch(toggleOptionFiltersModal(null));
+		dispatch(setOptionFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {

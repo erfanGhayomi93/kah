@@ -1,10 +1,11 @@
 import { useOptionOrdersQuery } from '@/api/queries/brokerPrivateQueries';
-import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect } from 'react';
+import Loading from '../../common/Loading';
 import NoData from '../../common/NoData';
+import Position from './Position';
 
 const UserOpenPositions = () => {
 	const t = useTranslations();
@@ -14,7 +15,7 @@ const UserOpenPositions = () => {
 	const {
 		data: optionOrdersData,
 		refetch: refetchOptionOrdersData,
-		isFetching,
+		isLoading,
 	} = useOptionOrdersQuery({
 		queryKey: ['optionOrdersQuery'],
 		enabled: false,
@@ -25,16 +26,11 @@ const UserOpenPositions = () => {
 		refetchOptionOrdersData();
 	}, [brokerURLs]);
 
-	if (isFetching)
-		return (
-			<div className='relative h-full'>
-				<Loading />
-			</div>
-		);
+	if (isLoading) return <Loading />;
 
 	const data = optionOrdersData ?? [];
 
-	if (!isFetching && data.length === 0) return <NoData />;
+	if (!isLoading && data.length === 0) return <NoData />;
 
 	return (
 		<div className='flex-1 flex-column'>
@@ -47,6 +43,12 @@ const UserOpenPositions = () => {
 					{t('symbol_info_panel.price')}
 				</div>
 			</div>
+
+			<ul className='flex-column'>
+				{data.map((item) => (
+					<Position key={item.symbolISIN} {...item} />
+				))}
+			</ul>
 		</div>
 	);
 };

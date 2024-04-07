@@ -3,13 +3,13 @@ import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs, setBrokerURLs } from '@/features/slices/brokerSlice';
 import {
+	setBlackScholesModal,
+	setBuySellModal,
+	setChoiceBrokerModal,
 	setConfirmModal,
-	toggleBlackScholesModal,
-	toggleBuySellModal,
-	toggleChoiceBrokerModal,
-	toggleForgetPasswordModal,
-	toggleLoginModal,
-	toggleLogoutModal,
+	setForgetPasswordModal,
+	setLoginModal,
+	setLogoutModal,
 } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn, setBrokerIsSelected } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -74,15 +74,15 @@ const Header = () => {
 	});
 
 	const showAuthenticationModal = () => {
-		dispatch(toggleLoginModal({}));
+		dispatch(setLoginModal({}));
 	};
 
 	const onLogout = () => {
-		dispatch(toggleLogoutModal({}));
+		dispatch(setLogoutModal({}));
 	};
 
 	const setPassword = () => {
-		dispatch(toggleForgetPasswordModal({}));
+		dispatch(setForgetPasswordModal({}));
 	};
 
 	const logoutBroker = (callback: () => void) => {
@@ -97,7 +97,7 @@ const Header = () => {
 				onSubmit: () => {
 					dispatch(setBrokerIsSelected(false));
 					dispatch(setBrokerURLs(null));
-					dispatch(toggleBuySellModal(null));
+					dispatch(setBuySellModal(null));
 					deleteBrokerClientId();
 
 					toast.success(t('alerts.logged_out_successfully'));
@@ -109,13 +109,13 @@ const Header = () => {
 	};
 
 	const loginBroker = (callback: () => void) => {
-		dispatch(toggleChoiceBrokerModal({}));
+		dispatch(setChoiceBrokerModal({}));
 
 		callback();
 	};
 
 	const openBlackScholesModal = () => {
-		dispatch(toggleBlackScholesModal({}));
+		dispatch(setBlackScholesModal({}));
 	};
 
 	const userStatusIcon = useMemo(() => {
@@ -248,7 +248,7 @@ const Header = () => {
 									</div>
 
 									<div className='flex-col gap-8 px-16 flex-items-center'>
-										{!userData?.hasPassword && (
+										{userData?.hasPassword === false && (
 											<button
 												type='button'
 												onClick={setPassword}

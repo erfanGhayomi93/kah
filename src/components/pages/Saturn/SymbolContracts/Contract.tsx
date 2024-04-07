@@ -3,7 +3,7 @@ import Loading from '@/components/common/Loading';
 import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSymbolContractsModal } from '@/features/slices/modalSlice';
+import { setSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import { cn, sepNumbers } from '@/utils/helpers';
@@ -74,7 +74,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 
 	const addSymbol = () => {
 		dispatch(
-			toggleSymbolContractsModal({
+			setSymbolContractsModal({
 				symbolTitle: baseSymbol.symbolTitle,
 				symbolISIN: baseSymbol.symbolISIN,
 			}),

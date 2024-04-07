@@ -21,7 +21,7 @@ const SymbolContracts = ({ symbolISIN }: ContractsProps) => {
 	);
 
 	return (
-		<Section defaultActiveTab='contracts' tabs={tabs}>
+		<Section name='base_symbol_contracts' defaultActiveTab='contracts' tabs={tabs}>
 			<Contracts symbolISIN={symbolISIN} />
 		</Section>
 	);
