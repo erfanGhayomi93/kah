@@ -53,6 +53,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 							<button
 								onClick={() => {
 									setActiveTab(tab.id);
+									onChange?.(tab.id);
 									if (!isExpand) setIsExpand(true);
 								}}
 								type='button'
@@ -79,8 +80,8 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 				<div className='gap-8 flex-items-center'>
 					<button type='button' className='text-gray-800' onClick={() => setIsExpand()}>
 						<ArrowUpSVG
-							width='1.8rem'
-							height='1.8rem'
+							width='1.6rem'
+							height='1.6rem'
 							className='transition-transform'
 							style={{ transform: `rotate(${isExpand ? 0 : 180}deg)` }}
 						/>

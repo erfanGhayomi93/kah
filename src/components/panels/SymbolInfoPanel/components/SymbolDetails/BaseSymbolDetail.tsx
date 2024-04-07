@@ -11,10 +11,10 @@ interface ISymbolItem {
 
 interface BaseSymbolDetailProps {
 	symbolData: Symbol.Info;
-	onToggleSymbolDetail: (isExpand: boolean) => void;
+	onExpand: (isExpand: boolean) => void;
 }
 
-const BaseSymbolDetail = ({ symbolData, onToggleSymbolDetail }: BaseSymbolDetailProps) => {
+const BaseSymbolDetail = ({ symbolData, onExpand }: BaseSymbolDetailProps) => {
 	const t = useTranslations();
 
 	const [isExpand, setIsExpand] = useState(false);
@@ -102,7 +102,7 @@ const BaseSymbolDetail = ({ symbolData, onToggleSymbolDetail }: BaseSymbolDetail
 	}, [items, isExpand]);
 
 	useLayoutEffect(() => {
-		onToggleSymbolDetail(isExpand);
+		onExpand(isExpand);
 	}, [isExpand]);
 
 	return (

@@ -16,7 +16,7 @@ const initialState: BrokerState = {
 
 	savedTemplates: false,
 
-	symbolInfoPanel: null,
+	symbolInfoPanel: 'IRO9IKCO8A21',
 };
 
 const brokerSlice = createSlice({

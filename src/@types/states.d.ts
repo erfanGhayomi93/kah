@@ -17,7 +17,6 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
 declare type TSymbolInfoPanelSections =
-	| 'option_base_symbol_information'
 	| 'option_detail'
 	| 'market_depth'
 	| 'symbol_detail'
