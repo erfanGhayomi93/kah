@@ -142,8 +142,8 @@ const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 						</div>
 					</label>
 
-					<div className='gap-4 flex-column'>
-						<div className='flex gap-32'>
+					<div className='flex gap-32'>
+						<div className='gap-4 flex-column'>
 							<span
 								className={
 									passwordRequirements?.lowercase
@@ -157,20 +157,6 @@ const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 							</span>
 							<span
 								className={
-									passwordRequirements?.uppercase
-										? 'i-success'
-										: newPasswordFieldIsTouched
-											? 'i-error'
-											: 'i-null'
-								}
-							>
-								{t('forget_password_modal.password_include_uppercase_chars')}
-							</span>
-						</div>
-
-						<div className='flex gap-32'>
-							<span
-								className={
 									passwordRequirements?.length
 										? 'i-success'
 										: newPasswordFieldIsTouched
@@ -179,6 +165,20 @@ const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 								}
 							>
 								{t('forget_password_modal.password_min_chars')}
+							</span>
+						</div>
+
+						<div className='gap-4 flex-column'>
+							<span
+								className={
+									passwordRequirements?.uppercase
+										? 'i-success'
+										: newPasswordFieldIsTouched
+											? 'i-error'
+											: 'i-null'
+								}
+							>
+								{t('forget_password_modal.password_include_uppercase_chars')}
 							</span>
 							<span
 								className={

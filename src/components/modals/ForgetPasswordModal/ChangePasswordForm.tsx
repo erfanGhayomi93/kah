@@ -16,9 +16,10 @@ interface ChangePasswordFormProps {
 	phoneNumber: string;
 	result: null | OAuthAPI.IValidateForgetPasswordOtp;
 	onPasswordChanged: () => void;
+	onCancel: () => void;
 }
 
-const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged }: ChangePasswordFormProps) => {
+const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged, onCancel }: ChangePasswordFormProps) => {
 	const t = useTranslations();
 
 	const {
@@ -113,8 +114,8 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged }: ChangePa
 						</div>
 					</label>
 
-					<div className='gap-4 flex-column'>
-						<div className='flex gap-32'>
+					<div className='flex gap-32'>
+						<div className='gap-4 flex-column'>
 							<span
 								className={
 									passwordRequirements?.lowercase
@@ -128,20 +129,6 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged }: ChangePa
 							</span>
 							<span
 								className={
-									passwordRequirements?.uppercase
-										? 'i-success'
-										: newPasswordFieldIsTouched
-											? 'i-error'
-											: 'i-null'
-								}
-							>
-								{t('forget_password_modal.password_include_uppercase_chars')}
-							</span>
-						</div>
-
-						<div className='flex gap-32'>
-							<span
-								className={
 									passwordRequirements?.length
 										? 'i-success'
 										: newPasswordFieldIsTouched
@@ -150,6 +137,20 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged }: ChangePa
 								}
 							>
 								{t('forget_password_modal.password_min_chars')}
+							</span>
+						</div>
+
+						<div className='gap-4 flex-column'>
+							<span
+								className={
+									passwordRequirements?.uppercase
+										? 'i-success'
+										: newPasswordFieldIsTouched
+											? 'i-error'
+											: 'i-null'
+								}
+							>
+								{t('forget_password_modal.password_include_uppercase_chars')}
 							</span>
 							<span
 								className={
@@ -217,7 +218,7 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged }: ChangePa
 					{t('common.register')}
 				</Button>
 
-				<button type='button' disabled={!isValid} className='h-48 font-medium text-primary-400'>
+				<button type='button' onClick={onCancel} className='h-48 font-medium text-primary-400'>
 					{t('common.cancel')}
 				</button>
 			</div>
