@@ -5,7 +5,7 @@ import { SettingSliderSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import GridLayout, { type Layout } from 'react-grid-layout';
 import BaseSymbolContracts from './components/BaseSymbolContracts';
 import Chart from './components/Chart';
@@ -28,8 +28,6 @@ interface ContainerProps {
 const MARGIN_BETWEEN_SECTIONS = 16;
 
 const Container = ({ symbolISIN, close }: ContainerProps) => {
-	const gridRef = useRef<GridLayout | null>(null);
-
 	const dispatch = useAppDispatch();
 
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
@@ -152,8 +150,6 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 					<div className='relative'>
 						<GridLayout
-							ref={gridRef}
-							className='layout'
 							draggableHandle='.drag-handler'
 							useCSSTransforms
 							isResizable={false}

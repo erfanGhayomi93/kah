@@ -28,6 +28,25 @@ declare type TSymbolInfoPanelSections =
 	| 'same_sector_symbols'
 	| 'supervisor_messages';
 
+declare type THomeSections =
+	| 'market_view'
+	| 'market_status'
+	| 'best'
+	| 'user_progress_bar'
+	| 'compare_transaction_value'
+	| 'option_contracts'
+	| 'option_trades_value'
+	| 'option_market_process'
+	| 'individual_and_legal'
+	| 'price_changes_watchlist'
+	| 'open_positions_process'
+	| 'meetings'
+	| 'new_and_old'
+	| 'top_base_assets'
+	| 'custom'
+	| 'recent_activities'
+	| 'due_dates';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'
