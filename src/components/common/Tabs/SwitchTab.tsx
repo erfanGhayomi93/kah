@@ -34,10 +34,11 @@ const SwitchTab = <T extends object>({
 
 		try {
 			const { left, width } = el.getBoundingClientRect();
-			const { left: rootLeft } = eRoot.getBoundingClientRect();
+			const { left: rootLeft, width: rootWidth } = eRoot.getBoundingClientRect();
+			const originalLeft = Math.abs(left - rootLeft - 1);
 
-			eRect.style.transform = `translate(${left - rootLeft - 1}px, -50%)`;
-			eRect.style.width = `${width}px`;
+			eRect.style.transform = `translate(-${Math.abs(rootWidth - originalLeft - width)}px, -50%)`;
+			eRect.style.width = `${Math.round(width)}px`;
 		} catch (e) {
 			//
 		}
