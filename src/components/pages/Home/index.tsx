@@ -1,5 +1,10 @@
+import ipcMain from '@/classes/IpcMain';
 import Main from '@/components/layout/Main';
+import { initialHomeGrid } from '@/constants';
+import { useTranslations } from 'next-intl';
+import { useEffect, useMemo, useState } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
+import { toast } from 'react-toastify';
 import Best from './components/Best';
 import CompareTransactionValue from './components/CompareTransactionValue';
 import Custom from './components/Custom';
@@ -22,52 +27,80 @@ const SECTIONS_MARGIN: [number, number] = [16, 16];
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Home = () => {
+	const t = useTranslations();
+
+	const [grid, setGrid] = useState(initialHomeGrid);
+
 	const getSectionHeight = (originalHeight: number) => (originalHeight + SECTIONS_MARGIN[1]) / 17;
 
 	const getGridLayouts = (): Layouts => {
-		const rowHeights = [
-			{ h: getSectionHeight(352), y: 0 },
-			{ h: getSectionHeight(424), y: getSectionHeight(352) },
-			{ h: getSectionHeight(384), y: getSectionHeight(776) },
-			{ h: getSectionHeight(336), y: getSectionHeight(1160) },
-			{ h: getSectionHeight(376), y: getSectionHeight(1496) },
-			{ h: getSectionHeight(376), y: getSectionHeight(1872) },
-			{ h: getSectionHeight(376), y: getSectionHeight(2248) },
-		];
+		const layout: Layout[] = [];
 
-		const l: Layout[] = [
-			// 1
-			{ x: 0, y: rowHeights[0].y, w: 2, h: rowHeights[0].h, i: 'market_view' },
-			{ x: 2, y: rowHeights[0].y, w: 1, h: rowHeights[0].h, i: 'market_status' },
-			// 2
-			{ x: 0, y: rowHeights[1].y, w: 2, h: rowHeights[1].h, i: 'best' },
-			{ x: 2, y: rowHeights[1].y, w: 1, h: rowHeights[1].h, i: 'user_progress_bar' },
-			// 3
-			{ x: 0, y: rowHeights[2].y, w: 2, h: rowHeights[2].h, i: 'compare_transaction_value' },
-			{ x: 2, y: rowHeights[2].y, w: 1, h: rowHeights[2].h, i: 'option_contracts' },
-			// 4
-			{ x: 0, y: rowHeights[3].y, w: 2, h: rowHeights[3].h, i: 'option_trades_value' },
-			{ x: 2, y: rowHeights[3].y, w: 1, h: rowHeights[3].h, i: 'option_market_process' },
-			// 5
-			{ x: 0, y: rowHeights[4].y, w: 1, h: rowHeights[4].h, i: 'individual_and_legal' },
-			{ x: 1, y: rowHeights[4].y, w: 1, h: rowHeights[4].h, i: 'price_changes_watchlist' },
-			{ x: 2, y: rowHeights[4].y, w: 1, h: rowHeights[4].h, i: 'open_positions_process' },
-			// 6
-			{ x: 0, y: rowHeights[5].y, w: 1, h: rowHeights[5].h, i: 'meetings' },
-			{ x: 1, y: rowHeights[5].y, w: 1, h: rowHeights[5].h, i: 'new_and_old' },
-			{ x: 2, y: rowHeights[5].y, w: 1, h: rowHeights[5].h, i: 'top_base_assets' },
-			// 7
-			{ x: 0, y: rowHeights[6].y, w: 1, h: rowHeights[6].h, i: 'custom' },
-			{ x: 1, y: rowHeights[6].y, w: 1, h: rowHeights[6].h, i: 'recent_activities' },
-			{ x: 2, y: rowHeights[6].y, w: 1, h: rowHeights[6].h, i: 'due_dates' },
-		];
+		let initialLayout = JSON.parse(JSON.stringify(grid)) as typeof initialHomeGrid;
+		initialLayout = initialLayout.filter((item) => item.hidden === false);
+		initialLayout.sort((a, b) => a.i - b.i);
+
+		const l = initialLayout.length;
+		let y = 0;
+		let c = 0;
+
+		for (let i = 0; i < l; i++) {
+			const item = initialLayout[i];
+			c += item.w;
+
+			const newItem = {
+				i: item.id,
+				h: getSectionHeight(item.h),
+				w: item.w,
+				x: c - item.w,
+				y,
+			};
+
+			layout.push(newItem);
+
+			if (c >= 3) {
+				y += newItem.h;
+				c = 0;
+			}
+		}
 
 		return {
-			xl: l,
-			lg: l,
-			sm: l,
+			xl: layout,
+			lg: layout,
+			sm: layout,
 		};
 	};
+
+	const onHideSection = ({ id, hidden }: IpcMainChannels['home.hide_section']) => {
+		const newGrid = grid.map((item) => (item.id === id ? { ...item, hidden } : item));
+		const visibleSectionsLength = newGrid.filter((item) => item.hidden === false).length;
+
+		if (visibleSectionsLength <= 1) {
+			toast.error(t('alerts.can_not_hide_every_sections'));
+			return;
+		}
+
+		setGrid(newGrid);
+	};
+
+	const cells = useMemo(() => {
+		const result: Partial<Record<THomeSections, boolean>> = {};
+
+		for (let i = 0; i < grid.length; i++) {
+			const item = grid[i];
+			result[item.id] = item.hidden;
+		}
+
+		return result;
+	}, [grid]);
+
+	useEffect(() => {
+		const removeCallback = ipcMain.handle('home.hide_section', onHideSection);
+
+		return () => {
+			removeCallback();
+		};
+	}, [grid]);
 
 	return (
 		<Main className='gap-8 !p-0'>
@@ -87,57 +120,107 @@ const Home = () => {
 					allowOverlap={false}
 					rowHeight={1}
 				>
-					<div key='market_view'>
-						<MarketView />
-					</div>
-					<div key='market_status'>
-						<MarketStatus />
-					</div>
-					<div key='best'>
-						<Best />
-					</div>
-					<div key='user_progress_bar'>
-						<UserProgressBar />
-					</div>
-					<div key='compare_transaction_value'>
-						<CompareTransactionValue />
-					</div>
-					<div key='option_contracts'>
-						<OptionContracts />
-					</div>
-					<div key='option_trades_value'>
-						<OptionTradesValue />
-					</div>
-					<div key='option_market_process'>
-						<OptionMarketProcess />
-					</div>
-					<div key='individual_and_legal'>
-						<IndividualAndLegal />
-					</div>
-					<div key='price_changes_watchlist'>
-						<PriceChangesWatchlist />
-					</div>
-					<div key='open_positions_process'>
-						<OpenPositionsProcess />
-					</div>
-					<div key='meetings'>
-						<Meetings />
-					</div>
-					<div key='new_and_old'>
-						<NewAndOld />
-					</div>
-					<div key='top_base_assets'>
-						<TopBaseAssets />
-					</div>
-					<div key='recent_activities'>
-						<RecentActivities />
-					</div>
-					<div key='due_dates'>
-						<DueDates />
-					</div>
-					<div key='custom'>
-						<Custom />
-					</div>
+					{!cells.market_view && (
+						<div key='market_view'>
+							<MarketView />
+						</div>
+					)}
+
+					{!cells.market_status && (
+						<div key='market_status'>
+							<MarketStatus />
+						</div>
+					)}
+
+					{!cells.best && (
+						<div key='best'>
+							<Best />
+						</div>
+					)}
+
+					{!cells.user_progress_bar && (
+						<div key='user_progress_bar'>
+							<UserProgressBar />
+						</div>
+					)}
+
+					{!cells.compare_transaction_value && (
+						<div key='compare_transaction_value'>
+							<CompareTransactionValue />
+						</div>
+					)}
+
+					{!cells.option_contracts && (
+						<div key='option_contracts'>
+							<OptionContracts />
+						</div>
+					)}
+
+					{!cells.option_trades_value && (
+						<div key='option_trades_value'>
+							<OptionTradesValue />
+						</div>
+					)}
+
+					{!cells.option_market_process && (
+						<div key='option_market_process'>
+							<OptionMarketProcess />
+						</div>
+					)}
+
+					{!cells.individual_and_legal && (
+						<div key='individual_and_legal'>
+							<IndividualAndLegal />
+						</div>
+					)}
+
+					{!cells.price_changes_watchlist && (
+						<div key='price_changes_watchlist'>
+							<PriceChangesWatchlist />
+						</div>
+					)}
+
+					{!cells.open_positions_process && (
+						<div key='open_positions_process'>
+							<OpenPositionsProcess />
+						</div>
+					)}
+
+					{!cells.meetings && (
+						<div key='meetings'>
+							<Meetings />
+						</div>
+					)}
+
+					{!cells.new_and_old && (
+						<div key='new_and_old'>
+							<NewAndOld />
+						</div>
+					)}
+
+					{!cells.top_base_assets && (
+						<div key='top_base_assets'>
+							<TopBaseAssets />
+						</div>
+					)}
+
+					{!cells.recent_activities && (
+						<div key='recent_activities'>
+							<RecentActivities />
+						</div>
+					)}
+
+					{!cells.due_dates && (
+						<div key='due_dates'>
+							<DueDates />
+						</div>
+					)}
+
+					{!cells.custom && (
+						<div key='custom'>
+							<Custom />
+						</div>
+					)}
 				</ResponsiveGridLayout>
 			</div>
 		</Main>

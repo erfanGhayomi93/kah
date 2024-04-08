@@ -6,6 +6,7 @@ const OpenPositionsProcess = () => {
 
 	return (
 		<Section
+			id='open_positions_process'
 			title={t('home.open_positions_process')}
 			tabs={{
 				top: [

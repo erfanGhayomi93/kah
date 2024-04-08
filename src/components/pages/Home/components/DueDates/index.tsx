@@ -6,6 +6,7 @@ const DueDates = () => {
 
 	return (
 		<Section
+			id='due_dates'
 			title={t('home.due_dates')}
 			tabs={{
 				bottom: [

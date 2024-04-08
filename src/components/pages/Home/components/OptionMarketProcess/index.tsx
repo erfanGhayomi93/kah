@@ -6,6 +6,7 @@ const OptionMarketProcess = () => {
 
 	return (
 		<Section
+			id='option_market_process'
 			title={t('home.option_market_process')}
 			tabs={{
 				top: [

@@ -6,6 +6,7 @@ const Meetings = () => {
 
 	return (
 		<Section
+			id='meetings'
 			title={t('home.meetings')}
 			tabs={{
 				bottom: [
