@@ -10,11 +10,12 @@ import {
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSidebar } from '@/features/slices/uiSlice';
+import { usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
 
@@ -23,6 +24,8 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isExpand }: NavbarProps) => {
+	const pathname = usePathname();
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -140,6 +143,10 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 		],
 		[expandId],
 	);
+
+	useEffect(() => {
+		setExpandId(null);
+	}, [pathname]);
 
 	return (
 		<Click enabled={isExpand} onClickOutside={collapseSidebar}>
