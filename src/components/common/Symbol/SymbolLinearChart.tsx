@@ -31,7 +31,7 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 
 	if (isLoading) return <Loading />;
 
-	if (!Array.isArray(data) || data.length === 0) return <NoData />;
+	if (data) return <NoData />;
 
 	return (
 		<Chart
