@@ -1,6 +1,6 @@
 import { ArrowUpSVG } from '@/components/icons';
+import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
 import OptionData from './OptionData';
 
 interface OptionBaseSymbolInformationProps {
@@ -10,7 +10,7 @@ interface OptionBaseSymbolInformationProps {
 const OptionBaseSymbolInformation = ({ symbolData }: OptionBaseSymbolInformationProps) => {
 	const t = useTranslations();
 
-	const [isExpand, setIsExpand] = useState(false);
+	const [isExpand, setIsExpand] = useLocalstorage('bsio', false);
 
 	const { baseSymbolTitle, symbolTitle } = symbolData;
 
