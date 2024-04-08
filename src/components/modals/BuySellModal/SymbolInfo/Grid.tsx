@@ -37,7 +37,7 @@ const Grid = ({ symbolISIN }: GridProps) => {
 	);
 
 	return (
-		<div style={{ height: '26rem' }} className='relative rounded border border-gray-500 bg-white'>
+		<div style={{ height: '26rem' }} className='relative rounded border border-gray-500 bg-white flex-column'>
 			<Tabs
 				data={tabs}
 				defaultActiveTab='market_map'
