@@ -3,6 +3,15 @@ import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './SymbolPriceSlider.module.scss';
 
+interface IConfig {
+	buySliderWidth: number;
+	sellSliderWidth: number;
+	lowestTradePriceOfTradingDayAsPercent: number;
+	highestTradePriceOfTradingDayAsPercent: number;
+	offsetLeft: number;
+	offsetRight: number;
+}
+
 interface SymbolPriceSliderProps {
 	onClick?: (price: number, percentage: number) => void;
 
@@ -31,11 +40,7 @@ const SymbolPriceSlider = ({
 
 	const rootRef = useRef<HTMLDivElement>(null);
 
-	const [config, setConfig] = useState({
-		firstTradedPrice: 0,
-		firstTradedPriceAsPercent: 0,
-		lastTradedPrice: 0,
-		lastTradedPriceAsPercent: 0,
+	const [config, setConfig] = useState<IConfig>({
 		buySliderWidth: 0,
 		sellSliderWidth: 0,
 		lowestTradePriceOfTradingDayAsPercent: 0,
@@ -100,11 +105,7 @@ const SymbolPriceSlider = ({
 		try {
 			if (!borderRef.current) return;
 
-			const instanceOfConfig = {
-				firstTradedPrice: 0,
-				firstTradedPriceAsPercent: 0,
-				lastTradedPrice: 0,
-				lastTradedPriceAsPercent: 0,
+			const instanceOfConfig: IConfig = {
 				buySliderWidth: 0,
 				sellSliderWidth: 0,
 				lowestTradePriceOfTradingDayAsPercent: 0,
@@ -115,23 +116,7 @@ const SymbolPriceSlider = ({
 
 			const borderWidth = borderRef.current.offsetWidth;
 			const [lowThreshold, highThreshold] = thresholdData;
-			const [firstTradedPrice, lastTradedPrice] = exchangeData;
 			const [lowestTradePriceOfTradingDay, highestTradePriceOfTradingDay] = boundaryData;
-
-			// Calculate (firstTradedPrice, lastTradedPrice)
-			const maxMinusMin = highThreshold - lowThreshold;
-			instanceOfConfig.firstTradedPrice =
-				(1 - (highThreshold - firstTradedPrice) / maxMinusMin) * borderWidth - 5;
-			if (instanceOfConfig.firstTradedPrice > borderWidth - 5)
-				instanceOfConfig.firstTradedPrice = borderWidth - 5;
-			instanceOfConfig.lastTradedPrice = (1 - (highThreshold - lastTradedPrice) / maxMinusMin) * borderWidth - 5;
-			if (instanceOfConfig.lastTradedPrice < -5) instanceOfConfig.lastTradedPrice = -5;
-
-			// Calculate (firstTradedPriceAsPercent, lastTradedPriceAsPercent)
-			instanceOfConfig.firstTradedPriceAsPercent =
-				Number((((firstTradedPrice - yesterdayClosingPrice) / yesterdayClosingPrice) * 100).toFixed(2)) * 1;
-			instanceOfConfig.lastTradedPriceAsPercent =
-				Number((((lastTradedPrice - yesterdayClosingPrice) / yesterdayClosingPrice) * 100).toFixed(2)) * 1;
 
 			// Calculate slider width
 			const halfOfRootWidth = borderWidth / 2;
@@ -195,6 +180,8 @@ const SymbolPriceSlider = ({
 		eRoot.addEventListener('resize', () => draw());
 	}, []);
 
+	const dataIsAvailable = thresholdData[0] + thresholdData[1] > 0;
+
 	return (
 		<div className='px-4'>
 			<div ref={rootRef} className={clsx(styles.root)}>
@@ -253,7 +240,10 @@ const SymbolPriceSlider = ({
 				<div className={styles.container}>
 					<div
 						style={{ left: 0 }}
-						className={clsx(styles.div, boundaryData[0] === averageNumbers[0] && styles.active)}
+						className={clsx(
+							styles.div,
+							dataIsAvailable && boundaryData[0] === averageNumbers[0] && styles.active,
+						)}
 					>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
@@ -271,7 +261,9 @@ const SymbolPriceSlider = ({
 						style={{ left: '16.667%' }}
 						className={clsx(
 							styles.div,
-							isBetween(boundaryData[0], averageNumbers[1], boundaryData[1]) && styles.active,
+							dataIsAvailable &&
+								isBetween(boundaryData[0], averageNumbers[1], boundaryData[1]) &&
+								styles.active,
 						)}
 					>
 						<div className={styles.inner}>
@@ -285,7 +277,9 @@ const SymbolPriceSlider = ({
 						style={{ left: '33.334%' }}
 						className={clsx(
 							styles.div,
-							isBetween(boundaryData[0], averageNumbers[2], boundaryData[1]) && styles.active,
+							dataIsAvailable &&
+								isBetween(boundaryData[0], averageNumbers[2], boundaryData[1]) &&
+								styles.active,
 						)}
 					>
 						<div className={styles.inner}>
@@ -307,7 +301,9 @@ const SymbolPriceSlider = ({
 						style={{ left: '66.667%' }}
 						className={clsx(
 							styles.div,
-							isBetween(boundaryData[0], averageNumbers[4], boundaryData[1]) && styles.active,
+							dataIsAvailable &&
+								isBetween(boundaryData[0], averageNumbers[4], boundaryData[1]) &&
+								styles.active,
 						)}
 					>
 						<div className={styles.inner}>
@@ -321,7 +317,9 @@ const SymbolPriceSlider = ({
 						style={{ left: '83.334%' }}
 						className={clsx(
 							styles.div,
-							isBetween(boundaryData[0], averageNumbers[5], boundaryData[1]) && styles.active,
+							dataIsAvailable &&
+								isBetween(boundaryData[0], averageNumbers[5], boundaryData[1]) &&
+								styles.active,
 						)}
 					>
 						<div className={styles.inner}>
@@ -333,7 +331,10 @@ const SymbolPriceSlider = ({
 
 					<div
 						style={{ left: '100%' }}
-						className={clsx(styles.div, boundaryData[1] === averageNumbers[6] && styles.active)}
+						className={clsx(
+							styles.div,
+							dataIsAvailable && boundaryData[1] === averageNumbers[6] && styles.active,
+						)}
 					>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
