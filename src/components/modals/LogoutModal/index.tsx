@@ -1,11 +1,11 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleLogoutModal } from '@/features/slices/modalSlice';
+import { setLogoutModal } from '@/features/slices/modalSlice';
 import { setBrokerIsSelected, setIsLoggedIn } from '@/features/slices/userSlice';
 import { deleteBrokerClientId, deleteClientId } from '@/utils/cookie';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 
@@ -21,7 +21,7 @@ const Div = styled.div`
 
 interface LogoutModalProps extends IBaseModalConfiguration {}
 
-const LogoutModal = (props: LogoutModalProps) => {
+const LogoutModal = forwardRef<HTMLDivElement, LogoutModalProps>((props, ref) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ const LogoutModal = (props: LogoutModalProps) => {
 	const [loading, setLoading] = useState(false);
 
 	const onCloseModal = () => {
-		dispatch(toggleLogoutModal(null));
+		dispatch(setLogoutModal(null));
 	};
 
 	const onLoggedOut = async () => {
@@ -54,6 +54,7 @@ const LogoutModal = (props: LogoutModalProps) => {
 
 	return (
 		<Modal
+			ref={ref}
 			transparent
 			classes={{ root: 'modal__logout' }}
 			style={{ modal: { transform: 'translate(-50%, -50%)', borderRadius: '1.6rem' } }}
@@ -94,6 +95,6 @@ const LogoutModal = (props: LogoutModalProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default LogoutModal;

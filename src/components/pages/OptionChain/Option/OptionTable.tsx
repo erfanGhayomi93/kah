@@ -1,15 +1,17 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleLoginModal, toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setChoiceBrokerModal, setLoginModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getIsLoggedIn, getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useTradingFeatures } from '@/hooks';
-import { openNewTab, sepNumbers } from '@/utils/helpers';
+import { sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
 
 export interface ITableData {
@@ -28,6 +30,7 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		orderBasket: getOrderBasket(state),
+		brokerURLs: getBrokerURLs(state),
 	}),
 );
 
@@ -36,11 +39,11 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, orderBasket } = useAppSelector(getStates);
+	const { isLoggedIn, brokerURLs, orderBasket } = useAppSelector(getStates);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
-	const [rowHoverId, setRowHoverId] = useState<number>(-1);
+	const [activeRowId, setActiveRowId] = useState<number>(-1);
 
 	const { addBuySellModal } = useTradingFeatures();
 
@@ -51,8 +54,6 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		],
 	});
 
-	const showLoginModal = () => dispatch(toggleLoginModal({}));
-
 	const onSymbolTitleClicked = ({ data }: CellClickedEvent<ITableData>, side: 'buy' | 'sell') => {
 		try {
 			if (!data) return;
@@ -62,18 +63,22 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 			const { symbolISIN, baseSymbolISIN } = symbolData.symbolInfo;
 
-			if (baseSymbolISIN && symbolISIN)
-				openNewTab('/fa/saturn', `symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+			if (baseSymbolISIN && symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
 		} catch (e) {
 			//
 		}
 	};
 
-	const addSymbolToBasket = (data: Option.Root, side: TOptionSides) => {
+	const showLoginModal = () => dispatch(setLoginModal({}));
+
+	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
+
+	const addSymbolToBasket = (data: Option.Root, type: TOptionSides) => {
 		if (!isLoggedIn) showLoginModal();
+		else if (!brokerURLs) showChoiceBrokerModal();
 		else {
-			const i = orderBasket.findIndex(
-				(item) => item.contract.symbolInfo.symbolISIN === data.symbolInfo.symbolISIN,
+			const i = orderBasket.findIndex((item) =>
+				item.symbolISIN ? item.symbolISIN === data.symbolInfo.symbolISIN : false,
 			);
 
 			if (i === -1) {
@@ -81,11 +86,14 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 					setOrderBasket([
 						...orderBasket,
 						{
+							id: uuidv4(),
 							symbolISIN: data.symbolInfo.symbolISIN,
-							price: data.optionWatchlistData.closingPrice,
-							contract: data,
+							baseSymbolISIN: data.symbolInfo.baseSymbolISIN,
+							price: data.optionWatchlistData.bestBuyPrice || 1,
+							quantity: data.optionWatchlistData.openPositionCount || 1,
 							settlementDay: data.symbolInfo.contractEndDate,
-							side,
+							type,
+							side: 'buy',
 							strikePrice: data.symbolInfo.strikePrice,
 						},
 					]),
@@ -100,9 +108,10 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const addSymbolToWatchlist = (data: Option.Root) => {
 		if (!isLoggedIn) showLoginModal();
+		else if (!brokerURLs) showChoiceBrokerModal();
 		else {
 			dispatch(
-				toggleMoveSymbolToWatchlistModal({
+				setMoveSymbolToWatchlistModal({
 					symbolISIN: data.symbolInfo.symbolISIN,
 					symbolTitle: data.symbolInfo.symbolTitle,
 				}),
@@ -112,6 +121,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const addAlert = (data: Option.Root) => {
 		if (!isLoggedIn) showLoginModal();
+		else if (!brokerURLs) showChoiceBrokerModal();
 	};
 
 	const goToTechnicalChart = (data: Option.Root) => {
@@ -203,7 +213,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						valueFormatter: ({ value }) => sepNumbers(String(value)),
 						cellRenderer: StrikePriceCellRenderer,
 						cellRendererParams: {
-							activeRowId: rowHoverId,
+							activeRowId,
 							basket: [],
 							addBuySellModal,
 							addSymbolToBasket,
@@ -350,7 +360,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			valueFormatter: ({ value }) => sepNumbers(String(value)),
 			cellRenderer: StrikePriceCellRenderer,
 			cellRendererParams: {
-				activeRowId: rowHoverId,
+				activeRowId,
 				basket: orderBasket,
 				addBuySellModal,
 				addSymbolToBasket,
@@ -361,10 +371,10 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			},
 		};
 
-		column.setColDef(colDef, colDef);
-	}, [rowHoverId, JSON.stringify(orderBasket)]);
+		column.setColDef(colDef, colDef, 'api');
+	}, [activeRowId, settlementDay, JSON.stringify(orderBasket)]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 
@@ -377,12 +387,13 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	return (
 		<AgTable<ITableData>
+			gridId='option-chain'
 			ref={gridRef}
 			className='flex-1 rounded-0'
 			rowData={modifiedData ?? []}
 			columnDefs={COLUMNS}
-			onCellMouseOver={(e) => setRowHoverId(e.node.rowIndex ?? -1)}
-			onCellMouseOut={() => setRowHoverId(-1)}
+			onCellMouseOver={(e) => setActiveRowId(e.node.rowIndex ?? -1)}
+			onCellMouseOut={() => setActiveRowId(-1)}
 			suppressRowVirtualisation
 			suppressColumnVirtualisation
 			defaultColDef={defaultColDef}

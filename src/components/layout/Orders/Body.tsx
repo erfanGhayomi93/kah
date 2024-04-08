@@ -138,11 +138,8 @@ const Body = ({ tab }: BodyProps) => {
 	}, [tab, openOrdersData, todayOrdersData, executedOrdersData, draftOrdersData, optionOrdersData]);
 
 	useLayoutEffect(() => {
-		ipcMain.handle('refetch_active_order_tab', refetchActiveTab);
-
-		return () => {
-			ipcMain.removeHandler('refetch_active_order_tab', refetchActiveTab);
-		};
+		const removeHandler = ipcMain.handle('refetch_active_order_tab', refetchActiveTab);
+		return () => removeHandler();
 	}, [tab]);
 
 	useLayoutEffect(() => {

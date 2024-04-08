@@ -22,10 +22,12 @@ import EditSVG from './edit.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
 import EraserSVG from './eraser.svg';
 import ExcelSVG from './excel.svg';
+import ExpandSVG from './expand.svg';
 import EyeSlashSVG from './eye-slash.svg';
 import EyeSVG from './eye.svg';
 import FileExcelSVG from './file-excel.svg';
 import FilterSVG from './filter.svg';
+import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import HomeSVG from './home.svg';
@@ -36,6 +38,9 @@ import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
 import MarketMapSVG from './market-map.svg';
 import MaximizeSVG from './maximize.svg';
+import MessageCheckSVG from './message-check.svg';
+import MessageDoubleCheckSVG from './message-double-check.svg';
+import MinimizeSVG from './minimize.svg';
 import MoneySVG from './money.svg';
 import MoreOptionsSVG from './more-options.svg';
 import OffSVG from './off.svg';
@@ -53,6 +58,7 @@ import SaturnSVG from './saturn.svg';
 import SearchSVG from './search.svg';
 import SendFillSVG from './send-fill.svg';
 import SessionHistorySVG from './session-history.svg';
+import SettingSliderSVG from './setting-slider.svg';
 import SettingSVG from './setting.svg';
 import ShieldSVG from './shield.svg';
 import SnowFlakeSVG from './snow-flake.svg';
@@ -95,10 +101,12 @@ export {
 	EllipsisVerticalSVG,
 	EraserSVG,
 	ExcelSVG,
+	ExpandSVG,
 	EyeSVG,
 	EyeSlashSVG,
 	FileExcelSVG,
 	FilterSVG,
+	GalaxySVG,
 	GrowDownSVG,
 	GrowUpSVG,
 	HomeSVG,
@@ -109,6 +117,9 @@ export {
 	ManageSVG,
 	MarketMapSVG,
 	MaximizeSVG,
+	MessageCheckSVG,
+	MessageDoubleCheckSVG,
+	MinimizeSVG,
 	MoneySVG,
 	MoreOptionsSVG,
 	OffSVG,
@@ -127,6 +138,7 @@ export {
 	SendFillSVG,
 	SessionHistorySVG,
 	SettingSVG,
+	SettingSliderSVG,
 	ShieldSVG,
 	SnowFlakeSVG,
 	SquareXSVG,

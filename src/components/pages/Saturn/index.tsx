@@ -8,8 +8,8 @@ import Main from '@/components/layout/Main';
 import Orders from '@/components/layout/Orders';
 import { defaultSymbolISIN } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleSaveSaturnTemplate } from '@/features/slices/modalSlice';
-import { openNewTab } from '@/utils/helpers';
+import { setSaveSaturnTemplate } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -57,40 +57,7 @@ const Saturn = () => {
 			return;
 		}
 
-		try {
-			const { isOption, symbolISIN, symbolTitle } = symbol;
-
-			if (baseSymbolInfo) {
-				const baseSymbolISIN = baseSymbolInfo.symbolISIN;
-
-				if (isOption) {
-					const contracts = [...baseSymbolContracts];
-					if (contracts.find((sym) => sym?.symbolISIN === symbolISIN)) return;
-
-					const option: Saturn.ContentOption = {
-						symbolISIN,
-						symbolTitle,
-						activeTab: 'price_information',
-					};
-
-					const blankContract = contracts.findIndex((con) => con === null);
-
-					if (blankContract > -1) {
-						contracts[blankContract] = option;
-						setBaseSymbolContracts(contracts);
-					} else {
-						if (symbolISIN)
-							openNewTab('/fa/saturn', `contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`);
-					}
-				} else {
-					if (symbolISIN) openNewTab('/fa/saturn', `symbolISIN=${symbolISIN}`);
-				}
-			} else {
-				openNewTab('/fa/saturn', `${isOption ? 'contractISIN' : 'symbolISIN'}=${symbol.symbolISIN}`);
-			}
-		} catch (e) {
-			//
-		}
+		dispatch(setSymbolInfoPanel(symbol.symbolISIN));
 	};
 
 	const saveTemplate = () => {
@@ -99,7 +66,7 @@ const Saturn = () => {
 		const { symbolISIN, symbolTitle } = baseSymbolInfo;
 
 		dispatch(
-			toggleSaveSaturnTemplate({
+			setSaveSaturnTemplate({
 				baseSymbolISIN: symbolISIN,
 				baseSymbolTitle: symbolTitle,
 				activeTab: baseSymbolActiveTab,

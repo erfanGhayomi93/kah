@@ -2,11 +2,11 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleLoginModal } from '@/features/slices/modalSlice';
+import { setLoginModal } from '@/features/slices/modalSlice';
 import { setIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useState } from 'react';
+import { forwardRef, useMemo, useState } from 'react';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
 import OTPForm from './OTPForm';
 import Welcome from './Welcome';
@@ -28,7 +28,7 @@ const PhoneNumberForm = dynamic(() => import('./PhoneNumberForm'), {
 
 interface LoginModalProps extends IBaseModalConfiguration {}
 
-const LoginModal = (props: LoginModalProps) => {
+const LoginModal = forwardRef<HTMLDivElement, LoginModalProps>((props, ref) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -45,7 +45,7 @@ const LoginModal = (props: LoginModalProps) => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleLoginModal(null));
+		dispatch(setLoginModal(null));
 	};
 
 	const onLoggedIn = () => {
@@ -120,6 +120,7 @@ const LoginModal = (props: LoginModalProps) => {
 
 	return (
 		<AuthenticationModalTemplate
+			ref={ref}
 			hideTitle={stage === 'welcome'}
 			title={t(stage === 'set-password' ? 'login_modal.set_password_title' : 'login_modal.login_title')}
 			onClose={onCloseModal}
@@ -168,6 +169,6 @@ const LoginModal = (props: LoginModalProps) => {
 			{stage === 'set-password' && <SetPasswordForm phoneNumber={phoneNumber ?? '*'} />}
 		</AuthenticationModalTemplate>
 	);
-};
+});
 
 export default LoginModal;

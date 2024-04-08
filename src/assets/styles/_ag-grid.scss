@@ -1,4 +1,4 @@
-@use "ag-grid-community/styles" as ag;
+@use "ag-grid-community/styles/index" as ag;
 @include ag.grid-styles(
 	(
 		themes: (
@@ -48,24 +48,6 @@
 
 .ag-root-wrapper {
 	border-radius: 0;
-}
-
-.ag-theme-alpine:not(.border-0) {
-	.ag-root {
-		border: 1px solid theme("colors.gray.500");
-	}
-}
-
-.ag-theme-alpine:not(.rounded-0) {
-	.ag-root {
-		border-radius: 8px;
-	}
-}
-
-.ag-theme-alpine.rounded-0 {
-	.ag-root {
-		border-radius: 0;
-	}
 }
 
 .ag-rtl .ag-cell:not(.ltr, .rtl) {
@@ -217,7 +199,8 @@
 	}
 }
 
-.ag-row-hover {
+.ag-row-hover,
+.ag-row-selected {
 	z-index: 1;
 	.ag-cell.strike-price {
 		background-color: var(--ag-row-hover-color);
@@ -242,5 +225,39 @@
 	.ag-header-group-text {
 		font-size: 1.4rem;
 		font-weight: 400;
+	}
+}
+
+.ag-theme-alpine {
+	&.transparent-header {
+		.ag-header {
+			background-color: rgb(255, 255, 255);
+		}
+
+		.ag-row-even {
+			background-color: var(--ag-odd-row-background-color);
+		}
+
+		.ag-row-odd {
+			background-color: var(--ag-background-color);
+		}
+	}
+
+	&.rounded-0 {
+		.ag-root {
+			border-radius: 0;
+		}
+	}
+
+	&:not(.border-0) {
+		.ag-root {
+			border: 1px solid theme("colors.gray.500");
+		}
+	}
+
+	&:not(.rounded-0) {
+		.ag-root {
+			border-radius: 8px;
+		}
 	}
 }

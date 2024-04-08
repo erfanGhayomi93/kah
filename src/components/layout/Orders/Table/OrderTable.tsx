@@ -4,7 +4,7 @@ import AgTable from '@/components/common/Tables/AgTable';
 import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
 import { editableOrdersStatus } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { setConfirmModal, toggleOrderDetailsModal } from '@/features/slices/modalSlice';
+import { setConfirmModal, setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { deleteOrder } from '@/utils/orders';
@@ -33,6 +33,20 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	const gridRef = useRef<GridApi<TOrders>>(null);
 
 	const { addBuySellModal } = useTradingFeatures();
+
+	const onCopy = (order: TOrders) => {
+		addBuySellModal({
+			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
+			symbolType: 'base',
+			mode: 'create',
+			symbolISIN: order.symbolISIN,
+			symbolTitle: order.symbolTitle,
+			initialPrice: order.price,
+			initialQuantity: order.quantity,
+			initialValidity: order.validity,
+			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+		});
+	};
 
 	const onDelete = (order: TOrders) => {
 		dispatch(
@@ -66,7 +80,7 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 
 	const showDetails = (order: TOrders) => {
 		dispatch(
-			toggleOrderDetailsModal({
+			setOrderDetailsModal({
 				order,
 			}),
 		);
@@ -194,10 +208,11 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 			{
 				colId: 'action',
 				headerName: t('orders.action'),
-				minWidth: 140,
-				maxWidth: 140,
+				minWidth: 160,
+				maxWidth: 160,
 				cellRenderer: OrderActionCell,
 				cellRendererParams: {
+					onCopy,
 					onDelete,
 					onEdit,
 					showDetails,
@@ -225,11 +240,8 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle('deselect_orders', unselectAll);
-
-		return () => {
-			ipcMain.removeHandler('deselect_orders', unselectAll);
-		};
+		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
+		return () => removeHandler();
 	}, []);
 
 	useEffect(() => {

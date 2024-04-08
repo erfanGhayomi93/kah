@@ -3,7 +3,7 @@ import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { EyeSVG, EyeSlashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { setForgetPasswordModal, setLoginModal } from '@/features/slices/modalSlice';
 import { setClientId } from '@/utils/cookie';
 import { base64encode, cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
@@ -72,8 +72,8 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 		const mParams: { phoneNumber?: string } & IBaseModalConfiguration = { animation: false };
 		if (phoneNumber) mParams.phoneNumber = phoneNumber;
 
-		dispatch(toggleLoginModal(null));
-		dispatch(toggleForgetPasswordModal(mParams));
+		dispatch(setLoginModal(null));
+		dispatch(setForgetPasswordModal(mParams));
 	};
 
 	useEffect(() => {

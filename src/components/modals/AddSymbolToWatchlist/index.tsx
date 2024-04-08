@@ -3,14 +3,14 @@ import { useCustomWatchlistSymbolSearch } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { EyeSVG, EyeSlashSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { cn } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useCallback, useRef, useState } from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Modal from '../Modal';
+import Modal, { Header } from '../Modal';
 
 const Div = styled.div`
 	width: 496px;
@@ -21,7 +21,7 @@ const Div = styled.div`
 
 interface AddSymbolToWatchlistProps extends IBaseModalConfiguration {}
 
-const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
+const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProps>((props, ref) => {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
@@ -41,7 +41,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleAddSymbolToWatchlistModal(null));
+		dispatch(setAddSymbolToWatchlistModal(null));
 	};
 
 	const onAddSymbol = async (symbol: Symbol.Search) => {
@@ -70,9 +70,15 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 	const placeholder = t('option_watchlist_filters_modal.base_symbol_placeholder');
 
 	return (
-		<Modal style={{ modal: { transform: 'translate(-50%, -50%)' } }} top='50%' onClose={onCloseModal} {...props}>
+		<Modal
+			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			top='50%'
+			onClose={onCloseModal}
+			{...props}
+			ref={ref}
+		>
 			<Div className='bg-white'>
-				<Modal.Header label={t('add_symbol_to_watchlist.title')} onClose={onCloseModal} />
+				<Header label={t('add_symbol_to_watchlist.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 gap-24 overflow-hidden rounded p-24 flex-column'>
 					<div className='relative h-40 rounded flex-items-center input-group'>
@@ -134,7 +140,7 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 										<button
 											onClick={() => onAddSymbol(item)}
 											type='button'
-											className='h-48 w-full px-16 transition-colors flex-justify-between hover:bg-primary-100'
+											className='h-48 w-full px-16 transition-colors flex-justify-between hover:btn-hover'
 										>
 											<span className='text-base font-medium text-gray-1000'>
 												{item.symbolTitle}
@@ -162,6 +168,6 @@ const AddSymbolToWatchlist = (props: AddSymbolToWatchlistProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default AddSymbolToWatchlist;

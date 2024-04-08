@@ -1,12 +1,12 @@
 import { PayMoneySVG, SnowFlakeSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChoiceCollateralModal, type IChoiceCollateral } from '@/features/slices/modalSlice';
+import { setChoiceCollateralModal, type IChoiceCollateral } from '@/features/slices/modalSlice';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import styled from 'styled-components';
-import Modal from '../Modal';
+import Modal, { Header } from '../Modal';
 
 const Div = styled.div`
 	width: 456px;
@@ -16,7 +16,7 @@ const Div = styled.div`
 
 interface ChoiceCollateralProps extends IChoiceCollateral {}
 
-const ChoiceCollateral = ({ order, ...props }: ChoiceCollateralProps) => {
+const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ order, ...props }, ref) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ const ChoiceCollateral = ({ order, ...props }: ChoiceCollateralProps) => {
 	const [value, setValue] = useState<Order.OrderSourceType>(order.blockType);
 
 	const onCloseModal = () => {
-		dispatch(toggleChoiceCollateralModal(null));
+		dispatch(setChoiceCollateralModal(null));
 	};
 
 	const onSubmit = () => {
@@ -33,9 +33,9 @@ const ChoiceCollateral = ({ order, ...props }: ChoiceCollateralProps) => {
 	};
 
 	return (
-		<Modal moveable transparent onClose={onCloseModal} {...props}>
+		<Modal moveable transparent onClose={onCloseModal} {...props} ref={ref}>
 			<Div className='justify-between bg-white flex-column'>
-				<Modal.Header label={t('choice_collateral_modal.title')} onClose={onCloseModal} />
+				<Header label={t('choice_collateral_modal.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 justify-between p-16 pt-40 flex-column'>
 					<div className='flex-1 items-center gap-24 text-center flex-column'>
@@ -120,6 +120,6 @@ const ChoiceCollateral = ({ order, ...props }: ChoiceCollateralProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default ChoiceCollateral;

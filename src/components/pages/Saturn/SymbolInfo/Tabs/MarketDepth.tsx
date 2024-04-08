@@ -1,6 +1,6 @@
 import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import { InfoSVG } from '@/components/icons';
-import ProgressBar from '../../common/ProgressBar';
+import Progressbar from '../../common/Progressbar';
 
 interface MarketDepthProps {
 	symbol: Symbol.Info;
@@ -14,7 +14,7 @@ const MarketDepth = ({ symbol }: MarketDepthProps) => {
 			<SymbolPriceTable symbolISIN={symbol.symbolISIN} />
 
 			<div style={{ gap: '8.8rem' }} className='relative w-full items-center flex-justify-between'>
-				<ProgressBar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />
+				<Progressbar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />
 				<div className='absolute left-1/2 -translate-x-1/2 transform pt-24'>
 					<button
 						type='button'
@@ -24,7 +24,7 @@ const MarketDepth = ({ symbol }: MarketDepthProps) => {
 						<InfoSVG width='1.6rem' height='1.6rem' />
 					</button>
 				</div>
-				<ProgressBar side='sell' individualVolume={individualSellVolume} legalVolume={legalSellVolume} />
+				<Progressbar side='sell' individualVolume={individualSellVolume} legalVolume={legalSellVolume} />
 			</div>
 		</div>
 	);

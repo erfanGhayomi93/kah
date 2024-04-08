@@ -38,4 +38,9 @@
 		background-position: center;
 		background-repeat: no-repeat;
 	}
+
+	&.disabled {
+		cursor: default;
+		border-color: theme("colors.gray.400");
+	}
 }

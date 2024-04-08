@@ -2,7 +2,7 @@ import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleOptionFiltersModal } from '@/features/slices/modalSlice';
+import { setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useDebounce } from '@/hooks';
 import { downloadFile } from '@/utils/helpers';
@@ -32,7 +32,7 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		if (filters.delta) params.initialDelta = filters.delta;
 		if (filters.minimumTradesValue) params.initialMinimumTradesValue = filters.minimumTradesValue;
 
-		dispatch(toggleOptionFiltersModal(params));
+		dispatch(setOptionFiltersModal(params));
 	};
 
 	const onExportExcel = () => {

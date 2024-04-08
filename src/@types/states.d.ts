@@ -16,6 +16,37 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
+declare type TSymbolInfoPanelSections =
+	| 'option_detail'
+	| 'market_depth'
+	| 'symbol_detail'
+	| 'base_symbol_contracts'
+	| 'user_open_positions'
+	| 'quotes'
+	| 'individual_and_legal'
+	| 'chart'
+	| 'same_sector_symbols'
+	| 'supervisor_messages';
+
+declare type THomeSections =
+	| 'market_view'
+	| 'market_status'
+	| 'best'
+	| 'user_progress_bar'
+	| 'compare_transaction_value'
+	| 'option_contracts'
+	| 'option_trades_value'
+	| 'option_market_process'
+	| 'individual_and_legal'
+	| 'price_changes_watchlist'
+	| 'open_positions_process'
+	| 'meetings'
+	| 'new_and_old'
+	| 'top_base_assets'
+	| 'custom'
+	| 'recent_activities'
+	| 'due_dates';
+
 declare type LightstreamStatus =
 	| 'CONNECTING'
 	| 'CONNECTED:STREAM-SENSING'
@@ -29,6 +60,30 @@ declare type LightstreamStatus =
 	| 'DISCONNECTED';
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
+
+declare interface ISymbolInfoPanelGrid {
+	id: TSymbolInfoPanelSections;
+	/**
+	 * Section height as px
+	 */
+	height: number;
+	/**
+	 * is expand
+	 */
+	expand: boolean;
+	/**
+	 * is hidden
+	 */
+	hidden: boolean;
+	/**
+	 * Section index
+	 */
+	i: number;
+	/**
+	 * Option | Not Option | Both
+	 */
+	readonly isOption?: boolean;
+}
 
 declare interface IBaseModalConfiguration {
 	moveable?: boolean;
@@ -134,11 +189,14 @@ declare interface OptionChainFilters {
 	settlementDay: Option.BaseSettlementDays | null;
 }
 
-declare interface IOrderBasket {
-	contract: Option.Root;
-	symbolISIN: string;
-	side: TOptionSides;
-	settlementDay: string;
+interface IOrderBasket {
+	id: string;
+	baseSymbolISIN: string;
+	symbolISIN: null | string;
+	side: TBsSides;
+	type: TOptionSides;
+	settlementDay: null | string;
 	strikePrice: number;
 	price: number;
+	quantity: number;
 }

@@ -2,30 +2,18 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 
 import axios from '@/api/axios';
+import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
-import ManageWatchlistColumns from './ManageWatchlistColumns';
 import NoData from './NoData';
 import WatchlistTable from './WatchlistTable';
-
-interface IOptionWatchlistQuery {
-	SymbolISINs: string[];
-	Id: string;
-	FromDueDays: string;
-	ToDueDays: string;
-	MinimumTradeValue: string;
-	FromDelta: string;
-	ToDelta: string;
-	OptionType: Array<'Call' | 'Put'>;
-	IOTM: Array<'ATM' | 'OTM' | 'ITM'>;
-}
 
 interface TableProps {
 	filters: Partial<IOptionWatchlistFilters>;
@@ -107,7 +95,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	});
 
 	const addSymbol = () => {
-		dispatch(toggleAddSymbolToWatchlistModal({}));
+		dispatch(setAddSymbolToWatchlistModal({}));
 	};
 
 	const onFiltersChanged = (newFilters: IOptionWatchlistFilters) => {
@@ -159,8 +147,6 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					<Loading />
 				</div>
 			)}
-
-			<ManageWatchlistColumns />
 
 			{dataIsEmpty && !isLoading && <NoData key='no-data' onAddSymbol={addSymbol} />}
 		</>

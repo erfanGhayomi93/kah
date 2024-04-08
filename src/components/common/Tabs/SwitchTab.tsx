@@ -33,11 +33,10 @@ const SwitchTab = <T extends object>({
 		if (!el || !eRoot || !eRect) return;
 
 		try {
-			const width = el.offsetWidth;
-			const left = el.offsetLeft;
-			const rootWidth = eRoot.offsetWidth;
+			const { left, width } = el.getBoundingClientRect();
+			const { left: rootLeft } = eRoot.getBoundingClientRect();
 
-			eRect.style.transform = `translateX(-${rootWidth - left - width - 2}px)`;
+			eRect.style.transform = `translate(${left - rootLeft - 1}px, -50%)`;
 			eRect.style.width = `${width}px`;
 		} catch (e) {
 			//

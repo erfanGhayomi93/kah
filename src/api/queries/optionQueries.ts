@@ -14,6 +14,56 @@ export interface IOptionWatchlistQuery {
 	IOTM: Array<'ATM' | 'OTM' | 'ITM'>;
 }
 
+export const useOptionWatchlistQuery = createQuery<
+	Option.Root[],
+	['optionCustomWatchlistQuery', Partial<IOptionWatchlistFilters> & { watchlistId: number }]
+>({
+	queryKey: ['optionCustomWatchlistQuery', { watchlistId: -1 }],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, props] = queryKey;
+		try {
+			const params: Partial<IOptionWatchlistQuery> = {};
+
+			if (props.minimumTradesValue && Number(props.minimumTradesValue) >= 0)
+				params.MinimumTradeValue = props.minimumTradesValue;
+
+			if (Array.isArray(props.symbols) && props.symbols.length > 0)
+				params.SymbolISINs = props.symbols.map((item) => item.symbolISIN);
+
+			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
+
+			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
+
+			if (props.dueDays && props.dueDays[1] >= props.dueDays[0]) {
+				if (props.dueDays[0] > 0) params.FromDueDays = String(props.dueDays[0]);
+				if (props.dueDays[1] < 365) params.ToDueDays = String(props.dueDays[1]);
+			}
+
+			if (props.delta && props.delta[1] >= props.delta[0]) {
+				if (props.delta[0] > -1) params.FromDelta = String(props.delta[0]);
+				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
+			}
+
+			params.Id = String(props.watchlistId);
+
+			const response = await axios.get<PaginationResponse<Option.Root[]>>(
+				routes.optionWatchlist.GetCustomWatchlist,
+				{
+					params,
+					signal,
+				},
+			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
 export const useOptionSymbolColumnsQuery = createQuery<Option.Column[], ['optionSymbolColumnsQuery']>({
 	staleTime: 36e5,
 	queryKey: ['optionSymbolColumnsQuery'],
@@ -237,6 +287,34 @@ export const useOptionSymbolSearchQuery = createQuery<Option.Search[], ['optionS
 				params: { term },
 				signal,
 			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useOptionOpenPositionQuery = createQuery<
+	Option.GetOpenPositionReport[],
+	['optionOpenPositionQuery', string]
+>({
+	staleTime: 18e5,
+	queryKey: ['optionOpenPositionQuery', ''],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const [, term] = queryKey;
+
+			const response = await axios.get<ServerResponse<Option.GetOpenPositionReport[]>>(
+				routes.option.GetOpenPositionReport,
+				{
+					params: { term },
+					signal,
+				},
+			);
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

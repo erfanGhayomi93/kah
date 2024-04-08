@@ -1,5 +1,5 @@
 import Tooltip from '@/components/common/Tooltip';
-import Collapse from '@/components/common/transition/Collapse';
+import Collapse from '@/components/common/animation/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import { Link, usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
@@ -42,7 +42,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 	const isExpand = Boolean('isExpand' in props && props.isExpand);
 
 	return (
-		<Tooltip disabled={sidebarIsExpand} placement='left' content={label}>
+		<Tooltip disabled={sidebarIsExpand} placement='left' content={label} animation={false}>
 			<li className={cn(isExpand && styles.expand, isActive && styles.active)}>
 				{'to' in props ? (
 					<Link onClick={() => onClick?.('a')} href={props.to}>

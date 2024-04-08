@@ -1,27 +1,23 @@
 'use client';
 
+import LocalstorageInstance from '@/classes/Localstorage';
+import { initialSymbolInfoPanelGrid } from '@/constants';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
 export interface UIState {
-	manageOptionColumns: boolean;
-
 	sidebarIsExpand: boolean;
-
-	savedSaturnTemplates: boolean;
 
 	saturnActiveTemplate: Saturn.Template | null;
 
 	lsStatus: LightstreamStatus;
 
 	ordersIsExpand: boolean;
+
+	symbolInfoPanelGridLayout: ISymbolInfoPanelGrid[];
 }
 
 const initialState: UIState = {
-	manageOptionColumns: false,
-
-	savedSaturnTemplates: false,
-
 	ordersIsExpand: false,
 
 	sidebarIsExpand: false,
@@ -29,20 +25,14 @@ const initialState: UIState = {
 	saturnActiveTemplate: null,
 
 	lsStatus: 'CONNECTING',
+
+	symbolInfoPanelGridLayout: LocalstorageInstance.get('sipg', initialSymbolInfoPanelGrid, (v) => Array.isArray(v)),
 };
 
 const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		toggleManageOptionColumns: (state, { payload }: PayloadAction<UIState['manageOptionColumns']>) => {
-			state.manageOptionColumns = payload;
-		},
-
-		toggleSavedSaturnTemplates: (state, { payload }: PayloadAction<UIState['savedSaturnTemplates']>) => {
-			state.savedSaturnTemplates = payload;
-		},
-
 		toggleSidebar: (state, { payload }: PayloadAction<UIState['sidebarIsExpand']>) => {
 			state.sidebarIsExpand = payload;
 		},
@@ -59,6 +49,11 @@ const uiSlice = createSlice({
 			state.ordersIsExpand = payload;
 		},
 
+		setSymbolInfoPanelGridLayout: (state, { payload }: PayloadAction<UIState['symbolInfoPanelGridLayout']>) => {
+			LocalstorageInstance.set('sipg', payload);
+			state.symbolInfoPanelGridLayout = payload;
+		},
+
 		toggleOrdersIsExpand: (state) => {
 			state.ordersIsExpand = !state.ordersIsExpand;
 		},
@@ -66,20 +61,18 @@ const uiSlice = createSlice({
 });
 
 export const {
-	toggleManageOptionColumns,
-	toggleSavedSaturnTemplates,
 	setSaturnActiveTemplate,
 	toggleSidebar,
 	toggleOrdersIsExpand,
 	setOrdersIsExpand,
 	setLsStatus,
+	setSymbolInfoPanelGridLayout,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
 export const getOrdersIsExpand = (state: RootState) => state.ui.ordersIsExpand;
-export const getManageOptionColumns = (state: RootState) => state.ui.manageOptionColumns;
-export const getSavedSaturnTemplates = (state: RootState) => state.ui.savedSaturnTemplates;
 export const getLsStatus = (state: RootState) => state.ui.lsStatus;
 export const getSaturnActiveTemplate = (state: RootState) => state.ui.saturnActiveTemplate;
+export const getSymbolInfoPanelGridLayout = (state: RootState) => state.ui.symbolInfoPanelGridLayout;
 
 export default uiSlice.reducer;

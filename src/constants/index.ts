@@ -150,4 +150,87 @@ export const getDateMilliseconds = {
 	Year: 31536e6,
 };
 
+export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
+	{
+		id: 'option_detail',
+		height: 468,
+		expand: true,
+		hidden: false,
+		isOption: true,
+		i: 0,
+	},
+	{
+		id: 'market_depth',
+		height: 200,
+		expand: true,
+		hidden: false,
+		isOption: true,
+		i: 1,
+	},
+	{
+		id: 'symbol_detail',
+		// It'll be "808" after expand
+		height: 448,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 2,
+	},
+	{
+		id: 'base_symbol_contracts',
+		height: 320,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 1,
+	},
+	{
+		id: 'user_open_positions',
+		height: 320,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 2,
+	},
+	{
+		id: 'quotes',
+		height: 277,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 3,
+	},
+	{
+		id: 'individual_and_legal',
+		height: 306,
+		expand: true,
+		hidden: false,
+		i: 4,
+	},
+	{
+		id: 'chart',
+		height: 320,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 5,
+	},
+	{
+		id: 'same_sector_symbols',
+		height: 400,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 6,
+	},
+	{
+		id: 'supervisor_messages',
+		height: 360,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 7,
+	},
+];
+
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];

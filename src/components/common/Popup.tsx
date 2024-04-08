@@ -1,10 +1,21 @@
 import { cn } from '@/utils/helpers';
-import React, { cloneElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+	cloneElement,
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react';
 import { createPortal } from 'react-dom';
+import AnimatePresence from './animation/AnimatePresence';
+import ErrorBoundary from './ErrorBoundary';
 
 interface IChildrenProps {
 	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpen: (v: boolean) => void;
 }
 
 interface PopupProps {
@@ -13,13 +24,12 @@ interface PopupProps {
 	onClose?: () => void;
 	onOpen?: () => void;
 	portalElement?: HTMLElement;
+	zIndex?: number;
 	defaultOpen?: boolean;
 	disabled?: boolean;
-	zIndex?: number;
 	margin?: Partial<Record<'x' | 'y', number>>;
 	defaultPopupWidth?: number;
 	className?: ClassesValue;
-	animation?: string;
 	dependency?: string;
 }
 
@@ -30,7 +40,6 @@ const Popup = ({
 	onOpen,
 	dependency,
 	portalElement,
-	animation = 'slideUp',
 	defaultOpen,
 	defaultPopupWidth,
 	className,
@@ -69,7 +78,7 @@ const Popup = ({
 		}
 	};
 
-	const onPortalLoad = useCallback((el: HTMLDivElement | null) => {
+	const onPortalLoad = useCallback((el: HTMLElement | null) => {
 		popupRef.current = el;
 
 		try {
@@ -102,9 +111,20 @@ const Popup = ({
 				el.style.left = left + mx + 'px';
 			}
 
+			const popupTop = top + height + my;
+
 			el.style.width = popupWidth;
-			el.style.top = top + height + my + 'px';
+			el.style.top = `${popupTop}px`;
 			el.style.display = '';
+
+			setTimeout(() => {
+				const popupHeight = el.getBoundingClientRect().height;
+				const maxTop = window.innerHeight - popupHeight - 8;
+
+				if (popupTop > maxTop) {
+					el.style.top = `${maxTop}px`;
+				}
+			});
 
 			if (className) el.setAttribute('class', cn(className));
 		} catch (e) {
@@ -112,8 +132,8 @@ const Popup = ({
 		}
 	}, []);
 
-	const handleOpen = () => {
-		if (!disabled) setOpen(true);
+	const handleOpen = (v: boolean) => {
+		if (!disabled) setOpen(v);
 	};
 
 	const onWindowBlur = () => {
@@ -154,24 +174,48 @@ const Popup = ({
 		<React.Fragment>
 			{cloneElement(children({ setOpen: handleOpen, open }), { ref: childRef })}
 
-			{!disabled &&
-				open &&
-				createPortal(
-					<div
-						ref={onPortalLoad}
-						style={{
-							position: 'fixed',
-							zIndex: zIndex ?? 99,
-							display: 'none',
-							animation: `${animation} ease-in-out 250ms 1 alternate forwards`,
-						}}
-					>
-						{renderer({ setOpen, open })}
-					</div>,
-					portalElement ?? document.body,
-				)}
+			<ErrorBoundary>
+				<AnimatePresence
+					initial={{ animation: 'fadeInDown' }}
+					exit={{ animation: 'fadeOutDown' }}
+					onRefLoad={onPortalLoad}
+				>
+					{!disabled && open && (
+						<Child zIndex={zIndex} portalElement={portalElement}>
+							{renderer({ setOpen, open })}
+						</Child>
+					)}
+				</AnimatePresence>
+			</ErrorBoundary>
 		</React.Fragment>
 	);
 };
+
+const Child = forwardRef<
+	HTMLDivElement,
+	{
+		children: React.ReactNode;
+		portalElement?: HTMLElement;
+		zIndex?: number;
+	}
+>(({ zIndex, portalElement, children }, ref) => {
+	const childRef = useRef<HTMLDivElement | null>(null);
+
+	useImperativeHandle(ref, () => childRef.current!);
+
+	return createPortal(
+		<div
+			ref={childRef}
+			style={{
+				position: 'fixed',
+				zIndex: zIndex ?? 99,
+				display: 'none',
+			}}
+		>
+			{children}
+		</div>,
+		portalElement ?? document.body,
+	);
+});
 
 export default Popup;

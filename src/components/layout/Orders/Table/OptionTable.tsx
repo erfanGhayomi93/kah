@@ -2,7 +2,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleChoiceCollateralModal } from '@/features/slices/modalSlice';
+import { setChoiceCollateralModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -27,15 +27,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const showDetails = (order: Order.OptionOrder) => {
-		// dispatch(
-		// 	toggleOrderDetailsModal({
-		// 		order,
-		// 		symbolType: 'option',
-		// 	}),
-		// );
-	};
-
 	const onClosePosition = (order: Order.OptionOrder) => {
 		addBuySellModal({
 			side: order.side === 'Call' ? 'sell' : 'buy',
@@ -52,7 +43,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 
 	const onChangeCollateral = (order: Order.OptionOrder) => {
 		dispatch(
-			toggleChoiceCollateralModal({
+			setChoiceCollateralModal({
 				order,
 			}),
 		);
@@ -131,7 +122,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				maxWidth: 140,
 				cellRenderer: OptionActionCell,
 				cellRendererParams: {
-					showDetails,
 					onClosePosition,
 					onChangeCollateral,
 				},
@@ -158,11 +148,8 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle('deselect_orders', unselectAll);
-
-		return () => {
-			ipcMain.removeHandler('deselect_orders', unselectAll);
-		};
+		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
+		return () => removeHandler();
 	}, []);
 
 	useEffect(() => {

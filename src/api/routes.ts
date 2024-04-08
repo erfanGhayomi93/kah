@@ -7,6 +7,8 @@ const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' :
 const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
+	pushengine: 'https://pushengine.ramandtech.com', // isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
+
 	common: {
 		time: `${rlcUrl}/Common/v1/Time`,
 		GetBrokers: `${rlcUrl}/Common/v1/GetBrokers`,
@@ -64,6 +66,9 @@ const routes = {
 		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
 		Search: `${rlcUrl}/Symbol/v1/Search`,
 		SymbolHistory: `${rlcUrl}/Symbol/v1/SymbolHistory`,
+		GetSameSectorSymbolsBySymbolISIN: `${rlcUrl}/Symbol/v1/GetSameSectorSymbolsBySymbolISIN`,
+		GetSupervisedMessage: `${rlcUrl}/Symbol/v1/GetSupervisedMessage`,
+		ChartData: `${rlcUrl}/Symbol/v1/ChartData`,
 	},
 
 	saturn: {

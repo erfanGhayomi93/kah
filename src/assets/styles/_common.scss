@@ -46,6 +46,10 @@
 	background-image: url("data:image/svg+xml,<svg width='12' height='10' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1.66675 4.03968L3.88897 6.26191L8.33341 1.5' stroke='rgb(255,255,255)'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/></svg>");
 }
 
+.apexcharts-canvas {
+	direction: ltr;
+}
+
 .skeleton {
 	background-color: var(--skeleton-bg);
 	background: linear-gradient(
@@ -58,4 +62,13 @@
 	background-position-x: 120%;
 	background-size: 200% 100%;
 	animation: 1000ms skeleton-loading ease-in-out infinite;
+}
+
+.react-grid-item:not(.react-draggable-dragging) {
+	transition:
+		height 200ms ease-in,
+		transform 200ms ease-in;
+	-webkit-transition:
+		height 200ms ease-in,
+		transform 200ms ease-in;
 }

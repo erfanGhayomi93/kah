@@ -4,12 +4,12 @@ import routes from '@/api/routes';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import { PlusSquareSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleAddNewOptionWatchlist, toggleManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlist, setManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useReducer } from 'react';
+import { forwardRef, useLayoutEffect, useReducer } from 'react';
 import styled from 'styled-components';
-import Modal from '../Modal';
+import Modal, { Header } from '../Modal';
 import WatchlistList from './WatchlistList';
 
 const Div = styled.div`
@@ -24,7 +24,7 @@ interface IDeleting {
 
 interface ManageOptionWatchlistListProps extends IBaseModalConfiguration {}
 
-const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
+const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchlistListProps>((props, ref) => {
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -53,7 +53,7 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 	});
 
 	const onCloseModal = () => {
-		dispatch(toggleManageOptionWatchlistListModal(null));
+		dispatch(setManageOptionWatchlistListModal(null));
 	};
 
 	const deleteAll = () => {
@@ -91,7 +91,7 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 	};
 
 	const addNewWatchlist = () => {
-		dispatch(toggleAddNewOptionWatchlist({ moveable: true }));
+		dispatch(setAddNewOptionWatchlist({ moveable: true }));
 	};
 
 	useLayoutEffect(() => {
@@ -105,9 +105,10 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 			top='50%'
 			onClose={onCloseModal}
 			{...props}
+			ref={ref}
 		>
 			<Div className='justify-between bg-white flex-column'>
-				<Modal.Header label={t('manage_option_watchlist_modal.title')} onClose={onCloseModal} />
+				<Header label={t('manage_option_watchlist_modal.title')} onClose={onCloseModal} />
 
 				{!Array.isArray(watchlistList) || watchlistList.length === 0 ? null : (
 					<div className='flex-1 overflow-hidden pt-40 flex-column'>
@@ -185,6 +186,6 @@ const ManageOptionWatchlistList = (props: ManageOptionWatchlistListProps) => {
 			</Div>
 		</Modal>
 	);
-};
+});
 
 export default ManageOptionWatchlistList;

@@ -1,67 +1,42 @@
 'use client';
 
 import { useAppSelector } from '@/features/hooks';
-import dynamic from 'next/dynamic';
-import { Fragment } from 'react';
+import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
+import ErrorBoundary from '../common/ErrorBoundary';
+import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
+import AnimatePresence from '../common/animation/AnimatePresence';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
+import ModalLoading from './ModalLoading';
+import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
 
-const AddNewOptionWatchlist = dynamic(() => import('./AddNewOptionWatchlist'), {
-	ssr: false,
-});
+const LoginModal = lazy(() => import('./LoginModal'));
 
-const AddSaturnTemplate = dynamic(() => import('./AddSaturnTemplate'), {
-	ssr: false,
-});
+const AddNewOptionWatchlist = lazy(() => import('./AddNewOptionWatchlist'));
 
-const AddSymbolToWatchlist = dynamic(() => import('./AddSymbolToWatchlist'), {
-	ssr: false,
-});
+const AddSaturnTemplate = lazy(() => import('./AddSaturnTemplate'));
 
-const BlackScholes = dynamic(() => import('./BlackScholes'), {
-	ssr: false,
-	loading: () => <h1>Loading</h1>,
-});
+const AddSymbolToWatchlist = lazy(() => import('./AddSymbolToWatchlist'));
 
-const BuySellModal = dynamic(() => import('./BuySellModal'), {
-	ssr: false,
-});
+const BlackScholes = lazy(() => import('./BlackScholes'));
 
-const ChoiceBroker = dynamic(() => import('./ChoiceBroker'), {
-	ssr: false,
-});
+const BuySellModal = lazy(() => import('./BuySellModal'));
 
-const ForgetPasswordModal = dynamic(() => import('./ForgetPasswordModal'), {
-	ssr: false,
-});
+const ChoiceBroker = lazy(() => import('./ChoiceBroker'));
 
-const LoginModal = dynamic(() => import('./LoginModal'), {
-	ssr: false,
-});
+const ForgetPasswordModal = lazy(() => import('./ForgetPasswordModal'));
 
-const LogoutModal = dynamic(() => import('./LogoutModal'), {
-	ssr: false,
-});
+const LogoutModal = lazy(() => import('./LogoutModal'));
 
-const ManageOptionWatchlistList = dynamic(() => import('./ManageOptionWatchlistList'), {
-	ssr: false,
-});
+const ManageOptionWatchlistList = lazy(() => import('./ManageOptionWatchlistList'));
 
-const OptionWatchlistFiltersModal = dynamic(() => import('./OptionWatchlistFiltersModal'), {
-	ssr: false,
-});
+const OptionWatchlistFiltersModal = lazy(() => import('./OptionWatchlistFiltersModal'));
 
-const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
-	ssr: false,
-});
+const SymbolContracts = lazy(() => import('./SymbolContracts'));
 
-const OrderDetails = dynamic(() => import('./OrderDetails'), {
-	ssr: false,
-});
+const OrderDetails = lazy(() => import('./OrderDetails'));
 
-const MoveSymbolToWatchlist = dynamic(() => import('./MoveSymbolToWatchlist'), {
-	ssr: false,
-});
+const MoveSymbolToWatchlist = lazy(() => import('./MoveSymbolToWatchlist'));
 
 const Modals = () => {
 	const {
@@ -77,6 +52,7 @@ const Modals = () => {
 		addSymbolToWatchlist,
 		choiceBroker,
 		confirm,
+		symbolInfoPanelSetting,
 		choiceCollateral,
 		blackScholes,
 		moveSymbolToWatchlist,
@@ -85,45 +61,177 @@ const Modals = () => {
 
 	return (
 		<Fragment>
-			{loginModal && <LoginModal {...loginModal} />}
+			<ModalAnimatePresence>
+				{loginModal && (
+					<ModalSuspense>
+						<LoginModal {...loginModal} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{logout && <LogoutModal {...logout} />}
+			<ModalAnimatePresence>
+				{logout && (
+					<ModalSuspense>
+						<LogoutModal {...logout} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{blackScholes && <BlackScholes {...blackScholes} />}
+			<ModalAnimatePresence>
+				{confirm && (
+					<ModalSuspense>
+						<Confirm {...confirm} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{optionFilters && <OptionWatchlistFiltersModal {...optionFilters} />}
+			<ModalAnimatePresence>
+				{symbolInfoPanelSetting && (
+					<ModalSuspense>
+						<SymbolInfoPanelSetting {...symbolInfoPanelSetting} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{symbolContracts && <SymbolContracts {...symbolContracts} />}
+			<ModalAnimatePresence>
+				{blackScholes && (
+					<ModalSuspense>
+						<BlackScholes {...blackScholes} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{addSaturnTemplate !== null && <AddSaturnTemplate {...addSaturnTemplate} />}
+			<ModalAnimatePresence>
+				{optionFilters && (
+					<ModalSuspense>
+						<OptionWatchlistFiltersModal {...optionFilters} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{addNewOptionWatchlist && <AddNewOptionWatchlist {...addNewOptionWatchlist} />}
+			<ModalAnimatePresence>
+				{symbolContracts && (
+					<ModalSuspense>
+						<SymbolContracts {...symbolContracts} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{manageOptionWatchlistList && <ManageOptionWatchlistList {...manageOptionWatchlistList} />}
+			<ModalAnimatePresence>
+				{choiceBroker && (
+					<ModalSuspense>
+						<ChoiceBroker {...choiceBroker} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{buySell && <BuySellModal {...buySell} />}
+			<ModalAnimatePresence>
+				{addSaturnTemplate && (
+					<ModalSuspense>
+						<AuthorizeMiddleware>
+							<AddSaturnTemplate {...addSaturnTemplate} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{addSymbolToWatchlist && <AddSymbolToWatchlist {...addSymbolToWatchlist} />}
+			<ModalAnimatePresence>
+				{addNewOptionWatchlist && (
+					<ModalSuspense>
+						<AuthorizeMiddleware>
+							<AddNewOptionWatchlist {...addNewOptionWatchlist} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{choiceBroker && <ChoiceBroker {...choiceBroker} />}
+			<ModalAnimatePresence>
+				{manageOptionWatchlistList && (
+					<ModalSuspense>
+						<AuthorizeMiddleware>
+							<ManageOptionWatchlistList {...manageOptionWatchlistList} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{choiceCollateral && <ChoiceCollateral {...choiceCollateral} />}
+			<ModalAnimatePresence>
+				{buySell && (
+					<ModalSuspense>
+						<AuthorizeMiddleware broker>
+							<BuySellModal {...buySell} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{confirm && <Confirm {...confirm} />}
+			<ModalAnimatePresence>
+				{addSymbolToWatchlist && (
+					<ModalSuspense>
+						<AuthorizeMiddleware>
+							<AddSymbolToWatchlist {...addSymbolToWatchlist} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{orderDetails && <OrderDetails {...orderDetails} />}
+			<ModalAnimatePresence>
+				{choiceCollateral && (
+					<ModalSuspense>
+						<AuthorizeMiddleware>
+							<ChoiceCollateral {...choiceCollateral} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{moveSymbolToWatchlist && <MoveSymbolToWatchlist {...moveSymbolToWatchlist} />}
+			<ModalAnimatePresence>
+				{orderDetails && (
+					<ModalSuspense>
+						<AuthorizeMiddleware broker>
+							<OrderDetails {...orderDetails} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 
-			{forgetPassword && (
-				<ForgetPasswordModal
-					phoneNumber={
-						forgetPassword && typeof forgetPassword === 'object' ? forgetPassword?.phoneNumber : undefined
-					}
-				/>
-			)}
+			<ModalAnimatePresence>
+				{moveSymbolToWatchlist && (
+					<ModalSuspense>
+						<AuthorizeMiddleware>
+							<MoveSymbolToWatchlist {...moveSymbolToWatchlist} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{forgetPassword && (
+					<ModalSuspense>
+						<ForgetPasswordModal
+							phoneNumber={
+								forgetPassword && typeof forgetPassword === 'object'
+									? forgetPassword?.phoneNumber
+									: undefined
+							}
+						/>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
 		</Fragment>
 	);
 };
+
+const ModalSuspense = forwardRef<HTMLDivElement, { children: ReactNode }>(({ children }, ref) => (
+	<Suspense fallback={<ModalLoading ref={ref} />}>{children ? cloneElement(children, { ref }) : null}</Suspense>
+));
+
+const ModalAnimatePresence = ({ children }: { children: ReactNode }) => (
+	<ErrorBoundary>
+		<AnimatePresence initial={{ animation: 'fadeIn' }} exit={{ animation: 'fadeOut' }}>
+			{children}
+		</AnimatePresence>
+	</ErrorBoundary>
+);
 
 export default Modals;

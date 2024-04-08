@@ -3,9 +3,9 @@ import Tooltip from '@/components/common/Tooltip';
 import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
-	toggleAddNewOptionWatchlist,
-	toggleLoginModal,
-	toggleManageOptionWatchlistListModal,
+	setAddNewOptionWatchlist,
+	setLoginModal,
+	setManageOptionWatchlistListModal,
 } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId, setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
@@ -63,19 +63,19 @@ const WatchlistList = () => {
 
 	const addNewWatchlist = () => {
 		if (!isLoggedIn) {
-			dispatch(toggleLoginModal({}));
+			dispatch(setLoginModal({}));
 			toast.error(t('alerts.login_to_your_account'), {
 				toastId: 'login_to_your_account',
 			});
 			return;
 		}
 
-		dispatch(toggleAddNewOptionWatchlist({}));
+		dispatch(setAddNewOptionWatchlist({}));
 	};
 
 	const manageWatchlistList = () => {
 		if (!isLoggedIn) {
-			dispatch(toggleLoginModal({}));
+			dispatch(setLoginModal({}));
 			toast.error(t('alerts.login_to_your_account'), {
 				toastId: 'login_to_your_account',
 			});
@@ -86,7 +86,7 @@ const WatchlistList = () => {
 			toast.warning(t('alerts.add_watchlist'));
 			return;
 		}
-		dispatch(toggleManageOptionWatchlistListModal({}));
+		dispatch(setManageOptionWatchlistListModal({}));
 	};
 
 	const watchlistList = useMemo(() => {

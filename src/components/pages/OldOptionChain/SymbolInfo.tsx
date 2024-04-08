@@ -219,7 +219,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 									<GrowDownSVG width='1rem' height='1rem' />
 								)}
 							</span>
-							{sepNumbers(String(closingPrice))}
+							{sepNumbers(String(closingPrice ?? 0))}
 						</span>
 
 						<span
@@ -228,7 +228,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
 							)}
 						>
-							{sepNumbers(String(lastTradedPrice))}
+							{sepNumbers(String(lastTradedPrice ?? 0))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>
 

@@ -1,5 +1,4 @@
 import { setBrokerURLs } from '@/features/slices/brokerSlice';
-import { toggleBuySellModal } from '@/features/slices/modalSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
@@ -68,7 +67,6 @@ export const onUnauthorize = () => {
 	try {
 		store.dispatch(setBrokerIsSelected(false));
 		store.dispatch(setBrokerURLs(null));
-		store.dispatch(toggleBuySellModal(null));
 
 		const [token] = getBrokerClientId();
 		deleteBrokerClientId();

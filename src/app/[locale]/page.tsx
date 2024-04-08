@@ -1,10 +1,10 @@
 'use client';
 
-import { redirect } from '@/navigation';
+import Home from '@/components/pages/Home';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
-	return redirect('/watchlist');
+	return <Home />;
 };
 
 export default Page;

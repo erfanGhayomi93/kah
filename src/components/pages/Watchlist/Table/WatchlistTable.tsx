@@ -4,12 +4,13 @@ import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { toggleLoginModal, toggleMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setLoginModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import { numFormatter, openNewTab, sepNumbers } from '@/utils/helpers';
+import { numFormatter, sepNumbers } from '@/utils/helpers';
 import {
 	type CellClickedEvent,
 	type ColDef,
@@ -61,8 +62,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 			const { symbolISIN, baseSymbolISIN } = data.symbolInfo;
 
-			if (baseSymbolISIN && symbolISIN)
-				openNewTab('/fa/saturn', `symbolISIN=${baseSymbolISIN}&contractISIN=${symbolISIN}`);
+			if (baseSymbolISIN && symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
 		} catch (e) {
 			//
 		}
@@ -94,7 +94,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		try {
 			if (!isLoggedIn) {
 				toast.error(t('alerts.login_to_your_account'));
-				dispatch(toggleLoginModal({}));
+				dispatch(setLoginModal({}));
 				return;
 			}
 
@@ -144,14 +144,14 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	const onAdd = (symbol: Option.Root) => {
 		if (!isLoggedIn) {
 			toast.error(t('alerts.login_to_your_account'));
-			dispatch(toggleLoginModal({}));
+			dispatch(setLoginModal({}));
 			return;
 		}
 
 		const { symbolISIN, symbolTitle } = symbol.symbolInfo;
 
 		dispatch(
-			toggleMoveSymbolToWatchlistModal({
+			setMoveSymbolToWatchlistModal({
 				symbolISIN,
 				symbolTitle,
 			}),
@@ -596,6 +596,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					cellRendererParams: {
 						onAdd,
 						onDelete,
+						addable: true,
 						deletable: id > -1,
 					},
 				},
@@ -633,11 +634,12 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			cellRendererParams: {
 				onAdd,
 				onDelete,
+				addable: true,
 				deletable: id > -1,
 			},
 		};
 
-		actionColumn.setColDef(colDef, colDef);
+		actionColumn.setColDef(colDef, colDef, 'api');
 	}, [id]);
 
 	useEffect(() => {
@@ -660,8 +662,6 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 		try {
 			const dataIsEmpty = !Array.isArray(data) || data.length === 0;
-
-			eGrid.setGridOption('suppressHorizontalScroll', dataIsEmpty);
 
 			if (dataIsEmpty) {
 				eGrid.setGridOption('rowData', []);
@@ -712,7 +712,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			for (let i = 0; i < watchlistColumns.length; i++) {
 				const { isHidden, title } = watchlistColumns[i];
 
-				eGrid.setColumnVisible(title, !isHidden);
+				eGrid.setColumnsVisible([title], !isHidden);
 			}
 		} catch (e) {
 			//
@@ -730,7 +730,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			defaultColDef={defaultColDef}
 			onColumnMoved={onColumnMoved}
 			onBodyScrollEnd={({ api }) => {
-				const lastRowIndex = api.getLastDisplayedRow();
+				const lastRowIndex = api.getLastDisplayedRowIndex();
 				if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
 			}}
 			onSortChanged={() => storeColumns()}

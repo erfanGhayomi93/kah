@@ -94,7 +94,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 								'border transition-colors',
 								symbol.symbolISIN === selectedSymbol
 									? 'border-primary-400 bg-primary-400 text-white hover:bg-primary-300'
-									: 'border-gray-500 text-gray-1000 shadow-sm hover:bg-primary-100 hover:shadow-none',
+									: 'hover:btn-hover border-gray-500 text-gray-1000 shadow-sm hover:shadow-none',
 							)}
 							onClick={() => setSelectedSymbol(symbol.symbolISIN)}
 							type='button'
@@ -142,7 +142,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					<span className='text-base text-gray-900'>{t('old_option_chain.sort_based_on')}:</span>
 					<div style={{ width: '17.6rem' }} className='flex flex-1 justify-end'>
 						<Select<TSelectOptions>
-							value={sorting}
+							defaultValue={sorting}
 							options={sortingOptions}
 							onChange={onChangeSorting}
 							getOptionId={(option) => option.id}

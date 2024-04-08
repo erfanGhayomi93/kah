@@ -59,7 +59,7 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 					<div className='flex-1'>
 						<Select<IBlackScholesModalStates['contractEndDate']>
 							options={settlementDays ?? []}
-							value={inputs.contractEndDate}
+							defaultValue={inputs.contractEndDate}
 							loading={isFetchingSettlementDays}
 							placeholder={t('black_scholes_modal.contract_end_date')}
 							getOptionId={(option) => option!.contractEndDate}
