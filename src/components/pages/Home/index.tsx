@@ -79,7 +79,7 @@ const Home = () => {
 					breakpoints={{ xl: 1440, lg: 1024, sm: 0 }}
 					containerPadding={[16, 16]}
 					cols={{ xl: 3, lg: 3, sm: 1 }}
-					useCSSTransforms
+					useCSSTransforms={false}
 					isDraggable={false}
 					isDroppable={false}
 					isResizable={false}
