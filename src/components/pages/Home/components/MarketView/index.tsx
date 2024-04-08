@@ -6,6 +6,7 @@ const MarketView = () => {
 
 	return (
 		<Section
+			id='market_view'
 			title={t('home.market_view')}
 			tabs={{
 				top: [

@@ -4,7 +4,7 @@ import Section from '../../common/Section';
 const TopBaseAssets = () => {
 	const t = useTranslations();
 
-	return <Section title={t('home.top_base_assets')} />;
+	return <Section id='top_base_assets' title={t('home.top_base_assets')} />;
 };
 
 export default TopBaseAssets;
