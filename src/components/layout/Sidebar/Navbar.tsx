@@ -10,11 +10,12 @@ import {
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSidebar } from '@/features/slices/uiSlice';
+import { usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
 
@@ -23,11 +24,13 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isExpand }: NavbarProps) => {
+	const pathname = usePathname();
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const [expandId, setExpandId] = useState<null | string>('market');
+	const [expandId, setExpandId] = useState<null | string>(null);
 
 	const toggleItem = (id: string) => {
 		if (isExpand) {
@@ -57,7 +60,7 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 			{
 				id: 'my_assets',
 				label: t('sidebar.my_assets'),
-				to: '/',
+				to: '/a',
 				icon: <MoneySVG />,
 			},
 			{
@@ -88,20 +91,20 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 					{
 						id: 'market_map',
 						label: t('sidebar.market_map'),
-						to: '/',
+						to: '/a',
 					},
 				],
 			},
 			{
 				id: 'strategy',
 				label: t('sidebar.strategy'),
-				to: '/',
+				to: '/a',
 				icon: <StrategySVG />,
 			},
 			{
 				id: 'technical',
 				label: t('sidebar.technical'),
-				to: '/',
+				to: '/a',
 				icon: <DataAnalyticsSVG />,
 			},
 			{
@@ -112,34 +115,38 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 					{
 						id: 'deposit_and_withdrawal',
 						label: t('sidebar.deposit_and_withdrawal'),
-						to: '/',
+						to: '/a',
 					},
 					{
 						id: 'change_broker',
 						label: t('sidebar.change_broker'),
-						to: '/',
+						to: '/a',
 					},
 					{
 						id: 'un_freezing',
 						label: t('sidebar.un_freezing'),
-						to: '/',
+						to: '/a',
 					},
 					{
 						id: 'option_settlement',
 						label: t('sidebar.option_settlement'),
-						to: '/',
+						to: '/a',
 					},
 				],
 			},
 			{
 				id: 'reports',
 				label: t('sidebar.reports'),
-				to: '/',
+				to: '/a',
 				icon: <ReportSVG />,
 			},
 		],
 		[expandId],
 	);
+
+	useEffect(() => {
+		setExpandId(null);
+	}, [pathname]);
 
 	return (
 		<Click enabled={isExpand} onClickOutside={collapseSidebar}>

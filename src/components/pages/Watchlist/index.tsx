@@ -27,7 +27,7 @@ const getStates = createSelector(
 	}),
 );
 
-const Home = () => {
+const Watchlist = () => {
 	const dispatch = useAppDispatch();
 
 	const { isLoggingIn, isLoggedIn } = useAppSelector(getStates);
@@ -91,4 +91,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default Watchlist;
