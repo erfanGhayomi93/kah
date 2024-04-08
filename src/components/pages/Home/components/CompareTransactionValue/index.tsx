@@ -6,6 +6,7 @@ const CompareTransactionValue = () => {
 
 	return (
 		<Section
+			id='compare_transaction_value'
 			title={t('home.compare_transaction_value')}
 			tabs={{
 				top: [

@@ -5,7 +5,7 @@ import { SettingSliderSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import GridLayout, { type Layout } from 'react-grid-layout';
 import BaseSymbolContracts from './components/BaseSymbolContracts';
 import Chart from './components/Chart';
@@ -98,12 +98,16 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 		dispatch(setSymbolInfoPanelGridLayout(layout));
 	};
 
-	const isNotHidden = useCallback(
-		(id: TSymbolInfoPanelSections) => {
-			return !symbolInfoPanelGridLayout.find((item) => item.id === id)?.hidden;
-		},
-		[symbolInfoPanelGridLayout],
-	);
+	const cells = useMemo(() => {
+		const result: Partial<Record<TSymbolInfoPanelSections, boolean>> = {};
+
+		for (let i = 0; i < symbolInfoPanelGridLayout.length; i++) {
+			const item = symbolInfoPanelGridLayout[i];
+			result[item.id] = item.hidden;
+		}
+
+		return result;
+	}, [symbolInfoPanelGridLayout]);
 
 	const isOption = Boolean(symbolData?.isOption);
 
@@ -164,7 +168,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 						>
 							{isOption
 								? [
-										isNotHidden('option_detail') && (
+										!cells.option_detail && (
 											<div key='option_detail'>
 												<ErrorBoundary>
 													<OptionDetail
@@ -175,7 +179,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 											</div>
 										),
 
-										isNotHidden('market_depth') && (
+										!cells.market_depth && (
 											<div key='market_depth'>
 												<ErrorBoundary>
 													<MarketDepth symbolISIN={symbolISIN} />
@@ -184,7 +188,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 										),
 									]
 								: [
-										isNotHidden('symbol_detail') && (
+										!cells.symbol_detail && (
 											<div key='symbol_detail'>
 												<ErrorBoundary>
 													<SymbolDetail
@@ -195,7 +199,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 											</div>
 										),
 
-										isNotHidden('base_symbol_contracts') && (
+										!cells.base_symbol_contracts && (
 											<div key='base_symbol_contracts'>
 												<ErrorBoundary>
 													<BaseSymbolContracts symbolISIN={symbolISIN} />
@@ -203,7 +207,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 											</div>
 										),
 
-										isNotHidden('user_open_positions') && (
+										!cells.user_open_positions && (
 											<div key='user_open_positions'>
 												<ErrorBoundary>
 													<OpenPositions symbolISIN={symbolISIN} />
@@ -211,7 +215,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 											</div>
 										),
 
-										isNotHidden('quotes') && (
+										!cells.quotes && (
 											<div key='quotes'>
 												<ErrorBoundary>
 													<Quotes symbolISIN={symbolISIN} />
@@ -220,7 +224,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 										),
 									]}
 
-							{isNotHidden('individual_and_legal') && (
+							{!cells.individual_and_legal && (
 								<div key='individual_and_legal'>
 									<ErrorBoundary>
 										<IndividualAndLegal symbolData={symbolData} />
@@ -229,7 +233,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 							)}
 
 							{!isOption && [
-								isNotHidden('chart') && (
+								!cells.chart && (
 									<div key='chart'>
 										<ErrorBoundary>
 											<Chart symbolISIN={symbolISIN} />
@@ -237,7 +241,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 									</div>
 								),
 
-								isNotHidden('same_sector_symbols') && (
+								!cells.same_sector_symbols && (
 									<div key='same_sector_symbols'>
 										<ErrorBoundary>
 											<SameSectorSymbol symbolISIN={symbolISIN} />
@@ -245,7 +249,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 									</div>
 								),
 
-								isNotHidden('supervisor_messages') && (
+								!cells.supervisor_messages && (
 									<div key='supervisor_messages'>
 										<ErrorBoundary>
 											<Messages symbolISIN={symbolISIN} />

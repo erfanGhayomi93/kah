@@ -36,12 +36,12 @@ const Tabs = <ID extends string | number, T extends object>({
 		if (!eIndicator || !eRoot || !el) return;
 
 		try {
-			const width = el.offsetWidth;
-			const left = el.offsetLeft;
-			const rootWidth = eRoot.offsetWidth;
+			const { left, width } = el.getBoundingClientRect();
+			const { left: rootLeft, width: rootWidth } = eRoot.getBoundingClientRect();
+			const originalLeft = Math.abs(left - rootLeft - 1);
 
-			eIndicator.style.transform = `translateX(-${rootWidth - left - width}px)`;
-			eIndicator.style.width = `${width}px`;
+			eIndicator.style.transform = `translate(-${Math.abs(rootWidth - originalLeft - width)}px, -50%)`;
+			eIndicator.style.width = `${Math.round(width)}px`;
 		} catch (e) {
 			//
 		}

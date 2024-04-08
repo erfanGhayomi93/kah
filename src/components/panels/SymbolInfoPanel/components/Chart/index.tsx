@@ -1,18 +1,13 @@
-import { useSymbolChartDataQuery } from '@/api/queries/symbolQuery';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import SymbolLinearChart from '../../../../common/Symbol/SymbolLinearChart';
 import Section, { type ITabIem } from '../../common/Section';
-import SymbolLinearChart from './SymbolLinearChart';
 
 interface ChartProps {
 	symbolISIN: string;
 }
 const Chart = ({ symbolISIN }: ChartProps) => {
 	const t = useTranslations();
-
-	const { data, isFetching } = useSymbolChartDataQuery({
-		queryKey: ['symbolChartDataQuery', symbolISIN, 'Today'],
-	});
 
 	const tabs: ITabIem[] = useMemo(
 		() => [
@@ -26,7 +21,7 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 
 	return (
 		<Section name='chart' defaultActiveTab='symbol_chart' tabs={tabs}>
-			<SymbolLinearChart data={data} isLoading={isFetching} />
+			<SymbolLinearChart symbolISIN={symbolISIN} height='26.4rem' />
 		</Section>
 	);
 };

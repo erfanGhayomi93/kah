@@ -1,3 +1,4 @@
+import ipcMain from '@/classes/IpcMain';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import { ExpandSVG, XSVG } from '@/components/icons';
 import clsx from 'clsx';
@@ -8,17 +9,21 @@ interface ITab {
 }
 
 interface SectionProps {
+	id: THomeSections;
 	title: string;
 	children?: React.ReactNode;
 	tabs?: Partial<{
 		top: ITab[] | React.ReactNode;
 		bottom: ITab[] | React.ReactNode;
 	}>;
-	onClose?: () => void;
 	onExpand?: () => void;
 }
 
-const Section = ({ title, tabs, onClose, onExpand }: SectionProps) => {
+const Section = ({ id, title, tabs, onExpand }: SectionProps) => {
+	const onClose = () => {
+		ipcMain.send('home.hide_section', { id, hidden: true });
+	};
+
 	return (
 		<div className='size-full justify-between rounded bg-white px-8 pb-16 pt-8 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
@@ -50,7 +55,7 @@ const Section = ({ title, tabs, onClose, onExpand }: SectionProps) => {
 								rect: 'bg-white !h-32 rounded',
 								tabs: 'gap-8',
 							}}
-							onChangeTab={console.log}
+							// onChangeTab={console.log}
 							renderTab={(item, activeTab) => (
 								<button
 									type='button'
@@ -80,7 +85,7 @@ const Section = ({ title, tabs, onClose, onExpand }: SectionProps) => {
 						rect: 'btn-select no-hover !border !h-40',
 						tabs: 'gap-8',
 					}}
-					onChangeTab={console.log}
+					// onChangeTab={console.log}
 					renderTab={(item, activeTab) => (
 						<button
 							type='button'

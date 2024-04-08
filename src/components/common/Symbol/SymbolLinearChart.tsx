@@ -1,16 +1,21 @@
+import { useSymbolChartDataQuery } from '@/api/queries/symbolQuery';
 import dayjs from '@/libs/dayjs';
 import { numFormatter } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
-import Loading from '../../common/Loading';
-import NoData from '../../common/NoData';
+import Loading from '../../panels/SymbolInfoPanel/common/Loading';
+import NoData from '../../panels/SymbolInfoPanel/common/NoData';
 
 interface SymbolLinearChartProps {
-	data: Symbol.ChartData[] | undefined;
-	isLoading: boolean;
+	symbolISIN: string;
+	height?: number | string;
 }
 
-const SymbolLinearChart = ({ data, isLoading }: SymbolLinearChartProps) => {
+const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
+	const { data, isLoading } = useSymbolChartDataQuery({
+		queryKey: ['symbolChartDataQuery', symbolISIN, 'Today'],
+	});
+
 	const dateFormatter = (v: string | number) => {
 		return dayjs(v).calendar('jalali').format('HH:mm');
 	};
@@ -26,7 +31,7 @@ const SymbolLinearChart = ({ data, isLoading }: SymbolLinearChartProps) => {
 
 	if (isLoading) return <Loading />;
 
-	if (!Array.isArray(data) || data.length === 0) return <NoData />;
+	if (data) return <NoData />;
 
 	return (
 		<Chart
@@ -125,7 +130,7 @@ const SymbolLinearChart = ({ data, isLoading }: SymbolLinearChartProps) => {
 			]}
 			type='area'
 			width='100%'
-			height='264px'
+			height={height}
 		/>
 	);
 };

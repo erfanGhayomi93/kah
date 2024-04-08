@@ -198,6 +198,8 @@
 		"strategy": "استراتژی",
 		"quantity_label": "تعداد",
 		"price_label": "قیمت",
+		"market_depth": "عمق بازار",
+		"chart": "نمودار",
 		"asset_value": "{v} دارایی",
 		"purchase_power_value": "{v} قدرت خرید",
 		"trade_value_label": "ارزش معامله",
@@ -749,6 +751,7 @@
 		"edit": "ویرایش"
 	},
 	"alerts": {
+		"can_not_hide_every_sections": "امکان مخفی کردن تمامی بخش‌ها وجود ندارد.",
 		"logged_out_successfully": "با موفقیت از حساب خود خارج شدید.",
 		"watchlist_symbol_removed_successfully": "نماد \"{symbolTitle}\" با موفقیت از دیده‌بان حذف شد.",
 		"watchlist_symbol_added_successfully": "نماد \"{symbolTitle}\" با موفقیت به دیده‌بان اضافه شد.",

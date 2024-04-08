@@ -6,6 +6,7 @@ const OptionContracts = () => {
 
 	return (
 		<Section
+			id='option_contracts'
 			title={t('home.option_contracts')}
 			tabs={{
 				top: [

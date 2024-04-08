@@ -4,7 +4,7 @@ import Section from '../../common/Section';
 const PriceChangesWatchlist = () => {
 	const t = useTranslations();
 
-	return <Section title={t('home.price_changes_watchlist')} />;
+	return <Section id='price_changes_watchlist' title={t('home.price_changes_watchlist')} />;
 };
 
 export default PriceChangesWatchlist;

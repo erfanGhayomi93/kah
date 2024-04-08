@@ -27,16 +27,18 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 							{t('common.tse')}
 						</a>
 					</li>
-					<li>
-						<a
-							href={getCodalLink(symbol?.symbolTitle)}
-							target='_blank'
-							className='h-48 gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
-						>
-							<Image width='18' height='18' src='/static/images/codal.png' alt='' />
-							{t('common.codal')}
-						</a>
-					</li>
+					{!symbol?.isOption && (
+						<li>
+							<a
+								href={getCodalLink(symbol?.symbolTitle)}
+								target='_blank'
+								className='h-48 gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+							>
+								<Image width='18' height='18' src='/static/images/codal.png' alt='' />
+								{t('common.codal')}
+							</a>
+						</li>
+					)}
 				</ul>
 			)}
 		>

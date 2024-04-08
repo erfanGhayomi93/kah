@@ -1,5 +1,6 @@
 import { useCommissionsQuery } from '@/api/queries/brokerPrivateQueries';
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuySellModal, type IBuySellModal } from '@/features/slices/modalSlice';
@@ -53,7 +54,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 	) => {
 		const dispatch = useAppDispatch();
 
-		const { data: symbolData } = useSymbolInfoQuery({
+		const { data: symbolData, isLoading } = useSymbolInfoQuery({
 			queryKey: ['symbolInfoQuery', symbolISIN],
 		});
 
@@ -186,7 +187,11 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 								inputs.expand && 'border-l border-l-gray-500',
 							)}
 						>
-							{inputs.expand && <SymbolInfo />}
+							{inputs.expand && (
+								<ErrorBoundary>
+									<SymbolInfo symbolData={symbolData ?? null} isLoading={isLoading} />
+								</ErrorBoundary>
+							)}
 						</div>
 						<Body
 							{...inputs}

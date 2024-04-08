@@ -67,8 +67,12 @@
 .react-grid-item:not(.react-draggable-dragging) {
 	transition:
 		height 200ms ease-in,
+		top 200ms ease-in,
+		left 200ms ease-in,
 		transform 200ms ease-in;
 	-webkit-transition:
 		height 200ms ease-in,
+		top 200ms ease-in,
+		left 200ms ease-in,
 		transform 200ms ease-in;
 }

@@ -6,6 +6,7 @@ const MarketStatus = () => {
 
 	return (
 		<Section
+			id='market_status'
 			title={t('home.market_status')}
 			tabs={{
 				bottom: [
