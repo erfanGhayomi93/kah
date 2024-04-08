@@ -6,6 +6,7 @@ const OptionTradesValue = () => {
 
 	return (
 		<Section
+			id='option_trades_value'
 			title={t('home.option_trades_value')}
 			tabs={{
 				top: [

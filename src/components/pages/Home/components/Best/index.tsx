@@ -6,6 +6,7 @@ const Best = () => {
 
 	return (
 		<Section
+			id='best'
 			title={t('home.best')}
 			tabs={{
 				top: [

@@ -112,7 +112,7 @@ class IpcMain {
 		listener: ListenerType<IpcMainChannels[T]>,
 		controller: AbortController,
 	) {
-		const i = this._channels[channel]![0].push(listener as ListenerType);
+		const i = this._channels[channel]![0].push(listener as ListenerType) - 1;
 		controller.signal.onabort = () => {
 			this._channels[channel]![0].splice(i, 1);
 		};
@@ -125,7 +125,7 @@ class IpcMain {
 		listener: ListenerType<IpcMainChannels[T]>,
 		controller: AbortController,
 	) {
-		const i = this._channels[channel]![1].push(listener as ListenerType);
+		const i = this._channels[channel]![1].push(listener as ListenerType) - 1;
 		controller.signal.onabort = () => {
 			this._channels[channel]![1].splice(i, 1);
 		};

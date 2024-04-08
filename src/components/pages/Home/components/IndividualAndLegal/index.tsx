@@ -6,6 +6,7 @@ const IndividualAndLegal = () => {
 
 	return (
 		<Section
+			id='individual_and_legal'
 			title={t('home.individual_and_legal')}
 			tabs={{
 				top: [

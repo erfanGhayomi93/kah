@@ -6,6 +6,7 @@ const NewAndOld = () => {
 
 	return (
 		<Section
+			id='new_and_old'
 			title={t('home.new_and_old')}
 			tabs={{
 				bottom: [
