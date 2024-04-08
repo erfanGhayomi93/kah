@@ -18,7 +18,7 @@ const Grid = ({ symbolISIN }: GridProps) => {
 				id: 'market_map',
 				title: t('bs_modal.market_depth'),
 				render: () => (
-					<div className='p-8'>
+					<div className='flex-1 p-8'>
 						<SymbolPriceTable symbolISIN={symbolISIN} />
 					</div>
 				),
@@ -27,7 +27,7 @@ const Grid = ({ symbolISIN }: GridProps) => {
 				id: 'chart',
 				title: t('bs_modal.chart'),
 				render: () => (
-					<div className='p-8'>
+					<div className='flex-1 p-8'>
 						<SymbolLinearChart symbolISIN={symbolISIN} />
 					</div>
 				),
