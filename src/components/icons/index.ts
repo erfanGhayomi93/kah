@@ -22,6 +22,7 @@ import EditSVG from './edit.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
 import EraserSVG from './eraser.svg';
 import ExcelSVG from './excel.svg';
+import ExpandSVG from './expand.svg';
 import EyeSlashSVG from './eye-slash.svg';
 import EyeSVG from './eye.svg';
 import FileExcelSVG from './file-excel.svg';
@@ -100,6 +101,7 @@ export {
 	EllipsisVerticalSVG,
 	EraserSVG,
 	ExcelSVG,
+	ExpandSVG,
 	EyeSVG,
 	EyeSlashSVG,
 	FileExcelSVG,
