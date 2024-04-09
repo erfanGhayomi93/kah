@@ -30,7 +30,7 @@ declare type TSymbolInfoPanelSections =
 
 declare type THomeSections =
 	| 'market_view'
-	| 'market_status'
+	| 'market_state'
 	| 'best'
 	| 'user_progress_bar'
 	| 'compare_transaction_value'

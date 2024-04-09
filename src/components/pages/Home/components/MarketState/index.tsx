@@ -1,5 +1,7 @@
 import { useGetMarketStateQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
+import { useServerDatetime } from '@/hooks';
+import dayjs from '@/libs/dayjs';
 import { numFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -10,7 +12,7 @@ interface ItemProps {
 	value: number;
 }
 
-const MarketStatus = () => {
+const MarketState = () => {
 	const t = useTranslations();
 
 	const [exchange, setExchange] = useState<Dashboard.TMarketStateExchange>('Option');
@@ -21,8 +23,8 @@ const MarketStatus = () => {
 
 	return (
 		<Section<string, Dashboard.TMarketStateExchange>
-			id='market_status'
-			title={t('home.market_status')}
+			id='market_state'
+			title={t('home.market_state')}
 			onBottomTabChange={setExchange}
 			tabs={{
 				bottom: [
@@ -30,6 +32,7 @@ const MarketStatus = () => {
 					{ id: 'Bourse', title: t('home.tab_bourse') },
 					{ id: 'FaraBourse', title: t('home.tab_fara_bourse') },
 				],
+				top: <Clock />,
 			}}
 		>
 			<div className='relative flex-1 pt-24'>
@@ -60,6 +63,16 @@ const MarketStatus = () => {
 	);
 };
 
+const Clock = () => {
+	const { timestamp } = useServerDatetime();
+
+	return (
+		<div style={{ flex: '0 0 6.8rem' }} className='h-full rounded bg-gray-200 flex-justify-center'>
+			{dayjs(timestamp).calendar('jalali').format('HH:mm:ss')}
+		</div>
+	);
+};
+
 const Item = ({ name, value }: ItemProps) => (
 	<li className='flex-justify-between'>
 		<span className='text-gray-900'>{name}:</span>
@@ -67,4 +80,4 @@ const Item = ({ name, value }: ItemProps) => (
 	</li>
 );
 
-export default MarketStatus;
+export default MarketState;

@@ -68,7 +68,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 	const getGridLayout = () => {
 		const layout = symbolInfoPanelGridLayout.filter((item) => {
-			return item.hidden === false && (!('isOption' in item) || item.isOption === symbolData?.isOption);
+			return !item.hidden && (!('isOption' in item) || item.isOption === symbolData?.isOption);
 		});
 		layout.sort((a, b) => a.i - b.i);
 
@@ -129,10 +129,9 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 						left: '1.6rem',
 						height: 'calc(100% - 1.6rem)',
 						bottom: '1.6rem',
-						width: 'calc(100% - 3.2rem)',
 						backdropFilter: 'blur(2px)',
 					}}
-					className='absolute top-0 rounded'
+					className='absolute top-0 w-full rounded'
 				>
 					<Loading />
 				</div>

@@ -25,13 +25,21 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 
 	eSellDropdown: HTMLUListElement | null = null;
 
+	eBuy: HTMLButtonElement | null = null;
+
+	eSell: HTMLButtonElement | null = null;
+
+	params!: StrikePriceCellRendererProps;
+
 	eventListener!: () => void;
 
 	init(params: StrikePriceCellRendererProps) {
+		this.params = params;
+
 		this.eGui = document.createElement('div');
 		this.eGui.setAttribute('class', 'flex-justify-center w-full');
 
-		this.eGui.textContent = String(params.valueFormatted ?? '−');
+		this.eGui.textContent = String(this.params.valueFormatted ?? '−');
 	}
 
 	getGui() {
@@ -40,15 +48,21 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 
 	refresh(params: StrikePriceCellRendererProps) {
 		try {
+			this.params = params;
+
 			const {
 				activeRowId,
 				node: { rowIndex },
 			} = params;
 
+			this.renderBuySellBtn();
+
 			if (rowIndex === activeRowId) {
 				this.removeRowOverlay();
-				this.createRowOverlay(params);
-			} else this.removeRowOverlay();
+				this.createRowOverlay();
+			} else {
+				this.removeRowOverlay();
+			}
 		} catch (e) {
 			//
 		}
@@ -81,21 +95,21 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		return overlay;
 	}
 
-	createRowOverlay(params: StrikePriceCellRendererProps) {
+	createRowOverlay() {
 		const {
 			node: { data },
-		} = params;
+		} = this.params;
 		if (!data) return;
 
 		const buyBtnGroup = new StrikePriceBtnGroup({
-			isInBasket: this.isInBasket(params, 'sell'),
+			isInBasket: this.isInBasket('sell'),
 			side: 'sell',
-			params,
+			params: this.params,
 		});
 		const sellBtnGroup = new StrikePriceBtnGroup({
-			isInBasket: this.isInBasket(params, 'buy'),
+			isInBasket: this.isInBasket('buy'),
 			side: 'buy',
-			params,
+			params: this.params,
 		});
 
 		this.eLeftOverlay = this.createOverlay();
@@ -125,8 +139,51 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		this.eSellDropdown = null;
 	}
 
-	isInBasket(params: StrikePriceCellRendererProps, side: 'buy' | 'sell') {
-		return params.basket.findIndex((item) => params.data![side]?.symbolInfo.symbolISIN === item.symbolISIN) > -1;
+	renderBuySellBtn() {
+		const isInBuyBasket = this.isInBasket('sell');
+		const isInSellBasket = this.isInBasket('buy');
+
+		if (isInBuyBasket) {
+			if (!this.eBuy) {
+				this.eBuy = this.createBtn();
+				this.eBuy.classList.add('absolute', 'right-8', 'bg-success-100/10', 'text-success-100');
+				this.eBuy.textContent = 'B';
+
+				this.eGui.appendChild(this.eBuy);
+			}
+		} else {
+			if (this.eBuy) this.eBuy.remove();
+			this.eBuy = null;
+		}
+
+		if (isInSellBasket) {
+			if (!this.eSell) {
+				this.eSell = this.createBtn();
+				this.eSell.classList.add('absolute', 'left-8', 'bg-error-100/10', 'text-error-100');
+				this.eSell.textContent = 'S';
+
+				this.eGui.appendChild(this.eSell);
+			}
+		} else {
+			if (this.eSell) this.eSell.remove();
+			this.eSell = null;
+		}
+	}
+
+	createBtn() {
+		const b = document.createElement('button');
+		b.setAttribute('class', 'size-28 top-4 flex-justify-center rounded');
+
+		return b;
+	}
+
+	isInBasket(side: 'buy' | 'sell') {
+		try {
+			const { basket, data } = this.params;
+			return basket.findIndex((item) => data![side]?.symbolInfo.symbolISIN === item.symbolISIN) > -1;
+		} catch (e) {
+			return false;
+		}
 	}
 }
 

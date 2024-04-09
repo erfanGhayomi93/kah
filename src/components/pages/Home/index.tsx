@@ -10,7 +10,7 @@ import CompareTransactionValue from './components/CompareTransactionValue';
 import Custom from './components/Custom';
 import DueDates from './components/DueDates';
 import IndividualAndLegal from './components/IndividualAndLegal';
-import MarketStatus from './components/MarketStatus';
+import MarketState from './components/MarketState';
 import MarketView from './components/MarketView';
 import Meetings from './components/Meetings';
 import NewAndOld from './components/NewAndOld';
@@ -126,9 +126,9 @@ const Home = () => {
 						</div>
 					)}
 
-					{!cells.market_status && (
-						<div key='market_status'>
-							<MarketStatus />
+					{!cells.market_state && (
+						<div key='market_state'>
+							<MarketState />
 						</div>
 					)}
 

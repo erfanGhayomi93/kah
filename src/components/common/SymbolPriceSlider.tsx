@@ -4,6 +4,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './SymbolPriceSlider.module.scss';
 
 interface IConfig {
+	firstTradedPrice: 0;
+	firstTradedPriceAsPercent: 0;
+	lastTradedPrice: 0;
+	lastTradedPriceAsPercent: 0;
 	buySliderWidth: number;
 	sellSliderWidth: number;
 	lowestTradePriceOfTradingDayAsPercent: number;
@@ -41,6 +45,10 @@ const SymbolPriceSlider = ({
 	const rootRef = useRef<HTMLDivElement>(null);
 
 	const [config, setConfig] = useState<IConfig>({
+		firstTradedPrice: 0,
+		firstTradedPriceAsPercent: 0,
+		lastTradedPrice: 0,
+		lastTradedPriceAsPercent: 0,
 		buySliderWidth: 0,
 		sellSliderWidth: 0,
 		lowestTradePriceOfTradingDayAsPercent: 0,
@@ -106,6 +114,10 @@ const SymbolPriceSlider = ({
 			if (!borderRef.current) return;
 
 			const instanceOfConfig: IConfig = {
+				firstTradedPrice: 0,
+				firstTradedPriceAsPercent: 0,
+				lastTradedPrice: 0,
+				lastTradedPriceAsPercent: 0,
 				buySliderWidth: 0,
 				sellSliderWidth: 0,
 				lowestTradePriceOfTradingDayAsPercent: 0,
@@ -186,6 +198,67 @@ const SymbolPriceSlider = ({
 		<div className='px-4'>
 			<div ref={rootRef} className={clsx(styles.root)}>
 				<div role='presentation' ref={borderRef} className={styles.border} onClick={onMouseDown} />
+
+				<div className={styles.tradedValues}>
+					<div className={styles.inner}>
+						<div
+							style={{ transform: `translateX(${config.firstTradedPrice}px)` }}
+							className={clsx('transition duration-300', styles.value)}
+						>
+							<svg
+								width='1.2rem'
+								height='1.5rem'
+								viewBox='0 0 14 17'
+								fill='none'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path
+									d='M6.97656 11.0645L2.19958 6.43259L6.97656 1.80073L11.7535 6.43259L6.97656 11.0645Z'
+									stroke='currentColor'
+									strokeWidth='2'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+								/>
+								<path
+									d='M11.7535 11.2959L6.97656 15.9278L2.19959 11.2959'
+									stroke='currentColor'
+									strokeWidth='2'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+								/>
+							</svg>
+						</div>
+
+						<div
+							style={{ transform: `translateX(${config.lastTradedPrice}px)` }}
+							className={clsx('transition duration-300', styles.value)}
+						>
+							<svg
+								width='1.2rem'
+								height='1.5rem'
+								viewBox='0 0 14 17'
+								fill='none'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path
+									d='M6.97656 11.0645L2.19958 6.43259L6.97656 1.80073L11.7535 6.43259L6.97656 11.0645Z'
+									fill='currentColor'
+									stroke='currentColor'
+									strokeWidth='2'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+								/>
+								<path
+									d='M11.7535 11.2959L6.97656 15.9278L2.19959 11.2959'
+									stroke='currentColor'
+									strokeWidth='2'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+								/>
+							</svg>
+						</div>
+					</div>
+				</div>
 
 				<div ref={tooltipRef} style={{ opacity: '0' }} className={styles.tooltip}>
 					<span className='text-xs font-medium' />
@@ -268,8 +341,6 @@ const SymbolPriceSlider = ({
 					>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
-							<span className={clsx(styles.line)} />
-							<span className={clsx(styles.number)}>{sepNumbers(String(averageNumbers[1]))}</span>
 						</div>
 					</div>
 
@@ -284,8 +355,6 @@ const SymbolPriceSlider = ({
 					>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
-							<span className={clsx(styles.line)} />
-							<span className={clsx(styles.number)}>{sepNumbers(String(averageNumbers[2]))}</span>
 						</div>
 					</div>
 
@@ -308,8 +377,6 @@ const SymbolPriceSlider = ({
 					>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
-							<span className={clsx(styles.line)} />
-							<span className={clsx(styles.number)}>{sepNumbers(String(averageNumbers[4]))}</span>
 						</div>
 					</div>
 
@@ -324,8 +391,6 @@ const SymbolPriceSlider = ({
 					>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
-							<span className={clsx(styles.line)} />
-							<span className={clsx(styles.number)}>{sepNumbers(String(averageNumbers[5]))}</span>
 						</div>
 					</div>
 
