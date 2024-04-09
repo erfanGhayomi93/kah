@@ -1,6 +1,6 @@
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import SymbolState from '@/components/common/SymbolState';
-import NoData from '@/components/panels/SymbolInfoPanel/common/NoData';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import Grid from './Grid';
@@ -28,7 +28,7 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 	} = symbolData;
 
 	return (
-		<div className='h-full justify-between px-16 py-8 flex-column'>
+		<div className='h-full justify-between px-16 pb-16 pt-24 flex-column'>
 			<div className='flex items-start justify-between'>
 				<div className='flex-1 gap-4 flex-column'>
 					<div className='gap-8 flex-items-center'>

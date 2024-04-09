@@ -9,6 +9,7 @@ import { cloneElement, forwardRef, useLayoutEffect, useState } from 'react';
 interface AuthorizeMiddlewareProps {
 	broker?: boolean;
 	children: React.ReactElement;
+	callback?: () => void;
 }
 
 const getStates = createSelector(
@@ -20,7 +21,7 @@ const getStates = createSelector(
 	}),
 );
 
-const AuthorizeMiddleware = forwardRef<HTMLElement, AuthorizeMiddlewareProps>(({ broker, children }, ref) => {
+const AuthorizeMiddleware = forwardRef<HTMLElement, AuthorizeMiddlewareProps>(({ broker, children, callback }, ref) => {
 	const dispatch = useAppDispatch();
 
 	const [checking, setChecking] = useState(true);
@@ -36,15 +37,19 @@ const AuthorizeMiddleware = forwardRef<HTMLElement, AuthorizeMiddlewareProps>(({
 	};
 
 	useLayoutEffect(() => {
-		if (broker) {
-			if (isLoggedIn) {
-				if (brokerIsSelected) setChecking(false);
-				else showBrokerLoginModal();
-			} else showUserLoginModal();
-		} else {
-			if (isLoggedIn) setChecking(false);
-			else showUserLoginModal();
+		if (!isLoggedIn) {
+			showUserLoginModal();
+			callback?.();
+			return;
 		}
+
+		if (broker && !brokerIsSelected) {
+			showBrokerLoginModal();
+			callback?.();
+			return;
+		}
+
+		setChecking(false);
 	}, [isLoggedIn, brokerIsSelected, brokerURLs]);
 
 	if (checking) return null;

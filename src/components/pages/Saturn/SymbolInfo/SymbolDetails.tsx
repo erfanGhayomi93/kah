@@ -1,5 +1,6 @@
 import { type ItemUpdate } from '@/classes/Subscribe';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
+import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
 import { useAppSelector } from '@/features/hooks';
@@ -195,12 +196,23 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 				? 'text-success-100'
 				: 'text-error-100';
 
-	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
-		symbol;
+	const {
+		closingPriceVarReferencePrice,
+		symbolTradeState,
+		symbolTitle,
+		closingPrice,
+		lastTradedPrice,
+		companyName,
+		yesterdayClosingPrice,
+		lowThreshold,
+		highThreshold,
+		lowPrice,
+		highPrice,
+	} = symbol;
 
 	return (
 		<div className='flex-column'>
-			<div className={cn('gap-40 flex-column', brokerURLs ? 'pb-32' : 'pb-56')}>
+			<div className={cn('gap-40 flex-column', brokerURLs ? 'pb-24' : 'pb-48')}>
 				<div className='flex-justify-between'>
 					<div className='flex-column'>
 						<div style={{ gap: '1rem' }} className='flex-items-center'>
@@ -240,7 +252,16 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 				</div>
 			</div>
 
-			<SymbolSummary data={symbolDetails} />
+			<div className='gap-24 flex-column'>
+				<SymbolPriceSlider
+					yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
+					thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
+					exchangeData={[closingPrice ?? 0, lastTradedPrice ?? 0]}
+					boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
+				/>
+
+				<SymbolSummary data={symbolDetails} />
+			</div>
 		</div>
 	);
 };

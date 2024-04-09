@@ -1,6 +1,16 @@
 'use client';
 
-import { useAppSelector } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import {
+	setAddNewOptionWatchlist,
+	setAddSaturnTemplate,
+	setAddSymbolToWatchlistModal,
+	setBuySellModal,
+	setChoiceCollateralModal,
+	setManageOptionWatchlistListModal,
+	setMoveSymbolToWatchlistModal,
+	setOrderDetailsModal,
+} from '@/features/slices/modalSlice';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
@@ -39,6 +49,8 @@ const OrderDetails = lazy(() => import('./OrderDetails'));
 const MoveSymbolToWatchlist = lazy(() => import('./MoveSymbolToWatchlist'));
 
 const Modals = () => {
+	const dispatch = useAppDispatch();
+
 	const {
 		loginModal,
 		logout,
@@ -128,7 +140,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{addSaturnTemplate && (
 					<ModalSuspense>
-						<AuthorizeMiddleware>
+						<AuthorizeMiddleware callback={() => dispatch(setAddSaturnTemplate(null))}>
 							<AddSaturnTemplate {...addSaturnTemplate} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -138,7 +150,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{addNewOptionWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware>
+						<AuthorizeMiddleware callback={() => dispatch(setAddNewOptionWatchlist(null))}>
 							<AddNewOptionWatchlist {...addNewOptionWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -148,7 +160,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{manageOptionWatchlistList && (
 					<ModalSuspense>
-						<AuthorizeMiddleware>
+						<AuthorizeMiddleware callback={() => dispatch(setManageOptionWatchlistListModal(null))}>
 							<ManageOptionWatchlistList {...manageOptionWatchlistList} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -158,7 +170,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{buySell && (
 					<ModalSuspense>
-						<AuthorizeMiddleware broker>
+						<AuthorizeMiddleware callback={() => dispatch(setBuySellModal(null))} broker>
 							<BuySellModal {...buySell} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -168,7 +180,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{addSymbolToWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware>
+						<AuthorizeMiddleware callback={() => dispatch(setAddSymbolToWatchlistModal(null))}>
 							<AddSymbolToWatchlist {...addSymbolToWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -178,7 +190,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{choiceCollateral && (
 					<ModalSuspense>
-						<AuthorizeMiddleware>
+						<AuthorizeMiddleware callback={() => dispatch(setChoiceCollateralModal(null))}>
 							<ChoiceCollateral {...choiceCollateral} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -188,7 +200,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{orderDetails && (
 					<ModalSuspense>
-						<AuthorizeMiddleware broker>
+						<AuthorizeMiddleware callback={() => dispatch(setOrderDetailsModal(null))} broker>
 							<OrderDetails {...orderDetails} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -198,7 +210,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{moveSymbolToWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware>
+						<AuthorizeMiddleware callback={() => dispatch(setMoveSymbolToWatchlistModal(null))}>
 							<MoveSymbolToWatchlist {...moveSymbolToWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>

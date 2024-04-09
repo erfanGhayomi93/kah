@@ -16,19 +16,22 @@ interface IRowData {
 
 interface RowProps extends IRowData {
 	side: 'buy' | 'sell';
+	compact: boolean;
 }
 
 interface GridProps {
 	side: 'buy' | 'sell';
+	compact: boolean;
 	data: IRowData[];
 }
 
 interface SymbolPriceTableProps {
 	symbolISIN: string;
 	length?: number;
+	compact?: boolean;
 }
 
-const SymbolPriceTable = ({ symbolISIN, length }: SymbolPriceTableProps) => {
+const SymbolPriceTable = ({ symbolISIN, length, compact = true }: SymbolPriceTableProps) => {
 	const queryClient = useQueryClient();
 
 	const { subscribe, unsubscribe } = useSubscription();
@@ -152,17 +155,18 @@ const SymbolPriceTable = ({ symbolISIN, length }: SymbolPriceTableProps) => {
 
 	return (
 		<div className='flex flex-1 gap-8'>
-			<Grid side='buy' data={dataModify.buy} />
-			<Grid side='sell' data={dataModify.sell} />
+			<Grid side='buy' data={dataModify.buy} compact={compact} />
+			<Grid side='sell' data={dataModify.sell} compact={compact} />
 		</div>
 	);
 };
 
-const Row = ({ side, price, count, quantity, percent }: RowProps) => (
+const Row = ({ side, price, count, quantity, percent, compact }: RowProps) => (
 	<div
 		className={cn(
-			'relative h-32 flex-justify-between *:text-base *:text-gray-900',
+			'relative flex-justify-between *:text-base *:text-gray-900',
 			side === 'sell' && 'flex-row-reverse',
+			compact ? 'h-32' : 'h-40',
 		)}
 	>
 		<div
@@ -185,7 +189,7 @@ const Row = ({ side, price, count, quantity, percent }: RowProps) => (
 	</div>
 );
 
-const Grid = ({ side, data }: GridProps) => {
+const Grid = ({ side, data, compact }: GridProps) => {
 	const t = useTranslations();
 
 	return (
@@ -209,7 +213,15 @@ const Grid = ({ side, data }: GridProps) => {
 
 			<div className='w-full gap-4 flex-column'>
 				{data.map(({ percent, price, quantity, count }, i) => (
-					<Row key={i} side={side} price={price} quantity={quantity} count={count} percent={percent} />
+					<Row
+						key={i}
+						side={side}
+						price={price}
+						quantity={quantity}
+						count={count}
+						percent={percent}
+						compact={compact}
+					/>
 				))}
 			</div>
 		</div>

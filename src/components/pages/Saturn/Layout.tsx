@@ -205,7 +205,7 @@ const Layout = ({
 				}}
 				className={cn(
 					'relative size-full flex-1 rounded bg-white px-16 pb-16 pt-8 flex-column',
-					brokerURLs ? 'gap-32' : 'gap-40',
+					brokerURLs ? 'gap-24' : 'gap-36',
 				)}
 			>
 				<SymbolInfo

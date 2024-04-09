@@ -1,6 +1,6 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
+import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
-import NoData from '../../common/NoData';
 import Contract from './Contract';
 
 interface ContractsProps {
