@@ -90,27 +90,29 @@ const Section = <T extends string = string, B extends string = string>({
 			{children ?? <NoData />}
 
 			{Array.isArray(tabs?.bottom) ? (
-				<SwitchTab<ITab<B>>
-					data={tabs.bottom}
-					defaultActiveTab={tabs.bottom[0].id}
-					classes={{
-						root: '!h-48 bg-gray-200 rtl !border-0 p-4',
-						rect: 'bg-primary-100 no-hover !h-40',
-						tabs: 'gap-8',
-					}}
-					onChangeTab={(v) => onBottomTabChange?.(v as B)}
-					renderTab={(item, activeTab) => (
-						<button
-							type='button'
-							className={clsx(
-								'h-full flex-1 rounded transition-colors',
-								item.id === activeTab ? 'font-medium text-primary-400' : 'text-gray-700',
-							)}
-						>
-							{item.title}
-						</button>
-					)}
-				/>
+				<div style={{ flex: '0 0 4.8rem' }}>
+					<SwitchTab<ITab<B>>
+						data={tabs.bottom}
+						defaultActiveTab={tabs.bottom[0].id}
+						classes={{
+							root: '!h-48 bg-gray-200 rtl !border-0 p-4',
+							rect: 'bg-primary-100 no-hover !h-40',
+							tabs: 'gap-8',
+						}}
+						onChangeTab={(v) => onBottomTabChange?.(v as B)}
+						renderTab={(item, activeTab) => (
+							<button
+								type='button'
+								className={clsx(
+									'h-full flex-1 rounded transition-colors',
+									item.id === activeTab ? 'font-medium text-primary-400' : 'text-gray-700',
+								)}
+							>
+								{item.title}
+							</button>
+						)}
+					/>
+				</div>
 			) : (
 				tabs?.bottom
 			)}
