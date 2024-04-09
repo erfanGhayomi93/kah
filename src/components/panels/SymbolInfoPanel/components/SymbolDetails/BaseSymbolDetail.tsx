@@ -1,5 +1,5 @@
 import { ArrowDownSVG } from '@/components/icons';
-import { sepNumbers } from '@/utils/helpers';
+import { numFormatter as bigNumFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useState } from 'react';
 
@@ -31,12 +31,12 @@ const BaseSymbolDetail = ({ symbolData, onExpand }: BaseSymbolDetailProps) => {
 				{
 					id: 'trade_value',
 					title: t('symbol_info_panel.trade_value'),
-					value: numFormatter(symbolData.tradeValue),
+					value: bigNumFormatter(symbolData.tradeValue),
 				},
 				{
 					id: 'trade_volume',
 					title: t('symbol_info_panel.trade_volume'),
-					value: numFormatter(symbolData.tradeVolume),
+					value: bigNumFormatter(symbolData.tradeVolume),
 				},
 				{ id: 'nav', title: t('symbol_info_panel.nav'), value: numFormatter(symbolData.cancellationNAV) },
 				{
