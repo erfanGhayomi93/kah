@@ -1,3 +1,4 @@
+import NoData from '@/components/common/NoData';
 import { numFormatter } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
@@ -18,6 +19,8 @@ const MarketViewChart = ({ data }: ChartProps) => {
 			y: String(item.lastIndexValueInDay),
 		}));
 	}, [data]);
+
+	if (!Array.isArray(data) || data.length === 0) return <NoData />;
 
 	return (
 		<Chart
