@@ -1,3 +1,5 @@
+'use client';
+
 import ipcMain from '@/classes/IpcMain';
 import Main from '@/components/layout/Main';
 import { initialHomeGrid } from '@/constants';
