@@ -4,8 +4,8 @@ import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
+import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
-import NoData from '../../common/NoData';
 import CoGroupSymbolCompare from './components/CoGroupSymbolCompare';
 import CoGroupSymbolCompareHeader from './components/CoGroupSymbolCompareHeader';
 

@@ -3,8 +3,8 @@ import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect } from 'react';
+import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
-import NoData from '../../common/NoData';
 import Position from './Position';
 
 const UserOpenPositions = () => {

@@ -86,6 +86,7 @@
 		"tab_trades_count": "تعداد معاملات",
 		"tab_changes_from_previous_day": "تغییرات نسبت به روز قبل",
 		"tab_trades_volume": "حجم معاملات",
+		"tab_trades_value": "ارزش معاملات",
 		"tab_contract_type": "نوع قرارداد",
 		"tab_in_profit": "در سود بودن",
 		"tab_option_relative_market": "نسبت معاملات آپشن به بازار",
@@ -101,7 +102,11 @@
 		"tab_new_trades": "تازه معامله شده‌ها",
 		"tab_most_trading_day": "بیشترین روز معاملاتی",
 		"tab_newest": "جدیدترین",
-		"tab_closest": "نزدیکترین"
+		"tab_closest": "نزدیکترین",
+		"bourse_market_value": "ارزش بازار بورس",
+		"fara_bourse_market_value": "ارزش بازار فرابورس",
+		"call_trades_value": "ارزش معاملات اختیارهای خرید",
+		"put_trades_value": "ارزش معاملات اختیارهای فروش"
 	},
 	"symbol_contracts_modal": {
 		"title": "انتخاب قرارداد {symbolTitle}",

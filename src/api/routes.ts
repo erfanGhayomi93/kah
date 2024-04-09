@@ -7,7 +7,24 @@ const oauthUrl = isStage || isDev ? 'https://ramandoauth-stage.ramandtech.com' :
 const rlcUrl = isStage || isDev ? 'https://kahkeshanapi-stage.ramandtech.com' : 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
-	pushengine: 'https://pushengine.ramandtech.com', // isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
+	pushengine: isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
+
+	dashboard: {
+		GetIndex: `${rlcUrl}/Dashboard/v1/GetIndex`,
+		GetMarketState: `${rlcUrl}/Dashboard/v1/GetMarketState`,
+		GetOptionTopSymbols: `${rlcUrl}/Dashboard/v1/GetOptionTopSymbols`,
+		GetBaseTopSymbols: `${rlcUrl}/Dashboard/v1/GetBaseTopSymbols`,
+		GetTopSymbols: `${rlcUrl}/Dashboard/v1/GetTopSymbols`,
+		GetOptionContractAdditionalInfo: `${rlcUrl}/Dashboard/v1/GetOptionContractAdditionalInfo`,
+		GetOptionMarketComparison: `${rlcUrl}/Dashboard/v1/GetOptionMarketComparison`,
+		GetOptionTradeProcess: `${rlcUrl}/Dashboard/v1/GetOptionTradeProcess`,
+		GetMarketProcessChart: `${rlcUrl}/Dashboard/v1/GetMarketProcessChart`,
+		GetOptionWatchlistPriceChangeInfo: `${rlcUrl}/Dashboard/v1/GetOptionWatchlistPriceChangeInfo`,
+		GetTopOptionBaseSymbolValue: `${rlcUrl}/Dashboard/v1/GetTopOptionBaseSymbolValue`,
+		GetFirstTradedOptionSymbol: `${rlcUrl}/Dashboard/v1/GetFirstTradedOptionSymbol`,
+		GetMostTradedOptionSymbol: `${rlcUrl}/Dashboard/v1/GetMostTradedOptionSymbol`,
+		GetOptionSettlementInfo: `${rlcUrl}/Dashboard/v1/GetOptionSettlementInfo`,
+	},
 
 	common: {
 		time: `${rlcUrl}/Common/v1/Time`,
