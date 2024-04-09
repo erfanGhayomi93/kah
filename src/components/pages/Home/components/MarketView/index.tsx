@@ -29,7 +29,7 @@ const MarketView = () => {
 				bottom: [
 					{ id: 'Overall', title: t('home.tab_overall_index') },
 					{ id: 'EqualWeightOverall', title: t('home.tab_same_weight_index') },
-					{ id: 'Overall', title: t('home.tab_small_trades_value') },
+					{ id: 'X', title: t('home.tab_small_trades_value') },
 				],
 			}}
 		>
