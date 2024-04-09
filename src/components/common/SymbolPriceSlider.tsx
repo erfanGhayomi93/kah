@@ -1,4 +1,4 @@
-import { isBetween, sepNumbers } from '@/utils/helpers';
+import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './SymbolPriceSlider.module.scss';
@@ -330,67 +330,11 @@ const SymbolPriceSlider = ({
 						</div>
 					</div>
 
-					<div
-						style={{ left: '16.667%' }}
-						className={clsx(
-							styles.div,
-							dataIsAvailable &&
-								isBetween(boundaryData[0], averageNumbers[1], boundaryData[1]) &&
-								styles.active,
-						)}
-					>
-						<div className={styles.inner}>
-							<span className={clsx(styles.rhombus)} />
-						</div>
-					</div>
-
-					<div
-						style={{ left: '33.334%' }}
-						className={clsx(
-							styles.div,
-							dataIsAvailable &&
-								isBetween(boundaryData[0], averageNumbers[2], boundaryData[1]) &&
-								styles.active,
-						)}
-					>
-						<div className={styles.inner}>
-							<span className={clsx(styles.rhombus)} />
-						</div>
-					</div>
-
 					<div style={{ left: '50%' }} className={clsx(styles.div, styles.active)}>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
 							<span className={clsx(styles.line)} />
 							<span className={clsx(styles.number)}>{sepNumbers(String(yesterdayClosingPrice))}</span>
-						</div>
-					</div>
-
-					<div
-						style={{ left: '66.667%' }}
-						className={clsx(
-							styles.div,
-							dataIsAvailable &&
-								isBetween(boundaryData[0], averageNumbers[4], boundaryData[1]) &&
-								styles.active,
-						)}
-					>
-						<div className={styles.inner}>
-							<span className={clsx(styles.rhombus)} />
-						</div>
-					</div>
-
-					<div
-						style={{ left: '83.334%' }}
-						className={clsx(
-							styles.div,
-							dataIsAvailable &&
-								isBetween(boundaryData[0], averageNumbers[5], boundaryData[1]) &&
-								styles.active,
-						)}
-					>
-						<div className={styles.inner}>
-							<span className={clsx(styles.rhombus)} />
 						</div>
 					</div>
 
