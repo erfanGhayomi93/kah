@@ -6,7 +6,7 @@ export const useGetMarketStateQuery = createQuery<
 	Dashboard.GetMarketState.All,
 	['getMarketStateQuery', Dashboard.TMarketStateExchange]
 >({
-	staleTime: 36e5,
+	staleTime: 6e5,
 	queryKey: ['getMarketStateQuery', 'Bourse'],
 	queryFn: async ({ signal, queryKey }) => {
 		const [, exchange] = queryKey;
@@ -18,6 +18,24 @@ export const useGetMarketStateQuery = createQuery<
 				signal,
 			},
 		);
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useGetIndexQuery = createQuery<Dashboard.GetIndex.All, ['getIndexQuery', Dashboard.TIndexType]>({
+	staleTime: 6e5,
+	queryKey: ['getIndexQuery', 'Overall'],
+	queryFn: async ({ signal, queryKey }) => {
+		const [, indexType] = queryKey;
+
+		const response = await axios.get<ServerResponse<Dashboard.GetIndex.All>>(routes.dashboard.GetIndex, {
+			params: { indexType },
+			signal,
+		});
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
