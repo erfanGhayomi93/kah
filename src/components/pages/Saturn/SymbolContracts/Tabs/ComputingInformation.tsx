@@ -104,7 +104,7 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 					{
 						id: 'timeValue',
 						title: t('old_option_chain.time_value'),
-						valueFormatter: dateFormatter(timeValue),
+						valueFormatter: sepNumbers(String(timeValue)),
 					},
 				],
 

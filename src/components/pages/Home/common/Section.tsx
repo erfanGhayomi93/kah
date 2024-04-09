@@ -1,31 +1,42 @@
 import ipcMain from '@/classes/IpcMain';
+import NoData from '@/components/common/NoData';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import { ExpandSVG, XSVG } from '@/components/icons';
 import clsx from 'clsx';
 
-interface ITab {
-	id: string;
+export interface ITab<T> {
+	id: T;
 	title: string;
 }
 
-interface SectionProps {
+interface SectionProps<T, B> {
 	id: THomeSections;
 	title: string;
 	children?: React.ReactNode;
 	tabs?: Partial<{
-		top: ITab[] | React.ReactNode;
-		bottom: ITab[] | React.ReactNode;
+		top: Array<ITab<T>> | React.ReactNode;
+		bottom: Array<ITab<B>> | React.ReactNode;
 	}>;
 	onExpand?: () => void;
+	onTopTabChange?: (v: T) => void;
+	onBottomTabChange?: (v: B) => void;
 }
 
-const Section = ({ id, title, tabs, onExpand }: SectionProps) => {
+const Section = <T extends string = string, B extends string = string>({
+	id,
+	title,
+	tabs,
+	children,
+	onExpand,
+	onTopTabChange,
+	onBottomTabChange,
+}: SectionProps<T, B>) => {
 	const onClose = () => {
 		ipcMain.send('home.hide_section', { id, hidden: true });
 	};
 
 	return (
-		<div className='size-full justify-between rounded bg-white px-8 pb-16 pt-8 flex-column'>
+		<div className='size-full justify-between rounded bg-white px-16 pb-16 pt-8 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div className='h-full gap-8 rounded bg-gray-200 px-8 flex-items-center'>
@@ -47,7 +58,7 @@ const Section = ({ id, title, tabs, onExpand }: SectionProps) => {
 					</div>
 
 					{Array.isArray(tabs?.top) ? (
-						<SwitchTab<ITab>
+						<SwitchTab<ITab<T>>
 							data={tabs.top}
 							defaultActiveTab={tabs.top[0].id}
 							classes={{
@@ -55,7 +66,7 @@ const Section = ({ id, title, tabs, onExpand }: SectionProps) => {
 								rect: 'bg-white !h-32 rounded',
 								tabs: 'gap-8',
 							}}
-							// onChangeTab={console.log}
+							onChangeTab={(v) => onTopTabChange?.(v as T)}
 							renderTab={(item, activeTab) => (
 								<button
 									type='button'
@@ -76,16 +87,18 @@ const Section = ({ id, title, tabs, onExpand }: SectionProps) => {
 				<h1 className='text-lg font-medium text-gray-900'>{title}</h1>
 			</div>
 
+			{children ?? <NoData />}
+
 			{Array.isArray(tabs?.bottom) ? (
-				<SwitchTab<ITab>
+				<SwitchTab<ITab<B>>
 					data={tabs.bottom}
 					defaultActiveTab={tabs.bottom[0].id}
 					classes={{
 						root: '!h-48 bg-gray-200 rtl !border-0 p-4',
-						rect: 'btn-select no-hover !border !h-40',
+						rect: 'bg-primary-100 no-hover !h-40',
 						tabs: 'gap-8',
 					}}
-					// onChangeTab={console.log}
+					onChangeTab={(v) => onBottomTabChange?.(v as B)}
 					renderTab={(item, activeTab) => (
 						<button
 							type='button'

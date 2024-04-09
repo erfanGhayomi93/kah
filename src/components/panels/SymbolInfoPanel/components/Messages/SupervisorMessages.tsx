@@ -1,7 +1,7 @@
 import { useSupervisorMessagesQuery } from '@/api/queries/symbolQuery';
 import { useState } from 'react';
+import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
-import NoData from '../../common/NoData';
 import Message from './Message';
 
 interface SupervisorMessagesProps {

@@ -158,7 +158,7 @@ const modalSlice = createSlice({
 			state.symbolContracts = payload;
 		},
 
-		setSaveSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
+		setAddSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
 
@@ -198,7 +198,7 @@ export const {
 	setConfirmModal,
 	setSymbolInfoPanelSetting,
 	setSymbolContractsModal,
-	setSaveSaturnTemplate,
+	setAddSaturnTemplate,
 	setAddNewOptionWatchlist,
 	setChoiceBrokerModal,
 	setMoveSymbolToWatchlistModal,

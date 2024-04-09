@@ -4,7 +4,7 @@ import { numFormatter } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 import Loading from '../../panels/SymbolInfoPanel/common/Loading';
-import NoData from '../../panels/SymbolInfoPanel/common/NoData';
+import NoData from '../NoData';
 
 interface SymbolLinearChartProps {
 	symbolISIN: string;

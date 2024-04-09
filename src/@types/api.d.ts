@@ -359,8 +359,8 @@ declare namespace Symbol {
 		numberOfILegalsBuyers: number;
 		legalSellVolume: number;
 		numberOfLegalsSellers: number;
-		baseSymbolISIN: string | null;
-		baseSymbolTitle: string | null;
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
 		marketUnit: string;
 		notionalValue: number;
 		contractEndDate: string;
@@ -846,5 +846,28 @@ declare namespace Message {
 		dateOfEvent: string;
 		read: boolean;
 		type: string;
+	}
+}
+
+declare namespace Dashboard {
+	export type TMarketStateExchange = 'Bourse' | 'FaraBourse' | 'Option';
+
+	export namespace GetMarketState {
+		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
+		export interface Bourse {
+			tradeVolume: number | null;
+			tradeValue: number | null;
+			marketValue: number | null;
+			tradeCount: number | null;
+		}
+
+		export interface FaraBourse extends GetMarketState.Bourse {}
+
+		export interface Option {
+			tradeVolume: number | null;
+			tradeValue: number | null;
+			putValue: number | null;
+			callValue: number | null;
+		}
 	}
 }

@@ -12,7 +12,7 @@ const OptionBaseSymbolInformation = ({ symbolData }: OptionBaseSymbolInformation
 
 	const [isExpand, setIsExpand] = useLocalstorage('bsio', false);
 
-	const { baseSymbolTitle, symbolTitle } = symbolData;
+	const { baseSymbolTitle, baseSymbolISIN, symbolISIN, symbolTitle } = symbolData;
 
 	return (
 		<div
@@ -37,7 +37,7 @@ const OptionBaseSymbolInformation = ({ symbolData }: OptionBaseSymbolInformation
 				</button>
 			</div>
 
-			{isExpand && <OptionData symbolISIN={symbolData.symbolISIN} />}
+			{isExpand && <OptionData symbolISIN={symbolISIN} baseSymbolISIN={baseSymbolISIN} />}
 		</div>
 	);
 };

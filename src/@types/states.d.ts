@@ -182,7 +182,7 @@ declare interface OptionChainFilters {
 	settlementDay: Option.BaseSettlementDays | null;
 }
 
-interface IOrderBasket {
+declare interface IOrderBasket {
 	id: string;
 	baseSymbolISIN: string;
 	symbolISIN: null | string;

@@ -2,18 +2,19 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
-import NoData from '../../common/NoData';
 
 interface OptionDataProps {
 	symbolISIN: string;
+	baseSymbolISIN: string;
 }
 
-const OptionData = ({ symbolISIN }: OptionDataProps) => {
+const OptionData = ({ symbolISIN, baseSymbolISIN }: OptionDataProps) => {
 	const t = useTranslations();
 
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
-		queryKey: ['symbolInfoQuery', symbolISIN],
+		queryKey: ['symbolInfoQuery', baseSymbolISIN],
 	});
 
 	if (isLoading) return <Loading />;
@@ -64,7 +65,7 @@ const OptionData = ({ symbolISIN }: OptionDataProps) => {
 			</div>
 
 			<div className='relative'>
-				<SymbolPriceTable symbolISIN={symbolISIN} />
+				<SymbolPriceTable symbolISIN={baseSymbolISIN} />
 			</div>
 		</div>
 	);

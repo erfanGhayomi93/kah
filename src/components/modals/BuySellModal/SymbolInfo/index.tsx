@@ -1,6 +1,6 @@
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import SymbolState from '@/components/common/SymbolState';
-import NoData from '@/components/panels/SymbolInfoPanel/common/NoData';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import Grid from './Grid';
