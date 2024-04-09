@@ -1,7 +1,8 @@
 import { ArrowDownSVG } from '@/components/icons';
+import { useLocalstorage } from '@/hooks';
 import { numFormatter as bigNumFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 
 interface ISymbolItem {
 	id: string;
@@ -17,7 +18,7 @@ interface BaseSymbolDetailProps {
 const BaseSymbolDetail = ({ symbolData, onExpand }: BaseSymbolDetailProps) => {
 	const t = useTranslations();
 
-	const [isExpand, setIsExpand] = useState(false);
+	const [isExpand, setIsExpand] = useLocalstorage('sio', false);
 
 	const numFormatter = (v: string | number | null) => {
 		if (v === null) return '−';
