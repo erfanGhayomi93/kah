@@ -1,13 +1,23 @@
-import SymbolLinearChart from '@/components/common/Symbol/SymbolLinearChart';
-import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
+import Loading from '@/components/common/Loading';
 import Tabs from '@/components/common/Tabs/Tabs';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 
 interface GridProps {
 	symbolISIN: string;
 }
+
+const SymbolPriceTable = dynamic(() => import('@/components/common/Tables/SymbolPriceTable'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+const SymbolLinearChart = dynamic(() => import('@/components/common/Symbol/SymbolLinearChart'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 const Grid = ({ symbolISIN }: GridProps) => {
 	const t = useTranslations();
@@ -18,8 +28,8 @@ const Grid = ({ symbolISIN }: GridProps) => {
 				id: 'market_map',
 				title: t('bs_modal.market_depth'),
 				render: () => (
-					<div className='flex-1 p-8'>
-						<SymbolPriceTable symbolISIN={symbolISIN} />
+					<div className='relative flex-1 px-8 pb-8 pt-16'>
+						<SymbolPriceTable symbolISIN={symbolISIN} compact={false} />
 					</div>
 				),
 			},
@@ -27,8 +37,8 @@ const Grid = ({ symbolISIN }: GridProps) => {
 				id: 'chart',
 				title: t('bs_modal.chart'),
 				render: () => (
-					<div className='flex-1 p-8'>
-						<SymbolLinearChart symbolISIN={symbolISIN} />
+					<div className='relative flex-1 p-8'>
+						<SymbolLinearChart symbolISIN={symbolISIN} height='256px' />
 					</div>
 				),
 			},
@@ -37,7 +47,7 @@ const Grid = ({ symbolISIN }: GridProps) => {
 	);
 
 	return (
-		<div style={{ height: '26rem' }} className='relative rounded border border-gray-500 bg-white flex-column'>
+		<div style={{ height: '30.8rem' }} className='relative rounded border border-gray-500 bg-white flex-column'>
 			<Tabs
 				data={tabs}
 				defaultActiveTab='market_map'
