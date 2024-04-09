@@ -852,6 +852,8 @@ declare namespace Message {
 declare namespace Dashboard {
 	export type TMarketStateExchange = 'Bourse' | 'FaraBourse' | 'Option';
 
+	export type TIndexType = 'Overall' | 'EqualWeightOverall';
+
 	export namespace GetMarketState {
 		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
 		export interface Bourse {
@@ -868,6 +870,42 @@ declare namespace Dashboard {
 			tradeValue: number | null;
 			putValue: number | null;
 			callValue: number | null;
+		}
+	}
+
+	export namespace GetIndex {
+		export type All = GetIndex.Overall[] | GetIndex.EqualWeightOverall[];
+
+		export interface Overall {
+			symbolTitle: string;
+			date: string;
+			time:
+				| 'ticks'
+				| 'days'
+				| 'hours'
+				| 'milliseconds'
+				| 'minutes'
+				| 'seconds'
+				| 'totalDays'
+				| 'totalHours'
+				| 'totalMilliseconds'
+				| 'totalMinutes'
+				| 'totalSeconds';
+			lastIndexValueInDay: number;
+		}
+
+		export interface EqualWeightOverall extends Overall {
+			ticks: 0;
+			days: 0;
+			hours: 0;
+			milliseconds: 0;
+			minutes: 0;
+			seconds: 0;
+			totalDays: 0;
+			totalHours: 0;
+			totalMilliseconds: 0;
+			totalMinutes: 0;
+			totalSeconds: 0;
 		}
 	}
 }

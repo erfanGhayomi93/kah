@@ -36,7 +36,7 @@ const Section = <T extends string = string, B extends string = string>({
 	};
 
 	return (
-		<div className='size-full justify-between rounded bg-white px-16 pb-16 pt-8 flex-column'>
+		<div className='size-full justify-between overflow-hidden rounded bg-white px-16 pb-16 pt-8 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div className='h-full gap-8 rounded bg-gray-200 px-8 flex-items-center'>
