@@ -235,7 +235,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 
 export const initialHomeGrid: IHomeGrid[] = [
 	{ id: 'market_view', w: 2, h: 352, hidden: false, i: 0 },
-	{ id: 'market_status', w: 1, h: 352, hidden: false, i: 1 },
+	{ id: 'market_state', w: 1, h: 352, hidden: false, i: 1 },
 	{ id: 'best', w: 2, h: 424, hidden: false, i: 2 },
 	{ id: 'user_progress_bar', w: 1, h: 424, hidden: false, i: 3 },
 	{ id: 'compare_transaction_value', w: 2, h: 384, hidden: false, i: 4 },

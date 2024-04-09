@@ -52,7 +52,7 @@
 	},
 	"home": {
 		"market_view": "نمای بازار",
-		"market_status": "وضعیت بازار",
+		"market_state": "وضعیت بازار",
 		"best": "برترین‌ها",
 		"user_progress_bar": "کهکشان",
 		"compare_transaction_value": "مقایسه ارزش معاملات",
