@@ -1,5 +1,4 @@
 import { useOptionCalculativeInfoQuery } from '@/api/queries/optionQueries';
-import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -21,11 +20,6 @@ const ComputingInformation = ({ symbolISIN }: ComputingInformationProps) => {
 	const { data, isLoading } = useOptionCalculativeInfoQuery({
 		queryKey: ['optionCalculativeInfoQuery', symbolISIN],
 	});
-
-	const dateFormatter = (v: string | number | null) => {
-		if (!v) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss');
-	};
 
 	const items = useMemo<IOptionItem[]>(() => {
 		if (!data) return [];
@@ -104,7 +98,7 @@ const ComputingInformation = ({ symbolISIN }: ComputingInformationProps) => {
 			{
 				id: 'timeValue',
 				title: t('old_option_chain.time_value'),
-				value: dateFormatter(timeValue),
+				value: sepNumbers(String(timeValue)),
 			},
 
 			{

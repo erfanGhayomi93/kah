@@ -37,7 +37,7 @@ const Home = () => {
 		const layout: Layout[] = [];
 
 		let initialLayout = JSON.parse(JSON.stringify(grid)) as typeof initialHomeGrid;
-		initialLayout = initialLayout.filter((item) => item.hidden === false);
+		initialLayout = initialLayout.filter((item) => !item.hidden);
 		initialLayout.sort((a, b) => a.i - b.i);
 
 		const l = initialLayout.length;
@@ -73,7 +73,7 @@ const Home = () => {
 
 	const onHideSection = ({ id, hidden }: IpcMainChannels['home.hide_section']) => {
 		const newGrid = grid.map((item) => (item.id === id ? { ...item, hidden } : item));
-		const visibleSectionsLength = newGrid.filter((item) => item.hidden === false).length;
+		const visibleSectionsLength = newGrid.filter((item) => !item.hidden).length;
 
 		if (visibleSectionsLength <= 1) {
 			toast.error(t('alerts.can_not_hide_every_sections'));

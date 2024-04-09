@@ -1,5 +1,5 @@
 import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
+import { numFormatter as bigNumFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -47,13 +47,13 @@ const PriceInformation = ({ symbolData }: PriceInformationProps) => {
 			{
 				id: 'tradeVolume',
 				title: t('symbol_info_panel.trade_volume'),
-				value: numFormatter(tradeVolume),
+				value: bigNumFormatter(tradeVolume),
 			},
 
 			{
 				id: 'tradeValue',
 				title: t('symbol_info_panel.trade_value'),
-				value: numFormatter(tradeValue),
+				value: bigNumFormatter(tradeValue),
 			},
 
 			{
@@ -84,7 +84,7 @@ const PriceInformation = ({ symbolData }: PriceInformationProps) => {
 							closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
 						)}
 					>
-						{sepNumbers(String(closingPrice))}
+						{sepNumbers(String(closingPrice ?? 0))}
 						<span className='text-tiny ltr'>
 							{closingPriceVarReferencePrice} ({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
 						</span>
