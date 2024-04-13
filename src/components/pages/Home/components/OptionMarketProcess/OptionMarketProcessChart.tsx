@@ -2,18 +2,19 @@ import { dateFormatter, numFormatter } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
-interface MarketViewChartProps {
+interface OptionMarketProcessChartProps {
 	interval: Dashboard.TInterval;
-	data: Dashboard.GetIndex.All;
+	data: Dashboard.GetMarketProcessChart.TChartData;
 }
 
-const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
+const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartProps) => {
 	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
-		if (!Array.isArray(data)) return [];
+		const keys = Object.keys(data);
+		if (keys.length === 0) return [];
 
-		return data.map((item) => ({
-			x: interval === 'Today' ? item.time : item.date,
-			y: item.lastIndexValueInDay ?? 0,
+		return keys.map((d) => ({
+			x: dateFormatter(d, interval === 'Today' ? 'time' : 'date'),
+			y: data[d] ?? 0,
 		}));
 	}, [interval, data]);
 
@@ -32,7 +33,7 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 						autoScaleYaxis: true,
 					},
 				},
-				colors: ['rgb(66, 115, 237)'],
+				colors: ['rgba(0, 194, 136, 1)'],
 				tooltip: {
 					cssClass: 'apex-tooltip',
 
@@ -70,9 +71,6 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 							fontFamily: 'IRANSans',
 							fontSize: '1.2rem',
 						},
-						formatter: (value) => {
-							return interval === 'Today' ? value : dateFormatter(value, 'date');
-						},
 					},
 				},
 				yaxis: {
@@ -94,7 +92,7 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 				},
 				markers: {
 					size: 4,
-					strokeColors: ['rgb(66, 115, 237)'],
+					strokeColors: ['rgba(0, 194, 136, 1)'],
 					colors: 'rgb(255, 255, 255)',
 					strokeWidth: 2,
 					hover: {
@@ -126,11 +124,11 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 					data: dataMapper,
 				},
 			]}
-			type='line'
+			type='area'
 			width='100%'
 			height='100%'
 		/>
 	);
 };
 
-export default MarketViewChart;
+export default OptionMarketProcessChart;

@@ -12,6 +12,8 @@ export interface ITab<T> {
 interface SectionProps<T, B> {
 	id: THomeSections;
 	title: string;
+	defaultTopActiveTab?: T;
+	defaultBottomActiveTab?: B;
 	children?: React.ReactNode;
 	tabs?: Partial<{
 		top: Array<ITab<T>> | React.ReactNode;
@@ -27,6 +29,8 @@ const Section = <T extends string = string, B extends string = string>({
 	title,
 	tabs,
 	children,
+	defaultTopActiveTab,
+	defaultBottomActiveTab,
 	onExpand,
 	onTopTabChange,
 	onBottomTabChange,
@@ -60,7 +64,7 @@ const Section = <T extends string = string, B extends string = string>({
 					{Array.isArray(tabs?.top) ? (
 						<SwitchTab<ITab<T>>
 							data={tabs.top}
-							defaultActiveTab={tabs.top[0].id}
+							defaultActiveTab={defaultTopActiveTab ?? tabs.top[0].id}
 							classes={{
 								root: '!h-40 bg-gray-200 rtl !border-0 py-4 px-8',
 								rect: 'bg-white !h-32 rounded',
@@ -93,7 +97,7 @@ const Section = <T extends string = string, B extends string = string>({
 				<div style={{ flex: '0 0 4.8rem' }}>
 					<SwitchTab<ITab<B>>
 						data={tabs.bottom}
-						defaultActiveTab={tabs.bottom[0].id}
+						defaultActiveTab={defaultBottomActiveTab ?? tabs.bottom[0].id}
 						classes={{
 							root: '!h-48 bg-gray-200 rtl !border-0 p-4',
 							rect: 'bg-primary-100 no-hover !h-40',

@@ -25,13 +25,13 @@ interface GridProps {
 	data: IRowData[];
 }
 
-interface SymbolPriceTableProps {
+interface SymbolMarketDepthProps {
 	symbolISIN: string;
 	length?: number;
 	compact?: boolean;
 }
 
-const SymbolPriceTable = ({ symbolISIN, length, compact = true }: SymbolPriceTableProps) => {
+const SymbolMarketDepth = ({ symbolISIN, length, compact = true }: SymbolMarketDepthProps) => {
 	const queryClient = useQueryClient();
 
 	const { subscribe, unsubscribe } = useSubscription();
@@ -228,4 +228,4 @@ const Grid = ({ side, data, compact }: GridProps) => {
 	);
 };
 
-export default SymbolPriceTable;
+export default SymbolMarketDepth;

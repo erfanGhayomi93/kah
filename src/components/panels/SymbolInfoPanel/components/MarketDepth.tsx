@@ -1,4 +1,4 @@
-import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
+import SymbolMarketDepth from '@/components/common/Tables/SymbolMarketDepth';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Section, { type ITabIem } from '../common/Section';
@@ -23,7 +23,7 @@ const MarketDepth = ({ symbolISIN }: MarketDepthProps) => {
 	return (
 		<Section name='market_depth' defaultActiveTab='market_depth' tabs={tabs}>
 			<div className='px-8 py-16'>
-				<SymbolPriceTable length={3} symbolISIN={symbolISIN} />
+				<SymbolMarketDepth length={3} symbolISIN={symbolISIN} />
 			</div>
 		</Section>
 	);

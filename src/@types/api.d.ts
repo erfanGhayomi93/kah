@@ -854,6 +854,14 @@ declare namespace Dashboard {
 
 	export type TIndexType = 'Overall' | 'EqualWeightOverall' | 'X';
 
+	export type TTopSymbols = 'Option' | 'BaseSymbol' | 'Symbol';
+
+	export type TOptionSide = 'Call' | 'Put';
+
+	export type TInterval = 'Today' | 'Week' | 'Month' | 'ThreeMonths' | 'Year';
+
+	export type TTopSymbolType = GetTopSymbols.BaseSymbol.Type | GetTopSymbols.Symbol.Type | GetTopSymbols.Option.Type;
+
 	export namespace GetMarketState {
 		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
 		export interface Bourse {
@@ -907,5 +915,192 @@ declare namespace Dashboard {
 			totalMinutes: 0;
 			totalSeconds: 0;
 		}
+	}
+
+	export namespace GetTopSymbols {
+		export type All = Option.All | BaseSymbol.All | Symbol.All;
+
+		export type AllAsArray = Option.AllAsArray | BaseSymbol.AllAsArray | Symbol.AllAsArray;
+
+		export namespace Option {
+			export type All = Value | OpenPosition | Volatility | TradeCount | YesterdayDiff | Volume;
+
+			export type AllAsArray =
+				| Value[]
+				| OpenPosition[]
+				| Volatility[]
+				| TradeCount[]
+				| YesterdayDiff[]
+				| Volume[];
+
+			export type Type =
+				| 'OptionValue'
+				| 'OptionOpenPosition'
+				| 'OptionVolatility'
+				| 'OptionTradeCount'
+				| 'OptionYesterdayDiff'
+				| 'OptionVolume';
+
+			export interface Value {
+				totalTradeValue: number;
+				lastTradedPrice: number;
+				symbolTitle: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface OpenPosition {
+				openPositionCount: number;
+				openPositionVarPercent: number;
+				symbolTitle: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface Volatility {
+				volatilityPercent: number;
+				volatility: number;
+				symbolTitle: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface TradeCount {
+				totalNumberOfTradesVarPercent: number;
+				totalNumberOfTrades: number;
+				symbolTitle: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface YesterdayDiff {
+				closingPriceVarReferencePrice: number;
+				closingPriceVarReferencePricePercent: number;
+				symbolTitle: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface Volume {
+				totalNumberOfSharesTradedVarPercent: number;
+				totalNumberOfSharesTraded: number;
+				symbolTitle: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+		}
+
+		export namespace BaseSymbol {
+			export type All = Value | PutOpenPosition | CallOpenPosition | OpenPositions | Volume;
+
+			export type AllAsArray = Value[] | PutOpenPosition[] | CallOpenPosition[] | OpenPositions[] | Volume[];
+
+			export type Type =
+				| 'BaseSymbolValue'
+				| 'BaseSymbolPutOpenPosition'
+				| 'BaseSymbolCallOpenPosition'
+				| 'BaseSymbolOpenPositions'
+				| 'BaseSymbolVolume';
+
+			export interface Value {
+				symbolTitle: string;
+				totalTradeValue: number;
+				thirtyDayValue: number;
+				ninetyDayValue: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+
+			export interface PutOpenPosition {
+				symbolTitle: string;
+				openPosition: number;
+				openPositionVarPercent: number;
+				contractCount: number;
+				closestEndDate: string;
+			}
+
+			export interface CallOpenPosition {
+				symbolTitle: string;
+				openPosition: number;
+				openPositionVarPercent: number;
+				contractCount: number;
+				closestEndDate: string;
+			}
+
+			export interface OpenPositions {
+				symbolTitle: string;
+				openPosition: number;
+				openPositionVarPercent: number;
+				contractCount: number;
+				closestEndDate: string;
+			}
+
+			export interface Volume {
+				symbolTitle: string;
+				totalNumberOfSharesTraded: number;
+				thirtyDayVolume: number;
+				ninetyDayVolume: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+		}
+
+		export namespace Symbol {
+			export type All = Value | Volume;
+
+			export type AllAsArray = Value[] | Volume[];
+
+			export type Type = 'SymbolValue' | 'SymbolVolume';
+
+			export interface Value {
+				symbolTitle: string;
+				totalTradeValue: number;
+				thirtyDayValue: number;
+				ninetyDayValue: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+
+			export interface Volume {
+				symbolTitle: string;
+				totalNumberOfSharesTraded: number;
+				thirtyDayVolume: number;
+				ninetyDayVolume: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+		}
+	}
+
+	export namespace GetOptionContractAdditionalInfo {
+		export type All = IOTM[] | ContractType[];
+
+		export type Basis = 'Volume' | 'Value';
+
+		export type Type = 'IOTM' | 'ContractType';
+
+		export interface IOTM {
+			iotm: 'ATM' | 'OTM' | 'ITM';
+			tradeValue: number;
+			tradeVolume: number;
+		}
+
+		export interface ContractType {
+			contractType: TOptionSide;
+			tradeValue: number;
+			tradeVolume: number;
+		}
+	}
+
+	export namespace GetOptionMarketComparison {
+		export type TChartType = 'OptionToMarket' | 'OptionBuyToMarket' | 'OptionSellToMarket';
+
+		export type TChartData = Record<string, number>;
+	}
+
+	export namespace GetMarketProcessChart {
+		export type TChartType = 'Value' | 'Volume' | 'NotionalValue';
+
+		export type TChartData = Record<string, number>;
 	}
 }

@@ -9,7 +9,7 @@ interface GridProps {
 	symbolISIN: string;
 }
 
-const SymbolPriceTable = dynamic(() => import('@/components/common/Tables/SymbolPriceTable'), {
+const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/SymbolMarketDepth'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -29,7 +29,7 @@ const Grid = ({ symbolISIN }: GridProps) => {
 				title: t('bs_modal.market_depth'),
 				render: () => (
 					<div className='relative flex-1 px-8 pb-8 pt-16'>
-						<SymbolPriceTable symbolISIN={symbolISIN} compact={false} />
+						<SymbolMarketDepth symbolISIN={symbolISIN} compact={false} />
 					</div>
 				),
 			},
