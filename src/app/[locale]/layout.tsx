@@ -15,14 +15,14 @@ const Panels = dynamic(() => import('@/components/panels/Panels'), {
 	ssr: false,
 });
 
-interface IRootLayout extends INextProps {
+interface ILayout extends INextProps {
 	children: React.ReactNode;
 	params: {
 		locale: string;
 	};
 }
 
-const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) => {
+const Layout = async ({ children, params: { locale = 'fa' } }: ILayout) => {
 	return (
 		<html lang={locale} dir={getDirection(locale)}>
 			<NextIntlClientRegistry>
@@ -40,6 +40,6 @@ const RootLayout = async ({ children, params: { locale = 'fa' } }: IRootLayout) 
 	);
 };
 
-export default RootLayout;
+export default Layout;
 
 export { metadata };
