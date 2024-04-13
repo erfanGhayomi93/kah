@@ -60,6 +60,8 @@ import SendFillSVG from './send-fill.svg';
 import SessionHistorySVG from './session-history.svg';
 import SettingSliderSVG from './setting-slider.svg';
 import SettingSVG from './setting.svg';
+import ShieldFillSVG from './shield-fill.svg';
+import ShieldOutlineSVG from './shield-outline.svg';
 import ShieldSVG from './shield.svg';
 import SnowFlakeSVG from './snow-flake.svg';
 import SquareXSVG from './square-x.svg';
@@ -139,6 +141,8 @@ export {
 	SessionHistorySVG,
 	SettingSVG,
 	SettingSliderSVG,
+	ShieldFillSVG,
+	ShieldOutlineSVG,
 	ShieldSVG,
 	SnowFlakeSVG,
 	SquareXSVG,

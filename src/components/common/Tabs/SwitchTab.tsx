@@ -1,5 +1,5 @@
 import { cn } from '@/utils/helpers';
-import { Fragment, cloneElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { Fragment, cloneElement, useCallback, useEffect, useRef, useState } from 'react';
 import styles from './SwitchTab.module.scss';
 
 export type ITabIem<T extends object> = T & {
@@ -25,15 +25,18 @@ const SwitchTab = <T extends object>({
 
 	const rectRef = useRef<HTMLDivElement>(null);
 
+	const activeElRef = useRef<HTMLElement | null>(null);
+
 	const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
-	const handleRectPosition = (el: HTMLElement | null) => {
+	const handleRectPosition = () => {
 		const eRoot = rootRef.current;
 		const eRect = rectRef.current;
-		if (!el || !eRoot || !eRect) return;
+		const eActive = activeElRef.current;
+		if (!eActive || !eRoot || !eRect) return;
 
 		try {
-			const { left, width } = el.getBoundingClientRect();
+			const { left, width } = eActive.getBoundingClientRect();
 			const { left: rootLeft, width: rootWidth } = eRoot.getBoundingClientRect();
 			const originalLeft = Math.abs(left - rootLeft) + 1;
 
@@ -46,12 +49,17 @@ const SwitchTab = <T extends object>({
 
 	const onTabChange = useCallback(
 		(el: HTMLElement) => {
-			handleRectPosition(el);
+			activeElRef.current = el;
+			handleRectPosition();
 		},
-		[rectRef.current],
+		[JSON.stringify(data), rectRef.current],
 	);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
+		setActiveTab(defaultActiveTab);
+	}, [defaultActiveTab]);
+
+	useEffect(() => {
 		try {
 			onChangeTab?.(activeTab);
 		} catch (e) {
@@ -59,13 +67,12 @@ const SwitchTab = <T extends object>({
 		}
 	}, [activeTab]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		try {
 			const eRoot = rootRef.current;
 			if (!eRoot) return;
 
-			const eActiveTab = eRoot.querySelector('[data-active="true"]') as HTMLElement | null;
-			document.fonts.ready.then(() => handleRectPosition(eActiveTab));
+			document.fonts.ready.then(() => handleRectPosition());
 		} catch (e) {
 			//
 		}
@@ -81,7 +88,6 @@ const SwitchTab = <T extends object>({
 						{cloneElement(renderTab(item, activeTab), {
 							onClick: () => setActiveTab(item.id),
 							ref: activeTab === item.id ? onTabChange : undefined,
-							'data-active': activeTab === item.id ? 'true' : 'false',
 						})}
 					</Fragment>
 				))}

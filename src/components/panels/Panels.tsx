@@ -51,8 +51,8 @@ const PanelSuspense = forwardRef<HTMLDivElement, { children: ReactNode }>(({ chi
 const PanelAnimatePresence = ({ children }: { children: ReactNode }) => (
 	<ErrorBoundary>
 		<AnimatePresence
-			initial={{ animation: 'fadeInLeft', duration: 750 }}
-			exit={{ animation: 'fadeOutLeft', duration: 600 }}
+			initial={{ animation: 'fadeInLeft', duration: 400 }}
+			exit={{ animation: 'fadeOutLeft', duration: 400 }}
 		>
 			{children}
 		</AnimatePresence>

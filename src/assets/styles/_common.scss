@@ -76,3 +76,47 @@
 		left 200ms ease-in,
 		transform 200ms ease-in;
 }
+
+.apex-tooltip,
+.apexcharts-xaxistooltip,
+.apexcharts-yaxistooltip {
+	background-color: rgb(64, 64, 83) !important;
+	border-color: rgb(64, 64, 83) !important;
+	border-radius: 8px !important;
+	color: rgb(235, 235, 235) !important;
+}
+
+.apexcharts-xaxistooltip,
+.apexcharts-yaxistooltip {
+	.apexcharts-xaxistooltip-text {
+		font-family: "IRANSans" !important;
+	}
+}
+
+.apexcharts-xaxistooltip-bottom {
+	&::before,
+	&::after {
+		border-bottom-color: rgb(64, 64, 83) !important;
+	}
+}
+
+.apex-tooltip {
+	padding: 4px 8px;
+
+	.apexcharts-tooltip-series-group {
+		padding: 0 !important;
+	}
+
+	.apexcharts-tooltip-marker {
+		display: none;
+	}
+
+	.apexcharts-tooltip-text-y-value {
+		margin-left: 0;
+	}
+}
+
+.apexcharts-tooltip-series-group.apexcharts-active,
+.apexcharts-tooltip-series-group:last-child {
+	padding-bottom: 0 !important;
+}
