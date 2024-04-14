@@ -9,8 +9,6 @@ interface MarketViewChartProps {
 
 const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
-		if (!Array.isArray(data)) return [];
-
 		return data.map((item) => ({
 			x: interval === 'Today' ? item.time : item.date,
 			y: item.lastIndexValueInDay ?? 0,
@@ -38,7 +36,7 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 
 					style: {
 						fontFamily: 'IRANSans',
-						fontSize: '1.2rem',
+						fontSize: '12px',
 					},
 
 					x: {
@@ -58,7 +56,7 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 					offsetX: 0,
 					offsetY: 0,
 					axisBorder: {
-						show: true,
+						show: false,
 					},
 					axisTicks: {
 						show: false,
@@ -68,11 +66,29 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 						rotateAlways: false,
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
 						formatter: (value) => {
 							return interval === 'Today' ? value : dateFormatter(value, 'date');
 						},
+					},
+				},
+				fill: {
+					type: 'gradient',
+					gradient: {
+						type: 'vertical',
+						colorStops: [
+							{
+								offset: 20,
+								color: 'rgb(66, 115, 237)',
+								opacity: 0.2,
+							},
+							{
+								offset: 100,
+								color: 'rgb(66, 115, 237)',
+								opacity: 0,
+							},
+						],
 					},
 				},
 				yaxis: {
@@ -82,7 +98,7 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 						offsetY: 1,
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
 						formatter: (val) => {
 							return numFormatter(val);
@@ -93,12 +109,12 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 					enabled: false,
 				},
 				markers: {
-					size: 4,
+					size: 0,
 					strokeColors: ['rgb(66, 115, 237)'],
 					colors: 'rgb(255, 255, 255)',
 					strokeWidth: 2,
 					hover: {
-						sizeOffset: 2,
+						size: 4,
 					},
 				},
 				grid: {
@@ -126,7 +142,7 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 					data: dataMapper,
 				},
 			]}
-			type='line'
+			type='area'
 			width='100%'
 			height='100%'
 		/>

@@ -190,3 +190,72 @@ export const useGetMarketProcessChartQuery = createQuery<
 		return data.result;
 	},
 });
+
+export const useGetOptionTradeProcessQuery = createQuery<
+	Dashboard.GetOptionTradeProcess.IChartData[],
+	['getOptionTradeProcessQuery', Dashboard.TInterval]
+>({
+	staleTime: 6e5,
+	queryKey: ['getOptionTradeProcessQuery', 'Today'],
+	queryFn: async ({ signal, queryKey }) => {
+		const [, chartIntervalType] = queryKey;
+
+		const response = await axios.get<ServerResponse<Dashboard.GetOptionTradeProcess.IChartData[]>>(
+			routes.dashboard.GetOptionTradeProcess,
+			{
+				params: { chartIntervalType },
+				signal,
+			},
+		);
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useGetOptionWatchlistPriceChangeInfoQuery = createQuery<
+	Dashboard.GetOptionWatchlistPriceChangeInfo.IChartData[],
+	['getOptionWatchlistPriceChangeInfoQuery']
+>({
+	staleTime: 6e5,
+	queryKey: ['getOptionWatchlistPriceChangeInfoQuery'],
+	queryFn: async ({ signal, queryKey }) => {
+		const response = await axios.get<ServerResponse<Dashboard.GetOptionWatchlistPriceChangeInfo.IChartData[]>>(
+			routes.dashboard.GetOptionWatchlistPriceChangeInfo,
+			{
+				signal,
+			},
+		);
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useGetOpenPositionProcessQuery = createQuery<
+	Dashboard.GetOpenPositionProcess.TChartData,
+	['getOpenPositionProcessQuery', Dashboard.TInterval]
+>({
+	staleTime: 6e5,
+	queryKey: ['getOpenPositionProcessQuery', 'Today'],
+	queryFn: async ({ signal, queryKey }) => {
+		const [, chartIntervalType] = queryKey;
+
+		const response = await axios.get<ServerResponse<Dashboard.GetOpenPositionProcess.TChartData>>(
+			routes.dashboard.GetOpenPositionProcess,
+			{
+				params: { chartIntervalType },
+				signal,
+			},
+		);
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
