@@ -1,16 +1,21 @@
 import { useGetOpenPositionProcessQuery } from '@/api/queries/dashboardQueries';
+import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
+import OpenPositionsProcessChart from './OpenPositionsProcessChart';
 
 const OpenPositionsProcess = () => {
 	const t = useTranslations();
 
 	const [interval, setInterval] = useState<Dashboard.TInterval>('Today');
 
-	const { data } = useGetOpenPositionProcessQuery({
+	const { data, isFetching } = useGetOpenPositionProcessQuery({
 		queryKey: ['getOpenPositionProcessQuery', interval],
 	});
+
+	const dataIsEmpty = Object.keys(data ?? {}).length === 0;
 
 	return (
 		<Section<Dashboard.TInterval>
@@ -26,7 +31,23 @@ const OpenPositionsProcess = () => {
 					{ id: 'Year', title: t('home.tab_year') },
 				],
 			}}
-		/>
+		>
+			<div className='relative flex-1 overflow-hidden'>
+				<OpenPositionsProcessChart data={data ?? {}} />
+
+				{isFetching ? (
+					<div className='absolute size-full bg-white center'>
+						<Loading />
+					</div>
+				) : (
+					dataIsEmpty && (
+						<div className='absolute size-full bg-white center'>
+							<NoData />
+						</div>
+					)
+				)}
+			</div>
+		</Section>
 	);
 };
 
