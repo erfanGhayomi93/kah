@@ -4,6 +4,7 @@ import {
 	useGetTopSymbolsQuery,
 } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useMemo } from 'react';
 
@@ -12,7 +13,7 @@ interface TableProps {
 	type: Dashboard.TTopSymbolType;
 }
 
-const Table = ({ symbolType, type }: TableProps) => {
+const BestTable = ({ symbolType, type }: TableProps) => {
 	const { data: optionTopSymbolsData, isFetching: isFetchingOptionTopSymbols } = useGetOptionTopSymbolsQuery({
 		queryKey: ['getOptionTopSymbolsQuery', type as Dashboard.GetTopSymbols.Option.Type],
 		enabled: symbolType === 'Option',
@@ -30,9 +31,24 @@ const Table = ({ symbolType, type }: TableProps) => {
 
 	const getOptionColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Option.All>> => [
 		{
-			colId: '',
-			headerName: '',
-			valueFormatter: (row) => row.symbolTitle,
+			colId: '1',
+			headerName: 'نماد',
+			valueFormatter: (row) => 'ضخود0119',
+		},
+		{
+			colId: '2',
+			headerName: 'ارزش',
+			valueFormatter: (row) => '7,000,000',
+		},
+		{
+			colId: '3',
+			headerName: 'آخرین قیمت',
+			valueFormatter: (row) => '7,700',
+		},
+		{
+			colId: '4',
+			headerName: 'مانده تا سر رسید (روز)',
+			valueFormatter: (row) => '27',
 		},
 	];
 
@@ -59,16 +75,20 @@ const Table = ({ symbolType, type }: TableProps) => {
 				: [topSymbolsData ?? [], isFetchingTopSymbolsData];
 
 	return (
-		<div className='relative flex-1'>
-			<LightweightTable<Dashboard.GetTopSymbols.All>
-				rowData={data}
-				columnDefs={columnDefinitions as Array<IColDef<Dashboard.GetTopSymbols.All>>}
-				getRowId={(_, index) => index}
-			/>
-
-			{isFetching && <Loading />}
+		<div className='relative h-full'>
+			{isFetching ? (
+				<Loading />
+			) : data.length > 0 ? (
+				<LightweightTable<Dashboard.GetTopSymbols.All>
+					rowData={data}
+					columnDefs={columnDefinitions as Array<IColDef<Dashboard.GetTopSymbols.All>>}
+					getRowId={(_, index) => index}
+				/>
+			) : (
+				<NoData />
+			)}
 		</div>
 	);
 };
 
-export default Table;
+export default BestTable;

@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import Section, { type ITab } from '../../common/Section';
+import BestTable from './BestTable';
 
 interface DefaultActiveTab {
 	top: Dashboard.TTopSymbols;
@@ -68,7 +69,11 @@ const Best = () => {
 				],
 				bottom: bottomTabs,
 			}}
-		/>
+		>
+			<div className='relative flex-1 overflow-hidden p-8'>
+				<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
+			</div>
+		</Section>
 	);
 };
 

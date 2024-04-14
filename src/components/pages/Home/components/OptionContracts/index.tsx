@@ -40,26 +40,26 @@ const OptionContracts = () => {
 				return [
 					{
 						title: t('home.atm'),
-						value: numFormatter(data[0][fieldName]),
+						value: numFormatter(data[0]?.[fieldName] ?? 0),
 					},
 					{
 						title: t('home.itm'),
-						value: numFormatter(data[1][fieldName]),
+						value: numFormatter(data[1]?.[fieldName] ?? 0),
 					},
 					{
 						title: t('home.otm'),
-						value: numFormatter(data[2][fieldName]),
+						value: numFormatter(data[2]?.[fieldName] ?? 0),
 					},
 				];
 
 			return [
 				{
 					title: t('home.call_contracts'),
-					value: numFormatter(data[0][fieldName]),
+					value: numFormatter(data[0]?.[fieldName] ?? 0),
 				},
 				{
 					title: t('home.put_contracts'),
-					value: numFormatter(data[1][fieldName]),
+					value: numFormatter(data[1]?.[fieldName] ?? 0),
 				},
 			];
 		} catch (e) {
