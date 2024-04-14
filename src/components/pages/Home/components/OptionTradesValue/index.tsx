@@ -1,10 +1,14 @@
+import { useGetOptionTradeProcessQuery } from '@/api/queries/dashboardQueries';
+import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
+import OptionTradesValueChart from './OptionTradesValueChart';
 
 interface DefaultActiveTab {
 	top: Dashboard.TInterval;
-	bottom: Dashboard.GetOptionMarketComparison.TChartType;
+	bottom: Dashboard.GetOptionTradeProcess.TChartType;
 }
 
 const OptionTradesValue = () => {
@@ -12,7 +16,11 @@ const OptionTradesValue = () => {
 
 	const [defaultTab, setDefaultTab] = useState<DefaultActiveTab>({
 		top: 'Today',
-		bottom: 'OptionToMarket',
+		bottom: 'Process',
+	});
+
+	const { data, isFetching } = useGetOptionTradeProcessQuery({
+		queryKey: ['getOptionTradeProcessQuery', defaultTab.top],
 	});
 
 	const setDefaultTabByPosition = <T extends keyof DefaultActiveTab>(position: T, value: DefaultActiveTab[T]) => {
@@ -37,12 +45,28 @@ const OptionTradesValue = () => {
 					{ id: 'Month', title: t('home.tab_month') },
 					{ id: 'Year', title: t('home.tab_year') },
 				],
-				// bottom: [
-				// 	{ id: 'tab_value_process', title: t('home.tab_value_process') },
-				// 	{ id: 'tab_put_option_relative_call', title: t('home.tab_put_option_relative_call') },
-				// ],
+				bottom: [
+					{ id: 'Process', title: t('home.tab_value_process') },
+					{ id: 'PutToCall', title: t('home.tab_put_option_relative_call') },
+				],
 			}}
-		/>
+		>
+			<div className='relative flex-1 overflow-hidden'>
+				<OptionTradesValueChart data={data ?? []} interval={defaultTab.top} type={defaultTab.bottom} />
+
+				{isFetching ? (
+					<div className='absolute size-full bg-white center'>
+						<Loading />
+					</div>
+				) : (
+					!data?.length && (
+						<div className='absolute size-full bg-white center'>
+							<NoData />
+						</div>
+					)
+				)}
+			</div>
+		</Section>
 	);
 };
 

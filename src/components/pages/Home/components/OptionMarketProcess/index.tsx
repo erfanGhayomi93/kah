@@ -30,6 +30,8 @@ const OptionMarketProcess = () => {
 		}));
 	};
 
+	const dataIsEmpty = Object.keys(data ?? {}).length === 0;
+
 	return (
 		<Section<DefaultActiveTab['top'], DefaultActiveTab['bottom']>
 			id='option_market_process'
@@ -60,7 +62,7 @@ const OptionMarketProcess = () => {
 						<Loading />
 					</div>
 				) : (
-					Object.keys(data ?? {}).length === 0 && (
+					dataIsEmpty && (
 						<div className='absolute size-full bg-white center'>
 							<NoData />
 						</div>

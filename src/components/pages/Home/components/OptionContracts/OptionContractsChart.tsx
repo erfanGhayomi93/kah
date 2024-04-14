@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
-interface PieChartProps {
+interface OptionContractsChartProps {
 	basis: Dashboard.GetOptionContractAdditionalInfo.Basis;
 	type: Dashboard.GetOptionContractAdditionalInfo.Type;
 	data?: Dashboard.GetOptionContractAdditionalInfo.All;
@@ -11,7 +11,7 @@ const IOTM_COLORS = ['rgba(0, 182, 237, 1)', 'rgba(0, 194, 136, 1)', 'rgba(255, 
 
 const CONTRACT_TYPE_COLORS = ['rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)'];
 
-const PieChart = ({ type, basis, data }: PieChartProps) => {
+const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) => {
 	const dataMapper = useMemo(() => {
 		try {
 			if (!Array.isArray(data)) return [];
@@ -30,6 +30,18 @@ const PieChart = ({ type, basis, data }: PieChartProps) => {
 		<div className='flex-1'>
 			<Chart
 				options={{
+					states: {
+						active: {
+							filter: {
+								type: 'none',
+							},
+						},
+						hover: {
+							filter: {
+								type: 'none',
+							},
+						},
+					},
 					fill: {
 						colors: donutColor,
 					},
@@ -58,4 +70,4 @@ const PieChart = ({ type, basis, data }: PieChartProps) => {
 	);
 };
 
-export default PieChart;
+export default OptionContractsChart;
