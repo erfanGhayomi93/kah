@@ -132,6 +132,7 @@ const PriceChangesWatchlistChart = ({ data }: PriceChangesWatchlistChartProps) =
 				},
 				dataLabels: {
 					textAnchor: 'middle',
+					offsetY: -24,
 					style: {
 						colors: ['rgba(93, 96, 109, 1)'],
 						fontWeight: 500,
@@ -156,6 +157,15 @@ const PriceChangesWatchlistChart = ({ data }: PriceChangesWatchlistChartProps) =
 					curve: 'smooth',
 					width: 2,
 				},
+				labels: [
+					'< ‎-4',
+					'‎-4 تا ‎-2',
+					'‎-2 تا ‎-0.5',
+					'‎+0.5 تا ‎-0.5',
+					'‎+2 تا ‎+0.5',
+					'‎+4 تا ‎+2',
+					'‎+4 <',
+				],
 			}}
 			series={[
 				{
