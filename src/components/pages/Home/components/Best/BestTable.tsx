@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 
 interface TableProps {
 	symbolType: Dashboard.TTopSymbols;
-	type: Dashboard.TTopSymbolType;
+	type: Dashboard.TTopSymbol;
 }
 
 const BestTable = ({ symbolType, type }: TableProps) => {
@@ -82,7 +82,6 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 				<LightweightTable<Dashboard.GetTopSymbols.All>
 					rowData={data}
 					columnDefs={columnDefinitions as Array<IColDef<Dashboard.GetTopSymbols.All>>}
-					getRowId={(_, index) => index}
 				/>
 			) : (
 				<NoData />

@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 
 interface OptionMarketProcessChartProps {
 	interval: Dashboard.TInterval;
-	data: Dashboard.GetMarketProcessChart.TChartData;
+	data: Dashboard.GetMarketProcessChart.Data;
 }
 
 const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartProps) => {
