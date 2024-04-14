@@ -1,5 +1,6 @@
 import { useGetOptionMarketComparisonQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
@@ -29,6 +30,8 @@ const CompareTransactionValue = () => {
 		}));
 	};
 
+	const dataIsEmpty = (Object.keys(data ?? {}).length = 0);
+
 	return (
 		<Section<DefaultActiveTab['top'], DefaultActiveTab['bottom']>
 			id='compare_transaction_value'
@@ -54,10 +57,16 @@ const CompareTransactionValue = () => {
 			<div className='relative flex-1 overflow-hidden'>
 				<CompareTransactionValueChart interval={defaultTab.top} data={data ?? {}} />
 
-				{isFetching && (
+				{isFetching ? (
 					<div className='absolute size-full bg-white center'>
 						<Loading />
 					</div>
+				) : (
+					dataIsEmpty === 0 && (
+						<div className='absolute size-full bg-white center'>
+							<NoData />
+						</div>
+					)
 				)}
 			</div>
 		</Section>
