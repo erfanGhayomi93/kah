@@ -1,13 +1,78 @@
-const oauthUrl = 'https://ramandoauth-stage.ramandtech.com';
-const rlcUrl = 'https://marketdata-stage.ramandtech.com';
+import { URLIsValid } from '@/utils/helpers';
+
+const isStage = URLIsValid('stage');
+const isDev = URLIsValid('localhost');
+const isPre = URLIsValid('preprd');
+
+const oauthUrl =
+	isStage || isDev
+		? 'https://ramandoauth-stage.ramandtech.com'
+		: isPre
+			? 'https://ramandoauth-preprd.ramandtech.com'
+			: 'https://ramandoauth.ramandtech.com';
+
+const rlcUrl = isStage
+	? 'https://kahkeshanapi-stage.ramandtech.com'
+	: isPre
+		? 'https://kahkeshanapi-preprd.ramandtech.com'
+		: 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
+	pushengine: isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
+
+	dashboard: {
+		GetIndex: `${rlcUrl}/Dashboard/v1/GetIndex`,
+		GetMarketState: `${rlcUrl}/Dashboard/v1/GetMarketState`,
+		GetOptionTopSymbols: `${rlcUrl}/Dashboard/v1/GetOptionTopSymbols`,
+		GetBaseTopSymbols: `${rlcUrl}/Dashboard/v1/GetBaseTopSymbols`,
+		GetTopSymbols: `${rlcUrl}/Dashboard/v1/GetTopSymbols`,
+		GetOptionContractAdditionalInfo: `${rlcUrl}/Dashboard/v1/GetOptionContractAdditionalInfo`,
+		GetOptionMarketComparison: `${rlcUrl}/Dashboard/v1/GetOptionMarketComparison`,
+		GetOptionTradeProcess: `${rlcUrl}/Dashboard/v1/GetOptionTradeProcess`,
+		GetMarketProcessChart: `${rlcUrl}/Dashboard/v1/GetMarketProcessChart`,
+		GetOptionWatchlistPriceChangeInfo: `${rlcUrl}/Dashboard/v1/GetOptionWatchlistPriceChangeInfo`,
+		GetTopOptionBaseSymbolValue: `${rlcUrl}/Dashboard/v1/GetTopOptionBaseSymbolValue`,
+		GetFirstTradedOptionSymbol: `${rlcUrl}/Dashboard/v1/GetFirstTradedOptionSymbol`,
+		GetMostTradedOptionSymbol: `${rlcUrl}/Dashboard/v1/GetMostTradedOptionSymbol`,
+		GetOptionSettlementInfo: `${rlcUrl}/Dashboard/v1/GetOptionSettlementInfo`,
+	},
+
+	common: {
+		time: `${rlcUrl}/Common/v1/Time`,
+		GetBrokers: `${rlcUrl}/Common/v1/GetBrokers`,
+		GetBrokerApiUrls: `${rlcUrl}/Common/v1/GetBrokerApiUrls`,
+	},
+
 	option: {
-		Watchlist: `${rlcUrl}/KahkeshanOption/v1/Watchlist`,
-		OptionSymbolSearch: `${rlcUrl}/KahkeshanOption/v1/OptionSymbolSearch`,
-		OptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/OptionSymbolColumns`,
-		ResetOptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/ResetOptionSymbolColumns`,
-		UpdateOptionSymbolColumns: `${rlcUrl}/KahkeshanOption/v1/UpdateOptionSymbolColumns`,
+		OptionBaseSymbolSearch: `${rlcUrl}/Option/v1/OptionBaseSymbolSearch`,
+		ContractInfoHeader: `${rlcUrl}/Option/v1/ContractInfoHeader`,
+		BaseSettlementDays: `${rlcUrl}/Option/v1/BaseSettlementDays`,
+		GetContractInfoHistory: `${rlcUrl}/Option/v1/GetContractInfoHistory`,
+		GetOpenPositionReport: `${rlcUrl}/Option/v1/GetOpenPositionReport`,
+		OptionSymbolSearch: `${rlcUrl}/Option/v1/OptionSymbolSearch`,
+	},
+
+	optionWatchlist: {
+		Watchlist: `${rlcUrl}/OptionWatchlist/v1/Watchlist`,
+		WatchlistInfoBySymbolISIN: `${rlcUrl}/OptionWatchlist/v1/WatchlistInfoBySymbolISIN`,
+		WatchlistExcel: `${rlcUrl}/OptionWatchlist/v1/WatchlistExcel`,
+		WatchlistBySettlementDate: `${rlcUrl}/OptionWatchlist/v1/WatchlistBySettlementDate`,
+		OptionCalculativeInfo: `${rlcUrl}/OptionWatchlist/v1/OptionCalculativeInfo`,
+		OptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/OptionSymbolColumns`,
+		DefaultOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/DefaultOptionSymbolColumns`,
+		ResetOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/ResetOptionSymbolColumns`,
+		UpdateOptionSymbolColumns: `${rlcUrl}/OptionWatchlist/v1/UpdateOptionSymbolColumns`,
+		GetAllCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetAllCustomWatchlist`,
+		CreateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/CreateCustomWatchlist`,
+		UpdateCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/UpdateCustomWatchlist`,
+		ChangeHiddenCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/ChangeHiddenCustomWatchlist`,
+		UpdateCustomWatchlistOrder: `${rlcUrl}/OptionWatchlist/v1/UpdateCustomWatchlistOrder`,
+		DeleteCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/DeleteCustomWatchlist`,
+		GetCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlist`,
+		GetCustomWatchlistExcel: `${rlcUrl}/OptionWatchlist/v1/GetCustomWatchlistExcel`,
+		CustomWatchlistOptionSearch: `${rlcUrl}/OptionWatchlist/v1/CustomWatchlistOptionSearch`,
+		AddSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
+		RemoveSymbolCustomWatchlist: `${rlcUrl}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
 	},
 
 	authentication: {
@@ -20,6 +85,28 @@ const routes = {
 		ValidateForgetPasswordOtp: `${oauthUrl}/OAuthAPI/v1/ValidateForgetPasswordOtp`,
 		ChangeForgottenPassword: `${oauthUrl}/OAuthAPI/v1/ChangeForgottenPassword`,
 		SendPasslessOTP: `${oauthUrl}/OAuthAPI/v1/SendPasslessOTP`,
+		Logout: `${oauthUrl}/OAuthAPI/v1/Logout`,
+		GetUserInformation: `${oauthUrl}/OAuthAPI/v1/GetUserInformation`,
+	},
+
+	symbol: {
+		SymbolInfo: `${rlcUrl}/Symbol/v1/SymbolInfo`,
+		BestLimit: `${rlcUrl}/Symbol/v1/BestLimit`,
+		Search: `${rlcUrl}/Symbol/v1/Search`,
+		SymbolHistory: `${rlcUrl}/Symbol/v1/SymbolHistory`,
+		GetSameSectorSymbolsBySymbolISIN: `${rlcUrl}/Symbol/v1/GetSameSectorSymbolsBySymbolISIN`,
+		GetSupervisedMessage: `${rlcUrl}/Symbol/v1/GetSupervisedMessage`,
+		ChartData: `${rlcUrl}/Symbol/v1/ChartData`,
+	},
+
+	saturn: {
+		GetAllSaturns: `${rlcUrl}/Saturn/v1/GetAllSaturns`,
+		GetSaturn: `${rlcUrl}/Saturn/v1/GetSaturn`,
+		Upsert: `${rlcUrl}/Saturn/v1/Upsert`,
+		Pin: `${rlcUrl}/Saturn/v1/Pin`,
+		Delete: `${rlcUrl}/Saturn/v1/Delete`,
+		SetActive: `${rlcUrl}/Saturn/v1/SetActive`,
+		GetActive: `${rlcUrl}/Saturn/v1/GetActive`,
 	},
 };
 

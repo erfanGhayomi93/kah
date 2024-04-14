@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import { cloneElement, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Dropdown.module.scss';
@@ -106,7 +106,7 @@ const Dropdown = <T extends unknown>({
 				<li
 					key={item.id}
 					onClick={() => onItemClick(item.action)}
-					className={clsx(
+					className={cn(
 						styles.item,
 						classes?.item,
 						item.underline && [styles.underline, classes?.underline],
@@ -124,7 +124,7 @@ const Dropdown = <T extends unknown>({
 		}
 
 		return props.data.map((item, index) => (
-			<li key={index} className={clsx(styles.item, classes?.item)}>
+			<li key={index} className={cn(styles.item, classes?.item)}>
 				{props.itemRenderer(item, onCloseDropdown)}
 			</li>
 		));
@@ -185,8 +185,8 @@ const Dropdown = <T extends unknown>({
 		}),
 		visible &&
 			createPortal(
-				<div ref={dropdownRef} className={clsx(styles.root, classes?.root)}>
-					<ul className={clsx(styles.list, classes?.list)}>{items()}</ul>
+				<div ref={dropdownRef} className={cn(styles.root, classes?.root)}>
+					<ul className={cn(styles.list, classes?.list)}>{items()}</ul>
 				</div>,
 				document.body,
 			),

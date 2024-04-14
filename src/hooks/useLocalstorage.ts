@@ -1,14 +1,14 @@
 import Localstorage from '@/classes/Localstorage';
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useLayoutEffect, useState, type Dispatch, type SetStateAction } from 'react';
 
 const useLocalstorage = <T extends unknown>(name: string, defaultValue: T): [T, Dispatch<SetStateAction<T>>] => {
 	const [value, setValue] = useState<T>(Localstorage.get<T>(name, defaultValue));
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		Localstorage.set(name, value, false);
 	}, [value]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		Localstorage.addEventListener(name, (value) => {
 			try {
 				if (value === null) return;
@@ -16,7 +16,7 @@ const useLocalstorage = <T extends unknown>(name: string, defaultValue: T): [T, 
 				const formattedValue = JSON.parse(value) as T;
 				setValue(formattedValue);
 			} catch (e) {
-				//
+				if (typeof defaultValue === 'string') setValue(value as T);
 			}
 		});
 	}, []);

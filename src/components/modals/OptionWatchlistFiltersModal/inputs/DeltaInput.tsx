@@ -1,28 +1,36 @@
-import { useTranslations } from 'next-intl';
+import PriceSlider from '@/components/common/PriceSlider';
 
 interface DeltaInputProps {
 	value: IOptionWatchlistFilters['delta'];
 	onChange: (value: IOptionWatchlistFilters['delta']) => void;
 }
 
-const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
-	<input type='text' inputMode='decimal' maxLength={12} className='h-40 w-full rounded border border-gray-400 px-8 text-left text-gray-100 ltr' {...props} />
-);
-
 const DeltaInput = ({ value: [fromValue, toValue], onChange }: DeltaInputProps) => {
-	const t = useTranslations();
+	const onChangeSlider = (value: number, type: 'start' | 'end') => {
+		const formattedValue = Number(valueFormatter(value));
+
+		onChange(
+			type === 'start'
+				? formattedValue > toValue
+					? [toValue, formattedValue]
+					: [formattedValue, toValue]
+				: formattedValue < fromValue
+					? [formattedValue, fromValue]
+					: [fromValue, formattedValue],
+		);
+	};
+
+	const valueFormatter = (value: number) => value.toFixed(3);
 
 	return (
-		<div className='flex-1 gap-16 flex-justify-end'>
-			<div className='flex-1 gap-8 flex-items-center'>
-				<span>{t('common.from')}</span>
-				<Input value={fromValue.replace(/[^0-9.]/gi, '')} onChange={(e) => onChange([e.target.value, toValue])} />
-			</div>
-			<div className='flex-1 gap-8 flex-items-center'>
-				<span>{t('common.to')}</span>
-				<Input value={toValue.replace(/[^0-9.]/gi, '')} onChange={(e) => onChange([fromValue, e.target.value])} />
-			</div>
-		</div>
+		<PriceSlider
+			step={0.025}
+			min={-1}
+			max={1}
+			onChange={onChangeSlider}
+			value={[fromValue, toValue]}
+			valueFormatter={valueFormatter}
+		/>
 	);
 };
 

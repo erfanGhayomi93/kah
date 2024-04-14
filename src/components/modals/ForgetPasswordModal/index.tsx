@@ -1,47 +1,105 @@
+import axios from '@/api/axios';
+import routes from '@/api/routes';
+import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
-import { toggleForgetPasswordModal, toggleLoginModal } from '@/features/slices/modalSlice';
+import { setForgetPasswordModal, setLoginModal, type IForgetPasswordModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import { forwardRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import AuthenticationModalTemplate from '../common/AuthenticationModalTemplate';
-import ChangePassword from './ChangePassword';
 import OTPForm from './OTPForm';
 import PhoneNumberForm from './PhoneNumberForm';
 
-const ForgetPasswordModal = () => {
-	const t = useTranslations();
+const ChangePasswordForm = dynamic(() => import('./ChangePasswordForm'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
-	const dispatch = useAppDispatch();
+interface ForgetPasswordModalProps extends IForgetPasswordModal {}
 
-	const [result, setResult] = useState<
-		null | OAuthAPI.IForgetPasswordFirstStep | OAuthAPI.IValidateForgetPasswordOtp
-	>(null);
+const ForgetPasswordModal = forwardRef<HTMLDivElement, ForgetPasswordModalProps>(
+	({ phoneNumber: pNumber, ...props }, ref) => {
+		const t = useTranslations();
 
-	const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password'>('phoneNumber');
+		const dispatch = useAppDispatch();
 
-	const onCloseModal = () => {
-		dispatch(toggleForgetPasswordModal(false));
-	};
+		const [result, setResult] = useState<
+			null | OAuthAPI.IForgetPasswordFirstStep | OAuthAPI.IValidateForgetPasswordOtp
+		>(null);
 
-	const goToLogin = () => {
-		dispatch(toggleLoginModal(true));
-		dispatch(toggleForgetPasswordModal(false));
-	};
+		const [stage, setStage] = useState<'phoneNumber' | 'otp' | 'change-password'>(pNumber ? 'otp' : 'phoneNumber');
 
-	return (
-		<AuthenticationModalTemplate title={t('forget_password_modal.title')} onClose={onCloseModal}>
-			{stage === 'phoneNumber' && <PhoneNumberForm setResult={setResult} goToOTP={() => setStage('otp')} />}
-			{stage === 'otp' && (
-				<OTPForm
-					result={result as OAuthAPI.IForgetPasswordFirstStep}
-					setResult={setResult}
-					goToChangePassword={() => setStage('change-password')}
-				/>
-			)}
-			{stage === 'change-password' && (
-				<ChangePassword result={result as OAuthAPI.IValidateForgetPasswordOtp} goToLogin={goToLogin} />
-			)}
-		</AuthenticationModalTemplate>
-	);
-};
+		const [phoneNumber, setPhoneNumber] = useState<string>(pNumber ?? '');
+
+		const onCloseModal = () => {
+			dispatch(setForgetPasswordModal(null));
+		};
+
+		const onPasswordChanged = () => {
+			toast.success(t('alerts.password_changed_successfully'), { autoClose: 3500 });
+
+			dispatch(setForgetPasswordModal(null));
+			dispatch(setLoginModal({ animation: false }));
+		};
+
+		const sendOTP = async (otpPhoneNumber?: string) => {
+			return new Promise<OAuthAPI.IForgetPasswordFirstStep>(async (resolve, reject) => {
+				try {
+					const response = await axios.post<ServerResponse<OAuthAPI.IForgetPasswordFirstStep>>(
+						routes.authentication.ForgetPasswordFirstStep,
+						{
+							mobileNumber: otpPhoneNumber ?? phoneNumber,
+						},
+					);
+					const { data } = response;
+
+					if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+					setResult(data.result);
+					resolve(data.result);
+				} catch (e) {
+					reject();
+				}
+			});
+		};
+
+		return (
+			<AuthenticationModalTemplate
+				title={t('forget_password_modal.title')}
+				onClose={onCloseModal}
+				{...props}
+				ref={ref}
+			>
+				{stage === 'phoneNumber' && (
+					<PhoneNumberForm
+						setResult={setResult}
+						sendOTP={sendOTP}
+						setPhoneNumber={setPhoneNumber}
+						goToOTP={() => setStage('otp')}
+					/>
+				)}
+				{stage === 'otp' && (
+					<OTPForm
+						phoneNumber={phoneNumber}
+						setResult={setResult}
+						sendOTP={sendOTP}
+						result={result as null | OAuthAPI.IForgetPasswordFirstStep}
+						goToChangePassword={() => setStage('change-password')}
+						goToPhoneNumber={() => setStage('phoneNumber')}
+					/>
+				)}
+				{stage === 'change-password' && (
+					<ChangePasswordForm
+						phoneNumber={phoneNumber}
+						result={result as OAuthAPI.IValidateForgetPasswordOtp}
+						onPasswordChanged={onPasswordChanged}
+						onCancel={onCloseModal}
+					/>
+				)}
+			</AuthenticationModalTemplate>
+		);
+	},
+);
 
 export default ForgetPasswordModal;

@@ -1,27 +1,37 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import styles from './Checkbox.module.scss';
 
-interface ICheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'checked' | 'onChange'> {
-	classes?: RecordClasses<'root' | 'dark' | 'checkbox' | 'checked' | 'label' | 'text'>;
-	checked: boolean;
+interface ICheckboxProps
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'checked' | 'onChange'> {
+	classes?: RecordClasses<'root' | 'checkbox' | 'disabled' | 'checked' | 'label' | 'text'>;
 	label?: string | number;
 	disabled?: boolean;
-	onChange: (checked: boolean) => void;
+	checked: boolean;
+	onChange?: (checked: boolean) => void;
 }
 
-const Checkbox = ({ classes, disabled, onChange, checked, label, ...props }: ICheckboxProps) => {
+const Checkbox = ({ classes, disabled, checked, label, onChange, ...props }: ICheckboxProps) => {
+	const onChangeVal = () => {
+		if (!disabled) onChange?.(!checked);
+	};
+
 	return (
-		<div className={clsx(styles.root, classes?.root, disabled && styles.disabled)} data-testid='checkbox_component'>
-			<label className={clsx(styles.label, classes?.label)}>
+		<div className={cn(styles.root, classes?.root, disabled && styles.disabled)}>
+			<label className={cn(styles.label, classes?.label)}>
 				<input
 					type='checkbox'
 					checked={checked}
-					onChange={disabled ? undefined : () => onChange(!checked)}
-					className={clsx(styles.checkbox, classes?.checkbox, checked && [styles.checked, classes?.checked])}
+					onChange={onChangeVal}
+					className={cn(
+						styles.checkbox,
+						classes?.checkbox,
+						disabled && [styles.disabled, classes?.disabled],
+						checked && ['i-checked', styles.checked, classes?.checked],
+					)}
 					{...props}
 				/>
 
-				{label && <span className={clsx(styles.text, classes?.text)}>{label}</span>}
+				{label && <span className={cn(styles.text, classes?.text)}>{label}</span>}
 			</label>
 		</div>
 	);

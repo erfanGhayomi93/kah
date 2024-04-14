@@ -16,11 +16,14 @@ const Countdown = ({ seconds, onFinished }: CountdownProps) => {
 	}, [remainingSeconds]);
 
 	useEffect(() => {
+		if (!remainingSeconds && remainingSeconds < seconds) setRemainingSeconds(seconds);
+
 		if (seconds <= 0) return;
 
 		const interval = setInterval(() => {
 			setRemainingSeconds((prevSecs) => {
 				const nextRemainingSeconds = prevSecs - 1;
+
 				if (nextRemainingSeconds < 0) {
 					clearInterval(interval);
 					onFinished();

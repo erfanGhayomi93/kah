@@ -1,12 +1,18 @@
 .root {
 	position: fixed;
-	width: 100vw;
-	height: 100vh;
-	backdrop-filter: blur(5px);
+	width: 100dvw;
+	height: 100dvh;
 	top: 0;
 	left: 0;
 	z-index: 9999;
-	background-color: rgba(0, 0, 0, 0.6);
+
+	&:not(.transparent) {
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+
+	&.transparent .modal {
+		box-shadow: theme("boxShadow.section");
+	}
 }
 
 .container {
@@ -17,12 +23,12 @@
 
 .modal {
 	position: absolute;
-	overflow-x: hidden;
-	overflow-y: auto;
 	top: 14%;
 	left: 50%;
-	max-width: 90%;
-	max-height: 90%;
+	max-width: 95%;
+	max-height: 95%;
+	border-radius: 8px;
+	overflow: hidden;
 	transform: translateX(-50%);
 	-webkit-transform: translateX(-50%);
 

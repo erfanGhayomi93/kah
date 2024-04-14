@@ -1,9 +1,8 @@
 export interface IOptionFiltersModal {
-	initialSymbols?: Option.SymbolSearch[];
+	initialSymbols?: Option.BaseSearch[];
 	initialType?: Array<'Call' | 'Put'>;
 	initialStatus?: Array<'ITM' | 'OTM' | 'ATM'>;
-	initialEndDate?: [number | null, number | null];
-	initialContractSize?: [number, number];
-	initialDelta?: [string, string];
-	initialMinimumTradesValue?: number;
+	initialDueDays?: [number, number];
+	initialDelta?: [number, number];
+	initialMinimumTradesValue?: string;
 }

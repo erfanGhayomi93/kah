@@ -1,5 +1,4 @@
-import { getRndInteger } from '@/utils/helpers';
-import clsx from 'clsx';
+import { cn, getRndInteger } from '@/utils/helpers';
 
 class TooltipWrapper {
 	private readonly _wrapperId = '__tooltip';
@@ -20,13 +19,21 @@ class TooltipElement extends TooltipWrapper {
 
 	private _interactive: AppTooltip.Interactive = false;
 
-	private _delay: AppTooltip.Delay = [500, 50];
+	private _delay: AppTooltip.Delay = [0, 100];
+
+	private _animation: AppTooltip.Animation = true;
 
 	private _trigger: AppTooltip.Trigger = 'hover';
 
 	private readonly _followCursor: AppTooltip.FollowCursor = false;
 
-	private _offset: AppTooltip.Offset = 0;
+	private _offsetY: AppTooltip.Offset = [0, 4]; // top - bottom
+
+	private _offsetX: AppTooltip.Offset = [4, 0]; // left - right
+
+	private _offsetXY: AppTooltip.Offset = [4, 4]; // top-left - bottom-right
+
+	private _disabled: AppTooltip.Disabled = false;
 
 	private _eTooltip?: AppTooltip.Element = undefined;
 
@@ -34,7 +41,9 @@ class TooltipElement extends TooltipWrapper {
 
 	private _content: HTMLElement | string | null = null;
 
-	private readonly _abortController: AppTooltip.AbortController;
+	private readonly _abortController: AppTooltip.Abort;
+
+	public isHidden: AppTooltip.Hidden = true;
 
 	constructor(element: AppTooltip.Element) {
 		super();
@@ -54,10 +63,11 @@ class TooltipElement extends TooltipWrapper {
 		this._eTooltip.id = this._id;
 		this._eTooltip.setAttribute(
 			'class',
-			clsx(
+			cn(
 				'common-tooltip-container common-tooltip-hidden',
 				`common-tooltip-${this._placement}`,
 				this._interactive && 'common-tooltip-interactive',
+				!this.isHidden && this._animation && 'common-tooltip-animation',
 			),
 		);
 
@@ -72,11 +82,22 @@ class TooltipElement extends TooltipWrapper {
 	}
 
 	public update() {
-		const eTooltip = this._eTooltip!;
+		const eTooltip = this._eTooltip;
+		if (!eTooltip) return;
+
+		if (this.disabled) {
+			if (this.isActive) this.hide();
+			return;
+		}
 
 		eTooltip.setAttribute(
 			'class',
-			clsx('common-tooltip-container', `common-tooltip-${this._placement}`, this._interactive && 'common-tooltip-interactive'),
+			cn(
+				'common-tooltip-container',
+				`common-tooltip-${this._placement}`,
+				this._interactive && 'common-tooltip-interactive',
+				!this.isHidden && this._animation && 'common-tooltip-animation',
+			),
 		);
 		eTooltip.innerHTML = '';
 
@@ -113,14 +134,33 @@ class TooltipElement extends TooltipWrapper {
 		const offset = this._element.getBoundingClientRect();
 		const { width: tooltipWidth, height: tooltipHeight } = this._eTooltip.getBoundingClientRect();
 
-		const [paddingX, paddingY] = Array.isArray(this._offset) ? this._offset : [this._offset, this._offset];
+		const [paddingX, paddingY] = this.padding;
 
-		let left = offset.left + offset.width / 2 - tooltipWidth / 2;
-		left += paddingY;
+		let left = 0;
+		let top = 0;
+
+		switch (this._placement) {
+			case 'bottom':
+				left = offset.left + offset.width / 2 - tooltipWidth / 2 + paddingX;
+				top = offset.top + offset.height + paddingY;
+				break;
+			case 'top':
+				left = offset.left + offset.width / 2 - tooltipWidth / 2 + paddingX;
+				top = offset.top - tooltipHeight - paddingY;
+				break;
+			case 'left':
+				left = offset.left - tooltipWidth - paddingX;
+				top = offset.top + offset.height / 2 - tooltipHeight / 2 - paddingY;
+				break;
+			case 'right':
+				left = offset.left + offset.width + tooltipWidth + paddingX;
+				top = offset.top + offset.height / 2 - tooltipHeight / 2 - paddingY;
+				break;
+			default:
+				break;
+		}
+
 		left = Math.max(0, Math.min(window.innerWidth - offset.width, left));
-
-		let top = offset.top - tooltipHeight;
-		top += paddingX - 4;
 		top = Math.max(0, Math.min(window.innerHeight - offset.height, top));
 
 		this._eTooltip.style.transform = `translate(${left}px,${top}px)`;
@@ -135,9 +175,41 @@ class TooltipElement extends TooltipWrapper {
 		else this._id = this._defaultId;
 	}
 
+	public setOffset(value: AppTooltip.Offset, placement?: AppTooltip.Placement) {
+		const p = placement ?? this._placement;
+		this._placement = p;
+
+		switch (p) {
+			case 'top':
+			case 'bottom':
+				this._offsetY = value;
+				break;
+			case 'left':
+			case 'right':
+				this._offsetX = value;
+				break;
+			default:
+				this._offsetXY = value;
+				break;
+		}
+	}
+
 	// Getter
 	public get id() {
 		return this._id;
+	}
+
+	public get padding(): [number, number] {
+		switch (this._placement) {
+			case 'top':
+			case 'bottom':
+				return Array.isArray(this._offsetY) ? this._offsetY : [this._offsetY, this._offsetY];
+			case 'left':
+			case 'right':
+				return Array.isArray(this._offsetX) ? this._offsetX : [this._offsetX, this._offsetX];
+			default:
+				return Array.isArray(this._offsetXY) ? this._offsetXY : [this._offsetXY, this._offsetXY];
+		}
 	}
 
 	public get element() {
@@ -150,10 +222,6 @@ class TooltipElement extends TooltipWrapper {
 
 	public get abortController() {
 		return this._abortController;
-	}
-
-	public get offset() {
-		return this._offset;
 	}
 
 	public get placement() {
@@ -185,13 +253,24 @@ class TooltipElement extends TooltipWrapper {
 		return this._eTooltip;
 	}
 
+	public get disabled() {
+		return this._disabled;
+	}
+
 	// Setter
-	set offset(value: AppTooltip.Offset) {
-		this._offset = value;
+	set disabled(value: AppTooltip.Disabled) {
+		this._disabled = value;
+
+		if (value && this.isActive) this.hide();
+		else if (!value && !this.isActive) this.unhide();
 	}
 
 	set placement(value: AppTooltip.Placement) {
 		this._placement = value;
+	}
+
+	set animation(value: AppTooltip.Animation) {
+		this._animation = value;
 	}
 
 	set interactive(value: AppTooltip.Interactive) {
@@ -212,15 +291,20 @@ class TooltipManager extends TooltipWrapper {
 
 	private _timeout?: AppTooltip.Timeout = null;
 
+	private _hidden: AppTooltip.Hidden = true;
+
 	constructor() {
 		super();
-
 		Object.seal(this);
 	}
 
 	public add(tooltip: TooltipElement) {
 		if (tooltip.trigger === 'click') this.addClickEvents(tooltip);
 		else if (tooltip.trigger === 'hover') this.addMouseEvents(tooltip);
+	}
+
+	public removeListeners(tooltip: TooltipElement) {
+		tooltip.abortController.abort();
 	}
 
 	// Add events
@@ -252,12 +336,31 @@ class TooltipManager extends TooltipWrapper {
 
 	// Listeners
 	private onMouseenterEvent(tooltip: TooltipElement) {
-		this.clearDelay();
 		this._tooltip = tooltip;
+		if (this._tooltip.disabled) return;
+
+		this.clearDelay();
+
+		if (!this._hidden) this._tooltip.isHidden = false;
 
 		if (this._tooltip.isActive) {
-			this._tooltip.update();
-			this._tooltip.adjust();
+			if (this._hidden) {
+				this.setDelay(() => {
+					if (!this._tooltip) return;
+
+					this._tooltip.update();
+					this._tooltip.adjust();
+
+					this._hidden = false;
+					this._tooltip.isHidden = false;
+				}, 0);
+			} else {
+				this._tooltip.update();
+				this._tooltip.adjust();
+
+				this._hidden = false;
+				this._tooltip.isHidden = false;
+			}
 		} else {
 			this._tooltip!.create();
 			this._tooltip!.append();
@@ -265,13 +368,20 @@ class TooltipManager extends TooltipWrapper {
 				this._tooltip!.unhide();
 				this._tooltip!.adjust();
 			}, 0);
+
+			this._hidden = false;
 		}
 	}
 
 	private onMouseleaveEvent() {
+		if (this._tooltip) this._tooltip.isHidden = true;
+
 		this.setDelay(() => {
-			if (this._tooltip) this._tooltip.hide();
-		}, 0);
+			this._hidden = true;
+
+			if (!this._tooltip) return;
+			this._tooltip.hide();
+		}, 1);
 	}
 
 	private onMousemoveEvent(e: MouseEvent) {
@@ -285,10 +395,13 @@ class TooltipManager extends TooltipWrapper {
 	setDelay(callback: () => void, delayIndex: number) {
 		if (!this._tooltip) return;
 
+		this.clearDelay();
+
 		const delay = this._tooltip.delay;
 
 		if (typeof delay === 'number' && delay > 0) this._timeout = setTimeout(() => callback(), delay);
-		else if (Array.isArray(delay) && delay[delayIndex] > 0) this._timeout = setTimeout(() => callback(), delay[delayIndex]);
+		else if (Array.isArray(delay) && delay[delayIndex] > 0)
+			this._timeout = setTimeout(() => callback(), delay[delayIndex]);
 		else callback();
 	}
 

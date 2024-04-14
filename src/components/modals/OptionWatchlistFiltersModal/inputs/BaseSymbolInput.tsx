@@ -1,14 +1,14 @@
-import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
-import Portal from '@/components/common/Portal';
+import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
+import Popup from '@/components/common/Popup';
 import { CheckSVG, SearchSVG, XSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
-import clsx from 'clsx';
+import { cn, findStringIn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../index.module.scss';
 
 interface BaseSymbolInputProps {
-	values: Option.SymbolSearch[];
+	values: Option.BaseSearch[];
 	onChange: (values: IOptionWatchlistFilters['symbols']) => void;
 }
 
@@ -21,7 +21,7 @@ const SelectedSymbol = ({ title, onRemoveSymbol }: SelectedSymbolProps) => (
 	<li>
 		<span className='truncate'>{title}</span>
 		<button onClick={onRemoveSymbol} type='button'>
-			<XSVG width='0.8rem' height='0.8rem' />
+			<XSVG width='1rem' height='1rem' />
 		</button>
 	</li>
 );
@@ -37,8 +37,11 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 
 	const [onlyShowTags, setOnlyShowTags] = useState(false);
 
-	const { data: symbolsData, isFetching } = useOptionSymbolSearchQuery({
-		queryKey: ['optionSymbolSearchQuery', term],
+	const [enabled, setEnabled] = useState(false);
+
+	const { data: symbolsData, isFetching } = useOptionBaseSymbolSearchQuery({
+		queryKey: ['optionBaseSymbolSearchQuery', { term, orderBy: 'Alphabet' }],
+		enabled,
 	});
 
 	const { setDebounce } = useDebounce();
@@ -60,7 +63,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 		if (inputRef.current) inputRef.current.focus();
 	};
 
-	const onToggleSymbol = (symbol: Option.SymbolSearch) => {
+	const onToggleSymbol = (symbol: Option.BaseSearch) => {
 		try {
 			const isExists = isSymbolSelected(symbol.symbolISIN);
 
@@ -91,23 +94,28 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	}, [values]);
 
 	return (
-		<Portal
+		<Popup
 			zIndex={9999}
 			onClose={() => {
 				setOnlyShowTags(false);
 			}}
+			onOpen={() => setEnabled(true)}
 			renderer={({ setOpen }) => (
 				<div
-					className={clsx(
-						'flex flex-col rounded-b border-x border-b border-primary-200 bg-white',
-						values.length === 0 &&
-							!(isLoading || symbolsDataIsEmpty) &&
-							!(onlyShowTags && values.length === 0) &&
-							'pt-16',
+					style={{
+						height: onlyShowTags ? '100%' : `calc(${(636 / window.innerHeight) * 100}vh - 16.5rem)`,
+					}}
+					className={cn(
+						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
 					)}
 				>
 					{values.length > 0 && (
-						<div className='w-full flex-wrap border-b border-link px-16 flex-justify-between'>
+						<div
+							className={cn(
+								'w-full flex-wrap px-16 pb-12 flex-justify-between',
+								!onlyShowTags && 'border-b border-b-gray-500',
+							)}
+						>
 							<ul className={styles.tags}>
 								{values.map((item, index) => (
 									<SelectedSymbol
@@ -125,7 +133,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 
 					{onlyShowTags && values.length === 0 && (
 						<div style={{ minHeight: '9.6rem' }} className='flex-justify-center'>
-							<span className='text-base text-gray-200'>
+							<span className='text-base text-gray-900'>
 								{t('option_watchlist_filters_modal.symbol_not_found')}
 							</span>
 						</div>
@@ -135,40 +143,70 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						<Fragment>
 							<div
 								style={{ minHeight: '9.6rem' }}
-								className={clsx(
-									'flex-1 py-8 flex-column',
+								className={cn(
+									'flex-1 gap-4 overflow-auto py-8 flex-column',
 									(isLoading || symbolsDataIsEmpty) && 'items-center justify-center',
 								)}
 							>
 								{isLoading ? (
-									<span className='text-base text-gray-200'>{t('common.searching')}</span>
+									<span className='text-base text-gray-900'>{t('common.searching')}</span>
 								) : symbolsDataIsEmpty ? (
-									<span className='text-base text-gray-200'>
+									<span className='text-base text-gray-900'>
 										{t('option_watchlist_filters_modal.symbol_not_found')}
 									</span>
 								) : (
 									symbolsData!.map((item) => {
-										const isSelected = isSymbolSelected(item.symbolISIN);
+										const { symbolTitle, symbolISIN } = item;
+										const isSelected = isSymbolSelected(symbolISIN);
+										const title = findStringIn(term, symbolTitle);
+
 										return (
 											<button
 												onClick={() => onToggleSymbol(item)}
 												type='button'
-												key={item.symbolISIN}
-												className={clsx(
-													'h-40 text-right transition-colors flex-justify-start',
+												key={symbolISIN}
+												className={cn(
+													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
-														? 'bg-primary-200 text-white'
-														: 'bg-transparent text-gray-100 hover:bg-primary-300/20',
+														? 'bg-primary-400 text-white hover:bg-primary-300'
+														: 'hover:btn-hover bg-transparent',
 												)}
 											>
 												<div className='w-32 flex-justify-center'>
 													{isSelected && (
-														<div className='h-16 w-16 rounded-sm bg-white text-primary-200 flex-justify-center'>
+														<div className='h-16 w-16 rounded-sm bg-white text-primary-400 flex-justify-center'>
 															<CheckSVG />
 														</div>
 													)}
 												</div>
-												<span className='text-inherit'>{item.symbolTitle}</span>
+
+												<div className='inline-block'>
+													<span
+														className={
+															isSelected
+																? 'text-white'
+																: term
+																	? 'text-gray-800'
+																	: 'text-gray-1000'
+														}
+													>
+														{title[0]}
+													</span>
+													<span className={isSelected ? 'text-white' : 'text-gray-1000'}>
+														{title[1]}
+													</span>
+													<span
+														className={
+															isSelected
+																? 'text-white'
+																: term
+																	? 'text-gray-800'
+																	: 'text-gray-1000'
+														}
+													>
+														{title[2]}
+													</span>
+												</div>
 											</button>
 										);
 									})
@@ -176,7 +214,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							</div>
 
 							{!symbolsDataIsEmpty && (
-								<div className='px-16 pb-16'>
+								<div className='border-t border-t-gray-500 px-16 py-16'>
 									<button
 										style={{ width: '14rem' }}
 										className='mr-auto h-40 rounded btn-primary'
@@ -194,12 +232,12 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 		>
 			{({ setOpen, open }) => (
 				<div
-					className={clsx(
-						'input-group h-40 flex-1 border flex-items-center',
-						open ? 'rounded-t border-primary-200' : 'rounded border-gray-400',
+					className={cn(
+						'h-40 flex-1 border flex-items-center input-group',
+						open ? 'rounded-t border-primary-300' : 'rounded border-gray-500',
 					)}
 				>
-					<span className='px-8 text-gray-100'>
+					<span className='px-8 text-gray-900'>
 						<SearchSVG />
 					</span>
 					<input
@@ -207,22 +245,25 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						type='text'
 						inputMode='numeric'
 						maxLength={32}
-						className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-100'
+						className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-1000'
 						placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 						value={term}
-						onFocus={() => setOpen(true)}
+						onFocus={() => {
+							setOnlyShowTags(false);
+							setOpen(true);
+						}}
 						onChange={(e) => onChangeInput(e.target.value)}
 					/>
 					{isLoading ? (
-						<div className='spinner ml-16 min-h-20 min-w-20' />
+						<div className='ml-16 min-h-20 min-w-20 spinner' />
 					) : (
 						term.length > 1 && (
 							<button
 								onClick={onClearTerm}
 								type='button'
-								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-100 text-white flex-justify-center'
+								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-1000 text-white flex-justify-center'
 							>
-								<XSVG width='0.8rem' height='0.8rem' />
+								<XSVG width='1rem' height='1rem' />
 							</button>
 						)
 					)}
@@ -230,11 +271,11 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 						<button
 							onClick={() => seeTags(() => setOpen(true))}
 							type='button'
-							className='h-24 w-40 border-r border-r-gray-400 text-tiny text-gray-200 flex-justify-center'
+							className='h-24 w-40 border-r border-r-gray-500 text-tiny text-gray-200 flex-justify-center'
 						>
 							<span
 								style={{ paddingTop: '2px' }}
-								className='size-24 rounded-circle bg-primary-200 text-white flex-justify-center'
+								className='size-24 rounded-circle bg-primary-400 text-white flex-justify-center'
 							>
 								{values.length}
 							</span>
@@ -242,7 +283,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 					)}
 				</div>
 			)}
-		</Portal>
+		</Popup>
 	);
 };
 

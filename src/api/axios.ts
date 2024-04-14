@@ -1,5 +1,6 @@
-import { getCookie } from '@/utils/cookie';
+import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 const axios = AXIOS.create();
 
@@ -16,7 +17,7 @@ axios.defaults.paramsSerializer = {
 				for (let j = 0; j < value.length; j++) {
 					queryParams.push(`${key}=${value[j]}`);
 				}
-			} else queryParams.push(`${key}=${params[key]}`);
+			} else if (value !== undefined) queryParams.push(`${key}=${params[key]}`);
 		}
 
 		return queryParams.join('&');
@@ -25,7 +26,7 @@ axios.defaults.paramsSerializer = {
 
 axios.interceptors.request.use(
 	(config) => {
-		const clientId = getCookie('client_id');
+		const clientId = getClientId();
 		if (clientId) config.headers.Authorization = `Bearer ${clientId}`;
 
 		return config;
@@ -39,14 +40,37 @@ axios.interceptors.response.use(
 	(response: AxiosResponse<ServerResponse>) => {
 		return response;
 	},
-	async (error) => {
-		if ((error as AxiosError).response !== undefined) {
-			// const errStatus = error.response.status;
+	async (error: AxiosError) => {
+		if (error.response) {
+			const errStatus = error.response.status;
+
+			switch (errStatus) {
+				case 401:
+					onUnauthorize();
+			}
 		}
 
 		return await Promise.reject(error);
 	},
 );
 
-export { AxiosError };
+const onUnauthorize = () => {
+	try {
+		const clientId = getClientId();
+
+		deleteBrokerClientId();
+		deleteClientId();
+
+		if (clientId) {
+			toast.warning('متاسفانه از حساب خود خارج شدید.', {
+				toastId: 'broker_unauthorize',
+				autoClose: 5000,
+			});
+		}
+	} catch (e) {
+		//
+	}
+};
+
+export { AxiosError, onUnauthorize };
 export default axios;

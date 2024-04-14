@@ -11,8 +11,8 @@ const metadata: Metadata = {
 		statusBarStyle: 'black',
 	},
 	icons: {
-		icon: '/static/icons/favicon.ico',
-		shortcut: '/static/icons/favicon.ico',
+		icon: '/static/icons/favicon.png',
+		shortcut: '/static/icons/favicon.png',
 		apple: {
 			url: '/static/icons/apple-touch-icon-180x180.png',
 			sizes: '180x180',

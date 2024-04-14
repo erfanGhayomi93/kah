@@ -1,4 +1,4 @@
-const letters = [
+export const letters = [
 	'',
 	' هزار',
 	' میلیون',
@@ -27,9 +27,6 @@ const num2persian = (value: string) => {
 	if (!value || isNaN(Number(value))) return '';
 
 	const toman = value.slice(0, -1);
-	// const rial = value.slice(-1);
-	// if (!toman || toman === '0' || isNaN(Number(toman))) return showRial ? `${rial} ریال` : '';
-
 	const result = [];
 
 	const vLength = toman.length;
@@ -39,16 +36,17 @@ const num2persian = (value: string) => {
 	}
 
 	const arrLength = result.length;
-	const persianToman =
-		result
-			.map((item, index) => {
-				return item + letters[arrLength - 1 - index];
-			})
-			.join(' و ') + ' تومان';
+	const persianToman = result
+		.map((item, index) => {
+			const itemAsNumber = Number(item);
+			if (!itemAsNumber) return '';
+			return itemAsNumber + letters[arrLength - 1 - index];
+		})
+		.filter(Boolean);
 
-	// if (!showRial || !rial || rial === '0' || isNaN(Number(rial))) return persianToman;
+	if (persianToman.length === 0) return '0 تومان';
 
-	return /* showRial ? `${persianToman} و ${rial} ریال` : */ persianToman;
+	return persianToman.join(' و ') + ' تومان';
 };
 
 export default num2persian;

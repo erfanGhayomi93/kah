@@ -1,55 +1,57 @@
 import { XSVG } from '@/components/icons';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 
-interface AuthenticationModalTemplateProps {
+interface AuthenticationModalTemplateProps extends IBaseModalConfiguration {
 	title: string | React.ReactNode;
 	children: React.ReactNode;
 	hideTitle?: boolean;
 	description?: string;
+	transparent?: boolean;
+	styles?: Partial<Record<'description', React.CSSProperties>>;
 	onClose: () => void;
 }
 
 const Div = styled.div`
 	width: 578px;
 	height: 560px;
+	display: flex;
+	padding: 2.4rem;
+	flex-direction: column;
+	border-radius: 1.6rem;
 `;
 
-const AuthenticationModalTemplate = ({
-	title,
-	children,
-	hideTitle,
-	description,
-	onClose,
-}: AuthenticationModalTemplateProps) => {
-	return (
-		<Modal onClose={onClose}>
-			<Div className='rounded-md bg-white p-24 flex-column'>
-				{!hideTitle && [
-					<div key='close' className='absolute left-24 z-10'>
-						<button onClick={onClose} type='button' className='text-gray-100'>
-							<XSVG />
-						</button>
-					</div>,
+const AuthenticationModalTemplate = forwardRef<HTMLDivElement, AuthenticationModalTemplateProps>(
+	({ title, children, hideTitle, description, styles, onClose, ...props }, ref) => {
+		return (
+			<Modal onClose={onClose} {...props} ref={ref}>
+				<Div className='bg-white'>
+					{!hideTitle && [
+						<div key='close' className='absolute left-24 z-10'>
+							<button onClick={onClose} type='button' className='icon-hover'>
+								<XSVG width='2rem' height='2rem' />
+							</button>
+						</div>,
 
-					<div key='title' style={{ height: '8.8rem' }} className='relative mt-48 text-center'>
-						<h1 className='text-3xl font-bold text-gray-100'>{title}</h1>
-						{description && (
-							<p
-								style={{ maxWidth: '30rem' }}
-								className='mx-auto pt-24 text-center text-base text-primary-300'
-							>
-								{description}
-							</p>
-						)}
-					</div>,
-				]}
+						<div key='title' className='relative mt-24 gap-24 text-center flex-column'>
+							<h1 className='text-3xl font-bold text-gray-1000'>{title}</h1>
+							{description && (
+								<p
+									style={{ maxWidth: '30rem', ...styles?.description }}
+									className='mx-auto text-center text-base text-primary-400'
+								>
+									{description}
+								</p>
+							)}
+						</div>,
+					]}
 
-				{children}
-			</Div>
-		</Modal>
-	);
-};
+					{children}
+				</Div>
+			</Modal>
+		);
+	},
+);
 
 export default AuthenticationModalTemplate;

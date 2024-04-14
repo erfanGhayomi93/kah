@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/helpers';
 import styles from './Button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,7 +8,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({ children, className, loading, disabled, ...props }: ButtonProps) => {
 	return (
-		<button role='button' disabled={loading ?? disabled} className={clsx(styles.btn, loading && styles.loading, className)} {...props}>
+		<button
+			role='button'
+			disabled={disabled ?? loading}
+			className={cn(styles.btn, loading && styles.loading, className)}
+			{...props}
+		>
 			{loading ? <div className={styles.spinner} /> : children}
 		</button>
 	);

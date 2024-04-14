@@ -1,7 +1,7 @@
+import { cn } from '@/utils/helpers';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry, createGrid, type GridApi, type GridOptions } from '@ag-grid-community/core';
-import clsx from 'clsx';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 
 ModuleRegistry.register(ClientSideRowModelModule);
 
@@ -45,8 +45,24 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 			});
 		}, []);
 
-		return <div ref={onTableLoad} className={clsx(`ag-theme-${theme}`, className)} style={style} />;
+		useEffect(
+			() => () => {
+				try {
+					const gridApi = tableRef.current;
+					if (!gridApi) return;
+
+					if (!gridApi.isDestroyed()) gridApi.destroy();
+				} catch (e) {
+					//
+				}
+			},
+			[],
+		);
+
+		return <div ref={onTableLoad} className={cn(`ag-theme-${theme}`, className)} style={style} />;
 	},
 );
 
-export default AgTable as <TData extends unknown>(props: AgTableProps<TData> & { ref?: React.Ref<GridApi<TData>> }) => JSX.Element;
+export default AgTable as <TData extends unknown>(
+	props: AgTableProps<TData> & { ref?: React.Ref<GridApi<TData>> },
+) => JSX.Element;

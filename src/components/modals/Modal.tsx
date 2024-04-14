@@ -1,74 +1,139 @@
-import clsx from 'clsx';
-import { useEffect, useRef } from 'react';
+import { cn } from '@/utils/helpers';
+import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import Moveable from '../common/Moveable';
+import { XSVG } from '../icons';
 import styles from './Modal.module.scss';
 
-interface ModalProps {
+interface ModalProps extends IBaseModalConfiguration {
 	portalElement?: HTMLElement;
 	style?: Partial<Record<'root' | 'container' | 'modal', React.CSSProperties>>;
 	size?: 'lg' | 'md' | 'sm' | 'xs' | 'xxs';
-	classes?: RecordClasses<'root' | 'container' | 'modal'>;
+	classes?: RecordClasses<'root' | 'container' | 'modal' | 'transparent'>;
 	children: React.ReactNode;
 	top?: string | number;
+	transparent?: boolean;
 	onClose: () => void;
 }
 
-const Modal = ({ portalElement, children, style, classes, size, top, onClose }: ModalProps) => {
-	const rootRef = useRef<HTMLDivElement>(null);
+interface ModalHeaderProps {
+	label: React.ReactNode;
+	onClose: () => void;
+}
 
-	const modalRef = useRef<HTMLDivElement>(null);
+const Modal = forwardRef<HTMLDivElement, ModalProps>(
+	(
+		{
+			portalElement,
+			moveable = false,
+			transparent = false,
+			children,
+			style,
+			classes,
+			size,
+			top,
+			animation = true,
+			onClose,
+		},
+		ref,
+	) => {
+		const rootRef = useRef<HTMLDivElement>(null);
 
-	const onWindowClick = (e: MouseEvent, removeListener: () => void) => {
-		try {
-			const eModal = modalRef.current;
-			const eRoot = rootRef.current;
-			if (!eRoot || !eModal) return;
+		const modalRef = useRef<HTMLDivElement | null>(null);
 
-			const target = (e.target ?? e.currentTarget) as Node;
-			if (target && !eModal.contains(target) && eRoot.contains(target)) {
-				onClose();
-				removeListener();
+		const onWindowClick = (e: MouseEvent, removeListener: () => void) => {
+			try {
+				const eModal = modalRef.current;
+				const eRoot = rootRef.current;
+				if (!eRoot || !eModal) return;
+
+				const target = (e.target ?? e.currentTarget) as Node;
+
+				if (target && !eModal.contains(target) && eRoot.contains(target)) {
+					onClose();
+					removeListener();
+				}
+			} catch (e) {
+				//
 			}
-		} catch (e) {
-			//
-		}
-	};
+		};
 
-	const onWindowKeyDown = (e: KeyboardEvent, removeListener: () => void) => {
-		try {
-			if (e.key !== 'Escape') return;
-			onClose();
+		const onWindowKeyDown = (e: KeyboardEvent, removeListener: () => void) => {
+			try {
+				if (e.key !== 'Escape') return;
 
-			removeListener();
-		} catch (e) {
-			//
-		}
-	};
+				onClose();
 
-	useEffect(() => {
-		const controller = new AbortController();
+				removeListener();
+			} catch (e) {
+				//
+			}
+		};
 
-		window.addEventListener('mousedown', (e) => onWindowClick(e, () => controller.abort()), {
-			signal: controller.signal,
-		});
+		useImperativeHandle(ref, () => rootRef.current!);
 
-		window.addEventListener('keydown', (e) => onWindowKeyDown(e, () => controller.abort()), {
-			signal: controller.signal,
-		});
+		useLayoutEffect(() => {
+			const controller = new AbortController();
 
-		return () => controller.abort();
-	}, []);
+			window.addEventListener('mousedown', (e) => onWindowClick(e, () => controller.abort()), {
+				signal: controller.signal,
+			});
 
-	return createPortal(
-		<div ref={rootRef} style={{ ...style?.root, animation: 'fadeIn ease-in-out 250ms 1 alternate forwards' }} className={clsx(styles.root, classes?.root)}>
-			<div style={style?.container} className={clsx(styles.container, classes?.container)}>
-				<div ref={modalRef} style={{ top, ...style?.modal }} className={clsx(styles.modal, size && styles[size], classes?.modal)}>
-					{children}
+			window.addEventListener('keydown', (e) => onWindowKeyDown(e, () => controller.abort()), {
+				signal: controller.signal,
+			});
+
+			return () => controller.abort();
+		}, []);
+
+		useEffect(() => {
+			try {
+				document.body.style.overflow = 'hidden';
+
+				return () => {
+					document.body.style.overflow = '';
+				};
+			} catch (e) {
+				//
+			}
+		}, []);
+
+		return createPortal(
+			<div
+				ref={rootRef}
+				style={style?.root}
+				className={cn(
+					'presence',
+					styles.root,
+					classes?.root,
+					transparent && [styles.transparent, classes?.transparent],
+				)}
+			>
+				<div style={style?.container} className={cn(styles.container, classes?.container)}>
+					<Moveable ref={modalRef} enabled={moveable}>
+						<div
+							style={{ top, ...style?.modal }}
+							className={cn(styles.modal, size && styles[size], classes?.modal)}
+						>
+							{children}
+						</div>
+					</Moveable>
 				</div>
-			</div>
-		</div>,
-		portalElement ?? document.body,
-	);
-};
+			</div>,
+			portalElement ?? document.body,
+		);
+	},
+);
 
+const Header = ({ label, onClose }: ModalHeaderProps) => (
+	<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
+		<h2 className='text-xl font-medium'>{label}</h2>
+
+		<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
+			<XSVG width='2rem' height='2rem' />
+		</button>
+	</div>
+);
+
+export { Header };
 export default Modal;
