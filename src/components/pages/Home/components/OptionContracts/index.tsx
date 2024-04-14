@@ -4,7 +4,7 @@ import { numFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import Section from '../../common/Section';
-import PieChart from './PieChart';
+import OptionContractsChart from './OptionContractsChart';
 
 interface DefaultActiveTab {
 	top: Dashboard.GetOptionContractAdditionalInfo.Basis;
@@ -87,7 +87,7 @@ const OptionContracts = () => {
 			}}
 		>
 			<div className='flex flex-1 px-8 pt-36'>
-				<PieChart type={defaultTab.bottom} basis={defaultTab.top} data={data} />
+				<OptionContractsChart type={defaultTab.bottom} basis={defaultTab.top} data={data} />
 
 				{isFetching ? (
 					<Loading />

@@ -21,6 +21,7 @@ const routes = {
 	pushengine: isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
 
 	dashboard: {
+		GetOpenPositionProcess: `${rlcUrl}/Dashboard/v1/GetOpenPositionProcess`,
 		GetIndex: `${rlcUrl}/Dashboard/v1/GetIndex`,
 		GetMarketState: `${rlcUrl}/Dashboard/v1/GetMarketState`,
 		GetOptionTopSymbols: `${rlcUrl}/Dashboard/v1/GetOptionTopSymbols`,

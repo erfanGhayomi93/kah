@@ -1103,4 +1103,25 @@ declare namespace Dashboard {
 
 		export type TChartData = Record<string, number>;
 	}
+
+	export namespace GetOptionTradeProcess {
+		export type TChartType = 'Process' | 'PutToCall';
+
+		export interface IChartData {
+			intervalDateTime: string;
+			callValue: number;
+			putValue: number;
+		}
+	}
+
+	export namespace GetOptionWatchlistPriceChangeInfo {
+		export interface IChartData {
+			count: number;
+			state: string;
+		}
+	}
+
+	export namespace GetOpenPositionProcess {
+		export type TChartData = Record<string, number>;
+	}
 }
