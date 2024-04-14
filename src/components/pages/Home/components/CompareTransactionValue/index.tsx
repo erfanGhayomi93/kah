@@ -30,7 +30,7 @@ const CompareTransactionValue = () => {
 		}));
 	};
 
-	const dataIsEmpty = (Object.keys(data ?? {}).length = 0);
+	const dataIsEmpty = Object.keys(data ?? {}).length === 0;
 
 	return (
 		<Section<DefaultActiveTab['top'], DefaultActiveTab['bottom']>
@@ -62,7 +62,7 @@ const CompareTransactionValue = () => {
 						<Loading />
 					</div>
 				) : (
-					dataIsEmpty === 0 && (
+					dataIsEmpty && (
 						<div className='absolute size-full bg-white center'>
 							<NoData />
 						</div>
