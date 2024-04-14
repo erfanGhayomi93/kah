@@ -39,7 +39,7 @@ const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartPr
 
 					style: {
 						fontFamily: 'IRANSans',
-						fontSize: '1.2rem',
+						fontSize: '12px',
 					},
 
 					x: {
@@ -55,11 +55,11 @@ const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartPr
 					},
 				},
 				xaxis: {
-					tickAmount: 9,
+					tickAmount: 5,
 					offsetX: 0,
 					offsetY: 0,
 					axisBorder: {
-						show: true,
+						show: false,
 					},
 					axisTicks: {
 						show: false,
@@ -69,7 +69,7 @@ const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartPr
 						rotateAlways: false,
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
 					},
 				},
@@ -80,7 +80,7 @@ const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartPr
 						offsetY: 1,
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
 						formatter: (val) => {
 							return numFormatter(val);
@@ -91,12 +91,12 @@ const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartPr
 					enabled: false,
 				},
 				markers: {
-					size: 4,
+					size: 0,
 					strokeColors: ['rgba(0, 194, 136, 1)'],
 					colors: 'rgb(255, 255, 255)',
 					strokeWidth: 2,
 					hover: {
-						sizeOffset: 2,
+						size: 4,
 					},
 				},
 				grid: {
@@ -117,6 +117,24 @@ const OptionMarketProcessChart = ({ data, interval }: OptionMarketProcessChartPr
 				stroke: {
 					curve: 'smooth',
 					width: 2,
+				},
+				fill: {
+					type: 'gradient',
+					gradient: {
+						type: 'vertical',
+						colorStops: [
+							{
+								offset: 20,
+								color: 'rgb(0, 194, 136)',
+								opacity: 0.2,
+							},
+							{
+								offset: 100,
+								color: 'rgb(0, 194, 136)',
+								opacity: 0,
+							},
+						],
+					},
 				},
 			}}
 			series={[

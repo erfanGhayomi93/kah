@@ -1,22 +1,55 @@
-import { dateFormatter } from '@/utils/helpers';
+import { dateFormatter, divide, numFormatter } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
-interface CompareTransactionValueChartProps {
+interface OptionTradesValueChartProps {
+	data: Dashboard.GetOptionTradeProcess.IChartData[];
 	interval: Dashboard.TInterval;
-	data: Dashboard.GetOptionMarketComparison.TChartData;
+	type: Dashboard.GetOptionTradeProcess.TChartType;
 }
 
-const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValueChartProps) => {
-	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
-		const keys = Object.keys(data);
-		if (keys.length === 0) return [];
+const OptionTradesValueChart = ({ data, interval, type }: OptionTradesValueChartProps) => {
+	const dataMapper = useMemo<ApexAxisChartSeries>(() => {
+		if (type === 'PutToCall') {
+			const result = data.map((item) => ({
+				x: dateFormatter(item.intervalDateTime, interval === 'Today' ? 'time' : 'date'),
+				y: divide(item.putValue, item.callValue) * 100,
+			}));
 
-		return keys.map((d) => ({
-			x: d,
-			y: data[d],
-		}));
-	}, [interval, data]);
+			return [
+				{
+					data: result,
+				},
+			];
+		}
+
+		const l = data.length;
+		const result: Array<{ data: Array<{ x: string; y: number }> }> = [
+			{
+				data: [],
+			},
+			{
+				data: [],
+			},
+		];
+		for (let i = 0; i < l; i++) {
+			const { intervalDateTime, callValue, putValue } = data[i];
+
+			result[0].data.push({
+				x: dateFormatter(intervalDateTime, interval === 'Today' ? 'time' : 'date'),
+				y: callValue,
+			});
+
+			result[1].data.push({
+				x: dateFormatter(intervalDateTime, interval === 'Today' ? 'time' : 'date'),
+				y: putValue,
+			});
+		}
+
+		return result;
+	}, [type, interval, data]);
+
+	const colors = type === 'Process' ? ['rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)'] : ['rgb(66, 115, 237)'];
 
 	return (
 		<Chart
@@ -33,7 +66,7 @@ const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValu
 						autoScaleYaxis: true,
 					},
 				},
-				colors: ['rgba(0, 194, 136, 1)'],
+				colors,
 				tooltip: {
 					cssClass: 'apex-tooltip',
 
@@ -54,8 +87,11 @@ const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValu
 						},
 					},
 				},
+				legend: {
+					show: false,
+				},
 				xaxis: {
-					tickAmount: 9,
+					tickAmount: 5,
 					offsetX: 0,
 					offsetY: 0,
 					axisBorder: {
@@ -71,9 +107,6 @@ const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValu
 							fontFamily: 'IRANSans',
 							fontSize: '12px',
 						},
-						formatter: (value) => {
-							return dateFormatter(value, interval === 'Today' ? 'time' : 'date');
-						},
 					},
 				},
 				yaxis: {
@@ -85,8 +118,8 @@ const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValu
 							fontFamily: 'IRANSans',
 							fontSize: '12px',
 						},
-						formatter: (value) => {
-							return String(Number((Number(value) * 100).toFixed(6)) * 1);
+						formatter: (val) => {
+							return numFormatter(val);
 						},
 					},
 				},
@@ -95,7 +128,7 @@ const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValu
 				},
 				markers: {
 					size: 0,
-					strokeColors: ['rgba(0, 194, 136, 1)'],
+					strokeColors: colors,
 					colors: 'rgb(255, 255, 255)',
 					strokeWidth: 2,
 					hover: {
@@ -122,34 +155,30 @@ const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValu
 					width: 2,
 				},
 				fill: {
-					type: 'gradient',
+					type: type === 'Process' ? 'solid' : 'gradient',
 					gradient: {
 						type: 'vertical',
 						colorStops: [
 							{
 								offset: 20,
-								color: 'rgb(0, 194, 136)',
+								color: 'rgb(66, 115, 237)',
 								opacity: 0.2,
 							},
 							{
 								offset: 100,
-								color: 'rgb(0, 194, 136)',
+								color: 'rgb(66, 115, 237)',
 								opacity: 0,
 							},
 						],
 					},
 				},
 			}}
-			series={[
-				{
-					data: dataMapper,
-				},
-			]}
-			type='area'
+			series={dataMapper}
+			type={type === 'Process' ? 'line' : 'area'}
 			width='100%'
 			height='100%'
 		/>
 	);
 };
 
-export default CompareTransactionValueChart;
+export default OptionTradesValueChart;
