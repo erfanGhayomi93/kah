@@ -8,7 +8,7 @@ import MarketViewChart from './MarketViewChart';
 
 interface DefaultActiveTab {
 	top: Dashboard.TInterval;
-	bottom: Dashboard.TIndexType;
+	bottom: Dashboard.TIndex;
 }
 
 const MarketView = () => {
@@ -31,7 +31,7 @@ const MarketView = () => {
 	});
 
 	return (
-		<Section<Dashboard.TInterval, Dashboard.TIndexType>
+		<Section<Dashboard.TInterval, Dashboard.TIndex>
 			id='market_view'
 			title={t('home.market_view')}
 			defaultTopActiveTab={defaultTab.top}

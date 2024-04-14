@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
 interface OptionTradesValueChartProps {
-	data: Dashboard.GetOptionTradeProcess.IChartData[];
+	data: Dashboard.GetOptionTradeProcess.Data[];
 	interval: Dashboard.TInterval;
 	type: Dashboard.GetOptionTradeProcess.TChartType;
 }

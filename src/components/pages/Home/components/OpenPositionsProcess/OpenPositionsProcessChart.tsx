@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
 interface OpenPositionsProcessChartProps {
-	data: Dashboard.GetOpenPositionProcess.TChartData;
+	data: Dashboard.GetOpenPositionProcess.Data;
 }
 
 const OpenPositionsProcessChart = ({ data }: OpenPositionsProcessChartProps) => {

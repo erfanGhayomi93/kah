@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
 interface PriceChangesWatchlistChartProps {
-	data: Dashboard.GetOptionWatchlistPriceChangeInfo.IChartData[];
+	data: Dashboard.GetOptionWatchlistPriceChangeInfo.Data[];
 }
 
 const COLORS = [
