@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 
 interface CompareTransactionValueChartProps {
 	interval: Dashboard.TInterval;
-	data: Dashboard.GetOptionMarketComparison.TChartData;
+	data: Dashboard.GetOptionMarketComparison.Data;
 }
 
 const CompareTransactionValueChart = ({ interval, data }: CompareTransactionValueChartProps) => {

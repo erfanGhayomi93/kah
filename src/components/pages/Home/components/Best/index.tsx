@@ -5,7 +5,7 @@ import BestTable from './BestTable';
 
 interface DefaultActiveTab {
 	top: Dashboard.TTopSymbols;
-	bottom: Dashboard.TTopSymbolType;
+	bottom: Dashboard.TTopSymbol;
 }
 
 const Best = () => {
@@ -23,7 +23,7 @@ const Best = () => {
 		}));
 	};
 
-	const bottomTabs = useMemo<Array<ITab<Dashboard.TTopSymbolType>>>(() => {
+	const bottomTabs = useMemo<Array<ITab<Dashboard.TTopSymbol>>>(() => {
 		if (defaultTab.top === 'BaseSymbol')
 			return [
 				{ id: 'BaseSymbolCallOpenPosition', title: t('home.tab_call_open_position') },

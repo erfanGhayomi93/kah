@@ -28,7 +28,11 @@ const BaseSymbolDetail = ({ symbolData, onExpand }: BaseSymbolDetailProps) => {
 	const items: [ISymbolItem[], ISymbolItem[]] = useMemo(
 		() => [
 			[
-				{ id: 'market_ype', title: t('symbol_info_panel.market_ype'), value: symbolData.exchange ?? '−' },
+				{
+					id: 'market_ype',
+					title: t('symbol_info_panel.market_ype'),
+					value: t(`exchange.${symbolData.exchange}`) ?? '−',
+				},
 				{
 					id: 'trade_value',
 					title: t('symbol_info_panel.trade_value'),

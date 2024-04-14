@@ -9,10 +9,9 @@ export interface IColDef<T> {
 interface LightweightTableProps<T extends unknown> {
 	rowData: T[];
 	columnDefs: Array<IColDef<T>>;
-	getRowId?: (row: T, index: number) => string | number;
 }
 
-const LightweightTable = <T extends unknown>({ columnDefs, rowData, getRowId }: LightweightTableProps<T>) => {
+const LightweightTable = <T extends unknown>({ columnDefs, rowData }: LightweightTableProps<T>) => {
 	return (
 		<table className={styles.table}>
 			<thead className={styles.thead}>
