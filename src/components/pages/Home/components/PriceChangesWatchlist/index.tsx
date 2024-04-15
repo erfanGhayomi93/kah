@@ -2,8 +2,12 @@ import { useGetOptionWatchlistPriceChangeInfoQuery } from '@/api/queries/dashboa
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Section from '../../common/Section';
-import PriceChangesWatchlistChart from './PriceChangesWatchlistChart';
+
+const PriceChangesWatchlistChart = dynamic(() => import('./PriceChangesWatchlistChart'), {
+	loading: () => <Loading />,
+});
 
 const PriceChangesWatchlist = () => {
 	const t = useTranslations();

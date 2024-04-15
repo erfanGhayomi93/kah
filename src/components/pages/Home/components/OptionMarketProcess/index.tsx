@@ -2,9 +2,13 @@ import { useGetMarketProcessChartQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
-import OptionMarketProcessChart from './OptionMarketProcessChart';
+
+const OptionMarketProcessChart = dynamic(() => import('./OptionMarketProcessChart'), {
+	loading: () => <Loading />,
+});
 
 interface DefaultActiveTab {
 	top: Dashboard.TInterval;

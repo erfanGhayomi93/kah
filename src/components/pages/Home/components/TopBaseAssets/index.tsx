@@ -2,8 +2,12 @@ import { useGetTopOptionBaseSymbolValueQuery } from '@/api/queries/dashboardQuer
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Section from '../../common/Section';
-import TopBaseAssetsTable from './TopBaseAssetsTable';
+
+const TopBaseAssetsTable = dynamic(() => import('./TopBaseAssetsTable'), {
+	loading: () => <Loading />,
+});
 
 const TopBaseAssets = () => {
 	const t = useTranslations();
