@@ -2,9 +2,13 @@ import { useGetOptionContractAdditionalInfoQuery } from '@/api/queries/dashboard
 import Loading from '@/components/common/Loading';
 import { numFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import Section from '../../common/Section';
-import OptionContractsChart from './OptionContractsChart';
+
+const OptionContractsChart = dynamic(() => import('./OptionContractsChart'), {
+	loading: () => <Loading />,
+});
 
 interface DefaultActiveTab {
 	top: Dashboard.GetOptionContractAdditionalInfo.Basis;

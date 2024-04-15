@@ -852,7 +852,7 @@ declare namespace Message {
 declare namespace Dashboard {
 	export type TMarketStateExchange = 'Bourse' | 'FaraBourse' | 'Option';
 
-	export type TIndex = 'Overall' | 'EqualWeightOverall' | 'X';
+	export type TIndex = 'Overall' | 'EqualWeightOverall' | 'RetailTrades';
 
 	export type TTopSymbols = 'Option' | 'BaseSymbol' | 'Symbol';
 

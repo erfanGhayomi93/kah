@@ -2,9 +2,13 @@ import { useGetOptionMarketComparisonQuery } from '@/api/queries/dashboardQuerie
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
-import CompareTransactionValueChart from './CompareTransactionValueChart';
+
+const CompareTransactionValueChart = dynamic(() => import('./CompareTransactionValueChart'), {
+	loading: () => <Loading />,
+});
 
 interface DefaultActiveTab {
 	top: Dashboard.TInterval;
