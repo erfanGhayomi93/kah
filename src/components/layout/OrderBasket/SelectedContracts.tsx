@@ -21,14 +21,18 @@ const SelectedContracts = ({ data, selectedData, setSelectedData }: SelectedCont
 
 	const dispatch = useAppDispatch();
 
+	const filterBasketItems = (id: string) => (item: IOrderBasket) => {
+		return item.id !== id;
+	};
+
 	const onSelect = (id: string, order: IOrderBasket, checked: boolean) => {
 		if (checked) setSelectedData([...selectedData, order]);
-		else setSelectedData(selectedData.filter((item) => item.id !== id));
+		else setSelectedData(selectedData.filter(filterBasketItems(id)));
 	};
 
 	const onDelete = (id: string) => {
-		setSelectedData(selectedData.filter((item, index) => item.id !== id));
-		dispatch(setOrderBasket(data.filter((item, index) => item.id !== id)));
+		setSelectedData(selectedData.filter(filterBasketItems(id)));
+		dispatch(setOrderBasket(data.filter(filterBasketItems(id))));
 	};
 
 	const addEmptyRow = () => {

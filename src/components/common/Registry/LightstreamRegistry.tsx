@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setLsStatus } from '@/features/slices/uiSlice';
 import { getIsLoggingIn } from '@/features/slices/userSlice';
 import { useUserInfo } from '@/hooks';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface LightstreamRegistryProps {
 	children: React.ReactNode;
@@ -34,7 +34,7 @@ const LightstreamRegistry = ({ children }: LightstreamRegistryProps) => {
 		lightstream.current.setUsername(userInfo?.nationalCode ?? null).restart();
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (isLoggingIn || isLoading) return;
 
 		if (!lightstream.current) registerLightstream();

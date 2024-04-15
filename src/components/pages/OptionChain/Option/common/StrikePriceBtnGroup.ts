@@ -39,12 +39,12 @@ class StrikePriceBtnGroup {
 		this.eGroup = document.createElement('div');
 		this.eGroup.setAttribute(
 			'class',
-			clsx('relative gap-8 flex-items-center', this.side === 'buy' && 'flex-row-reverse'),
+			clsx('relative gap-8 flex-items-center', this.side === 'sell' && 'flex-row-reverse'),
 		);
 
 		this.eGroup.appendChild(this._createBuyBtn());
 		this.eGroup.appendChild(this._createSellBtn());
-		this.eGroup.appendChild(this._createBasketBtn());
+		this.eGroup.appendChild(this._createTechnicalChartBtn());
 		this.eGroup.appendChild(this._createDropdownBtn());
 	}
 
@@ -65,13 +65,7 @@ class StrikePriceBtnGroup {
 		btn.textContent = 'B';
 		btn.onclick = (e) => {
 			e.stopPropagation();
-			this.params.addBuySellModal({
-				side: 'buy',
-				mode: 'create',
-				symbolType: 'option',
-				symbolISIN: this.data.symbolInfo.symbolISIN,
-				symbolTitle: this.data.symbolInfo.symbolTitle,
-			});
+			this.params.addSymbolToBasket(this.data, 'buy');
 		};
 
 		return btn;
@@ -84,30 +78,21 @@ class StrikePriceBtnGroup {
 		btn.textContent = 'S';
 		btn.onclick = (e) => {
 			e.stopPropagation();
-			this.params.addBuySellModal({
-				side: 'sell',
-				mode: 'create',
-				symbolType: 'option',
-				symbolISIN: this.data.symbolInfo.symbolISIN,
-				symbolTitle: this.data.symbolInfo.symbolTitle,
-			});
+			this.params.addSymbolToBasket(this.data, 'sell');
 		};
 
 		return btn;
 	}
 
-	private _createBasketBtn() {
+	private _createTechnicalChartBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
 		btn.classList.add('hover:bg-gray-200');
-		btn.innerHTML = this.isInBasket
-			? '<svg width="2rem" height="2rem" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.18773 4.0097C4.86229 3.68427 4.33465 3.68427 4.00921 4.0097C3.68378 4.33514 3.68378 4.86277 4.00921 5.18822L8.82148 10.0005L4.00926 14.8127C3.68383 15.1381 3.68383 15.6658 4.00926 15.9912C4.3347 16.3166 4.86234 16.3166 5.18777 15.9912L9.99998 11.179L14.8122 15.9912C15.1376 16.3166 15.6653 16.3166 15.9907 15.9912C16.3161 15.6658 16.3161 15.1381 15.9907 14.8127L11.1785 10.0005L15.9908 5.18822C16.3162 4.86277 16.3162 4.33514 15.9908 4.0097C15.6654 3.68427 15.1377 3.68427 14.8123 4.0097L9.99998 8.82197L5.18773 4.0097Z" fill="currentColor" /></svg>'
-			: '<svg width="2.4rem" height="2.4rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.5249 18.7505H8.47494C7.77912 18.7492 7.10537 18.5062 6.56904 18.0629C6.03271 17.6196 5.66715 17.0036 5.53494 16.3205L4.53744 11.1305C4.48642 10.8715 4.49348 10.6044 4.5581 10.3485C4.62273 10.0925 4.74331 9.85412 4.91117 9.6504C5.07903 9.44667 5.28998 9.28271 5.52882 9.17033C5.76767 9.05795 6.02848 8.99994 6.29244 9.00048H17.7074C17.9746 8.9943 18.2396 9.04817 18.4832 9.1581C18.7267 9.26804 18.9424 9.43124 19.1144 9.63566C19.2865 9.84009 19.4104 10.0805 19.4771 10.3392C19.5439 10.598 19.5517 10.8683 19.4999 11.1305L18.5024 16.3205C18.369 17.01 17.998 17.6308 17.4539 18.0749C16.9098 18.5189 16.2272 18.758 15.5249 18.7505Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 5.25L8.25 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 5.25L15.75 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.75 12.75V14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.25 12.75V14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+		btn.innerHTML =
+			'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="path-1-inside-1_752_14024" fill="white"><path d="M19.9999 20H4V4H5.23079V17.352L8.21226 12.8799L10.6348 15.3026L13.1611 10.8814L15.1136 13.4848L18.9212 9.13303L19.8479 9.94377L15.0404 15.4379L13.3007 13.1183L10.9038 17.3123L8.40317 14.8121L5.76524 18.7692L20 18.769L19.9999 20Z"/></mask><path d="M19.9999 20V21.5H21.4997L21.4999 20.0001L19.9999 20ZM4 20H2.5V21.5H4V20ZM4 4V2.5H2.5V4H4ZM5.23079 4H6.73079V2.5H5.23079V4ZM5.23079 17.352H3.73079V22.3061L6.47886 18.1841L5.23079 17.352ZM8.21226 12.8799L9.27296 11.8193L7.97917 10.5254L6.96419 12.0478L8.21226 12.8799ZM10.6348 15.3026L9.57411 16.3632L10.9628 17.752L11.9372 16.0468L10.6348 15.3026ZM13.1611 10.8814L14.3612 9.98145L12.9914 8.15505L11.8588 10.1372L13.1611 10.8814ZM15.1136 13.4848L13.9136 14.3848L15.0239 15.8653L16.2425 14.4725L15.1136 13.4848ZM18.9212 9.13303L19.9088 8.00404L18.7799 7.01652L17.7923 8.14531L18.9212 9.13303ZM19.8479 9.94377L20.9768 10.9315L21.9647 9.80254L20.8356 8.81478L19.8479 9.94377ZM15.0404 15.4379L13.8404 16.3379L14.9506 17.8183L16.1692 16.4257L15.0404 15.4379ZM13.3007 13.1183L14.5007 12.2183L13.131 10.392L11.9983 12.374L13.3007 13.1183ZM10.9038 17.3123L9.84327 18.373L11.2319 19.7614L12.2062 18.0566L10.9038 17.3123ZM8.40317 14.8121L9.46373 13.7513L8.1699 12.4577L7.15507 13.98L8.40317 14.8121ZM5.76524 18.7692L4.51714 17.9372L2.96254 20.2692L5.76527 20.2692L5.76524 18.7692ZM20 18.769L21.5 18.7691L21.5001 17.269L20 17.269L20 18.769ZM19.9999 18.5H4V21.5H19.9999V18.5ZM5.5 20V4H2.5V20H5.5ZM4 5.5H5.23079V2.5H4V5.5ZM3.73079 4V17.352H6.73079V4H3.73079ZM6.47886 18.1841L9.46032 13.7119L6.96419 12.0478L3.98272 16.5199L6.47886 18.1841ZM7.15156 13.9405L9.57411 16.3632L11.6955 14.242L9.27296 11.8193L7.15156 13.9405ZM11.9372 16.0468L14.4635 11.6256L11.8588 10.1372L9.33244 14.5584L11.9372 16.0468ZM11.9611 11.7814L13.9136 14.3848L16.3136 12.5848L14.3612 9.98145L11.9611 11.7814ZM16.2425 14.4725L20.05 10.1208L17.7923 8.14531L13.9847 12.4971L16.2425 14.4725ZM17.9335 10.262L18.8603 11.0728L20.8356 8.81478L19.9088 8.00404L17.9335 10.262ZM18.7191 8.956L13.9115 14.4502L16.1692 16.4257L20.9768 10.9315L18.7191 8.956ZM16.2404 14.538L14.5007 12.2183L12.1007 14.0183L13.8404 16.3379L16.2404 14.538ZM11.9983 12.374L9.60151 16.568L12.2062 18.0566L14.603 13.8626L11.9983 12.374ZM11.9644 16.2515L9.46373 13.7513L7.3426 15.8728L9.84327 18.373L11.9644 16.2515ZM7.15507 13.98L4.51714 17.9372L7.01335 19.6012L9.65127 15.6441L7.15507 13.98ZM5.76527 20.2692L20 20.269L20 17.269L5.76522 17.2692L5.76527 20.2692ZM18.5 18.7688L18.4999 19.9999L21.4999 20.0001L21.5 18.7691L18.5 18.7688Z" fill="#5D606D" mask="url(#path-1-inside-1_752_14024)"/></svg>';
 		btn.onclick = (e) => {
 			e.stopPropagation();
-
-			if (this.isInBasket) this.params.removeSymbolFromBasket(this.data);
-			else this.params.addSymbolToBasket(this.data, this.side === 'buy' ? 'call' : 'put');
+			this.params.goToTechnicalChart(this.params.data![this.side]!);
 		};
 
 		return btn;
@@ -147,7 +132,7 @@ class StrikePriceBtnGroup {
 			this.eDropdown.style.zIndex = '999';
 			this.eDropdown.style.width = '248px';
 			this.eDropdown.style[this.side === 'buy' ? 'left' : 'right'] = '0px';
-			this.eDropdown.style.top = dropdownOriginalTop > maxTop ? '-148px' : '40px';
+			this.eDropdown.style.top = dropdownOriginalTop > maxTop ? '-104px' : '40px';
 
 			const a = document.createElement('li');
 			const aBtn = document.createElement('button');
@@ -179,27 +164,10 @@ class StrikePriceBtnGroup {
 				this.removeDropdown();
 			};
 
-			const c = document.createElement('li');
-			const cBtn = document.createElement('button');
-			cBtn.setAttribute(
-				'class',
-				'w-full h-48 text-base px-16 gap-8 text-gray-900 flex-justify-end hover:btn-hover transition-colors',
-			);
-			cBtn.type = 'button';
-			cBtn.innerHTML =
-				'ابزار تکنیکال<svg width="2.4rem" height="2.4rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.29395 10.5625V16.0505" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M12.0312 7.9375V16.0519" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M15.7061 13.4609V16.0489" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7486 4H8.25143C5.6381 4 4 5.84967 4 8.46813V15.5319C4 18.1503 5.63048 20 8.25143 20H15.7486C18.3695 20 20 18.1503 20 15.5319V8.46813C20 5.84967 18.3695 4 15.7486 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>';
-			cBtn.onclick = (e) => {
-				e.stopPropagation();
-				this.params.goToTechnicalChart(this.data);
-				this.removeDropdown();
-			};
-
 			a.appendChild(aBtn);
 			b.appendChild(bBtn);
-			c.appendChild(cBtn);
 			this.eDropdown.appendChild(a);
 			this.eDropdown.appendChild(b);
-			this.eDropdown.appendChild(c);
 
 			this.eGroup.appendChild(this.eDropdown);
 		} catch (e) {
