@@ -11,11 +11,12 @@ const oauthUrl =
 			? 'https://ramandoauth-preprd.ramandtech.com'
 			: 'https://ramandoauth.ramandtech.com';
 
-const rlcUrl = isStage
-	? 'https://kahkeshanapi-stage.ramandtech.com'
-	: isPre
-		? 'https://kahkeshanapi-preprd.ramandtech.com'
-		: 'https://kahkeshanapi.ramandtech.com';
+const rlcUrl =
+	isStage || isDev
+		? 'https://kahkeshanapi-stage.ramandtech.com'
+		: isPre
+			? 'https://kahkeshanapi-preprd.ramandtech.com'
+			: 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
 	pushengine: isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
