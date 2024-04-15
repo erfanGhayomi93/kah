@@ -1,6 +1,4 @@
-import { useGetOptionTradeProcessQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
-import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -21,10 +19,6 @@ const OptionTradesValue = () => {
 	const [defaultTab, setDefaultTab] = useState<DefaultActiveTab>({
 		top: 'Today',
 		bottom: 'Process',
-	});
-
-	const { data, isFetching } = useGetOptionTradeProcessQuery({
-		queryKey: ['getOptionTradeProcessQuery', defaultTab.top],
 	});
 
 	const setDefaultTabByPosition = <T extends keyof DefaultActiveTab>(position: T, value: DefaultActiveTab[T]) => {
@@ -56,19 +50,7 @@ const OptionTradesValue = () => {
 			}}
 		>
 			<div className='relative flex-1 overflow-hidden'>
-				<OptionTradesValueChart data={data ?? []} interval={defaultTab.top} type={defaultTab.bottom} />
-
-				{isFetching ? (
-					<div className='absolute size-full bg-white center'>
-						<Loading />
-					</div>
-				) : (
-					!data?.length && (
-						<div className='absolute size-full bg-white center'>
-							<NoData />
-						</div>
-					)
-				)}
+				<OptionTradesValueChart interval={defaultTab.top} type={defaultTab.bottom} />
 			</div>
 		</Section>
 	);

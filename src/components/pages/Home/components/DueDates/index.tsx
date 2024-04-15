@@ -1,6 +1,4 @@
-import { useGetOptionSettlementInfoQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
-import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -14,10 +12,6 @@ const DueDates = () => {
 	const t = useTranslations();
 
 	const [type, setType] = useState<Dashboard.GetOptionSettlementInfo.Type>('MostRecent');
-
-	const { data, isFetching } = useGetOptionSettlementInfoQuery({
-		queryKey: ['getOptionSettlementInfoQuery', type],
-	});
 
 	return (
 		<Section<string, Dashboard.GetOptionSettlementInfo.Type>
@@ -33,13 +27,7 @@ const DueDates = () => {
 			}}
 		>
 			<div className='relative flex-1 overflow-hidden p-8'>
-				{isFetching ? (
-					<Loading />
-				) : !data?.length ? (
-					<NoData />
-				) : (
-					<DueDatesTable type={type} data={data ?? {}} />
-				)}
+				<DueDatesTable type={type} />
 			</div>
 		</Section>
 	);

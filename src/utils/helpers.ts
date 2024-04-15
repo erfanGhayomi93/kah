@@ -414,3 +414,16 @@ export const uuidv4 = () => {
 		(+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16),
 	);
 };
+
+export const toFixed = (v: number, l = 3) => {
+	if (isNaN(v) || v === Infinity) return '−';
+
+	if (l === 0) return sepNumbers(v.toFixed(0));
+
+	const value = v.toFixed(l);
+	const [integer, decimal] = value.split('.');
+
+	if (!Number(decimal)) return sepNumbers(integer);
+
+	return sepNumbers(integer) + '.' + Number(decimal) * 1;
+};

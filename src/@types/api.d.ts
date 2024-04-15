@@ -993,15 +993,15 @@ declare namespace Dashboard {
 		}
 
 		export namespace BaseSymbol {
-			export type All = Value | PutOpenPosition | CallOpenPosition | OpenPositions | Volume;
+			export type All = Value | PutOpenPosition | CallOpenPosition | OpenPosition | Volume;
 
-			export type AllAsArray = Value[] | PutOpenPosition[] | CallOpenPosition[] | OpenPositions[] | Volume[];
+			export type AllAsArray = Value[] | PutOpenPosition[] | CallOpenPosition[] | OpenPosition[] | Volume[];
 
 			export type Type =
 				| 'BaseSymbolValue'
 				| 'BaseSymbolPutOpenPosition'
 				| 'BaseSymbolCallOpenPosition'
-				| 'BaseSymbolOpenPositions'
+				| 'BaseSymbolOpenPosition'
 				| 'BaseSymbolVolume';
 
 			export interface Value {
@@ -1014,7 +1014,7 @@ declare namespace Dashboard {
 			}
 
 			export interface PutOpenPosition {
-				symbolTitle: string;
+				baseSymbolTitle: string;
 				openPosition: number;
 				openPositionVarPercent: number;
 				contractCount: number;
@@ -1022,15 +1022,15 @@ declare namespace Dashboard {
 			}
 
 			export interface CallOpenPosition {
-				symbolTitle: string;
+				baseSymbolTitle: string;
 				openPosition: number;
 				openPositionVarPercent: number;
 				contractCount: number;
 				closestEndDate: string;
 			}
 
-			export interface OpenPositions {
-				symbolTitle: string;
+			export interface OpenPosition {
+				baseSymbolTitle: string;
 				openPosition: number;
 				openPositionVarPercent: number;
 				contractCount: number;

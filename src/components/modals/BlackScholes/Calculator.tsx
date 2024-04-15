@@ -1,6 +1,6 @@
 import { blackScholes } from '@/utils/Math/black-scholes';
 import { type IBlackScholesResponse } from '@/utils/Math/type';
-import { cn, sepNumbers } from '@/utils/helpers';
+import { cn, toFixed } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useState } from 'react';
 import styles from './BlackScholes.module.scss';
@@ -24,19 +24,6 @@ const Calculator = (props: CalculatorProps) => {
 		lambdaPut: 0,
 		gamma: 0,
 	});
-
-	const numFormatter = (v: number, l = 3) => {
-		if (isNaN(v) || v === Infinity) return '−';
-
-		if (l === 0) return sepNumbers(v.toFixed(0));
-
-		const value = v.toFixed(l);
-		const [integer, decimal] = value.split('.');
-
-		if (!decimal) return sepNumbers(integer);
-
-		return sepNumbers(integer) + '.' + decimal;
-	};
 
 	useLayoutEffect(() => {
 		const { strikePrice, dueDays, volatility, riskFreeProfit, sharePrice } = props;
@@ -63,12 +50,12 @@ const Calculator = (props: CalculatorProps) => {
 					)}
 				>
 					<legend>Call</legend>
-					<div className={cn('text-lg', styles.part)}>{numFormatter(values.call, 0)}</div>
-					<div className={cn(styles.green, styles.part)}>{numFormatter(values.deltaCall)}</div>
-					<div className={cn(styles.green, styles.part)}>{numFormatter(values.gamma, 7)}</div>
-					<div className={cn(styles.green, styles.part)}>{numFormatter(values.vega)}</div>
-					<div className={cn(styles.green, styles.part)}>{numFormatter(values.thetaCall)}</div>
-					<div className={cn(styles.green, styles.part)}>{numFormatter(values.rhoCall)}</div>
+					<div className={cn('text-lg', styles.part)}>{toFixed(values.call, 0)}</div>
+					<div className={cn(styles.green, styles.part)}>{toFixed(values.deltaCall)}</div>
+					<div className={cn(styles.green, styles.part)}>{toFixed(values.gamma, 7)}</div>
+					<div className={cn(styles.green, styles.part)}>{toFixed(values.vega)}</div>
+					<div className={cn(styles.green, styles.part)}>{toFixed(values.thetaCall)}</div>
+					<div className={cn(styles.green, styles.part)}>{toFixed(values.rhoCall)}</div>
 				</fieldset>
 
 				<div
@@ -91,12 +78,12 @@ const Calculator = (props: CalculatorProps) => {
 					)}
 				>
 					<legend>Put</legend>
-					<div className={cn('text-lg', styles.part)}>{numFormatter(values.put, 0)}</div>
-					<div className={cn(styles.red, styles.part)}>{numFormatter(values.deltaPut)}</div>
-					<div className={cn(styles.red, styles.part)}>{numFormatter(values.gamma, 7)}</div>
-					<div className={cn(styles.red, styles.part)}>{numFormatter(values.vega)}</div>
-					<div className={cn(styles.red, styles.part)}>{numFormatter(values.thetaPut)}</div>
-					<div className={cn(styles.red, styles.part)}>{numFormatter(values.rhoPut)}</div>
+					<div className={cn('text-lg', styles.part)}>{toFixed(values.put, 0)}</div>
+					<div className={cn(styles.red, styles.part)}>{toFixed(values.deltaPut)}</div>
+					<div className={cn(styles.red, styles.part)}>{toFixed(values.gamma, 7)}</div>
+					<div className={cn(styles.red, styles.part)}>{toFixed(values.vega)}</div>
+					<div className={cn(styles.red, styles.part)}>{toFixed(values.thetaPut)}</div>
+					<div className={cn(styles.red, styles.part)}>{toFixed(values.rhoPut)}</div>
 				</fieldset>
 			</div>
 
