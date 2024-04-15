@@ -73,7 +73,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 
 	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
 
-	const addSymbolToBasket = (data: Option.Root, type: TOptionSides) => {
+	const addSymbolToBasket = (data: Option.Root, side: TBsSides) => {
 		if (!isLoggedIn) showLoginModal();
 		else if (!brokerURLs) showChoiceBrokerModal();
 		else {
@@ -92,18 +92,14 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 							price: data.optionWatchlistData.bestBuyPrice || 1,
 							quantity: data.optionWatchlistData.openPositionCount || 1,
 							settlementDay: data.symbolInfo.contractEndDate,
-							type,
-							side: 'buy',
+							type: data.symbolInfo.optionType === 'Call' ? 'call' : 'put',
+							side,
 							strikePrice: data.symbolInfo.strikePrice,
 						},
 					]),
 				);
 			}
 		}
-	};
-
-	const removeSymbolFromBasket = (data: Option.Root) => {
-		dispatch(setOrderBasket(orderBasket.filter((item) => item.symbolISIN !== data.symbolInfo.symbolISIN)));
 	};
 
 	const addSymbolToWatchlist = (data: Option.Root) => {
@@ -215,9 +211,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 						cellRendererParams: {
 							activeRowId,
 							basket: [],
-							addBuySellModal,
 							addSymbolToBasket,
-							removeSymbolFromBasket,
 							addSymbolToWatchlist,
 							addAlert,
 							goToTechnicalChart,
@@ -364,7 +358,6 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 				basket: orderBasket,
 				addBuySellModal,
 				addSymbolToBasket,
-				removeSymbolFromBasket,
 				addSymbolToWatchlist,
 				addAlert,
 				goToTechnicalChart,
