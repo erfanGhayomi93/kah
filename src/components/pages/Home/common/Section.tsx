@@ -65,7 +65,9 @@ const Section = <T extends string = string, B extends string = string>({
 		const eRoot = rootRef.current;
 		if (!eRoot) return;
 
-		observer.current = new IntersectionObserver(onVisibilityChange);
+		observer.current = new IntersectionObserver(onVisibilityChange, {
+			threshold: 0.25,
+		});
 		observer.current.observe(eRoot);
 
 		return () => disconnect();

@@ -1,6 +1,5 @@
 import { useOptionCalculativeInfoQuery } from '@/api/queries/optionQueries';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
-import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -16,11 +15,6 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 		queryKey: ['optionCalculativeInfoQuery', symbol?.symbolISIN ?? ''],
 		enabled: Boolean(symbol?.symbolISIN),
 	});
-
-	const dateFormatter = (v: string | number | null) => {
-		if (!v) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss');
-	};
 
 	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
 		try {
