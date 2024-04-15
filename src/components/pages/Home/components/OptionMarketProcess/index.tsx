@@ -1,10 +1,12 @@
-import { useGetMarketProcessChartQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
-import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
-import OptionMarketProcessChart from './OptionMarketProcessChart';
+
+const OptionMarketProcessChart = dynamic(() => import('./OptionMarketProcessChart'), {
+	loading: () => <Loading />,
+});
 
 interface DefaultActiveTab {
 	top: Dashboard.TInterval;
@@ -19,18 +21,12 @@ const OptionMarketProcess = () => {
 		bottom: 'Volume',
 	});
 
-	const { data, isFetching } = useGetMarketProcessChartQuery({
-		queryKey: ['getMarketProcessChartQuery', defaultTab.top, defaultTab.bottom],
-	});
-
 	const setDefaultTabByPosition = <T extends keyof DefaultActiveTab>(position: T, value: DefaultActiveTab[T]) => {
 		setDefaultTab((prev) => ({
 			...prev,
 			[position]: value,
 		}));
 	};
-
-	const dataIsEmpty = Object.keys(data ?? {}).length === 0;
 
 	return (
 		<Section<DefaultActiveTab['top'], DefaultActiveTab['bottom']>
@@ -55,19 +51,7 @@ const OptionMarketProcess = () => {
 			}}
 		>
 			<div className='relative flex-1 overflow-hidden'>
-				<OptionMarketProcessChart interval={defaultTab.top} data={data ?? {}} />
-
-				{isFetching ? (
-					<div className='absolute size-full bg-white center'>
-						<Loading />
-					</div>
-				) : (
-					dataIsEmpty && (
-						<div className='absolute size-full bg-white center'>
-							<NoData />
-						</div>
-					)
-				)}
+				<OptionMarketProcessChart interval={defaultTab.top} type={defaultTab.bottom} />
 			</div>
 		</Section>
 	);

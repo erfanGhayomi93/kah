@@ -1,24 +1,25 @@
+import clsx from 'clsx';
 import styles from './LightweightTable.module.scss';
 
 export interface IColDef<T> {
 	headerName: string;
-	colId: string | number;
+	cellClass?: ClassesValue;
+	headerClass?: ClassesValue;
 	valueFormatter: (row: T) => React.ReactNode;
 }
 
 interface LightweightTableProps<T extends unknown> {
 	rowData: T[];
 	columnDefs: Array<IColDef<T>>;
-	getRowId?: (row: T, index: number) => string | number;
 }
 
-const LightweightTable = <T extends unknown>({ columnDefs, rowData, getRowId }: LightweightTableProps<T>) => {
+const LightweightTable = <T extends unknown>({ columnDefs, rowData }: LightweightTableProps<T>) => {
 	return (
 		<table className={styles.table}>
 			<thead className={styles.thead}>
 				<tr className={styles.tr}>
 					{columnDefs.map((item, i) => (
-						<th className={styles.th} key={i}>
+						<th className={clsx(styles.th, item.headerClass)} key={i}>
 							{item.headerName}
 						</th>
 					))}
@@ -28,7 +29,7 @@ const LightweightTable = <T extends unknown>({ columnDefs, rowData, getRowId }: 
 				{rowData.map((cell, i) => (
 					<tr className={styles.tr} key={i}>
 						{columnDefs.map((col, i) => (
-							<td className={styles.td} key={i}>
+							<td className={clsx(styles.td, col.cellClass)} key={i}>
 								{col.valueFormatter(cell)}
 							</td>
 						))}

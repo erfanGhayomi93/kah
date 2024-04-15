@@ -36,6 +36,7 @@ const routes = {
 		GetFirstTradedOptionSymbol: `${rlcUrl}/Dashboard/v1/GetFirstTradedOptionSymbol`,
 		GetMostTradedOptionSymbol: `${rlcUrl}/Dashboard/v1/GetMostTradedOptionSymbol`,
 		GetOptionSettlementInfo: `${rlcUrl}/Dashboard/v1/GetOptionSettlementInfo`,
+		GetAnnualReport: `${rlcUrl}/Dashboard/v1/GetAnnualReport`,
 	},
 
 	common: {

@@ -12,87 +12,70 @@ import { toast } from 'react-toastify';
 import Loading from './components/Loading';
 
 const Best = dynamic(() => import('./components/Best'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const CompareTransactionValue = dynamic(() => import('./components/CompareTransactionValue'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const Custom = dynamic(() => import('./components/Custom'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const DueDates = dynamic(() => import('./components/DueDates'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const IndividualAndLegal = dynamic(() => import('./components/IndividualAndLegal'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const MarketState = dynamic(() => import('./components/MarketState'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const MarketView = dynamic(() => import('./components/MarketView'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const Meetings = dynamic(() => import('./components/Meetings'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const NewAndOld = dynamic(() => import('./components/NewAndOld'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const OpenPositionsProcess = dynamic(() => import('./components/OpenPositionsProcess'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const OptionContracts = dynamic(() => import('./components/OptionContracts'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const OptionMarketProcess = dynamic(() => import('./components/OptionMarketProcess'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const OptionTradesValue = dynamic(() => import('./components/OptionTradesValue'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const PriceChangesWatchlist = dynamic(() => import('./components/PriceChangesWatchlist'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const RecentActivities = dynamic(() => import('./components/RecentActivities'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const TopBaseAssets = dynamic(() => import('./components/TopBaseAssets'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 
 const UserProgressBar = dynamic(() => import('./components/UserProgressBar'), {
-	ssr: true,
 	loading: () => <Loading />,
 });
 

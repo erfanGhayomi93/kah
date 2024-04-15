@@ -1,9 +1,7 @@
+import { useGetOptionWatchlistPriceChangeInfoQuery } from '@/api/queries/dashboardQueries';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
-
-interface PriceChangesWatchlistChartProps {
-	data: Dashboard.GetOptionWatchlistPriceChangeInfo.IChartData[];
-}
+import Suspend from '../../common/Suspend';
 
 const COLORS = [
 	'rgba(255, 0, 40, 1)',
@@ -25,8 +23,14 @@ const BG_COLORS = [
 	'rgba(0, 164, 115, 0.05)',
 ];
 
-const PriceChangesWatchlistChart = ({ data }: PriceChangesWatchlistChartProps) => {
+const PriceChangesWatchlistChart = () => {
+	const { data, isFetching } = useGetOptionWatchlistPriceChangeInfoQuery({
+		queryKey: ['getOptionWatchlistPriceChangeInfoQuery'],
+	});
+
 	const dataMapper = useMemo<Array<{ x: string; fillColor: string; strokeColor: string; y: number }>>(() => {
+		if (!Array.isArray(data)) return [];
+
 		return data.map((item, i) => ({
 			x: item.state,
 			y: Math.max(0, Math.min(item.count, 100)),
@@ -36,136 +40,150 @@ const PriceChangesWatchlistChart = ({ data }: PriceChangesWatchlistChartProps) =
 	}, [data]);
 
 	return (
-		<Chart
-			options={{
-				states: {
-					active: {
-						filter: {
-							type: 'none',
+		<>
+			<Chart
+				options={{
+					states: {
+						active: {
+							filter: {
+								type: 'none',
+							},
 						},
-					},
-					hover: {
-						filter: {
-							type: 'none',
-						},
-					},
-				},
-				chart: {
-					stacked: false,
-					toolbar: {
-						show: false,
-					},
-					foreColor: 'rgb(146, 145, 165)',
-					zoom: {
-						enabled: false,
-					},
-				},
-				plotOptions: {
-					bar: {
-						columnWidth: '32%',
-						borderRadius: 6,
-						colors: {
-							backgroundBarColors: BG_COLORS,
-							backgroundBarRadius: 6,
-						},
-						dataLabels: {
-							position: 'top',
-						},
-					},
-				},
-				tooltip: {
-					cssClass: 'apex-tooltip',
-
-					style: {
-						fontFamily: 'IRANSans',
-						fontSize: '12px',
-					},
-
-					x: {
-						show: false,
-					},
-
-					y: {
-						title: {
-							formatter: () => {
-								return '';
+						hover: {
+							filter: {
+								type: 'none',
 							},
 						},
 					},
-				},
-				legend: {
-					show: false,
-				},
-				xaxis: {
-					tickAmount: 5,
-					offsetX: 0,
-					offsetY: 0,
-					axisBorder: {
-						show: false,
+					chart: {
+						stacked: false,
+						toolbar: {
+							show: false,
+						},
+						foreColor: 'rgb(146, 145, 165)',
+						zoom: {
+							enabled: false,
+						},
 					},
-					axisTicks: {
-						show: false,
+					plotOptions: {
+						bar: {
+							columnWidth: '32%',
+							borderRadius: 6,
+							colors: {
+								backgroundBarColors: BG_COLORS,
+								backgroundBarRadius: 6,
+							},
+							dataLabels: {
+								position: 'top',
+							},
+						},
 					},
-					labels: {
-						rotate: 0,
-						rotateAlways: false,
+					tooltip: {
+						cssClass: 'apex-tooltip',
+
 						style: {
 							fontFamily: 'IRANSans',
 							fontSize: '12px',
 						},
+
+						x: {
+							show: false,
+						},
+
+						y: {
+							title: {
+								formatter: () => {
+									return '';
+								},
+							},
+						},
 					},
-				},
-				yaxis: {
-					show: false,
-					axisBorder: {
+					legend: {
 						show: false,
 					},
-					axisTicks: {
-						show: false,
+					xaxis: {
+						tickAmount: 5,
+						offsetX: 0,
+						offsetY: 0,
+						axisBorder: {
+							show: false,
+						},
+						axisTicks: {
+							show: false,
+						},
+						labels: {
+							rotate: 0,
+							rotateAlways: false,
+							style: {
+								fontFamily: 'IRANSans',
+								fontSize: '12px',
+							},
+						},
 					},
-					labels: {
+					yaxis: {
 						show: false,
+						axisBorder: {
+							show: false,
+						},
+						axisTicks: {
+							show: false,
+						},
+						labels: {
+							show: false,
+							formatter: (value) => {
+								return `${value}%`;
+							},
+						},
+					},
+					dataLabels: {
+						textAnchor: 'middle',
+						offsetY: -24,
+						style: {
+							colors: ['rgba(93, 96, 109, 1)'],
+							fontWeight: 500,
+							fontFamily: 'IRANSans',
+							fontSize: '12px',
+						},
 						formatter: (value) => {
 							return `${value}%`;
 						},
 					},
-				},
-				dataLabels: {
-					textAnchor: 'middle',
-					style: {
-						colors: ['rgba(93, 96, 109, 1)'],
-						fontWeight: 500,
-						fontFamily: 'IRANSans',
-						fontSize: '12px',
+					grid: {
+						show: false,
+						padding: {
+							top: 0,
+							left: 0,
+							bottom: 0,
+							right: 0,
+						},
 					},
-					formatter: (value) => {
-						return `${value}%`;
+					stroke: {
+						colors: ['rgb(255, 255, 255)'],
+						curve: 'smooth',
+						width: 2,
 					},
-				},
-				grid: {
-					show: false,
-					padding: {
-						top: 0,
-						left: 0,
-						bottom: 0,
-						right: 0,
+					labels: [
+						'< ‎-4',
+						'‎-4 تا ‎-2',
+						'‎-2 تا ‎-0.5',
+						'‎+0.5 تا ‎-0.5',
+						'‎+2 تا ‎+0.5',
+						'‎+4 تا ‎+2',
+						'‎+4 <',
+					],
+				}}
+				series={[
+					{
+						data: dataMapper,
 					},
-				},
-				stroke: {
-					colors: ['rgb(255, 255, 255)'],
-					curve: 'smooth',
-					width: 2,
-				},
-			}}
-			series={[
-				{
-					data: dataMapper,
-				},
-			]}
-			type='bar'
-			width='100%'
-			height='100%'
-		/>
+				]}
+				type='bar'
+				width='100%'
+				height='100%'
+			/>
+
+			<Suspend isLoading={isFetching} isEmpty={!data?.length} />
+		</>
 	);
 };
 

@@ -6,6 +6,7 @@ import ArrowUpSVG from './arrow-up.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
+import ChainSVG from './chain.svg';
 import ChangeBrokerSVG from './change-broker.svg';
 import ChartDownSVG from './chart-down.svg';
 import ChartUpSVG from './chart-up.svg';
@@ -87,6 +88,7 @@ export {
 	BellSVG,
 	BookmarkSVG,
 	CalendarSVG,
+	ChainSVG,
 	ChangeBrokerSVG,
 	ChartDownSVG,
 	ChartUpSVG,

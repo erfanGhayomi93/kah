@@ -1,4 +1,4 @@
-import { dateFormatter, numFormatter } from '@/utils/helpers';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
@@ -48,6 +48,9 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 							formatter: () => {
 								return '';
 							},
+						},
+						formatter: (val) => {
+							return sepNumbers(String(val ?? 0));
 						},
 					},
 				},

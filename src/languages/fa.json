@@ -120,7 +120,21 @@
 		"itm": "ITM",
 		"otm": "OTM",
 		"call_contracts": "اختیارهای خرید",
-		"put_contracts": "اختیارهای فروش"
+		"put_contracts": "اختیارهای فروش",
+		"symbol_title": "نماد",
+		"date": "تاریخ",
+		"title": "عنوان",
+		"strike_date": "تاریخ اعمال",
+		"working_days_traded_count": "روزهای معامله شده",
+		"first_trade_date": "اولین روز معامله شده",
+		"detail": "جزئیات",
+		"daily": "روزانه",
+		"weekly": "هفتگی",
+		"monthly": "ماهانه",
+		"today_volume": "حجم امروز",
+		"today_value": "ارزش امروز",
+		"due_days": "روز مانده",
+		"passed_days": "روز گذشته"
 	},
 	"symbol_contracts_modal": {
 		"title": "انتخاب قرارداد {symbolTitle}",
@@ -768,6 +782,19 @@
 		"close_position": "بستن موقعیت",
 		"cancel_order": "لغو سفارش",
 		"edit": "ویرایش"
+	},
+	"exchange": {
+		"Exchange": "بورس",
+		"CommodityExchange": "بورس کالا",
+		"Future": "آتی",
+		"Option": "اختیار",
+		"BaseFaraBourse": "پایه فرابورس",
+		"BaseFaraBourseNoPublish": "پایه فرابورس (منتشر نمی شود)",
+		"Bourse": "بورس",
+		"FaraBourse": "فرابورس",
+		"EnergyExchange": "بورس انرژی",
+		"undefined": "تعریف نشده",
+		"null": "تعریف نشده"
 	},
 	"alerts": {
 		"can_not_hide_every_sections": "امکان مخفی کردن تمامی بخش‌ها وجود ندارد.",
