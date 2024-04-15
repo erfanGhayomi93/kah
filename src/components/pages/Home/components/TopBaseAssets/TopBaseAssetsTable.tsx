@@ -1,10 +1,9 @@
+import { useGetTopOptionBaseSymbolValueQuery } from '@/api/queries/dashboardQueries';
+import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-
-interface TopBaseAssetsTableProps {
-	data: Dashboard.GetTopOptionBaseSymbolValue.Data;
-}
 
 interface ITableData {
 	today: Dashboard.GetTopOptionBaseSymbolValue.Symbol;
@@ -12,11 +11,17 @@ interface ITableData {
 	month: Dashboard.GetTopOptionBaseSymbolValue.Symbol;
 }
 
-const TopBaseAssetsTable = ({ data }: TopBaseAssetsTableProps) => {
+const TopBaseAssetsTable = () => {
 	const t = useTranslations();
+
+	const { data, isFetching } = useGetTopOptionBaseSymbolValueQuery({
+		queryKey: ['getTopOptionBaseSymbolValueQuery'],
+	});
 
 	const dataMapper = useMemo(() => {
 		const result: ITableData[] = [];
+
+		if (!data) return result;
 
 		try {
 			const l = Math.max(
@@ -44,23 +49,32 @@ const TopBaseAssetsTable = ({ data }: TopBaseAssetsTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<ITableData>>>(
 		() => [
 			{
-				colId: 'daily',
 				headerName: t('home.daily'),
 				valueFormatter: (row) => row.today?.symbolTitle ?? '−',
 			},
 			{
-				colId: 'weekly',
 				headerName: t('home.weekly'),
 				valueFormatter: (row) => row.month?.symbolTitle ?? '−',
 			},
 			{
-				colId: 'monthly',
 				headerName: t('home.monthly'),
 				valueFormatter: (row) => row.week?.symbolTitle ?? '−',
 			},
 		],
 		[],
 	);
+
+	if (isFetching) return <Loading />;
+
+	if (
+		!data ||
+		Math.max(
+			data.monthTopOptionBaseSymbolValues.length,
+			data.todayTopOptionBaseSymbolValues.length,
+			data.weekTopOptionBaseSymbolValues.length,
+		) === 0
+	)
+		return <NoData />;
 
 	return <LightweightTable<ITableData> rowData={dataMapper} columnDefs={columnDefs} />;
 };

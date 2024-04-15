@@ -66,7 +66,7 @@ const Section = <T extends string = string, B extends string = string>({
 		if (!eRoot) return;
 
 		observer.current = new IntersectionObserver(onVisibilityChange, {
-			threshold: 0.25,
+			threshold: 0.2,
 		});
 		observer.current.observe(eRoot);
 
