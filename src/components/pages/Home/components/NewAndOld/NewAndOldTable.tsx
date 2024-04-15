@@ -36,17 +36,14 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<TTableData>>>(
 		() => [
 			{
-				colId: 'symbolTitle',
 				headerName: t('home.symbol_title'),
 				valueFormatter: (row) => row.symbolTitle ?? '−',
 			},
 			{
-				colId: 'date',
 				headerName: t('home.strike_date'),
 				valueFormatter: (row) => dateFormatter(row.contractEndDate, 'date'),
 			},
 			{
-				colId: 'date',
 				headerName: t(
 					`home.${type === 'FirstTradedOptionSymbol' ? 'first_trade_date' : 'working_days_traded_count'}`,
 				),
@@ -54,7 +51,6 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 					'firstTradeDate' in row ? fromNow(row.firstTradeDate) : row.workingDaysTradedCount,
 			},
 			{
-				colId: 'detail',
 				headerName: t('home.detail'),
 				valueFormatter: () => (
 					<button type='button' className='mx-auto text-gray-900 flex-justify-center'>

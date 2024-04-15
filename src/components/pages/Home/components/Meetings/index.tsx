@@ -1,6 +1,4 @@
-import { useGetAnnualReportQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
-import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -14,10 +12,6 @@ const Meetings = () => {
 	const t = useTranslations();
 
 	const [type, setType] = useState<Dashboard.GetAnnualReport.Type>('FundIncrease');
-
-	const { data, isFetching } = useGetAnnualReportQuery({
-		queryKey: ['getAnnualReportQuery', type],
-	});
 
 	return (
 		<Section<string, Dashboard.GetAnnualReport.Type>
@@ -33,7 +27,7 @@ const Meetings = () => {
 			}}
 		>
 			<div className='flex-1 overflow-hidden p-8'>
-				{isFetching ? <Loading /> : !data?.length ? <NoData /> : <MeetingTable data={data ?? []} />}
+				<MeetingTable type={type} />
 			</div>
 		</Section>
 	);
