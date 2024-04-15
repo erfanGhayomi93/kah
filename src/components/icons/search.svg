@@ -1,7 +1,7 @@
 <svg width="2rem" height="2rem" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<path
 		d="M9.80584 17.2966C13.9429 17.2966 17.2967 13.9428 17.2967 9.80578C17.2967 5.6687 13.9429 2.31494 9.80584 2.31494C5.66876 2.31494 2.315 5.6687 2.315 9.80578C2.315 13.9428 5.66876 17.2966 9.80584 17.2966Z"
-		stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+		stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 	<path d="M15.015 15.4043L17.9517 18.3335" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
 		stroke-linejoin="round" />
 </svg>
