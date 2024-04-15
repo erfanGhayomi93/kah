@@ -415,7 +415,7 @@ export const uuidv4 = () => {
 	);
 };
 
-export const toFixed = (v: number, l = 3) => {
+export const toFixed = (v: number, l = 3, round = true) => {
 	if (isNaN(v) || v === Infinity) return '−';
 
 	if (l === 0) return sepNumbers(v.toFixed(0));
@@ -423,7 +423,8 @@ export const toFixed = (v: number, l = 3) => {
 	const value = v.toFixed(l);
 	const [integer, decimal] = value.split('.');
 
-	if (!Number(decimal)) return sepNumbers(integer);
+	const decimalAsNumber = Number(decimal) * 1;
+	if (!decimalAsNumber) return sepNumbers(integer);
 
-	return sepNumbers(integer) + '.' + Number(decimal) * 1;
+	return sepNumbers(integer) + '.' + (round ? decimalAsNumber : decimal);
 };
