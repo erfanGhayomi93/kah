@@ -28,6 +28,8 @@
 	},
 	"header": {
 		"login": "ورود",
+		"search_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"register": "ثبت‌نام",
 		"exit": "خروج",
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
