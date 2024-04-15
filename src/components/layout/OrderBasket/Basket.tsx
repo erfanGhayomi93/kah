@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useLayoutEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const SelectedContracts = dynamic(() => import('./SelectedContracts'), {
 	ssr: false,
@@ -27,13 +28,15 @@ const Basket = () => {
 
 	const basketSnapshot = useRef<IOrderBasket[]>([]);
 
+	const sentOrders = useRef<Array<{ order: IOrderBasket; result: IpcMainChannels['order_sent'] }>>([]);
+
 	const dispatch = useAppDispatch();
 
 	const basket = useAppSelector(getOrderBasket);
 
 	const [submitting, setSubmitting] = useState(false);
 
-	const [isMaximized, setIsMaximized] = useState(false);
+	const [isMaximized, setIsMaximized] = useState(true);
 
 	const [selectedContracts, setSelectedContracts] = useState<IOrderBasket[]>([]);
 
@@ -62,14 +65,20 @@ const Basket = () => {
 		setIsMaximized(!isMaximized);
 	};
 
-	const removeFromBasket = (itemId: string) => {
+	const filterBasketItems = (itemId: string) => (item: IOrderBasket) => {
+		return item.id !== itemId;
+	};
+
+	const removeItemFromBasket = (itemId: string) => {
 		let data = [...basketSnapshot.current];
-		data = data.filter((item) => item.id !== itemId);
+		data = data.filter(filterBasketItems(itemId));
 
 		basketSnapshot.current = data;
 
+		if (data.length === 0) onOrdersSent();
+
 		dispatch(setOrderBasket(data));
-		setSelectedContracts((prev) => prev.filter((item) => item.id !== itemId));
+		setSelectedContracts((prev) => prev.filter(filterBasketItems(itemId)));
 	};
 
 	const validation = () => {
@@ -104,11 +113,36 @@ const Basket = () => {
 
 	const onOrderMessageReceived = (item: IOrderBasket, id: string) => (result: IpcMainChannels['order_sent']) => {
 		if (id !== result.id) return;
-		removeFromBasket(item.id);
+		removeItemFromBasket(item.id);
+
+		sentOrders.current.push({
+			order: item,
+			result,
+		});
 	};
 
 	const onOrderSentSuccessfully = (item: IOrderBasket) => {
 		//
+	};
+
+	const onOrdersSent = () => {
+		const failedOrdersLength = sentOrders.current.reduce((total, order) => {
+			if (!order.result.id || order.result.response === 'error') return total + 1;
+			return total;
+		}, 0);
+
+		const message =
+			failedOrdersLength === 0
+				? 'alerts.orders_sent_successfully'
+				: failedOrdersLength === sentOrders.current.length
+					? 'alerts.orders_sent_failed'
+					: failedOrdersLength >= sentOrders.current.length / 2
+						? 'alerts.some_orders_sent_successfully'
+						: 'alerts.most_orders_sent_successfully';
+
+		toast.success(t(message));
+
+		sentOrders.current = [];
 	};
 
 	const sendOrder = async (index: number) => {

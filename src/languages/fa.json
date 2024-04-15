@@ -45,7 +45,7 @@
 		"user_status_Normal": "عادی",
 		"user_status_AtRisk": "در خطر",
 		"user_status_CallMargin": "اخطار وجه تضمین",
-		"logout": "خروج از حساب کاربری کهکشان"
+		"logout": "خروج از حساب کاربری"
 	},
 	"header_navigation": {
 		"watchlist": "دیده‌بان",
@@ -799,6 +799,10 @@
 		"null": "تعریف نشده"
 	},
 	"alerts": {
+		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
+		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",
+		"orders_sent_successfully": "تمام سفارش‌ها با موفقیت ارسال شدند.",
+		"orders_sent_failed": "ارسال تمام سفارش‌ها با خطا مواجه شدند.",
 		"can_not_hide_every_sections": "امکان مخفی کردن تمامی بخش‌ها وجود ندارد.",
 		"logged_out_successfully": "با موفقیت از حساب خود خارج شدید.",
 		"watchlist_symbol_removed_successfully": "نماد \"{symbolTitle}\" با موفقیت از دیده‌بان حذف شد.",
