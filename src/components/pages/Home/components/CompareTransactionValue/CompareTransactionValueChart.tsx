@@ -1,5 +1,5 @@
 import { useGetOptionMarketComparisonQuery } from '@/api/queries/dashboardQueries';
-import { dateFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, toFixed } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 import Suspend from '../../common/Suspend';
@@ -62,7 +62,7 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 								},
 							},
 							formatter: (val) => {
-								return sepNumbers(String(val ?? 0));
+								return toFixed(val, 6, false);
 							},
 						},
 					},
