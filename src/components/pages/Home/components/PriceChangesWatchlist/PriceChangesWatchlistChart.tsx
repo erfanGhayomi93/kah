@@ -151,9 +151,9 @@ const PriceChangesWatchlistChart = () => {
 					grid: {
 						show: false,
 						padding: {
-							top: 0,
+							top: -16,
 							left: 0,
-							bottom: 0,
+							bottom: -8,
 							right: 0,
 						},
 					},

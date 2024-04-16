@@ -62,7 +62,7 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 								},
 							},
 							formatter: (val) => {
-								return toFixed(val, 6, false);
+								return toFixed(val, 6, false) + '%';
 							},
 						},
 					},
@@ -123,9 +123,9 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 							},
 						},
 						padding: {
-							top: 0,
+							top: -16,
 							left: 0,
-							bottom: 0,
+							bottom: -8,
 							right: 0,
 						},
 					},

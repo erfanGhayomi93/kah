@@ -947,6 +947,7 @@ declare namespace Dashboard {
 				totalTradeValue: number;
 				lastTradedPrice: number;
 				symbolTitle: string;
+				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
 			}
@@ -955,6 +956,7 @@ declare namespace Dashboard {
 				openPositionCount: number;
 				openPositionVarPercent: number;
 				symbolTitle: string;
+				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
 			}
@@ -963,6 +965,7 @@ declare namespace Dashboard {
 				volatilityPercent: number;
 				volatility: number;
 				symbolTitle: string;
+				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
 			}
@@ -971,6 +974,7 @@ declare namespace Dashboard {
 				totalNumberOfTradesVarPercent: number;
 				totalNumberOfTrades: number;
 				symbolTitle: string;
+				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
 			}
@@ -979,6 +983,7 @@ declare namespace Dashboard {
 				closingPriceVarReferencePrice: number;
 				closingPriceVarReferencePricePercent: number;
 				symbolTitle: string;
+				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
 			}
@@ -987,6 +992,7 @@ declare namespace Dashboard {
 				totalNumberOfSharesTradedVarPercent: number;
 				totalNumberOfSharesTraded: number;
 				symbolTitle: string;
+				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
 			}
@@ -1006,6 +1012,7 @@ declare namespace Dashboard {
 
 			export interface Value {
 				symbolTitle: string;
+				symbolISIN: string;
 				totalTradeValue: number;
 				thirtyDayValue: number;
 				ninetyDayValue: number;
@@ -1015,6 +1022,7 @@ declare namespace Dashboard {
 
 			export interface PutOpenPosition {
 				baseSymbolTitle: string;
+				baseSymbolISIN: string;
 				openPosition: number;
 				openPositionVarPercent: number;
 				contractCount: number;
@@ -1023,6 +1031,7 @@ declare namespace Dashboard {
 
 			export interface CallOpenPosition {
 				baseSymbolTitle: string;
+				baseSymbolISIN: string;
 				openPosition: number;
 				openPositionVarPercent: number;
 				contractCount: number;
@@ -1031,6 +1040,7 @@ declare namespace Dashboard {
 
 			export interface OpenPosition {
 				baseSymbolTitle: string;
+				baseSymbolISIN: string;
 				openPosition: number;
 				openPositionVarPercent: number;
 				contractCount: number;
@@ -1039,6 +1049,7 @@ declare namespace Dashboard {
 
 			export interface Volume {
 				symbolTitle: string;
+				baseSymbolISIN: string;
 				totalNumberOfSharesTraded: number;
 				thirtyDayVolume: number;
 				ninetyDayVolume: number;
@@ -1056,6 +1067,7 @@ declare namespace Dashboard {
 
 			export interface Value {
 				symbolTitle: string;
+				symbolISIN: string;
 				totalTradeValue: number;
 				thirtyDayValue: number;
 				ninetyDayValue: number;
@@ -1065,6 +1077,7 @@ declare namespace Dashboard {
 
 			export interface Volume {
 				symbolTitle: string;
+				symbolISIN: string;
 				totalNumberOfSharesTraded: number;
 				thirtyDayVolume: number;
 				ninetyDayVolume: number;
@@ -1187,6 +1200,26 @@ declare namespace Dashboard {
 			closestDueDays: number;
 			totalTradeValue: number;
 			totalTradeVolume: number;
+		}
+	}
+
+	export namespace GetIndividualLegalInfo {
+		export type SymbolType = 'Option' | 'BaseSymbol';
+
+		export type Type = 'Individual' | 'Legal';
+
+		export type Data = GetIndividualLegalInfo.Individual | GetIndividualLegalInfo.Legal;
+
+		export interface Individual {
+			dateTime: string;
+			individualBuyAverage: number;
+			individualSellAverage: number;
+		}
+
+		export interface Legal {
+			dateTime: string;
+			sumOfLegalsBuyVolume: number;
+			sumOfLegalsSellVolume: number;
 		}
 	}
 }

@@ -1,15 +1,14 @@
 import { URLIsValid } from '@/utils/helpers';
 
 const isStage = URLIsValid('stage');
-const isDev = URLIsValid('localhost');
+// const isDev = URLIsValid('localhost');
 const isPre = URLIsValid('preprd');
 
-const oauthUrl =
-	isStage || isDev
-		? 'https://ramandoauth-stage.ramandtech.com'
-		: isPre
-			? 'https://ramandoauth-preprd.ramandtech.com'
-			: 'https://ramandoauth.ramandtech.com';
+const oauthUrl = isStage
+	? 'https://ramandoauth-stage.ramandtech.com'
+	: isPre
+		? 'https://ramandoauth-preprd.ramandtech.com'
+		: 'https://ramandoauth.ramandtech.com';
 
 const rlcUrl = isStage
 	? 'https://kahkeshanapi-stage.ramandtech.com'
@@ -18,7 +17,7 @@ const rlcUrl = isStage
 		: 'https://kahkeshanapi.ramandtech.com';
 
 const routes = {
-	pushengine: isStage || isDev ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
+	pushengine: isStage ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
 
 	dashboard: {
 		GetOpenPositionProcess: `${rlcUrl}/Dashboard/v1/GetOpenPositionProcess`,
@@ -37,6 +36,7 @@ const routes = {
 		GetMostTradedOptionSymbol: `${rlcUrl}/Dashboard/v1/GetMostTradedOptionSymbol`,
 		GetOptionSettlementInfo: `${rlcUrl}/Dashboard/v1/GetOptionSettlementInfo`,
 		GetAnnualReport: `${rlcUrl}/Dashboard/v1/GetAnnualReport`,
+		GetIndividualLegalInfo: `${rlcUrl}/Dashboard/v1/GetIndividualLegalInfo`,
 	},
 
 	common: {

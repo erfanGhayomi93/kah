@@ -5,6 +5,7 @@ import ArrowLeftSVG from './arrow-left.svg';
 import ArrowUpSVG from './arrow-up.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
+import CalculatorSVG from './calculator.svg';
 import CalendarSVG from './calendar.svg';
 import ChainSVG from './chain.svg';
 import ChangeBrokerSVG from './change-broker.svg';
@@ -19,6 +20,7 @@ import DataAnalyticsSVG from './data-analytics.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
 import DoubleArrowLeftSVG from './double-arrow-right.svg';
 import DragSVG from './drag.svg';
+import EditFillSVG from './edit-fill.svg';
 import EditSVG from './edit.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
 import EraserSVG from './eraser.svg';
@@ -61,9 +63,11 @@ import SendFillSVG from './send-fill.svg';
 import SessionHistorySVG from './session-history.svg';
 import SettingSliderSVG from './setting-slider.svg';
 import SettingSVG from './setting.svg';
+import ShieldCheckSVG from './shield-check.svg';
 import ShieldFillSVG from './shield-fill.svg';
+import ShieldInfoSVG from './shield-info.svg';
 import ShieldOutlineSVG from './shield-outline.svg';
-import ShieldSVG from './shield.svg';
+import ShieldXSVG from './shield-x.svg';
 import SnowFlakeSVG from './snow-flake.svg';
 import SquareXSVG from './square-x.svg';
 import StrategySVG from './strategy.svg';
@@ -77,6 +81,7 @@ import UserBoldSVG from './user-bold.svg';
 import UserCircleSVG from './user-circle.svg';
 import WalletSVG from './wallet.svg';
 import WatchlistSVG from './watchlist.svg';
+import XCircleSVG from './x-circle.svg';
 import XSVG from './x.svg';
 
 export {
@@ -87,6 +92,7 @@ export {
 	ArrowUpSVG,
 	BellSVG,
 	BookmarkSVG,
+	CalculatorSVG,
 	CalendarSVG,
 	ChainSVG,
 	ChangeBrokerSVG,
@@ -101,6 +107,7 @@ export {
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,
 	DragSVG,
+	EditFillSVG,
 	EditSVG,
 	EllipsisVerticalSVG,
 	EraserSVG,
@@ -143,9 +150,11 @@ export {
 	SessionHistorySVG,
 	SettingSVG,
 	SettingSliderSVG,
+	ShieldCheckSVG,
 	ShieldFillSVG,
+	ShieldInfoSVG,
 	ShieldOutlineSVG,
-	ShieldSVG,
+	ShieldXSVG,
 	SnowFlakeSVG,
 	SquareXSVG,
 	StrategySVG,
@@ -159,5 +168,6 @@ export {
 	UserCircleSVG,
 	WalletSVG,
 	WatchlistSVG,
+	XCircleSVG,
 	XSVG,
 };

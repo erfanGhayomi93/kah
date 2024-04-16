@@ -28,6 +28,8 @@
 	},
 	"header": {
 		"login": "ورود",
+		"search_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"register": "ثبت‌نام",
 		"exit": "خروج",
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
@@ -43,7 +45,7 @@
 		"user_status_Normal": "عادی",
 		"user_status_AtRisk": "در خطر",
 		"user_status_CallMargin": "اخطار وجه تضمین",
-		"logout": "خروج از حساب کاربری کهکشان"
+		"logout": "خروج از حساب کاربری"
 	},
 	"header_navigation": {
 		"watchlist": "دیده‌بان",
@@ -106,8 +108,8 @@
 		"tab_most_trading_day": "بیشترین روز معاملاتی",
 		"tab_newest": "جدیدترین",
 		"tab_closest": "نزدیکترین",
-		"bourse_market_value": "ارزش بازار بورس",
-		"fara_bourse_market_value": "ارزش بازار فرابورس",
+		"bourse_market_value": "شاخص بورس",
+		"fara_bourse_market_value": "شاخص فرابورس",
 		"call_trades_value": "ارزش معاملات اختیارهای خرید",
 		"put_trades_value": "ارزش معاملات اختیارهای فروش",
 		"login_check": "ورود به کهکشان",
@@ -134,7 +136,9 @@
 		"today_volume": "حجم امروز",
 		"today_value": "ارزش امروز",
 		"due_days": "روز مانده",
-		"passed_days": "روز گذشته"
+		"passed_days": "روز گذشته",
+		"call_option": "اختیار خرید",
+		"put_option": "اختیار فروش"
 	},
 	"symbol_contracts_modal": {
 		"title": "انتخاب قرارداد {symbolTitle}",
@@ -639,6 +643,18 @@
 		"select_collateral": "لطفا نوع وثیقه مورد نظر خود را انتخاب کنید",
 		"collateral_details": "وثیقه مبلغ <p>{price}</p> ریال، بابت ضمانت موقعیت <t>{title}</t>"
 	},
+	"manage_dashboard_layout_modal": {
+		"title": "چیدمان صفحه اصلی"
+	},
+	"change_broker_modal": {
+		"title": "تغییر کارگزار ناظر"
+	},
+	"withdrawal_modal": {
+		"title": "برداشت وجه"
+	},
+	"deposit_modal": {
+		"title": "واریز وجه"
+	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
 		"next_page": "صفحه بعد",
@@ -797,6 +813,10 @@
 		"null": "تعریف نشده"
 	},
 	"alerts": {
+		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
+		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",
+		"orders_sent_successfully": "تمام سفارش‌ها با موفقیت ارسال شدند.",
+		"orders_sent_failed": "ارسال تمام سفارش‌ها با خطا مواجه شدند.",
 		"can_not_hide_every_sections": "امکان مخفی کردن تمامی بخش‌ها وجود ندارد.",
 		"logged_out_successfully": "با موفقیت از حساب خود خارج شدید.",
 		"watchlist_symbol_removed_successfully": "نماد \"{symbolTitle}\" با موفقیت از دیده‌بان حذف شد.",
