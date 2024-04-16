@@ -1,20 +1,26 @@
 import { URLIsValid } from '@/utils/helpers';
 
 const isStage = URLIsValid('stage');
-// const isDev = URLIsValid('localhost');
+const isDev = URLIsValid('localhost');
 const isPre = URLIsValid('preprd');
 
-const oauthUrl = isStage
-	? 'https://ramandoauth-stage.ramandtech.com'
-	: isPre
-		? 'https://ramandoauth-preprd.ramandtech.com'
-		: 'https://ramandoauth.ramandtech.com';
+const URL = {
+	oauth: {
+		preprd: 'https://ramandoauth-preprd.ramandtech.com',
+		stage: 'https://ramandoauth-stage.ramandtech.com',
+		prod: 'https://ramandoauth-preprd.ramandtech.com',
+	},
 
-const rlcUrl = isStage
-	? 'https://kahkeshanapi-stage.ramandtech.com'
-	: isPre
-		? 'https://kahkeshanapi-preprd.ramandtech.com'
-		: 'https://kahkeshanapi.ramandtech.com';
+	rlc: {
+		preprd: 'https://kahkeshanapi-preprd.ramandtech.com',
+		stage: 'https://kahkeshanapi-stage.ramandtech.com',
+		prod: 'https://kahkeshanapi.ramandtech.com',
+	},
+};
+
+const oauthUrl = isDev ? URL.oauth.preprd : isStage ? URL.oauth.stage : isPre ? URL.oauth.preprd : URL.oauth.prod;
+
+const rlcUrl = isDev ? URL.rlc.preprd : isStage ? URL.rlc.stage : isPre ? URL.rlc.preprd : URL.rlc.prod;
 
 const routes = {
 	pushengine: isStage ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',

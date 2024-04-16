@@ -1,7 +1,7 @@
 'use client';
 
 import LocalstorageInstance from '@/classes/Localstorage';
-import { initialSymbolInfoPanelGrid } from '@/constants';
+import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
@@ -15,6 +15,8 @@ export interface UIState {
 	ordersIsExpand: boolean;
 
 	symbolInfoPanelGridLayout: ISymbolInfoPanelGrid[];
+
+	dashboardGridLayout: IDashboardGrid[];
 }
 
 const initialState: UIState = {
@@ -27,6 +29,8 @@ const initialState: UIState = {
 	lsStatus: 'CONNECTING',
 
 	symbolInfoPanelGridLayout: LocalstorageInstance.get('sipg', initialSymbolInfoPanelGrid, (v) => Array.isArray(v)),
+
+	dashboardGridLayout: LocalstorageInstance.get('dg', initialDashboardGrid, (v) => Array.isArray(v)),
 };
 
 const uiSlice = createSlice({
@@ -54,6 +58,11 @@ const uiSlice = createSlice({
 			state.symbolInfoPanelGridLayout = payload;
 		},
 
+		setDashboardGridLayout: (state, { payload }: PayloadAction<UIState['dashboardGridLayout']>) => {
+			LocalstorageInstance.set('dg', payload);
+			state.dashboardGridLayout = payload;
+		},
+
 		toggleOrdersIsExpand: (state) => {
 			state.ordersIsExpand = !state.ordersIsExpand;
 		},
@@ -67,6 +76,7 @@ export const {
 	setOrdersIsExpand,
 	setLsStatus,
 	setSymbolInfoPanelGridLayout,
+	setDashboardGridLayout,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
@@ -74,5 +84,6 @@ export const getOrdersIsExpand = (state: RootState) => state.ui.ordersIsExpand;
 export const getLsStatus = (state: RootState) => state.ui.lsStatus;
 export const getSaturnActiveTemplate = (state: RootState) => state.ui.saturnActiveTemplate;
 export const getSymbolInfoPanelGridLayout = (state: RootState) => state.ui.symbolInfoPanelGridLayout;
+export const getDashboardGridLayout = (state: RootState) => state.ui.dashboardGridLayout;
 
 export default uiSlice.reducer;

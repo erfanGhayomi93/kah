@@ -78,7 +78,7 @@ const Section = <T extends string = string, B extends string = string>({
 	return (
 		<div
 			ref={rootRef}
-			className='size-full justify-between overflow-hidden rounded bg-white px-16 pb-16 pt-8 flex-column'
+			className='size-full justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'
 		>
 			<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
 				<div className='flex h-full gap-8'>
