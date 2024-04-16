@@ -10,7 +10,7 @@ interface IndividualAndLegalChartProps {
 }
 
 const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartProps) => {
-	const { data, isFetching } = useGetIndividualLegalInfoQuery({
+	const { data, isLoading } = useGetIndividualLegalInfoQuery({
 		queryKey: ['getIndividualLegalInfoQuery', symbolType, type],
 	});
 
@@ -171,7 +171,7 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data?.length} />
+			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</>
 	);
 };

@@ -13,7 +13,7 @@ interface DueDatesTableProps {
 const DueDatesTable = ({ type }: DueDatesTableProps) => {
 	const t = useTranslations();
 
-	const { data, isFetching } = useGetOptionSettlementInfoQuery({
+	const { data, isLoading } = useGetOptionSettlementInfoQuery({
 		queryKey: ['getOptionSettlementInfoQuery', type],
 	});
 
@@ -42,7 +42,7 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 		[type],
 	);
 
-	if (isFetching) return <Loading />;
+	if (isLoading) return <Loading />;
 
 	if (!data?.length) return <NoData />;
 
