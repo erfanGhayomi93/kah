@@ -10,7 +10,7 @@ interface CompareTransactionValueChartProps {
 }
 
 const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValueChartProps) => {
-	const { data, isFetching } = useGetOptionMarketComparisonQuery({
+	const { data, isLoading } = useGetOptionMarketComparisonQuery({
 		queryKey: ['getOptionMarketComparisonQuery', interval, type],
 	});
 
@@ -162,7 +162,7 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data || Object.keys(data).length === 0} />
+			<Suspend isLoading={isLoading} isEmpty={!data || Object.keys(data).length === 0} />
 		</>
 	);
 };

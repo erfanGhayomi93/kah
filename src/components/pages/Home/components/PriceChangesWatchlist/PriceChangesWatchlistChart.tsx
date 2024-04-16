@@ -24,7 +24,7 @@ const BG_COLORS = [
 ];
 
 const PriceChangesWatchlistChart = () => {
-	const { data, isFetching } = useGetOptionWatchlistPriceChangeInfoQuery({
+	const { data, isLoading } = useGetOptionWatchlistPriceChangeInfoQuery({
 		queryKey: ['getOptionWatchlistPriceChangeInfoQuery'],
 	});
 
@@ -182,7 +182,7 @@ const PriceChangesWatchlistChart = () => {
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data?.length} />
+			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</>
 	);
 };

@@ -9,7 +9,7 @@ interface OpenPositionsProcessChartProps {
 }
 
 const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps) => {
-	const { data, isFetching } = useGetOpenPositionProcessQuery({
+	const { data, isLoading } = useGetOpenPositionProcessQuery({
 		queryKey: ['getOpenPositionProcessQuery', interval],
 	});
 
@@ -169,7 +169,7 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data || Object.keys(data).length === 0} />
+			<Suspend isLoading={isLoading} isEmpty={!data || Object.keys(data).length === 0} />
 		</>
 	);
 };

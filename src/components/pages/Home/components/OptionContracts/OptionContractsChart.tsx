@@ -27,46 +27,44 @@ const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) 
 	const donutColor = type === 'IOTM' ? IOTM_COLORS : CONTRACT_TYPE_COLORS;
 
 	return (
-		<div className='flex-1'>
-			<Chart
-				options={{
-					states: {
-						active: {
-							filter: {
-								type: 'none',
-							},
-						},
-						hover: {
-							filter: {
-								type: 'none',
-							},
+		<Chart
+			options={{
+				states: {
+					active: {
+						filter: {
+							type: 'none',
 						},
 					},
-					fill: {
-						colors: donutColor,
+					hover: {
+						filter: {
+							type: 'none',
+						},
 					},
+				},
+				fill: {
 					colors: donutColor,
-					legend: {
-						show: false,
-					},
-					dataLabels: {
-						enabled: false,
-					},
-					tooltip: {
-						enabled: false,
-					},
-					stroke: {
-						show: true,
-						width: 2,
-						colors: ['rgb(255, 255, 255)'],
-					},
-				}}
-				series={dataMapper}
-				type='donut'
-				width='100%'
-				height='100%'
-			/>
-		</div>
+				},
+				colors: donutColor,
+				legend: {
+					show: false,
+				},
+				dataLabels: {
+					enabled: false,
+				},
+				tooltip: {
+					enabled: false,
+				},
+				stroke: {
+					show: true,
+					width: 2,
+					colors: ['rgb(255, 255, 255)'],
+				},
+			}}
+			series={dataMapper}
+			type='donut'
+			width='100%'
+			height='100%'
+		/>
 	);
 };
 
