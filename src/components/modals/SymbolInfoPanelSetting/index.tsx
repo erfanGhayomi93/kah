@@ -1,6 +1,7 @@
 import { initialSymbolInfoPanelGrid } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { type ISymbolInfoPanelSetting, setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
+import { type ISymbolInfoPanelSetting } from '@/features/slices/modalSlice.interfaces';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useCallback, useMemo, useState } from 'react';

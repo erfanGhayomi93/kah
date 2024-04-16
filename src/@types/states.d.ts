@@ -28,7 +28,7 @@ declare type TSymbolInfoPanelSections =
 	| 'same_sector_symbols'
 	| 'supervisor_messages';
 
-declare type THomeSections =
+declare type TDashboardSections =
 	| 'market_view'
 	| 'market_state'
 	| 'best'
@@ -71,7 +71,7 @@ declare interface ISymbolInfoPanelGrid {
 }
 
 declare interface IHomeGrid {
-	id: THomeSections;
+	id: TDashboardSections;
 	w: number;
 	h: number;
 	i: number;

@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import { toast } from 'react-toastify';
 import Loading from './components/Loading';
+import EditLayoutButton from './EditLayoutButton';
 
 const Best = dynamic(() => import('./components/Best'), {
 	loading: () => <Loading />,
@@ -140,7 +141,7 @@ const Home = () => {
 	};
 
 	const cells = useMemo(() => {
-		const result: Partial<Record<THomeSections, boolean>> = {};
+		const result: Partial<Record<TDashboardSections, boolean>> = {};
 
 		for (let i = 0; i < grid.length; i++) {
 			const item = grid[i];
@@ -313,6 +314,8 @@ const Home = () => {
 					)}
 				</ResponsiveGridLayout>
 			</div>
+
+			<EditLayoutButton />
 		</Main>
 	);
 };

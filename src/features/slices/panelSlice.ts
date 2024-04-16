@@ -24,7 +24,7 @@ const brokerSlice = createSlice({
 	initialState,
 	reducers: {
 		setSymbolInfoPanel: (state, { payload }: PayloadAction<BrokerState['symbolInfoPanel']>) => {
-			state.symbolInfoPanel = payload;
+			if (payload !== undefined) state.symbolInfoPanel = payload;
 		},
 
 		setSavedTemplatesPanel: (state, { payload }: PayloadAction<BrokerState['savedTemplates']>) => {

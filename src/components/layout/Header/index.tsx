@@ -203,7 +203,7 @@ const Header = () => {
 							onClick={showAuthenticationModal}
 							type='button'
 							disabled={isFetchingUserData || isLoggingIn}
-							className='h-40 gap-8 rounded px-16 font-medium btn-primary'
+							className='h-32 gap-8 rounded px-16 font-medium btn-primary'
 						>
 							{t('header.login')}
 							<span style={{ width: '2px' }} className='h-12 rounded bg-white' />

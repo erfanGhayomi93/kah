@@ -12,7 +12,7 @@ const PriceChangesWatchlist = () => {
 
 	return (
 		<Section id='price_changes_watchlist' title={t('home.price_changes_watchlist')}>
-			<div className='relative flex-1 overflow-hidden'>
+			<div className='relative flex-1 overflow-hidden py-8'>
 				<PriceChangesWatchlistChart />
 			</div>
 		</Section>

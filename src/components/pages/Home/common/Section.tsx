@@ -1,7 +1,7 @@
 import ipcMain from '@/classes/IpcMain';
 import NoData from '@/components/common/NoData';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
-import { ExpandSVG, XSVG } from '@/components/icons';
+import { ExpandSVG, XCircleSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 
@@ -11,8 +11,9 @@ export interface ITab<T> {
 }
 
 interface SectionProps<T, B> {
-	id: THomeSections;
+	id: TDashboardSections;
 	title: string;
+	expandable?: boolean;
 	defaultTopActiveTab?: T;
 	defaultBottomActiveTab?: B;
 	children?: React.ReactNode;
@@ -32,6 +33,7 @@ const Section = <T extends string = string, B extends string = string>({
 	children,
 	defaultTopActiveTab,
 	defaultBottomActiveTab,
+	expandable,
 	onExpand,
 	onTopTabChange,
 	onBottomTabChange,
@@ -84,18 +86,20 @@ const Section = <T extends string = string, B extends string = string>({
 						<button
 							onClick={onClose}
 							type='button'
-							className='size-18 rounded-circle bg-gray-700 text-white flex-justify-center'
+							className='text-gray-700 transition-colors flex-justify-center hover:text-error-100'
 						>
-							<XSVG width='1.4rem' height='1.4rem' />
+							<XCircleSVG width='1.8rem' height='1.8rem' />
 						</button>
 
-						<button
-							onClick={onExpand}
-							type='button'
-							className='size-18 rounded-circle bg-gray-700 text-white flex-justify-center'
-						>
-							<ExpandSVG width='1.8rem' height='1.8rem' />
-						</button>
+						{expandable && (
+							<button
+								onClick={onExpand}
+								type='button'
+								className='size-18 rounded-circle bg-gray-700 text-white transition-colors flex-justify-center hover:bg-success-100'
+							>
+								<ExpandSVG width='1.4rem' height='1.4rem' />
+							</button>
+						)}
 					</div>
 
 					{Array.isArray(tabs?.top) ? (

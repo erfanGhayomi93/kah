@@ -1,6 +1,7 @@
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setOrderDetailsModal, type IOrderDetailsModal } from '@/features/slices/modalSlice';
+import { setOrderDetailsModal } from '@/features/slices/modalSlice';
+import { type IOrderDetailsModal } from '@/features/slices/modalSlice.interfaces';
 import { cn, dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';

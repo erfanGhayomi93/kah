@@ -1,6 +1,7 @@
 import { PayMoneySVG, SnowFlakeSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setChoiceCollateralModal, type IChoiceCollateral } from '@/features/slices/modalSlice';
+import { setChoiceCollateralModal } from '@/features/slices/modalSlice';
+import { type IChoiceCollateral } from '@/features/slices/modalSlice.interfaces';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';

@@ -8,7 +8,7 @@ const OptionContractsContainer = dynamic(() => import('./OptionContractsContaine
 	loading: () => <Loading />,
 });
 
-interface DefaultActiveTab {
+interface IDefaultActiveTab {
 	top: Dashboard.GetOptionContractAdditionalInfo.Basis;
 	bottom: Dashboard.GetOptionContractAdditionalInfo.Type;
 }
@@ -16,12 +16,12 @@ interface DefaultActiveTab {
 const OptionContracts = () => {
 	const t = useTranslations();
 
-	const [defaultTab, setDefaultTab] = useState<DefaultActiveTab>({
+	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Volume',
 		bottom: 'ContractType',
 	});
 
-	const setDefaultTabByPosition = <T extends keyof DefaultActiveTab>(position: T, value: DefaultActiveTab[T]) => {
+	const setDefaultTabByPosition = <T extends keyof IDefaultActiveTab>(position: T, value: IDefaultActiveTab[T]) => {
 		setDefaultTab((prev) => ({
 			...prev,
 			[position]: value,
@@ -29,7 +29,7 @@ const OptionContracts = () => {
 	};
 
 	return (
-		<Section<DefaultActiveTab['top'], DefaultActiveTab['bottom']>
+		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_contracts'
 			title={t('home.option_contracts')}
 			defaultTopActiveTab={defaultTab.top}

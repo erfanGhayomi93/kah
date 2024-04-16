@@ -1,113 +1,72 @@
 'use client';
 
-import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
-
-type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IBaseModalConfiguration);
-
-type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
-
-export interface IBlackScholes extends IBaseModalConfiguration {
-	symbolISIN?: string;
-}
-
-export interface IBuySellModal extends IBaseModalConfiguration {
-	id?: number;
-	mode: TBsModes;
-	switchable?: boolean;
-	symbolTitle: string;
-	symbolISIN: string;
-	symbolType: TBsSymbolTypes;
-	side: TBsSides;
-	type?: TBsTypes;
-	collateral?: TBsCollaterals;
-	expand?: boolean;
-	priceLock?: boolean;
-	holdAfterOrder?: boolean;
-	initialValidity?: TBsValidityDates;
-	initialValidityDate?: number;
-	initialPrice?: number;
-	initialQuantity?: number;
-}
-
-export interface IForgetPasswordModal extends IBaseModalConfiguration {
-	phoneNumber?: string;
-}
-
-export interface IContractSelectorModal extends IBaseModalConfiguration {
-	symbolTitle: string;
-	symbolISIN: string;
-}
-
-export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
-
-export interface IOrderDetailsModal extends IBaseModalConfiguration {
-	order: Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
-}
-
-export interface IMoveSymbolToWatchlistModal extends IBaseModalConfiguration {
-	symbolTitle: string;
-	symbolISIN: string;
-}
-
-export interface IChoiceCollateral extends IBaseModalConfiguration {
-	order: Order.OptionOrder;
-}
-
-export interface IConfirmModal extends IBaseModalConfiguration {
-	title: React.ReactNode;
-	description: React.ReactNode;
-	onSubmit?: () => void;
-	onCancel?: () => void;
-	confirm: {
-		label: string;
-		type: 'success' | 'error' | 'primary';
-	};
-}
-
-export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
-	isOption: boolean;
-}
-
-export type ModalState = TBaseModalProps<{
-	loginModal: true;
-	logout: true;
-	choiceBroker: true;
-	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
-	confirm: IConfirmModal;
-	blackScholes: IBlackScholes;
-	buySell: IBuySellModal;
-	orderDetails: IOrderDetailsModal;
-	addNewOptionWatchlist: true;
-	manageOptionWatchlistList: true;
-	addSymbolToWatchlist: true;
-	choiceCollateral: IChoiceCollateral;
-	moveSymbolToWatchlist: IMoveSymbolToWatchlistModal;
-	addSaturnTemplate: IAddSaturnTemplate;
-	symbolContracts: IContractSelectorModal;
-	forgetPassword: IForgetPasswordModal;
-	optionFilters: Partial<IOptionFiltersModal>;
-}>;
+import { type ModalState } from './modalSlice.interfaces';
 
 const initialState: ModalState = {
+	// لاگین
 	loginModal: null,
+
+	// فیلتر صفحه دیده‌بان آپشن
 	optionFilters: null,
+
+	// گرفتن تایید از کاربر
 	confirm: null,
+
+	// انتقال نماد به دیده‌بان
 	moveSymbolToWatchlist: null,
+
+	// خروج از حساب‌کاربری
 	logout: null,
+
+	// ماشین حساب بلک‌شولز
 	blackScholes: null,
+
+	// اطلاعات سفارش
 	orderDetails: null,
+
+	// اضافه کردن نماد به دیده‌بان
 	addSymbolToWatchlist: null,
+
+	// اضافه کردن دیده‌بان جدید
 	addNewOptionWatchlist: null,
+
+	// مدیریت دیده‌بان‌های اضافه شده
 	manageOptionWatchlistList: null,
+
+	// انتخاب کارگزاری
 	choiceBroker: null,
+
+	// انتخاب نوع وثیقه آپشن
 	choiceCollateral: null,
+
+	// فراموشی رمزعبور
 	forgetPassword: null,
+
+	// خرید و فروش
 	buySell: null,
+
+	// جزئیات نماد
 	symbolInfoPanelSetting: null,
+
+	// افزودن قالب جدید زحل
 	addSaturnTemplate: null,
+
+	// قراردادهای نماد
 	symbolContracts: null,
+
+	// چیدمان صفحه اصلی
+	manageDashboardLayout: null,
+
+	// تغییر کارگزار ناظر
+	changeBroker: null,
+
+	// واریز وجه
+	deposit: null,
+
+	// برداشت وجه
+	withdrawal: null,
 };
 
 const modalSlice = createSlice({
@@ -184,6 +143,22 @@ const modalSlice = createSlice({
 		) => {
 			state.manageOptionWatchlistList = payload;
 		},
+
+		setManageDashboardLayoutModal: (state, { payload }: PayloadAction<ModalState['manageDashboardLayout']>) => {
+			state.manageDashboardLayout = payload;
+		},
+
+		setChangeBrokerModal: (state, { payload }: PayloadAction<ModalState['changeBroker']>) => {
+			state.changeBroker = payload;
+		},
+
+		setWithdrawalModal: (state, { payload }: PayloadAction<ModalState['withdrawal']>) => {
+			state.withdrawal = payload;
+		},
+
+		setDepositModal: (state, { payload }: PayloadAction<ModalState['deposit']>) => {
+			state.deposit = payload;
+		},
 	},
 });
 
@@ -205,6 +180,10 @@ export const {
 	setChoiceCollateralModal,
 	setAddSymbolToWatchlistModal,
 	setManageOptionWatchlistListModal,
+	setManageDashboardLayoutModal,
+	setChangeBrokerModal,
+	setWithdrawalModal,
+	setDepositModal,
 } = modalSlice.actions;
 
 export const getChoiceBroker = (state: RootState) => state.modal.choiceBroker;

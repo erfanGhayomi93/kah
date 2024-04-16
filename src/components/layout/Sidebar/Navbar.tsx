@@ -9,6 +9,7 @@ import {
 	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import { usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
@@ -46,7 +47,10 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 	};
 
 	const onClickItem = (tagName: 'a' | 'button') => {
-		if (tagName === 'a') collapseSidebar();
+		if (tagName === 'a') {
+			collapseSidebar();
+			dispatch(setSymbolInfoPanel(null));
+		}
 	};
 
 	const items: TListItem[] = useMemo(
