@@ -1,8 +1,8 @@
-import Home from '@/components/pages/Home';
+import Dashboard from '@/components/pages/Home';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = async () => {
-	return <Home />;
+	return <Dashboard />;
 };
 
 export default Page;

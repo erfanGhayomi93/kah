@@ -46,7 +46,7 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable<Dashboard.GetOptionSettlementInfo.Data> rowData={data} columnDefs={columnDefs} />;
+	return <LightweightTable rowData={data} columnDefs={columnDefs} />;
 };
 
 export default DueDatesTable;

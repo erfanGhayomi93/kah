@@ -72,9 +72,7 @@ const Best = () => {
 				bottom: bottomTabs,
 			}}
 		>
-			<div
-				className={clsx('relative flex-1 overflow-hidden px-8', defaultTab.top === 'Option' ? 'py-8' : 'py-24')}
-			>
+			<div className={clsx('relative flex-1 overflow-hidden', defaultTab.top === 'Option' ? 'py-8' : 'py-24')}>
 				<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
 			</div>
 		</Section>
