@@ -1,27 +1,83 @@
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import Section from '../../common/Section';
+import { useLayoutEffect, useMemo, useState } from 'react';
+import Section, { type ITab } from '../../common/Section';
+import BestTable from './BestTable';
+
+interface IDefaultActiveTab {
+	top: Dashboard.TTopSymbols;
+	bottom: Dashboard.TTopSymbol;
+}
 
 const Best = () => {
 	const t = useTranslations();
 
+	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
+		top: 'Option',
+		bottom: 'OptionOpenPosition',
+	});
+
+	const setDefaultTabByPosition = <T extends keyof IDefaultActiveTab>(position: T, value: IDefaultActiveTab[T]) => {
+		setDefaultTab((prev) => ({
+			...prev,
+			[position]: value,
+		}));
+	};
+
+	const bottomTabs = useMemo<Array<ITab<Dashboard.TTopSymbol>>>(() => {
+		if (defaultTab.top === 'BaseSymbol')
+			return [
+				{ id: 'BaseSymbolCallOpenPosition', title: t('home.tab_call_open_position') },
+				{ id: 'BaseSymbolPutOpenPosition', title: t('home.tab_put_open_position') },
+				{ id: 'BaseSymbolVolume', title: t('home.tab_trades_volume') },
+				{ id: 'BaseSymbolValue', title: t('home.tab_trades_value') },
+				{ id: 'BaseSymbolOpenPosition', title: t('home.tab_option_positions') },
+			];
+
+		if (defaultTab.top === 'Symbol')
+			return [
+				{ id: 'SymbolVolume', title: t('home.tab_trades_volume') },
+				{ id: 'SymbolValue', title: t('home.tab_trades_value') },
+			];
+
+		return [
+			{ id: 'OptionOpenPosition', title: t('home.tab_option_position') },
+			{ id: 'OptionTradeCount', title: t('home.tab_trades_count') },
+			{ id: 'OptionYesterdayDiff', title: t('home.tab_changes_from_previous_day') },
+			{ id: 'OptionVolume', title: t('home.tab_trades_volume') },
+		];
+	}, [defaultTab.top]);
+
+	useLayoutEffect(() => {
+		if (defaultTab.top === 'BaseSymbol') setDefaultTabByPosition('bottom', 'BaseSymbolCallOpenPosition');
+		else if (defaultTab.top === 'Symbol') return setDefaultTabByPosition('bottom', 'SymbolVolume');
+		else setDefaultTabByPosition('bottom', 'OptionOpenPosition');
+	}, [defaultTab.top]);
+
 	return (
-		<Section
+		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
+			expandable
 			id='best'
 			title={t('home.best')}
+			defaultTopActiveTab={defaultTab.top}
+			defaultBottomActiveTab={defaultTab.bottom}
+			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
+			onBottomTabChange={(v) => setDefaultTabByPosition('bottom', v)}
 			tabs={{
 				top: [
-					{ id: 'tab_option', title: t('home.tab_option') },
-					{ id: 'tab_base_symbol', title: t('home.tab_base_symbol') },
-					{ id: 'tab_symbol', title: t('home.tab_symbol') },
+					{ id: 'Option', title: t('home.tab_option') },
+					{ id: 'BaseSymbol', title: t('home.tab_base_symbol') },
+					{ id: 'Symbol', title: t('home.tab_symbol') },
 				],
-				bottom: [
-					{ id: 'tab_option_position', title: t('home.tab_option_position') },
-					{ id: 'tab_trades_count', title: t('home.tab_trades_count') },
-					{ id: 'tab_changes_from_previous_day', title: t('home.tab_changes_from_previous_day') },
-					{ id: 'tab_trades_volume', title: t('home.tab_trades_volume') },
-				],
+				bottom: bottomTabs,
 			}}
-		/>
+		>
+			<div
+				className={clsx('relative flex-1 overflow-hidden px-8', defaultTab.top === 'Option' ? 'py-8' : 'py-24')}
+			>
+				<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
+			</div>
+		</Section>
 	);
 };
 

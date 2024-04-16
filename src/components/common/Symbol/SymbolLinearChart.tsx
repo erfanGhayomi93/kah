@@ -52,7 +52,7 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 				tooltip: {
 					style: {
 						fontFamily: 'IRANSans',
-						fontSize: '1.2rem',
+						fontSize: '12px',
 					},
 				},
 				xaxis: {
@@ -60,7 +60,7 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 					offsetY: 0,
 					tickAmount: 7,
 					axisBorder: {
-						show: true,
+						show: false,
 					},
 					axisTicks: {
 						show: false,
@@ -68,7 +68,7 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 					labels: {
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
 						formatter: (val) => {
 							return dateFormatter(val);
@@ -82,7 +82,7 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 						offsetY: 1,
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
 						formatter: (val) => {
 							return numFormatter(val);
@@ -94,6 +94,12 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 				},
 				markers: {
 					size: 0,
+					strokeColors: ['rgba(0, 194, 136, 1)'],
+					colors: 'rgb(255, 255, 255)',
+					strokeWidth: 2,
+					hover: {
+						size: 4,
+					},
 				},
 				grid: {
 					position: 'back',
@@ -113,8 +119,19 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 				fill: {
 					type: 'gradient',
 					gradient: {
-						opacityFrom: 0.8,
-						opacityTo: 0.2,
+						type: 'vertical',
+						colorStops: [
+							{
+								offset: 20,
+								color: 'rgb(0, 194, 136)',
+								opacity: 0.2,
+							},
+							{
+								offset: 100,
+								color: 'rgb(0, 194, 136)',
+								opacity: 0,
+							},
+						],
 					},
 				},
 				stroke: {

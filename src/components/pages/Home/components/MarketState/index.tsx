@@ -17,7 +17,7 @@ const MarketState = () => {
 
 	const [exchange, setExchange] = useState<Dashboard.TMarketStateExchange>('Option');
 
-	const { data, isFetching } = useGetMarketStateQuery({
+	const { data, isLoading } = useGetMarketStateQuery({
 		queryKey: ['getMarketStateQuery', exchange],
 	});
 
@@ -36,7 +36,7 @@ const MarketState = () => {
 			}}
 		>
 			<div className='relative flex-1 pt-24'>
-				{isFetching && <Loading />}
+				{isLoading && <Loading />}
 
 				{data && (
 					<ul className='gap-24 rtl flex-column'>

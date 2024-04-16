@@ -852,7 +852,17 @@ declare namespace Message {
 declare namespace Dashboard {
 	export type TMarketStateExchange = 'Bourse' | 'FaraBourse' | 'Option';
 
-	export type TIndexType = 'Overall' | 'EqualWeightOverall' | 'X';
+	export type TIndex = 'Overall' | 'EqualWeightOverall' | 'RetailTrades';
+
+	export type TTopSymbols = 'Option' | 'BaseSymbol' | 'Symbol';
+
+	export type TOptionSide = 'Call' | 'Put';
+
+	export type TInterval = 'Today' | 'Week' | 'Month' | 'ThreeMonths' | 'Year';
+
+	export type TNewAndOld = 'FirstTradedOptionSymbol' | 'MostTradedOptionSymbol';
+
+	export type TTopSymbol = GetTopSymbols.BaseSymbol.Type | GetTopSymbols.Symbol.Type | GetTopSymbols.Option.Type;
 
 	export namespace GetMarketState {
 		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
@@ -906,6 +916,310 @@ declare namespace Dashboard {
 			totalMilliseconds: 0;
 			totalMinutes: 0;
 			totalSeconds: 0;
+		}
+	}
+
+	export namespace GetTopSymbols {
+		export type All = Option.All | BaseSymbol.All | Symbol.All;
+
+		export type AllAsArray = Option.AllAsArray | BaseSymbol.AllAsArray | Symbol.AllAsArray;
+
+		export namespace Option {
+			export type All = Value | OpenPosition | Volatility | TradeCount | YesterdayDiff | Volume;
+
+			export type AllAsArray =
+				| Value[]
+				| OpenPosition[]
+				| Volatility[]
+				| TradeCount[]
+				| YesterdayDiff[]
+				| Volume[];
+
+			export type Type =
+				| 'OptionValue'
+				| 'OptionOpenPosition'
+				| 'OptionVolatility'
+				| 'OptionTradeCount'
+				| 'OptionYesterdayDiff'
+				| 'OptionVolume';
+
+			export interface Value {
+				totalTradeValue: number;
+				lastTradedPrice: number;
+				symbolTitle: string;
+				symbolISIN: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface OpenPosition {
+				openPositionCount: number;
+				openPositionVarPercent: number;
+				symbolTitle: string;
+				symbolISIN: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface Volatility {
+				volatilityPercent: number;
+				volatility: number;
+				symbolTitle: string;
+				symbolISIN: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface TradeCount {
+				totalNumberOfTradesVarPercent: number;
+				totalNumberOfTrades: number;
+				symbolTitle: string;
+				symbolISIN: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface YesterdayDiff {
+				closingPriceVarReferencePrice: number;
+				closingPriceVarReferencePricePercent: number;
+				symbolTitle: string;
+				symbolISIN: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+
+			export interface Volume {
+				totalNumberOfSharesTradedVarPercent: number;
+				totalNumberOfSharesTraded: number;
+				symbolTitle: string;
+				symbolISIN: string;
+				dueDays: number;
+				optionType: TOptionSide;
+			}
+		}
+
+		export namespace BaseSymbol {
+			export type All = Value | PutOpenPosition | CallOpenPosition | OpenPosition | Volume;
+
+			export type AllAsArray = Value[] | PutOpenPosition[] | CallOpenPosition[] | OpenPosition[] | Volume[];
+
+			export type Type =
+				| 'BaseSymbolValue'
+				| 'BaseSymbolPutOpenPosition'
+				| 'BaseSymbolCallOpenPosition'
+				| 'BaseSymbolOpenPosition'
+				| 'BaseSymbolVolume';
+
+			export interface Value {
+				symbolTitle: string;
+				symbolISIN: string;
+				totalTradeValue: number;
+				thirtyDayValue: number;
+				ninetyDayValue: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+
+			export interface PutOpenPosition {
+				baseSymbolTitle: string;
+				baseSymbolISIN: string;
+				openPosition: number;
+				openPositionVarPercent: number;
+				contractCount: number;
+				closestEndDate: string;
+			}
+
+			export interface CallOpenPosition {
+				baseSymbolTitle: string;
+				baseSymbolISIN: string;
+				openPosition: number;
+				openPositionVarPercent: number;
+				contractCount: number;
+				closestEndDate: string;
+			}
+
+			export interface OpenPosition {
+				baseSymbolTitle: string;
+				baseSymbolISIN: string;
+				openPosition: number;
+				openPositionVarPercent: number;
+				contractCount: number;
+				closestEndDate: string;
+			}
+
+			export interface Volume {
+				symbolTitle: string;
+				baseSymbolISIN: string;
+				totalNumberOfSharesTraded: number;
+				thirtyDayVolume: number;
+				ninetyDayVolume: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+		}
+
+		export namespace Symbol {
+			export type All = Value | Volume;
+
+			export type AllAsArray = Value[] | Volume[];
+
+			export type Type = 'SymbolValue' | 'SymbolVolume';
+
+			export interface Value {
+				symbolTitle: string;
+				symbolISIN: string;
+				totalTradeValue: number;
+				thirtyDayValue: number;
+				ninetyDayValue: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+
+			export interface Volume {
+				symbolTitle: string;
+				symbolISIN: string;
+				totalNumberOfSharesTraded: number;
+				thirtyDayVolume: number;
+				ninetyDayVolume: number;
+				lastTradedPrice: number;
+				tradePriceVarPreviousTradePercent: number;
+			}
+		}
+	}
+
+	export namespace GetOptionContractAdditionalInfo {
+		export type All = IOTM[] | ContractType[];
+
+		export type Basis = 'Volume' | 'Value';
+
+		export type Type = 'IOTM' | 'ContractType';
+
+		export interface IOTM {
+			iotm: 'ATM' | 'OTM' | 'ITM';
+			tradeValue: number;
+			tradeVolume: number;
+		}
+
+		export interface ContractType {
+			contractType: TOptionSide;
+			tradeValue: number;
+			tradeVolume: number;
+		}
+	}
+
+	export namespace GetOptionMarketComparison {
+		export type TChartType = 'OptionToMarket' | 'OptionBuyToMarket' | 'OptionSellToMarket';
+
+		export type Data = Record<string, number>;
+	}
+
+	export namespace GetMarketProcessChart {
+		export type TChartType = 'Value' | 'Volume' | 'NotionalValue';
+
+		export type Data = Record<string, number>;
+	}
+
+	export namespace GetOptionTradeProcess {
+		export type TChartType = 'Process' | 'PutToCall';
+
+		export interface Data {
+			intervalDateTime: string;
+			callValue: number;
+			putValue: number;
+		}
+	}
+
+	export namespace GetOptionWatchlistPriceChangeInfo {
+		export interface Data {
+			count: number;
+			state: string;
+		}
+	}
+
+	export namespace GetOpenPositionProcess {
+		export type Data = Record<string, number>;
+	}
+
+	export namespace GetAnnualReport {
+		export type Type = 'FundIncrease' | 'Other';
+
+		export interface Data {
+			symbolTitle: string;
+			dateTime: string;
+			title: string;
+		}
+	}
+
+	export namespace GetFirstTradedOptionSymbol {
+		export interface Data {
+			symbolISIN: string;
+			contractEndDate: string;
+			symbolTitle: string;
+			firstTradeDate: string;
+			numberOfDaysUntilNow: number;
+		}
+	}
+
+	export namespace GetMostTradedOptionSymbol {
+		export interface Data {
+			symbolISIN: string;
+			contractEndDate: string;
+			symbolTitle: string;
+			workingDaysTradedCount: number;
+		}
+	}
+
+	export namespace GetTopOptionBaseSymbolValue {
+		export interface Data {
+			todayTopOptionBaseSymbolValues: GetTopOptionBaseSymbolValue.Symbol[];
+			weekTopOptionBaseSymbolValues: GetTopOptionBaseSymbolValue.Symbol[];
+			monthTopOptionBaseSymbolValues: GetTopOptionBaseSymbolValue.Symbol[];
+		}
+
+		export interface Symbol {
+			symbolISIN: string;
+			symbolTitle: string;
+			todayValue: number;
+		}
+	}
+
+	export namespace GetOptionSettlementInfo {
+		export type Type = 'MostRecent' | 'Closest';
+
+		export type Data = GetOptionSettlementInfo.MostRecentData | GetOptionSettlementInfo.ClosestData;
+
+		export interface MostRecentData {
+			symbolTitle: string;
+			mostRecentPassedDays: number;
+			totalTradeValue: number;
+			totalTradeVolume: number;
+		}
+
+		export interface ClosestData {
+			symbolTitle: string;
+			closestDueDays: number;
+			totalTradeValue: number;
+			totalTradeVolume: number;
+		}
+	}
+
+	export namespace GetIndividualLegalInfo {
+		export type SymbolType = 'Option' | 'BaseSymbol';
+
+		export type Type = 'Individual' | 'Legal';
+
+		export type Data = GetIndividualLegalInfo.Individual | GetIndividualLegalInfo.Legal;
+
+		export interface Individual {
+			dateTime: string;
+			individualBuyAverage: number;
+			individualSellAverage: number;
+		}
+
+		export interface Legal {
+			dateTime: string;
+			sumOfLegalsBuyVolume: number;
+			sumOfLegalsSellVolume: number;
 		}
 	}
 }

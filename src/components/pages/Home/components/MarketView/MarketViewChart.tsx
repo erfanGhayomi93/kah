@@ -1,26 +1,23 @@
-import NoData from '@/components/common/NoData';
-import { numFormatter } from '@/utils/helpers';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
-interface ChartProps {
-	data: Dashboard.GetIndex.All | null;
+interface MarketViewChartProps {
+	interval: Dashboard.TInterval;
+	data: Dashboard.GetIndex.All;
 }
 
-const MarketViewChart = ({ data }: ChartProps) => {
-	const dataMapper: Array<Record<'x' | 'y', string>> = useMemo(() => {
-		if (!Array.isArray(data)) return [];
-
-		const d = JSON.parse(JSON.stringify(data)) as typeof data;
-		d.reverse();
-
-		return d.map((item) => ({
-			x: item.time,
-			y: String(item.lastIndexValueInDay),
+const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
+	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
+		const result = data.map((item) => ({
+			x: interval === 'Today' ? item.time : item.date,
+			y: item.lastIndexValueInDay ?? 0,
 		}));
-	}, [data]);
 
-	if (!Array.isArray(data) || data.length === 0) return <NoData />;
+		if (interval === 'Today') result.reverse();
+
+		return result;
+	}, [interval, data]);
 
 	return (
 		<Chart
@@ -39,39 +36,76 @@ const MarketViewChart = ({ data }: ChartProps) => {
 				},
 				colors: ['rgb(66, 115, 237)'],
 				tooltip: {
+					cssClass: 'apex-tooltip',
+
 					style: {
 						fontFamily: 'IRANSans',
-						fontSize: '1.2rem',
+						fontSize: '12px',
+					},
+
+					x: {
+						show: false,
+					},
+
+					y: {
+						title: {
+							formatter: () => {
+								return '';
+							},
+						},
+						formatter: (val) => {
+							return sepNumbers(String(val ?? 0));
+						},
 					},
 				},
 				xaxis: {
+					tickAmount: 9,
 					offsetX: 0,
 					offsetY: 0,
-					tickAmount: 7,
 					axisBorder: {
-						show: true,
+						show: false,
 					},
 					axisTicks: {
 						show: false,
 					},
 					labels: {
+						rotate: 0,
+						rotateAlways: false,
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
-						formatter: (val) => {
-							return val;
+						formatter: (value) => {
+							return interval === 'Today' ? value : dateFormatter(value, 'date');
 						},
 					},
 				},
+				fill: {
+					type: 'gradient',
+					gradient: {
+						type: 'vertical',
+						colorStops: [
+							{
+								offset: 20,
+								color: 'rgb(66, 115, 237)',
+								opacity: 0.2,
+							},
+							{
+								offset: 100,
+								color: 'rgb(66, 115, 237)',
+								opacity: 0,
+							},
+						],
+					},
+				},
 				yaxis: {
-					tickAmount: 4,
+					tickAmount: 2,
 					labels: {
 						offsetX: -8,
 						offsetY: 1,
 						style: {
 							fontFamily: 'IRANSans',
-							fontSize: '1.2rem',
+							fontSize: '12px',
 						},
 						formatter: (val) => {
 							return numFormatter(val);
@@ -83,6 +117,12 @@ const MarketViewChart = ({ data }: ChartProps) => {
 				},
 				markers: {
 					size: 0,
+					strokeColors: ['rgb(66, 115, 237)'],
+					colors: 'rgb(255, 255, 255)',
+					strokeWidth: 2,
+					hover: {
+						size: 4,
+					},
 				},
 				grid: {
 					position: 'back',
@@ -93,24 +133,23 @@ const MarketViewChart = ({ data }: ChartProps) => {
 						},
 					},
 					padding: {
-						top: 0,
+						top: -16,
 						left: 0,
-						bottom: 0,
+						bottom: -8,
 						right: 0,
 					},
 				},
 				stroke: {
 					curve: 'smooth',
-					width: 1,
+					width: 2,
 				},
 			}}
 			series={[
 				{
-					name: 'قیمت',
 					data: dataMapper,
 				},
 			]}
-			type='line'
+			type='area'
 			width='100%'
 			height='100%'
 		/>

@@ -1,29 +1,84 @@
 'use client';
 
 import ipcMain from '@/classes/IpcMain';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Main from '@/components/layout/Main';
 import { initialHomeGrid } from '@/constants';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import { toast } from 'react-toastify';
-import Best from './components/Best';
-import CompareTransactionValue from './components/CompareTransactionValue';
-import Custom from './components/Custom';
-import DueDates from './components/DueDates';
-import IndividualAndLegal from './components/IndividualAndLegal';
-import MarketState from './components/MarketState';
-import MarketView from './components/MarketView';
-import Meetings from './components/Meetings';
-import NewAndOld from './components/NewAndOld';
-import OpenPositionsProcess from './components/OpenPositionsProcess';
-import OptionContracts from './components/OptionContracts';
-import OptionMarketProcess from './components/OptionMarketProcess';
-import OptionTradesValue from './components/OptionTradesValue';
-import PriceChangesWatchlist from './components/PriceChangesWatchlist';
-import RecentActivities from './components/RecentActivities';
-import TopBaseAssets from './components/TopBaseAssets';
-import UserProgressBar from './components/UserProgressBar';
+import Loading from './components/Loading';
+import EditLayoutButton from './EditLayoutButton';
+
+const Best = dynamic(() => import('./components/Best'), {
+	loading: () => <Loading />,
+});
+
+const CompareTransactionValue = dynamic(() => import('./components/CompareTransactionValue'), {
+	loading: () => <Loading />,
+});
+
+const Custom = dynamic(() => import('./components/Custom'), {
+	loading: () => <Loading />,
+});
+
+const DueDates = dynamic(() => import('./components/DueDates'), {
+	loading: () => <Loading />,
+});
+
+const IndividualAndLegal = dynamic(() => import('./components/IndividualAndLegal'), {
+	loading: () => <Loading />,
+});
+
+const MarketState = dynamic(() => import('./components/MarketState'), {
+	loading: () => <Loading />,
+});
+
+const MarketView = dynamic(() => import('./components/MarketView'), {
+	loading: () => <Loading />,
+});
+
+const Meetings = dynamic(() => import('./components/Meetings'), {
+	loading: () => <Loading />,
+});
+
+const NewAndOld = dynamic(() => import('./components/NewAndOld'), {
+	loading: () => <Loading />,
+});
+
+const OpenPositionsProcess = dynamic(() => import('./components/OpenPositionsProcess'), {
+	loading: () => <Loading />,
+});
+
+const OptionContracts = dynamic(() => import('./components/OptionContracts'), {
+	loading: () => <Loading />,
+});
+
+const OptionMarketProcess = dynamic(() => import('./components/OptionMarketProcess'), {
+	loading: () => <Loading />,
+});
+
+const OptionTradesValue = dynamic(() => import('./components/OptionTradesValue'), {
+	loading: () => <Loading />,
+});
+
+const PriceChangesWatchlist = dynamic(() => import('./components/PriceChangesWatchlist'), {
+	loading: () => <Loading />,
+});
+
+const RecentActivities = dynamic(() => import('./components/RecentActivities'), {
+	loading: () => <Loading />,
+});
+
+const TopBaseAssets = dynamic(() => import('./components/TopBaseAssets'), {
+	loading: () => <Loading />,
+});
+
+const UserProgressBar = dynamic(() => import('./components/UserProgressBar'), {
+	loading: () => <Loading />,
+});
 
 const SECTIONS_MARGIN: [number, number] = [16, 16];
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -86,7 +141,7 @@ const Home = () => {
 	};
 
 	const cells = useMemo(() => {
-		const result: Partial<Record<THomeSections, boolean>> = {};
+		const result: Partial<Record<TDashboardSections, boolean>> = {};
 
 		for (let i = 0; i < grid.length; i++) {
 			const item = grid[i];
@@ -124,107 +179,143 @@ const Home = () => {
 				>
 					{!cells.market_view && (
 						<div key='market_view'>
-							<MarketView />
+							<ErrorBoundary>
+								<MarketView />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.market_state && (
 						<div key='market_state'>
-							<MarketState />
+							<ErrorBoundary>
+								<MarketState />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.best && (
 						<div key='best'>
-							<Best />
+							<ErrorBoundary>
+								<Best />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.user_progress_bar && (
 						<div key='user_progress_bar'>
-							<UserProgressBar />
+							<ErrorBoundary>
+								<UserProgressBar />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.compare_transaction_value && (
 						<div key='compare_transaction_value'>
-							<CompareTransactionValue />
+							<ErrorBoundary>
+								<CompareTransactionValue />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.option_contracts && (
 						<div key='option_contracts'>
-							<OptionContracts />
+							<ErrorBoundary>
+								<OptionContracts />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.option_trades_value && (
 						<div key='option_trades_value'>
-							<OptionTradesValue />
+							<ErrorBoundary>
+								<OptionTradesValue />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.option_market_process && (
 						<div key='option_market_process'>
-							<OptionMarketProcess />
+							<ErrorBoundary>
+								<OptionMarketProcess />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.individual_and_legal && (
 						<div key='individual_and_legal'>
-							<IndividualAndLegal />
+							<ErrorBoundary>
+								<IndividualAndLegal />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.price_changes_watchlist && (
 						<div key='price_changes_watchlist'>
-							<PriceChangesWatchlist />
+							<ErrorBoundary>
+								<PriceChangesWatchlist />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.open_positions_process && (
 						<div key='open_positions_process'>
-							<OpenPositionsProcess />
+							<ErrorBoundary>
+								<OpenPositionsProcess />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.meetings && (
 						<div key='meetings'>
-							<Meetings />
+							<ErrorBoundary>
+								<Meetings />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.new_and_old && (
 						<div key='new_and_old'>
-							<NewAndOld />
+							<ErrorBoundary>
+								<NewAndOld />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.top_base_assets && (
 						<div key='top_base_assets'>
-							<TopBaseAssets />
+							<ErrorBoundary>
+								<TopBaseAssets />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.recent_activities && (
 						<div key='recent_activities'>
-							<RecentActivities />
+							<ErrorBoundary>
+								<RecentActivities />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.due_dates && (
 						<div key='due_dates'>
-							<DueDates />
+							<ErrorBoundary>
+								<DueDates />
+							</ErrorBoundary>
 						</div>
 					)}
 
 					{!cells.custom && (
 						<div key='custom'>
-							<Custom />
+							<ErrorBoundary>
+								<Custom />
+							</ErrorBoundary>
 						</div>
 					)}
 				</ResponsiveGridLayout>
 			</div>
+
+			<EditLayoutButton />
 		</Main>
 	);
 };

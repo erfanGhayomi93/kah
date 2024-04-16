@@ -1,4 +1,4 @@
-import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
+import SymbolMarketDepth from '@/components/common/Tables/SymbolMarketDepth';
 
 interface ContractMarketDepthProps {
 	symbol: Symbol.Info | null;
@@ -7,7 +7,7 @@ interface ContractMarketDepthProps {
 const ContractMarketDepth = ({ symbol }: ContractMarketDepthProps) => {
 	if (!symbol) return null;
 
-	return <SymbolPriceTable symbolISIN={symbol.symbolISIN} />;
+	return <SymbolMarketDepth symbolISIN={symbol.symbolISIN} />;
 };
 
 export default ContractMarketDepth;

@@ -127,7 +127,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
 const Header = ({ label, onClose }: ModalHeaderProps) => (
 	<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
-		<h2 className='text-xl font-medium'>{label}</h2>
+		<h2 className='text-xl font-medium text-gray-900'>{label}</h2>
 
 		<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
 			<XSVG width='2rem' height='2rem' />

@@ -1,13 +1,13 @@
 import metadata from '@/metadata';
 
-interface IRootLayout extends INextProps {
+interface ILayout extends INextProps {
 	children: React.ReactNode;
 	params: {
 		locale: string;
 	};
 }
 
-const RootLayout = async ({ children }: IRootLayout) => {
+const Layout = async ({ children }: ILayout) => {
 	return (
 		<html>
 			<body>{children}</body>
@@ -15,6 +15,6 @@ const RootLayout = async ({ children }: IRootLayout) => {
 	);
 };
 
-export default RootLayout;
+export default Layout;
 
 export { metadata };

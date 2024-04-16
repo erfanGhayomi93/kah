@@ -1,4 +1,3 @@
-import { type IBuySellModal } from '@/features/slices/modalSlice';
 import { type ICellRendererComp, type ICellRendererParams } from '@ag-grid-community/core';
 import { type ITableData } from '../OptionTable';
 import StrikePriceBtnGroup from './StrikePriceBtnGroup';
@@ -6,9 +5,7 @@ import StrikePriceBtnGroup from './StrikePriceBtnGroup';
 export type StrikePriceCellRendererProps = ICellRendererParams<ITableData, number> & {
 	activeRowId: number;
 	basket: IOrderBasket[];
-	addBuySellModal: (props: IBuySellModal) => void;
-	addSymbolToBasket: (data: Option.Root, side: TOptionSides) => void;
-	removeSymbolFromBasket: (data: Option.Root) => void;
+	addSymbolToBasket: (data: Option.Root, side: TBsSides) => void;
 	addSymbolToWatchlist: (data: Option.Root) => void;
 	addAlert: (data: Option.Root) => void;
 	goToTechnicalChart: (data: Option.Root) => void;
@@ -55,7 +52,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 				node: { rowIndex },
 			} = params;
 
-			this.renderBuySellBtn();
+			// this.renderBuySellBtn();
 
 			if (rowIndex === activeRowId) {
 				this.removeRowOverlay();
@@ -102,13 +99,13 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		if (!data) return;
 
 		const buyBtnGroup = new StrikePriceBtnGroup({
-			isInBasket: this.isInBasket('sell'),
-			side: 'sell',
+			isInBasket: this.isInBasket('buy'),
+			side: 'buy',
 			params: this.params,
 		});
 		const sellBtnGroup = new StrikePriceBtnGroup({
-			isInBasket: this.isInBasket('buy'),
-			side: 'buy',
+			isInBasket: this.isInBasket('sell'),
+			side: 'sell',
 			params: this.params,
 		});
 

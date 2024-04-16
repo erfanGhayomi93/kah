@@ -1,27 +1,59 @@
+import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
 import Section from '../../common/Section';
+
+const OptionMarketProcessChart = dynamic(() => import('./OptionMarketProcessChart'), {
+	loading: () => <Loading />,
+});
+
+interface IDefaultActiveTab {
+	top: Dashboard.TInterval;
+	bottom: Dashboard.GetMarketProcessChart.TChartType;
+}
 
 const OptionMarketProcess = () => {
 	const t = useTranslations();
 
+	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
+		top: 'Today',
+		bottom: 'Volume',
+	});
+
+	const setDefaultTabByPosition = <T extends keyof IDefaultActiveTab>(position: T, value: IDefaultActiveTab[T]) => {
+		setDefaultTab((prev) => ({
+			...prev,
+			[position]: value,
+		}));
+	};
+
 	return (
-		<Section
+		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_market_process'
 			title={t('home.option_market_process')}
+			defaultTopActiveTab={defaultTab.top}
+			defaultBottomActiveTab={defaultTab.bottom}
+			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
+			onBottomTabChange={(v) => setDefaultTabByPosition('bottom', v)}
 			tabs={{
 				top: [
-					{ id: 'tab_day', title: t('home.tab_day') },
-					{ id: 'tab_week', title: t('home.tab_week') },
-					{ id: 'tab_month', title: t('home.tab_month') },
-					{ id: 'tab_year', title: t('home.tab_year') },
+					{ id: 'Today', title: t('home.tab_day') },
+					{ id: 'Week', title: t('home.tab_week') },
+					{ id: 'Month', title: t('home.tab_month') },
+					{ id: 'Year', title: t('home.tab_year') },
 				],
 				bottom: [
-					{ id: 'tab_volume', title: t('home.tab_volume') },
-					{ id: 'tab_value', title: t('home.tab_value') },
-					{ id: 'tab_notional_value', title: t('home.tab_notional_value') },
+					{ id: 'Volume', title: t('home.tab_volume') },
+					{ id: 'Value', title: t('home.tab_value') },
+					{ id: 'NotionalValue', title: t('home.tab_notional_value') },
 				],
 			}}
-		/>
+		>
+			<div className='relative flex-1 overflow-hidden py-8'>
+				<OptionMarketProcessChart interval={defaultTab.top} type={defaultTab.bottom} />
+			</div>
+		</Section>
 	);
 };
 

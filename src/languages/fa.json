@@ -28,6 +28,8 @@
 	},
 	"header": {
 		"login": "ورود",
+		"search_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
+		"register": "ثبت‌نام",
 		"exit": "خروج",
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
@@ -43,7 +45,7 @@
 		"user_status_Normal": "عادی",
 		"user_status_AtRisk": "در خطر",
 		"user_status_CallMargin": "اخطار وجه تضمین",
-		"logout": "خروج از حساب کاربری کهکشان"
+		"logout": "خروج از حساب کاربری"
 	},
 	"header_navigation": {
 		"watchlist": "دیده‌بان",
@@ -56,7 +58,7 @@
 		"best": "برترین‌ها",
 		"user_progress_bar": "کهکشان",
 		"compare_transaction_value": "مقایسه ارزش معاملات",
-		"option_contracts": "قرارداد های اختیار",
+		"option_contracts": "قراردادهای اختیار",
 		"option_trades_value": "ارزش در معاملات اختیار",
 		"option_market_process": "روند بازار آپشن",
 		"individual_and_legal": "حقیقی و حقوقی",
@@ -83,9 +85,12 @@
 		"tab_bourse": "بورس",
 		"tab_fara_bourse": "فرابورس",
 		"tab_option_position": "موقعیت باز",
+		"tab_option_positions": "کل موقعیت‌های باز",
 		"tab_trades_count": "تعداد معاملات",
 		"tab_changes_from_previous_day": "تغییرات نسبت به روز قبل",
 		"tab_trades_volume": "حجم معاملات",
+		"tab_call_open_position": "موقعیت باز خرید",
+		"tab_put_open_position": "موقعیت باز فروش",
 		"tab_trades_value": "ارزش معاملات",
 		"tab_contract_type": "نوع قرارداد",
 		"tab_in_profit": "در سود بودن",
@@ -103,10 +108,37 @@
 		"tab_most_trading_day": "بیشترین روز معاملاتی",
 		"tab_newest": "جدیدترین",
 		"tab_closest": "نزدیکترین",
-		"bourse_market_value": "ارزش بازار بورس",
-		"fara_bourse_market_value": "ارزش بازار فرابورس",
+		"bourse_market_value": "شاخص بورس",
+		"fara_bourse_market_value": "شاخص فرابورس",
 		"call_trades_value": "ارزش معاملات اختیارهای خرید",
-		"put_trades_value": "ارزش معاملات اختیارهای فروش"
+		"put_trades_value": "ارزش معاملات اختیارهای فروش",
+		"login_check": "ورود به کهکشان",
+		"trade_check": "معامله در کهکشان",
+		"invite_check": "معرفی کهکشان به حداقل {n} نفر",
+		"use_strategy_check": "استفاده از استراتژی‌ها",
+		"create_profile_check": "ایجاد پروفایل برای شبکه اجتماعی کهکشان",
+		"share_check": "به اشتراک گذاشتن استراتژی در صفحه‌های سیگنال",
+		"atm": "ATM",
+		"itm": "ITM",
+		"otm": "OTM",
+		"call_contracts": "اختیارهای خرید",
+		"put_contracts": "اختیارهای فروش",
+		"symbol_title": "نماد",
+		"date": "تاریخ",
+		"title": "عنوان",
+		"strike_date": "تاریخ اعمال",
+		"working_days_traded_count": "روزهای معامله شده",
+		"first_trade_date": "اولین روز معامله شده",
+		"detail": "جزئیات",
+		"daily": "روزانه",
+		"weekly": "هفتگی",
+		"monthly": "ماهانه",
+		"today_volume": "حجم امروز",
+		"today_value": "ارزش امروز",
+		"due_days": "روز مانده",
+		"passed_days": "روز گذشته",
+		"call_option": "اختیار خرید",
+		"put_option": "اختیار فروش"
 	},
 	"symbol_contracts_modal": {
 		"title": "انتخاب قرارداد {symbolTitle}",
@@ -181,7 +213,7 @@
 	"choose_broker_modal": {
 		"title": "انتخاب کارگزاری",
 		"login": "ورود",
-		"description": "برای معامله در کهکشان، یکی از کارگزاری های زیر را انتخاب کنید."
+		"description": "برای معامله در کهکشان، یکی از کارگزاری‌های زیر را انتخاب کنید."
 	},
 	"add_symbol_to_watchlist": {
 		"title": "جستجوی نماد"
@@ -327,7 +359,7 @@
 		"back_to_default": "پیش‌فرض"
 	},
 	"manage_option_watchlist_columns": {
-		"title": "مدیریت ستون های جدول",
+		"title": "مدیریت ستون‌های جدول",
 		"symbol_info": "اطلاعات نماد",
 		"table_details": "جزئیات تابلو",
 		"formula": "یونانی و محاسباتی",
@@ -611,6 +643,18 @@
 		"select_collateral": "لطفا نوع وثیقه مورد نظر خود را انتخاب کنید",
 		"collateral_details": "وثیقه مبلغ <p>{price}</p> ریال، بابت ضمانت موقعیت <t>{title}</t>"
 	},
+	"manage_dashboard_layout_modal": {
+		"title": "چیدمان صفحه اصلی"
+	},
+	"change_broker_modal": {
+		"title": "تغییر کارگزار ناظر"
+	},
+	"withdrawal_modal": {
+		"title": "برداشت وجه"
+	},
+	"deposit_modal": {
+		"title": "واریز وجه"
+	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
 		"next_page": "صفحه بعد",
@@ -711,7 +755,7 @@
 		"ParseMessageFailed_UserNameNotValid": "کاربر نامعتبر است.",
 		"OrderPerSecondFail": "تعداد بیش از حد مجاز سفارش در ثانیه برای مشتری است.",
 		"OMSNotAvailable": "خطا در برقراری ارتباط با OMS",
-		"HasNotAcceptedtAgreement": "عدم تایید توافق‌نامه های لازم",
+		"HasNotAcceptedtAgreement": "عدم تایید توافق‌نامه‌های لازم",
 		"Held_quantity_of_shares_is_insufficient": "موجودی سهام کافی نمی باشد.",
 		"AccessToHubFail": "امکان ارسال سفارش وجود ندارد",
 		"ChangeBestPrice_Is_Not_Valid": "امکان تغییر بهترین مظنه وجود ندارد",
@@ -755,7 +799,24 @@
 		"cancel_order": "لغو سفارش",
 		"edit": "ویرایش"
 	},
+	"exchange": {
+		"Exchange": "بورس",
+		"CommodityExchange": "بورس کالا",
+		"Future": "آتی",
+		"Option": "اختیار",
+		"BaseFaraBourse": "پایه فرابورس",
+		"BaseFaraBourseNoPublish": "پایه فرابورس (منتشر نمی شود)",
+		"Bourse": "بورس",
+		"FaraBourse": "فرابورس",
+		"EnergyExchange": "بورس انرژی",
+		"undefined": "تعریف نشده",
+		"null": "تعریف نشده"
+	},
 	"alerts": {
+		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
+		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",
+		"orders_sent_successfully": "تمام سفارش‌ها با موفقیت ارسال شدند.",
+		"orders_sent_failed": "ارسال تمام سفارش‌ها با خطا مواجه شدند.",
 		"can_not_hide_every_sections": "امکان مخفی کردن تمامی بخش‌ها وجود ندارد.",
 		"logged_out_successfully": "با موفقیت از حساب خود خارج شدید.",
 		"watchlist_symbol_removed_successfully": "نماد \"{symbolTitle}\" با موفقیت از دیده‌بان حذف شد.",

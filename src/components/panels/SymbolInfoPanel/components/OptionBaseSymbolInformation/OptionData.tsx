@@ -1,5 +1,5 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
-import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
+import SymbolMarketDepth from '@/components/common/Tables/SymbolMarketDepth';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import NoData from '../../../../common/NoData';
@@ -65,7 +65,7 @@ const OptionData = ({ symbolISIN, baseSymbolISIN }: OptionDataProps) => {
 			</div>
 
 			<div className='relative'>
-				<SymbolPriceTable symbolISIN={baseSymbolISIN} />
+				<SymbolMarketDepth symbolISIN={baseSymbolISIN} />
 			</div>
 		</div>
 	);

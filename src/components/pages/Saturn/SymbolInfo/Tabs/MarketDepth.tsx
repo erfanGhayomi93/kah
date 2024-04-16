@@ -1,4 +1,4 @@
-import SymbolPriceTable from '@/components/common/Tables/SymbolPriceTable';
+import SymbolMarketDepth from '@/components/common/Tables/SymbolMarketDepth';
 import { InfoSVG } from '@/components/icons';
 import Progressbar from '../../common/Progressbar';
 
@@ -11,7 +11,7 @@ const MarketDepth = ({ symbol }: MarketDepthProps) => {
 
 	return (
 		<div className='relative flex-1 gap-40 flex-column'>
-			<SymbolPriceTable symbolISIN={symbol.symbolISIN} />
+			<SymbolMarketDepth symbolISIN={symbol.symbolISIN} />
 
 			<div style={{ gap: '8.8rem' }} className='relative w-full items-center flex-justify-between'>
 				<Progressbar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />
