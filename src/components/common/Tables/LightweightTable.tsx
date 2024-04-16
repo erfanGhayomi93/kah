@@ -10,13 +10,17 @@ export interface IColDef<T> {
 	valueFormatter: (row: T) => React.ReactNode;
 }
 
-interface LightweightTableProps<T extends unknown> {
-	rowData: T[];
+interface LightweightTableProps<T extends unknown[], K extends unknown> {
+	rowData: T;
 	className?: ClassesValue;
-	columnDefs: Array<IColDef<T>>;
+	columnDefs: Array<IColDef<K>>;
 }
 
-const LightweightTable = <T extends unknown>({ columnDefs, rowData, className }: LightweightTableProps<T>) => {
+const LightweightTable = <T extends unknown[], K = ElementType<T>>({
+	columnDefs,
+	rowData,
+	className,
+}: LightweightTableProps<T, K>) => {
 	return (
 		<table className={clsx(styles.table, className)}>
 			<thead className={styles.thead}>
@@ -33,11 +37,11 @@ const LightweightTable = <T extends unknown>({ columnDefs, rowData, className }:
 					<tr className={styles.tr} key={i}>
 						{columnDefs.map((col, i) => (
 							<td
-								onClick={(e) => col.onCellClick?.(row, e)}
+								onClick={(e) => col.onCellClick?.(row as K, e)}
 								className={clsx(styles.td, col.cellClass)}
 								key={i}
 							>
-								{col.valueFormatter(row)}
+								{col.valueFormatter(row as K)}
 							</td>
 						))}
 					</tr>
