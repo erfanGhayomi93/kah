@@ -34,7 +34,7 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 			const value = data[datetime];
 
 			result[0].data.push({
-				x: dateFormatter(datetime, 'time'),
+				x: datetime,
 				y: value,
 			});
 
@@ -108,6 +108,9 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 							style: {
 								fontFamily: 'IRANSans',
 								fontSize: '12px',
+							},
+							formatter: (v) => {
+								return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
 							},
 						},
 					},
