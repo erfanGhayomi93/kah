@@ -4,11 +4,8 @@ import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import {
-	setAddNewOptionWatchlist,
-	setMoveSymbolToWatchlistModal,
-	type IMoveSymbolToWatchlistModal,
-} from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlist, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { type IMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice.interfaces';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';

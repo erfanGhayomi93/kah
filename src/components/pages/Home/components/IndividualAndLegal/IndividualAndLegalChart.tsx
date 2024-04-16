@@ -1,30 +1,50 @@
-import { useGetOptionMarketComparisonQuery } from '@/api/queries/dashboardQueries';
-import { dateFormatter, toFixed } from '@/utils/helpers';
+import { useGetIndividualLegalInfoQuery } from '@/api/queries/dashboardQueries';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 import Suspend from '../../common/Suspend';
 
-interface CompareTransactionValueChartProps {
-	interval: Dashboard.TInterval;
-	type: Dashboard.GetOptionMarketComparison.TChartType;
+interface IndividualAndLegalChartProps {
+	symbolType: Dashboard.GetIndividualLegalInfo.SymbolType;
+	type: Dashboard.GetIndividualLegalInfo.Type;
 }
 
-const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValueChartProps) => {
-	const { data, isFetching } = useGetOptionMarketComparisonQuery({
-		queryKey: ['getOptionMarketComparisonQuery', interval, type],
+const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartProps) => {
+	const { data, isFetching } = useGetIndividualLegalInfoQuery({
+		queryKey: ['getIndividualLegalInfoQuery', symbolType, type],
 	});
 
-	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
-		if (!data) return [];
+	const dataMapper: ApexAxisChartSeries = useMemo(() => {
+		if (!data?.length) return [];
 
-		const keys = Object.keys(data);
-		if (keys.length === 0) return [];
+		const l = data.length;
+		const result: Array<{ data: Array<{ x: string; y: number }> }> = [
+			{
+				data: [],
+			},
+			{
+				data: [],
+			},
+		];
+		for (let i = 0; i < l; i++) {
+			const item = data[i];
+			const dateTime = item.dateTime;
+			const call = 'individualBuyAverage' in item ? item.individualBuyAverage : item.sumOfLegalsBuyVolume;
+			const put = 'individualBuyAverage' in item ? item.individualSellAverage : item.sumOfLegalsSellVolume;
 
-		return keys.map((d) => ({
-			x: d,
-			y: data[d],
-		}));
-	}, [interval, data]);
+			result[0].data.push({
+				x: dateFormatter(dateTime, 'date'),
+				y: call,
+			});
+
+			result[1].data.push({
+				x: dateFormatter(dateTime, 'date'),
+				y: put,
+			});
+		}
+
+		return result;
+	}, [type, symbolType, data]);
 
 	return (
 		<>
@@ -62,12 +82,12 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 								},
 							},
 							formatter: (val) => {
-								return toFixed(val, 6, false) + '%';
+								return sepNumbers(String(val ?? 0));
 							},
 						},
 					},
 					xaxis: {
-						tickAmount: 9,
+						tickAmount: 5,
 						offsetX: 0,
 						offsetY: 0,
 						axisBorder: {
@@ -83,9 +103,6 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 								fontFamily: 'IRANSans',
 								fontSize: '12px',
 							},
-							formatter: (value) => {
-								return dateFormatter(value, interval === 'Today' ? 'time' : 'date');
-							},
 						},
 					},
 					yaxis: {
@@ -97,8 +114,8 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 								fontFamily: 'IRANSans',
 								fontSize: '12px',
 							},
-							formatter: (value) => {
-								return String(Number((Number(value) * 100).toFixed(6)) * 1);
+							formatter: (val) => {
+								return numFormatter(val);
 							},
 						},
 					},
@@ -123,9 +140,9 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 							},
 						},
 						padding: {
-							top: -16,
+							top: 0,
 							left: 0,
-							bottom: -8,
+							bottom: 0,
 							right: 0,
 						},
 					},
@@ -152,19 +169,15 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 						},
 					},
 				}}
-				series={[
-					{
-						data: dataMapper,
-					},
-				]}
+				series={dataMapper}
 				type='area'
 				width='100%'
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data || Object.keys(data).length === 0} />
+			<Suspend isLoading={isFetching} isEmpty={!data?.length} />
 		</>
 	);
 };
 
-export default CompareTransactionValueChart;
+export default IndividualAndLegalChart;

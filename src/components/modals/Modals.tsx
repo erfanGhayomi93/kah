@@ -6,10 +6,14 @@ import {
 	setAddSaturnTemplate,
 	setAddSymbolToWatchlistModal,
 	setBuySellModal,
+	setChangeBrokerModal,
 	setChoiceCollateralModal,
+	setDepositModal,
+	setManageDashboardLayoutModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
 	setOrderDetailsModal,
+	setWithdrawalModal,
 } from '@/features/slices/modalSlice';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
@@ -48,6 +52,14 @@ const OrderDetails = lazy(() => import('./OrderDetails'));
 
 const MoveSymbolToWatchlist = lazy(() => import('./MoveSymbolToWatchlist'));
 
+const Withdrawal = lazy(() => import('./Withdrawal'));
+
+const Deposit = lazy(() => import('./Deposit'));
+
+const ChangeBroker = lazy(() => import('./ChangeBroker'));
+
+const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
+
 const Modals = () => {
 	const dispatch = useAppDispatch();
 
@@ -69,6 +81,10 @@ const Modals = () => {
 		blackScholes,
 		moveSymbolToWatchlist,
 		orderDetails,
+		changeBroker,
+		deposit,
+		manageDashboardLayout,
+		withdrawal,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -133,6 +149,46 @@ const Modals = () => {
 				{choiceBroker && (
 					<ModalSuspense>
 						<ChoiceBroker {...choiceBroker} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{changeBroker && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setChangeBrokerModal(null))}>
+							<ChangeBroker {...changeBroker} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{withdrawal && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setWithdrawalModal(null))}>
+							<Withdrawal {...withdrawal} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{deposit && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setDepositModal(null))}>
+							<Deposit {...deposit} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{manageDashboardLayout && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setManageDashboardLayoutModal(null))}>
+							<ManageDashboardLayout {...manageDashboardLayout} />
+						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

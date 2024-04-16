@@ -5,7 +5,7 @@ import { SearchSVG, XCircleSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SearchSymbol = () => {
 	const t = useTranslations();
@@ -23,6 +23,10 @@ const SearchSymbol = () => {
 	const setSymbol = (symbolISIN: string) => {
 		if (symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
 	};
+
+	useEffect(() => {
+		setTerm('');
+	}, [isExpand]);
 
 	return (
 		<Popup
@@ -84,6 +88,7 @@ const SearchSymbol = () => {
 					{isExpand && (
 						<>
 							<input
+								autoFocus
 								onFocus={() => setOpen(true)}
 								type='text'
 								value={term}
@@ -99,7 +104,7 @@ const SearchSymbol = () => {
 								type='button'
 								className='size-24 rounded-circle text-gray-800 flex-justify-center'
 							>
-								<XCircleSVG width='2.4rem' height='2.4rem' />
+								<XCircleSVG width='1.6rem' height='1.6rem' />
 							</button>
 						</>
 					)}
