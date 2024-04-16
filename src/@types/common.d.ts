@@ -13,7 +13,9 @@ declare type ReactNode = null | undefined | false | React.ReactElement;
 
 declare type RecordClasses<T extends string> = Partial<Record<T, ClassesValue>>;
 
-type NestedObject = { [key: string | number]: NestedObject | string | number };
+declare type NestedObject = { [key: string | number]: NestedObject | string | number };
+
+declare type ElementType<T extends readonly unknown[]> = T extends readonly (infer U)[] ? U : never;
 
 declare type PartialK<T, K extends PropertyKey = PropertyKey> = Partial<Pick<T, Extract<keyof T, K>>> &
 	Omit<T, K> extends infer O

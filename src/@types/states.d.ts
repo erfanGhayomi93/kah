@@ -70,7 +70,7 @@ declare interface ISymbolInfoPanelGrid {
 	readonly isOption?: boolean;
 }
 
-declare interface IHomeGrid {
+declare interface IDashboardGrid {
 	id: TDashboardSections;
 	w: number;
 	h: number;
