@@ -4,6 +4,7 @@ import { numFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
+import Suspend from '../../common/Suspend';
 
 const OptionContractsChart = dynamic(() => import('./OptionContractsChart'), {
 	loading: () => <Loading />,
@@ -17,7 +18,7 @@ interface OptionContractsContainerProps {
 const OptionContractsContainer = ({ basis, type }: OptionContractsContainerProps) => {
 	const t = useTranslations();
 
-	const { data, isFetching } = useGetOptionContractAdditionalInfoQuery({
+	const { data, isLoading } = useGetOptionContractAdditionalInfoQuery({
 		queryKey: ['getOptionContractAdditionalInfoQuery', type],
 	});
 
@@ -59,21 +60,19 @@ const OptionContractsContainer = ({ basis, type }: OptionContractsContainerProps
 	}, [data, basis, type]);
 
 	return (
-		<div className='flex flex-1 px-8 pt-36'>
+		<div className='relative flex flex-1 px-8 pt-36'>
 			<OptionContractsChart type={type} basis={basis} data={data} />
 
-			{isFetching ? (
-				<Loading />
-			) : (
-				<ul className='flex-1 justify-center gap-32 rtl flex-column'>
-					{dataMapper.map((item, i) => (
-						<li key={i} className='text-base flex-justify-between'>
-							<span className='text-gray-900'>{item.title}:</span>
-							<span className='text-gray-1000'>{item.value}</span>
-						</li>
-					))}
-				</ul>
-			)}
+			<ul className='flex-1 justify-center gap-32 rtl flex-column'>
+				{dataMapper.map((item, i) => (
+					<li key={i} className='text-base flex-justify-between'>
+						<span className='text-gray-900'>{item.title}:</span>
+						<span className='text-gray-1000'>{item.value}</span>
+					</li>
+				))}
+			</ul>
+
+			<Suspend isLoading={isLoading} />
 		</div>
 	);
 };

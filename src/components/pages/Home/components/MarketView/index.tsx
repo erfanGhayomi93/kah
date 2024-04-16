@@ -25,7 +25,7 @@ const MarketView = () => {
 		}));
 	};
 
-	const { data, isFetching } = useGetIndexQuery({
+	const { data, isLoading } = useGetIndexQuery({
 		queryKey: ['getIndexQuery', defaultTab.top, defaultTab.bottom],
 	});
 
@@ -54,7 +54,7 @@ const MarketView = () => {
 		>
 			<div className='relative flex-1 overflow-hidden py-8'>
 				<MarketViewChart interval={defaultTab.top} data={data ?? []} />
-				<Suspend isLoading={isFetching} isEmpty={!data?.length} />
+				<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 			</div>
 		</Section>
 	);

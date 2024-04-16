@@ -21,13 +21,13 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 		return dayjs(v).calendar('jalali').locale('fa').fromNow();
 	};
 
-	const { data: mostTradedOptionSymbolData, isFetching: isFetchingMostTradedOptionSymbol } =
+	const { data: mostTradedOptionSymbolData, isLoading: isLoadingMostTradedOptionSymbol } =
 		useGetMostTradedOptionSymbolQuery({
 			queryKey: ['getMostTradedOptionSymbolQuery'],
 			enabled: type === 'MostTradedOptionSymbol',
 		});
 
-	const { data: firstTradedOptionSymbolData, isFetching: isFetchingFirstTradedOptionSymbol } =
+	const { data: firstTradedOptionSymbolData, isLoading: isLoadingFirstTradedOptionSymbol } =
 		useGetFirstTradedOptionSymbolQuery({
 			queryKey: ['getFirstTradedOptionSymbolQuery'],
 			enabled: type === 'FirstTradedOptionSymbol',
@@ -62,12 +62,12 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 		[type],
 	);
 
-	const [data, isFetching] =
+	const [data, isLoading] =
 		type === 'FirstTradedOptionSymbol'
-			? [firstTradedOptionSymbolData ?? [], isFetchingFirstTradedOptionSymbol]
-			: [mostTradedOptionSymbolData ?? [], isFetchingMostTradedOptionSymbol];
+			? [firstTradedOptionSymbolData ?? [], isLoadingFirstTradedOptionSymbol]
+			: [mostTradedOptionSymbolData ?? [], isLoadingMostTradedOptionSymbol];
 
-	if (isFetching) return <Loading />;
+	if (isLoading) return <Loading />;
 
 	if (!data?.length) return <NoData />;
 

@@ -10,7 +10,7 @@ interface IndividualAndLegalChartProps {
 }
 
 const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartProps) => {
-	const { data, isFetching } = useGetIndividualLegalInfoQuery({
+	const { data, isLoading } = useGetIndividualLegalInfoQuery({
 		queryKey: ['getIndividualLegalInfoQuery', symbolType, type],
 	});
 
@@ -33,18 +33,20 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 			const put = 'individualBuyAverage' in item ? item.individualSellAverage : item.sumOfLegalsSellVolume;
 
 			result[0].data.push({
-				x: dateFormatter(dateTime, 'date'),
+				x: dateTime,
 				y: call,
 			});
 
 			result[1].data.push({
-				x: dateFormatter(dateTime, 'date'),
+				x: dateTime,
 				y: put,
 			});
 		}
 
 		return result;
 	}, [type, symbolType, data]);
+
+	const colors = ['rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)'];
 
 	return (
 		<>
@@ -62,7 +64,10 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 							autoScaleYaxis: true,
 						},
 					},
-					colors: ['rgba(0, 194, 136, 1)'],
+					legend: {
+						show: false,
+					},
+					colors,
 					tooltip: {
 						cssClass: 'apex-tooltip',
 
@@ -103,12 +108,15 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 								fontFamily: 'IRANSans',
 								fontSize: '12px',
 							},
+							formatter: (v) => {
+								return dateFormatter(v, 'time');
+							},
 						},
 					},
 					yaxis: {
 						tickAmount: 2,
 						labels: {
-							offsetX: -8,
+							offsetX: -16,
 							offsetY: 1,
 							style: {
 								fontFamily: 'IRANSans',
@@ -124,7 +132,7 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 					},
 					markers: {
 						size: 0,
-						strokeColors: ['rgba(0, 194, 136, 1)'],
+						strokeColors: colors,
 						colors: 'rgb(255, 255, 255)',
 						strokeWidth: 2,
 						hover: {
@@ -133,15 +141,21 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 					},
 					grid: {
 						position: 'back',
+						strokeDashArray: 24,
 						show: true,
 						yaxis: {
 							lines: {
 								show: true,
 							},
 						},
+						xaxis: {
+							lines: {
+								show: true,
+							},
+						},
 						padding: {
-							top: 0,
-							left: 0,
+							top: -16,
+							left: -8,
 							bottom: 0,
 							right: 0,
 						},
@@ -150,32 +164,14 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 						curve: 'smooth',
 						width: 2,
 					},
-					fill: {
-						type: 'gradient',
-						gradient: {
-							type: 'vertical',
-							colorStops: [
-								{
-									offset: 20,
-									color: 'rgb(0, 194, 136)',
-									opacity: 0.2,
-								},
-								{
-									offset: 100,
-									color: 'rgb(0, 194, 136)',
-									opacity: 0,
-								},
-							],
-						},
-					},
 				}}
 				series={dataMapper}
-				type='area'
+				type='line'
 				width='100%'
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data?.length} />
+			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</>
 	);
 };

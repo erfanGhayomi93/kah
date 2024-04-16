@@ -9,7 +9,7 @@ interface OpenPositionsProcessChartProps {
 }
 
 const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps) => {
-	const { data, isFetching } = useGetOpenPositionProcessQuery({
+	const { data, isLoading } = useGetOpenPositionProcessQuery({
 		queryKey: ['getOpenPositionProcessQuery', interval],
 	});
 
@@ -34,7 +34,7 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 			const value = data[datetime];
 
 			result[0].data.push({
-				x: dateFormatter(datetime, 'time'),
+				x: datetime,
 				y: value,
 			});
 
@@ -109,6 +109,9 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 								fontFamily: 'IRANSans',
 								fontSize: '12px',
 							},
+							formatter: (v) => {
+								return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
+							},
 						},
 					},
 					yaxis: {
@@ -166,7 +169,7 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data || Object.keys(data).length === 0} />
+			<Suspend isLoading={isLoading} isEmpty={!data || Object.keys(data).length === 0} />
 		</>
 	);
 };

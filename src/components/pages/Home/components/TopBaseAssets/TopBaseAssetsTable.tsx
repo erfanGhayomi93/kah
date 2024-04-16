@@ -14,7 +14,7 @@ interface ITableData {
 const TopBaseAssetsTable = () => {
 	const t = useTranslations();
 
-	const { data, isFetching } = useGetTopOptionBaseSymbolValueQuery({
+	const { data, isLoading } = useGetTopOptionBaseSymbolValueQuery({
 		queryKey: ['getTopOptionBaseSymbolValueQuery'],
 	});
 
@@ -64,7 +64,7 @@ const TopBaseAssetsTable = () => {
 		[],
 	);
 
-	if (isFetching) return <Loading />;
+	if (isLoading) return <Loading />;
 
 	if (
 		!data ||

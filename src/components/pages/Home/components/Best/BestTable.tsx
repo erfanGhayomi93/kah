@@ -30,17 +30,17 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const { data: optionTopSymbolsData, isFetching: isFetchingOptionTopSymbols } = useGetOptionTopSymbolsQuery({
+	const { data: optionTopSymbolsData, isLoading: isLoadingOptionTopSymbols } = useGetOptionTopSymbolsQuery({
 		queryKey: ['getOptionTopSymbolsQuery', type as Dashboard.GetTopSymbols.Option.Type],
 		enabled: symbolType === 'Option',
 	});
 
-	const { data: baseTopSymbolsData, isFetching: isFetchingBaseTopSymbolsData } = useGetBaseTopSymbolsQuery({
+	const { data: baseTopSymbolsData, isLoading: isLoadingBaseTopSymbolsData } = useGetBaseTopSymbolsQuery({
 		queryKey: ['getBaseTopSymbolsQuery', type as Dashboard.GetTopSymbols.BaseSymbol.Type],
 		enabled: symbolType === 'BaseSymbol',
 	});
 
-	const { data: topSymbolsData, isFetching: isFetchingTopSymbolsData } = useGetTopSymbolsQuery({
+	const { data: topSymbolsData, isLoading: isLoadingTopSymbolsData } = useGetTopSymbolsQuery({
 		queryKey: ['getTopSymbolsQuery', type as Dashboard.GetTopSymbols.Symbol.Type],
 		enabled: symbolType === 'Symbol',
 	});
@@ -383,16 +383,16 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		[type],
 	);
 
-	const [data, isFetching]: [Dashboard.GetTopSymbols.AllAsArray, boolean] =
+	const [data, isLoading]: [Dashboard.GetTopSymbols.AllAsArray, boolean] =
 		symbolType === 'Option'
-			? [optionTopSymbolsData ?? [], isFetchingOptionTopSymbols]
+			? [optionTopSymbolsData ?? [], isLoadingOptionTopSymbols]
 			: symbolType === 'BaseSymbol'
-				? [baseTopSymbolsData ?? [], isFetchingBaseTopSymbolsData]
-				: [topSymbolsData ?? [], isFetchingTopSymbolsData];
+				? [baseTopSymbolsData ?? [], isLoadingBaseTopSymbolsData]
+				: [topSymbolsData ?? [], isLoadingTopSymbolsData];
 
 	return (
 		<div className='relative h-full'>
-			{isFetching ? (
+			{isLoading ? (
 				<Loading />
 			) : data.length > 0 ? (
 				<div className='flex h-full gap-12'>

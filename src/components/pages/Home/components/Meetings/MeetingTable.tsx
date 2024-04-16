@@ -13,7 +13,7 @@ interface MeetingTableProps {
 const MeetingTable = ({ type }: MeetingTableProps) => {
 	const t = useTranslations();
 
-	const { data, isFetching } = useGetAnnualReportQuery({
+	const { data, isLoading } = useGetAnnualReportQuery({
 		queryKey: ['getAnnualReportQuery', type],
 	});
 
@@ -35,7 +35,7 @@ const MeetingTable = ({ type }: MeetingTableProps) => {
 		[],
 	);
 
-	if (isFetching) return <Loading />;
+	if (isLoading) return <Loading />;
 
 	if (!data?.length) return <NoData />;
 

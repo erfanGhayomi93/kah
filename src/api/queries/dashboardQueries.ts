@@ -2,7 +2,7 @@ import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
-const CACHE_TIME = 1e5;
+const CACHE_TIME = 0;
 
 export const useGetMarketStateQuery = createQuery<
 	Dashboard.GetMarketState.All,
