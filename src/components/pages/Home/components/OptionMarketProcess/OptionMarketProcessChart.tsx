@@ -10,7 +10,7 @@ interface OptionMarketProcessChartProps {
 }
 
 const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartProps) => {
-	const { data, isFetching } = useGetMarketProcessChartQuery({
+	const { data, isLoading } = useGetMarketProcessChartQuery({
 		queryKey: ['getMarketProcessChartQuery', interval, type],
 	});
 
@@ -162,7 +162,7 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data || Object.keys(data).length === 0} />
+			<Suspend isLoading={isLoading} isEmpty={!data || Object.keys(data).length === 0} />
 		</>
 	);
 };

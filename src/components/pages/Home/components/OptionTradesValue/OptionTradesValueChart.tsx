@@ -10,7 +10,7 @@ interface OptionTradesValueChartProps {
 }
 
 const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps) => {
-	const { data, isFetching } = useGetOptionTradeProcessQuery({
+	const { data, isLoading } = useGetOptionTradeProcessQuery({
 		queryKey: ['getOptionTradeProcessQuery', interval],
 	});
 
@@ -190,7 +190,7 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 				height='100%'
 			/>
 
-			<Suspend isLoading={isFetching} isEmpty={!data?.length} />
+			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</>
 	);
 };
