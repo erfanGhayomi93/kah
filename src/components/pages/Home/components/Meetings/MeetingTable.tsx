@@ -39,7 +39,7 @@ const MeetingTable = ({ type }: MeetingTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable<Dashboard.GetAnnualReport.Data> rowData={data ?? []} columnDefs={columnDefs} />;
+	return <LightweightTable rowData={data ?? []} columnDefs={columnDefs} />;
 };
 
 export default MeetingTable;
