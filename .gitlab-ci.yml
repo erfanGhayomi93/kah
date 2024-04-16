@@ -81,7 +81,7 @@ Preprd-Job:
     # # Define the URL to call
 # Make the HTTP request
     - $url = "http://localhost:6066"
-    - $response = Invoke-WebRequest -Uri $url 
+    - $response = Invoke-WebRequest -Uri $url -UseBasicParsing
     - if ($response.StatusCode -eq 200) {
         Write-Output "Request to $url succeeded. Response body:"
         Write-Output $response.Content
