@@ -1,6 +1,7 @@
 import { EraserSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setBlackScholesModal, type IBlackScholes } from '@/features/slices/modalSlice';
+import { setBlackScholesModal } from '@/features/slices/modalSlice';
+import { type IBlackScholes } from '@/features/slices/modalSlice.interfaces';
 import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -106,7 +107,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 		>
 			<Div className='bg-white flex-column'>
 				<div className='relative h-56 bg-gray-200 flex-justify-center'>
-					<h1 className='text-xl font-medium text-gray-900'>{t('black_scholes_modal.title')}</h1>
+					<h2 className='text-xl font-medium text-gray-900'>{t('black_scholes_modal.title')}</h2>
 
 					<div className='absolute left-24 gap-16 flex-items-center'>
 						<button onClick={onReset} type='button' className='icon-hover'>

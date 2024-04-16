@@ -1,5 +1,6 @@
 import { useAppDispatch } from '@/features/hooks';
-import { setBuySellModal, type IBuySellModal } from '@/features/slices/modalSlice';
+import { setBuySellModal } from '@/features/slices/modalSlice';
+import { IBuySellModal } from '@/features/slices/modalSlice.interfaces';
 
 const useTradingFeatures = () => {
 	const dispatch = useAppDispatch();

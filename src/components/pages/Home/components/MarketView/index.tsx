@@ -1,12 +1,11 @@
 import { useGetIndexQuery } from '@/api/queries/dashboardQueries';
-import Loading from '@/components/common/Loading';
-import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
+import Suspend from '../../common/Suspend';
 import MarketViewChart from './MarketViewChart';
 
-interface DefaultActiveTab {
+interface IDefaultActiveTab {
 	top: Dashboard.TInterval;
 	bottom: Dashboard.TIndex;
 }
@@ -14,12 +13,12 @@ interface DefaultActiveTab {
 const MarketView = () => {
 	const t = useTranslations();
 
-	const [defaultTab, setDefaultTab] = useState<DefaultActiveTab>({
+	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Today',
 		bottom: 'Overall',
 	});
 
-	const setDefaultTabByPosition = <T extends keyof DefaultActiveTab>(position: T, value: DefaultActiveTab[T]) => {
+	const setDefaultTabByPosition = <T extends keyof IDefaultActiveTab>(position: T, value: IDefaultActiveTab[T]) => {
 		setDefaultTab((prev) => ({
 			...prev,
 			[position]: value,
@@ -53,20 +52,9 @@ const MarketView = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden'>
+			<div className='relative flex-1 overflow-hidden py-8'>
 				<MarketViewChart interval={defaultTab.top} data={data ?? []} />
-
-				{isFetching ? (
-					<div className='absolute size-full bg-white center'>
-						<Loading />
-					</div>
-				) : (
-					!data?.length && (
-						<div className='absolute size-full bg-white center'>
-							<NoData />
-						</div>
-					)
-				)}
+				<Suspend isLoading={isFetching} isEmpty={!data?.length} />
 			</div>
 		</Section>
 	);

@@ -20,6 +20,7 @@ import DataAnalyticsSVG from './data-analytics.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
 import DoubleArrowLeftSVG from './double-arrow-right.svg';
 import DragSVG from './drag.svg';
+import EditFillSVG from './edit-fill.svg';
 import EditSVG from './edit.svg';
 import EllipsisVerticalSVG from './ellipsis-vertical.svg';
 import EraserSVG from './eraser.svg';
@@ -106,6 +107,7 @@ export {
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,
 	DragSVG,
+	EditFillSVG,
 	EditSVG,
 	EllipsisVerticalSVG,
 	EraserSVG,

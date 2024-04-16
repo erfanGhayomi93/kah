@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import Section, { type ITab } from '../../common/Section';
 import BestTable from './BestTable';
 
-interface DefaultActiveTab {
+interface IDefaultActiveTab {
 	top: Dashboard.TTopSymbols;
 	bottom: Dashboard.TTopSymbol;
 }
@@ -11,12 +12,12 @@ interface DefaultActiveTab {
 const Best = () => {
 	const t = useTranslations();
 
-	const [defaultTab, setDefaultTab] = useState<DefaultActiveTab>({
+	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Option',
 		bottom: 'OptionOpenPosition',
 	});
 
-	const setDefaultTabByPosition = <T extends keyof DefaultActiveTab>(position: T, value: DefaultActiveTab[T]) => {
+	const setDefaultTabByPosition = <T extends keyof IDefaultActiveTab>(position: T, value: IDefaultActiveTab[T]) => {
 		setDefaultTab((prev) => ({
 			...prev,
 			[position]: value,
@@ -54,7 +55,8 @@ const Best = () => {
 	}, [defaultTab.top]);
 
 	return (
-		<Section<DefaultActiveTab['top'], DefaultActiveTab['bottom']>
+		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
+			expandable
 			id='best'
 			title={t('home.best')}
 			defaultTopActiveTab={defaultTab.top}
@@ -70,7 +72,9 @@ const Best = () => {
 				bottom: bottomTabs,
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden p-8'>
+			<div
+				className={clsx('relative flex-1 overflow-hidden px-8', defaultTab.top === 'Option' ? 'py-8' : 'py-24')}
+			>
 				<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
 			</div>
 		</Section>

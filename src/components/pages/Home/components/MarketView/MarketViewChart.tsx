@@ -9,10 +9,14 @@ interface MarketViewChartProps {
 
 const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
-		return data.map((item) => ({
+		const result = data.map((item) => ({
 			x: interval === 'Today' ? item.time : item.date,
 			y: item.lastIndexValueInDay ?? 0,
 		}));
+
+		if (interval === 'Today') result.reverse();
+
+		return result;
 	}, [interval, data]);
 
 	return (
@@ -129,9 +133,9 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 						},
 					},
 					padding: {
-						top: 0,
+						top: -16,
 						left: 0,
-						bottom: 0,
+						bottom: -8,
 						right: 0,
 					},
 				},

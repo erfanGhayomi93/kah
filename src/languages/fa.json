@@ -108,8 +108,8 @@
 		"tab_most_trading_day": "بیشترین روز معاملاتی",
 		"tab_newest": "جدیدترین",
 		"tab_closest": "نزدیکترین",
-		"bourse_market_value": "ارزش بازار بورس",
-		"fara_bourse_market_value": "ارزش بازار فرابورس",
+		"bourse_market_value": "شاخص بورس",
+		"fara_bourse_market_value": "شاخص فرابورس",
 		"call_trades_value": "ارزش معاملات اختیارهای خرید",
 		"put_trades_value": "ارزش معاملات اختیارهای فروش",
 		"login_check": "ورود به کهکشان",
@@ -136,7 +136,9 @@
 		"today_volume": "حجم امروز",
 		"today_value": "ارزش امروز",
 		"due_days": "روز مانده",
-		"passed_days": "روز گذشته"
+		"passed_days": "روز گذشته",
+		"call_option": "اختیار خرید",
+		"put_option": "اختیار فروش"
 	},
 	"symbol_contracts_modal": {
 		"title": "انتخاب قرارداد {symbolTitle}",
@@ -640,6 +642,18 @@
 		"cash_collateral": "وثیقه وجه نقد",
 		"select_collateral": "لطفا نوع وثیقه مورد نظر خود را انتخاب کنید",
 		"collateral_details": "وثیقه مبلغ <p>{price}</p> ریال، بابت ضمانت موقعیت <t>{title}</t>"
+	},
+	"manage_dashboard_layout_modal": {
+		"title": "چیدمان صفحه اصلی"
+	},
+	"change_broker_modal": {
+		"title": "تغییر کارگزار ناظر"
+	},
+	"withdrawal_modal": {
+		"title": "برداشت وجه"
+	},
+	"deposit_modal": {
+		"title": "واریز وجه"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",

@@ -6,15 +6,30 @@ import {
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { dateFormatter, sepNumbers, toFixed } from '@/utils/helpers';
-import { useMemo } from 'react';
+import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
+import { useCallback } from 'react';
 
 interface TableProps {
 	symbolType: Dashboard.TTopSymbols;
 	type: Dashboard.TTopSymbol;
 }
 
+interface TableWrapperProps {
+	type: TOptionSides;
+	title: string;
+	isOption: boolean;
+	children: React.ReactNode;
+}
+
 const BestTable = ({ symbolType, type }: TableProps) => {
+	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
 	const { data: optionTopSymbolsData, isFetching: isFetchingOptionTopSymbols } = useGetOptionTopSymbolsQuery({
 		queryKey: ['getOptionTopSymbolsQuery', type as Dashboard.GetTopSymbols.Option.Type],
 		enabled: symbolType === 'Option',
@@ -30,9 +45,15 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		enabled: symbolType === 'Symbol',
 	});
 
-	const getOptionValueColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Option.Value>> => [
+	const setSymbol = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
+	const getOptionValueColDefs = (side: TOptionSides): Array<IColDef<Dashboard.GetTopSymbols.Option.Value>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -49,9 +70,13 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 	];
 
-	const getOptionOpenPositionsColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Option.OpenPosition>> => [
+	const getOptionOpenPositionsColDefs = (
+		side: TOptionSides,
+	): Array<IColDef<Dashboard.GetTopSymbols.Option.OpenPosition>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -69,9 +94,13 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 	];
 
-	const getOptionTradesCountColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Option.TradeCount>> => [
+	const getOptionTradesCountColDefs = (
+		side: TOptionSides,
+	): Array<IColDef<Dashboard.GetTopSymbols.Option.TradeCount>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -89,9 +118,13 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 	];
 
-	const getOptionYesterdayDiffColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Option.YesterdayDiff>> => [
+	const getOptionYesterdayDiffColDefs = (
+		side: TOptionSides,
+	): Array<IColDef<Dashboard.GetTopSymbols.Option.YesterdayDiff>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -109,9 +142,13 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 	];
 
-	const getOptionTradesVolumeColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Option.Volume>> => [
+	const getOptionTradesVolumeColDefs = (
+		side: TOptionSides,
+	): Array<IColDef<Dashboard.GetTopSymbols.Option.Volume>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -134,6 +171,8 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
 		{
@@ -159,6 +198,8 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
 		{
@@ -182,6 +223,8 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getBaseSymbolTradesVolumeColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.Volume>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -197,7 +240,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => sepNumbers(String(row.ninetyDayVolume)),
 		},
 		{
-			headerName: 'آخرین قیمت با درصد',
+			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
 			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
 		},
@@ -206,6 +249,8 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getBaseSymbolTradesValueColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.Value>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -221,7 +266,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => sepNumbers(String(row.ninetyDayValue)),
 		},
 		{
-			headerName: 'آخرین قیمت با درصد',
+			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
 			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
 		},
@@ -230,6 +275,8 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getBaseSymbolOpenPositionColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.OpenPosition>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
 		{
@@ -253,6 +300,8 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getSymbolTradesVolumeColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Symbol.Volume>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -268,7 +317,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => sepNumbers(String(row.ninetyDayVolume)),
 		},
 		{
-			headerName: 'آخرین قیمت با درصد',
+			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
 			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
 		},
@@ -277,6 +326,8 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getSymbolTradesValueColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Symbol.Value>> => [
 		{
 			headerName: 'نماد',
+			cellClass: 'cursor-pointer',
+			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
 		{
@@ -292,42 +343,45 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => sepNumbers(String(row.ninetyDayValue)),
 		},
 		{
-			headerName: 'آخرین قیمت با درصد',
+			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
 			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
 		},
 	];
 
-	const columnDefinitions = useMemo(() => {
-		switch (type) {
-			case 'OptionValue':
-				return getOptionValueColDefs();
-			case 'OptionOpenPosition':
-				return getOptionOpenPositionsColDefs();
-			case 'OptionTradeCount':
-				return getOptionTradesCountColDefs();
-			case 'OptionYesterdayDiff':
-				return getOptionYesterdayDiffColDefs();
-			case 'OptionVolume':
-				return getOptionTradesVolumeColDefs();
-			case 'BaseSymbolValue':
-				return getBaseSymbolTradesValueColDefs();
-			case 'BaseSymbolPutOpenPosition':
-				return getBaseSymbolOpenPutPositionsColDefs();
-			case 'BaseSymbolCallOpenPosition':
-				return getBaseSymbolOpenCallPositionsColDefs();
-			case 'BaseSymbolOpenPosition':
-				return getBaseSymbolOpenPositionColDefs();
-			case 'BaseSymbolVolume':
-				return getBaseSymbolTradesVolumeColDefs();
-			case 'SymbolValue':
-				return getSymbolTradesValueColDefs();
-			case 'SymbolVolume':
-				return getSymbolTradesVolumeColDefs();
-			default:
-				return [];
-		}
-	}, [type]);
+	const getColumnDefinitions = useCallback(
+		(side: TOptionSides) => {
+			switch (type) {
+				case 'OptionValue':
+					return getOptionValueColDefs(side);
+				case 'OptionOpenPosition':
+					return getOptionOpenPositionsColDefs(side);
+				case 'OptionTradeCount':
+					return getOptionTradesCountColDefs(side);
+				case 'OptionYesterdayDiff':
+					return getOptionYesterdayDiffColDefs(side);
+				case 'OptionVolume':
+					return getOptionTradesVolumeColDefs(side);
+				case 'BaseSymbolValue':
+					return getBaseSymbolTradesValueColDefs();
+				case 'BaseSymbolPutOpenPosition':
+					return getBaseSymbolOpenPutPositionsColDefs();
+				case 'BaseSymbolCallOpenPosition':
+					return getBaseSymbolOpenCallPositionsColDefs();
+				case 'BaseSymbolOpenPosition':
+					return getBaseSymbolOpenPositionColDefs();
+				case 'BaseSymbolVolume':
+					return getBaseSymbolTradesVolumeColDefs();
+				case 'SymbolValue':
+					return getSymbolTradesValueColDefs();
+				case 'SymbolVolume':
+					return getSymbolTradesVolumeColDefs();
+				default:
+					return [];
+			}
+		},
+		[type],
+	);
 
 	const [data, isFetching]: [Dashboard.GetTopSymbols.AllAsArray, boolean] =
 		symbolType === 'Option'
@@ -341,15 +395,44 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			{isFetching ? (
 				<Loading />
 			) : data.length > 0 ? (
-				<LightweightTable<Dashboard.GetTopSymbols.All>
-					rowData={data}
-					columnDefs={columnDefinitions as Array<IColDef<Dashboard.GetTopSymbols.All>>}
-				/>
+				<div className='flex h-full gap-12'>
+					<TableWrapper type='put' title={t('home.put_option')} isOption={symbolType === 'Option'}>
+						<LightweightTable<Dashboard.GetTopSymbols.All>
+							rowData={data}
+							columnDefs={getColumnDefinitions('put') as Array<IColDef<Dashboard.GetTopSymbols.All>>}
+						/>
+					</TableWrapper>
+
+					{symbolType === 'Option' && (
+						<TableWrapper type='call' title={t('home.call_option')} isOption={symbolType === 'Option'}>
+							<LightweightTable<Dashboard.GetTopSymbols.All>
+								rowData={data}
+								columnDefs={getColumnDefinitions('call') as Array<IColDef<Dashboard.GetTopSymbols.All>>}
+							/>
+						</TableWrapper>
+					)}
+				</div>
 			) : (
 				<NoData />
 			)}
 		</div>
 	);
 };
+
+const TableWrapper = ({ children, title, isOption, type }: TableWrapperProps) => (
+	<div className='h-full text-center flex-column'>
+		{isOption && (
+			<h3 className={clsx('pb-8 text-base', type === 'call' ? 'text-success-100' : 'text-error-100')}>{title}</h3>
+		)}
+		<div
+			className={clsx(
+				'flex-1 overflow-hidden rounded',
+				isOption && ['border-t', type === 'call' ? 'border-t-success-100' : 'border-t-error-100'],
+			)}
+		>
+			{children}
+		</div>
+	</div>
+);
 
 export default BestTable;

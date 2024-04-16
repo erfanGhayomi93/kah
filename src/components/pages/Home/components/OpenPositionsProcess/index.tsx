@@ -28,7 +28,7 @@ const OpenPositionsProcess = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden'>
+			<div className='relative flex-1 overflow-hidden pt-8'>
 				<OpenPositionsProcessChart interval={interval} />
 			</div>
 		</Section>

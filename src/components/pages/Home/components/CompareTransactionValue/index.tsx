@@ -8,7 +8,7 @@ const CompareTransactionValueChart = dynamic(() => import('./CompareTransactionV
 	loading: () => <Loading />,
 });
 
-interface DefaultActiveTab {
+interface IDefaultActiveTab {
 	top: Dashboard.TInterval;
 	bottom: Dashboard.GetOptionMarketComparison.TChartType;
 }
@@ -16,12 +16,12 @@ interface DefaultActiveTab {
 const CompareTransactionValue = () => {
 	const t = useTranslations();
 
-	const [defaultTab, setDefaultTab] = useState<DefaultActiveTab>({
+	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Today',
 		bottom: 'OptionToMarket',
 	});
 
-	const setDefaultTabByPosition = <T extends keyof DefaultActiveTab>(position: T, value: DefaultActiveTab[T]) => {
+	const setDefaultTabByPosition = <T extends keyof IDefaultActiveTab>(position: T, value: IDefaultActiveTab[T]) => {
 		setDefaultTab((prev) => ({
 			...prev,
 			[position]: value,
@@ -29,7 +29,7 @@ const CompareTransactionValue = () => {
 	};
 
 	return (
-		<Section<DefaultActiveTab['top'], DefaultActiveTab['bottom']>
+		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='compare_transaction_value'
 			title={t('home.compare_transaction_value')}
 			defaultTopActiveTab={defaultTab.top}
@@ -50,7 +50,7 @@ const CompareTransactionValue = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden'>
+			<div className='relative flex-1 overflow-hidden py-8'>
 				<CompareTransactionValueChart interval={defaultTab.top} type={defaultTab.bottom} />
 			</div>
 		</Section>
