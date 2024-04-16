@@ -1,7 +1,7 @@
 import { URLIsValid } from '@/utils/helpers';
 
 const isStage = URLIsValid('stage');
-const isDev = URLIsValid('localhost');
+// const isDev = URLIsValid('localhost');
 const isPre = URLIsValid('preprd');
 
 const oauthUrl = isStage
