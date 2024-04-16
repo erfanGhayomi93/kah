@@ -79,8 +79,6 @@ Preprd-Job:
     - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\*"
     - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui.tmp\*"
     # # Define the URL to call
-    - $url = "http://localhost:6066"
-
 # Make the HTTP request
     - $url = "http://localhost:6066"
     - $response = Invoke-WebRequest -Uri $url 
