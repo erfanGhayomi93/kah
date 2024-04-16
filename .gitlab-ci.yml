@@ -78,6 +78,17 @@ Preprd-Job:
     - Start-Sleep -Seconds 10
     - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\*"
     - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui.tmp\*"
+    # # Define the URL to call
+    - $url = "http://localhost:6066"
+
+# Make the HTTP request
+    - $response = Invoke-WebRequest -Uri $url
+      if ($response.StatusCode -eq 200) {
+      Write-Output "Request to $url succeeded. Response body:"
+      Write-Output $response.Content
+      } else {
+       Write-Error "Request to $url failed with status code $($response.StatusCode)"
+      }
 
     - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
 #    - cd c:\scripts\Clubui\
