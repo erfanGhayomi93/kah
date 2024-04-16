@@ -82,15 +82,14 @@ Preprd-Job:
     - $url = "http://localhost:6066"
 
 # Make the HTTP request
-    - $response = Invoke-WebRequest -Uri $url
-      if ($response.StatusCode -eq 200) {
-      Write-Output "Request to $url succeeded. Response body:"
-      Write-Output $response.Content
+    - $url = "http://localhost:6066"
+    - $response = Invoke-WebRequest -Uri $url 
+    - if ($response.StatusCode -eq 200) {
+        Write-Output "Request to $url succeeded. Response body:"
+        Write-Output $response.Content
       } else {
-       Write-Error "Request to $url failed with status code $($response.StatusCode)"
+        Write-Error "Request to $url failed with status code $($response.StatusCode)"
       }
-
-    - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
 #    - cd c:\scripts\Clubui\
 #    - .\only4backup
 
