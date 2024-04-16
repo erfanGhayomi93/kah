@@ -154,7 +154,10 @@ const Header = () => {
 	const customerTitle = userInfo?.customerTitle ?? t('common.app_user');
 
 	return (
-		<header style={{ zIndex: 99 }} className='sticky top-0 z-10 h-48 bg-white px-16 shadow flex-justify-between'>
+		<header
+			style={{ zIndex: 99 }}
+			className='sticky top-0 z-10 h-48 border-b border-b-gray-500 bg-white px-16 flex-justify-between'
+		>
 			<div className='flex-1 gap-32 flex-justify-start'>
 				<div className='gap-16 flex-items-center'>
 					{isLoggedIn ? (

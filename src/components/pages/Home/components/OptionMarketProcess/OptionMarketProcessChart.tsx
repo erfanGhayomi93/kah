@@ -21,7 +21,7 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 		if (keys.length === 0) return [];
 
 		return keys.map((d) => ({
-			x: dateFormatter(d, interval === 'Today' ? 'time' : 'date'),
+			x: d,
 			y: data[d] ?? 0,
 		}));
 	}, [interval, data]);
@@ -82,6 +82,9 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 							style: {
 								fontFamily: 'IRANSans',
 								fontSize: '12px',
+							},
+							formatter: (v) => {
+								return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
 							},
 						},
 					},
