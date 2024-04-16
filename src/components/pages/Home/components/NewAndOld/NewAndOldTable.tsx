@@ -71,7 +71,7 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable<TTableData> rowData={data} columnDefs={columnDefs} />;
+	return <LightweightTable rowData={data} columnDefs={columnDefs} />;
 };
 
 export default NewAndOldTable;

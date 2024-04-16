@@ -76,7 +76,7 @@ const TopBaseAssetsTable = () => {
 	)
 		return <NoData />;
 
-	return <LightweightTable<ITableData> rowData={dataMapper} columnDefs={columnDefs} />;
+	return <LightweightTable rowData={dataMapper} columnDefs={columnDefs} />;
 };
 
 export default TopBaseAssetsTable;
