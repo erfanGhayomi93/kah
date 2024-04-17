@@ -30,15 +30,16 @@
 	border-radius: 8px;
 	transform: translate(0, -50%);
 	transition:
-		background-color 250ms ease-in-out,
-		transform 250ms ease-in-out;
+		width 200ms linear,
+		background-color 200ms linear,
+		transform 200ms linear;
 	-webkit-transition:
-		background-color 250ms ease-in-out,
-		transform 250ms ease-in-out;
+		width 200ms linear,
+		transform 200ms linear;
 	-moz-transition:
-		background-color 250ms ease-in-out,
-		transform 250ms ease-in-out;
+		width 200ms linear,
+		transform 200ms linear;
 	-o-transition:
-		background-color 250ms ease-in-out,
-		transform 250ms ease-in-out;
+		width 200ms linear,
+		transform 200ms linear;
 }
