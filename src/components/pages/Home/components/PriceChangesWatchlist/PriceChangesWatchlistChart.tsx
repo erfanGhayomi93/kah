@@ -1,6 +1,6 @@
 import { useGetOptionWatchlistPriceChangeInfoQuery } from '@/api/queries/dashboardQueries';
+import AppChart from '@/components/common/AppChart';
 import { useMemo } from 'react';
-import Chart from 'react-apexcharts';
 import Suspend from '../../common/Suspend';
 
 const COLORS = [
@@ -55,7 +55,7 @@ const PriceChangesWatchlistChart = () => {
 
 	return (
 		<>
-			<Chart
+			<AppChart
 				options={{
 					states: {
 						active: {
@@ -67,27 +67,6 @@ const PriceChangesWatchlistChart = () => {
 							filter: {
 								type: 'none',
 							},
-						},
-					},
-					chart: {
-						stacked: false,
-						toolbar: {
-							show: false,
-						},
-						foreColor: 'rgb(146, 145, 165)',
-						zoom: {
-							enabled: false,
-						},
-						animations: {
-							dynamicAnimation: {
-								enabled: true,
-							},
-							animateGradually: {
-								enabled: false,
-							},
-							enabled: true,
-							easing: 'linear',
-							speed: 200,
 						},
 					},
 					plotOptions: {
@@ -103,42 +82,9 @@ const PriceChangesWatchlistChart = () => {
 							},
 						},
 					},
-					tooltip: {
-						cssClass: 'apex-tooltip',
-
-						style: {
-							fontFamily: 'IRANSans',
-							fontSize: '12px',
-						},
-
-						x: {
-							show: false,
-						},
-
-						y: {
-							title: {
-								formatter: () => {
-									return '';
-								},
-							},
-						},
-					},
-					legend: {
-						show: false,
-					},
 					xaxis: {
 						tickAmount: 5,
-						offsetX: 0,
-						offsetY: 0,
-						axisBorder: {
-							show: false,
-						},
-						axisTicks: {
-							show: false,
-						},
 						labels: {
-							rotate: 0,
-							rotateAlways: false,
 							style: {
 								fontFamily: 'IRANSans',
 								fontSize: '12px',
@@ -147,18 +93,6 @@ const PriceChangesWatchlistChart = () => {
 					},
 					yaxis: {
 						show: false,
-						axisBorder: {
-							show: false,
-						},
-						axisTicks: {
-							show: false,
-						},
-						labels: {
-							show: false,
-							formatter: (value) => {
-								return `${value}%`;
-							},
-						},
 					},
 					dataLabels: {
 						textAnchor: 'middle',
@@ -175,17 +109,6 @@ const PriceChangesWatchlistChart = () => {
 					},
 					grid: {
 						show: false,
-						padding: {
-							top: -16,
-							left: 0,
-							bottom: -8,
-							right: 0,
-						},
-					},
-					stroke: {
-						colors: ['rgb(255, 255, 255)'],
-						curve: 'smooth',
-						width: 2,
 					},
 					labels: [
 						'< ‎-4',

@@ -1,3 +1,4 @@
+import { useDebounce } from '@/hooks';
 import { cn } from '@/utils/helpers';
 import { Fragment, cloneElement, useCallback, useEffect, useRef, useState } from 'react';
 import styles from './SwitchTab.module.scss';
@@ -27,6 +28,8 @@ const SwitchTab = <T extends object>({
 
 	const activeElRef = useRef<HTMLElement | null>(null);
 
+	const { setDebounce } = useDebounce();
+
 	const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
 	const handleRectPosition = () => {
@@ -54,6 +57,20 @@ const SwitchTab = <T extends object>({
 		},
 		[JSON.stringify(data), rectRef.current],
 	);
+
+	const onWindowResize = () => {
+		setDebounce(() => handleRectPosition(), 300);
+	};
+
+	useEffect(() => {
+		const controller = new AbortController();
+
+		window.addEventListener('resize', onWindowResize, {
+			signal: controller.signal,
+		});
+
+		return () => controller.abort();
+	}, []);
 
 	useEffect(() => {
 		setActiveTab(defaultActiveTab);

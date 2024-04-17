@@ -11,7 +11,7 @@ const DueDatesTable = dynamic(() => import('./DueDatesTable'), {
 const DueDates = () => {
 	const t = useTranslations();
 
-	const [type, setType] = useState<Dashboard.GetOptionSettlementInfo.Type>('MostRecent');
+	const [type, setType] = useState<Dashboard.GetOptionSettlementInfo.Type>('Closest');
 
 	return (
 		<Section<string, Dashboard.GetOptionSettlementInfo.Type>
@@ -21,8 +21,8 @@ const DueDates = () => {
 			onBottomTabChange={setType}
 			tabs={{
 				bottom: [
-					{ id: 'MostRecent', title: t('home.tab_newest') },
 					{ id: 'Closest', title: t('home.tab_closest') },
+					{ id: 'MostRecent', title: t('home.tab_newest') },
 				],
 			}}
 		>

@@ -21,7 +21,9 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 
 	return (
 		<Section name='chart' defaultActiveTab='symbol_chart' tabs={tabs}>
-			<SymbolLinearChart symbolISIN={symbolISIN} height='264px' />
+			<div className='pt-16'>
+				<SymbolLinearChart symbolISIN={symbolISIN} height='264px' />
+			</div>
 		</Section>
 	);
 };
