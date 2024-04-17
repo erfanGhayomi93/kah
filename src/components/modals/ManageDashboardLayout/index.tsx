@@ -1,9 +1,10 @@
 import Switch from '@/components/common/Inputs/Switch';
-import { useAppDispatch } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setManageDashboardLayoutModal } from '@/features/slices/modalSlice';
 import { type IManageDashboardLayoutModal } from '@/features/slices/modalSlice.interfaces';
+import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useMemo } from 'react';
+import { forwardRef, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 
@@ -20,34 +21,54 @@ const ManageDashboardLayout = forwardRef<HTMLDivElement, ManageDashboardLayoutPr
 
 	const dispatch = useAppDispatch();
 
+	const grid = useAppSelector(getDashboardGridLayout);
+
+	const [visibleItems, setVisibleItems] = useState(
+		Object.fromEntries(grid.map((item) => [item.id, !item.hidden])) as Record<TDashboardSections, boolean>,
+	);
+
 	const onCloseModal = () => {
 		dispatch(setManageDashboardLayoutModal(null));
 	};
 
 	const onChange = (id: TDashboardSections, v: boolean) => {
-		//
+		setVisibleItems((prev) => ({
+			...prev,
+			[id]: v,
+		}));
 	};
 
-	const items = useMemo<Array<{ id: TDashboardSections; title: string; checked: boolean }>>(
+	const onSubmit = () => {
+		const newGrid = grid.map((item) => ({
+			...item,
+			hidden: !visibleItems[item.id],
+		}));
+
+		dispatch(setDashboardGridLayout(newGrid));
+
+		onCloseModal();
+	};
+
+	const items = useMemo<Array<{ id: TDashboardSections; title: string }>>(
 		() => [
-			{ id: 'market_view', title: t('home.market_view'), checked: true },
-			{ id: 'market_state', title: t('home.market_state'), checked: true },
-			{ id: 'best', title: t('home.best'), checked: true },
-			{ id: 'user_progress_bar', title: t('home.user_progress_bar'), checked: true },
-			{ id: 'compare_transaction_value', title: t('home.compare_transaction_value'), checked: true },
-			{ id: 'option_contracts', title: t('home.option_contracts'), checked: true },
-			{ id: 'option_trades_value', title: t('home.option_trades_value'), checked: true },
-			{ id: 'option_market_process', title: t('home.option_market_process'), checked: true },
-			{ id: 'individual_and_legal', title: t('home.individual_and_legal'), checked: true },
-			{ id: 'price_changes_watchlist', title: t('home.price_changes_watchlist'), checked: true },
-			{ id: 'open_positions_process', title: t('home.open_positions_process'), checked: true },
-			{ id: 'meetings', title: t('home.meetings'), checked: true },
-			{ id: 'new_and_old', title: t('home.new_and_old'), checked: true },
-			{ id: 'top_base_assets', title: t('home.top_base_assets'), checked: true },
-			{ id: 'recent_activities', title: t('home.recent_activities'), checked: true },
-			{ id: 'due_dates', title: t('home.due_dates'), checked: true },
+			{ id: 'market_view', title: t('home.market_view') },
+			{ id: 'market_state', title: t('home.market_state') },
+			{ id: 'best', title: t('home.best') },
+			{ id: 'user_progress_bar', title: t('home.user_progress_bar') },
+			{ id: 'compare_transaction_value', title: t('home.compare_transaction_value') },
+			{ id: 'option_contracts', title: t('home.option_contracts') },
+			{ id: 'option_trades_value', title: t('home.option_trades_value') },
+			{ id: 'option_market_process', title: t('home.option_market_process') },
+			{ id: 'individual_and_legal', title: t('home.individual_and_legal') },
+			{ id: 'price_changes_watchlist', title: t('home.price_changes_watchlist') },
+			{ id: 'open_positions_process', title: t('home.open_positions_process') },
+			{ id: 'new_and_old', title: t('home.new_and_old') },
+			{ id: 'top_base_assets', title: t('home.top_base_assets') },
+			{ id: 'due_dates', title: t('home.due_dates') },
+			{ id: 'meetings', title: t('home.meetings') },
+			{ id: 'recent_activities', title: t('home.recent_activities') },
 		],
-		[],
+		[visibleItems],
 	);
 
 	return (
@@ -66,14 +87,18 @@ const ManageDashboardLayout = forwardRef<HTMLDivElement, ManageDashboardLayoutPr
 						{items.map((item) => (
 							<li key={item.id} className='h-40 flex-justify-between'>
 								<span className='text-gray-1000'>{item.title}</span>
-								<Switch checked={item.checked} onChange={(v) => onChange(item.id, v)} />
+								<Switch
+									checked={Boolean(visibleItems[item.id])}
+									onChange={(v) => onChange(item.id, v)}
+								/>
 							</li>
 						))}
 					</ul>
 
 					<button
-						style={{ flex: '0 0 4rem' }}
 						type='button'
+						onClick={onSubmit}
+						style={{ flex: '0 0 4rem' }}
 						className='rounded flex-justify-center btn-primary'
 					>
 						{t('common.confirm')}

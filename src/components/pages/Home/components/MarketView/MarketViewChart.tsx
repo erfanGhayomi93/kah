@@ -27,12 +27,21 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 					toolbar: {
 						show: false,
 					},
-					foreColor: 'rgb(146, 145, 165)',
 					zoom: {
-						type: 'x',
-						enabled: true,
-						autoScaleYaxis: true,
+						enabled: false,
 					},
+					animations: {
+						dynamicAnimation: {
+							enabled: true,
+						},
+						animateGradually: {
+							enabled: false,
+						},
+						enabled: true,
+						easing: 'linear',
+						speed: 200,
+					},
+					foreColor: 'rgb(146, 145, 165)',
 				},
 				colors: ['rgb(66, 115, 237)'],
 				tooltip: {

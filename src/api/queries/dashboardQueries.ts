@@ -50,7 +50,7 @@ export const useGetIndexQuery = createQuery<
 });
 
 export const useGetOptionTopSymbolsQuery = createQuery<
-	Dashboard.GetTopSymbols.Option.AllAsArray,
+	Dashboard.GetTopSymbols.Option.Data,
 	['getOptionTopSymbolsQuery', Dashboard.GetTopSymbols.Option.Type]
 >({
 	staleTime: CACHE_TIME,
@@ -58,7 +58,7 @@ export const useGetOptionTopSymbolsQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		const [, type] = queryKey;
 
-		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.Option.AllAsArray>>(
+		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.Option.FakeData>>(
 			routes.dashboard.GetOptionTopSymbols,
 			{
 				params: { type },
@@ -69,12 +69,26 @@ export const useGetOptionTopSymbolsQuery = createQuery<
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-		return data.result;
+		const result: Dashboard.GetTopSymbols.Option.Data = [];
+
+		try {
+			const l = data.result.call.length;
+			for (let i = 0; i < l; i++) {
+				result.push({
+					call: data.result.call[i],
+					put: data.result.put[i],
+				});
+			}
+		} catch (e) {
+			//
+		}
+
+		return result;
 	},
 });
 
 export const useGetBaseTopSymbolsQuery = createQuery<
-	Dashboard.GetTopSymbols.BaseSymbol.AllAsArray,
+	Dashboard.GetTopSymbols.BaseSymbol.Data,
 	['getBaseTopSymbolsQuery', Dashboard.GetTopSymbols.BaseSymbol.Type]
 >({
 	staleTime: CACHE_TIME,
@@ -82,7 +96,7 @@ export const useGetBaseTopSymbolsQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		const [, type] = queryKey;
 
-		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.BaseSymbol.AllAsArray>>(
+		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.BaseSymbol.Data>>(
 			routes.dashboard.GetBaseTopSymbols,
 			{
 				params: { type },
@@ -98,7 +112,7 @@ export const useGetBaseTopSymbolsQuery = createQuery<
 });
 
 export const useGetTopSymbolsQuery = createQuery<
-	Dashboard.GetTopSymbols.Symbol.AllAsArray,
+	Dashboard.GetTopSymbols.Symbol.Data,
 	['getTopSymbolsQuery', Dashboard.GetTopSymbols.Symbol.Type]
 >({
 	staleTime: CACHE_TIME,
@@ -106,7 +120,7 @@ export const useGetTopSymbolsQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		const [, type] = queryKey;
 
-		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.Symbol.AllAsArray>>(
+		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.Symbol.Data>>(
 			routes.dashboard.GetTopSymbols,
 			{
 				params: { type },

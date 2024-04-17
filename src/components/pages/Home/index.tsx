@@ -3,10 +3,12 @@
 import ipcMain from '@/classes/IpcMain';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Main from '@/components/layout/Main';
-import { initialHomeGrid } from '@/constants';
+import { type initialDashboardGrid } from '@/constants';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import { toast } from 'react-toastify';
 import Loading from './components/Loading';
@@ -83,26 +85,24 @@ const UserProgressBar = dynamic(() => import('./components/UserProgressBar'), {
 const SECTIONS_MARGIN: [number, number] = [16, 16];
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const Home = () => {
+const Dashboard = () => {
 	const t = useTranslations();
 
-	const [grid, setGrid] = useState(initialHomeGrid);
+	const dispatch = useAppDispatch();
+
+	const grid = useAppSelector(getDashboardGridLayout);
 
 	const getSectionHeight = (originalHeight: number) => (originalHeight + SECTIONS_MARGIN[1]) / 17;
 
-	const getGridLayouts = (): Layouts => {
+	const getDesktopLayout = (grid: IDashboardGrid[]): Layout[] => {
 		const layout: Layout[] = [];
 
-		let initialLayout = JSON.parse(JSON.stringify(grid)) as typeof initialHomeGrid;
-		initialLayout = initialLayout.filter((item) => !item.hidden);
-		initialLayout.sort((a, b) => a.i - b.i);
-
-		const l = initialLayout.length;
+		const l = grid.length;
 		let y = 0;
 		let c = 0;
 
 		for (let i = 0; i < l; i++) {
-			const item = initialLayout[i];
+			const item = grid[i];
 			c += item.w;
 
 			const newItem = {
@@ -121,10 +121,41 @@ const Home = () => {
 			}
 		}
 
+		return layout;
+	};
+
+	const getMobileLayout = (grid: IDashboardGrid[]): Layout[] => {
+		const layout: Layout[] = [];
+
+		const l = grid.length;
+		let y = 0;
+
+		for (let i = 0; i < l; i++) {
+			const item = grid[i];
+			const newItem = {
+				i: item.id,
+				h: getSectionHeight(item.h),
+				w: item.w,
+				x: 1,
+				y,
+			};
+
+			layout.push(newItem);
+
+			y += newItem.h;
+		}
+
+		return layout;
+	};
+
+	const getGridLayouts = (): Layouts => {
+		let initialLayout = JSON.parse(JSON.stringify(grid)) as typeof initialDashboardGrid;
+		initialLayout = initialLayout.filter((item) => !item.hidden);
+		initialLayout.sort((a, b) => a.i - b.i);
+
 		return {
-			xl: layout,
-			lg: layout,
-			sm: layout,
+			lg: getDesktopLayout(initialLayout),
+			sm: getMobileLayout(initialLayout),
 		};
 	};
 
@@ -137,7 +168,7 @@ const Home = () => {
 			return;
 		}
 
-		setGrid(newGrid);
+		dispatch(setDashboardGridLayout(newGrid));
 	};
 
 	const cells = useMemo(() => {
@@ -166,10 +197,10 @@ const Home = () => {
 					className='w-full ltr'
 					layouts={getGridLayouts()}
 					margin={SECTIONS_MARGIN}
-					breakpoints={{ xl: 1440, lg: 1024, sm: 0 }}
-					containerPadding={[16, 16]}
-					cols={{ xl: 3, lg: 3, sm: 1 }}
-					useCSSTransforms={false}
+					breakpoints={{ lg: 1366, sm: 0 }}
+					containerPadding={[8, 16]}
+					cols={{ lg: 3, sm: 1 }}
+					useCSSTransforms
 					isDraggable={false}
 					isDroppable={false}
 					isResizable={false}
@@ -320,4 +351,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default Dashboard;

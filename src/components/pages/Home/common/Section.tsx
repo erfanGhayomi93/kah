@@ -78,7 +78,7 @@ const Section = <T extends string = string, B extends string = string>({
 	return (
 		<div
 			ref={rootRef}
-			className='size-full justify-between overflow-hidden rounded bg-white px-16 pb-16 pt-8 flex-column'
+			className='size-full justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'
 		>
 			<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
 				<div className='flex h-full gap-8'>
@@ -132,7 +132,7 @@ const Section = <T extends string = string, B extends string = string>({
 				<h1 className='text-lg font-medium text-gray-900'>{title}</h1>
 			</div>
 
-			{isRendered && (children ?? <NoData />)}
+			<div className='relative h-full flex-1 overflow-hidden p-8'>{isRendered && (children ?? <NoData />)}</div>
 
 			{Array.isArray(tabs?.bottom) ? (
 				<div style={{ flex: '0 0 4.8rem' }}>

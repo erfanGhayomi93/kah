@@ -9,7 +9,6 @@ import {
 	setChangeBrokerModal,
 	setChoiceCollateralModal,
 	setDepositModal,
-	setManageDashboardLayoutModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
 	setOrderDetailsModal,
@@ -186,9 +185,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{manageDashboardLayout && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setManageDashboardLayoutModal(null))}>
-							<ManageDashboardLayout {...manageDashboardLayout} />
-						</AuthorizeMiddleware>
+						<ManageDashboardLayout {...manageDashboardLayout} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

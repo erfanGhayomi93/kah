@@ -867,10 +867,11 @@ declare namespace Dashboard {
 	export namespace GetMarketState {
 		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
 		export interface Bourse {
+			index: number;
 			tradeVolume: number | null;
 			tradeValue: number | null;
-			marketValue: number | null;
-			tradeCount: number | null;
+			marketValue: number;
+			tradeCount: number;
 		}
 
 		export interface FaraBourse extends GetMarketState.Bourse {}
@@ -878,8 +879,8 @@ declare namespace Dashboard {
 		export interface Option {
 			tradeVolume: number | null;
 			tradeValue: number | null;
-			putValue: number | null;
-			callValue: number | null;
+			putValue: number;
+			callValue: number;
 		}
 	}
 
@@ -920,21 +921,9 @@ declare namespace Dashboard {
 	}
 
 	export namespace GetTopSymbols {
-		export type All = Option.All | BaseSymbol.All | Symbol.All;
-
-		export type AllAsArray = Option.AllAsArray | BaseSymbol.AllAsArray | Symbol.AllAsArray;
+		export type Data = Option.Data | BaseSymbol.Data | Symbol.Data;
 
 		export namespace Option {
-			export type All = Value | OpenPosition | Volatility | TradeCount | YesterdayDiff | Volume;
-
-			export type AllAsArray =
-				| Value[]
-				| OpenPosition[]
-				| Volatility[]
-				| TradeCount[]
-				| YesterdayDiff[]
-				| Volume[];
-
 			export type Type =
 				| 'OptionValue'
 				| 'OptionOpenPosition'
@@ -943,65 +932,71 @@ declare namespace Dashboard {
 				| 'OptionYesterdayDiff'
 				| 'OptionVolume';
 
-			export interface Value {
+			export type All = Value | OpenPosition | Volatility | TradeCount | YesterdayDiff | Volume;
+
+			export type ORecord<T> = Record<TOptionSides, T>;
+
+			export type Data = Array<ORecord<All>>;
+
+			export type FakeData = ORecord<All[]>;
+
+			export type Value = {
 				totalTradeValue: number;
 				lastTradedPrice: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
-			}
+			};
 
-			export interface OpenPosition {
+			export type OpenPosition = {
 				openPositionCount: number;
 				openPositionVarPercent: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
-			}
+			};
 
-			export interface Volatility {
+			export type Volatility = {
 				volatilityPercent: number;
 				volatility: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
-			}
+			};
 
-			export interface TradeCount {
+			export type TradeCount = {
 				totalNumberOfTradesVarPercent: number;
 				totalNumberOfTrades: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
-			}
+			};
 
-			export interface YesterdayDiff {
+			export type YesterdayDiff = {
 				closingPriceVarReferencePrice: number;
 				closingPriceVarReferencePricePercent: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
-			}
+			};
 
-			export interface Volume {
+			export type Volume = {
 				totalNumberOfSharesTradedVarPercent: number;
 				totalNumberOfSharesTraded: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;
 				optionType: TOptionSide;
-			}
+			};
 		}
 
 		export namespace BaseSymbol {
-			export type All = Value | PutOpenPosition | CallOpenPosition | OpenPosition | Volume;
-
-			export type AllAsArray = Value[] | PutOpenPosition[] | CallOpenPosition[] | OpenPosition[] | Volume[];
+			export type Data = Value[] | PutOpenPosition[] | CallOpenPosition[] | OpenPosition[] | Volume[];
 
 			export type Type =
 				| 'BaseSymbolValue'
@@ -1059,9 +1054,7 @@ declare namespace Dashboard {
 		}
 
 		export namespace Symbol {
-			export type All = Value | Volume;
-
-			export type AllAsArray = Value[] | Volume[];
+			export type Data = Value[] | Volume[];
 
 			export type Type = 'SymbolValue' | 'SymbolVolume';
 
@@ -1094,16 +1087,22 @@ declare namespace Dashboard {
 
 		export type Type = 'IOTM' | 'ContractType';
 
+		export type DataPoint = null | 'atm' | 'otm' | 'itm' | 'call' | 'put';
+
 		export interface IOTM {
 			iotm: 'ATM' | 'OTM' | 'ITM';
 			tradeValue: number;
+			valuePercentageOfTotal: number;
 			tradeVolume: number;
+			volumePercentageOfTotal: number;
 		}
 
 		export interface ContractType {
 			contractType: TOptionSide;
 			tradeValue: number;
+			valuePercentageOfTotal: number;
 			tradeVolume: number;
+			volumePercentageOfTotal: number;
 		}
 	}
 
@@ -1145,6 +1144,7 @@ declare namespace Dashboard {
 
 		export interface Data {
 			symbolTitle: string;
+			symbolISIN: string;
 			dateTime: string;
 			title: string;
 		}
@@ -1190,6 +1190,7 @@ declare namespace Dashboard {
 
 		export interface MostRecentData {
 			symbolTitle: string;
+			symbolISIN: string;
 			mostRecentPassedDays: number;
 			totalTradeValue: number;
 			totalTradeVolume: number;
@@ -1197,6 +1198,7 @@ declare namespace Dashboard {
 
 		export interface ClosestData {
 			symbolTitle: string;
+			symbolISIN: string;
 			closestDueDays: number;
 			totalTradeValue: number;
 			totalTradeVolume: number;

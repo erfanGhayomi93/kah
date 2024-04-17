@@ -2,6 +2,8 @@ import { useGetTopOptionBaseSymbolValueQuery } from '@/api/queries/dashboardQuer
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -14,9 +16,15 @@ interface ITableData {
 const TopBaseAssetsTable = () => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const { data, isLoading } = useGetTopOptionBaseSymbolValueQuery({
 		queryKey: ['getTopOptionBaseSymbolValueQuery'],
 	});
+
+	const setSymbol = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
 
 	const dataMapper = useMemo(() => {
 		const result: ITableData[] = [];
@@ -50,15 +58,21 @@ const TopBaseAssetsTable = () => {
 		() => [
 			{
 				headerName: t('home.daily'),
-				valueFormatter: (row) => row.today?.symbolTitle ?? '−',
+				cellClass: 'cursor-pointer',
+				onCellClick: (row) => setSymbol(row.today.symbolISIN),
+				valueFormatter: (row) => row.today.symbolTitle ?? '−',
 			},
 			{
 				headerName: t('home.weekly'),
-				valueFormatter: (row) => row.month?.symbolTitle ?? '−',
+				cellClass: 'cursor-pointer',
+				onCellClick: (row) => setSymbol(row.month.symbolISIN),
+				valueFormatter: (row) => row.month.symbolTitle ?? '−',
 			},
 			{
 				headerName: t('home.monthly'),
-				valueFormatter: (row) => row.week?.symbolTitle ?? '−',
+				cellClass: 'cursor-pointer',
+				onCellClick: (row) => setSymbol(row.week.symbolISIN),
+				valueFormatter: (row) => row.week.symbolTitle ?? '−',
 			},
 		],
 		[],
@@ -76,7 +90,7 @@ const TopBaseAssetsTable = () => {
 	)
 		return <NoData />;
 
-	return <LightweightTable<ITableData> rowData={dataMapper} columnDefs={columnDefs} />;
+	return <LightweightTable rowData={dataMapper} columnDefs={columnDefs} />;
 };
 
 export default TopBaseAssetsTable;

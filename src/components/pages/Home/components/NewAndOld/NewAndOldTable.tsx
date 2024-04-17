@@ -3,6 +3,8 @@ import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { ChainSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
@@ -16,6 +18,8 @@ type TTableData = Dashboard.GetMostTradedOptionSymbol.Data | Dashboard.GetFirstT
 
 const NewAndOldTable = ({ type }: MeetingTableProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
 
 	const fromNow = (v: string) => {
 		return dayjs(v).calendar('jalali').locale('fa').fromNow();
@@ -33,10 +37,16 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 			enabled: type === 'FirstTradedOptionSymbol',
 		});
 
+	const setSymbol = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
 	const columnDefs = useMemo<Array<IColDef<TTableData>>>(
 		() => [
 			{
 				headerName: t('home.symbol_title'),
+				cellClass: 'cursor-pointer',
+				onCellClick: (row) => setSymbol(row.symbolISIN),
 				valueFormatter: (row) => row.symbolTitle ?? '−',
 			},
 			{
@@ -71,7 +81,7 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable<TTableData> rowData={data} columnDefs={columnDefs} />;
+	return <LightweightTable rowData={data} columnDefs={columnDefs} />;
 };
 
 export default NewAndOldTable;

@@ -50,9 +50,7 @@ const CompareTransactionValue = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden py-8'>
-				<CompareTransactionValueChart interval={defaultTab.top} type={defaultTab.bottom} />
-			</div>
+			<CompareTransactionValueChart interval={defaultTab.top} type={defaultTab.bottom} />
 		</Section>
 	);
 };

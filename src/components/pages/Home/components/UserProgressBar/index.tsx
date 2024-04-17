@@ -51,7 +51,7 @@ const UserProgressBar = () => {
 
 	return (
 		<Section id='user_progress_bar' title={t('home.user_progress_bar')}>
-			<div className='flex-1 gap-24 pt-8 flex-column'>
+			<div className='h-full gap-24 pt-8 flex-column'>
 				<div style={{ flex: '0 0 1.6rem' }} className='gap-8 flex-items-center'>
 					<span className='text-lg font-medium text-success-100'>32%</span>
 					<div className='flex-1 overflow-hidden rounded-oval bg-gray-200'>

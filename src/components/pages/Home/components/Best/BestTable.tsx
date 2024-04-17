@@ -25,6 +25,8 @@ interface TableWrapperProps {
 	children: React.ReactNode;
 }
 
+type TCol = Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.All>>>;
+
 const BestTable = ({ symbolType, type }: TableProps) => {
 	const t = useTranslations();
 
@@ -49,120 +51,122 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const getOptionValueColDefs = (side: TOptionSides): Array<IColDef<Dashboard.GetTopSymbols.Option.Value>> => [
+	const getOptionValueColDefs = (
+		side: TOptionSides,
+	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.Value>>> => [
 		{
 			headerName: 'نماد',
 			cellClass: 'cursor-pointer',
-			onCellClick: (row) => setSymbol(row.symbolISIN),
-			valueFormatter: (row) => row.symbolTitle,
+			onCellClick: (row) => setSymbol(row[side].symbolISIN),
+			valueFormatter: (row) => row[side].symbolTitle,
 		},
 		{
 			headerName: 'ارزش',
-			valueFormatter: (row) => sepNumbers(String(row.totalTradeValue ?? 0)),
+			valueFormatter: (row) => sepNumbers(String(row[side].totalTradeValue ?? 0)),
 		},
 		{
 			headerName: 'آخرین قیمت',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: (row) => sepNumbers(String(row[side].lastTradedPrice ?? 0)),
 		},
 		{
 			headerName: 'مانده تا سررسید (روز)',
-			valueFormatter: (row) => row.dueDays,
+			valueFormatter: (row) => row[side].dueDays,
 		},
 	];
 
 	const getOptionOpenPositionsColDefs = (
 		side: TOptionSides,
-	): Array<IColDef<Dashboard.GetTopSymbols.Option.OpenPosition>> => [
+	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.OpenPosition>>> => [
 		{
 			headerName: 'نماد',
 			cellClass: 'cursor-pointer',
-			onCellClick: (row) => setSymbol(row.symbolISIN),
-			valueFormatter: (row) => row.symbolTitle,
+			onCellClick: (row) => setSymbol(row[side].symbolISIN),
+			valueFormatter: (row) => row[side].symbolTitle,
 		},
 		{
 			headerName: 'موقعیت باز',
-			valueFormatter: (row) => sepNumbers(String(row.openPositionCount ?? 0)),
+			valueFormatter: (row) => sepNumbers(String(row[side].openPositionCount ?? 0)),
 		},
 		{
 			headerName: 'مقدار (درصد تغییر)',
 			cellClass: 'ltr',
-			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
+			valueFormatter: (row) => `${toFixed(row[side].openPositionVarPercent)}%`,
 		},
 		{
 			headerName: 'مانده تا سررسید (روز)',
-			valueFormatter: (row) => row.dueDays,
+			valueFormatter: (row) => row[side].dueDays,
 		},
 	];
 
 	const getOptionTradesCountColDefs = (
 		side: TOptionSides,
-	): Array<IColDef<Dashboard.GetTopSymbols.Option.TradeCount>> => [
+	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.TradeCount>>> => [
 		{
 			headerName: 'نماد',
 			cellClass: 'cursor-pointer',
-			onCellClick: (row) => setSymbol(row.symbolISIN),
-			valueFormatter: (row) => row.symbolTitle,
+			onCellClick: (row) => setSymbol(row[side].symbolISIN),
+			valueFormatter: (row) => row[side].symbolTitle,
 		},
 		{
 			headerName: 'تعداد معاملات',
-			valueFormatter: (row) => sepNumbers(String(row.totalNumberOfTrades ?? 0)),
+			valueFormatter: (row) => sepNumbers(String(row[side].totalNumberOfTrades ?? 0)),
 		},
 		{
 			headerName: 'درصد تغییر تعداد',
 			cellClass: 'ltr',
-			valueFormatter: (row) => `${toFixed(row.totalNumberOfTradesVarPercent)}%`,
+			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfTradesVarPercent)}%`,
 		},
 		{
 			headerName: 'مانده تا سررسید (روز)',
-			valueFormatter: (row) => row.dueDays,
+			valueFormatter: (row) => row[side].dueDays,
 		},
 	];
 
 	const getOptionYesterdayDiffColDefs = (
 		side: TOptionSides,
-	): Array<IColDef<Dashboard.GetTopSymbols.Option.YesterdayDiff>> => [
+	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.YesterdayDiff>>> => [
 		{
 			headerName: 'نماد',
 			cellClass: 'cursor-pointer',
-			onCellClick: (row) => setSymbol(row.symbolISIN),
-			valueFormatter: (row) => row.symbolTitle,
+			onCellClick: (row) => setSymbol(row[side].symbolISIN),
+			valueFormatter: (row) => row[side].symbolTitle,
 		},
 		{
 			headerName: 'درصد تغییر قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => `${toFixed(row.closingPriceVarReferencePricePercent)}%`,
+			valueFormatter: (row) => `${toFixed(row[side].closingPriceVarReferencePricePercent)}%`,
 		},
 		{
 			headerName: 'مقدار تغییر',
-			valueFormatter: (row) => sepNumbers(String(row.closingPriceVarReferencePrice ?? 0)),
+			valueFormatter: (row) => sepNumbers(String(row[side].closingPriceVarReferencePrice ?? 0)),
 		},
 		{
 			headerName: 'مانده تا سررسید (روز)',
-			valueFormatter: (row) => row.dueDays,
+			valueFormatter: (row) => row[side].dueDays,
 		},
 	];
 
 	const getOptionTradesVolumeColDefs = (
 		side: TOptionSides,
-	): Array<IColDef<Dashboard.GetTopSymbols.Option.Volume>> => [
+	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.Volume>>> => [
 		{
 			headerName: 'نماد',
 			cellClass: 'cursor-pointer',
-			onCellClick: (row) => setSymbol(row.symbolISIN),
-			valueFormatter: (row) => row.symbolTitle,
+			onCellClick: (row) => setSymbol(row[side].symbolISIN),
+			valueFormatter: (row) => row[side].symbolTitle,
 		},
 		{
 			headerName: 'حجم معاملات',
-			valueFormatter: (row) => sepNumbers(String(row.totalNumberOfSharesTraded ?? 0)),
+			valueFormatter: (row) => sepNumbers(String(row[side].totalNumberOfSharesTraded ?? 0)),
 		},
 		{
 			headerName: 'درصد تغییر حجم',
 			cellClass: 'ltr',
-			valueFormatter: (row) => `${toFixed(row.totalNumberOfSharesTradedVarPercent)}%`,
+			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfSharesTradedVarPercent)}%`,
 		},
 		{
 			headerName: 'مانده تا سررسید (روز)',
-			valueFormatter: (row) => row.dueDays,
+			valueFormatter: (row) => row[side].dueDays,
 		},
 	];
 
@@ -176,16 +180,17 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
 		{
-			headerName: 'تعداد موقعیت های باز خرید',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تعداد موقعیت‌های باز خرید',
+			valueFormatter: (row) => sepNumbers(String(row.openPosition)),
 		},
 		{
-			headerName: 'تغییر موقعیت های باز خرید',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تغییر موقعیت‌های باز خرید',
+			cellClass: 'ltr',
+			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
 			headerName: 'تعداد قراردادهای دارای موقعیت باز خرید',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			valueFormatter: (row) => sepNumbers(String(row.contractCount)),
 		},
 		{
 			headerName: 'نزدیکترین سررسید',
@@ -203,16 +208,17 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
 		{
-			headerName: 'تعداد موقعیت های باز فروش',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تعداد موقعیت‌های باز فروش',
+			valueFormatter: (row) => sepNumbers(String(row.openPosition)),
 		},
 		{
-			headerName: 'تغییر موقعیت های باز فروش',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تغییر موقعیت‌های باز فروش',
+			cellClass: 'ltr',
+			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
 			headerName: 'تعداد قراردادهای دارای موقعیت باز فروش',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			valueFormatter: (row) => sepNumbers(String(row.contractCount)),
 		},
 		{
 			headerName: 'نزدیکترین سررسید',
@@ -383,7 +389,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		[type],
 	);
 
-	const [data, isLoading]: [Dashboard.GetTopSymbols.AllAsArray, boolean] =
+	const [data, isLoading]: [Dashboard.GetTopSymbols.Data, boolean] =
 		symbolType === 'Option'
 			? [optionTopSymbolsData ?? [], isLoadingOptionTopSymbols]
 			: symbolType === 'BaseSymbol'
@@ -397,18 +403,12 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			) : data.length > 0 ? (
 				<div className='flex h-full gap-12'>
 					<TableWrapper type='put' title={t('home.put_option')} isOption={symbolType === 'Option'}>
-						<LightweightTable<Dashboard.GetTopSymbols.All>
-							rowData={data}
-							columnDefs={getColumnDefinitions('put') as Array<IColDef<Dashboard.GetTopSymbols.All>>}
-						/>
+						<LightweightTable rowData={data} columnDefs={getColumnDefinitions('put') as TCol} />
 					</TableWrapper>
 
 					{symbolType === 'Option' && (
 						<TableWrapper type='call' title={t('home.call_option')} isOption={symbolType === 'Option'}>
-							<LightweightTable<Dashboard.GetTopSymbols.All>
-								rowData={data}
-								columnDefs={getColumnDefinitions('call') as Array<IColDef<Dashboard.GetTopSymbols.All>>}
-							/>
+							<LightweightTable rowData={data} columnDefs={getColumnDefinitions('call') as TCol} />
 						</TableWrapper>
 					)}
 				</div>
