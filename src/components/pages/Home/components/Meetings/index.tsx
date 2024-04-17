@@ -26,9 +26,7 @@ const Meetings = () => {
 				],
 			}}
 		>
-			<div className='flex-1 overflow-hidden p-8'>
-				<MeetingTable type={type} />
-			</div>
+			<MeetingTable type={type} />
 		</Section>
 	);
 };

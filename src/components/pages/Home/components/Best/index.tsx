@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import Section, { type ITab } from '../../common/Section';
@@ -72,9 +71,7 @@ const Best = () => {
 				bottom: bottomTabs,
 			}}
 		>
-			<div className={clsx('relative flex-1 overflow-hidden', defaultTab.top === 'Option' ? 'py-8' : 'py-24')}>
-				<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
-			</div>
+			<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
 		</Section>
 	);
 };

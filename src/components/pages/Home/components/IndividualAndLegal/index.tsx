@@ -42,9 +42,7 @@ const IndividualAndLegal = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden'>
-				<IndividualAndLegalChart symbolType={defaultTab.top} type={defaultTab.bottom} />
-			</div>
+			<IndividualAndLegalChart symbolType={defaultTab.top} type={defaultTab.bottom} />
 		</Section>
 	);
 };

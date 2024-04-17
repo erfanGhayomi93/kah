@@ -26,9 +26,7 @@ const DueDates = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden p-8'>
-				<DueDatesTable type={type} />
-			</div>
+			<DueDatesTable type={type} />
 		</Section>
 	);
 };

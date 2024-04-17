@@ -26,9 +26,7 @@ const NewAndOld = () => {
 				],
 			}}
 		>
-			<div className='flex-1 overflow-hidden p-8'>
-				<NewAndOldTable type={type} />
-			</div>
+			<NewAndOldTable type={type} />
 		</Section>
 	);
 };
