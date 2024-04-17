@@ -50,9 +50,7 @@ const OptionMarketProcess = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden py-8'>
-				<OptionMarketProcessChart interval={defaultTab.top} type={defaultTab.bottom} />
-			</div>
+			<OptionMarketProcessChart interval={defaultTab.top} type={defaultTab.bottom} />
 		</Section>
 	);
 };

@@ -12,9 +12,7 @@ const TopBaseAssets = () => {
 
 	return (
 		<Section id='top_base_assets' title={t('home.top_base_assets')}>
-			<div className='relative flex-1 overflow-hidden p-8'>
-				<TopBaseAssetsTable />
-			</div>
+			<TopBaseAssetsTable />
 		</Section>
 	);
 };

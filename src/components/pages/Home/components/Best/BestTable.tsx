@@ -180,16 +180,17 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
 		{
-			headerName: 'تعداد موقعیت های باز خرید',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تعداد موقعیت‌های باز خرید',
+			valueFormatter: (row) => sepNumbers(String(row.openPosition)),
 		},
 		{
-			headerName: 'تغییر موقعیت های باز خرید',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تغییر موقعیت‌های باز خرید',
+			cellClass: 'ltr',
+			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
 			headerName: 'تعداد قراردادهای دارای موقعیت باز خرید',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			valueFormatter: (row) => sepNumbers(String(row.contractCount)),
 		},
 		{
 			headerName: 'نزدیکترین سررسید',
@@ -207,16 +208,17 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
 		{
-			headerName: 'تعداد موقعیت های باز فروش',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تعداد موقعیت‌های باز فروش',
+			valueFormatter: (row) => sepNumbers(String(row.openPosition)),
 		},
 		{
-			headerName: 'تغییر موقعیت های باز فروش',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			headerName: 'تغییر موقعیت‌های باز فروش',
+			cellClass: 'ltr',
+			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
 			headerName: 'تعداد قراردادهای دارای موقعیت باز فروش',
-			valueFormatter: (row) => sepNumbers(String(0)),
+			valueFormatter: (row) => sepNumbers(String(row.contractCount)),
 		},
 		{
 			headerName: 'نزدیکترین سررسید',

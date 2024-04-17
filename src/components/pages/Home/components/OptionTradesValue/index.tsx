@@ -49,9 +49,7 @@ const OptionTradesValue = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden py-8'>
-				<OptionTradesValueChart interval={defaultTab.top} type={defaultTab.bottom} />
-			</div>
+			<OptionTradesValueChart interval={defaultTab.top} type={defaultTab.bottom} />
 		</Section>
 	);
 };

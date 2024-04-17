@@ -867,10 +867,11 @@ declare namespace Dashboard {
 	export namespace GetMarketState {
 		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
 		export interface Bourse {
+			index: number;
 			tradeVolume: number | null;
 			tradeValue: number | null;
-			marketValue: number | null;
-			tradeCount: number | null;
+			marketValue: number;
+			tradeCount: number;
 		}
 
 		export interface FaraBourse extends GetMarketState.Bourse {}
@@ -878,8 +879,8 @@ declare namespace Dashboard {
 		export interface Option {
 			tradeVolume: number | null;
 			tradeValue: number | null;
-			putValue: number | null;
-			callValue: number | null;
+			putValue: number;
+			callValue: number;
 		}
 	}
 
@@ -1086,16 +1087,22 @@ declare namespace Dashboard {
 
 		export type Type = 'IOTM' | 'ContractType';
 
+		export type DataPoint = null | 'atm' | 'otm' | 'itm' | 'call' | 'put';
+
 		export interface IOTM {
 			iotm: 'ATM' | 'OTM' | 'ITM';
 			tradeValue: number;
+			valuePercentageOfTotal: number;
 			tradeVolume: number;
+			volumePercentageOfTotal: number;
 		}
 
 		export interface ContractType {
 			contractType: TOptionSide;
 			tradeValue: number;
+			valuePercentageOfTotal: number;
 			tradeVolume: number;
+			volumePercentageOfTotal: number;
 		}
 	}
 
@@ -1137,6 +1144,7 @@ declare namespace Dashboard {
 
 		export interface Data {
 			symbolTitle: string;
+			symbolISIN: string;
 			dateTime: string;
 			title: string;
 		}
@@ -1182,6 +1190,7 @@ declare namespace Dashboard {
 
 		export interface MostRecentData {
 			symbolTitle: string;
+			symbolISIN: string;
 			mostRecentPassedDays: number;
 			totalTradeValue: number;
 			totalTradeVolume: number;
@@ -1189,6 +1198,7 @@ declare namespace Dashboard {
 
 		export interface ClosestData {
 			symbolTitle: string;
+			symbolISIN: string;
 			closestDueDays: number;
 			totalTradeValue: number;
 			totalTradeVolume: number;
