@@ -38,8 +38,8 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 								const i: Dashboard.GetOptionContractAdditionalInfo.DataPoint[] = [
 									'call',
 									'put',
-									'atm',
 									'itm',
+									'atm',
 									'otm',
 								];
 
@@ -74,7 +74,7 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 				},
 				plotOptions: {
 					pie: {
-						customScale: 1,
+						customScale: 0.75,
 						expandOnClick: true,
 						donut: {
 							size: '60%',
