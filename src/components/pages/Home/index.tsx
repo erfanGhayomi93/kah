@@ -94,31 +94,63 @@ const Dashboard = () => {
 
 	const getSectionHeight = (originalHeight: number) => (originalHeight + SECTIONS_MARGIN[1]) / 17;
 
-	const getDesktopLayout = (grid: IDashboardGrid[]): Layout[] => {
+	const getDesktopLayout = (grid: IDashboardGrid[]) => {
+		const MAX_WIDTH = 3;
+
 		const layout: Layout[] = [];
-
 		const l = grid.length;
-		let y = 0;
-		let c = 0;
 
+		let y = 0;
+		let x = 0;
+		let c = MAX_WIDTH;
+
+		let pairs: typeof layout = [];
 		for (let i = 0; i < l; i++) {
 			const item = grid[i];
-			c += item.w;
-
-			const newItem = {
+			const iItem = {
 				i: item.id,
 				h: getSectionHeight(item.h),
 				w: item.w,
-				x: c - item.w,
+				x,
 				y,
 			};
 
-			layout.push(newItem);
+			pairs.push(iItem);
 
-			if (c >= 3) {
-				y += newItem.h;
-				c = 0;
+			x += item.w;
+			c -= item.w;
+
+			let availableWidth = c;
+			for (let j = i + 1; j < l; j++) {
+				const pairItem = grid[j];
+				const jItem = {
+					i: pairItem.id,
+					h: getSectionHeight(pairItem.h),
+					w: pairItem.w,
+					x,
+					y,
+				};
+
+				x += item.w;
+				availableWidth -= pairItem.w;
+
+				if (availableWidth === 0) {
+					pairs.push(jItem);
+					i = j;
+					break;
+				} else if (availableWidth < 0) {
+					availableWidth += pairItem.w;
+					continue;
+				} else {
+					pairs.push(jItem);
+				}
 			}
+
+			layout.push(...pairs);
+			pairs = [];
+			c = MAX_WIDTH;
+			x = 0;
+			y += 1;
 		}
 
 		return layout;

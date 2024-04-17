@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
-		"start": "cross-env NODE_OPTIONS='--inspect' next dev -p 3002",
+		"start": "next dev -p 3002",
 		"build": "next build",
 		"preview": "next start -p 3002",
 		"lint": "next lint",

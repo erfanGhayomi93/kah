@@ -2,14 +2,14 @@ import { useGetMarketStateQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
 import { useServerDatetime } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import { numFormatter } from '@/utils/helpers';
+import { numFormatter, toFixed } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
 
 interface ItemProps {
 	name: string;
-	value: number;
+	value: string | number;
 }
 
 const MarketState = () => {
@@ -39,20 +39,20 @@ const MarketState = () => {
 
 			{data && (
 				<ul className='h-full gap-24 pt-16 rtl flex-column'>
-					<Item name={t('home.tab_trades_volume')} value={data.tradeVolume ?? 0} />
-					<Item name={t('home.tab_trades_value')} value={data.tradeValue ?? 0} />
+					<Item name={t('home.tab_trades_volume')} value={numFormatter(data.tradeVolume ?? 0)} />
+					<Item name={t('home.tab_trades_value')} value={numFormatter(data.tradeValue ?? 0)} />
 					{'putValue' in data ? (
 						<>
-							<Item name={t('home.call_trades_value')} value={data.callValue ?? 0} />
-							<Item name={t('home.put_trades_value')} value={data.putValue ?? 0} />
+							<Item name={t('home.call_trades_value')} value={numFormatter(data.callValue ?? 0)} />
+							<Item name={t('home.put_trades_value')} value={numFormatter(data.putValue ?? 0)} />
 						</>
 					) : (
 						<>
 							<Item
 								name={t(`home.${exchange === 'Bourse' ? '' : 'fara_'}bourse_market_value`)}
-								value={data.index ?? 0}
+								value={toFixed(data.index ?? 0, 2)}
 							/>
-							<Item name={t('home.tab_trades_count')} value={data.tradeCount ?? 0} />
+							<Item name={t('home.tab_trades_count')} value={numFormatter(data.tradeCount ?? 0)} />
 						</>
 					)}
 				</ul>
@@ -74,7 +74,7 @@ const Clock = () => {
 const Item = ({ name, value }: ItemProps) => (
 	<li className='flex-justify-between'>
 		<span className='text-gray-900'>{name}:</span>
-		<span className='text-base text-gray-1000'>{isNaN(value) ? '−' : numFormatter(value)}</span>
+		<span className='text-base text-gray-1000'>{value}</span>
 	</li>
 );
 

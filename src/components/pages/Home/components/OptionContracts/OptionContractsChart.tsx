@@ -1,6 +1,6 @@
+import AppChart from '@/components/common/AppChart';
 import num2persian from '@/utils/num2persian';
 import { useMemo } from 'react';
-import Chart from 'react-apexcharts';
 
 interface OptionContractsChartProps {
 	basis: Dashboard.GetOptionContractAdditionalInfo.Basis;
@@ -29,7 +29,7 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 	const donutColor = type === 'IOTM' ? IOTM_COLORS : CONTRACT_TYPE_COLORS;
 
 	return (
-		<Chart
+		<AppChart
 			options={{
 				chart: {
 					events: {
@@ -38,8 +38,8 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 								const i: Dashboard.GetOptionContractAdditionalInfo.DataPoint[] = [
 									'call',
 									'put',
-									'atm',
 									'itm',
+									'atm',
 									'otm',
 								];
 
@@ -53,17 +53,6 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 							}
 						},
 						mouseLeave: () => setDataPointHover(null),
-					},
-					animations: {
-						dynamicAnimation: {
-							enabled: true,
-						},
-						animateGradually: {
-							enabled: false,
-						},
-						enabled: true,
-						easing: 'linear',
-						speed: 200,
 					},
 				},
 				states: {
@@ -85,24 +74,17 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 				},
 				plotOptions: {
 					pie: {
+						customScale: 0.75,
 						expandOnClick: true,
+						donut: {
+							size: '60%',
+						},
 					},
 				},
 				colors: donutColor,
-				legend: {
-					show: false,
-				},
-				dataLabels: {
-					enabled: false,
-				},
 				tooltip: {
-					intersect: false,
-					followCursor: false,
 					cssClass: 'apex-tooltip',
 					fillSeriesColor: false,
-					style: {
-						fontFamily: 'IRANSans',
-					},
 					y: {
 						title: {
 							formatter: () => '',
@@ -116,6 +98,14 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 					show: true,
 					width: 2,
 					colors: ['rgb(255, 255, 255)'],
+				},
+				grid: {
+					padding: {
+						top: 0,
+						right: 0,
+						bottom: 0,
+						left: 0,
+					},
 				},
 			}}
 			series={dataMapper}
