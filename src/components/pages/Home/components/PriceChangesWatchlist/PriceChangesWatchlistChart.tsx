@@ -23,17 +23,31 @@ const BG_COLORS = [
 	'rgba(0, 164, 115, 0.05)',
 ];
 
+const DEFAULT_RESULT = [...Array<IChartOutput[]>(7)].map((_, i) => ({
+	x: `${i}`,
+	y: 0,
+	fillColor: COLORS[i],
+	strokeColor: COLORS[i],
+}));
+
+interface IChartOutput {
+	x: string | number;
+	y: string | number;
+	fillColor: string;
+	strokeColor: string;
+}
+
 const PriceChangesWatchlistChart = () => {
 	const { data, isLoading } = useGetOptionWatchlistPriceChangeInfoQuery({
 		queryKey: ['getOptionWatchlistPriceChangeInfoQuery'],
 	});
 
-	const dataMapper = useMemo<Array<{ x: string; fillColor: string; strokeColor: string; y: number }>>(() => {
-		if (!Array.isArray(data)) return [];
+	const dataMapper = useMemo<IChartOutput[]>(() => {
+		if (!Array.isArray(data)) return DEFAULT_RESULT;
 
-		return data.map((item, i) => ({
-			x: item.state,
-			y: Math.max(0, Math.min(item.count, 100)),
+		return DEFAULT_RESULT.map((_, i) => ({
+			x: data[i]?.state ?? `${i}`,
+			y: Math.max(0, Math.min(data[i]?.count ?? 0, 100)),
 			fillColor: COLORS[i],
 			strokeColor: COLORS[i],
 		}));
@@ -63,6 +77,17 @@ const PriceChangesWatchlistChart = () => {
 						foreColor: 'rgb(146, 145, 165)',
 						zoom: {
 							enabled: false,
+						},
+						animations: {
+							dynamicAnimation: {
+								enabled: true,
+							},
+							animateGradually: {
+								enabled: false,
+							},
+							enabled: true,
+							easing: 'linear',
+							speed: 200,
 						},
 					},
 					plotOptions: {

@@ -132,7 +132,7 @@ const Section = <T extends string = string, B extends string = string>({
 				<h1 className='text-lg font-medium text-gray-900'>{title}</h1>
 			</div>
 
-			{isRendered && (children ?? <NoData />)}
+			<div className='relative h-full flex-1 overflow-hidden p-8'>{isRendered && (children ?? <NoData />)}</div>
 
 			{Array.isArray(tabs?.bottom) ? (
 				<div style={{ flex: '0 0 4.8rem' }}>

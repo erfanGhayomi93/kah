@@ -35,30 +35,28 @@ const MarketState = () => {
 				top: <Clock />,
 			}}
 		>
-			<div className='relative flex-1 pt-24'>
-				{isLoading && <Loading />}
+			{isLoading && <Loading />}
 
-				{data && (
-					<ul className='gap-24 rtl flex-column'>
-						<Item name={t('home.tab_trades_volume')} value={data.tradeVolume ?? 0} />
-						<Item name={t('home.tab_trades_value')} value={data.tradeValue ?? 0} />
-						{'putValue' in data ? (
-							<>
-								<Item name={t('home.call_trades_value')} value={data.callValue ?? 0} />
-								<Item name={t('home.put_trades_value')} value={data.putValue ?? 0} />
-							</>
-						) : (
-							<>
-								<Item
-									name={t(`home.${exchange === 'Bourse' ? '' : 'fara_'}bourse_market_value`)}
-									value={data.marketValue ?? 0}
-								/>
-								<Item name={t('home.tab_trades_count')} value={data.tradeCount ?? 0} />
-							</>
-						)}
-					</ul>
-				)}
-			</div>
+			{data && (
+				<ul className='h-full gap-24 pt-16 rtl flex-column'>
+					<Item name={t('home.tab_trades_volume')} value={data.tradeVolume ?? 0} />
+					<Item name={t('home.tab_trades_value')} value={data.tradeValue ?? 0} />
+					{'putValue' in data ? (
+						<>
+							<Item name={t('home.call_trades_value')} value={data.callValue ?? 0} />
+							<Item name={t('home.put_trades_value')} value={data.putValue ?? 0} />
+						</>
+					) : (
+						<>
+							<Item
+								name={t(`home.${exchange === 'Bourse' ? '' : 'fara_'}bourse_market_value`)}
+								value={data.marketValue ?? 0}
+							/>
+							<Item name={t('home.tab_trades_count')} value={data.tradeCount ?? 0} />
+						</>
+					)}
+				</ul>
+			)}
 		</Section>
 	);
 };

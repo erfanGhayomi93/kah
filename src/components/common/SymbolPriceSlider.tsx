@@ -1,4 +1,4 @@
-import { sepNumbers } from '@/utils/helpers';
+import { isBetween, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './SymbolPriceSlider.module.scss';
@@ -330,7 +330,15 @@ const SymbolPriceSlider = ({
 						</div>
 					</div>
 
-					<div style={{ left: '50%' }} className={clsx(styles.div, styles.active)}>
+					<div
+						style={{ left: '50%' }}
+						className={clsx(
+							styles.div,
+							dataIsAvailable &&
+								isBetween(boundaryData[0], yesterdayClosingPrice, boundaryData[1]) &&
+								styles.active,
+						)}
+					>
 						<div className={styles.inner}>
 							<span className={clsx(styles.rhombus)} />
 							<span className={clsx(styles.line)} />

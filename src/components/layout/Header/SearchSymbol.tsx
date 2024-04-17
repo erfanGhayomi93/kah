@@ -35,6 +35,7 @@ const SearchSymbol = () => {
 				y: 4,
 			}}
 			zIndex={9999}
+			onClose={() => setTerm('')}
 			renderer={({ setOpen }) => {
 				if (term.length < 2) return null;
 
@@ -59,6 +60,7 @@ const SearchSymbol = () => {
 								<li
 									onClick={() => {
 										setSymbol(symbol.symbolISIN);
+										setIsExpand(false);
 										setOpen(false);
 									}}
 									key={symbol.symbolISIN}

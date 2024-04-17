@@ -52,10 +52,8 @@ const MarketView = () => {
 				],
 			}}
 		>
-			<div className='relative flex-1 overflow-hidden py-8'>
-				<MarketViewChart interval={defaultTab.top} data={data ?? []} />
-				<Suspend isLoading={isLoading} isEmpty={!data?.length} />
-			</div>
+			<MarketViewChart interval={defaultTab.top} data={data ?? []} />
+			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</Section>
 	);
 };

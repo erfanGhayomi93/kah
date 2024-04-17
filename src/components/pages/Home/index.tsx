@@ -94,19 +94,15 @@ const Dashboard = () => {
 
 	const getSectionHeight = (originalHeight: number) => (originalHeight + SECTIONS_MARGIN[1]) / 17;
 
-	const getGridLayouts = (): Layouts => {
+	const getDesktopLayout = (grid: IDashboardGrid[]): Layout[] => {
 		const layout: Layout[] = [];
 
-		let initialLayout = JSON.parse(JSON.stringify(grid)) as typeof initialDashboardGrid;
-		initialLayout = initialLayout.filter((item) => !item.hidden);
-		initialLayout.sort((a, b) => a.i - b.i);
-
-		const l = initialLayout.length;
+		const l = grid.length;
 		let y = 0;
 		let c = 0;
 
 		for (let i = 0; i < l; i++) {
-			const item = initialLayout[i];
+			const item = grid[i];
 			c += item.w;
 
 			const newItem = {
@@ -125,10 +121,41 @@ const Dashboard = () => {
 			}
 		}
 
+		return layout;
+	};
+
+	const getMobileLayout = (grid: IDashboardGrid[]): Layout[] => {
+		const layout: Layout[] = [];
+
+		const l = grid.length;
+		let y = 0;
+
+		for (let i = 0; i < l; i++) {
+			const item = grid[i];
+			const newItem = {
+				i: item.id,
+				h: getSectionHeight(item.h),
+				w: item.w,
+				x: 1,
+				y,
+			};
+
+			layout.push(newItem);
+
+			y += newItem.h;
+		}
+
+		return layout;
+	};
+
+	const getGridLayouts = (): Layouts => {
+		let initialLayout = JSON.parse(JSON.stringify(grid)) as typeof initialDashboardGrid;
+		initialLayout = initialLayout.filter((item) => !item.hidden);
+		initialLayout.sort((a, b) => a.i - b.i);
+
 		return {
-			xl: layout,
-			lg: layout,
-			sm: layout,
+			lg: getDesktopLayout(initialLayout),
+			sm: getMobileLayout(initialLayout),
 		};
 	};
 
@@ -170,9 +197,9 @@ const Dashboard = () => {
 					className='w-full ltr'
 					layouts={getGridLayouts()}
 					margin={SECTIONS_MARGIN}
-					breakpoints={{ xl: 1440, lg: 1024, sm: 0 }}
-					containerPadding={[16, 16]}
-					cols={{ xl: 3, lg: 3, sm: 1 }}
+					breakpoints={{ lg: 1366, sm: 0 }}
+					containerPadding={[8, 16]}
+					cols={{ lg: 3, sm: 1 }}
 					useCSSTransforms
 					isDraggable={false}
 					isDroppable={false}

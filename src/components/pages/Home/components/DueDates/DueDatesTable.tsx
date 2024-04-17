@@ -2,6 +2,8 @@ import { useGetOptionSettlementInfoQuery } from '@/api/queries/dashboardQueries'
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { numFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -13,6 +15,12 @@ interface DueDatesTableProps {
 const DueDatesTable = ({ type }: DueDatesTableProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
+	const setSymbol = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
 	const { data, isLoading } = useGetOptionSettlementInfoQuery({
 		queryKey: ['getOptionSettlementInfoQuery', type],
 	});
@@ -21,6 +29,8 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 		() => [
 			{
 				headerName: t('home.symbol_title'),
+				cellClass: 'cursor-pointer',
+				onCellClick: (row) => setSymbol(row.symbolISIN),
 				valueFormatter: (row) => row.symbolTitle,
 			},
 			{
