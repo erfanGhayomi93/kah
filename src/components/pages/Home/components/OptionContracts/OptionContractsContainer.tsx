@@ -89,7 +89,7 @@ const OptionContractsContainer = ({ basis, type }: OptionContractsContainerProps
 	};
 
 	return (
-		<div className='relative flex h-full px-8 pt-36'>
+		<div className='relative flex h-full px-8'>
 			<OptionContractsChart
 				type={type}
 				basis={basis}

@@ -25,6 +25,14 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 		queryKey: ['getOptionSettlementInfoQuery', type],
 	});
 
+	const dateFormatter = (v: number): number | string => {
+		if (v === 0) return t('validity_date.Today');
+
+		if (v === 1) return t('validity_date.Tomorrow');
+
+		return v;
+	};
+
 	const columnDefs = useMemo<Array<IColDef<Dashboard.GetOptionSettlementInfo.Data>>>(
 		() => [
 			{
@@ -36,9 +44,11 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 			{
 				headerName: t(`home.${type === 'Closest' ? 'due_days' : 'passed_days'}`),
 				valueFormatter: (row) =>
-					'mostRecentPassedDays' in row
-						? Math.max(row.mostRecentPassedDays ?? 0, 0)
-						: Math.max(row.closestDueDays ?? 0, 0),
+					dateFormatter(
+						'mostRecentPassedDays' in row
+							? Math.max(row.mostRecentPassedDays ?? 0, 0)
+							: Math.max(row.closestDueDays ?? 0, 0),
+					),
 			},
 			{
 				headerName: t('home.today_value'),
