@@ -129,7 +129,7 @@ const AppChart = ({ options, height = '100%', series, type = 'area', width = '10
 						top: -16,
 						left: 0,
 						bottom: 0,
-						right: -24,
+						right: 0,
 						...options?.grid?.padding,
 					},
 				},

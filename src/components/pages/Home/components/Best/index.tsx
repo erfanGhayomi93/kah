@@ -13,7 +13,7 @@ const Best = () => {
 
 	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Option',
-		bottom: 'OptionOpenPosition',
+		bottom: 'OptionValue',
 	});
 
 	const setDefaultTabByPosition = <T extends keyof IDefaultActiveTab>(position: T, value: IDefaultActiveTab[T]) => {
@@ -40,6 +40,7 @@ const Best = () => {
 			];
 
 		return [
+			{ id: 'OptionValue', title: t('home.tab_value') },
 			{ id: 'OptionOpenPosition', title: t('home.tab_option_position') },
 			{ id: 'OptionTradeCount', title: t('home.tab_trades_count') },
 			{ id: 'OptionYesterdayDiff', title: t('home.tab_changes_from_previous_day') },
@@ -50,7 +51,7 @@ const Best = () => {
 	useLayoutEffect(() => {
 		if (defaultTab.top === 'BaseSymbol') setDefaultTabByPosition('bottom', 'BaseSymbolCallOpenPosition');
 		else if (defaultTab.top === 'Symbol') return setDefaultTabByPosition('bottom', 'SymbolVolume');
-		else setDefaultTabByPosition('bottom', 'OptionOpenPosition');
+		else setDefaultTabByPosition('bottom', 'OptionValue');
 	}, [defaultTab.top]);
 
 	return (
