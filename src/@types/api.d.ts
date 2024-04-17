@@ -1086,16 +1086,22 @@ declare namespace Dashboard {
 
 		export type Type = 'IOTM' | 'ContractType';
 
+		export type DataPoint = null | 'atm' | 'otm' | 'itm' | 'call' | 'put';
+
 		export interface IOTM {
 			iotm: 'ATM' | 'OTM' | 'ITM';
 			tradeValue: number;
+			valuePercentageOfTotal: number;
 			tradeVolume: number;
+			volumePercentageOfTotal: number;
 		}
 
 		export interface ContractType {
 			contractType: TOptionSide;
 			tradeValue: number;
+			valuePercentageOfTotal: number;
 			tradeVolume: number;
+			volumePercentageOfTotal: number;
 		}
 	}
 
@@ -1137,6 +1143,7 @@ declare namespace Dashboard {
 
 		export interface Data {
 			symbolTitle: string;
+			symbolISIN: string;
 			dateTime: string;
 			title: string;
 		}
@@ -1182,6 +1189,7 @@ declare namespace Dashboard {
 
 		export interface MostRecentData {
 			symbolTitle: string;
+			symbolISIN: string;
 			mostRecentPassedDays: number;
 			totalTradeValue: number;
 			totalTradeVolume: number;
@@ -1189,6 +1197,7 @@ declare namespace Dashboard {
 
 		export interface ClosestData {
 			symbolTitle: string;
+			symbolISIN: string;
 			closestDueDays: number;
 			totalTradeValue: number;
 			totalTradeVolume: number;

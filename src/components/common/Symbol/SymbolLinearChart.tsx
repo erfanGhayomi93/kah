@@ -47,6 +47,17 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 						enabled: true,
 						autoScaleYaxis: true,
 					},
+					animations: {
+						dynamicAnimation: {
+							enabled: true,
+						},
+						animateGradually: {
+							enabled: false,
+						},
+						enabled: true,
+						easing: 'linear',
+						speed: 200,
+					},
 				},
 				colors: ['rgb(34, 180, 150)'],
 				tooltip: {

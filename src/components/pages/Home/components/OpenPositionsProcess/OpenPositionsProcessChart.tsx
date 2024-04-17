@@ -58,12 +58,21 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 						toolbar: {
 							show: false,
 						},
-						foreColor: 'rgb(146, 145, 165)',
 						zoom: {
-							type: 'x',
-							enabled: true,
-							autoScaleYaxis: true,
+							enabled: false,
 						},
+						animations: {
+							dynamicAnimation: {
+								enabled: true,
+							},
+							animateGradually: {
+								enabled: false,
+							},
+							enabled: true,
+							easing: 'linear',
+							speed: 200,
+						},
+						foreColor: 'rgb(146, 145, 165)',
 					},
 					colors,
 					tooltip: {
@@ -151,7 +160,7 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 						padding: {
 							top: -16,
 							left: 0,
-							bottom: -8,
+							bottom: 0,
 							right: 0,
 						},
 					},
