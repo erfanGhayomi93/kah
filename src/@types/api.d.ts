@@ -867,10 +867,11 @@ declare namespace Dashboard {
 	export namespace GetMarketState {
 		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
 		export interface Bourse {
+			index: number;
 			tradeVolume: number | null;
 			tradeValue: number | null;
-			marketValue: number | null;
-			tradeCount: number | null;
+			marketValue: number;
+			tradeCount: number;
 		}
 
 		export interface FaraBourse extends GetMarketState.Bourse {}
@@ -878,8 +879,8 @@ declare namespace Dashboard {
 		export interface Option {
 			tradeVolume: number | null;
 			tradeValue: number | null;
-			putValue: number | null;
-			callValue: number | null;
+			putValue: number;
+			callValue: number;
 		}
 	}
 

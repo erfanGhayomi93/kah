@@ -50,7 +50,7 @@ const MarketState = () => {
 						<>
 							<Item
 								name={t(`home.${exchange === 'Bourse' ? '' : 'fara_'}bourse_market_value`)}
-								value={data.marketValue ?? 0}
+								value={data.index ?? 0}
 							/>
 							<Item name={t('home.tab_trades_count')} value={data.tradeCount ?? 0} />
 						</>
