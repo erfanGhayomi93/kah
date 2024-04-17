@@ -1,7 +1,7 @@
 import { useGetIndividualLegalInfoQuery } from '@/api/queries/dashboardQueries';
+import AppChart from '@/components/common/AppChart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { useMemo } from 'react';
-import Chart from 'react-apexcharts';
 import Suspend from '../../common/Suspend';
 
 interface IndividualAndLegalChartProps {
@@ -50,51 +50,11 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 
 	return (
 		<>
-			<Chart
+			<AppChart
 				options={{
-					chart: {
-						stacked: false,
-						toolbar: {
-							show: false,
-						},
-						zoom: {
-							enabled: false,
-						},
-						animations: {
-							dynamicAnimation: {
-								enabled: true,
-							},
-							animateGradually: {
-								enabled: false,
-							},
-							enabled: true,
-							easing: 'linear',
-							speed: 200,
-						},
-						foreColor: 'rgb(146, 145, 165)',
-					},
-					legend: {
-						show: false,
-					},
 					colors,
 					tooltip: {
-						cssClass: 'apex-tooltip',
-
-						style: {
-							fontFamily: 'IRANSans',
-							fontSize: '12px',
-						},
-
-						x: {
-							show: false,
-						},
-
 						y: {
-							title: {
-								formatter: () => {
-									return '';
-								},
-							},
 							formatter: (val) => {
 								return sepNumbers(String(val ?? 0));
 							},
@@ -102,21 +62,7 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 					},
 					xaxis: {
 						tickAmount: 5,
-						offsetX: 0,
-						offsetY: 0,
-						axisBorder: {
-							show: false,
-						},
-						axisTicks: {
-							show: false,
-						},
 						labels: {
-							rotate: 0,
-							rotateAlways: false,
-							style: {
-								fontFamily: 'IRANSans',
-								fontSize: '12px',
-							},
 							formatter: (v) => {
 								return dateFormatter(v, 'time');
 							},
@@ -125,27 +71,9 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 					yaxis: {
 						tickAmount: 2,
 						labels: {
-							offsetX: -16,
-							offsetY: 1,
-							style: {
-								fontFamily: 'IRANSans',
-								fontSize: '12px',
-							},
 							formatter: (val) => {
 								return numFormatter(val);
 							},
-						},
-					},
-					dataLabels: {
-						enabled: false,
-					},
-					markers: {
-						size: 0,
-						strokeColors: colors,
-						colors: 'rgb(255, 255, 255)',
-						strokeWidth: 2,
-						hover: {
-							size: 4,
 						},
 					},
 					grid: {
@@ -162,16 +90,6 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 								show: true,
 							},
 						},
-						padding: {
-							top: -16,
-							left: -8,
-							bottom: 0,
-							right: 0,
-						},
-					},
-					stroke: {
-						curve: 'smooth',
-						width: 2,
 					},
 				}}
 				series={dataMapper}
