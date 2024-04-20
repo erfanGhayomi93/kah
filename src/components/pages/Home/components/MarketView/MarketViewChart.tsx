@@ -32,7 +32,7 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 	const COLORS: Record<Dashboard.TIndex, string[]> = {
 		Overall: ['rgba(0, 87, 255, 1)'],
 		EqualWeightOverall: ['rgba(137, 118, 255, 1)'],
-		RetailTrades: ['rgba(137, 118, 255, 1)'],
+		RetailTrades: ['rgba(68, 34, 140, 1)'],
 	};
 
 	return (
