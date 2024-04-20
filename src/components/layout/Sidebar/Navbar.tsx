@@ -1,8 +1,8 @@
 import Click from '@/components/common/Click';
 import {
+	AssetSVG,
 	DataAnalyticsSVG,
 	HomeSVG,
-	MoneySVG,
 	ReceptionSVG,
 	ReportSVG,
 	StrategySVG,
@@ -65,7 +65,7 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 				id: 'my_assets',
 				label: t('sidebar.my_assets'),
 				to: '/a',
-				icon: <MoneySVG />,
+				icon: <AssetSVG />,
 			},
 			{
 				id: 'market',

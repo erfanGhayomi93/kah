@@ -3,6 +3,7 @@ import AngleLeft from './angle-left.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import ArrowUpSVG from './arrow-up.svg';
+import AssetSVG from './asset.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalculatorSVG from './calculator.svg';
@@ -90,6 +91,7 @@ export {
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	ArrowUpSVG,
+	AssetSVG,
 	BellSVG,
 	BookmarkSVG,
 	CalculatorSVG,
