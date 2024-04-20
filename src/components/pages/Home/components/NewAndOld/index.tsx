@@ -1,12 +1,9 @@
-import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
 
-const NewAndOldTable = dynamic(() => import('./NewAndOldTable'), {
-	loading: () => <Loading />,
-});
+const NewAndOldTable = dynamic(() => import('./NewAndOldTable'));
 
 const NewAndOld = () => {
 	const t = useTranslations();

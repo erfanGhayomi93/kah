@@ -1,12 +1,9 @@
-import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
 
-const OpenPositionsProcessChart = dynamic(() => import('./OpenPositionsProcessChart'), {
-	loading: () => <Loading />,
-});
+const OpenPositionsProcessChart = dynamic(() => import('./OpenPositionsProcessChart'));
 
 const OpenPositionsProcess = () => {
 	const t = useTranslations();
