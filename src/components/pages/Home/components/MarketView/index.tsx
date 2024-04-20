@@ -52,7 +52,7 @@ const MarketView = () => {
 				],
 			}}
 		>
-			<MarketViewChart interval={defaultTab.top} data={data ?? []} />
+			<MarketViewChart interval={defaultTab.top} type={defaultTab.bottom} data={data ?? []} />
 			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</Section>
 	);

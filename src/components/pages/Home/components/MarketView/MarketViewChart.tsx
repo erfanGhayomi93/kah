@@ -4,10 +4,11 @@ import { useMemo } from 'react';
 
 interface MarketViewChartProps {
 	interval: Dashboard.TInterval;
+	type: Dashboard.TIndex;
 	data: Dashboard.GetIndex.All;
 }
 
-const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
+const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
 		const result = data.map((item) => ({
 			x: interval === 'Today' ? item.time : item.date,
@@ -19,9 +20,16 @@ const MarketViewChart = ({ interval, data }: MarketViewChartProps) => {
 		return result;
 	}, [interval, data]);
 
+	const COLORS: Record<Dashboard.TIndex, string[]> = {
+		Overall: ['rgba(0, 87, 255, 1)'],
+		EqualWeightOverall: ['rgba(137, 118, 255, 1)'],
+		RetailTrades: ['rgba(137, 118, 255, 1)'],
+	};
+
 	return (
 		<AppChart
 			options={{
+				colors: COLORS[type],
 				tooltip: {
 					y: {
 						formatter: (val) => {
