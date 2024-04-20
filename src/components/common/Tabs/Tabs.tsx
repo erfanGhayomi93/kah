@@ -1,5 +1,6 @@
+import { useDebounce } from '@/hooks';
 import { cn } from '@/utils/helpers';
-import { Fragment, cloneElement, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, cloneElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Tabs.module.scss';
 
 export type ITabIem<ID extends string | number, T extends object> = T & {
@@ -28,15 +29,20 @@ const Tabs = <ID extends string | number, T extends object>({
 
 	const indicatorRef = useRef<HTMLDivElement>(null);
 
+	const activeElRef = useRef<HTMLElement | null>(null);
+
 	const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
-	const handleIndicatorSize = (el: HTMLElement | null) => {
+	const { setDebounce } = useDebounce();
+
+	const handleIndicatorSize = () => {
 		const eRoot = rootRef.current;
 		const eIndicator = indicatorRef.current;
-		if (!eIndicator || !eRoot || !el) return;
+		const eActive = activeElRef.current;
+		if (!eIndicator || !eRoot || !eActive) return;
 
 		try {
-			const { left, width } = el.getBoundingClientRect();
+			const { left, width } = eActive.getBoundingClientRect();
 			const { left: rootLeft, width: rootWidth } = eRoot.getBoundingClientRect();
 			const originalLeft = Math.abs(left - rootLeft - 1);
 
@@ -47,16 +53,31 @@ const Tabs = <ID extends string | number, T extends object>({
 		}
 	};
 
+	const onWindowResize = () => {
+		setDebounce(() => handleIndicatorSize(), 300);
+	};
+
 	const render = useMemo(() => data.find((item) => item.id === activeTab)?.render ?? null, [activeTab, data]);
 
 	const onTabChange = useCallback(
 		(el: HTMLElement) => {
-			handleIndicatorSize(el);
+			activeElRef.current = el;
+			handleIndicatorSize();
 		},
 		[indicatorRef.current],
 	);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
+		const controller = new AbortController();
+
+		window.addEventListener('resize', onWindowResize, {
+			signal: controller.signal,
+		});
+
+		return () => controller.abort();
+	}, []);
+
+	useEffect(() => {
 		try {
 			onChange?.(activeTab);
 		} catch (error) {
@@ -64,13 +85,12 @@ const Tabs = <ID extends string | number, T extends object>({
 		}
 	}, [activeTab]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		try {
 			const eRoot = rootRef.current;
 			if (!eRoot) return;
 
-			const eActiveTab = eRoot.querySelector('[data-active="true"]') as HTMLElement | null;
-			document.fonts.ready.then(() => handleIndicatorSize(eActiveTab));
+			document.fonts.ready.then(() => handleIndicatorSize());
 		} catch (e) {
 			//
 		}
