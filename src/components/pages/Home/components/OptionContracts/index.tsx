@@ -1,12 +1,9 @@
-import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
 
-const OptionContractsContainer = dynamic(() => import('./OptionContractsContainer'), {
-	loading: () => <Loading />,
-});
+const OptionContractsContainer = dynamic(() => import('./OptionContractsContainer'));
 
 interface IDefaultActiveTab {
 	top: Dashboard.GetOptionContractAdditionalInfo.Basis;
