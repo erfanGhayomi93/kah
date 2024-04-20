@@ -66,7 +66,7 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable rowData={data.slice(0, 5)} columnDefs={columnDefs} />;
+	return <LightweightTable rowData={data} columnDefs={columnDefs} />;
 };
 
 export default DueDatesTable;

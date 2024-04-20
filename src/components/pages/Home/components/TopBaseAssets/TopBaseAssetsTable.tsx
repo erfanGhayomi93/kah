@@ -48,9 +48,9 @@ const TopBaseAssetsTable = () => {
 				});
 			}
 
-			return result.slice(0, 5);
+			return result;
 		} catch (e) {
-			return result.slice(0, 5);
+			return result;
 		}
 	}, [data]);
 
