@@ -15,18 +15,16 @@ const Plus = () => (
 	</svg>
 );
 
-const Custom = () => {
-	return (
-		<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center'>
-			<button
-				type='button'
-				style={{ width: '12.4rem', height: '12.4rem' }}
-				className='rounded text-gray-800 flex-justify-center'
-			>
-				<Plus />
-			</button>
-		</div>
-	);
-};
+const Custom = () => (
+	<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center'>
+		<button
+			type='button'
+			style={{ width: '12.4rem', height: '12.4rem' }}
+			className='rounded text-gray-800 flex-justify-center'
+		>
+			<Plus />
+		</button>
+	</div>
+);
 
 export default Custom;
