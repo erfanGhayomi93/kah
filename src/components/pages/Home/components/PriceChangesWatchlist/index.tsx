@@ -1,11 +1,8 @@
-import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Section from '../../common/Section';
 
-const PriceChangesWatchlistChart = dynamic(() => import('./PriceChangesWatchlistChart'), {
-	loading: () => <Loading />,
-});
+const PriceChangesWatchlistChart = dynamic(() => import('./PriceChangesWatchlistChart'));
 
 const PriceChangesWatchlist = () => {
 	const t = useTranslations();

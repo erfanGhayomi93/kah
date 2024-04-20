@@ -1,12 +1,9 @@
-import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
 
-const OptionTradesValueChart = dynamic(() => import('./OptionTradesValueChart'), {
-	loading: () => <Loading />,
-});
+const OptionTradesValueChart = dynamic(() => import('./OptionTradesValueChart'));
 
 interface IDefaultActiveTab {
 	top: Dashboard.TInterval;

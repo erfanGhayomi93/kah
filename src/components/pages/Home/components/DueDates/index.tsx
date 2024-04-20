@@ -1,12 +1,9 @@
-import Loading from '@/components/common/Loading';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Section from '../../common/Section';
 
-const DueDatesTable = dynamic(() => import('./DueDatesTable'), {
-	loading: () => <Loading />,
-});
+const DueDatesTable = dynamic(() => import('./DueDatesTable'));
 
 const DueDates = () => {
 	const t = useTranslations();

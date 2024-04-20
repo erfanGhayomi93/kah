@@ -403,12 +403,15 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			) : data.length > 0 ? (
 				<div className='flex h-full gap-12'>
 					<TableWrapper type='put' title={t('home.put_option')} isOption={symbolType === 'Option'}>
-						<LightweightTable rowData={data} columnDefs={getColumnDefinitions('put') as TCol} />
+						<LightweightTable rowData={data.slice(0, 5)} columnDefs={getColumnDefinitions('put') as TCol} />
 					</TableWrapper>
 
 					{symbolType === 'Option' && (
 						<TableWrapper type='call' title={t('home.call_option')} isOption={symbolType === 'Option'}>
-							<LightweightTable rowData={data} columnDefs={getColumnDefinitions('call') as TCol} />
+							<LightweightTable
+								rowData={data.slice(0, 5)}
+								columnDefs={getColumnDefinitions('call') as TCol}
+							/>
 						</TableWrapper>
 					)}
 				</div>
