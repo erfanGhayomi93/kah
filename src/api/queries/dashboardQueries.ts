@@ -29,7 +29,7 @@ export const useGetMarketStateQuery = createQuery<
 });
 
 export const useGetIndexQuery = createQuery<
-	Dashboard.GetIndex.All,
+	Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall,
 	['getIndexQuery', Dashboard.TInterval, Dashboard.TIndex]
 >({
 	staleTime: CACHE_TIME,
@@ -37,10 +37,36 @@ export const useGetIndexQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		const [, chartIntervalType, indexType] = queryKey;
 
-		const response = await axios.get<ServerResponse<Dashboard.GetIndex.All>>(routes.dashboard.GetIndex, {
+		const response = await axios.get<
+			ServerResponse<Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall>
+		>(routes.dashboard.GetIndex, {
 			params: { chartIntervalType, indexType },
 			signal,
 		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useGetRetailTradeValuesQuery = createQuery<
+	Dashboard.GetIndex.RetailTrades,
+	['getRetailTradeValuesQuery', Dashboard.TInterval]
+>({
+	staleTime: CACHE_TIME,
+	queryKey: ['getRetailTradeValuesQuery', 'Today'],
+	queryFn: async ({ signal, queryKey }) => {
+		const [, chartIntervalType] = queryKey;
+
+		const response = await axios.get<ServerResponse<Dashboard.GetIndex.RetailTrades>>(
+			routes.dashboard.GetRetailTradeValues,
+			{
+				params: { chartIntervalType },
+				signal,
+			},
+		);
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

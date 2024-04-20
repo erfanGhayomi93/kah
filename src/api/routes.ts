@@ -28,6 +28,7 @@ const routes = {
 	dashboard: {
 		GetOpenPositionProcess: `${rlcUrl}/Dashboard/v1/GetOpenPositionProcess`,
 		GetIndex: `${rlcUrl}/Dashboard/v1/GetIndex`,
+		GetRetailTradeValues: `${rlcUrl}/Dashboard/v1/GetRetailTradeValues`,
 		GetMarketState: `${rlcUrl}/Dashboard/v1/GetMarketState`,
 		GetOptionTopSymbols: `${rlcUrl}/Dashboard/v1/GetOptionTopSymbols`,
 		GetBaseTopSymbols: `${rlcUrl}/Dashboard/v1/GetBaseTopSymbols`,
