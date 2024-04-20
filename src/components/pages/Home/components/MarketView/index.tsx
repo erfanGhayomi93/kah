@@ -1,9 +1,11 @@
-import { useGetIndexQuery } from '@/api/queries/dashboardQueries';
+import { useGetIndexQuery, useGetRetailTradeValuesQuery } from '@/api/queries/dashboardQueries';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
 import Suspend from '../../common/Suspend';
 import MarketViewChart from './MarketViewChart';
+
+type TIndexData = Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall | Dashboard.GetIndex.RetailTrades;
 
 interface IDefaultActiveTab {
 	top: Dashboard.TInterval;
@@ -25,9 +27,22 @@ const MarketView = () => {
 		}));
 	};
 
-	const { data, isLoading } = useGetIndexQuery({
+	const { data: indexData, isLoading: isLoadingIndex } = useGetIndexQuery({
 		queryKey: ['getIndexQuery', defaultTab.top, defaultTab.bottom],
+		enabled: defaultTab.bottom !== 'RetailTrades',
 	});
+
+	const { data: retailTradesData, isLoading: isLoadingRetailTrades } = useGetRetailTradeValuesQuery({
+		queryKey: ['getRetailTradeValuesQuery', defaultTab.top],
+		enabled: defaultTab.bottom === 'RetailTrades',
+	});
+
+	const [data, isLoading] =
+		defaultTab.bottom === 'RetailTrades'
+			? [retailTradesData ?? {}, isLoadingRetailTrades]
+			: [indexData ?? [], isLoadingIndex];
+
+	const dataIsEmpty = !data ? true : Array.isArray(data) ? data.length === 0 : Object.keys(data).length === 0;
 
 	return (
 		<Section<Dashboard.TInterval, Dashboard.TIndex>
@@ -52,8 +67,8 @@ const MarketView = () => {
 				],
 			}}
 		>
-			<MarketViewChart interval={defaultTab.top} data={data ?? []} />
-			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
+			<MarketViewChart interval={defaultTab.top} type={defaultTab.bottom} data={data as TIndexData} />
+			<Suspend isLoading={isLoading} isEmpty={dataIsEmpty} />
 		</Section>
 	);
 };

@@ -885,8 +885,6 @@ declare namespace Dashboard {
 	}
 
 	export namespace GetIndex {
-		export type All = GetIndex.Overall[] | GetIndex.EqualWeightOverall[];
-
 		export interface Overall {
 			symbolTitle: string;
 			date: string;
@@ -918,6 +916,8 @@ declare namespace Dashboard {
 			totalMinutes: 0;
 			totalSeconds: 0;
 		}
+
+		export type RetailTrades = Record<string, number>;
 	}
 
 	export namespace GetTopSymbols {
