@@ -428,3 +428,15 @@ export const toFixed = (v: number, l = 3, round = true) => {
 
 	return sepNumbers(integer) + '.' + (round ? decimalAsNumber : decimal);
 };
+
+export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boolean) => {
+	const l = arrays2.length;
+	const result: T[] = [];
+
+	for (let i = 0; i < l; i++) {
+		const index = arrays1.findIndex((item) => callback(item, arrays2[i]));
+		if (index === -1) result.push(arrays2[i]);
+	}
+
+	return result;
+};

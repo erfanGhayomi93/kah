@@ -31,9 +31,13 @@ export interface IForgetPasswordModal extends IBaseModalConfiguration {
 	phoneNumber?: string;
 }
 
-export interface IContractSelectorModal extends IBaseModalConfiguration {
+export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	symbolTitle: string;
 	symbolISIN: string;
+	canChangeBaseSymbol: boolean;
+	maxContracts?: number;
+	initialSelectedContracts?: string[];
+	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
 export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
@@ -74,6 +78,10 @@ export interface IWithdrawalModal extends IBaseModalConfiguration {}
 
 export interface IDepositModal extends IBaseModalConfiguration {}
 
+export interface IAnalyzeModal extends IBaseModalConfiguration {
+	contracts?: IOrderBasket[];
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
@@ -89,11 +97,12 @@ export type ModalState = TBaseModalProps<{
 	choiceCollateral: IChoiceCollateral;
 	moveSymbolToWatchlist: IMoveSymbolToWatchlistModal;
 	addSaturnTemplate: IAddSaturnTemplate;
-	symbolContracts: IContractSelectorModal;
+	selectSymbolContracts: ISelectSymbolContractsModal;
 	forgetPassword: IForgetPasswordModal;
 	optionFilters: Partial<IOptionFiltersModal>;
 	manageDashboardLayout: IManageDashboardLayoutModal;
 	changeBroker: IChangeBrokerModal;
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;
+	analyze: IAnalyzeModal;
 }>;

@@ -2,10 +2,13 @@ import ipcMain from '@/classes/IpcMain';
 import Button from '@/components/common/Button';
 import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setChoiceBrokerModal, setConfirmModal, setLoginModal } from '@/features/slices/modalSlice';
-import { getOrderBasket, setBrokerIsSelected, setOrderBasket } from '@/features/slices/userSlice';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setAnalyzeModal, setChoiceBrokerModal, setConfirmModal, setLoginModal } from '@/features/slices/modalSlice';
+import { getIsLoggedIn, getOrderBasket, setBrokerIsSelected, setOrderBasket } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { createOrder } from '@/utils/orders';
+import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -21,8 +24,18 @@ const SelectedContracts = dynamic(() => import('./SelectedContracts'), {
 	),
 });
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		brokerURLs: getBrokerURLs(state),
+	}),
+);
+
 const Basket = () => {
 	const t = useTranslations();
+
+	const { isLoggedIn, brokerURLs } = useAppSelector(getStates);
 
 	const sendingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -43,6 +56,14 @@ const Basket = () => {
 	const close = () => {
 		dispatch(setOrderBasket([]));
 	};
+
+	const analyze = () => {
+		dispatch(setAnalyzeModal({}));
+	};
+
+	const showLoginModal = () => dispatch(setLoginModal({}));
+
+	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
 
 	const onClose = () => {
 		if (basket.length === 1) close();
@@ -98,16 +119,19 @@ const Basket = () => {
 
 	const onSubmit = () => {
 		if (selectedContracts.length === 0) return;
+		else if (!isLoggedIn) showLoginModal();
+		else if (!brokerURLs) showChoiceBrokerModal();
+		else {
+			try {
+				validation();
 
-		try {
-			validation();
+				basketSnapshot.current = JSON.parse(JSON.stringify(basket)) as typeof basket;
 
-			basketSnapshot.current = JSON.parse(JSON.stringify(basket)) as typeof basket;
-
-			setSubmitting(true);
-			sendOrder(0);
-		} catch (e) {
-			//
+				setSubmitting(true);
+				sendOrder(0);
+			} catch (e) {
+				//
+			}
 		}
 	};
 
@@ -235,7 +259,7 @@ const Basket = () => {
 						</div>
 
 						<div className='flex h-40 gap-8 font-medium'>
-							<button disabled className='rounded px-16 btn-primary-outline' type='button'>
+							<button onClick={analyze} className='rounded px-16 btn-primary-outline' type='button'>
 								{t('order_basket.analyze')}
 							</button>
 

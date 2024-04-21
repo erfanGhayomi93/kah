@@ -1,4 +1,7 @@
 import Loading from '@/components/common/Loading';
+import { useAppDispatch } from '@/features/hooks';
+import { setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 
 const Contract = dynamic(() => import('./Contract'), {
@@ -15,10 +18,14 @@ interface SymbolContractsProps {
 
 const SymbolContracts = ({
 	baseSymbol,
-	setBaseSymbol,
 	baseSymbolContracts,
+	setBaseSymbol,
 	setBaseSymbolContracts,
 }: SymbolContractsProps) => {
+	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
 	const onLoadContract = (contract: Symbol.Info) => {
 		try {
 			if (!contract.baseSymbolISIN) return;
@@ -56,12 +63,51 @@ const SymbolContracts = ({
 		}
 	};
 
+	const onContractsAdded = (contracts: Option.Root[]) => {
+		try {
+			let i = 0;
+			const newContracts = baseSymbolContracts.map<Saturn.ContentOption | null>((item) => {
+				if (item !== null) return item;
+
+				const contract = contracts[i];
+				i++;
+
+				return contract
+					? {
+							activeTab: 'price_information',
+							symbolISIN: contract.symbolInfo.symbolISIN,
+							symbolTitle: contract.symbolInfo.symbolTitle,
+						}
+					: null;
+			});
+
+			setBaseSymbolContracts(newContracts);
+		} catch (e) {
+			//
+		}
+	};
+
 	const onClose = (i: number) => {
 		const options = JSON.parse(JSON.stringify(baseSymbolContracts)) as typeof baseSymbolContracts;
 
 		options[i] = null;
 
 		setBaseSymbolContracts(options);
+	};
+
+	const addNewContract = () => {
+		dispatch(
+			setSelectSymbolContractsModal({
+				symbolTitle: baseSymbol.symbolTitle,
+				symbolISIN: baseSymbol.symbolISIN,
+				initialSelectedContracts: baseSymbolContracts
+					.filter((item) => item !== null)
+					.map<string>((item) => item.symbolISIN),
+				canChangeBaseSymbol: false,
+				maxContracts: 4,
+				callback: onContractsAdded,
+			}),
+		);
 	};
 
 	if (baseSymbolContracts.length === 0) return null;
@@ -72,6 +118,7 @@ const SymbolContracts = ({
 			option={option}
 			baseSymbol={baseSymbol}
 			close={() => onClose(index)}
+			addNewContract={addNewContract}
 			onLoadContract={(contract) => onLoadContract(contract)}
 			onChangeContractTab={(tab) => onChangeContractTab(tab, index)}
 		/>

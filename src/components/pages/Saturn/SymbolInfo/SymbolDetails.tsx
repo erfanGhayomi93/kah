@@ -150,7 +150,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					{
 						id: 'avg30',
 						title: t('old_option_chain.avg_volume', { days: 30 }),
-						valueFormatter: oneMonthAvgVolume ?? '−',
+						valueFormatter: sepNumbers(String(oneMonthAvgVolume ?? 0)),
 					},
 					{
 						id: 'lastTradeDate',
@@ -212,7 +212,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 	return (
 		<div className='flex-column'>
-			<div className={cn('gap-40 flex-column', brokerURLs ? 'pb-24' : 'pb-48')}>
+			<div className='gap-40 pb-24 flex-column'>
 				<div className='flex-justify-between'>
 					<div className='flex-column'>
 						<div style={{ gap: '1rem' }} className='flex-items-center'>

@@ -3,14 +3,12 @@
 import axios from '@/api/axios';
 import { symbolInfoQueryFn } from '@/api/queries/symbolQuery';
 import routes from '@/api/routes';
-import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
 import { type RootState } from '@/features/store';
-import { cn } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
@@ -180,11 +178,6 @@ const Layout = ({
 	}, [saturnActiveTemplate]);
 
 	useLayoutEffect(() => {
-		const removeHandler = ipcMain.handle('saturn_contract_added', onContractAdded);
-		return () => removeHandler();
-	}, [JSON.stringify(baseSymbolContracts)]);
-
-	useLayoutEffect(() => {
 		if (!activeTemplate) return;
 		dispatch(setSaturnActiveTemplate(activeTemplate));
 	}, [activeTemplate]);
@@ -203,10 +196,7 @@ const Layout = ({
 				style={{
 					flex: '5',
 				}}
-				className={cn(
-					'relative size-full flex-1 rounded bg-white px-16 pb-16 pt-8 flex-column',
-					brokerURLs ? 'gap-24' : 'gap-36',
-				)}
+				className='relative size-full flex-1 gap-24 overflow-y-auto overflow-x-hidden rounded bg-white px-16 pb-16 pt-8 flex-column'
 			>
 				<SymbolInfo
 					symbol={baseSymbolInfo}

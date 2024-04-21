@@ -1,15 +1,12 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setChoiceBrokerModal, setLoginModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { getIsLoggedIn, getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
+import { getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { useTradingFeatures } from '@/hooks';
 import { sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
-import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
@@ -25,21 +22,12 @@ interface OptionTableProps {
 	baseSymbolISIN: string;
 }
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isLoggedIn: getIsLoggedIn(state),
-		orderBasket: getOrderBasket(state),
-		brokerURLs: getBrokerURLs(state),
-	}),
-);
-
 const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, brokerURLs, orderBasket } = useAppSelector(getStates);
+	const orderBasket = useAppSelector(getOrderBasket);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
@@ -69,55 +57,42 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		}
 	};
 
-	const showLoginModal = () => dispatch(setLoginModal({}));
-
-	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
-
 	const addSymbolToBasket = (data: Option.Root, side: TBsSides) => {
-		if (!isLoggedIn) showLoginModal();
-		else if (!brokerURLs) showChoiceBrokerModal();
-		else {
-			const i = orderBasket.findIndex((item) =>
-				item.symbolISIN ? item.symbolISIN === data.symbolInfo.symbolISIN : false,
-			);
+		const i = orderBasket.findIndex((item) =>
+			item.symbolISIN ? item.symbolISIN === data.symbolInfo.symbolISIN : false,
+		);
 
-			if (i === -1) {
-				dispatch(
-					setOrderBasket([
-						...orderBasket,
-						{
-							id: uuidv4(),
-							symbolISIN: data.symbolInfo.symbolISIN,
-							baseSymbolISIN: data.symbolInfo.baseSymbolISIN,
-							price: data.optionWatchlistData.bestBuyPrice || 1,
-							quantity: data.optionWatchlistData.openPositionCount || 1,
-							settlementDay: data.symbolInfo.contractEndDate,
-							type: data.symbolInfo.optionType === 'Call' ? 'call' : 'put',
-							side,
-							strikePrice: data.symbolInfo.strikePrice,
-						},
-					]),
-				);
-			}
+		if (i === -1) {
+			dispatch(
+				setOrderBasket([
+					...orderBasket,
+					{
+						id: uuidv4(),
+						symbolISIN: data.symbolInfo.symbolISIN,
+						baseSymbolISIN: data.symbolInfo.baseSymbolISIN,
+						price: data.optionWatchlistData.bestBuyPrice || 1,
+						quantity: data.optionWatchlistData.openPositionCount || 1,
+						settlementDay: data.symbolInfo.contractEndDate,
+						type: data.symbolInfo.optionType === 'Call' ? 'call' : 'put',
+						side,
+						strikePrice: data.symbolInfo.strikePrice,
+					},
+				]),
+			);
 		}
 	};
 
 	const addSymbolToWatchlist = (data: Option.Root) => {
-		if (!isLoggedIn) showLoginModal();
-		else if (!brokerURLs) showChoiceBrokerModal();
-		else {
-			dispatch(
-				setMoveSymbolToWatchlistModal({
-					symbolISIN: data.symbolInfo.symbolISIN,
-					symbolTitle: data.symbolInfo.symbolTitle,
-				}),
-			);
-		}
+		dispatch(
+			setMoveSymbolToWatchlistModal({
+				symbolISIN: data.symbolInfo.symbolISIN,
+				symbolTitle: data.symbolInfo.symbolTitle,
+			}),
+		);
 	};
 
 	const addAlert = (data: Option.Root) => {
-		if (!isLoggedIn) showLoginModal();
-		else if (!brokerURLs) showChoiceBrokerModal();
+		//
 	};
 
 	const goToTechnicalChart = (data: Option.Root) => {

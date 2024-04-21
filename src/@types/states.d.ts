@@ -85,7 +85,8 @@ declare interface IBaseModalConfiguration {
 
 declare interface SymbolContractModalStates {
 	term: string;
-	contract: null | Option.Root;
+	sendBaseSymbol: boolean;
+	contracts: Option.Root[];
 	contractType: Record<'id' | 'title', string>;
 	activeSettlement: Option.BaseSettlementDays | null;
 }

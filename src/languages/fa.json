@@ -140,13 +140,16 @@
 		"call_option": "اختیار خرید",
 		"put_option": "اختیار فروش"
 	},
-	"symbol_contracts_modal": {
-		"title": "انتخاب قرارداد {symbolTitle}",
-		"contract_search_placeholder": "جستجوی قرارداد",
-		"search_contract": "نوع قرارداد",
-		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}",
-		"end_date": "سررسیدهای",
-		"select_contract_from_list": "از لیست سمت راست یک سررسید انتخاب کنید!"
+	"iotm": {
+		"atm": "در قیمت",
+		"itm": "در سوئ",
+		"otm": "در زیان"
+	},
+	"select_symbol_contracts_modal": {
+		"title": "انتخاب قرارداد",
+		"first_select_a_contract_end_date": "ابتدا از لیست بالا یک سررسید انتخاب نمایید.",
+		"base_symbol": "نماد پایه",
+		"add": "افزودن"
 	},
 	"add_new_option_watchlist_modal": {
 		"title": "افزودن دیده‌بان",
@@ -655,6 +658,11 @@
 	"deposit_modal": {
 		"title": "واریز وجه"
 	},
+	"analyze_modal": {
+		"title": "آنالیز",
+		"no_trade_found": "هیچ معامله‌ای وجود ندارد",
+		"make_your_own_strategy": "استراتژی دلخواه خود را بسازید"
+	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
 		"next_page": "صفحه بعد",
@@ -813,6 +821,7 @@
 		"null": "تعریف نشده"
 	},
 	"alerts": {
+		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
 		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
 		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",
 		"orders_sent_successfully": "تمام سفارش‌ها با موفقیت ارسال شدند.",

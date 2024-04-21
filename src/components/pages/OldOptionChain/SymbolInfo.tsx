@@ -140,7 +140,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 					{
 						id: 'avg30',
 						title: t('old_option_chain.avg_volume', { days: 30 }),
-						valueFormatter: oneMonthAvgVolume ?? '−',
+						valueFormatter: sepNumbers(String(oneMonthAvgVolume ?? 0)),
 					},
 					{
 						id: 'lastTradeDate',
