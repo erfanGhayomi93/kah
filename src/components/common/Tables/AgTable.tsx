@@ -23,6 +23,7 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 				rowModelType: 'clientSide',
 				suppressColumnVirtualisation: true,
 				suppressCellFocus: true,
+				enableCellTextSelection: true,
 				suppressAnimationFrame: true,
 				suppressScrollOnNewData: true,
 				suppressLoadingOverlay: true,

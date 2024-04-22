@@ -1,4 +1,6 @@
 import { useGetBrokersQuery } from '@/api/queries/brokerQueries';
+import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setChoiceBrokerModal } from '@/features/slices/modalSlice';
@@ -66,8 +68,10 @@ const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) 
 				</div>
 
 				<div className='relative flex-1 gap-16 flex-justify-center'>
-					{isFetching || !Array.isArray(brokersData) ? (
-						<div className='absolute size-48 center spinner' />
+					{isFetching ? (
+						<Loading />
+					) : !brokersData?.length ? (
+						<NoData />
 					) : (
 						brokersData.map((broker) => (
 							<Broker key={broker.brokerCode} {...broker} onSelect={() => onSelectBroker(broker)} />

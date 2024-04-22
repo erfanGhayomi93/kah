@@ -226,6 +226,16 @@ const config: Config = {
 					'align-items': 'center',
 				},
 
+				'.flex-items-start': {
+					display: 'flex',
+					'align-items': 'start',
+				},
+
+				'.flex-items-end': {
+					display: 'flex',
+					'align-items': 'end',
+				},
+
 				'.fit-image': {
 					'background-repeat': 'no-repeat',
 					'background-size': 'cover',

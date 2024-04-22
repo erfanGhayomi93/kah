@@ -93,7 +93,7 @@ const Container = ({ close }: ContainerProps) => {
 				</div>
 			</div>
 
-			<div className='relative h-full gap-16 overflow-hidden px-32 flex-column'>
+			<div className='relative h-full gap-16 overflow-auto px-32 flex-column'>
 				{resetting && <Loading />}
 
 				{Object.keys(categories).map((category, categoryIndex) => (
@@ -117,7 +117,7 @@ const Container = ({ close }: ContainerProps) => {
 									key={column.id}
 									className={cn(
 										column.isHidden
-											? 'hover:btn-hover bg-white text-gray-900 shadow-sm hover:shadow-none'
+											? 'bg-white text-gray-900 shadow-sm hover:shadow-none hover:btn-hover'
 											: 'bg-primary-400 text-white hover:bg-primary-300',
 									)}
 								>

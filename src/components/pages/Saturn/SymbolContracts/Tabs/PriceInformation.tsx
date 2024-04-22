@@ -71,7 +71,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'avg30',
 						title: t('old_option_chain.avg_volume_month'),
-						valueFormatter: oneMonthAvgVolume ?? '−',
+						valueFormatter: sepNumbers(String(oneMonthAvgVolume ?? 0)),
 					},
 				],
 

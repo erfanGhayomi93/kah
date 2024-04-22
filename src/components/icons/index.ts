@@ -35,6 +35,7 @@ import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import HomeSVG from './home.svg';
+import InfoCircleOutlineSVG from './info-circle-outline.svg';
 import InfoCircleSVG from './info-circle.svg';
 import InfoSVG from './info.svg';
 import LockSVG from './lock.svg';
@@ -123,6 +124,7 @@ export {
 	GrowDownSVG,
 	GrowUpSVG,
 	HomeSVG,
+	InfoCircleOutlineSVG,
 	InfoCircleSVG,
 	InfoSVG,
 	LockSVG,

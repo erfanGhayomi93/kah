@@ -8,6 +8,12 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
 
+interface SettlementItemProps {
+	settlementDay: Option.BaseSettlementDays;
+	activeSettlementDay: Option.BaseSettlementDays | null;
+	setSettlementDay: (item: Option.BaseSettlementDays) => void;
+}
+
 interface ToolbarProps {
 	inputs: OptionChainFilters;
 	setInputValue: <T extends keyof OptionChainFilters>(name: T, value: OptionChainFilters[T]) => void;
@@ -22,13 +28,6 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 		queryKey: ['baseSettlementDaysQuery', inputs.baseSymbol?.symbolISIN ?? null],
 		enabled: Boolean(inputs.baseSymbol),
 	});
-
-	const dateFormatter = (v: string) => {
-		const d = dayjs(v).calendar('jalali');
-		if (!d.isValid()) return '−';
-
-		return d.locale('fa').format('DD MMMM');
-	};
 
 	const openSymbolInfo = () => {
 		if (inputs.baseSymbol) dispatch(setSymbolInfoPanel(inputs.baseSymbol.symbolISIN));
@@ -65,20 +64,12 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 					) : (
 						<ul className='flex gap-8 overflow-auto'>
 							{settlementDays?.map((item, i) => (
-								<li key={i}>
-									<button
-										onClick={() => setInputValue('settlementDay', item)}
-										type='button'
-										className={clsx(
-											'h-40 w-88 rounded !border transition-colors',
-											inputs.settlementDay?.contractEndDate === item.contractEndDate
-												? 'no-hover font-medium btn-select'
-												: 'border-gray-500 text-gray-900 hover:btn-hover',
-										)}
-									>
-										{dateFormatter(item.contractEndDate)}
-									</button>
-								</li>
+								<SettlementItem
+									key={i}
+									activeSettlementDay={inputs.settlementDay}
+									settlementDay={item}
+									setSettlementDay={(v) => setInputValue('settlementDay', v)}
+								/>
 							))}
 						</ul>
 					)}
@@ -102,6 +93,32 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 				</div>
 			)}
 		</div>
+	);
+};
+
+export const SettlementItem = ({ activeSettlementDay, settlementDay, setSettlementDay }: SettlementItemProps) => {
+	const dateFormatter = (v: string) => {
+		const d = dayjs(v).calendar('jalali');
+		if (!d.isValid()) return '−';
+
+		return d.locale('fa').format('DD MMMM');
+	};
+
+	return (
+		<li>
+			<button
+				onClick={() => setSettlementDay(settlementDay)}
+				type='button'
+				className={clsx(
+					'h-40 w-88 rounded !border transition-colors',
+					settlementDay?.contractEndDate === activeSettlementDay?.contractEndDate
+						? 'no-hover font-medium btn-select'
+						: 'border-gray-500 text-gray-900 hover:btn-hover',
+				)}
+			>
+				{dateFormatter(settlementDay.contractEndDate)}
+			</button>
+		</li>
 	);
 };
 
