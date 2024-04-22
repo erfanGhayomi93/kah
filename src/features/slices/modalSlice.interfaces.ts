@@ -1,11 +1,18 @@
-import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
-
 type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IBaseModalConfiguration);
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
 export interface IBlackScholes extends IBaseModalConfiguration {
 	symbolISIN?: string;
+}
+
+export interface IOptionFiltersModal extends IBaseModalConfiguration {
+	initialSymbols?: Option.BaseSearch[];
+	initialType?: Array<'Call' | 'Put'>;
+	initialStatus?: Array<'ITM' | 'OTM' | 'ATM'>;
+	initialDueDays?: [number, number];
+	initialDelta?: [number, number];
+	initialMinimumTradesValue?: string;
 }
 
 export interface IBuySellModal extends IBaseModalConfiguration {
@@ -105,7 +112,7 @@ export type ModalState = TBaseModalProps<{
 	addSaturnTemplate: IAddSaturnTemplate;
 	selectSymbolContracts: ISelectSymbolContractsModal;
 	forgetPassword: IForgetPasswordModal;
-	optionFilters: Partial<IOptionFiltersModal>;
+	optionFilters: IOptionFiltersModal;
 	manageDashboardLayout: IManageDashboardLayoutModal;
 	changeBroker: IChangeBrokerModal;
 	withdrawal: IWithdrawalModal;

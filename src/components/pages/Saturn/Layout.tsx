@@ -6,10 +6,7 @@ import routes from '@/api/routes';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
-import { type RootState } from '@/features/store';
-import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -24,14 +21,6 @@ const SymbolInfo = dynamic(() => import('./SymbolInfo'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
-
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		saturnActiveTemplate: getSaturnActiveTemplate(state),
-		brokerURLs: getBrokerURLs(state),
-	}),
-);
 
 interface LayoutProps {
 	selectedSymbol: string;
@@ -60,29 +49,7 @@ const Layout = ({
 
 	const searchParams = useSearchParams();
 
-	const { saturnActiveTemplate, brokerURLs } = useAppSelector(getStates);
-
-	const onContractAdded = (data: Array<{ symbolISIN: string; symbolTitle: string; activeTab: Saturn.OptionTab }>) => {
-		try {
-			const contracts = [...baseSymbolContracts];
-
-			for (let i = 0; i < data.length; i++) {
-				const { symbolISIN, symbolTitle, activeTab } = data[i];
-				const nullableContractIndex = contracts.findIndex((c) => c === null);
-
-				const option: Saturn.ContentOption = {
-					symbolISIN,
-					symbolTitle,
-					activeTab: activeTab ?? 'price_information',
-				};
-				if (nullableContractIndex >= 0) contracts[nullableContractIndex] = option;
-				else contracts[0] = option;
-			}
-			onChangeBaseSymbolContracts(contracts);
-		} catch (e) {
-			//
-		}
-	};
+	const saturnActiveTemplate = useAppSelector(getSaturnActiveTemplate);
 
 	const updateTemplate = async () => {
 		if (!baseSymbolInfo || !saturnActiveTemplate) return;

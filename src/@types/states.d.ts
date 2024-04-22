@@ -1,3 +1,24 @@
+declare interface INextProps {}
+
+declare interface IOFields {
+	symbolISIN: string;
+	quantity: number;
+	price: number;
+	orderSide: 'buy' | 'sell';
+	validity: TBsValidityDates;
+	validityDate: number;
+}
+
+declare interface IOFieldsWithID {
+	id: number;
+	symbolISIN: string;
+	quantity: number;
+	price: number;
+	orderSide: 'buy' | 'sell';
+	validity: TBsValidityDates;
+	validityDate: number;
+}
+
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
 declare type TOptionSides = 'put' | 'call';
@@ -27,6 +48,54 @@ declare type TSymbolInfoPanelSections =
 	| 'chart'
 	| 'same_sector_symbols'
 	| 'supervisor_messages';
+
+declare type OptionWatchlistColumns =
+	| 'symbolTitle'
+	| 'tradeValue'
+	| 'premium'
+	| 'delta'
+	| 'baseSymbolPrice'
+	| 'breakEvenPoint'
+	| 'leverage'
+	| 'openPositionCount'
+	| 'impliedVolatility'
+	| 'iotm'
+	| 'blackScholes'
+	| 'tradeVolume'
+	| 'dueDays'
+	| 'strikePrice'
+	| 'bestBuyPrice'
+	| 'bestSellPrice'
+	| 'symbolFullTitle'
+	| 'baseSymbolTitle'
+	| 'closingPrice'
+	| 'historicalVolatility'
+	| 'contractSize'
+	| 'timeValue'
+	| 'theta'
+	| 'tradeCount'
+	| 'contractEndDate'
+	| 'spread'
+	| 'blackScholesDifference'
+	| 'baseClosingPrice'
+	| 'gamma'
+	| 'optionType'
+	| 'requiredMargin'
+	| 'initialMargin'
+	| 'rho'
+	| 'vega'
+	| 'growth'
+	| 'contractValueType'
+	| 'highOpenPosition'
+	| 'lastTradeDate'
+	| 'legalBuyVolume'
+	| 'individualBuyVolume'
+	| 'legalSellVolume'
+	| 'individualSellVolume'
+	| 'sectorName'
+	| 'notionalValue'
+	| 'intrinsicValue'
+	| 'action';
 
 declare type TDashboardSections =
 	| 'market_view'

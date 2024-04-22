@@ -235,7 +235,7 @@ const Basket = () => {
 
 	useEffect(() => {
 		const lastItem = basketOrders[basketOrders.length - 1];
-		if (!lastItem || lastItem.symbol.symbolISIN === null) return;
+		if (!lastItem) return;
 
 		if (selectedContracts.findIndex((item) => item.id === lastItem.id) > -1) return;
 

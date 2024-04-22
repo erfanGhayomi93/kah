@@ -3,8 +3,6 @@ import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/Sy
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
-import { useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
@@ -22,8 +20,6 @@ interface SymbolDetailsProps {
 
 const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
-
-	const brokerURLs = useAppSelector(getBrokerURLs);
 
 	const symbolSnapshot = usePrevious(symbol);
 

@@ -36,7 +36,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
 			this.eGui.appendChild(this.eTitle);
 			this.eGui.appendChild(this.eCheckbox);
 		} catch (e) {
-			console.log(e);
+			//
 		}
 	}
 
