@@ -1,8 +1,8 @@
-import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
 import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionFiltersModal } from '@/features/slices/modalSlice';
+import { type IOptionFiltersModal } from '@/features/slices/modalSlice.interfaces';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useDebounce } from '@/hooks';
 import { downloadFile } from '@/utils/helpers';

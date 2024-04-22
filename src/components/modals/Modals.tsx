@@ -18,6 +18,7 @@ import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
+import Analyze from './Analyze';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import ModalLoading from './ModalLoading';
@@ -45,7 +46,7 @@ const ManageOptionWatchlistList = lazy(() => import('./ManageOptionWatchlistList
 
 const OptionWatchlistFiltersModal = lazy(() => import('./OptionWatchlistFiltersModal'));
 
-const SymbolContracts = lazy(() => import('./SymbolContracts'));
+const SymbolContracts = lazy(() => import('./SelectSymbolContracts'));
 
 const OrderDetails = lazy(() => import('./OrderDetails'));
 
@@ -67,7 +68,7 @@ const Modals = () => {
 		logout,
 		optionFilters,
 		forgetPassword,
-		symbolContracts,
+		selectSymbolContracts,
 		addSaturnTemplate,
 		addNewOptionWatchlist,
 		manageOptionWatchlistList,
@@ -84,6 +85,7 @@ const Modals = () => {
 		deposit,
 		manageDashboardLayout,
 		withdrawal,
+		analyze,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -100,6 +102,14 @@ const Modals = () => {
 				{logout && (
 					<ModalSuspense>
 						<LogoutModal {...logout} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{analyze && (
+					<ModalSuspense>
+						<Analyze {...analyze} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -137,9 +147,9 @@ const Modals = () => {
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
-				{symbolContracts && (
+				{selectSymbolContracts && (
 					<ModalSuspense>
-						<SymbolContracts {...symbolContracts} />
+						<SymbolContracts {...selectSymbolContracts} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

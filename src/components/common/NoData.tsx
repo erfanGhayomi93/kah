@@ -1,7 +1,12 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
-const NoData = () => {
+interface NoDataProps {
+	imgSrc?: string;
+	text?: string;
+}
+
+const NoData = ({ text, imgSrc }: NoDataProps) => {
 	const t = useTranslations();
 
 	return (
@@ -13,9 +18,9 @@ const NoData = () => {
 					height='118'
 					quality='100'
 					alt='no data'
-					src='/static/images/search-file.png'
+					src={imgSrc ?? '/static/images/search-file.png'}
 				/>
-				<span className='text-base text-gray-900'>{t('common.no_data')}</span>
+				<span className='text-base text-gray-900'>{text ?? t('common.no_data')}</span>
 			</div>
 		</div>
 	);

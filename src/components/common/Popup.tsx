@@ -44,7 +44,7 @@ const Popup = ({
 	defaultPopupWidth,
 	className,
 	disabled,
-	margin,
+	margin = { x: 0, y: 2 },
 	zIndex,
 }: PopupProps) => {
 	const childRef = useRef<HTMLElement>(null);

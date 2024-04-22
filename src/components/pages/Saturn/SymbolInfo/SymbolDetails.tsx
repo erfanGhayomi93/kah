@@ -3,8 +3,6 @@ import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/Sy
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
-import { useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
@@ -22,8 +20,6 @@ interface SymbolDetailsProps {
 
 const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
-
-	const brokerURLs = useAppSelector(getBrokerURLs);
 
 	const symbolSnapshot = usePrevious(symbol);
 
@@ -150,7 +146,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					{
 						id: 'avg30',
 						title: t('old_option_chain.avg_volume', { days: 30 }),
-						valueFormatter: oneMonthAvgVolume ?? '−',
+						valueFormatter: sepNumbers(String(oneMonthAvgVolume ?? 0)),
 					},
 					{
 						id: 'lastTradeDate',
@@ -212,7 +208,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 	return (
 		<div className='flex-column'>
-			<div className={cn('gap-40 flex-column', brokerURLs ? 'pb-24' : 'pb-48')}>
+			<div className='gap-40 pb-24 flex-column'>
 				<div className='flex-justify-between'>
 					<div className='flex-column'>
 						<div style={{ gap: '1rem' }} className='flex-items-center'>

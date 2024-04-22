@@ -54,7 +54,7 @@ const initialState: ModalState = {
 	addSaturnTemplate: null,
 
 	// قراردادهای نماد
-	symbolContracts: null,
+	selectSymbolContracts: null,
 
 	// چیدمان صفحه اصلی
 	manageDashboardLayout: null,
@@ -67,6 +67,9 @@ const initialState: ModalState = {
 
 	// برداشت وجه
 	withdrawal: null,
+
+	// آنالیز
+	analyze: null,
 };
 
 const modalSlice = createSlice({
@@ -113,8 +116,22 @@ const modalSlice = createSlice({
 			state.logout = payload;
 		},
 
-		setSymbolContractsModal: (state, { payload }: PayloadAction<ModalState['symbolContracts']>) => {
-			state.symbolContracts = payload;
+		setSelectSymbolContractsModal: (state, { payload }: PayloadAction<ModalState['selectSymbolContracts']>) => {
+			state.selectSymbolContracts = payload;
+		},
+
+		updateSelectSymbolContractsModal: (
+			state,
+			{ payload }: PayloadAction<Partial<ModalState['selectSymbolContracts']>>,
+		) => {
+			const prev = {
+				...state.selectSymbolContracts,
+				...payload,
+			};
+
+			if (state.selectSymbolContracts !== null) {
+				state.selectSymbolContracts = prev as ModalState['selectSymbolContracts'];
+			}
 		},
 
 		setAddSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
@@ -159,6 +176,10 @@ const modalSlice = createSlice({
 		setDepositModal: (state, { payload }: PayloadAction<ModalState['deposit']>) => {
 			state.deposit = payload;
 		},
+
+		setAnalyzeModal: (state, { payload }: PayloadAction<ModalState['analyze']>) => {
+			state.analyze = payload;
+		},
 	},
 });
 
@@ -172,7 +193,7 @@ export const {
 	setBlackScholesModal,
 	setConfirmModal,
 	setSymbolInfoPanelSetting,
-	setSymbolContractsModal,
+	setSelectSymbolContractsModal,
 	setAddSaturnTemplate,
 	setAddNewOptionWatchlist,
 	setChoiceBrokerModal,
@@ -184,9 +205,11 @@ export const {
 	setChangeBrokerModal,
 	setWithdrawalModal,
 	setDepositModal,
+	setAnalyzeModal,
+	updateSelectSymbolContractsModal,
 } = modalSlice.actions;
 
-export const getChoiceBroker = (state: RootState) => state.modal.choiceBroker;
+export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
 export const getChoiceCollateral = (state: RootState) => state.modal.choiceCollateral;
 export const getLoginModal = (state: RootState) => state.modal.loginModal;
 export const getMoveSymbolToWatchlistModal = (state: RootState) => state.modal.moveSymbolToWatchlist;
@@ -196,11 +219,12 @@ export const getConfirmModal = (state: RootState) => state.modal.confirm;
 export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
-export const getSymbolContractsModal = (state: RootState) => state.modal.symbolContracts;
-export const getAddSaturnTemplate = (state: RootState) => state.modal.addSaturnTemplate;
-export const getAddNewOptionWatchlist = (state: RootState) => state.modal.addNewOptionWatchlist;
-export const getOrderDetails = (state: RootState) => state.modal.orderDetails;
-export const getManageOptionWatchlistList = (state: RootState) => state.modal.manageOptionWatchlistList;
-export const getAddSymbolToWatchlist = (state: RootState) => state.modal.addSymbolToWatchlist;
+export const getSelectSymbolContractsModal = (state: RootState) => state.modal.selectSymbolContracts;
+export const getAddSaturnTemplateModal = (state: RootState) => state.modal.addSaturnTemplate;
+export const getAddNewOptionWatchlistModal = (state: RootState) => state.modal.addNewOptionWatchlist;
+export const getOrderDetailsModal = (state: RootState) => state.modal.orderDetails;
+export const getManageOptionWatchlistListModal = (state: RootState) => state.modal.manageOptionWatchlistList;
+export const getAddSymbolToWatchlistModal = (state: RootState) => state.modal.addSymbolToWatchlist;
+export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 
 export default modalSlice.reducer;

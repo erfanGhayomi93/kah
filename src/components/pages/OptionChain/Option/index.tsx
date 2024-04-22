@@ -15,19 +15,19 @@ const OptionTable = dynamic(() => import('./OptionTable'), {
 
 interface OptionProps {
 	settlementDay: null | Option.BaseSettlementDays;
-	baseSymbolISIN: null | string;
+	baseSymbol: null | Option.BaseSearch;
 }
 
-const Option = ({ settlementDay, baseSymbolISIN }: OptionProps) => {
+const Option = ({ settlementDay, baseSymbol }: OptionProps) => {
 	const t = useTranslations();
 
 	return (
 		<div className='flex-1 gap-8 rounded flex-column'>
-			{settlementDay && baseSymbolISIN ? (
+			{settlementDay && baseSymbol ? (
 				<>
 					<OptionInfo settlementDay={settlementDay} />
 					<div className='relative flex-1 overflow-hidden rounded bg-white flex-column'>
-						<OptionTable settlementDay={settlementDay} baseSymbolISIN={baseSymbolISIN} />
+						<OptionTable settlementDay={settlementDay} baseSymbol={baseSymbol} />
 					</div>
 				</>
 			) : (
