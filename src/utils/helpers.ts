@@ -440,3 +440,18 @@ export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boo
 
 	return result;
 };
+
+export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): OrderBasket.Order => ({
+	id: uuidv4(),
+	symbol: {
+		symbolISIN: symbol.symbolInfo.symbolISIN,
+		symbolTitle: symbol.symbolInfo.symbolTitle,
+	},
+	contractSize: symbol.symbolInfo.contractSize,
+	price: symbol.optionWatchlistData.bestBuyPrice || 1,
+	quantity: symbol.optionWatchlistData.openPositionCount || 1,
+	settlementDay: symbol.symbolInfo.contractEndDate,
+	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
+	strikePrice: symbol.symbolInfo.strikePrice,
+	side,
+});

@@ -27,10 +27,7 @@ const Div = styled.div`
 `;
 
 const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
-	(
-		{ symbolISIN, symbolTitle, initialSelectedContracts, canChangeBaseSymbol, maxContracts, callback, ...props },
-		ref,
-	) => {
+	({ symbol, initialSelectedContracts, canChangeBaseSymbol, maxContracts, callback, ...props }, ref) => {
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
@@ -42,7 +39,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 			},
 			contracts: [],
 			activeSettlement: null,
-			sendBaseSymbol: false,
+			sendBaseSymbol: true,
 			term: '',
 		});
 
@@ -68,7 +65,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		};
 
 		const onSubmit = () => {
-			callback(states.contracts, states.sendBaseSymbol ? symbolISIN : null);
+			callback(states.contracts, states.sendBaseSymbol && symbol ? symbol.symbolISIN : null);
 			onCloseModal();
 		};
 
@@ -88,7 +85,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							canChangeBaseSymbol={canChangeBaseSymbol ?? true}
 							settlementDay={states.activeSettlement}
 							setSettlementDay={(v) => setStatesValue('activeSettlement', v)}
-							symbolISIN={symbolISIN}
+							symbol={symbol}
 						/>
 
 						<ContractsTable
@@ -96,11 +93,11 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							contracts={states.contracts}
 							setContracts={(v) => setStatesValue('contracts', v)}
 							settlementDay={states.activeSettlement}
-							symbolISIN={symbolISIN}
+							symbolISIN={symbol?.symbolISIN}
 							maxContracts={maxContracts}
 						/>
 
-						{canChangeBaseSymbol && (
+						{canChangeBaseSymbol && symbol && (
 							<div
 								style={{ flex: '0 0 4rem' }}
 								className='rounded bg-white px-8 shadow-card flex-items-center'
@@ -109,7 +106,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 									label={
 										<>
 											{t('select_symbol_contracts_modal.base_symbol')}:
-											<span className='pr-4 font-medium'>{symbolTitle}</span>
+											<span className='pr-4 font-medium'>{symbol?.symbolTitle ?? '−'}</span>
 										</>
 									}
 									checked={states.sendBaseSymbol}

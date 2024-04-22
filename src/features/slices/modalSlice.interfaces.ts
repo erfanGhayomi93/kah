@@ -32,11 +32,13 @@ export interface IForgetPasswordModal extends IBaseModalConfiguration {
 }
 
 export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
-	symbolTitle: string;
-	symbolISIN: string;
+	symbol: null | {
+		symbolTitle: string;
+		symbolISIN: string;
+	};
 	canChangeBaseSymbol: boolean;
-	maxContracts?: number;
-	initialSelectedContracts?: string[];
+	maxContracts: null | number;
+	initialSelectedContracts: string[];
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
@@ -79,7 +81,11 @@ export interface IWithdrawalModal extends IBaseModalConfiguration {}
 export interface IDepositModal extends IBaseModalConfiguration {}
 
 export interface IAnalyzeModal extends IBaseModalConfiguration {
-	contracts?: IOrderBasket[];
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+	};
+	contracts: OrderBasket.Order[];
 }
 
 export type ModalState = TBaseModalProps<{

@@ -183,14 +183,39 @@ declare interface OptionChainFilters {
 	settlementDay: Option.BaseSettlementDays | null;
 }
 
-declare interface IOrderBasket {
+declare namespace OrderBasket {
+	export interface Root {
+		baseSymbol: {
+			symbolISIN: string;
+			symbolTitle: string;
+		};
+
+		orders: OrderBasket.Order[];
+	}
+	export interface Order extends ISymbolStrategyContract {}
+}
+
+declare interface ISymbolStrategyContract {
 	id: string;
-	baseSymbolISIN: string;
-	symbolISIN: null | string;
-	side: TBsSides;
-	type: TOptionSides;
-	settlementDay: null | string;
-	strikePrice: number;
-	price: number;
 	quantity: number;
+	price: number;
+	strikePrice: number;
+	contractSize: number;
+	settlementDay: Date | number | string;
+	type: TOptionSides;
+	side: TBsSides;
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+	};
+	commission?: {
+		value: number;
+		checked: boolean;
+		onChecked: (checked: boolean) => void;
+	};
+	requiredMargin?: {
+		value: number;
+		checked: boolean;
+		onChecked: (checked: boolean) => void;
+	};
 }

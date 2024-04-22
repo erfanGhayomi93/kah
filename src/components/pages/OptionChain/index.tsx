@@ -21,7 +21,7 @@ const OptionChain = () => {
 	return (
 		<Main className='gap-8 !px-8'>
 			<Toolbar inputs={inputs} setInputValue={setInputValue} />
-			<Option settlementDay={inputs.settlementDay} baseSymbolISIN={inputs.baseSymbol?.symbolISIN ?? null} />
+			<Option settlementDay={inputs.settlementDay} baseSymbol={inputs.baseSymbol ?? null} />
 		</Main>
 	);
 };

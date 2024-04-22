@@ -5,7 +5,7 @@ import { setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { useTradingFeatures } from '@/hooks';
-import { sepNumbers, uuidv4 } from '@/utils/helpers';
+import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -19,15 +19,15 @@ export interface ITableData {
 
 interface OptionTableProps {
 	settlementDay: Option.BaseSettlementDays;
-	baseSymbolISIN: string;
+	baseSymbol: Option.BaseSearch;
 }
 
-const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
+const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const orderBasket = useAppSelector(getOrderBasket);
+	const basket = useAppSelector(getOrderBasket);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
@@ -38,7 +38,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	const { data: watchlistData } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
-			{ baseSymbolISIN, settlementDate: settlementDay?.contractEndDate },
+			{ baseSymbolISIN: baseSymbol.symbolISIN, settlementDate: settlementDay?.contractEndDate },
 		],
 	});
 
@@ -58,26 +58,20 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 	};
 
 	const addSymbolToBasket = (data: Option.Root, side: TBsSides) => {
-		const i = orderBasket.findIndex((item) =>
-			item.symbolISIN ? item.symbolISIN === data.symbolInfo.symbolISIN : false,
-		);
+		const basketOrders = basket?.orders ?? [];
+		const i = basketOrders.findIndex((item) => item.symbol.symbolISIN === data.symbolInfo.symbolISIN);
 
 		if (i === -1) {
+			const orders: OrderBasket.Order[] = [...basketOrders, convertSymbolWatchlistToSymbolBasket(data, side)];
+
 			dispatch(
-				setOrderBasket([
-					...orderBasket,
-					{
-						id: uuidv4(),
-						symbolISIN: data.symbolInfo.symbolISIN,
-						baseSymbolISIN: data.symbolInfo.baseSymbolISIN,
-						price: data.optionWatchlistData.bestBuyPrice || 1,
-						quantity: data.optionWatchlistData.openPositionCount || 1,
-						settlementDay: data.symbolInfo.contractEndDate,
-						type: data.symbolInfo.optionType === 'Call' ? 'call' : 'put',
-						side,
-						strikePrice: data.symbolInfo.strikePrice,
+				setOrderBasket({
+					baseSymbol: {
+						symbolISIN: baseSymbol.symbolISIN,
+						symbolTitle: baseSymbol.symbolTitle,
 					},
-				]),
+					orders,
+				}),
 			);
 		}
 	};
@@ -330,7 +324,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 			cellRenderer: StrikePriceCellRenderer,
 			cellRendererParams: {
 				activeRowId,
-				basket: orderBasket,
+				basket: basket?.orders ?? [],
 				addBuySellModal,
 				addSymbolToBasket,
 				addSymbolToWatchlist,
@@ -340,7 +334,7 @@ const OptionTable = ({ settlementDay, baseSymbolISIN }: OptionTableProps) => {
 		};
 
 		column.setColDef(colDef, colDef, 'api');
-	}, [activeRowId, settlementDay, JSON.stringify(orderBasket)]);
+	}, [activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])]);
 
 	useEffect(() => {
 		const gridApi = gridRef.current;

@@ -9,7 +9,7 @@ const Basket = dynamic(() => import('./Basket'), {
 const OrderBasket = () => {
 	const orderBasket = useAppSelector(getOrderBasket);
 
-	if (orderBasket.length === 0) return null;
+	if (orderBasket === null) return null;
 	return <Basket />;
 };
 

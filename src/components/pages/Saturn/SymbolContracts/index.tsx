@@ -1,7 +1,6 @@
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
-import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 
 const Contract = dynamic(() => import('./Contract'), {
@@ -22,8 +21,6 @@ const SymbolContracts = ({
 	setBaseSymbol,
 	setBaseSymbolContracts,
 }: SymbolContractsProps) => {
-	const t = useTranslations();
-
 	const dispatch = useAppDispatch();
 
 	const onLoadContract = (contract: Symbol.Info) => {
@@ -98,11 +95,13 @@ const SymbolContracts = ({
 	const addNewContract = () => {
 		dispatch(
 			setSelectSymbolContractsModal({
-				symbolTitle: baseSymbol.symbolTitle,
-				symbolISIN: baseSymbol.symbolISIN,
-				initialSelectedContracts: baseSymbolContracts
-					.filter((item) => item !== null)
-					.map<string>((item) => item.symbolISIN),
+				symbol: {
+					symbolTitle: baseSymbol.symbolTitle,
+					symbolISIN: baseSymbol.symbolISIN,
+				},
+				initialSelectedContracts: (
+					baseSymbolContracts.filter((item) => item !== null) as Saturn.ContentOption[]
+				).map((item) => item.symbolISIN),
 				canChangeBaseSymbol: false,
 				maxContracts: 4,
 				callback: onContractsAdded,

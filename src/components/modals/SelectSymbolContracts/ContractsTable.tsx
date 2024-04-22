@@ -1,5 +1,6 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { type ITableData } from '@/components/pages/OptionChain/Option/OptionTable';
 import { sepNumbers } from '@/utils/helpers';
@@ -12,9 +13,9 @@ import CellSymbolTitleRendererRenderer from './CellSymbolTitleRenderer';
 interface ContractsTableProps {
 	initialSelectedContracts: string[];
 	settlementDay: Option.BaseSettlementDays | null;
-	symbolISIN: string;
+	symbolISIN?: string;
 	contracts: Option.Root[];
-	maxContracts?: number;
+	maxContracts: number | null;
 	setContracts: (v: Option.Root[]) => void;
 }
 
@@ -37,9 +38,9 @@ const ContractsTable = ({
 	const { data: watchlistData, isFetching } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
-			{ baseSymbolISIN: symbolISIN, settlementDate: settlementDay?.contractEndDate ?? '' },
+			{ baseSymbolISIN: symbolISIN ?? '', settlementDate: settlementDay?.contractEndDate ?? '' },
 		],
-		enabled: settlementDay !== null,
+		enabled: settlementDay !== null && Boolean(symbolISIN),
 	});
 
 	const toggleContract = (c: Option.Root) => {
@@ -52,7 +53,7 @@ const ContractsTable = ({
 			newContracts.push(c);
 		}
 
-		if (maxContracts !== undefined) {
+		if (maxContracts !== null) {
 			const addableContractsLength = maxContracts - newContracts.length;
 
 			if (addableContractsLength < 0) {
@@ -288,14 +289,24 @@ const ContractsTable = ({
 			<AgTable<ITableData>
 				ref={gridRef}
 				className='h-full'
-				rowData={modifiedData ?? []}
+				rowData={modifiedData}
 				columnDefs={COLUMNS}
 				suppressRowVirtualisation
 				suppressColumnVirtualisation
 				defaultColDef={defaultColDef}
 			/>
 
-			{(!settlementDay || isFetching) && <Loading />}
+			{!isFetching && (!settlementDay || modifiedData.length === 0) && (
+				<div className='absolute left-0 top-0 size-full bg-white'>
+					<NoData />
+				</div>
+			)}
+
+			{isFetching && (
+				<div className='absolute left-0 top-0 size-full bg-white'>
+					<Loading />
+				</div>
+			)}
 		</div>
 	);
 };

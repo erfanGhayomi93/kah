@@ -4,7 +4,13 @@ import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAnalyzeModal, setChoiceBrokerModal, setConfirmModal, setLoginModal } from '@/features/slices/modalSlice';
-import { getIsLoggedIn, getOrderBasket, setBrokerIsSelected, setOrderBasket } from '@/features/slices/userSlice';
+import {
+	getIsLoggedIn,
+	getOrderBasket,
+	setBrokerIsSelected,
+	setOrderBasket,
+	setOrderBasketOrders,
+} from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { createOrder } from '@/utils/orders';
@@ -12,10 +18,10 @@ import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const SelectedContracts = dynamic(() => import('./SelectedContracts'), {
+const SymbolStrategyTable = dynamic(() => import('@/components/common/Tables/SymbolStrategyTable'), {
 	ssr: false,
 	loading: () => (
 		<div style={{ minHeight: '7.2rem' }} className='relative w-full flex-justify-center'>
@@ -29,36 +35,47 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		brokerURLs: getBrokerURLs(state),
+		basket: getOrderBasket(state)!,
 	}),
 );
 
 const Basket = () => {
 	const t = useTranslations();
 
-	const { isLoggedIn, brokerURLs } = useAppSelector(getStates);
+	const {
+		isLoggedIn,
+		brokerURLs,
+		basket: { baseSymbol, orders: basketOrders },
+	} = useAppSelector(getStates);
 
 	const sendingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-	const basketSnapshot = useRef<IOrderBasket[]>([]);
+	const basketSnapshot = useRef<OrderBasket.Order[]>([]);
 
-	const sentOrders = useRef<Array<{ order: IOrderBasket; result: IpcMainChannels['order_sent'] }>>([]);
+	const sentOrders = useRef<Array<{ order: OrderBasket.Order; result: IpcMainChannels['order_sent'] }>>([]);
 
 	const dispatch = useAppDispatch();
-
-	const basket = useAppSelector(getOrderBasket);
 
 	const [submitting, setSubmitting] = useState(false);
 
 	const [isMaximized, setIsMaximized] = useState(true);
 
-	const [selectedContracts, setSelectedContracts] = useState<IOrderBasket[]>([]);
+	const [selectedContracts, setSelectedContracts] = useState<OrderBasket.Order[]>([]);
 
 	const close = () => {
-		dispatch(setOrderBasket([]));
+		dispatch(setOrderBasket(null));
 	};
 
 	const analyze = () => {
-		dispatch(setAnalyzeModal({}));
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: baseSymbol.symbolTitle,
+					symbolISIN: baseSymbol.symbolISIN,
+				},
+				contracts: basketOrders ?? [],
+			}),
+		);
 	};
 
 	const showLoginModal = () => dispatch(setLoginModal({}));
@@ -66,7 +83,7 @@ const Basket = () => {
 	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
 
 	const onClose = () => {
-		if (basket.length === 1) close();
+		if (basketOrders.length === 1) close();
 		else {
 			dispatch(
 				setConfirmModal({
@@ -86,20 +103,13 @@ const Basket = () => {
 		setIsMaximized(!isMaximized);
 	};
 
-	const filterBasketItems = (itemId: string) => (item: IOrderBasket) => {
+	const filterBasketItems = (itemId: string) => (item: OrderBasket.Order) => {
 		return item.id !== itemId;
 	};
 
-	const removeItemFromBasket = (itemId: string) => {
-		let data = [...basketSnapshot.current];
-		data = data.filter(filterBasketItems(itemId));
-
-		basketSnapshot.current = data;
-
-		if (data.length === 0) onOrdersSent();
-
-		dispatch(setOrderBasket(data));
-		setSelectedContracts((prev) => prev.filter(filterBasketItems(itemId)));
+	const removeOrder = (id: string) => {
+		dispatch(setOrderBasketOrders(basketOrders.filter(filterBasketItems(id))));
+		setSelectedContracts((prev) => prev.filter(filterBasketItems(id)));
 	};
 
 	const validation = () => {
@@ -125,7 +135,7 @@ const Basket = () => {
 			try {
 				validation();
 
-				basketSnapshot.current = JSON.parse(JSON.stringify(basket)) as typeof basket;
+				basketSnapshot.current = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
 
 				setSubmitting(true);
 				sendOrder(0);
@@ -135,17 +145,19 @@ const Basket = () => {
 		}
 	};
 
-	const onOrderMessageReceived = (item: IOrderBasket, id: string) => (result: IpcMainChannels['order_sent']) => {
+	const onOrderMessageReceived = (item: OrderBasket.Order, id: string) => (result: IpcMainChannels['order_sent']) => {
 		if (id !== result.id) return;
-		removeItemFromBasket(item.id);
+		removeOrder(item.id);
 
 		sentOrders.current.push({
 			order: item,
 			result,
 		});
+
+		if (basketSnapshot.current.length === 0) onOrdersSent();
 	};
 
-	const onOrderSentSuccessfully = (item: IOrderBasket) => {
+	const onOrderSentSuccessfully = (item: OrderBasket.Order) => {
 		//
 	};
 
@@ -174,10 +186,10 @@ const Basket = () => {
 			const item = selectedContracts[index];
 			if (!item) throw new Error('Item not found!');
 
-			if (!item.symbolISIN) throw new Error('symbolISIN not found!');
+			if (!item.symbol.symbolISIN) throw new Error('symbolISIN not found!');
 
 			const uuid = await createOrder({
-				symbolISIN: item.symbolISIN,
+				symbolISIN: item.symbol.symbolISIN,
 				quantity: item.quantity,
 				price: item.price,
 				orderSide: item.side,
@@ -195,7 +207,22 @@ const Basket = () => {
 		}
 	};
 
-	const addNewHandler = (item: IOrderBasket, id: string) => {
+	const setOrderProperty = <T extends keyof OrderBasket.Order>(
+		id: string,
+		property: T,
+		value: OrderBasket.Order[T],
+	) => {
+		const orders = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
+
+		const orderIndex = orders.findIndex((item) => item.id === id);
+		if (orderIndex === -1) return;
+
+		orders[orderIndex][property] = value;
+
+		dispatch(setOrderBasketOrders(orders));
+	};
+
+	const addNewHandler = (item: OrderBasket.Order, id: string) => {
 		const removeHandler = ipcMain.handle('order_sent', onOrderMessageReceived(item, id), { once: true });
 
 		if (sendingTimeoutRef.current) clearTimeout(sendingTimeoutRef.current);
@@ -206,20 +233,20 @@ const Basket = () => {
 		}, 2000);
 	};
 
-	useLayoutEffect(() => {
-		const lastItem = basket[basket.length - 1];
-		if (lastItem.symbolISIN === null) return;
+	useEffect(() => {
+		const lastItem = basketOrders[basketOrders.length - 1];
+		if (!lastItem || lastItem.symbol.symbolISIN === null) return;
 
 		if (selectedContracts.findIndex((item) => item.id === lastItem.id) > -1) return;
 
 		setSelectedContracts([...selectedContracts, lastItem]);
-	}, [basket.length]);
+	}, [basketOrders.length]);
 
 	return (
 		<div
 			style={{
 				right: '6.4rem',
-				width: isMaximized ? '60.8rem' : '41.6rem',
+				width: isMaximized ? '80rem' : '41.6rem',
 				zIndex: 99,
 			}}
 			className='fixed bottom-8'
@@ -243,7 +270,7 @@ const Basket = () => {
 					</div>
 				</div>
 
-				<div className='gap-24 overflow-hidden py-16 flex-column'>
+				<div className='gap-8 overflow-hidden pt-16 flex-column'>
 					<div className='px-16 flex-justify-between'>
 						<div onClick={onExpand} className='cursor-pointer gap-12 pl-16 flex-items-center'>
 							<span className='select-none whitespace-nowrap rounded text-base text-gray-1000'>
@@ -259,7 +286,12 @@ const Basket = () => {
 						</div>
 
 						<div className='flex h-40 gap-8 font-medium'>
-							<button onClick={analyze} className='rounded px-16 btn-primary-outline' type='button'>
+							<button
+								disabled={selectedContracts.length === 0}
+								onClick={analyze}
+								className='rounded px-16 btn-primary-outline'
+								type='button'
+							>
 								{t('order_basket.analyze')}
 							</button>
 
@@ -277,11 +309,17 @@ const Basket = () => {
 					</div>
 
 					{isMaximized && (
-						<SelectedContracts
-							data={basket}
-							selectedData={selectedContracts}
-							setSelectedData={setSelectedContracts}
-						/>
+						<div style={{ maxHeight: '40rem' }} className='overflow-y-auto'>
+							<SymbolStrategyTable
+								selectedContracts={selectedContracts}
+								contracts={basketOrders}
+								onSelectionChanged={setSelectedContracts}
+								onChangePrice={(id, value) => setOrderProperty(id, 'price', value)}
+								onChangeQuantity={(id, value) => setOrderProperty(id, 'quantity', value)}
+								onSideChange={(id, value) => setOrderProperty(id, 'side', value)}
+								onDelete={removeOrder}
+							/>
+						</div>
 					)}
 				</div>
 			</div>

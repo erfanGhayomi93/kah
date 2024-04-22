@@ -120,6 +120,20 @@ const modalSlice = createSlice({
 			state.selectSymbolContracts = payload;
 		},
 
+		updateSelectSymbolContractsModal: (
+			state,
+			{ payload }: PayloadAction<Partial<ModalState['selectSymbolContracts']>>,
+		) => {
+			const prev = {
+				...state.selectSymbolContracts,
+				...payload,
+			};
+
+			if (state.selectSymbolContracts !== null) {
+				state.selectSymbolContracts = prev as ModalState['selectSymbolContracts'];
+			}
+		},
+
 		setAddSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
@@ -192,6 +206,7 @@ export const {
 	setWithdrawalModal,
 	setDepositModal,
 	setAnalyzeModal,
+	updateSelectSymbolContractsModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
