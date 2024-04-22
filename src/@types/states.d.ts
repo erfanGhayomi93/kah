@@ -1,3 +1,24 @@
+declare interface INextProps {}
+
+declare interface IOFields {
+	symbolISIN: string;
+	quantity: number;
+	price: number;
+	orderSide: 'buy' | 'sell';
+	validity: TBsValidityDates;
+	validityDate: number;
+}
+
+declare interface IOFieldsWithID {
+	id: number;
+	symbolISIN: string;
+	quantity: number;
+	price: number;
+	orderSide: 'buy' | 'sell';
+	validity: TBsValidityDates;
+	validityDate: number;
+}
+
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
 declare type TOptionSides = 'put' | 'call';
@@ -27,6 +48,54 @@ declare type TSymbolInfoPanelSections =
 	| 'chart'
 	| 'same_sector_symbols'
 	| 'supervisor_messages';
+
+declare type OptionWatchlistColumns =
+	| 'symbolTitle'
+	| 'tradeValue'
+	| 'premium'
+	| 'delta'
+	| 'baseSymbolPrice'
+	| 'breakEvenPoint'
+	| 'leverage'
+	| 'openPositionCount'
+	| 'impliedVolatility'
+	| 'iotm'
+	| 'blackScholes'
+	| 'tradeVolume'
+	| 'dueDays'
+	| 'strikePrice'
+	| 'bestBuyPrice'
+	| 'bestSellPrice'
+	| 'symbolFullTitle'
+	| 'baseSymbolTitle'
+	| 'closingPrice'
+	| 'historicalVolatility'
+	| 'contractSize'
+	| 'timeValue'
+	| 'theta'
+	| 'tradeCount'
+	| 'contractEndDate'
+	| 'spread'
+	| 'blackScholesDifference'
+	| 'baseClosingPrice'
+	| 'gamma'
+	| 'optionType'
+	| 'requiredMargin'
+	| 'initialMargin'
+	| 'rho'
+	| 'vega'
+	| 'growth'
+	| 'contractValueType'
+	| 'highOpenPosition'
+	| 'lastTradeDate'
+	| 'legalBuyVolume'
+	| 'individualBuyVolume'
+	| 'legalSellVolume'
+	| 'individualSellVolume'
+	| 'sectorName'
+	| 'notionalValue'
+	| 'intrinsicValue'
+	| 'action';
 
 declare type TDashboardSections =
 	| 'market_view'
@@ -85,7 +154,8 @@ declare interface IBaseModalConfiguration {
 
 declare interface SymbolContractModalStates {
 	term: string;
-	contract: null | Option.Root;
+	sendBaseSymbol: boolean;
+	contracts: Option.Root[];
 	contractType: Record<'id' | 'title', string>;
 	activeSettlement: Option.BaseSettlementDays | null;
 }
@@ -182,14 +252,39 @@ declare interface OptionChainFilters {
 	settlementDay: Option.BaseSettlementDays | null;
 }
 
-declare interface IOrderBasket {
+declare namespace OrderBasket {
+	export interface Root {
+		baseSymbol: {
+			symbolISIN: string;
+			symbolTitle: string;
+		};
+
+		orders: OrderBasket.Order[];
+	}
+	export interface Order extends ISymbolStrategyContract {}
+}
+
+declare interface ISymbolStrategyContract {
 	id: string;
-	baseSymbolISIN: string;
-	symbolISIN: null | string;
-	side: TBsSides;
-	type: TOptionSides;
-	settlementDay: null | string;
-	strikePrice: number;
-	price: number;
 	quantity: number;
+	price: number;
+	strikePrice: number;
+	contractSize: number;
+	settlementDay: Date | number | string;
+	type: TOptionSides;
+	side: TBsSides;
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+	};
+	commission?: {
+		value: number;
+		checked: boolean;
+		onChecked: (checked: boolean) => void;
+	};
+	requiredMargin?: {
+		value: number;
+		checked: boolean;
+		onChecked: (checked: boolean) => void;
+	};
 }

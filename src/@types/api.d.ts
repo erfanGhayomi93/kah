@@ -1,5 +1,5 @@
 declare namespace Option {
-	export type IOTM = 'atm' | 'otm' | 'itm';
+	export type IOTM = 'ATM' | 'OTM' | 'ITM';
 
 	export interface Root {
 		/**

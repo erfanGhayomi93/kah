@@ -2,8 +2,6 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
-import { setSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import { cn, sepNumbers } from '@/utils/helpers';
@@ -36,30 +34,25 @@ interface WrapperProps {
 }
 
 interface ContractProps {
-	close: () => void;
 	baseSymbol: Symbol.Info;
 	option: Saturn.ContentOption | null;
+	close: () => void;
+	addNewContract: () => void;
 	onLoadContract: (contract: Symbol.Info) => void;
 	onChangeContractTab: (tab: Saturn.OptionTab) => void;
 }
 
-const Wrapper = ({ children }: WrapperProps) => (
-	<div
-		style={{
-			flex: '1 0 39.2rem',
-		}}
-		className='relative gap-16 rounded border border-gray-500 bg-white px-16 pb-12 pt-12 flex-column'
-	>
-		{children}
-	</div>
-);
-
-const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContract }: ContractProps) => {
+const Contract = ({
+	baseSymbol,
+	option,
+	close,
+	addNewContract,
+	onChangeContractTab,
+	onLoadContract,
+}: ContractProps) => {
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
-
-	const dispatch = useAppDispatch();
 
 	const { addBuySellModal } = useTradingFeatures();
 
@@ -71,15 +64,6 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 	});
 
 	const contractSnapshot = usePrevious(contractInfo);
-
-	const addSymbol = () => {
-		dispatch(
-			setSymbolContractsModal({
-				symbolTitle: baseSymbol.symbolTitle,
-				symbolISIN: baseSymbol.symbolISIN,
-			}),
-		);
-	};
 
 	const addBsModal = (side: TBsSides) => {
 		if (!contractInfo) return;
@@ -176,7 +160,7 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 		return (
 			<Wrapper>
 				<div
-					onClick={addSymbol}
+					onClick={addNewContract}
 					className='absolute cursor-pointer items-center gap-24 text-center flex-column center'
 				>
 					<Image width='48' height='48' alt='add-symbol' src='/static/images/add-button.png' />
@@ -298,5 +282,16 @@ const Contract = ({ baseSymbol, close, option, onChangeContractTab, onLoadContra
 		</Wrapper>
 	);
 };
+
+const Wrapper = ({ children }: WrapperProps) => (
+	<div
+		style={{
+			flex: '1 0 39.2rem',
+		}}
+		className='relative gap-16 rounded border border-gray-500 bg-white px-16 pb-12 pt-12 flex-column'
+	>
+		{children}
+	</div>
+);
 
 export default Contract;

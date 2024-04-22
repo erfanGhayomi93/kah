@@ -428,3 +428,30 @@ export const toFixed = (v: number, l = 3, round = true) => {
 
 	return sepNumbers(integer) + '.' + (round ? decimalAsNumber : decimal);
 };
+
+export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boolean) => {
+	const l = arrays2.length;
+	const result: T[] = [];
+
+	for (let i = 0; i < l; i++) {
+		const index = arrays1.findIndex((item) => callback(item, arrays2[i]));
+		if (index === -1) result.push(arrays2[i]);
+	}
+
+	return result;
+};
+
+export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): OrderBasket.Order => ({
+	id: uuidv4(),
+	symbol: {
+		symbolISIN: symbol.symbolInfo.symbolISIN,
+		symbolTitle: symbol.symbolInfo.symbolTitle,
+	},
+	contractSize: symbol.symbolInfo.contractSize,
+	price: symbol.optionWatchlistData.bestBuyPrice || 1,
+	quantity: symbol.optionWatchlistData.openPositionCount || 1,
+	settlementDay: symbol.symbolInfo.contractEndDate,
+	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
+	strikePrice: symbol.symbolInfo.strikePrice,
+	side,
+});

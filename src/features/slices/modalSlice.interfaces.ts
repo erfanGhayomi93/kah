@@ -1,11 +1,18 @@
-import { type IOptionFiltersModal } from '@/@types/slices/modalSlice';
-
 type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IBaseModalConfiguration);
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
 export interface IBlackScholes extends IBaseModalConfiguration {
 	symbolISIN?: string;
+}
+
+export interface IOptionFiltersModal extends IBaseModalConfiguration {
+	initialSymbols?: Option.BaseSearch[];
+	initialType?: Array<'Call' | 'Put'>;
+	initialStatus?: Array<'ITM' | 'OTM' | 'ATM'>;
+	initialDueDays?: [number, number];
+	initialDelta?: [number, number];
+	initialMinimumTradesValue?: string;
 }
 
 export interface IBuySellModal extends IBaseModalConfiguration {
@@ -31,9 +38,15 @@ export interface IForgetPasswordModal extends IBaseModalConfiguration {
 	phoneNumber?: string;
 }
 
-export interface IContractSelectorModal extends IBaseModalConfiguration {
-	symbolTitle: string;
-	symbolISIN: string;
+export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
+	symbol: null | {
+		symbolTitle: string;
+		symbolISIN: string;
+	};
+	canChangeBaseSymbol: boolean;
+	maxContracts: null | number;
+	initialSelectedContracts: string[];
+	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
 export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
@@ -74,6 +87,14 @@ export interface IWithdrawalModal extends IBaseModalConfiguration {}
 
 export interface IDepositModal extends IBaseModalConfiguration {}
 
+export interface IAnalyzeModal extends IBaseModalConfiguration {
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+	};
+	contracts: OrderBasket.Order[];
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
@@ -89,11 +110,12 @@ export type ModalState = TBaseModalProps<{
 	choiceCollateral: IChoiceCollateral;
 	moveSymbolToWatchlist: IMoveSymbolToWatchlistModal;
 	addSaturnTemplate: IAddSaturnTemplate;
-	symbolContracts: IContractSelectorModal;
+	selectSymbolContracts: ISelectSymbolContractsModal;
 	forgetPassword: IForgetPasswordModal;
-	optionFilters: Partial<IOptionFiltersModal>;
+	optionFilters: IOptionFiltersModal;
 	manageDashboardLayout: IManageDashboardLayoutModal;
 	changeBroker: IChangeBrokerModal;
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;
+	analyze: IAnalyzeModal;
 }>;
