@@ -57,8 +57,6 @@ const PerformanceChart = ({ contracts }: PerformanceChartProps) => {
 		return chartData;
 	}, [JSON.stringify(contracts)]);
 
-	console.log(dataMapper);
-
 	return (
 		<AppChart
 			options={{
