@@ -4,7 +4,7 @@ import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { initialFilters } from '@/components/modals/OptionWatchlistFiltersModal/Form';
+import { initialOptionWatchlistFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
@@ -32,7 +32,7 @@ const Watchlist = () => {
 
 	const { isLoggingIn, isLoggedIn } = useAppSelector(getStates);
 
-	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialFilters);
+	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialOptionWatchlistFilters);
 
 	const { data: userCustomWatchlistList, refetch: refetchUserCustomWatchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],

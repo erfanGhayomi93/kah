@@ -59,7 +59,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 
 	const addSymbolToBasket = (data: Option.Root, side: TBsSides) => {
 		const basketOrders = basket?.orders ?? [];
-		const i = basketOrders.findIndex((item) => item.symbol.symbolISIN === data.symbolInfo.symbolISIN);
+		const i = basketOrders.findIndex((item) => item.symbol.symbolInfo.symbolISIN === data.symbolInfo.symbolISIN);
 
 		if (i === -1) {
 			const orders: OrderBasket.Order[] = [...basketOrders, convertSymbolWatchlistToSymbolBasket(data, side)];

@@ -26,7 +26,6 @@ const GreeksTable = dynamic(() => import('./GreeksTable'), {
 
 const Div = styled.div`
 	width: 800px;
-	min-height: 768px;
 	display: flex;
 	flex-direction: column;
 `;
@@ -66,7 +65,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(({ symbol, contracts, .
 			for (let i = 0; i < l; i++) {
 				const item2 = contracts[i];
 				const index = symbolContracts.findIndex(
-					(item) => item.symbol.symbolISIN === item2.symbolInfo.symbolISIN,
+					(item) => item.symbol.symbolInfo.symbolISIN === item2.symbolInfo.symbolISIN,
 				);
 
 				if (index === -1) result.push(convertSymbolWatchlistToSymbolBasket(item2, 'buy'));
@@ -85,7 +84,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(({ symbol, contracts, .
 				maxContracts: null,
 				initialSelectedContracts: contracts
 					.filter((item) => item !== null)
-					.map((item) => item.symbol.symbolISIN) as string[],
+					.map((item) => item.symbol.symbolInfo.symbolISIN) as string[],
 				canChangeBaseSymbol: true,
 				callback: onContractsAdded,
 			}),
@@ -123,8 +122,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(({ symbol, contracts, .
 				id: 'normal',
 				title: t('analyze_modal.performance'),
 				render: () => (
-					<div className='relative flex-1 py-16'>
-						<PerformanceChart />
+					<div style={{ height: '22rem' }} className='relative py-16'>
+						<PerformanceChart contracts={symbolContracts} />
 					</div>
 				),
 			},
@@ -132,13 +131,13 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(({ symbol, contracts, .
 				id: 'strategy',
 				title: t('analyze_modal.greeks'),
 				render: () => (
-					<div className='relative flex-1 py-16'>
-						<GreeksTable />
+					<div style={{ height: '22rem' }} className='relative py-16'>
+						<GreeksTable contracts={symbolContracts} />
 					</div>
 				),
 			},
 		],
-		[],
+		[symbolContracts],
 	);
 
 	return (

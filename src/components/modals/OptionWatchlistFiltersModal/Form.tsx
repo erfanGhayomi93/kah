@@ -1,4 +1,5 @@
 import ipcMain from '@/classes/IpcMain';
+import { initialOptionWatchlistFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOptionFiltersModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { type IOptionFiltersModal } from '@/features/slices/modalSlice.interfaces';
@@ -18,15 +19,6 @@ const InputWrapper = styled.div`
 	max-width: 100%;
 `;
 
-export const initialFilters: IOptionWatchlistFilters = {
-	symbols: [],
-	type: [],
-	status: [],
-	dueDays: [0, 365],
-	delta: [-1, 1],
-	minimumTradesValue: '',
-};
-
 const Form = () => {
 	const t = useTranslations();
 
@@ -35,12 +27,13 @@ const Form = () => {
 	const initialModalFilters = useAppSelector(getOptionFiltersModal) as Partial<IOptionFiltersModal>;
 
 	const [filters, setFilters] = useState<IOptionWatchlistFilters>({
-		symbols: initialModalFilters?.initialSymbols ?? initialFilters.symbols,
-		type: initialModalFilters?.initialType ?? initialFilters.type,
-		status: initialModalFilters?.initialStatus ?? initialFilters.status,
-		dueDays: initialModalFilters?.initialDueDays ?? initialFilters.dueDays,
-		delta: initialModalFilters?.initialDelta ?? initialFilters.delta,
-		minimumTradesValue: initialModalFilters?.initialMinimumTradesValue ?? initialFilters.minimumTradesValue,
+		symbols: initialModalFilters?.initialSymbols ?? initialOptionWatchlistFilters.symbols,
+		type: initialModalFilters?.initialType ?? initialOptionWatchlistFilters.type,
+		status: initialModalFilters?.initialStatus ?? initialOptionWatchlistFilters.status,
+		dueDays: initialModalFilters?.initialDueDays ?? initialOptionWatchlistFilters.dueDays,
+		delta: initialModalFilters?.initialDelta ?? initialOptionWatchlistFilters.delta,
+		minimumTradesValue:
+			initialModalFilters?.initialMinimumTradesValue ?? initialOptionWatchlistFilters.minimumTradesValue,
 	});
 
 	const setFilterValue = <T extends keyof IOptionWatchlistFilters>(field: T, value: IOptionWatchlistFilters[T]) => {
@@ -51,7 +44,7 @@ const Form = () => {
 	};
 
 	const onClear = () => {
-		setFilters(initialFilters);
+		setFilters(initialOptionWatchlistFilters);
 	};
 
 	const onClose = () => {
@@ -70,7 +63,7 @@ const Form = () => {
 		}
 	};
 
-	const clearButtonIsDisabled = JSON.stringify(initialFilters) === JSON.stringify(filters);
+	const clearButtonIsDisabled = JSON.stringify(initialOptionWatchlistFilters) === JSON.stringify(filters);
 
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>

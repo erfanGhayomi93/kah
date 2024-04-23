@@ -22,21 +22,7 @@ interface ModalHeaderProps {
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
-	(
-		{
-			portalElement,
-			moveable = false,
-			transparent = false,
-			children,
-			style,
-			classes,
-			size,
-			top,
-			animation = true,
-			onClose,
-		},
-		ref,
-	) => {
+	({ portalElement, moveable = false, transparent = false, children, style, classes, size, top, onClose }, ref) => {
 		const rootRef = useRef<HTMLDivElement>(null);
 
 		const modalRef = useRef<HTMLDivElement | null>(null);
