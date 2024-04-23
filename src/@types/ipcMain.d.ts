@@ -1,9 +1,4 @@
 declare interface IpcMainChannels {
-	saturn_contract_added: Array<{
-		symbolISIN: string;
-		symbolTitle: string;
-		activeTab: Saturn.OptionTab;
-	}>;
 	send_order: IOFields;
 	send_orders: IOFields[];
 	order_sent: { id: string | undefined; response: Order.Response | 'error' };

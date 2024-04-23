@@ -1,10 +1,11 @@
 import { cn } from '@/utils/helpers';
+import React from 'react';
 import styles from './Checkbox.module.scss';
 
 interface ICheckboxProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'checked' | 'onChange'> {
 	classes?: RecordClasses<'root' | 'checkbox' | 'disabled' | 'checked' | 'label' | 'text'>;
-	label?: string | number;
+	label?: React.ReactNode;
 	disabled?: boolean;
 	checked: boolean;
 	onChange?: (checked: boolean) => void;

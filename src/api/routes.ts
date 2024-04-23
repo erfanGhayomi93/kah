@@ -8,7 +8,7 @@ const URL = {
 	oauth: {
 		preprd: 'https://ramandoauth-preprd.ramandtech.com',
 		stage: 'https://ramandoauth-stage.ramandtech.com',
-		prod: 'https://ramandoauth-preprd.ramandtech.com',
+		prod: 'https://ramandoauth.ramandtech.com',
 	},
 
 	rlc: {
@@ -28,6 +28,7 @@ const routes = {
 	dashboard: {
 		GetOpenPositionProcess: `${rlcUrl}/Dashboard/v1/GetOpenPositionProcess`,
 		GetIndex: `${rlcUrl}/Dashboard/v1/GetIndex`,
+		GetRetailTradeValues: `${rlcUrl}/Dashboard/v1/GetRetailTradeValues`,
 		GetMarketState: `${rlcUrl}/Dashboard/v1/GetMarketState`,
 		GetOptionTopSymbols: `${rlcUrl}/Dashboard/v1/GetOptionTopSymbols`,
 		GetBaseTopSymbols: `${rlcUrl}/Dashboard/v1/GetBaseTopSymbols`,

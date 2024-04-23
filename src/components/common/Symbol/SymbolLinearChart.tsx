@@ -37,9 +37,6 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 		<AppChart
 			options={{
 				colors: ['rgb(34, 180, 150)'],
-				stroke: {
-					show: false,
-				},
 				tooltip: {
 					y: {
 						formatter: (val) => {
@@ -58,10 +55,6 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 						show: false,
 					},
 					labels: {
-						style: {
-							fontFamily: 'IRANSans',
-							fontSize: '12px',
-						},
 						formatter: (val) => {
 							return dateFormatter(val);
 						},

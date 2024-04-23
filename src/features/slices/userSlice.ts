@@ -11,7 +11,7 @@ export interface UserState {
 
 	brokerIsSelected: boolean;
 
-	orderBasket: IOrderBasket[];
+	orderBasket: null | OrderBasket.Root;
 }
 
 const initialState: UserState = {
@@ -21,7 +21,7 @@ const initialState: UserState = {
 
 	brokerIsSelected: Boolean(getBrokerClientId()[0]),
 
-	orderBasket: [],
+	orderBasket: null,
 };
 
 const userSlice = createSlice({
@@ -43,10 +43,20 @@ const userSlice = createSlice({
 		setOrderBasket: (state, { payload }: PayloadAction<UserState['orderBasket']>) => {
 			state.orderBasket = payload;
 		},
+
+		setOrderBasketOrders: (state, { payload }: PayloadAction<OrderBasket.Order[]>) => {
+			if (state.orderBasket !== null) {
+				state.orderBasket = {
+					...state.orderBasket,
+					orders: payload,
+				};
+			}
+		},
 	},
 });
 
-export const { setIsLoggedIn, setIsLoggingIn, setOrderBasket, setBrokerIsSelected } = userSlice.actions;
+export const { setIsLoggedIn, setIsLoggingIn, setOrderBasket, setBrokerIsSelected, setOrderBasketOrders } =
+	userSlice.actions;
 
 export const getIsLoggedIn = (state: RootState) => state.user.loggedIn;
 export const getBrokerIsSelected = (state: RootState) => state.user.brokerIsSelected;

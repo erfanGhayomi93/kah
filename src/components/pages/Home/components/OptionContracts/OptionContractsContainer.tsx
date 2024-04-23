@@ -1,5 +1,4 @@
 import { useGetOptionContractAdditionalInfoQuery } from '@/api/queries/dashboardQueries';
-import Loading from '@/components/common/Loading';
 import { numFormatter, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -7,9 +6,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Suspend from '../../common/Suspend';
 
-const OptionContractsChart = dynamic(() => import('./OptionContractsChart'), {
-	loading: () => <Loading />,
-});
+const OptionContractsChart = dynamic(() => import('./OptionContractsChart'));
 
 interface IData {
 	id: Dashboard.GetOptionContractAdditionalInfo.DataPoint;

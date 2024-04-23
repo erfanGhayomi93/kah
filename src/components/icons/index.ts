@@ -3,6 +3,7 @@ import AngleLeft from './angle-left.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import ArrowUpSVG from './arrow-up.svg';
+import AssetSVG from './asset.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalculatorSVG from './calculator.svg';
@@ -34,6 +35,7 @@ import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import HomeSVG from './home.svg';
+import InfoCircleOutlineSVG from './info-circle-outline.svg';
 import InfoCircleSVG from './info-circle.svg';
 import InfoSVG from './info.svg';
 import LockSVG from './lock.svg';
@@ -90,6 +92,7 @@ export {
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	ArrowUpSVG,
+	AssetSVG,
 	BellSVG,
 	BookmarkSVG,
 	CalculatorSVG,
@@ -121,6 +124,7 @@ export {
 	GrowDownSVG,
 	GrowUpSVG,
 	HomeSVG,
+	InfoCircleOutlineSVG,
 	InfoCircleSVG,
 	InfoSVG,
 	LockSVG,

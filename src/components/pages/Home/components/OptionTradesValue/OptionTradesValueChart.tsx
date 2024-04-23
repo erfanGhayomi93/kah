@@ -72,12 +72,6 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 					},
 					xaxis: {
 						tickAmount: 5,
-						labels: {
-							style: {
-								fontFamily: 'IRANSans',
-								fontSize: '12px',
-							},
-						},
 					},
 					yaxis: {
 						tickAmount: 2,

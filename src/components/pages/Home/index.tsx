@@ -223,10 +223,11 @@ const Dashboard = () => {
 	}, [grid]);
 
 	return (
-		<Main className='gap-8 !p-0'>
+		<Main className='gap-8 !p-0 !pr-8'>
 			<div className='size-full'>
 				<ResponsiveGridLayout
 					className='w-full ltr'
+					compactType='vertical'
 					layouts={getGridLayouts()}
 					margin={SECTIONS_MARGIN}
 					breakpoints={{ lg: 1366, sm: 0 }}
@@ -236,7 +237,6 @@ const Dashboard = () => {
 					isDraggable={false}
 					isDroppable={false}
 					isResizable={false}
-					compactType='vertical'
 					allowOverlap={false}
 					rowHeight={1}
 				>

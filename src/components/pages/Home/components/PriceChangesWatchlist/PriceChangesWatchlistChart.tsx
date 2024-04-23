@@ -84,12 +84,6 @@ const PriceChangesWatchlistChart = () => {
 					},
 					xaxis: {
 						tickAmount: 5,
-						labels: {
-							style: {
-								fontFamily: 'IRANSans',
-								fontSize: '12px',
-							},
-						},
 					},
 					yaxis: {
 						show: false,
@@ -97,12 +91,6 @@ const PriceChangesWatchlistChart = () => {
 					dataLabels: {
 						textAnchor: 'middle',
 						offsetY: -24,
-						style: {
-							colors: ['rgba(93, 96, 109, 1)'],
-							fontWeight: 500,
-							fontFamily: 'IRANSans',
-							fontSize: '12px',
-						},
 						formatter: (value) => {
 							return `${value}%`;
 						},

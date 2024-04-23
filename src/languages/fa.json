@@ -47,10 +47,19 @@
 		"user_status_CallMargin": "اخطار وجه تضمین",
 		"logout": "خروج از حساب کاربری"
 	},
-	"header_navigation": {
-		"watchlist": "دیده‌بان",
-		"option_chain": "زنجیره قراردادها",
-		"saturn": "زحل"
+	"symbol_strategy": {
+		"side": "سمت",
+		"symbol": "نماد",
+		"type": "نوع",
+		"end_date": "سررسید",
+		"strike_price": "قیمت اعمال",
+		"contract_size": "اندازه قرارداد",
+		"price": "قیمت",
+		"quantity": "تعداد",
+		"required_margin": "وجه تضمین",
+		"commission": "کارمزد",
+		"call": "اختیار خرید",
+		"put": "اختیار فروش"
 	},
 	"home": {
 		"market_view": "نمای بازار",
@@ -140,13 +149,16 @@
 		"call_option": "اختیار خرید",
 		"put_option": "اختیار فروش"
 	},
-	"symbol_contracts_modal": {
-		"title": "انتخاب قرارداد {symbolTitle}",
-		"contract_search_placeholder": "جستجوی قرارداد",
-		"search_contract": "نوع قرارداد",
-		"add_contract_to_symbol": "افزودن قرارداد به صفحه {symbolTitle}",
-		"end_date": "سررسیدهای",
-		"select_contract_from_list": "از لیست سمت راست یک سررسید انتخاب کنید!"
+	"iotm": {
+		"atm": "در قیمت",
+		"itm": "در سوئ",
+		"otm": "در زیان"
+	},
+	"select_symbol_contracts_modal": {
+		"title": "انتخاب قرارداد",
+		"first_select_a_contract_end_date": "ابتدا از لیست بالا یک سررسید انتخاب نمایید.",
+		"base_symbol": "نماد پایه",
+		"add": "افزودن"
 	},
 	"add_new_option_watchlist_modal": {
 		"title": "افزودن دیده‌بان",
@@ -474,8 +486,6 @@
 		"selected_trade": "معامله انتخاب شده",
 		"delete_order_basket": "حذف سبد سفارش",
 		"empty_order_basket": "سبد سفارش شما خالی شود؟",
-		"call": "اختیار خ",
-		"put": "اختیار ف",
 		"bs": "B/S",
 		"end_date": "سررسید",
 		"strike": "اعمال",
@@ -655,6 +665,29 @@
 	"deposit_modal": {
 		"title": "واریز وجه"
 	},
+	"analyze_modal": {
+		"title": "آنالیز",
+		"no_trade_found": "هیچ معامله‌ای وجود ندارد",
+		"make_your_own_strategy": "استراتژی دلخواه خود را بسازید",
+		"send_all": "ارسال همه",
+		"performance": "بازده (عملکرد)",
+		"greeks": "یونانی‌ها",
+		"with_commission": "با احتساب کارمزد",
+		"most_profit": "بیشترین سود",
+		"break_even_point": "سر به سر",
+		"risk": "ریسک",
+		"time_value": "ارزش زمانی",
+		"most_loss": "بیشترین ضرر",
+		"required_budget": "بودجه مورد نیاز",
+		"profit_probability": "احتمال سود",
+		"required_margin": "وجه تضمین مورد نیاز",
+		"symbolTitle": "نماد",
+		"delta": "دلتا",
+		"theta": "تتا",
+		"gama": "گاما",
+		"vega": "وگا",
+		"rho": "رو"
+	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
 		"next_page": "صفحه بعد",
@@ -813,6 +846,7 @@
 		"null": "تعریف نشده"
 	},
 	"alerts": {
+		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
 		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
 		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",
 		"orders_sent_successfully": "تمام سفارش‌ها با موفقیت ارسال شدند.",

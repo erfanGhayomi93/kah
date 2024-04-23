@@ -1,9 +1,9 @@
 import ipcMain from '@/classes/IpcMain';
 import NoData from '@/components/common/NoData';
+import RenderOnViewportEntry from '@/components/common/RenderOnViewportEntry ';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import { ExpandSVG, XCircleSVG } from '@/components/icons';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
 
 export interface ITab<T> {
 	id: T;
@@ -38,48 +38,12 @@ const Section = <T extends string = string, B extends string = string>({
 	onTopTabChange,
 	onBottomTabChange,
 }: SectionProps<T, B>) => {
-	const rootRef = useRef<HTMLDivElement>(null);
-
-	const observer = useRef<IntersectionObserver | null>(null);
-
-	const [isRendered, setIsRendered] = useState(false);
-
-	const disconnect = () => {
-		if (observer.current) {
-			observer.current.disconnect();
-			observer.current = null;
-		}
-	};
-
 	const onClose = () => {
 		ipcMain.send('home.hide_section', { id, hidden: true });
 	};
 
-	const onVisibilityChange = (entries: IntersectionObserverEntry[]) => {
-		const firstEntry = entries[0];
-		if (!firstEntry || !firstEntry.isIntersecting) return;
-
-		setIsRendered(true);
-		disconnect();
-	};
-
-	useEffect(() => {
-		const eRoot = rootRef.current;
-		if (!eRoot) return;
-
-		observer.current = new IntersectionObserver(onVisibilityChange, {
-			threshold: 0.2,
-		});
-		observer.current.observe(eRoot);
-
-		return () => disconnect();
-	}, [rootRef.current]);
-
 	return (
-		<div
-			ref={rootRef}
-			className='size-full justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'
-		>
+		<div className='size-full justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div className='h-full gap-8 rounded bg-gray-200 px-8 flex-items-center'>
@@ -132,7 +96,9 @@ const Section = <T extends string = string, B extends string = string>({
 				<h1 className='text-lg font-medium text-gray-900'>{title}</h1>
 			</div>
 
-			<div className='relative h-full flex-1 overflow-hidden p-8'>{isRendered && (children ?? <NoData />)}</div>
+			<RenderOnViewportEntry className='relative h-full flex-1 overflow-hidden p-8'>
+				{children ?? <NoData />}
+			</RenderOnViewportEntry>
 
 			{Array.isArray(tabs?.bottom) ? (
 				<div style={{ flex: '0 0 4.8rem' }}>

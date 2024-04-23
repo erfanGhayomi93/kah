@@ -14,16 +14,18 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 		queryKey: ['getMarketProcessChartQuery', interval, type],
 	});
 
-	const dataMapper: Array<{ x: string; y: number }> = useMemo(() => {
+	const dataMapper: Array<{ x: number; y: number }> = useMemo(() => {
 		if (!data) return [];
 
 		const keys = Object.keys(data);
 		if (keys.length === 0) return [];
 
-		return keys.map((d) => ({
-			x: d,
-			y: data[d] ?? 0,
-		}));
+		return keys
+			.map((d) => ({
+				x: new Date(d).getTime(),
+				y: data[d] ?? 0,
+			}))
+			.sort((a, b) => a.x - b.x);
 	}, [interval, data]);
 
 	return (

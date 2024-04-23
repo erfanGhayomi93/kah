@@ -4,7 +4,7 @@ import StrikePriceBtnGroup from './StrikePriceBtnGroup';
 
 export type StrikePriceCellRendererProps = ICellRendererParams<ITableData, number> & {
 	activeRowId: number;
-	basket: IOrderBasket[];
+	basket: OrderBasket.Order[];
 	addSymbolToBasket: (data: Option.Root, side: TBsSides) => void;
 	addSymbolToWatchlist: (data: Option.Root) => void;
 	addAlert: (data: Option.Root) => void;
@@ -177,7 +177,10 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 	isInBasket(side: 'buy' | 'sell') {
 		try {
 			const { basket, data } = this.params;
-			return basket.findIndex((item) => data![side]?.symbolInfo.symbolISIN === item.symbolISIN) > -1;
+			return (
+				basket.findIndex((item) => data![side]?.symbolInfo.symbolISIN === item.symbol.symbolInfo.symbolISIN) >
+				-1
+			);
 		} catch (e) {
 			return false;
 		}
