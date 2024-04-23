@@ -680,7 +680,13 @@
 		"most_loss": "بیشترین ضرر",
 		"required_budget": "بودجه مورد نیاز",
 		"profit_probability": "احتمال سود",
-		"required_margin": "وجه تضمین مورد نیاز"
+		"required_margin": "وجه تضمین مورد نیاز",
+		"symbolTitle": "نماد",
+		"delta": "دلتا",
+		"theta": "تتا",
+		"gama": "گاما",
+		"vega": "وگا",
+		"rho": "رو"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",

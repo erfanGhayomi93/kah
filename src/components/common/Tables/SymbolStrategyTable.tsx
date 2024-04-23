@@ -70,14 +70,18 @@ const SymbolStrategyTable = ({
 		return selectedContracts.findIndex((item) => item.id === id) > -1;
 	};
 
-	const isAllContractsSelected = selectedContracts.length === contracts.length;
+	const isAllContractsSelected = contracts.length > 0 && selectedContracts.length === contracts.length;
 
 	return (
 		<table style={{ borderSpacing: spacing ?? '8px 16px' }} className={styles.table}>
 			<thead className={styles.thead}>
 				<tr className={styles.tr}>
 					<th className={styles.th} style={{ width: '2.4rem' }}>
-						<Checkbox checked={isAllContractsSelected} onChange={toggleAll} />
+						<Checkbox
+							disabled={contracts.length === 0}
+							checked={isAllContractsSelected}
+							onChange={toggleAll}
+						/>
 					</th>
 					<th className={styles.th} style={{ width: '4rem' }}>
 						{t('symbol_strategy.side')}
@@ -148,7 +152,7 @@ const SymbolStrategy = ({
 	};
 
 	const openSymbolInfo = () => {
-		dispatch(setSymbolInfoPanel(symbol.symbolISIN));
+		dispatch(setSymbolInfoPanel(symbol.symbolInfo.symbolISIN));
 	};
 
 	return (
@@ -171,7 +175,7 @@ const SymbolStrategy = ({
 			</td>
 
 			<td onClick={openSymbolInfo} className={clsx(styles.td, 'cursor-pointer')}>
-				<span className='text-gray-1000'>{symbol.symbolTitle}</span>
+				<span className='text-gray-1000'>{symbol.symbolInfo.symbolTitle}</span>
 			</td>
 
 			<td className={styles.td}>
@@ -183,7 +187,10 @@ const SymbolStrategy = ({
 			</td>
 
 			<td className={styles.td}>
-				<div className='w-full flex-1 flex-justify-center'>
+				<div
+					onCopy={(e) => copyNumberToClipboard(e, strikePrice)}
+					className='w-full flex-1 flex-justify-center'
+				>
 					<span className='text-gray-1000'>{sepNumbers(String(strikePrice ?? 0))}</span>
 				</div>
 			</td>
@@ -196,6 +203,7 @@ const SymbolStrategy = ({
 
 			<td className={styles.td}>
 				<input
+					maxLength={16}
 					onCopy={(e) => copyNumberToClipboard(e, price)}
 					type='text'
 					name='price'
@@ -208,6 +216,7 @@ const SymbolStrategy = ({
 
 			<td className={styles.td}>
 				<input
+					maxLength={9}
 					onCopy={(e) => copyNumberToClipboard(e, quantity)}
 					type='text'
 					name='quantity'

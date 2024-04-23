@@ -253,4 +253,13 @@ export const initialDashboardGrid: IDashboardGrid[] = [
 	{ id: 'due_dates', w: 1, h: 376, hidden: false, i: 16 },
 ];
 
+export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
+	symbols: [],
+	type: [],
+	status: [],
+	dueDays: [0, 365],
+	delta: [-1, 1],
+	minimumTradesValue: '',
+};
+
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];

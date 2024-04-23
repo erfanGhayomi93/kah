@@ -273,10 +273,7 @@ declare interface ISymbolStrategyContract {
 	settlementDay: Date | number | string;
 	type: TOptionSides;
 	side: TBsSides;
-	symbol: {
-		symbolTitle: string;
-		symbolISIN: string;
-	};
+	symbol: Option.Root;
 	commission?: {
 		value: number;
 		checked: boolean;
