@@ -186,10 +186,10 @@ const Basket = () => {
 			const item = selectedContracts[index];
 			if (!item) throw new Error('Item not found!');
 
-			if (!item.symbol.symbolISIN) throw new Error('symbolISIN not found!');
+			if (!item.symbol.symbolInfo.symbolISIN) throw new Error('symbolISIN not found!');
 
 			const uuid = await createOrder({
-				symbolISIN: item.symbol.symbolISIN,
+				symbolISIN: item.symbol.symbolInfo.symbolISIN,
 				quantity: item.quantity,
 				price: item.price,
 				orderSide: item.side,

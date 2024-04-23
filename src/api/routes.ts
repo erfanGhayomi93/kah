@@ -8,7 +8,7 @@ const URL = {
 	oauth: {
 		preprd: 'https://ramandoauth-preprd.ramandtech.com',
 		stage: 'https://ramandoauth-stage.ramandtech.com',
-		prod: 'https://ramandoauth-preprd.ramandtech.com',
+		prod: 'https://ramandoauth.ramandtech.com',
 	},
 
 	rlc: {
