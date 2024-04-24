@@ -93,6 +93,8 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 		symbolISIN: string;
 	};
 	contracts: OrderBasket.Order[];
+	onContractsAdded?: (contract: OrderBasket.Order[]) => void;
+	onContractRemoved?: (contract: OrderBasket.Order) => void;
 }
 
 export type ModalState = TBaseModalProps<{

@@ -70,22 +70,9 @@ export const getRndInteger = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export const getNestedValue = (obj: NestedObject, key: string) => {
-	const keys = key.split('.');
-
-	return keys.reduce<NestedObject | string | number | undefined>((acc, currentKey) => {
-		return acc && typeof acc === 'object' && currentKey in acc ? acc[currentKey] : undefined;
-	}, obj);
-};
-
 export const negativeValueFormatter = (value: number) => {
 	if (value >= 0) return String(value);
 	return `(${value})`;
-};
-
-export const minusFormatter = (value: number) => {
-	if (value >= 0) return String(value);
-	return `−${Math.abs(value)}`;
 };
 
 export const rialToToman = (value: number) => {

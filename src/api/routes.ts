@@ -18,9 +18,9 @@ const URL = {
 	},
 };
 
-const oauthUrl = isDev ? URL.oauth.preprd : isStage ? URL.oauth.stage : isPre ? URL.oauth.preprd : URL.oauth.prod;
+const oauthUrl = isDev ? URL.oauth.stage : isStage ? URL.oauth.stage : isPre ? URL.oauth.preprd : URL.oauth.prod;
 
-const rlcUrl = isDev ? URL.rlc.preprd : isStage ? URL.rlc.stage : isPre ? URL.rlc.preprd : URL.rlc.prod;
+const rlcUrl = isDev ? URL.rlc.stage : isStage ? URL.rlc.stage : isPre ? URL.rlc.preprd : URL.rlc.prod;
 
 const routes = {
 	pushengine: isStage ? 'https://pushengine-stage.ramandtech.com' : 'https://pushengine.ramandtech.com',
