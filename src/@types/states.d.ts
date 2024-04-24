@@ -210,6 +210,22 @@ declare interface IBsModalInputs {
 	holdAfterOrder: boolean;
 }
 
+declare interface IAnalyzeModalInputs {
+	chartData: Array<Record<'x' | 'y', number>>;
+	minPrice: number;
+	maxPrice: number;
+	mostProfit: number;
+	mostLoss: number;
+	baseAssets: number;
+	bep: number;
+	budget: number;
+	profitProbability: number;
+	timeValue: number;
+	risk: number;
+	requiredMargin: number;
+	withCommission: boolean;
+}
+
 declare type TSetBsModalInputs = <
 	T extends
 		| Partial<IBsModalInputs>

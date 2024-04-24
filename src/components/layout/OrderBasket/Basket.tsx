@@ -7,6 +7,7 @@ import { setAnalyzeModal, setChoiceBrokerModal, setConfirmModal, setLoginModal }
 import {
 	getIsLoggedIn,
 	getOrderBasket,
+	removeOrderBasketOrder,
 	setBrokerIsSelected,
 	setOrderBasket,
 	setOrderBasketOrders,
@@ -60,10 +61,18 @@ const Basket = () => {
 
 	const [isMaximized, setIsMaximized] = useState(true);
 
-	const [selectedContracts, setSelectedContracts] = useState<OrderBasket.Order[]>([]);
+	const [selectedContracts, setSelectedContracts] = useState<string[]>([]);
 
 	const close = () => {
 		dispatch(setOrderBasket(null));
+	};
+
+	const onContractsAdded = (contracts: OrderBasket.Order[]) => {
+		dispatch(setOrderBasketOrders([...basketOrders, ...contracts]));
+	};
+
+	const onContractRemoved = (contract: OrderBasket.Order) => {
+		removeOrder(contract.id);
 	};
 
 	const analyze = () => {
@@ -74,6 +83,8 @@ const Basket = () => {
 					symbolISIN: baseSymbol.symbolISIN,
 				},
 				contracts: basketOrders ?? [],
+				onContractsAdded,
+				onContractRemoved,
 			}),
 		);
 	};
@@ -81,6 +92,20 @@ const Basket = () => {
 	const showLoginModal = () => dispatch(setLoginModal({}));
 
 	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
+
+	const getSelectedContracts = () => {
+		const result: OrderBasket.Order[] = [];
+
+		for (let i = 0; i < selectedContracts.length; i++) {
+			const orderId = selectedContracts[i];
+			const order = basketOrders.find((order) => order.id === orderId);
+			if (!order) return;
+
+			result.push(order);
+		}
+
+		return result;
+	};
 
 	const onClose = () => {
 		if (basketOrders.length === 1) close();
@@ -103,13 +128,9 @@ const Basket = () => {
 		setIsMaximized(!isMaximized);
 	};
 
-	const filterBasketItems = (itemId: string) => (item: OrderBasket.Order) => {
-		return item.id !== itemId;
-	};
-
 	const removeOrder = (id: string) => {
-		dispatch(setOrderBasketOrders(basketOrders.filter(filterBasketItems(id))));
-		setSelectedContracts((prev) => prev.filter(filterBasketItems(id)));
+		dispatch(removeOrderBasketOrder(id));
+		setSelectedContracts((prev) => prev.filter((orderId) => orderId !== id));
 	};
 
 	const validation = () => {
@@ -135,7 +156,7 @@ const Basket = () => {
 			try {
 				validation();
 
-				basketSnapshot.current = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
+				basketSnapshot.current = JSON.parse(JSON.stringify(getSelectedContracts())) as OrderBasket.Order[];
 
 				setSubmitting(true);
 				sendOrder(0);
@@ -183,7 +204,7 @@ const Basket = () => {
 
 	const sendOrder = async (index: number) => {
 		try {
-			const item = selectedContracts[index];
+			const item = basketSnapshot.current[index];
 			if (!item) throw new Error('Item not found!');
 
 			if (!item.symbol.symbolInfo.symbolISIN) throw new Error('symbolISIN not found!');
@@ -207,17 +228,16 @@ const Basket = () => {
 		}
 	};
 
-	const setOrderProperty = <T extends keyof OrderBasket.Order>(
-		id: string,
-		property: T,
-		value: OrderBasket.Order[T],
-	) => {
+	const setOrderProperties = (id: string, values: Partial<OrderBasket.Order>) => {
 		const orders = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
 
 		const orderIndex = orders.findIndex((item) => item.id === id);
 		if (orderIndex === -1) return;
 
-		orders[orderIndex][property] = value;
+		orders[orderIndex] = {
+			...orders[orderIndex],
+			...values,
+		};
 
 		dispatch(setOrderBasketOrders(orders));
 	};
@@ -237,9 +257,9 @@ const Basket = () => {
 		const lastItem = basketOrders[basketOrders.length - 1];
 		if (!lastItem) return;
 
-		if (selectedContracts.findIndex((item) => item.id === lastItem.id) > -1) return;
+		if (selectedContracts.findIndex((orderId) => orderId === lastItem.id) > -1) return;
 
-		setSelectedContracts([...selectedContracts, lastItem]);
+		setSelectedContracts([...selectedContracts, lastItem.id]);
 	}, [basketOrders.length]);
 
 	return (
@@ -314,9 +334,8 @@ const Basket = () => {
 								selectedContracts={selectedContracts}
 								contracts={basketOrders}
 								onSelectionChanged={setSelectedContracts}
-								onChangePrice={(id, value) => setOrderProperty(id, 'price', value)}
-								onChangeQuantity={(id, value) => setOrderProperty(id, 'quantity', value)}
-								onSideChange={(id, value) => setOrderProperty(id, 'side', value)}
+								onChange={(id, v) => setOrderProperties(id, v)}
+								onSideChange={(id, value) => setOrderProperties(id, { side: value })}
 								onDelete={removeOrder}
 							/>
 						</div>

@@ -59,7 +59,9 @@
 		"required_margin": "وجه تضمین",
 		"commission": "کارمزد",
 		"call": "اختیار خرید",
-		"put": "اختیار فروش"
+		"put": "اختیار فروش",
+		"remove": "حذف",
+		"mor_info": "اطلاعات بیشتر"
 	},
 	"home": {
 		"market_view": "نمای بازار",
@@ -686,7 +688,12 @@
 		"theta": "تتا",
 		"gama": "گاما",
 		"vega": "وگا",
-		"rho": "رو"
+		"rho": "رو",
+		"predicted_loss": "ضرر پیش بینی شده",
+		"base_assets": "دارایی پایه",
+		"base_symbol_price_range": "بازه قیمت پایه",
+		"from_price": "از قیمت",
+		"to_price": "تا قیمت"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
