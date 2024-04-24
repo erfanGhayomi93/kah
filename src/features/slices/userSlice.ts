@@ -52,11 +52,27 @@ const userSlice = createSlice({
 				};
 			}
 		},
+
+		removeOrderBasketOrder: (state, { payload }: PayloadAction<string>) => {
+			if (state.orderBasket !== null) {
+				const orders = [...state.orderBasket.orders];
+				state.orderBasket = {
+					...state.orderBasket,
+					orders: orders.filter((order) => order.id !== payload),
+				};
+			}
+		},
 	},
 });
 
-export const { setIsLoggedIn, setIsLoggingIn, setOrderBasket, setBrokerIsSelected, setOrderBasketOrders } =
-	userSlice.actions;
+export const {
+	setIsLoggedIn,
+	setIsLoggingIn,
+	setOrderBasket,
+	setBrokerIsSelected,
+	setOrderBasketOrders,
+	removeOrderBasketOrder,
+} = userSlice.actions;
 
 export const getIsLoggedIn = (state: RootState) => state.user.loggedIn;
 export const getBrokerIsSelected = (state: RootState) => state.user.brokerIsSelected;
