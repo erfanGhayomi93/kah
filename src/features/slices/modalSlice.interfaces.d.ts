@@ -51,9 +51,29 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 
 export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
 
-export interface IOrderDetailsModal extends IBaseModalConfiguration {
-	order: Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
+export interface IOrderDetails {
+	type: 'order';
+	data: Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
 }
+
+export interface IOptionDetails {
+	type: 'option';
+	data: {
+		quantity: number;
+		price: number;
+		strikePrice: number;
+		contractSize: number;
+		settlementDay: Date | number | string;
+		type: TOptionSides;
+		side: TBsSides;
+		symbolTitle: string;
+		requiredMargin: number;
+		strikeCommission: number;
+		tradeCommission: number;
+	};
+}
+
+export type TOrderDetailsModal = IBaseModalConfiguration & (IOrderDetails | IOptionDetails);
 
 export interface IMoveSymbolToWatchlistModal extends IBaseModalConfiguration {
 	symbolTitle: string;
@@ -93,8 +113,8 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 		symbolISIN: string;
 	};
 	contracts: OrderBasket.Order[];
-	onContractsAdded?: (contract: OrderBasket.Order[]) => void;
-	onContractRemoved?: (contract: OrderBasket.Order) => void;
+	onContractsChanged?: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
+	onContractRemoved?: (id: string) => void;
 }
 
 export type ModalState = TBaseModalProps<{
@@ -105,7 +125,7 @@ export type ModalState = TBaseModalProps<{
 	confirm: IConfirmModal;
 	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
-	orderDetails: IOrderDetailsModal;
+	orderDetails: TOrderDetailsModal;
 	addNewOptionWatchlist: true;
 	manageOptionWatchlistList: true;
 	addSymbolToWatchlist: true;

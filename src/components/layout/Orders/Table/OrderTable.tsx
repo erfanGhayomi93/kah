@@ -81,7 +81,8 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 	const showDetails = (order: TOrders) => {
 		dispatch(
 			setOrderDetailsModal({
-				order,
+				type: 'order',
+				data: order,
 			}),
 		);
 	};

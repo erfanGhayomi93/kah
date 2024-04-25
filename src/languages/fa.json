@@ -38,7 +38,6 @@
 		"logout_broker_description": "پس از خروج از حساب، عملیات معاملاتی مرتبط با کارگزاری امکان پذیر نخواهد بود.",
 		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
-		"black_scholes": "ماشین حساب",
 		"session_history": "تاریخچه ورود و خروج",
 		"setting": "تنظیمات",
 		"status": "وضعیت",
@@ -59,9 +58,7 @@
 		"required_margin": "وجه تضمین",
 		"commission": "کارمزد",
 		"call": "اختیار خرید",
-		"put": "اختیار فروش",
-		"remove": "حذف",
-		"mor_info": "اطلاعات بیشتر"
+		"put": "اختیار فروش"
 	},
 	"home": {
 		"market_view": "نمای بازار",
@@ -251,8 +248,6 @@
 		"price_label": "قیمت",
 		"market_depth": "عمق بازار",
 		"chart": "نمودار",
-		"asset_value": "{v} دارایی",
-		"purchase_power_value": "{v} قدرت خرید",
 		"trade_value_label": "ارزش معامله",
 		"total_amount": "مبلغ کل سفارش",
 		"stock_collateral": "وثیقه با سهم",
@@ -573,8 +568,6 @@
 		"open_position_count": "موقعیت‌های باز",
 		"implied_volatility": "IV",
 		"iotm": "وضعیت",
-		"add_new_watchlist": "افزودن دیده‌بان جدید",
-		"manage_watchlist_list": "مدیریت دیده‌بان‌ها",
 		"black_scholes": "بلک شولز",
 		"trade_volume": "حجم",
 		"due_days": "روز مانده",
@@ -693,7 +686,11 @@
 		"base_assets": "دارایی پایه",
 		"base_symbol_price_range": "بازه قیمت پایه",
 		"from_price": "از قیمت",
-		"to_price": "تا قیمت"
+		"to_price": "تا قیمت",
+		"base_symbol_price": "قیمت دارایی پایه",
+		"current_base_price_distance": "فاصله تا قیمت فعلی سهم پایه",
+		"rial_efficiency": "بازده ریالی",
+		"ytm": "YTM بازده موثر سالانه"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
@@ -822,9 +819,9 @@
 		"The_Investor_Has_Been_Suspended_By_CSD": "مشتری از سپرده گذاری مسدود شده است.",
 		"Not_Enough_Remain": "مانده کافی نمی باشد"
 	},
-	"order_details": {
+	"order_details_modal": {
 		"title": "جزئیات سفارش {title}",
-		"order_side": "نوع سفارش",
+		"order_side": "سمت",
 		"order_status": "وضعیت سفارش",
 		"guarantee_type": "روش ضمانت",
 		"quantity_and_executed_orders": "تعداد / (انجام‌شده)",
@@ -832,12 +829,22 @@
 		"price": "قیمت",
 		"stock": "سهم",
 		"amount": "مبلغ",
+		"symbol": "نماد",
 		"commission": "کارمزد",
 		"validity": "معتبر تا",
 		"change_guarantee_type": "تغییر روش ضمانت",
 		"close_position": "بستن موقعیت",
 		"cancel_order": "لغو سفارش",
-		"edit": "ویرایش"
+		"edit": "ویرایش",
+		"type": "نوع",
+		"end_date": "سررسید",
+		"strike_price": "قیمت اعمال (ریال)",
+		"contract_size": "اندازه قرارداد",
+		"required_margin": "وجه تضمین",
+		"trade_commission": "کارمزد معامله",
+		"strike_commission": "کارمزد اعمال",
+		"call": "اختیار خرید",
+		"put": "اختیار فروش"
 	},
 	"exchange": {
 		"Exchange": "بورس",
@@ -851,6 +858,17 @@
 		"EnergyExchange": "بورس انرژی",
 		"undefined": "تعریف نشده",
 		"null": "تعریف نشده"
+	},
+	"tooltip": {
+		"asset_value": "{v} دارایی",
+		"purchase_power_value": "{v} قدرت خرید",
+		"send_all_selected_orders": "ارسال سفارشات انتخاب شده",
+		"remove_all_selected_orders": "حذف سفارشات انتخاب شده",
+		"more_info": "اطلاعات بیشتر",
+		"remove": "حذف",
+		"black_scholes": "ماشین حساب",
+		"add_new_watchlist": "افزودن دیده‌بان جدید",
+		"manage_watchlist_list": "مدیریت دیده‌بان‌ها"
 	},
 	"alerts": {
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",

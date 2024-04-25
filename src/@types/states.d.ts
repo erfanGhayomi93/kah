@@ -217,7 +217,7 @@ declare interface IAnalyzeModalInputs {
 	mostProfit: number;
 	mostLoss: number;
 	baseAssets: number;
-	bep: number;
+	bep: Record<'x' | 'y', number>;
 	budget: number;
 	profitProbability: number;
 	timeValue: number;
@@ -290,14 +290,14 @@ declare interface ISymbolStrategyContract {
 	type: TOptionSides;
 	side: TBsSides;
 	symbol: Option.Root;
-	commission?: {
+	commission: {
 		value: number;
-		checked: boolean;
-		onChecked: (checked: boolean) => void;
+		checked?: boolean;
+		onChecked?: (checked: boolean) => void;
 	};
-	requiredMargin?: {
+	requiredMargin: {
 		value: number;
-		checked: boolean;
-		onChecked: (checked: boolean) => void;
+		checked?: boolean;
+		onChecked?: (checked: boolean) => void;
 	};
 }
