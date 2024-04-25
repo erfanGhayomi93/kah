@@ -3,7 +3,7 @@ import styles from './Radiobox.module.scss';
 
 interface ICheckboxProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'checked' | 'onChange'> {
-	classes?: RecordClasses<'root' | 'radiobox' | 'checked' | 'label' | 'text'>;
+	classes?: RecordClasses<'root' | 'active' | 'radiobox' | 'checked' | 'label' | 'text'>;
 	label?: string | number;
 	disabled?: boolean;
 	checked: boolean;
@@ -22,7 +22,11 @@ const Radiobox = ({ classes, disabled, onChange, checked, label, ...props }: ICh
 					{...props}
 				/>
 
-				{label && <span className={cn(styles.text, classes?.text)}>{label}</span>}
+				{label && (
+					<span className={cn(styles.text, classes?.text, checked && [styles.active, classes?.active])}>
+						{label}
+					</span>
+				)}
 			</label>
 		</div>
 	);

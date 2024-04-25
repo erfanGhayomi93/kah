@@ -140,9 +140,9 @@ const AppChart = ({ options, height = '100%', series, type = 'area', width = '10
 						type: 'vertical',
 						colorStops: [
 							{
-								offset: 20,
+								offset: 40,
 								color: colors[0],
-								opacity: 0.2,
+								opacity: 0.25,
 							},
 							{
 								offset: 100,

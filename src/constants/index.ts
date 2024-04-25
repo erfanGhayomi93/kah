@@ -255,4 +255,14 @@ export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
 	minimumTradesValue: '',
 };
 
+export const dateTypesAPI: Record<
+	'daily' | 'weekly' | 'monthly' | 'yearly',
+	'Today' | 'Weekly' | 'Monthly' | 'Yearly'
+> = {
+	daily: 'Today',
+	weekly: 'Weekly',
+	monthly: 'Monthly',
+	yearly: 'Yearly',
+};
+
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];
