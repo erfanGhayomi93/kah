@@ -217,7 +217,7 @@ declare interface IAnalyzeModalInputs {
 	mostProfit: number;
 	mostLoss: number;
 	baseAssets: number;
-	bep: number;
+	bep: Record<'x' | 'y', number>;
 	budget: number;
 	profitProbability: number;
 	timeValue: number;
