@@ -301,3 +301,8 @@ declare interface ISymbolStrategyContract {
 		onChecked?: (checked: boolean) => void;
 	};
 }
+
+declare interface ISymbolChartStates {
+	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
+	type: 'linear' | 'candle';
+}
