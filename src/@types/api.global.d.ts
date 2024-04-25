@@ -19,3 +19,5 @@ declare interface PaginationParams {
 	hasPreviousPage: boolean;
 	hasNextPage: boolean;
 }
+
+declare type APIEndpoints = Record<'oauth' | 'rlc' | 'pushengine', string>;

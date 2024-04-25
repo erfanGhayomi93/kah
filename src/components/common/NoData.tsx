@@ -13,10 +13,9 @@ const NoData = ({ text, imgSrc }: NoDataProps) => {
 		<div className='size-full flex-justify-center'>
 			<div className='items-center flex-column'>
 				<Image
-					loading='lazy'
+					priority
 					width='118'
 					height='118'
-					quality='100'
 					alt='no data'
 					src={imgSrc ?? '/static/images/search-file.png'}
 				/>

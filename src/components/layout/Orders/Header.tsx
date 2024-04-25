@@ -1,5 +1,6 @@
 import { useBrokerOrdersCountQuery } from '@/api/queries/brokerPrivateQueries';
 import ipcMain from '@/classes/IpcMain';
+import Tooltip from '@/components/common/Tooltip';
 import { ArrowUpSVG, SendFillSVG, TrashFillSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setConfirmModal } from '@/features/slices/modalSlice';
@@ -170,19 +171,25 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 				{isExpand && !['option_orders', 'executed_orders'].includes(tab) && (
 					<>
 						<li>
-							<button onClick={onDeleteAll} disabled={selectedRows.length === 0} type='button'>
-								<TrashFillSVG width='2rem' height='2rem' />
-								{selectedRows.length > 0 && <span className={styles.badge}>{selectedRows.length}</span>}
-							</button>
-						</li>
-						{tab === 'draft' && (
-							<li>
-								<button onClick={onSendAll} disabled={selectedRows.length === 0} type='button'>
-									<SendFillSVG width='2rem' height='2rem' />
+							<Tooltip content={t('tooltip.remove_all_selected_orders')}>
+								<button onClick={onDeleteAll} disabled={selectedRows.length === 0} type='button'>
+									<TrashFillSVG width='2rem' height='2rem' />
 									{selectedRows.length > 0 && (
 										<span className={styles.badge}>{selectedRows.length}</span>
 									)}
 								</button>
+							</Tooltip>
+						</li>
+						{tab === 'draft' && (
+							<li>
+								<Tooltip content={t('tooltip.send_all_selected_orders')}>
+									<button onClick={onSendAll} disabled={selectedRows.length === 0} type='button'>
+										<SendFillSVG width='2rem' height='2rem' />
+										{selectedRows.length > 0 && (
+											<span className={styles.badge}>{selectedRows.length}</span>
+										)}
+									</button>
+								</Tooltip>
 							</li>
 						)}
 					</>
