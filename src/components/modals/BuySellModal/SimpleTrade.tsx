@@ -25,7 +25,7 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 				<Tooltip
 					key={p}
 					placement='bottom'
-					content={t(`bs_modal.${side === 'buy' ? 'purchase_power_value' : 'asset_value'}`, {
+					content={t(`tooltip.${side === 'buy' ? 'purchase_power_value' : 'asset_value'}`, {
 						v: `${p}%`,
 					})}
 				>
@@ -183,7 +183,7 @@ const SimpleTrade = ({
 								'h-full rounded border transition-colors flex-justify-center',
 								priceLock
 									? 'border-primary-400 bg-secondary-100 text-primary-400'
-									: 'hover:btn-hover border-gray-500 bg-white text-gray-900',
+									: 'border-gray-500 bg-white text-gray-900 hover:btn-hover',
 							)}
 							type='button'
 							onClick={() => setInputValue('priceLock', !priceLock)}

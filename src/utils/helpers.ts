@@ -1,5 +1,5 @@
 import { onUnauthorize } from '@/api/axios';
-import { getDateMilliseconds } from '@/constants';
+import { DateAsMilliseconds, Environment } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
@@ -335,9 +335,9 @@ export const toISOStringWithoutChangeTime = (d: Date): string => {
 export const dateConverter = (v: 'Week' | 'Month' | 'Year') => {
 	let timestamp = Date.now();
 
-	if (v === 'Week') timestamp += getDateMilliseconds.Week;
-	else if (v === 'Month') timestamp += getDateMilliseconds.Month;
-	else if (v === 'Year') timestamp += getDateMilliseconds.Year;
+	if (v === 'Week') timestamp += DateAsMilliseconds.Week;
+	else if (v === 'Month') timestamp += DateAsMilliseconds.Month;
+	else if (v === 'Year') timestamp += DateAsMilliseconds.Year;
 
 	return timestamp;
 };
@@ -410,10 +410,10 @@ export const toFixed = (v: number, l = 3, round = true) => {
 	const value = v.toFixed(l);
 	const [integer, decimal] = value.split('.');
 
-	const decimalAsNumber = Number(decimal) * 1;
+	const decimalAsNumber = Number(`.${decimal}`) * 1;
 	if (!decimalAsNumber) return sepNumbers(integer);
 
-	return sepNumbers(integer) + '.' + (round ? decimalAsNumber : decimal);
+	return sepNumbers(integer) + '.' + (round ? String(decimalAsNumber).slice(2) : decimal);
 };
 
 export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boolean) => {
@@ -438,4 +438,42 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
 	strikePrice: symbol.symbolInfo.strikePrice,
 	side,
+	commission: {
+		value: 0,
+	},
+	requiredMargin: {
+		value: symbol.optionWatchlistData.requiredMargin,
+	},
 });
+
+export const getEnvironment = (): Environment.DEV | Environment.STAGE | Environment.PREPROD | Environment.PROD => {
+	if (URLIsValid('stage')) return Environment.STAGE;
+	if (URLIsValid('localhost')) return Environment.DEV;
+	if (URLIsValid('preprd')) return Environment.PREPROD;
+
+	return Environment.PROD;
+};
+
+export const getAPIEndpoints = (env: Environment): APIEndpoints => {
+	switch (env) {
+		case Environment.STAGE:
+			return {
+				pushengine: 'https://pushengine-stage.ramandtech.com',
+				oauth: 'https://ramandoauth-stage.ramandtech.com',
+				rlc: 'https://kahkeshanapi-stage.ramandtech.com',
+			};
+		case Environment.DEV:
+		case Environment.PREPROD:
+			return {
+				pushengine: 'https://pushengine.ramandtech.com',
+				oauth: 'https://ramandoauth-preprd.ramandtech.com',
+				rlc: 'https://kahkeshanapi-preprd.ramandtech.com',
+			};
+		case Environment.PROD:
+			return {
+				pushengine: 'https://pushengine.ramandtech.com',
+				oauth: 'https://ramandoauth.ramandtech.com',
+				rlc: 'https://kahkeshanapi.ramandtech.com',
+			};
+	}
+};

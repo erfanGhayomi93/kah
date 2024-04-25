@@ -17,12 +17,10 @@ import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 
 const PerformanceChart = dynamic(() => import('./PerformanceChart'), {
-	ssr: false,
 	loading: () => <Loading />,
 });
 
 const GreeksTable = dynamic(() => import('./GreeksTable'), {
-	ssr: false,
 	loading: () => <Loading />,
 });
 
@@ -47,7 +45,7 @@ interface NoContractExistsProps {
 interface AnalyzeProps extends IAnalyzeModal {}
 
 const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
-	({ symbol, contracts, onContractsAdded, onContractRemoved, ...props }, ref) => {
+	({ symbol, contracts, onContractsChanged, onContractRemoved, ...props }, ref) => {
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
@@ -63,7 +61,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			mostProfit: 0,
 			mostLoss: 0,
 			baseAssets: 0,
-			bep: 0,
+			bep: { x: 0, y: 0 },
 			budget: 0,
 			profitProbability: 0,
 			timeValue: 0,
@@ -91,13 +89,13 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				}
 
 				setSymbolContracts(result);
-				onContractsAdded?.(result);
+				onContractsChanged?.(contracts, baseSymbolISIN);
 			} catch (e) {
 				//
 			}
 		};
 
-		const addNewStrategy = () => {
+		const addNewContracts = () => {
 			dispatch(
 				setSelectSymbolContractsModal({
 					symbol,
@@ -132,11 +130,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 			if (removedOrderIndex > -1) {
 				const orders = JSON.parse(JSON.stringify(symbolContracts)) as typeof symbolContracts;
-				const order = orders[removedOrderIndex];
 				orders.splice(removedOrderIndex, 1);
 
 				setSymbolContracts(orders);
-				onContractRemoved?.(order);
+				onContractRemoved?.(id);
 			}
 		};
 
@@ -222,7 +219,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				const lowPrice = newStates.minPrice;
 				const highPrice = newStates.maxPrice;
 				const diff = Math.round((highPrice - lowPrice) / 20);
-				const n = 1;
 
 				const fakeData: IAnalyzeModalInputs['chartData'] = [];
 
@@ -237,17 +233,18 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					} = item;
 
 					let index = 0;
-					for (let j = lowPrice; j <= highPrice; j += n) {
+					for (let j = lowPrice; j <= highPrice; j++) {
 						const iv = intrinsicValue(strikePrice, j, contractType);
-						const previousY = newStates.chartData[index]?.y ?? 0;
+						const previousY = fakeData[index]?.y ?? 0;
 						const y = previousY + pnl(iv, price, item.side);
 
-						if (y === 0) newStates.bep = j;
-
-						fakeData[index] = {
-							x: j,
-							y,
-						};
+						if (y === 0) newStates.bep = { x: j, y: 0 };
+						else {
+							fakeData[index] = {
+								x: j,
+								y,
+							};
+						}
 
 						index++;
 					}
@@ -298,7 +295,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 								<div className='flex pl-28 pr-56 flex-justify-between'>
 									<button
 										type='button'
-										onClick={addNewStrategy}
+										onClick={addNewContracts}
 										className='size-40 rounded btn-primary'
 									>
 										<PlusSVG width='2rem' height='2rem' />
@@ -344,7 +341,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 											/>
 											<StrategyInfoItem
 												title={t('analyze_modal.break_even_point')}
-												value={`${sepNumbers(String(inputs.bep))} (0.1%)`}
+												value={`${sepNumbers(String(inputs.bep.x))} (0.1%)`}
 											/>
 											<StrategyInfoItem title={t('analyze_modal.risk')} value='22,509 (0.1%)' />
 											<StrategyInfoItem
@@ -390,7 +387,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 						</div>
 					) : (
 						<div className='relative flex-1 flex-justify-center'>
-							<NoContractExists addNewStrategy={addNewStrategy} />
+							<NoContractExists addNewStrategy={addNewContracts} />
 						</div>
 					)}
 				</Div>

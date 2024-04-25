@@ -120,7 +120,7 @@ const WatchlistList = () => {
 
 			<ul className='flex flex-grow-0 gap-8'>
 				<li>
-					<Tooltip placement='top' content={t('option_page.add_new_watchlist')}>
+					<Tooltip placement='top' content={t('tooltip.add_new_watchlist')}>
 						<button
 							type='button'
 							className='size-40 rounded border border-gray-500 text-gray-1000 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
@@ -132,7 +132,7 @@ const WatchlistList = () => {
 				</li>
 
 				<li>
-					<Tooltip placement='top' content={t('option_page.manage_watchlist_list')}>
+					<Tooltip placement='top' content={t('tooltip.manage_watchlist_list')}>
 						<button
 							type='button'
 							onClick={manageWatchlistList}

@@ -143,13 +143,6 @@ export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 	},
 ];
 
-export const getDateMilliseconds = {
-	Day: 864e5,
-	Week: 6048e5,
-	Month: 2592e6,
-	Year: 31536e6,
-};
-
 export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	{
 		id: 'option_detail',
