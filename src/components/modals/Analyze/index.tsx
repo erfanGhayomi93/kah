@@ -47,7 +47,7 @@ interface NoContractExistsProps {
 interface AnalyzeProps extends IAnalyzeModal {}
 
 const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
-	({ symbol, contracts, onContractsAdded, onContractRemoved, ...props }, ref) => {
+	({ symbol, contracts, onContractsChanged, onContractRemoved, ...props }, ref) => {
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
@@ -91,13 +91,13 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				}
 
 				setSymbolContracts(result);
-				onContractsAdded?.(result);
+				onContractsChanged?.(contracts, baseSymbolISIN);
 			} catch (e) {
 				//
 			}
 		};
 
-		const addNewStrategy = () => {
+		const addNewContracts = () => {
 			dispatch(
 				setSelectSymbolContractsModal({
 					symbol,
@@ -132,11 +132,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 			if (removedOrderIndex > -1) {
 				const orders = JSON.parse(JSON.stringify(symbolContracts)) as typeof symbolContracts;
-				const order = orders[removedOrderIndex];
 				orders.splice(removedOrderIndex, 1);
 
 				setSymbolContracts(orders);
-				onContractRemoved?.(order);
+				onContractRemoved?.(id);
 			}
 		};
 
@@ -298,7 +297,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 								<div className='flex pl-28 pr-56 flex-justify-between'>
 									<button
 										type='button'
-										onClick={addNewStrategy}
+										onClick={addNewContracts}
 										className='size-40 rounded btn-primary'
 									>
 										<PlusSVG width='2rem' height='2rem' />
@@ -390,7 +389,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 						</div>
 					) : (
 						<div className='relative flex-1 flex-justify-center'>
-							<NoContractExists addNewStrategy={addNewStrategy} />
+							<NoContractExists addNewStrategy={addNewContracts} />
 						</div>
 					)}
 				</Div>

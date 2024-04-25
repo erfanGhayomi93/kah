@@ -1,3 +1,4 @@
+import { TooltipElement } from '@/classes/Tooltip';
 import { editableOrdersStatus } from '@/constants';
 import { type ICellRendererComp, type ICellRendererParams } from 'ag-grid-community';
 import ActionCell from './ActionCell';
@@ -15,6 +16,12 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 	params!: OrderActionCellProps;
 
 	eGui!: HTMLDivElement;
+
+	eDelete!: HTMLButtonElement;
+
+	eEdit!: HTMLButtonElement;
+
+	tooltip: TooltipElement | null = null;
 
 	init(params: OrderActionCellProps) {
 		this.params = params;
@@ -39,20 +46,10 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 	}
 
 	editBtn() {
-		const btn = this.createEdit();
-		const isEnable = this.editable;
+		this.eEdit = this.createEdit();
+		this.updateEditBtn();
 
-		if (!isEnable) {
-			btn.disabled = true;
-			btn.classList.add('text-gray-700');
-		}
-
-		btn.onclick = (e) => {
-			e.stopPropagation();
-			if (isEnable) this.params.onEdit(this.params.data!);
-		};
-
-		return btn;
+		return this.eEdit;
 	}
 
 	copyBtn() {
@@ -66,20 +63,10 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 	}
 
 	deleteBtn() {
-		const btn = this.createTrash();
-		const isEnable = this.editable;
+		this.eDelete = this.createTrash();
+		this.updateDeleteBtn();
 
-		if (!isEnable) {
-			btn.disabled = true;
-			btn.classList.add('text-gray-700');
-		}
-
-		btn.onclick = (e) => {
-			e.stopPropagation();
-			if (isEnable) this.params.onDelete(this.params.data!);
-		};
-
-		return btn;
+		return this.eDelete;
 	}
 
 	getGui() {
@@ -88,7 +75,47 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 
 	refresh(params: OrderActionCellProps) {
 		this.params = params;
+		this.updateDeleteBtn();
+		this.updateEditBtn();
+
 		return true;
+	}
+
+	updateEditBtn() {
+		const isEnable = this.editable;
+
+		if (!isEnable) {
+			this.eEdit.disabled = true;
+			this.eEdit.classList.add('text-gray-700');
+			this.setTooltip(this.eEdit, 'غیرفعال');
+		}
+
+		this.eEdit.onclick = (e) => {
+			e.stopPropagation();
+			if (isEnable) this.params.onEdit(this.params.data!);
+		};
+	}
+
+	updateDeleteBtn() {
+		const isEnable = this.editable;
+
+		if (!isEnable) {
+			this.eDelete.disabled = true;
+			this.eDelete.classList.add('text-gray-700');
+			this.setTooltip(this.eDelete, 'غیرفعال');
+		}
+
+		this.eDelete.onclick = (e) => {
+			e.stopPropagation();
+			if (isEnable) this.params.onDelete(this.params.data!);
+		};
+	}
+
+	setTooltip(element: HTMLElement, content: string) {
+		if (!this.tooltip) this.tooltip = new TooltipElement(element);
+		else this.tooltip.element = element;
+
+		this.tooltip.setContent(content);
 	}
 
 	get editable() {

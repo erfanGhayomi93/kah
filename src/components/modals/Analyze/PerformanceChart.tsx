@@ -84,7 +84,12 @@ const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onCh
 						custom: ({ series, seriesIndex, dataPointIndex, w }) => {
 							const y = series[seriesIndex][dataPointIndex];
 
-							return '<div class="arrow_box">' + '<span>' + y + '</span>' + '</div>';
+							const li1 = `<li><span>${t('analyze_modal.base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(2700))}</span></li>`;
+							const li2 = `<li><span>${t('analyze_modal.current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(4650))}</span></li>`;
+							const li3 = `<li><span>${t('analyze_modal.rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(1200))} (2.45%)</span></li>`;
+							const li4 = `<li><span>${t('analyze_modal.ytm')}:</span><span class="ltr">${sepNumbers(String(125000))} (-2.6%)</span></li>`;
+
+							return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
 						},
 					},
 					xaxis: {
@@ -102,12 +107,12 @@ const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onCh
 						},
 					},
 					yaxis: {
-						min: (min) => min * 1.2,
-						max: (max) => max * 1.2,
+						min: (min) => min,
+						max: (max) => max,
 						tickAmount: 5,
 						floating: false,
 						labels: {
-							formatter: (value) => toFixed(Number(value), 0),
+							formatter: (value) => toFixed(Number(value), 2),
 						},
 					},
 					stroke: {

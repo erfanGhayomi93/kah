@@ -1,5 +1,6 @@
 import { InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
+import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useDebounce, useInputs } from '@/hooks';
 import dayjs from '@/libs/dayjs';
@@ -150,6 +151,8 @@ const SymbolStrategy = ({
 }: SymbolStrategyProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const { setDebounce } = useDebounce();
 
 	const { inputs, setFieldValue } = useInputs<IInput>({
@@ -157,7 +160,25 @@ const SymbolStrategy = ({
 		quantity,
 	});
 
-	const dispatch = useAppDispatch();
+	const showInfo = () => {
+		dispatch(
+			setOrderDetailsModal({
+				type: 'option',
+				data: {
+					...inputs,
+					contractSize,
+					settlementDay,
+					strikePrice,
+					requiredMargin: requiredMargin.value,
+					strikeCommission: 0.0005,
+					tradeCommission: commission.value,
+					side,
+					type,
+					symbolTitle: symbol.symbolInfo.symbolTitle,
+				},
+			}),
+		);
+	};
 
 	const dateFormatter = () => {
 		return dayjs(settlementDay).calendar('jalali').locale('fa').format('YYYY/MM/DD');
@@ -168,9 +189,11 @@ const SymbolStrategy = ({
 	};
 
 	useEffect(() => {
-		setDebounce(() => {
-			onChange(inputs);
-		}, 400);
+		if (inputs.price !== price || inputs.quantity !== quantity) {
+			setDebounce(() => {
+				onChange(inputs);
+			}, 400);
+		}
 	}, [inputs]);
 
 	return (
@@ -245,19 +268,19 @@ const SymbolStrategy = ({
 				/>
 			</td>
 
-			{requiredMargin && <td className={styles.td} />}
+			{requiredMargin?.checked && <td className={styles.td} />}
 
-			{commission && <td className={styles.td} />}
+			{commission?.checked && <td className={styles.td} />}
 
 			<td style={{ flex: '0 0 5.6rem' }} className={styles.td}>
 				<div className='gap-8 flex-justify-center'>
-					<Tooltip placement='bottom' content={t('symbol_strategy.mor_info')}>
-						<button type='button' className='icon-hover'>
+					<Tooltip placement='bottom' content={t('tooltip.more_info')}>
+						<button onClick={showInfo} type='button' className='icon-hover'>
 							<InfoCircleOutlineSVG className='2.4rem' height='2.4rem' />
 						</button>
 					</Tooltip>
 
-					<Tooltip placement='bottom' content={t('symbol_strategy.remove')}>
+					<Tooltip placement='bottom' content={t('tooltip.remove')}>
 						<button onClick={() => onDelete(id)} type='button' className='icon-hover'>
 							<TrashSVG className='2rem' height='2rem' />
 						</button>

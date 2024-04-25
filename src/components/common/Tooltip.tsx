@@ -29,10 +29,7 @@ const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
 
 		useEffect(
 			() => () => {
-				if (tooltipRef.current) {
-					tooltipRef.current.hide();
-					tooltipRef.current.abortController.abort();
-				}
+				if (tooltipRef.current) tooltipRef.current.destroy();
 			},
 			[],
 		);
