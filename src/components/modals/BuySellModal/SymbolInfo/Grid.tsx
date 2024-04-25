@@ -14,7 +14,7 @@ const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/Symbo
 	loading: () => <Loading />,
 });
 
-const SymbolLinearChart = dynamic(() => import('@/components/common/Symbol/SymbolLinearChart'), {
+const Chart = dynamic(() => import('./Chart'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -36,11 +36,7 @@ const Grid = ({ symbolISIN }: GridProps) => {
 			{
 				id: 'chart',
 				title: t('bs_modal.chart'),
-				render: () => (
-					<div className='relative flex-1 p-8'>
-						<SymbolLinearChart symbolISIN={symbolISIN} height='256px' />
-					</div>
-				),
+				render: () => <Chart symbolISIN={symbolISIN} />,
 			},
 		],
 		[],
