@@ -57,19 +57,19 @@ const TopBaseAssetsTable = () => {
 	const columnDefs = useMemo<Array<IColDef<ITableData>>>(
 		() => [
 			{
-				headerName: t('home.daily'),
+				headerName: t('dates.daily'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.today.symbolISIN),
 				valueFormatter: (row) => row.today.symbolTitle ?? '−',
 			},
 			{
-				headerName: t('home.weekly'),
+				headerName: t('dates.weekly'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.month.symbolISIN),
 				valueFormatter: (row) => row.month.symbolTitle ?? '−',
 			},
 			{
-				headerName: t('home.monthly'),
+				headerName: t('dates.monthly'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.week.symbolISIN),
 				valueFormatter: (row) => row.week.symbolTitle ?? '−',

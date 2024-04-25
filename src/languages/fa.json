@@ -138,9 +138,6 @@
 		"working_days_traded_count": "روزهای معامله شده",
 		"first_trade_date": "اولین روز معامله شده",
 		"detail": "جزئیات",
-		"daily": "روزانه",
-		"weekly": "هفتگی",
-		"monthly": "ماهانه",
 		"today_volume": "حجم امروز",
 		"today_value": "ارزش امروز",
 		"due_days": "روز مانده",
@@ -342,7 +339,9 @@
 		"contract_end_date": "تاریخ سررسید",
 		"contract_size": "اندازه قرارداد",
 		"open_position": "موقعیت باز",
-		"last_trade_date": "آخرین معامله"
+		"last_trade_date": "آخرین معامله",
+		"linear": "خطی",
+		"candle": "شمعی"
 	},
 	"same_sector_symbol": {
 		"symbol": "نماد",
@@ -858,6 +857,12 @@
 		"EnergyExchange": "بورس انرژی",
 		"undefined": "تعریف نشده",
 		"null": "تعریف نشده"
+	},
+	"dates": {
+		"daily": "روزانه",
+		"weekly": "هفتگی",
+		"monthly": "ماهانه",
+		"yearly": "سالانه"
 	},
 	"tooltip": {
 		"asset_value": "{v} دارایی",

@@ -1,21 +1,14 @@
-import { useSymbolChartDataQuery } from '@/api/queries/symbolQuery';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { useMemo } from 'react';
-import Loading from '../../panels/SymbolInfoPanel/common/Loading';
 import AppChart from '../AppChart';
-import NoData from '../NoData';
 
 interface SymbolLinearChartProps {
-	symbolISIN: string;
+	data: Symbol.ChartData[];
 	height?: number | string;
 }
 
-const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
-	const { data, isLoading } = useSymbolChartDataQuery({
-		queryKey: ['symbolChartDataQuery', symbolISIN, 'Today'],
-	});
-
+const SymbolLinearChart = ({ height, data }: SymbolLinearChartProps) => {
 	const dateFormatter = (v: string | number) => {
 		return dayjs(v).calendar('jalali').format('HH:mm');
 	};
@@ -28,10 +21,6 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 			y: item.c,
 		}));
 	}, [data]);
-
-	if (isLoading) return <Loading />;
-
-	if (!Array.isArray(data) || data.length === 0) return <NoData />;
 
 	return (
 		<AppChart
@@ -61,6 +50,7 @@ const SymbolLinearChart = ({ symbolISIN, height }: SymbolLinearChartProps) => {
 					},
 				},
 				yaxis: {
+					min: 0,
 					labels: {
 						formatter: (val) => {
 							return numFormatter(val);
