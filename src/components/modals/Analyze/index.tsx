@@ -1,3 +1,4 @@
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
@@ -89,6 +90,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				}
 
 				setSymbolContracts(result);
+				setSelectedContracts(selectedResult);
 				onContractsChanged?.(contracts, baseSymbolISIN);
 			} catch (e) {
 				//
@@ -172,14 +174,16 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					title: t('analyze_modal.performance'),
 					render: () => (
 						<div style={{ height: '40rem' }} className='relative py-16'>
-							<PerformanceChart
-								minPrice={inputs.minPrice}
-								maxPrice={inputs.maxPrice}
-								chartData={inputs.chartData}
-								baseAssets={inputs.baseAssets}
-								bep={inputs.bep}
-								onChange={setFieldsValue}
-							/>
+							<ErrorBoundary>
+								<PerformanceChart
+									minPrice={inputs.minPrice}
+									maxPrice={inputs.maxPrice}
+									chartData={inputs.chartData}
+									baseAssets={inputs.baseAssets}
+									bep={inputs.bep}
+									onChange={setFieldsValue}
+								/>
+							</ErrorBoundary>
 						</div>
 					),
 				},
@@ -188,7 +192,9 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					title: t('analyze_modal.greeks'),
 					render: () => (
 						<div style={{ height: '40rem' }} className='relative py-16'>
-							<GreeksTable contracts={symbolContracts} />
+							<ErrorBoundary>
+								<GreeksTable contracts={symbolContracts} />
+							</ErrorBoundary>
 						</div>
 					),
 				},
@@ -211,10 +217,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				newStates.baseAssets = baseSymbolPrice;
 
 				if (!newStates.minPrice || minMaxIsInvalid)
-					newStates.minPrice = Math.max(newStates.baseAssets * 0.8, 0);
+					newStates.minPrice = Math.max(newStates.baseAssets * 0.75, 0);
 
 				if (!newStates.maxPrice || minMaxIsInvalid)
-					newStates.maxPrice = Math.max(newStates.baseAssets * 1.2, 0);
+					newStates.maxPrice = Math.max(newStates.baseAssets * 1.25, 0);
 
 				const lowPrice = newStates.minPrice;
 				const highPrice = newStates.maxPrice;
@@ -255,7 +261,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				for (let i = 0; i < fl; i++) {
 					const item = fakeData[i];
 
-					if (i % diff === 0 || i === fl - 1 || (!hasBep && item.y === 0)) {
+					if (item && (i % diff === 0 || i === fl - 1 || (!hasBep && item.y === 0))) {
 						newStates.chartData.push(item);
 						if (item.y === 0) hasBep = true;
 					}
