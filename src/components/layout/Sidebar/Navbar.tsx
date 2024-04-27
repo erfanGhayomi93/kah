@@ -102,7 +102,7 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 			{
 				id: 'strategy',
 				label: t('sidebar.strategy'),
-				to: '/a',
+				to: '/strategy',
 				icon: <StrategySVG />,
 			},
 			{
