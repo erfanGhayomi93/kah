@@ -210,9 +210,9 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 				},
 				{
 					headerName: t('option_page.intrinsic_value'),
-					colId: 'intrinsicValue',
+					colId: 'IntrinsicValue',
 					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.intrinsicValue?.isHidden ?? true),
+					initialHide: Boolean(modifiedWatchlistColumns?.IntrinsicValue?.isHidden ?? true),
 					valueGetter: ({ data }) => String(data!.optionWatchlistData.intrinsicValue),
 					valueFormatter: ({ value }) => sepNumbers(value),
 				},
@@ -711,7 +711,6 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		try {
 			for (let i = 0; i < watchlistColumns.length; i++) {
 				const { isHidden, title } = watchlistColumns[i];
-
 				eGrid.setColumnsVisible([title], !isHidden);
 			}
 		} catch (e) {
