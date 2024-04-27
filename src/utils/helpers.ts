@@ -1,5 +1,5 @@
 import { onUnauthorize } from '@/api/axios';
-import { DateAsMilliseconds } from '@/constants/enums';
+import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
@@ -335,9 +335,9 @@ export const toISOStringWithoutChangeTime = (d: Date): string => {
 export const dateConverter = (v: 'Week' | 'Month' | 'Year') => {
 	let timestamp = Date.now();
 
-	if (v === 'Week') timestamp += DateAsMilliseconds.Week;
-	else if (v === 'Month') timestamp += DateAsMilliseconds.Month;
-	else if (v === 'Year') timestamp += DateAsMilliseconds.Year;
+	if (v === 'Week') timestamp += DateAsMillisecond.Week;
+	else if (v === 'Month') timestamp += DateAsMillisecond.Month;
+	else if (v === 'Year') timestamp += DateAsMillisecond.Year;
 
 	return timestamp;
 };

@@ -97,6 +97,13 @@ const routes = {
 		SetActive: `${rlc}/Saturn/v1/SetActive`,
 		GetActive: `${rlc}/Saturn/v1/GetActive`,
 	},
+
+	strategy: {
+		CoveredCall: `${rlc}/Strategies/v1/CoveredCall`,
+		LongCall: `${rlc}/Strategies/v1/LongCall`,
+		LongPut: `${rlc}/Strategies/v1/LongPut`,
+		GetAll: `${rlc}/Strategies/v1/GetAll`,
+	},
 };
 
 export default routes;
