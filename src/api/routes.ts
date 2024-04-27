@@ -1,7 +1,6 @@
-import { getAPIEndpoints, getEnvironment } from '@/utils/helpers';
-
-const env = getEnvironment();
-const { oauth, rlc, pushengine } = getAPIEndpoints(env);
+const pushengine = process.env.NEXT_PUBLIC_PUSHENGINE_URL;
+const oauth = process.env.NEXT_PUBLIC_OAUTH_URL;
+const rlc = process.env.NEXT_PUBLIC_RLC_URL;
 
 const routes = {
 	pushengine,
