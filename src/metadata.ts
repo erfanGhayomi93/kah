@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-	metadataBase: new URL(process.env.APP_URL!),
-	title: process.env.APP_TITLE,
-	applicationName: process.env.APP_NAME,
-	description: process.env.APP_DESCRIPTION,
+	metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+	title: 'کهکشان',
+	applicationName: 'کهکشان',
+	description:
+		'از دیده‌بان اختیار برای جستجو و فیلتر کردن ابزارها بر اساس ارزش بازار، بازده سود سهام، حجم، سهام‌های دارای نوسان و ... آنها استفاده کنید.',
 	appleWebApp: {
 		capable: true,
-		title: process.env.APP_NAME,
+		title: 'کهکشان',
 		statusBarStyle: 'black',
 	},
 	icons: {
