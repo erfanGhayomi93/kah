@@ -9,7 +9,7 @@ import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import SymbolLinearChart from '../../../../common/Symbol/SymbolLinearChart';
+import SymbolChart from '../../../../common/Symbol/SymbolChart';
 import Section, { type ITabIem } from '../../common/Section';
 
 interface ChartIntervalProps {
@@ -28,7 +28,7 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 
 	const { inputs, setFieldValue } = useInputs<ISymbolChartStates>({
 		interval: 'daily',
-		type: 'linear',
+		type: 'area',
 	});
 
 	const { data, isLoading } = useSymbolChartDataQuery({
@@ -50,7 +50,7 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 			<div className='relative h-full pb-16 flex-column'>
 				{Array.isArray(data) && data.length > 0 ? (
 					<div className='pt-16'>
-						<SymbolLinearChart data={data} height='208px' />
+						<SymbolChart type={inputs.type} data={data} height='208px' />
 					</div>
 				) : (
 					<NoData />
@@ -90,11 +90,11 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 					<div className='gap-8 flex-justify-end'>
 						<Tooltip content={t('symbol_info_panel.linear')}>
 							<button
-								onClick={() => setFieldValue('type', 'linear')}
+								onClick={() => setFieldValue('type', 'area')}
 								type='button'
 								className={clsx(
 									'size-24 rounded-sm transition-colors flex-justify-center',
-									inputs.type === 'linear' ? 'btn-primary' : 'bg-gray-600 text-gray-900',
+									inputs.type === 'area' ? 'btn-primary' : 'bg-gray-600 text-gray-900',
 								)}
 							>
 								<LinearChartSVG width='2rem' height='2rem' />
@@ -102,11 +102,11 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 						</Tooltip>
 						<Tooltip content={t('symbol_info_panel.candle')}>
 							<button
-								onClick={() => setFieldValue('type', 'candle')}
+								onClick={() => setFieldValue('type', 'candlestick')}
 								type='button'
 								className={clsx(
 									'size-24 rounded-sm transition-colors flex-justify-center',
-									inputs.type === 'candle' ? 'btn-primary' : 'bg-gray-600 text-gray-900',
+									inputs.type === 'candlestick' ? 'btn-primary' : 'bg-gray-600 text-gray-900',
 								)}
 							>
 								<CandleChartSVG width='2rem' height='2rem' />
