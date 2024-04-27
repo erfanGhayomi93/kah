@@ -1,3 +1,4 @@
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
@@ -173,14 +174,16 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					title: t('analyze_modal.performance'),
 					render: () => (
 						<div style={{ height: '40rem' }} className='relative py-16'>
-							<PerformanceChart
-								minPrice={inputs.minPrice}
-								maxPrice={inputs.maxPrice}
-								chartData={inputs.chartData}
-								baseAssets={inputs.baseAssets}
-								bep={inputs.bep}
-								onChange={setFieldsValue}
-							/>
+							<ErrorBoundary>
+								<PerformanceChart
+									minPrice={inputs.minPrice}
+									maxPrice={inputs.maxPrice}
+									chartData={inputs.chartData}
+									baseAssets={inputs.baseAssets}
+									bep={inputs.bep}
+									onChange={setFieldsValue}
+								/>
+							</ErrorBoundary>
 						</div>
 					),
 				},
@@ -189,7 +192,9 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					title: t('analyze_modal.greeks'),
 					render: () => (
 						<div style={{ height: '40rem' }} className='relative py-16'>
-							<GreeksTable contracts={symbolContracts} />
+							<ErrorBoundary>
+								<GreeksTable contracts={symbolContracts} />
+							</ErrorBoundary>
 						</div>
 					),
 				},
