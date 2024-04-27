@@ -1,7 +1,7 @@
 import { useSymbolChartDataQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
-import SymbolLinearChart from '@/components/common/Symbol/SymbolLinearChart';
+import SymbolChart from '@/components/common/Symbol/SymbolChart';
 
 interface ChartProps {
 	symbolISIN: string;
@@ -19,7 +19,7 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 			) : !Array.isArray(data) || data.length === 0 ? (
 				<NoData />
 			) : (
-				<SymbolLinearChart data={data ?? []} height='256px' />
+				<SymbolChart data={data ?? []} height='256px' />
 			)}
 		</div>
 	);

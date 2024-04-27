@@ -304,5 +304,5 @@ declare interface ISymbolStrategyContract {
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
-	type: 'linear' | 'candle';
+	type: 'area' | 'candlestick';
 }
