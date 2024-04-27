@@ -155,8 +155,11 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 	return (
 		<Click enabled={isExpand} onClickOutside={collapseSidebar}>
 			<div className='z-10 flex-1 select-none overflow-hidden flex-column'>
-				<div className={clsx('px-16 py-12 flex-justify-start', isExpand && 'gap-8')}>
-					<Image width='32' height='32' alt='favicon' src='/static/icons/favicon.png' />
+				<div
+					style={{ minWidth: '5.4rem', height: '5.4rem' }}
+					className={clsx('pr-16 flex-justify-start', isExpand && 'gap-8')}
+				>
+					<Image width='30' height='30' alt='favicon' src='/static/icons/favicon.png' />
 					<h2 className={clsx('text-base text-white', !isExpand && 'hidden')}>{t('sidebar.app_name')}</h2>
 				</div>
 
