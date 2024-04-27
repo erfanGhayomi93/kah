@@ -1,5 +1,5 @@
-import AngleLeftCircle from './angle-left-circle.svg';
-import AngleLeft from './angle-left.svg';
+import AngleLeftCircleSVG from './angle-left-circle.svg';
+import AngleLeftSVG from './angle-left.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import ArrowUpSVG from './arrow-up.svg';
@@ -89,8 +89,8 @@ import XCircleSVG from './x-circle.svg';
 import XSVG from './x.svg';
 
 export {
-	AngleLeft,
-	AngleLeftCircle,
+	AngleLeftCircleSVG,
+	AngleLeftSVG,
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	ArrowUpSVG,

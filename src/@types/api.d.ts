@@ -1225,3 +1225,27 @@ declare namespace Dashboard {
 		}
 	}
 }
+
+declare namespace Strategy {
+	declare type Cheap =
+		| 'HighRisk'
+		| 'LowRisk'
+		| 'ModerateRisk'
+		| 'LimitedInterest'
+		| 'UnlimitedInterest'
+		| 'LimitedLoss'
+		| 'UnlimitedLoss'
+		| 'BullishMarket'
+		| 'BearishMarket'
+		| 'NeutralMarket'
+		| 'DirectionalMarket';
+
+	declare type Type = 'CoveredCall' | 'LongCall' | 'LongPut' | 'ProtectivePut' | 'BullCallSpread';
+
+	export interface GetAll {
+		id: number;
+		title: string;
+		type: Type;
+		tags: Cheap[];
+	}
+}
