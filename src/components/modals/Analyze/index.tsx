@@ -89,6 +89,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				}
 
 				setSymbolContracts(result);
+				setSelectedContracts(selectedResult);
 				onContractsChanged?.(contracts, baseSymbolISIN);
 			} catch (e) {
 				//
@@ -211,10 +212,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				newStates.baseAssets = baseSymbolPrice;
 
 				if (!newStates.minPrice || minMaxIsInvalid)
-					newStates.minPrice = Math.max(newStates.baseAssets * 0.8, 0);
+					newStates.minPrice = Math.max(newStates.baseAssets * 0.75, 0);
 
 				if (!newStates.maxPrice || minMaxIsInvalid)
-					newStates.maxPrice = Math.max(newStates.baseAssets * 1.2, 0);
+					newStates.maxPrice = Math.max(newStates.baseAssets * 1.25, 0);
 
 				const lowPrice = newStates.minPrice;
 				const highPrice = newStates.maxPrice;
@@ -255,7 +256,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				for (let i = 0; i < fl; i++) {
 					const item = fakeData[i];
 
-					if (i % diff === 0 || i === fl - 1 || (!hasBep && item.y === 0)) {
+					if (item && (i % diff === 0 || i === fl - 1 || (!hasBep && item.y === 0))) {
 						newStates.chartData.push(item);
 						if (item.y === 0) hasBep = true;
 					}

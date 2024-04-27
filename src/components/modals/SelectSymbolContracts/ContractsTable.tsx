@@ -4,7 +4,7 @@ import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { type ITableData } from '@/components/pages/OptionChain/Option/OptionTable';
 import { sepNumbers } from '@/utils/helpers';
-import { type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
+import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -71,6 +71,18 @@ const ContractsTable = ({
 		return contractsRef.current.findIndex((item) => item.symbolInfo.symbolISIN === symbolISIN) > -1;
 	};
 
+	const onCellClicked = (e: CellClickedEvent<ITableData>) => {
+		try {
+			const colId = e.column.getColId();
+			const side = colId.split('-')[1];
+
+			const data = e.data![side === 'sell' ? 'sell' : 'buy'];
+			if (data) toggleContract(data);
+		} catch (e) {
+			//
+		}
+	};
+
 	const COLUMNS: Array<ColDef<ITableData> | ColGroupDef<ITableData>> = useMemo(
 		() => [
 			{
@@ -88,7 +100,6 @@ const ContractsTable = ({
 						cellRendererParams: {
 							reverse: false,
 							isSelected: isContractSelected,
-							onSelect: toggleContract,
 						},
 					},
 
@@ -183,7 +194,6 @@ const ContractsTable = ({
 						cellRendererParams: {
 							reverse: true,
 							isSelected: isContractSelected,
-							onSelect: toggleContract,
 						},
 					},
 				],
@@ -294,6 +304,7 @@ const ContractsTable = ({
 				suppressRowVirtualisation
 				suppressColumnVirtualisation
 				defaultColDef={defaultColDef}
+				onCellClicked={onCellClicked}
 			/>
 
 			{!isFetching && (!settlementDay || modifiedData.length === 0) && (

@@ -44,19 +44,23 @@ const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onCh
 
 	const [chunk1, chunk2] = useMemo<Array<typeof chartData>>(() => {
 		const result: Array<typeof chartData> = [[], []];
-
 		const l = chartData.length;
+
 		for (let i = 0; i < l; i++) {
 			const item = chartData[i];
 
-			if (item.y > 0) result[0].push(item);
-			else if (item.y < 0) result[1].push(item);
+			if (item) {
+				if (item.y > 0) result[0].push(item);
+				else if (item.y < 0) result[1].push(item);
+			}
 		}
 
-		if (result[0].length > 0 && result[1].length > 0) {
+		if (result[0].length > 1) {
 			if (result[0][0].y > result[0][1].y) result[0].push(bep);
 			else result[0].unshift(bep);
+		}
 
+		if (result[1].length > 1) {
 			if (result[1][0].y > result[1][1].y) result[1].unshift(bep);
 			else result[1].push(bep);
 		}
@@ -101,6 +105,8 @@ const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onCh
 						},
 					},
 					xaxis: {
+						min: minPrice,
+						max: maxPrice,
 						offsetX: 0,
 						offsetY: 0,
 						tickAmount: 5,
@@ -120,7 +126,7 @@ const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onCh
 						tickAmount: 5,
 						floating: false,
 						labels: {
-							formatter: (value) => toFixed(Number(value), 2),
+							formatter: (value) => toFixed(Number(value), 0),
 						},
 					},
 					stroke: {
