@@ -1,5 +1,5 @@
-import AngleLeftCircle from './angle-left-circle.svg';
-import AngleLeft from './angle-left.svg';
+import AngleLeftCircleSVG from './angle-left-circle.svg';
+import AngleLeftSVG from './angle-left.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import ArrowUpSVG from './arrow-up.svg';
@@ -8,6 +8,7 @@ import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalculatorSVG from './calculator.svg';
 import CalendarSVG from './calendar.svg';
+import CandleChartSVG from './candle-chart.svg';
 import ChainSVG from './chain.svg';
 import ChangeBrokerSVG from './change-broker.svg';
 import ChartDownSVG from './chart-down.svg';
@@ -38,6 +39,7 @@ import HomeSVG from './home.svg';
 import InfoCircleOutlineSVG from './info-circle-outline.svg';
 import InfoCircleSVG from './info-circle.svg';
 import InfoSVG from './info.svg';
+import LinearChartSVG from './linear-chart.svg';
 import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
 import ManageSVG from './manage.svg';
@@ -87,8 +89,8 @@ import XCircleSVG from './x-circle.svg';
 import XSVG from './x.svg';
 
 export {
-	AngleLeft,
-	AngleLeftCircle,
+	AngleLeftCircleSVG,
+	AngleLeftSVG,
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	ArrowUpSVG,
@@ -97,6 +99,7 @@ export {
 	BookmarkSVG,
 	CalculatorSVG,
 	CalendarSVG,
+	CandleChartSVG,
 	ChainSVG,
 	ChangeBrokerSVG,
 	ChartDownSVG,
@@ -127,6 +130,7 @@ export {
 	InfoCircleOutlineSVG,
 	InfoCircleSVG,
 	InfoSVG,
+	LinearChartSVG,
 	LockSVG,
 	LogoutSVG,
 	ManageSVG,

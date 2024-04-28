@@ -49,7 +49,7 @@ const UserDropdown = ({
 					<button
 						type='button'
 						onClick={resetPassword}
-						className='h-40 w-full rounded border border-primary-400 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+						className='h-36 w-full rounded border border-primary-400 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
 					>
 						{t('header.set_password')}
 					</button>
@@ -59,7 +59,7 @@ const UserDropdown = ({
 					<button
 						type='button'
 						onClick={() => logoutBroker(close)}
-						className='h-40 w-full rounded border border-error-100 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
+						className='h-36 w-full rounded border border-error-100 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
 					>
 						{t('header.logout_broker')}
 					</button>
@@ -70,7 +70,7 @@ const UserDropdown = ({
 							loginBroker();
 							close();
 						}}
-						className='h-40 w-full rounded border border-primary-400 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+						className='h-36 w-full rounded border border-primary-400 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
 					>
 						{t('header.login_broker')}
 					</button>

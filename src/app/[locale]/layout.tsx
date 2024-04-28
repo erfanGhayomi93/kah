@@ -15,11 +15,8 @@ const Panels = dynamic(() => import('@/components/panels/Panels'), {
 	ssr: false,
 });
 
-interface ILayout extends INextProps {
+interface ILayout extends INextProps<{ locale: string }> {
 	children: React.ReactNode;
-	params: {
-		locale: string;
-	};
 }
 
 const Layout = async ({ children, params: { locale = 'fa' } }: ILayout) => {

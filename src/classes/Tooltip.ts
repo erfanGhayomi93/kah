@@ -37,7 +37,7 @@ class TooltipElement extends TooltipWrapper {
 
 	private _eTooltip?: AppTooltip.Element = undefined;
 
-	private readonly _element: AppTooltip.Element;
+	private _element: AppTooltip.Element;
 
 	private _content: HTMLElement | string | null = null;
 
@@ -124,7 +124,11 @@ class TooltipElement extends TooltipWrapper {
 	}
 
 	public destroy() {
-		if (this._eTooltip) this._eTooltip.remove();
+		if (this._eTooltip) {
+			this.hide();
+			this._eTooltip.remove();
+			this.abortController.abort();
+		}
 		this._eTooltip = undefined;
 	}
 
@@ -263,6 +267,10 @@ class TooltipElement extends TooltipWrapper {
 
 		if (value && this.isActive) this.hide();
 		else if (!value && !this.isActive) this.unhide();
+	}
+
+	set element(el: AppTooltip.Element) {
+		this._element = el;
 	}
 
 	set placement(value: AppTooltip.Placement) {

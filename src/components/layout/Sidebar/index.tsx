@@ -1,4 +1,4 @@
-import { AngleLeft } from '@/components/icons';
+import { AngleLeftSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSidebarIsExpand, toggleSidebar } from '@/features/slices/uiSlice';
 import { cn } from '@/utils/helpers';
@@ -29,7 +29,7 @@ const Sidebar = () => {
 		>
 			<div className='relative h-full flex-column'>
 				<button type='button' onClick={toggle} className={cn(styles.toggler, isExpand && styles.expand)}>
-					<AngleLeft width='1.6rem' height='1.6rem' />
+					<AngleLeftSVG width='1.6rem' height='1.6rem' />
 				</button>
 
 				<Navbar isExpand={isExpand} />

@@ -1,5 +1,5 @@
 import { onUnauthorize } from '@/api/axios';
-import { getDateMilliseconds } from '@/constants';
+import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
@@ -70,22 +70,9 @@ export const getRndInteger = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export const getNestedValue = (obj: NestedObject, key: string) => {
-	const keys = key.split('.');
-
-	return keys.reduce<NestedObject | string | number | undefined>((acc, currentKey) => {
-		return acc && typeof acc === 'object' && currentKey in acc ? acc[currentKey] : undefined;
-	}, obj);
-};
-
 export const negativeValueFormatter = (value: number) => {
 	if (value >= 0) return String(value);
 	return `(${value})`;
-};
-
-export const minusFormatter = (value: number) => {
-	if (value >= 0) return String(value);
-	return `−${Math.abs(value)}`;
 };
 
 export const rialToToman = (value: number) => {
@@ -348,9 +335,9 @@ export const toISOStringWithoutChangeTime = (d: Date): string => {
 export const dateConverter = (v: 'Week' | 'Month' | 'Year') => {
 	let timestamp = Date.now();
 
-	if (v === 'Week') timestamp += getDateMilliseconds.Week;
-	else if (v === 'Month') timestamp += getDateMilliseconds.Month;
-	else if (v === 'Year') timestamp += getDateMilliseconds.Year;
+	if (v === 'Week') timestamp += DateAsMillisecond.Week;
+	else if (v === 'Month') timestamp += DateAsMillisecond.Month;
+	else if (v === 'Year') timestamp += DateAsMillisecond.Year;
 
 	return timestamp;
 };
@@ -423,10 +410,10 @@ export const toFixed = (v: number, l = 3, round = true) => {
 	const value = v.toFixed(l);
 	const [integer, decimal] = value.split('.');
 
-	const decimalAsNumber = Number(decimal) * 1;
+	const decimalAsNumber = Number(`.${decimal}`) * 1;
 	if (!decimalAsNumber) return sepNumbers(integer);
 
-	return sepNumbers(integer) + '.' + (round ? decimalAsNumber : decimal);
+	return sepNumbers(integer) + '.' + (round ? String(decimalAsNumber).slice(2) : decimal);
 };
 
 export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boolean) => {
@@ -451,4 +438,10 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
 	strikePrice: symbol.symbolInfo.strikePrice,
 	side,
+	commission: {
+		value: 0,
+	},
+	requiredMargin: {
+		value: symbol.optionWatchlistData.requiredMargin,
+	},
 });

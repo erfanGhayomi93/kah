@@ -4,7 +4,6 @@ import { type ICellRendererComp, type ICellRendererParams } from '@ag-grid-commu
 type CellSymbolTitleRendererRendererProps = ICellRendererParams<ITableData, Option.Root> & {
 	reverse: boolean;
 	isSelected: (symbolISIN: string) => boolean;
-	onSelect: (c: Option.Root) => void;
 };
 
 class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
@@ -59,10 +58,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
 		this.eCheckbox.type = 'checkbox';
 		this.eCheckbox.name = 'contract';
 		this.eCheckbox.onchange = (e) => e.preventDefault();
-		this.eCheckbox.onclick = (e) => {
-			e.preventDefault();
-			this.params.onSelect(this.params.value!);
-		};
+		this.eCheckbox.onclick = (e) => e.preventDefault();
 
 		this.updateCheckbox();
 	}

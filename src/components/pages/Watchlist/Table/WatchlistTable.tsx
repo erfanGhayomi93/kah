@@ -201,6 +201,22 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					valueFormatter: ({ value }) => numFormatter(value),
 				},
 				{
+					headerName: t('option_page.notional_value'),
+					colId: 'notionalValue',
+					minWidth: 160,
+					initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden ?? true),
+					valueGetter: ({ data }) => String(data!.optionWatchlistData.notionalValue),
+					valueFormatter: ({ value }) => sepNumbers(value),
+				},
+				{
+					headerName: t('option_page.intrinsic_value'),
+					colId: 'IntrinsicValue',
+					minWidth: 96,
+					initialHide: Boolean(modifiedWatchlistColumns?.IntrinsicValue?.isHidden ?? true),
+					valueGetter: ({ data }) => String(data!.optionWatchlistData.intrinsicValue),
+					valueFormatter: ({ value }) => sepNumbers(value),
+				},
+				{
 					headerName: t('option_page.premium'),
 					colId: 'premium',
 					initialHide: Boolean(modifiedWatchlistColumns?.premium?.isHidden ?? true),
@@ -568,22 +584,6 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					valueGetter: ({ data }) => data!.symbolInfo.sectorName,
 				},
 				{
-					headerName: t('option_page.notional_value'),
-					colId: 'notionalValue',
-					minWidth: 160,
-					initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden ?? true),
-					valueGetter: ({ data }) => String(data!.optionWatchlistData.notionalValue),
-					valueFormatter: ({ value }) => sepNumbers(value),
-				},
-				{
-					headerName: t('option_page.intrinsic_value'),
-					colId: 'intrinsicValue',
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.intrinsicValue?.isHidden ?? true),
-					valueGetter: ({ data }) => String(data!.optionWatchlistData.intrinsicValue),
-					valueFormatter: ({ value }) => sepNumbers(value),
-				},
-				{
 					headerName: t('option_page.action'),
 					colId: 'action',
 					initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
@@ -711,7 +711,6 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		try {
 			for (let i = 0; i < watchlistColumns.length; i++) {
 				const { isHidden, title } = watchlistColumns[i];
-
 				eGrid.setColumnsVisible([title], !isHidden);
 			}
 		} catch (e) {

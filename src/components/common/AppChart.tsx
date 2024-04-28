@@ -7,14 +7,15 @@ const AppChart = ({ options, height = '100%', series, type = 'area', width = '10
 		<ApexChart
 			options={{
 				colors,
-				stroke: {
-					curve: 'smooth',
-					width: 2,
-				},
 				legend: {
 					show: false,
 				},
 				...options,
+				stroke: {
+					curve: 'smooth',
+					width: 2,
+					...options?.stroke,
+				},
 				dataLabels: {
 					enabled: false,
 					style: {
@@ -139,9 +140,9 @@ const AppChart = ({ options, height = '100%', series, type = 'area', width = '10
 						type: 'vertical',
 						colorStops: [
 							{
-								offset: 20,
+								offset: 40,
 								color: colors[0],
-								opacity: 0.2,
+								opacity: 0.25,
 							},
 							{
 								offset: 100,

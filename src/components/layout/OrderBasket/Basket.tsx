@@ -1,18 +1,26 @@
 import ipcMain from '@/classes/IpcMain';
 import Button from '@/components/common/Button';
-import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
+import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, PlusSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setAnalyzeModal, setChoiceBrokerModal, setConfirmModal, setLoginModal } from '@/features/slices/modalSlice';
+import {
+	setAnalyzeModal,
+	setChoiceBrokerModal,
+	setConfirmModal,
+	setLoginModal,
+	setSelectSymbolContractsModal,
+} from '@/features/slices/modalSlice';
 import {
 	getIsLoggedIn,
 	getOrderBasket,
+	removeOrderBasketOrder,
 	setBrokerIsSelected,
 	setOrderBasket,
 	setOrderBasketOrders,
 } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
+import { convertSymbolWatchlistToSymbolBasket } from '@/utils/helpers';
 import { createOrder } from '@/utils/orders';
 import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
@@ -60,7 +68,7 @@ const Basket = () => {
 
 	const [isMaximized, setIsMaximized] = useState(true);
 
-	const [selectedContracts, setSelectedContracts] = useState<OrderBasket.Order[]>([]);
+	const [selectedContracts, setSelectedContracts] = useState<string[]>([]);
 
 	const close = () => {
 		dispatch(setOrderBasket(null));
@@ -81,6 +89,20 @@ const Basket = () => {
 	const showLoginModal = () => dispatch(setLoginModal({}));
 
 	const showChoiceBrokerModal = () => dispatch(setChoiceBrokerModal({}));
+
+	const getSelectedContracts = () => {
+		const result: OrderBasket.Order[] = [];
+
+		for (let i = 0; i < selectedContracts.length; i++) {
+			const orderId = selectedContracts[i];
+			const order = basketOrders.find((order) => order.id === orderId);
+			if (!order) return;
+
+			result.push(order);
+		}
+
+		return result;
+	};
 
 	const onClose = () => {
 		if (basketOrders.length === 1) close();
@@ -103,13 +125,9 @@ const Basket = () => {
 		setIsMaximized(!isMaximized);
 	};
 
-	const filterBasketItems = (itemId: string) => (item: OrderBasket.Order) => {
-		return item.id !== itemId;
-	};
-
 	const removeOrder = (id: string) => {
-		dispatch(setOrderBasketOrders(basketOrders.filter(filterBasketItems(id))));
-		setSelectedContracts((prev) => prev.filter(filterBasketItems(id)));
+		dispatch(removeOrderBasketOrder(id));
+		setSelectedContracts((prev) => prev.filter((orderId) => orderId !== id));
 	};
 
 	const validation = () => {
@@ -135,7 +153,7 @@ const Basket = () => {
 			try {
 				validation();
 
-				basketSnapshot.current = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
+				basketSnapshot.current = JSON.parse(JSON.stringify(getSelectedContracts())) as OrderBasket.Order[];
 
 				setSubmitting(true);
 				sendOrder(0);
@@ -183,7 +201,7 @@ const Basket = () => {
 
 	const sendOrder = async (index: number) => {
 		try {
-			const item = selectedContracts[index];
+			const item = basketSnapshot.current[index];
 			if (!item) throw new Error('Item not found!');
 
 			if (!item.symbol.symbolInfo.symbolISIN) throw new Error('symbolISIN not found!');
@@ -207,17 +225,16 @@ const Basket = () => {
 		}
 	};
 
-	const setOrderProperty = <T extends keyof OrderBasket.Order>(
-		id: string,
-		property: T,
-		value: OrderBasket.Order[T],
-	) => {
+	const setOrderProperties = (id: string, values: Partial<OrderBasket.Order>) => {
 		const orders = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
 
 		const orderIndex = orders.findIndex((item) => item.id === id);
 		if (orderIndex === -1) return;
 
-		orders[orderIndex][property] = value;
+		orders[orderIndex] = {
+			...orders[orderIndex],
+			...values,
+		};
 
 		dispatch(setOrderBasketOrders(orders));
 	};
@@ -233,13 +250,51 @@ const Basket = () => {
 		}, 2000);
 	};
 
+	const updateContracts = (contracts: Option.Root[]) => {
+		try {
+			const l = contracts.length;
+
+			const result: ISymbolStrategyContract[] = [];
+			const selectedResult: string[] = [];
+
+			for (let i = 0; i < l; i++) {
+				const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
+
+				result.push(item);
+				selectedResult.push(item.id);
+			}
+
+			dispatch(setOrderBasketOrders(result));
+			setSelectedContracts(selectedResult);
+		} catch (e) {
+			//
+		}
+	};
+
+	const addNewContracts = () => {
+		dispatch(
+			setSelectSymbolContractsModal({
+				symbol: {
+					symbolISIN: baseSymbol.symbolISIN,
+					symbolTitle: baseSymbol.symbolTitle,
+				},
+				maxContracts: null,
+				initialSelectedContracts: basketOrders
+					.filter((item) => item !== null)
+					.map((item) => item.symbol.symbolInfo.symbolISIN) as string[],
+				canChangeBaseSymbol: true,
+				callback: updateContracts,
+			}),
+		);
+	};
+
 	useEffect(() => {
 		const lastItem = basketOrders[basketOrders.length - 1];
 		if (!lastItem) return;
 
-		if (selectedContracts.findIndex((item) => item.id === lastItem.id) > -1) return;
+		if (selectedContracts.findIndex((orderId) => orderId === lastItem.id) > -1) return;
 
-		setSelectedContracts([...selectedContracts, lastItem]);
+		setSelectedContracts([...selectedContracts, lastItem.id]);
 	}, [basketOrders.length]);
 
 	return (
@@ -270,7 +325,7 @@ const Basket = () => {
 					</div>
 				</div>
 
-				<div className='gap-8 overflow-hidden pt-16 flex-column'>
+				<div className='gap-8 overflow-hidden py-16 flex-column'>
 					<div className='px-16 flex-justify-between'>
 						<div onClick={onExpand} className='cursor-pointer gap-12 pl-16 flex-items-center'>
 							<span className='select-none whitespace-nowrap rounded text-base text-gray-1000'>
@@ -309,16 +364,25 @@ const Basket = () => {
 					</div>
 
 					{isMaximized && (
-						<div style={{ maxHeight: '40rem' }} className='overflow-y-auto'>
-							<SymbolStrategyTable
-								selectedContracts={selectedContracts}
-								contracts={basketOrders}
-								onSelectionChanged={setSelectedContracts}
-								onChangePrice={(id, value) => setOrderProperty(id, 'price', value)}
-								onChangeQuantity={(id, value) => setOrderProperty(id, 'quantity', value)}
-								onSideChange={(id, value) => setOrderProperty(id, 'side', value)}
-								onDelete={removeOrder}
-							/>
+						<div className='gap-8 flex-column'>
+							<div style={{ maxHeight: '40rem' }} className='overflow-y-auto'>
+								<SymbolStrategyTable
+									selectedContracts={selectedContracts}
+									contracts={basketOrders}
+									onSelectionChanged={setSelectedContracts}
+									onChange={(id, v) => setOrderProperties(id, v)}
+									onSideChange={(id, value) => setOrderProperties(id, { side: value })}
+									onDelete={removeOrder}
+								/>
+							</div>
+
+							<button
+								type='button'
+								onClick={addNewContracts}
+								className='mr-44 size-40 rounded btn-primary'
+							>
+								<PlusSVG width='2rem' height='2rem' />
+							</button>
 						</div>
 					)}
 				</div>
