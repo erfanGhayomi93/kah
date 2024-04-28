@@ -115,7 +115,7 @@ Production-Job01:
         - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public .
         - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src .
         - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json .
-        - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/environments .
+        - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/environments .
         - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
         - pwd
         - pm2 start npm --name "kahkeshan" -- run start:production && pm2 save --force
