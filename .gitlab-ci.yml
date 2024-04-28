@@ -1,183 +1,182 @@
-image : mcr.microsoft.com/dotnet/sdk:latest
+image: mcr.microsoft.com/dotnet/sdk:latest
 stages:
-  - deploy
+    - deploy
 Deploy-Job:
-  stage: deploy
-  script:
-    - npm install
-    - npm install express
-    - ($env:CI = "true") -and (npm run build)
-    - $date = get-date -format  "dd-MM-yyyy"
-    - mkdir -p "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Import-Module WebAdministration
-    - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse -Verbose "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    #- Stop-WebSite "kahkeshan"
-    - Start-WebSite "kahkeshan"
-    - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
-  tags:
-    - Test
-  artifacts:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "Develop"
+    stage: deploy
+    script:
+        - npm install
+        - npm install express
+        - ($env:CI = "true") -and (npm run build)
+        - $date = get-date -format  "dd-MM-yyyy"
+        - mkdir -p "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Import-Module WebAdministration
+        - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse -Verbose "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        #- Stop-WebSite "kahkeshan"
+        - Start-WebSite "kahkeshan"
+        - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
+    tags:
+        - Test
+    artifacts:
+    rules:
+        - if: $CI_COMMIT_BRANCH == "Develop"
 stage-Job:
-  stage: deploy
-  script: 
-    - npm install
-    - npm install express
-    - ($env:CI = "false") -and (npm run build:stage)
-    - $date = get-date -format  "dd-MM-yyyy"
-    - mkdir -p "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Import-Module WebAdministration
-    - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.next" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\server.js" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\web.config" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\public" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.env" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Stop-WebSite "kahkeshan"
-    - Start-WebSite "kahkeshan"
-    - Stop-WebAppPool -Name "kahkeshan"
-    - Start-Sleep -Seconds 10
-    - Start-WebAppPool -Name "kahkeshan"
-    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*"
-    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui.tmp\*"
+    stage: deploy
+    script:
+        - npm install
+        - npm install express
+        - ($env:CI = "false") -and (npm run build:stage)
+        - $date = get-date -format  "dd-MM-yyyy"
+        - mkdir -p "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Import-Module WebAdministration
+        - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\.next" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\server.js" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\web.config" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\public" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\environments" -Destination  "D:\Stage\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Stop-WebSite "kahkeshan"
+        - Start-WebSite "kahkeshan"
+        - Stop-WebAppPool -Name "kahkeshan"
+        - Start-Sleep -Seconds 10
+        - Start-WebAppPool -Name "kahkeshan"
+        - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui\*"
+        - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\t6tP4xAxA\0\ui\kahkeshan-ui.tmp\*"
 
-    - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
-#    - cd c:\scripts\Clubui\
-#    - .\only4backup
+        - ([Environment]::SetEnvironmentVariable("AdminApiS", [int64]$Env:AdminApiS + 1, "Machine"))
+    #    - cd c:\scripts\Clubui\
+    #    - .\only4backup
 
-  tags:
-    - StageApp
-  artifacts:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "Stage" 
+    tags:
+        - StageApp
+    artifacts:
+    rules:
+        - if: $CI_COMMIT_BRANCH == "Stage"
 
 Preprd-Job:
-  stage: deploy
-  script: 
-    - npm install
-    - npm install express 
-    - ($env:CI = "false") -and (npm run build:preprd)
-    - $date = get-date -format  "dd-MM-yyyy"
-    - mkdir -p "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Import-Module WebAdministration
-    - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\.next" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\server.js" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\web.config" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\public" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\.env" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
-    - Stop-WebSite "kahkeshan"
-    - Start-WebSite "kahkeshan"
-    - Stop-WebAppPool -Name "kahkeshan"
-    - Start-Sleep -Seconds 10
-    - Start-WebAppPool -Name "kahkeshan"
-    - Start-Sleep -Seconds 10
-    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\*"
-    - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui.tmp\*"
-    # # Define the URL to call
-# Make the HTTP request
-    - $url = "http://localhost:6066"
-    - $response = Invoke-WebRequest -Uri $url -UseBasicParsing
-    - if ($response.StatusCode -eq 200) {
-        Write-Output "Request to $url succeeded. Response body:"
-        Write-Output $response.Content
-      } else {
-        Write-Error "Request to $url failed with status code $($response.StatusCode)"
-      }
-#    - cd c:\scripts\Clubui\
-#    - .\only4backup
+    stage: deploy
+    script:
+        - npm install
+        - npm install express
+        - ($env:CI = "false") -and (npm run build:preprd)
+        - $date = get-date -format  "dd-MM-yyyy"
+        - mkdir -p "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Import-Module WebAdministration
+        - Set-ItemProperty IIS:\Sites\kahkeshan -name physicalPath -value "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\.next" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\node_modules" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\server.js" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\web.config" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\public" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Copy-item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\environments" -Destination  "D:\UI\kahkeshanUi\Versions\kahkeshanUi.$date.$Env:AdminApiS\"
+        - Stop-WebSite "kahkeshan"
+        - Start-WebSite "kahkeshan"
+        - Stop-WebAppPool -Name "kahkeshan"
+        - Start-Sleep -Seconds 10
+        - Start-WebAppPool -Name "kahkeshan"
+        - Start-Sleep -Seconds 10
+        - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui\*"
+        - Remove-Item -Force -Recurse "D:\GitLab-Runner\builds\glrt-4QN\0\ui\kahkeshan-ui.tmp\*"
+        # # Define the URL to call
+        # Make the HTTP request
+        - $url = "http://localhost:6066"
+        - $response = Invoke-WebRequest -Uri $url -UseBasicParsing
+        - if ($response.StatusCode -eq 200) {
+          Write-Output "Request to $url succeeded. Response body:"
+          Write-Output $response.Content
+          } else {
+          Write-Error "Request to $url failed with status code $($response.StatusCode)"
+          }
+    #    - cd c:\scripts\Clubui\
+    #    - .\only4backup
 
-  tags:
-    - Srv-Preprd
-  artifacts:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "Preprd" 
+    tags:
+        - Srv-Preprd
+    artifacts:
+    rules:
+        - if: $CI_COMMIT_BRANCH == "Preprd"
 
 Production-Job01:
-  stage: deploy
-  script: 
-    #- set -e 
-    - npm install
-    - npm install express
-    - npm run build:production
-    - cd /etc/kahkeshan-ui/
-    - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
-    - pm2 delete kahkeshan && pm2 save --force
-    
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js .
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/node_modules .
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json .
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public .
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src .
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json .
-    - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env .
-    - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
-    - pwd
-    - pm2 start npm --name "kahkeshan" -- run start:production && pm2 save --force
-    - pm2 describe kahkeshan
-    #- sudo systemctl restart nginx
-    - cd ../
-    - pwd
-    - ls -tr | head -n1 | xargs zip -rq 1.zip
-    - sudo mv 1.zip /etc/kahkeshan-backups/
-    - sudo rm -rf $(ls -tr | head -n1)
-    - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
-    - sudo rm -rf /etc/kahkeshan-backups/1.zip
-    #- sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
+    stage: deploy
+    script:
+        #- set -e
+        - npm install
+        - npm install express
+        - npm run build:production
+        - cd /etc/kahkeshan-ui/
+        - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
+        - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
+        - pm2 delete kahkeshan && pm2 save --force
 
-  tags:
-    - Runner-KahkeshanUI01
-  artifacts:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "Production"
-      #when: always
-    #- exists:
-      #- $CI_COMMIT_BRANCH
+        - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js .
+        - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/node_modules .
+        - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json .
+        - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public .
+        - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src .
+        - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json .
+        - sudo cp /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/environments .
+        - sudo cp -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
+        - pwd
+        - pm2 start npm --name "kahkeshan" -- run start:production && pm2 save --force
+        - pm2 describe kahkeshan
+        #- sudo systemctl restart nginx
+        - cd ../
+        - pwd
+        - ls -tr | head -n1 | xargs zip -rq 1.zip
+        - sudo mv 1.zip /etc/kahkeshan-backups/
+        - sudo rm -rf $(ls -tr | head -n1)
+        - sudo unzip /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
+        - sudo rm -rf /etc/kahkeshan-backups/1.zip
+        #- sudo rm -rf /home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/*
+
+    tags:
+        - Runner-KahkeshanUI01
+    artifacts:
+    rules:
+        - if: $CI_COMMIT_BRANCH == "Production"
+          #when: always
+        #- exists:
+        #- $CI_COMMIT_BRANCH
 #on_failure:
-  #script:
+#script:
 Production-Job02:
-  stage: deploy
-  script: 
-    #- set -e 
-    - npm install
-    - npm run build:production
-    - cd /etc/kahkeshan-ui/
-    - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
-    - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
-    - pm2 delete kahkeshan && pm2 save --force
-    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js .
-    - sudo cp -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/node_modules .
-    - sudo -s sshpass -p Ss@123456 scp -rq  manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json .
-    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public .
-    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src .
-    - sudo -s sshpass -p Ss@123456 scp -rq  manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json .
-    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.env .
-    - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
-    - pwd
-    - pm2 start npm --name "kahkeshan" -- run start:production && pm2 save --force
-    - pm2 describe kahkeshan
-    #- sudo systemctl restart nginx
-    - cd ../
-    - pwd
-    - ls -tr | head -n1 | xargs zip -rq 1.zip
-    - sudo mv 1.zip /etc/kahkeshan-backups/
-    - sudo rm -rf $(ls -tr | head -n1) > /dev/null 2>&1
-    - sudo unzip -q /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
-    - sudo rm -rf /etc/kahkeshan-backups/1.zip > /dev/null 2>&1
-    #- sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
-  #dependencies:
-  #  - Production-Job01  
-  tags:
-    - Runner-KahkeshanUI02
-  needs:
-    - job: "Production-Job01"
-      artifacts: true
-  artifacts:
-  rules:
-    - if: $CI_COMMIT_BRANCH == "Production"
-
+    stage: deploy
+    script:
+        #- set -e
+        - npm install
+        - npm run build:production
+        - cd /etc/kahkeshan-ui/
+        - mkdir "kahkeshan.$(date '+%Y-%m-%d.V%H%M%S')"
+        - cd "$(ls -lt --time=creation | grep '^d' | head -n 1 | awk '{print $NF}')"
+        - pm2 delete kahkeshan && pm2 save --force
+        - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/next.config.js .
+        - sudo cp -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/node_modules .
+        - sudo -s sshpass -p Ss@123456 scp -rq  manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/package.json .
+        - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/public .
+        - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/src .
+        - sudo -s sshpass -p Ss@123456 scp -rq  manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/tsconfig.json .
+        - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/environments .
+        - sudo -s sshpass -p Ss@123456 scp -rq manoochehr@172.30.1.21:/home/gitlab-runner/builds/y4etTpBpL/0/ui/kahkeshan-ui/.next .
+        - pwd
+        - pm2 start npm --name "kahkeshan" -- run start:production && pm2 save --force
+        - pm2 describe kahkeshan
+        #- sudo systemctl restart nginx
+        - cd ../
+        - pwd
+        - ls -tr | head -n1 | xargs zip -rq 1.zip
+        - sudo mv 1.zip /etc/kahkeshan-backups/
+        - sudo rm -rf $(ls -tr | head -n1) > /dev/null 2>&1
+        - sudo unzip -q /etc/kahkeshan-backups/1.zip -d /etc/kahkeshan-backups/
+        - sudo rm -rf /etc/kahkeshan-backups/1.zip > /dev/null 2>&1
+        #- sudo rm -rf /home/gitlab-runner/builds/RB_jG_1YG/0/ui/kahkeshan-ui/*
+    #dependencies:
+    #  - Production-Job01
+    tags:
+        - Runner-KahkeshanUI02
+    needs:
+        - job: 'Production-Job01'
+          artifacts: true
+    artifacts:
+    rules:
+        - if: $CI_COMMIT_BRANCH == "Production"
