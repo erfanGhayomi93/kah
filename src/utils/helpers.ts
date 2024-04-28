@@ -1,5 +1,5 @@
 import { onUnauthorize } from '@/api/axios';
-import { DateAsMilliseconds, Environment } from '@/constants/enums';
+import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
@@ -335,9 +335,9 @@ export const toISOStringWithoutChangeTime = (d: Date): string => {
 export const dateConverter = (v: 'Week' | 'Month' | 'Year') => {
 	let timestamp = Date.now();
 
-	if (v === 'Week') timestamp += DateAsMilliseconds.Week;
-	else if (v === 'Month') timestamp += DateAsMilliseconds.Month;
-	else if (v === 'Year') timestamp += DateAsMilliseconds.Year;
+	if (v === 'Week') timestamp += DateAsMillisecond.Week;
+	else if (v === 'Month') timestamp += DateAsMillisecond.Month;
+	else if (v === 'Year') timestamp += DateAsMillisecond.Year;
 
 	return timestamp;
 };
@@ -445,35 +445,3 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 		value: symbol.optionWatchlistData.requiredMargin,
 	},
 });
-
-export const getEnvironment = (): Environment.DEV | Environment.STAGE | Environment.PREPROD | Environment.PROD => {
-	if (URLIsValid('stage')) return Environment.STAGE;
-	if (URLIsValid('localhost')) return Environment.DEV;
-	if (URLIsValid('preprd')) return Environment.PREPROD;
-
-	return Environment.PROD;
-};
-
-export const getAPIEndpoints = (env: Environment): APIEndpoints => {
-	switch (env) {
-		case Environment.STAGE:
-			return {
-				pushengine: 'https://pushengine-stage.ramandtech.com',
-				oauth: 'https://ramandoauth-stage.ramandtech.com',
-				rlc: 'https://kahkeshanapi-stage.ramandtech.com',
-			};
-		case Environment.DEV:
-		case Environment.PREPROD:
-			return {
-				pushengine: 'https://pushengine.ramandtech.com',
-				oauth: 'https://ramandoauth-preprd.ramandtech.com',
-				rlc: 'https://kahkeshanapi-preprd.ramandtech.com',
-			};
-		case Environment.PROD:
-			return {
-				pushengine: 'https://pushengine.ramandtech.com',
-				oauth: 'https://ramandoauth.ramandtech.com',
-				rlc: 'https://kahkeshanapi.ramandtech.com',
-			};
-	}
-};

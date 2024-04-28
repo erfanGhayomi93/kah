@@ -185,7 +185,7 @@ const Header = () => {
 							{({ setOpen, open }) => (
 								<button
 									onClick={() => setOpen(!open)}
-									className='h-32 gap-8 rounded bg-gray-200 px-8 flex-items-center icon-hover'
+									className='h-32 gap-8 px-8 flex-items-center icon-hover'
 								>
 									<span className='text-base font-medium text-gray-1000'>{customerTitle}</span>
 

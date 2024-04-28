@@ -8,7 +8,7 @@ const NotFound = () => {
 	const router = useRouter();
 
 	useEffect(() => {
-		router.replace('/');
+		router.push('/');
 	}, []);
 	return <Loading />;
 };

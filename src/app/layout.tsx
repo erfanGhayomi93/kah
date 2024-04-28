@@ -3,9 +3,6 @@ import { getDirection } from '@/utils/helpers';
 
 interface ILayout extends INextProps {
 	children: React.ReactNode;
-	params: {
-		locale: string;
-	};
 }
 
 const Layout = async ({ children, params: { locale = 'fa' } }: ILayout) => {
