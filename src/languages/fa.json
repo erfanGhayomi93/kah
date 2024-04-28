@@ -858,6 +858,7 @@
 		"strategy_desc_ProtectivePut": "خرید دارایی پایه <plus></plus> خرید اختیار فروش",
 		"strategy_title_BullCallSpread": "بول کال اسپرد",
 		"strategy_desc_BullCallSpread": "خرید اختیار خرید اعمال بالا  <plus></plus> فروش اختیار خرید اعمال پایین ",
+		"tag_all": "همه",
 		"tag_HighRisk": "ریسک بالا",
 		"tag_LowRisk": "ریسک پایین",
 		"tag_ModerateRisk": "ریسک متعادل",
@@ -868,7 +869,9 @@
 		"tag_BullishMarket": "بازار صعودی",
 		"tag_BearishMarket": "بازار نزولی",
 		"tag_NeutralMarket": "بازار خنثی",
-		"tag_DirectionalMarket": "بازار جهت دار"
+		"tag_DirectionalMarket": "بازار جهت دار",
+		"prepared_strategy": "استراتژی آماده",
+		"build_strategy": "ساخت استراتژی"
 	},
 	"exchange": {
 		"Exchange": "بورس",

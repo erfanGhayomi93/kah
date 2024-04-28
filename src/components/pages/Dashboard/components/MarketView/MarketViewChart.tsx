@@ -50,6 +50,8 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 					tickAmount: 9,
 					labels: {
 						formatter: (value) => {
+							if (type === 'RetailTrades')
+								return dateFormatter(value, interval === 'Today' ? 'time' : 'date');
 							return interval === 'Today' ? value : dateFormatter(value, 'date');
 						},
 					},

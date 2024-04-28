@@ -1,4 +1,8 @@
-declare interface INextProps {}
+declare interface INextProps<T extends object = {}> {
+	params: T & { locale: string };
+}
+
+declare interface INextStrategyProps extends INextProps<{ id: string }> {}
 
 declare interface IOFields {
 	symbolISIN: string;
@@ -36,6 +40,10 @@ declare type TBsTypes = 'draft' | 'order';
 declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | 'option_orders' | 'draft';
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
+
+declare type TStrategyMarketTrend =
+	| 'all'
+	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
 
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
