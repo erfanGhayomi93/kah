@@ -1,20 +1,21 @@
-export const dynamicParams = false;
+import { type GetStaticPaths } from 'next';
 
-export async function generateStaticParams() {
-	return [{ id: '1' }, { id: '2' }, { id: '3' }];
-	// try {
-	// 	const response = await fetch(routes.strategy.GetAll);
-	// 	const { result } = (await response.json()) as ServerResponse<Strategy.GetAll[]>;
+export const getStaticPaths = (async () => {
+	return {
+		paths: [
+			{
+				params: {
+					id: '1',
+					locale: 'fa',
+				},
+			}, // See the "paths" section below
+		],
+		fallback: false, // false or "blocking"
+	};
+}) satisfies GetStaticPaths;
 
-	// 	return result.map((item) => ({
-	// 		slug: String(item.id),
-	// 	}));
-	// } catch (e) {
-	// 	return [];
-	// }
-}
-
-export default function Page({ params }: { params: { id: string } }) {
-	const { id } = params;
+const Page = async ({ params: { id } }: INextStrategyProps) => {
 	return <h1>Hello {id}</h1>;
-}
+};
+
+export default Page;

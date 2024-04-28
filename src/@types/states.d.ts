@@ -1,5 +1,5 @@
-declare interface INextProps<T> {
-	params: T;
+declare interface INextProps<T extends object = {}> {
+	params: T & { locale: string };
 }
 
 declare interface INextStrategyProps extends INextProps<{ id: string }> {}
