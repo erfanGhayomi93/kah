@@ -31,8 +31,8 @@ const Option = ({ settlementDay, baseSymbol }: OptionProps) => {
 					</div>
 				</>
 			) : (
-				<div className='flex flex-1 justify-center rounded bg-white'>
-					<div style={{ top: '20%' }} className='absolute'>
+				<div className='flex-1 rounded bg-white'>
+					<div style={{ marginTop: '9.6rem' }}>
 						<NoData text={t('option_chain.select_symbol_first')} />
 					</div>
 				</div>

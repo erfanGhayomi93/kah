@@ -1,4 +1,4 @@
-import { AngleLeftCircle, XSVG } from '@/components/icons';
+import { AngleLeftCircleSVG, XSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 
 interface HeaderProps {
@@ -15,7 +15,7 @@ const Header = ({ symbolTitle, expand, onToggle, onClose }: HeaderProps) => {
 		<div className='moveable relative h-48 border-b border-b-gray-500 bg-white flex-justify-center'>
 			<button type='button' className='absolute right-16 top-1/2 -translate-y-1/2 transform' onClick={onToggle}>
 				<span className='size-24 text-gray-900 flex-justify-center'>
-					<AngleLeftCircle
+					<AngleLeftCircleSVG
 						width='2.4rem'
 						height='2.4rem'
 						style={{ transform: `rotate(${expand ? 0 : 180}deg)`, transition: 'transform 250ms' }}

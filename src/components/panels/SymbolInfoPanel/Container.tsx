@@ -5,20 +5,56 @@ import { SettingSliderSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
+import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import GridLayout, { type Layout } from 'react-grid-layout';
-import BaseSymbolContracts from './components/BaseSymbolContracts';
-import Chart from './components/Chart';
-import IndividualAndLegal from './components/IndividualAndLegal';
-import MarketDepth from './components/MarketDepth';
-import Messages from './components/Messages';
-import OpenPositions from './components/OpenPositions';
-import OptionBaseSymbolInformation from './components/OptionBaseSymbolInformation';
-import OptionDetail from './components/OptionDetail';
-import Quotes from './components/Quotes';
-import SameSectorSymbol from './components/SameSectorSymbol';
-import SymbolDetail from './components/SymbolDetails';
-import SymbolInformation from './components/SymbolInformation';
+
+const BaseSymbolContracts = dynamic(() => import('./components/BaseSymbolContracts'), {
+	loading: () => <Loading />,
+});
+
+const Chart = dynamic(() => import('./components/Chart'), {
+	loading: () => <Loading />,
+});
+
+const IndividualAndLegal = dynamic(() => import('./components/IndividualAndLegal'), {
+	loading: () => <Loading />,
+});
+
+const MarketDepth = dynamic(() => import('./components/MarketDepth'), {
+	loading: () => <Loading />,
+});
+
+const Messages = dynamic(() => import('./components/Messages'), {
+	loading: () => <Loading />,
+});
+
+const OpenPositions = dynamic(() => import('./components/OpenPositions'), {
+	loading: () => <Loading />,
+});
+
+const OptionBaseSymbolInformation = dynamic(() => import('./components/OptionBaseSymbolInformation'), {
+	loading: () => <Loading />,
+});
+const OptionDetail = dynamic(() => import('./components/OptionDetail'), {
+	loading: () => <Loading />,
+});
+
+const Quotes = dynamic(() => import('./components/Quotes'), {
+	loading: () => <Loading />,
+});
+
+const SameSectorSymbol = dynamic(() => import('./components/SameSectorSymbol'), {
+	loading: () => <Loading />,
+});
+
+const SymbolDetails = dynamic(() => import('./components/SymbolDetails'), {
+	loading: () => <Loading />,
+});
+
+const SymbolInformation = dynamic(() => import('./components/SymbolInformation'), {
+	loading: () => <Loading />,
+});
 
 interface ContainerProps {
 	symbolISIN: string;
@@ -190,7 +226,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 										!cells.symbol_detail && (
 											<div key='symbol_detail'>
 												<ErrorBoundary>
-													<SymbolDetail
+													<SymbolDetails
 														symbolData={symbolData}
 														onExpand={onToggleSymbolDetail}
 													/>

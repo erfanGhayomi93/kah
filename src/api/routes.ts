@@ -1,7 +1,6 @@
-import { getAPIEndpoints, getEnvironment } from '@/utils/helpers';
-
-const env = getEnvironment();
-const { oauth, rlc, pushengine } = getAPIEndpoints(env);
+const pushengine = process.env.NEXT_PUBLIC_PUSHENGINE_URL!;
+const oauth = process.env.NEXT_PUBLIC_OAUTH_URL!;
+const rlc = process.env.NEXT_PUBLIC_RLC_URL!;
 
 const routes = {
 	pushengine,
@@ -97,6 +96,13 @@ const routes = {
 		Delete: `${rlc}/Saturn/v1/Delete`,
 		SetActive: `${rlc}/Saturn/v1/SetActive`,
 		GetActive: `${rlc}/Saturn/v1/GetActive`,
+	},
+
+	strategy: {
+		CoveredCall: `${rlc}/Strategies/v1/CoveredCall`,
+		LongCall: `${rlc}/Strategies/v1/LongCall`,
+		LongPut: `${rlc}/Strategies/v1/LongPut`,
+		GetAll: `${rlc}/Strategies/v1/GetAll`,
 	},
 };
 
