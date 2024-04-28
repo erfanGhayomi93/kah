@@ -1,18 +1,27 @@
-import { AngleLeftSVG, PlusSVG } from '@/components/icons';
+import { PlusSVG } from '@/components/icons';
 import { StrategyCheapColor } from '@/constants/enums';
+import { useRouter } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 interface StrategyItemProps extends Strategy.GetAll {}
 
-const StrategyItem = ({ id, title, type, tags }: StrategyItemProps) => {
+const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) => {
+	const router = useRouter();
+
 	const t = useTranslations();
+
+	const onStrategyClick = () => {
+		router.push(`/strategy/${id}`);
+	};
 
 	return (
 		<div className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12'>
 			<div
+				onClick={onStrategyClick}
 				style={{ height: '32.8rem' }}
-				className='overflow-hidden rounded border border-gray-500 bg-white p-16 flex-column'
+				className='cursor-pointer gap-16 overflow-hidden rounded border border-gray-500 bg-white p-16 flex-column'
 			>
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
@@ -22,7 +31,7 @@ const StrategyItem = ({ id, title, type, tags }: StrategyItemProps) => {
 						</h1>
 
 						<button type='button' className='size-32 text-gray-900 flex-justify-center'>
-							<AngleLeftSVG width='2rem' height='2rem' />
+							{/* <AngleLeftSVG width='2rem' height='2rem' /> */}
 						</button>
 					</div>
 
@@ -37,7 +46,18 @@ const StrategyItem = ({ id, title, type, tags }: StrategyItemProps) => {
 					</h3>
 				</div>
 
-				<div className='flex-1' />
+				<div className='flex-1 overflow-hidden'>
+					<Image
+						width='397'
+						height='176'
+						alt={title}
+						src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
+						style={{
+							width: '100%',
+							height: 'auto',
+						}}
+					/>
+				</div>
 
 				<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4'>
 					{tags.map((tag, i) => (
