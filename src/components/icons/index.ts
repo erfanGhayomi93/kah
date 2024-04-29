@@ -30,6 +30,7 @@ import ExpandSVG from './expand.svg';
 import EyeSlashSVG from './eye-slash.svg';
 import EyeSVG from './eye.svg';
 import FileExcelSVG from './file-excel.svg';
+import FileTextSVG from './file-text.svg';
 import FilterSVG from './filter.svg';
 import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
@@ -119,6 +120,7 @@ export {
 	EyeSVG,
 	EyeSlashSVG,
 	FileExcelSVG,
+	FileTextSVG,
 	FilterSVG,
 	GalaxySVG,
 	GrowDownSVG,
