@@ -253,6 +253,15 @@ export const decodeBrokerUrls = (data: Broker.URL[]): IBrokerUrls => {
 		groupDeleteOrder: data[15].url,
 		updateDraft: data[16].url,
 		updateOrder: data[17].url,
+		createRequestEPaymentApi: data[18].url,
+		getRemain: data[19].url,
+		completeRequestReceipt: data[20].url,
+		getListBrokerBankAccount: data[21].url,
+		getReceipt: data[22].url,
+		customerTurnOverRemain: data[23].url,
+		getWithFilterReceipt: data[24].url,
+		getFilteredEPaymentApi: data[25].url,
+		getFilteredPayment: data[26].url,
 	};
 
 	return urls;

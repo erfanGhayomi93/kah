@@ -48,8 +48,8 @@ const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) =>
 
 				<div className='flex-1 overflow-hidden'>
 					<Image
-						width='397'
-						height='176'
+						width='395'
+						height='170'
 						alt={title}
 						src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
 						style={{
