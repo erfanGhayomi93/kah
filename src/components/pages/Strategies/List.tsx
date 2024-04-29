@@ -18,7 +18,7 @@ const List = () => {
 	const filteredStrategies = useMemo<Strategy.GetAll[]>(() => {
 		if (!data?.length) return [];
 
-		if (strategyTrend === 'all') return data;
+		if (strategyTrend === 'All') return data;
 
 		return data.filter((item) => item.tags.includes(strategyTrend));
 	}, [strategyTrend, data]);

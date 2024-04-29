@@ -1,0 +1,171 @@
+'use client';
+
+import { StrategyTag } from '@/components/common/Strategy/StrategyTag';
+import {
+	AdvantagesSVG,
+	ArrowDownSVG,
+	ArrowRightSVG,
+	DisadvantagesSVG,
+	GuaranteeSVG,
+	MaximumLossSVG,
+	MaximumProfitSVG,
+	MenuChocolateSVG,
+	PlusSVG,
+	TeachVideoSVG,
+} from '@/components/icons';
+import { Link } from '@/navigation';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useState } from 'react';
+
+interface DescriptionsProps {
+	strategy: Strategy.GetAll;
+}
+
+const Descriptions = ({ strategy }: DescriptionsProps) => {
+	const t = useTranslations();
+
+	const [isExpand, setIsExpand] = useState(false);
+
+	const { title, type, imageUrl, tags } = strategy;
+
+	return (
+		<div className='relative overflow-hidden pb-16 flex-column'>
+			<div
+				style={{ height: isExpand ? '34rem' : '9.6rem' }}
+				className='flex justify-between rounded bg-white p-16 px-16 transition-height'
+			>
+				<div className='flex-1 justify-between overflow-hidden flex-column'>
+					<div className='gap-8 flex-column'>
+						<div className='gap-12 flex-column'>
+							<div style={{ flex: '0 0 3.2rem' }} className='gap-8 flex-items-center'>
+								<Link href='/strategy' className='size-32 text-gray-900 flex-justify-center'>
+									<ArrowRightSVG width='2.4rem' height='2.4rem' />
+								</Link>
+
+								<div className='flex gap-4 font-medium text-gray-900'>
+									<h1 className='text-base'>{t(`${type}.title`)}</h1>
+									<h2 className='text-base text-gray-700'>({title})</h2>
+								</div>
+
+								<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4 pr-8'>
+									{tags.map((tag, i) => (
+										<StrategyTag key={tag} i={i} tag={tag} />
+									))}
+								</ul>
+							</div>
+							<span className='gap-4 whitespace-nowrap pr-40 text-tiny text-gray-700 flex-items-center'>
+								{t.rich(`${type}.desc`, {
+									plus: () => (
+										<b className='text-gray-600'>
+											<PlusSVG width='1.4rem' height='1.4rem' />
+										</b>
+									),
+								})}
+							</span>
+						</div>
+
+						{isExpand && (
+							<div className='gap-24 flex-column'>
+								<h1 className='text-base font-medium'>{t(`${type}.summary`)}</h1>
+
+								<ul className='gap-8 flex-column'>
+									<li className='flex gap-8'>
+										<span className='gap-4 text-tiny font-medium text-gray-900 flex-items-center'>
+											<AdvantagesSVG width='2rem' height='2rem' />
+											{t('strategy.advantages')}:
+										</span>
+										<p className='text-tiny leading-8 text-gray-1000'>{t(`${type}.advantages`)}</p>
+									</li>
+									<li className='flex gap-8'>
+										<span className='gap-4 text-tiny font-medium text-gray-900 flex-items-center'>
+											<DisadvantagesSVG width='2rem' height='2rem' />
+											{t('strategy.disadvantages')}:
+										</span>
+										<p className='text-tiny leading-8 text-gray-1000'>
+											{t(`${type}.disadvantages`)}
+										</p>
+									</li>
+									<li className='flex gap-8'>
+										<span className='gap-4 text-tiny font-medium text-gray-900 flex-items-center'>
+											<MaximumLossSVG width='2rem' height='2rem' />
+											{t('strategy.maximum_loss')}:
+										</span>
+										<p className='text-tiny leading-8 text-gray-1000'>
+											{t(`${type}.maximum_loss`)}
+										</p>
+									</li>
+									<li className='flex gap-8'>
+										<span className='gap-4 text-tiny font-medium text-gray-900 flex-items-center'>
+											<MaximumProfitSVG width='2rem' height='2rem' />
+											{t('strategy.maximum_profit')}:
+										</span>
+										<p className='text-tiny leading-8 text-gray-1000'>
+											{t(`${type}.maximum_profit`)}
+										</p>
+									</li>
+									<li className='flex gap-8'>
+										<span className='gap-4 text-tiny font-medium text-gray-900 flex-items-center'>
+											<GuaranteeSVG width='2rem' height='2rem' />
+											{t('strategy.required_margin')}:
+										</span>
+										<p className='text-tiny leading-8 text-gray-1000'>
+											{t(`${type}.required_margin`)}
+										</p>
+									</li>
+								</ul>
+							</div>
+						)}
+					</div>
+
+					{isExpand && (
+						<div className='flex items-center gap-16'>
+							<button type='button' className='gap-8 text-base text-info flex-items-center'>
+								<MenuChocolateSVG width='2.4rem' height='2.4rem' />
+								{t('strategy.more_info')}
+							</button>
+							<button type='button' className='gap-8 text-base text-info flex-items-center'>
+								<TeachVideoSVG width='2.4rem' height='2.4rem' />
+								{t('strategy.teach_video')}
+							</button>
+						</div>
+					)}
+				</div>
+
+				{isExpand && (
+					<div
+						style={{ flex: '0 0 43.2rem' }}
+						className='h-full gap-8 overflow-hidden rounded p-16 shadow-card flex-column'
+					>
+						<Image
+							width='395'
+							height='170'
+							alt={title}
+							src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
+							style={{
+								width: '100%',
+								height: 'auto',
+							}}
+						/>
+					</div>
+				)}
+			</div>
+
+			<button
+				type='button'
+				onClick={() => setIsExpand(!isExpand)}
+				style={{ width: '6.6rem', height: '2.2rem' }}
+				className='absolute bottom-8 left-1/2 -translate-x-1/2 transform rounded bg-white text-gray-900 flex-justify-center'
+			>
+				<ArrowDownSVG
+					width='1.8rem'
+					height='1.8rem'
+					className='transition-transform'
+					style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }}
+				/>
+			</button>
+		</div>
+	);
+};
+
+export default Descriptions;

@@ -1,8 +1,9 @@
 declare interface INextProps<T extends object = {}> {
+	children: React.ReactNode;
 	params: T & { locale: string };
 }
 
-declare interface INextStrategyProps extends INextProps<{ id: string }> {}
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
 declare interface IOFields {
 	symbolISIN: string;
@@ -42,7 +43,7 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
 declare type TStrategyMarketTrend =
-	| 'all'
+	| 'All'
 	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
 
 declare type TSymbolInfoPanelSections =

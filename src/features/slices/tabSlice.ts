@@ -17,7 +17,7 @@ export interface TabState {
 
 const initialState: TabState = {
 	optionWatchlistTabId: Number(LocalstorageInstance.get('awl', -1)) || -1,
-	strategyTrend: 'all',
+	strategyTrend: 'All',
 };
 
 const portfolioSlice = createSlice({
