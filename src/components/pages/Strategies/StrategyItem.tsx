@@ -7,13 +7,13 @@ import Image from 'next/image';
 
 interface StrategyItemProps extends Strategy.GetAll {}
 
-const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) => {
+const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 	const router = useRouter();
 
 	const t = useTranslations();
 
 	const onStrategyClick = () => {
-		router.push(`/strategy/${id}`);
+		router.push(`/strategy/${type}`);
 	};
 
 	return (
