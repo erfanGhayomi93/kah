@@ -1,23 +1,31 @@
 import { InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
+import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { useDebounce, useInputs } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 import Checkbox from '../Inputs/Checkbox';
+import Tooltip from '../Tooltip';
 import styles from './SymbolStrategyTable.module.scss';
+
+interface IInput {
+	price: number;
+	quantity: number;
+}
 
 interface ISharedProps {
 	withContractSize?: boolean;
-	onChangePrice: (id: string, v: number) => void;
-	onChangeQuantity: (id: string, v: number) => void;
 	onSideChange: (id: string, side: TBsSides) => void;
 	onDelete: (id: string) => void;
 }
 
 interface SymbolStrategyProps extends ISharedProps, ISymbolStrategyContract {
 	checked: boolean;
+	onChange: (v: IInput) => void;
 	onSelect: (checked: boolean) => void;
 }
 
@@ -25,9 +33,10 @@ interface SymbolStrategyTableProps extends ISharedProps {
 	withRequiredMargin?: boolean;
 	withCommission?: boolean;
 	contracts: ISymbolStrategyContract[];
-	selectedContracts: ISymbolStrategyContract[];
+	selectedContracts: string[];
 	spacing?: string;
-	onSelectionChanged: (rows: ISymbolStrategyContract[]) => void;
+	onSelectionChanged: (rows: string[]) => void;
+	onChange: (id: string, v: IInput) => void;
 }
 
 const SymbolStrategyTable = ({
@@ -37,8 +46,7 @@ const SymbolStrategyTable = ({
 	withCommission,
 	withRequiredMargin,
 	withContractSize,
-	onChangePrice,
-	onChangeQuantity,
+	onChange,
 	onSideChange,
 	onDelete,
 	onSelectionChanged,
@@ -49,16 +57,16 @@ const SymbolStrategyTable = ({
 		if (isAllContractsSelected) {
 			onSelectionChanged([]);
 		} else {
-			onSelectionChanged(contracts);
+			onSelectionChanged(contracts.map((item) => item.id));
 		}
 	};
 
 	const onSelect = (data: ISymbolStrategyContract, checked: boolean) => {
 		const contracts = [...selectedContracts];
-		const contractIndex = contracts.findIndex((item) => item.id === data.id);
+		const contractIndex = contracts.findIndex((orderId) => orderId === data.id);
 
 		if (contractIndex === -1) {
-			if (checked) contracts.push(data);
+			if (checked) contracts.push(data.id);
 		} else {
 			if (!checked) contracts.splice(contractIndex, 1);
 		}
@@ -67,7 +75,7 @@ const SymbolStrategyTable = ({
 	};
 
 	const isContractSelected = (id: string): boolean => {
-		return selectedContracts.findIndex((item) => item.id === id) > -1;
+		return selectedContracts.findIndex((orderId) => orderId === id) > -1;
 	};
 
 	const isAllContractsSelected = contracts.length > 0 && selectedContracts.length === contracts.length;
@@ -111,8 +119,7 @@ const SymbolStrategyTable = ({
 						{...item}
 						checked={isContractSelected(item.id)}
 						withContractSize={Boolean(withContractSize)}
-						onChangePrice={onChangePrice}
-						onChangeQuantity={onChangeQuantity}
+						onChange={(v) => onChange(item.id, v)}
 						onSideChange={onSideChange}
 						onDelete={onDelete}
 						onSelect={(v) => onSelect(item, v)}
@@ -138,14 +145,40 @@ const SymbolStrategy = ({
 	withContractSize,
 	checked,
 	onSelect,
-	onChangePrice,
-	onChangeQuantity,
+	onChange,
 	onSideChange,
 	onDelete,
 }: SymbolStrategyProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
+
+	const { setDebounce } = useDebounce();
+
+	const { inputs, setFieldValue } = useInputs<IInput>({
+		price,
+		quantity,
+	});
+
+	const showInfo = () => {
+		dispatch(
+			setOrderDetailsModal({
+				type: 'option',
+				data: {
+					...inputs,
+					contractSize,
+					settlementDay,
+					strikePrice,
+					requiredMargin: requiredMargin.value,
+					strikeCommission: 0.0005,
+					tradeCommission: commission.value,
+					side,
+					type,
+					symbolTitle: symbol.symbolInfo.symbolTitle,
+				},
+			}),
+		);
+	};
 
 	const dateFormatter = () => {
 		return dayjs(settlementDay).calendar('jalali').locale('fa').format('YYYY/MM/DD');
@@ -154,6 +187,14 @@ const SymbolStrategy = ({
 	const openSymbolInfo = () => {
 		dispatch(setSymbolInfoPanel(symbol.symbolInfo.symbolISIN));
 	};
+
+	useEffect(() => {
+		if (inputs.price !== price || inputs.quantity !== quantity) {
+			setDebounce(() => {
+				onChange(inputs);
+			}, 400);
+		}
+	}, [inputs]);
 
 	return (
 		<tr className={styles.tr}>
@@ -204,41 +245,46 @@ const SymbolStrategy = ({
 			<td className={styles.td}>
 				<input
 					maxLength={16}
-					onCopy={(e) => copyNumberToClipboard(e, price)}
+					onCopy={(e) => copyNumberToClipboard(e, inputs.price)}
 					type='text'
 					name='price'
 					inputMode='numeric'
 					className='h-40 w-full rounded border border-input px-8 text-center ltr'
-					value={sepNumbers(String(price))}
-					onChange={(e) => onChangePrice(id, Number(convertStringToInteger(e.target.value)))}
+					value={sepNumbers(String(inputs.price))}
+					onChange={(e) => setFieldValue('price', Number(convertStringToInteger(e.target.value)))}
 				/>
 			</td>
 
 			<td className={styles.td}>
 				<input
 					maxLength={9}
-					onCopy={(e) => copyNumberToClipboard(e, quantity)}
+					onCopy={(e) => copyNumberToClipboard(e, inputs.quantity)}
 					type='text'
 					name='quantity'
 					inputMode='numeric'
 					className='h-40 w-full rounded border border-input px-8 text-center ltr'
-					value={sepNumbers(String(quantity))}
-					onChange={(e) => onChangeQuantity(id, Number(convertStringToInteger(e.target.value)))}
+					value={sepNumbers(String(inputs.quantity))}
+					onChange={(e) => setFieldValue('quantity', Number(convertStringToInteger(e.target.value)))}
 				/>
 			</td>
 
-			{requiredMargin && <td className={styles.td} />}
+			{requiredMargin?.checked && <td className={styles.td} />}
 
-			{commission && <td className={styles.td} />}
+			{commission?.checked && <td className={styles.td} />}
 
 			<td style={{ flex: '0 0 5.6rem' }} className={styles.td}>
 				<div className='gap-8 flex-justify-center'>
-					<button type='button' className='icon-hover'>
-						<InfoCircleOutlineSVG className='2.4rem' height='2.4rem' />
-					</button>
-					<button onClick={() => onDelete(id)} type='button' className='icon-hover'>
-						<TrashSVG className='2rem' height='2rem' />
-					</button>
+					<Tooltip placement='bottom' content={t('tooltip.more_info')}>
+						<button onClick={showInfo} type='button' className='icon-hover'>
+							<InfoCircleOutlineSVG className='2.4rem' height='2.4rem' />
+						</button>
+					</Tooltip>
+
+					<Tooltip placement='bottom' content={t('tooltip.remove')}>
+						<button onClick={() => onDelete(id)} type='button' className='icon-hover'>
+							<TrashSVG className='2rem' height='2rem' />
+						</button>
+					</Tooltip>
 				</div>
 			</td>
 		</tr>

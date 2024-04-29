@@ -1,7 +1,7 @@
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 
 const OptionInfo = dynamic(() => import('./OptionInfo'), {
 	ssr: false,
@@ -31,16 +31,9 @@ const Option = ({ settlementDay, baseSymbol }: OptionProps) => {
 					</div>
 				</>
 			) : (
-				<div className='flex flex-1 justify-center rounded bg-white'>
-					<div style={{ top: '18%' }} className='absolute flex-col gap-8 text-center flex-justify-center'>
-						<Image
-							width='174'
-							height='174'
-							quality='100'
-							alt='search first'
-							src='/static/images/search-file.png'
-						/>
-						<span className='text-base text-gray-900'>{t('option_chain.select_symbol_first')}</span>
+				<div className='flex-1 rounded bg-white'>
+					<div style={{ marginTop: '9.6rem' }}>
+						<NoData text={t('option_chain.select_symbol_first')} />
 					</div>
 				</div>
 			)}

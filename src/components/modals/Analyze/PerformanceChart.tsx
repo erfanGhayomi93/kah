@@ -1,105 +1,164 @@
 import AppChart from '@/components/common/AppChart';
-import { sepNumbers } from '@/utils/helpers';
+import { sepNumbers, toFixed } from '@/utils/helpers';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import PriceRange from './PriceRange';
 
-interface PerformanceChartProps {
-	contracts: ISymbolStrategyContract[];
+interface PerformanceChartProps
+	extends Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice' | 'chartData' | 'baseAssets' | 'bep'> {
+	onChange: (values: Partial<Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
-const PerformanceChart = ({ contracts }: PerformanceChartProps) => {
-	const intrinsicValue = (strikePrice: number, baseSymbolPrice: number, type: TOptionSides) => {
-		if (type === 'call') return Math.max(baseSymbolPrice - strikePrice, 0);
-		return Math.max(strikePrice - baseSymbolPrice, 0);
-	};
+const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onChange }: PerformanceChartProps) => {
+	const t = useTranslations();
 
-	const pnl = (intrinsicValue: number, premium: number, type: TBsSides) => {
-		if (type === 'buy') return intrinsicValue - premium;
-		return premium - intrinsicValue;
-	};
+	const getAnnotationStyle = (x: string, label: string, value: string, color: string, h: boolean) => ({
+		x,
+		strokeDashArray: 8,
+		borderWidth: 2,
+		borderColor: color,
+		fillColor: color,
+		label: {
+			borderRadius: 4,
+			borderWidth: 0,
+			orientation: 'horizontal',
+			text: `‎${value} :${label}`,
+			style: {
+				background: color,
+				color: 'rgb(255, 255, 255)',
+				fontFamily: 'IRANSans',
+				fontSize: '12px',
+				cssClass: 'apex-annotation',
+				padding: {
+					top: 4,
+					left: 8,
+					bottom: 8,
+					right: 8,
+				},
+			},
+			offsetY: h ? 32 : 0,
+		},
+	});
 
-	const dataMapper = useMemo(() => {
-		const chartData: Array<Record<'x' | 'y', number>> = [];
-		if (contracts.length === 0) return chartData;
+	const colors = ['rgb(0, 194, 136)', 'rgb(255, 82, 109)'];
 
-		try {
-			const l = contracts.length;
-			const { baseSymbolPrice } = contracts[0].symbol.optionWatchlistData;
-			const lowPrice = Math.max(baseSymbolPrice * 0.8, 0);
-			const highPrice = baseSymbolPrice * 1.2;
-			const n = (highPrice - lowPrice) / 10;
+	const [chunk1, chunk2] = useMemo<Array<typeof chartData>>(() => {
+		const result: Array<typeof chartData> = [[], []];
+		const l = chartData.length;
 
-			for (let i = 0; i < l; i++) {
-				const item = contracts[i];
-				const contractType = item.symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put';
-				const {
-					optionWatchlistData: { premium },
-					symbolInfo: { strikePrice },
-				} = item.symbol;
+		for (let i = 0; i < l; i++) {
+			const item = chartData[i];
 
-				let index = 0;
-				for (let j = lowPrice; j <= highPrice; j += n) {
-					const iv = intrinsicValue(strikePrice, j, contractType);
-					const previousY = chartData[index]?.y ?? 0;
-					const y = previousY + pnl(iv, premium, item.side);
-
-					chartData[index] = {
-						y,
-						x: j,
-					};
-
-					index++;
-				}
+			if (item) {
+				if (item.y > 0) result[0].push(item);
+				else if (item.y < 0) result[1].push(item);
 			}
-		} catch (e) {
-			//
 		}
 
-		return chartData;
-	}, [JSON.stringify(contracts)]);
+		if (result[0].length > 1) {
+			if (result[0][0].y > result[0][1].y) result[0].push(bep);
+			else result[0].unshift(bep);
+		}
+
+		if (result[1].length > 1) {
+			if (result[1][0].y > result[1][1].y) result[1].unshift(bep);
+			else result[1].push(bep);
+		}
+
+		return result;
+	}, [JSON.stringify(chartData), bep]);
 
 	return (
-		<AppChart
-			options={{
-				colors: ['rgba(0, 87, 255, 1)'],
-				chart: {
-					zoom: {
-						enabled: true,
+		<div className='gap-8 flex-column'>
+			<AppChart
+				key='324'
+				options={{
+					colors,
+					annotations: {
+						xaxis: [
+							getAnnotationStyle(
+								String(bep.x),
+								t('analyze_modal.break_even_point'),
+								sepNumbers(String(bep.x)),
+								'rgba(127, 26, 255, 1)',
+								false,
+							),
+							getAnnotationStyle(
+								String(baseAssets),
+								t('analyze_modal.base_assets'),
+								sepNumbers(String(baseAssets)),
+								'rgba(0, 87, 255, 1)',
+								true,
+							),
+						],
 					},
-				},
-				tooltip: {
-					y: {
-						formatter: (val) => {
-							return sepNumbers(String(val ?? 0));
+					tooltip: {
+						custom: ({ series, seriesIndex, dataPointIndex, w }) => {
+							const y = series[seriesIndex][dataPointIndex];
+
+							const li1 = `<li><span>${t('analyze_modal.base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
+							const li2 = `<li><span>${t('analyze_modal.current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(4650))}</span></li>`;
+							const li3 = `<li><span>${t('analyze_modal.rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(1200))} (2.45%)</span></li>`;
+							const li4 = `<li><span>${t('analyze_modal.ytm')}:</span><span class="ltr">${sepNumbers(String(125000))} (-2.6%)</span></li>`;
+
+							return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
 						},
 					},
-				},
-				xaxis: {
-					offsetX: 0,
-					offsetY: 0,
-					tickAmount: 5,
-					axisBorder: {
-						show: false,
+					xaxis: {
+						min: minPrice,
+						max: maxPrice,
+						offsetX: 0,
+						offsetY: 0,
+						tickAmount: 5,
+						axisBorder: {
+							show: false,
+						},
+						axisTicks: {
+							show: false,
+						},
+						labels: {
+							formatter: (value) => toFixed(Number(value), 0),
+						},
 					},
-					axisTicks: {
-						show: false,
+					yaxis: {
+						min: (min) => min,
+						max: (max) => max,
+						tickAmount: 5,
+						floating: false,
+						labels: {
+							formatter: (value) => toFixed(Number(value), 0),
+						},
 					},
-					labels: {
-						formatter: (value) => sepNumbers(String(value)),
+					stroke: {
+						curve: 'straight',
 					},
-				},
-				yaxis: {
-					tickAmount: 5,
-				},
-			}}
-			series={[
-				{
-					data: dataMapper,
-				},
-			]}
-			type='area'
-			width='100%'
-			height='100%'
-		/>
+					fill: {
+						type: 'gradient',
+						colors,
+						gradient: {
+							type: 'vertical',
+							opacityFrom: 0.5,
+							opacityTo: 0.5,
+						},
+					},
+				}}
+				series={[
+					{
+						type: 'area',
+						data: chunk1,
+					},
+					{
+						type: 'area',
+						data: chunk2,
+					},
+				]}
+				type='area'
+				width='100%'
+				height={304}
+			/>
+
+			<PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />
+		</div>
 	);
 };
 

@@ -11,7 +11,6 @@ import {
 	setDepositModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
-	setOrderDetailsModal,
 	setWithdrawalModal
 } from '@/features/slices/modalSlice';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
@@ -263,9 +262,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{orderDetails && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setOrderDetailsModal(null))} broker>
-							<OrderDetails {...orderDetails} />
-						</AuthorizeMiddleware>
+						<OrderDetails {...orderDetails} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

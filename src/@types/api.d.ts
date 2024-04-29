@@ -1225,3 +1225,130 @@ declare namespace Dashboard {
 		}
 	}
 }
+
+declare namespace Strategy {
+	declare type Cheap =
+		| 'HighRisk'
+		| 'LowRisk'
+		| 'ModerateRisk'
+		| 'LimitedInterest'
+		| 'UnlimitedInterest'
+		| 'LimitedLoss'
+		| 'UnlimitedLoss'
+		| 'BullishMarket'
+		| 'BearishMarket'
+		| 'NeutralMarket'
+		| 'DirectionalMarket';
+
+	declare type Type = 'CoveredCall' | 'LongCall' | 'LongPut' | 'ProtectivePut' | 'BullCallSpread';
+
+	export interface GetAll {
+		id: number;
+		title: string;
+		type: Type;
+		imageUrl: string;
+		tags: Cheap[];
+	}
+
+	export interface CoveredCall {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		strikePrice: number;
+		openPositionCount: number;
+		iotm: Option.IOTM;
+		premium: number;
+		tradePriceVarPreviousTradePercent: number;
+		optionBestBuyLimitQuantity: number;
+		optionBestBuyLimitPrice: number;
+		contractSize: number;
+		baseBestSellLimitPrice: number;
+		baseBestBuyLimitPrice: number;
+		optionBestSellLimitPrice: number;
+		optionBestSellLimitQuantity: number;
+		baseClosingPrice: number;
+		tradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		coveredCallBEP: number;
+		maxProfit: number;
+		maxProfitPercent: number;
+		inUseCapital: number;
+		bestBuyYTM: number;
+		bestSellYTM: number;
+		bepDifference: number;
+		riskCoverage: number;
+		nonExpiredProfit: number;
+		nonExpiredProfitPercent: number;
+	}
+
+	export interface LongCall {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		strikePrice: number;
+		openPositionCount: number;
+		iotm: Option.IOTM;
+		premium: number;
+		tradePriceVarPreviousTradePercent: number;
+		optionBestSellLimitPrice: number;
+		optionBestSellLimitQuantity: number;
+		longCallBEP: number;
+		profitAmount: number;
+		profitPercentUntilSettlement: number;
+		blackScholes: number;
+		timeValue: number;
+		intrinsicValue: number;
+		bepDifference: number;
+		optionBestLimitPrice: number;
+		optionBestLimitVolume: number;
+		tradeValue: number;
+		baseTradeValue: number;
+		baesTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		ytm: number;
+	}
+
+	export interface LongPut {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		strikePrice: number;
+		openPositionCount: number;
+		iotm: Option.IOTM;
+		premium: number;
+		tradePriceVarPreviousTradePercent: number;
+		optionBestSellLimitPrice: number;
+		optionBestSellLimitQuantity: number;
+		longCallBEP: number;
+		profitAmount: number;
+		profitPercentUntilSettlement: number;
+		blackScholes: number;
+		timeValue: number;
+		intrinsicValue: number;
+		bepDifference: number;
+		optionBestLimitPrice: number;
+		optionBestLimitVolume: number;
+		tradeValue: number;
+		baseTradeValue: number;
+		baesTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		ytm: number;
+	}
+}

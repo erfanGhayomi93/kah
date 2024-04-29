@@ -143,13 +143,6 @@ export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 	},
 ];
 
-export const getDateMilliseconds = {
-	Day: 864e5,
-	Week: 6048e5,
-	Month: 2592e6,
-	Year: 31536e6,
-};
-
 export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	{
 		id: 'option_detail',
@@ -260,6 +253,16 @@ export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
 	dueDays: [0, 365],
 	delta: [-1, 1],
 	minimumTradesValue: '',
+};
+
+export const dateTypesAPI: Record<
+	'daily' | 'weekly' | 'monthly' | 'yearly',
+	'Today' | 'Weekly' | 'Monthly' | 'Yearly'
+> = {
+	daily: 'Today',
+	weekly: 'Weekly',
+	monthly: 'Monthly',
+	yearly: 'Yearly',
 };
 
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];

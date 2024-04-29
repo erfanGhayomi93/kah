@@ -12,11 +12,15 @@
 }
 
 .text {
-	color: theme("colors.gray.900");
+	color: theme("colors.gray.700");
 	font-size: 13px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+
+	&.active {
+		color: theme("colors.gray.1000");
+	}
 }
 
 .radiobox {

@@ -1,4 +1,8 @@
-declare interface INextProps {}
+declare interface INextProps<T extends object = {}> {
+	params: T & { locale: string };
+}
+
+declare interface INextStrategyProps extends INextProps<{ id: string }> {}
 
 declare interface IOFields {
 	symbolISIN: string;
@@ -36,6 +40,10 @@ declare type TBsTypes = 'draft' | 'order';
 declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | 'option_orders' | 'draft';
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
+
+declare type TStrategyMarketTrend =
+	| 'all'
+	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
 
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
@@ -210,6 +218,22 @@ declare interface IBsModalInputs {
 	holdAfterOrder: boolean;
 }
 
+declare interface IAnalyzeModalInputs {
+	chartData: Array<Record<'x' | 'y', number>>;
+	minPrice: number;
+	maxPrice: number;
+	mostProfit: number;
+	mostLoss: number;
+	baseAssets: number;
+	bep: Record<'x' | 'y', number>;
+	budget: number;
+	profitProbability: number;
+	timeValue: number;
+	risk: number;
+	requiredMargin: number;
+	withCommission: boolean;
+}
+
 declare type TSetBsModalInputs = <
 	T extends
 		| Partial<IBsModalInputs>
@@ -274,14 +298,19 @@ declare interface ISymbolStrategyContract {
 	type: TOptionSides;
 	side: TBsSides;
 	symbol: Option.Root;
-	commission?: {
+	commission: {
 		value: number;
-		checked: boolean;
-		onChecked: (checked: boolean) => void;
+		checked?: boolean;
+		onChecked?: (checked: boolean) => void;
 	};
-	requiredMargin?: {
+	requiredMargin: {
 		value: number;
-		checked: boolean;
-		onChecked: (checked: boolean) => void;
+		checked?: boolean;
+		onChecked?: (checked: boolean) => void;
 	};
+}
+
+declare interface ISymbolChartStates {
+	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
+	type: 'area' | 'candlestick';
 }
