@@ -2,7 +2,7 @@ import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import Descriptions from '@/components/pages/Strategies/Strategy/Descriptions';
-import TableFilters from '@/components/pages/Strategies/Strategy/TableFilters';
+import Table from '@/components/pages/Strategies/Strategy/Table';
 import { redirect } from '@/navigation';
 import type { NextPage } from 'next';
 
@@ -29,16 +29,11 @@ const Page: NextPage<INextStrategyProps> = async ({ params: { id } }) => {
 	return (
 		<Main className='!px-8'>
 			<Descriptions strategy={strategy} />
-
-			<div className='flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
-				<TableFilters strategy={strategy} />
-			</div>
+			<Table strategy={strategy} />
 		</Main>
 	);
 };
 
-export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
-export const dynamicParams = true;
 
 export default Page;
