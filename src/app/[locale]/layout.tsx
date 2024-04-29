@@ -17,9 +17,7 @@ const Panels = dynamic(() => import('@/components/panels/Panels'), {
 	ssr: false,
 });
 
-interface ILayout extends INextProps<{ locale: string }> {
-	children: React.ReactNode;
-}
+interface ILayout extends INextProps {}
 
 const Layout = async ({ children, params: { locale = 'fa' } }: ILayout) => {
 	unstable_setRequestLocale(locale);
