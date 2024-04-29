@@ -53,6 +53,7 @@ export const deleteClientId = () => deleteCookie('kahkeshan_client_id');
 
 // Broker Client ID
 export const getBrokerClientId = (): [string | null, number | null] => {
+	// [token, brokerCode]
 	try {
 		const clientId = getCookie('br_client_id');
 

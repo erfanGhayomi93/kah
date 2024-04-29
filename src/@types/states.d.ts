@@ -186,7 +186,16 @@ declare type IBrokerUrls = Record<
 	| 'updateOrder'
 	| 'userRemain'
 	| 'userStatus'
-	| 'createDraft',
+	| 'createDraft'
+	| 'createRequestEPaymentApi'
+	| 'getRemain'
+	| 'completeRequestReceipt'
+	| 'getListBrokerBankAccount'
+	| 'getReceipt'
+	| 'customerTurnOverRemain'
+	| 'getWithFilterReceipt'
+	| 'getFilteredEPaymentApi'
+	| 'getFilteredPayment',
 	string
 >;
 
