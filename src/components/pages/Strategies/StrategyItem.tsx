@@ -7,13 +7,13 @@ import Image from 'next/image';
 
 interface StrategyItemProps extends Strategy.GetAll {}
 
-const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) => {
+const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 	const router = useRouter();
 
 	const t = useTranslations();
 
 	const onStrategyClick = () => {
-		router.push(`/strategy/${id}`);
+		router.push(`/strategy/${type}`);
 	};
 
 	return (
@@ -48,8 +48,8 @@ const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) =>
 
 				<div className='flex-1 overflow-hidden'>
 					<Image
-						width='397'
-						height='176'
+						width='395'
+						height='170'
 						alt={title}
 						src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
 						style={{

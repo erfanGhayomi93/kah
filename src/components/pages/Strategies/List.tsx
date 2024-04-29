@@ -8,7 +8,7 @@ import { getStrategyTrend } from '@/features/slices/tabSlice';
 import { useMemo } from 'react';
 import StrategyItem from './StrategyItem';
 
-const Strategies = () => {
+const List = () => {
 	const strategyTrend = useAppSelector(getStrategyTrend);
 
 	const { data, isLoading } = useGetAllStrategyQuery({
@@ -48,4 +48,4 @@ const Strategies = () => {
 	);
 };
 
-export default Strategies;
+export default List;

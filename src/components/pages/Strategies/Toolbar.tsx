@@ -83,7 +83,7 @@ const Toolbar = () => {
 								? 'no-hover font-medium btn-select'
 								: 'border-gray-200 bg-gray-200 text-gray-900',
 						)}
-						href='strategy/build'
+						href='/strategy/build'
 					>
 						{t('strategies.build_strategy')}
 					</Link>
