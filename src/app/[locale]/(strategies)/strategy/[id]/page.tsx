@@ -9,7 +9,7 @@ export async function generateStaticParams() {
 		)) as ServerResponse<Strategy.GetAll[]>;
 
 		return result.map((item) => ({
-			id: String(item.id),
+			id: item.type,
 		}));
 	} catch (e) {
 		return [];
