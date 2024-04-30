@@ -1,62 +1,71 @@
-import { cloneElement, useEffect, useRef } from 'react';
+import { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 interface ClickProps {
-	enabled: boolean;
+	enabled?: boolean;
 	children: React.ReactElement;
+	dependency?: string;
 	onClickInside?: () => void;
 	onClickOutside?: () => void;
 }
 
-const Click = ({ enabled, children, onClickInside, onClickOutside }: ClickProps) => {
-	const childRef = useRef<HTMLElement>(null);
+const Click = forwardRef<HTMLElement, ClickProps>(
+	({ enabled = true, dependency, children, onClickInside, onClickOutside }: ClickProps, ref) => {
+		const childRef = useRef<HTMLElement>(null);
 
-	const controllerRef = useRef<AbortController>(new AbortController());
+		const controllerRef = useRef<AbortController>(new AbortController());
 
-	const onDocumentClick = (e: MouseEvent) => {
-		try {
-			const eChild = childRef.current;
-			const eTarget = e.target as HTMLElement | null;
-			if (!eTarget || !eChild) return;
+		useImperativeHandle(ref, () => childRef.current!);
 
-			if (eChild.isEqualNode(eTarget) || eChild.contains(eTarget)) {
-				onClickInside?.();
-				return;
+		const onDocumentClick = (e: MouseEvent) => {
+			try {
+				const eChild = childRef.current;
+				const eTarget = e.target as HTMLElement | null;
+				if (!eTarget || !eChild) return;
+
+				if (
+					eChild.isEqualNode(eTarget) ||
+					eChild.contains(eTarget) ||
+					(dependency && eTarget.closest(dependency))
+				) {
+					onClickInside?.();
+					return;
+				}
+
+				abort();
+				onClickOutside?.();
+			} catch (e) {
+				//
+			}
+		};
+
+		const abort = () => {
+			try {
+				controllerRef.current.abort();
+			} catch (e) {
+				//
+			}
+		};
+
+		const getSignal = () => {
+			return controllerRef.current.signal;
+		};
+
+		useEffect(() => {
+			abort();
+
+			if (enabled) {
+				controllerRef.current = new AbortController();
+
+				window.addEventListener('mousedown', onDocumentClick, {
+					signal: getSignal(),
+				});
 			}
 
-			abort();
-			onClickOutside?.();
-		} catch (e) {
-			//
-		}
-	};
+			return () => abort();
+		}, [enabled]);
 
-	const abort = () => {
-		try {
-			controllerRef.current.abort();
-		} catch (e) {
-			//
-		}
-	};
-
-	const getSignal = () => {
-		return controllerRef.current.signal;
-	};
-
-	useEffect(() => {
-		abort();
-
-		if (enabled) {
-			controllerRef.current = new AbortController();
-
-			window.addEventListener('mousedown', onDocumentClick, {
-				signal: getSignal(),
-			});
-		}
-
-		return () => abort();
-	}, [enabled]);
-
-	return cloneElement(children, { ref: childRef });
-};
+		return cloneElement(children, { ref: childRef });
+	},
+);
 
 export default Click;
