@@ -180,3 +180,4 @@ Production-Job02:
     artifacts:
     rules:
         - if: $CI_COMMIT_BRANCH == "Production"
+
