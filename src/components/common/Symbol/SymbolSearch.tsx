@@ -1,7 +1,7 @@
 import { useSymbolSearchQuery } from '@/api/queries/symbolQuery';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { SearchSVG, XCircleSVG } from '../../icons';
 import Popup from '../Popup';
 import styles from './SymbolSearch.module.scss';
@@ -19,7 +19,7 @@ interface INonClearableProps {
 	clearable?: false;
 	value: Symbol.Search | null;
 	onChange: (option: Symbol.Search) => void;
-	readonly onClear: () => void;
+	readonly onClear?: undefined;
 }
 
 type SymbolSearchProps = InputProps &
@@ -37,6 +37,8 @@ const SymbolSearch = ({
 	...inputProps
 }: SymbolSearchProps) => {
 	const t = useTranslations();
+
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const [term, setTerm] = useState('');
 
@@ -60,9 +62,10 @@ const SymbolSearch = ({
 		if (!clearable) return;
 
 		try {
-			onChange(null);
 			setTerm('');
 			onClear?.();
+
+			inputRef.current?.focus();
 		} catch (e) {
 			//
 		}
@@ -117,6 +120,7 @@ const SymbolSearch = ({
 					</div>
 
 					<input
+						ref={inputRef}
 						type='text'
 						inputMode='search'
 						className={cn(styles.input, classes?.input)}
@@ -127,9 +131,9 @@ const SymbolSearch = ({
 						onChange={(e) => setTerm(e.target.value)}
 					/>
 
-					{clearable && (
+					{clearable && term.length > 1 && (
 						<button onClick={onClearInput} type='button' className={cn(styles.clear, classes?.clear)}>
-							<XCircleSVG width='1.6rem' height='1.6rem' />
+							<XCircleSVG width='1.4rem' height='1.4rem' />
 						</button>
 					)}
 

@@ -12,6 +12,7 @@ interface ToggleSymbolSelectProps {
 
 const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
 	const dispatch = useAppDispatch();
+
 	const [isToggleActive, setIsToggleActive] = useState(false);
 
 	const onChangeSymbol = (value: Symbol.Search | null) => {
@@ -33,13 +34,14 @@ const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
 
 					{isToggleActive && (
 						<Click onClickOutside={() => setIsToggleActive(false)}>
-							<div className='absolute bg-white'>
+							<div style={{ width: '18rem' }} className='absolute bg-white'>
 								<SymbolSearch
+									clearable
 									autoFocus
 									classes={{
 										list: 'panel-symbol-search',
 									}}
-									value={{ ...symbolData, companyISIN: '' } as Symbol.Search}
+									value={null}
 									onChange={onChangeSymbol}
 								/>
 							</div>
