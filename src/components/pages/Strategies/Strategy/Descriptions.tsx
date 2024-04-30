@@ -17,24 +17,37 @@ import {
 import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface DescriptionsProps {
 	strategy: Strategy.GetAll;
 }
 
 const Descriptions = ({ strategy }: DescriptionsProps) => {
+	const { title, type, imageUrl, tags } = strategy;
+
 	const t = useTranslations();
 
 	const [isExpand, setIsExpand] = useState(true);
 
-	const { title, type, imageUrl, tags } = strategy;
+	const combinedTags = useMemo(() => {
+		// try {
+		// 	const result = [];
+		// 	const markets = result.slice(3);
+		// 	for (let i = 0; i < tags.length; i++) {
+		// 		markets
+		// 	}
+		// 	return result;
+		// } catch (e) {
+		// 	return tags;
+		// }
+	}, []);
 
 	return (
 		<div className='relative overflow-hidden pb-16 flex-column'>
 			<div
 				style={{ height: isExpand ? '34rem' : '9.6rem' }}
-				className='flex justify-between rounded bg-white p-16 px-16 transition-height'
+				className='flex justify-between rounded bg-white p-16 transition-height'
 			>
 				<div className='flex-1 justify-between overflow-hidden flex-column'>
 					<div className='flex-column'>
@@ -51,7 +64,7 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 
 								<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4 pr-8'>
 									{tags.map((tag, i) => (
-										<StrategyTag key={tag} i={i} tag={tag} />
+										<StrategyTag key={tag} i={i} id={tag} title={t(`strategy_cheaps.${tag}`)} />
 									))}
 								</ul>
 							</div>
@@ -178,7 +191,7 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 				type='button'
 				onClick={() => setIsExpand(!isExpand)}
 				style={{ width: '6.6rem', height: '2.2rem' }}
-				className='absolute bottom-8 left-1/2 -translate-x-1/2 transform rounded bg-white text-gray-900 flex-justify-center'
+				className='absolute bottom-8 left-1/2 -translate-x-1/2 rounded bg-white text-gray-900 flex-justify-center'
 			>
 				<ArrowDownSVG
 					width='1.8rem'

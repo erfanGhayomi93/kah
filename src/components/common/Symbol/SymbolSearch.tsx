@@ -2,21 +2,40 @@ import { useSymbolSearchQuery } from '@/api/queries/symbolQuery';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { SearchSVG } from '../../icons';
+import { SearchSVG, XCircleSVG } from '../../icons';
 import Popup from '../Popup';
 import styles from './SymbolSearch.module.scss';
 
-type TSymbolType = Symbol.Search | null;
-
 type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>;
 
-interface SymbolSearchProps extends InputProps {
-	value: TSymbolType;
-	classes?: RecordClasses<'root' | 'input' | 'search' | 'list' | 'blankList' | 'item'>;
-	onChange: (symbol: TSymbolType) => void;
+interface IClearableProps {
+	clearable: true;
+	value: Symbol.Search | null;
+	onClear?: () => void;
+	onChange: (option: Symbol.Search | null) => void;
 }
 
-const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: SymbolSearchProps) => {
+interface INonClearableProps {
+	clearable?: false;
+	value: Symbol.Search | null;
+	onChange: (option: Symbol.Search) => void;
+	readonly onClear: () => void;
+}
+
+type SymbolSearchProps = InputProps &
+	(IClearableProps | INonClearableProps) & {
+		classes?: RecordClasses<'root' | 'input' | 'search' | 'list' | 'blankList' | 'item' | 'clear'>;
+	};
+
+const SymbolSearch = ({
+	clearable,
+	value,
+	classes,
+	placeholder,
+	onChange,
+	onClear,
+	...inputProps
+}: SymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -25,7 +44,7 @@ const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: 
 		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
 	});
 
-	const onSelect = (symbol: TSymbolType) => {
+	const onSelect = (symbol: Symbol.Search) => {
 		onChange(symbol);
 	};
 
@@ -35,6 +54,18 @@ const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: 
 
 	const onBlur = () => {
 		setTerm('');
+	};
+
+	const onClearInput = () => {
+		if (!clearable) return;
+
+		try {
+			onChange(null);
+			setTerm('');
+			onClear?.();
+		} catch (e) {
+			//
+		}
 	};
 
 	return (
@@ -95,6 +126,12 @@ const SymbolSearch = ({ value, classes, placeholder, onChange, ...inputProps }: 
 						value={open ? term : value ? value.symbolTitle : term}
 						onChange={(e) => setTerm(e.target.value)}
 					/>
+
+					{clearable && (
+						<button onClick={onClearInput} type='button' className={cn(styles.clear, classes?.clear)}>
+							<XCircleSVG width='1.6rem' height='1.6rem' />
+						</button>
+					)}
 
 					<span
 						style={{ right: '3.6rem' }}

@@ -60,7 +60,7 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 
 				<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4'>
 					{tags.map((tag, i) => (
-						<StrategyTag key={tag} i={i} tag={tag} />
+						<StrategyTag key={tag} i={i} id={tag} title={t(`strategy_cheaps.${tag}`)} />
 					))}
 				</ul>
 			</div>
