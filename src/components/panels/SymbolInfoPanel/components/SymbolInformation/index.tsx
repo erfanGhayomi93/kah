@@ -1,6 +1,5 @@
 import SymbolContextMenu from '@/components/common/Symbol/SymbolContextMenu';
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
-import SymbolState from '@/components/common/SymbolState';
 import { GalaxySVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -8,6 +7,7 @@ import { useTradingFeatures } from '@/hooks';
 import { Link } from '@/navigation';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import ToggleSymbolSelect from './ToggleSymbolSelect';
 
 interface SymbolInformationProps {
 	symbolData: Symbol.Info;
@@ -16,10 +16,8 @@ interface SymbolInformationProps {
 const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 	const {
 		baseSymbolISIN,
-		symbolTradeState,
 		symbolTitle,
 		symbolISIN,
-		companyName,
 		isOption,
 		lastTradedPrice,
 		tradePriceVarPreviousTradePercent,
@@ -55,17 +53,11 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 			: `/saturn?contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`;
 
 	return (
-		<div className='gap-8 rounded bg-white px-8 py-16 flex-column'>
+		<div className='gap-8 overflow-hidden rounded bg-white px-8 py-16 flex-column'>
 			<div className='flex items-start justify-between'>
-				<div className='flex-1 gap-4 flex-column'>
-					<div className='gap-8 flex-items-center'>
-						<SymbolState state={symbolTradeState} />
-						<h1 className='text-lg font-medium text-gray-1000'>{symbolTitle}</h1>
-					</div>
-					<h2 className='pr-16 text-tiny text-gray-900'>{companyName}</h2>
-				</div>
+				<ToggleSymbolSelect symbolData={symbolData} />
 
-				<div className='gap-8 flex-items-center'>
+				<div className='gap-8 overflow-hidden flex-items-center'>
 					<Link
 						target='_blank'
 						href={saturnUrl}

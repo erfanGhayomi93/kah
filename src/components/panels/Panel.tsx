@@ -9,13 +9,14 @@ interface PanelProps {
 	width: string;
 	height?: string;
 	transparent?: boolean;
+	dependency?: string;
 	classes?: RecordClasses<'root' | 'wrapper' | 'bg' | 'shadow'>;
 	onClose: () => void;
 	render: () => React.ReactNode;
 }
 
 const Panel = forwardRef<HTMLDivElement, PanelProps>(
-	({ transparent = false, width, height, classes, render, onClose }, ref) => {
+	({ transparent = false, dependency, width, height, classes, render, onClose }, ref) => {
 		const panelRef = useRef<HTMLDivElement>(null);
 
 		const onMouseDown = (e: React.MouseEvent) => {
@@ -23,8 +24,13 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(
 				const ePanel = panelRef.current;
 				if (!ePanel) return;
 
-				const target = e.target as HTMLElement;
-				if (ePanel.isEqualNode(target) || ePanel.contains(target)) return;
+				const eTarget = e.target as HTMLElement;
+				if (
+					ePanel.isEqualNode(eTarget) ||
+					ePanel.contains(eTarget) ||
+					(dependency && eTarget.closest(dependency))
+				)
+					return;
 
 				onClose();
 			} catch (e) {

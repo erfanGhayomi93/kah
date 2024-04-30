@@ -960,10 +960,11 @@
 		"UnlimitedInterest": "سود نامحدود",
 		"LimitedLoss": "زیان محدود",
 		"UnlimitedLoss": "زیان نامحدود",
-		"BullishMarket": "بازار صعودی",
-		"BearishMarket": "بازار نزولی",
-		"NeutralMarket": "بازار خنثی",
-		"DirectionalMarket": "بازار جهت دار"
+		"Market": "بازار",
+		"BullishMarket": "صعودی",
+		"BearishMarket": "نزولی",
+		"NeutralMarket": "خنثی",
+		"DirectionalMarket": "جهت دار"
 	},
 	"dates": {
 		"daily": "روزانه",
