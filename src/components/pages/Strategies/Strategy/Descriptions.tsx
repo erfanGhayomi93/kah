@@ -36,7 +36,7 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 				className='flex justify-between rounded bg-white p-16 px-16 transition-height'
 			>
 				<div className='flex-1 justify-between overflow-hidden flex-column'>
-					<div className='gap-8 flex-column'>
+					<div className='flex-column'>
 						<div className='gap-12 flex-column'>
 							<div style={{ flex: '0 0 3.2rem' }} className='gap-8 flex-items-center'>
 								<Link href='/strategy' className='size-32 text-gray-900 flex-justify-center'>
@@ -66,8 +66,11 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 						</div>
 
 						{isExpand && (
-							<div className='gap-24 flex-column'>
-								<h1 className='text-base font-medium'>{t(`${type}.summary`)}</h1>
+							<div className='gap-16 flex-column'>
+								<div className='flex-items-center'>
+									<h1 className='text-base font-medium'>{t(`${type}.summary`)}</h1>
+									<Image width='42' height='50' alt={title} src='/static/images/astronaut-hint.png' />
+								</div>
 
 								<ul className='gap-8 flex-column'>
 									<li className='flex gap-8'>

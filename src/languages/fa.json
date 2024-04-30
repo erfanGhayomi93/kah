@@ -354,7 +354,7 @@
 	"symbol_info_panel_setting": {
 		"title": "ابزارها",
 		"option_detail": "اطلاعات قیمتی",
-		"description": "شما می‌توانید مواردی که می‌خواهید در ستون اطلاعات نماد مشاهده کنید را انتخاب نمایید.",
+		"description": "شما می‌توانید مواردی را که می‌خواهید در ستون اطلاعات نماد نمایش داده شوند، انتخاب کنید.",
 		"symbol_detail": "جزئیات نماد",
 		"contracts": "قراردادها",
 		"user_open_positions": "موقعیت‌های باز",
@@ -999,6 +999,7 @@
 		"draft_unsuccessfully_edited": "ویرایش پیش‌نویس با خطا مواجه شد.",
 		"login_to_your_account": "ابتدا وارد حساب کاربری خود شوید.",
 		"broker_error": "خطا در ارتباط با کارگزاری",
+		"symbol_added_successfully": "نماد با موفقیت به دیده‌بان افزوده شد.",
 		"invalid_token": "درخواست نامعتبر است. لطفا مجددا تلاش کنید.",
 		"logged_in_successfully_to_broker_account": "با موفقیت وارد حساب کارگزاری خود شدید.",
 		"invalid_price": "قیمت وارد نشده است.",
