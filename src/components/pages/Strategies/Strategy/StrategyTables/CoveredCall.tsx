@@ -178,11 +178,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 			{
 				headerName: 'اختلاف تا سر به سر',
 				width: 136,
-				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.bepDifferencePercent ?? 0,
-				}),
-				valueGetter: ({ data }) => `${data?.bepDifference ?? 0}|${data?.bepDifferencePercent ?? 0}`,
+				valueGetter: ({ data }) => data?.bepDifference ?? 0,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
 			},
 			{
