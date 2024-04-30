@@ -24,28 +24,28 @@ const Toolbar = () => {
 	const tags = useMemo<ITabItem[]>(
 		() => [
 			{
-				id: 'all',
-				title: t('strategies.tag_all'),
+				id: 'All',
+				title: t('strategy_cheaps.All'),
 				icon: null,
 			},
 			{
 				id: 'BullishMarket',
-				title: t('strategies.tag_BullishMarket'),
+				title: t('strategy_cheaps.BullishMarket'),
 				icon: null,
 			},
 			{
 				id: 'NeutralMarket',
-				title: t('strategies.tag_NeutralMarket'),
+				title: t('strategy_cheaps.NeutralMarket'),
 				icon: null,
 			},
 			{
 				id: 'DirectionalMarket',
-				title: t('strategies.tag_DirectionalMarket'),
+				title: t('strategy_cheaps.DirectionalMarket'),
 				icon: null,
 			},
 			{
 				id: 'BearishMarket',
-				title: t('strategies.tag_BearishMarket'),
+				title: t('strategy_cheaps.BearishMarket'),
 				icon: null,
 			},
 		],
@@ -83,7 +83,7 @@ const Toolbar = () => {
 								? 'no-hover font-medium btn-select'
 								: 'border-gray-200 bg-gray-200 text-gray-900',
 						)}
-						href='strategy/build'
+						href='/strategy/build'
 					>
 						{t('strategies.build_strategy')}
 					</Link>

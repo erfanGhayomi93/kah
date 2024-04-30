@@ -124,7 +124,7 @@ const Select = <T, D = T>({
 						classes?.root,
 						!placeholder && [styles.border, classes?.border],
 						disabled ? ['disabled', styles.disabled, classes?.disabled] : styles.clickable,
-						focusing && [styles.focus, classes?.focus],
+						focusing && ['focus', styles.focus, classes?.focus],
 					)}
 				>
 					{value && (
