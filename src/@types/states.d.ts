@@ -24,6 +24,8 @@ declare interface IOFieldsWithID {
 	validityDate: number;
 }
 
+type TPriceBasis = 'lastTradedPrice' | 'closingPrice' | 'headline';
+
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
 declare type TOptionSides = 'put' | 'call';
