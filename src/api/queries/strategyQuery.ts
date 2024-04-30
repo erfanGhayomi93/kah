@@ -23,7 +23,7 @@ export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStr
 
 export const useCoveredCallQuery = createQuery<Strategy.CoveredCall[], ['coveredCallQuery', TPriceBasis, boolean]>({
 	staleTime: 6e5,
-	queryKey: ['coveredCallQuery', 'lastTradedPrice', false],
+	queryKey: ['coveredCallQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
 			const [, priceBasis, commission] = queryKey;
