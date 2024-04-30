@@ -344,9 +344,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					colId: 'bestBuyPrice',
 					initialHide: Boolean(modifiedWatchlistColumns?.bestBuyPrice?.isHidden ?? true),
 					minWidth: 112,
-					cellStyle: {
-						backgroundColor: 'rgba(12, 175, 130, 0.12)',
-					},
+					cellClass: 'buy',
 					valueGetter: ({ data }) => String(data!.optionWatchlistData.bestBuyPrice),
 					valueFormatter: ({ value }) => sepNumbers(value),
 				},
@@ -355,9 +353,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					colId: 'bestSellPrice',
 					initialHide: Boolean(modifiedWatchlistColumns?.bestSellPrice?.isHidden ?? true),
 					minWidth: 120,
-					cellStyle: {
-						backgroundColor: 'rgba(254, 57, 87, 0.12)',
-					},
+					cellClass: 'sell',
 					valueGetter: ({ data }) => String(data!.optionWatchlistData.bestSellPrice),
 					valueFormatter: ({ value }) => sepNumbers(value),
 				},

@@ -87,6 +87,18 @@
 	&.rtl {
 		direction: rtl;
 	}
+
+	&.buy {
+		background-color: rgba(12, 175, 130, 0.12);
+	}
+
+	&.sell {
+		background-color: rgba(254, 57, 87, 0.12);
+	}
+
+	&.gray {
+		background-color: rgba(140, 142, 151, 0.1);
+	}
 }
 
 .ag-row-odd.ag-row-hover {
