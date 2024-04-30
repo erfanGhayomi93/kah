@@ -144,6 +144,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				cellRendererParams: {
 					onClosePosition,
 					onChangeCollateral,
+					showDetails,
 				},
 			},
 		],

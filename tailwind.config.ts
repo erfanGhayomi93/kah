@@ -639,7 +639,7 @@ const config: Config = {
 					'-webkit-transition': 'border-color 200ms ease-in-out',
 					'-moz-transition': 'border-color 200ms ease-in-out',
 
-					'&:focus-within,input:focus,textarea:focus': {
+					'&:focus-within,input:focus,textarea:focus,&.focus': {
 						'border-color': theme('colors.primary.300'),
 
 						'.flexible-placeholder': {
@@ -735,6 +735,10 @@ const config: Config = {
 							content: '"\\00A0"',
 							position: 'relative',
 						},
+					},
+
+					'&.colorful': {
+						'border-color': theme('colors.primary.300'),
 					},
 
 					'&.active': {

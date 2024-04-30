@@ -3,6 +3,8 @@ import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/Sy
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
@@ -11,7 +13,7 @@ import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import SymbolContextMenu from '../../../common/Symbol/SymbolContextMenu';
 
 interface SymbolDetailsProps {
@@ -20,6 +22,8 @@ interface SymbolDetailsProps {
 
 const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
 
 	const symbolSnapshot = usePrevious(symbol);
 
@@ -61,6 +65,15 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 			symbolISIN,
 			symbolTitle,
 		});
+	};
+
+	const openSymbolInfoPanel = () => {
+		try {
+			const { symbolISIN } = symbol;
+			if (symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
+		} catch (e) {
+			//
+		}
 	};
 
 	const lastTradedPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {
@@ -177,7 +190,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 		}
 	}, [symbol, closingPriceIs]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const sub = subscribeSymbolInfo(symbol.symbolISIN, 'symbolData,individualLegal');
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
 		sub.start();
@@ -210,7 +223,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 		<div className='flex-column'>
 			<div className='gap-40 pb-24 flex-column'>
 				<div className='flex-justify-between'>
-					<div className='flex-column'>
+					<div onClick={openSymbolInfoPanel} className='cursor-pointer flex-column'>
 						<div style={{ gap: '1rem' }} className='flex-items-center'>
 							<SymbolState state={symbolTradeState} />
 							<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
