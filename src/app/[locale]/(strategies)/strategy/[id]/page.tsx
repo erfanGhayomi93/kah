@@ -8,12 +8,13 @@ import type { NextPage } from 'next';
 
 const getStrategy = async (id: string): Promise<Strategy.GetAll | undefined> => {
 	try {
-		const { result } = (await fetch(routes.strategy.GetAll, { method: 'get', cache: 'force-cache' }).then((res) =>
+		const { result } = (await fetch(routes.strategy.GetAll, { method: 'get', cache: 'default' }).then((res) =>
 			res.json(),
 		)) as ServerResponse<Strategy.GetAll[]>;
 
 		return result.find((item) => item.type === id) ?? undefined;
 	} catch (e) {
+		console.log(e);
 		return undefined;
 	}
 };
