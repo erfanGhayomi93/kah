@@ -8,14 +8,20 @@ import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useEffect, useMemo, useRef } from 'react';
+import StrategyActionCell from '../components/StrategyActionCell';
 
-const CoveredCall = () => {
+interface CoveredCallProps {
+	priceBasis: TPriceBasis;
+	withCommission: boolean;
+}
+
+const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.CoveredCall>>(null);
 
 	const { data } = useCoveredCallQuery({
-		queryKey: ['coveredCallQuery'],
+		queryKey: ['coveredCallQuery', priceBasis, withCommission],
 	});
 
 	const onSymbolTitleClicked = ({ data }: CellClickedEvent<Strategy.CoveredCall>) => {
@@ -30,11 +36,20 @@ const CoveredCall = () => {
 		}
 	};
 
+	const goToTechnicalChart = (data: Strategy.CoveredCall) => {
+		//
+	};
+
+	const execute = (data: Strategy.CoveredCall) => {
+		//
+	};
+
 	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall>>>(
 		() => [
 			{
 				headerName: 'نماد پایه',
 				width: 104,
+				pinned: 'right',
 				onCellClicked: onSymbolTitleClicked,
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -227,7 +242,8 @@ const CoveredCall = () => {
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
-					tooltip: '−',
+					tooltip:
+						'پوشش ریسک یا حاشیه اطمینان درصدی است که سهم پایه می‌تواند حداکثر کاهش خود را داشته باشد، ولی استراتژی کاورد کال وارد زیان نشود.',
 				},
 				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
 				valueGetter: ({ data }) => data?.riskCoverage ?? 0,
@@ -247,6 +263,12 @@ const CoveredCall = () => {
 			{
 				headerName: 'عملیات',
 				width: 80,
+				pinned: 'left',
+				cellRenderer: StrategyActionCell,
+				cellRendererParams: {
+					goToTechnicalChart,
+					execute,
+				},
 			},
 		],
 		[],
