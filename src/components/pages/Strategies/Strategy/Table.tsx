@@ -9,8 +9,6 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 
-type TPriceBasis = 'lastTradedPrice' | 'closingPrice' | 'headline';
-
 interface ISelectItem {
 	id: TPriceBasis;
 	title: string;
@@ -64,13 +62,19 @@ const Table = ({ strategy }: TableProps) => {
 
 	const tables = useMemo<Record<Strategy.Type, () => React.ReactNode>>(
 		() => ({
-			CoveredCall: () => <CoveredCall key='CoveredCall' />,
+			CoveredCall: () => (
+				<CoveredCall
+					key={`${inputs.priceBasis.id}_${String(inputs.withCommission)}`}
+					priceBasis={inputs.priceBasis.id}
+					withCommission={inputs.withCommission}
+				/>
+			),
 			LongCall: () => <LongCall key='LongCall' />,
 			LongPut: () => <LongPut key='LongPut' />,
 			ProtectivePut: () => <ProtectivePut key='ProtectivePut' />,
 			BullCallSpread: () => <BullCallSpread key='BullCallSpread' />,
 		}),
-		[],
+		[JSON.stringify(inputs)],
 	);
 
 	const { title, type } = strategy;
@@ -105,7 +109,18 @@ const Table = ({ strategy }: TableProps) => {
 					</div>
 				</div>
 			</div>
-			{tables[type]()}
+
+			{type === 'CoveredCall' && (
+				<CoveredCall priceBasis={inputs.priceBasis.id} withCommission={inputs.withCommission} />
+			)}
+
+			{type === 'LongCall' && <LongCall />}
+
+			{type === 'LongPut' && <LongPut />}
+
+			{type === 'ProtectivePut' && <ProtectivePut />}
+
+			{type === 'BullCallSpread' && <BullCallSpread />}
 		</div>
 	);
 };
