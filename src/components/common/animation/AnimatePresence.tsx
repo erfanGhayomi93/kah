@@ -1,4 +1,4 @@
-import { cloneElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { cloneElement, useCallback, useEffect, useRef, useState } from 'react';
 
 interface IAnimation {
 	animation: string;
@@ -52,7 +52,7 @@ const AnimatePresence = ({ exit, initial, children, disabled, onRefLoad }: Anima
 		[children],
 	);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const isVisible = Boolean(children);
 
 		clearDebounce();

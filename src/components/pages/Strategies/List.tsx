@@ -8,7 +8,7 @@ import { getStrategyTrend } from '@/features/slices/tabSlice';
 import { useMemo } from 'react';
 import StrategyItem from './StrategyItem';
 
-const Strategies = () => {
+const List = () => {
 	const strategyTrend = useAppSelector(getStrategyTrend);
 
 	const { data, isLoading } = useGetAllStrategyQuery({
@@ -18,7 +18,7 @@ const Strategies = () => {
 	const filteredStrategies = useMemo<Strategy.GetAll[]>(() => {
 		if (!data?.length) return [];
 
-		if (strategyTrend === 'all') return data;
+		if (strategyTrend === 'All') return data;
 
 		return data.filter((item) => item.tags.includes(strategyTrend));
 	}, [strategyTrend, data]);
@@ -48,4 +48,4 @@ const Strategies = () => {
 	);
 };
 
-export default Strategies;
+export default List;

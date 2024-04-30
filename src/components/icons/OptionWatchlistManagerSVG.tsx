@@ -14,7 +14,7 @@ const Button = styled.button`
 
 		path:nth-child(2),
 		path:nth-child(4) {
-			fill: rgba(74, 74, 74, 1);
+			fill: rgb(93, 96, 109);
 		}
 	}
 

@@ -4,6 +4,7 @@ import Loading from '@/components/common/Loading';
 import axios from '@/api/axios';
 import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
+import NoData from '@/components/common/NoData';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
@@ -12,7 +13,6 @@ import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo } from 'react';
-import NoData from './NoData';
 import WatchlistTable from './WatchlistTable';
 
 interface TableProps {
@@ -148,7 +148,17 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				</div>
 			)}
 
-			{dataIsEmpty && !isLoading && <NoData key='no-data' onAddSymbol={addSymbol} />}
+			{dataIsEmpty && !isLoading && (
+				<NoData
+					text={t.rich('option_page.no_data_table', {
+						symbol: (chunk) => (
+							<button type='button' className='text-primary-400 underline' onClick={addSymbol}>
+								{chunk}
+							</button>
+						),
+					})}
+				/>
+			)}
 		</>
 	);
 };

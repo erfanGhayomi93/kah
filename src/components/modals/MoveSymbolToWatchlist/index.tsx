@@ -9,6 +9,7 @@ import { type IMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice.i
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import Watchlist from './Watchlist';
@@ -48,6 +49,10 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 				const data = response.data;
 
 				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+				toast.success(t('alerts.symbol_added_successfully'), {
+					toastId: 'symbol_added_successfully',
+				});
 
 				queryClient.refetchQueries({
 					queryKey: ['optionWatchlistQuery', { watchlistId: wl.id }],
