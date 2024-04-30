@@ -63,6 +63,7 @@ import PasswordSVG from './password.svg';
 import PayMoneySVG from './pay-money.svg';
 import PayOffSVG from './pay-off.svg';
 import PinSVG from './pin.svg';
+import PlaySVG from './play.svg';
 import PlusSquareSVG from './plus-square.svg';
 import PlusSVG from './plus.svg';
 import ReceptionSVG from './reception.svg';
@@ -162,6 +163,7 @@ export {
 	PayMoneySVG,
 	PayOffSVG,
 	PinSVG,
+	PlaySVG,
 	PlusSVG,
 	PlusSquareSVG,
 	ReceptionSVG,

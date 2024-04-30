@@ -10,6 +10,7 @@ import {
 	MaximumLossSVG,
 	MaximumProfitSVG,
 	MenuChocolateSVG,
+	PlaySVG,
 	PlusSVG,
 	TeachVideoSVG,
 } from '@/components/icons';
@@ -25,7 +26,7 @@ interface DescriptionsProps {
 const Descriptions = ({ strategy }: DescriptionsProps) => {
 	const t = useTranslations();
 
-	const [isExpand, setIsExpand] = useState(false);
+	const [isExpand, setIsExpand] = useState(true);
 
 	const { title, type, imageUrl, tags } = strategy;
 
@@ -150,6 +151,25 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 								height: 'auto',
 							}}
 						/>
+
+						<ul className='gap-8 text-right flex-column'>
+							<li className='gap-4 text-gray-900 flex-items-center'>
+								<PlaySVG />
+								<h3 className='text-tiny font-medium'>{t('strategy.how_to_execute')}:</h3>
+							</li>
+							<li className='gap-4 flex-items-center'>
+								<span className='size-16 rounded-circle border border-gray-500 text-sm text-gray-900 flex-justify-center'>
+									1
+								</span>
+								<p className='flex-1 text-tiny leading-8 text-gray-1000'>{t(`${type}.step_1`)}</p>
+							</li>
+							<li className='gap-4 flex-items-center'>
+								<span className='size-16 rounded-circle border border-gray-500 text-sm text-gray-900 flex-justify-center'>
+									2
+								</span>
+								<p className='flex-1 text-tiny leading-8 text-gray-1000'>{t(`${type}.step_2`)}</p>
+							</li>
+						</ul>
 					</div>
 				)}
 			</div>
