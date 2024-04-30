@@ -21,14 +21,17 @@ export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStr
 	},
 });
 
-export const useCoveredCallQuery = createQuery<Strategy.CoveredCall[], ['coveredCallQuery']>({
+export const useCoveredCallQuery = createQuery<Strategy.CoveredCall[], ['coveredCallQuery', TPriceBasis, boolean]>({
 	staleTime: 6e5,
-	queryKey: ['coveredCallQuery'],
-	queryFn: async ({ signal }) => {
+	queryKey: ['coveredCallQuery', 'LastTradePrice', false],
+	queryFn: async ({ signal, queryKey }) => {
 		try {
+			const [, priceBasis, commission] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
+				CalculateBy: priceBasis,
+				WithCommission: commission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.CoveredCall[]>>(routes.strategy.CoveredCall, {

@@ -9,8 +9,6 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 
-type TPriceBasis = 'lastTradedPrice' | 'closingPrice' | 'headline';
-
 interface ISelectItem {
 	id: TPriceBasis;
 	title: string;
@@ -50,26 +48,15 @@ const Table = ({ strategy }: TableProps) => {
 
 	const { inputs, setFieldValue } = useInputs<IInput>({
 		withCommission: false,
-		priceBasis: { id: 'lastTradedPrice', title: t('strategy.last_traded_price') },
+		priceBasis: { id: 'LastTradePrice', title: t('strategy.last_traded_price') },
 	});
 
 	const options: ISelectItem[] = useMemo(
 		() => [
-			{ id: 'lastTradedPrice', title: t('strategy.last_traded_price') },
-			{ id: 'closingPrice', title: t('strategy.closing_price') },
-			{ id: 'headline', title: t('strategy.headline') },
+			{ id: 'LastTradePrice', title: t('strategy.last_traded_price') },
+			{ id: 'ClosingPrice', title: t('strategy.closing_price') },
+			{ id: 'BestLimit', title: t('strategy.headline') },
 		],
-		[],
-	);
-
-	const tables = useMemo<Record<Strategy.Type, () => React.ReactNode>>(
-		() => ({
-			CoveredCall: () => <CoveredCall key='CoveredCall' />,
-			LongCall: () => <LongCall key='LongCall' />,
-			LongPut: () => <LongPut key='LongPut' />,
-			ProtectivePut: () => <ProtectivePut key='ProtectivePut' />,
-			BullCallSpread: () => <BullCallSpread key='BullCallSpread' />,
-		}),
 		[],
 	);
 
@@ -105,7 +92,18 @@ const Table = ({ strategy }: TableProps) => {
 					</div>
 				</div>
 			</div>
-			{tables[type]()}
+
+			{type === 'CoveredCall' && (
+				<CoveredCall priceBasis={inputs.priceBasis.id} withCommission={inputs.withCommission} />
+			)}
+
+			{type === 'LongCall' && <LongCall />}
+
+			{type === 'LongPut' && <LongPut />}
+
+			{type === 'ProtectivePut' && <ProtectivePut />}
+
+			{type === 'BullCallSpread' && <BullCallSpread />}
 		</div>
 	);
 };
