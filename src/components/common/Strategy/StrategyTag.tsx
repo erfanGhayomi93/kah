@@ -1,8 +1,7 @@
-import { StrategyCheapColor } from '@/constants/enums';
 import clsx from 'clsx';
 
 interface StrategyTagProps {
-	id: Strategy.Cheap;
+	id: Strategy.Cheap | string;
 	title: string;
 	i: number;
 }
@@ -13,13 +12,13 @@ export const StrategyTag = ({ id, title, i }: StrategyTagProps) => {
 			<button
 				type='button'
 				className={clsx(
-					'h-32 w-96 rounded-oval border border-current text-tiny flex-justify-center',
-					i !== 0 && `border-current text-${StrategyCheapColor[id]}`,
-					i === 0 && `font-medium bg-${StrategyCheapColor[id]}`,
-					{
-						'border-current text-white': i === 0 && id !== 'ModerateRisk',
-						'border-warning-100 bg-warning-100 text-gray-1000': i === 0 && id === 'ModerateRisk',
-					},
+					'h-32 w-96 rounded-oval !border border-current text-tiny flex-justify-center',
+					i === 0 && id === 'HighRisk' && 'font-medium btn-error',
+					i === 0 && id === 'LowRisk' && 'font-medium btn-success',
+					i === 0 && id === 'ModerateRisk' && 'btn-warning font-medium',
+					i === 1 && 'btn-success-outline',
+					i === 2 && 'btn-error-outline',
+					i === 3 && 'btn-info-outline',
 				)}
 			>
 				{title}

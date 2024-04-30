@@ -31,16 +31,22 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 	const [isExpand, setIsExpand] = useState(true);
 
 	const combinedTags = useMemo(() => {
-		// try {
-		// 	const result = [];
-		// 	const markets = result.slice(3);
-		// 	for (let i = 0; i < tags.length; i++) {
-		// 		markets
-		// 	}
-		// 	return result;
-		// } catch (e) {
-		// 	return tags;
-		// }
+		const result: Array<[Strategy.Cheap, string]> = [
+			[tags[0], t(`strategy_cheaps.${tags[0]}`)],
+			[tags[1], t(`strategy_cheaps.${tags[1]}`)],
+			[tags[2], t(`strategy_cheaps.${tags[2]}`)],
+			[tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)],
+		];
+
+		if (tags.length > 4)
+			result[3][1] +=
+				'/' +
+				tags
+					.slice(4)
+					.map((tag) => t(`strategy_cheaps.${tag}`))
+					.join('/');
+
+		return result;
 	}, []);
 
 	return (
@@ -63,8 +69,8 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 								</div>
 
 								<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4 pr-8'>
-									{tags.map((tag, i) => (
-										<StrategyTag key={tag} i={i} id={tag} title={t(`strategy_cheaps.${tag}`)} />
+									{combinedTags.map(([id, title], i) => (
+										<StrategyTag key={i} i={i} id={id} title={title} />
 									))}
 								</ul>
 							</div>
