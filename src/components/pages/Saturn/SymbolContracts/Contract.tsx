@@ -300,7 +300,7 @@ const Wrapper = ({ children }: WrapperProps) => (
 		style={{
 			flex: '1 0 39.2rem',
 		}}
-		className='relative gap-16 rounded border border-gray-500 bg-white px-16 pb-12 pt-12 flex-column'
+		className='relative gap-16 rounded border border-gray-500 bg-white px-16 py-12 flex-column'
 	>
 		{children}
 	</div>

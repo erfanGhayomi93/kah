@@ -143,7 +143,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			</div>
 
 			{isLoading && (
-				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 h-full w-full'>
+				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 size-full'>
 					<Loading />
 				</div>
 			)}

@@ -169,12 +169,12 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
 														? 'bg-primary-400 text-white hover:bg-primary-300'
-														: 'hover:btn-hover bg-transparent',
+														: 'bg-transparent hover:btn-hover',
 												)}
 											>
 												<div className='w-32 flex-justify-center'>
 													{isSelected && (
-														<div className='h-16 w-16 rounded-sm bg-white text-primary-400 flex-justify-center'>
+														<div className='size-16 rounded-sm bg-white text-primary-400 flex-justify-center'>
 															<CheckSVG />
 														</div>
 													)}
@@ -214,7 +214,7 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 							</div>
 
 							{!symbolsDataIsEmpty && (
-								<div className='border-t border-t-gray-500 px-16 py-16'>
+								<div className='border-t border-t-gray-500 p-16'>
 									<button
 										style={{ width: '14rem' }}
 										className='mr-auto h-40 rounded btn-primary'

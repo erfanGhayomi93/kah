@@ -3,6 +3,7 @@ import { AngleLeftSVG, PlusSVG } from '@/components/icons';
 import { useRouter } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useMemo } from 'react';
 
 interface StrategyItemProps extends Strategy.GetAll {}
 
@@ -14,6 +15,25 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 	const onStrategyClick = () => {
 		router.push(`/strategy/${type}`);
 	};
+
+	const combinedTags = useMemo(() => {
+		const result: Array<[Strategy.Cheap, string]> = [
+			[tags[0], t(`strategy_cheaps.${tags[0]}`)],
+			[tags[1], t(`strategy_cheaps.${tags[1]}`)],
+			[tags[2], t(`strategy_cheaps.${tags[2]}`)],
+			[tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)],
+		];
+
+		if (tags.length > 4)
+			result[3][1] +=
+				'/' +
+				tags
+					.slice(4)
+					.map((tag) => t(`strategy_cheaps.${tag}`))
+					.join('/');
+
+		return result;
+	}, []);
 
 	return (
 		<div className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12'>
@@ -58,9 +78,9 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 					/>
 				</div>
 
-				<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4'>
-					{tags.map((tag, i) => (
-						<StrategyTag key={tag} i={i} tag={tag} />
+				<ul style={{ flex: '0 0 3.2rem' }} className='gap-4 flex-justify-center'>
+					{combinedTags.map(([id, title], i) => (
+						<StrategyTag key={i} i={i} id={id} title={title} />
 					))}
 				</ul>
 			</div>
