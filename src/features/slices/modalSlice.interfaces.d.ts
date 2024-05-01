@@ -105,7 +105,9 @@ export interface IChangeBrokerModal extends IBaseModalConfiguration {}
 
 export interface IWithdrawalModal extends IBaseModalConfiguration {}
 
-export interface IDepositModal extends IBaseModalConfiguration {}
+export interface IDepositModal extends IBaseModalConfiguration {
+	isShow: boolean;
+}
 
 export interface IAnalyzeModal extends IBaseModalConfiguration {
 	symbol: {

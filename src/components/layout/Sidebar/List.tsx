@@ -8,6 +8,7 @@ import {
 	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
+import { setDepositModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
@@ -39,10 +40,19 @@ const List = ({ isExpand }: ListProps) => {
 		}
 	};
 
-	const onClickItem = (tagName: 'a' | 'button') => {
+	const onClickItem = (tagName: string) => {
+		if (tagName === 'button') return false;
+
+		dispatch(toggleSidebar(false));
+
 		if (tagName === 'a') {
-			dispatch(toggleSidebar(false));
 			dispatch(setSymbolInfoPanel(null));
+		}
+		else {
+			// for open of modal
+			if (tagName === 'deposit') {
+				dispatch(setDepositModal({ isShow: true }));
+			}
 		}
 	};
 
@@ -110,9 +120,14 @@ const List = ({ isExpand }: ListProps) => {
 				icon: <ReceptionSVG />,
 				items: [
 					{
-						id: 'deposit_and_withdrawal',
-						label: t('sidebar.deposit_and_withdrawal'),
-						to: '/a',
+						id: 'deposit',
+						label: t('sidebar.deposit'),
+						isModal: true
+					},
+					{
+						id: 'withdrawal',
+						label: t('sidebar.withdrawal'),
+						isModal: true
 					},
 					{
 						id: 'change_broker',
