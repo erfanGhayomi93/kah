@@ -14,10 +14,10 @@ const Modals = dynamic(() => import('@/components/modals/Modals'), {
 });
 
 const Panels = dynamic(() => import('@/components/panels/Panels'), {
-	ssr: false,
+	ssr: false
 });
 
-interface ILayout extends INextProps {}
+interface ILayout extends INextProps { }
 
 const Layout = async ({ children, params: { locale = 'fa' } }: ILayout) => {
 	unstable_setRequestLocale(locale);
@@ -46,3 +46,4 @@ export function generateStaticParams() {
 export default Layout;
 
 export { metadata };
+

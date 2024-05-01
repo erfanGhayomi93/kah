@@ -19,13 +19,13 @@ const Toolbar = ({ symbol, settlementDay, canChangeBaseSymbol, setSettlementDay 
 		!symbol
 			? null
 			: {
-					symbolISIN: symbol.symbolISIN,
-					symbolTitle: symbol.symbolTitle,
-					insCode: '0',
-					companyISIN: '0',
-					companyName: '−',
-					symbolTradeState: 'Open',
-				},
+				symbolISIN: symbol.symbolISIN,
+				symbolTitle: symbol.symbolTitle,
+				insCode: '0',
+				companyISIN: '0',
+				companyName: '−',
+				symbolTradeState: 'Open',
+			},
 	);
 
 	const { data: settlementDays, isFetching } = useBaseSettlementDaysQuery({

@@ -18,8 +18,8 @@ interface IWatchlistColumnsContext {
 
 const defaultParams: IWatchlistColumnsContext = {
 	data: LocalstorageInstance.get<Option.Column[]>('owc', []),
-	setColumns: () => {},
-	setHiddenColumn: () => {},
+	setColumns: () => { },
+	setHiddenColumn: () => { },
 	resetColumns: () =>
 		new Promise<Option.Column[]>((resolve) => {
 			resolve([]);

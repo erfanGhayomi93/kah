@@ -9,6 +9,10 @@ export interface BrokerState {
 	savedTemplates: boolean;
 
 	symbolInfoPanel: string | null;
+
+	manageTransactionColumnsPanel: boolean;
+
+	manageInstantDepositColumnsPanel: boolean;
 }
 
 const initialState: BrokerState = {
@@ -17,6 +21,10 @@ const initialState: BrokerState = {
 	savedTemplates: false,
 
 	symbolInfoPanel: null,
+
+	manageTransactionColumnsPanel: false,
+
+	manageInstantDepositColumnsPanel: false,
 };
 
 const brokerSlice = createSlice({
@@ -34,13 +42,23 @@ const brokerSlice = createSlice({
 		setManageWatchlistColumnsPanel: (state, { payload }: PayloadAction<BrokerState['manageWatchlistColumns']>) => {
 			state.manageWatchlistColumns = payload;
 		},
+
+		setManageTransactionColumnsPanel: (state, { payload }: PayloadAction<BrokerState['manageTransactionColumnsPanel']>) => {
+			state.manageTransactionColumnsPanel = payload;
+		},
+
+		setManageInstantDepositColumnsPanel: (state, { payload }: PayloadAction<BrokerState['manageInstantDepositColumnsPanel']>) => {
+			state.manageInstantDepositColumnsPanel = payload;
+		},
 	},
 });
 
-export const { setSymbolInfoPanel, setSavedTemplatesPanel, setManageWatchlistColumnsPanel } = brokerSlice.actions;
+export const { setSymbolInfoPanel, setSavedTemplatesPanel, setManageWatchlistColumnsPanel, setManageTransactionColumnsPanel, setManageInstantDepositColumnsPanel } = brokerSlice.actions;
 
 export const getManageWatchlistColumnsPanel = (state: RootState) => state.panel.manageWatchlistColumns;
 export const getSymbolInfoPanel = (state: RootState) => state.panel.symbolInfoPanel;
 export const getSavedTemplatesPanel = (state: RootState) => state.panel.savedTemplates;
+export const getManageTransactionColumnsPanel = (state: RootState) => state.panel.manageTransactionColumnsPanel;
+export const getManageInstantDepositColumnsPanel = (state: RootState) => state.panel.manageInstantDepositColumnsPanel;
 
 export default brokerSlice.reducer;

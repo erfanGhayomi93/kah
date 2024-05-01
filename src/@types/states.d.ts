@@ -3,7 +3,7 @@ declare interface INextProps<T extends object = {}> {
 	params: T & { locale: string };
 }
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+declare interface INextStrategyProps extends INextProps<{ id: string }> { }
 
 declare interface IOFields {
 	symbolISIN: string;
@@ -25,6 +25,8 @@ declare interface IOFieldsWithID {
 }
 
 type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
+
+declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
 
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
@@ -107,6 +109,15 @@ declare type OptionWatchlistColumns =
 	| 'notionalValue'
 	| 'intrinsicValue'
 	| 'action';
+
+declare type TTransactionColumns =
+	"credit" | "date" | "debit" | "description" | "remaining" | "station" | "transactionType"
+
+declare type TInstantDepositColumns = "reservationNumber" | "referenceNumber" | "saveDate" | "amount" | "providerType" | "state" | "errorMessage"
+
+declare type TDepositWithReceiptColumns = "id" | "receiptDate" | "providerType" | "receiptNumber" | "amount" | "state" | "state"
+
+declare type TWithdrawalCashColumns = "id" | "saveDate" | "requestDate" | "customerBank" | "requestAmount" | "channel" | "state" | "state"
 
 declare type TDashboardSections =
 	| 'market_view'
@@ -199,11 +210,70 @@ declare type IBrokerUrls = Record<
 	| 'getWithFilterReceipt'
 	| 'getFilteredEPaymentApi'
 	| 'getFilteredPayment',
-	string
->;
+	string>
 
 declare type TOptionWatchlistColumnsState = Array<{
 	colId: OptionWatchlistColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
+
+declare type TTransactionColumnsState = Array<{
+	colId: TTransactionColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
+
+declare type TInstantDepositColumnsState = Array<{
+	colId: TInstantDepositColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
+
+declare type TDepositWithReceiptReportsColumnsState = Array<{
+	colId: TDepositWithReceiptColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
+
+declare type TWithdrawalCashReportsColumnsState = Array<{
+	colId: TWithdrawalCashColumns;
 	width?: number;
 	hide?: boolean;
 	pinned?: 'left' | 'right' | null;
@@ -248,9 +318,9 @@ declare interface IAnalyzeModalInputs {
 
 declare type TSetBsModalInputs = <
 	T extends
-		| Partial<IBsModalInputs>
-		| keyof Partial<IBsModalInputs>
-		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+	| Partial<IBsModalInputs>
+	| keyof Partial<IBsModalInputs>
+	| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
 >(
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
@@ -297,7 +367,7 @@ declare namespace OrderBasket {
 
 		orders: OrderBasket.Order[];
 	}
-	export interface Order extends ISymbolStrategyContract {}
+	export interface Order extends ISymbolStrategyContract { }
 }
 
 declare interface ISymbolStrategyContract {
@@ -324,5 +394,121 @@ declare interface ISymbolStrategyContract {
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
-	type: 'area' | 'candlestick';
+	type: 'linear' | 'candle';
+}
+
+declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_offline' | 'withdrawal_cash';
+
+declare namespace Transaction {
+
+	export type TTransactionGroupModes = "Flat" | "GreedyGrouped" | "Grouped";
+
+	export type TransactionTypes = "Buy" | "Sell" | "Deposit" | "Payment";
+
+	export interface ITransactionsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.info | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		fromPrice: number | null;
+		toPrice: number | null;
+		groupMode: TTransactionGroupModes;
+		transactionType: { id: TransactionTypes, title: string }[];
+	}
+
+	export interface ITransactionsParams {
+		"QueryOption.PageNumber": string;
+		"QueryOption.PageSize": string;
+		"fromDate": string;
+		"toDate": string;
+		"GroupMode": TTransactionGroupModes;
+		"SymbolISIN": string;
+		"FromPrice": string;
+		"ToPrice": string;
+		"TransactionType": Array<string>
+
+	}
+
+
+
+}
+
+declare namespace InstantDepositReports {
+
+	export interface IInstantDepositReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		toPrice: number | null;
+		fromPrice: number | null;
+		providers: string[];
+	}
+
+	export interface IInstantDepositReportsParams {
+		"QueryOption.PageNumber": string;
+		"QueryOption.PageSize": string;
+		"startDate": string;
+		"endDate": string;
+		"minAmount": string;
+		"maxAmount": string;
+		"ProviderTypes": Array<string>;
+		"Statuses": Array<string>
+	}
+
+}
+
+declare namespace DepositWithReceiptReports {
+
+	export interface DepositWithReceiptReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		toPrice: number | null;
+		fromPrice: number | null;
+		receiptNumber: string | null;
+		attachment: boolean | null;
+	}
+
+	export interface DepositWithReceiptReportsParams {
+		"QueryOption.PageNumber": string;
+		"QueryOption.PageSize": string;
+		"startDate": string;
+		"endDate": string;
+		"minAmount": string;
+		"maxAmount": string;
+		"ReceiptNumber": string;
+		"HasAttachment": string;
+		"StatesList": Array<string>
+	}
+}
+
+declare namespace WithdrawalCashReports {
+	export interface WithdrawalCashReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		date: DateRangeType;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		fromPrice: number | null;
+		toPrice: number | null;
+		banks: CashWithdrawBankType[]
+	}
+
+	export interface WithdrawalCashReportsParams {
+		"QueryOption.PageNumber": string;
+		"QueryOption.PageSize": string;
+		"startDate": string;
+		"endDate": string;
+		"Statuses": Array<string>;
+		"AccountIds": Array<string>
+	}
 }

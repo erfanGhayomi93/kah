@@ -11,7 +11,7 @@ import Modal, { Header } from '../Modal';
 import ContractsTable from './ContractsTable';
 import Toolbar from './Toolbar';
 
-interface SymbolContractsProps extends ISelectSymbolContractsModal {}
+interface SymbolContractsProps extends ISelectSymbolContractsModal { }
 
 interface ContractProps extends Option.Root {
 	onRemove: () => void;

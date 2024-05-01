@@ -12,7 +12,7 @@ import Form from './Form';
 import SearchBasis from './SearchBasis';
 import SelectSymbol from './SelectSymbol';
 
-interface BlackScholesProps extends IBlackScholes {}
+interface BlackScholesProps extends IBlackScholes { }
 
 const Calculator = dynamic(() => import('./Calculator'), {
 	ssr: false,

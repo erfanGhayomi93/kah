@@ -19,7 +19,7 @@ const Div = styled.div`
 	border-radius: 1.6rem;
 `;
 
-interface ChoiceBrokerProps extends IBaseModalConfiguration {}
+interface ChoiceBrokerProps extends IBaseModalConfiguration { }
 
 const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) => {
 	const t = useTranslations();

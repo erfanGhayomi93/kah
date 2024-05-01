@@ -10,6 +10,7 @@ interface PaginationProps extends Record<'totalCount' | 'pageNumber' | 'pageSize
 	hasPreviousPage: boolean;
 	onPageChange: (pn: number) => void;
 	onPageSizeChange: (ps: number) => void;
+	currentPage: number
 }
 const Pagination = ({
 	onPageChange,
