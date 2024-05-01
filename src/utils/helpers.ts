@@ -268,6 +268,11 @@ export const decodeBrokerUrls = (data: Broker.URL[]): IBrokerUrls => {
 };
 
 export const divide = (arg1: number, arg2: number) => {
+	if (arg1 === arg2) return 1;
+	if (arg2 === 0) return 0;
+	if (isNaN(arg1) || isNaN(arg2)) return 0;
+
+	return arg1 / arg2;
 };
 
 export const cn = (...args: ClassesValue[]) => {
@@ -449,7 +454,6 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 		value: symbol.optionWatchlistData.requiredMargin,
 	},
 });
-
 
 export const setHours = (d: Date, hour: number, minutes: number, seconds = 0, milliseconds = 0) => {
 	d.setHours(hour, minutes, seconds, milliseconds);
