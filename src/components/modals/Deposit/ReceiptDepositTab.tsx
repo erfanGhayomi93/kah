@@ -11,33 +11,29 @@ import Image from 'next/image';
 import { type MouseEvent, useRef } from 'react';
 import { toast } from 'react-toastify';
 
-
 interface inputType {
 	receipt: string;
 	price: string;
-	accountNumber: string
-	date: number | null,
-	image: File | null
+	accountNumber: string;
+	date: number | null;
+	image: File | null;
 }
 
 export const ReceiptDepositTab = () => {
-
 	const t = useTranslations();
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const { data: brokerAccountOption } = useListBrokerBankAccountQuery({
-		queryKey: ['brokerAccount']
+		queryKey: ['brokerAccount'],
 	});
-
-
 
 	const { inputs, setFieldValue } = useInputs<inputType>({
 		receipt: '',
 		price: '',
 		accountNumber: '',
 		date: null,
-		image: null
+		image: null,
 	});
 
 	const resetInput = () => {
@@ -52,7 +48,6 @@ export const ReceiptDepositTab = () => {
 		resetInput();
 	};
 
-
 	const onUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
 		try {
 			const files = e.target.files;
@@ -64,7 +59,7 @@ export const ReceiptDepositTab = () => {
 			const fileType = activeFile.type.slice(0, 5);
 			if (fileType !== 'image') throw new Error('file type is invalid.');
 
-			if (activeFile.size >= 1E6) {
+			if (activeFile.size >= 1e6) {
 				toast.error(t('common.file_size_must_be_less_than', { v: '1MB' }));
 				throw new Error('file size must be less than 2MB.');
 			}
@@ -75,8 +70,6 @@ export const ReceiptDepositTab = () => {
 		}
 	};
 
-
-
 	return (
 		<div className='mt-24'>
 			<div>
@@ -85,22 +78,22 @@ export const ReceiptDepositTab = () => {
 					onChange={(e) => setFieldValue('receipt', e.target.value)}
 					type='text'
 					placeholder={t('deposit_modal.receipt_value_placeholder')}
-					classInput="placeholder:text-right"
+					classInput='placeholder:text-right'
 					inputMode='numeric'
 				/>
 			</div>
 
-			<div className='mt-24 mb-32'>
+			<div className='mb-32 mt-24'>
 				<Input
-					value={sepNumbers((String(inputs.price)))}
+					value={sepNumbers(String(inputs.price))}
 					onChange={(e) => setFieldValue('price', convertStringToInteger(e.target.value))}
 					type='text'
 					prefix={t('common.rial')}
 					placeholder={t('deposit_modal.placeholderDepositInput')}
-					classInput="placeholder:text-right"
+					classInput='placeholder:text-right'
 					inputMode='numeric'
 					maxLength={25}
-					num2persianValue={num2persian((String(inputs.price)))}
+					num2persianValue={num2persian(String(inputs.price))}
 				/>
 			</div>
 
@@ -111,7 +104,7 @@ export const ReceiptDepositTab = () => {
 						options={brokerAccountOption || []}
 						getOptionId={(option) => option.id}
 						getOptionTitle={(option) => (
-							<div className='flex-justify-between w-full'>
+							<div className='w-full flex-justify-between'>
 								<span>{option.bankName}</span>
 								<span>{option.accountNumber}</span>
 							</div>
@@ -120,57 +113,47 @@ export const ReceiptDepositTab = () => {
 					/>
 				</div>
 				<div className='w-2/5'>
-					<Datepicker
-						value={inputs.date}
-						onChange={(value) => setFieldValue('date', value)}
-					/>
+					<Datepicker value={inputs.date} onChange={(value) => setFieldValue('date', value)} />
 				</div>
 			</div>
 
-			<div
-				className='my-24  border border-dashed border-gray-500'
-				onClick={() => inputRef.current?.click()}
-			>
-				<input ref={inputRef} onChange={onUploadFile} accept="image/*" type='file' className="absolute invisible" />
+			<div className='my-24  border border-dashed border-gray-500' onClick={() => inputRef.current?.click()}>
+				<input
+					ref={inputRef}
+					onChange={onUploadFile}
+					accept='image/*'
+					type='file'
+					className='invisible absolute'
+				/>
 
-				{
-					!inputs.image ? (
-						<div className='flex flex-column items-center gap-y-8 cursor-pointer p-24 h-[153px]'>
+				{!inputs.image ? (
+					<div className='flex h-[153px] cursor-pointer items-center gap-y-8 p-24 flex-column'>
+						<FileTextSVG />
 
-							<FileTextSVG />
+						<p className='text-tiny text-gray-900'>
+							تصویر فیش بانکی خود را اینجا رها کنید یا بارگذاری کنید(اختیاری)
+						</p>
 
-							<p className='text-gray-900 text-tiny'>
-								تصویر فیش بانکی خود را اینجا رها کنید یا بارگذاری کنید(اختیاری)
-							</p>
-
-							<p className='text-gray-700'>
-								{t('deposit_modal.receipt_upload_size')}
-							</p>
+						<p className='text-gray-700'>{t('deposit_modal.receipt_upload_size')}</p>
+					</div>
+				) : (
+					<div className='relative flex justify-center'>
+						<div className='absolute left-0 top-0 cursor-pointer p-8' onClick={onClearImage}>
+							<XSVG width='2rem' height='2rem' />
 						</div>
-					) : (
-						<div className='h-[153px] flex justify-center relative'>
-							<div className='absolute top-0 left-0 p-8 cursor-pointer' onClick={onClearImage}>
-								<XSVG width='2rem' height='2rem' />
-							</div>
-							<Image src={URL.createObjectURL(inputs.image)} alt='' height={153} width={200} />
-						</div>
-					)
-				}
-
-
+						<Image src={URL.createObjectURL(inputs.image)} alt='' height={153} width={200} />
+					</div>
+				)}
 			</div>
 
 			<div>
 				<button
-					className='h-48 btn-primary rounded w-full font-medium gap-8 flex-justify-center text-'
+					className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 					type='button'
 				>
-
 					{t('deposit_modal.state_Request')}
-
 				</button>
 			</div>
-
 		</div>
 	);
 };

@@ -11,18 +11,23 @@ import TransactionsTable from './TransactionsTable';
 
 interface TableProps {
 	filters: Transaction.ITransactionsFilters;
-	setFilters: <K extends keyof Transaction.ITransactionsFilters>(name: K, value: Transaction.ITransactionsFilters[K]) => void;
+	setFilters: <K extends keyof Transaction.ITransactionsFilters>(
+		name: K,
+		value: Transaction.ITransactionsFilters[K],
+	) => void;
 }
 
 const Table = ({ filters, setFilters }: TableProps) => {
-
 	const dispatch = useAppDispatch();
 
 	const t = useTranslations();
 
-
-	const { data: transactionsReportData, isLoading, isError } = useTransactionsHistory({
-		queryKey: ['transactionsReport', filters]
+	const {
+		data: transactionsReportData,
+		isLoading,
+		isError,
+	} = useTransactionsHistory({
+		queryKey: ['transactionsReport', filters],
 	});
 
 	const addSymbol = () => {
@@ -45,7 +50,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		const response: Record<'lastTrades' | 'finalRemain', number> & { reports: Reports.ITransactions[] } = {
 			lastTrades: 0,
 			finalRemain: 0,
-			reports: []
+			reports: [],
 		};
 
 		if (!transactionsReportData?.result) return response;
@@ -60,8 +65,6 @@ const Table = ({ filters, setFilters }: TableProps) => {
 
 	const dataIsEmpty = transactionsReportData?.result.length === 0;
 
-
-
 	return (
 		<>
 			<div
@@ -74,19 +77,23 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				<TransactionsTable reports={reports} lastTrades={lastTrades} finalRemain={finalRemain} />
 			</div>
 
-			<div className='flex-justify-between py-22'>
-				<div className='flex-justify-start gap-40 text-base'>
-					<div className='flex-justify-start gap-8'>
-						<span className='font-medium text-gray-900'>{t('transactions_reports_page.last_remain')}:   </span>
-						<div className='flex-justify-start gap-4'>
+			<div className='py-22 flex-justify-between'>
+				<div className='gap-40 text-base flex-justify-start'>
+					<div className='gap-8 flex-justify-start'>
+						<span className='font-medium text-gray-900'>
+							{t('transactions_reports_page.last_remain')}:{' '}
+						</span>
+						<div className='gap-4 flex-justify-start'>
 							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(finalRemain))}`}</span>
 							<span className=' text-gray-700'>{t('common.rial')}</span>
 						</div>
 					</div>
 					<div style={{ minWidth: '1px', minHeight: '16px' }} className='bg-gray-700' />
-					<div className='flex-justify-start gap-8'>
-						<span className='font-medium text-gray-900'>{t('transactions_reports_page.last_remain')}:   </span>
-						<div className='flex-justify-start gap-4'>
+					<div className='gap-8 flex-justify-start'>
+						<span className='font-medium text-gray-900'>
+							{t('transactions_reports_page.last_remain')}:{' '}
+						</span>
+						<div className='gap-4 flex-justify-start'>
 							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(lastTrades))}`}</span>
 							<span className=' text-gray-700'>{t('common.rial')}</span>
 						</div>
@@ -101,20 +108,21 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					currentPage={filters?.pageNumber ?? 1}
 					pageSize={filters?.pageSize ?? 0}
 					onPageChange={(value) => setFilters('pageNumber', value)}
-					onPageSizeChange={(value) => setFilters('pageSize', value)} pageNumber={transactionsReportData?.pageNumber ?? 0} />
-
-
+					onPageSizeChange={(value) => setFilters('pageSize', value)}
+					pageNumber={transactionsReportData?.pageNumber ?? 0}
+				/>
 			</div>
 
 			{isLoading && (
-				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 h-full w-full'>
+				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 size-full'>
 					<Loading />
 				</div>
 			)}
-			{dataIsEmpty && !isLoading && <div className='fixed center'>
-				<NoData />
-			</div>}
-
+			{dataIsEmpty && !isLoading && (
+				<div className='fixed center'>
+					<NoData />
+				</div>
+			)}
 		</>
 	);
 };

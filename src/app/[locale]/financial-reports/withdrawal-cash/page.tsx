@@ -1,11 +1,7 @@
-import WithdrawalCashReports from "@/components/pages/FinancialReports/WithdrawalCashReports";
+import WithdrawalCashReports from '@/components/pages/FinancialReports/WithdrawalCashReports';
 
 const Page = () => {
-
-	return (
-		<WithdrawalCashReports />
-
-	);
+	return <WithdrawalCashReports />;
 };
 
 export default Page;

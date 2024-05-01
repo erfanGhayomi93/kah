@@ -5,11 +5,7 @@ import { getTransactionsColumns, setTransactionsColumns } from '@/features/slice
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
-import {
-	type ColDef,
-	type ColumnMovedEvent,
-	type GridApi
-} from '@ag-grid-community/core';
+import { type ColDef, type ColumnMovedEvent, type GridApi } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -22,7 +18,6 @@ interface WatchlistTableProps {
 }
 
 const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableProps) => {
-
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -203,7 +198,10 @@ const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableP
 					suppressMovable: true,
 					sortable: false,
 					minWidth: 144,
-					valueFormatter: ({ data }) => (data?.description === 'payfast-1561') ? t('transactions_reports_page.payfast') : data?.description,
+					valueFormatter: ({ data }) =>
+						data?.description === 'payfast-1561'
+							? t('transactions_reports_page.payfast')
+							: data?.description,
 				},
 				{
 					headerName: t('transactions_reports_page.debit_column'),
@@ -211,10 +209,14 @@ const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableP
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					cellClass: ({ value }) => clsx('ltr', {
-						'text-error-100': value < 0
-					}),
-					valueFormatter: ({ data }) => (Number(data?.debit)) >= 0 ? sepNumbers(String(data?.debit)) : `(${sepNumbers(String(data?.debit))})`,
+					cellClass: ({ value }) =>
+						clsx('ltr', {
+							'text-error-100': value < 0,
+						}),
+					valueFormatter: ({ data }) =>
+						Number(data?.debit) >= 0
+							? sepNumbers(String(data?.debit))
+							: `(${sepNumbers(String(data?.debit))})`,
 				},
 				{
 					headerName: t('transactions_reports_page.credit_column'),
@@ -222,11 +224,14 @@ const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableP
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					cellClass: ({ data }) => clsx('ltr', {
-						'text-error-100': (Number(data?.credit)) < 0,
-					}),
-					valueFormatter: ({ data }) => (Number(data?.credit)) >= 0 ? sepNumbers(String(data?.credit)) : `(${sepNumbers(String(data?.credit))})`,
-
+					cellClass: ({ data }) =>
+						clsx('ltr', {
+							'text-error-100': Number(data?.credit) < 0,
+						}),
+					valueFormatter: ({ data }) =>
+						Number(data?.credit) >= 0
+							? sepNumbers(String(data?.credit))
+							: `(${sepNumbers(String(data?.credit))})`,
 				},
 				{
 					headerName: t('transactions_reports_page.remain_column'),
@@ -234,8 +239,12 @@ const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableP
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					cellClass: ({ data }) => clsx('ltr', ((Number(data?.remaining)) > 0) ? 'text-success-400' : 'text-error-300'),
-					valueFormatter: ({ data }) => (Number(data?.remaining)) >= 0 ? sepNumbers(String(data?.remaining)) : `(${sepNumbers(String(data?.remaining))})`,
+					cellClass: ({ data }) =>
+						clsx('ltr', Number(data?.remaining) > 0 ? 'text-success-400' : 'text-error-300'),
+					valueFormatter: ({ data }) =>
+						Number(data?.remaining) >= 0
+							? sepNumbers(String(data?.remaining))
+							: `(${sepNumbers(String(data?.remaining))})`,
 				},
 				{
 					headerName: t('transactions_reports_page.station_column'),
@@ -244,7 +253,7 @@ const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableP
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-				}
+				},
 			] as Array<ColDef<Reports.ITransactions>>,
 		[],
 	);
@@ -326,18 +335,14 @@ const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableP
 			for (let i = 0; i < length; i++) {
 				const newItem = reports[i];
 				if (newItem) {
-					const matchingItem = cWatchlistData.find(
-						(item) => item.symbolIsin === newItem.symbolIsin,
-					);
+					const matchingItem = cWatchlistData.find((item) => item.symbolIsin === newItem.symbolIsin);
 					if (matchingItem) transaction.update.push(newItem);
 					else transaction.add.push(newItem);
 				}
 
 				const oldItem = cWatchlistData[i];
 				if (oldItem) {
-					const matchingItem = reports.find(
-						(item) => item.symbolIsin === oldItem.symbolIsin,
-					);
+					const matchingItem = reports.find((item) => item.symbolIsin === oldItem.symbolIsin);
 					if (!matchingItem) transaction.remove.push(oldItem);
 				}
 			}
@@ -364,8 +369,6 @@ const TransactionsTable = ({ reports, finalRemain, lastTrades }: WatchlistTableP
 	// }, [watchlistColumns]);
 
 	const dataIsEmpty = !Array.isArray(reports) || reports.length === 0;
-
-
 
 	return (
 		<>
