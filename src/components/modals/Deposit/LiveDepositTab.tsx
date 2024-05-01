@@ -1,11 +1,9 @@
 import brokerAxios from '@/api/brokerAxios';
 import Input from '@/components/common/Inputs/Input';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 
@@ -15,19 +13,11 @@ export const LiveDepositTab = () => {
 
 	const [value, setValue] = useState('');
 
-	const url = useSelector(getBrokerURLs);
-
-	// const { data } = usePaymentCreateQuery();
-
-	// useEffect(() => {
-	// 	console.log('data', (data));
-	// }, [data]);
+	// const url = useSelector(getBrokerURLs);
 
 	const handleClickDeposit = async () => {
-		if (!url?.createRequestEPaymentApi) return;
 
-		const { data } = await brokerAxios.post<ServerResponse<Payment.IDepositResponse>>(url?.createRequestEPaymentApi + `?amount=${value}`);
-		// console.log('data', data.result.bankToken, data);
+		const { data } = await brokerAxios.post<ServerResponse<Payment.IDepositResponse>>("https://backoffice.ramandtech.com/EPaymentApi/v1/CreateRequest" + `?amount=${value}`);
 
 		if (data.succeeded) {
 			toast.info(t('alerts.redirecting_to_payment') + '...', {

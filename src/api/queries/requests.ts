@@ -8,7 +8,6 @@ export const usePaymentCreateQuery = createQuery<Payment.IDepositHistoryList[] |
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
-
 		const response = await brokerAxios.get<ServerResponse<Payment.IDepositHistoryList[]>>(
 			'https://backoffice-stage.ramandtech.com/EPaymentApi/v1/History',
 			{
