@@ -1,10 +1,14 @@
-import { initialDepositWithReceiptReportsFilters, initialInstantDepositReportsFilters, initialTransactionsFilters, initialWithdrawalCashReportsFilters } from '@/constants';
+import {
+	initialDepositWithReceiptReportsFilters,
+	initialInstantDepositReportsFilters,
+	initialTransactionsFilters,
+	initialWithdrawalCashReportsFilters,
+} from '@/constants';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { store } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { createQuery, setHours, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import brokerAxios from '../brokerAxios';
-
 
 export const useTransactionsHistory = createQuery<
 	PaginationResponse<Reports.ITransactions[]> | null,
@@ -17,14 +21,17 @@ export const useTransactionsHistory = createQuery<
 			const url = getBrokerURLs(store.getState());
 			if (!url) return null;
 
-			const [, { fromDate, fromPrice, groupMode, pageNumber, pageSize, symbol, toDate, toPrice, transactionType }] = queryKey;
+			const [
+				,
+				{ fromDate, fromPrice, groupMode, pageNumber, pageSize, symbol, toDate, toPrice, transactionType },
+			] = queryKey;
 
 			const params: Record<string, string | string[]> = {
 				'QueryOption.PageNumber': String(pageNumber),
 				'QueryOption.PageSize': String(pageSize),
-				'fromDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
-				'toDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
-				'GroupMode': groupMode
+				fromDate: toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
+				toDate: toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
+				GroupMode: groupMode,
 			};
 
 			if (symbol) params.SymbolISIN = symbol.symbolISIN;
@@ -38,13 +45,10 @@ export const useTransactionsHistory = createQuery<
 				});
 			}
 
-			const response = await brokerAxios.get(
-				url.customerTurnOverRemain,
-				{
-					params,
-					signal,
-				},
-			);
+			const response = await brokerAxios.get(url.customerTurnOverRemain, {
+				params,
+				signal,
+			});
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -72,8 +76,8 @@ export const useInstantDepositReports = createQuery<
 			const params: Record<string, string | string[]> = {
 				'QueryOption.PageNumber': String(pageNumber),
 				'QueryOption.PageSize': String(pageSize),
-				'startDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
-				'endDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59))
+				startDate: toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
+				endDate: toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
 			};
 
 			if (fromPrice) params.minAmount = String(fromPrice);
@@ -122,13 +126,16 @@ export const useDepositWithReceiptReports = createQuery<
 			const url = getBrokerURLs(store.getState());
 			if (!url) return null;
 
-			const [, { attachment, date, fromDate, fromPrice, pageNumber, pageSize, receiptNumber, status, toDate, toPrice }] = queryKey;
+			const [
+				,
+				{ attachment, date, fromDate, fromPrice, pageNumber, pageSize, receiptNumber, status, toDate, toPrice },
+			] = queryKey;
 
 			const params: Record<string, string | string[]> = {
 				'QueryOption.PageNumber': String(pageNumber),
 				'QueryOption.PageSize': String(pageSize),
-				'StartDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
-				'EndDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59))
+				StartDate: toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
+				EndDate: toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
 			};
 
 			if (fromPrice) params.MinAmount = String(fromPrice);
@@ -143,13 +150,10 @@ export const useDepositWithReceiptReports = createQuery<
 				});
 			}
 
-			const response = await brokerAxios.get<PaginationResponse<Reports.IDepositWithReceipt[]>>(
-				url.getReceipt,
-				{
-					params,
-					signal,
-				},
-			);
+			const response = await brokerAxios.get<PaginationResponse<Reports.IDepositWithReceipt[]>>(url.getReceipt, {
+				params,
+				signal,
+			});
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -176,14 +180,20 @@ export const useWithdrawalCashReports = createQuery<
 
 			const params: Record<string, string | string[]> = {
 				'QueryOption.PageNumber': String(pageNumber),
-				'QueryOption.PageSize': String(pageSize)
+				'QueryOption.PageSize': String(pageSize),
 			};
 
 			if (fromDate) params.StartDate = toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0));
-			else params.StartDate = toISOStringWithoutChangeTime(dayjs().subtract(1, 'week').hour(0).minute(0).second(0).toDate());
+			else
+				params.StartDate = toISOStringWithoutChangeTime(
+					dayjs().subtract(1, 'week').hour(0).minute(0).second(0).toDate(),
+				);
 
 			if (toDate) params.EndDate = toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59));
-			else params.EndDate = toISOStringWithoutChangeTime(dayjs().add(1, 'week').hour(23).minute(59).second(59).toDate());
+			else
+				params.EndDate = toISOStringWithoutChangeTime(
+					dayjs().add(1, 'week').hour(23).minute(59).second(59).toDate(),
+				);
 
 			if (fromPrice) params.MinAmount = String(fromPrice);
 			if (toPrice) params.MaxAmount = String(toPrice);
@@ -201,13 +211,10 @@ export const useWithdrawalCashReports = createQuery<
 				});
 			}
 
-			const response = await brokerAxios.get<PaginationResponse<Reports.IWithdrawal[]>>(
-				url.getFilteredPayment,
-				{
-					params,
-					signal,
-				},
-			);
+			const response = await brokerAxios.get<PaginationResponse<Reports.IWithdrawal[]>>(url.getFilteredPayment, {
+				params,
+				signal,
+			});
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -218,5 +225,3 @@ export const useWithdrawalCashReports = createQuery<
 		}
 	},
 });
-
-

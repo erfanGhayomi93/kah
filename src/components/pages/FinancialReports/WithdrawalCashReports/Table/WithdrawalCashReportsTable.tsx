@@ -1,15 +1,15 @@
 import AgTable from '@/components/common/Tables/AgTable';
 import { defaultDepositWithReceiptReportsColumn, defaultTransactionColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getInstantDepositColumns, setDepositWithReceiptColumns, setInstantDepositColumns } from '@/features/slices/tableSlice';
+import {
+	getInstantDepositColumns,
+	setDepositWithReceiptColumns,
+	setInstantDepositColumns,
+} from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
-import {
-	type ColDef,
-	type ColumnMovedEvent,
-	type GridApi
-} from '@ag-grid-community/core';
+import { type ColDef, type ColumnMovedEvent, type GridApi } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
@@ -19,7 +19,6 @@ interface WithdrawalCashReportsTableProps {
 }
 
 const WithdrawalCashReportsTable = ({ reports }: WithdrawalCashReportsTableProps) => {
-
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -182,7 +181,7 @@ const WithdrawalCashReportsTable = ({ reports }: WithdrawalCashReportsTableProps
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss')
+					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss'),
 				},
 				{
 					headerName: t('instant_deposit_reports_page.getway_column'),
@@ -190,7 +189,7 @@ const WithdrawalCashReportsTable = ({ reports }: WithdrawalCashReportsTableProps
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => t('bank_accounts.' + value)
+					valueFormatter: ({ value }) => t('bank_accounts.' + value),
 				},
 				{
 					headerName: t('instant_deposit_reports_page.reservation_number_column'),
@@ -300,18 +299,14 @@ const WithdrawalCashReportsTable = ({ reports }: WithdrawalCashReportsTableProps
 			for (let i = 0; i < length; i++) {
 				const newItem = reports[i];
 				if (newItem) {
-					const matchingItem = cWatchlistData.find(
-						(item) => item.requestDate === newItem.requestDate,
-					);
+					const matchingItem = cWatchlistData.find((item) => item.requestDate === newItem.requestDate);
 					if (matchingItem) transaction.update.push(newItem);
 					else transaction.add.push(newItem);
 				}
 
 				const oldItem = cWatchlistData[i];
 				if (oldItem) {
-					const matchingItem = reports.find(
-						(item) => item.requestDate === oldItem.requestDate,
-					);
+					const matchingItem = reports.find((item) => item.requestDate === oldItem.requestDate);
 					if (!matchingItem) transaction.remove.push(oldItem);
 				}
 			}
@@ -338,8 +333,6 @@ const WithdrawalCashReportsTable = ({ reports }: WithdrawalCashReportsTableProps
 	// }, [watchlistColumns]);
 
 	const dataIsEmpty = !Array.isArray(reports) || reports.length === 0;
-
-
 
 	return (
 		<>
