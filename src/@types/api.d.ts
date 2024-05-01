@@ -1226,6 +1226,60 @@ declare namespace Dashboard {
 	}
 }
 
+declare namespace Payment {
+	export type ThistoryState =
+		| 'Request'
+		| 'RequestBankToken'
+		| 'RequestBankTokenOk'
+		| 'RequestBankTokenError'
+		| 'RedirectToBank'
+		| 'OkBeforeVerify'
+		| 'VerifyCheck'
+		| 'VerifyCheckFailed'
+		| 'Verify'
+		| 'DoubleSpendingCheckFailed'
+		| 'DoubleSpendingCheckedOk'
+		| 'Done'
+		| 'CanceledByUser'
+		| 'Failed'
+		| 'SessionIsNull'
+		| 'InvalidParameters'
+		| 'MerchantIpAddressIsInvalid'
+		| 'TokenNotFound'
+		| 'TokenRequired'
+		| 'TerminalNotFound';
+
+	export interface IDepositResponse {
+		bankToken: string;
+		amount: number;
+		merchantId: null;
+		reservationNumber: string;
+		redirectUrl: string | null;
+		wage: number;
+		errorMessage: string | null;
+		isSuccessful: boolean;
+		mobilePhone: number;
+	}
+
+	export interface IDepositHistoryList {
+		reservationNumber: number;
+		saveDate: string;
+		amount: number;
+		providerType: string;
+		state: ThistoryState;
+	}
+
+	export interface IBrokerAccount {
+		id: string;
+		bankName: string;
+		bankBranch: string;
+		accountType: string;
+		accountNumber: string;
+		permittedToPay: boolean;
+		permittedToReceive: boolean;
+	}
+}
+
 declare namespace Strategy {
 	declare type Cheap =
 		| 'HighRisk'

@@ -1,3 +1,4 @@
+import { useListBrokerBankAccountQuery } from '@/api/queries/requests';
 import Datepicker from '@/components/common/Datepicker';
 import Input from '@/components/common/Inputs/Input';
 import Select from '@/components/common/Inputs/Select';
@@ -7,14 +8,9 @@ import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { type MouseEvent, useMemo, useRef } from 'react';
+import { type MouseEvent, useRef } from 'react';
 import { toast } from 'react-toastify';
 
-
-interface TSelectOptions {
-	id: string;
-	title: string | React.ReactNode;
-}
 
 interface inputType {
 	receipt: string;
@@ -30,25 +26,10 @@ export const ReceiptDepositTab = () => {
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
+	const { data: brokerAccountOption } = useListBrokerBankAccountQuery({
+		queryKey: ['brokerAccount']
+	});
 
-
-	const sortingOptions = useMemo<TSelectOptions[]>(
-		() => [
-			{
-				id: 'MaximumValue',
-				title: t('old_option_chain.sort_highest_value_per_day'),
-			},
-			{
-				id: 'ClosestSettlement',
-				title: t('old_option_chain.sort_closest_due_date'),
-			},
-			{
-				id: 'Alphabet',
-				title: t('old_option_chain.sort_alphabet'),
-			},
-		],
-		[],
-	);
 
 
 	const { inputs, setFieldValue } = useInputs<inputType>({
@@ -109,7 +90,7 @@ export const ReceiptDepositTab = () => {
 				/>
 			</div>
 
-			<div className='my-24'>
+			<div className='mt-24 mb-32'>
 				<Input
 					value={sepNumbers((String(inputs.price)))}
 					onChange={(e) => setFieldValue('price', convertStringToInteger(e.target.value))}
@@ -125,11 +106,16 @@ export const ReceiptDepositTab = () => {
 
 			<div className='flex gap-x-8'>
 				<div className='flex-1'>
-					<Select<TSelectOptions>
+					<Select<Payment.IBrokerAccount>
 						onChange={(option) => setFieldValue('accountNumber', option.id)}
-						options={sortingOptions}
+						options={brokerAccountOption || []}
 						getOptionId={(option) => option.id}
-						getOptionTitle={(option) => option.title}
+						getOptionTitle={(option) => (
+							<div className='flex-justify-between w-full'>
+								<span>{option.bankName}</span>
+								<span>{option.accountNumber}</span>
+							</div>
+						)}
 						placeholder={t('deposit_modal.account_number_placeholder')}
 					/>
 				</div>
@@ -174,19 +160,16 @@ export const ReceiptDepositTab = () => {
 
 			</div>
 
-			{/* {inputs.image && imagePreview && ReactDOM.createPortal(<div onClick={showImageHandler} style={{ zIndex: 9999 }} className='fixed left-0 top-0 flex items-center justify-center w-screen h-screen bg-dark-secondary-100/20'>
-				<div className='relative'>
-					<div className='absolute left-6 top-6 p-4 bg-black/50 rounded cursor-pointer text-white'>
-						<ClosePositionSVG />
-					</div>
-					<img
-						onClick={e => e.stopPropagation()}
-						style={{ maxWidth: '80vw', minWidth: '20rem', maxHeight: '80vh', minHeight: '20rem', backgroundColor: 'rgba(0,0,0,0.3)' }}
-						src={URL.createObjectURL(inputs.image)}
-						alt=""
-					/>
-				</div>
-			</div>, document.body)} */}
+			<div>
+				<button
+					className='h-48 btn-primary rounded w-full font-medium gap-8 flex-justify-center text-'
+					type='button'
+				>
+
+					{t('deposit_modal.state_Request')}
+
+				</button>
+			</div>
 
 		</div>
 	);

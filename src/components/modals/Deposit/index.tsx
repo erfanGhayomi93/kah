@@ -1,4 +1,4 @@
-import Collapse from '@/components/common/animation/Collapse';
+import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import { useAppDispatch } from '@/features/hooks';
 import { setDepositModal } from '@/features/slices/modalSlice';
 import { type IDepositModal } from '@/features/slices/modalSlice.interfaces';
@@ -49,27 +49,24 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 			/>
 
 			<div className='flex p-24 bg-white'>
-
 				<Div className={clsx('flex-column', {
 					'border-l border-gray-500 pr-16 pl-24': isShowExpanded
 				})}>
 					<Body />
 				</Div>
 
-
-				{/* {
-					isShowExpanded && (
-						<Div className='bg-white'>
-							<HistoryDeposit />
-						</Div>
-					)
-				} */}
-
-				<Collapse enabled={isShowExpanded} >
-					<Div className='bg-white'>
-						<HistoryDeposit />
-					</Div>
-				</Collapse>
+				<AnimatePresence
+					initial={{ animation: 'fadeInLeft' }}
+					exit={{ animation: 'fadeOutLeft' }}
+				>
+					{
+						isShowExpanded && (
+							<Div className='bg-white'>
+								<HistoryDeposit />
+							</Div>
+						)
+					}
+				</AnimatePresence>
 			</div>
 		</Modal>
 	);
