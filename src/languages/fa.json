@@ -22,7 +22,7 @@
 		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
 		"show_more": "مشاهده بیشتر",
 		"an_error_occurred": "خطا در دریافت اطلاعات",
-		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {{v}} باشد"
+		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {n} باشد"
 	},
 	"side": {
 		"buy": "خرید",
@@ -720,6 +720,19 @@
 		"state_Error": "خطا",
 		"state_PayFast": "پرداخت سریع"
 	},
+	"payment_result": {
+		"payment_success_title": "پرداخت موفق",
+		"payment_error_title": "پرداخت ناموفق",
+		"payment_success_desc": "عملیات موفقیت آمیز بود",
+		"payment_error_desc": "عملیات موفقیت آمیز نبود",
+		"price": "مبلغ",
+		"number_transaction": "شماره تراکنش",
+		"tracking_code": "کد رهگیری",
+		"type_payment": "شیوه پرداخت",
+		"return_rivas": "بازگشت به ریواس",
+		"payment_again": "پرداخت مجدد",
+		"gateway_bank": "درگاه بانک"
+	},
 	"analyze_modal": {
 		"title": "آنالیز",
 		"no_trade_found": "هیچ معامله‌ای وجود ندارد",
@@ -1073,6 +1086,8 @@
 		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
 		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت.",
 		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
+		"offline_deposit_succeeded": "فیش با موفقیت ثبت شد.",
+		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
 		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید."
 	},
 	"financial_reports_page": {
@@ -1082,7 +1097,7 @@
 		"deposit_offline_tab": "واریز با فیش",
 		"withdrawal_cash_tab": "برداشت وجه"
 	},
-	"transactions_reports_page" : {
+	"transactions_reports_page": {
 		"id_column": "شماره ردیف",
 		"date_column": "زمان",
 		"operator_column": "عملیات",
@@ -1102,8 +1117,7 @@
 		"final_remain": "مانده نهایی",
 		"last_remain": "مانده بدون معاملات آخر"
 	},
-
-	"instant_deposit_reports_page" : {
+	"instant_deposit_reports_page": {
 		"id_column": "ردیف",
 		"date_column": "تاریخ",
 		"time_column": "ساعت",
@@ -1119,21 +1133,19 @@
 		"bank_column": "بانک",
 		"system": "سامانه"
 	},
-
-	"deposit_with_receipt_page" : {
+	"deposit_with_receipt_page": {
 		"id_column": "ردیف",
 		"date_column": "تاریخ",
 		"broker_bank_column": "بانک کارگزاری",
-		"receipt_number_column":"شماره فیش",
+		"receipt_number_column": "شماره فیش",
 		"price_column": "مبلغ",
 		"status_column": "وضعیت",
 		"operation_column": "عملیات"
 	},
-
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"
-	}, 
+	},
 	"states": {
 		"state_CancelByBroker": "رد شده توسط ناظر",
 		"state_CancelByCustomer": "لغو شده توسط کاربر",
@@ -1181,5 +1193,4 @@
 		"agreement_state_NotSpecified": "تعیین نشده",
 		"agreement_state_expired": "منقضی شده"
 	}
-
 }

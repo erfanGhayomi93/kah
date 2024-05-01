@@ -1,20 +1,26 @@
+import brokerAxios from '@/api/brokerAxios';
 import { useListBrokerBankAccountQuery } from '@/api/queries/requests';
 import Datepicker from '@/components/common/Datepicker';
 import Input from '@/components/common/Inputs/Input';
 import Select from '@/components/common/Inputs/Select';
 import { FileTextSVG, XSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setDepositModal } from '@/features/slices/modalSlice';
 import { useInputs } from '@/hooks';
-import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import { convertStringToInteger, sepNumbers, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { type MouseEvent, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface inputType {
 	receipt: string;
 	price: string;
-	accountNumber: string;
+	account: Payment.IBrokerAccount | null;
 	date: number | null;
 	image: File | null;
 }
@@ -24,6 +30,14 @@ export const ReceiptDepositTab = () => {
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
+	const url = useSelector(getBrokerURLs);
+
+	const queryClient = useQueryClient();
+
+	const userInfo: Broker.User | undefined = queryClient.getQueryData(['userInfoQuery']);
+
+	const dispatch = useAppDispatch();
+
 	const { data: brokerAccountOption } = useListBrokerBankAccountQuery({
 		queryKey: ['brokerAccount'],
 	});
@@ -31,7 +45,7 @@ export const ReceiptDepositTab = () => {
 	const { inputs, setFieldValue } = useInputs<inputType>({
 		receipt: '',
 		price: '',
-		accountNumber: '',
+		account: null,
 		date: null,
 		image: null,
 	});
@@ -60,13 +74,54 @@ export const ReceiptDepositTab = () => {
 			if (fileType !== 'image') throw new Error('file type is invalid.');
 
 			if (activeFile.size >= 1e6) {
-				toast.error(t('common.file_size_must_be_less_than', { v: '1MB' }));
+				toast.error(t('common.file_size_must_be_less_than', { n: '1MB' }));
 				throw new Error('file size must be less than 2MB.');
 			}
 			setFieldValue('image', activeFile);
 			resetInput();
 		} catch (e) {
 			setFieldValue('image', null);
+		}
+	};
+
+	const handleSubmitReceiptDeposit = async () => {
+		try {
+			const fd = new FormData();
+			const { account, date, image, price, receipt } = inputs;
+
+			if (!url || !userInfo || !account) {
+				console.log('url', url, 'userInfo', userInfo, 'image', image, 'account', account);
+				return;
+			}
+
+			fd.append('NationalCode', userInfo?.nationalCode);
+			fd.append('File', image ?? '');
+			fd.append('BankAccountId', account.id);
+			fd.append('AccountNumber', account?.accountNumber);
+			fd.append('CustomerISIN', userInfo.customerISIN);
+			fd.append('Amount', price);
+			fd.append('ReceiptNumber', receipt);
+			fd.append('ReceiptDate', toISOStringWithoutChangeTime(new Date()));
+
+			const response = await brokerAxios.post(url.completeRequestReceipt, fd);
+
+			const { data } = response;
+			if (data.succeeded) {
+				toast.success(t('alerts.offline_deposit_succeeded'), {
+					toastId: 'offline_deposit_succeeded',
+				});
+
+				queryClient.refetchQueries({ queryKey: ['userRemainQuery'] });
+				queryClient.refetchQueries({ queryKey: ['depositHistoryOnline'] });
+			} else {
+				toast.error(t('alerts.offline_deposit_failed'), {
+					toastId: 'offline_deposit_succeeded',
+				});
+			}
+
+			dispatch(setDepositModal(null));
+		} catch (err) {
+			console.log('err', err);
 		}
 	};
 
@@ -100,7 +155,7 @@ export const ReceiptDepositTab = () => {
 			<div className='flex gap-x-8'>
 				<div className='flex-1'>
 					<Select<Payment.IBrokerAccount>
-						onChange={(option) => setFieldValue('accountNumber', option.id)}
+						onChange={(option) => setFieldValue('account', option)}
 						options={brokerAccountOption || []}
 						getOptionId={(option) => option.id}
 						getOptionTitle={(option) => (
@@ -113,7 +168,12 @@ export const ReceiptDepositTab = () => {
 					/>
 				</div>
 				<div className='w-2/5'>
-					<Datepicker value={inputs.date} onChange={(value) => setFieldValue('date', value)} />
+					<Datepicker
+						value={inputs.date}
+						onChange={(value) => {
+							setFieldValue('date', value);
+						}}
+					/>
 				</div>
 			</div>
 
@@ -127,7 +187,10 @@ export const ReceiptDepositTab = () => {
 				/>
 
 				{!inputs.image ? (
-					<div className='flex h-[153px] cursor-pointer items-center gap-y-8 p-24 flex-column'>
+					<div
+						style={{ height: '15.3rem' }}
+						className='flex cursor-pointer items-center gap-y-8 p-24 flex-column'
+					>
 						<FileTextSVG />
 
 						<p className='text-tiny text-gray-900'>
@@ -150,6 +213,7 @@ export const ReceiptDepositTab = () => {
 				<button
 					className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 					type='button'
+					onClick={handleSubmitReceiptDeposit}
 				>
 					{t('deposit_modal.state_Request')}
 				</button>
