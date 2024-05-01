@@ -5,11 +5,7 @@ import { getDepositWithReceiptReportsColumns, setDepositWithReceiptColumns } fro
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
-import {
-	type ColDef,
-	type ColumnMovedEvent,
-	type GridApi
-} from '@ag-grid-community/core';
+import { type ColDef, type ColumnMovedEvent, type GridApi } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
@@ -19,7 +15,6 @@ interface DepositWithReceiptReportsTableProps {
 }
 
 const DepositWithReceiptReportsTable = ({ reports }: DepositWithReceiptReportsTableProps) => {
-
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -204,7 +199,6 @@ const DepositWithReceiptReportsTable = ({ reports }: DepositWithReceiptReportsTa
 					suppressMovable: true,
 					sortable: false,
 					valueFormatter: ({ value }) => sepNumbers(String(value)),
-
 				},
 				{
 					headerName: t('deposit_with_receipt_page.status_column'),
@@ -272,7 +266,10 @@ const DepositWithReceiptReportsTable = ({ reports }: DepositWithReceiptReportsTa
 		if (!gridApi) return;
 
 		if (Array.isArray(depositWithReceiptReportsColumnsIndex) && depositWithReceiptReportsColumnsIndex.length > 0) {
-			if (typeof depositWithReceiptReportsColumnsIndex[0] === 'object' && 'colId' in depositWithReceiptReportsColumnsIndex[0]) {
+			if (
+				typeof depositWithReceiptReportsColumnsIndex[0] === 'object' &&
+				'colId' in depositWithReceiptReportsColumnsIndex[0]
+			) {
 				gridApi.applyColumnState({ state: depositWithReceiptReportsColumnsIndex, applyOrder: true });
 			} else {
 				dispatch(setDepositWithReceiptColumns(defaultDepositWithReceiptReportsColumn));
@@ -306,18 +303,14 @@ const DepositWithReceiptReportsTable = ({ reports }: DepositWithReceiptReportsTa
 			for (let i = 0; i < length; i++) {
 				const newItem = reports[i];
 				if (newItem) {
-					const matchingItem = cWatchlistData.find(
-						(item) => item.id === newItem.id,
-					);
+					const matchingItem = cWatchlistData.find((item) => item.id === newItem.id);
 					if (matchingItem) transaction.update.push(newItem);
 					else transaction.add.push(newItem);
 				}
 
 				const oldItem = cWatchlistData[i];
 				if (oldItem) {
-					const matchingItem = reports.find(
-						(item) => item.id === oldItem.id,
-					);
+					const matchingItem = reports.find((item) => item.id === oldItem.id);
 					if (!matchingItem) transaction.remove.push(oldItem);
 				}
 			}
@@ -344,8 +337,6 @@ const DepositWithReceiptReportsTable = ({ reports }: DepositWithReceiptReportsTa
 	// }, [watchlistColumns]);
 
 	const dataIsEmpty = !Array.isArray(reports) || reports.length === 0;
-
-
 
 	return (
 		<>

@@ -1,15 +1,15 @@
 import AgTable from '@/components/common/Tables/AgTable';
 import { defaultDepositWithReceiptReportsColumn, defaultTransactionColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getInstantDepositColumns, setDepositWithReceiptColumns, setInstantDepositColumns } from '@/features/slices/tableSlice';
+import {
+	getInstantDepositColumns,
+	setDepositWithReceiptColumns,
+	setInstantDepositColumns,
+} from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
-import {
-	type ColDef,
-	type ColumnMovedEvent,
-	type GridApi
-} from '@ag-grid-community/core';
+import { type ColDef, type ColumnMovedEvent, type GridApi } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
@@ -19,7 +19,6 @@ interface InstantDepositReportsTableProps {
 }
 
 const InstantDepositReportsTable = ({ reports }: InstantDepositReportsTableProps) => {
-
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -184,7 +183,7 @@ const InstantDepositReportsTable = ({ reports }: InstantDepositReportsTableProps
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss')
+					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss'),
 				},
 				{
 					headerName: t('instant_deposit_reports_page.getway_column'),
@@ -194,7 +193,7 @@ const InstantDepositReportsTable = ({ reports }: InstantDepositReportsTableProps
 					sortable: false,
 					maxWidth: 220,
 					minWidth: 220,
-					valueFormatter: ({ value }) => t('bank_accounts.' + value)
+					valueFormatter: ({ value }) => t('bank_accounts.' + value),
 				},
 				{
 					headerName: t('instant_deposit_reports_page.reservation_number_column'),
@@ -302,18 +301,14 @@ const InstantDepositReportsTable = ({ reports }: InstantDepositReportsTableProps
 			for (let i = 0; i < length; i++) {
 				const newItem = reports[i];
 				if (newItem) {
-					const matchingItem = cWatchlistData.find(
-						(item) => item.saveDate === newItem.saveDate,
-					);
+					const matchingItem = cWatchlistData.find((item) => item.saveDate === newItem.saveDate);
 					if (matchingItem) transaction.update.push(newItem);
 					else transaction.add.push(newItem);
 				}
 
 				const oldItem = cWatchlistData[i];
 				if (oldItem) {
-					const matchingItem = reports.find(
-						(item) => item.saveDate === oldItem.saveDate,
-					);
+					const matchingItem = reports.find((item) => item.saveDate === oldItem.saveDate);
 					if (!matchingItem) transaction.remove.push(oldItem);
 				}
 			}
@@ -340,8 +335,6 @@ const InstantDepositReportsTable = ({ reports }: InstantDepositReportsTableProps
 	// }, [watchlistColumns]);
 
 	const dataIsEmpty = !Array.isArray(reports) || reports.length === 0;
-
-
 
 	return (
 		<>
