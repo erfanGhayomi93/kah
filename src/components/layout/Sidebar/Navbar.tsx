@@ -1,5 +1,4 @@
 import Click from '@/components/common/Click';
-
 import { useAppDispatch } from '@/features/hooks';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
