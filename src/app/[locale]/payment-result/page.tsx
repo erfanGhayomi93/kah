@@ -1,10 +1,7 @@
-import PaymentResultPage from "@/components/pages/paymentResultPage";
+import PaymentResultPage from '@/components/pages/paymentResultPage';
 
 const PaymentResult = () => {
-	return (
-		<PaymentResultPage />
-	)
+	return <PaymentResultPage />;
 };
 
-
-export default PaymentResult
+export default PaymentResult;
