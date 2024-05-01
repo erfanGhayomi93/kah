@@ -129,6 +129,7 @@ const config: Config = {
 
 		spacing: {
 			'0': '0',
+			'2': '2px',
 			'4': '0.4rem',
 			'8': '0.8rem',
 			'10': '1rem',

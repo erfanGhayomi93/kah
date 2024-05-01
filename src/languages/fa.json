@@ -859,7 +859,8 @@
 		"strategy_title_BullCallSpread": "بول کال اسپرد",
 		"strategy_desc_BullCallSpread": "خرید اختیار خرید اعمال بالا <plus></plus> فروش اختیار خرید اعمال پایین ",
 		"prepared_strategy": "استراتژی آماده",
-		"build_strategy": "ساخت استراتژی"
+		"build_strategy": "ساخت استراتژی",
+		"market_process": "روند بازار"
 	},
 	"exchange": {
 		"Exchange": "بورس",

@@ -209,7 +209,7 @@ const Header = () => {
 							className='h-32 gap-8 rounded px-16 font-medium btn-primary'
 						>
 							{t('header.login')}
-							<span style={{ width: '2px' }} className='h-12 rounded bg-white' />
+							<span className='w-2 h-12 rounded bg-white' />
 							{t('header.register')}
 						</button>
 					)}
@@ -281,7 +281,7 @@ const Header = () => {
 						)}
 					</Popup>
 
-					<span style={{ width: '2px' }} className='mr-8 h-12 bg-gray-500' />
+					<span className='w-2 mr-8 h-12 bg-gray-500' />
 				</div>
 
 				<div className='h-full gap-8 ltr flex-justify-start'>

@@ -6,8 +6,10 @@ import ArrowLeftSVG from './arrow-left.svg';
 import ArrowRightSVG from './arrow-right.svg';
 import ArrowUpSVG from './arrow-up.svg';
 import AssetSVG from './asset.svg';
+import BearishMarketSVG from './bearish-market.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
+import BullishMarketSVG from './bullish-market.svg';
 import CalculatorSVG from './calculator.svg';
 import CalendarSVG from './calendar.svg';
 import CandleChartSVG from './candle-chart.svg';
@@ -21,6 +23,7 @@ import ClosePositionSVG from './close-position.svg';
 import CogsSVG from './cogs.svg';
 import ColumnsSVG from './columns.svg';
 import DataAnalyticsSVG from './data-analytics.svg';
+import DirectionalMarketSVG from './directional-market.svg';
 import DisadvantagesSVG from './disadvantages.svg';
 import DoubleArrowRightSVG from './double-arrow-left.svg';
 import DoubleArrowLeftSVG from './double-arrow-right.svg';
@@ -57,6 +60,7 @@ import MessageDoubleCheckSVG from './message-double-check.svg';
 import MinimizeSVG from './minimize.svg';
 import MoneySVG from './money.svg';
 import MoreOptionsSVG from './more-options.svg';
+import NeutralMarketSVG from './neutral-market.svg';
 import OffSVG from './off.svg';
 import OptionChainSVG from './option-chain.svg';
 import PasswordSVG from './password.svg';
@@ -106,8 +110,10 @@ export {
 	ArrowRightSVG,
 	ArrowUpSVG,
 	AssetSVG,
+	BearishMarketSVG,
 	BellSVG,
 	BookmarkSVG,
+	BullishMarketSVG,
 	CalculatorSVG,
 	CalendarSVG,
 	CandleChartSVG,
@@ -121,6 +127,7 @@ export {
 	CogsSVG,
 	ColumnsSVG,
 	DataAnalyticsSVG,
+	DirectionalMarketSVG,
 	DisadvantagesSVG,
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,
@@ -157,6 +164,7 @@ export {
 	MinimizeSVG,
 	MoneySVG,
 	MoreOptionsSVG,
+	NeutralMarketSVG,
 	OffSVG,
 	OptionChainSVG,
 	PasswordSVG,
