@@ -232,6 +232,7 @@ declare interface IBsModalInputs {
 
 declare interface IAnalyzeModalInputs {
 	chartData: Array<Record<'x' | 'y', number>>;
+	intersectionPoint: number;
 	minPrice: number;
 	maxPrice: number;
 	mostProfit: number;

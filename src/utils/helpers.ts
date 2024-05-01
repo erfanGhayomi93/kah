@@ -441,7 +441,7 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 	id: uuidv4(),
 	symbol,
 	contractSize: symbol.symbolInfo.contractSize,
-	price: symbol.optionWatchlistData.bestBuyPrice || 1,
+	price: symbol.optionWatchlistData.premium || 1,
 	quantity: 1,
 	settlementDay: symbol.symbolInfo.contractEndDate,
 	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
