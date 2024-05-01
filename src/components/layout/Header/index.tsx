@@ -249,7 +249,6 @@ const Header = () => {
 			<div className='flex-1 gap-16 flex-justify-end'>
 				<div className='gap-8 flex-items-center'>
 					<SearchSymbol />
-
 					<Tooltip placement='bottom' content={t('tooltip.black_scholes')}>
 						<button
 							onClick={openBlackScholesModal}

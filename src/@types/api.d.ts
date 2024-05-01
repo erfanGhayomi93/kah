@@ -874,7 +874,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse {}
+		export interface FaraBourse extends GetMarketState.Bourse { }
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -889,17 +889,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-				| 'ticks'
-				| 'days'
-				| 'hours'
-				| 'milliseconds'
-				| 'minutes'
-				| 'seconds'
-				| 'totalDays'
-				| 'totalHours'
-				| 'totalMilliseconds'
-				| 'totalMinutes'
-				| 'totalSeconds';
+			| 'ticks'
+			| 'days'
+			| 'hours'
+			| 'milliseconds'
+			| 'minutes'
+			| 'seconds'
+			| 'totalDays'
+			| 'totalHours'
+			| 'totalMilliseconds'
+			| 'totalMinutes'
+			| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1406,6 +1406,7 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+
 	}
 
 	export interface BullCallSpread {
@@ -1454,3 +1455,70 @@ declare namespace Strategy {
 		ytm: number;
 	}
 }
+
+declare namespace Reports {
+
+
+	export interface Column {
+		id: number;
+		title: string;
+		category: string;
+		isHidden: boolean;
+		order: number;
+	}
+
+	export interface ITransactions {
+		debit: string;
+		credit: string;
+		remaining: string;
+		description: string;
+		date: string;
+		station: string;
+		symbolIsin: string;
+		transactionType: "Withdrawal" | "Deposit" | "Charge" | "Buy" | "Sell";
+	}
+
+	export interface IInstantDeposit {
+		reservationNumber: number;
+		referenceNumber: string;
+		saveDate: string;
+		amount: number;
+		providerType: string;
+		state: "CanceledByUser" | "Done" | "DoubleSpendingCheckedOk" | "DoubleSpendingCheckFailed" | "RedirectToBank" | "Request" | "RequestBankToken" | "RequestBankTokenError" | "Verify" | "VerifyCheck" | "VerifyCheckFailed" | "OkBeforeVerifys";
+		errorMessage: string;
+	}
+
+	export interface IDepositWithReceipt {
+		id: number;
+		nationalCode: string;
+		customerISIN: string;
+		date: string;
+		bankAccountId: string;
+		amount: number;
+		receiptNumber: string;
+		comment: string;
+		receiptDate: string;
+		accountCode: string;
+		state: "InOMSQueue" | "OrderDone" | "Error" | "Modified" | "Expired" | "Canceled";
+		providerType: string
+	}
+
+	export interface IWithdrawal {
+		requestNumber: string;
+		creationDate: string;
+		requestAmount: number;
+		requestDate: string;
+		bankAccountId: number;
+		accountNumber: string | null;
+		status: "Draft" | "Pending" | "Confirmed" | "Canceled" | "Failed" | "Voided" | "Paid" | "Entry" | "ErrorOccured" | "PostedToBackOffice" | "CreateRequest";
+		prsName: string | null;
+		orderOrigin: "Broker" | "Online" | number;
+		orderOriginName: null | string;
+		comments: string;
+		deletable: boolean;
+		bankName: string | null;
+		checkDate: string;
+		reservationNumber: number;
+	}
+}
+
