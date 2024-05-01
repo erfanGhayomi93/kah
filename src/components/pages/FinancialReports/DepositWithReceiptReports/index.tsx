@@ -3,11 +3,12 @@
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { initialDepositWithReceiptReportsFilters } from '@/constants';
-import { useAppDispatch } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { useDebounce, useInputs } from '@/hooks';
+import { useRouter } from '@/navigation';
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Tabs from '../common/Tabs';
 
 const Table = dynamic(() => import('./Table'), {
@@ -22,6 +23,13 @@ const DepositWithReceiptReports = () => {
 		useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(initialDepositWithReceiptReportsFilters);
 
 	const { setDebounce } = useDebounce();
+
+	const router = useRouter()
+
+	const { brokerIsSelected, loggedIn,
+		loggingIn
+	} = useAppSelector((state) => state.user)
+
 
 	const onShowFilters = () => {
 		// const params: Partial<IOptionFiltersModal> = {};
@@ -87,6 +95,11 @@ const DepositWithReceiptReports = () => {
 
 		return badgeCount;
 	}, [JSON.stringify(inputs ?? {})]);
+
+
+	useEffect(() => {
+		if (!brokerIsSelected) router.push("/")
+	}, [loggedIn])
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>

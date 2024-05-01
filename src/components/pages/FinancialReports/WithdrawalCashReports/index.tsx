@@ -6,8 +6,9 @@ import { initialWithdrawalCashReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { useDebounce, useInputs } from '@/hooks';
+import { useRouter } from '@/navigation';
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Tabs from '../common/Tabs';
 
 const Table = dynamic(() => import('./Table'), {
@@ -16,6 +17,9 @@ const Table = dynamic(() => import('./Table'), {
 });
 
 const WithdrawalCashReports = () => {
+
+	const router = useRouter()
+
 	const dispatch = useAppDispatch();
 
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<WithdrawalCashReports.WithdrawalCashReportsFilters>(
@@ -90,6 +94,12 @@ const WithdrawalCashReports = () => {
 
 		return badgeCount;
 	}, [JSON.stringify(inputs ?? {})]);
+
+
+	useEffect(() => {
+		if (!brokerIsSelected) router.push("/")
+	}, [loggedIn])
+
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
