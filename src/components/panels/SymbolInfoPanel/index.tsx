@@ -25,6 +25,7 @@ const SymbolInfoPanel = forwardRef<HTMLDivElement, SymbolInfoPanelProps>(({ symb
 		<Panel
 			ref={ref}
 			onClose={onClose}
+			dependency='.panel-symbol-search'
 			render={() => <Container symbolISIN={symbolISIN} close={onClose} />}
 			width='400px'
 			classes={{

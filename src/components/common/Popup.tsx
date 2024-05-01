@@ -144,7 +144,7 @@ const Popup = ({
 		if (!open) return;
 
 		const controller = new AbortController();
-		window.addEventListener('click', (e) => onWindowClick(e, () => controller.abort()), {
+		window.addEventListener('mousedown', (e) => onWindowClick(e, () => controller.abort()), {
 			signal: controller.signal,
 		});
 

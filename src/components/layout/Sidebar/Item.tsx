@@ -3,7 +3,7 @@ import Collapse from '@/components/common/animation/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import { Link, usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
@@ -106,4 +106,4 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 	);
 };
 
-export default Item;
+export default memo(Item);

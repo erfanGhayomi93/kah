@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 interface NoDataProps {
 	imgSrc?: string;
-	text?: string;
+	text?: React.ReactNode;
 }
 
 const NoData = ({ text, imgSrc }: NoDataProps) => {
@@ -11,7 +11,7 @@ const NoData = ({ text, imgSrc }: NoDataProps) => {
 
 	return (
 		<div className='size-full flex-justify-center'>
-			<div className='items-center flex-column'>
+			<div className='items-center gap-4 flex-column'>
 				<Image
 					priority
 					width='118'

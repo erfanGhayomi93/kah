@@ -7,6 +7,7 @@
 	"extends": [
 		"standard-with-typescript",
 		"plugin:react/recommended",
+		"plugin:tailwindcss/recommended",
 		"next/core-web-vitals",
 		"prettier"
 	],
@@ -53,6 +54,9 @@
 		"@typescript-eslint/no-unnecessary-type-constraint": "off",
 		"@typescript-eslint/no-dynamic-delete": "off",
 		"no-useless-call": "off",
+		"tailwindcss/classnames-order": "off",
+		"tailwindcss/no-custom-classname": "off",
+		"tailwindcss/no-arbitrary-value": "error",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/space-before-function-paren": "off",
 		"@typescript-eslint/semi": [

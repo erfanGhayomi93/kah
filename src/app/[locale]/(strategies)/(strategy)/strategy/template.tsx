@@ -1,8 +1,8 @@
 import Main from '@/components/layout/Main';
-import Toolbar from '@/components/pages/Strategy/Toolbar';
+import Toolbar from '@/components/pages/Strategies/Toolbar';
 import React from 'react';
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const Template = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<Main className='gap-8 !px-8'>
 			<Toolbar />
@@ -11,4 +11,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-export default layout;
+export default Template;

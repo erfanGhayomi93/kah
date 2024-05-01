@@ -84,7 +84,7 @@ const Watchlist = ({
 				<div className='flex items-center'>
 					<div className='w-28'>
 						{hasNotCheckbox ? (
-							<button type='button' className='h-16 flex-grow-0 text-gray-600 flex-justify-start'>
+							<button type='button' className='h-16 grow-0 text-gray-600 flex-justify-start'>
 								<DragSVG width='2.4rem' height='2.4rem' />
 							</button>
 						) : (
@@ -117,7 +117,7 @@ const Watchlist = ({
 								e.stopPropagation();
 								onVisibilityChange();
 							}}
-							className='hover:btn-hover h-48 flex-1 cursor-pointer gap-8 rounded border border-gray-500 bg-gray-200 px-16 transition-colors flex-justify-start'
+							className='h-48 flex-1 cursor-pointer gap-8 rounded border border-gray-500 bg-gray-200 px-16 transition-colors flex-justify-start hover:btn-hover'
 						>
 							<button type='button' className={isActive ? 'text-gray-1000' : 'text-gray-700'}>
 								{watchlist.isHidden ? (

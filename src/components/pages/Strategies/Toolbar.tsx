@@ -1,5 +1,6 @@
 'use client';
 
+import { BearishMarketSVG, BullishMarketSVG, DirectionalMarketSVG, NeutralMarketSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getStrategyTrend, setStrategyTrend } from '@/features/slices/tabSlice';
 import { Link, usePathname } from '@/navigation';
@@ -24,29 +25,29 @@ const Toolbar = () => {
 	const tags = useMemo<ITabItem[]>(
 		() => [
 			{
-				id: 'all',
-				title: t('strategies.tag_all'),
+				id: 'All',
+				title: t('strategy_cheaps.All'),
 				icon: null,
 			},
 			{
 				id: 'BullishMarket',
-				title: t('strategies.tag_BullishMarket'),
-				icon: null,
+				title: t('strategy_cheaps.BullishMarket'),
+				icon: <BullishMarketSVG />,
 			},
 			{
 				id: 'NeutralMarket',
-				title: t('strategies.tag_NeutralMarket'),
-				icon: null,
+				title: t('strategy_cheaps.NeutralMarket'),
+				icon: <NeutralMarketSVG />,
 			},
 			{
 				id: 'DirectionalMarket',
-				title: t('strategies.tag_DirectionalMarket'),
-				icon: null,
+				title: t('strategy_cheaps.DirectionalMarket'),
+				icon: <DirectionalMarketSVG />,
 			},
 			{
 				id: 'BearishMarket',
-				title: t('strategies.tag_BearishMarket'),
-				icon: null,
+				title: t('strategy_cheaps.BearishMarket'),
+				icon: <BearishMarketSVG />,
 			},
 		],
 		[],
@@ -57,7 +58,7 @@ const Toolbar = () => {
 	return (
 		<div
 			style={{ flex: '0 0 5.6rem' }}
-			className='flex-1 gap-36 overflow-hidden rounded bg-white px-16 flex-justify-start'
+			className='flex-1 gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start'
 		>
 			<ul className='flex gap-8'>
 				<li>
@@ -83,32 +84,41 @@ const Toolbar = () => {
 								? 'no-hover font-medium btn-select'
 								: 'border-gray-200 bg-gray-200 text-gray-900',
 						)}
-						href='strategy/build'
+						href='/strategy/build'
 					>
 						{t('strategies.build_strategy')}
 					</Link>
 				</li>
 			</ul>
 
+			{isStrategiesListPage && <span className='w-2 h-12 bg-gray-500' />}
+
 			{isStrategiesListPage && (
-				<ul className='flex gap-8'>
-					{tags.map((item) => (
-						<li key={item.id}>
-							<button
-								onClick={() => dispatch(setStrategyTrend(item.id))}
-								type='button'
-								className={clsx(
-									'h-40 w-96 rounded !border text-base transition-colors flex-justify-center',
-									item.id === strategyTrend
-										? 'no-hover font-medium btn-select'
-										: 'border-gray-500 text-gray-1000 hover:btn-hover',
-								)}
-							>
-								{item.title}
-							</button>
-						</li>
-					))}
-				</ul>
+				<div className='gap-16 flex-items-center'>
+					<h4 className='text-gray-900'>{t('strategies.market_process')}:</h4>
+
+					<ul className='flex gap-8'>
+						{tags.map((item) => (
+							<li key={item.id}>
+								<button
+									onClick={() => dispatch(setStrategyTrend(item.id))}
+									type='button'
+									className={clsx(
+										'h-40 w-96 rounded !border text-base transition-colors flex-justify-center',
+										item.id === strategyTrend
+											? 'no-hover font-medium btn-select'
+											: 'border-gray-500 text-gray-900 hover:btn-hover',
+									)}
+								>
+									<span className={item.id !== strategyTrend ? 'text-gray-1000' : ''}>
+										{item.title}
+									</span>
+									{item.icon}
+								</button>
+							</li>
+						))}
+					</ul>
+				</div>
 			)}
 		</div>
 	);

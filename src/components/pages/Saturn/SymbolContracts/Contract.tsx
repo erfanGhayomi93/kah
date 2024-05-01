@@ -2,6 +2,8 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
 import usePrevious from '@/hooks/usePrevious';
 import { cn, sepNumbers } from '@/utils/helpers';
@@ -52,6 +54,8 @@ const Contract = ({
 }: ContractProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const queryClient = useQueryClient();
 
 	const { addBuySellModal } = useTradingFeatures();
@@ -64,6 +68,14 @@ const Contract = ({
 	});
 
 	const contractSnapshot = usePrevious(contractInfo);
+
+	const openSymbolInfoPanel = () => {
+		try {
+			if (option) dispatch(setSymbolInfoPanel(option.symbolISIN));
+		} catch (e) {
+			//
+		}
+	};
 
 	const addBsModal = (side: TBsSides) => {
 		if (!contractInfo) return;
@@ -199,7 +211,7 @@ const Contract = ({
 			<div className='justify-start pb-8 flex-column'>
 				<div className='flex items-start justify-between'>
 					<div className='flex flex-1 justify-between gap-16'>
-						<div className='flex-items-start flex-column'>
+						<div onClick={openSymbolInfoPanel} className='cursor-pointer flex-column flex-items-start'>
 							<div className='flex items-center gap-8'>
 								<SymbolContextMenu symbol={contractInfo ?? null} />
 								<h1 className='text-3xl font-medium text-gray-1000'>
@@ -288,7 +300,7 @@ const Wrapper = ({ children }: WrapperProps) => (
 		style={{
 			flex: '1 0 39.2rem',
 		}}
-		className='relative gap-16 rounded border border-gray-500 bg-white px-16 pb-12 pt-12 flex-column'
+		className='relative gap-16 rounded border border-gray-500 bg-white px-16 py-12 flex-column'
 	>
 		{children}
 	</div>

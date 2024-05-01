@@ -1,20 +1,39 @@
-import { PlusSVG } from '@/components/icons';
-import { StrategyCheapColor } from '@/constants/enums';
+import { StrategyTag } from '@/components/common/Strategy/StrategyTag';
+import { AngleLeftSVG, PlusSVG } from '@/components/icons';
 import { useRouter } from '@/navigation';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { useMemo } from 'react';
 
 interface StrategyItemProps extends Strategy.GetAll {}
 
-const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) => {
+const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 	const router = useRouter();
 
 	const t = useTranslations();
 
 	const onStrategyClick = () => {
-		router.push(`/strategy/${id}`);
+		router.push(`/strategy/${type}`);
 	};
+
+	const combinedTags = useMemo(() => {
+		const result: Array<[Strategy.Cheap, string]> = [
+			[tags[0], t(`strategy_cheaps.${tags[0]}`)],
+			[tags[1], t(`strategy_cheaps.${tags[1]}`)],
+			[tags[2], t(`strategy_cheaps.${tags[2]}`)],
+			[tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)],
+		];
+
+		if (tags.length > 4)
+			result[3][1] +=
+				'/' +
+				tags
+					.slice(4)
+					.map((tag) => t(`strategy_cheaps.${tag}`))
+					.join('/');
+
+		return result;
+	}, []);
 
 	return (
 		<div className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12'>
@@ -31,7 +50,7 @@ const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) =>
 						</h1>
 
 						<button type='button' className='size-32 text-gray-900 flex-justify-center'>
-							{/* <AngleLeftSVG width='2rem' height='2rem' /> */}
+							<AngleLeftSVG width='2rem' height='2rem' />
 						</button>
 					</div>
 
@@ -46,38 +65,22 @@ const StrategyItem = ({ id, imageUrl, title, type, tags }: StrategyItemProps) =>
 					</h3>
 				</div>
 
-				<div className='flex-1 overflow-hidden'>
+				<div className='flex-1 overflow-hidden flex-justify-center'>
 					<Image
-						width='397'
-						height='176'
+						width='395'
+						height='170'
 						alt={title}
 						src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
 						style={{
-							width: '100%',
+							width: '99%',
 							height: 'auto',
 						}}
 					/>
 				</div>
 
-				<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4'>
-					{tags.map((tag, i) => (
-						<li key={tag}>
-							<button
-								type='button'
-								className={clsx(
-									'h-32 w-96 rounded-oval border border-current text-tiny font-medium flex-justify-center',
-									i !== 0 && `border-current text-${StrategyCheapColor[tag]}`,
-									i === 0 && `bg-${StrategyCheapColor[tag]}`,
-									{
-										'border-current text-white': i === 0 && tag !== 'ModerateRisk',
-										'border-warning-100 bg-warning-100 text-gray-1000':
-											i === 0 && tag === 'ModerateRisk',
-									},
-								)}
-							>
-								{t(`strategies.tag_${tag}`)}
-							</button>
-						</li>
+				<ul style={{ flex: '0 0 3.2rem' }} className='gap-4 flex-justify-center'>
+					{combinedTags.map(([id, title], i) => (
+						<StrategyTag key={i} i={i} id={id} title={title} />
 					))}
 				</ul>
 			</div>

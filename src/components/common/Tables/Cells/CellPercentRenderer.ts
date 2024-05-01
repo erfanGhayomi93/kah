@@ -1,4 +1,3 @@
-import { sepNumbers } from '@/utils/helpers';
 import { type ICellRendererComp, type ICellRendererParams } from '@ag-grid-community/core';
 
 type CellPercentRendererProps = ICellRendererParams<unknown, number> & {
@@ -16,7 +15,7 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 
 	init(params: CellPercentRendererProps) {
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center ltr overflow-hidden text-lg w-full gap-4');
+		this.eGui.setAttribute('class', 'flex-justify-center ltr overflow-hidden text-base w-full gap-4');
 
 		this.eValue = document.createElement('span');
 		this.eValue.classList.add('w-max');
@@ -41,8 +40,8 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 		return true;
 	}
 
-	getValueToDisplay(params: CellPercentRendererProps): string | null {
-		return sepNumbers(String(params.valueFormatted ? params.valueFormatted : params.value));
+	getValueToDisplay(params: CellPercentRendererProps): string {
+		return params.valueFormatted ? params.valueFormatted : String(params.value ?? 0);
 	}
 
 	setPercentage(percent: number) {
