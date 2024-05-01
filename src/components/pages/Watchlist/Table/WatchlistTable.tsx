@@ -47,6 +47,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 	const { data: watchlistColumns } = useWatchlistColumns();
 
+	console.log(watchlistColumns, 'watchlistColumns');
+
 	const onColumnMoved = ({ finished, toIndex }: ColumnMovedEvent<Option.Root>) => {
 		try {
 			if (!finished || toIndex === undefined) return;
@@ -226,8 +228,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 						percent: data ? data.optionWatchlistData.tradePriceVarPreviousTradePercent : 0,
 					}),
 					valueGetter: ({ data }) =>
-						`${data!.optionWatchlistData.premium}|${
-							data!.optionWatchlistData.tradePriceVarPreviousTradePercent
+						`${data!.optionWatchlistData.premium}|${data!.optionWatchlistData.tradePriceVarPreviousTradePercent
 						}`,
 					valueFormatter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.premium)),
 				},
@@ -248,8 +249,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 						percent: data ? data.optionWatchlistData.baseTradePriceVarPreviousTradePercent : 0,
 					}),
 					valueGetter: ({ data }) =>
-						`${data!.optionWatchlistData.baseSymbolPrice}|${
-							data!.optionWatchlistData.baseTradePriceVarPreviousTradePercent
+						`${data!.optionWatchlistData.baseSymbolPrice}|${data!.optionWatchlistData.baseTradePriceVarPreviousTradePercent
 						}`,
 					valueFormatter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.baseSymbolPrice)),
 				},

@@ -22,7 +22,7 @@ interface IDeleting {
 	selected: number[];
 }
 
-interface ManageOptionWatchlistListProps extends IBaseModalConfiguration {}
+interface ManageOptionWatchlistListProps extends IBaseModalConfiguration { }
 
 const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchlistListProps>((props, ref) => {
 	const t = useTranslations();
