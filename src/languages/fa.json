@@ -22,7 +22,7 @@
 		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
 		"show_more" : "مشاهده بیشتر",
 		"an_error_occurred": "خطا در دریافت اطلاعات" , 
-		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {{v}} باشد"
+		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {n} باشد"
 	},
 	"side": {
 		"buy": "خرید",
@@ -719,6 +719,19 @@
 		"state_Error": "خطا",
 		"state_PayFast": "پرداخت سریع"
 	},
+	"payment_result": {
+		"payment_success_title": "پرداخت موفق",
+		"payment_error_title": "پرداخت ناموفق",
+		"payment_success_desc": "عملیات موفقیت آمیز بود",
+		"payment_error_desc": "عملیات موفقیت آمیز نبود",
+		"price": "مبلغ",
+		"number_transaction": "شماره تراکنش",
+		"tracking_code": "کد رهگیری",
+		"type_payment": "شیوه پرداخت",
+		"return_rivas": "بازگشت به ریواس",
+		"payment_again": "پرداخت مجدد",
+		"gateway_bank": "درگاه بانک"
+	},
 	"analyze_modal": {
 		"title": "آنالیز",
 		"no_trade_found": "هیچ معامله‌ای وجود ندارد",
@@ -1072,6 +1085,8 @@
 		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
 		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت.",
 		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
+		"offline_deposit_succeeded": "فیش با موفقیت ثبت شد.",
+		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
 		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید."
 	},
 	"financial_reports_page": {
