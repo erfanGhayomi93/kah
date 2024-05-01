@@ -1,3 +1,5 @@
+import { DateAsMillisecond } from './enums';
+
 export const defaultSymbolISIN = 'IRO1IKCO0001';
 
 export const broadcastChannel = 'tUFN1pQ1Ry';
@@ -266,3 +268,158 @@ export const dateTypesAPI: Record<
 };
 
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];
+
+
+export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	date: 'dates.custom',
+	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	toDate: new Date().getTime(),
+	fromPrice: null,
+	toPrice: null,
+	groupMode: 'GreedyGrouped',
+	transactionType: []
+};
+
+
+export const defaultTransactionColumns: TTransactionColumnsState = [
+	{
+		colId: 'date',
+	},
+	{
+		colId: 'transactionType',
+	},
+	{
+		colId: 'description',
+	},
+	{
+		colId: 'debit',
+	},
+	{
+		colId: 'credit',
+	},
+	{
+		colId: 'remaining',
+	},
+	{
+		colId: 'station',
+	},
+
+];
+
+export const initialInstantDepositReportsFilters: InstantDepositReports.IInstantDepositReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	toPrice: null,
+	fromPrice: null,
+	date: 'dates.month',
+	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	toDate: new Date().getTime(),
+	providers: [],
+	status: []
+};
+
+export const defaultInstantDepositReportsColumn: TInstantDepositColumnsState = [
+	{
+		colId: 'saveDate',
+	},
+	{
+		colId: 'reservationNumber',
+	},
+	{
+		colId: 'referenceNumber',
+	},
+	{
+		colId: 'amount',
+	},
+	{
+		colId: 'providerType',
+	},
+	{
+		colId: 'state',
+	},
+	{
+		colId: 'errorMessage',
+	},
+];
+
+
+export const initialDepositWithReceiptReportsFilters: DepositWithReceiptReports.DepositWithReceiptReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	toDate: new Date().getTime(),
+	status: [],
+	date: 'dates.month',
+	toPrice: null,
+	fromPrice: null,
+	receiptNumber: null,
+	attachment: null
+};
+
+export const defaultDepositWithReceiptReportsColumn: TDepositWithReceiptReportsColumnsState = [
+	{
+		colId: 'id'
+	},
+	{
+		colId: 'receiptDate'
+	},
+	{
+		colId: 'providerType'
+	},
+	{
+		colId: 'receiptNumber'
+	},
+	{
+		colId: 'amount'
+	},
+	{
+		colId: 'state'
+	},
+	{
+		colId: 'state'
+	},
+];
+
+
+
+export const initialWithdrawalCashReportsFilters: WithdrawalCashReports.WithdrawalCashReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	toDate: new Date().getTime(),
+	status: [],
+	date: 'dates.week',
+	toPrice: null,
+	fromPrice: null,
+	banks: []
+};
+
+export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsState = [
+	{
+		colId: 'id'
+	},
+	{
+		colId: 'saveDate'
+	},
+	{
+		colId: 'requestDate'
+	},
+	{
+		colId: 'customerBank'
+	},
+	{
+		colId: 'requestAmount'
+	},
+	{
+		colId: 'channel'
+	},
+	{
+		colId: 'state'
+	},
+	{
+		colId: 'state'
+	},
+];

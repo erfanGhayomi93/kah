@@ -149,8 +149,29 @@ const List = ({ isExpand }: ListProps) => {
 			{
 				id: 'reports',
 				label: t('sidebar.reports'),
-				to: '/a',
 				icon: <ReportSVG />,
+				items: [
+					{
+						id: 'transactions',
+						label: t('sidebar.transactions'),
+						to: '/financial-reports/transactions'
+					},
+					{
+						id: 'instant_deposit',
+						label: t('sidebar.instant_deposit'),
+						to: '/financial-reports/instant-deposit'
+					},
+					{
+						id: 'deposit_with_receipt',
+						label: t('sidebar.deposit_with_receipt'),
+						to: '/financial-reports/deposit-with-receipt'
+					},
+					{
+						id: 'withdrawal_cash',
+						label: t('sidebar.withdrawal_cash'),
+						to: '/financial-reports/withdrawal-cash'
+					}
+				]
 			},
 		],
 		[expandId],

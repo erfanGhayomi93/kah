@@ -24,6 +24,7 @@ export const useGetBrokerUrlQuery = createQuery<IBrokerUrls | null, ['getBrokerU
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			const urls = decodeBrokerUrls(data.result);
+
 			store.dispatch(setBrokerURLs(urls));
 
 			return urls;

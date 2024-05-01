@@ -19,7 +19,7 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface AddSaturnTemplateProps extends IAddSaturnTemplate {}
+interface AddSaturnTemplateProps extends IAddSaturnTemplate { }
 
 const AddSaturnTemplate = forwardRef<HTMLDivElement, AddSaturnTemplateProps>(
 	({ baseSymbolTitle, baseSymbolISIN, activeTab, options, ...props }, ref) => {

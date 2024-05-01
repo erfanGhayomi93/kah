@@ -49,7 +49,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
-export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
+export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration { }
 
 export interface IOrderDetails {
 	type: 'order';
@@ -99,11 +99,11 @@ export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 	isOption: boolean;
 }
 
-export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
+export interface IManageDashboardLayoutModal extends IBaseModalConfiguration { }
 
-export interface IChangeBrokerModal extends IBaseModalConfiguration {}
+export interface IChangeBrokerModal extends IBaseModalConfiguration { }
 
-export interface IWithdrawalModal extends IBaseModalConfiguration {}
+export interface IWithdrawalModal extends IBaseModalConfiguration { }
 
 export interface IDepositModal extends IBaseModalConfiguration {
 	isShow: boolean;
