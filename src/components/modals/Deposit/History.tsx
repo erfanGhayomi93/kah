@@ -1,4 +1,4 @@
-import { usePaymentCreateQuery } from '@/api/queries/requests';
+import { useDepositHistoryQuery } from '@/api/queries/requests';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { SessionHistorySVG } from '@/components/icons';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
@@ -10,7 +10,7 @@ export const HistoryDeposit = () => {
 
 	const t = useTranslations();
 
-	const { data } = usePaymentCreateQuery({
+	const { data } = useDepositHistoryQuery({
 		queryKey: ['depositHistoryOnline']
 	});
 
