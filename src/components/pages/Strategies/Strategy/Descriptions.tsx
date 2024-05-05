@@ -14,10 +14,11 @@ import {
 	PlusSVG,
 	TeachVideoSVG,
 } from '@/components/icons';
+import { useLocalstorage } from '@/hooks';
 import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 interface DescriptionsProps {
 	strategy: Strategy.GetAll;
@@ -28,7 +29,7 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 
 	const t = useTranslations();
 
-	const [isExpand, setIsExpand] = useState(true);
+	const [isExpand, setIsExpand] = useLocalstorage('istre', true);
 
 	const combinedTags = useMemo(() => {
 		const result: Array<[Strategy.Cheap, string]> = [
