@@ -231,10 +231,11 @@ declare type IBrokerUrls = Record<
 	| 'getRemain'
 	| 'completeRequestReceipt'
 	| 'getListBrokerBankAccount'
-	| 'getReceipt'
+	| 'getDepositOfflineHistory'
 	| 'customerTurnOverRemain'
 	| 'getWithFilterReceipt'
 	| 'getFilteredEPaymentApi'
+	| 'getDepositOnlineHistory'
 	| 'getFilteredPayment',
 	string
 >;

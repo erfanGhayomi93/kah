@@ -13,7 +13,7 @@ export const useGetBrokerUrlQuery = createQuery<IBrokerUrls | null, ['getBrokerU
 		if (!brokerCode || brokerCode <= 0) return null;
 
 		try {
-			const response = await axios.get<ServerResponse<Broker.URL[]>>(routes.common.GetBrokerApiUrls, {
+			const response = await axios.get<ServerResponse<Broker.URL>>(routes.common.GetBrokerApiUrls, {
 				params: {
 					brokerCode: brokerCode ?? 189,
 				},
