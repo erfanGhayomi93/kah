@@ -21,7 +21,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.CoveredCall>>(null);
 
-	const { data } = useCoveredCallQuery({
+	const { data, isFetching } = useCoveredCallQuery({
 		queryKey: ['coveredCallQuery', priceBasis, withCommission],
 	});
 
@@ -43,6 +43,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
+				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -66,6 +67,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 			{
 				headerName: 'اختیار خرید',
 				width: 128,
+				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
@@ -289,6 +291,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 	return (
 		<>
 			<AgTable<Strategy.CoveredCall>
+				suppressColumnVirtualisation={false}
 				ref={gridRef}
 				rowData={rows}
 				rowHeight={40}
@@ -298,7 +301,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				className='h-full border-0'
 			/>
 
-			{rows.length === 0 && <NoTableData />}
+			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>
 	);
 };
