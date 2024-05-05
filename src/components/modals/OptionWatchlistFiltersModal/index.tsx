@@ -10,7 +10,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface OptionWatchlistFiltersModalProps extends IBaseModalConfiguration {}
+interface OptionWatchlistFiltersModalProps extends IBaseModalConfiguration { }
 
 const OptionWatchlistFiltersModal = forwardRef<HTMLDivElement, OptionWatchlistFiltersModalProps>((props, ref) => {
 	const t = useTranslations();

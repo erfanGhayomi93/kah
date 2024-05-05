@@ -5,11 +5,22 @@ import { useMemo } from 'react';
 import PriceRange from './PriceRange';
 
 interface PerformanceChartProps
-	extends Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice' | 'chartData' | 'baseAssets' | 'bep'> {
+	extends Pick<
+		IAnalyzeModalInputs,
+		'minPrice' | 'maxPrice' | 'chartData' | 'intersectionPoint' | 'baseAssets' | 'bep'
+	> {
 	onChange: (values: Partial<Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
-const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onChange }: PerformanceChartProps) => {
+const PerformanceChart = ({
+	chartData,
+	bep,
+	intersectionPoint,
+	baseAssets,
+	maxPrice,
+	minPrice,
+	onChange,
+}: PerformanceChartProps) => {
 	const t = useTranslations();
 
 	const getAnnotationStyle = (x: string, label: string, value: string, color: string, h: boolean) => ({
@@ -55,18 +66,22 @@ const PerformanceChart = ({ chartData, bep, baseAssets, maxPrice, minPrice, onCh
 			}
 		}
 
-		if (result[0].length > 1) {
-			if (result[0][0].y > result[0][1].y) result[0].push(bep);
-			else result[0].unshift(bep);
-		}
+		const centerPoint = { y: 0, x: intersectionPoint };
 
-		if (result[1].length > 1) {
-			if (result[1][0].y > result[1][1].y) result[1].unshift(bep);
-			else result[1].push(bep);
+		if (result[0].length > 2 && result[1].length) {
+			if (result[0].length > 2) {
+				if (result[0][0].y > result[0][1].y) result[0].push(centerPoint);
+				else result[0].unshift(centerPoint);
+			}
+
+			if (result[1].length > 2) {
+				if (result[1][0].y > result[1][1].y) result[1].unshift(centerPoint);
+				else result[1].push(centerPoint);
+			}
 		}
 
 		return result;
-	}, [JSON.stringify(chartData), bep]);
+	}, [JSON.stringify(chartData), intersectionPoint]);
 
 	return (
 		<div className='gap-8 flex-column'>

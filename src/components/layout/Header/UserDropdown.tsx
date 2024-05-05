@@ -82,27 +82,36 @@ const UserDropdown = ({
 					<li>
 						<button
 							type='button'
-							className='h-40 w-full gap-12 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
-							<UserCircleSVG className='text-gray-900' width='1.8rem' height='1.8rem' />
+							<span className='size-24 flex-justify-center'>
+								<UserCircleSVG className='text-gray-900' width='1.8rem' height='1.8rem' />
+							</span>
+
 							<span>{t('header.user_account')}</span>
 						</button>
 					</li>
 					<li>
 						<button
 							type='button'
-							className='h-40 w-full gap-12 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
-							<SessionHistorySVG className='text-gray-900' width='1.6rem' height='1.6rem' />
+							<span className='size-24 flex-justify-center'>
+								<SessionHistorySVG className='text-gray-900' width='1.6rem' height='1.6rem' />
+							</span>
+
 							<span>{t('header.session_history')}</span>
 						</button>
 					</li>
 					<li>
 						<button
 							type='button'
-							className='h-40 w-full gap-12 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
-							<SettingSVG className='text-gray-900' width='1.6rem' height='1.6rem' />
+							<span className='size-24 flex-justify-center'>
+								<SettingSVG className='text-gray-900' width='2.2rem' height='2.2rem' />
+							</span>
+
 							<span>{t('header.setting')}</span>
 						</button>
 					</li>
@@ -116,9 +125,12 @@ const UserDropdown = ({
 								close();
 							}}
 							type='button'
-							className='h-40 w-full gap-12 rounded px-12 text-error-100 transition-colors flex-justify-start hover:bg-error-100 hover:text-white'
+							className='h-40 w-full gap-8 rounded px-12 text-error-100 transition-colors flex-justify-start hover:bg-error-100 hover:text-white'
 						>
-							<LogoutSVG width='1.6rem' height='1.6rem' />
+							<span className='size-24 flex-justify-center'>
+								<LogoutSVG width='1.6rem' height='1.6rem' />
+							</span>
+
 							<span>{t('header.logout')}</span>
 						</button>
 					</li>

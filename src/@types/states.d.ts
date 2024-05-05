@@ -48,6 +48,43 @@ declare type TStrategyMarketTrend =
 	| 'All'
 	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
 
+declare type TTransactionColumns =
+	| 'credit'
+	| 'date'
+	| 'debit'
+	| 'description'
+	| 'remaining'
+	| 'station'
+	| 'transactionType';
+
+declare type TInstantDepositColumns =
+	| 'reservationNumber'
+	| 'referenceNumber'
+	| 'saveDate'
+	| 'amount'
+	| 'providerType'
+	| 'state'
+	| 'errorMessage';
+
+declare type TDepositWithReceiptColumns =
+	| 'id'
+	| 'receiptDate'
+	| 'providerType'
+	| 'receiptNumber'
+	| 'amount'
+	| 'state'
+	| 'state';
+
+declare type TWithdrawalCashColumns =
+	| 'id'
+	| 'saveDate'
+	| 'requestDate'
+	| 'customerBank'
+	| 'requestAmount'
+	| 'channel'
+	| 'state'
+	| 'state';
+
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
 	| 'market_depth'
@@ -232,6 +269,7 @@ declare interface IBsModalInputs {
 
 declare interface IAnalyzeModalInputs {
 	chartData: Array<Record<'x' | 'y', number>>;
+	intersectionPoint: number;
 	minPrice: number;
 	maxPrice: number;
 	mostProfit: number;
@@ -326,3 +364,171 @@ declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
 	type: 'area' | 'candlestick';
 }
+
+declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_offline' | 'withdrawal_cash';
+
+declare namespace Transaction {
+	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
+
+	export type TransactionTypes = 'Buy' | 'Sell' | 'Deposit' | 'Payment';
+
+	export interface ITransactionsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.info | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		fromPrice: number | null;
+		toPrice: number | null;
+		groupMode: TTransactionGroupModes;
+		transactionType: { id: TransactionTypes; title: string }[];
+	}
+
+	export interface ITransactionsParams {
+		'QueryOption.PageNumber': string;
+		'QueryOption.PageSize': string;
+		fromDate: string;
+		toDate: string;
+		GroupMode: TTransactionGroupModes;
+		SymbolISIN: string;
+		FromPrice: string;
+		ToPrice: string;
+		TransactionType: Array<string>;
+	}
+}
+
+declare namespace InstantDepositReports {
+	export interface IInstantDepositReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		toPrice: number | null;
+		fromPrice: number | null;
+		providers: string[];
+	}
+
+	export interface IInstantDepositReportsParams {
+		'QueryOption.PageNumber': string;
+		'QueryOption.PageSize': string;
+		startDate: string;
+		endDate: string;
+		minAmount: string;
+		maxAmount: string;
+		ProviderTypes: Array<string>;
+		Statuses: Array<string>;
+	}
+}
+
+declare namespace DepositWithReceiptReports {
+	export interface DepositWithReceiptReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		toPrice: number | null;
+		fromPrice: number | null;
+		receiptNumber: string | null;
+		attachment: boolean | null;
+	}
+
+	export interface DepositWithReceiptReportsParams {
+		'QueryOption.PageNumber': string;
+		'QueryOption.PageSize': string;
+		startDate: string;
+		endDate: string;
+		minAmount: string;
+		maxAmount: string;
+		ReceiptNumber: string;
+		HasAttachment: string;
+		StatesList: Array<string>;
+	}
+}
+
+declare namespace WithdrawalCashReports {
+	export interface WithdrawalCashReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		date: DateRangeType;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		fromPrice: number | null;
+		toPrice: number | null;
+		banks: CashWithdrawBankType[];
+	}
+
+	export interface WithdrawalCashReportsParams {
+		'QueryOption.PageNumber': string;
+		'QueryOption.PageSize': string;
+		startDate: string;
+		endDate: string;
+		Statuses: Array<string>;
+		AccountIds: Array<string>;
+	}
+}
+
+declare type TTransactionColumnsState = Array<{
+	colId: TTransactionColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
+
+declare type TInstantDepositColumnsState = Array<{
+	colId: TInstantDepositColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
+
+declare type TDepositWithReceiptReportsColumnsState = Array<{
+	colId: TDepositWithReceiptColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
+
+declare type TWithdrawalCashReportsColumnsState = Array<{
+	colId: TWithdrawalCashColumns;
+	width?: number;
+	hide?: boolean;
+	pinned?: 'left' | 'right' | null;
+	sort?: 'asc' | 'desc' | null;
+	sortIndex?: null;
+	aggFunc?: null;
+	rowGroup?: boolean;
+	rowGroupIndex?: null;
+	pivot?: boolean;
+	pivotIndex?: null;
+	flex?: number;
+}>;
