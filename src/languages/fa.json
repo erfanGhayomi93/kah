@@ -530,8 +530,8 @@
 		"phone_number_placeholder": "شماره همراه خود را وارد کنید",
 		"otp": "کد تایید",
 		"otp_mobile_number": "کد تایید ارسال شده به {mobile} را وارد",
-		"otp_placeholder": "کد تایید" ,
-		"Input.Required": "{n} را وارد کنید"
+		"otp_placeholder": "کد تایید",
+		"required": "{n} را وارد کنید"
 	},
 	"symbol_search": {
 		"input_placeholder": "جستجو نماد",
@@ -824,7 +824,7 @@
 		"MinBuyOrderAmount_Is_Not_Valid": "حداقل مبلغ خرید رعایت نشده است.",
 		"MinSellOrderAmount_Is_Not_Valid": "حداقل مبلغ فروش رعایت نشده است.",
 		"SellOrder_Is_Not_Allowed_ForThisSymbol": "فروش بر روی این نماد مسدود است.",
-		"MaxSellCountPerDay_Is_Not_Allowed_ForThisSymbol": "سقف فروش روزانه برای این سهم پر شده است. ",
+		"MaxSellCountPerDay_Is_Not_Allowed_ForThisSymbol": "سقف فروش روزانه برای این سهم پر شده است.",
 		"SellTime_Is_Not_Allowed_ForThisSymbol": "بازه ساعتی برای فروش این سهم غیر مجاز است.",
 		"MaxSellVolumePerDay_Is_Not_Allowed_ForThisSymbol": "سقف حجم فروش روزانه برای این سهم پر شده است.",
 		"BuyOrder_Is_Not_Allowed": "خرید امکان پذیر نمی‌باشد.",
