@@ -4,13 +4,14 @@ import { forwardRef, type InputHTMLAttributes } from 'react';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	prefix?: string,
 	classInput?: string,
-	num2persianValue?: string
+	num2persianValue?: string,
+	error?: string
 }
 
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
-	const { prefix, classInput, num2persianValue, ...resProps } = props;
+	const { prefix, classInput, num2persianValue, error, ...resProps } = props;
 
 	// console.log('value', value);
 
@@ -45,6 +46,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 					<span style={{ top: '4.8rem' }} className='absolute h-16 text-right text-sm text-gray-1000'>
 						{num2persianValue}
 					</span>
+				)
+			}
+
+
+			{
+				error && (
+					<span style={{ top: '4.8rem' }} className='absolute text-tiny text-error-200'>{error}</span>
 				)
 			}
 		</div>

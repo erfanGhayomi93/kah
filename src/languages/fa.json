@@ -530,7 +530,8 @@
 		"phone_number_placeholder": "شماره همراه خود را وارد کنید",
 		"otp": "کد تایید",
 		"otp_mobile_number": "کد تایید ارسال شده به {mobile} را وارد",
-		"otp_placeholder": "کد تایید"
+		"otp_placeholder": "کد تایید" ,
+		"Input.Required": "{n} را وارد کنید"
 	},
 	"symbol_search": {
 		"input_placeholder": "جستجو نماد",
