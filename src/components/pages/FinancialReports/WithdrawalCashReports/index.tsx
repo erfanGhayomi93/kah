@@ -17,8 +17,7 @@ const Table = dynamic(() => import('./Table'), {
 });
 
 const WithdrawalCashReports = () => {
-
-	const router = useRouter()
+	const router = useRouter();
 
 	const dispatch = useAppDispatch();
 
@@ -95,11 +94,9 @@ const WithdrawalCashReports = () => {
 		return badgeCount;
 	}, [JSON.stringify(inputs ?? {})]);
 
-
 	useEffect(() => {
-		if (!brokerIsSelected) router.push("/")
-	}, [loggedIn])
-
+		if (!brokerIsSelected) router.push('/');
+	}, [loggedIn]);
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
