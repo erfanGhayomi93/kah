@@ -103,7 +103,9 @@ const Table = ({ strategy }: TableProps) => {
 
 			{type === 'ProtectivePut' && <ProtectivePut />}
 
-			{type === 'BullCallSpread' && <BullCallSpread />}
+			{type === 'BullCallSpread' && (
+				<BullCallSpread priceBasis={inputs.priceBasis.id} withCommission={inputs.withCommission} />
+			)}
 		</div>
 	);
 };
