@@ -19,7 +19,7 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface AddNewOptionWatchlistProps extends IBaseModalConfiguration {}
+interface AddNewOptionWatchlistProps extends IBaseModalConfiguration { }
 
 const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistProps>((props, ref) => {
 	const t = useTranslations();

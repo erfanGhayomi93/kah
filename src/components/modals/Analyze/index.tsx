@@ -57,6 +57,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 		const { inputs, setFieldValue, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
 			chartData: [],
+			intersectionPoint: 0,
 			minPrice: 0,
 			maxPrice: 0,
 			mostProfit: 0,
@@ -181,6 +182,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 									chartData={inputs.chartData}
 									baseAssets={inputs.baseAssets}
 									bep={inputs.bep}
+									intersectionPoint={inputs.intersectionPoint}
 									onChange={setFieldsValue}
 								/>
 							</ErrorBoundary>
@@ -207,6 +209,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			const newStates = JSON.parse(JSON.stringify(inputs)) as IAnalyzeModalInputs;
 
 			newStates.chartData = [];
+			newStates.intersectionPoint = 0;
 
 			if (data.length === 0) return;
 
@@ -222,10 +225,12 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				if (!newStates.maxPrice || minMaxIsInvalid)
 					newStates.maxPrice = Math.max(newStates.baseAssets * 1.25, 0);
 
+				newStates.minPrice = Math.floor(newStates.minPrice);
+				newStates.maxPrice = Math.ceil(newStates.maxPrice);
+
 				const lowPrice = newStates.minPrice;
 				const highPrice = newStates.maxPrice;
 				const diff = Math.round((highPrice - lowPrice) / 20);
-
 				const fakeData: IAnalyzeModalInputs['chartData'] = [];
 
 				for (let i = 0; i < l; i++) {
@@ -239,18 +244,25 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					} = item;
 
 					let index = 0;
+					let differenceY = Infinity;
+
 					for (let j = lowPrice; j <= highPrice; j++) {
 						const iv = intrinsicValue(strikePrice, j, contractType);
 						const previousY = fakeData[index]?.y ?? 0;
 						const y = previousY + pnl(iv, price, item.side);
 
 						if (y === 0) newStates.bep = { x: j, y: 0 };
-						else {
-							fakeData[index] = {
-								x: j,
-								y,
-							};
+
+						const positiveY = Math.abs(y);
+						if (positiveY < differenceY) {
+							differenceY = positiveY;
+							newStates.intersectionPoint = j;
 						}
+
+						fakeData[index] = {
+							x: j,
+							y,
+						};
 
 						index++;
 					}

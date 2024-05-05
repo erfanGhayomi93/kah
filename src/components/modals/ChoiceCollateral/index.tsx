@@ -15,7 +15,7 @@ const Div = styled.div`
 	position: relative;
 `;
 
-interface ChoiceCollateralProps extends IChoiceCollateral {}
+interface ChoiceCollateralProps extends IChoiceCollateral { }
 
 const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ order, ...props }, ref) => {
 	const t = useTranslations();

@@ -10,7 +10,7 @@ import { getClientId } from './cookie';
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
-	const formattedIntegerPart: string = num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	const formattedIntegerPart: string = num?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 	return formattedIntegerPart;
 };
@@ -441,7 +441,7 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 	id: uuidv4(),
 	symbol,
 	contractSize: symbol.symbolInfo.contractSize,
-	price: symbol.optionWatchlistData.bestBuyPrice || 1,
+	price: symbol.optionWatchlistData.premium || 1,
 	quantity: 1,
 	settlementDay: symbol.symbolInfo.contractEndDate,
 	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
@@ -454,3 +454,8 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 		value: symbol.optionWatchlistData.requiredMargin,
 	},
 });
+
+export const setHours = (d: Date, hour: number, minutes: number, seconds = 0, milliseconds = 0) => {
+	d.setHours(hour, minutes, seconds, milliseconds);
+	return d;
+};
