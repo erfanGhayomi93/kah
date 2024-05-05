@@ -6,8 +6,9 @@ import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
-import { type CellClickedEvent, type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useEffect, useMemo, useRef } from 'react';
+import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
 
 interface CoveredCallProps {
@@ -20,20 +21,12 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.CoveredCall>>(null);
 
-	const { data } = useCoveredCallQuery({
+	const { data, isFetching } = useCoveredCallQuery({
 		queryKey: ['coveredCallQuery', priceBasis, withCommission],
 	});
 
-	const onSymbolTitleClicked = ({ data }: CellClickedEvent<Strategy.CoveredCall>) => {
-		try {
-			if (!data) return;
-
-			const { symbolISIN } = data;
-
-			if (symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
-		} catch (e) {
-			//
-		}
+	const onSymbolTitleClicked = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
 	const goToTechnicalChart = (data: Strategy.CoveredCall) => {
@@ -50,7 +43,8 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
-				onCellClicked: onSymbolTitleClicked,
+				cellClass: 'cursor-pointer',
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
@@ -73,7 +67,8 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 			{
 				headerName: 'اختیار خرید',
 				width: 128,
-				onCellClicked: onSymbolTitleClicked,
+				cellClass: 'cursor-pointer',
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
@@ -291,16 +286,23 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 		}
 	}, [data]);
 
+	const rows = data ?? [];
+
 	return (
-		<AgTable<Strategy.CoveredCall>
-			ref={gridRef}
-			rowData={data ?? []}
-			rowHeight={40}
-			headerHeight={48}
-			columnDefs={columnDefs}
-			defaultColDef={defaultColDef}
-			className='h-full border-0'
-		/>
+		<>
+			<AgTable<Strategy.CoveredCall>
+				suppressColumnVirtualisation={false}
+				ref={gridRef}
+				rowData={rows}
+				rowHeight={40}
+				headerHeight={48}
+				columnDefs={columnDefs}
+				defaultColDef={defaultColDef}
+				className='h-full border-0'
+			/>
+
+			{rows.length === 0 && !isFetching && <NoTableData />}
+		</>
 	);
 };
 

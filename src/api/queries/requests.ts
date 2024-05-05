@@ -3,13 +3,13 @@ import { store } from '@/features/store';
 import { createQuery } from '@/utils/helpers';
 import brokerAxios from '../brokerAxios';
 
-export const usePaymentCreateQuery = createQuery<Payment.IDepositHistoryList[] | null, ['depositHistoryOnline']>({
+export const useDepositHistoryQuery = createQuery<Payment.IDepositHistoryList[] | null, ['depositHistoryOnline']>({
 	queryKey: ['depositHistoryOnline'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 		const response = await brokerAxios.get<ServerResponse<Payment.IDepositHistoryList[]>>(
-			'https://backoffice-stage.ramandtech.com/EPaymentApi/v1/History',
+			'https://backoffice.ramandtech.com/EPaymentApi/v1/History',
 			{
 				signal,
 			},
