@@ -12,7 +12,7 @@ import Form from './Form';
 import SearchBasis from './SearchBasis';
 import SelectSymbol from './SelectSymbol';
 
-interface BlackScholesProps extends IBlackScholes {}
+interface BlackScholesProps extends IBlackScholes { }
 
 const Calculator = dynamic(() => import('./Calculator'), {
 	ssr: false,
@@ -127,7 +127,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 					<div className='flex flex-1 gap-16 pb-24'>
 						<Form setInputValue={setInputValue} inputs={inputs} />
 
-						<div className='h-full flex-1 justify-between gap-24 rounded-md bg-gray-100 px-24 pb-16 pt-16 flex-column'>
+						<div className='h-full flex-1 justify-between gap-24 rounded-md bg-gray-100 px-24 py-16 flex-column'>
 							<Calculator {...inputs} />
 						</div>
 					</div>

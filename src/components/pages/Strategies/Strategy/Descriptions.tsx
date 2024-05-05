@@ -10,30 +10,50 @@ import {
 	MaximumLossSVG,
 	MaximumProfitSVG,
 	MenuChocolateSVG,
+	PlaySVG,
 	PlusSVG,
 	TeachVideoSVG,
 } from '@/components/icons';
 import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface DescriptionsProps {
 	strategy: Strategy.GetAll;
 }
 
 const Descriptions = ({ strategy }: DescriptionsProps) => {
+	const { title, type, imageUrl, tags } = strategy;
+
 	const t = useTranslations();
 
-	const [isExpand, setIsExpand] = useState(false);
+	const [isExpand, setIsExpand] = useState(true);
 
-	const { title, type, imageUrl, tags } = strategy;
+	const combinedTags = useMemo(() => {
+		const result: Array<[Strategy.Cheap, string]> = [
+			[tags[0], t(`strategy_cheaps.${tags[0]}`)],
+			[tags[1], t(`strategy_cheaps.${tags[1]}`)],
+			[tags[2], t(`strategy_cheaps.${tags[2]}`)],
+			[tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)],
+		];
+
+		if (tags.length > 4)
+			result[3][1] +=
+				'/' +
+				tags
+					.slice(4)
+					.map((tag) => t(`strategy_cheaps.${tag}`))
+					.join('/');
+
+		return result;
+	}, []);
 
 	return (
 		<div className='relative overflow-hidden pb-16 flex-column'>
 			<div
 				style={{ height: isExpand ? '34rem' : '9.6rem' }}
-				className='flex justify-between rounded bg-white p-16 px-16 transition-height'
+				className='flex justify-between rounded bg-white p-16 transition-height'
 			>
 				<div className='flex-1 justify-between overflow-hidden flex-column'>
 					<div className='flex-column'>
@@ -49,8 +69,8 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 								</div>
 
 								<ul style={{ flex: '0 0 3.2rem' }} className='flex gap-4 pr-8'>
-									{tags.map((tag, i) => (
-										<StrategyTag key={tag} i={i} tag={tag} />
+									{combinedTags.map(([id, title], i) => (
+										<StrategyTag key={i} i={i} id={id} title={title} />
 									))}
 								</ul>
 							</div>
@@ -150,6 +170,25 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 								height: 'auto',
 							}}
 						/>
+
+						<ul className='gap-8 text-right flex-column'>
+							<li className='gap-4 text-gray-900 flex-items-center'>
+								<PlaySVG />
+								<h3 className='text-tiny font-medium'>{t('strategy.how_to_execute')}:</h3>
+							</li>
+							<li className='gap-4 flex-items-center'>
+								<span className='size-16 rounded-circle border border-gray-500 text-sm text-gray-900 flex-justify-center'>
+									1
+								</span>
+								<p className='flex-1 text-tiny leading-8 text-gray-1000'>{t(`${type}.step_1`)}</p>
+							</li>
+							<li className='gap-4 flex-items-center'>
+								<span className='size-16 rounded-circle border border-gray-500 text-sm text-gray-900 flex-justify-center'>
+									2
+								</span>
+								<p className='flex-1 text-tiny leading-8 text-gray-1000'>{t(`${type}.step_2`)}</p>
+							</li>
+						</ul>
 					</div>
 				)}
 			</div>
@@ -158,7 +197,7 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 				type='button'
 				onClick={() => setIsExpand(!isExpand)}
 				style={{ width: '6.6rem', height: '2.2rem' }}
-				className='absolute bottom-8 left-1/2 -translate-x-1/2 transform rounded bg-white text-gray-900 flex-justify-center'
+				className='absolute bottom-8 left-1/2 -translate-x-1/2 rounded bg-white text-gray-900 flex-justify-center'
 			>
 				<ArrowDownSVG
 					width='1.8rem'

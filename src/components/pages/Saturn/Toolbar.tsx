@@ -20,9 +20,8 @@ const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 
 	const [symbol] = useState<Symbol.Search | null>(null);
 
-	const onChangeSymbol = (value: Symbol.Search | null) => {
-		if (!value) return;
-		setSymbol(value);
+	const onChangeSymbol = (value: Symbol.Search) => {
+		if (value) setSymbol(value);
 	};
 
 	const openSavedTemplates = () => {

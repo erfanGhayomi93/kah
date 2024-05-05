@@ -15,7 +15,7 @@ const MarketDepth = ({ symbol }: MarketDepthProps) => {
 
 			<div style={{ gap: '8.8rem' }} className='relative w-full items-center flex-justify-between'>
 				<Progressbar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />
-				<div className='absolute left-1/2 -translate-x-1/2 transform pt-24'>
+				<div className='absolute left-1/2 -translate-x-1/2 pt-24'>
 					<button
 						type='button'
 						style={{ minWidth: '2.4rem', minHeight: '2.4rem' }}

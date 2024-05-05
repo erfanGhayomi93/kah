@@ -88,3 +88,12 @@
 		background-color: theme("colors.secondary.100");
 	}
 }
+
+.clear {
+	padding: 0 0.8rem;
+	height: 2.4rem;
+	color: theme("colors.gray.800");
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

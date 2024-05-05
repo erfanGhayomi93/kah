@@ -107,7 +107,7 @@ const WatchlistList = () => {
 
 	return (
 		<div className='select-none gap-8 flex-justify-start'>
-			<ul className='flex flex-grow-0 gap-8'>
+			<ul className='flex grow-0 gap-8'>
 				{watchlistList.map((item) => (
 					<Watchlist
 						key={item.id}
@@ -118,7 +118,7 @@ const WatchlistList = () => {
 				))}
 			</ul>
 
-			<ul className='flex flex-grow-0 gap-8'>
+			<ul className='flex grow-0 gap-8'>
 				<li>
 					<Tooltip placement='top' content={t('tooltip.add_new_watchlist')}>
 						<button

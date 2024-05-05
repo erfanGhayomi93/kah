@@ -129,6 +129,7 @@ const config: Config = {
 
 		spacing: {
 			'0': '0',
+			'2': '2px',
 			'4': '0.4rem',
 			'8': '0.8rem',
 			'10': '1rem',
@@ -248,17 +249,17 @@ const config: Config = {
 				},
 
 				'.btn-primary:disabled, .btn-gray:disabled, .btn-select:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
-					{
-						'&:not(.not)': {
-							'box-shadow': 'none !important',
-							'background-color': `${theme('colors.gray.400')} !important`,
-							color: `${theme('colors.gray.800')} !important`,
-						},
-
-						'&.not': {
-							opacity: '0.5',
-						},
+				{
+					'&:not(.not)': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
 					},
+
+					'&.not': {
+						opacity: '0.5',
+					},
+				},
 
 				'.btn-primary': {
 					display: 'flex',
@@ -431,6 +432,44 @@ const config: Config = {
 						color: theme('colors.white'),
 						'background-color': theme('colors.error.100'),
 						'border-color': theme('colors.error.100'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
+					},
+				},
+
+				'.btn-warning': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.gray.1000'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.warning.100'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.warning.100'),
+					},
+				},
+
+				'.btn-warning-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.warning.100'),
+					'font-weight': '500',
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.warning.100')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.gray.1000'),
+						'background-color': theme('colors.warning.100'),
+						'border-color': theme('colors.warning.100'),
 					},
 
 					'&:disabled': {
