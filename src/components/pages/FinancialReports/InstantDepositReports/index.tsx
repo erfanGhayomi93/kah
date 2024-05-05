@@ -25,11 +25,9 @@ const InstantDepositReports = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const { brokerIsSelected, loggedIn,
-		loggingIn
-	} = useAppSelector((state) => state.user)
+	const { brokerIsSelected, loggedIn, loggingIn } = useAppSelector((state) => state.user);
 
-	const router = useRouter()
+	const router = useRouter();
 
 	const onShowFilters = () => {
 		// const params: Partial<IOptionFiltersModal> = {};
@@ -97,8 +95,8 @@ const InstantDepositReports = () => {
 	}, [JSON.stringify(inputs ?? {})]);
 
 	useEffect(() => {
-		if (!brokerIsSelected) router.push("/")
-	}, [loggedIn])
+		if (!brokerIsSelected) router.push('/');
+	}, [loggedIn]);
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
