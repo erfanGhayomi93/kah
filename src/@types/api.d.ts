@@ -579,10 +579,37 @@ declare namespace Saturn {
 declare namespace Broker {
 	export type TRemainStatus = 'Normal' | 'AtRisk' | 'CallMargin';
 
-	interface URL {
-		brokerCode: string | number;
-		url: string;
-	}
+	export type UrlKey =
+		| 'TodayOrders'
+		| 'ExecutedOrders'
+		| 'Drafts'
+		| 'CreateOrder'
+		| 'OrdersCount'
+		| 'OpenOrders'
+		| 'Commission'
+		| 'UserInformation'
+		| 'UserRemain'
+		| 'UserStatus'
+		| 'OptionOrders'
+		| 'CreateDraft'
+		| 'DeleteDraft'
+		| 'DeleteOrder'
+		| 'GroupDeleteDraft'
+		| 'GroupDeleteOrder'
+		| 'UpdateDraft'
+		| 'UpdateOrder'
+		| 'CreateRequestEPaymentApi'
+		| 'GetRemain'
+		| 'CompleteRequestReceipt'
+		| 'GetListBrokerBankAccount'
+		| 'DepositOfflineHistory'
+		| 'CustomerTurnOverRemain'
+		| 'GetWithFilterReceipt'
+		| 'GetFilteredEPaymentApi'
+		| 'GetFilteredPayment'
+		| 'DepositOnlineHistory';
+
+	type URL = Record<UrlKey, string>;
 
 	export interface Remain {
 		remainT1: number;
@@ -874,7 +901,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse { }
+		export interface FaraBourse extends GetMarketState.Bourse {}
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -889,17 +916,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-			| 'ticks'
-			| 'days'
-			| 'hours'
-			| 'milliseconds'
-			| 'minutes'
-			| 'seconds'
-			| 'totalDays'
-			| 'totalHours'
-			| 'totalMilliseconds'
-			| 'totalMinutes'
-			| 'totalSeconds';
+				| 'ticks'
+				| 'days'
+				| 'hours'
+				| 'milliseconds'
+				| 'minutes'
+				| 'seconds'
+				| 'totalDays'
+				| 'totalHours'
+				| 'totalMilliseconds'
+				| 'totalMinutes'
+				| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1406,7 +1433,6 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
-
 	}
 
 	export interface BullCallSpread {
@@ -1415,6 +1441,7 @@ declare namespace Strategy {
 		baseLastTradedPrice: number;
 		baseTradePriceVarPreviousTradePercent: number;
 		dueDays: number;
+		// اعمال پایین
 		lspSymbolISIN: string;
 		lspSymbolTitle: string;
 		lspStrikePrice: number;
@@ -1422,6 +1449,7 @@ declare namespace Strategy {
 		lspBestSellLimitQuantity: number;
 		lspBestBuyLimitPrice: number;
 		lspBestBuyLimitQuantity: number;
+		// اعمال بالا
 		hspSymbolISIN: string;
 		hspSymbolTitle: string;
 		hspStrikePrice: number;
@@ -1457,8 +1485,6 @@ declare namespace Strategy {
 }
 
 declare namespace Reports {
-
-
 	export interface Column {
 		id: number;
 		title: string;
@@ -1475,7 +1501,7 @@ declare namespace Reports {
 		date: string;
 		station: string;
 		symbolIsin: string;
-		transactionType: "Withdrawal" | "Deposit" | "Charge" | "Buy" | "Sell";
+		transactionType: 'Withdrawal' | 'Deposit' | 'Charge' | 'Buy' | 'Sell';
 	}
 
 	export interface IInstantDeposit {
@@ -1484,7 +1510,19 @@ declare namespace Reports {
 		saveDate: string;
 		amount: number;
 		providerType: string;
-		state: "CanceledByUser" | "Done" | "DoubleSpendingCheckedOk" | "DoubleSpendingCheckFailed" | "RedirectToBank" | "Request" | "RequestBankToken" | "RequestBankTokenError" | "Verify" | "VerifyCheck" | "VerifyCheckFailed" | "OkBeforeVerifys";
+		state:
+			| 'CanceledByUser'
+			| 'Done'
+			| 'DoubleSpendingCheckedOk'
+			| 'DoubleSpendingCheckFailed'
+			| 'RedirectToBank'
+			| 'Request'
+			| 'RequestBankToken'
+			| 'RequestBankTokenError'
+			| 'Verify'
+			| 'VerifyCheck'
+			| 'VerifyCheckFailed'
+			| 'OkBeforeVerifys';
 		errorMessage: string;
 	}
 
@@ -1499,8 +1537,8 @@ declare namespace Reports {
 		comment: string;
 		receiptDate: string;
 		accountCode: string;
-		state: "InOMSQueue" | "OrderDone" | "Error" | "Modified" | "Expired" | "Canceled";
-		providerType: string
+		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
+		providerType: string;
 	}
 
 	export interface IWithdrawal {
@@ -1510,9 +1548,20 @@ declare namespace Reports {
 		requestDate: string;
 		bankAccountId: number;
 		accountNumber: string | null;
-		status: "Draft" | "Pending" | "Confirmed" | "Canceled" | "Failed" | "Voided" | "Paid" | "Entry" | "ErrorOccured" | "PostedToBackOffice" | "CreateRequest";
+		status:
+			| 'Draft'
+			| 'Pending'
+			| 'Confirmed'
+			| 'Canceled'
+			| 'Failed'
+			| 'Voided'
+			| 'Paid'
+			| 'Entry'
+			| 'ErrorOccured'
+			| 'PostedToBackOffice'
+			| 'CreateRequest';
 		prsName: string | null;
-		orderOrigin: "Broker" | "Online" | number;
+		orderOrigin: 'Broker' | 'Online' | number;
 		orderOriginName: null | string;
 		comments: string;
 		deletable: boolean;
@@ -1521,4 +1570,3 @@ declare namespace Reports {
 		reservationNumber: number;
 	}
 }
-

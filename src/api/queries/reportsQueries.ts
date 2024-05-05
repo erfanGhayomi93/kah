@@ -150,10 +150,13 @@ export const useDepositWithReceiptReports = createQuery<
 				});
 			}
 
-			const response = await brokerAxios.get<PaginationResponse<Reports.IDepositWithReceipt[]>>(url.getReceipt, {
-				params,
-				signal,
-			});
+			const response = await brokerAxios.get<PaginationResponse<Reports.IDepositWithReceipt[]>>(
+				url.getDepositOfflineHistory,
+				{
+					params,
+					signal,
+				},
+			);
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
