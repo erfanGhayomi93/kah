@@ -9,7 +9,7 @@ export const useDepositHistoryQuery = createQuery<Payment.IDepositHistoryList[] 
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 		const response = await brokerAxios.get<ServerResponse<Payment.IDepositHistoryList[]>>(
-			'https://backoffice.ramandtech.com/EPaymentApi/v1/History',
+			url.getDepositOnlineHistory,
 			{
 				signal,
 			},
