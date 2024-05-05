@@ -70,6 +70,9 @@ const initialState: ModalState = {
 
 	// آنالیز
 	analyze: null,
+
+	// توضیحات
+	description: null,
 };
 
 const modalSlice = createSlice({
@@ -180,6 +183,10 @@ const modalSlice = createSlice({
 		setAnalyzeModal: (state, { payload }: PayloadAction<ModalState['analyze']>) => {
 			state.analyze = payload;
 		},
+
+		setDescriptionModal: (state, { payload }: PayloadAction<ModalState['description']>) => {
+			state.description = payload;
+		},
 	},
 });
 
@@ -205,6 +212,7 @@ export const {
 	setChangeBrokerModal,
 	setWithdrawalModal,
 	setDepositModal,
+	setDescriptionModal,
 	setAnalyzeModal,
 	updateSelectSymbolContractsModal,
 } = modalSlice.actions;
@@ -226,5 +234,6 @@ export const getOrderDetailsModal = (state: RootState) => state.modal.orderDetai
 export const getManageOptionWatchlistListModal = (state: RootState) => state.modal.manageOptionWatchlistList;
 export const getAddSymbolToWatchlistModal = (state: RootState) => state.modal.addSymbolToWatchlist;
 export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
+export const getDescriptionModal = (state: RootState) => state.modal.description;
 
 export default modalSlice.reducer;

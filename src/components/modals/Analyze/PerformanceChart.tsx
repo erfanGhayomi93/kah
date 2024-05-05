@@ -68,8 +68,6 @@ const PerformanceChart = ({
 
 		const centerPoint = { y: 0, x: intersectionPoint };
 
-		console.log(result);
-
 		if (result[0].length > 2 && result[1].length) {
 			if (result[0].length > 2) {
 				if (result[0][0].y > result[0][1].y) result[0].push(centerPoint);
