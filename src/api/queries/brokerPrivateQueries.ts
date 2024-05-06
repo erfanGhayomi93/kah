@@ -146,19 +146,3 @@ export const useOptionOrdersQuery = createQuery<Order.OptionOrder[] | null, ['op
 		return data.result;
 	},
 });
-
-export const useCommissionsQuery = createQuery<Broker.Commission[] | null, ['commissionsQuery']>({
-	staleTime: 18e5,
-	queryKey: ['commissionsQuery'],
-	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
-		if (!url) return null;
-
-		const response = await axios.get<ServerResponse<Broker.Commission[]>>(url.commission, { signal });
-		const data = response.data;
-
-		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-		return data.result;
-	},
-});

@@ -1,5 +1,5 @@
 import { ArrowDownSVG } from '@/components/icons';
-import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import React, { useLayoutEffect, useState } from 'react';
 import Popup from '../Popup';
@@ -82,14 +82,14 @@ const Select = <T, D = T>({
 			renderer={({ setOpen }) => {
 				if (!Array.isArray(options) || options.length === 0)
 					return (
-						<div className={cn(styles.alert, classes?.alert)}>
+						<div className={clsx(styles.alert, classes?.alert)}>
 							<span>{t('common.no_data')}</span>
 						</div>
 					);
 
 				return (
-					<div className={cn(styles.box, classes?.box)}>
-						<ul className={cn(styles.list, classes?.list)}>
+					<div className={clsx(styles.box, classes?.box)}>
+						<ul className={clsx(styles.list, classes?.list)}>
 							{options.map((option) => (
 								<li
 									onClick={() => {
@@ -97,7 +97,7 @@ const Select = <T, D = T>({
 										setOpen(false);
 									}}
 									key={getOptionId(option)}
-									className={cn(
+									className={clsx(
 										styles.listItem,
 										classes?.listItem,
 										value &&
@@ -118,7 +118,7 @@ const Select = <T, D = T>({
 			{({ setOpen, open }) => (
 				<div
 					onClick={() => setOpen(!open)}
-					className={cn(
+					className={clsx(
 						'input-group',
 						styles.root,
 						classes?.root,
@@ -128,17 +128,17 @@ const Select = <T, D = T>({
 					)}
 				>
 					{value && (
-						<span className={cn(styles.value, classes?.value)}>
+						<span className={clsx(styles.value, classes?.value)}>
 							{value ? (getInputValue ? getInputValue(value) : getOptionTitle(value)) : placeholder}
 						</span>
 					)}
 
 					{placeholder && (
 						<>
-							<span className={cn('flexible-placeholder', value && 'active', open && 'colorful')}>
+							<span className={clsx('flexible-placeholder', value && 'active', open && 'colorful')}>
 								{placeholder}
 							</span>
-							<fieldset className={cn('flexible-fieldset', placeholder && value && 'active')}>
+							<fieldset className={clsx('flexible-fieldset', placeholder && value && 'active')}>
 								<legend>{placeholder}</legend>
 							</fieldset>
 						</>
@@ -150,7 +150,7 @@ const Select = <T, D = T>({
 						<button
 							type='button'
 							style={{ transform: open ? 'rotate(180deg)' : undefined }}
-							className={cn(styles.icon, classes?.icon)}
+							className={clsx(styles.icon, classes?.icon)}
 							onClick={() => setOpen(!open)}
 						>
 							<ArrowDownSVG width='1.6rem' height='1.6rem' />

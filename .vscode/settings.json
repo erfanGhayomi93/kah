@@ -14,5 +14,6 @@
 		"toman",
 		"کدال",
 		"clsx"
-	]
+	],
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }

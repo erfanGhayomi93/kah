@@ -16,6 +16,7 @@
 		"close": "بستن",
 		"tse": "TSE",
 		"codal": "کدال",
+		"read": "خواندم",
 		"symbol_not_found": "نماد مورد نظر یافت نشد",
 		"no_data": "موردی برای نمایش وجود ندارد",
 		"searching": "در حال جستجو",
@@ -529,8 +530,8 @@
 		"phone_number_placeholder": "شماره همراه خود را وارد کنید",
 		"otp": "کد تایید",
 		"otp_mobile_number": "کد تایید ارسال شده به {mobile} را وارد",
-		"otp_placeholder": "کد تایید" ,
-		"Input.Required": "{n} را وارد کنید"
+		"otp_placeholder": "کد تایید",
+		"required": "{n} را وارد کنید"
 	},
 	"symbol_search": {
 		"input_placeholder": "جستجو نماد",
@@ -719,7 +720,8 @@
 		"state_Draft": "ثبت شده",
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
-		"state_PayFast": "پرداخت سریع"
+		"state_PayFast": "پرداخت سریع" , 
+		"more_reports_deposit" : "مشاهده در گزارشات"
 	},
 	"payment_result": {
 		"payment_success_title": "پرداخت موفق",
@@ -823,7 +825,7 @@
 		"MinBuyOrderAmount_Is_Not_Valid": "حداقل مبلغ خرید رعایت نشده است.",
 		"MinSellOrderAmount_Is_Not_Valid": "حداقل مبلغ فروش رعایت نشده است.",
 		"SellOrder_Is_Not_Allowed_ForThisSymbol": "فروش بر روی این نماد مسدود است.",
-		"MaxSellCountPerDay_Is_Not_Allowed_ForThisSymbol": "سقف فروش روزانه برای این سهم پر شده است. ",
+		"MaxSellCountPerDay_Is_Not_Allowed_ForThisSymbol": "سقف فروش روزانه برای این سهم پر شده است.",
 		"SellTime_Is_Not_Allowed_ForThisSymbol": "بازه ساعتی برای فروش این سهم غیر مجاز است.",
 		"MaxSellVolumePerDay_Is_Not_Allowed_ForThisSymbol": "سقف حجم فروش روزانه برای این سهم پر شده است.",
 		"BuyOrder_Is_Not_Allowed": "خرید امکان پذیر نمی‌باشد.",
