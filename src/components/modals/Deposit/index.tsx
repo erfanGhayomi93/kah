@@ -62,7 +62,9 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 					{
 						isShowExpanded && (
 							<Div className='bg-white'>
-								<HistoryDeposit />
+								<HistoryDeposit
+									onCloseModal={onCloseModal}
+								/>
 							</Div>
 						)
 					}
