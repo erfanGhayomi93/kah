@@ -7,6 +7,7 @@ import {
 	setBuySellModal,
 	setChoiceBrokerModal,
 	setConfirmModal,
+	setDepositModal,
 	setForgetPasswordModal,
 	setLoginModal,
 	setLogoutModal,
@@ -119,6 +120,11 @@ const Header = () => {
 		dispatch(setBlackScholesModal({}));
 	};
 
+	const handleShowDepositModal = () => {
+		dispatch(setDepositModal({ isShow: true }));
+	};
+
+
 	const userStatusIcon = useMemo(() => {
 		if (!userStatus?.remainStatus) return null;
 
@@ -133,6 +139,7 @@ const Header = () => {
 	const [serverTime, serverDate] = useMemo(() => {
 		return dayjs(timestamp).calendar('jalali').format('HH:mm:ss YYYY/MM/DD').split(' ');
 	}, [timestamp]);
+
 
 	useEffect(() => {
 		if (!brokerURLs) return;
@@ -229,6 +236,7 @@ const Header = () => {
 						</span>
 						<WalletSVG
 							className={(userRemain.purchasePower ?? 0) < 0 ? 'text-success-100' : 'text-error-100'}
+							onClick={handleShowDepositModal}
 						/>
 					</span>
 				)}

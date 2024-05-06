@@ -720,7 +720,8 @@
 		"state_Draft": "ثبت شده",
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
-		"state_PayFast": "پرداخت سریع"
+		"state_PayFast": "پرداخت سریع" , 
+		"more_reports_deposit" : "مشاهده در گزارشات"
 	},
 	"payment_result": {
 		"payment_success_title": "پرداخت موفق",
