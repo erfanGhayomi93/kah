@@ -1,15 +1,9 @@
 import ipcMain from '@/classes/IpcMain';
 import Button from '@/components/common/Button';
-import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, PlusSVG, XSVG } from '@/components/icons';
+import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import {
-	setAnalyzeModal,
-	setChoiceBrokerModal,
-	setConfirmModal,
-	setLoginModal,
-	setSelectSymbolContractsModal,
-} from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setChoiceBrokerModal, setConfirmModal, setLoginModal } from '@/features/slices/modalSlice';
 import {
 	getIsLoggedIn,
 	getOrderBasket,
@@ -20,7 +14,6 @@ import {
 } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
-import { convertSymbolWatchlistToSymbolBasket } from '@/utils/helpers';
 import { createOrder } from '@/utils/orders';
 import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
@@ -250,44 +243,6 @@ const Basket = () => {
 		}, 2000);
 	};
 
-	const updateContracts = (contracts: Option.Root[]) => {
-		try {
-			const l = contracts.length;
-
-			const result: ISymbolStrategyContract[] = [];
-			const selectedResult: string[] = [];
-
-			for (let i = 0; i < l; i++) {
-				const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
-
-				result.push(item);
-				selectedResult.push(item.id);
-			}
-
-			dispatch(setOrderBasketOrders(result));
-			setSelectedContracts(selectedResult);
-		} catch (e) {
-			//
-		}
-	};
-
-	const addNewContracts = () => {
-		dispatch(
-			setSelectSymbolContractsModal({
-				symbol: {
-					symbolISIN: baseSymbol.symbolISIN,
-					symbolTitle: baseSymbol.symbolTitle,
-				},
-				maxContracts: null,
-				initialSelectedContracts: basketOrders
-					.filter((item) => item !== null)
-					.map((item) => item.symbol.symbolInfo.symbolISIN) as string[],
-				canChangeBaseSymbol: true,
-				callback: updateContracts,
-			}),
-		);
-	};
-
 	useEffect(() => {
 		const lastItem = basketOrders[basketOrders.length - 1];
 		if (!lastItem) return;
@@ -364,25 +319,15 @@ const Basket = () => {
 					</div>
 
 					{isMaximized && (
-						<div className='gap-8 flex-column'>
-							<div style={{ maxHeight: '40rem' }} className='overflow-y-auto'>
-								<SymbolStrategyTable
-									selectedContracts={selectedContracts}
-									contracts={basketOrders}
-									onSelectionChanged={setSelectedContracts}
-									onChange={(id, v) => setOrderProperties(id, v)}
-									onSideChange={(id, value) => setOrderProperties(id, { side: value })}
-									onDelete={removeOrder}
-								/>
-							</div>
-
-							<button
-								type='button'
-								onClick={addNewContracts}
-								className='mr-44 size-40 rounded btn-primary'
-							>
-								<PlusSVG width='2rem' height='2rem' />
-							</button>
+						<div style={{ maxHeight: '40rem' }} className='overflow-y-auto'>
+							<SymbolStrategyTable
+								selectedContracts={selectedContracts}
+								contracts={basketOrders}
+								onSelectionChanged={setSelectedContracts}
+								onChange={(id, v) => setOrderProperties(id, v)}
+								onSideChange={(id, value) => setOrderProperties(id, { side: value })}
+								onDelete={removeOrder}
+							/>
 						</div>
 					)}
 				</div>

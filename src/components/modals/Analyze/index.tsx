@@ -181,13 +181,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					render: () => (
 						<div style={{ height: '40rem' }} className='relative py-16'>
 							<ErrorBoundary>
-								<PerformanceChart
-									minPrice={inputs.minPrice}
-									maxPrice={inputs.maxPrice}
-									chartData={inputs.chartData}
-									baseAssets={inputs.baseAssets}
-									onChange={setFieldsValue}
-								/>
+								<PerformanceChart inputs={inputs} onChange={setFieldsValue} />
 							</ErrorBoundary>
 						</div>
 					),
@@ -209,7 +203,20 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 		useEffect(() => {
 			const data = selectedContractsAsSymbol;
-			const newStates = JSON.parse(JSON.stringify(inputs)) as IAnalyzeModalInputs;
+			const newStates: IAnalyzeModalInputs = {
+				chartData: [],
+				minPrice: 0,
+				maxPrice: 0,
+				mostProfit: 0,
+				mostLoss: 0,
+				baseAssets: 0,
+				bep: { x: 0, y: 0 },
+				budget: 0,
+				profitProbability: 0,
+				timeValue: 0,
+				risk: 0,
+				requiredMargin: 0,
+			};
 
 			newStates.chartData = [];
 
@@ -287,11 +294,13 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 			setFieldsValue(newStates);
 		}, [
-			JSON.stringify(selectedContractsAsSymbol),
-			useCommission,
-			commissionData,
-			inputs.minPrice,
-			inputs.maxPrice,
+			JSON.stringify({
+				selectedContractsAsSymbol,
+				useCommission,
+				commissionData,
+				minPrice: inputs.minPrice,
+				maxPrice: inputs.maxPrice,
+			}),
 		]);
 
 		return (

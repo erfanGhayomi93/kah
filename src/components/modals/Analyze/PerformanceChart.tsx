@@ -18,8 +18,8 @@ interface IChartOptions {
 	colors: string[];
 }
 
-interface PerformanceChartProps
-	extends Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice' | 'chartData' | 'baseAssets'> {
+interface PerformanceChartProps {
+	inputs: Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice' | 'chartData' | 'baseAssets'>;
 	onChange: (values: Partial<Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
@@ -28,7 +28,7 @@ const COLORS = {
 	RED: 'rgb(255, 82, 109)',
 };
 
-const PerformanceChart = ({ chartData, baseAssets, maxPrice, minPrice, onChange }: PerformanceChartProps) => {
+const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 	const t = useTranslations();
 
 	const [chartOptions, setChartOptions] = useState<IChartOptions>({
@@ -70,6 +70,10 @@ const PerformanceChart = ({ chartData, baseAssets, maxPrice, minPrice, onChange 
 	});
 
 	useEffect(() => {
+		const { chartData, baseAssets, maxPrice, minPrice } = inputs;
+
+		if (maxPrice - minPrice === 0) return;
+
 		const options: IChartOptions = {
 			annotations: [
 				getAnnotationStyle(
@@ -101,6 +105,14 @@ const PerformanceChart = ({ chartData, baseAssets, maxPrice, minPrice, onChange 
 
 			if (k === 0 || k === l - 1 || k % diff === 0) {
 				const color = item.y < 0 ? COLORS.RED : COLORS.GREEN;
+
+				if (k === 0 && j > 0) {
+					options.series[j - 1].data.push({
+						...item,
+						color,
+					});
+				}
+
 				options.series[j].data.push({
 					...item,
 					color,
@@ -124,7 +136,7 @@ const PerformanceChart = ({ chartData, baseAssets, maxPrice, minPrice, onChange 
 
 		options.colors = options.series.reduce<string[]>((total, current) => [...total, current.data[0].color], []);
 		setChartOptions(options);
-	}, [JSON.stringify(chartData), maxPrice, minPrice]);
+	}, [JSON.stringify(inputs)]);
 
 	const { series, annotations, colors } = chartOptions;
 
@@ -135,13 +147,6 @@ const PerformanceChart = ({ chartData, baseAssets, maxPrice, minPrice, onChange 
 					colors,
 					annotations: {
 						xaxis: annotations,
-					},
-					chart: {
-						animations: {
-							enabled: true,
-							easing: 'linear',
-							speed: 100,
-						},
 					},
 					tooltip: {
 						custom: ({ series, seriesIndex, dataPointIndex, w }) => {
@@ -156,8 +161,8 @@ const PerformanceChart = ({ chartData, baseAssets, maxPrice, minPrice, onChange 
 						},
 					},
 					xaxis: {
-						min: minPrice,
-						max: maxPrice,
+						min: inputs.minPrice,
+						max: inputs.maxPrice,
 						offsetX: 0,
 						offsetY: 0,
 						tickAmount: 5,
@@ -199,7 +204,7 @@ const PerformanceChart = ({ chartData, baseAssets, maxPrice, minPrice, onChange 
 				height={304}
 			/>
 
-			<PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />
+			<PriceRange maxPrice={inputs.maxPrice} minPrice={inputs.minPrice} onChange={onChange} />
 		</div>
 	);
 };

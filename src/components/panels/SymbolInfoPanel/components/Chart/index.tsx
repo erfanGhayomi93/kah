@@ -50,7 +50,7 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 			<div className='relative h-full pb-16 flex-column'>
 				{Array.isArray(data) && data.length > 0 ? (
 					<div className='pt-16'>
-						<SymbolChart type={inputs.type} data={data} height='208px' />
+						<SymbolChart {...inputs} data={data} height='208px' />
 					</div>
 				) : (
 					<NoData />

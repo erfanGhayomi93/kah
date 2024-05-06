@@ -335,7 +335,7 @@ export const englishToPersian = (str: string): string => {
 };
 
 export const toISOStringWithoutChangeTime = (d: Date): string => {
-	const timezoneOffsetInMinutes = d.getTimezoneOffset() * 60000;
+	const timezoneOffsetInMinutes = d.getTimezoneOffset() * 6e4;
 	const utcDate = new Date(d.getTime() - timezoneOffsetInMinutes);
 
 	const isoString = utcDate.toISOString();
@@ -378,7 +378,7 @@ export const dateFormatter = (v: string | number, format: 'date' | 'time' | 'dat
 		datetime: 'YYYY/MM/DD HH:mm',
 	};
 
-	const d = dayjs(v).calendar('jalali');
+	const d = dayjs(v ?? new Date()).calendar('jalali');
 	if (d.isValid()) return d.format(formats[format]);
 
 	return '−';
