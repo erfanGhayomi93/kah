@@ -3,10 +3,15 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { SessionHistorySVG } from '@/components/icons';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import Link from 'next/link';
+import { type FC, useMemo } from 'react';
+
+interface HistoryDepositType {
+	onCloseModal: () => void;
+}
 
 
-export const HistoryDeposit = () => {
+export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 
 	const t = useTranslations();
 
@@ -43,15 +48,15 @@ export const HistoryDeposit = () => {
 				/>
 			</div>
 
-			<button
-				className='h-48 text-info rounded w-full font-medium gap-8 flex-justify-center text-'
-				type='button'
+			<Link
+				className='h-48 text-info rounded w-full font-medium gap-8 flex-justify-center'
+				href={'/financial-reports/instant-deposit'}
+				onClick={() => onCloseModal()}
 			>
 				<SessionHistorySVG />
 
-				{t('common.show_more')}
-
-			</button>
+				{t('deposit_modal.more_reports_deposit')}
+			</Link>
 		</div>
 	);
 };
