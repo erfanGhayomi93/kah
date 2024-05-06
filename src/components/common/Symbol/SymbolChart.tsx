@@ -63,7 +63,7 @@ const SymbolChart = ({ height, data, type = 'area', interval = 'daily' }: Symbol
 					labels: {
 						formatter: (val) => {
 							if (isNaN(Number(val))) return '-';
-							return dateFormatter(val, interval === 'daily' ? 'time' : 'date');
+							return dateFormatter(val + 1e3, interval === 'daily' ? 'time' : 'date');
 						},
 					},
 				},

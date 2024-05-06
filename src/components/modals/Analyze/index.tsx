@@ -9,12 +9,13 @@ import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/modalSlice.interfaces';
-import { useInputs, useLocalstorage } from '@/hooks';
+import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import React, { forwardRef, useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 
@@ -51,6 +52,24 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
+
+		const { submit, submitting } = useBasketOrderingSystem({
+			onOrdersSent: ({ failedOrders, sentOrders }) => {
+				const failedOrdersLength = failedOrders.length;
+				const sentOrdersLength = sentOrders.length;
+
+				const message =
+					failedOrdersLength === 0
+						? 'alerts.orders_sent_successfully'
+						: failedOrdersLength === sentOrdersLength
+							? 'alerts.orders_sent_failed'
+							: failedOrdersLength >= sentOrdersLength / 2
+								? 'alerts.some_orders_sent_successfully'
+								: 'alerts.most_orders_sent_successfully';
+
+				toast.success(t(message));
+			},
+		});
 
 		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
@@ -145,8 +164,20 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			}
 		};
 
-		const sendAll = () => {
-			//
+		const getSelectedContracts = () => {
+			const result: OrderBasket.Order[] = [];
+
+			for (let i = 0; i < selectedContracts.length; i++) {
+				const orderId = selectedContracts[i];
+				const order = contracts.find((order) => order.id === orderId);
+				if (order) result.push(order);
+			}
+
+			return result;
+		};
+
+		const onSubmit = () => {
+			submit(getSelectedContracts());
 		};
 
 		const selectedContractsAsSymbol = useMemo<OrderBasket.Order[]>(() => {
@@ -330,6 +361,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 								<div className='flex pl-28 pr-56 flex-justify-between'>
 									<button
+										disabled={submitting}
 										type='button'
 										onClick={addNewContracts}
 										className='size-40 rounded btn-primary'
@@ -338,9 +370,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 									</button>
 
 									<button
+										disabled={submitting}
 										style={{ flex: '0 0 14.4rem' }}
 										type='button'
-										onClick={sendAll}
+										onClick={onSubmit}
 										className='h-40 rounded btn-primary'
 									>
 										{t('analyze_modal.send_all')}
