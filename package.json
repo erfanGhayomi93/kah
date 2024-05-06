@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
+		"preinstall": "npx only-allow npm",
 		"start": "env-cmd -f ./environments/.env.development next dev -p 3002",
 		"start:production": "env-cmd -f ./environments/.env.production next start -p 3002",
 		"build:stage": "env-cmd -f ./environments/.env.stage next build",
@@ -57,6 +58,7 @@
 		"eslint-plugin-react": "^7.33.2",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-tailwindcss": "^3.15.1",
+		"only-allow": "^1.2.1",
 		"postcss": "^8.4.35",
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.5.11",
