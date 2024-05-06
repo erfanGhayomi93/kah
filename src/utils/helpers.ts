@@ -448,6 +448,7 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
 	strikePrice: symbol.symbolInfo.strikePrice,
 	side,
+	marketUnit: symbol.symbolInfo.marketUnit ?? '',
 	commission: {
 		value: 0,
 	},

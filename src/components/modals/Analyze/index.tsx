@@ -1,3 +1,4 @@
+import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
@@ -8,7 +9,7 @@ import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/modalSlice.interfaces';
-import { useInputs } from '@/hooks';
+import { useInputs, useLocalstorage } from '@/hooks';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -51,13 +52,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 		const dispatch = useAppDispatch();
 
-		const [symbolContracts, setSymbolContracts] = useState([...contracts]);
+		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
-		const [selectedContracts, setSelectedContracts] = useState<string[]>(symbolContracts.map((item) => item.id));
-
-		const { inputs, setFieldValue, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
+		const { inputs, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
 			chartData: [],
-			intersectionPoint: 0,
 			minPrice: 0,
 			maxPrice: 0,
 			mostProfit: 0,
@@ -69,7 +67,14 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			timeValue: 0,
 			risk: 0,
 			requiredMargin: 0,
-			withCommission: false,
+		});
+
+		const [symbolContracts, setSymbolContracts] = useState([...contracts]);
+
+		const [selectedContracts, setSelectedContracts] = useState<string[]>(symbolContracts.map((item) => item.id));
+
+		const { data: commissionData } = useCommissionsQuery({
+			queryKey: ['commissionQuery'],
 		});
 
 		const onCloseModal = () => {
@@ -181,8 +186,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 									maxPrice={inputs.maxPrice}
 									chartData={inputs.chartData}
 									baseAssets={inputs.baseAssets}
-									bep={inputs.bep}
-									intersectionPoint={inputs.intersectionPoint}
 									onChange={setFieldsValue}
 								/>
 							</ErrorBoundary>
@@ -209,7 +212,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			const newStates = JSON.parse(JSON.stringify(inputs)) as IAnalyzeModalInputs;
 
 			newStates.chartData = [];
-			newStates.intersectionPoint = 0;
 
 			if (data.length === 0) return;
 
@@ -230,8 +232,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 				const lowPrice = newStates.minPrice;
 				const highPrice = newStates.maxPrice;
-				const diff = Math.round((highPrice - lowPrice) / 20);
-				const fakeData: IAnalyzeModalInputs['chartData'] = [];
 
 				for (let i = 0; i < l; i++) {
 					const item = data[i];
@@ -243,23 +243,37 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 						price,
 					} = item;
 
+					let commission = 0;
 					let index = 0;
-					let differenceY = Infinity;
+
+					if (Array.isArray(commissionData) && useCommission) {
+						const transactionCommission = commissionData.find(
+							({ marketUnitTitle }) => marketUnitTitle === item.marketUnit,
+						);
+
+						if (transactionCommission) {
+							commission =
+								transactionCommission[item.side === 'buy' ? 'buyCommission' : 'sellCommission'] ?? 0;
+
+							commission *= item.quantity * item.price;
+							if (item.side === 'sell') commission *= -1;
+						}
+					}
+					const transactionValue = Math.ceil(Math.abs(item.quantity * price + commission));
 
 					for (let j = lowPrice; j <= highPrice; j++) {
-						const iv = intrinsicValue(strikePrice, j, contractType);
-						const previousY = fakeData[index]?.y ?? 0;
-						const y = previousY + pnl(iv, price, item.side);
+						const strikeCommission =
+							useCommission && item.side === 'buy'
+								? strikePrice * 0.0005 * (item.type === 'call' ? 1 : -1)
+								: 0;
+
+						const iv = intrinsicValue(strikePrice + strikeCommission, j, contractType);
+						const previousY = newStates.chartData[index]?.y ?? 0;
+						const y = previousY + pnl(iv, transactionValue, item.side);
 
 						if (y === 0) newStates.bep = { x: j, y: 0 };
 
-						const positiveY = Math.abs(y);
-						if (positiveY < differenceY) {
-							differenceY = positiveY;
-							newStates.intersectionPoint = j;
-						}
-
-						fakeData[index] = {
+						newStates.chartData[index] = {
 							x: j,
 							y,
 						};
@@ -267,23 +281,18 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 						index++;
 					}
 				}
-
-				const fl = fakeData.length;
-				let hasBep = false;
-				for (let i = 0; i < fl; i++) {
-					const item = fakeData[i];
-
-					if (item && (i % diff === 0 || i === fl - 1 || (!hasBep && item.y === 0))) {
-						newStates.chartData.push(item);
-						if (item.y === 0) hasBep = true;
-					}
-				}
 			} catch (e) {
 				//
 			}
 
 			setFieldsValue(newStates);
-		}, [JSON.stringify(selectedContractsAsSymbol), inputs.minPrice, inputs.maxPrice]);
+		}, [
+			JSON.stringify(selectedContractsAsSymbol),
+			useCommission,
+			commissionData,
+			inputs.minPrice,
+			inputs.maxPrice,
+		]);
 
 		return (
 			<Modal
@@ -394,10 +403,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 											<span className='text-tiny font-medium text-gray-900'>
 												{t('analyze_modal.with_commission')}
 											</span>
-											<Switch
-												checked={inputs.withCommission}
-												onChange={(v) => setFieldValue('withCommission', v)}
-											/>
+											<Switch checked={useCommission} onChange={(v) => setUseCommission(v)} />
 										</div>
 									</div>
 								</div>

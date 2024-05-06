@@ -4,19 +4,14 @@ import Select from '@/components/common/Inputs/Select';
 import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
 import TableActions from '@/components/common/Toolbar/TableActions';
-import { useInputs } from '@/hooks';
+import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface ISelectItem {
 	id: TPriceBasis;
 	title: string;
-}
-
-interface IInput {
-	withCommission: boolean;
-	priceBasis: ISelectItem;
 }
 
 interface TableProps {
@@ -46,9 +41,11 @@ const ProtectivePut = dynamic(() => import('./StrategyTables/ProtectivePut'), {
 const Table = ({ strategy }: TableProps) => {
 	const t = useTranslations();
 
-	const { inputs, setFieldValue } = useInputs<IInput>({
-		withCommission: false,
-		priceBasis: { id: 'LastTradePrice', title: t('strategy.last_traded_price') },
+	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+
+	const [priceBasis, setPriceBasis] = useState<ISelectItem>({
+		id: 'LastTradePrice',
+		title: t('strategy.last_traded_price'),
 	});
 
 	const options: ISelectItem[] = useMemo(
@@ -75,15 +72,15 @@ const Table = ({ strategy }: TableProps) => {
 				<div className='flex-1 gap-24 flex-justify-end'>
 					<div className='h-40 gap-8 flex-items-center'>
 						<span className='text-tiny font-medium text-gray-900'>{t('strategy.with_commission')}</span>
-						<Switch checked={inputs.withCommission} onChange={(v) => setFieldValue('withCommission', v)} />
+						<Switch checked={useCommission} onChange={(v) => setUseCommission(v)} />
 					</div>
 
 					<div style={{ flex: '0 0 28.4rem' }} className='flex-1 gap-8 flex-justify-end'>
 						<Select<ISelectItem>
-							defaultValue={inputs.priceBasis}
+							defaultValue={priceBasis}
 							options={options}
 							placeholder={t('strategy.price_basis')}
-							onChange={(v) => setFieldValue('priceBasis', v)}
+							onChange={(v) => setPriceBasis(v)}
 							getOptionId={(option) => option.id}
 							getOptionTitle={(option) => option.title}
 						/>
@@ -93,9 +90,7 @@ const Table = ({ strategy }: TableProps) => {
 				</div>
 			</div>
 
-			{type === 'CoveredCall' && (
-				<CoveredCall priceBasis={inputs.priceBasis.id} withCommission={inputs.withCommission} />
-			)}
+			{type === 'CoveredCall' && <CoveredCall priceBasis={priceBasis.id} withCommission={useCommission} />}
 
 			{type === 'LongCall' && <LongCall />}
 
@@ -103,9 +98,7 @@ const Table = ({ strategy }: TableProps) => {
 
 			{type === 'ProtectivePut' && <ProtectivePut />}
 
-			{type === 'BullCallSpread' && (
-				<BullCallSpread priceBasis={inputs.priceBasis.id} withCommission={inputs.withCommission} />
-			)}
+			{type === 'BullCallSpread' && <BullCallSpread priceBasis={priceBasis.id} withCommission={useCommission} />}
 		</div>
 	);
 };

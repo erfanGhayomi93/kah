@@ -1,3 +1,15 @@
+declare namespace Common {
+	type Time = string;
+
+	interface Commission {
+		marketTitle: string;
+		marketUnitTitle: string;
+		commissionType: string;
+		buyCommission: number;
+		sellCommission: number;
+	}
+}
+
 declare namespace Option {
 	export type IOTM = 'ATM' | 'OTM' | 'ITM';
 
@@ -66,6 +78,10 @@ declare namespace Option {
 		 * اسم شرکت
 		 */
 		companyName: string;
+		/**
+		 * آیدی مارکت
+		 */
+		marketUnit: string;
 	}
 
 	export interface Watchlist {
@@ -651,14 +667,6 @@ declare namespace Broker {
 		executedOrderCnt: number;
 		orderDraftCnt: number;
 		orderOptionCount: number;
-	}
-
-	export interface Commission {
-		marketTitle: string;
-		marketUnitTitle: string;
-		commissionType: string;
-		buyCommission: number;
-		sellCommission: number;
 	}
 }
 

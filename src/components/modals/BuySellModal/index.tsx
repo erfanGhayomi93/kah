@@ -1,4 +1,4 @@
-import { useCommissionsQuery } from '@/api/queries/brokerPrivateQueries';
+import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
@@ -60,7 +60,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		});
 
 		const { data: commissions } = useCommissionsQuery({
-			queryKey: ['commissionsQuery'],
+			queryKey: ['commissionQuery'],
 		});
 
 		const [inputs, setInputs] = useState<IBsModalInputs>({
