@@ -1,3 +1,4 @@
+import useBasketOrderingSystem from './useBasketOrderingSystem';
 import useDebounce from './useDebounce';
 import useErrors from './useErrors';
 import useFirstViewportEntry from './useFirstViewportEntry';
@@ -11,6 +12,7 @@ import useUserInfo from './useUserInfo';
 import useWatchlistColumns from './useWatchlistColumns';
 
 export {
+	useBasketOrderingSystem,
 	useDebounce,
 	useErrors,
 	useFirstViewportEntry,

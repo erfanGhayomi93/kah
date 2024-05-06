@@ -44,6 +44,7 @@ const routes = {
 		time: `${rlc}/Common/v1/Time`,
 		GetBrokers: `${rlc}/Common/v1/GetBrokers`,
 		GetBrokerApiUrls: `${rlc}/Common/v1/GetBrokerApiUrls`,
+		GetBuyAndSellCommission: `${rlc}/Common/v1/GetBuyAndSellCommission`,
 	},
 
 	option: {

@@ -270,7 +270,6 @@ declare interface IBsModalInputs {
 
 declare interface IAnalyzeModalInputs {
 	chartData: Array<Record<'x' | 'y', number>>;
-	intersectionPoint: number;
 	minPrice: number;
 	maxPrice: number;
 	mostProfit: number;
@@ -282,7 +281,6 @@ declare interface IAnalyzeModalInputs {
 	timeValue: number;
 	risk: number;
 	requiredMargin: number;
-	withCommission: boolean;
 }
 
 declare type TSetBsModalInputs = <
@@ -341,6 +339,7 @@ declare namespace OrderBasket {
 
 declare interface ISymbolStrategyContract {
 	id: string;
+	marketUnit: string;
 	quantity: number;
 	price: number;
 	strikePrice: number;
