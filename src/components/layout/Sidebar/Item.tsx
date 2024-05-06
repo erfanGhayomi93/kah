@@ -16,7 +16,7 @@ interface IListAnchor {
 }
 
 interface IListModal {
-	isModal: boolean
+	isModal: boolean;
 }
 
 export type TListItem = (IListButton | IListAnchor | IListModal) & {
@@ -37,11 +37,11 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 
 	const isActive = useMemo(() => {
 		if ('to' in props) return props.to === pathname;
-		else if ('isModal' in props) return false;
+
+		if ('isModal' in props) return false;
 
 		return !sidebarIsExpand && props.items.findIndex((item) => 'to' in item && item.to === pathname) > -1;
 	}, [pathname, sidebarIsExpand]);
-
 
 	const conditionalsAnchor = () => {
 		if ('to' in props) {
@@ -53,12 +53,12 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 			);
 		}
 
-		else if ('isModal' in props) {
+		if ('isModal' in props) {
 			return (
-				<Link onClick={() => onClick?.(props.id)} href={''}>
+				<button type='button' onClick={() => onClick?.(props.id)}>
 					{icon}
 					<span>{label}</span>
-				</Link>
+				</button>
 			);
 		}
 
@@ -74,7 +74,6 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 				{hasDropdown && <ArrowDownSVG style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }} />}
 			</button>
 		);
-
 	};
 
 	const hasDropdown = 'items' in props && props.items.length > 0;

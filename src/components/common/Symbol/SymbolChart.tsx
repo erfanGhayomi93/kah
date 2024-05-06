@@ -73,7 +73,6 @@ const SymbolChart = ({ height, data, type = 'area' }: SymbolChartProps) => {
 					},
 				},
 				yaxis: {
-					min: 0,
 					labels: {
 						formatter: (val) => {
 							return numFormatter(val);
