@@ -14,6 +14,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 
 	return (
 		<Popup
+			zIndex={99999}
 			defaultPopupWidth={160}
 			renderer={() => (
 				<ul style={{ width: '16rem' }} className='overflow-hidden rounded bg-white shadow-tooltip flex-column'>

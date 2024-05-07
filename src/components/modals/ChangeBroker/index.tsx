@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/features/hooks';
 import { setChangeBrokerModal } from '@/features/slices/modalSlice';
-import { type IChangeBrokerModal } from '@/features/slices/modalSlice.interfaces';
+import { type IChangeBrokerModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
 import styled from 'styled-components';

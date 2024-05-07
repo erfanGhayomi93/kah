@@ -164,7 +164,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	},
 	{
 		id: 'symbol_detail',
-		// It'll be "808" after expand
+		// height will be "808" after expand
 		height: 448,
 		expand: true,
 		hidden: false,
@@ -269,20 +269,18 @@ export const dateTypesAPI: Record<
 
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];
 
-
 export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
 	date: 'dates.custom',
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	fromPrice: null,
 	toPrice: null,
 	groupMode: 'GreedyGrouped',
-	transactionType: []
+	transactionType: [],
 };
-
 
 export const defaultTransactionColumns: TTransactionColumnsState = [
 	{
@@ -306,7 +304,6 @@ export const defaultTransactionColumns: TTransactionColumnsState = [
 	{
 		colId: 'station',
 	},
-
 ];
 
 export const initialInstantDepositReportsFilters: InstantDepositReports.IInstantDepositReportsFilters = {
@@ -315,10 +312,10 @@ export const initialInstantDepositReportsFilters: InstantDepositReports.IInstant
 	toPrice: null,
 	fromPrice: null,
 	date: 'dates.month',
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	providers: [],
-	status: []
+	status: [],
 };
 
 export const defaultInstantDepositReportsColumn: TInstantDepositColumnsState = [
@@ -345,81 +342,78 @@ export const defaultInstantDepositReportsColumn: TInstantDepositColumnsState = [
 	},
 ];
 
-
 export const initialDepositWithReceiptReportsFilters: DepositWithReceiptReports.DepositWithReceiptReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	status: [],
 	date: 'dates.month',
 	toPrice: null,
 	fromPrice: null,
 	receiptNumber: null,
-	attachment: null
+	attachment: null,
 };
 
 export const defaultDepositWithReceiptReportsColumn: TDepositWithReceiptReportsColumnsState = [
 	{
-		colId: 'id'
+		colId: 'id',
 	},
 	{
-		colId: 'receiptDate'
+		colId: 'receiptDate',
 	},
 	{
-		colId: 'providerType'
+		colId: 'providerType',
 	},
 	{
-		colId: 'receiptNumber'
+		colId: 'receiptNumber',
 	},
 	{
-		colId: 'amount'
+		colId: 'amount',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 ];
-
-
 
 export const initialWithdrawalCashReportsFilters: WithdrawalCashReports.WithdrawalCashReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	status: [],
 	date: 'dates.week',
 	toPrice: null,
 	fromPrice: null,
-	banks: []
+	banks: [],
 };
 
 export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsState = [
 	{
-		colId: 'id'
+		colId: 'id',
 	},
 	{
-		colId: 'saveDate'
+		colId: 'saveDate',
 	},
 	{
-		colId: 'requestDate'
+		colId: 'requestDate',
 	},
 	{
-		colId: 'customerBank'
+		colId: 'customerBank',
 	},
 	{
-		colId: 'requestAmount'
+		colId: 'requestAmount',
 	},
 	{
-		colId: 'channel'
+		colId: 'channel',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 ];

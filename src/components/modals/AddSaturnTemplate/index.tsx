@@ -3,7 +3,7 @@ import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddSaturnTemplate } from '@/features/slices/modalSlice';
-import { type IAddSaturnTemplate } from '@/features/slices/modalSlice.interfaces';
+import { type IAddSaturnTemplate } from '@/features/slices/types/modalSlice.interfaces';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
@@ -19,7 +19,7 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface AddSaturnTemplateProps extends IAddSaturnTemplate { }
+interface AddSaturnTemplateProps extends IAddSaturnTemplate {}
 
 const AddSaturnTemplate = forwardRef<HTMLDivElement, AddSaturnTemplateProps>(
 	({ baseSymbolTitle, baseSymbolISIN, activeTab, options, ...props }, ref) => {
