@@ -2,7 +2,7 @@ import Checkbox from '@/components/common/Inputs/Checkbox';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
-import { type ISelectSymbolContractsModal } from '@/features/slices/modalSlice.interfaces';
+import { type ISelectSymbolContractsModal } from '@/features/slices/types/modalSlice.interfaces';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
@@ -11,7 +11,7 @@ import Modal, { Header } from '../Modal';
 import ContractsTable from './ContractsTable';
 import Toolbar from './Toolbar';
 
-interface SymbolContractsProps extends ISelectSymbolContractsModal { }
+interface SymbolContractsProps extends ISelectSymbolContractsModal {}
 
 interface ContractProps extends Option.Root {
 	onRemove: () => void;

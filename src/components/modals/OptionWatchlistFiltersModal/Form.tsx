@@ -2,7 +2,7 @@ import ipcMain from '@/classes/IpcMain';
 import { initialOptionWatchlistFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOptionFiltersModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
-import { type IOptionFiltersModal } from '@/features/slices/modalSlice.interfaces';
+import { type IOptionFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

@@ -4,7 +4,7 @@ import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuySellModal } from '@/features/slices/modalSlice';
-import { type IBuySellModal } from '@/features/slices/modalSlice.interfaces';
+import { type IBuySellModal } from '@/features/slices/types/modalSlice.interfaces';
 import { cn, divide } from '@/utils/helpers';
 import dynamic from 'next/dynamic';
 import { forwardRef, useMemo, useState } from 'react';

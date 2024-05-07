@@ -8,7 +8,7 @@ import Tabs from '@/components/common/Tabs/Tabs';
 import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
-import { type IAnalyzeModal } from '@/features/slices/modalSlice.interfaces';
+import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -250,10 +250,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				newStates.baseAssets = baseSymbolPrice;
 
 				if (!newStates.minPrice || minMaxIsInvalid)
-					newStates.minPrice = Math.max(newStates.baseAssets * 0.75, 0);
+					newStates.minPrice = Math.max(newStates.baseAssets * 0.5, 0);
 
 				if (!newStates.maxPrice || minMaxIsInvalid)
-					newStates.maxPrice = Math.max(newStates.baseAssets * 1.25, 0);
+					newStates.maxPrice = Math.max(newStates.baseAssets * 1.5, 0);
 
 				newStates.minPrice = Math.floor(newStates.minPrice);
 				newStates.maxPrice = Math.ceil(newStates.maxPrice);
@@ -313,7 +313,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				//
 			}
 
-			console.log(newStates.minPrice, newStates.maxPrice);
 			setFieldsValue(newStates);
 		}, [
 			JSON.stringify({

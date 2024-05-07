@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/features/hooks';
 import { setDescriptionModal } from '@/features/slices/modalSlice';
-import { type IDescriptionModal } from '@/features/slices/modalSlice.interfaces';
+import { type IDescriptionModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
