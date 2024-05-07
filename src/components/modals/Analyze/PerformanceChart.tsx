@@ -1,5 +1,5 @@
 import AppChart from '@/components/common/AppChart';
-import { sepNumbers, toFixed } from '@/utils/helpers';
+import { divide, sepNumbers, toFixed } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { memo, useEffect, useState } from 'react';
 import PriceRange from './PriceRange';
@@ -90,11 +90,15 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 
 		const diff = Math.round((maxPrice - minPrice) / 100);
 		const l = chartData.length;
+		let closestPositive: null | Record<'x' | 'y', number> = null;
+		let closestNegative: null | Record<'x' | 'y', number> = null;
+		let hasBEP = false;
 		let j = 0;
 		let k = 0;
 
 		for (let i = 0; i < l; i++) {
 			const item = chartData[i];
+			const pnl = item.y;
 
 			if (options.series[j] === undefined) {
 				k = 0;
@@ -103,8 +107,8 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 				};
 			}
 
-			if (k === 0 || k === l - 1 || k % diff === 0) {
-				const color = item.y < 0 ? COLORS.RED : COLORS.GREEN;
+			if (k === 0 || k === l - 1 || k % diff === 0 || pnl === 0) {
+				const color = pnl < 0 ? COLORS.RED : COLORS.GREEN;
 
 				if (k === 0 && j > 0) {
 					options.series[j - 1].data.push({
@@ -119,7 +123,7 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 				});
 			}
 
-			if (item.y === 0) {
+			if (pnl === 0) {
 				options.annotations.push(
 					getAnnotationStyle(
 						item.x,
@@ -128,10 +132,35 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 						'rgba(127, 26, 255, 1)',
 					),
 				);
+
+				hasBEP = true;
 				j++;
+			} else if (i > 0) {
+				const previousItem = chartData[i - 1];
+
+				if ((previousItem.y > 0 && pnl < 0) || (previousItem.y < 0 && pnl > 0)) {
+					j++;
+				}
+
+				const absoluteValue = Math.abs(pnl);
+				if (pnl >= 0 && (!closestPositive || absoluteValue < closestPositive.y)) {
+					closestPositive = item;
+				} else if (pnl < 0 && (!closestNegative || absoluteValue < Math.abs(closestNegative.y))) {
+					closestNegative = item;
+				}
 			}
 
 			k++;
+		}
+
+		if (!hasBEP && closestPositive !== null && closestNegative !== null) {
+			const xDiff = closestPositive.x - closestNegative.x;
+			const x = divide(closestPositive.y - closestNegative.y, xDiff) * xDiff + closestNegative.x;
+
+			hasBEP = true;
+			options.annotations.push(
+				getAnnotationStyle(x, t('analyze_modal.break_even_point'), String(x), 'rgba(127, 26, 255, 1)'),
+			);
 		}
 
 		options.colors = options.series.reduce<string[]>((total, current) => [...total, current.data[0].color], []);
