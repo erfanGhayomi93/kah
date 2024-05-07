@@ -3,7 +3,7 @@ import { setConfirmModal } from '@/features/slices/modalSlice';
 import { type IConfirmModal } from '@/features/slices/modalSlice.interfaces';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useLayoutEffect } from 'react';
+import { forwardRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 
@@ -39,26 +39,25 @@ const Confirm = forwardRef<HTMLDivElement, ConfirmProps>(
 		};
 
 		const onKeyDown = (e: KeyboardEvent) => {
-			e.stopPropagation();
-			e.preventDefault();
-
 			if (e.key === 'Escape') {
 				onCloseModalAndNotify();
-				return;
-			}
-
-			if (e.key === 'Enter') {
+				e.stopPropagation();
+				e.preventDefault();
+			} else if (e.key === 'Enter') {
 				onConfirm();
-				return;
+				e.stopPropagation();
+				e.preventDefault();
 			}
 		};
 
-		useLayoutEffect(() => {
+		useEffect(() => {
 			const controller = new AbortController();
 
 			window.addEventListener('keydown', onKeyDown);
 
-			return () => controller.abort();
+			return () => {
+				controller.abort();
+			};
 		}, []);
 
 		return (

@@ -1,3 +1,4 @@
+import { TooltipElement } from '@/classes/Tooltip';
 import { type ICellRendererComp, type ICellRendererParams } from 'ag-grid-community';
 import ActionCell from './ActionCell';
 
@@ -31,6 +32,8 @@ class DraftActionCell extends ActionCell implements ICellRendererComp<Order.Draf
 			this.params.onSend(this.params.data!);
 		};
 
+		this.addTooltip('ارسال پیش‌نویس', btn);
+
 		return btn;
 	}
 
@@ -40,6 +43,8 @@ class DraftActionCell extends ActionCell implements ICellRendererComp<Order.Draf
 			e.stopPropagation();
 			this.params.onCopy(this.params.data!);
 		};
+
+		this.addTooltip('کپی پیش‌نویس', btn);
 
 		return btn;
 	}
@@ -51,6 +56,8 @@ class DraftActionCell extends ActionCell implements ICellRendererComp<Order.Draf
 			this.params.onEdit(this.params.data!);
 		};
 
+		this.addTooltip('ویرایش پیش‌نویس', btn);
+
 		return btn;
 	}
 
@@ -60,6 +67,8 @@ class DraftActionCell extends ActionCell implements ICellRendererComp<Order.Draf
 			e.stopPropagation();
 			this.params.onDelete(this.params.data!);
 		};
+
+		this.addTooltip('حذف پیش‌نویس', btn);
 
 		return btn;
 	}
@@ -71,6 +80,12 @@ class DraftActionCell extends ActionCell implements ICellRendererComp<Order.Draf
 	refresh(params: DraftActionCellProps) {
 		this.params = params;
 		return true;
+	}
+
+	addTooltip(content: string, children: HTMLElement) {
+		const tooltip = new TooltipElement(children);
+		tooltip.animation = false;
+		tooltip.setContent(content).add();
 	}
 }
 
