@@ -51,7 +51,6 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 				if (e.key !== 'Escape') return;
 
 				onClose();
-
 				removeListener();
 			} catch (e) {
 				//
@@ -71,7 +70,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 				signal: controller.signal,
 			});
 
-			return () => controller.abort();
+			return () => {
+				controller.abort();
+			};
 		}, []);
 
 		useEffect(() => {

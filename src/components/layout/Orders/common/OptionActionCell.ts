@@ -15,8 +15,6 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 
 	eCollateral!: HTMLButtonElement;
 
-	tooltip: TooltipElement | null = null;
-
 	init(params: OptionActionCellProps) {
 		this.params = params;
 		this.eGui = document.createElement('div');
@@ -33,6 +31,8 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 			e.stopPropagation();
 			this.params.onClosePosition(this.params.data!);
 		};
+
+		this.addTooltip('بستن موقعیت', btn);
 
 		return btn;
 	}
@@ -52,6 +52,8 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 			this.params.showDetails(this.params.data!);
 		};
 
+		this.addTooltip('جزئیات موقعیت', btn);
+
 		return btn;
 	}
 
@@ -65,18 +67,29 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 		if (isDisabled) {
 			this.eCollateral.classList.add('text-gray-700');
 			this.eCollateral.disabled = true;
-
-			this.tooltip = new TooltipElement(this.eCollateral);
-			this.tooltip.setContent('غیرفعال');
 		} else {
 			this.eCollateral.disabled = false;
-			if (this.tooltip) this.tooltip.destroy();
 		}
 
 		this.eCollateral.onclick = (e) => {
 			e.stopPropagation();
 			if (!isDisabled) this.params.onChangeCollateral(this.params.data!);
 		};
+
+		this.addTooltip('تغییر روش تضمین', this.eCollateral);
+	}
+
+	refresh(params: OptionActionCellProps) {
+		this.params = params;
+		this.updateCollateral();
+
+		return true;
+	}
+
+	addTooltip(content: string, children: HTMLElement) {
+		const tooltip = new TooltipElement(children);
+		tooltip.animation = false;
+		tooltip.setContent(content).add();
 	}
 
 	get blockType() {
@@ -85,13 +98,6 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 
 	get isSwapDisabled() {
 		return Boolean(this.params.data?.side === 'Call' || !this.params.data?.isFreeze);
-	}
-
-	refresh(params: OptionActionCellProps) {
-		this.params = params;
-		this.updateCollateral();
-
-		return true;
 	}
 }
 
