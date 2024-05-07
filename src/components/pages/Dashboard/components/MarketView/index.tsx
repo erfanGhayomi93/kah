@@ -68,9 +68,7 @@ const MarketView = () => {
 							<span>{t('home.tab_overall_index')}:</span>
 							<span className='pr-8 font-medium ltr'>
 								(%{toFixed(indexDetails?.equalWeightOverallPercent ?? 0)}){' '}
-								{indexDetails?.equalWeightOverallValue
-									? sepNumbers(String(indexDetails.equalWeightOverallValue))
-									: '−'}
+								{sepNumbers(String(indexDetails?.equalWeightOverallValue ?? 0))}
 							</span>
 						</>
 					),
@@ -82,9 +80,7 @@ const MarketView = () => {
 							<span>{t('home.tab_same_weight_index')}:</span>
 							<span className='pr-8 font-medium ltr'>
 								(%{toFixed(indexDetails?.retailTradesPercent ?? 0)}){' '}
-								{indexDetails?.retailTradesValue
-									? sepNumbers(String(indexDetails.retailTradesValue))
-									: '−'}
+								{sepNumbers(String(indexDetails?.retailTradesValue ?? 0))}
 							</span>
 						</>
 					),
@@ -96,9 +92,7 @@ const MarketView = () => {
 							<span>{t('home.tab_small_trades_value')}:</span>
 							<span className='pr-8 font-medium ltr'>
 								(%{toFixed(indexDetails?.retailTradesPercent ?? 0)}){' '}
-								{indexDetails?.retailTradesValue
-									? sepNumbers(String(indexDetails?.retailTradesValue))
-									: '−'}
+								{sepNumbers(String(indexDetails?.retailTradesValue ?? 0))}
 							</span>
 						</>
 					),
