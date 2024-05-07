@@ -17,7 +17,7 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface DepositProps extends IDepositModal { }
+interface DepositProps extends IDepositModal {}
 
 const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 	const t = useTranslations();
@@ -30,7 +30,7 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 	};
 
 	const onExpanded = () => {
-		setIsShowExpanded(prev => !prev);
+		setIsShowExpanded((prev) => !prev);
 	};
 
 	return (
@@ -41,31 +41,23 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Header
-				label={t('deposit_modal.title')}
-				onClose={onCloseModal}
-				onExpanded={onExpanded}
-				isExpanded
-			/>
+			<Header label={t('deposit_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} isExpanded />
 
-			<div className='flex p-24 bg-white'>
-				<Div className={clsx('flex-column', {
-					'border-l border-gray-500 pr-16 pl-24': isShowExpanded
-				})}>
+			<div className='flex bg-white p-24'>
+				<Div
+					className={clsx('flex-column', {
+						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
+					})}
+				>
 					<Body />
 				</Div>
 
-				<AnimatePresence
-					initial={{ animation: 'fadeInLeft' }}
-					exit={{ animation: 'fadeOutLeft' }}
-				>
-					{
-						isShowExpanded && (
-							<Div className='bg-white'>
-								<HistoryDeposit />
-							</Div>
-						)
-					}
+				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
+					{isShowExpanded && (
+						<Div className='bg-white'>
+							<HistoryDeposit />
+						</Div>
+					)}
 				</AnimatePresence>
 			</div>
 		</Modal>

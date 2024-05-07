@@ -26,7 +26,7 @@ const Transactions = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const { brokerIsSelected, loggedIn, loggingIn } = useAppSelector((state) => state.user);
+	const { brokerIsSelected, loggedIn } = useAppSelector((state) => state.user);
 
 	const onShowFilters = () => {
 		// const params: Partial<IOptionFiltersModal> = {};
@@ -94,8 +94,12 @@ const Transactions = () => {
 	}, [JSON.stringify(inputs ?? {})]);
 
 	useEffect(() => {
-		if (!brokerIsSelected) router.push('/');
-	}, [loggedIn]);
+		if (!loggedIn || !brokerIsSelected) {
+			router.push('/');
+		}
+	}, []);
+
+	if (!loggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>

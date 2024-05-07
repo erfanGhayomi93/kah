@@ -6,13 +6,6 @@
 		"source.removeUnused": "never",
 		"source.organizeImports": "explicit"
 	},
-	"cSpell.words": [
-		"kahkeshan",
-		"payfast",
-		"pushengine",
-		"Scholes",
-		"toman",
-		"کدال",
-		"clsx"
-	]
+	"cSpell.words": ["kahkeshan", "payfast", "pushengine", "Scholes", "toman", "کدال", "clsx"],
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }
