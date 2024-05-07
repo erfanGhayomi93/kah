@@ -1,29 +1,47 @@
 import AppChart from '@/components/common/AppChart';
 import { sepNumbers, toFixed } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import PriceRange from './PriceRange';
 
-interface PerformanceChartProps
-	extends Pick<
-		IAnalyzeModalInputs,
-		'minPrice' | 'maxPrice' | 'chartData' | 'intersectionPoint' | 'baseAssets' | 'bep'
-	> {
+interface IAxisChartSeries {
+	data: Array<{
+		x: number | string;
+		y: number | string;
+		color: string;
+	}>;
+}
+
+interface IChartOptions {
+	series: IAxisChartSeries[];
+	annotations: XAxisAnnotations[];
+	colors: string[];
+}
+
+interface PerformanceChartProps {
+	inputs: Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice' | 'chartData' | 'baseAssets'>;
 	onChange: (values: Partial<Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
-const PerformanceChart = ({
-	chartData,
-	bep,
-	intersectionPoint,
-	baseAssets,
-	maxPrice,
-	minPrice,
-	onChange,
-}: PerformanceChartProps) => {
+const COLORS = {
+	GREEN: 'rgba(0, 194, 136)',
+	RED: 'rgb(255, 82, 109)',
+};
+
+const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 	const t = useTranslations();
 
-	const getAnnotationStyle = (x: string, label: string, value: string, color: string, h: boolean) => ({
+	const [chartOptions, setChartOptions] = useState<IChartOptions>({
+		series: [
+			{
+				data: [{ x: 0, y: 0, color: COLORS.GREEN }],
+			},
+		],
+		annotations: [],
+		colors: [COLORS.GREEN],
+	});
+
+	const getAnnotationStyle = (x: number | string, label: string, value: string, color: string, h = false) => ({
 		x,
 		strokeDashArray: 8,
 		borderWidth: 2,
@@ -33,7 +51,7 @@ const PerformanceChart = ({
 			borderRadius: 4,
 			borderWidth: 0,
 			orientation: 'horizontal',
-			text: `‎${value} :${label}`,
+			text: `‎${sepNumbers(value)} :${label}`,
 			style: {
 				background: color,
 				color: 'rgb(255, 255, 255)',
@@ -51,61 +69,84 @@ const PerformanceChart = ({
 		},
 	});
 
-	const colors = ['rgb(0, 194, 136)', 'rgb(255, 82, 109)'];
+	useEffect(() => {
+		const { chartData, baseAssets, maxPrice, minPrice } = inputs;
 
-	const [chunk1, chunk2] = useMemo<Array<typeof chartData>>(() => {
-		const result: Array<typeof chartData> = [[], []];
+		if (maxPrice - minPrice === 0) return;
+
+		const options: IChartOptions = {
+			annotations: [
+				getAnnotationStyle(
+					baseAssets,
+					t('analyze_modal.base_assets'),
+					String(baseAssets),
+					'rgba(0, 87, 255, 1)',
+					true,
+				),
+			],
+			series: [],
+			colors: [],
+		};
+
+		const diff = Math.round((maxPrice - minPrice) / 100);
 		const l = chartData.length;
+		let j = 0;
+		let k = 0;
 
 		for (let i = 0; i < l; i++) {
 			const item = chartData[i];
 
-			if (item) {
-				if (item.y > 0) result[0].push(item);
-				else if (item.y < 0) result[1].push(item);
+			if (options.series[j] === undefined) {
+				k = 0;
+				options.series[j] = {
+					data: [],
+				};
 			}
+
+			if (k === 0 || k === l - 1 || k % diff === 0) {
+				const color = item.y < 0 ? COLORS.RED : COLORS.GREEN;
+
+				if (k === 0 && j > 0) {
+					options.series[j - 1].data.push({
+						...item,
+						color,
+					});
+				}
+
+				options.series[j].data.push({
+					...item,
+					color,
+				});
+			}
+
+			if (item.y === 0) {
+				options.annotations.push(
+					getAnnotationStyle(
+						item.x,
+						t('analyze_modal.break_even_point'),
+						String(item.x),
+						'rgba(127, 26, 255, 1)',
+					),
+				);
+				j++;
+			}
+
+			k++;
 		}
 
-		const centerPoint = { y: 0, x: intersectionPoint };
+		options.colors = options.series.reduce<string[]>((total, current) => [...total, current.data[0].color], []);
+		setChartOptions(options);
+	}, [JSON.stringify(inputs)]);
 
-		if (result[0].length > 2 && result[1].length) {
-			if (result[0].length > 2) {
-				if (result[0][0].y > result[0][1].y) result[0].push(centerPoint);
-				else result[0].unshift(centerPoint);
-			}
-
-			if (result[1].length > 2) {
-				if (result[1][0].y > result[1][1].y) result[1].unshift(centerPoint);
-				else result[1].push(centerPoint);
-			}
-		}
-
-		return result;
-	}, [JSON.stringify(chartData), intersectionPoint]);
+	const { series, annotations, colors } = chartOptions;
 
 	return (
 		<div className='gap-8 flex-column'>
 			<AppChart
-				key='324'
 				options={{
 					colors,
 					annotations: {
-						xaxis: [
-							getAnnotationStyle(
-								String(bep.x),
-								t('analyze_modal.break_even_point'),
-								sepNumbers(String(bep.x)),
-								'rgba(127, 26, 255, 1)',
-								false,
-							),
-							getAnnotationStyle(
-								String(baseAssets),
-								t('analyze_modal.base_assets'),
-								sepNumbers(String(baseAssets)),
-								'rgba(0, 87, 255, 1)',
-								true,
-							),
-						],
+						xaxis: annotations,
 					},
 					tooltip: {
 						custom: ({ series, seriesIndex, dataPointIndex, w }) => {
@@ -120,8 +161,8 @@ const PerformanceChart = ({
 						},
 					},
 					xaxis: {
-						min: minPrice,
-						max: maxPrice,
+						min: inputs.minPrice,
+						max: inputs.maxPrice,
 						offsetX: 0,
 						offsetY: 0,
 						tickAmount: 5,
@@ -157,24 +198,15 @@ const PerformanceChart = ({
 						},
 					},
 				}}
-				series={[
-					{
-						type: 'area',
-						data: chunk1,
-					},
-					{
-						type: 'area',
-						data: chunk2,
-					},
-				]}
+				series={series}
 				type='area'
 				width='100%'
 				height={304}
 			/>
 
-			<PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />
+			<PriceRange maxPrice={inputs.maxPrice} minPrice={inputs.minPrice} onChange={onChange} />
 		</div>
 	);
 };
 
-export default PerformanceChart;
+export default memo(PerformanceChart);

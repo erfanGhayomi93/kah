@@ -1,10 +1,8 @@
-import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { useMemo } from 'react';
 import AppChart from '../AppChart';
 
-interface SymbolChartProps {
-	type?: 'area' | 'candlestick';
+interface SymbolChartProps extends Partial<ISymbolChartStates> {
 	data: Symbol.ChartData[];
 	height?: number | string;
 }
@@ -12,11 +10,7 @@ interface SymbolChartProps {
 type TLinearChartResponse = Record<'x' | 'y', number>;
 type TCandleChartResponse = [number, [number, number, number, number]];
 
-const SymbolChart = ({ height, data, type = 'area' }: SymbolChartProps) => {
-	const dateFormatter = (v: string | number) => {
-		return dayjs(v).calendar('jalali').format('HH:mm');
-	};
-
+const SymbolChart = ({ height, data, type = 'area', interval = 'daily' }: SymbolChartProps) => {
 	const dataMapper: TLinearChartResponse[] | TCandleChartResponse[] = useMemo(() => {
 		if (!Array.isArray(data)) return [];
 		if (type === 'area') {
@@ -59,7 +53,7 @@ const SymbolChart = ({ height, data, type = 'area' }: SymbolChartProps) => {
 				xaxis: {
 					offsetX: 0,
 					offsetY: 0,
-					tickAmount: 7,
+					tickAmount: 4,
 					axisBorder: {
 						show: false,
 					},
@@ -68,7 +62,8 @@ const SymbolChart = ({ height, data, type = 'area' }: SymbolChartProps) => {
 					},
 					labels: {
 						formatter: (val) => {
-							return dateFormatter(val);
+							if (isNaN(Number(val))) return '-';
+							return dateFormatter(val + 1e3, interval === 'daily' ? 'time' : 'date');
 						},
 					},
 				},

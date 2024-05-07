@@ -55,7 +55,7 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
 					{isShowExpanded && (
 						<Div className='bg-white'>
-							<HistoryDeposit />
+							<HistoryDeposit onCloseModal={onCloseModal} />
 						</Div>
 					)}
 				</AnimatePresence>
