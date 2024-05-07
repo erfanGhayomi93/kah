@@ -58,7 +58,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 			setManageColumnsPanel({
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: () => {},
+				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
 			}),
 		);
 	};
@@ -336,6 +336,20 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 			//
 		}
 	}, [data]);
+
+	useEffect(() => {
+		const eGrid = gridRef.current;
+		if (!eGrid || !Array.isArray(columnsVisibility)) return;
+
+		try {
+			for (let i = 0; i < columnsVisibility.length; i++) {
+				const { hidden, id } = columnsVisibility[i];
+				eGrid.setColumnsVisible([id], !hidden);
+			}
+		} catch (e) {
+			//
+		}
+	}, [columnsVisibility]);
 
 	const rows = data ?? [];
 

@@ -61,7 +61,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 			setManageColumnsPanel({
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: () => {},
+				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
 			}),
 		);
 	};
@@ -206,7 +206,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 			},
 			{
 				colId: 'lspPremium',
-				headerName: 'قیمت نماد کال خرید با درصد',
+				headerName: 'قیمت نماد کال خرید',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
@@ -217,7 +217,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 			},
 			{
 				colId: 'hspPremium',
-				headerName: 'قیمت نماد کال فروش با درصد',
+				headerName: 'قیمت نماد کال فروش',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
@@ -383,6 +383,20 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 			//
 		}
 	}, [data]);
+
+	useEffect(() => {
+		const eGrid = gridRef.current;
+		if (!eGrid || !Array.isArray(columnsVisibility)) return;
+
+		try {
+			for (let i = 0; i < columnsVisibility.length; i++) {
+				const { hidden, id } = columnsVisibility[i];
+				eGrid.setColumnsVisible([id], !hidden);
+			}
+		} catch (e) {
+			//
+		}
+	}, [columnsVisibility]);
 
 	const rows = data ?? [];
 

@@ -1,6 +1,8 @@
 import { RefreshSVG, XSVG } from '@/components/icons';
 import { useAppSelector } from '@/features/hooks';
 import { getManageColumnsPanel } from '@/features/slices/panelSlice';
+import clsx from 'clsx';
+import { useState } from 'react';
 
 interface ColumnsProps {
 	close: () => void;
@@ -8,6 +10,22 @@ interface ColumnsProps {
 
 const Columns = ({ close }: ColumnsProps) => {
 	const manageColumns = useAppSelector(getManageColumnsPanel);
+
+	const [columns, setColumns] = useState(manageColumns?.columns ?? []);
+
+	const onColumnChanged = (updatedCol: IManageStrategyColumn) => {
+		try {
+			const newColumns = columns.map((col) => ({
+				...col,
+				hidden: Boolean(col.id === updatedCol.id ? !col.hidden : col.hidden),
+			}));
+
+			setColumns(newColumns);
+			manageColumns?.onColumnChanged(updatedCol, newColumns);
+		} catch (e) {
+			//
+		}
+	};
 
 	return (
 		<>
@@ -23,6 +41,26 @@ const Columns = ({ close }: ColumnsProps) => {
 					</button>
 				</div>
 			</div>
+
+			<ul className='flex flex-wrap gap-x-16 gap-y-24 px-24'>
+				{columns.map((col) => (
+					<li key={col.id}>
+						<button
+							onClick={() => onColumnChanged(col)}
+							type='button'
+							style={{ width: '14.4rem' }}
+							className={clsx(
+								'h-40 rounded transition-colors flex-justify-center',
+								col.hidden
+									? 'bg-white text-gray-900 shadow-sm hover:shadow-none hover:btn-hover'
+									: 'bg-primary-400 text-white hover:bg-primary-300',
+							)}
+						>
+							{col.title}
+						</button>
+					</li>
+				))}
+			</ul>
 		</>
 	);
 };

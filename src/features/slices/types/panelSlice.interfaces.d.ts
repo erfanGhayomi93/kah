@@ -3,7 +3,7 @@ export interface IManageColumnsModal {
 	columns: IManageStrategyColumn[];
 	applyChangesAfterClose?: boolean;
 	onReset?: () => void;
-	onColumnChanged: () => void;
+	onColumnChanged: (updatedCol: IManageStrategyColumn, columns: IManageStrategyColumn[]) => void;
 }
 
 export interface PanelState {
