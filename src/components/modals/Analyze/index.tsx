@@ -235,18 +235,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 		useEffect(() => {
 			const data = selectedContractsAsSymbol;
 			const newStates: IAnalyzeModalInputs = {
+				...inputs,
 				chartData: [],
-				minPrice: 0,
-				maxPrice: 0,
-				mostProfit: 0,
-				mostLoss: 0,
-				baseAssets: 0,
-				bep: { x: 0, y: 0 },
-				budget: 0,
-				profitProbability: 0,
-				timeValue: 0,
-				risk: 0,
-				requiredMargin: 0,
 			};
 
 			newStates.chartData = [];
@@ -323,6 +313,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				//
 			}
 
+			console.log(newStates.minPrice, newStates.maxPrice);
 			setFieldsValue(newStates);
 		}, [
 			JSON.stringify({

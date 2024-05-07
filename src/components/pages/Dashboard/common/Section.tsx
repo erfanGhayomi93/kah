@@ -7,7 +7,7 @@ import clsx from 'clsx';
 
 export interface ITab<T> {
 	id: T;
-	title: string;
+	title: React.ReactNode;
 }
 
 interface SectionProps<T, B> {

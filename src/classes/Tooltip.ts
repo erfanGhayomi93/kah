@@ -172,6 +172,7 @@ class TooltipElement extends TooltipWrapper {
 
 	public setContent(value: string | HTMLElement) {
 		this._content = value;
+		return this;
 	}
 
 	public setSingleton(value: AppTooltip.Singleton) {
@@ -196,6 +197,10 @@ class TooltipElement extends TooltipWrapper {
 				this._offsetXY = value;
 				break;
 		}
+	}
+
+	public add() {
+		Tooltip.add(this);
 	}
 
 	// Getter
