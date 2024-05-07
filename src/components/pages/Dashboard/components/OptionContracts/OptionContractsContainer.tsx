@@ -104,11 +104,11 @@ const OptionContractsContainer = ({ basis, type }: OptionContractsContainerProps
 						)}
 					>
 						<span className='text-gray-900'>{item.title}:</span>
-						<div className='flex gap-8 text-gray-1000'>
+						<div className='flex gap-8 text-gray-1000 ltr'>
+							{item.value}
 							<span className={item.id && item.id === dataPointHover ? COLORS[item.id] : ''}>
 								{item.percent}%
 							</span>
-							{item.value}
 						</div>
 					</li>
 				))}

@@ -1,11 +1,21 @@
-import { useGetIndexQuery, useGetRetailTradeValuesQuery } from '@/api/queries/dashboardQueries';
+import {
+	useGetIndexDetailsQuery,
+	useGetIndexQuery,
+	useGetRetailTradeValuesQuery,
+} from '@/api/queries/dashboardQueries';
+import { sepNumbers, toFixed } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import Section from '../../common/Section';
+import { useMemo, useState } from 'react';
+import Section, { type ITab } from '../../common/Section';
 import Suspend from '../../common/Suspend';
 import MarketViewChart from './MarketViewChart';
 
 type TIndexData = Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall | Dashboard.GetIndex.RetailTrades;
+
+type TTabs = Partial<{
+	top: Array<ITab<Dashboard.TInterval>> | React.ReactNode;
+	bottom: Array<ITab<Dashboard.TIndex>> | React.ReactNode;
+}>;
 
 interface IDefaultActiveTab {
 	top: Dashboard.TInterval;
@@ -37,6 +47,67 @@ const MarketView = () => {
 		enabled: defaultTab.bottom === 'RetailTrades',
 	});
 
+	const { data: indexDetails } = useGetIndexDetailsQuery({
+		queryKey: ['getIndexDetailsQuery'],
+	});
+
+	const tabs = useMemo<TTabs>(
+		() => ({
+			top: [
+				{ id: 'Today', title: t('home.tab_day') },
+				{ id: 'Week', title: t('home.tab_week') },
+				{ id: 'Month', title: t('home.tab_month') },
+				{ id: 'ThreeMonths', title: t('home.tab_3month') },
+				{ id: 'Year', title: t('home.tab_year') },
+			],
+			bottom: [
+				{
+					id: 'Overall',
+					title: (
+						<>
+							<span>{t('home.tab_overall_index')}:</span>
+							<span className='pr-8 font-medium ltr'>
+								(%{toFixed(indexDetails?.equalWeightOverallPercent ?? 0)}){' '}
+								{indexDetails?.equalWeightOverallValue
+									? sepNumbers(String(indexDetails.equalWeightOverallValue))
+									: '−'}
+							</span>
+						</>
+					),
+				},
+				{
+					id: 'EqualWeightOverall',
+					title: (
+						<>
+							<span>{t('home.tab_same_weight_index')}:</span>
+							<span className='pr-8 font-medium ltr'>
+								(%{toFixed(indexDetails?.retailTradesPercent ?? 0)}){' '}
+								{indexDetails?.retailTradesValue
+									? sepNumbers(String(indexDetails.retailTradesValue))
+									: '−'}
+							</span>
+						</>
+					),
+				},
+				{
+					id: 'RetailTrades',
+					title: (
+						<>
+							<span>{t('home.tab_small_trades_value')}:</span>
+							<span className='pr-8 font-medium ltr'>
+								(%{toFixed(indexDetails?.retailTradesPercent ?? 0)}){' '}
+								{indexDetails?.retailTradesValue
+									? sepNumbers(String(indexDetails?.retailTradesValue))
+									: '−'}
+							</span>
+						</>
+					),
+				},
+			],
+		}),
+		[],
+	);
+
 	const [data, isLoading] =
 		defaultTab.bottom === 'RetailTrades'
 			? [retailTradesData ?? {}, isLoadingRetailTrades]
@@ -52,20 +123,7 @@ const MarketView = () => {
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
 			onBottomTabChange={(v) => setDefaultTabByPosition('bottom', v)}
-			tabs={{
-				top: [
-					{ id: 'Today', title: t('home.tab_day') },
-					{ id: 'Week', title: t('home.tab_week') },
-					{ id: 'Month', title: t('home.tab_month') },
-					{ id: 'ThreeMonths', title: t('home.tab_3month') },
-					{ id: 'Year', title: t('home.tab_year') },
-				],
-				bottom: [
-					{ id: 'Overall', title: t('home.tab_overall_index') },
-					{ id: 'EqualWeightOverall', title: t('home.tab_same_weight_index') },
-					{ id: 'RetailTrades', title: t('home.tab_small_trades_value') },
-				],
-			}}
+			tabs={tabs}
 		>
 			<MarketViewChart interval={defaultTab.top} type={defaultTab.bottom} data={data as TIndexData} />
 			<Suspend isLoading={isLoading} isEmpty={dataIsEmpty} />

@@ -1,6 +1,6 @@
 'use client';
 
-import TooltipManager, { TooltipElement } from '@/classes/Tooltip';
+import { TooltipElement } from '@/classes/Tooltip';
 import { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 export interface ITooltipProps {
@@ -45,7 +45,7 @@ const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
 			if (offset) tooltipRef.current.setOffset(offset);
 			if (placement) tooltipRef.current.placement = placement;
 
-			TooltipManager.add(tooltipRef.current);
+			tooltipRef.current.add();
 		}, [childRef.current]);
 
 		useEffect(() => {

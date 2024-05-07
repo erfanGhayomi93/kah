@@ -291,6 +291,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت باز',
+			cellClass: 'ltr',
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
