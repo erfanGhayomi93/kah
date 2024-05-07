@@ -3,7 +3,7 @@ import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setForgetPasswordModal, setLoginModal } from '@/features/slices/modalSlice';
-import { type IForgetPasswordModal } from '@/features/slices/modalSlice.interfaces';
+import { type IForgetPasswordModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { forwardRef, useState } from 'react';

@@ -178,6 +178,12 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
+declare interface IManageStrategyColumn {
+	id: string;
+	title: string;
+	hidden: boolean;
+}
+
 declare interface ISymbolInfoPanelGrid {
 	id: TSymbolInfoPanelSections;
 	height: number;

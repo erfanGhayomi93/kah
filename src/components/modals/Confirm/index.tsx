@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/features/hooks';
 import { setConfirmModal } from '@/features/slices/modalSlice';
-import { type IConfirmModal } from '@/features/slices/modalSlice.interfaces';
+import { type IConfirmModal } from '@/features/slices/types/modalSlice.interfaces';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useEffect } from 'react';

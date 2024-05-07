@@ -1,7 +1,7 @@
 import { PayMoneySVG, SnowFlakeSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setChoiceCollateralModal } from '@/features/slices/modalSlice';
-import { type IChoiceCollateral } from '@/features/slices/modalSlice.interfaces';
+import { type IChoiceCollateral } from '@/features/slices/types/modalSlice.interfaces';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -15,7 +15,7 @@ const Div = styled.div`
 	position: relative;
 `;
 
-interface ChoiceCollateralProps extends IChoiceCollateral { }
+interface ChoiceCollateralProps extends IChoiceCollateral {}
 
 const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ order, ...props }, ref) => {
 	const t = useTranslations();
