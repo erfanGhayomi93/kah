@@ -720,8 +720,8 @@
 		"state_Draft": "ثبت شده",
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
-		"state_PayFast": "پرداخت سریع" , 
-		"more_reports_deposit" : "مشاهده در گزارشات"
+		"state_PayFast": "پرداخت سریع",
+		"more_reports_deposit": "مشاهده در گزارشات"
 	},
 	"payment_result": {
 		"payment_success_title": "پرداخت موفق",
@@ -935,7 +935,8 @@
 		"strategy_desc_BullCallSpread": "خرید اختیار خرید اعمال بالا <plus></plus> فروش اختیار خرید اعمال پایین ",
 		"prepared_strategy": "استراتژی آماده",
 		"build_strategy": "ساخت استراتژی",
-		"market_process": "روند بازار"
+		"market_process": "روند بازار",
+		"manage_columns": "مدیریت ستون‌های جدول"
 	},
 	"exchange": {
 		"Exchange": "بورس",

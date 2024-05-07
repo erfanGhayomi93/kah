@@ -1,7 +1,7 @@
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setOrderDetailsModal } from '@/features/slices/modalSlice';
-import { type TOrderDetailsModal } from '@/features/slices/modalSlice.interfaces';
+import { type TOrderDetailsModal } from '@/features/slices/types/modalSlice.interfaces';
 import dayjs from '@/libs/dayjs';
 import { dateFormatter, days, sepNumbers, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';

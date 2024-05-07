@@ -3,26 +3,42 @@ import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { useLocalstorage } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
-import { useEffect, useMemo, useRef } from 'react';
+import { useTranslations } from 'next-intl';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ISelectItem } from '..';
+import Filters from '../components/Filters';
 import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
 
 interface CoveredCallProps {
-	priceBasis: TPriceBasis;
-	withCommission: boolean;
+	title: string;
+	type: Strategy.Type;
 }
 
-const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
+const CoveredCall = ({ title, type }: CoveredCallProps) => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.CoveredCall>>(null);
 
+	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('covered_call_column', initialColumnsCoveredCall);
+
+	const [priceBasis, setPriceBasis] = useState<ISelectItem>({
+		id: 'LastTradePrice',
+		title: t('strategy.last_traded_price'),
+	});
+
 	const { data, isFetching } = useCoveredCallQuery({
-		queryKey: ['coveredCallQuery', priceBasis, withCommission],
+		queryKey: ['coveredCallQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
@@ -37,9 +53,20 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 		//
 	};
 
+	const showColumnsPanel = () => {
+		dispatch(
+			setManageColumnsPanel({
+				columns: columnsVisibility,
+				title: t('strategies.manage_columns'),
+				onColumnChanged: () => {},
+			}),
+		);
+	};
+
 	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall>>>(
 		() => [
 			{
+				colId: 'baseSymbolISIN',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -48,8 +75,8 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
+				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
-				colId: 'baseSymbolPrice',
 				minWidth: 108,
 				valueGetter: ({ data }) =>
 					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
@@ -60,11 +87,13 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				}),
 			},
 			{
+				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
 				width: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
+				colId: 'callSymbolISIN',
 				headerName: 'اختیار خرید',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -76,6 +105,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				},
 			},
 			{
+				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
 				width: 96,
 				cellClass: 'gray',
@@ -83,12 +113,14 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'openPositionCount',
 				headerName: 'موقعیت باز',
 				width: 112,
 				valueGetter: ({ data }) => data?.openPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'optionBestBuyLimitPrice',
 				headerName: 'قیمت بهترین خریدار',
 				width: 152,
 				cellClass: 'buy',
@@ -96,6 +128,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'optionBestBuyLimitQuantity',
 				headerName: 'حجم سرخط خرید',
 				width: 152,
 				cellClass: 'buy',
@@ -103,6 +136,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'optionBestSellLimitPrice',
 				headerName: 'قیمت بهترین فروشنده',
 				width: 152,
 				cellClass: 'sell',
@@ -110,6 +144,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'optionBestSellLimitQuantity',
 				headerName: 'حجم سر خط فروش',
 				width: 152,
 				cellClass: 'sell',
@@ -117,6 +152,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'coveredCallBEP',
 				headerName: 'سر به سر استراتژی',
 				width: 136,
 				cellClass: ({ data }) =>
@@ -127,6 +163,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'maxProfit',
 				headerName: 'بیشینه سود',
 				width: 184,
 				headerComponent: HeaderHint,
@@ -141,6 +178,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ data }) => sepNumbers(String(data!.maxProfit)),
 			},
 			{
+				colId: 'nonExpiredProfit',
 				headerName: 'سود عدم اعمال',
 				width: 184,
 				headerComponent: HeaderHint,
@@ -155,12 +193,14 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ data }) => sepNumbers(String(data!.nonExpiredProfit)),
 			},
 			{
+				colId: 'inUseCapital',
 				headerName: 'سرمایه درگیر',
 				width: 96,
 				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'premium',
 				headerName: 'آخرین قیمت نماد آپشن',
 				width: 152,
 				cellRenderer: CellPercentRenderer,
@@ -171,42 +211,49 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
 			},
 			{
+				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
 				width: 136,
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
 			},
 			{
+				colId: 'tradeValue',
 				headerName: 'ارزش معاملات آپشن',
 				width: 136,
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
+				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
 				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
+				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
 				width: 128,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
 				width: 136,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
 				width: 120,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
 			{
+				colId: 'bestBuyYTM',
 				headerName: 'YTM سرخط خرید',
 				width: 120,
 				headerComponent: HeaderHint,
@@ -218,6 +265,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
+				colId: 'bestSellYTM',
 				headerName: 'YTM سرخط فروش',
 				width: 152,
 				headerComponent: HeaderHint,
@@ -229,6 +277,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
+				colId: 'riskCoverage',
 				headerName: 'پوشش ریسک',
 				width: 152,
 				headerComponent: HeaderHint,
@@ -241,6 +290,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
+				colId: 'nonExpiredYTM',
 				headerName: 'YTM عدم اعمال',
 				width: 120,
 				headerComponent: HeaderHint,
@@ -252,6 +302,7 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
+				colId: 'action',
 				headerName: 'عملیات',
 				width: 80,
 				pinned: 'left',
@@ -290,6 +341,16 @@ const CoveredCall = ({ priceBasis, withCommission }: CoveredCallProps) => {
 
 	return (
 		<>
+			<Filters
+				type={type}
+				title={title}
+				useCommission={useCommission}
+				priceBasis={priceBasis}
+				onManageColumns={showColumnsPanel}
+				onPriceBasisChanged={setPriceBasis}
+				onCommissionChanged={setUseCommission}
+			/>
+
 			<AgTable<Strategy.CoveredCall>
 				suppressColumnVirtualisation={false}
 				ref={gridRef}
