@@ -157,8 +157,8 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				width: 136,
 				cellClass: ({ data }) =>
 					(data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0) < 0
-						? 'text-success-100'
-						: 'text-error-100',
+						? 'text-error-100'
+						: 'text-success-100',
 				valueGetter: ({ data }) => data?.coveredCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
