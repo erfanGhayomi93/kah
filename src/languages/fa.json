@@ -516,7 +516,12 @@
 		"invalid_password": "رمز عبور نادرست است.",
 		"invalid_repeat_password": "رمز عبور مطابقت ندارد.",
 		"invalid_phone_number": "شماره همراه نادرست است.",
-		"invalid_captcha": "کد وارد شده مطابقت ندارد."
+		"invalid_captcha": "کد وارد شده مطابقت ندارد.",
+		"withdrawal_InsertFailed": "مبلغ درخواستی شما بیشتر از سقف مجاز می‌باشد.",
+		"withdrawal_BadRequest": "عدم ارسال ورودی‌های ضروری",
+		"withdrawal_not_allowed_datetime": "برداشت وجه برای این روز، تنها تا ساعت 13:00 امکان‌پذیر می‌باشد.",
+		"withdrawal_NoTokenGenerated": "خطا در ارتباط با سرویس",
+		"withdrawal_RemainUnderZero": "مانده کافی نمی باشد"
 	},
 	"inputs": {
 		"captcha": "کد امنیتی",
@@ -667,7 +672,19 @@
 		"title": "تغییر کارگزار ناظر"
 	},
 	"withdrawal_modal": {
-		"title": "برداشت وجه"
+		"title": "برداشت وجه",
+		"account_number_placeholder": "انتخاب حساب بانکی",
+		"receive_date_placeholder": "انتخاب تاریخ برداشت",
+		"placeholderDepositInput": "مبلغ مورد نظر را وارد کنید",
+		"up_to": "تا سقف {n} ریال",
+		"withdrawal_not_allowed_datetime": "برداشت وجه برای این روز، تنها تا ساعت 13:00 امکان‌پذیر می‌باشد.",
+		"day_attention": "ثبت درخواست برداشت برای روز کاری بعد حداکثر تا ساعت ۱۳ امکان پذیر می باشد.",
+		"withdrawal_date_column": "موعد پرداخت",
+		"reservation_number_column": "کد پیگیری",
+		"bank_account_column": "درگاه بانکی",
+		"status_column": "وضعیت",
+		"amount_column": "مبلغ (ریال)",
+		"date_validation": "تاریخ مورد نظر را انتخاب کنید"
 	},
 	"deposit_modal": {
 		"title": "واریز وجه",
@@ -733,7 +750,7 @@
 		"number_transaction": "شماره تراکنش",
 		"tracking_code": "کد رهگیری",
 		"type_payment": "شیوه پرداخت",
-		"return_rivas": "بازگشت به ریواس",
+		"return_rivas": "بازگشت به کهکشان",
 		"payment_again": "پرداخت مجدد",
 		"gateway_bank": "درگاه بانک"
 	},
@@ -1110,7 +1127,9 @@
 		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
 		"offline_deposit_succeeded": "فیش با موفقیت ثبت شد.",
 		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
-		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید."
+		"drawal_offline_successFully": "درخواست برداشت وجه با موفقیت انجام شد.",
+		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید.",
+		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است"
 	},
 	"financial_reports_page": {
 		"financial_reports": "گزارشات مالی",

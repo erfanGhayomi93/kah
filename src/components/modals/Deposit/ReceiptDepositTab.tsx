@@ -42,14 +42,6 @@ export const ReceiptDepositTab = () => {
 		queryKey: ['brokerAccount'],
 	});
 
-	// const { inputs, setFieldValue } = useInputs<inputType>({
-	// 	receipt: '',
-	// 	price: '',
-	// 	account: null,
-	// 	date: null,
-	// 	image: null,
-	// });
-
 	const {
 		register,
 		handleSubmit,

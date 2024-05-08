@@ -10,6 +10,7 @@ dayjs.extend(weekday);
 dayjs.extend(isBetween);
 dayjs.extend(updateLocale);
 dayjs.extend(relativeTime);
+dayjs.extend(weekday);
 
 dayjs.updateLocale('en', {
 	weekStart: 6,
