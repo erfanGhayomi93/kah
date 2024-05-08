@@ -37,6 +37,20 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 				rowHeight: 48,
 				headerHeight: 48,
 				scrollbarWidth: 12,
+				onColumnVisible: ({ api, column }) => {
+					try {
+						if (!column) return;
+
+						const colId = column.getColId();
+
+						api.ensureColumnVisible(colId);
+						api.flashCells({
+							columns: [colId],
+						});
+					} catch (e) {
+						//
+					}
+				},
 				defaultColDef: {
 					suppressMovable: true,
 					sortable: false,

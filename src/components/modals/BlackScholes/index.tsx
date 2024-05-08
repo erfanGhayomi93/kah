@@ -1,7 +1,7 @@
 import { EraserSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setBlackScholesModal } from '@/features/slices/modalSlice';
-import { type IBlackScholes } from '@/features/slices/modalSlice.interfaces';
+import { type IBlackScholes } from '@/features/slices/types/modalSlice.interfaces';
 import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -12,7 +12,7 @@ import Form from './Form';
 import SearchBasis from './SearchBasis';
 import SelectSymbol from './SelectSymbol';
 
-interface BlackScholesProps extends IBlackScholes { }
+interface BlackScholesProps extends IBlackScholes {}
 
 const Calculator = dynamic(() => import('./Calculator'), {
 	ssr: false,

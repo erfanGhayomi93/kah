@@ -76,6 +76,7 @@ const OptionContractsChart = ({ type, basis, data, setDataPointHover }: OptionCo
 					pie: {
 						customScale: 0.75,
 						expandOnClick: true,
+
 						donut: {
 							size: '60%',
 						},

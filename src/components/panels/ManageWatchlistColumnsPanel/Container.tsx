@@ -7,32 +7,13 @@ import { useAppDispatch } from '@/features/hooks';
 import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { useDebounce, useWatchlistColumns } from '@/hooks';
 import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import styled from 'styled-components';
 
 interface ContainerProps {
 	close: () => void;
 }
-
-const Button = styled.button`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 12rem;
-	font-weight: 500;
-	height: 4rem;
-	border-radius: 0.8rem;
-	transition:
-		color 250ms,
-		background-color 250ms;
-	-webkit-transition:
-		color 250ms,
-		background-color 250ms;
-	-moz-transition:
-		color 250ms,
-		background-color 250ms;
-`;
 
 const Container = ({ close }: ContainerProps) => {
 	const t = useTranslations();
@@ -111,18 +92,20 @@ const Container = ({ close }: ContainerProps) => {
 
 						<div className='flex-wrap gap-16 flex-justify-between'>
 							{categories[category].map((column) => (
-								<Button
+								<button
 									onClick={() => setHiddenColumn(column.id, !column.isHidden)}
 									type='button'
 									key={column.id}
-									className={cn(
+									style={{ width: '12rem' }}
+									className={clsx(
+										'h-40 rounded transition-colors flex-justify-center',
 										column.isHidden
 											? 'bg-white text-gray-900 shadow-sm hover:shadow-none hover:btn-hover'
 											: 'bg-primary-400 text-white hover:bg-primary-300',
 									)}
 								>
 									{t(`manage_option_watchlist_columns.column_${column.title}`)}
-								</Button>
+								</button>
 							))}
 
 							{[

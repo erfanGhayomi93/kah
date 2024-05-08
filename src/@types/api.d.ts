@@ -903,6 +903,15 @@ declare namespace Dashboard {
 
 	export type TTopSymbol = GetTopSymbols.BaseSymbol.Type | GetTopSymbols.Symbol.Type | GetTopSymbols.Option.Type;
 
+	export interface GetIndexDetails {
+		overallValue: number;
+		overallValuePercent: number;
+		equalWeightOverallValue: number;
+		equalWeightOverallPercent: number;
+		retailTradesValue: number;
+		retailTradesPercent: number;
+	}
+
 	export namespace GetMarketState {
 		export type All = GetMarketState.Bourse | GetMarketState.FaraBourse | GetMarketState.Option;
 		export interface Bourse {
@@ -991,6 +1000,7 @@ declare namespace Dashboard {
 			export type OpenPosition = {
 				openPositionCount: number;
 				openPositionVarPercent: number;
+				openPositionCountDiff: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;

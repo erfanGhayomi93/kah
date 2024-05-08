@@ -55,7 +55,7 @@ const SwitchTab = <T extends object>({
 			activeElRef.current = el;
 			handleRectPosition();
 		},
-		[JSON.stringify(data), rectRef.current],
+		[data, rectRef.current],
 	);
 
 	const onWindowResize = () => {

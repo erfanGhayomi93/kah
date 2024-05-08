@@ -164,7 +164,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	},
 	{
 		id: 'symbol_detail',
-		// It'll be "808" after expand
+		// height will be "808" after expand
 		height: 448,
 		expand: true,
 		hidden: false,
@@ -229,23 +229,23 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 ];
 
 export const initialDashboardGrid: IDashboardGrid[] = [
-	{ id: 'market_view', w: 2, h: 352, hidden: false, i: 0 },
-	{ id: 'market_state', w: 1, h: 352, hidden: false, i: 1 },
-	{ id: 'best', w: 2, h: 424, hidden: false, i: 2 },
-	{ id: 'user_progress_bar', w: 1, h: 424, hidden: false, i: 3 },
+	{ id: 'market_view', w: 2, h: 384, hidden: false, i: 0 },
+	{ id: 'market_state', w: 1, h: 384, hidden: false, i: 1 },
+	{ id: 'best', w: 2, h: 384, hidden: false, i: 2 },
+	{ id: 'user_progress_bar', w: 1, h: 384, hidden: false, i: 3 },
 	{ id: 'compare_transaction_value', w: 2, h: 384, hidden: false, i: 4 },
 	{ id: 'option_contracts', w: 1, h: 384, hidden: false, i: 5 },
-	{ id: 'option_trades_value', w: 2, h: 336, hidden: false, i: 6 },
-	{ id: 'option_market_process', w: 1, h: 336, hidden: false, i: 7 },
-	{ id: 'individual_and_legal', w: 1, h: 376, hidden: false, i: 8 },
-	{ id: 'price_changes_watchlist', w: 1, h: 376, hidden: false, i: 9 },
-	{ id: 'open_positions_process', w: 1, h: 376, hidden: false, i: 10 },
-	{ id: 'meetings', w: 1, h: 376, hidden: false, i: 11 },
-	{ id: 'new_and_old', w: 1, h: 376, hidden: false, i: 12 },
-	{ id: 'top_base_assets', w: 1, h: 376, hidden: false, i: 13 },
-	{ id: 'custom', w: 1, h: 376, hidden: false, i: 14 },
-	{ id: 'recent_activities', w: 1, h: 376, hidden: false, i: 15 },
-	{ id: 'due_dates', w: 1, h: 376, hidden: false, i: 16 },
+	{ id: 'option_trades_value', w: 2, h: 384, hidden: false, i: 6 },
+	{ id: 'option_market_process', w: 1, h: 384, hidden: false, i: 7 },
+	{ id: 'individual_and_legal', w: 1, h: 384, hidden: false, i: 8 },
+	{ id: 'price_changes_watchlist', w: 1, h: 384, hidden: false, i: 9 },
+	{ id: 'open_positions_process', w: 1, h: 384, hidden: false, i: 10 },
+	{ id: 'meetings', w: 1, h: 384, hidden: false, i: 11 },
+	{ id: 'new_and_old', w: 1, h: 384, hidden: false, i: 12 },
+	{ id: 'top_base_assets', w: 1, h: 384, hidden: false, i: 13 },
+	{ id: 'custom', w: 1, h: 384, hidden: false, i: 14 },
+	{ id: 'recent_activities', w: 1, h: 384, hidden: false, i: 15 },
+	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 16 },
 ];
 
 export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
@@ -269,20 +269,18 @@ export const dateTypesAPI: Record<
 
 export const editableOrdersStatus = ['OnBoardModify', 'OnBoard', 'PartOfTheOrderDone'];
 
-
 export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
 	date: 'dates.custom',
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
-	fromPrice: null,
-	toPrice: null,
+	fromPrice: 0,
+	toPrice: 0,
 	groupMode: 'GreedyGrouped',
-	transactionType: []
+	transactionType: [],
 };
-
 
 export const defaultTransactionColumns: TTransactionColumnsState = [
 	{
@@ -306,7 +304,6 @@ export const defaultTransactionColumns: TTransactionColumnsState = [
 	{
 		colId: 'station',
 	},
-
 ];
 
 export const initialInstantDepositReportsFilters: InstantDepositReports.IInstantDepositReportsFilters = {
@@ -315,10 +312,10 @@ export const initialInstantDepositReportsFilters: InstantDepositReports.IInstant
 	toPrice: null,
 	fromPrice: null,
 	date: 'dates.month',
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	providers: [],
-	status: []
+	status: [],
 };
 
 export const defaultInstantDepositReportsColumn: TInstantDepositColumnsState = [
@@ -345,81 +342,102 @@ export const defaultInstantDepositReportsColumn: TInstantDepositColumnsState = [
 	},
 ];
 
-
 export const initialDepositWithReceiptReportsFilters: DepositWithReceiptReports.DepositWithReceiptReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	status: [],
 	date: 'dates.month',
 	toPrice: null,
 	fromPrice: null,
 	receiptNumber: null,
-	attachment: null
+	attachment: null,
 };
 
 export const defaultDepositWithReceiptReportsColumn: TDepositWithReceiptReportsColumnsState = [
 	{
-		colId: 'id'
+		colId: 'id',
 	},
 	{
-		colId: 'receiptDate'
+		colId: 'receiptDate',
 	},
 	{
-		colId: 'providerType'
+		colId: 'providerType',
 	},
 	{
-		colId: 'receiptNumber'
+		colId: 'receiptNumber',
 	},
 	{
-		colId: 'amount'
+		colId: 'amount',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 ];
-
-
 
 export const initialWithdrawalCashReportsFilters: WithdrawalCashReports.WithdrawalCashReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	fromDate: new Date().getTime() - (DateAsMillisecond.Year * 3),
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	status: [],
 	date: 'dates.week',
 	toPrice: null,
 	fromPrice: null,
-	banks: []
+	banks: [],
 };
 
 export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsState = [
 	{
-		colId: 'id'
+		colId: 'id',
 	},
 	{
-		colId: 'saveDate'
+		colId: 'saveDate',
 	},
 	{
-		colId: 'requestDate'
+		colId: 'requestDate',
 	},
 	{
-		colId: 'customerBank'
+		colId: 'customerBank',
 	},
 	{
-		colId: 'requestAmount'
+		colId: 'requestAmount',
 	},
 	{
-		colId: 'channel'
+		colId: 'channel',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 	{
-		colId: 'state'
+		colId: 'state',
 	},
 ];
+
+export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+
+export const yearMonthsName = [
+	'فروردین',
+	'اردیبهشت',
+	'خرداد',
+	'تیر',
+	'مرداد',
+	'شهریور',
+	'مهر',
+	'آبان',
+	'آذر',
+	'دی',
+	'بهمن',
+	'اسفند',
+];
+
+export const getDateMilliseconds = {
+	Day: 864e5,
+	Week: 6048e5,
+	Month: 2592e6,
+	Year: 31536e6,
+};

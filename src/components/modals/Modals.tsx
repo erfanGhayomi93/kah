@@ -11,7 +11,7 @@ import {
 	setDepositModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
-	setWithdrawalModal
+	setWithdrawalModal,
 } from '@/features/slices/modalSlice';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
@@ -22,6 +22,7 @@ import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import ModalLoading from './ModalLoading';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
+import TransactionsFiltersModal from './TrasactionsFilters';
 
 const LoginModal = lazy(() => import('./LoginModal'));
 
@@ -85,6 +86,7 @@ const Modals = () => {
 		manageDashboardLayout,
 		withdrawal,
 		analyze,
+		transactionsFilters,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -287,6 +289,14 @@ const Modals = () => {
 									: undefined
 							}
 						/>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{transactionsFilters && (
+					<ModalSuspense>
+						<TransactionsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

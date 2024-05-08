@@ -37,11 +37,6 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 				x: datetime,
 				y: value,
 			});
-
-			// result[1].data.push({
-			// 	x: dateFormatter(datetime, 'time'),
-			// 	y: value,
-			// });
 		}
 
 		return result;
@@ -73,7 +68,7 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 						},
 					},
 					yaxis: {
-						tickAmount: 2,
+						tickAmount: 4,
 						labels: {
 							formatter: (val) => {
 								return numFormatter(val);

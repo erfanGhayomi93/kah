@@ -8,7 +8,7 @@ import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { dateFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, sepNumbers, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
@@ -23,6 +23,11 @@ interface TableWrapperProps {
 	title: string;
 	isOption: boolean;
 	children: React.ReactNode;
+}
+
+interface ValuePercentProps {
+	value: number;
+	percent: number;
 }
 
 type TCol = Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.All>>>;
@@ -56,7 +61,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.Value>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -79,7 +84,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.OpenPosition>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -90,7 +95,10 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'مقدار (درصد تغییر)',
 			cellClass: 'ltr',
-			valueFormatter: (row) => `${toFixed(row[side].openPositionVarPercent)}%`,
+			valueFormatter: (row) => {
+				const { openPositionVarPercent, openPositionCountDiff } = row[side];
+				return <ValuePercent value={openPositionCountDiff} percent={openPositionVarPercent} />;
+			},
 		},
 		{
 			headerName: 'مانده تا سررسید (روز)',
@@ -103,7 +111,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.TradeCount>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -113,7 +121,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'درصد تغییر تعداد',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side].totalNumberOfTradesVarPercent)],
 			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfTradesVarPercent)}%`,
 		},
 		{
@@ -127,13 +135,13 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.YesterdayDiff>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
 		{
 			headerName: 'درصد تغییر قیمت',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side].closingPriceVarReferencePricePercent)],
 			valueFormatter: (row) => `${toFixed(row[side].closingPriceVarReferencePricePercent)}%`,
 		},
 		{
@@ -151,7 +159,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.Volume>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -161,7 +169,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'درصد تغییر حجم',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side].totalNumberOfSharesTradedVarPercent)],
 			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfSharesTradedVarPercent)}%`,
 		},
 		{
@@ -175,7 +183,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
@@ -185,7 +193,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت‌های باز خرید',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -203,7 +211,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
@@ -213,7 +221,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت‌های باز فروش',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -229,7 +237,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getBaseSymbolTradesVolumeColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.Volume>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
@@ -248,14 +256,16 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
 	const getBaseSymbolTradesValueColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.Value>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
@@ -274,14 +284,16 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
 	const getBaseSymbolOpenPositionColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.OpenPosition>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
@@ -291,6 +303,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت باز',
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -306,7 +319,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getSymbolTradesVolumeColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Symbol.Volume>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
@@ -325,14 +338,16 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
 	const getSymbolTradesValueColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Symbol.Value>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
@@ -351,7 +366,9 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
@@ -433,6 +450,13 @@ const TableWrapper = ({ children, title, isOption, type }: TableWrapperProps) =>
 			{children}
 		</div>
 	</div>
+);
+
+const ValuePercent = ({ value, percent }: ValuePercentProps) => (
+	<>
+		{toFixed(value)}
+		<span className={`pl-4 ${getColorBasedOnPercent(percent)}`}>({toFixed(percent)}%)</span>
+	</>
 );
 
 export default BestTable;

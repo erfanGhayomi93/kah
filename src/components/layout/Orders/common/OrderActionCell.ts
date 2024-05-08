@@ -21,8 +21,6 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 
 	eEdit!: HTMLButtonElement;
 
-	tooltip: TooltipElement | null = null;
-
 	init(params: OrderActionCellProps) {
 		this.params = params;
 		this.eGui = document.createElement('div');
@@ -42,12 +40,16 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 			this.params.showDetails(this.params.data!);
 		};
 
+		this.addTooltip('جزئیات سفارش', btn);
+
 		return btn;
 	}
 
 	editBtn() {
 		this.eEdit = this.createEdit();
 		this.updateEditBtn();
+
+		this.addTooltip('ویرایش سفارش', this.eEdit);
 
 		return this.eEdit;
 	}
@@ -59,12 +61,16 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 			this.params.onCopy(this.params.data!);
 		};
 
+		this.addTooltip('کپی سفارش', btn);
+
 		return btn;
 	}
 
 	deleteBtn() {
 		this.eDelete = this.createTrash();
 		this.updateDeleteBtn();
+
+		this.addTooltip('حذف سفارش', this.eDelete);
 
 		return this.eDelete;
 	}
@@ -87,7 +93,6 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 		if (!isEnable) {
 			this.eEdit.disabled = true;
 			this.eEdit.classList.add('text-gray-700');
-			this.setTooltip(this.eEdit, 'غیرفعال');
 		}
 
 		this.eEdit.onclick = (e) => {
@@ -102,7 +107,6 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 		if (!isEnable) {
 			this.eDelete.disabled = true;
 			this.eDelete.classList.add('text-gray-700');
-			this.setTooltip(this.eDelete, 'غیرفعال');
 		}
 
 		this.eDelete.onclick = (e) => {
@@ -111,11 +115,10 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 		};
 	}
 
-	setTooltip(element: HTMLElement, content: string) {
-		if (!this.tooltip) this.tooltip = new TooltipElement(element);
-		else this.tooltip.element = element;
-
-		this.tooltip.setContent(content);
+	addTooltip(content: string, children: HTMLElement) {
+		const tooltip = new TooltipElement(children);
+		tooltip.animation = false;
+		tooltip.setContent(content).add();
 	}
 
 	get editable() {

@@ -2,7 +2,7 @@ import { cn } from '@/utils/helpers';
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
-import { SessionHistorySVG, XSVG } from '../icons';
+import { EraserSVG, SessionHistorySVG, XSVG } from '../icons';
 import styles from './Modal.module.scss';
 
 interface ModalProps extends IBaseModalConfiguration {
@@ -20,6 +20,7 @@ interface ModalHeaderProps {
 	label: React.ReactNode;
 	onClose: () => void;
 	onExpanded?: () => void;
+	onClear?: () => void;
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
@@ -50,7 +51,6 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 				if (e.key !== 'Escape') return;
 
 				onClose();
-
 				removeListener();
 			} catch (e) {
 				//
@@ -70,7 +70,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 				signal: controller.signal,
 			});
 
-			return () => controller.abort();
+			return () => {
+				controller.abort();
+			};
 		}, []);
 
 		useEffect(() => {
@@ -112,7 +114,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 	},
 );
 
-const Header = ({ label, onClose, onExpanded }: ModalHeaderProps) => (
+const Header = ({ label, onClose, onClear, onExpanded }: ModalHeaderProps) => (
 	<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
 		<h2 className='text-xl font-medium text-gray-900'>{label}</h2>
 
@@ -125,6 +127,15 @@ const Header = ({ label, onClose, onExpanded }: ModalHeaderProps) => (
 				<SessionHistorySVG width='1.8rem' height='1.8rem' />
 			</button>
 		)}
+
+		{
+			!!onClear && (
+				<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
+					<EraserSVG width='2rem' height='2rem' />
+				</button>
+			)
+		}
+
 	</div>
 );
 
