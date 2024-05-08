@@ -47,8 +47,6 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 	const { data: watchlistColumns } = useWatchlistColumns();
 
-	console.log(watchlistColumns, 'watchlistColumns');
-
 	const onColumnMoved = ({ finished, toIndex }: ColumnMovedEvent<Option.Root>) => {
 		try {
 			if (!finished || toIndex === undefined) return;
