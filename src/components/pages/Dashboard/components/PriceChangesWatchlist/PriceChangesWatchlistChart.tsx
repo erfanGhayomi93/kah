@@ -1,5 +1,7 @@
 import { useGetOptionWatchlistPriceChangeInfoQuery } from '@/api/queries/dashboardQueries';
 import AppChart from '@/components/common/AppChart';
+import { sepNumbers } from '@/utils/helpers';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Suspend from '../../common/Suspend';
 
@@ -38,6 +40,8 @@ interface IChartOutput {
 }
 
 const PriceChangesWatchlistChart = () => {
+	const t = useTranslations();
+
 	const { data, isLoading } = useGetOptionWatchlistPriceChangeInfoQuery({
 		queryKey: ['getOptionWatchlistPriceChangeInfoQuery'],
 	});
@@ -57,6 +61,13 @@ const PriceChangesWatchlistChart = () => {
 		<>
 			<AppChart
 				options={{
+					tooltip: {
+						y: {
+							formatter: (val) => {
+								return `‏${t('home.count')}: ${sepNumbers(String(val ?? 0))}`;
+							},
+						},
+					},
 					states: {
 						active: {
 							filter: {

@@ -6,15 +6,6 @@
 		"source.removeUnused": "never",
 		"source.organizeImports": "explicit"
 	},
-	"cSpell.words": [
-		"clsx",
-		"doji",
-		"kahkeshan",
-		"payfast",
-		"pushengine",
-		"Scholes",
-		"toman",
-		"کدال"
-	],
+	"cSpell.words": ["clsx", "doji", "kahkeshan", "payfast", "pushengine", "Scholes", "toman", "کدال"],
 	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }

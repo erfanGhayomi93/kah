@@ -18,6 +18,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 					ref={ref}
 					className={clsx('h-40 flex-1 rounded px-8 text-left ltr', {
 						[classInput ?? '']: !!classInput,
+						[classInput ?? '']: !!classInput,
 					})}
 					{...resProps}
 				/>
@@ -40,6 +41,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 					{error}
 				</span>
 			)}
+
 		</div>
 	);
 });

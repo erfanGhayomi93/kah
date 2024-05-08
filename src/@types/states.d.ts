@@ -3,6 +3,8 @@ declare interface INextProps<T extends object = {}> {
 	params: T & { locale: string };
 }
 
+declare type DatesFilterType = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
+
 declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
 declare interface IOFields {
@@ -244,6 +246,10 @@ declare type IBrokerUrls = Record<
 	| 'getWithFilterReceipt'
 	| 'getFilteredEPaymentApi'
 	| 'getDepositOnlineHistory'
+	| 'GetListBankAccount'
+	| 'GetRemainsWithDate'
+	| 'LastListDrawal'
+	| 'RequestPayment'
 	| 'getFilteredPayment',
 	string
 >;
@@ -380,29 +386,19 @@ declare namespace Transaction {
 
 	export type TransactionTypes = 'Buy' | 'Sell' | 'Deposit' | 'Payment';
 
+	type TransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
+
 	export interface ITransactionsFilters {
 		pageNumber: number;
 		pageSize: number;
-		symbol: Symbol.info | null;
+		symbol: Symbol.Search | null;
 		date: TDateRange;
 		fromDate: number;
 		toDate: number;
-		fromPrice: number | null;
-		toPrice: number | null;
+		fromPrice: number;
+		toPrice: number;
 		groupMode: TTransactionGroupModes;
 		transactionType: { id: TransactionTypes; title: string }[];
-	}
-
-	export interface ITransactionsParams {
-		'QueryOption.PageNumber': string;
-		'QueryOption.PageSize': string;
-		fromDate: string;
-		toDate: string;
-		GroupMode: TTransactionGroupModes;
-		SymbolISIN: string;
-		FromPrice: string;
-		ToPrice: string;
-		TransactionType: Array<string>;
 	}
 }
 

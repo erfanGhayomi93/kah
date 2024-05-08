@@ -1,8 +1,14 @@
 import Tooltip from '@/components/common/Tooltip';
 import Collapse from '@/components/common/animation/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
+import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { Link, usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
+import { createSelector } from '@reduxjs/toolkit';
 import { memo, useMemo } from 'react';
 import styles from './Sidebar.module.scss';
 
@@ -24,6 +30,7 @@ export type TListItem = (IListButton | IListAnchor | IListModal) & {
 	label: string;
 	icon?: JSX.Element;
 	disabled?: boolean;
+	isBroker?: boolean;
 };
 
 type ItemProps = TListItem & {
@@ -32,8 +39,30 @@ type ItemProps = TListItem & {
 	toggle?: () => void;
 };
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		brokerIsSelected: getBrokerIsSelected(state),
+		brokerURLs: getBrokerURLs(state),
+	}),
+);
 const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...props }: ItemProps) => {
 	const pathname = usePathname();
+
+	const dispatch = useAppDispatch();
+
+	const { isLoggedIn, brokerIsSelected } = useAppSelector(getStates);
+
+	const onAuthorizing = () => {
+		if (!isLoggedIn) {
+			dispatch(setLoginModal({}));
+		}
+
+		if (!brokerIsSelected && isLoggedIn) {
+			dispatch(setChoiceBrokerModal({}));
+		}
+	};
 
 	const isActive = useMemo(() => {
 		if ('to' in props) return props.to === pathname;
@@ -44,12 +73,22 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 	}, [pathname, sidebarIsExpand]);
 
 	const conditionalsAnchor = () => {
-		if ('to' in props) {
+		const isAuthorize = isLoggedIn && brokerIsSelected;
+
+		if (('to' in props && !props.isBroker) || ('to' in props && isAuthorize)) {
 			return (
 				<Link onClick={() => onClick?.('a')} href={props.to}>
 					{icon}
 					<span>{label}</span>
 				</Link>
+			);
+		}
+		if ('to' in props && props.isBroker) {
+			return (
+				<button onClick={onAuthorizing}>
+					{icon}
+					<span>{label}</span>
+				</button>
 			);
 		}
 
