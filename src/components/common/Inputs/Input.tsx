@@ -13,12 +13,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
 	const { prefix, classInput, num2persianValue, error, ...resProps } = props;
 
-	// console.log('value', value);
-
-	// useEffect(() => {
-	// 	value && console.log('value', convertStringToInteger(value as string));
-	// }, [value]);
-
 
 	return (
 		<div className='relative flex flex-col gap-4'>

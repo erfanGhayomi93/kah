@@ -45,7 +45,6 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 				label={t('deposit_modal.title')}
 				onClose={onCloseModal}
 				onExpanded={onExpanded}
-				isExpanded
 			/>
 
 			<div className='flex p-24 bg-white'>

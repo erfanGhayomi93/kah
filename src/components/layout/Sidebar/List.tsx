@@ -9,7 +9,7 @@ import {
 	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setDepositModal } from '@/features/slices/modalSlice';
+import { setDepositModal, setWithdrawalModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
@@ -52,6 +52,8 @@ const List = ({ isExpand }: ListProps) => {
 			// for open of modal
 			if (tagName === 'deposit') {
 				dispatch(setDepositModal({ isShow: true }));
+			} else if (tagName === 'withdrawal') {
+				dispatch(setWithdrawalModal({ isShow: true }));
 			}
 		}
 	};

@@ -236,6 +236,10 @@ declare type IBrokerUrls = Record<
 	| 'getWithFilterReceipt'
 	| 'getFilteredEPaymentApi'
 	| 'getDepositOnlineHistory'
+	| 'GetListBankAccount'
+	| 'GetRemainsWithDate'
+	| 'LastListDrawal'
+	| 'RequestPayment'
 	| 'getFilteredPayment',
 	string
 >;

@@ -623,6 +623,10 @@ declare namespace Broker {
 		| 'GetWithFilterReceipt'
 		| 'GetFilteredEPaymentApi'
 		| 'GetFilteredPayment'
+		| 'GetListBankAccount'
+		| 'GetRemainsWithDate'
+		| 'LastListDrawal'
+		| 'RequestPayment'
 		| 'DepositOnlineHistory';
 
 	type URL = Record<UrlKey, string>;
@@ -1284,6 +1288,15 @@ declare namespace Payment {
 		| 'TokenRequired'
 		| 'TerminalNotFound';
 
+	export type TRemainsWithDay = Record<
+		't1' | 't2',
+		{
+			date: number;
+			valid: boolean;
+			amount: string;
+		}
+	>;
+
 	export interface IDepositResponse {
 		bankToken: string;
 		amount: number;
@@ -1312,6 +1325,39 @@ declare namespace Payment {
 		accountNumber: string;
 		permittedToPay: boolean;
 		permittedToReceive: boolean;
+	}
+
+	export interface IUserBankAccount {
+		id: number;
+		shaba: string;
+		accountNumber: string;
+		bankName: string;
+		isDefault: number;
+	}
+
+	export interface IWithdrawalForm {
+		bankAccount: IUserBankAccount | null;
+		withdrawalType: string | null;
+		amount: string;
+	}
+
+	export interface IDrawalHistoryList {
+		id: number;
+		accountNumber: string;
+		bankAccountId: number;
+		branchId: number;
+		comment: string;
+		customerAccountId: number;
+		customerBank: string;
+		customerISIN: string;
+		errorMessage: string;
+		channel: string;
+		id: number;
+		nationalCode: string;
+		requestDate: string;
+		requestAmount: number;
+		saveDate: string;
+		state: string;
 	}
 }
 

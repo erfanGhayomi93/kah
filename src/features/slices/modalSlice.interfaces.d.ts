@@ -103,7 +103,9 @@ export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
 
 export interface IChangeBrokerModal extends IBaseModalConfiguration {}
 
-export interface IWithdrawalModal extends IBaseModalConfiguration {}
+export interface IWithdrawalModal extends IBaseModalConfiguration {
+	isShow: boolean;
+}
 
 export interface IDescriptionModal extends IBaseModalConfiguration {
 	title: React.ReactNode;

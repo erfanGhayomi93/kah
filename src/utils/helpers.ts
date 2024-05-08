@@ -262,6 +262,10 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getWithFilterReceipt: data.GetWithFilterReceipt,
 		getFilteredEPaymentApi: data.GetFilteredEPaymentApi,
 		getFilteredPayment: data.GetFilteredPayment,
+		GetListBankAccount: data.GetListBankAccount,
+		GetRemainsWithDate: data.GetRemainsWithDate,
+		LastListDrawal: data.LastListDrawal,
+		RequestPayment: data.RequestPayment,
 		getDepositOnlineHistory: data.DepositOnlineHistory,
 	};
 
