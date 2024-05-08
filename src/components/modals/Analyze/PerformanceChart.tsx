@@ -10,6 +10,11 @@ interface IPoint {
 }
 
 interface IAxisChartSeries {
+	name?: string;
+	type?: string;
+	color?: string;
+	group?: string;
+	zIndex?: number;
 	data: IPoint[];
 }
 
@@ -135,6 +140,7 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 
 				options.series[j] = {
 					data: bepPoint ? [bepPoint] : [],
+					type: 'area',
 				};
 			}
 
@@ -164,14 +170,10 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 			k++;
 		}
 
-		const sl = options.series.length;
-		for (let i = 0; i < sl; i++) {
-			const { data } = options.series[i];
-
-			// Detect chart color
-			options.colors = [...options.colors, data[1].y < 0 ? COLORS.RED : COLORS.GREEN];
-		}
-
+		options.colors = options.series.reduce<string[]>(
+			(total, { data }) => [...total, data[1].y < 0 ? COLORS.RED : COLORS.GREEN],
+			[],
+		);
 		options.offset[0] *= 1.5;
 		options.offset[1] *= 1.5;
 
@@ -226,7 +228,8 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 						},
 					},
 					stroke: {
-						curve: 'straight',
+						// ! Don't change this: monotoneCubic
+						curve: 'monotoneCubic',
 					},
 					fill: {
 						type: 'gradient',
