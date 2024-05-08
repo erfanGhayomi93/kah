@@ -16,6 +16,7 @@ interface IChartOptions {
 	series: IAxisChartSeries[];
 	annotations: XAxisAnnotations[];
 	colors: string[];
+	offset: [number, number];
 }
 
 interface PerformanceChartProps {
@@ -39,6 +40,7 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 		],
 		annotations: [],
 		colors: [COLORS.GREEN],
+		offset: [0, 0],
 	});
 
 	const getAnnotationStyle = (x: number | string, label: string, value: string, color: string, h = false) => ({
@@ -86,6 +88,7 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 			],
 			series: [],
 			colors: [],
+			offset: [0, 0],
 		};
 
 		const diff = Math.round((maxPrice - minPrice) / 100);
@@ -112,13 +115,15 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 
 				if (k === 0 && j > 0) {
 					options.series[j - 1].data.push({
-						...item,
+						x: item.x,
+						y: Math.round(item.y),
 						color,
 					});
 				}
 
 				options.series[j].data.push({
-					...item,
+					x: item.x,
+					y: Math.round(item.y),
 					color,
 				});
 			}
@@ -150,6 +155,9 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 				}
 			}
 
+			if (pnl < options.offset[0]) options.offset[0] = pnl;
+			else if (pnl > options.offset[1]) options.offset[1] = pnl;
+
 			k++;
 		}
 
@@ -164,6 +172,10 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 		}
 
 		options.colors = options.series.reduce<string[]>((total, current) => [...total, current.data[0].color], []);
+
+		options.offset[0] *= 1.5;
+		options.offset[1] *= 1.5;
+
 		setChartOptions(options);
 	}, [JSON.stringify(inputs)]);
 
@@ -206,8 +218,8 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 						},
 					},
 					yaxis: {
-						min: (min) => min,
-						max: (max) => max,
+						min: chartOptions.offset[0] || undefined,
+						max: chartOptions.offset[1] || undefined,
 						tickAmount: 5,
 						floating: false,
 						labels: {
