@@ -10,7 +10,7 @@ import dayjs from '@/libs/dayjs';
 import { createQuery, setHours, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import brokerAxios from '../brokerAxios';
 
-export const useTransactionsHistory = createQuery<
+export const useTransactionsReportsQuery = createQuery<
 	PaginationResponse<Reports.ITransactions[]> | null,
 	['transactionsReport', Transaction.ITransactionsFilters]
 >({

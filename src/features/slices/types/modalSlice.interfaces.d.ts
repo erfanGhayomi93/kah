@@ -15,6 +15,17 @@ export interface IOptionFiltersModal extends IBaseModalConfiguration {
 	initialMinimumTradesValue?: string;
 }
 
+export interface ITransactionsFiltersModal extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	fromPrice?: number | null;
+	toPrice?: number | null;
+	groupMode?: TTransactionGroupModes;
+	transactionType?: Array<{ id: TransactionTypes; title: string }>;
+}
+
 export interface IBuySellModal extends IBaseModalConfiguration {
 	id?: number;
 	mode: TBsModes;
@@ -149,4 +160,5 @@ export type ModalState = TBaseModalProps<{
 	deposit: IDepositModal;
 	analyze: IAnalyzeModal;
 	description: IDescriptionModal;
+	transactionsFilters: ITransactionsFiltersModal;
 }>;

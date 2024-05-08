@@ -1057,8 +1057,15 @@
 		"daily": "روزانه",
 		"weekly": "هفتگی",
 		"monthly": "ماهانه",
-		"yearly": "سالانه"
+		"yearly": "سالانه",
+		"day": "روز",
+		"week": "هفته",
+		"month": "ماه",
+		"year": "سال",
+		"custom": "دلخواه",
+		"today": "امروز"
 	},
+
 	"tooltip": {
 		"asset_value": "{v} دارایی",
 		"purchase_power_value": "{v} قدرت خرید",
@@ -1112,6 +1119,7 @@
 		"withdrawal_cash_tab": "برداشت وجه"
 	},
 	"transactions_reports_page": {
+		"filter_title_modal": "فیلتر گردش حساب",
 		"id_column": "شماره ردیف",
 		"date_column": "زمان",
 		"operator_column": "عملیات",
@@ -1129,7 +1137,20 @@
 		"remain_column": "مانده",
 		"station_column": "ایستگاه معاملاتی",
 		"final_remain": "مانده نهایی",
-		"last_remain": "مانده بدون معاملات آخر"
+		"last_remain": "مانده بدون معاملات آخر",
+		"dates_placeholder_filter": "زمان",
+		"from_date_placeholder_filter": "از تاریخ",
+		"to_date_placeholder_filter": "تا تاریخ",
+		"actions_placeholder_filter": "عملیات",
+		"display_type_placeholder_filter": "نوع نمایش",
+		"from_price_type_placeholder_filter": "از مبلغ",
+		"to_price_type_placeholder_filter": "تا مبلغ",
+		"actions_type_Buy": "خرید",
+		"actions_type_Sell": "فروش",
+		"actions_type_Deposit": "واریز وجه",
+		"actions_type_Payment": "برداشت وجه",
+		"display_type_group_Flat": "با جزئیات",
+		"display_type_group_GreedyGrouped": "بدون جزئیات"
 	},
 	"instant_deposit_reports_page": {
 		"id_column": "ردیف",
