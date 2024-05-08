@@ -276,8 +276,8 @@ export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	date: 'dates.custom',
 	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
-	fromPrice: null,
-	toPrice: null,
+	fromPrice: 0,
+	toPrice: 0,
 	groupMode: 'GreedyGrouped',
 	transactionType: [],
 };
@@ -417,3 +417,27 @@ export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsSt
 		colId: 'state',
 	},
 ];
+
+export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+
+export const yearMonthsName = [
+	'فروردین',
+	'اردیبهشت',
+	'خرداد',
+	'تیر',
+	'مرداد',
+	'شهریور',
+	'مهر',
+	'آبان',
+	'آذر',
+	'دی',
+	'بهمن',
+	'اسفند',
+];
+
+export const getDateMilliseconds = {
+	Day: 864e5,
+	Week: 6048e5,
+	Month: 2592e6,
+	Year: 31536e6,
+};

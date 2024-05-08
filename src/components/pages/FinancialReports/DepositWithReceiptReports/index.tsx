@@ -94,8 +94,12 @@ const DepositWithReceiptReports = () => {
 	}, [JSON.stringify(inputs ?? {})]);
 
 	useEffect(() => {
-		if (!brokerIsSelected) router.push('/');
-	}, [loggedIn]);
+		if (!loggedIn || !brokerIsSelected) {
+			router.push('/');
+		}
+	}, []);
+
+	if (!loggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
