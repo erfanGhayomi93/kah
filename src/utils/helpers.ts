@@ -461,3 +461,14 @@ export const setHours = (d: Date, hour: number, minutes: number, seconds = 0, mi
 	d.setHours(hour, minutes, seconds, milliseconds);
 	return d;
 };
+
+export const dojiAnalyzer = <T>(data: T[], callback: (item: T) => number): TDojiType => {
+	const maxL = data.length - 1;
+
+	const firstItem = callback(data[0]);
+	const lastItem = callback(data[maxL]);
+
+	if (lastItem > firstItem) return 'Bullish';
+	if (lastItem < firstItem) return 'Bearish';
+	return 'Neutral';
+};

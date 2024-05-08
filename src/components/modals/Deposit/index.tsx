@@ -1,7 +1,7 @@
 import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import { useAppDispatch } from '@/features/hooks';
 import { setDepositModal } from '@/features/slices/modalSlice';
-import { type IDepositModal } from '@/features/slices/modalSlice.interfaces';
+import { type IDepositModal } from '@/features/slices/types/modalSlice.interfaces';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';

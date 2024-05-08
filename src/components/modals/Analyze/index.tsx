@@ -8,7 +8,7 @@ import Tabs from '@/components/common/Tabs/Tabs';
 import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
-import { type IAnalyzeModal } from '@/features/slices/modalSlice.interfaces';
+import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -235,18 +235,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 		useEffect(() => {
 			const data = selectedContractsAsSymbol;
 			const newStates: IAnalyzeModalInputs = {
+				...inputs,
 				chartData: [],
-				minPrice: 0,
-				maxPrice: 0,
-				mostProfit: 0,
-				mostLoss: 0,
-				baseAssets: 0,
-				bep: { x: 0, y: 0 },
-				budget: 0,
-				profitProbability: 0,
-				timeValue: 0,
-				risk: 0,
-				requiredMargin: 0,
 			};
 
 			newStates.chartData = [];
@@ -260,10 +250,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				newStates.baseAssets = baseSymbolPrice;
 
 				if (!newStates.minPrice || minMaxIsInvalid)
-					newStates.minPrice = Math.max(newStates.baseAssets * 0.75, 0);
+					newStates.minPrice = Math.max(newStates.baseAssets * 0.5, 0);
 
 				if (!newStates.maxPrice || minMaxIsInvalid)
-					newStates.maxPrice = Math.max(newStates.baseAssets * 1.25, 0);
+					newStates.maxPrice = Math.max(newStates.baseAssets * 1.5, 0);
 
 				newStates.minPrice = Math.floor(newStates.minPrice);
 				newStates.maxPrice = Math.ceil(newStates.maxPrice);

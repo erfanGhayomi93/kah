@@ -15,10 +15,10 @@ export const StrategyTag = ({ id, title, i }: StrategyTagProps) => {
 					'h-32 w-96 rounded-oval !border border-current text-tiny flex-justify-center',
 					i === 0 && id === 'HighRisk' && 'font-medium btn-error',
 					i === 0 && id === 'LowRisk' && 'font-medium btn-success',
-					i === 0 && id === 'ModerateRisk' && 'btn-warning font-medium',
-					i === 1 && 'btn-success-outline',
-					i === 2 && 'btn-error-outline',
-					i === 3 && 'btn-info-outline',
+					i === 0 && id === 'ModerateRisk' && 'font-medium btn-warning',
+					i === 1 && 'border-success-100 text-success-100',
+					i === 2 && 'border-error-100 text-error-100',
+					i === 3 && 'border-info text-info',
 				)}
 			>
 				{title}

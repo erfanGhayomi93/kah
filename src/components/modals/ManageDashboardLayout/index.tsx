@@ -1,7 +1,7 @@
 import Switch from '@/components/common/Inputs/Switch';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setManageDashboardLayoutModal } from '@/features/slices/modalSlice';
-import { type IManageDashboardLayoutModal } from '@/features/slices/modalSlice.interfaces';
+import { type IManageDashboardLayoutModal } from '@/features/slices/types/modalSlice.interfaces';
 import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useMemo, useState } from 'react';

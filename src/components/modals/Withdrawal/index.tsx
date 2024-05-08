@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/features/hooks';
 import { setWithdrawalModal } from '@/features/slices/modalSlice';
-import { type IWithdrawalModal } from '@/features/slices/modalSlice.interfaces';
+import { type IWithdrawalModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
 import styled from 'styled-components';

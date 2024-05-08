@@ -51,6 +51,21 @@ export const useGetIndexQuery = createQuery<
 	},
 });
 
+export const useGetIndexDetailsQuery = createQuery<Dashboard.GetIndexDetails, ['getIndexDetailsQuery']>({
+	staleTime: CACHE_TIME,
+	queryKey: ['getIndexDetailsQuery'],
+	queryFn: async ({ signal }) => {
+		const response = await axios.get<ServerResponse<Dashboard.GetIndexDetails>>(routes.dashboard.GetIndexDetails, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
 export const useGetRetailTradeValuesQuery = createQuery<
 	Dashboard.GetIndex.RetailTrades,
 	['getRetailTradeValuesQuery', Dashboard.TInterval]

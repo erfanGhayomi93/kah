@@ -44,6 +44,8 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
+declare type TDojiType = 'Bullish' | 'Bearish' | 'Neutral';
+
 declare type TStrategyMarketTrend =
 	| 'All'
 	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
@@ -177,6 +179,12 @@ declare type LightstreamStatus =
 	| 'DISCONNECTED';
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
+
+declare interface IManageStrategyColumn {
+	id: string;
+	title: string;
+	hidden: boolean;
+}
 
 declare interface ISymbolInfoPanelGrid {
 	id: TSymbolInfoPanelSections;

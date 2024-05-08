@@ -6,6 +6,11 @@ import { useMemo } from 'react';
 import Descriptions from './Descriptions';
 import Table from './Table';
 
+export interface ISelectItem {
+	id: TPriceBasis;
+	title: string;
+}
+
 interface StrategyProps {
 	id: Strategy.Type;
 }
