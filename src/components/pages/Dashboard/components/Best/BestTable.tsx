@@ -8,7 +8,7 @@ import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { dateFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, sepNumbers, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
@@ -23,6 +23,11 @@ interface TableWrapperProps {
 	title: string;
 	isOption: boolean;
 	children: React.ReactNode;
+}
+
+interface ValuePercentProps {
+	value: number;
+	percent: number;
 }
 
 type TCol = Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.All>>>;
@@ -92,15 +97,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			cellClass: 'ltr',
 			valueFormatter: (row) => {
 				const { openPositionVarPercent, openPositionCountDiff } = row[side];
-
-				return (
-					<>
-						{toFixed(openPositionCountDiff)}
-						<span className={`pl-4 ${openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'}`}>
-							({toFixed(openPositionVarPercent)}%)
-						</span>
-					</>
-				);
+				return <ValuePercent value={openPositionCountDiff} percent={openPositionVarPercent} />;
 			},
 		},
 		{
@@ -124,10 +121,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'درصد تغییر تعداد',
-			cellClass: (row) => [
-				'ltr',
-				row[side].totalNumberOfTradesVarPercent < 0 ? 'text-error-100' : 'text-success-100',
-			],
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side].totalNumberOfTradesVarPercent)],
 			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfTradesVarPercent)}%`,
 		},
 		{
@@ -147,10 +141,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'درصد تغییر قیمت',
-			cellClass: (row) => [
-				'ltr',
-				row[side].closingPriceVarReferencePricePercent < 0 ? 'text-error-100' : 'text-success-100',
-			],
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side].closingPriceVarReferencePricePercent)],
 			valueFormatter: (row) => `${toFixed(row[side].closingPriceVarReferencePricePercent)}%`,
 		},
 		{
@@ -178,10 +169,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'درصد تغییر حجم',
-			cellClass: (row) => [
-				'ltr',
-				row[side].totalNumberOfSharesTradedVarPercent < 0 ? 'text-error-100' : 'text-success-100',
-			],
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side].totalNumberOfSharesTradedVarPercent)],
 			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfSharesTradedVarPercent)}%`,
 		},
 		{
@@ -205,7 +193,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت‌های باز خرید',
-			cellClass: (row) => ['ltr', row.openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'],
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -233,7 +221,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت‌های باز فروش',
-			cellClass: (row) => ['ltr', row.openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'],
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -268,7 +256,9 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
@@ -294,7 +284,9 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
@@ -311,7 +303,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت باز',
-			cellClass: (row) => ['ltr', row.openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'],
+			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -346,7 +338,9 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
@@ -372,7 +366,9 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'آخرین قیمت',
 			cellClass: 'ltr',
-			valueFormatter: (row) => sepNumbers(String(row.lastTradedPrice ?? 0)),
+			valueFormatter: ({ lastTradedPrice, tradePriceVarPreviousTradePercent }) => (
+				<ValuePercent value={lastTradedPrice} percent={tradePriceVarPreviousTradePercent} />
+			),
 		},
 	];
 
@@ -454,6 +450,13 @@ const TableWrapper = ({ children, title, isOption, type }: TableWrapperProps) =>
 			{children}
 		</div>
 	</div>
+);
+
+const ValuePercent = ({ value, percent }: ValuePercentProps) => (
+	<>
+		{toFixed(value)}
+		<span className={`pl-4 ${getColorBasedOnPercent(percent)}`}>({toFixed(percent)}%)</span>
+	</>
 );
 
 export default BestTable;

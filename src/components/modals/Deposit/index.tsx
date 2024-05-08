@@ -17,7 +17,7 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface DepositProps extends IDepositModal {}
+interface DepositProps extends IDepositModal { }
 
 const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 	const t = useTranslations();
@@ -41,7 +41,11 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Header label={t('deposit_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} isExpanded />
+			<Header
+				label={t('deposit_modal.title')}
+				onClose={onCloseModal}
+				onExpanded={onExpanded}
+			/>
 
 			<div className='flex bg-white p-24'>
 				<Div
