@@ -44,6 +44,8 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
+declare type TDojiType = 'Bullish' | 'Bearish' | 'Neutral';
+
 declare type TStrategyMarketTrend =
 	| 'All'
 	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;

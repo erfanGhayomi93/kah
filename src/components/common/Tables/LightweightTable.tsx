@@ -4,7 +4,7 @@ import styles from './LightweightTable.module.scss';
 
 export interface IColDef<T> {
 	headerName: string;
-	cellClass?: ClassesValue;
+	cellClass?: ClassesValue | ((data: T) => ClassesValue);
 	headerClass?: ClassesValue;
 	onCellClick?: (row: T, e: React.MouseEvent) => void;
 	valueFormatter: (row: T) => React.ReactNode;
@@ -38,7 +38,10 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 						{columnDefs.map((col, i) => (
 							<td
 								onClick={(e) => col.onCellClick?.(row as K, e)}
-								className={clsx(styles.td, col.cellClass)}
+								className={clsx(
+									styles.td,
+									typeof col.cellClass === 'function' ? col.cellClass(row as K) : col.cellClass,
+								)}
 								key={i}
 							>
 								{col.valueFormatter(row as K)}

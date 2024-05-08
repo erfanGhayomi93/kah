@@ -56,7 +56,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.Value>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -79,7 +79,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.OpenPosition>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -90,7 +90,18 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		{
 			headerName: 'مقدار (درصد تغییر)',
 			cellClass: 'ltr',
-			valueFormatter: (row) => `${toFixed(row[side].openPositionVarPercent)}%`,
+			valueFormatter: (row) => {
+				const { openPositionVarPercent, openPositionCountDiff } = row[side];
+
+				return (
+					<>
+						{toFixed(openPositionCountDiff)}
+						<span className={`pl-4 ${openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'}`}>
+							({toFixed(openPositionVarPercent)}%)
+						</span>
+					</>
+				);
+			},
 		},
 		{
 			headerName: 'مانده تا سررسید (روز)',
@@ -103,7 +114,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.TradeCount>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -113,7 +124,10 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'درصد تغییر تعداد',
-			cellClass: 'ltr',
+			cellClass: (row) => [
+				'ltr',
+				row[side].totalNumberOfTradesVarPercent < 0 ? 'text-error-100' : 'text-success-100',
+			],
 			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfTradesVarPercent)}%`,
 		},
 		{
@@ -127,13 +141,16 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.YesterdayDiff>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
 		{
 			headerName: 'درصد تغییر قیمت',
-			cellClass: 'ltr',
+			cellClass: (row) => [
+				'ltr',
+				row[side].closingPriceVarReferencePricePercent < 0 ? 'text-error-100' : 'text-success-100',
+			],
 			valueFormatter: (row) => `${toFixed(row[side].closingPriceVarReferencePricePercent)}%`,
 		},
 		{
@@ -151,7 +168,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	): Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.Volume>>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row[side].symbolISIN),
 			valueFormatter: (row) => row[side].symbolTitle,
 		},
@@ -161,7 +178,10 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'درصد تغییر حجم',
-			cellClass: 'ltr',
+			cellClass: (row) => [
+				'ltr',
+				row[side].totalNumberOfSharesTradedVarPercent < 0 ? 'text-error-100' : 'text-success-100',
+			],
 			valueFormatter: (row) => `${toFixed(row[side].totalNumberOfSharesTradedVarPercent)}%`,
 		},
 		{
@@ -175,7 +195,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
@@ -185,7 +205,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت‌های باز خرید',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', row.openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -203,7 +223,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
@@ -213,7 +233,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت‌های باز فروش',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', row.openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -229,7 +249,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getBaseSymbolTradesVolumeColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.Volume>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
@@ -255,7 +275,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getBaseSymbolTradesValueColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.Value>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
@@ -281,7 +301,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getBaseSymbolOpenPositionColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.BaseSymbol.OpenPosition>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.baseSymbolISIN),
 			valueFormatter: (row) => row.baseSymbolTitle,
 		},
@@ -291,7 +311,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 		},
 		{
 			headerName: 'تغییر موقعیت باز',
-			cellClass: 'ltr',
+			cellClass: (row) => ['ltr', row.openPositionVarPercent < 0 ? 'text-error-100' : 'text-success-100'],
 			valueFormatter: (row) => `${toFixed(row.openPositionVarPercent)}%`,
 		},
 		{
@@ -307,7 +327,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getSymbolTradesVolumeColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Symbol.Volume>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
@@ -333,7 +353,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 	const getSymbolTradesValueColDefs = (): Array<IColDef<Dashboard.GetTopSymbols.Symbol.Value>> => [
 		{
 			headerName: 'نماد',
-			cellClass: 'cursor-pointer',
+			cellClass: 'cursor-pointer font-medium',
 			onCellClick: (row) => setSymbol(row.symbolISIN),
 			valueFormatter: (row) => row.symbolTitle,
 		},
