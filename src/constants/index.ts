@@ -229,23 +229,23 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 ];
 
 export const initialDashboardGrid: IDashboardGrid[] = [
-	{ id: 'market_view', w: 2, h: 352, hidden: false, i: 0 },
-	{ id: 'market_state', w: 1, h: 352, hidden: false, i: 1 },
-	{ id: 'best', w: 2, h: 424, hidden: false, i: 2 },
-	{ id: 'user_progress_bar', w: 1, h: 424, hidden: false, i: 3 },
+	{ id: 'market_view', w: 2, h: 384, hidden: false, i: 0 },
+	{ id: 'market_state', w: 1, h: 384, hidden: false, i: 1 },
+	{ id: 'best', w: 2, h: 384, hidden: false, i: 2 },
+	{ id: 'user_progress_bar', w: 1, h: 384, hidden: false, i: 3 },
 	{ id: 'compare_transaction_value', w: 2, h: 384, hidden: false, i: 4 },
 	{ id: 'option_contracts', w: 1, h: 384, hidden: false, i: 5 },
-	{ id: 'option_trades_value', w: 2, h: 336, hidden: false, i: 6 },
-	{ id: 'option_market_process', w: 1, h: 336, hidden: false, i: 7 },
-	{ id: 'individual_and_legal', w: 1, h: 376, hidden: false, i: 8 },
-	{ id: 'price_changes_watchlist', w: 1, h: 376, hidden: false, i: 9 },
-	{ id: 'open_positions_process', w: 1, h: 376, hidden: false, i: 10 },
-	{ id: 'meetings', w: 1, h: 376, hidden: false, i: 11 },
-	{ id: 'new_and_old', w: 1, h: 376, hidden: false, i: 12 },
-	{ id: 'top_base_assets', w: 1, h: 376, hidden: false, i: 13 },
-	{ id: 'custom', w: 1, h: 376, hidden: false, i: 14 },
-	{ id: 'recent_activities', w: 1, h: 376, hidden: false, i: 15 },
-	{ id: 'due_dates', w: 1, h: 376, hidden: false, i: 16 },
+	{ id: 'option_trades_value', w: 2, h: 384, hidden: false, i: 6 },
+	{ id: 'option_market_process', w: 1, h: 384, hidden: false, i: 7 },
+	{ id: 'individual_and_legal', w: 1, h: 384, hidden: false, i: 8 },
+	{ id: 'price_changes_watchlist', w: 1, h: 384, hidden: false, i: 9 },
+	{ id: 'open_positions_process', w: 1, h: 384, hidden: false, i: 10 },
+	{ id: 'meetings', w: 1, h: 384, hidden: false, i: 11 },
+	{ id: 'new_and_old', w: 1, h: 384, hidden: false, i: 12 },
+	{ id: 'top_base_assets', w: 1, h: 384, hidden: false, i: 13 },
+	{ id: 'custom', w: 1, h: 384, hidden: false, i: 14 },
+	{ id: 'recent_activities', w: 1, h: 384, hidden: false, i: 15 },
+	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 16 },
 ];
 
 export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
