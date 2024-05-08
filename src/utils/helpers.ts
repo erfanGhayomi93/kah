@@ -521,3 +521,9 @@ export const dojiAnalyzer = <T>(data: T[], callback: (item: T) => number): TDoji
 	if (lastItem < firstItem) return 'Bearish';
 	return 'Neutral';
 };
+
+export const getColorBasedOnPercent = (v: number) => {
+	if (v === 0) return 'text-gray-900';
+	if (v > 0) return 'text-success-100';
+	return 'text-error-100';
+};

@@ -28,11 +28,17 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 			.sort((a, b) => a.x - b.x);
 	}, [interval, data]);
 
+	const COLORS: Record<Dashboard.GetMarketProcessChart.TChartType, string[]> = {
+		Volume: ['rgba(0, 87, 255, 1)'],
+		Value: ['rgba(137, 118, 255, 1)'],
+		NotionalValue: ['rgba(68, 34, 140, 1)'],
+	};
+
 	return (
 		<>
 			<AppChart
 				options={{
-					colors: ['rgba(0, 194, 136, 1)'],
+					colors: COLORS[type],
 					tooltip: {
 						y: {
 							formatter: (val) => {
@@ -49,7 +55,7 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 						},
 					},
 					yaxis: {
-						tickAmount: 2,
+						tickAmount: 4,
 						labels: {
 							formatter: (val) => {
 								return numFormatter(val);

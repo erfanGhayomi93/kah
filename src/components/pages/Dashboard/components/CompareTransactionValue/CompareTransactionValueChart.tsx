@@ -26,11 +26,17 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 		}));
 	}, [interval, data]);
 
+	const COLORS: Record<Dashboard.GetOptionMarketComparison.TChartType, string[]> = {
+		OptionToMarket: ['rgba(0, 87, 255, 1)'],
+		OptionBuyToMarket: ['rgba(137, 118, 255, 1)'],
+		OptionSellToMarket: ['rgba(68, 34, 140, 1)'],
+	};
+
 	return (
 		<>
 			<AppChart
 				options={{
-					colors: ['rgba(0, 194, 136, 1)'],
+					colors: COLORS[type],
 					tooltip: {
 						y: {
 							formatter: (val) => {
@@ -47,7 +53,7 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 						},
 					},
 					yaxis: {
-						tickAmount: 2,
+						tickAmount: 4,
 						labels: {
 							formatter: (value) => {
 								return String(Number((Number(value) * 100).toFixed(6)) * 1);

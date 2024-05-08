@@ -146,7 +146,8 @@
 		"due_days": "روز مانده",
 		"passed_days": "روز گذشته",
 		"call_option": "اختیار خرید",
-		"put_option": "اختیار فروش"
+		"put_option": "اختیار فروش",
+		"count": "تعداد"
 	},
 	"iotm": {
 		"atm": "در قیمت",

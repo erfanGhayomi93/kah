@@ -1,7 +1,7 @@
 import { initialTransactionsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getTransactionsFiltersModal, setTransactionsFiltersModal } from '@/features/slices/modalSlice';
-import { type ITransactionsFiltersModal } from '@/features/slices/modalSlice.interfaces';
+import { type ITransactionsFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
 import styled from 'styled-components';
