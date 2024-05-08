@@ -26,8 +26,8 @@
 .thead {
 	.tr > .th {
 		background-color: theme("colors.gray.200");
-		font-weight: 400;
 		font-size: 1.2rem;
+		font-weight: 400;
 		color: theme("colors.gray.900");
 	}
 }
@@ -41,7 +41,6 @@
 		}
 
 		& > .td {
-			font-weight: 400;
 			font-size: 1.2rem;
 		}
 	}

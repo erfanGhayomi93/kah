@@ -7,13 +7,14 @@
 		"source.organizeImports": "explicit"
 	},
 	"cSpell.words": [
+		"clsx",
+		"doji",
 		"kahkeshan",
 		"payfast",
 		"pushengine",
 		"Scholes",
 		"toman",
-		"کدال",
-		"clsx"
+		"کدال"
 	],
 	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }
