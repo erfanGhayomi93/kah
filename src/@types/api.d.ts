@@ -996,6 +996,7 @@ declare namespace Dashboard {
 			export type OpenPosition = {
 				openPositionCount: number;
 				openPositionVarPercent: number;
+				openPositionCountDiff: number;
 				symbolTitle: string;
 				symbolISIN: string;
 				dueDays: number;

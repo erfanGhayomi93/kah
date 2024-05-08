@@ -4,12 +4,13 @@ import { useTranslations } from 'next-intl';
 import { memo, useEffect, useState } from 'react';
 import PriceRange from './PriceRange';
 
+interface IPoint {
+	x: number;
+	y: number;
+}
+
 interface IAxisChartSeries {
-	data: Array<{
-		x: number | string;
-		y: number | string;
-		color: string;
-	}>;
+	data: IPoint[];
 }
 
 interface IChartOptions {
@@ -25,7 +26,7 @@ interface PerformanceChartProps {
 }
 
 const COLORS = {
-	GREEN: 'rgba(0, 194, 136)',
+	GREEN: 'rgb(0, 194, 136)',
 	RED: 'rgb(255, 82, 109)',
 };
 
@@ -35,7 +36,7 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 	const [chartOptions, setChartOptions] = useState<IChartOptions>({
 		series: [
 			{
-				data: [{ x: 0, y: 0, color: COLORS.GREEN }],
+				data: [{ x: 0, y: 0 }],
 			},
 		],
 		annotations: [],
@@ -71,6 +72,25 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 		},
 	});
 
+	const getBepByPoints = (point1: IPoint, point2: IPoint) => {
+		const xDiff = point2.x - point1.x;
+		const x = divide(point2.y - point1.y, xDiff) * xDiff + point1.x;
+
+		return {
+			x,
+			y: 0,
+		};
+	};
+
+	const getBepAnnotation = (target: IPoint) => {
+		return getAnnotationStyle(
+			target.x,
+			t('analyze_modal.break_even_point'),
+			String(target.x),
+			'rgba(127, 26, 255, 1)',
+		);
+	};
+
 	useEffect(() => {
 		const { chartData, baseAssets, maxPrice, minPrice } = inputs;
 
@@ -93,85 +113,64 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 
 		const diff = Math.round((maxPrice - minPrice) / 100);
 		const l = chartData.length;
-		let closestPositive: null | Record<'x' | 'y', number> = null;
-		let closestNegative: null | Record<'x' | 'y', number> = null;
-		let hasBEP = false;
+		const bep: IPoint[] = [];
 		let j = 0;
 		let k = 0;
 
+		const addBep = (point: IPoint) => {
+			bep.push(point);
+			options.series[j].data.push(point);
+			options.annotations.push(getBepAnnotation(point));
+		};
+
 		for (let i = 0; i < l; i++) {
+			const previousItem = chartData[i - 1];
 			const item = chartData[i];
 			const pnl = item.y;
 
+			// Create new series
 			if (options.series[j] === undefined) {
+				const bepPoint = bep[bep.length - 1];
 				k = 0;
+
 				options.series[j] = {
-					data: [],
+					data: bepPoint ? [bepPoint] : [],
 				};
 			}
 
-			if (k === 0 || k === l - 1 || k % diff === 0 || pnl === 0) {
-				const color = pnl < 0 ? COLORS.RED : COLORS.GREEN;
-
-				if (k === 0 && j > 0) {
-					options.series[j - 1].data.push({
-						x: item.x,
-						y: Math.round(item.y),
-						color,
-					});
-				}
-
+			// Add point
+			if (pnl !== 0 && (k === 0 || k === l - 1 || k % diff === 0)) {
 				options.series[j].data.push({
 					x: item.x,
 					y: Math.round(item.y),
-					color,
 				});
 			}
 
-			if (pnl === 0) {
-				options.annotations.push(
-					getAnnotationStyle(
-						item.x,
-						t('analyze_modal.break_even_point'),
-						String(item.x),
-						'rgba(127, 26, 255, 1)',
-					),
-				);
-
-				hasBEP = true;
-				j++;
-			} else if (i > 0) {
-				const previousItem = chartData[i - 1];
-
-				if ((previousItem.y > 0 && pnl < 0) || (previousItem.y < 0 && pnl > 0)) {
-					j++;
-				}
-
-				const absoluteValue = Math.abs(pnl);
-				if (pnl >= 0 && (!closestPositive || absoluteValue < closestPositive.y)) {
-					closestPositive = item;
-				} else if (pnl < 0 && (!closestNegative || absoluteValue < Math.abs(closestNegative.y))) {
-					closestNegative = item;
-				}
-			}
-
+			// Detect max/min
 			if (pnl < options.offset[0]) options.offset[0] = pnl;
 			else if (pnl > options.offset[1]) options.offset[1] = pnl;
+
+			// Add break even point / Increase j / Change chart color
+			if (pnl === 0) {
+				addBep(getBepByPoints(previousItem, item));
+				j++;
+			} else if (i > 0) {
+				if ((previousItem.y > 0 && pnl < 0) || (previousItem.y < 0 && pnl > 0)) {
+					addBep(getBepByPoints(previousItem, item));
+					j++;
+				}
+			}
 
 			k++;
 		}
 
-		if (!hasBEP && closestPositive !== null && closestNegative !== null) {
-			const xDiff = closestPositive.x - closestNegative.x;
-			const x = divide(closestPositive.y - closestNegative.y, xDiff) * xDiff + closestNegative.x;
+		const sl = options.series.length;
+		for (let i = 0; i < sl; i++) {
+			const { data } = options.series[i];
 
-			hasBEP = true;
-			options.annotations.push(
-				getAnnotationStyle(x, t('analyze_modal.break_even_point'), String(x), 'rgba(127, 26, 255, 1)'),
-			);
+			// Detect chart color
+			options.colors = [...options.colors, data[1].y < 0 ? COLORS.RED : COLORS.GREEN];
 		}
-
-		options.colors = options.series.reduce<string[]>((total, current) => [...total, current.data[0].color], []);
 
 		options.offset[0] *= 1.5;
 		options.offset[1] *= 1.5;
@@ -190,13 +189,13 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 						xaxis: annotations,
 					},
 					tooltip: {
-						custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-							const y = series[seriesIndex][dataPointIndex];
+						custom: ({ seriesIndex, dataPointIndex, w }) => {
+							const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
 
-							const li1 = `<li><span>${t('analyze_modal.base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
-							const li2 = `<li><span>${t('analyze_modal.current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(4650))}</span></li>`;
-							const li3 = `<li><span>${t('analyze_modal.rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(1200))} (2.45%)</span></li>`;
-							const li4 = `<li><span>${t('analyze_modal.ytm')}:</span><span class="ltr">${sepNumbers(String(125000))} (-2.6%)</span></li>`;
+							const li1 = `<li><span>${t('analyze_modal.base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(data.x ?? 0))}</span></li>`;
+							const li2 = `<li><span>${t('analyze_modal.current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - inputs.baseAssets)))}</span></li>`;
+							const li3 = `<li><span>${t('analyze_modal.rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
+							const li4 = `<li><span>${t('analyze_modal.ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
 
 							return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
 						},
@@ -233,9 +232,9 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 						type: 'gradient',
 						colors,
 						gradient: {
-							type: 'vertical',
-							opacityFrom: 0.5,
-							opacityTo: 0.5,
+							shadeIntensity: 0,
+							opacityFrom: 0.7,
+							opacityTo: 0.2,
 						},
 					},
 				}}
