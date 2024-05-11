@@ -6,10 +6,9 @@ import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
-import usePrevious from '@/hooks/usePrevious';
 import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
-import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
+import { cn, getColorBasedOnPercent, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -24,8 +23,6 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
-
-	const symbolSnapshot = usePrevious(symbol);
 
 	const queryClient = useQueryClient();
 
@@ -76,28 +73,6 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 		}
 	};
 
-	const lastTradedPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {
-		if (!symbolSnapshot) return 'equal';
-
-		const newValue = symbol.lastTradedPrice;
-		const oldValue = symbolSnapshot.lastTradedPrice;
-
-		if (newValue === oldValue) return 'equal';
-		if (newValue > oldValue) return 'more';
-		return 'less';
-	}, [symbolSnapshot?.lastTradedPrice, symbol.lastTradedPrice]);
-
-	const closingPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {
-		if (!symbolSnapshot) return 'equal';
-
-		const newValue = symbol.closingPrice;
-		const oldValue = symbolSnapshot.closingPrice;
-
-		if (newValue === oldValue) return 'equal';
-		if (newValue > oldValue) return 'more';
-		return 'less';
-	}, [symbolSnapshot?.lastTradedPrice, symbol.lastTradedPrice]);
-
 	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
 		try {
 			const {
@@ -127,11 +102,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 							<span
 								className={cn(
 									'gap-4 flex-items-center',
-									closingPriceIs === 'equal'
-										? 'text-gray-1000'
-										: closingPriceIs === 'more'
-											? 'text-success-100'
-											: 'text-error-100',
+									getColorBasedOnPercent(closingPriceVarReferencePricePercent),
 								)}
 							>
 								{sepNumbers(String(closingPrice))}
@@ -188,7 +159,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 		} catch (error) {
 			return [];
 		}
-	}, [symbol, closingPriceIs]);
+	}, [symbol]);
 
 	useEffect(() => {
 		const sub = subscribeSymbolInfo(symbol.symbolISIN, 'symbolData,individualLegal');
@@ -197,13 +168,6 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 		subscribe(sub);
 	}, [symbol.symbolISIN]);
-
-	const priceColor =
-		lastTradedPriceIs === 'equal'
-			? 'text-gray-1000'
-			: lastTradedPriceIs === 'more'
-				? 'text-success-100'
-				: 'text-error-100';
 
 	const {
 		closingPriceVarReferencePrice,
@@ -233,16 +197,21 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					</div>
 
 					<div className='h-fit gap-8 flex-items-center'>
-						<span className={cn('gap-4 flex-items-center', priceColor)}>
+						<span
+							className={cn(
+								'gap-4 flex-items-center',
+								getColorBasedOnPercent(closingPriceVarReferencePrice),
+							)}
+						>
 							<span className='flex items-center text-tiny ltr'>
 								({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
-								{lastTradedPriceIs === 'more' && <GrowUpSVG width='1rem' height='1rem' />}
-								{lastTradedPriceIs === 'less' && <GrowDownSVG width='1rem' height='1rem' />}
+								{closingPriceVarReferencePrice > 0 && <GrowUpSVG width='1rem' height='1rem' />}
+								{closingPriceVarReferencePrice < 0 && <GrowDownSVG width='1rem' height='1rem' />}
 							</span>
 							{sepNumbers(String(closingPrice ?? 0))}
 						</span>
 
-						<span className={cn('flex items-center gap-4 text-4xl font-bold', priceColor)}>
+						<span className='flex items-center gap-4 text-4xl font-bold'>
 							{sepNumbers(String(lastTradedPrice ?? 0))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>

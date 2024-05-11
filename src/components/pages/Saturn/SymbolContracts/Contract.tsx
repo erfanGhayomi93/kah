@@ -5,8 +5,7 @@ import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useSubscription, useTradingFeatures } from '@/hooks';
-import usePrevious from '@/hooks/usePrevious';
-import { cn, sepNumbers } from '@/utils/helpers';
+import { cn, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ItemUpdate } from 'lightstreamer-client-web';
@@ -66,8 +65,6 @@ const Contract = ({
 		queryKey: ['symbolInfoQuery', option === null ? null : option.symbolISIN],
 		enabled: option !== null,
 	});
-
-	const contractSnapshot = usePrevious(contractInfo);
 
 	const openSymbolInfoPanel = () => {
 		try {
@@ -139,17 +136,6 @@ const Contract = ({
 		[contractInfo],
 	);
 
-	const lastTradedPriceIs: 'equal' | 'more' | 'less' = useMemo(() => {
-		if (!contractSnapshot || !contractInfo) return 'equal';
-
-		const newValue = contractInfo.lastTradedPrice;
-		const oldValue = contractSnapshot.lastTradedPrice;
-
-		if (newValue === oldValue) return 'equal';
-		if (newValue > oldValue) return 'more';
-		return 'less';
-	}, [contractSnapshot?.lastTradedPrice, contractInfo?.lastTradedPrice]);
-
 	useLayoutEffect(() => {
 		if (!option?.symbolISIN) {
 			unsubscribe();
@@ -197,13 +183,6 @@ const Contract = ({
 			</Wrapper>
 		);
 
-	const priceColor =
-		lastTradedPriceIs === 'equal'
-			? 'text-gray-1000'
-			: lastTradedPriceIs === 'more'
-				? 'text-success-100'
-				: 'text-error-100';
-
 	const closingPriceVarReferencePrice = contractInfo?.closingPriceVarReferencePrice ?? 0;
 
 	return (
@@ -224,16 +203,21 @@ const Contract = ({
 						</div>
 
 						<div className='h-fit gap-8 flex-items-center'>
-							<span className={cn('gap-4 flex-items-center', priceColor)}>
+							<span
+								className={cn(
+									'gap-4 flex-items-center',
+									getColorBasedOnPercent(closingPriceVarReferencePrice),
+								)}
+							>
 								<span className='flex items-center text-tiny ltr'>
 									({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
-									{lastTradedPriceIs === 'more' && <GrowUpSVG width='1rem' height='1rem' />}
-									{lastTradedPriceIs === 'less' && <GrowDownSVG width='1rem' height='1rem' />}
+									{closingPriceVarReferencePrice > 0 && <GrowUpSVG width='1rem' height='1rem' />}
+									{closingPriceVarReferencePrice < 0 && <GrowDownSVG width='1rem' height='1rem' />}
 								</span>
 								{sepNumbers(String(contractInfo?.closingPrice ?? 0))}
 							</span>
 
-							<span className={cn('flex items-center gap-4 text-4xl font-bold', priceColor)}>
+							<span className={cn('flex items-center gap-4 text-4xl font-bold text-gray-1000')}>
 								{sepNumbers(String(contractInfo?.lastTradedPrice || 0))}
 								<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 							</span>

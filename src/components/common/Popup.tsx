@@ -86,6 +86,7 @@ const Popup = ({
 			if (!el || !eChild) return;
 
 			const { width, height, top, left } = eChild.getBoundingClientRect();
+			console.log(eChild, left);
 
 			let popupWidth = (defaultPopupWidth ?? width) + 'px';
 
@@ -112,7 +113,6 @@ const Popup = ({
 			}
 
 			const popupTop = top + height + my;
-
 			el.style.width = popupWidth;
 			el.style.top = `${popupTop}px`;
 			el.style.display = '';
