@@ -8,7 +8,7 @@ import SettingCard from '../../components/SettingCard';
 const History = () => {
 	const t = useTranslations();
 
-	const columnDefs = useMemo<Array<ColDef<any>>>(
+	const columnDefs = useMemo<Array<ColDef<unknown>>>(
 		() => [
 			{
 				headerName: '',
@@ -56,7 +56,7 @@ const History = () => {
 
 	return (
 		<SettingCard title={t('settings_page.history_settings')} className='h-2/3'>
-			<AgTable<any>
+			<AgTable<unknown>
 				suppressRowClickSelection
 				rowHeight={48}
 				headerHeight={48}
