@@ -2,14 +2,15 @@ import { useOptionBaseSymbolSearchQuery } from '@/api/queries/optionQueries';
 import AsyncSelect, { type AsyncSelectProps } from '@/components/common/Inputs/AsyncSelect';
 import { englishToPersian } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type BaseSymbolSearchProps = Partial<Omit<AsyncSelectProps<Option.BaseSearch>, 'value' | 'onChange'>> & {
+	nullable?: boolean;
 	value: IBlackScholesModalStates['baseSymbol'];
 	onChange: (symbol: IBlackScholesModalStates['baseSymbol']) => void;
 };
 
-const BaseSymbolSearch = ({ value, onChange, ...props }: BaseSymbolSearchProps) => {
+const BaseSymbolSearch = ({ value, nullable = true, onChange, ...props }: BaseSymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -29,9 +30,15 @@ const BaseSymbolSearch = ({ value, onChange, ...props }: BaseSymbolSearchProps) 
 		return symbolsData.filter((s) => s.symbolTitle.includes(englishToPersian(term)));
 	}, [term, symbolsData]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		refetch();
 	}, []);
+
+	useEffect(() => {
+		if (!nullable && !value && Array.isArray(symbolsData) && symbolsData.length > 0) {
+			onChange(symbolsData[0]);
+		}
+	}, [nullable, symbolsData]);
 
 	return (
 		<AsyncSelect<Option.BaseSearch>

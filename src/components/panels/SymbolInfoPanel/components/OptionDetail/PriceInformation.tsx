@@ -11,10 +11,11 @@ interface IOptionItem {
 }
 
 interface PriceInformationProps {
+	isExpand: boolean;
 	symbolData: Symbol.Info;
 }
 
-const PriceInformation = ({ symbolData }: PriceInformationProps) => {
+const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 	const t = useTranslations();
 
 	const numFormatter = (v: string | number | null) => {
@@ -70,7 +71,7 @@ const PriceInformation = ({ symbolData }: PriceInformationProps) => {
 
 			{
 				id: 'openPosition',
-				title: t('symbol_info_panel.open_position'),
+				title: t('symbol_info_panel.open_positions'),
 				value: numFormatter(openPosition),
 			},
 
@@ -118,21 +119,24 @@ const PriceInformation = ({ symbolData }: PriceInformationProps) => {
 		];
 	}, [symbolData]);
 
+	const rows = useMemo(() => {
+		if (!isExpand) return items;
+		return items.slice(0, 6);
+	}, [items, isExpand]);
+
 	return (
-		<div className='px-8 pb-8 pt-16 flex-column'>
-			<ul className='flex-column'>
-				{items.map((item) => (
-					<li
-						style={{ flex: '0 0 40px' }}
-						className='rounded-sm px-8 text-base flex-justify-between even:bg-gray-200'
-						key={item.id}
-					>
-						<span className='text-gray-900'>{item.title}:</span>
-						<span className='text-gray-1000 ltr'>{item.value}</span>
-					</li>
-				))}
-			</ul>
-		</div>
+		<ul className='flex-column' style={{ height: `${rows.length * 40}px`, transition: 'height 200ms ease-in' }}>
+			{rows.map((row) => (
+				<li
+					key={row.id}
+					style={{ flex: '0 0 40px' }}
+					className='rounded-sm px-8 text-base flex-justify-between odd:bg-gray-200'
+				>
+					<span className='text-gray-900'>{row.title}:</span>
+					<span className='text-gray-1000 ltr'>{row.value}</span>
+				</li>
+			))}
+		</ul>
 	);
 };
 

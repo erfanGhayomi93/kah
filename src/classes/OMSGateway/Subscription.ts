@@ -42,8 +42,6 @@ class Subscription {
 		updateInfo.forEachChangedField((fieldName, _, value) => {
 			try {
 				if (value) {
-					console.log(value);
-
 					const m = this._beautify(value);
 
 					if (fieldName === 'OMSMessage') this._OMSMessage(m);
@@ -102,11 +100,11 @@ class Subscription {
 	}
 
 	private _AdminMessage(message: Record<number, string>) {
-		console.log(message);
+		//
 	}
 
 	private _SystemMessage(message: Record<number, string>) {
-		console.log(message);
+		//
 	}
 }
 

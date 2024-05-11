@@ -1,9 +1,9 @@
 export interface IManageColumnsModal {
 	title: React.ReactNode;
-	columns: IManageStrategyColumn[];
+	columns: IManageColumn[];
 	applyChangesAfterClose?: boolean;
 	onReset?: () => void;
-	onColumnChanged: (updatedCol: IManageStrategyColumn, columns: IManageStrategyColumn[]) => void;
+	onColumnChanged: (updatedCol: IManageColumn, columns: IManageColumn[]) => void;
 }
 
 export interface PanelState {
