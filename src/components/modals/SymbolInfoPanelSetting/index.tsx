@@ -1,7 +1,7 @@
 import { initialSymbolInfoPanelGrid } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
-import { type ISymbolInfoPanelSetting } from '@/features/slices/modalSlice.interfaces';
+import { type ISymbolInfoPanelSetting } from '@/features/slices/types/modalSlice.interfaces';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useCallback, useMemo, useState } from 'react';
@@ -110,6 +110,11 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 					id: 'market_depth',
 					title: t('symbol_info_panel_setting.market_depth'),
 					imgSrc: '/static/images/q4WNQ4Oibv.png',
+				},
+				{
+					id: 'chart',
+					title: t('symbol_info_panel_setting.symbol_chart'),
+					imgSrc: '/static/images/rbfs0K0Tqf.png',
 				},
 				{
 					id: 'individual_and_legal',

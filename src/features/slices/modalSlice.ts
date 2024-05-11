@@ -2,7 +2,7 @@
 
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
-import { type ModalState } from './modalSlice.interfaces';
+import { type ModalState } from './types/modalSlice.interfaces';
 
 const initialState: ModalState = {
 	// لاگین
@@ -73,6 +73,9 @@ const initialState: ModalState = {
 
 	// توضیحات
 	description: null,
+
+	// فیلتر صفحه  گردش حساب
+	transactionsFilters: null,
 };
 
 const modalSlice = createSlice({
@@ -187,6 +190,10 @@ const modalSlice = createSlice({
 		setDescriptionModal: (state, { payload }: PayloadAction<ModalState['description']>) => {
 			state.description = payload;
 		},
+
+		setTransactionsFiltersModal: (state, { payload }: PayloadAction<ModalState['transactionsFilters']>) => {
+			state.transactionsFilters = payload;
+		},
 	},
 });
 
@@ -215,6 +222,7 @@ export const {
 	setDescriptionModal,
 	setAnalyzeModal,
 	updateSelectSymbolContractsModal,
+	setTransactionsFiltersModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -235,5 +243,6 @@ export const getManageOptionWatchlistListModal = (state: RootState) => state.mod
 export const getAddSymbolToWatchlistModal = (state: RootState) => state.modal.addSymbolToWatchlist;
 export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 export const getDescriptionModal = (state: RootState) => state.modal.description;
+export const getTransactionsFiltersModal = (state: RootState) => state.modal.transactionsFilters;
 
 export default modalSlice.reducer;

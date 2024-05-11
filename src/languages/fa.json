@@ -146,7 +146,8 @@
 		"due_days": "روز مانده",
 		"passed_days": "روز گذشته",
 		"call_option": "اختیار خرید",
-		"put_option": "اختیار فروش"
+		"put_option": "اختیار فروش",
+		"count": "تعداد"
 	},
 	"iotm": {
 		"atm": "در قیمت",
@@ -335,13 +336,15 @@
 		"quantity": "تعداد",
 		"price": "قیمت",
 		"symbol_title": "نماد",
-		"individual_cash_inflow": "ورود پول حقیقی",
+		"liquid_inflow": "ورود پول حقیقی",
+		"liquid_outflow": "خروج پول حقیقی",
 		"contract_description": "‎{dueDays} روز تقویمی و ‎{workingDaysLeftCount} روز معاملاتی",
 		"avg_volume_month": "میانگین حجم ماه",
 		"notional_value": "ارزش مفهومی معاملات",
+		"notional_value_tab": "ارزش مفهومی",
 		"contract_end_date": "تاریخ سررسید",
 		"contract_size": "اندازه قرارداد",
-		"open_position": "موقعیت باز",
+		"open_positions": "موقعیت‌های باز",
 		"last_trade_date": "آخرین معامله",
 		"linear": "خطی",
 		"candle": "شمعی"
@@ -353,6 +356,11 @@
 		"last_traded_price_percent": "درصد تغییر",
 		"demand": "عرضه",
 		"supply": "تقاضا"
+	},
+	"symbol_context_menu": {
+		"add_note": "افزودن یادداشت",
+		"alarm": "هشدار شرطی",
+		"technical_chart": "نمودار نکنیکال"
 	},
 	"symbol_info_panel_setting": {
 		"title": "ابزارها",
@@ -508,6 +516,12 @@
 		"tab_computing_information": "اطلاعات محاسباتی",
 		"tab_open_position": "پوزیشن باز"
 	},
+	"symbol_price_slider": {
+		"last": "آخرین",
+		"closing": "پایانی",
+		"high": "بیشترین",
+		"low": "کمترین"
+	},
 	"i_errors": {
 		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
 		"too_many_request": "درخواست بیش از حد مجاز است. لطفا دقایقی دیگر مجددا امتحان کنید.",
@@ -515,7 +529,12 @@
 		"invalid_password": "رمز عبور نادرست است.",
 		"invalid_repeat_password": "رمز عبور مطابقت ندارد.",
 		"invalid_phone_number": "شماره همراه نادرست است.",
-		"invalid_captcha": "کد وارد شده مطابقت ندارد."
+		"invalid_captcha": "کد وارد شده مطابقت ندارد.",
+		"withdrawal_InsertFailed": "مبلغ درخواستی شما بیشتر از سقف مجاز می‌باشد.",
+		"withdrawal_BadRequest": "عدم ارسال ورودی‌های ضروری",
+		"withdrawal_not_allowed_datetime": "برداشت وجه برای این روز، تنها تا ساعت 13:00 امکان‌پذیر می‌باشد.",
+		"withdrawal_NoTokenGenerated": "خطا در ارتباط با سرویس",
+		"withdrawal_RemainUnderZero": "مانده کافی نمی باشد"
 	},
 	"inputs": {
 		"captcha": "کد امنیتی",
@@ -529,7 +548,7 @@
 		"phone_number": "شماره همراه",
 		"phone_number_placeholder": "شماره همراه خود را وارد کنید",
 		"otp": "کد تایید",
-		"otp_mobile_number": "کد تایید ارسال شده به {mobile} را وارد",
+		"otp_mobile_number": "کد تایید ارسال شده به {mobile} را وارد کنید",
 		"otp_placeholder": "کد تایید",
 		"required": "{n} را وارد کنید"
 	},
@@ -666,7 +685,19 @@
 		"title": "تغییر کارگزار ناظر"
 	},
 	"withdrawal_modal": {
-		"title": "برداشت وجه"
+		"title": "برداشت وجه",
+		"account_number_placeholder": "انتخاب حساب بانکی",
+		"receive_date_placeholder": "انتخاب تاریخ برداشت",
+		"placeholderDepositInput": "مبلغ مورد نظر را وارد کنید",
+		"up_to": "تا سقف {n} ریال",
+		"withdrawal_not_allowed_datetime": "برداشت وجه برای این روز، تنها تا ساعت 13:00 امکان‌پذیر می‌باشد.",
+		"day_attention": "ثبت درخواست برداشت برای روز کاری بعد حداکثر تا ساعت ۱۳ امکان پذیر می باشد.",
+		"withdrawal_date_column": "موعد پرداخت",
+		"reservation_number_column": "کد پیگیری",
+		"bank_account_column": "درگاه بانکی",
+		"status_column": "وضعیت",
+		"amount_column": "مبلغ (ریال)",
+		"date_validation": "تاریخ مورد نظر را انتخاب کنید"
 	},
 	"deposit_modal": {
 		"title": "واریز وجه",
@@ -720,8 +751,8 @@
 		"state_Draft": "ثبت شده",
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
-		"state_PayFast": "پرداخت سریع" , 
-		"more_reports_deposit" : "مشاهده در گزارشات"
+		"state_PayFast": "پرداخت سریع",
+		"more_reports_deposit": "مشاهده در گزارشات"
 	},
 	"payment_result": {
 		"payment_success_title": "پرداخت موفق",
@@ -732,7 +763,7 @@
 		"number_transaction": "شماره تراکنش",
 		"tracking_code": "کد رهگیری",
 		"type_payment": "شیوه پرداخت",
-		"return_rivas": "بازگشت به ریواس",
+		"return_rivas": "بازگشت به کهکشان",
 		"payment_again": "پرداخت مجدد",
 		"gateway_bank": "درگاه بانک"
 	},
@@ -935,7 +966,8 @@
 		"strategy_desc_BullCallSpread": "خرید اختیار خرید اعمال بالا <plus></plus> فروش اختیار خرید اعمال پایین ",
 		"prepared_strategy": "استراتژی آماده",
 		"build_strategy": "ساخت استراتژی",
-		"market_process": "روند بازار"
+		"market_process": "روند بازار",
+		"manage_columns": "مدیریت ستون‌های جدول"
 	},
 	"exchange": {
 		"Exchange": "بورس",
@@ -1056,7 +1088,13 @@
 		"daily": "روزانه",
 		"weekly": "هفتگی",
 		"monthly": "ماهانه",
-		"yearly": "سالانه"
+		"yearly": "سالانه",
+		"day": "روز",
+		"week": "هفته",
+		"month": "ماه",
+		"year": "سال",
+		"custom": "دلخواه",
+		"today": "امروز"
 	},
 	"tooltip": {
 		"asset_value": "{v} دارایی",
@@ -1101,7 +1139,9 @@
 		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
 		"offline_deposit_succeeded": "فیش با موفقیت ثبت شد.",
 		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
-		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید."
+		"drawal_offline_successFully": "درخواست برداشت وجه با موفقیت انجام شد.",
+		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید.",
+		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است"
 	},
 	"financial_reports_page": {
 		"financial_reports": "گزارشات مالی",
@@ -1111,6 +1151,7 @@
 		"withdrawal_cash_tab": "برداشت وجه"
 	},
 	"transactions_reports_page": {
+		"filter_title_modal": "فیلتر گردش حساب",
 		"id_column": "شماره ردیف",
 		"date_column": "زمان",
 		"operator_column": "عملیات",
@@ -1128,7 +1169,20 @@
 		"remain_column": "مانده",
 		"station_column": "ایستگاه معاملاتی",
 		"final_remain": "مانده نهایی",
-		"last_remain": "مانده بدون معاملات آخر"
+		"last_remain": "مانده بدون معاملات آخر",
+		"dates_placeholder_filter": "زمان",
+		"from_date_placeholder_filter": "از تاریخ",
+		"to_date_placeholder_filter": "تا تاریخ",
+		"actions_placeholder_filter": "عملیات",
+		"display_type_placeholder_filter": "نوع نمایش",
+		"from_price_type_placeholder_filter": "از مبلغ",
+		"to_price_type_placeholder_filter": "تا مبلغ",
+		"actions_type_Buy": "خرید",
+		"actions_type_Sell": "فروش",
+		"actions_type_Deposit": "واریز وجه",
+		"actions_type_Payment": "برداشت وجه",
+		"display_type_group_Flat": "با جزئیات",
+		"display_type_group_GreedyGrouped": "بدون جزئیات"
 	},
 	"instant_deposit_reports_page": {
 		"id_column": "ردیف",
@@ -1205,5 +1259,40 @@
 		"agreement_state_NotAccepted": "تایید نشده",
 		"agreement_state_NotSpecified": "تعیین نشده",
 		"agreement_state_expired": "منقضی شده"
+	},
+	"settings_page": {
+		"general_settings": "تنظیمات عمومی",
+		"send_order_settings": "ارسال سفارش",
+		"agreements_settings": "توافق نامه‌ها",
+		"history_settings": " سابقه ورود خروج",
+		"identity_information": "اطلاعات هویتی",
+		"two_step_login": "ورود دو مرحله ای",
+		"two_step_login_greeting": "کاربر گرامی",
+		"two_step_login_description": "با فعال سازی ورود دو مرحله ای در هر بار ورود، علاوه بر نام کاربری و رمز عبور، لازم است رمز یکبار مصرفی که برای شما پیامک می شود را نیز وارد نمایید. پیشنهاد می شود برای امنیت بیشتر حساب کاربری خود، این امکان را فعال نمایید.",
+		"two_step_login_btn_title": "فعالسازی ورود دو مرحله ای",
+		"name": "نام و نام خانوادگی",
+		"natinal_code": "کد ملی",
+		"bourse_code": "کد بورسی",
+		"username": "نام کاربری",
+		"phone_number": "تلفن همراه",
+		"email": "ایمیل",
+		"password": "رمز عبور",
+		"system_title": "نام سامانه",
+		"device_address": "آدرس دستگاه",
+		"device_type": "نوع دستگاه",
+		"status": "وضعیت",
+		"entrance_date": "تاریخ ورود",
+		"exit_date": "تاریخ خروج",
+		"action": "عملیات",
+		"general_info_title": "اطلاعات کاربری کهکشان",
+		"background_color": "رنگ زمینه",
+		"light": "روشن",
+		"dark": "تیره",
+		"system": "سیستم",
+		"notification_placement": "محل نمایش پیام‌های سیستم",
+		"top_right": "بالا - راست",
+		"top_left": "بالا - چپ",
+		"bottom_right": "پایین - راست",
+		"bottom_left": "پایین - چپ"
 	}
 }

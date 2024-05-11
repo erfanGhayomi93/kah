@@ -1,12 +1,12 @@
-import { useTransactionsHistory } from '@/api/queries/reportsQueries';
+import { useTransactionsReportsQuery } from '@/api/queries/reportsQueries';
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
 import { useAppDispatch } from '@/features/hooks';
-import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import TransactionsTable from './TransactionsTable';
 
 interface TableProps {
@@ -15,9 +15,10 @@ interface TableProps {
 		name: K,
 		value: Transaction.ITransactionsFilters[K],
 	) => void;
+	setFieldsValue: (props: Partial<Transaction.ITransactionsFilters>) => void;
 }
 
-const Table = ({ filters, setFilters }: TableProps) => {
+const Table = ({ filters, setFilters, setFieldsValue }: TableProps) => {
 	const dispatch = useAppDispatch();
 
 	const t = useTranslations();
@@ -26,25 +27,21 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		data: transactionsReportData,
 		isLoading,
 		isError,
-	} = useTransactionsHistory({
+	} = useTransactionsReportsQuery({
 		queryKey: ['transactionsReport', filters],
 	});
 
-	const addSymbol = () => {
-		dispatch(setAddSymbolToWatchlistModal({}));
+	const onFiltersChanged = (newFilters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>) => {
+		setFieldsValue(newFilters);
 	};
 
-	const onFiltersChanged = (newFilters: Transaction.ITransactionsFilters) => {
-		// setFilters(newFilters);
-	};
+	useLayoutEffect(() => {
+		ipcMain.handle('set_transactions_filters', onFiltersChanged);
 
-	// useLayoutEffect(() => {
-	// 	ipcMain.handle('set_transactions_filters', onFiltersChanged);
-
-	// 	return () => {
-	// 		ipcMain.removeChannel('set_transactions_filters');
-	// 	};
-	// }, []);
+		return () => {
+			ipcMain.removeChannel('set_transactions_filters');
+		};
+	}, []);
 
 	const { lastTrades, finalRemain, reports } = useMemo(() => {
 		const response: Record<'lastTrades' | 'finalRemain', number> & { reports: Reports.ITransactions[] } = {

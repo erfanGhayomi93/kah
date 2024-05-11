@@ -23,6 +23,14 @@ const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {
 		}, 500);
 	}, [inputs]);
 
+	useEffect(() => {
+		setFieldValue('minPrice', minPrice);
+	}, [minPrice]);
+
+	useEffect(() => {
+		setFieldValue('maxPrice', maxPrice);
+	}, [maxPrice]);
+
 	return (
 		<div style={{ flex: '0 0 4rem' }} className='gap-16 flex-items-center'>
 			<span className='text-tiny text-gray-900'>{t('analyze_modal.base_symbol_price_range')}:</span>

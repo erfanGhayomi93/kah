@@ -3,6 +3,8 @@ declare interface INextProps<T extends object = {}> {
 	params: T & { locale: string };
 }
 
+declare type DatesFilterType = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
+
 declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
 declare interface IOFields {
@@ -43,6 +45,8 @@ declare type TBsTypes = 'draft' | 'order';
 declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | 'option_orders' | 'draft';
 
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
+
+declare type TDojiType = 'Bullish' | 'Bearish' | 'Neutral';
 
 declare type TStrategyMarketTrend =
 	| 'All'
@@ -178,6 +182,12 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
+declare interface IManageColumn {
+	id: string;
+	title: string;
+	hidden: boolean;
+}
+
 declare interface ISymbolInfoPanelGrid {
 	id: TSymbolInfoPanelSections;
 	height: number;
@@ -198,6 +208,7 @@ declare interface IDashboardGrid {
 declare interface IBaseModalConfiguration {
 	moveable?: boolean;
 	animation?: boolean;
+	callbackFunction?: () => void;
 }
 
 declare interface SymbolContractModalStates {
@@ -236,6 +247,10 @@ declare type IBrokerUrls = Record<
 	| 'getWithFilterReceipt'
 	| 'getFilteredEPaymentApi'
 	| 'getDepositOnlineHistory'
+	| 'GetListBankAccount'
+	| 'GetRemainsWithDate'
+	| 'LastListDrawal'
+	| 'RequestPayment'
 	| 'getFilteredPayment',
 	string
 >;
@@ -372,29 +387,19 @@ declare namespace Transaction {
 
 	export type TransactionTypes = 'Buy' | 'Sell' | 'Deposit' | 'Payment';
 
+	type TransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
+
 	export interface ITransactionsFilters {
 		pageNumber: number;
 		pageSize: number;
-		symbol: Symbol.info | null;
+		symbol: Symbol.Search | null;
 		date: TDateRange;
 		fromDate: number;
 		toDate: number;
-		fromPrice: number | null;
-		toPrice: number | null;
+		fromPrice: number;
+		toPrice: number;
 		groupMode: TTransactionGroupModes;
 		transactionType: { id: TransactionTypes; title: string }[];
-	}
-
-	export interface ITransactionsParams {
-		'QueryOption.PageNumber': string;
-		'QueryOption.PageSize': string;
-		fromDate: string;
-		toDate: string;
-		GroupMode: TTransactionGroupModes;
-		SymbolISIN: string;
-		FromPrice: string;
-		ToPrice: string;
-		TransactionType: Array<string>;
 	}
 }
 

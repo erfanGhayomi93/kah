@@ -9,7 +9,7 @@ import {
 	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setDepositModal } from '@/features/slices/modalSlice';
+import { setDepositModal, setWithdrawalModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
@@ -52,6 +52,8 @@ const List = ({ isExpand }: ListProps) => {
 			// for open of modal
 			if (tagName === 'deposit') {
 				dispatch(setDepositModal({ isShow: true }));
+			} else if (tagName === 'withdrawal') {
+				dispatch(setWithdrawalModal({ isShow: true }));
 			}
 		}
 	};
@@ -156,21 +158,25 @@ const List = ({ isExpand }: ListProps) => {
 							id: 'transactions',
 							label: t('sidebar.transactions'),
 							to: '/financial-reports/transactions',
+							isBroker: true,
 						},
 						{
 							id: 'instant_deposit',
 							label: t('sidebar.instant_deposit'),
 							to: '/financial-reports/instant-deposit',
+							isBroker: true,
 						},
 						{
 							id: 'deposit_with_receipt',
 							label: t('sidebar.deposit_with_receipt'),
 							to: '/financial-reports/deposit-with-receipt',
+							isBroker: true,
 						},
 						{
 							id: 'withdrawal_cash',
 							label: t('sidebar.withdrawal_cash'),
 							to: '/financial-reports/withdrawal-cash',
+							isBroker: true,
 						},
 					],
 				},
@@ -179,7 +185,7 @@ const List = ({ isExpand }: ListProps) => {
 				{
 					id: 'setting',
 					label: t('sidebar.setting'),
-					to: '/settings',
+					to: '/settings/general/',
 					icon: <SettingSVG />,
 				},
 			],

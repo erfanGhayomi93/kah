@@ -41,7 +41,7 @@ const userSlice = createSlice({
 		},
 
 		setOrderBasket: (state, { payload }: PayloadAction<UserState['orderBasket']>) => {
-			state.orderBasket = payload;
+			state.orderBasket = payload === null ? null : payload.orders.length === 0 ? null : payload;
 		},
 
 		setOrderBasketOrders: (state, { payload }: PayloadAction<OrderBasket.Order[]>) => {
@@ -55,11 +55,14 @@ const userSlice = createSlice({
 
 		removeOrderBasketOrder: (state, { payload }: PayloadAction<string>) => {
 			if (state.orderBasket !== null) {
-				const orders = [...state.orderBasket.orders];
-				state.orderBasket = {
-					...state.orderBasket,
-					orders: orders.filter((order) => order.id !== payload),
-				};
+				const orders = [...state.orderBasket.orders].filter((order) => order.id !== payload);
+				state.orderBasket =
+					orders.length === 0
+						? null
+						: {
+								...state.orderBasket,
+								orders,
+							};
 			}
 		},
 	},

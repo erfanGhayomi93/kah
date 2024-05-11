@@ -6,7 +6,7 @@ import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 interface SettlementItemProps {
 	settlementDay: Option.BaseSettlementDays;
@@ -38,9 +38,9 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 		return settlementDays.reduce((total, current) => total + current.openPosition, 0);
 	}, [settlementDays]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (Array.isArray(settlementDays)) setInputValue('settlementDay', settlementDays[0]);
-	}, [settlementDays, JSON.stringify(inputs.baseSymbol)]);
+	}, [settlementDays, inputs.baseSymbol]);
 
 	return (
 		<div
@@ -50,6 +50,7 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 			<div className='flex-1 gap-24 overflow-hidden flex-items-center'>
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch
+						nullable={false}
 						value={inputs.baseSymbol}
 						onChange={(symbol) => setInputValue('baseSymbol', symbol)}
 					/>

@@ -38,3 +38,54 @@ export const useListBrokerBankAccountQuery = createQuery<Payment.IBrokerAccount[
 		return data.result;
 	},
 });
+
+export const useListUserBankAccountQuery = createQuery<Payment.IUserBankAccount[] | null, ['userAccount']>({
+	queryKey: ['userAccount'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+
+		const response = await brokerAxios.get<ServerResponse<Payment.IUserBankAccount[]>>(url.GetListBankAccount, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useRemainsWithDateQuery = createQuery<Payment.TRemainsWithDay | null, ['remainsWithDay']>({
+	queryKey: ['remainsWithDay'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+
+		const response = await brokerAxios.get<ServerResponse<Payment.TRemainsWithDay>>(url.GetRemainsWithDate, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useDrawalHistoryQuery = createQuery<Payment.IDrawalHistoryList[] | null, ['drawalHistoryOnline']>({
+	queryKey: ['drawalHistoryOnline'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+		const response = await brokerAxios.get<ServerResponse<Payment.IDrawalHistoryList[]>>(url.LastListDrawal, {
+			signal,
+			params: { count: 20 },
+		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});

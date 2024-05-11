@@ -42,14 +42,6 @@ export const ReceiptDepositTab = () => {
 		queryKey: ['brokerAccount'],
 	});
 
-	// const { inputs, setFieldValue } = useInputs<inputType>({
-	// 	receipt: '',
-	// 	price: '',
-	// 	account: null,
-	// 	date: null,
-	// 	image: null,
-	// });
-
 	const {
 		register,
 		handleSubmit,
@@ -57,16 +49,16 @@ export const ReceiptDepositTab = () => {
 		resetField,
 		setValue,
 		getValues,
-		watch
+		watch,
 	} = useForm<inputType>({
 		defaultValues: {
 			receipt: '',
 			price: '',
 			account: null,
 			date: null,
-			image: null
+			image: null,
 		},
-		mode: 'onChange'
+		mode: 'onChange',
 	});
 
 	const resetInput = () => {
@@ -108,10 +100,7 @@ export const ReceiptDepositTab = () => {
 			const fd = new FormData();
 			const { account, date, image, price, receipt } = inputs;
 
-			if (!url || !userInfo || !account) {
-				console.log('url', url, 'userInfo', userInfo, 'image', image, 'account', account);
-				return;
-			}
+			if (!url || !userInfo || !account) return;
 
 			fd.append('NationalCode', userInfo?.nationalCode);
 			fd.append('File', image ?? '');
@@ -140,7 +129,7 @@ export const ReceiptDepositTab = () => {
 
 			dispatch(setDepositModal(null));
 		} catch (err) {
-			console.log('err', err);
+			//
 		}
 	};
 
@@ -152,8 +141,8 @@ export const ReceiptDepositTab = () => {
 						{...register('receipt', {
 							required: {
 								value: true,
-								message: t('deposit_modal.receipt_value_placeholder')
-							}
+								message: t('deposit_modal.receipt_value_placeholder'),
+							},
 						})}
 						error={errors.receipt?.message}
 						type='text'
@@ -168,12 +157,13 @@ export const ReceiptDepositTab = () => {
 						{...register('price', {
 							required: {
 								value: true,
-								message: t('deposit_modal.placeholderDepositInput')
+								message: t('deposit_modal.placeholderDepositInput'),
 							},
-
 						})}
 						value={sepNumbers(String(getValues('price')))}
-						onChange={(e) => setValue('price', convertStringToInteger(e.target.value), { shouldValidate: true })}
+						onChange={(e) =>
+							setValue('price', convertStringToInteger(e.target.value), { shouldValidate: true })
+						}
 						type='text'
 						prefix={t('common.rial')}
 						placeholder={t('deposit_modal.placeholderDepositInput')}
@@ -237,7 +227,12 @@ export const ReceiptDepositTab = () => {
 							<div className='absolute left-0 top-0 cursor-pointer p-8' onClick={onClearImage}>
 								<XSVG width='2rem' height='2rem' />
 							</div>
-							<Image src={URL.createObjectURL(getValues('image') as Blob | MediaSource)} alt='' height={153} width={200} />
+							<Image
+								src={URL.createObjectURL(getValues('image') as Blob | MediaSource)}
+								alt=''
+								height={153}
+								width={200}
+							/>
 						</div>
 					)}
 				</div>
@@ -246,7 +241,7 @@ export const ReceiptDepositTab = () => {
 					<button
 						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 						type='submit'
-					// onClick={handleSubmitReceiptDeposit}
+						// onClick={handleSubmitReceiptDeposit}
 					>
 						{t('deposit_modal.state_Request')}
 					</button>

@@ -2,13 +2,13 @@ import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionFiltersModal } from '@/features/slices/modalSlice';
-import { type IOptionFiltersModal } from '@/features/slices/modalSlice.interfaces';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { type IOptionFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useDebounce } from '@/hooks';
 import { downloadFile } from '@/utils/helpers';
 import { useMemo } from 'react';
 import Actions from './Actions';
-import SelectSymbol from './SelectSymbol';
+import SearchSymbol from './SearchSymbol';
 import WatchlistList from './WatchlistList';
 
 interface ToolbarProps {
@@ -99,15 +99,17 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	return (
 		<div className='gap-16 flex-column'>
 			<div className='h-40 w-full flex-justify-between'>
-				<SelectSymbol />
+				<div className='gap-8 flex-items-center'>
+					<WatchlistList />
+					<SearchSymbol />
+				</div>
+
 				<Actions
 					filtersCount={filtersCount}
 					onShowFilters={onShowFilters}
 					onExportExcel={() => setDebounce(onExportExcel, 500)}
 				/>
 			</div>
-
-			<WatchlistList />
 		</div>
 	);
 };
