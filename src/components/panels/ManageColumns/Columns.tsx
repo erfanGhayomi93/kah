@@ -13,7 +13,7 @@ const Columns = ({ close }: ColumnsProps) => {
 
 	const [columns, setColumns] = useState(manageColumns?.columns ?? []);
 
-	const onColumnChanged = (updatedCol: IManageStrategyColumn) => {
+	const onColumnChanged = (updatedCol: IManageColumn) => {
 		try {
 			const newColumns = columns.map((col) => ({
 				...col,
