@@ -1,7 +1,9 @@
 import { isBetween, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './SymbolPriceSlider.module.scss';
+import Tooltip from './Tooltip';
 
 interface IConfig {
 	firstTradedPrice: 0;
@@ -38,9 +40,14 @@ const SymbolPriceSlider = ({
 	exchangeData,
 	yesterdayClosingPrice,
 }: SymbolPriceSliderProps) => {
+	const t = useTranslations('symbol_price_slider');
+
 	const borderRef = useRef<HTMLDivElement>(null);
 
+	// Tooltip
 	const tooltipRef = useRef<HTMLDivElement>(null);
+	const tooltipValueRef = useRef<HTMLDivElement>(null);
+	const tooltipPercentRef = useRef<HTMLDivElement>(null);
 
 	const rootRef = useRef<HTMLDivElement>(null);
 
@@ -73,7 +80,7 @@ const SymbolPriceSlider = ({
 		}
 	}, [thresholdData]);
 
-	const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+	const onMouseDown = (e: React.MouseEvent<HTMLElement>) => {
 		try {
 			const rootElement = rootRef.current;
 			if (!rootElement) return;
@@ -90,6 +97,60 @@ const SymbolPriceSlider = ({
 				Number((((price - yesterdayClosingPrice) / yesterdayClosingPrice) * 100).toFixed(2)) * 1;
 
 			onClick?.(price, priceAsPercent);
+		} catch (e) {
+			//
+		}
+	};
+
+	const onMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+		try {
+			const eTooltip = tooltipRef.current;
+			const eTooltipValue = tooltipValueRef.current;
+			const eTooltipPercent = tooltipPercentRef.current;
+			const rootElement = rootRef.current;
+			if (!eTooltip || !eTooltipValue || !eTooltipPercent || !rootElement) return;
+
+			const rootOffset = rootElement.getBoundingClientRect();
+			const tooltipOffset = eTooltip.getBoundingClientRect();
+
+			/* Location */
+			let left = e.clientX - rootOffset.left - tooltipOffset.width / 2;
+			if (left < 0) left = 0;
+			else if (left > rootOffset.width - tooltipOffset.width) left = rootOffset.width - tooltipOffset.width;
+			eTooltip.style.transform = `translate(${Math.abs(left)}px, -12px)`;
+
+			/* Value */
+			const percentage = (e.clientX - rootOffset.left) / rootOffset.width;
+			let price = Math.abs(
+				Math.round((1 - percentage) * (thresholdData[1] - thresholdData[0]) - thresholdData[1]),
+			);
+			if (price > thresholdData[1]) price = thresholdData[1];
+			else if (price < thresholdData[0]) price = thresholdData[0];
+			const priceAsPercent =
+				Number((((price - yesterdayClosingPrice) / yesterdayClosingPrice) * 100).toFixed(2)) * 1;
+
+			eTooltip.style.opacity = '1';
+			eTooltipValue.textContent = sepNumbers(String(price ?? 0));
+			eTooltipPercent.textContent = `(${priceAsPercent}%)`;
+
+			if (priceAsPercent < 0) {
+				eTooltipPercent.classList.remove('text-success-100');
+				eTooltipPercent.classList.add('text-error-100');
+			} else {
+				eTooltipPercent.classList.remove('text-error-100');
+				eTooltipPercent.classList.add('text-success-100');
+			}
+		} catch (e) {
+			//
+		}
+	};
+
+	const onMouseLeave = () => {
+		try {
+			const tooltipElement = tooltipRef.current;
+			if (!tooltipElement) return;
+
+			tooltipElement.style.opacity = '0';
 		} catch (e) {
 			//
 		}
@@ -197,71 +258,97 @@ const SymbolPriceSlider = ({
 	return (
 		<div className='px-4'>
 			<div ref={rootRef} className={clsx(styles.root)}>
-				<div role='presentation' ref={borderRef} className={styles.border} onClick={onMouseDown} />
+				<div
+					role='presentation'
+					ref={borderRef}
+					className={styles.border}
+					onClick={onMouseDown}
+					onMouseMove={onMouseMove}
+					onMouseLeave={onMouseLeave}
+				/>
 
 				<div className={styles.tradedValues}>
 					<div className={styles.inner}>
-						<div
-							style={{ transform: `translateX(${config.firstTradedPrice}px)` }}
-							className={clsx('transition duration-300', styles.value)}
+						<Tooltip
+							animation={false}
+							className={config.firstTradedPriceAsPercent >= 0 ? 'text-success-400' : 'text-error-300'}
+							content={`${t('closing')}: ‎${sepNumbers(String(exchangeData[0] ?? 0))} (${config.firstTradedPriceAsPercent}%)`}
 						>
-							<svg
-								width='1.2rem'
-								height='1.5rem'
-								viewBox='0 0 14 17'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'
+							<div
+								style={{ transform: `translateX(${config.firstTradedPrice}px)` }}
+								className={clsx('transition duration-300', styles.value)}
 							>
-								<path
-									d='M6.97656 11.0645L2.19958 6.43259L6.97656 1.80073L11.7535 6.43259L6.97656 11.0645Z'
-									stroke='currentColor'
-									strokeWidth='2'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								/>
-								<path
-									d='M11.7535 11.2959L6.97656 15.9278L2.19959 11.2959'
-									stroke='currentColor'
-									strokeWidth='2'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								/>
-							</svg>
-						</div>
+								<svg
+									width='1.2rem'
+									height='1.5rem'
+									viewBox='0 0 14 17'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'
+								>
+									<path
+										d='M6.97656 11.0645L2.19958 6.43259L6.97656 1.80073L11.7535 6.43259L6.97656 11.0645Z'
+										stroke='currentColor'
+										strokeWidth='2'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									/>
+									<path
+										d='M11.7535 11.2959L6.97656 15.9278L2.19959 11.2959'
+										stroke='currentColor'
+										strokeWidth='2'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									/>
+								</svg>
+							</div>
+						</Tooltip>
 
-						<div
-							style={{ transform: `translateX(${config.lastTradedPrice}px)` }}
-							className={clsx('transition duration-300', styles.value)}
+						<Tooltip
+							animation={false}
+							className={config.lastTradedPriceAsPercent >= 0 ? 'text-success-400' : 'text-error-300'}
+							content={`${t('last')}: ‎${sepNumbers(String(exchangeData[1] ?? 0))} (${config.lastTradedPriceAsPercent}%)`}
 						>
-							<svg
-								width='1.2rem'
-								height='1.5rem'
-								viewBox='0 0 14 17'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'
+							<div
+								style={{ transform: `translateX(${config.lastTradedPrice}px)` }}
+								className={clsx('transition duration-300', styles.value)}
 							>
-								<path
-									d='M6.97656 11.0645L2.19958 6.43259L6.97656 1.80073L11.7535 6.43259L6.97656 11.0645Z'
-									fill='currentColor'
-									stroke='currentColor'
-									strokeWidth='2'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								/>
-								<path
-									d='M11.7535 11.2959L6.97656 15.9278L2.19959 11.2959'
-									stroke='currentColor'
-									strokeWidth='2'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								/>
-							</svg>
-						</div>
+								<svg
+									width='1.2rem'
+									height='1.5rem'
+									viewBox='0 0 14 17'
+									fill='none'
+									xmlns='http://www.w3.org/2000/svg'
+								>
+									<path
+										d='M6.97656 11.0645L2.19958 6.43259L6.97656 1.80073L11.7535 6.43259L6.97656 11.0645Z'
+										fill='currentColor'
+										stroke='currentColor'
+										strokeWidth='2'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									/>
+									<path
+										d='M11.7535 11.2959L6.97656 15.9278L2.19959 11.2959'
+										stroke='currentColor'
+										strokeWidth='2'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									/>
+								</svg>
+							</div>
+						</Tooltip>
 					</div>
 				</div>
 
-				<div ref={tooltipRef} style={{ opacity: '0' }} className={styles.tooltip}>
-					<span className='text-xs font-medium' />
+				<div
+					ref={tooltipRef}
+					style={{ opacity: '0' }}
+					className={clsx(styles.tooltip, 'common-tooltip-container common-tooltip-top')}
+				>
+					<div className='text-tiny font-medium ltr'>
+						<span ref={tooltipValueRef} />
+						<span ref={tooltipPercentRef} className='pl-4' />
+					</div>
 				</div>
 
 				<div className={styles.sliders}>
@@ -275,16 +362,21 @@ const SymbolPriceSlider = ({
 								className={clsx('transition', styles.slider)}
 							/>
 
-							<div
-								style={{
-									transform: `translateX(${boundaryData[0] > yesterdayClosingPrice ? config.offsetLeft : -(config.sellSliderWidth + Math.abs(config.offsetRight))}px)`,
-								}}
-								className={clsx(
-									'transition',
-									styles.mark,
-									boundaryData[0] > yesterdayClosingPrice && styles.buy,
-								)}
-							/>
+							<Tooltip
+								animation={false}
+								content={`${t('high')}: ‎${sepNumbers(String(boundaryData[0] ?? 0))} (${config.lowestTradePriceOfTradingDayAsPercent}%)`}
+							>
+								<div
+									style={{
+										transform: `translateX(${boundaryData[0] > yesterdayClosingPrice ? config.offsetLeft : -(config.sellSliderWidth + Math.abs(config.offsetRight))}px)`,
+									}}
+									className={clsx(
+										'transition',
+										styles.mark,
+										boundaryData[0] > yesterdayClosingPrice && styles.buy,
+									)}
+								/>
+							</Tooltip>
 						</div>
 
 						<div className={clsx(styles.section, styles.buy)}>
@@ -296,16 +388,21 @@ const SymbolPriceSlider = ({
 								className={clsx('transition', styles.slider)}
 							/>
 
-							<div
-								style={{
-									transform: `translateX(${boundaryData[1] < yesterdayClosingPrice ? -config.offsetRight : config.buySliderWidth + Math.abs(config.offsetLeft)}px)`,
-								}}
-								className={clsx(
-									'transition',
-									styles.mark,
-									boundaryData[1] < yesterdayClosingPrice && styles.sell,
-								)}
-							/>
+							<Tooltip
+								animation={false}
+								content={`${t('low')}: ‎${sepNumbers(String(boundaryData[1] ?? 0))} (${config.highestTradePriceOfTradingDayAsPercent}%)`}
+							>
+								<div
+									style={{
+										transform: `translateX(${boundaryData[1] < yesterdayClosingPrice ? -config.offsetRight : config.buySliderWidth + Math.abs(config.offsetLeft)}px)`,
+									}}
+									className={clsx(
+										'transition',
+										styles.mark,
+										boundaryData[1] < yesterdayClosingPrice && styles.sell,
+									)}
+								/>
+							</Tooltip>
 						</div>
 					</div>
 				</div>

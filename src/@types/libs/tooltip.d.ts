@@ -19,6 +19,8 @@ declare namespace AppTooltip {
 
 	export type Element = HTMLElement;
 
+	export type Classes = string;
+
 	export type Hidden = boolean;
 
 	export type Animation = boolean;

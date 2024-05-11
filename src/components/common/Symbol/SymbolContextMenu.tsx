@@ -22,7 +22,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 						<a
 							href={getTSELink(symbol?.insCode)}
 							target='_blank'
-							className='h-48 gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
 							<Image width='18' height='18' src='/static/images/tsetmc.png' alt='' />
 							{t('common.tse')}
@@ -33,13 +33,29 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 							<a
 								href={getCodalLink(symbol?.symbolTitle)}
 								target='_blank'
-								className='h-48 gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+								className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
 							>
 								<Image width='18' height='18' src='/static/images/codal.png' alt='' />
 								{t('common.codal')}
 							</a>
 						</li>
 					)}
+
+					<li>
+						<button className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'>
+							{t('symbol_context_menu.add_note')}
+						</button>
+					</li>
+					<li>
+						<button className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'>
+							{t('symbol_context_menu.alarm')}
+						</button>
+					</li>
+					<li>
+						<button className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'>
+							{t('symbol_context_menu.technical_chart')}
+						</button>
+					</li>
 				</ul>
 			)}
 		>

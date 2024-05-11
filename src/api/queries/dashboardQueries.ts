@@ -102,7 +102,7 @@ export const useGetOptionTopSymbolsQuery = createQuery<
 		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.Option.FakeData>>(
 			routes.dashboard.GetOptionTopSymbols,
 			{
-				params: { type },
+				params: { type, pageSize: 4 },
 				signal,
 			},
 		);
