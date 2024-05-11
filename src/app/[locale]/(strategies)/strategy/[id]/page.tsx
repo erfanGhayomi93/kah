@@ -9,7 +9,6 @@ import type { NextPage } from 'next';
 
 // 		return result.find((item) => item.type === id) ?? undefined;
 // 	} catch (e) {
-// 		console.log(e);
 // 		return undefined;
 // 	}
 // };

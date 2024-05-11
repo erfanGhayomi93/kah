@@ -21,8 +21,6 @@ interface TableProps {
 const Table = ({ filters, setFilters, setFieldsValue }: TableProps) => {
 	const dispatch = useAppDispatch();
 
-	console.log(filters, 'filtersfilters');
-
 	const t = useTranslations();
 
 	const {

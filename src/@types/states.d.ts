@@ -182,7 +182,7 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
-declare interface IManageStrategyColumn {
+declare interface IManageColumn {
 	id: string;
 	title: string;
 	hidden: boolean;
@@ -208,6 +208,7 @@ declare interface IDashboardGrid {
 declare interface IBaseModalConfiguration {
 	moveable?: boolean;
 	animation?: boolean;
+	callbackFunction?: () => void;
 }
 
 declare interface SymbolContractModalStates {

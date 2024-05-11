@@ -211,10 +211,10 @@ const Contract = ({
 			<div className='justify-start pb-8 flex-column'>
 				<div className='flex items-start justify-between'>
 					<div className='flex flex-1 justify-between gap-16'>
-						<div onClick={openSymbolInfoPanel} className='cursor-pointer flex-column flex-items-start'>
+						<div className='cursor-pointer flex-column flex-items-start'>
 							<div className='flex items-center gap-8'>
 								<SymbolContextMenu symbol={contractInfo ?? null} />
-								<h1 className='text-3xl font-medium text-gray-1000'>
+								<h1 onClick={openSymbolInfoPanel} className='text-3xl font-medium text-gray-1000'>
 									{contractInfo?.symbolTitle ?? '−'}
 								</h1>
 							</div>
