@@ -72,23 +72,13 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 	const symbolInfoPanelGridLayout = useAppSelector(getSymbolInfoPanelGridLayout);
 
-	const onToggleSymbolDetail = (isExpand: boolean) => {
+	const setSectionHeight = (id: TSymbolInfoPanelSections, h: number) => {
 		const l = JSON.parse(JSON.stringify(symbolInfoPanelGridLayout)) as typeof symbolInfoPanelGridLayout;
-		const i = l.findIndex((item) => item.id === 'symbol_detail');
+		const i = l.findIndex((item) => item.id === id);
 
 		if (i === -1) return;
 
-		l[i].height = isExpand ? 808 : 448;
-		dispatch(setSymbolInfoPanelGridLayout(l));
-	};
-
-	const onToggleOptionDetail = (isExpand: boolean) => {
-		const l = JSON.parse(JSON.stringify(symbolInfoPanelGridLayout)) as typeof symbolInfoPanelGridLayout;
-		const i = l.findIndex((item) => item.id === 'option_detail');
-
-		if (i === -1) return;
-
-		l[i].height = isExpand ? 628 : 468;
+		l[i].height = h;
 		dispatch(setSymbolInfoPanelGridLayout(l));
 	};
 
@@ -207,7 +197,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 											<div key='option_detail'>
 												<ErrorBoundary>
 													<OptionDetail
-														onExpand={onToggleOptionDetail}
+														setHeight={(h) => setSectionHeight('option_detail', h)}
 														symbolData={symbolData}
 													/>
 												</ErrorBoundary>
@@ -228,7 +218,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 												<ErrorBoundary>
 													<SymbolDetails
 														symbolData={symbolData}
-														onExpand={onToggleSymbolDetail}
+														setHeight={(h) => setSectionHeight('symbol_detail', h)}
 													/>
 												</ErrorBoundary>
 											</div>
@@ -267,15 +257,15 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 								</div>
 							)}
 
-							{!isOption && [
-								!cells.chart && (
-									<div key='chart'>
-										<ErrorBoundary>
-											<Chart symbolISIN={symbolISIN} />
-										</ErrorBoundary>
-									</div>
-								),
+							{!cells.chart && (
+								<div key='chart'>
+									<ErrorBoundary>
+										<Chart isOption={isOption} symbolISIN={symbolISIN} />
+									</ErrorBoundary>
+								</div>
+							)}
 
+							{!isOption && [
 								!cells.same_sector_symbols && (
 									<div key='same_sector_symbols'>
 										<ErrorBoundary>

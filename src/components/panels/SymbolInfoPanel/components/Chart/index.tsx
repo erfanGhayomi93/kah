@@ -20,10 +20,11 @@ interface ChartIntervalProps {
 }
 
 interface ChartProps {
+	isOption: boolean;
 	symbolISIN: string;
 }
 
-const Chart = ({ symbolISIN }: ChartProps) => {
+const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 	const t = useTranslations();
 
 	const { inputs, setFieldValue } = useInputs<ISymbolChartStates>({
@@ -35,15 +36,27 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 		queryKey: ['symbolChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
 	});
 
-	const tabs: ITabIem[] = useMemo(
-		() => [
+	const tabs: ITabIem[] = useMemo(() => {
+		const value = [
 			{
 				id: 'symbol_chart',
 				title: t('symbol_info_panel.symbol_chart'),
 			},
-		],
-		[],
-	);
+			{
+				id: 'open_positions',
+				title: t('symbol_info_panel.open_positions'),
+			},
+		];
+
+		if (isOption) {
+			value.push({
+				id: 'notional_value_tab',
+				title: t('symbol_info_panel.notional_value_tab'),
+			});
+		}
+
+		return value;
+	}, [isOption]);
 
 	return (
 		<Section name='chart' defaultActiveTab='symbol_chart' tabs={tabs}>

@@ -1,6 +1,7 @@
 'use client';
 
 import { TooltipElement } from '@/classes/Tooltip';
+import clsx from 'clsx';
 import { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 export interface ITooltipProps {
@@ -15,12 +16,13 @@ export interface ITooltipProps {
 	element?: AppTooltip.Element;
 	children: React.ReactElement;
 	content: string;
+	className?: ClassesValue;
 	onShow?: () => void;
 	onHide?: () => void;
 }
 
 const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
-	({ children, animation = true, disabled, placement, content, offset }, ref) => {
+	({ children, animation = true, disabled, placement, content, offset, className }, ref) => {
 		const childRef = useRef<HTMLElement | null>(null);
 
 		const tooltipRef = useRef<TooltipElement | null>(null);
@@ -42,6 +44,7 @@ const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
 			tooltipRef.current.setContent(content);
 			tooltipRef.current.disabled = Boolean(disabled);
 			tooltipRef.current.animation = Boolean(animation);
+			if (className) tooltipRef.current.setCustomClass(clsx(className));
 			if (offset) tooltipRef.current.setOffset(offset);
 			if (placement) tooltipRef.current.placement = placement;
 
@@ -67,6 +70,10 @@ const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
 		useEffect(() => {
 			if (tooltipRef.current) tooltipRef.current.animation = Boolean(animation);
 		}, [animation]);
+
+		useEffect(() => {
+			if (tooltipRef.current) tooltipRef.current.setCustomClass(clsx(className));
+		}, [className]);
 
 		return cloneElement(children, { ref: childRef });
 	},

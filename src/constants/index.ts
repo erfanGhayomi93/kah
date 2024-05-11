@@ -148,7 +148,9 @@ export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	{
 		id: 'option_detail',
-		height: 468,
+		// 328 > 468
+		// 328 > 628
+		height: 328,
 		expand: true,
 		hidden: false,
 		isOption: true,
@@ -164,8 +166,8 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	},
 	{
 		id: 'symbol_detail',
-		// height will be "808" after expand
-		height: 448,
+		// 328 > 808
+		height: 328,
 		expand: true,
 		hidden: false,
 		isOption: false,
@@ -196,18 +198,17 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		i: 3,
 	},
 	{
-		id: 'individual_and_legal',
-		height: 306,
+		id: 'chart',
+		height: 320,
 		expand: true,
 		hidden: false,
 		i: 4,
 	},
 	{
-		id: 'chart',
-		height: 320,
+		id: 'individual_and_legal',
+		height: 234,
 		expand: true,
 		hidden: false,
-		isOption: false,
 		i: 5,
 	},
 	{

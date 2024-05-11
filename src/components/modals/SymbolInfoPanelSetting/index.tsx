@@ -112,6 +112,11 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 					imgSrc: '/static/images/q4WNQ4Oibv.png',
 				},
 				{
+					id: 'chart',
+					title: t('symbol_info_panel_setting.symbol_chart'),
+					imgSrc: '/static/images/rbfs0K0Tqf.png',
+				},
+				{
 					id: 'individual_and_legal',
 					title: t('symbol_info_panel_setting.individual_and_legal'),
 					imgSrc: '/static/images/9PlkNy6gfp.png',

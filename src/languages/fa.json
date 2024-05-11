@@ -336,13 +336,15 @@
 		"quantity": "تعداد",
 		"price": "قیمت",
 		"symbol_title": "نماد",
-		"individual_cash_inflow": "ورود پول حقیقی",
+		"liquid_inflow": "ورود پول حقیقی",
+		"liquid_outflow": "خروج پول حقیقی",
 		"contract_description": "‎{dueDays} روز تقویمی و ‎{workingDaysLeftCount} روز معاملاتی",
 		"avg_volume_month": "میانگین حجم ماه",
 		"notional_value": "ارزش مفهومی معاملات",
+		"notional_value_tab": "ارزش مفهومی",
 		"contract_end_date": "تاریخ سررسید",
 		"contract_size": "اندازه قرارداد",
-		"open_position": "موقعیت باز",
+		"open_positions": "موقعیت‌های باز",
 		"last_trade_date": "آخرین معامله",
 		"linear": "خطی",
 		"candle": "شمعی"
@@ -354,6 +356,11 @@
 		"last_traded_price_percent": "درصد تغییر",
 		"demand": "عرضه",
 		"supply": "تقاضا"
+	},
+	"symbol_context_menu": {
+		"add_note": "افزودن یادداشت",
+		"alarm": "هشدار شرطی",
+		"technical_chart": "نمودار نکنیکال"
 	},
 	"symbol_info_panel_setting": {
 		"title": "ابزارها",
@@ -508,6 +515,12 @@
 		"tab_price_information": "اطلاعات قیمتی",
 		"tab_computing_information": "اطلاعات محاسباتی",
 		"tab_open_position": "پوزیشن باز"
+	},
+	"symbol_price_slider": {
+		"last": "آخرین",
+		"closing": "پایانی",
+		"high": "بیشترین",
+		"low": "کمترین"
 	},
 	"i_errors": {
 		"undefined_error": "خطای ناشناخته رخ داد، لطفا مجددا امتحان کنید.",
@@ -1083,7 +1096,6 @@
 		"custom": "دلخواه",
 		"today": "امروز"
 	},
-
 	"tooltip": {
 		"asset_value": "{v} دارایی",
 		"purchase_power_value": "{v} قدرت خرید",
