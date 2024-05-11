@@ -1,6 +1,4 @@
-type Props = {};
-
-const SendOrder = (props: Props) => {
+const SendOrder = () => {
 	return <div></div>;
 };
 

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useAppSelector } from '@/features/hooks';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
@@ -14,12 +14,10 @@ const General = () => {
 
 	return (
 		<div className='flex-1 gap-8 flex-column'>
-			{isLoggedIn ? (
+			{isLoggedIn && (
 				<SettingCard title={t('settings_page.general_info_title')}>
 					<KahkeshanInfo />
 				</SettingCard>
-			) : (
-				<></>
 			)}
 
 			<div className='gap-56 rounded bg-gray-200 p-24 flex-justify-between'>

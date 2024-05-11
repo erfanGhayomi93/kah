@@ -1,14 +1,5 @@
 'use client';
-import {
-	ChangeNameSVG,
-	EditFillSVG,
-	IdentityCardSVG,
-	KeySVG,
-	MailSVG,
-	MobileSVG,
-	NoSVG,
-	UserBoldSVG,
-} from '@/components/icons';
+import { EditFillSVG, KeySVG, MobileSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 
 interface IFieldProps {

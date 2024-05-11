@@ -2,9 +2,7 @@ import { NotificationSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
-type Props = {};
-
-const NotificationPlacement = (props: Props) => {
+const NotificationPlacement = () => {
 	const t = useTranslations();
 
 	const buttons = [
@@ -34,12 +32,18 @@ const NotificationPlacement = (props: Props) => {
 		<div className='gap-16 flex-justify-between'>
 			{buttons.map((item) => (
 				<button
+					key={item.id}
 					className={clsx(
 						'relative flex-1  rounded-md py-48 transition-colors flex-justify-center',
 						item.id === 'bottom_left' ? 'bg-primary-100' : '!border border-gray-500 hover:btn-hover',
 					)}
 				>
-					<span className={clsx('absolute ' + item.className, item.id === 'bottom_left' ? 'text-primary-400' : 'text-gray-500')}>
+					<span
+						className={clsx(
+							'absolute ' + item.className,
+							item.id === 'bottom_left' ? 'text-primary-400' : 'text-gray-500',
+						)}
+					>
 						{<NotificationSVG width={'3.9rem'} height={'3.9rem'} />}
 					</span>
 					{item.title}
