@@ -179,7 +179,7 @@ const List = ({ isExpand }: ListProps) => {
 				{
 					id: 'setting',
 					label: t('sidebar.setting'),
-					to: '/settings',
+					to: '/settings/general/',
 					icon: <SettingSVG />,
 				},
 			],
