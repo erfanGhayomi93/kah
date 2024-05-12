@@ -220,7 +220,9 @@ const SymbolStrategy = ({
 			</td>
 
 			<td className={styles.td}>
-				<span className='text-gray-1000'>{t(`symbol_strategy.${type}`)}</span>
+				<span className={type === 'call' ? 'text-success-100' : 'text-error-100'}>
+					{t(`symbol_strategy.${type}`)}
+				</span>
 			</td>
 
 			<td className={styles.td}>

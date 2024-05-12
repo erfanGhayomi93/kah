@@ -57,7 +57,6 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 					},
 				},
 				yaxis: {
-					tickAmount: 2,
 					labels: {
 						formatter: (val) => {
 							return numFormatter(val);

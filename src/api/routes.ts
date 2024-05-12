@@ -104,6 +104,8 @@ const routes = {
 		CoveredCall: `${rlc}/Strategies/v1/CoveredCall`,
 		LongCall: `${rlc}/Strategies/v1/LongCall`,
 		LongPut: `${rlc}/Strategies/v1/LongPut`,
+		LongStraddle: `${rlc}/Strategies/v1/LongStraddle`,
+		Conversion: `${rlc}/Strategies/v1/Conversion`,
 		BullCallSpread: `${rlc}/Strategies/v1/BullCallSpread`,
 		GetAll: `${rlc}/Strategies/v1/GetAll`,
 	},

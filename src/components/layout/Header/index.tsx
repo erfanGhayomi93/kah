@@ -34,6 +34,7 @@ import {
 	ShieldXSVG,
 	UserBoldSVG,
 	WalletSVG,
+	XSVG,
 } from '../../icons';
 import Notifications from './Notifications';
 import SearchSymbol from './SearchSymbol';
@@ -124,7 +125,6 @@ const Header = () => {
 		dispatch(setDepositModal({ isShow: true }));
 	};
 
-
 	const userStatusIcon = useMemo(() => {
 		if (!userStatus?.remainStatus) return null;
 
@@ -139,7 +139,6 @@ const Header = () => {
 	const [serverTime, serverDate] = useMemo(() => {
 		return dayjs(timestamp).calendar('jalali').format('HH:mm:ss YYYY/MM/DD').split(' ');
 	}, [timestamp]);
-
 
 	useEffect(() => {
 		if (!brokerURLs) return;
@@ -216,7 +215,7 @@ const Header = () => {
 							className='h-32 gap-8 rounded px-16 font-medium btn-primary'
 						>
 							{t('header.login')}
-							<span className='w-2 h-12 rounded bg-white' />
+							<span className='h-12 w-2 rounded bg-white' />
 							{t('header.register')}
 						</button>
 					)}
@@ -257,6 +256,7 @@ const Header = () => {
 			<div className='flex-1 gap-16 flex-justify-end'>
 				<div className='gap-8 flex-items-center'>
 					<SearchSymbol />
+
 					<Tooltip placement='bottom' content={t('tooltip.black_scholes')}>
 						<button
 							onClick={openBlackScholesModal}
@@ -275,23 +275,29 @@ const Header = () => {
 						defaultPopupWidth={296}
 						onOpen={() => setIsDropdownOpened(true)}
 						onClose={() => setIsDropdownOpened(false)}
-						renderer={({ setOpen }) => <Notifications />}
+						renderer={() => <Notifications />}
 					>
 						{({ open, setOpen }) => (
-							<button
-								onClick={() => setOpen(!open)}
-								type='button'
-								className='size-32 rounded-circle bg-gray-200 flex-justify-center icon-hover'
-							>
-								<BellSVG width='1.8rem' height='1.8rem' />
-							</button>
+							<Tooltip placement='bottom' content={t('tooltip.notifications')}>
+								<button
+									onClick={() => setOpen(!open)}
+									type='button'
+									className='size-32 rounded-circle bg-gray-200 flex-justify-center icon-hover'
+								>
+									{open ? (
+										<XSVG width='1.8rem' height='1.8rem' />
+									) : (
+										<BellSVG width='1.8rem' height='1.8rem' />
+									)}
+								</button>
+							</Tooltip>
 						)}
 					</Popup>
 
-					<span className='w-2 mr-8 h-12 bg-gray-500' />
+					<span className='mr-8 h-12 w-2 bg-gray-500' />
 				</div>
 
-				<div className='h-full gap-8 ltr flex-justify-start'>
+				<div className='h-full gap-12 ltr flex-justify-start'>
 					<span style={{ width: '6.6rem' }} className='text-left text-base text-gray-900'>
 						{serverDate}
 					</span>

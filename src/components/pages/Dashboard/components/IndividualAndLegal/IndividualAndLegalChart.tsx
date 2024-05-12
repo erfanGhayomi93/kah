@@ -69,7 +69,6 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 						},
 					},
 					yaxis: {
-						tickAmount: 4,
 						labels: {
 							formatter: (val) => {
 								return numFormatter(val);

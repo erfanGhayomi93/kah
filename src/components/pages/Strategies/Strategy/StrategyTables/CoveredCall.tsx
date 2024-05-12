@@ -1,4 +1,4 @@
-import { useCoveredCallQuery } from '@/api/queries/strategyQuery';
+import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
@@ -30,14 +30,14 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('covered_call_column', initialColumnsCoveredCall);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'covered_call_strategy_columns',
+		initialColumnsCoveredCall,
+	);
 
-	const [priceBasis, setPriceBasis] = useState<ISelectItem>({
-		id: 'LastTradePrice',
-		title: t('strategy.last_traded_price'),
-	});
+	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useCoveredCallQuery({
+	const { data, isFetching } = useCoveredCallStrategyQuery({
 		queryKey: ['coveredCallQuery', priceBasis.id, useCommission],
 	});
 

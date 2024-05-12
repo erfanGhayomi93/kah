@@ -1,8 +1,8 @@
 import { useSymbolSearchQuery } from '@/api/queries/symbolQuery';
 import Click from '@/components/common/Click';
+import KeyDown from '@/components/common/KeyDown';
 import Popup from '@/components/common/Popup';
 import styles from '@/components/common/Symbol/SymbolSearch.module.scss';
-import Tooltip from '@/components/common/Tooltip';
 import { SearchSVG, XCircleSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -32,7 +32,7 @@ const SearchSymbol = () => {
 
 	return (
 		<Popup
-			defaultPopupWidth={256}
+			defaultPopupWidth={300}
 			margin={{
 				y: 4,
 			}}
@@ -86,44 +86,51 @@ const SearchSymbol = () => {
 						setOpen(false);
 					}}
 				>
-					<div
-						style={{ width: isExpand ? '256px' : '3.2rem' }}
-						className='h-32 overflow-hidden rounded-oval bg-gray-200 px-8 transition-width flex-justify-between'
+					<KeyDown
+						enabled={isExpand}
+						keys={['Escape']}
+						onKeyDown={() => {
+							setIsExpand(false);
+							setOpen(false);
+						}}
 					>
-						<Tooltip disabled={isExpand} placement='bottom' content={t('tooltip.symbol_search')}>
+						<div
+							style={{ width: isExpand ? '30rem' : '4rem' }}
+							className='h-40 rounded border border-input bg-white pl-8 transition-width flex-justify-between'
+						>
 							<button
 								onClick={() => setIsExpand(!isExpand)}
 								type='button'
-								className='size-32 flex-justify-center icon-hover'
+								className='h-40 min-w-40 text-gray-900 flex-justify-center'
 							>
-								<SearchSVG width='2rem' height='2rem' strokeWidth='4rem' />
+								<SearchSVG width='2.4rem' height='2.4rem' strokeWidth='4rem' />
 							</button>
-						</Tooltip>
 
-						{isExpand && (
-							<>
-								<input
-									autoFocus
-									onFocus={() => setOpen(true)}
-									type='text'
-									value={term}
-									onChange={(e) => setTerm(e.target.value)}
-									className='flex-1 border-0 bg-transparent text-right text-tiny'
-									placeholder={t('header.search_symbol_placeholder')}
-								/>
-								<button
-									onClick={() => {
-										setOpen(false);
-										setIsExpand(false);
-									}}
-									type='button'
-									className='size-24 rounded-circle text-gray-800 flex-justify-center'
-								>
-									<XCircleSVG width='1.6rem' height='1.6rem' />
-								</button>
-							</>
-						)}
-					</div>
+							{isExpand && (
+								<div className='flex-1 overflow-hidden flex-justify-start'>
+									<input
+										autoFocus
+										onFocus={() => setOpen(true)}
+										type='text'
+										value={term}
+										onChange={(e) => setTerm(e.target.value)}
+										className='flex-1 border-0 bg-transparent text-right text-tiny'
+										placeholder={t('header.search_symbol_placeholder')}
+									/>
+									<button
+										onClick={() => {
+											setOpen(false);
+											setIsExpand(false);
+										}}
+										type='button'
+										className='size-24 rounded-circle text-gray-800 flex-justify-center'
+									>
+										<XCircleSVG width='1.6rem' height='1.6rem' />
+									</button>
+								</div>
+							)}
+						</div>
+					</KeyDown>
 				</Click>
 			)}
 		</Popup>

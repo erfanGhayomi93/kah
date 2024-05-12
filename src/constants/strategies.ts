@@ -301,6 +301,8 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 
 export const initialColumnsLongCall: IManageColumn[] = [];
 
-export const initialColumnsBullLongPut: IManageColumn[] = [];
+export const initialColumnsLongPut: IManageColumn[] = [];
+
+export const initialColumnsConversion: IManageColumn[] = [];
 
 export const initialColumnsProtectivePut: IManageColumn[] = [];
