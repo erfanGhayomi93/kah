@@ -143,7 +143,9 @@ export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 
 export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
 
-export interface IChangeBrokerModal extends IBaseModalConfiguration {}
+export interface IChangeBrokerModal extends IBaseModalConfiguration {
+	isShow: boolean;
+}
 
 export interface IWithdrawalModal extends IBaseModalConfiguration {
 	isShow: boolean;

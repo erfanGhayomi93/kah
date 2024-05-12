@@ -683,7 +683,14 @@
 		"title": "چیدمان صفحه اصلی"
 	},
 	"change_broker_modal": {
-		"title": "تغییر کارگزار ناظر"
+		"title": "تغییر کارگزار ناظر",
+		"notice_attention": "در صورتی که تمایل دارید دارایی خود را به کارگزاری فارابی انتقال دهید، در فرم بالا نام نماد را انتخاب کنید و دکمه ثبت درخواست را بزنید.",
+		"symbol_validation": "نماد مورد نظر خود را وارد کنید",
+		"symbol_column": "نماد",
+		"save_date_column": "زمان درخواست",
+		"comment_column": "شرح",
+		"last_state_column": "وضعیت",
+		"cancel_column": "انصراف"
 	},
 	"withdrawal_modal": {
 		"title": "برداشت وجه",
@@ -1141,6 +1148,16 @@
 		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
 		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت.",
 		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
+		"change_broker_request_successfully": "درخواست تغییر کارگزار ناظر با موفقیت ارسال شد.",
+		"change_broker_request_delete_successfully": "درخواست حذف تغییر کارگزار ناظر با موفقیت ارسال شد.",
+		"change_broker_failure_SymbolISINisEmpty": "ابتدا یک نماد انتخاب کنید.",
+		"change_broker_failure_HasInProgressStateRequest": "درخواست شما در حال بررسی می‌باشد.",
+		"change_broker_failure_ChangeBroker_Exists": "یک درخواست در جریان برای این نماد وجود دارد.",
+		"change_broker_failure_Unauthorized": "ثبت درخواست برای این نماد امکان پذیر نیست.",
+		"change_broker_failure_BadRequest": "درخواست غیرمجاز، لطفا با پشتیبان سیستم تماس بگیرید.",
+		"change_broker_failure_SomethingWentWrong": "درخواست غیرمجاز، لطفا با پشتیبان سیستم تماس بگیرید.",
+		"change_broker_failure_NoـTokenGenerated": "درخواست غیرمجاز، لطفا با پشتیبان سیستم تماس بگیرید.",
+		"change_broker_failure_UnRemoveable": "امکان لغو این مورد وجود ندارد.",
 		"offline_deposit_succeeded": "فیش با موفقیت ثبت شد.",
 		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
 		"drawal_offline_successFully": "درخواست برداشت وجه با موفقیت انجام شد.",
