@@ -1,4 +1,4 @@
-import { useBullCallSpreadQuery } from '@/api/queries/strategyQuery';
+import { useBullCallSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
@@ -31,16 +31,13 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'bull_call_spread_column',
+		'bull_call_spread_strategy_columns',
 		initialColumnsBullCallSpread,
 	);
 
-	const [priceBasis, setPriceBasis] = useState<ISelectItem>({
-		id: 'LastTradePrice',
-		title: t('strategy.last_traded_price'),
-	});
+	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useBullCallSpreadQuery({
+	const { data, isFetching } = useBullCallSpreadStrategyQuery({
 		queryKey: ['bullCallSpreadQuery', priceBasis.id, useCommission],
 	});
 
