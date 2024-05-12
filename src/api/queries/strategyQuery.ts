@@ -23,7 +23,7 @@ export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStr
 	},
 });
 
-export const useCoveredCallQuery = createQuery<Strategy.CoveredCall[], TStrategyBaseType<'coveredCallQuery'>>({
+export const useCoveredCallStrategyQuery = createQuery<Strategy.CoveredCall[], TStrategyBaseType<'coveredCallQuery'>>({
 	staleTime: 6e5,
 	queryKey: ['coveredCallQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
@@ -51,7 +51,7 @@ export const useCoveredCallQuery = createQuery<Strategy.CoveredCall[], TStrategy
 	},
 });
 
-export const useLongCallQuery = createQuery<Strategy.LongCall[], TStrategyBaseType<'longCallQuery'>>({
+export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrategyBaseType<'longCallQuery'>>({
 	staleTime: 6e5,
 	queryKey: ['longCallQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
@@ -79,7 +79,7 @@ export const useLongCallQuery = createQuery<Strategy.LongCall[], TStrategyBaseTy
 	},
 });
 
-export const useLongPutQuery = createQuery<Strategy.LongPut[], TStrategyBaseType<'longPutQuery'>>({
+export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategyBaseType<'longPutQuery'>>({
 	staleTime: 6e5,
 	queryKey: ['longPutQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
@@ -107,7 +107,69 @@ export const useLongPutQuery = createQuery<Strategy.LongPut[], TStrategyBaseType
 	},
 });
 
-export const useBullCallSpreadQuery = createQuery<Strategy.BullCallSpread[], TStrategyBaseType<'bullCallSpreadQuery'>>({
+export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TStrategyBaseType<'conversionQuery'>>({
+	staleTime: 6e5,
+	queryKey: ['conversionQuery', 'LastTradePrice', false],
+	queryFn: async ({ signal, queryKey }) => {
+		try {
+			const [, priceBasis, commission] = queryKey;
+			const params = {
+				PageSize: 100,
+				PageNumber: 1,
+				CalculateBy: priceBasis,
+				WithCommission: commission,
+			};
+
+			const response = await axios.get<ServerResponse<Strategy.Conversion[]>>(routes.strategy.Conversion, {
+				signal,
+				params,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useLongStraddleStrategyQuery = createQuery<
+	Strategy.LongStraddle[],
+	TStrategyBaseType<'longStraddleQuery'>
+>({
+	staleTime: 6e5,
+	queryKey: ['longStraddleQuery', 'LastTradePrice', false],
+	queryFn: async ({ signal, queryKey }) => {
+		try {
+			const [, priceBasis, commission] = queryKey;
+			const params = {
+				PageSize: 100,
+				PageNumber: 1,
+				CalculateBy: priceBasis,
+				WithCommission: commission,
+			};
+
+			const response = await axios.get<ServerResponse<Strategy.LongStraddle[]>>(routes.strategy.LongStraddle, {
+				signal,
+				params,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useBullCallSpreadStrategyQuery = createQuery<
+	Strategy.BullCallSpread[],
+	TStrategyBaseType<'bullCallSpreadQuery'>
+>({
 	staleTime: 6e5,
 	queryKey: ['bullCallSpreadQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {

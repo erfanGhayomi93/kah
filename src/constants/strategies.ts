@@ -1,4 +1,4 @@
-export const initialColumnsCoveredCall: IManageStrategyColumn[] = [
+export const initialColumnsCoveredCall: IManageColumn[] = [
 	{
 		id: 'baseSymbolISIN',
 		title: 'نماد پایه',
@@ -126,7 +126,7 @@ export const initialColumnsCoveredCall: IManageStrategyColumn[] = [
 	},
 ];
 
-export const initialColumnsBullCallSpread: IManageStrategyColumn[] = [
+export const initialColumnsBullCallSpread: IManageColumn[] = [
 	{
 		id: 'baseSymbolISIN',
 		title: 'نماد پایه',
@@ -299,8 +299,10 @@ export const initialColumnsBullCallSpread: IManageStrategyColumn[] = [
 	},
 ];
 
-export const initialColumnsLongCall: IManageStrategyColumn[] = [];
+export const initialColumnsLongCall: IManageColumn[] = [];
 
-export const initialColumnsBullLongPut: IManageStrategyColumn[] = [];
+export const initialColumnsLongPut: IManageColumn[] = [];
 
-export const initialColumnsProtectivePut: IManageStrategyColumn[] = [];
+export const initialColumnsConversion: IManageColumn[] = [];
+
+export const initialColumnsProtectivePut: IManageColumn[] = [];

@@ -221,7 +221,6 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 					yaxis: {
 						min: chartOptions.offset[0] || undefined,
 						max: chartOptions.offset[1] || undefined,
-						tickAmount: 5,
 						floating: false,
 						labels: {
 							formatter: (value) => toFixed(Number(value), 0),

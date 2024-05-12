@@ -19,7 +19,7 @@ const Section = ({ title, checked, imgSrc, onChecked }: SectionProps) => {
 				checked ? 'bg-white' : 'bg-gray-200',
 			)}
 		>
-			<div className='gap-8 flex-items-center'>
+			<div className='select-none gap-8 flex-items-center'>
 				<Checkbox checked={checked} />
 				<span className='text-tiny text-gray-900'>{title}</span>
 			</div>

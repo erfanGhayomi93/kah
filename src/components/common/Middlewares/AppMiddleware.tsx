@@ -7,7 +7,7 @@ import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice'
 import { type RootState } from '@/features/store';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 interface AppMiddlewareProps {
 	children: React.ReactNode;
@@ -44,7 +44,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 		queryClient.setQueryData(['commissionsQuery'], null);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (brokerURLs) return;
 		onUserLoggedOutFromTheBroker();
 	}, [brokerURLs]);

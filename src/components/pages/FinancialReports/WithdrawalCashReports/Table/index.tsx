@@ -2,54 +2,32 @@ import { useWithdrawalCashReports } from '@/api/queries/reportsQueries';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { useAppDispatch } from '@/features/hooks';
-import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
-import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { type Dispatch, type SetStateAction, useMemo } from 'react';
 import WithdrawalCashReportsTable from './WithdrawalCashReportsTable';
 
 interface TableProps {
 	filters: WithdrawalCashReports.WithdrawalCashReportsFilters;
-	setFilters: <K extends keyof WithdrawalCashReports.WithdrawalCashReportsFilters>(name: K, value: WithdrawalCashReports.WithdrawalCashReportsFilters[K]) => void;
+	setFilters: <K extends keyof WithdrawalCashReports.WithdrawalCashReportsFilters>(
+		name: K,
+		value: WithdrawalCashReports.WithdrawalCashReportsFilters[K],
+	) => void;
+	setFieldsValue: (props: Partial<WithdrawalCashReports.WithdrawalCashReportsFilters>) => void;
+	columnsVisibility: TWithdrawalCashReportsColumnsState[];
+	setColumnsVisibility: Dispatch<SetStateAction<TWithdrawalCashReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters }: TableProps) => {
-
-	const dispatch = useAppDispatch();
-
-	const t = useTranslations();
-
-
-	const { data: withdrawalCashReportsData, isLoading, isError } = useWithdrawalCashReports({
-		queryKey: ['withdrawalCashReports', filters]
+const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility }: TableProps) => {
+	const { data: withdrawalCashReportsData, isLoading } = useWithdrawalCashReports({
+		queryKey: ['withdrawalCashReports', filters],
 	});
-
-	const addSymbol = () => {
-		dispatch(setAddSymbolToWatchlistModal({}));
-	};
-
-	const onFiltersChanged = (newFilters: Transaction.ITransactionsFilters) => {
-		// setFilters(newFilters);
-	};
-
-	// useLayoutEffect(() => {
-	// 	ipcMain.handle('set_transactions_filters', onFiltersChanged);
-
-	// 	return () => {
-	// 		ipcMain.removeChannel('set_transactions_filters');
-	// 	};
-	// }, []);
 
 	const reports = useMemo(() => {
 		if (!withdrawalCashReportsData?.result) return [];
-
 
 		return withdrawalCashReportsData?.result;
 	}, [withdrawalCashReportsData?.result]);
 
 	const dataIsEmpty = reports.length === 0;
-
-
 
 	return (
 		<>
@@ -60,10 +38,14 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					transition: 'height 250ms ease',
 				}}
 			>
-				<WithdrawalCashReportsTable reports={reports} />
+				<WithdrawalCashReportsTable
+					columnsVisibility={columnsVisibility}
+					setColumnsVisibility={setColumnsVisibility}
+					reports={reports}
+				/>
 			</div>
 
-			<div className='flex-justify-end py-22'>
+			<div className='py-22 flex-justify-end'>
 				<Pagination
 					hasNextPage={withdrawalCashReportsData?.hasNextPage ?? false}
 					hasPreviousPage={withdrawalCashReportsData?.hasPreviousPage ?? false}
@@ -72,18 +54,22 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					currentPage={filters?.pageNumber ?? 1}
 					pageSize={filters?.pageSize ?? 0}
 					onPageChange={(value) => setFilters('pageNumber', value)}
-					onPageSizeChange={(value) => setFilters('pageSize', value)} pageNumber={withdrawalCashReportsData?.pageNumber ?? 0} />
+					onPageSizeChange={(value) => setFilters('pageSize', value)}
+					pageNumber={withdrawalCashReportsData?.pageNumber ?? 0}
+				/>
 			</div>
 
 			{isLoading && (
-				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 h-full w-full'>
+				<div style={{ backdropFilter: 'blur(1px)' }} className='absolute left-0 top-0 size-full'>
 					<Loading />
 				</div>
 			)}
 
-			{dataIsEmpty && !isLoading && <div className='fixed center'>
-				<NoData />
-			</div>}
+			{dataIsEmpty && !isLoading && (
+				<div className='fixed center'>
+					<NoData />
+				</div>
+			)}
 		</>
 	);
 };

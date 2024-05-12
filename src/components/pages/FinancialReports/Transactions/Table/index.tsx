@@ -3,10 +3,9 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { useAppDispatch } from '@/features/hooks';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo } from 'react';
+import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
 import TransactionsTable from './TransactionsTable';
 
 interface TableProps {
@@ -16,20 +15,14 @@ interface TableProps {
 		value: Transaction.ITransactionsFilters[K],
 	) => void;
 	setFieldsValue: (props: Partial<Transaction.ITransactionsFilters>) => void;
+	columnsVisibility: TTransactionColumnsState[];
+	setColumnsVisibility: Dispatch<SetStateAction<TTransactionColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, setFieldsValue }: TableProps) => {
-	const dispatch = useAppDispatch();
-
-	console.log(filters, 'filtersfilters');
-
+const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
 	const t = useTranslations();
 
-	const {
-		data: transactionsReportData,
-		isLoading,
-		isError,
-	} = useTransactionsReportsQuery({
+	const { data: transactionsReportData, isLoading } = useTransactionsReportsQuery({
 		queryKey: ['transactionsReport', filters],
 	});
 
@@ -73,7 +66,13 @@ const Table = ({ filters, setFilters, setFieldsValue }: TableProps) => {
 					transition: 'height 250ms ease',
 				}}
 			>
-				<TransactionsTable reports={reports} lastTrades={lastTrades} finalRemain={finalRemain} />
+				<TransactionsTable
+					columnsVisibility={columnsVisibility}
+					setColumnsVisibility={setColumnsVisibility}
+					reports={reports}
+					lastTrades={lastTrades}
+					finalRemain={finalRemain}
+				/>
 			</div>
 
 			<div className='py-22 flex-justify-between'>

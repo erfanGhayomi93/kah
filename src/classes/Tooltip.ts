@@ -1,4 +1,5 @@
 import { cn, getRndInteger } from '@/utils/helpers';
+import clsx from 'clsx';
 
 class TooltipWrapper {
 	private readonly _wrapperId = '__tooltip';
@@ -39,6 +40,8 @@ class TooltipElement extends TooltipWrapper {
 
 	private _element: AppTooltip.Element;
 
+	private _className: AppTooltip.Classes = '';
+
 	private _content: HTMLElement | string | null = null;
 
 	private readonly _abortController: AppTooltip.Abort;
@@ -72,7 +75,7 @@ class TooltipElement extends TooltipWrapper {
 		);
 
 		const tooltipBody = document.createElement('div');
-		tooltipBody.classList.add('common-tooltip-body');
+		tooltipBody.setAttribute('class', clsx('common-tooltip-body', this._className));
 
 		if (typeof this._content === 'string') tooltipBody.textContent = this._content;
 		else if (this._content === null) tooltipBody.innerHTML = '';
@@ -102,7 +105,7 @@ class TooltipElement extends TooltipWrapper {
 		eTooltip.innerHTML = '';
 
 		const tooltipBody = document.createElement('div');
-		tooltipBody.classList.add('common-tooltip-body');
+		tooltipBody.setAttribute('class', clsx('common-tooltip-body', this._className));
 
 		if (typeof this._content === 'string') tooltipBody.textContent = this._content;
 		else if (this._content === null) tooltipBody.innerHTML = '';
@@ -178,6 +181,10 @@ class TooltipElement extends TooltipWrapper {
 	public setSingleton(value: AppTooltip.Singleton) {
 		if (!value) this._id = `app-tooltip-${getRndInteger(10000, 99999)}`;
 		else this._id = this._defaultId;
+	}
+
+	public setCustomClass(value: AppTooltip.Classes) {
+		this._className = value;
 	}
 
 	public setOffset(value: AppTooltip.Offset, placement?: AppTooltip.Placement) {

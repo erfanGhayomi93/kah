@@ -52,7 +52,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 				node: { rowIndex },
 			} = params;
 
-			// this.renderBuySellBtn();
+			this.renderBuySellBtn();
 
 			if (rowIndex === activeRowId) {
 				this.removeRowOverlay();
@@ -137,14 +137,14 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 	}
 
 	renderBuySellBtn() {
-		const isInBuyBasket = this.isInBasket('sell');
-		const isInSellBasket = this.isInBasket('buy');
+		const targetSide = this.isInSide();
 
-		if (isInBuyBasket) {
+		if (targetSide === 'buy') {
 			if (!this.eBuy) {
 				this.eBuy = this.createBtn();
-				this.eBuy.classList.add('absolute', 'right-8', 'bg-success-100/10', 'text-success-100');
-				this.eBuy.textContent = 'B';
+				this.eBuy.classList.add('absolute', 'w-40', 'h-32', 'bg-success-100/10', 'text-success-100');
+				this.eBuy.style.right = '1px';
+				this.eBuy.textContent = 'خرید';
 
 				this.eGui.appendChild(this.eBuy);
 			}
@@ -153,11 +153,12 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			this.eBuy = null;
 		}
 
-		if (isInSellBasket) {
+		if (targetSide === 'sell') {
 			if (!this.eSell) {
 				this.eSell = this.createBtn();
-				this.eSell.classList.add('absolute', 'left-8', 'bg-error-100/10', 'text-error-100');
-				this.eSell.textContent = 'S';
+				this.eSell.classList.add('absolute', 'w-40', 'h-32', 'bg-error-100/10', 'text-error-100');
+				this.eSell.style.left = '1px';
+				this.eSell.textContent = 'فروش';
 
 				this.eGui.appendChild(this.eSell);
 			}
@@ -181,6 +182,31 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 				basket.findIndex((item) => data![side]?.symbolInfo.symbolISIN === item.symbol.symbolInfo.symbolISIN) >
 				-1
 			);
+		} catch (e) {
+			return false;
+		}
+	}
+
+	isInSide() {
+		try {
+			const { basket, data } = this.params;
+			let resultSide: 'buy' | 'sell' | null = null;
+
+			for (let i = 0; i < basket.length; i++) {
+				const {
+					symbol: { symbolInfo },
+					side,
+				} = basket[i];
+				const buyData = data!.buy!.symbolInfo;
+				const sellData = data!.sell!.symbolInfo;
+
+				if (symbolInfo.symbolISIN === buyData.symbolISIN || symbolInfo.symbolISIN === sellData.symbolISIN) {
+					resultSide = side;
+					break;
+				}
+			}
+
+			return resultSide;
 		} catch (e) {
 			return false;
 		}

@@ -74,7 +74,6 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 						tickAmount: 5,
 					},
 					yaxis: {
-						tickAmount: 4,
 						labels: {
 							formatter: (val) => {
 								return numFormatter(val);

@@ -215,6 +215,46 @@ export const downloadFile = (url: string, name: string, params: Record<string, u
 			.catch(reject);
 	});
 
+export const downloadFileQueryParams = (
+	url: string,
+	name: string,
+	params: string | string[][] | Record<string, string> | URLSearchParams | undefined = undefined,
+) =>
+	new Promise<void>((resolve, reject) => {
+		const headers = new Headers();
+		headers.append('Accept', 'application/json, text/plain, */*');
+		headers.append('Accept-Language', 'en-US,en;q=0.9,fa;q=0.8');
+
+		const clientId = getClientId();
+		if (clientId) headers.append('Authorization', 'Bearer ' + clientId);
+
+		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+		fetch(url + '?' + new URLSearchParams(params), {
+			method: 'GET',
+			headers,
+			redirect: 'follow',
+		})
+			.then((response) => {
+				try {
+					const statusCode = Number(response.status);
+					if (statusCode === 401) onUnauthorize();
+				} catch (e) {
+					//
+				}
+
+				return response.blob();
+			})
+			.then((blobResponse) => {
+				const a = document.createElement('a');
+				a.download = name;
+				a.href = URL.createObjectURL(blobResponse);
+
+				a.click();
+				resolve();
+			})
+			.catch(reject);
+	});
+
 export const paramsSerializer = (params: Record<string, unknown>) => {
 	const queryParams: string[] = [];
 	const keys = Object.keys(params);
@@ -270,6 +310,10 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		LastListDrawal: data.LastListDrawal,
 		RequestPayment: data.RequestPayment,
 		getDepositOnlineHistory: data.DepositOnlineHistory,
+		getCustomerTurnOverCSVExport: data.CustomerTurnOverCSVExport,
+		getEPaymentExportFilteredCSV: data.EPaymentExportFilteredCSV,
+		getReceiptExportFilteredCSV: data.ReceiptExportFilteredCSV,
+		getPaymentExportFilteredCSV: data.PaymentExportFilteredCSV,
 	};
 
 	return urls;

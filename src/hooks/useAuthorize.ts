@@ -16,7 +16,6 @@ const getStates = createSelector(
 );
 
 const useAuthorize = ({ isBroker, enabled }: { isBroker: boolean; enabled: boolean }) => {
-	console.log(enabled, 'enabled');
 	const dispatch = useAppDispatch();
 
 	const { isLoggedIn, brokerIsSelected, brokerURLs } = useAppSelector(getStates);
