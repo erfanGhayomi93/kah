@@ -1385,7 +1385,14 @@ declare namespace Strategy {
 		| 'NeutralMarket'
 		| 'DirectionalMarket';
 
-	declare type Type = 'CoveredCall' | 'LongCall' | 'LongPut' | 'ProtectivePut' | 'BullCallSpread';
+	declare type Type =
+		| 'CoveredCall'
+		| 'LongCall'
+		| 'LongPut'
+		| 'ProtectivePut'
+		| 'BullCallSpread'
+		| 'LongStraddle'
+		| 'Conversion';
 
 	export interface GetAll {
 		id: number;
@@ -1461,7 +1468,7 @@ declare namespace Strategy {
 		optionBestLimitVolume: number;
 		tradeValue: number;
 		baseTradeValue: number;
-		baesTradeCount: number;
+		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
@@ -1493,7 +1500,7 @@ declare namespace Strategy {
 		optionBestLimitVolume: number;
 		tradeValue: number;
 		baseTradeValue: number;
-		baesTradeCount: number;
+		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
@@ -1514,8 +1521,8 @@ declare namespace Strategy {
 		putSymbolTitle: string;
 		putBestSellLimitPrice: number;
 		putBestSellLimitQuantity: number;
-		callOpenPoisitionCount: number;
-		putOpenPoisitionCount: number;
+		callOpenPositionCount: number;
+		putOpenPositionCount: number;
 		callIOTM: Option.IOTM;
 		putIOTM: Option.IOTM;
 		callPremium: number;
@@ -1552,12 +1559,12 @@ declare namespace Strategy {
 		callPremium: number;
 		callPremiumPercent: number;
 		callIOTM: Option.IOTM;
-		callOpenPoisitionCount: number;
+		callOpenPositionCount: number;
 		putSymbolISIN: string;
 		putSymbolTitle: string;
 		putBestSellLimitPrice: number;
 		putBestSellLimitQuantity: number;
-		putOpenPoisitionCount: number;
+		putOpenPositionCount: number;
 		putIOTM: Option.IOTM;
 		putPremium: number;
 		putPremiumPercent: number;

@@ -1,4 +1,5 @@
 import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
@@ -43,10 +44,6 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const goToTechnicalChart = (data: Strategy.CoveredCall) => {
-		//
 	};
 
 	const execute = (data: Strategy.CoveredCall) => {
@@ -308,7 +305,6 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
 				},
 			},
@@ -375,6 +371,8 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>

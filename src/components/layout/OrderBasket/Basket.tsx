@@ -1,18 +1,14 @@
 import Button from '@/components/common/Button';
 import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAnalyzeModal, setConfirmModal } from '@/features/slices/modalSlice';
 import {
-	getIsLoggedIn,
 	getOrderBasket,
 	removeOrderBasketOrder,
 	setOrderBasket,
 	setOrderBasketOrders,
 } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
 import { useBasketOrderingSystem } from '@/hooks';
-import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -28,23 +24,10 @@ const SymbolStrategyTable = dynamic(() => import('@/components/common/Tables/Sym
 	),
 });
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isLoggedIn: getIsLoggedIn(state),
-		brokerURLs: getBrokerURLs(state),
-		basket: getOrderBasket(state)!,
-	}),
-);
-
 const Basket = () => {
 	const t = useTranslations();
 
-	const {
-		isLoggedIn,
-		brokerURLs,
-		basket: { baseSymbol, orders: basketOrders },
-	} = useAppSelector(getStates);
+	const { baseSymbol, orders: basketOrders } = useAppSelector(getOrderBasket)!;
 
 	const dispatch = useAppDispatch();
 

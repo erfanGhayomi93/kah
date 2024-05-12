@@ -1,4 +1,5 @@
 import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
@@ -43,10 +44,6 @@ const LongPut = ({ title, type }: LongPutProps) => {
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const goToTechnicalChart = (data: Strategy.LongPut) => {
-		//
 	};
 
 	const execute = (data: Strategy.LongPut) => {
@@ -238,7 +235,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
 				width: 128,
-				valueGetter: ({ data }) => data?.baesTradeCount ?? 0,
+				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -262,7 +259,6 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
 				},
 			},
@@ -329,6 +325,8 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>

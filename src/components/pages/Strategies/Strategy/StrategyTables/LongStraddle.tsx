@@ -1,4 +1,5 @@
 import { useLongStraddleStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
@@ -41,10 +42,6 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.LongStraddle) => {
-		//
-	};
-
 	const execute = (data: Strategy.LongStraddle) => {
 		//
 	};
@@ -68,7 +65,6 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
 				},
 			},
@@ -135,6 +131,8 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>

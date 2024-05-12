@@ -1,4 +1,5 @@
 import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
@@ -41,10 +42,6 @@ const Conversion = ({ title, type }: ConversionProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.Conversion) => {
-		//
-	};
-
 	const execute = (data: Strategy.Conversion) => {
 		//
 	};
@@ -68,7 +65,6 @@ const Conversion = ({ title, type }: ConversionProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
 				},
 			},
@@ -135,6 +131,8 @@ const Conversion = ({ title, type }: ConversionProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>

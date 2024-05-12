@@ -1,4 +1,5 @@
 import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
@@ -39,10 +40,6 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const goToTechnicalChart = (data: Strategy.ProtectivePut) => {
-		//
 	};
 
 	const execute = (data: Strategy.ProtectivePut) => {
@@ -173,7 +170,6 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
 				},
 			},
@@ -240,6 +236,8 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>

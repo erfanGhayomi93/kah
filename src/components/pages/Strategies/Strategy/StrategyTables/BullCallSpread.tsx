@@ -1,4 +1,5 @@
 import { useBullCallSpreadStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
@@ -43,10 +44,6 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const goToTechnicalChart = (data: Strategy.BullCallSpread) => {
-		//
 	};
 
 	const execute = (data: Strategy.BullCallSpread) => {
@@ -352,7 +349,6 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
 				},
 			},
@@ -419,6 +415,8 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>
