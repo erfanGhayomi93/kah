@@ -53,12 +53,12 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 	return (
 		<div className='relative overflow-hidden pb-16 flex-column'>
 			<div
-				style={{ height: isExpand ? '34rem' : '9.6rem' }}
+				style={{ height: isExpand ? '34rem' : '8.4rem' }}
 				className='flex justify-between rounded bg-white p-16 transition-height'
 			>
 				<div className='flex-1 justify-between overflow-hidden flex-column'>
 					<div className='flex-column'>
-						<div className='gap-12 flex-column'>
+						<div className='flex-column'>
 							<div style={{ flex: '0 0 3.2rem' }} className='gap-8 flex-items-center'>
 								<Link href='/strategy' className='size-32 text-gray-900 flex-justify-center'>
 									<ArrowRightSVG width='2.4rem' height='2.4rem' />

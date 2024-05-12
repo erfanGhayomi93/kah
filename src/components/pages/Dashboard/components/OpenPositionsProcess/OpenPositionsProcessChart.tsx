@@ -68,7 +68,6 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 						},
 					},
 					yaxis: {
-						tickAmount: 4,
 						labels: {
 							formatter: (val) => {
 								return numFormatter(val);

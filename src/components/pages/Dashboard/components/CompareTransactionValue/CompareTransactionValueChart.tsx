@@ -53,7 +53,6 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 						},
 					},
 					yaxis: {
-						tickAmount: 4,
 						labels: {
 							formatter: (value) => {
 								return String(Number((Number(value) * 100).toFixed(6)) * 1);
