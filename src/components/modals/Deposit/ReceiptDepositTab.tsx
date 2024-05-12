@@ -46,7 +46,6 @@ export const ReceiptDepositTab = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
-		resetField,
 		setValue,
 		getValues,
 		watch,
@@ -98,7 +97,7 @@ export const ReceiptDepositTab = () => {
 	const onSubmit: SubmitHandler<inputType> = async (inputs) => {
 		try {
 			const fd = new FormData();
-			const { account, date, image, price, receipt } = inputs;
+			const { account, image, price, receipt } = inputs;
 
 			if (!url || !userInfo || !account) return;
 

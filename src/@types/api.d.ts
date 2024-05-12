@@ -627,7 +627,11 @@ declare namespace Broker {
 		| 'GetRemainsWithDate'
 		| 'LastListDrawal'
 		| 'RequestPayment'
-		| 'DepositOnlineHistory';
+		| 'DepositOnlineHistory'
+		| 'CustomerTurnOverCSVExport'
+		| 'EPaymentExportFilteredCSV'
+		| 'ReceiptExportFilteredCSV'
+		| 'PaymentExportFilteredCSV';
 
 	type URL = Record<UrlKey, string>;
 
