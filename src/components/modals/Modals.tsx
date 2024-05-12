@@ -166,7 +166,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{changeBroker && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChangeBrokerModal(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setChangeBrokerModal(null))} broker>
 							<ChangeBroker {...changeBroker} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -176,7 +176,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{withdrawal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setWithdrawalModal(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setWithdrawalModal(null))} broker>
 							<Withdrawal {...withdrawal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
