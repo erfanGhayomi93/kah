@@ -55,7 +55,6 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 						},
 					},
 					yaxis: {
-						tickAmount: 4,
 						labels: {
 							formatter: (val) => {
 								return numFormatter(val);
