@@ -275,7 +275,7 @@ export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	pageSize: 25,
 	symbol: null,
 	date: 'dates.custom',
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	fromPrice: 0,
 	toPrice: 0,
@@ -283,63 +283,137 @@ export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	transactionType: [],
 };
 
-export const defaultTransactionColumns: TTransactionColumnsState = [
-	{
-		colId: 'date',
-	},
-	{
-		colId: 'transactionType',
-	},
-	{
-		colId: 'description',
-	},
-	{
-		colId: 'debit',
-	},
-	{
-		colId: 'credit',
-	},
-	{
-		colId: 'remaining',
-	},
-	{
-		colId: 'station',
-	},
-];
-
 export const initialInstantDepositReportsFilters: InstantDepositReports.IInstantDepositReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	toPrice: null,
-	fromPrice: null,
+	toPrice: 0,
+	fromPrice: 0,
 	date: 'dates.month',
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	providers: [],
 	status: [],
 };
 
-export const defaultInstantDepositReportsColumn: TInstantDepositColumnsState = [
+export const defaultTransactionColumns: TTransactionColumnsState[] = [
 	{
-		colId: 'saveDate',
+		id: 'date',
+		title: 'زمان',
+		hidden: false,
 	},
 	{
-		colId: 'reservationNumber',
+		id: 'transactionType',
+		title: 'عملیات',
+		hidden: false,
 	},
 	{
-		colId: 'referenceNumber',
+		id: 'description',
+		title: 'شرح تراکنش',
+		hidden: false,
 	},
 	{
-		colId: 'amount',
+		id: 'debit',
+		title: 'بدهکار',
+		hidden: false,
 	},
 	{
-		colId: 'providerType',
+		id: 'credit',
+		title: 'بستانکار',
+		hidden: false,
 	},
 	{
-		colId: 'state',
+		id: 'remaining',
+		title: 'مانده',
+		hidden: false,
 	},
 	{
-		colId: 'errorMessage',
+		id: 'station',
+		title: 'ایستگاه معاملاتی',
+		hidden: false,
+	},
+];
+
+export const defaultInstantDepositReportsColumn: TInstantDepositReportsColumnsState[] = [
+	{
+		id: 'saveDate',
+		title: 'زمان',
+		hidden: false,
+	},
+	{
+		id: 'providerType',
+		title: 'درگاه',
+		hidden: false,
+	},
+	{
+		id: 'reservationNumber',
+		title: 'شماره پیگیری',
+		hidden: false,
+	},
+	{
+		id: 'amount',
+		title: 'مقدار',
+		hidden: false,
+	},
+	{
+		id: 'state',
+		title: 'وضعیت',
+		hidden: false,
+	},
+];
+
+export const defaultDepositWithReceiptReportsColumn: TDepositWithReceiptReportsColumnsState[] = [
+	{
+		id: 'receiptDate',
+		title: 'زمان',
+		hidden: false,
+	},
+	{
+		id: 'providerType',
+		title: 'بانک کارگزاری',
+		hidden: false,
+	},
+	{
+		id: 'receiptNumber',
+		title: 'شماره فیش',
+		hidden: false,
+	},
+	{
+		id: 'amount',
+		title: 'مبلغ',
+		hidden: false,
+	},
+	{
+		id: 'state',
+		title: 'وضعیت',
+		hidden: false,
+	},
+];
+
+export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsState[] = [
+	{
+		id: 'saveDate',
+		title: 'زمان درخواست',
+		hidden: false,
+	},
+	{
+		id: 'requestDate',
+		title: 'موعد درخواست',
+		hidden: false,
+	},
+	{
+		id: 'customerBank',
+		title: 'بانک',
+		hidden: false,
+	},
+	{
+		id: 'requestAmount',
+		title: 'مبلغ',
+		hidden: false,
+	},
+	{
+		id: 'state',
+		title: 'وضعیت',
+		hidden: false,
 	},
 ];
 
@@ -350,35 +424,11 @@ export const initialDepositWithReceiptReportsFilters: DepositWithReceiptReports.
 	toDate: new Date().getTime(),
 	status: [],
 	date: 'dates.month',
-	toPrice: null,
-	fromPrice: null,
-	receiptNumber: null,
+	toPrice: 0,
+	fromPrice: 0,
+	receiptNumber: '',
 	attachment: null,
 };
-
-export const defaultDepositWithReceiptReportsColumn: TDepositWithReceiptReportsColumnsState = [
-	{
-		colId: 'id',
-	},
-	{
-		colId: 'receiptDate',
-	},
-	{
-		colId: 'providerType',
-	},
-	{
-		colId: 'receiptNumber',
-	},
-	{
-		colId: 'amount',
-	},
-	{
-		colId: 'state',
-	},
-	{
-		colId: 'state',
-	},
-];
 
 export const initialWithdrawalCashReportsFilters: WithdrawalCashReports.WithdrawalCashReportsFilters = {
 	pageNumber: 1,
@@ -387,37 +437,10 @@ export const initialWithdrawalCashReportsFilters: WithdrawalCashReports.Withdraw
 	toDate: new Date().getTime(),
 	status: [],
 	date: 'dates.week',
-	toPrice: null,
-	fromPrice: null,
+	toPrice: 0,
+	fromPrice: 0,
 	banks: [],
 };
-
-export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsState = [
-	{
-		colId: 'id',
-	},
-	{
-		colId: 'saveDate',
-	},
-	{
-		colId: 'requestDate',
-	},
-	{
-		colId: 'customerBank',
-	},
-	{
-		colId: 'requestAmount',
-	},
-	{
-		colId: 'channel',
-	},
-	{
-		colId: 'state',
-	},
-	{
-		colId: 'state',
-	},
-];
 
 export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 

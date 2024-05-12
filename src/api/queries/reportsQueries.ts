@@ -34,7 +34,7 @@ export const useTransactionsReportsQuery = createQuery<
 				GroupMode: groupMode,
 			};
 
-			if (symbol) params.SymbolISIN = symbol.symbolISIN;
+			if (symbol) params.symbolISIN = symbol.symbolISIN;
 			if (fromPrice) params.FromPrice = String(fromPrice);
 			if (toPrice) params.ToPrice = String(toPrice);
 
@@ -128,7 +128,7 @@ export const useDepositWithReceiptReports = createQuery<
 
 			const [
 				,
-				{ attachment, date, fromDate, fromPrice, pageNumber, pageSize, receiptNumber, status, toDate, toPrice },
+				{ attachment, fromDate, fromPrice, pageNumber, pageSize, receiptNumber, status, toDate, toPrice },
 			] = queryKey;
 
 			const params: Record<string, string | string[]> = {
@@ -179,7 +179,7 @@ export const useWithdrawalCashReports = createQuery<
 			const url = getBrokerURLs(store.getState());
 			if (!url) return null;
 
-			const [, { banks, date, fromDate, fromPrice, pageNumber, pageSize, status, toDate, toPrice }] = queryKey;
+			const [, { banks, fromDate, fromPrice, pageNumber, pageSize, status, toDate, toPrice }] = queryKey;
 
 			const params: Record<string, string | string[]> = {
 				'QueryOption.PageNumber': String(pageNumber),
@@ -209,8 +209,8 @@ export const useWithdrawalCashReports = createQuery<
 			}
 			if (Array.isArray(banks) && banks.length > 0) {
 				params.AccountIds = [];
-				banks.forEach(({ customerAccountId }) => {
-					(params.AccountIds as string[]).push(String(customerAccountId));
+				banks.forEach(({ id }) => {
+					(params.AccountIds as string[]).push(String(id));
 				});
 			}
 

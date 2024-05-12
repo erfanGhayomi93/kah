@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ArrowDownSVG } from '@/components/icons';
 import clsx from 'clsx';
@@ -35,7 +36,7 @@ interface SelectProps<T> {
 	onChange: (option: T[]) => void;
 }
 
-const MultiSelect = <T, D = T>({
+const MultiSelect = <T, _D = T>({
 	defaultValues,
 	options,
 	classes,
@@ -46,7 +47,6 @@ const MultiSelect = <T, D = T>({
 	defaultOpen,
 	getOptionId,
 	getOptionTitle,
-	getInputValue,
 	onChange,
 }: SelectProps<T>) => {
 	const t = useTranslations();
@@ -56,15 +56,20 @@ const MultiSelect = <T, D = T>({
 	const [focusing, setFocusing] = useState(false);
 
 	const onChangeValue = (v: T) => {
-		setValues((prev) => {
-			const cloneValues = [...prev];
-			// @ts-expect-error
-			const optionIndex = cloneValues.findIndex((option) => option.id === v.id);
-			if (optionIndex === -1) cloneValues.push(v);
-			else cloneValues.splice(optionIndex, 1);
-			return cloneValues;
-		});
-		onChange(values);
+		// @ts-expect-error
+		const optionIndex = values.findIndex((item) => item.id === v.id);
+
+		if (optionIndex === -1) {
+			setValues((prev) => [...prev, v]);
+			onChange([...values, v]);
+		} else {
+			setValues((prev) => {
+				const spliceValue = prev.splice(optionIndex, 1);
+				// @ts-expect-error
+				return [...prev].filter((value) => value.id !== spliceValue.id);
+			});
+			onChange([...values]);
+		}
 	};
 
 	useLayoutEffect(() => {
