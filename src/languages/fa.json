@@ -8,7 +8,7 @@
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
 		"delete": "حذف",
-		"app_user": "کاربر کهکشان",
+		"app_user": "صندوق سرمایه گذاری سهامی اهرمی جهش فارابی",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
@@ -1097,6 +1097,8 @@
 		"today": "امروز"
 	},
 	"tooltip": {
+		"notifications": "اعلان‌ها",
+		"symbol_search": "جستجوی نماد",
 		"asset_value": "{v} دارایی",
 		"purchase_power_value": "{v} قدرت خرید",
 		"send_all_selected_orders": "ارسال سفارشات انتخاب شده",

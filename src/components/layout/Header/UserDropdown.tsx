@@ -26,22 +26,20 @@ const UserDropdown = ({
 
 	return (
 		<div className='gap-24 rounded-md bg-white pb-16 shadow-tooltip flex-column'>
-			<div className='flex items-start justify-between pb-8 pr-16'>
-				<div className='gap-12 pt-16 flex-items-center fit-image'>
-					<div
-						className='size-40 rounded-circle fit-image'
-						style={{ backgroundImage: 'url("/static/images/young-boy.png")' }}
-					/>
-
-					<div className='gap-4 flex-column'>
+			<div className='gap-4 pb-8 flex-column'>
+				<div className='flex items-start justify-between pr-16'>
+					<div className='gap-8 pt-16 flex-items-center fit-image'>
+						<div style={{ flex: '0 0 2.4rem' }} className='h-24 rounded-circle flex-justify-center'>
+							<UserCircleSVG className='text-gray-900' width='2.4rem' height='2.4rem' />
+						</div>
 						<h3 className='text-base font-medium text-gray-1000'>{customerTitle}</h3>
-						<span className='text-tiny text-gray-700'>{userData?.mobile ?? '−'}</span>
 					</div>
-				</div>
 
-				<button className='p-16 text-gray-900 transition-colors hover:text-primary-300' type='button'>
-					<EditSVG width='2rem' height='2rem' />
-				</button>
+					<button className='p-16 text-gray-900 transition-colors hover:text-primary-300' type='button'>
+						<EditSVG width='2rem' height='2rem' />
+					</button>
+				</div>
+				<span className='pr-48 text-tiny text-gray-700'>{userData?.mobile ?? '−'}</span>
 			</div>
 
 			<div className='flex-col gap-8 px-16 flex-items-center'>
