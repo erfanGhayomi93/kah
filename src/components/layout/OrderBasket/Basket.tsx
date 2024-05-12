@@ -41,8 +41,6 @@ const Basket = () => {
 	const t = useTranslations();
 
 	const {
-		isLoggedIn,
-		brokerURLs,
 		basket: { baseSymbol, orders: basketOrders },
 	} = useAppSelector(getStates);
 

@@ -1182,9 +1182,11 @@
 		"actions_type_Deposit": "واریز وجه",
 		"actions_type_Payment": "برداشت وجه",
 		"display_type_group_Flat": "با جزئیات",
-		"display_type_group_GreedyGrouped": "بدون جزئیات"
+		"display_type_group_GreedyGrouped": "بدون جزئیات",
+		"manage_columns": "مدیریت ستون‌های جدول"
 	},
 	"instant_deposit_reports_page": {
+		"filter_title_modal": "فیلتر واریز آنی",
 		"id_column": "ردیف",
 		"date_column": "تاریخ",
 		"time_column": "ساعت",
@@ -1198,17 +1200,35 @@
 		"request_time_column": "زمان درخواست",
 		"payment_time_column": "موعد پرداخت",
 		"bank_column": "بانک",
-		"system": "سامانه"
+		"system": "سامانه",
+		"manage_columns": "مدیریت ستون‌های جدول",
+		"bank_placeholder_filter": "بانک",
+		"status_placeholder_filter": "وضعیت"
 	},
 	"deposit_with_receipt_page": {
+		"filter_title_modal": "فیلتر واریز با فیش",
 		"id_column": "ردیف",
 		"date_column": "تاریخ",
 		"broker_bank_column": "بانک کارگزاری",
 		"receipt_number_column": "شماره فیش",
 		"price_column": "مبلغ",
 		"status_column": "وضعیت",
-		"operation_column": "عملیات"
+		"operation_column": "عملیات",
+		"manage_columns": "مدیریت ستون‌های جدول",
+		"has_attachment": "دارد",
+		"has_not_attachment": "ندارد",
+		"status_placeholder_filter": "وضعیت",
+		"receipt_number_placeholder_filter": "شماره فیش",
+		"attachment_placeholder_filter": "پیوست"
 	},
+
+	"withdrawal_cash_reports_page": {
+		"filter_title_modal": "فیلتر برداشت وجه",
+		"manage_columns": "مدیریت ستون‌های جدول",
+		"bank_placeholder_filter": "بانک",
+		"status_placeholder_filter": "وضعیت"
+	},
+
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"

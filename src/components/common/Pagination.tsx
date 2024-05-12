@@ -10,7 +10,7 @@ interface PaginationProps extends Record<'totalCount' | 'pageNumber' | 'pageSize
 	hasPreviousPage: boolean;
 	onPageChange: (pn: number) => void;
 	onPageSizeChange: (ps: number) => void;
-	currentPage: number
+	currentPage: number;
 }
 const Pagination = ({
 	onPageChange,
@@ -41,7 +41,7 @@ const Pagination = ({
 		<ul className={styles.pagination}>
 			<li className={styles.prev}>
 				<button onClick={onPrevious} disabled={!hasPreviousPage} type='button'>
-					<DoubleArrowLeftSVG width='1.6rem' height='1.6rem' />
+					<DoubleArrowRightSVG width='1.6rem' height='1.6rem' />
 					{t('pagination.prev_page')}
 				</button>
 			</li>
@@ -59,7 +59,7 @@ const Pagination = ({
 			<li className={styles.next}>
 				<button onClick={onNext} disabled={!hasNextPage} type='button'>
 					{t('pagination.next_page')}
-					<DoubleArrowRightSVG width='1.6rem' height='1.6rem' />
+					<DoubleArrowLeftSVG width='1.6rem' height='1.6rem' />
 				</button>
 			</li>
 		</ul>
