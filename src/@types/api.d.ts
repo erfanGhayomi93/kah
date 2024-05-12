@@ -1503,6 +1503,82 @@ declare namespace Strategy {
 		ytm: number;
 	}
 
+	export interface LongStraddle {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		strikePrice: number;
+		callSymbolISIN: string;
+		callSymbolTitle: string;
+		callBestSellLimitPrice: number;
+		callBestSellLimitQuantity: number;
+		putSymbolISIN: string;
+		putSymbolTitle: string;
+		putBestSellLimitPrice: number;
+		putBestSellLimitQuantity: number;
+		callOpenPoisitionCount: number;
+		putOpenPoisitionCount: number;
+		callIOTM: Option.IOTM;
+		putIOTM: Option.IOTM;
+		callPremium: number;
+		callPremiumPercent: number;
+		putPremium: number;
+		putPremiumPercent: number;
+		lowBEP: number;
+		highBEP: number;
+		maxLoss: number;
+		inUseCapital: number;
+		callTimeValue: number;
+		putTimeValue: number;
+		callIntrinsicValue: number;
+		putIntrinsicValue: number;
+		callTradeValue: number;
+		putTradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+	}
+
+	export interface Conversion {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		strikePrice: number;
+		callSymbolISIN: string;
+		callSymbolTitle: string;
+		callBestSellLimitPrice: number;
+		callBestSellLimitQuantity: number;
+		callPremium: number;
+		callPremiumPercent: number;
+		callIOTM: Option.IOTM;
+		callOpenPoisitionCount: number;
+		putSymbolISIN: string;
+		putSymbolTitle: string;
+		putBestSellLimitPrice: number;
+		putBestSellLimitQuantity: number;
+		putOpenPoisitionCount: number;
+		putIOTM: Option.IOTM;
+		putPremium: number;
+		putPremiumPercent: number;
+		profit: number;
+		inUseCapital: number;
+		callTimeValue: number;
+		putTimeValue: number;
+		callIntrinsicValue: number;
+		putIntrinsicValue: number;
+		callTradeValue: number;
+		putTradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+	}
+
 	export interface BullCallSpread {
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
@@ -1549,6 +1625,11 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+	}
+
+	export interface ProtectivePut {
+		symbolTitle: string;
+		symbolISIN: string;
 	}
 }
 

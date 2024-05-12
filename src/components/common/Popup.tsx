@@ -1,14 +1,5 @@
 import { cn } from '@/utils/helpers';
-import React, {
-	cloneElement,
-	forwardRef,
-	useCallback,
-	useEffect,
-	useImperativeHandle,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react';
+import React, { cloneElement, forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import AnimatePresence from './animation/AnimatePresence';
 import ErrorBoundary from './ErrorBoundary';
@@ -97,14 +88,13 @@ const Popup = ({
 
 				if (defaultPopupWidth > width) {
 					const valueAsPx = left - (defaultPopupWidth - width);
-
 					if (valueAsPx > 0) el.style.left = valueAsPx + mx + 'px';
 					else el.style.left = left + mx + 'px';
 				} else {
 					const valueAsPx = left + width - defaultPopupWidth;
 
-					if (valueAsPx > 0) el.style.right = valueAsPx - mx + 'px';
-					else el.style.right = valueAsPx - mx + 'px';
+					if (valueAsPx > 0) el.style.left = valueAsPx - mx + 'px';
+					else el.style.left = valueAsPx - mx + 'px';
 				}
 			} else {
 				popupWidth = width + 'px';
@@ -112,7 +102,6 @@ const Popup = ({
 			}
 
 			const popupTop = top + height + my;
-
 			el.style.width = popupWidth;
 			el.style.top = `${popupTop}px`;
 			el.style.display = '';
@@ -140,7 +129,7 @@ const Popup = ({
 		setOpen(false);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!open) return;
 
 		const controller = new AbortController();
@@ -151,7 +140,7 @@ const Popup = ({
 		return () => controller.abort();
 	}, [open]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const controller = new AbortController();
 
 		window.addEventListener('blur', onWindowBlur, {

@@ -1,60 +1,64 @@
-import { cloneElement, useLayoutEffect, useRef } from 'react';
+import { cloneElement, forwardRef, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 
 interface KeyDownProps {
 	keys: string[];
-	enabled: boolean;
+	enabled?: boolean;
 	children: React.ReactElement;
 	dependencies?: unknown[];
 	onKeyDown: (key: string) => void;
 }
 
-const KeyDown = ({ keys, enabled, dependencies = [], children, onKeyDown }: KeyDownProps) => {
-	const childRef = useRef<HTMLElement>(null);
+const KeyDown = forwardRef<HTMLElement, KeyDownProps>(
+	({ keys, enabled = true, dependencies = [], children, onKeyDown }, ref) => {
+		const childRef = useRef<HTMLElement>(null);
 
-	const controllerRef = useRef<AbortController>(new AbortController());
+		const controllerRef = useRef<AbortController>(new AbortController());
 
-	const onDocumentKeyDown = (e: KeyboardEvent) => {
-		try {
-			const { code } = e;
-			if (!keys.includes(code)) return;
+		useImperativeHandle(ref, () => childRef.current!);
 
-			e.preventDefault();
-			e.stopPropagation();
+		const onDocumentKeyDown = (e: KeyboardEvent) => {
+			try {
+				const { code } = e;
+				if (!keys.includes(code)) return;
 
-			onKeyDown(code);
-		} catch (e) {
-			//
-		}
-	};
+				e.preventDefault();
+				e.stopPropagation();
 
-	const abort = () => {
-		try {
-			controllerRef.current.abort();
-		} catch (e) {
-			//
-		}
-	};
+				onKeyDown(code);
+			} catch (e) {
+				//
+			}
+		};
 
-	const getSignal = () => {
-		return controllerRef.current.signal;
-	};
+		const abort = () => {
+			try {
+				controllerRef.current.abort();
+			} catch (e) {
+				//
+			}
+		};
 
-	useLayoutEffect(() => {
-		abort();
+		const getSignal = () => {
+			return controllerRef.current.signal;
+		};
 
-		if (enabled) {
-			controllerRef.current = new AbortController();
+		useLayoutEffect(() => {
+			abort();
 
-			window.addEventListener('keydown', onDocumentKeyDown, {
-				signal: getSignal(),
-				capture: true,
-			});
-		}
+			if (enabled) {
+				controllerRef.current = new AbortController();
 
-		return () => abort();
-	}, [JSON.stringify({ enabled, dependencies })]);
+				window.addEventListener('keydown', onDocumentKeyDown, {
+					signal: getSignal(),
+					capture: true,
+				});
+			}
 
-	return cloneElement(children, { ref: childRef });
-};
+			return () => abort();
+		}, [JSON.stringify({ enabled, dependencies })]);
+
+		return cloneElement(children, { ref: childRef });
+	},
+);
 
 export default KeyDown;

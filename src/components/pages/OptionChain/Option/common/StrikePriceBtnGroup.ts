@@ -42,15 +42,18 @@ class StrikePriceBtnGroup {
 			clsx('relative gap-8 flex-items-center', this.side === 'sell' && 'flex-row-reverse'),
 		);
 
-		this.eGroup.appendChild(this._createBuyBtn());
-		this.eGroup.appendChild(this._createSellBtn());
-		this.eGroup.appendChild(this._createTechnicalChartBtn());
 		this.eGroup.appendChild(this._createDropdownBtn());
+		this.eGroup.appendChild(this._createTechnicalChartBtn());
+		this.eGroup.appendChild(this._createSellBtn());
+		this.eGroup.appendChild(this._createBuyBtn());
 	}
 
 	private createBtn() {
 		const btn = document.createElement('button');
-		btn.setAttribute('class', 'bg-white rounded text-base text-gray-900 flex-justify-center transition-colors');
+		btn.setAttribute(
+			'class',
+			'bg-white select-none rounded text-base text-gray-900 flex-justify-center transition-colors',
+		);
 
 		return btn;
 	}
@@ -123,7 +126,7 @@ class StrikePriceBtnGroup {
 			const maxTop = gridOffset.height;
 
 			this.eDropdown = document.createElement('ul');
-			this.eDropdown.setAttribute('class', 'absolute overflow-hidden bg-white rounded size-32');
+			this.eDropdown.setAttribute('class', 'absolute select-none overflow-hidden bg-white rounded');
 			this.eDropdown.setAttribute('data-side', this.side);
 			this.eDropdown.style.boxShadow = '0px 2px 22px 0px rgba(0, 0, 0, 0.07)';
 			this.eDropdown.style.zIndex = '999';

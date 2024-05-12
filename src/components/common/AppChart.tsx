@@ -93,7 +93,7 @@ const AppChart = ({ options, height = '100%', series, type = 'area', width = '10
 					},
 				},
 				yaxis: {
-					tickAmount: 4,
+					tickAmount: 3,
 					...options?.yaxis,
 					labels: {
 						rotate: 0,

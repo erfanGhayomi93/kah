@@ -73,6 +73,21 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 					orders,
 				}),
 			);
+		} else {
+			const contractISIN = data.symbolInfo.symbolISIN;
+
+			dispatch(
+				setOrderBasket({
+					baseSymbol: {
+						symbolISIN: baseSymbol.symbolISIN,
+						symbolTitle: baseSymbol.symbolTitle,
+					},
+					orders: basketOrders.map((item) => ({
+						...item,
+						side: item.symbol.symbolInfo.symbolISIN === contractISIN ? side : item.side,
+					})),
+				}),
+			);
 		}
 	};
 

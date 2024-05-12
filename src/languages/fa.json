@@ -8,7 +8,7 @@
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
 		"delete": "حذف",
-		"app_user": "کاربر کهکشان",
+		"app_user": "صندوق سرمایه گذاری سهامی اهرمی جهش فارابی",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
@@ -23,7 +23,8 @@
 		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
 		"show_more": "مشاهده بیشتر",
 		"an_error_occurred": "خطا در دریافت اطلاعات",
-		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {n} باشد"
+		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {n} باشد",
+		"infinity": "نامحدود"
 	},
 	"side": {
 		"buy": "خرید",
@@ -1003,8 +1004,8 @@
 		"maximum_loss": "به اندازه وجه پرداختی بابت خرید اختیار خرید",
 		"maximum_profit": "نا‌محدود",
 		"required_margin": "این استراتژی نیازی به وجه تضمین ندارد.",
-		"step_1": "داشتن یا خرید دارایی پایه",
-		"step_2": "فروش اختیار خرید با قیمت اعمال  A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)"
+		"step_1": "خرید اختیار خرید با قیمت اعمال A",
+		"step_2": ""
 	},
 	"LongPut": {
 		"title": "لانگ پوت",
@@ -1015,8 +1016,8 @@
 		"maximum_loss": "به اندازه وجه پرداختی بابت خرید اختیار فروش",
 		"maximum_profit": "نامحدود",
 		"required_margin": "این استراتژی نیازی به وجه تضمین ندارد.",
-		"step_1": "داشتن یا خرید دارایی پایه",
-		"step_2": "فروش اختیار خرید با قیمت اعمال  A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)"
+		"step_1": "خرید اختیار فروش با قیمت اعمال A",
+		"step_2": ""
 	},
 	"ProtectivePut": {
 		"title": "پروتکتیو پوت",
@@ -1028,7 +1029,7 @@
 		"maximum_profit": "نامحدود",
 		"required_margin": "این استراتژی نیازی به وجه تضمین ندارد.",
 		"step_1": "داشتن یا خرید دارایی پایه",
-		"step_2": "فروش اختیار خرید با قیمت اعمال  A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)"
+		"step_2": "خرید یک اختیار فروش با اعمال A"
 	},
 	"BullCallSpread": {
 		"title": "بول کال اسپرد",
@@ -1097,6 +1098,9 @@
 		"today": "امروز"
 	},
 	"tooltip": {
+		"edit": "ویرایش",
+		"notifications": "اعلان‌ها",
+		"symbol_search": "جستجوی نماد",
 		"asset_value": "{v} دارایی",
 		"purchase_power_value": "{v} قدرت خرید",
 		"send_all_selected_orders": "ارسال سفارشات انتخاب شده",
@@ -1279,5 +1283,40 @@
 		"agreement_state_NotAccepted": "تایید نشده",
 		"agreement_state_NotSpecified": "تعیین نشده",
 		"agreement_state_expired": "منقضی شده"
+	},
+	"settings_page": {
+		"general_settings": "تنظیمات عمومی",
+		"send_order_settings": "ارسال سفارش",
+		"agreements_settings": "توافق نامه‌ها",
+		"history_settings": " سابقه ورود خروج",
+		"identity_information": "اطلاعات هویتی",
+		"two_step_login": "ورود دو مرحله ای",
+		"two_step_login_greeting": "کاربر گرامی",
+		"two_step_login_description": "با فعال سازی ورود دو مرحله ای در هر بار ورود، علاوه بر نام کاربری و رمز عبور، لازم است رمز یکبار مصرفی که برای شما پیامک می شود را نیز وارد نمایید. پیشنهاد می شود برای امنیت بیشتر حساب کاربری خود، این امکان را فعال نمایید.",
+		"two_step_login_btn_title": "فعالسازی ورود دو مرحله ای",
+		"name": "نام و نام خانوادگی",
+		"natinal_code": "کد ملی",
+		"bourse_code": "کد بورسی",
+		"username": "نام کاربری",
+		"phone_number": "تلفن همراه",
+		"email": "ایمیل",
+		"password": "رمز عبور",
+		"system_title": "نام سامانه",
+		"device_address": "آدرس دستگاه",
+		"device_type": "نوع دستگاه",
+		"status": "وضعیت",
+		"entrance_date": "تاریخ ورود",
+		"exit_date": "تاریخ خروج",
+		"action": "عملیات",
+		"general_info_title": "اطلاعات کاربری کهکشان",
+		"background_color": "رنگ زمینه",
+		"light": "روشن",
+		"dark": "تیره",
+		"system": "سیستم",
+		"notification_placement": "محل نمایش پیام‌های سیستم",
+		"top_right": "بالا - راست",
+		"top_left": "بالا - چپ",
+		"bottom_right": "پایین - راست",
+		"bottom_left": "پایین - چپ"
 	}
 }
