@@ -1293,6 +1293,13 @@
 		"bottom_left": "پایین - چپ",
 		"broker_info_title": "اطلاعات کارگزاری",
 		"activation": "فعالسازی",
-		"changed_toast_position": "محل نمایش پیام های سیستم تغییر یافت"
+		"changed_toast_position": "محل نمایش پیام های سیستم تغییر یافت",
+		"default_buy_volume": "حجم پیش فرض خرید",
+		"default_sell_volume": "حجم پیش فرض فروش",
+		"confirm_before_send_order": "دریافت تایید قبل از ارسال سفارش",
+		"confirm_before_delete_order": "دریافت تایید قبل از حذف سفارش",
+		"Get_online_price": "دریافت قیمت از سرخط",
+		"market_watcher_message_notification": "ارسال اعلان “پیام ناظر بازار”",
+		"show_symbol_info_in_send_order": "نمایش اطلاعات نماد در ارسال سفارش"
 	}
 }
