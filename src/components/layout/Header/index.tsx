@@ -34,6 +34,7 @@ import {
 	ShieldXSVG,
 	UserBoldSVG,
 	WalletSVG,
+	XSVG,
 } from '../../icons';
 import Notifications from './Notifications';
 import SearchSymbol from './SearchSymbol';
@@ -255,6 +256,7 @@ const Header = () => {
 			<div className='flex-1 gap-16 flex-justify-end'>
 				<div className='gap-8 flex-items-center'>
 					<SearchSymbol />
+
 					<Tooltip placement='bottom' content={t('tooltip.black_scholes')}>
 						<button
 							onClick={openBlackScholesModal}
@@ -273,16 +275,22 @@ const Header = () => {
 						defaultPopupWidth={296}
 						onOpen={() => setIsDropdownOpened(true)}
 						onClose={() => setIsDropdownOpened(false)}
-						renderer={({ setOpen }) => <Notifications />}
+						renderer={() => <Notifications />}
 					>
 						{({ open, setOpen }) => (
-							<button
-								onClick={() => setOpen(!open)}
-								type='button'
-								className='size-32 rounded-circle bg-gray-200 flex-justify-center icon-hover'
-							>
-								<BellSVG width='1.8rem' height='1.8rem' />
-							</button>
+							<Tooltip placement='bottom' content={t('tooltip.notifications')}>
+								<button
+									onClick={() => setOpen(!open)}
+									type='button'
+									className='size-32 rounded-circle bg-gray-200 flex-justify-center icon-hover'
+								>
+									{open ? (
+										<XSVG width='1.8rem' height='1.8rem' />
+									) : (
+										<BellSVG width='1.8rem' height='1.8rem' />
+									)}
+								</button>
+							</Tooltip>
 						)}
 					</Popup>
 
