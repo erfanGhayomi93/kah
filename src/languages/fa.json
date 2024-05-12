@@ -581,7 +581,8 @@
 		"transactions": "گردش حساب",
 		"instant_deposit": "واریز آنی",
 		"deposit_with_receipt": "واریز با فیش",
-		"withdrawal_cash": "برداشت وجه"
+		"withdrawal_cash": "برداشت وجه",
+		"change_broker_reports": "تغییر کارگزار ناظر"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
@@ -1224,6 +1225,15 @@
 		"status_placeholder_filter": "وضعیت",
 		"receipt_number_placeholder_filter": "شماره فیش",
 		"attachment_placeholder_filter": "پیوست"
+	},
+	"change_broker_reports_page": {
+		"filter_title_modal": "فیلتر تغییر کارگزار ناظر",
+		"id_column":"ردیف",
+		"date_column": "زمان",
+		"symbol_column": "نماد",
+		"gateway_column": "سامانه",
+		"status_column": "وضعیت",
+		"action_column": "عملیات"
 	},
 
 	"withdrawal_cash_reports_page": {

@@ -40,7 +40,7 @@ const InstantDepositReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue } = useInputs<InstantDepositReports.IInstantDepositReportsFilters>(
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<InstantDepositReports.IInstantDepositReportsFilters>(
 		initialInstantDepositReportsFilters,
 	);
 
@@ -148,6 +148,7 @@ const InstantDepositReports = () => {
 					setFilters={setFieldValue}
 					columnsVisibility={columnsVisibility}
 					setColumnsVisibility={setColumnsVisibility}
+					setFieldsValue={setFieldsValue}
 				/>
 			</div>
 		</Main>

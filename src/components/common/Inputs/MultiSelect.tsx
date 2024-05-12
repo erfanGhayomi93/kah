@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import React, { useLayoutEffect, useState } from 'react';
 import Popup from '../Popup';
-import styles from './Select.module.scss';
+import styles from './MultiSelect.module.scss';
 
 interface SelectProps<T> {
 	clearable?: boolean;
@@ -56,8 +56,14 @@ const MultiSelect = <T, _D = T>({
 	const [focusing, setFocusing] = useState(false);
 
 	const onChangeValue = (v: T) => {
-		// @ts-expect-error
-		const optionIndex = values.findIndex((item) => item.id === v.id);
+		const optionIndex = values.findIndex((item) => {
+			if (typeof item === 'object' && item !== null) {
+				// @ts-expect-error
+				return item.id === v.id;
+			} else {
+				return item === v;
+			}
+		});
 
 		if (optionIndex === -1) {
 			setValues((prev) => [...prev, v]);
@@ -95,7 +101,7 @@ const MultiSelect = <T, _D = T>({
 				return (
 					<div className={clsx(styles.box, classes?.box)}>
 						<ul className={clsx(styles.list, classes?.list)}>
-							{options.map((option) => (
+							{options?.map((option) => (
 								<li
 									onClick={(e) => {
 										onChangeValue(option);
@@ -106,7 +112,7 @@ const MultiSelect = <T, _D = T>({
 										styles.listItem,
 										classes?.listItem,
 										// @ts-expect-error
-										values.some((value) => value.id === getOptionId(option)) && [
+										values.some((value) => typeof value === 'object' && value !== null ? value.id === getOptionId(option) : value === getOptionId(option)) && [
 											styles.active,
 											classes?.active,
 										],
@@ -116,7 +122,7 @@ const MultiSelect = <T, _D = T>({
 								</li>
 							))}
 						</ul>
-					</div>
+					</div >
 				);
 			}}
 		>
@@ -137,9 +143,9 @@ const MultiSelect = <T, _D = T>({
 							{values.length === 0 && !placeholder ? (
 								placeholder
 							) : (
-								<ul className='flex items-center gap-2'>
+								<ul className='flex items-center gap-2 truncate'>
 									{values.map((value, index, array) => (
-										<li className='rounded-md bg-primary-300 px-8 py-2 text-gray-200' key={index}>
+										<li className='rounded-md bg-primary-100  px-8 py-2 text-gray-00' key={index}>
 											{getOptionTitle(value)}
 										</li>
 									))}
@@ -181,7 +187,7 @@ const MultiSelect = <T, _D = T>({
 					)}
 				</div>
 			)}
-		</Popup>
+		</Popup >
 	);
 };
 

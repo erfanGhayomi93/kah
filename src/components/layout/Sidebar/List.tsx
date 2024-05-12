@@ -178,6 +178,12 @@ const List = ({ isExpand }: ListProps) => {
 							to: '/financial-reports/withdrawal-cash',
 							isBroker: true,
 						},
+						{
+							id: 'change_broker',
+							label: t('sidebar.change_broker'),
+							to: '/financial-reports/change-broker',
+							isBroker: true,
+						},
 					],
 				},
 			],

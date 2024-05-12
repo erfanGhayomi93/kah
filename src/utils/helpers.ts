@@ -311,6 +311,11 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getEPaymentExportFilteredCSV: data.EPaymentExportFilteredCSV,
 		getReceiptExportFilteredCSV: data.ReceiptExportFilteredCSV,
 		getPaymentExportFilteredCSV: data.PaymentExportFilteredCSV,
+		getEPaymentApiGetStatuses: data.EPaymentApiGetStatuses,
+		getEPaymentApiGetProviderTypes: data.EPaymentApiGetProviderTypes,
+		getPaymentGetStatuses: data.PaymentGetStatuses,
+		getChangeBrokerExportFilteredCSV: data.ChangeBrokerExportFilteredCSV,
+		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter
 	};
 
 	return urls;

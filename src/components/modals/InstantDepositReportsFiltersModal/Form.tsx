@@ -1,10 +1,11 @@
+import { userOnlineDepositProvidersQuery, userOnlineDepositStatusesQuery } from '@/api/queries/reportsQueries';
 import ipcMain from '@/classes/IpcMain';
 import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
 import InputLegend from '@/components/common/Inputs/InputLegend';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import { useAppDispatch } from '@/features/hooks';
-import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { setInstantDepositReportsFiltersModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction } from 'react';
 
@@ -30,8 +31,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		}));
 	};
 
+	const { data: userStatusesData } = userOnlineDepositStatusesQuery({ queryKey: ['userOnlineDepositStatuses'] });
+
+	const { data: userProvidersData } = userOnlineDepositProvidersQuery({
+		queryKey: ['userOnlineDepositProviders']
+	});
+
+
 	const onClose = () => {
-		dispatch(setTransactionsFiltersModal(null));
+		dispatch(setInstantDepositReportsFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {
@@ -46,12 +54,12 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		}
 	};
 
-	const onChangeProvider = (option: string[]) => {
-		setFilterValue('providers', option);
+	const onChangeProvider = (options: string[]) => {
+		setFilterValue('providers', options);
 	};
 
-	const onChangeState = (option: string[]) => {
-		setFilterValue('status', option);
+	const onChangeState = (options: string[]) => {
+		setFilterValue('status', options);
 	};
 
 	return (
@@ -101,7 +109,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 				<MultiSelect<string>
 					onChange={(options) => onChangeProvider(options)}
-					options={['Saman']}
+					options={userProvidersData ?? []}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t('bank_accounts.' + option)}</span>}
 					placeholder={t('instant_deposit_reports_page.bank_placeholder_filter')}
@@ -110,20 +118,11 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 				<MultiSelect<string>
 					onChange={(options) => onChangeState(options)}
-					options={[
-						'Canceled',
-						'Financial',
-						'Approved',
-						'Reception',
-						'Returned',
-						'Rejected',
-						'Finished',
-						'Registeration',
-					]}
+					options={userStatusesData ?? []}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => <span>{t('states.' + option)}</span>}
+					getOptionTitle={(option) => <span>{t(`states.state_${option}`)}</span>}
 					placeholder={t('instant_deposit_reports_page.status_placeholder_filter')}
-					defaultValues={filters.providers}
+					defaultValues={filters.status}
 				/>
 			</div>
 
