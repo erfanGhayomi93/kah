@@ -489,22 +489,17 @@ export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boo
 	return result;
 };
 
-export const convertSymbolWatchlistToSymbolBasket = (
-	symbol: Option.Root,
-	side: TBsSides,
-	type: ISymbolStrategyContract['type'] = 'option',
-): OrderBasket.Order => {
+export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): IOptionStrategy => {
 	const { optionWatchlistData, symbolInfo } = symbol;
 	const optionType = symbolInfo.optionType === 'Call' ? 'call' : 'put';
 
 	return {
 		id: uuidv4(),
-		type,
+		type: 'option',
 		symbol: {
 			symbolTitle: symbolInfo.symbolTitle,
 			symbolISIN: symbolInfo.symbolISIN,
 			optionType,
-			strikePrice: symbolInfo.strikePrice,
 			baseSymbolPrice: optionWatchlistData.baseSymbolPrice,
 			historicalVolatility: optionWatchlistData.historicalVolatility,
 		},
@@ -515,9 +510,6 @@ export const convertSymbolWatchlistToSymbolBasket = (
 		strikePrice: symbolInfo.strikePrice,
 		side,
 		marketUnit: symbolInfo.marketUnit ?? '',
-		commission: {
-			value: 0,
-		},
 		requiredMargin: {
 			value: symbol.optionWatchlistData.requiredMargin,
 		},

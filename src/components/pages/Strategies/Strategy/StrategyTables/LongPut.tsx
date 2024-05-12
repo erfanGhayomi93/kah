@@ -52,7 +52,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 	};
 
 	const analyze = (data: Strategy.LongPut) => {
-		const contracts: ISymbolStrategyContract[] = [];
+		const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
 			setAnalyzeModal({

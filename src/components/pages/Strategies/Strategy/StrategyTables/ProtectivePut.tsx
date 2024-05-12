@@ -47,7 +47,7 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 	};
 
 	const analyze = (data: Strategy.ProtectivePut) => {
-		/* const contracts: ISymbolStrategyContract[] = [];
+		/* const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
 			setAnalyzeModal({

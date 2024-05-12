@@ -1457,6 +1457,11 @@ declare namespace Strategy {
 		riskCoverage: number;
 		nonExpiredProfit: number;
 		nonExpiredProfitPercent: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
+		requiredMargin: number;
+		contractEndDate: string;
 	}
 
 	export interface LongCall {
@@ -1489,6 +1494,9 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
 	}
 
 	export interface LongPut {
@@ -1521,6 +1529,9 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
 	}
 
 	export interface LongStraddle {
@@ -1560,6 +1571,9 @@ declare namespace Strategy {
 		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
 	}
 
 	export interface Conversion {
@@ -1597,6 +1611,9 @@ declare namespace Strategy {
 		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
 	}
 
 	export interface BullCallSpread {
@@ -1645,11 +1662,17 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
 	}
 
 	export interface ProtectivePut {
 		symbolTitle: string;
 		symbolISIN: string;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
 	}
 }
 

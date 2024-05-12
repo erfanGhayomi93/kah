@@ -52,7 +52,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 	};
 
 	const analyze = (data: Strategy.LongCall) => {
-		const contracts: ISymbolStrategyContract[] = [];
+		const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
 			setAnalyzeModal({

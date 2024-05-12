@@ -48,7 +48,7 @@ const Conversion = ({ title, type }: ConversionProps) => {
 	};
 
 	const analyze = (data: Strategy.Conversion) => {
-		const contracts: ISymbolStrategyContract[] = [];
+		const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
 			setAnalyzeModal({

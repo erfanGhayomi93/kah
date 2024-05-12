@@ -1,6 +1,5 @@
 import { InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useDebounce, useInputs } from '@/hooks';
 import dayjs from '@/libs/dayjs';
@@ -23,16 +22,17 @@ interface ISharedProps {
 	onDelete: (id: string) => void;
 }
 
-interface SymbolStrategyProps extends ISharedProps, ISymbolStrategyContract {
-	checked: boolean;
-	onChange: (v: IInput) => void;
-	onSelect: (checked: boolean) => void;
-}
+type SymbolStrategyProps = ISharedProps &
+	TSymbolStrategy & {
+		checked: boolean;
+		onChange: (v: IInput) => void;
+		onSelect: (checked: boolean) => void;
+	};
 
 interface SymbolStrategyTableProps extends ISharedProps {
 	withRequiredMargin?: boolean;
 	withCommission?: boolean;
-	contracts: ISymbolStrategyContract[];
+	contracts: TSymbolStrategy[];
 	selectedContracts: string[];
 	spacing?: string;
 	onSelectionChanged: (rows: string[]) => void;
@@ -61,7 +61,7 @@ const SymbolStrategyTable = ({
 		}
 	};
 
-	const onSelect = (data: ISymbolStrategyContract, checked: boolean) => {
+	const onSelect = (data: TSymbolStrategy, checked: boolean) => {
 		const contracts = [...selectedContracts];
 		const contractIndex = contracts.findIndex((orderId) => orderId === data.id);
 
@@ -161,23 +161,23 @@ const SymbolStrategy = ({
 	});
 
 	const showInfo = () => {
-		dispatch(
-			setOrderDetailsModal({
-				type: 'option',
-				data: {
-					...inputs,
-					contractSize,
-					settlementDay,
-					strikePrice,
-					requiredMargin: requiredMargin.value,
-					strikeCommission: 0.0005,
-					tradeCommission: commission.value,
-					side,
-					type: symbol.optionType,
-					symbolTitle: symbol.symbolTitle,
-				},
-			}),
-		);
+		// dispatch(
+		// 	setOrderDetailsModal({
+		// 		type: type === 'base' ? 'order' : 'option',
+		// 		data: {
+		// 			...inputs,
+		// 			contractSize,
+		// 			settlementDay,
+		// 			strikePrice,
+		// 			requiredMargin: requiredMargin.value,
+		// 			strikeCommission: 0.0005,
+		// 			tradeCommission: commission.value,
+		// 			side,
+		// 			type: symbol.optionType,
+		// 			symbolTitle: symbol.symbolTitle,
+		// 		},
+		// 	}),
+		// );
 	};
 
 	const dateFormatter = () => {

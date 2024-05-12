@@ -104,7 +104,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			try {
 				const l = contracts.length;
 
-				const result: ISymbolStrategyContract[] = [];
+				const result: TSymbolStrategy[] = [];
 				const selectedResult: string[] = [];
 
 				for (let i = 0; i < l; i++) {
@@ -136,9 +136,12 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			);
 		};
 
-		const setOrderProperties = (id: string, values: Partial<ISymbolStrategyContract>) => {
+		const setOrderProperties = (
+			id: string,
+			values: Partial<Pick<TSymbolStrategy, 'price' | 'quantity' | 'side'>>,
+		) => {
 			setSymbolContracts((prev) => {
-				const orders = JSON.parse(JSON.stringify(prev)) as ISymbolStrategyContract[];
+				const orders = JSON.parse(JSON.stringify(prev)) as TSymbolStrategy[];
 
 				const orderIndex = orders.findIndex((item) => item.id === id);
 
@@ -287,10 +290,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					for (let j = lowPrice; j <= highPrice; j++) {
 						const strikeCommission =
 							useCommission && item.side === 'buy'
-								? strikePrice * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
+								? (strikePrice ?? 0) * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
 								: 0;
 
-						const iv = intrinsicValue(strikePrice + strikeCommission, j, contractType);
+						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, contractType ?? 'call');
 						const previousY = newStates.chartData[index]?.y ?? 0;
 						const y = previousY + pnl(iv, transactionValue, item.side);
 

@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -52,7 +52,42 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 	};
 
 	const analyze = (data: Strategy.CoveredCall) => {
-		const contracts: ISymbolStrategyContract[] = [];
+		const contracts: TSymbolStrategy[] = [
+			{
+				type: 'base',
+				id: uuidv4(),
+				marketUnit: data.baseMarketUnit,
+				quantity: 1,
+				price: data.baseBestBuyLimitPrice,
+				side: 'buy',
+				symbol: {
+					symbolTitle: data.symbolTitle,
+					symbolISIN: data.symbolISIN,
+					baseSymbolPrice: data.baseLastTradedPrice,
+				},
+			},
+			{
+				type: 'option',
+				id: uuidv4(),
+				symbol: {
+					symbolTitle: data.symbolTitle,
+					symbolISIN: data.symbolISIN,
+					optionType: 'call',
+					baseSymbolPrice: data.baseLastTradedPrice,
+					historicalVolatility: data.historicalVolatility,
+				},
+				contractSize: data.contractSize,
+				price: data.premium || 1,
+				quantity: 1,
+				settlementDay: data.contractEndDate,
+				strikePrice: data.strikePrice,
+				side: 'sell',
+				marketUnit: data.marketUnit,
+				requiredMargin: {
+					value: data.requiredMargin,
+				},
+			},
+		];
 
 		dispatch(
 			setAnalyzeModal({

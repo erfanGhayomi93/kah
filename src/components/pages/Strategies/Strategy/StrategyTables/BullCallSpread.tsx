@@ -52,7 +52,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 	};
 
 	const analyze = (data: Strategy.BullCallSpread) => {
-		const contracts: ISymbolStrategyContract[] = [];
+		const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
 			setAnalyzeModal({

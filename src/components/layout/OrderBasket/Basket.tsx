@@ -112,7 +112,7 @@ const Basket = () => {
 		setSelectedContracts((prev) => prev.filter((orderId) => orderId !== id));
 	};
 
-	const setOrderProperties = (id: string, values: Partial<OrderBasket.Order>) => {
+	const setOrderProperties = (id: string, values: Partial<Pick<TSymbolStrategy, 'price' | 'quantity' | 'side'>>) => {
 		const orders = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
 
 		const orderIndex = orders.findIndex((item) => item.id === id);

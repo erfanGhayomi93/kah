@@ -47,7 +47,7 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 	};
 
 	const analyze = (data: Strategy.LongStraddle) => {
-		/* const contracts: ISymbolStrategyContract[] = [];
+		/* const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
 			setAnalyzeModal({

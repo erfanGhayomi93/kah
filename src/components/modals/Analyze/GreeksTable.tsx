@@ -9,11 +9,11 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 interface ITableData extends IBlackScholesResponse {
-	symbol: ISymbolStrategyContract['symbol'];
+	symbol: TSymbolStrategy['symbol'];
 }
 
 interface GreeksTableProps {
-	contracts: ISymbolStrategyContract[];
+	contracts: TSymbolStrategy[];
 }
 
 const GreeksTable = ({ contracts }: GreeksTableProps) => {
@@ -26,7 +26,9 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 	};
 
 	const dataMapper = useMemo(() => {
-		return contracts.map<ITableData>((item) => {
+		const filteredContracts = contracts.filter((item) => item.type === 'option') as IOptionStrategy[];
+
+		return filteredContracts.map<ITableData>((item) => {
 			const {
 				strikePrice,
 				settlementDay,
