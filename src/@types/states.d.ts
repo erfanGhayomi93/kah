@@ -374,6 +374,7 @@ declare namespace OrderBasket {
 }
 
 declare interface ISymbolStrategyContract {
+	type: 'option' | 'base';
 	id: string;
 	marketUnit: string;
 	quantity: number;
@@ -381,9 +382,15 @@ declare interface ISymbolStrategyContract {
 	strikePrice: number;
 	contractSize: number;
 	settlementDay: Date | number | string;
-	type: TOptionSides;
 	side: TBsSides;
-	symbol: Option.Root;
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		optionType: TOptionSides;
+		strikePrice: number;
+		baseSymbolPrice: number;
+		historicalVolatility: number;
+	};
 	commission: {
 		value: number;
 		checked?: boolean;

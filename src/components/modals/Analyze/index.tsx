@@ -129,7 +129,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					maxContracts: null,
 					initialSelectedContracts: symbolContracts
 						.filter((item) => item !== null)
-						.map((item) => item.symbol.symbolInfo.symbolISIN) as string[],
+						.map((item) => item.symbol.symbolISIN) as string[],
 					canChangeBaseSymbol: true,
 					callback: addContracts,
 				}),
@@ -245,7 +245,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 			try {
 				const l = data.length;
-				const { baseSymbolPrice } = data[0].symbol.optionWatchlistData;
+				const { baseSymbolPrice } = data[0].symbol;
 				const minMaxIsInvalid = newStates.minPrice >= newStates.maxPrice;
 				newStates.baseAssets = baseSymbolPrice;
 
@@ -263,13 +263,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 				for (let i = 0; i < l; i++) {
 					const item = data[i];
-					const contractType = item.symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put';
-					const {
-						symbol: {
-							symbolInfo: { strikePrice },
-						},
-						price,
-					} = item;
+					const contractType = item.symbol.optionType;
+					const { strikePrice, price } = item;
 
 					let commission = 0;
 					let index = 0;
@@ -292,7 +287,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					for (let j = lowPrice; j <= highPrice; j++) {
 						const strikeCommission =
 							useCommission && item.side === 'buy'
-								? strikePrice * 0.0005 * (item.type === 'call' ? 1 : -1)
+								? strikePrice * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
 								: 0;
 
 						const iv = intrinsicValue(strikePrice + strikeCommission, j, contractType);

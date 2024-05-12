@@ -132,12 +132,12 @@ const SymbolStrategyTable = ({
 
 const SymbolStrategy = ({
 	id,
+	type,
 	quantity,
 	price,
 	strikePrice,
 	settlementDay,
 	contractSize,
-	type,
 	side,
 	symbol,
 	commission,
@@ -173,8 +173,8 @@ const SymbolStrategy = ({
 					strikeCommission: 0.0005,
 					tradeCommission: commission.value,
 					side,
-					type,
-					symbolTitle: symbol.symbolInfo.symbolTitle,
+					type: symbol.optionType,
+					symbolTitle: symbol.symbolTitle,
 				},
 			}),
 		);
@@ -185,7 +185,7 @@ const SymbolStrategy = ({
 	};
 
 	const openSymbolInfo = () => {
-		dispatch(setSymbolInfoPanel(symbol.symbolInfo.symbolISIN));
+		dispatch(setSymbolInfoPanel(symbol.symbolISIN));
 	};
 
 	useEffect(() => {
@@ -216,25 +216,37 @@ const SymbolStrategy = ({
 			</td>
 
 			<td onClick={openSymbolInfo} className={clsx(styles.td, 'cursor-pointer')}>
-				<span className='text-gray-1000'>{symbol.symbolInfo.symbolTitle}</span>
+				<span className='text-gray-1000'>{symbol.symbolTitle}</span>
 			</td>
 
 			<td className={styles.td}>
-				<span className={type === 'call' ? 'text-success-100' : 'text-error-100'}>
-					{t(`symbol_strategy.${type}`)}
+				<span
+					className={
+						type === 'base'
+							? 'text-gray-1000'
+							: symbol.optionType === 'call'
+								? 'text-success-100'
+								: 'text-error-100'
+					}
+				>
+					{t(`symbol_strategy.${type === 'base' ? 'base_symbol' : symbol.optionType}`)}
 				</span>
 			</td>
 
 			<td className={styles.td}>
-				<span className='text-gray-1000'>{dateFormatter()}</span>
+				<span className='text-gray-1000'>{type === 'base' ? '−' : dateFormatter()}</span>
 			</td>
 
 			<td className={styles.td}>
 				<div
-					onCopy={(e) => copyNumberToClipboard(e, strikePrice)}
+					onCopy={(e) => {
+						if (type === 'option') copyNumberToClipboard(e, strikePrice);
+					}}
 					className='w-full flex-1 flex-justify-center'
 				>
-					<span className='text-gray-1000'>{sepNumbers(String(strikePrice ?? 0))}</span>
+					<span className='text-gray-1000'>
+						{type === 'base' ? '−' : sepNumbers(String(strikePrice ?? 0))}
+					</span>
 				</div>
 			</td>
 

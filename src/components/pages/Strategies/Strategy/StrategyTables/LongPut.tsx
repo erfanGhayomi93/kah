@@ -6,9 +6,10 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -48,6 +49,20 @@ const LongPut = ({ title, type }: LongPutProps) => {
 
 	const execute = (data: Strategy.LongPut) => {
 		//
+	};
+
+	const analyze = (data: Strategy.LongPut) => {
+		const contracts: ISymbolStrategyContract[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts,
+			}),
+		);
 	};
 
 	const showColumnsPanel = () => {
@@ -164,9 +179,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				headerName: 'سر به سر استراتژی',
 				width: 136,
 				cellClass: ({ data }) =>
-					(data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0) < 0
-						? 'text-error-100'
-						: 'text-success-100',
+					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0)),
 				valueGetter: ({ data }) => data?.longCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -260,6 +273,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
 					execute,
+					analyze,
 				},
 			},
 		],

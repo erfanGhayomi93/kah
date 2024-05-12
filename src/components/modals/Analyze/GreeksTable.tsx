@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 interface ITableData extends IBlackScholesResponse {
-	symbol: Option.Root;
+	symbol: ISymbolStrategyContract['symbol'];
 }
 
 interface GreeksTableProps {
@@ -28,18 +28,20 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 	const dataMapper = useMemo(() => {
 		return contracts.map<ITableData>((item) => {
 			const {
-				symbol: { optionWatchlistData, symbolInfo },
+				strikePrice,
+				settlementDay,
+				symbol: { baseSymbolPrice, historicalVolatility },
 			} = item;
 
-			const dueDays = dayjs(symbolInfo.contractEndDate).diff(new Date(), 'day', false);
+			const dueDays = dayjs(settlementDay).diff(new Date(), 'day', false);
 
 			return {
 				symbol: item.symbol,
 				...blackScholes({
-					sharePrice: optionWatchlistData.baseSymbolPrice,
-					strikePrice: symbolInfo.strikePrice,
+					sharePrice: baseSymbolPrice,
+					strikePrice,
 					rate: 0.3,
-					volatility: Number(optionWatchlistData.historicalVolatility) / 100,
+					volatility: Number(historicalVolatility) / 100,
 					dueDays,
 				}),
 			};
@@ -51,30 +53,20 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 			{
 				headerName: t('analyze_modal.symbolTitle'),
 				cellClass: 'cursor-pointer',
-				onCellClick: (row) => setSymbol(row.symbol.symbolInfo.symbolISIN),
-				valueFormatter: (row) => row.symbol.symbolInfo.symbolTitle,
+				onCellClick: (row) => setSymbol(row.symbol.symbolISIN),
+				valueFormatter: (row) => row.symbol.symbolTitle,
 			},
 			{
 				headerName: t('analyze_modal.delta'),
 				cellClass: 'ltr',
-				valueFormatter: ({
-					symbol: {
-						symbolInfo: { optionType },
-					},
-					deltaCall,
-					deltaPut,
-				}) => toFixed(optionType === 'Call' ? deltaCall : deltaPut, 4),
+				valueFormatter: ({ symbol: { optionType }, deltaCall, deltaPut }) =>
+					toFixed(optionType === 'call' ? deltaCall : deltaPut, 4),
 			},
 			{
 				headerName: t('analyze_modal.theta'),
 				cellClass: 'ltr',
-				valueFormatter: ({
-					symbol: {
-						symbolInfo: { optionType },
-					},
-					thetaCall,
-					thetaPut,
-				}) => toFixed(optionType === 'Call' ? thetaCall : thetaPut, 4),
+				valueFormatter: ({ symbol: { optionType }, thetaCall, thetaPut }) =>
+					toFixed(optionType === 'call' ? thetaCall : thetaPut, 4),
 			},
 			{
 				headerName: t('analyze_modal.gama'),
@@ -89,13 +81,8 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 			{
 				headerName: t('analyze_modal.rho'),
 				cellClass: 'ltr',
-				valueFormatter: ({
-					symbol: {
-						symbolInfo: { optionType },
-					},
-					rhoCall,
-					rhoPut,
-				}) => toFixed(optionType === 'Call' ? rhoCall : rhoPut, 4),
+				valueFormatter: ({ symbol: { optionType }, rhoCall, rhoPut }) =>
+					toFixed(optionType === 'call' ? rhoCall : rhoPut, 4),
 			},
 		],
 		[],

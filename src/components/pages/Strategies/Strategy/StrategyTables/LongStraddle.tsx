@@ -46,6 +46,20 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 		//
 	};
 
+	const analyze = (data: Strategy.LongStraddle) => {
+		/* const contracts: ISymbolStrategyContract[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts: [],
+			}),
+		); */
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
@@ -66,6 +80,7 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
 					execute,
+					analyze,
 				},
 			},
 		],

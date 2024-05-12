@@ -3,6 +3,7 @@ import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -46,6 +47,20 @@ const Conversion = ({ title, type }: ConversionProps) => {
 		//
 	};
 
+	const analyze = (data: Strategy.Conversion) => {
+		const contracts: ISymbolStrategyContract[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts,
+			}),
+		);
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
@@ -66,6 +81,7 @@ const Conversion = ({ title, type }: ConversionProps) => {
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
 					execute,
+					analyze,
 				},
 			},
 		],

@@ -149,15 +149,17 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			)}
 
 			{dataIsEmpty && !isLoading && (
-				<NoData
-					text={t.rich('option_page.no_data_table', {
-						symbol: (chunk) => (
-							<button type='button' className='text-primary-400 underline' onClick={addSymbol}>
-								{chunk}
-							</button>
-						),
-					})}
-				/>
+				<div className='absolute left-0 top-0 size-full flex-justify-center'>
+					<NoData
+						text={t.rich('option_page.no_data_table', {
+							symbol: (chunk) => (
+								<button type='button' className='text-primary-400 underline' onClick={addSymbol}>
+									{chunk}
+								</button>
+							),
+						})}
+					/>
+				</div>
 			)}
 		</>
 	);

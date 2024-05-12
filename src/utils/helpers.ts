@@ -489,24 +489,40 @@ export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boo
 	return result;
 };
 
-export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): OrderBasket.Order => ({
-	id: uuidv4(),
-	symbol,
-	contractSize: symbol.symbolInfo.contractSize,
-	price: symbol.optionWatchlistData.premium || 1,
-	quantity: 1,
-	settlementDay: symbol.symbolInfo.contractEndDate,
-	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
-	strikePrice: symbol.symbolInfo.strikePrice,
-	side,
-	marketUnit: symbol.symbolInfo.marketUnit ?? '',
-	commission: {
-		value: 0,
-	},
-	requiredMargin: {
-		value: symbol.optionWatchlistData.requiredMargin,
-	},
-});
+export const convertSymbolWatchlistToSymbolBasket = (
+	symbol: Option.Root,
+	side: TBsSides,
+	type: ISymbolStrategyContract['type'] = 'option',
+): OrderBasket.Order => {
+	const { optionWatchlistData, symbolInfo } = symbol;
+	const optionType = symbolInfo.optionType === 'Call' ? 'call' : 'put';
+
+	return {
+		id: uuidv4(),
+		type,
+		symbol: {
+			symbolTitle: symbolInfo.symbolTitle,
+			symbolISIN: symbolInfo.symbolISIN,
+			optionType,
+			strikePrice: symbolInfo.strikePrice,
+			baseSymbolPrice: optionWatchlistData.baseSymbolPrice,
+			historicalVolatility: optionWatchlistData.historicalVolatility,
+		},
+		contractSize: symbolInfo.contractSize,
+		price: optionWatchlistData.premium || 1,
+		quantity: 1,
+		settlementDay: symbolInfo.contractEndDate,
+		strikePrice: symbolInfo.strikePrice,
+		side,
+		marketUnit: symbolInfo.marketUnit ?? '',
+		commission: {
+			value: 0,
+		},
+		requiredMargin: {
+			value: symbol.optionWatchlistData.requiredMargin,
+		},
+	};
+};
 
 export const setHours = (d: Date, hour: number, minutes: number, seconds = 0, milliseconds = 0) => {
 	d.setHours(hour, minutes, seconds, milliseconds);

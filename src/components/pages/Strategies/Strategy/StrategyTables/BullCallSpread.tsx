@@ -6,9 +6,10 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -48,6 +49,20 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 
 	const execute = (data: Strategy.BullCallSpread) => {
 		//
+	};
+
+	const analyze = (data: Strategy.BullCallSpread) => {
+		const contracts: ISymbolStrategyContract[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts,
+			}),
+		);
 	};
 
 	const showColumnsPanel = () => {
@@ -338,7 +353,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.ytm ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 6),
 			},
@@ -350,6 +365,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
 					execute,
+					analyze,
 				},
 			},
 		],

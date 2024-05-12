@@ -46,6 +46,20 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 		//
 	};
 
+	const analyze = (data: Strategy.ProtectivePut) => {
+		/* const contracts: ISymbolStrategyContract[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts: [],
+			}),
+		); */
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
@@ -171,6 +185,7 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
 					execute,
+					analyze,
 				},
 			},
 		],

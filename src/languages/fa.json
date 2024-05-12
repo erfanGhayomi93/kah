@@ -51,6 +51,7 @@
 		"logout": "خروج از حساب کاربری"
 	},
 	"symbol_strategy": {
+		"base_symbol": "نماد پایه",
 		"side": "سمت",
 		"symbol": "نماد",
 		"type": "نوع",
@@ -1242,14 +1243,12 @@
 		"receipt_number_placeholder_filter": "شماره فیش",
 		"attachment_placeholder_filter": "پیوست"
 	},
-
 	"withdrawal_cash_reports_page": {
 		"filter_title_modal": "فیلتر برداشت وجه",
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"bank_placeholder_filter": "بانک",
 		"status_placeholder_filter": "وضعیت"
 	},
-
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"
