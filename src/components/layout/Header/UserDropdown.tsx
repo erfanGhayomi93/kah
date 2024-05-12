@@ -1,3 +1,4 @@
+import Tooltip from '@/components/common/Tooltip';
 import { EditSVG, LogoutSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 
@@ -27,7 +28,7 @@ const UserDropdown = ({
 	return (
 		<div className='gap-24 rounded-md bg-white pb-16 shadow-tooltip flex-column'>
 			<div className='gap-4 pb-8 flex-column'>
-				<div className='flex items-start justify-between pr-16'>
+				<div className='pr-16 flex-justify-between'>
 					<div className='gap-8 pt-16 flex-items-center fit-image'>
 						<div style={{ flex: '0 0 2.4rem' }} className='h-24 rounded-circle flex-justify-center'>
 							<UserCircleSVG className='text-gray-900' width='2.4rem' height='2.4rem' />
@@ -35,8 +36,12 @@ const UserDropdown = ({
 						<h3 className='text-base font-medium text-gray-1000'>{customerTitle}</h3>
 					</div>
 
-					<button className='p-16 text-gray-900 transition-colors hover:text-primary-300' type='button'>
-						<EditSVG width='2rem' height='2rem' />
+					<button className='p-12 text-gray-900 transition-colors hover:text-primary-300' type='button'>
+						<Tooltip placement='bottom' content={t('tooltip.edit')}>
+							<div className='p-4'>
+								<EditSVG width='2rem' height='2rem' />
+							</div>
+						</Tooltip>
 					</button>
 				</div>
 				<span className='pr-48 text-tiny text-gray-700'>{userData?.mobile ?? '−'}</span>
