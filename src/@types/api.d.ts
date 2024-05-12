@@ -620,14 +620,21 @@ declare namespace Broker {
 		| 'GetListBrokerBankAccount'
 		| 'DepositOfflineHistory'
 		| 'CustomerTurnOverRemain'
+		| 'CreateChangeBrokers'
+		| 'LastChangeBrokers'
 		| 'GetWithFilterReceipt'
 		| 'GetFilteredEPaymentApi'
+		| 'DeleteChangeBroker'
 		| 'GetFilteredPayment'
 		| 'GetListBankAccount'
 		| 'GetRemainsWithDate'
 		| 'LastListDrawal'
 		| 'RequestPayment'
-		| 'DepositOnlineHistory';
+		| 'DepositOnlineHistory'
+		| 'CustomerTurnOverCSVExport'
+		| 'EPaymentExportFilteredCSV'
+		| 'ReceiptExportFilteredCSV'
+		| 'PaymentExportFilteredCSV';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1325,6 +1332,16 @@ declare namespace Payment {
 		amount: number;
 		providerType: string;
 		state: ThistoryState;
+	}
+
+	export interface IChangeBrokerList {
+		id: number;
+		saveDate: string;
+		symbolISIN: string;
+		lastState: string;
+		attachmentId: number;
+		symbolTitle: string;
+		hasAttachment: boolean;
 	}
 
 	export interface IBrokerAccount {

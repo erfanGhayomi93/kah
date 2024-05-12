@@ -22,8 +22,39 @@ export interface ITransactionsFiltersModal extends IBaseModalConfiguration {
 	toDate?: number;
 	fromPrice?: number | null;
 	toPrice?: number | null;
-	groupMode?: TTransactionGroupModes;
-	transactionType?: Array<{ id: TransactionTypes; title: string }>;
+	groupMode?: Transaction.TTransactionGroupModes;
+	transactionType?: Array<{ id: Transaction.TransactionTypes; title: string }>;
+}
+
+export interface IInstantDepositReportsFiltersModal extends IBaseModalConfiguration {
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	status?: string[];
+	toPrice?: number | null;
+	fromPrice?: number | null;
+	providers?: string[];
+}
+
+export interface IDepositWithReceiptReportsFiltersModal extends IBaseModalConfiguration {
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	status?: string[];
+	fromPrice?: number | null;
+	toPrice?: number | null;
+	receiptNumber?: string | null;
+	attachment?: boolean | null;
+}
+
+export interface IWithdrawalCashReportsFiltersModal extends IBaseModalConfiguration {
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	status?: string[];
+	fromPrice?: number | null;
+	toPrice?: number | null;
+	banks?: IUserBankAccount[];
 }
 
 export interface IBuySellModal extends IBaseModalConfiguration {
@@ -112,7 +143,9 @@ export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 
 export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
 
-export interface IChangeBrokerModal extends IBaseModalConfiguration {}
+export interface IChangeBrokerModal extends IBaseModalConfiguration {
+	isShow: boolean;
+}
 
 export interface IWithdrawalModal extends IBaseModalConfiguration {
 	isShow: boolean;
@@ -163,4 +196,7 @@ export type ModalState = TBaseModalProps<{
 	analyze: IAnalyzeModal;
 	description: IDescriptionModal;
 	transactionsFilters: ITransactionsFiltersModal;
+	instantDepositReportsFilters: IInstantDepositReportsFiltersModal;
+	depositWithReceiptReportsFilters: IDepositWithReceiptReportsFiltersModal;
+	withdrawalCashReportsFilters: IWithdrawalCashReportsFiltersModal;
 }>;

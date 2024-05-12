@@ -76,6 +76,15 @@ const initialState: ModalState = {
 
 	// فیلتر صفحه  گردش حساب
 	transactionsFilters: null,
+
+	// فیلتر صفحه گزارشات واریز آنی
+	instantDepositReportsFilters: null,
+
+	// فیلتر صفحه گزارشات واریز با فیش
+	depositWithReceiptReportsFilters: null,
+
+	// فیلتر صفحه گزارشات برداشت وجه
+	withdrawalCashReportsFilters: null,
 };
 
 const modalSlice = createSlice({
@@ -194,6 +203,27 @@ const modalSlice = createSlice({
 		setTransactionsFiltersModal: (state, { payload }: PayloadAction<ModalState['transactionsFilters']>) => {
 			state.transactionsFilters = payload;
 		},
+
+		setInstantDepositReportsFiltersModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['instantDepositReportsFilters']>,
+		) => {
+			state.instantDepositReportsFilters = payload;
+		},
+
+		setDepositWithReceiptReportsFiltersModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['depositWithReceiptReportsFilters']>,
+		) => {
+			state.depositWithReceiptReportsFilters = payload;
+		},
+
+		setWithdrawalCashReportsFiltersModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['withdrawalCashReportsFilters']>,
+		) => {
+			state.withdrawalCashReportsFilters = payload;
+		},
 	},
 });
 
@@ -223,6 +253,9 @@ export const {
 	setAnalyzeModal,
 	updateSelectSymbolContractsModal,
 	setTransactionsFiltersModal,
+	setInstantDepositReportsFiltersModal,
+	setDepositWithReceiptReportsFiltersModal,
+	setWithdrawalCashReportsFiltersModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -244,5 +277,8 @@ export const getAddSymbolToWatchlistModal = (state: RootState) => state.modal.ad
 export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 export const getDescriptionModal = (state: RootState) => state.modal.description;
 export const getTransactionsFiltersModal = (state: RootState) => state.modal.transactionsFilters;
+export const getInstantDepositReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
+export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
+export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.modal.withdrawalCashReportsFilters;
 
 export default modalSlice.reducer;
