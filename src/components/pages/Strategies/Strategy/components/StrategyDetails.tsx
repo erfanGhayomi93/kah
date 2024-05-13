@@ -27,12 +27,14 @@ interface StepProps {
 }
 
 interface StrategyDetailsProps {
+	steps: string[];
 	strategy: Strategy.GetAll;
 	condition?: string;
-	steps: string[];
+	readMore?: () => void;
+	trainingVideo?: () => void;
 }
 
-const StrategyDetails = ({ strategy, condition, steps }: StrategyDetailsProps) => {
+const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }: StrategyDetailsProps) => {
 	const { title, type, imageUrl, tags } = strategy;
 
 	const t = useTranslations();
@@ -159,11 +161,19 @@ const StrategyDetails = ({ strategy, condition, steps }: StrategyDetailsProps) =
 
 					{isExpand && (
 						<div className='flex items-center gap-16'>
-							<button type='button' className='gap-8 text-base text-info flex-items-center'>
+							<button
+								onClick={readMore}
+								type='button'
+								className='gap-8 text-base text-info flex-items-center'
+							>
 								<MenuChocolateSVG width='2.4rem' height='2.4rem' />
 								{t('strategy.more_info')}
 							</button>
-							<button type='button' className='gap-8 text-base text-info flex-items-center'>
+							<button
+								onClick={trainingVideo}
+								type='button'
+								className='gap-8 text-base text-info flex-items-center'
+							>
 								<TeachVideoSVG width='2.4rem' height='2.4rem' />
 								{t('strategy.teach_video')}
 							</button>
