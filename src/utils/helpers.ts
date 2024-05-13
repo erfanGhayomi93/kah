@@ -318,7 +318,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getEPaymentApiGetProviderTypes: data.EPaymentApiGetProviderTypes,
 		getPaymentGetStatuses: data.PaymentGetStatuses,
 		getChangeBrokerExportFilteredCSV: data.ChangeBrokerExportFilteredCSV,
-		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter
+		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter,
+		changeBrokerSetCancel: data.ChangeBrokerSetCancel
 	};
 
 	return urls;

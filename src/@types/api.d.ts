@@ -640,6 +640,7 @@ declare namespace Broker {
 		| 'PaymentGetStatuses'
 		| 'ChangeBrokerExportFilteredCSV'
 		| 'ChangeBrokerChangeBrokersByFilter'
+		| 'ChangeBrokerSetCancel'
 
 	type URL = Record<UrlKey, string>;
 

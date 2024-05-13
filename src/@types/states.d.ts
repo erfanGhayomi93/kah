@@ -277,7 +277,8 @@ declare type IBrokerUrls = Record<
 	| 'getEPaymentApiGetProviderTypes'
 	| 'getPaymentGetStatuses'
 	| 'getChangeBrokerExportFilteredCSV'
-	| 'getChangeBrokerChangeBrokersByFilter',
+	| 'getChangeBrokerChangeBrokersByFilter'
+	| 'changeBrokerSetCancel',
 	string
 >;
 

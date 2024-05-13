@@ -1261,12 +1261,22 @@
 		"filter_title_modal": "فیلتر برداشت وجه",
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"bank_placeholder_filter": "بانک",
-		"status_placeholder_filter": "وضعیت"
+		"status_placeholder_filter": "وضعیت",
+		"id_column": "ردیف",
+		"date_column": "زمان درخواست",
+		"time_column": "موعد پرداخت",
+		"bank_column": "بانک",
+		"amount_column": "مبلغ",
+		"gateway_column": "سامانه",
+		"state_column": "وضعیت",
+		"action_column": "عملیات"
+		
 	},
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"
 	},
+
 	"states": {
 		"state_CancelByBroker": "رد شده توسط ناظر",
 		"state_CancelByCustomer": "لغو شده توسط کاربر",

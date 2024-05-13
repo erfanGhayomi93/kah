@@ -21,9 +21,11 @@ interface TableProps {
 const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
 	const t = useTranslations();
 
+
 	const { data: changeBrokerReportsData, isLoading } = useChangeBrokerReportsQuery({
 		queryKey: ['changeBrokerReports', filters],
 	});
+
 
 	const onFiltersChanged = (newFilters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>) => {
 		setFieldsValue(newFilters);
@@ -42,6 +44,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 
 		return changeBrokerReportsData?.result;
 	}, [changeBrokerReportsData?.result]);
+
 
 
 	const dataIsEmpty = changeBrokerReportsData?.result.length === 0;
