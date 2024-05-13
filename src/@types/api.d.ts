@@ -635,11 +635,14 @@ declare namespace Broker {
 		| 'EPaymentExportFilteredCSV'
 		| 'ReceiptExportFilteredCSV'
 		| 'PaymentExportFilteredCSV'
+		| 'SetCustomerSettings'
+		| 'DepositOnlineHistory'
+		| 'GetCustomerSettings'
 		| 'EPaymentApiGetStatuses'
 		| 'EPaymentApiGetProviderTypes'
 		| 'PaymentGetStatuses'
 		| 'ChangeBrokerExportFilteredCSV'
-		| 'ChangeBrokerChangeBrokersByFilter'
+		| 'ChangeBrokerChangeBrokersByFilter';
 
 	type URL = Record<UrlKey, string>;
 
@@ -934,7 +937,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse { }
+		export interface FaraBourse extends GetMarketState.Bourse {}
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -949,17 +952,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-			| 'ticks'
-			| 'days'
-			| 'hours'
-			| 'milliseconds'
-			| 'minutes'
-			| 'seconds'
-			| 'totalDays'
-			| 'totalHours'
-			| 'totalMilliseconds'
-			| 'totalMinutes'
-			| 'totalSeconds';
+				| 'ticks'
+				| 'days'
+				| 'hours'
+				| 'milliseconds'
+				| 'minutes'
+				| 'seconds'
+				| 'totalDays'
+				| 'totalHours'
+				| 'totalMilliseconds'
+				| 'totalMinutes'
+				| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1287,6 +1290,24 @@ declare namespace Dashboard {
 	}
 }
 
+declare namespace Settings {
+	export interface IBrokerCustomerSettings {
+		id: number;
+		configKey:
+			| 'confirmBeforeDelete'
+			| 'confirmBeforeSendOrder'
+			| 'defaultBuyVolume'
+			| 'defaultSellVolume'
+			| 'sendSupervisorMarketMessage'
+			| 'showSymbolDetailsInBuySellModal'
+			| 'breakEvenPoint';
+		configValue: string;
+		saveDate: string;
+	}
+
+	export type IFormattedBrokerCustomerSettings = Record<IBrokerCustomerSettings['configKey'], string | boolean>;
+}
+
 declare namespace Payment {
 	export type ThistoryState =
 		| 'Request'
@@ -1441,7 +1462,6 @@ declare namespace Strategy {
 		tradePriceVarPreviousTradePercent: number;
 		optionBestBuyLimitQuantity: number;
 		optionBestBuyLimitPrice: number;
-		contractSize: number;
 		baseBestSellLimitPrice: number;
 		baseBestBuyLimitPrice: number;
 		optionBestSellLimitPrice: number;
@@ -1467,6 +1487,8 @@ declare namespace Strategy {
 		historicalVolatility: number;
 		requiredMargin: number;
 		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongCall {
@@ -1502,6 +1524,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongPut {
@@ -1537,6 +1562,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongStraddle {
@@ -1579,6 +1607,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface Conversion {
@@ -1619,6 +1650,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface BullCallSpread {
@@ -1670,6 +1704,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface ProtectivePut {
@@ -1678,11 +1715,13 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 }
 
 declare namespace Reports {
-
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1701,18 +1740,18 @@ declare namespace Reports {
 		amount: number;
 		providerType: string;
 		state:
-		| 'CanceledByUser'
-		| 'Done'
-		| 'DoubleSpendingCheckedOk'
-		| 'DoubleSpendingCheckFailed'
-		| 'RedirectToBank'
-		| 'Request'
-		| 'RequestBankToken'
-		| 'RequestBankTokenError'
-		| 'Verify'
-		| 'VerifyCheck'
-		| 'VerifyCheckFailed'
-		| 'OkBeforeVerifys';
+			| 'CanceledByUser'
+			| 'Done'
+			| 'DoubleSpendingCheckedOk'
+			| 'DoubleSpendingCheckFailed'
+			| 'RedirectToBank'
+			| 'Request'
+			| 'RequestBankToken'
+			| 'RequestBankTokenError'
+			| 'Verify'
+			| 'VerifyCheck'
+			| 'VerifyCheckFailed'
+			| 'OkBeforeVerifys';
 		errorMessage: string;
 	}
 
@@ -1739,17 +1778,17 @@ declare namespace Reports {
 		bankAccountId: number;
 		accountNumber: string | null;
 		status:
-		| 'Draft'
-		| 'Pending'
-		| 'Confirmed'
-		| 'Canceled'
-		| 'Failed'
-		| 'Voided'
-		| 'Paid'
-		| 'Entry'
-		| 'ErrorOccured'
-		| 'PostedToBackOffice'
-		| 'CreateRequest';
+			| 'Draft'
+			| 'Pending'
+			| 'Confirmed'
+			| 'Canceled'
+			| 'Failed'
+			| 'Voided'
+			| 'Paid'
+			| 'Entry'
+			| 'ErrorOccured'
+			| 'PostedToBackOffice'
+			| 'CreateRequest';
 		prsName: string | null;
 		orderOrigin: 'Broker' | 'Online' | number;
 		orderOriginName: null | string;

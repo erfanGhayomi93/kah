@@ -1,6 +1,4 @@
 import { useBullCallSpreadStrategyQuery } from '@/api/queries/strategyQuery';
-import Loading from '@/components/common/Loading';
-import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
@@ -15,15 +13,15 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface BullCallSpreadProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface BullCallSpreadProps extends Strategy.GetAll {}
 
-const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
+const BullCallSpread = (strategy: BullCallSpreadProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -71,6 +69,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsBullCallSpread),
 			}),
 		);
 	};
@@ -372,16 +371,6 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 		[],
 	);
 
-	const defaultColDef: ColDef<Strategy.BullCallSpread> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 96,
-		}),
-		[],
-	);
-
 	useEffect(() => {
 		const eGrid = gridRef.current;
 		if (!eGrid) return;
@@ -411,30 +400,30 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				condition={t(`${type}.condition`)}
 			/>
 
-			<AgTable<Strategy.BullCallSpread>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{isFetching && <Loading />}
-
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.BullCallSpread>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };

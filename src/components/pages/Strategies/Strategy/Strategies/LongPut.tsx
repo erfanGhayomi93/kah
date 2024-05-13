@@ -1,6 +1,4 @@
 import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
-import Loading from '@/components/common/Loading';
-import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
@@ -9,21 +7,21 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface LongPutProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface LongPutProps extends Strategy.GetAll {}
 
-const LongPut = ({ title, type }: LongPutProps) => {
+const LongPut = (strategy: LongPutProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -51,18 +49,44 @@ const LongPut = ({ title, type }: LongPutProps) => {
 		//
 	};
 
-	const analyze = (data: Strategy.LongPut) => {
-		const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+	const analyze = (data: Strategy.LongCall) => {
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.symbolTitle,
+						symbolISIN: data.symbolISIN,
+						optionType: 'put',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.premium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'buy',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
 				},
-				contracts,
-			}),
-		);
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showColumnsPanel = () => {
@@ -71,6 +95,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsLongPut),
 			}),
 		);
 	};
@@ -283,16 +308,6 @@ const LongPut = ({ title, type }: LongPutProps) => {
 		[],
 	);
 
-	const defaultColDef: ColDef<Strategy.LongPut> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			flex: 1,
-		}),
-		[],
-	);
-
 	useEffect(() => {
 		const eGrid = gridRef.current;
 		if (!eGrid) return;
@@ -322,30 +337,21 @@ const LongPut = ({ title, type }: LongPutProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
-			/>
+			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} />
 
-			<AgTable<Strategy.LongPut>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{isFetching && <Loading />}
-
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.LongPut> ref={gridRef} rowData={rows} columnDefs={columnDefs} isFetching={isFetching} />
+			</div>
 		</>
 	);
 };
