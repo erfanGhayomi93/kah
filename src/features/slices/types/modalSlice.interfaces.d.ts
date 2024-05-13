@@ -86,6 +86,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 		symbolISIN: string;
 	};
 	canChangeBaseSymbol: boolean;
+	canSendBaseSymbol: boolean;
 	maxContracts: null | number;
 	initialSelectedContracts: string[];
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
@@ -96,6 +97,16 @@ export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfigurat
 export interface IOrderDetails {
 	type: 'order';
 	data: Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
+}
+
+export interface IBaseSymbolDetails {
+	type: 'base';
+	data: {
+		quantity: number;
+		price: number;
+		side: TBsSides;
+		symbolTitle: string;
+	};
 }
 
 export interface IOptionDetails {
@@ -115,7 +126,7 @@ export interface IOptionDetails {
 	};
 }
 
-export type TOrderDetailsModal = IBaseModalConfiguration & (IOrderDetails | IOptionDetails);
+export type TOrderDetailsModal = IBaseModalConfiguration & (IOrderDetails | IBaseSymbolDetails | IOptionDetails);
 
 export interface IMoveSymbolToWatchlistModal extends IBaseModalConfiguration {
 	symbolTitle: string;

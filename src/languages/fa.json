@@ -943,6 +943,7 @@
 		"quantity_and_executed_orders": "تعداد / (انجام‌شده)",
 		"remain": "باقی‌مانده",
 		"price": "قیمت",
+		"quantity": "تعداد",
 		"stock": "سهم",
 		"amount": "مبلغ",
 		"symbol": "نماد",
@@ -1117,7 +1118,8 @@
 		"remove": "حذف",
 		"black_scholes": "ماشین حساب",
 		"add_new_watchlist": "افزودن دیده‌بان جدید",
-		"manage_watchlist_list": "مدیریت دیده‌بان‌ها"
+		"manage_watchlist_list": "مدیریت دیده‌بان‌ها",
+		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد."
 	},
 	"alerts": {
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",

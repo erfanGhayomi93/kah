@@ -146,7 +146,7 @@ const Basket = () => {
 		>
 			<div className='overflow-hidden rounded bg-white shadow-card'>
 				<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
-					<h2 className='text-xl font-medium'>{t('order_basket.title')}</h2>
+					<h2 className='select-none text-xl font-medium'>{t('order_basket.title')}</h2>
 
 					<div className='absolute left-24 gap-16 flex-items-center'>
 						<button onClick={onExpand} type='button' className='icon-hover'>

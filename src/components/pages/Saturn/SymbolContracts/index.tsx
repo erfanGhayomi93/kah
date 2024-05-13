@@ -103,6 +103,7 @@ const SymbolContracts = ({
 					baseSymbolContracts.filter((item) => item !== null) as Saturn.ContentOption[]
 				).map((item) => item.symbolISIN),
 				canChangeBaseSymbol: false,
+				canSendBaseSymbol: false,
 				maxContracts: 4,
 				callback: onContractsAdded,
 			}),

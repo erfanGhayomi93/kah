@@ -130,7 +130,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					initialSelectedContracts: symbolContracts
 						.filter((item) => item !== null)
 						.map((item) => item.symbol.symbolISIN) as string[],
-					canChangeBaseSymbol: true,
+					canChangeBaseSymbol: false,
+					canSendBaseSymbol: true,
 					callback: addContracts,
 				}),
 			);
@@ -285,18 +286,25 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 							if (item.side === 'sell') commission *= -1;
 						}
 					}
+
 					const transactionValue = Math.ceil(Math.abs(item.quantity * price + commission));
 
 					for (let j = lowPrice; j <= highPrice; j++) {
-						const strikeCommission =
-							useCommission && item.side === 'buy'
-								? (strikePrice ?? 0) * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
-								: 0;
+						let y = 0;
 
-						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, contractType ?? 'call');
-						const previousY = newStates.chartData[index]?.y ?? 0;
-						const y = previousY + pnl(iv, transactionValue, item.side);
+						if (item.type === 'base') {
+							y = j - baseSymbolPrice;
+						} else {
+							const strikeCommission =
+								useCommission && item.side === 'buy'
+									? (strikePrice ?? 0) * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
+									: 0;
 
+							const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, contractType ?? 'call');
+							y = pnl(iv, transactionValue, item.side);
+						}
+
+						y += newStates.chartData[index]?.y ?? 0;
 						if (y === 0) newStates.bep = { x: j, y: 0 };
 
 						newStates.chartData[index] = {

@@ -54,19 +54,6 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 	const analyze = (data: Strategy.CoveredCall) => {
 		const contracts: TSymbolStrategy[] = [
 			{
-				type: 'base',
-				id: uuidv4(),
-				marketUnit: data.baseMarketUnit,
-				quantity: 1,
-				price: data.baseBestBuyLimitPrice,
-				side: 'buy',
-				symbol: {
-					symbolTitle: data.symbolTitle,
-					symbolISIN: data.symbolISIN,
-					baseSymbolPrice: data.baseLastTradedPrice,
-				},
-			},
-			{
 				type: 'option',
 				id: uuidv4(),
 				symbol: {
@@ -85,6 +72,19 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				marketUnit: data.marketUnit,
 				requiredMargin: {
 					value: data.requiredMargin,
+				},
+			},
+			{
+				type: 'base',
+				id: uuidv4(),
+				marketUnit: data.baseMarketUnit,
+				quantity: 1,
+				price: data.baseLastTradedPrice,
+				side: 'buy',
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+					baseSymbolPrice: data.baseLastTradedPrice,
 				},
 			},
 		];

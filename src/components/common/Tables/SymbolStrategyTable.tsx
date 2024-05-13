@@ -1,12 +1,15 @@
 import { InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
+import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { type IBaseSymbolDetails, type IOptionDetails } from '@/features/slices/types/modalSlice.interfaces';
 import { useDebounce, useInputs } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import Checkbox from '../Inputs/Checkbox';
 import Tooltip from '../Tooltip';
 import styles from './SymbolStrategyTable.module.scss';
@@ -161,23 +164,34 @@ const SymbolStrategy = ({
 	});
 
 	const showInfo = () => {
-		// dispatch(
-		// 	setOrderDetailsModal({
-		// 		type: type === 'base' ? 'order' : 'option',
-		// 		data: {
-		// 			...inputs,
-		// 			contractSize,
-		// 			settlementDay,
-		// 			strikePrice,
-		// 			requiredMargin: requiredMargin.value,
-		// 			strikeCommission: 0.0005,
-		// 			tradeCommission: commission.value,
-		// 			side,
-		// 			type: symbol.optionType,
-		// 			symbolTitle: symbol.symbolTitle,
-		// 		},
-		// 	}),
-		// );
+		const symbolDetails: IOptionDetails | IBaseSymbolDetails =
+			type === 'base'
+				? {
+						type: 'base',
+						data: {
+							quantity: inputs.quantity,
+							price: inputs.price,
+							side,
+							symbolTitle: symbol.symbolTitle,
+						},
+					}
+				: {
+						type: 'option',
+						data: {
+							...inputs,
+							contractSize: contractSize ?? 0,
+							settlementDay,
+							strikePrice,
+							requiredMargin: requiredMargin?.value ?? 0,
+							strikeCommission: 0.0005,
+							tradeCommission: commission?.value ?? 0,
+							side,
+							type: symbol.optionType,
+							symbolTitle: symbol.symbolTitle,
+						},
+					};
+
+		dispatch(setOrderDetailsModal(symbolDetails));
 	};
 
 	const dateFormatter = () => {
@@ -204,10 +218,14 @@ const SymbolStrategy = ({
 
 			<td className={styles.td}>
 				<button
-					onClick={() => onSideChange(id, side === 'buy' ? 'sell' : 'buy')}
+					onClick={() => {
+						if (type === 'option') onSideChange(id, side === 'buy' ? 'sell' : 'buy');
+						else toast.warning(t('tooltip.can_not_change_base_symbol_side'));
+					}}
 					type='button'
 					className={clsx(
 						'size-40 rounded font-normal transition-colors',
+						type === 'base' && 'cursor-not-allowed',
 						side === 'buy' ? 'bg-success-100/10 text-success-100' : 'bg-error-100/10 text-error-100',
 					)}
 				>
