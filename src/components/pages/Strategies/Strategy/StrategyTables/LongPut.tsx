@@ -1,13 +1,15 @@
 import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsLongPut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -32,7 +34,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'long_put_strategy_columns',
-		initialColumnsBullCallSpread,
+		initialColumnsLongPut,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
@@ -45,12 +47,22 @@ const LongPut = ({ title, type }: LongPutProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.LongPut) => {
+	const execute = (data: Strategy.LongPut) => {
 		//
 	};
 
-	const execute = (data: Strategy.LongPut) => {
-		//
+	const analyze = (data: Strategy.LongPut) => {
+		const contracts: TSymbolStrategy[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts,
+			}),
+		);
 	};
 
 	const showColumnsPanel = () => {
@@ -63,12 +75,13 @@ const LongPut = ({ title, type }: LongPutProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.LongCall>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.LongPut>>>(
 		() => [
 			{
 				colId: 'symbolISIN',
 				headerName: 'نماد پایه',
-				width: 104,
+				minWidth: 104,
+				flex: 1,
 				pinned: 'right',
 				cellClass: 'cursor-pointer',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
@@ -89,13 +102,13 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
-				width: 120,
+				minWidth: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
 				colId: 'callSymbolISIN',
 				headerName: 'اختیار خرید',
-				width: 128,
+				minWidth: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
@@ -107,7 +120,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
-				width: 96,
+				minWidth: 96,
 				cellClass: 'gray',
 				valueGetter: ({ data }) => data?.strikePrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -115,14 +128,14 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'openPositionCount',
 				headerName: 'موقعیت باز',
-				width: 112,
+				minWidth: 112,
 				valueGetter: ({ data }) => data?.openPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'premium',
 				headerName: 'آخرین قیمت نماد آپشن',
-				width: 152,
+				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
 					percent: data?.premium ?? 0,
@@ -133,7 +146,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'optionBestBuyLimitPrice',
 				headerName: 'قیمت بهترین خریدار',
-				width: 152,
+				minWidth: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -141,7 +154,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'optionBestBuyLimitQuantity',
 				headerName: 'حجم سرخط خرید',
-				width: 152,
+				minWidth: 120,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -149,7 +162,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'optionBestSellLimitPrice',
 				headerName: 'قیمت بهترین فروشنده',
-				width: 152,
+				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -157,7 +170,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'optionBestSellLimitQuantity',
 				headerName: 'حجم سرخط فروش',
-				width: 152,
+				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -165,18 +178,16 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'longCallBEP',
 				headerName: 'سر به سر استراتژی',
-				width: 136,
+				minWidth: 128,
 				cellClass: ({ data }) =>
-					(data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0) < 0
-						? 'text-error-100'
-						: 'text-success-100',
+					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0)),
 				valueGetter: ({ data }) => data?.longCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'maxProfit',
 				headerName: 'بیشینه سود',
-				width: 184,
+				minWidth: 160,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
@@ -191,67 +202,69 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			{
 				colId: 'blackScholes',
 				headerName: 'بلک شولز',
+				minWidth: 96,
 				valueGetter: ({ data }) => data?.blackScholes ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
 				colId: 'timeValue',
 				headerName: 'ارزش زمانی',
-				width: 152,
+				minWidth: 96,
 				valueGetter: ({ data }) => data?.timeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'intrinsicValue',
 				headerName: 'ارزش ذاتی',
-				width: 152,
+				minWidth: 96,
 				valueGetter: ({ data }) => data?.intrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'profit',
 				headerName: 'مقدار سود',
+				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},
 			{
 				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
-				width: 136,
+				minWidth: 136,
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
 			},
 			{
 				colId: 'tradeValue',
 				headerName: 'ارزش معاملات آپشن',
-				width: 136,
+				minWidth: 136,
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
-				width: 152,
+				minWidth: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
-				width: 128,
-				valueGetter: ({ data }) => data?.baesTradeCount ?? 0,
+				minWidth: 128,
+				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
-				width: 136,
+				minWidth: 136,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
-				width: 120,
+				minWidth: 120,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
@@ -262,8 +275,8 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
+					analyze,
 				},
 			},
 		],
@@ -275,7 +288,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			suppressMovable: true,
 			sortable: true,
 			resizable: false,
-			minWidth: 96,
+			flex: 1,
 		}),
 		[],
 	);
@@ -329,6 +342,8 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>

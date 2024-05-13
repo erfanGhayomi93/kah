@@ -1,6 +1,7 @@
 import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
@@ -28,7 +29,7 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'protective_put_strategy_columns',
-		initialColumnsBullCallSpread,
+		initialColumnsProtectivePut,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
@@ -41,12 +42,22 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.ProtectivePut) => {
+	const execute = (data: Strategy.ProtectivePut) => {
 		//
 	};
 
-	const execute = (data: Strategy.ProtectivePut) => {
-		//
+	const analyze = (data: Strategy.ProtectivePut) => {
+		/* const contracts: TSymbolStrategy[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts: [],
+			}),
+		); */
 	};
 
 	const showColumnsPanel = () => {
@@ -173,8 +184,8 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
+					analyze,
 				},
 			},
 		],
@@ -240,6 +251,8 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>

@@ -240,7 +240,7 @@ export const ReceiptDepositTab = () => {
 					<button
 						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 						type='submit'
-						// onClick={handleSubmitReceiptDeposit}
+					// onClick={handleSubmitReceiptDeposit}
 					>
 						{t('deposit_modal.state_Request')}
 					</button>

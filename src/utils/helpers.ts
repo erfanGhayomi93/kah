@@ -299,8 +299,11 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getListBrokerBankAccount: data.GetListBrokerBankAccount,
 		getDepositOfflineHistory: data.DepositOfflineHistory,
 		customerTurnOverRemain: data.CustomerTurnOverRemain,
+		CreateChangeBrokers: data.CreateChangeBrokers,
+		LastChangeBrokers: data.LastChangeBrokers,
 		getWithFilterReceipt: data.GetWithFilterReceipt,
 		getFilteredEPaymentApi: data.GetFilteredEPaymentApi,
+		DeleteChangeBroker: data.DeleteChangeBroker,
 		getFilteredPayment: data.GetFilteredPayment,
 		GetListBankAccount: data.GetListBankAccount,
 		GetRemainsWithDate: data.GetRemainsWithDate,
@@ -491,24 +494,32 @@ export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boo
 	return result;
 };
 
-export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): OrderBasket.Order => ({
-	id: uuidv4(),
-	symbol,
-	contractSize: symbol.symbolInfo.contractSize,
-	price: symbol.optionWatchlistData.premium || 1,
-	quantity: 1,
-	settlementDay: symbol.symbolInfo.contractEndDate,
-	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
-	strikePrice: symbol.symbolInfo.strikePrice,
-	side,
-	marketUnit: symbol.symbolInfo.marketUnit ?? '',
-	commission: {
-		value: 0,
-	},
-	requiredMargin: {
-		value: symbol.optionWatchlistData.requiredMargin,
-	},
-});
+export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): IOptionStrategy => {
+	const { optionWatchlistData, symbolInfo } = symbol;
+	const optionType = symbolInfo.optionType === 'Call' ? 'call' : 'put';
+
+	return {
+		id: uuidv4(),
+		type: 'option',
+		symbol: {
+			symbolTitle: symbolInfo.symbolTitle,
+			symbolISIN: symbolInfo.symbolISIN,
+			optionType,
+			baseSymbolPrice: optionWatchlistData.baseSymbolPrice,
+			historicalVolatility: optionWatchlistData.historicalVolatility,
+		},
+		contractSize: symbolInfo.contractSize,
+		price: optionWatchlistData.premium || 1,
+		quantity: 1,
+		settlementDay: symbolInfo.contractEndDate,
+		strikePrice: symbolInfo.strikePrice,
+		side,
+		marketUnit: symbolInfo.marketUnit ?? '',
+		requiredMargin: {
+			value: symbol.optionWatchlistData.requiredMargin,
+		},
+	};
+};
 
 export const setHours = (d: Date, hour: number, minutes: number, seconds = 0, milliseconds = 0) => {
 	d.setHours(hour, minutes, seconds, milliseconds);

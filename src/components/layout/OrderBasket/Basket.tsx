@@ -1,18 +1,14 @@
 import Button from '@/components/common/Button';
 import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAnalyzeModal, setConfirmModal } from '@/features/slices/modalSlice';
 import {
-	getIsLoggedIn,
 	getOrderBasket,
 	removeOrderBasketOrder,
 	setOrderBasket,
 	setOrderBasketOrders,
 } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
 import { useBasketOrderingSystem } from '@/hooks';
-import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -28,21 +24,10 @@ const SymbolStrategyTable = dynamic(() => import('@/components/common/Tables/Sym
 	),
 });
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isLoggedIn: getIsLoggedIn(state),
-		brokerURLs: getBrokerURLs(state),
-		basket: getOrderBasket(state)!,
-	}),
-);
-
 const Basket = () => {
 	const t = useTranslations();
 
-	const {
-		basket: { baseSymbol, orders: basketOrders },
-	} = useAppSelector(getStates);
+	const { baseSymbol, orders: basketOrders } = useAppSelector(getOrderBasket)!;
 
 	const dispatch = useAppDispatch();
 
@@ -127,7 +112,7 @@ const Basket = () => {
 		setSelectedContracts((prev) => prev.filter((orderId) => orderId !== id));
 	};
 
-	const setOrderProperties = (id: string, values: Partial<OrderBasket.Order>) => {
+	const setOrderProperties = (id: string, values: Partial<Pick<TSymbolStrategy, 'price' | 'quantity' | 'side'>>) => {
 		const orders = JSON.parse(JSON.stringify(basketOrders)) as OrderBasket.Order[];
 
 		const orderIndex = orders.findIndex((item) => item.id === id);
@@ -161,7 +146,7 @@ const Basket = () => {
 		>
 			<div className='overflow-hidden rounded bg-white shadow-card'>
 				<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
-					<h2 className='text-xl font-medium'>{t('order_basket.title')}</h2>
+					<h2 className='select-none text-xl font-medium'>{t('order_basket.title')}</h2>
 
 					<div className='absolute left-24 gap-16 flex-items-center'>
 						<button onClick={onExpand} type='button' className='icon-hover'>

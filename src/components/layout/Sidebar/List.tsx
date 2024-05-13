@@ -9,7 +9,7 @@ import {
 	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setDepositModal, setWithdrawalModal } from '@/features/slices/modalSlice';
+import { setChangeBrokerModal, setDepositModal, setWithdrawalModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
@@ -54,6 +54,8 @@ const List = ({ isExpand }: ListProps) => {
 				dispatch(setDepositModal({ isShow: true }));
 			} else if (tagName === 'withdrawal') {
 				dispatch(setWithdrawalModal({ isShow: true }));
+			} else if (tagName === 'change_broker') {
+				dispatch(setChangeBrokerModal({ isShow: true }));
 			}
 		}
 	};
@@ -135,7 +137,7 @@ const List = ({ isExpand }: ListProps) => {
 						{
 							id: 'change_broker',
 							label: t('sidebar.change_broker'),
-							to: '/a',
+							isModal: true
 						},
 						{
 							id: 'un_freezing',
