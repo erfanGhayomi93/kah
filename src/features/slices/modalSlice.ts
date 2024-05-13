@@ -87,7 +87,7 @@ const initialState: ModalState = {
 	withdrawalCashReportsFilters: null,
 
 	// فیلتر صفحه گزارشات تغییر کارگزار ناظر
-	changeBrokerReportsFilters: null
+	changeBrokerReportsFilters: null,
 };
 
 const modalSlice = createSlice({
@@ -228,7 +228,6 @@ const modalSlice = createSlice({
 			state.withdrawalCashReportsFilters = payload;
 		},
 
-
 		setChangeBrokerReportsFiltersModal: (
 			state,
 			{ payload }: PayloadAction<ModalState['changeBrokerReportsFilters']>,
@@ -267,7 +266,7 @@ export const {
 	setInstantDepositReportsFiltersModal,
 	setDepositWithReceiptReportsFiltersModal,
 	setWithdrawalCashReportsFiltersModal,
-	setChangeBrokerReportsFiltersModal
+	setChangeBrokerReportsFiltersModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;

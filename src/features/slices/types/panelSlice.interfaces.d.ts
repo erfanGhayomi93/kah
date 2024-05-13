@@ -1,4 +1,5 @@
 export interface IManageColumnsModal {
+	initialColumns?: IManageColumn[];
 	title: React.ReactNode;
 	columns: IManageColumn[];
 	applyChangesAfterClose?: boolean;

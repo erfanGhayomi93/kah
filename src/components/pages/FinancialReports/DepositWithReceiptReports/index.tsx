@@ -40,9 +40,8 @@ const DepositWithReceiptReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(
-		initialDepositWithReceiptReportsFilters,
-	);
+	const { inputs, setFieldValue, setFieldsValue } =
+		useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(initialDepositWithReceiptReportsFilters);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'deposit_with_receipt_column',
@@ -114,6 +113,7 @@ const DepositWithReceiptReports = () => {
 	const onManageColumns = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: defaultDepositWithReceiptReportsColumn,
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
