@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -50,17 +50,64 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	};
 
 	const analyze = (data: Strategy.BullCallSpread) => {
-		const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.lspSymbolTitle,
+						symbolISIN: data.lspSymbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.lspHistoricalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.lspPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.lspStrikePrice,
+					side: 'buy',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
 				},
-				contracts,
-			}),
-		);
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.hspSymbolTitle,
+						symbolISIN: data.hspSymbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.hspHistoricalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.lspPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.hspStrikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showColumnsPanel = () => {
