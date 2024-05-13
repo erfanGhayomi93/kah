@@ -4,7 +4,7 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -110,6 +110,20 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsCoveredCall),
+			}),
+		);
+	};
+
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: <h1>Hello</h1>,
+				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
 	};
@@ -394,7 +408,11 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	return (
 		<>
-			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`), t(`${type}.step_2`)]} />
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				readMore={readMore}
+			/>
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
 				<Filters

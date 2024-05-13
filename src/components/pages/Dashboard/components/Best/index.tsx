@@ -56,7 +56,6 @@ const Best = () => {
 
 	return (
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
-			expandable
 			id='best'
 			title={t('home.best')}
 			defaultTopActiveTab={defaultTab.top}

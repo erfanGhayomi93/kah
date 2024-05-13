@@ -4,7 +4,7 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -108,6 +108,20 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 		} catch (e) {
 			//
 		}
+	};
+
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: title,
+				onRead: () => dispatch(setDescriptionModal(null)),
+			}),
+		);
 	};
 
 	const showColumnsPanel = () => {
@@ -452,6 +466,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				strategy={strategy}
 				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
 				condition={t(`${type}.condition`)}
+				readMore={readMore}
 			/>
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
