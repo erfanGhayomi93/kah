@@ -273,7 +273,14 @@ declare type IBrokerUrls = Record<
 	| 'getEPaymentExportFilteredCSV'
 	| 'getReceiptExportFilteredCSV'
 	| 'getPaymentExportFilteredCSV',
-	'SetCustomerSettings' | 'GetCustomerSettings',
+	| 'SetCustomerSettings'
+	| 'GetCustomerSettings'
+	| 'getPaymentExportFilteredCSV'
+	| 'getEPaymentApiGetStatuses'
+	| 'getEPaymentApiGetProviderTypes'
+	| 'getPaymentGetStatuses'
+	| 'getChangeBrokerExportFilteredCSV'
+	| 'getChangeBrokerChangeBrokersByFilter',
 	string
 >;
 
@@ -533,6 +540,27 @@ declare namespace WithdrawalCashReports {
 		Statuses: Array<string>;
 		AccountIds: Array<string>;
 	}
+}
+
+declare namespace ChangeBrokerReports {
+	export interface IChangeBrokerReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		attachment: boolean | null;
+	}
+
+	export interface IChangeBrokerReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
 }
 
 declare type TTransactionColumnsState = {

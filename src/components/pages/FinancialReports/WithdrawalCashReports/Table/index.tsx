@@ -1,8 +1,9 @@
 import { useWithdrawalCashReports } from '@/api/queries/reportsQueries';
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useMemo } from 'react';
+import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
 import WithdrawalCashReportsTable from './WithdrawalCashReportsTable';
 
 interface TableProps {
@@ -16,10 +17,22 @@ interface TableProps {
 	setColumnsVisibility: Dispatch<SetStateAction<TWithdrawalCashReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility }: TableProps) => {
+const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, setFieldsValue }: TableProps) => {
 	const { data: withdrawalCashReportsData, isLoading } = useWithdrawalCashReports({
 		queryKey: ['withdrawalCashReports', filters],
 	});
+
+	const onFiltersChanged = (newFilters: Omit<WithdrawalCashReports.WithdrawalCashReportsFilters, 'pageNumber' | 'pageSize'>) => {
+		setFieldsValue(newFilters);
+	};
+
+	useLayoutEffect(() => {
+		ipcMain.handle('set_withdrawal_cash_filters', onFiltersChanged);
+
+		return () => {
+			ipcMain.removeChannel('set_transactions_filters');
+		};
+	}, []);
 
 	const reports = useMemo(() => {
 		if (!withdrawalCashReportsData?.result) return [];
@@ -66,9 +79,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility }:
 			)}
 
 			{dataIsEmpty && !isLoading && (
-				<div className='fixed center'>
-					<NoData />
-				</div>
+				<NoData />
 			)}
 		</>
 	);

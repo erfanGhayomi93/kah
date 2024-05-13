@@ -15,7 +15,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface DepositWithReceiptFiltersModalProps extends IBaseModalConfiguration {}
+interface DepositWithReceiptFiltersModalProps extends IBaseModalConfiguration { }
 
 const DepositWithReceiptFiltersModal = forwardRef<HTMLDivElement, DepositWithReceiptFiltersModalProps>((props, ref) => {
 	const t = useTranslations();

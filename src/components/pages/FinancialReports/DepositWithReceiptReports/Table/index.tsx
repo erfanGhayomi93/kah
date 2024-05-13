@@ -1,8 +1,9 @@
 import { useDepositWithReceiptReports } from '@/api/queries/reportsQueries';
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useMemo } from 'react';
+import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
 import DepositWithReceiptReportsTable from './DepositWithReceiptReportsTable';
 
 interface TableProps {
@@ -11,14 +12,27 @@ interface TableProps {
 		name: K,
 		value: DepositWithReceiptReports.DepositWithReceiptReportsFilters[K],
 	) => void;
+	setFieldsValue: (props: Partial<DepositWithReceiptReports.DepositWithReceiptReportsFilters>) => void;
 	columnsVisibility: IDepositWithReceiptReportsColumnsState[];
 	setColumnsVisibility: Dispatch<SetStateAction<IDepositWithReceiptReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility }: TableProps) => {
+const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, setFieldsValue }: TableProps) => {
 	const { data: depositWithReceiptReportsData, isLoading } = useDepositWithReceiptReports({
 		queryKey: ['depositWithReceiptReports', filters],
 	});
+
+	const onFiltersChanged = (newFilters: Omit<DepositWithReceiptReports.DepositWithReceiptReportsFilters, 'pageNumber' | 'pageSize'>) => {
+		setFieldsValue(newFilters);
+	};
+
+	useLayoutEffect(() => {
+		ipcMain.handle('set_deposit_with_receipt_filters', onFiltersChanged);
+
+		return () => {
+			ipcMain.removeChannel('set_transactions_filters');
+		};
+	}, []);
 
 	const reports = useMemo(() => {
 		if (!depositWithReceiptReportsData?.result) return [];
@@ -65,9 +79,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility }:
 			)}
 
 			{dataIsEmpty && !isLoading && (
-				<div className='fixed center'>
-					<NoData />
-				</div>
+				<NoData />
 			)}
 		</>
 	);

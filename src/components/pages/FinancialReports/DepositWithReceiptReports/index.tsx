@@ -40,7 +40,7 @@ const DepositWithReceiptReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue } = useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(
 		initialDepositWithReceiptReportsFilters,
 	);
 
@@ -117,6 +117,7 @@ const DepositWithReceiptReports = () => {
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(defaultDepositWithReceiptReportsColumn),
 			}),
 		);
 	};
@@ -147,6 +148,7 @@ const DepositWithReceiptReports = () => {
 					setFilters={setFieldValue}
 					columnsVisibility={columnsVisibility}
 					setColumnsVisibility={setColumnsVisibility}
+					setFieldsValue={setFieldsValue}
 				/>
 			</div>
 		</Main>

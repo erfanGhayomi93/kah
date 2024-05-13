@@ -5,7 +5,7 @@ import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOpt
 import { type AxiosError } from 'axios';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { getClientId } from './cookie';
+import { getBrokerClientId, getClientId } from './cookie';
 
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
@@ -225,7 +225,7 @@ export const downloadFileQueryParams = (
 		headers.append('Accept', 'application/json, text/plain, */*');
 		headers.append('Accept-Language', 'en-US,en;q=0.9,fa;q=0.8');
 
-		const clientId = getClientId();
+		const clientId = getBrokerClientId()[0];
 		if (clientId) headers.append('Authorization', 'Bearer ' + clientId);
 
 		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
@@ -316,6 +316,11 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getPaymentExportFilteredCSV: data.PaymentExportFilteredCSV,
 		SetCustomerSettings: data.SetCustomerSettings,
 		GetCustomerSettings: data.GetCustomerSettings,
+		getEPaymentApiGetStatuses: data.EPaymentApiGetStatuses,
+		getEPaymentApiGetProviderTypes: data.EPaymentApiGetProviderTypes,
+		getPaymentGetStatuses: data.PaymentGetStatuses,
+		getChangeBrokerExportFilteredCSV: data.ChangeBrokerExportFilteredCSV,
+		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter,
 	};
 
 	return urls;

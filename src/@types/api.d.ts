@@ -637,7 +637,12 @@ declare namespace Broker {
 		| 'PaymentExportFilteredCSV'
 		| 'SetCustomerSettings'
 		| 'DepositOnlineHistory'
-		| 'GetCustomerSettings';
+		| 'GetCustomerSettings'
+		| 'EPaymentApiGetStatuses'
+		| 'EPaymentApiGetProviderTypes'
+		| 'PaymentGetStatuses'
+		| 'ChangeBrokerExportFilteredCSV'
+		| 'ChangeBrokerChangeBrokersByFilter';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1717,14 +1722,6 @@ declare namespace Strategy {
 }
 
 declare namespace Reports {
-	export interface Column {
-		id: number;
-		title: string;
-		category: string;
-		isHidden: boolean;
-		order: number;
-	}
-
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1800,5 +1797,15 @@ declare namespace Reports {
 		bankName: string | null;
 		checkDate: string;
 		reservationNumber: number;
+	}
+
+	export interface IChangeBrokerReports {
+		id: number;
+		saveDate: string;
+		symbolISIN: string;
+		lastState: string;
+		attachmentId: number;
+		symbolTitle: string;
+		hasAttachment: boolean;
 	}
 }
