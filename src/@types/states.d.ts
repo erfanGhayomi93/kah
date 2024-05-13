@@ -251,7 +251,9 @@ declare type IBrokerUrls = Record<
 	| 'GetRemainsWithDate'
 	| 'LastListDrawal'
 	| 'RequestPayment'
-	| 'getFilteredPayment',
+	| 'getFilteredPayment'
+	| 'SetCustomerSettings'
+	| 'GetCustomerSettings',
 	string
 >;
 

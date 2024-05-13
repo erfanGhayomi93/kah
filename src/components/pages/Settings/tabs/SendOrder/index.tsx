@@ -1,130 +1,176 @@
 'use client';
+import brokerAxios from '@/api/brokerAxios';
+import { useGetCustomerSettings } from '@/api/queries/brokerPrivateQueries';
 import Input from '@/components/common/Inputs/Input';
 import Switch from '@/components/common/Inputs/Switch';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useReducer } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import SettingCard from '../../components/SettingCard';
 import SettingCardField from '../../components/SettingCardField';
 
-type TReducerType =
-	| 'defaultBuyVolume'
-	| 'defaultSellVolume'
-	| 'confirmSendOrder'
-	| 'confirmDeleteOrder'
-	| 'getOnlinePrice'
-	| 'marketWatcherMessageNotification'
-	| 'showSymbolInfoInSendOrder';
+type TFieldName = Settings.IBrokerCustomerSettings['configKey'];
 
-const initialFieldValues = {
-	defaultBuyVolume: '',
-	defaultSellVolume: '',
-	confirmSendOrder: false,
-	confirmDeleteOrder: false,
-	getOnlinePrice: false,
-	marketWatcherMessageNotification: false,
-	showSymbolInfoInSendOrder: false,
-};
-
-const reducer = (
-	state: typeof initialFieldValues,
-	action: { type: TReducerType; payload: string | boolean },
-): typeof initialFieldValues => {
-	return { ...state, [action.type]: action.payload };
-};
+interface IUpdateSettingsBody {
+	configKey: Settings.IBrokerCustomerSettings['configKey'];
+	configValue: string | boolean;
+}
 
 const SendOrder = () => {
 	const t = useTranslations();
 
-	const [fieldValues, dispatch] = useReducer(reducer, initialFieldValues);
+	const defaultFieldValues = useRef<Settings.IFormatedBrokerCustomerSettings>();
 
-	const fields = [
-		{
-			title: t('settings_page.default_buy_volume'),
-			component: (
-				<Input
-					classInput='text-right'
-					value={sepNumbers(String(fieldValues.defaultBuyVolume))}
-					onChange={(e) =>
-						dispatch({ type: 'defaultBuyVolume', payload: convertStringToInteger(e.target.value) })
-					}
-					type='text'
-					inputMode='numeric'
-					placeholder='وارد کنید'
-				/>
-			),
+	const [fieldValues, setFieldValues] = useState<Settings.IFormatedBrokerCustomerSettings>();
+
+	const brokerURLs = useAppSelector(getBrokerURLs);
+
+	const { data: customerSettings, refetch: fetchCustomerSettings } = useGetCustomerSettings({
+		queryKey: ['GetCustomerSettings'],
+		enabled: false,
+	});
+
+	const { mutate: updateCustomerSettings } = useMutation({
+		mutationFn: async (settingsData: IUpdateSettingsBody[]) => {
+			if (!brokerURLs) return;
+			const { data } = await brokerAxios.post(brokerURLs.SetCustomerSettings, settingsData);
+			return data;
 		},
-		{
-			title: t('settings_page.default_sell_volume'),
-			component: (
-				<Input
-					classInput='text-right'
-					value={sepNumbers(String(fieldValues.defaultSellVolume))}
-					onChange={(e) =>
-						dispatch({ type: 'defaultSellVolume', payload: convertStringToInteger(e.target.value) })
-					}
-					type='text'
-					inputMode='numeric'
-					placeholder='وارد کنید'
-				/>
-			),
+		onSuccess: () => {
+			defaultFieldValues.current = fieldValues;
 		},
-		{
-			title: t('settings_page.confirm_before_send_order'),
-			component: (
-				<>
-					<Switch
-						checked={fieldValues.confirmSendOrder}
-						onChange={(value) => dispatch({ type: 'confirmSendOrder', payload: value })}
+		onError: () => {
+			toast.warning(t('i_errors.undefined_error'));
+			setFieldValues(defaultFieldValues.current);
+		},
+	});
+
+	const handleFieldValueChange = (fieldName: TFieldName, newValue: string | boolean) => {
+		const customerSettingsBody: IUpdateSettingsBody[] = [];
+		for (const key in fieldValues) {
+			const keyValue = key as IUpdateSettingsBody['configKey'];
+			customerSettingsBody.push({
+				configKey: keyValue,
+				configValue: fieldName === keyValue ? String(newValue) : String(fieldValues[keyValue]),
+			});
+		}
+		updateCustomerSettings(customerSettingsBody);
+		setFieldValues((prev) => ({ ...prev, [fieldName]: newValue }) as Settings.IFormatedBrokerCustomerSettings);
+	};
+
+	useEffect(() => {
+		brokerURLs && fetchCustomerSettings();
+	}, [brokerURLs]);
+
+	useEffect(() => {
+		if (customerSettings) {
+			setFieldValues(customerSettings);
+			defaultFieldValues.current = customerSettings;
+		}
+	}, [customerSettings]);
+
+	const fields = useMemo(
+		() => [
+			{
+				title: t('settings_page.default_buy_volume'),
+				component: (
+					<Input
+						classInput='text-right'
+						value={
+							fieldValues?.defaultBuyVolume === '0'
+								? ''
+								: sepNumbers(String(fieldValues?.defaultBuyVolume))
+						}
+						onChange={(e) =>
+							handleFieldValueChange('defaultBuyVolume', convertStringToInteger(e.target.value))
+						}
+						type='text'
+						inputMode='numeric'
+						placeholder='وارد کنید'
 					/>
-				</>
-			),
-		},
-		{
-			title: t('settings_page.confirm_before_delete_order'),
-			component: (
-				<>
-					<Switch
-						checked={fieldValues.confirmDeleteOrder}
-						onChange={(value) => dispatch({ type: 'confirmDeleteOrder', payload: value })}
+				),
+			},
+			{
+				title: t('settings_page.default_sell_volume'),
+				component: (
+					<Input
+						classInput='text-right'
+						value={
+							fieldValues?.defaultSellVolume === '0'
+								? ''
+								: sepNumbers(String(fieldValues?.defaultSellVolume))
+						}
+						onChange={(e) =>
+							handleFieldValueChange('defaultSellVolume', convertStringToInteger(e.target.value))
+						}
+						type='text'
+						inputMode='numeric'
+						placeholder='وارد کنید'
 					/>
-				</>
-			),
-		},
-		{
-			title: t('settings_page.Get_online_price'),
-			component: (
-				<>
-					<Switch
-						checked={fieldValues.getOnlinePrice}
-						onChange={(value) => dispatch({ type: 'getOnlinePrice', payload: value })}
-					/>
-				</>
-			),
-		},
-		{
-			title: t('settings_page.market_watcher_message_notification'),
-			component: (
-				<>
-					<Switch
-						checked={fieldValues.marketWatcherMessageNotification}
-						onChange={(value) => dispatch({ type: 'marketWatcherMessageNotification', payload: value })}
-					/>
-				</>
-			),
-		},
-		{
-			title: t('settings_page.show_symbol_info_in_send_order'),
-			component: (
-				<>
-					<Switch
-						checked={fieldValues.showSymbolInfoInSendOrder}
-						onChange={(value) => dispatch({ type: 'showSymbolInfoInSendOrder', payload: value })}
-					/>
-				</>
-			),
-		},
-	];
+				),
+			},
+			{
+				title: t('settings_page.confirm_before_send_order'),
+				component: (
+					<>
+						<Switch
+							checked={!!fieldValues?.confirmBeforeSendOrder}
+							onChange={(value) => handleFieldValueChange('confirmBeforeSendOrder', value)}
+						/>
+					</>
+				),
+			},
+			{
+				title: t('settings_page.confirm_before_delete_order'),
+				component: (
+					<>
+						<Switch
+							checked={!!fieldValues?.confirmBeforeDelete}
+							onChange={(value) => handleFieldValueChange('confirmBeforeDelete', value)}
+						/>
+					</>
+				),
+			},
+			{
+				title: t('settings_page.Get_online_price'),
+				component: (
+					<>
+						<Switch
+							checked={!!fieldValues?.breakEvenPoint}
+							onChange={(value) => handleFieldValueChange('breakEvenPoint', value)}
+						/>
+					</>
+				),
+			},
+			{
+				title: t('settings_page.market_watcher_message_notification'),
+				component: (
+					<>
+						<Switch
+							checked={!!fieldValues?.sendSupervisorMarketMessage}
+							onChange={(value) => handleFieldValueChange('sendSupervisorMarketMessage', value)}
+						/>
+					</>
+				),
+			},
+			{
+				title: t('settings_page.show_symbol_info_in_send_order'),
+				component: (
+					<>
+						<Switch
+							checked={!!fieldValues?.showSymbolDetailsInBuySellModal}
+							onChange={(value) => handleFieldValueChange('showSymbolDetailsInBuySellModal', value)}
+						/>
+					</>
+				),
+			},
+		],
+		[fieldValues],
+	);
 
 	return (
 		<SettingCard title={t('settings_page.send_order_settings')}>

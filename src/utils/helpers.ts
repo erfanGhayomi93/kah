@@ -267,6 +267,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		LastListDrawal: data.LastListDrawal,
 		RequestPayment: data.RequestPayment,
 		getDepositOnlineHistory: data.DepositOnlineHistory,
+		SetCustomerSettings: data.SetCustomerSettings,
+		GetCustomerSettings: data.GetCustomerSettings,
 	};
 
 	return urls;
