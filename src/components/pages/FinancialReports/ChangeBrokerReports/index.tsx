@@ -16,7 +16,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
-import Tabs from '../common/Tabs';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -105,6 +104,7 @@ const ChangeBrokerReports = () => {
 				columns: columnsVisibility,
 				title: t('transactions_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(defaultChangeBrokerReportsColumns),
 			}),
 		);
 	};
@@ -120,7 +120,7 @@ const ChangeBrokerReports = () => {
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
 			<div className='flex-justify-between'>
-				<Tabs />
+				<span className='text-xl font-medium text-gray-900'>{t('change_broker_reports_page.title_page')}</span>
 				<Toolbar
 					filtersCount={filtersCount}
 					onShowFilters={onShowFilters}

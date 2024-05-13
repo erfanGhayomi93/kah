@@ -49,7 +49,7 @@ const ChangeBrokerTable = ({
 					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
 				},
 				{
-					headerName: t('change_broker_reports_page.change_column'),
+					headerName: t('change_broker_reports_page.symbol_column'),
 					field: 'symbolTitle',
 					cellClass: 'ltr text-right',
 					minWidth: 150,
@@ -77,8 +77,8 @@ const ChangeBrokerTable = ({
 
 				},
 				{
-					headerName: t('change_broker_reports_page.debit_column'),
-					field: 'lastState',
+					headerName: t('change_broker_reports_page.action_column'),
+					field: 'action',
 					maxWidth: 112,
 					minWidth: 112,
 					initialHide: false,

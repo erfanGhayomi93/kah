@@ -92,7 +92,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 						'Draft'
 					]}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => <span>{t(`states.state.${option}`)}</span>}
+					getOptionTitle={(option) => <span>{t(`states.state_${option}`)}</span>}
 					placeholder={t('transactions_reports_page.actions_placeholder_filter')}
 					defaultValues={filters.status}
 				/>

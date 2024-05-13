@@ -1227,6 +1227,7 @@
 		"attachment_placeholder_filter": "پیوست"
 	},
 	"change_broker_reports_page": {
+		"title_page": "گزارشات تغییر کارگزار ناظر",
 		"filter_title_modal": "فیلتر تغییر کارگزار ناظر",
 		"id_column":"ردیف",
 		"date_column": "زمان",
@@ -1289,6 +1290,8 @@
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
 		"state_PayFast": "پرداخت سریع",
+		"state_CancellByCustomer": "انصراف توسط مشتری",
+		"state_BankingAction": "اقدام بانکی",
 		"agreement_state_Accepted": "تایید شده",
 		"agreement_state_NotAccepted": "تایید نشده",
 		"agreement_state_NotSpecified": "تعیین نشده",

@@ -62,9 +62,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 				/>
 			</div>
 
-			<div className='py-22 flex-justify-between'>
-
-
+			<div className='py-22 flex-justify-end'>
 				<Pagination
 					hasNextPage={changeBrokerReportsData?.hasNextPage ?? false}
 					hasPreviousPage={changeBrokerReportsData?.hasPreviousPage ?? false}
