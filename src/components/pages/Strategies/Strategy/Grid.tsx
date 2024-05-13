@@ -3,39 +3,39 @@
 import Loading from '@/components/common/Loading';
 import dynamic from 'next/dynamic';
 
-interface TableProps {
+interface GridProps {
 	strategy: Strategy.GetAll;
 }
 
-const BullCallSpread = dynamic(() => import('./StrategyTables/BullCallSpread'), {
+const BullCallSpread = dynamic(() => import('./Strategies/BullCallSpread'), {
 	loading: () => <Loading />,
 });
 
-const CoveredCall = dynamic(() => import('./StrategyTables/CoveredCall'), {
+const CoveredCall = dynamic(() => import('./Strategies/CoveredCall'), {
 	loading: () => <Loading />,
 });
 
-const LongCall = dynamic(() => import('./StrategyTables/LongCall'), {
+const LongCall = dynamic(() => import('./Strategies/LongCall'), {
 	loading: () => <Loading />,
 });
 
-const LongPut = dynamic(() => import('./StrategyTables/LongPut'), {
+const LongPut = dynamic(() => import('./Strategies/LongPut'), {
 	loading: () => <Loading />,
 });
 
-const ProtectivePut = dynamic(() => import('./StrategyTables/ProtectivePut'), {
+const ProtectivePut = dynamic(() => import('./Strategies/ProtectivePut'), {
 	loading: () => <Loading />,
 });
 
-const LongStraddle = dynamic(() => import('./StrategyTables/LongStraddle'), {
+const LongStraddle = dynamic(() => import('./Strategies/LongStraddle'), {
 	loading: () => <Loading />,
 });
 
-const Conversion = dynamic(() => import('./StrategyTables/Conversion'), {
+const Conversion = dynamic(() => import('./Strategies/Conversion'), {
 	loading: () => <Loading />,
 });
 
-const Table = ({ strategy }: TableProps) => {
+const Grid = ({ strategy }: GridProps) => {
 	const { type } = strategy;
 
 	return (
@@ -57,4 +57,4 @@ const Table = ({ strategy }: TableProps) => {
 	);
 };
 
-export default Table;
+export default Grid;

@@ -5,7 +5,7 @@ declare interface INextProps<T extends object = {}> {
 
 declare type DatesFilterType = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
 declare interface IUserBankAccount {
 	id: number;
@@ -272,6 +272,9 @@ declare type IBrokerUrls = Record<
 	| 'getCustomerTurnOverCSVExport'
 	| 'getEPaymentExportFilteredCSV'
 	| 'getReceiptExportFilteredCSV'
+	| 'getPaymentExportFilteredCSV',
+	| 'SetCustomerSettings'
+	| 'GetCustomerSettings'
 	| 'getPaymentExportFilteredCSV'
 	| 'getEPaymentApiGetStatuses'
 	| 'getEPaymentApiGetProviderTypes'
@@ -327,9 +330,9 @@ declare interface IAnalyzeModalInputs {
 
 declare type TSetBsModalInputs = <
 	T extends
-	| Partial<IBsModalInputs>
-	| keyof Partial<IBsModalInputs>
-	| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+		| Partial<IBsModalInputs>
+		| keyof Partial<IBsModalInputs>
+		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
 >(
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
@@ -556,13 +559,9 @@ declare namespace ChangeBrokerReports {
 		id: string;
 		title: string;
 		hidden: boolean;
-	};
+	}
 
-	export type TChangeBrokerReportsColumns =
-		| 'id'
-		| 'saveDate'
-		| 'symbolTitle'
-		| 'lastState'
+	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
 }
 
 declare type TTransactionColumnsState = {
@@ -594,5 +593,3 @@ declare type TWithdrawalCashReportsColumnsState = {
 	title: string;
 	hidden: boolean;
 };
-
-

@@ -635,6 +635,9 @@ declare namespace Broker {
 		| 'EPaymentExportFilteredCSV'
 		| 'ReceiptExportFilteredCSV'
 		| 'PaymentExportFilteredCSV'
+		| 'SetCustomerSettings'
+		| 'DepositOnlineHistory'
+		| 'GetCustomerSettings'
 		| 'EPaymentApiGetStatuses'
 		| 'EPaymentApiGetProviderTypes'
 		| 'PaymentGetStatuses'
@@ -1288,6 +1291,24 @@ declare namespace Dashboard {
 	}
 }
 
+declare namespace Settings {
+	export interface IBrokerCustomerSettings {
+		id: number;
+		configKey:
+		| 'confirmBeforeDelete'
+		| 'confirmBeforeSendOrder'
+		| 'defaultBuyVolume'
+		| 'defaultSellVolume'
+		| 'sendSupervisorMarketMessage'
+		| 'showSymbolDetailsInBuySellModal'
+		| 'breakEvenPoint';
+		configValue: string;
+		saveDate: string;
+	}
+
+	export type IFormattedBrokerCustomerSettings = Record<IBrokerCustomerSettings['configKey'], string | boolean>;
+}
+
 declare namespace Payment {
 	export type ThistoryState =
 		| 'Request'
@@ -1442,7 +1463,6 @@ declare namespace Strategy {
 		tradePriceVarPreviousTradePercent: number;
 		optionBestBuyLimitQuantity: number;
 		optionBestBuyLimitPrice: number;
-		contractSize: number;
 		baseBestSellLimitPrice: number;
 		baseBestBuyLimitPrice: number;
 		optionBestSellLimitPrice: number;
@@ -1468,6 +1488,8 @@ declare namespace Strategy {
 		historicalVolatility: number;
 		requiredMargin: number;
 		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongCall {
@@ -1503,6 +1525,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongPut {
@@ -1538,6 +1563,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongStraddle {
@@ -1580,6 +1608,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface Conversion {
@@ -1620,6 +1651,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface BullCallSpread {
@@ -1671,6 +1705,9 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface ProtectivePut {
@@ -1679,11 +1716,13 @@ declare namespace Strategy {
 		marketUnit: string;
 		baseMarketUnit: string;
 		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 }
 
 declare namespace Reports {
-
 	export interface ITransactions {
 		debit: string;
 		credit: string;

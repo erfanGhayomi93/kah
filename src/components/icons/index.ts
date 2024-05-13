@@ -85,6 +85,7 @@ import PlusSVG from './plus.svg';
 import ReceptionSVG from './reception.svg';
 import RefreshSVG from './refresh.svg';
 import ReportSVG from './report.svg';
+import RhombicCircleSVG from './rhombic-circle.svg';
 import SaturnSVG from './saturn.svg';
 import SearchSVG from './search.svg';
 import SendFillSVG from './send-fill.svg';
@@ -203,6 +204,7 @@ export {
 	ReceptionSVG,
 	RefreshSVG,
 	ReportSVG,
+	RhombicCircleSVG,
 	SaturnSVG,
 	SearchSVG,
 	SendFillSVG,

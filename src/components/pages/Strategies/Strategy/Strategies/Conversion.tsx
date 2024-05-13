@@ -1,6 +1,4 @@
 import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
-import Loading from '@/components/common/Loading';
-import AgTable from '@/components/common/Tables/AgTable';
 import { initialColumnsConversion } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
@@ -11,15 +9,15 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface ConversionProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface ConversionProps extends Strategy.GetAll {}
 
-const Conversion = ({ title, type }: ConversionProps) => {
+const Conversion = (strategy: ConversionProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -67,6 +65,7 @@ const Conversion = ({ title, type }: ConversionProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsConversion),
 			}),
 		);
 	};
@@ -85,16 +84,6 @@ const Conversion = ({ title, type }: ConversionProps) => {
 				},
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Strategy.Conversion> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 96,
-		}),
 		[],
 	);
 
@@ -127,30 +116,26 @@ const Conversion = ({ title, type }: ConversionProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
-			/>
+			<StrategyDetails strategy={strategy} steps={[]} />
 
-			<AgTable<Strategy.Conversion>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{isFetching && <Loading />}
-
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.Conversion>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };

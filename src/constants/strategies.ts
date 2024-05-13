@@ -537,4 +537,6 @@ export const initialColumnsLongPut: IManageColumn[] = [
 
 export const initialColumnsConversion: IManageColumn[] = [];
 
+export const initialColumnsLongStraddle: IManageColumn[] = [];
+
 export const initialColumnsProtectivePut: IManageColumn[] = [];

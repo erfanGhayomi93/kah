@@ -1,68 +1,105 @@
-import { useLongCallStrategyQuery } from '@/api/queries/strategyQuery';
-import Loading from '@/components/common/Loading';
-import AgTable from '@/components/common/Tables/AgTable';
+import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsLongCall } from '@/constants/strategies';
+import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface LongCallProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface CoveredCallProps extends Strategy.GetAll {}
 
-const LongCall = ({ title, type }: LongCallProps) => {
+const CoveredCall = (strategy: CoveredCallProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<Strategy.LongCall>>(null);
+	const gridRef = useRef<GridApi<Strategy.CoveredCall>>(null);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'long_call_strategy_columns',
-		initialColumnsLongCall,
+		'covered_call_strategy_columns',
+		initialColumnsCoveredCall,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useLongCallStrategyQuery({
-		queryKey: ['longCallQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useCoveredCallStrategyQuery({
+		queryKey: ['coveredCallQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const execute = (data: Strategy.LongCall) => {
+	const execute = (data: Strategy.CoveredCall) => {
 		//
 	};
 
-	const analyze = (data: Strategy.LongCall) => {
-		const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+	const analyze = (data: Strategy.CoveredCall) => {
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.symbolTitle,
+						symbolISIN: data.symbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.premium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
 				},
-				contracts,
-			}),
-		);
+				{
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: data.baseMarketUnit,
+					quantity: 1,
+					price: data.baseLastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+						baseSymbolPrice: data.baseLastTradedPrice,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showColumnsPanel = () => {
@@ -71,20 +108,20 @@ const LongCall = ({ title, type }: LongCallProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsCoveredCall),
 			}),
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.LongCall>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall>>>(
 		() => [
 			{
-				colId: 'symbolISIN',
+				colId: 'baseSymbolISIN',
 				headerName: 'نماد پایه',
-				minWidth: 104,
-				flex: 1,
+				width: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer',
-				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
@@ -102,13 +139,13 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
-				minWidth: 120,
+				width: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
 				colId: 'callSymbolISIN',
 				headerName: 'اختیار خرید',
-				minWidth: 128,
+				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
@@ -120,7 +157,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
-				minWidth: 96,
+				width: 96,
 				cellClass: 'gray',
 				valueGetter: ({ data }) => data?.strikePrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -128,66 +165,55 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'openPositionCount',
 				headerName: 'موقعیت باز',
-				minWidth: 112,
+				width: 112,
 				valueGetter: ({ data }) => data?.openPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'premium',
-				headerName: 'آخرین قیمت نماد آپشن',
-				minWidth: 152,
-				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.premium ?? 0,
-				}),
-				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
-			},
-			{
 				colId: 'optionBestBuyLimitPrice',
 				headerName: 'قیمت بهترین خریدار',
-				minWidth: 152,
+				width: 152,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'optionBestBuyLimitQuantity',
 				headerName: 'حجم سرخط خرید',
-				minWidth: 120,
+				width: 152,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
 				headerName: 'قیمت بهترین فروشنده',
-				minWidth: 152,
+				width: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'optionBestSellLimitQuantity',
-				headerName: 'حجم سرخط فروش',
-				minWidth: 152,
+				headerName: 'حجم سر خط فروش',
+				width: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'longCallBEP',
+				colId: 'coveredCallBEP',
 				headerName: 'سر به سر استراتژی',
-				minWidth: 128,
+				width: 136,
 				cellClass: ({ data }) =>
-					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0)),
-				valueGetter: ({ data }) => data?.longCallBEP ?? 0,
+					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0)),
+				valueGetter: ({ data }) => data?.coveredCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'maxProfit',
 				headerName: 'بیشینه سود',
-				minWidth: 160,
+				width: 184,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
@@ -196,80 +222,135 @@ const LongCall = ({ title, type }: LongCallProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
 					percent: data?.maxProfitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.profitAmount}|${data!.profitPercentUntilSettlement}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data!.profitAmount)),
+				valueGetter: ({ data }) => `${data!.maxProfit}|${data!.maxProfitPercent}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data!.maxProfit)),
 			},
 			{
-				colId: 'blackScholes',
-				headerName: 'بلک شولز',
-				minWidth: 96,
-				valueGetter: ({ data }) => data?.blackScholes ?? 0,
-				valueFormatter: ({ value }) => toFixed(value, 4),
+				colId: 'nonExpiredProfit',
+				headerName: 'سود عدم اعمال',
+				width: 184,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده تا سررسید در صورت عدم اعمال توسط خریدار آپشن به ازای یک قرارداد آپشن',
+				},
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+					percent: data?.nonExpiredProfitPercent ?? 0,
+				}),
+				valueGetter: ({ data }) => `${data!.nonExpiredProfit}|${data!.nonExpiredProfitPercent}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data!.nonExpiredProfit)),
 			},
 			{
-				colId: 'timeValue',
-				headerName: 'ارزش زمانی',
-				minWidth: 96,
-				valueGetter: ({ data }) => data?.timeValue ?? 0,
+				colId: 'inUseCapital',
+				headerName: 'سرمایه درگیر',
+				width: 96,
+				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'intrinsicValue',
-				headerName: 'ارزش ذاتی',
-				minWidth: 96,
-				valueGetter: ({ data }) => data?.intrinsicValue ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
-			},
-			{
-				colId: 'profit',
-				headerName: 'مقدار سود',
-				minWidth: 104,
-				valueFormatter: () => t('common.infinity'),
+				colId: 'premium',
+				headerName: 'آخرین قیمت نماد آپشن',
+				width: 152,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+					percent: data?.premium ?? 0,
+				}),
+				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
 			},
 			{
 				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
-				minWidth: 136,
+				width: 136,
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
 			},
 			{
 				colId: 'tradeValue',
 				headerName: 'ارزش معاملات آپشن',
-				minWidth: 136,
+				width: 136,
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
-				minWidth: 152,
+				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
-				minWidth: 128,
+				width: 128,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
-				minWidth: 136,
+				width: 136,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
-				minWidth: 120,
+				width: 120,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
 			{
-				colId: 'actions',
+				colId: 'bestBuyYTM',
+				headerName: 'YTM سرخط خرید',
+				width: 120,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'bestSellYTM',
+				headerName: 'YTM سرخط فروش',
+				width: 152,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'riskCoverage',
+				headerName: 'پوشش ریسک',
+				width: 152,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip:
+						'پوشش ریسک یا حاشیه اطمینان درصدی است که سهم پایه می‌تواند حداکثر کاهش خود را داشته باشد، ولی استراتژی کاورد کال وارد زیان نشود.',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.riskCoverage ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'nonExpiredYTM',
+				headerName: 'YTM عدم اعمال',
+				width: 120,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید در صورت عدم اعمال توسط خریدار اختیار',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'action',
 				headerName: 'عملیات',
 				width: 80,
 				pinned: 'left',
@@ -280,16 +361,6 @@ const LongCall = ({ title, type }: LongCallProps) => {
 				},
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Strategy.LongCall> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			flex: 1,
-		}),
 		[],
 	);
 
@@ -322,32 +393,28 @@ const LongCall = ({ title, type }: LongCallProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
-			/>
+			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`), t(`${type}.step_2`)]} />
 
-			<AgTable<Strategy.LongCall>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{isFetching && <Loading />}
-
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.CoveredCall>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };
 
-export default LongCall;
+export default CoveredCall;

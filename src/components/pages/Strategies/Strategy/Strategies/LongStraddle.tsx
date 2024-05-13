@@ -1,7 +1,5 @@
 import { useLongStraddleStrategyQuery } from '@/api/queries/strategyQuery';
-import Loading from '@/components/common/Loading';
-import AgTable from '@/components/common/Tables/AgTable';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsLongStraddle } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
@@ -10,15 +8,15 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface LongStraddleProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface LongStraddleProps extends Strategy.GetAll {}
 
-const LongStraddle = ({ title, type }: LongStraddleProps) => {
+const LongStraddle = (strategy: LongStraddleProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -29,7 +27,7 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'Long_straddle_strategy_columns',
-		initialColumnsBullCallSpread,
+		initialColumnsLongStraddle,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
@@ -66,6 +64,7 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsLongStraddle),
 			}),
 		);
 	};
@@ -84,16 +83,6 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 				},
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Strategy.LongStraddle> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 96,
-		}),
 		[],
 	);
 
@@ -126,30 +115,26 @@ const LongStraddle = ({ title, type }: LongStraddleProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
-			/>
+			<StrategyDetails strategy={strategy} steps={[]} />
 
-			<AgTable<Strategy.LongStraddle>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{isFetching && <Loading />}
-
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.LongStraddle>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };
