@@ -634,7 +634,12 @@ declare namespace Broker {
 		| 'CustomerTurnOverCSVExport'
 		| 'EPaymentExportFilteredCSV'
 		| 'ReceiptExportFilteredCSV'
-		| 'PaymentExportFilteredCSV';
+		| 'PaymentExportFilteredCSV'
+		| 'EPaymentApiGetStatuses'
+		| 'EPaymentApiGetProviderTypes'
+		| 'PaymentGetStatuses'
+		| 'ChangeBrokerExportFilteredCSV'
+		| 'ChangeBrokerChangeBrokersByFilter'
 
 	type URL = Record<UrlKey, string>;
 
@@ -929,7 +934,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse {}
+		export interface FaraBourse extends GetMarketState.Bourse { }
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -944,17 +949,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-				| 'ticks'
-				| 'days'
-				| 'hours'
-				| 'milliseconds'
-				| 'minutes'
-				| 'seconds'
-				| 'totalDays'
-				| 'totalHours'
-				| 'totalMilliseconds'
-				| 'totalMinutes'
-				| 'totalSeconds';
+			| 'ticks'
+			| 'days'
+			| 'hours'
+			| 'milliseconds'
+			| 'minutes'
+			| 'seconds'
+			| 'totalDays'
+			| 'totalHours'
+			| 'totalMilliseconds'
+			| 'totalMinutes'
+			| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1677,13 +1682,6 @@ declare namespace Strategy {
 }
 
 declare namespace Reports {
-	export interface Column {
-		id: number;
-		title: string;
-		category: string;
-		isHidden: boolean;
-		order: number;
-	}
 
 	export interface ITransactions {
 		debit: string;
@@ -1703,18 +1701,18 @@ declare namespace Reports {
 		amount: number;
 		providerType: string;
 		state:
-			| 'CanceledByUser'
-			| 'Done'
-			| 'DoubleSpendingCheckedOk'
-			| 'DoubleSpendingCheckFailed'
-			| 'RedirectToBank'
-			| 'Request'
-			| 'RequestBankToken'
-			| 'RequestBankTokenError'
-			| 'Verify'
-			| 'VerifyCheck'
-			| 'VerifyCheckFailed'
-			| 'OkBeforeVerifys';
+		| 'CanceledByUser'
+		| 'Done'
+		| 'DoubleSpendingCheckedOk'
+		| 'DoubleSpendingCheckFailed'
+		| 'RedirectToBank'
+		| 'Request'
+		| 'RequestBankToken'
+		| 'RequestBankTokenError'
+		| 'Verify'
+		| 'VerifyCheck'
+		| 'VerifyCheckFailed'
+		| 'OkBeforeVerifys';
 		errorMessage: string;
 	}
 
@@ -1741,17 +1739,17 @@ declare namespace Reports {
 		bankAccountId: number;
 		accountNumber: string | null;
 		status:
-			| 'Draft'
-			| 'Pending'
-			| 'Confirmed'
-			| 'Canceled'
-			| 'Failed'
-			| 'Voided'
-			| 'Paid'
-			| 'Entry'
-			| 'ErrorOccured'
-			| 'PostedToBackOffice'
-			| 'CreateRequest';
+		| 'Draft'
+		| 'Pending'
+		| 'Confirmed'
+		| 'Canceled'
+		| 'Failed'
+		| 'Voided'
+		| 'Paid'
+		| 'Entry'
+		| 'ErrorOccured'
+		| 'PostedToBackOffice'
+		| 'CreateRequest';
 		prsName: string | null;
 		orderOrigin: 'Broker' | 'Online' | number;
 		orderOriginName: null | string;
@@ -1760,5 +1758,15 @@ declare namespace Reports {
 		bankName: string | null;
 		checkDate: string;
 		reservationNumber: number;
+	}
+
+	export interface IChangeBrokerReports {
+		id: number;
+		saveDate: string;
+		symbolISIN: string;
+		lastState: string;
+		attachmentId: number;
+		symbolTitle: string;
+		hasAttachment: boolean;
 	}
 }

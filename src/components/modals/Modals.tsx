@@ -18,6 +18,7 @@ import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
 import Analyze from './Analyze';
+import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
@@ -93,6 +94,7 @@ const Modals = () => {
 		instantDepositReportsFilters,
 		depositWithReceiptReportsFilters,
 		withdrawalCashReportsFilters,
+		changeBrokerReportsFilters
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -324,6 +326,13 @@ const Modals = () => {
 				{withdrawalCashReportsFilters && (
 					<ModalSuspense>
 						<WithdrawalCashFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{changeBrokerReportsFilters && (
+					<ModalSuspense>
+						<ChangeBrokerReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

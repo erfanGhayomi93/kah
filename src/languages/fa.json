@@ -582,7 +582,8 @@
 		"transactions": "گردش حساب",
 		"instant_deposit": "واریز آنی",
 		"deposit_with_receipt": "واریز با فیش",
-		"withdrawal_cash": "برداشت وجه"
+		"withdrawal_cash": "برداشت وجه",
+		"change_broker_reports": "تغییر کارگزار ناظر"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
@@ -1245,6 +1246,17 @@
 		"receipt_number_placeholder_filter": "شماره فیش",
 		"attachment_placeholder_filter": "پیوست"
 	},
+	"change_broker_reports_page": {
+		"title_page": "گزارشات تغییر کارگزار ناظر",
+		"filter_title_modal": "فیلتر تغییر کارگزار ناظر",
+		"id_column":"ردیف",
+		"date_column": "زمان",
+		"symbol_column": "نماد",
+		"gateway_column": "سامانه",
+		"status_column": "وضعیت",
+		"action_column": "عملیات"
+	},
+
 	"withdrawal_cash_reports_page": {
 		"filter_title_modal": "فیلتر برداشت وجه",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1297,6 +1309,8 @@
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
 		"state_PayFast": "پرداخت سریع",
+		"state_CancellByCustomer": "انصراف توسط مشتری",
+		"state_BankingAction": "اقدام بانکی",
 		"agreement_state_Accepted": "تایید شده",
 		"agreement_state_NotAccepted": "تایید نشده",
 		"agreement_state_NotSpecified": "تعیین نشده",

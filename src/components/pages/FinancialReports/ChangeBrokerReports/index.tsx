@@ -2,10 +2,10 @@
 
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultTransactionColumns, initialTransactionsFilters } from '@/constants';
+import { defaultChangeBrokerReportsColumns, initialChangeBrokerReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { setChangeBrokerReportsFiltersModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel } from '@/features/slices/panelSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -16,7 +16,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
-import Tabs from '../common/Tabs';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -33,7 +32,7 @@ const getStates = createSelector(
 	}),
 );
 
-const Transactions = () => {
+const ChangeBrokerReports = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -41,25 +40,24 @@ const Transactions = () => {
 	const router = useRouter();
 
 	const { inputs, setFieldValue, setFieldsValue } =
-		useInputs<Transaction.ITransactionsFilters>(initialTransactionsFilters);
+		useInputs<ChangeBrokerReports.IChangeBrokerReportsFilters>(initialChangeBrokerReportsFilters);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('transaction_column', defaultTransactionColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('changeBroker_column', defaultChangeBrokerReportsColumns);
 
 	const { setDebounce } = useDebounce();
 
 	const { brokerIsSelected, isLoggedIn, urls } = useAppSelector(getStates);
 
 	const onShowFilters = () => {
-		const params: Partial<Transaction.ITransactionsFilters> = {};
+		const params: Partial<ChangeBrokerReports.IChangeBrokerReportsFilters> = {};
 
 		if (inputs.symbol) params.symbol = inputs.symbol;
-		if (inputs.fromPrice) params.fromPrice = inputs.fromPrice;
-		if (inputs.toPrice) params.toPrice = inputs.toPrice;
 		if (inputs.fromDate) params.fromDate = inputs.fromDate;
 		if (inputs.toDate) params.toDate = inputs.toDate;
-		if (inputs.groupMode) params.groupMode = inputs.groupMode;
+		if (inputs.attachment) params.attachment = inputs.attachment;
+		if (inputs.status) params.status = inputs.status;
 
-		dispatch(setTransactionsFiltersModal(params));
+		dispatch(setChangeBrokerReportsFiltersModal(params));
 	};
 
 	const filtersCount = useMemo(() => {
@@ -67,11 +65,9 @@ const Transactions = () => {
 
 		if (inputs.symbol) badgeCount++;
 
-		if (inputs.fromPrice) badgeCount++;
+		if (inputs.attachment) badgeCount++;
 
-		if (inputs.toPrice) badgeCount++;
-
-		if (Array.isArray(inputs.groupMode) && inputs.groupMode.length > 0) badgeCount++;
+		if (Array.isArray(inputs.status) && inputs.status.length > 0) badgeCount++;
 
 		return badgeCount;
 	}, [JSON.stringify(inputs ?? {})]);
@@ -85,20 +81,17 @@ const Transactions = () => {
 
 			params.append('QueryOption.PageNumber', String(inputs.pageNumber));
 			params.append('QueryOption.PageSize', String(inputs.pageSize));
-			params.append('FromDate', toISOStringWithoutChangeTime(fromDate));
-			params.append('ToDate', toISOStringWithoutChangeTime(toDate));
-			params.append('GroupMode', String(inputs.groupMode));
-			if (inputs.symbol?.symbolISIN) params.append('SymbolISIN', inputs.symbol.symbolISIN);
-			if (inputs.fromPrice) params.append('FromPrice', String(inputs.fromPrice));
-			if (inputs.toPrice) params.append('ToPrice', String(inputs.toPrice));
-			inputs.transactionType.forEach(({ id }) => params.append('TransactionType', id));
+			params.append('StartDate', toISOStringWithoutChangeTime(fromDate));
+			params.append('EndDate', toISOStringWithoutChangeTime(toDate));
+
+			inputs.status.forEach((st) => params.append('Statuses', st));
 
 			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
-				urls.getCustomerTurnOverCSVExport,
-				`transactions-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
-				params,
+				urls.getChangeBrokerExportFilteredCSV,
+				`change-broker-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
+				params
 			);
 		} catch (e) {
 			//
@@ -111,7 +104,7 @@ const Transactions = () => {
 				columns: columnsVisibility,
 				title: t('transactions_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
-				onReset: () => setColumnsVisibility(defaultTransactionColumns),
+				onReset: () => setColumnsVisibility(defaultChangeBrokerReportsColumns),
 			}),
 		);
 	};
@@ -127,7 +120,7 @@ const Transactions = () => {
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
 			<div className='flex-justify-between'>
-				<Tabs />
+				<span className='text-xl font-medium text-gray-900'>{t('change_broker_reports_page.title_page')}</span>
 				<Toolbar
 					filtersCount={filtersCount}
 					onShowFilters={onShowFilters}
@@ -149,4 +142,4 @@ const Transactions = () => {
 	);
 };
 
-export default Transactions;
+export default ChangeBrokerReports;

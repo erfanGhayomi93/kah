@@ -57,6 +57,15 @@ export interface IWithdrawalCashReportsFiltersModal extends IBaseModalConfigurat
 	banks?: IUserBankAccount[];
 }
 
+export interface IChangeBrokerReportsFiltersModal extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	status?: string[];
+	attachment?: boolean | null;
+}
+
 export interface IBuySellModal extends IBaseModalConfiguration {
 	id?: number;
 	mode: TBsModes;
@@ -92,7 +101,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
-export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
+export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration { }
 
 export interface IOrderDetails {
 	type: 'order';
@@ -152,7 +161,7 @@ export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 	isOption: boolean;
 }
 
-export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
+export interface IManageDashboardLayoutModal extends IBaseModalConfiguration { }
 
 export interface IChangeBrokerModal extends IBaseModalConfiguration {
 	isShow: boolean;
@@ -210,4 +219,5 @@ export type ModalState = TBaseModalProps<{
 	instantDepositReportsFilters: IInstantDepositReportsFiltersModal;
 	depositWithReceiptReportsFilters: IDepositWithReceiptReportsFiltersModal;
 	withdrawalCashReportsFilters: IWithdrawalCashReportsFiltersModal;
+	changeBrokerReportsFilters: IChangeBrokerReportsFiltersModal
 }>;

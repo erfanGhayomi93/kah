@@ -5,7 +5,7 @@ declare interface INextProps<T extends object = {}> {
 
 declare type DatesFilterType = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
 
 declare interface IUserBankAccount {
 	id: number;
@@ -272,7 +272,12 @@ declare type IBrokerUrls = Record<
 	| 'getCustomerTurnOverCSVExport'
 	| 'getEPaymentExportFilteredCSV'
 	| 'getReceiptExportFilteredCSV'
-	| 'getPaymentExportFilteredCSV',
+	| 'getPaymentExportFilteredCSV'
+	| 'getEPaymentApiGetStatuses'
+	| 'getEPaymentApiGetProviderTypes'
+	| 'getPaymentGetStatuses'
+	| 'getChangeBrokerExportFilteredCSV'
+	| 'getChangeBrokerChangeBrokersByFilter',
 	string
 >;
 
@@ -321,9 +326,9 @@ declare interface IAnalyzeModalInputs {
 
 declare type TSetBsModalInputs = <
 	T extends
-		| Partial<IBsModalInputs>
-		| keyof Partial<IBsModalInputs>
-		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+	| Partial<IBsModalInputs>
+	| keyof Partial<IBsModalInputs>
+	| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
 >(
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
@@ -534,6 +539,31 @@ declare namespace WithdrawalCashReports {
 	}
 }
 
+declare namespace ChangeBrokerReports {
+	export interface IChangeBrokerReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		attachment: boolean | null;
+	}
+
+	export interface IChangeBrokerReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	};
+
+	export type TChangeBrokerReportsColumns =
+		| 'id'
+		| 'saveDate'
+		| 'symbolTitle'
+		| 'lastState'
+}
+
 declare type TTransactionColumnsState = {
 	id: string;
 	title: string;
@@ -563,3 +593,5 @@ declare type TWithdrawalCashReportsColumnsState = {
 	title: string;
 	hidden: boolean;
 };
+
+

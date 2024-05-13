@@ -40,7 +40,7 @@ const InstantDepositReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue } = useInputs<InstantDepositReports.IInstantDepositReportsFilters>(
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<InstantDepositReports.IInstantDepositReportsFilters>(
 		initialInstantDepositReportsFilters,
 	);
 
@@ -118,6 +118,7 @@ const InstantDepositReports = () => {
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(defaultInstantDepositReportsColumn),
 			}),
 		);
 	};
@@ -148,6 +149,7 @@ const InstantDepositReports = () => {
 					setFilters={setFieldValue}
 					columnsVisibility={columnsVisibility}
 					setColumnsVisibility={setColumnsVisibility}
+					setFieldsValue={setFieldsValue}
 				/>
 			</div>
 		</Main>

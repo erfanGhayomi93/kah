@@ -101,10 +101,10 @@ const Select = <T, D = T>({
 										styles.listItem,
 										classes?.listItem,
 										value &&
-											getOptionId(option) === getOptionId(value) && [
-												styles.active,
-												classes?.active,
-											],
+										getOptionId(option) === getOptionId(value) && [
+											styles.active,
+											classes?.active,
+										],
 									)}
 								>
 									{getOptionTitle(option)}

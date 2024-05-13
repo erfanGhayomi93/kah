@@ -1,6 +1,6 @@
 import { initialWithdrawalCashReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getWithdrawalCashReportsFiltersModal, setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { getWithdrawalCashReportsFiltersModal, setWithdrawalCashReportsFiltersModal } from '@/features/slices/modalSlice';
 import { type IWithdrawalCashReportsFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
@@ -12,7 +12,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface WithdrawalCashFiltersModalProps extends IBaseModalConfiguration {}
+interface WithdrawalCashFiltersModalProps extends IBaseModalConfiguration { }
 
 const WithdrawalCashFiltersModal = forwardRef<HTMLDivElement, WithdrawalCashFiltersModalProps>((props, ref) => {
 	const t = useTranslations();
@@ -36,7 +36,7 @@ const WithdrawalCashFiltersModal = forwardRef<HTMLDivElement, WithdrawalCashFilt
 	});
 
 	const onCloseModal = () => {
-		dispatch(setTransactionsFiltersModal(null));
+		dispatch(setWithdrawalCashReportsFiltersModal(null));
 	};
 
 	const onClear = () => {
