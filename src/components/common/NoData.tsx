@@ -10,7 +10,7 @@ const NoData = ({ text, imgSrc }: NoDataProps) => {
 	const t = useTranslations();
 
 	return (
-		<div className='absolute top-0 size-full flex-justify-center'>
+		<div className='size-full flex-justify-center'>
 			<div className='items-center gap-4 flex-column'>
 				<Image
 					priority

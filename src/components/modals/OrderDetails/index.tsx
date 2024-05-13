@@ -42,7 +42,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 	};
 
 	const orderStatusColor = () => {
-		if (type === 'option') return '';
+		if (type !== 'order') return '';
 
 		switch (data.orderStatus) {
 			case 'OrderDone':
@@ -59,7 +59,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 	};
 
 	const validityDate = () => {
-		if (type === 'option') return '';
+		if (type !== 'order') return '';
 
 		const { validity, validityDate } = data;
 
@@ -77,7 +77,8 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 	};
 
 	const list = useMemo<IItem[][]>(() => {
-		const isBuy = type === 'option' ? data.side : data.orderSide === 'Buy';
+		const side = (type === 'order' ? data.orderSide : data.side).toLowerCase();
+		const isBuy = side === 'buy';
 
 		if (type === 'order')
 			return [
@@ -126,6 +127,23 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 						name: t('order_details_modal.validity'),
 						value: <span className='pl-4 font-medium'>{validityDate()}</span>,
 					},
+				],
+			];
+
+		if (type === 'base')
+			return [
+				[
+					{
+						name: t('order_details_modal.symbol'),
+						value: data.symbolTitle,
+					},
+					{
+						name: t('order_details_modal.order_side'),
+						value: t(isBuy ? 'side.buy' : 'side.sell'),
+						className: isBuy ? 'text-success-100' : 'text-error-100',
+					},
+					{ name: t('order_details_modal.price'), value: numFormatter(data.price) },
+					{ name: t('order_details_modal.quantity'), value: numFormatter(data.quantity) },
 				],
 			];
 

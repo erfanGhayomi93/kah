@@ -3,6 +3,7 @@
 import LocalstorageInstance from '@/classes/Localstorage';
 import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { type ToastPosition } from 'react-toastify';
 import { type RootState } from '../store';
 
 export interface UIState {
@@ -17,6 +18,8 @@ export interface UIState {
 	symbolInfoPanelGridLayout: ISymbolInfoPanelGrid[];
 
 	dashboardGridLayout: IDashboardGrid[];
+
+	toastPosition: ToastPosition;
 }
 
 const initialState: UIState = {
@@ -31,6 +34,8 @@ const initialState: UIState = {
 	symbolInfoPanelGridLayout: LocalstorageInstance.get('sipg', initialSymbolInfoPanelGrid, (v) => Array.isArray(v)),
 
 	dashboardGridLayout: LocalstorageInstance.get('dg', initialDashboardGrid, (v) => Array.isArray(v)),
+
+	toastPosition: LocalstorageInstance.get<ToastPosition>('tp', 'bottom-left'),
 };
 
 const uiSlice = createSlice({
@@ -66,6 +71,11 @@ const uiSlice = createSlice({
 		toggleOrdersIsExpand: (state) => {
 			state.ordersIsExpand = !state.ordersIsExpand;
 		},
+
+		setToastPosition: (state, { payload }: PayloadAction<UIState['toastPosition']>) => {
+			LocalstorageInstance.set('tp', payload);
+			state.toastPosition = payload;
+		},
 	},
 });
 
@@ -77,6 +87,7 @@ export const {
 	setLsStatus,
 	setSymbolInfoPanelGridLayout,
 	setDashboardGridLayout,
+	setToastPosition,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
@@ -85,5 +96,6 @@ export const getLsStatus = (state: RootState) => state.ui.lsStatus;
 export const getSaturnActiveTemplate = (state: RootState) => state.ui.saturnActiveTemplate;
 export const getSymbolInfoPanelGridLayout = (state: RootState) => state.ui.symbolInfoPanelGridLayout;
 export const getDashboardGridLayout = (state: RootState) => state.ui.dashboardGridLayout;
+export const getToastPosition = (state: RootState) => state.ui.toastPosition;
 
 export default uiSlice.reducer;

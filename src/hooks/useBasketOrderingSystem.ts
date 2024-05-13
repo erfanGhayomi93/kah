@@ -104,10 +104,10 @@ const useBasketOrderingSystem = ({ onOrderSentSuccessfully, onOrdersSent, onOrde
 			const item = basketSnapshot.current[index];
 			if (!item) throw new Error('Item not found!');
 
-			if (!item.symbol.symbolInfo.symbolISIN) throw new Error('symbolISIN not found!');
+			if (!item.symbol.symbolISIN) throw new Error('symbolISIN not found!');
 
 			const uuid = await createOrder({
-				symbolISIN: item.symbol.symbolInfo.symbolISIN,
+				symbolISIN: item.symbol.symbolISIN,
 				quantity: item.quantity,
 				price: item.price,
 				orderSide: item.side,

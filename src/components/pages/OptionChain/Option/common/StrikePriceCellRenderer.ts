@@ -178,10 +178,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 	isInBasket(side: 'buy' | 'sell') {
 		try {
 			const { basket, data } = this.params;
-			return (
-				basket.findIndex((item) => data![side]?.symbolInfo.symbolISIN === item.symbol.symbolInfo.symbolISIN) >
-				-1
-			);
+			return basket.findIndex((item) => data![side]?.symbolInfo.symbolISIN === item.symbol.symbolISIN) > -1;
 		} catch (e) {
 			return false;
 		}
@@ -194,13 +191,13 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 
 			for (let i = 0; i < basket.length; i++) {
 				const {
-					symbol: { symbolInfo },
+					symbol: { symbolISIN },
 					side,
 				} = basket[i];
 				const buyData = data!.buy!.symbolInfo;
 				const sellData = data!.sell!.symbolInfo;
 
-				if (symbolInfo.symbolISIN === buyData.symbolISIN || symbolInfo.symbolISIN === sellData.symbolISIN) {
+				if (symbolISIN === buyData.symbolISIN || symbolISIN === sellData.symbolISIN) {
 					resultSide = side;
 					break;
 				}

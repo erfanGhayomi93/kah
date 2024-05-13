@@ -2,118 +2,154 @@
 
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { initialDepositWithReceiptReportsFilters } from '@/constants';
+import { defaultDepositWithReceiptReportsColumn, initialDepositWithReceiptReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setOptionFiltersModal } from '@/features/slices/modalSlice';
-import { useDebounce, useInputs } from '@/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setDepositWithReceiptReportsFiltersModal } from '@/features/slices/modalSlice';
+import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
+import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
 import { useRouter } from '@/navigation';
+import { downloadFileQueryParams, toISOStringWithoutChangeTime } from '@/utils/helpers';
+import { createSelector } from '@reduxjs/toolkit';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import Tabs from '../common/Tabs';
+import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		brokerIsSelected: getBrokerIsSelected(state),
+		urls: getBrokerURLs(state),
+	}),
+);
+
 const DepositWithReceiptReports = () => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
-
-	const { inputs, setFieldValue, setFieldsValue } =
-		useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(initialDepositWithReceiptReportsFilters);
-
-	const { setDebounce } = useDebounce();
 
 	const router = useRouter();
 
-	const { brokerIsSelected, loggedIn, loggingIn } = useAppSelector((state) => state.user);
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(
+		initialDepositWithReceiptReportsFilters,
+	);
+
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'deposit_with_receipt_column',
+		defaultDepositWithReceiptReportsColumn,
+	);
+
+	const { setDebounce } = useDebounce();
+
+	const { brokerIsSelected, isLoggedIn, urls } = useAppSelector(getStates);
 
 	const onShowFilters = () => {
-		// const params: Partial<IOptionFiltersModal> = {};
+		const params: Partial<DepositWithReceiptReports.DepositWithReceiptReportsFilters> = {};
 
-		// if (filters.symbols) params.initialSymbols = filters.symbols;
-		// if (filters.type) params.initialType = filters.type;
-		// if (filters.status) params.initialStatus = filters.status;
-		// if (filters.dueDays) params.initialDueDays = filters.dueDays;
-		// if (filters.delta) params.initialDelta = filters.delta;
-		// if (filters.minimumTradesValue) params.initialMinimumTradesValue = filters.minimumTradesValue;
+		if (inputs.attachment) params.attachment = inputs.attachment;
+		if (inputs.fromPrice) params.fromPrice = inputs.fromPrice;
+		if (inputs.toPrice) params.toPrice = inputs.toPrice;
+		if (inputs.fromDate) params.fromDate = inputs.fromDate;
+		if (inputs.toDate) params.toDate = inputs.toDate;
+		if (inputs.status) params.status = inputs.status;
 
-		dispatch(setOptionFiltersModal({}));
-	};
-
-	const onExportExcel = () => {
-		// try {
-		// 	const url =
-		// 		watchlistId === -1
-		// 			? routes.optionWatchlist.WatchlistExcel
-		// 			: routes.optionWatchlist.GetCustomWatchlistExcel;
-		// 	const params: Partial<IOptionWatchlistQuery> = {};
-		// 	if (filters.minimumTradesValue && Number(filters.minimumTradesValue) >= 0)
-		// 		params.MinimumTradeValue = filters.minimumTradesValue;
-		// 	if (Array.isArray(filters.symbols) && filters.symbols.length > 0)
-		// 		params.SymbolISINs = filters.symbols.map((item) => item.symbolISIN);
-		// 	if (Array.isArray(filters.type) && filters.type.length > 0) params.OptionType = filters.type;
-		// 	if (Array.isArray(filters.status) && filters.status.length > 0) params.IOTM = filters.status;
-		// 	if (filters.dueDays && filters.dueDays[1] >= filters.dueDays[0]) {
-		// 		if (filters.dueDays[0] > 0) params.FromDueDays = String(filters.dueDays[0]);
-		// 		if (filters.dueDays[1] < 365) params.ToDueDays = String(filters.dueDays[1]);
-		// 	}
-		// 	if (filters.delta && filters.delta[1] >= filters.delta[0]) {
-		// 		if (filters.delta[0] > -1) params.FromDelta = String(filters.delta[0]);
-		// 		if (filters.delta[1] < 1) params.ToDelta = String(filters.delta[1]);
-		// 	}
-		// 	if (watchlistId !== -1) params.Id = String(watchlistId);
-		// 	downloadFile(url, 'دیده‌بان کهکشان', params);
-		// } catch (e) {
-		// 	//
-		// }
+		dispatch(setDepositWithReceiptReportsFiltersModal(params));
 	};
 
 	const filtersCount = useMemo(() => {
-		const badgeCount = 0;
+		let badgeCount = 0;
 
-		// if (filters.minimumTradesValue && Number(filters.minimumTradesValue) >= 0) badgeCount++;
+		if (inputs.attachment) badgeCount++;
 
-		// if (Array.isArray(filters.symbols) && filters.symbols.length > 0) badgeCount++;
+		if (inputs.fromPrice) badgeCount++;
 
-		// if (Array.isArray(filters.type) && filters.type.length > 0) badgeCount++;
+		if (inputs.toPrice) badgeCount++;
 
-		// if (Array.isArray(filters.status) && filters.status.length > 0) badgeCount++;
-
-		// if (filters.dueDays) {
-		// 	if (filters.dueDays[0] > 0) badgeCount++;
-		// 	if (filters.dueDays[1] < 365) badgeCount++;
-		// }
-
-		// if (filters.delta) {
-		// 	if (filters.delta[0] > -1) badgeCount++;
-		// 	if (filters.delta[1] < 1) badgeCount++;
-		// }
+		if (Array.isArray(inputs.status) && inputs.status.length > 0) badgeCount++;
 
 		return badgeCount;
 	}, [JSON.stringify(inputs ?? {})]);
 
+	const onExportExcel = () => {
+		try {
+			const fromDate: Date = new Date(inputs.fromDate);
+			const toDate: Date = new Date(inputs.toDate);
+
+			const params = new URLSearchParams();
+
+			params.append('QueryOption.PageNumber', String(inputs.pageNumber));
+			params.append('QueryOption.PageSize', String(inputs.pageSize));
+			params.append('StartDate', toISOStringWithoutChangeTime(fromDate));
+			params.append('EndDate', toISOStringWithoutChangeTime(toDate));
+
+			if (inputs.attachment !== null) params.append('HasAttachment', String(Number(inputs.attachment)));
+			if (inputs.receiptNumber) params.append('ReceiptNumber', inputs.receiptNumber);
+			if (inputs.fromPrice) params.append('MinAmount', String(inputs.fromPrice));
+			if (inputs.toPrice) params.append('MaxAmount', String(inputs.toPrice));
+
+			inputs.status.forEach((st) => params.append('StatesList', st));
+
+			if (!urls) throw new Error('broker_error');
+
+			downloadFileQueryParams(
+				urls.getReceiptExportFilteredCSV,
+				`offline-deposit-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
+				params,
+			);
+		} catch (e) {
+			//
+		}
+	};
+
+	const onManageColumns = () => {
+		dispatch(
+			setManageColumnsPanel({
+				columns: columnsVisibility,
+				title: t('instant_deposit_reports_page.manage_columns'),
+				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(defaultDepositWithReceiptReportsColumn),
+			}),
+		);
+	};
+
 	useEffect(() => {
-		if (!loggedIn || !brokerIsSelected) {
+		if (!isLoggedIn || !brokerIsSelected) {
 			router.push('/');
 		}
 	}, []);
 
-	if (!loggedIn || !brokerIsSelected) return <Loading />;
+	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
 			<div className='flex-justify-between'>
 				<Tabs />
-				{/* <Actions
+				<Toolbar
 					filtersCount={filtersCount}
 					onShowFilters={onShowFilters}
 					onExportExcel={() => setDebounce(onExportExcel, 500)}
-				/> */}
+					onManageColumns={onManageColumns}
+				/>
 			</div>
 
 			<div className='relative flex-1 overflow-hidden'>
-				<Table filters={inputs} setFilters={setFieldValue} />
+				<Table
+					filters={inputs}
+					setFilters={setFieldValue}
+					columnsVisibility={columnsVisibility}
+					setColumnsVisibility={setColumnsVisibility}
+					setFieldsValue={setFieldsValue}
+				/>
 			</div>
 		</Main>
 	);

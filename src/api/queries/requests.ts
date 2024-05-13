@@ -89,3 +89,21 @@ export const useDrawalHistoryQuery = createQuery<Payment.IDrawalHistoryList[] | 
 		return data.result;
 	},
 });
+
+export const useHistoryChangeBrokerQuery = createQuery<Payment.IChangeBrokerList[] | null, ['LastHistoryChangeBroker']>(
+	{
+		queryKey: ['LastHistoryChangeBroker'],
+		queryFn: async ({ signal }) => {
+			const url = getBrokerURLs(store.getState());
+			if (!url) return null;
+			const response = await brokerAxios.get<ServerResponse<Payment.IChangeBrokerList[]>>(url.LastChangeBrokers, {
+				signal,
+			});
+			const data = response.data;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		},
+	},
+);

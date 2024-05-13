@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ArrowDownSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import React, { useLayoutEffect, useState } from 'react';
 import Popup from '../Popup';
-import styles from './Select.module.scss';
+import styles from './MultiSelect.module.scss';
 
 interface SelectProps<T> {
 	clearable?: boolean;
@@ -35,7 +36,7 @@ interface SelectProps<T> {
 	onChange: (option: T[]) => void;
 }
 
-const MultiSelect = <T, D = T>({
+const MultiSelect = <T, _D = T>({
 	defaultValues,
 	options,
 	classes,
@@ -46,7 +47,6 @@ const MultiSelect = <T, D = T>({
 	defaultOpen,
 	getOptionId,
 	getOptionTitle,
-	getInputValue,
 	onChange,
 }: SelectProps<T>) => {
 	const t = useTranslations();
@@ -56,15 +56,26 @@ const MultiSelect = <T, D = T>({
 	const [focusing, setFocusing] = useState(false);
 
 	const onChangeValue = (v: T) => {
-		setValues((prev) => {
-			const cloneValues = [...prev];
-			// @ts-expect-error
-			const optionIndex = cloneValues.findIndex((option) => option.id === v.id);
-			if (optionIndex === -1) cloneValues.push(v);
-			else cloneValues.splice(optionIndex, 1);
-			return cloneValues;
+		const optionIndex = values.findIndex((item) => {
+			if (typeof item === 'object' && item !== null) {
+				// @ts-expect-error
+				return item.id === v.id;
+			} else {
+				return item === v;
+			}
 		});
-		onChange(values);
+
+		if (optionIndex === -1) {
+			setValues((prev) => [...prev, v]);
+			onChange([...values, v]);
+		} else {
+			setValues((prev) => {
+				const spliceValue = prev.splice(optionIndex, 1);
+				// @ts-expect-error
+				return [...prev].filter((value) => value.id !== spliceValue.id);
+			});
+			onChange([...values]);
+		}
 	};
 
 	useLayoutEffect(() => {
@@ -90,7 +101,7 @@ const MultiSelect = <T, D = T>({
 				return (
 					<div className={clsx(styles.box, classes?.box)}>
 						<ul className={clsx(styles.list, classes?.list)}>
-							{options.map((option) => (
+							{options?.map((option) => (
 								<li
 									onClick={(e) => {
 										onChangeValue(option);
@@ -101,7 +112,7 @@ const MultiSelect = <T, D = T>({
 										styles.listItem,
 										classes?.listItem,
 										// @ts-expect-error
-										values.some((value) => value.id === getOptionId(option)) && [
+										values.some((value) => typeof value === 'object' && value !== null ? value.id === getOptionId(option) : value === getOptionId(option)) && [
 											styles.active,
 											classes?.active,
 										],
@@ -111,7 +122,7 @@ const MultiSelect = <T, D = T>({
 								</li>
 							))}
 						</ul>
-					</div>
+					</div >
 				);
 			}}
 		>
@@ -132,9 +143,9 @@ const MultiSelect = <T, D = T>({
 							{values.length === 0 && !placeholder ? (
 								placeholder
 							) : (
-								<ul className='flex items-center gap-2'>
+								<ul className='flex items-center gap-2 truncate'>
 									{values.map((value, index, array) => (
-										<li className='rounded-md bg-primary-300 px-8 py-2 text-gray-200' key={index}>
+										<li className='rounded-md bg-primary-100  px-8 py-2 text-gray-00' key={index}>
 											{getOptionTitle(value)}
 										</li>
 									))}
@@ -176,7 +187,7 @@ const MultiSelect = <T, D = T>({
 					)}
 				</div>
 			)}
-		</Popup>
+		</Popup >
 	);
 };
 
