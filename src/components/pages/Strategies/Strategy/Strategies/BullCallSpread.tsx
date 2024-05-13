@@ -84,7 +84,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						historicalVolatility: data.hspHistoricalVolatility,
 					},
 					contractSize: data.contractSize,
-					price: data.lspPremium || 1,
+					price: data.hspPremium || 1,
 					quantity: 1,
 					settlementDay: data.contractEndDate,
 					strikePrice: data.hspStrikePrice,
@@ -113,6 +113,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsBullCallSpread,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
@@ -234,14 +235,14 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestSellLimitPrice',
 				headerName: 'قیمت بهترین فروشنده کال فروش',
-				width: 192,
+				width: 204,
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspBestSellLimitQuantity',
 				headerName: 'حجم سر خط فروش کال فروش',
-				width: 176,
+				width: 192,
 				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
