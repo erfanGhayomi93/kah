@@ -1,7 +1,7 @@
 import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
@@ -29,7 +29,7 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'protective_put_strategy_columns',
-		initialColumnsBullCallSpread,
+		initialColumnsProtectivePut,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });

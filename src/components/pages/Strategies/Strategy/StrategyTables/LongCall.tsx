@@ -4,7 +4,7 @@ import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsLongCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -34,7 +34,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'long_call_strategy_columns',
-		initialColumnsBullCallSpread,
+		initialColumnsLongCall,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
@@ -80,7 +80,8 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'symbolISIN',
 				headerName: 'نماد پایه',
-				width: 104,
+				minWidth: 104,
+				flex: 1,
 				pinned: 'right',
 				cellClass: 'cursor-pointer',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
@@ -101,13 +102,13 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
-				width: 120,
+				minWidth: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
 				colId: 'callSymbolISIN',
 				headerName: 'اختیار خرید',
-				width: 128,
+				minWidth: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
@@ -119,7 +120,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
-				width: 96,
+				minWidth: 96,
 				cellClass: 'gray',
 				valueGetter: ({ data }) => data?.strikePrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -127,14 +128,14 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'openPositionCount',
 				headerName: 'موقعیت باز',
-				width: 112,
+				minWidth: 112,
 				valueGetter: ({ data }) => data?.openPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'premium',
 				headerName: 'آخرین قیمت نماد آپشن',
-				width: 152,
+				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
 					percent: data?.premium ?? 0,
@@ -145,7 +146,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'optionBestBuyLimitPrice',
 				headerName: 'قیمت بهترین خریدار',
-				width: 152,
+				minWidth: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -153,7 +154,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'optionBestBuyLimitQuantity',
 				headerName: 'حجم سرخط خرید',
-				width: 152,
+				minWidth: 120,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -161,7 +162,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'optionBestSellLimitPrice',
 				headerName: 'قیمت بهترین فروشنده',
-				width: 152,
+				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -169,7 +170,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'optionBestSellLimitQuantity',
 				headerName: 'حجم سرخط فروش',
-				width: 152,
+				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -177,7 +178,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'longCallBEP',
 				headerName: 'سر به سر استراتژی',
-				width: 136,
+				minWidth: 128,
 				cellClass: ({ data }) =>
 					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0)),
 				valueGetter: ({ data }) => data?.longCallBEP ?? 0,
@@ -186,7 +187,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'maxProfit',
 				headerName: 'بیشینه سود',
-				width: 184,
+				minWidth: 160,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
@@ -201,67 +202,69 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			{
 				colId: 'blackScholes',
 				headerName: 'بلک شولز',
+				minWidth: 96,
 				valueGetter: ({ data }) => data?.blackScholes ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
 				colId: 'timeValue',
 				headerName: 'ارزش زمانی',
-				width: 152,
+				minWidth: 96,
 				valueGetter: ({ data }) => data?.timeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'intrinsicValue',
 				headerName: 'ارزش ذاتی',
-				width: 152,
+				minWidth: 96,
 				valueGetter: ({ data }) => data?.intrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'profit',
 				headerName: 'مقدار سود',
+				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},
 			{
 				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
-				width: 136,
+				minWidth: 136,
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
 			},
 			{
 				colId: 'tradeValue',
 				headerName: 'ارزش معاملات آپشن',
-				width: 136,
+				minWidth: 136,
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
-				width: 152,
+				minWidth: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
-				width: 128,
+				minWidth: 128,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
-				width: 136,
+				minWidth: 136,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
-				width: 120,
+				minWidth: 120,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
@@ -285,7 +288,7 @@ const LongCall = ({ title, type }: LongCallProps) => {
 			suppressMovable: true,
 			sortable: true,
 			resizable: false,
-			minWidth: 96,
+			flex: 1,
 		}),
 		[],
 	);

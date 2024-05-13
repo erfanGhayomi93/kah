@@ -299,9 +299,241 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 	},
 ];
 
-export const initialColumnsLongCall: IManageColumn[] = [];
+export const initialColumnsLongCall: IManageColumn[] = [
+	{
+		id: 'symbolISIN',
+		title: 'نماد پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseLastTradedPrice',
+		title: 'قیمت پایه',
+		hidden: false,
+	},
+	{
+		id: 'dueDays',
+		title: 'مانده تا سررسید',
+		hidden: false,
+	},
+	{
+		id: 'callSymbolISIN',
+		title: 'اختیار خرید',
+		hidden: false,
+	},
+	{
+		id: 'strikePrice',
+		title: 'قیمت اعمال',
+		hidden: false,
+	},
+	{
+		id: 'openPositionCount',
+		title: 'موقعیت باز',
+		hidden: false,
+	},
+	{
+		id: 'premium',
+		title: 'آخرین قیمت نماد آپشن',
+		hidden: true,
+	},
+	{
+		id: 'optionBestBuyLimitPrice',
+		title: 'قیمت بهترین خریدار',
+		hidden: true,
+	},
+	{
+		id: 'optionBestBuyLimitQuantity',
+		title: 'حجم سرخط خرید',
+		hidden: true,
+	},
+	{
+		id: 'optionBestSellLimitPrice',
+		title: 'قیمت بهترین فروشنده',
+		hidden: false,
+	},
+	{
+		id: 'optionBestSellLimitQuantity',
+		title: 'حجم سرخط فروش',
+		hidden: false,
+	},
+	{
+		id: 'longCallBEP',
+		title: 'سر به سر استراتژی',
+		hidden: false,
+	},
+	{
+		id: 'maxProfit',
+		title: 'بیشینه سود',
+		hidden: false,
+	},
+	{
+		id: 'blackScholes',
+		title: 'بلک شولز',
+		hidden: false,
+	},
+	{
+		id: 'timeValue',
+		title: 'ارزش زمانی',
+		hidden: true,
+	},
+	{
+		id: 'intrinsicValue',
+		title: 'ارزش ذاتی',
+		hidden: true,
+	},
+	{
+		id: 'profit',
+		title: 'مقدار سود',
+		hidden: true,
+	},
+	{
+		id: 'bepDifference',
+		title: 'اختلاف تا سر به سر',
+		hidden: true,
+	},
+	{
+		id: 'tradeValue',
+		title: 'ارزش معاملات آپشن',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeValue',
+		title: 'ارزش معاملات سهم پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeCount',
+		title: 'تعداد معاملات پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeVolume',
+		title: 'حجم معاملات پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseLastTradedDate',
+		title: 'آخرین معامله پایه',
+		hidden: true,
+	},
+];
 
-export const initialColumnsLongPut: IManageColumn[] = [];
+export const initialColumnsLongPut: IManageColumn[] = [
+	{
+		id: 'symbolISIN',
+		title: 'نماد پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseLastTradedPrice',
+		title: 'قیمت پایه',
+		hidden: false,
+	},
+	{
+		id: 'dueDays',
+		title: 'مانده تا سررسید',
+		hidden: false,
+	},
+	{
+		id: 'callSymbolISIN',
+		title: 'اختیار خرید',
+		hidden: false,
+	},
+	{
+		id: 'strikePrice',
+		title: 'قیمت اعمال',
+		hidden: false,
+	},
+	{
+		id: 'openPositionCount',
+		title: 'موقعیت باز',
+		hidden: false,
+	},
+	{
+		id: 'premium',
+		title: 'آخرین قیمت نماد آپشن',
+		hidden: false,
+	},
+	{
+		id: 'optionBestBuyLimitPrice',
+		title: 'قیمت بهترین خریدار',
+		hidden: false,
+	},
+	{
+		id: 'optionBestBuyLimitQuantity',
+		title: 'حجم سرخط خرید',
+		hidden: false,
+	},
+	{
+		id: 'optionBestSellLimitPrice',
+		title: 'قیمت بهترین فروشنده',
+		hidden: false,
+	},
+	{
+		id: 'optionBestSellLimitQuantity',
+		title: 'حجم سرخط فروش',
+		hidden: false,
+	},
+	{
+		id: 'longCallBEP',
+		title: 'سر به سر استراتژی',
+		hidden: false,
+	},
+	{
+		id: 'maxProfit',
+		title: 'بیشینه سود',
+		hidden: false,
+	},
+	{
+		id: 'blackScholes',
+		title: 'بلک شولز',
+		hidden: false,
+	},
+	{
+		id: 'timeValue',
+		title: 'ارزش زمانی',
+		hidden: false,
+	},
+	{
+		id: 'intrinsicValue',
+		title: 'ارزش ذاتی',
+		hidden: true,
+	},
+	{
+		id: 'profit',
+		title: 'مقدار سود',
+		hidden: true,
+	},
+	{
+		id: 'bepDifference',
+		title: 'اختلاف تا سر به سر',
+		hidden: true,
+	},
+	{
+		id: 'tradeValue',
+		title: 'ارزش معاملات آپشن',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeValue',
+		title: 'ارزش معاملات سهم پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeCount',
+		title: 'تعداد معاملات پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeVolume',
+		title: 'حجم معاملات پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseLastTradedDate',
+		title: 'آخرین معامله پایه',
+		hidden: true,
+	},
+];
 
 export const initialColumnsConversion: IManageColumn[] = [];
 

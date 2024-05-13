@@ -1,7 +1,7 @@
 import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
 import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsConversion } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -30,7 +30,7 @@ const Conversion = ({ title, type }: ConversionProps) => {
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'conversion_strategy_columns',
-		initialColumnsBullCallSpread,
+		initialColumnsConversion,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
