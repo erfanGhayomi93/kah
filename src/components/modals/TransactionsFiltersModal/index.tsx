@@ -12,7 +12,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface TransactionsFiltersModalProps extends IBaseModalConfiguration {}
+interface TransactionsFiltersModalProps extends IBaseModalConfiguration { }
 
 const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersModalProps>((props, ref) => {
 	const t = useTranslations();
@@ -25,7 +25,7 @@ const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersM
 		symbol: initialModalFilters?.symbol ?? initialTransactionsFilters.symbol,
 		date: initialModalFilters?.date ?? initialTransactionsFilters.date,
 		fromDate: initialModalFilters?.fromDate ?? initialTransactionsFilters.fromDate,
-		toDate: initialModalFilters?.fromDate ?? initialTransactionsFilters.toDate,
+		toDate: initialModalFilters?.toDate ?? initialTransactionsFilters.toDate,
 		fromPrice: initialModalFilters?.fromPrice ?? initialTransactionsFilters.fromPrice,
 		toPrice: initialModalFilters?.toPrice ?? initialTransactionsFilters.toPrice,
 		groupMode: initialModalFilters?.groupMode ?? initialTransactionsFilters.groupMode,

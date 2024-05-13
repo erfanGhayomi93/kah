@@ -620,14 +620,29 @@ declare namespace Broker {
 		| 'GetListBrokerBankAccount'
 		| 'DepositOfflineHistory'
 		| 'CustomerTurnOverRemain'
+		| 'CreateChangeBrokers'
+		| 'LastChangeBrokers'
 		| 'GetWithFilterReceipt'
 		| 'GetFilteredEPaymentApi'
+		| 'DeleteChangeBroker'
 		| 'GetFilteredPayment'
 		| 'GetListBankAccount'
 		| 'GetRemainsWithDate'
 		| 'LastListDrawal'
 		| 'RequestPayment'
-		| 'DepositOnlineHistory';
+		| 'DepositOnlineHistory'
+		| 'CustomerTurnOverCSVExport'
+		| 'EPaymentExportFilteredCSV'
+		| 'ReceiptExportFilteredCSV'
+		| 'PaymentExportFilteredCSV'
+		| 'SetCustomerSettings'
+		| 'DepositOnlineHistory'
+		| 'GetCustomerSettings'
+		| 'EPaymentApiGetStatuses'
+		| 'EPaymentApiGetProviderTypes'
+		| 'PaymentGetStatuses'
+		| 'ChangeBrokerExportFilteredCSV'
+		| 'ChangeBrokerChangeBrokersByFilter';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1275,6 +1290,24 @@ declare namespace Dashboard {
 	}
 }
 
+declare namespace Settings {
+	export interface IBrokerCustomerSettings {
+		id: number;
+		configKey:
+			| 'confirmBeforeDelete'
+			| 'confirmBeforeSendOrder'
+			| 'defaultBuyVolume'
+			| 'defaultSellVolume'
+			| 'sendSupervisorMarketMessage'
+			| 'showSymbolDetailsInBuySellModal'
+			| 'breakEvenPoint';
+		configValue: string;
+		saveDate: string;
+	}
+
+	export type IFormattedBrokerCustomerSettings = Record<IBrokerCustomerSettings['configKey'], string | boolean>;
+}
+
 declare namespace Payment {
 	export type ThistoryState =
 		| 'Request'
@@ -1325,6 +1358,16 @@ declare namespace Payment {
 		amount: number;
 		providerType: string;
 		state: ThistoryState;
+	}
+
+	export interface IChangeBrokerList {
+		id: number;
+		saveDate: string;
+		symbolISIN: string;
+		lastState: string;
+		attachmentId: number;
+		symbolTitle: string;
+		hasAttachment: boolean;
 	}
 
 	export interface IBrokerAccount {
@@ -1385,7 +1428,14 @@ declare namespace Strategy {
 		| 'NeutralMarket'
 		| 'DirectionalMarket';
 
-	declare type Type = 'CoveredCall' | 'LongCall' | 'LongPut' | 'ProtectivePut' | 'BullCallSpread';
+	declare type Type =
+		| 'CoveredCall'
+		| 'LongCall'
+		| 'LongPut'
+		| 'ProtectivePut'
+		| 'BullCallSpread'
+		| 'LongStraddle'
+		| 'Conversion';
 
 	export interface GetAll {
 		id: number;
@@ -1412,7 +1462,6 @@ declare namespace Strategy {
 		tradePriceVarPreviousTradePercent: number;
 		optionBestBuyLimitQuantity: number;
 		optionBestBuyLimitPrice: number;
-		contractSize: number;
 		baseBestSellLimitPrice: number;
 		baseBestBuyLimitPrice: number;
 		optionBestSellLimitPrice: number;
@@ -1433,6 +1482,13 @@ declare namespace Strategy {
 		riskCoverage: number;
 		nonExpiredProfit: number;
 		nonExpiredProfitPercent: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
+		requiredMargin: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongCall {
@@ -1461,10 +1517,16 @@ declare namespace Strategy {
 		optionBestLimitVolume: number;
 		tradeValue: number;
 		baseTradeValue: number;
-		baesTradeCount: number;
+		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface LongPut {
@@ -1493,10 +1555,104 @@ declare namespace Strategy {
 		optionBestLimitVolume: number;
 		tradeValue: number;
 		baseTradeValue: number;
-		baesTradeCount: number;
+		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
+	}
+
+	export interface LongStraddle {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		strikePrice: number;
+		callSymbolISIN: string;
+		callSymbolTitle: string;
+		callBestSellLimitPrice: number;
+		callBestSellLimitQuantity: number;
+		putSymbolISIN: string;
+		putSymbolTitle: string;
+		putBestSellLimitPrice: number;
+		putBestSellLimitQuantity: number;
+		callOpenPositionCount: number;
+		putOpenPositionCount: number;
+		callIOTM: Option.IOTM;
+		putIOTM: Option.IOTM;
+		callPremium: number;
+		callPremiumPercent: number;
+		putPremium: number;
+		putPremiumPercent: number;
+		lowBEP: number;
+		highBEP: number;
+		maxLoss: number;
+		inUseCapital: number;
+		callTimeValue: number;
+		putTimeValue: number;
+		callIntrinsicValue: number;
+		putIntrinsicValue: number;
+		callTradeValue: number;
+		putTradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
+	}
+
+	export interface Conversion {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		strikePrice: number;
+		callSymbolISIN: string;
+		callSymbolTitle: string;
+		callBestSellLimitPrice: number;
+		callBestSellLimitQuantity: number;
+		callPremium: number;
+		callPremiumPercent: number;
+		callIOTM: Option.IOTM;
+		callOpenPositionCount: number;
+		putSymbolISIN: string;
+		putSymbolTitle: string;
+		putBestSellLimitPrice: number;
+		putBestSellLimitQuantity: number;
+		putOpenPositionCount: number;
+		putIOTM: Option.IOTM;
+		putPremium: number;
+		putPremiumPercent: number;
+		profit: number;
+		inUseCapital: number;
+		callTimeValue: number;
+		putTimeValue: number;
+		callIntrinsicValue: number;
+		putIntrinsicValue: number;
+		callTradeValue: number;
+		putTradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 
 	export interface BullCallSpread {
@@ -1537,6 +1693,8 @@ declare namespace Strategy {
 		lspTimeValue: number;
 		hspTimeValue: number;
 		lspIntrinsicValue: number;
+		lspHistoricalVolatility: number;
+		hspHistoricalVolatility: number;
 		hspIntrinsicValue: number;
 		lspTradeValue: number;
 		hspTradeValue: number;
@@ -1545,18 +1703,26 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
+		marketUnit: string;
+		baseMarketUnit: string;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
+	}
+
+	export interface ProtectivePut {
+		symbolTitle: string;
+		symbolISIN: string;
+		marketUnit: string;
+		baseMarketUnit: string;
+		historicalVolatility: number;
+		contractEndDate: string;
+		contractSize: number;
+		requiredMargin: number;
 	}
 }
 
 declare namespace Reports {
-	export interface Column {
-		id: number;
-		title: string;
-		category: string;
-		isHidden: boolean;
-		order: number;
-	}
-
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1632,5 +1798,15 @@ declare namespace Reports {
 		bankName: string | null;
 		checkDate: string;
 		reservationNumber: number;
+	}
+
+	export interface IChangeBrokerReports {
+		id: number;
+		saveDate: string;
+		symbolISIN: string;
+		lastState: string;
+		attachmentId: number;
+		symbolTitle: string;
+		hasAttachment: boolean;
 	}
 }

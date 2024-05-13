@@ -1,155 +1,29 @@
 import AgTable from '@/components/common/Tables/AgTable';
-import { defaultDepositWithReceiptReportsColumn, defaultTransactionColumns } from '@/constants';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import {
-	getInstantDepositColumns,
-	setDepositWithReceiptColumns,
-	setInstantDepositColumns,
-} from '@/features/slices/tableSlice';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
-import { type ColDef, type ColumnMovedEvent, type GridApi } from '@ag-grid-community/core';
-import { useQueryClient } from '@tanstack/react-query';
+import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
 
 interface WithdrawalCashReportsTableProps {
 	reports: Reports.IWithdrawal[] | null;
+	columnsVisibility: TWithdrawalCashReportsColumnsState[];
+	setColumnsVisibility: Dispatch<SetStateAction<TWithdrawalCashReportsColumnsState[]>>;
 }
 
-const WithdrawalCashReportsTable = ({ reports }: WithdrawalCashReportsTableProps) => {
-	const t = useTranslations();
-
-	const queryClient = useQueryClient();
-
-	const isLoggedIn = useAppSelector(getIsLoggedIn);
-
-	const cWatchlistRef = useRef<Reports.IWithdrawal[]>([]);
-
+const WithdrawalCashReportsTable = ({
+	reports,
+	columnsVisibility,
+	setColumnsVisibility,
+}: WithdrawalCashReportsTableProps) => {
 	const gridRef = useRef<GridApi<Reports.IWithdrawal>>(null);
 
-	const dispatch = useAppDispatch();
-
-	const instantDepositColumnsIndex = useAppSelector(getInstantDepositColumns);
-
-	// const { data: watchlistColumns } = useWatchlistColumns();
-
-	const onColumnMoved = ({ finished, toIndex }: ColumnMovedEvent<Reports.ITransactions>) => {
-		try {
-			if (!finished || toIndex === undefined) return;
-			storeColumns();
-		} catch (e) {
-			//
-		}
-	};
-
-	const storeColumns = () => {
-		try {
-			const gridApi = gridRef.current;
-			if (!gridApi) return;
-
-			const columnState = gridApi.getColumnState() as TInstantDepositColumnsState;
-			gridApi.applyColumnState({
-				state: columnState,
-				applyOrder: true,
-			});
-
-			dispatch(setInstantDepositColumns(columnState));
-		} catch (e) {
-			//
-		}
-	};
+	const t = useTranslations();
 
 	const dateFormatter = (v: string | number) => {
 		if (v === undefined || v === null) return '−';
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
-
-	// const onDelete = async (symbol: Option.Root) => {
-	// 	try {
-	// 		if (!isLoggedIn) {
-	// 			toast.error(t('alerts.login_to_your_account'));
-	// 			dispatch(setLoginModal({}));
-	// 			return;
-	// 		}
-
-	// 		const { symbolISIN, symbolTitle } = symbol.symbolInfo;
-
-	// 		try {
-	// 			const gridApi = gridRef.current;
-	// 			if (gridApi) {
-	// 				const queryKey = ['optionWatchlistQuery', { watchlistId: id ?? -1 }];
-
-	// 				queryClient.setQueriesData(
-	// 					{
-	// 						exact: false,
-	// 						queryKey,
-	// 					},
-	// 					(c) => {
-	// 						return (c as Option.Root[]).filter((item) => item.symbolInfo.symbolISIN !== symbolISIN);
-	// 					},
-	// 				);
-	// 			}
-	// 		} catch (e) {
-	// 			//
-	// 		}
-
-	// 		await brokerAxios.post(routes.optionWatchlist.RemoveSymbolCustomWatchlist, {
-	// 			id,
-	// 			symbolISIN,
-	// 		});
-
-	// 		const toastId = 'watchlist_symbol_removed_successfully';
-	// 		if (toast.isActive(toastId)) {
-	// 			toast.update(toastId, {
-	// 				render: t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }),
-	// 				autoClose: 2500,
-	// 			});
-	// 		} else {
-	// 			toast.success(t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }), {
-	// 				toastId: 'watchlist_symbol_removed_successfully',
-	// 				autoClose: 2500,
-	// 			});
-	// 		}
-	// 	} catch (e) {
-	// 		//
-	// 	}
-	// };
-
-	// const onAdd = (symbol: Option.Root) => {
-	// 	if (!isLoggedIn) {
-	// 		toast.error(t('alerts.login_to_your_account'));
-	// 		dispatch(setLoginModal({}));
-	// 		return;
-	// 	}
-
-	// 	const { symbolISIN, symbolTitle } = symbol.symbolInfo;
-
-	// 	dispatch(
-	// 		setMoveSymbolToWatchlistModal({
-	// 			symbolISIN,
-	// 			symbolTitle,
-	// 		}),
-	// 	);
-	// };
-
-	// const modifiedWatchlistColumns = useMemo(() => {
-	// 	const result: Record<string, Option.Column> = {};
-
-	// 	try {
-	// 		if (!watchlistColumns) return result;
-
-	// 		for (let i = 0; i < watchlistColumns.length; i++) {
-	// 			const item = watchlistColumns[i];
-	// 			result[item.title] = item;
-	// 		}
-
-	// 		return result;
-	// 	} catch (e) {
-	// 		return result;
-	// 	}
-	// }, [JSON.stringify(watchlistColumns)]);
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IWithdrawal>>>(
 		() =>
@@ -224,115 +98,39 @@ const WithdrawalCashReportsTable = ({ reports }: WithdrawalCashReportsTableProps
 
 	const defaultColDef: ColDef<Reports.IWithdrawal> = useMemo(
 		() => ({
+			suppressMovable: true,
 			sortable: true,
 			resizable: false,
+			minWidth: 114,
 			flex: 1,
 		}),
 		[],
 	);
-
-	// useEffect(() => {
-	// 	const gridApi = gridRef.current;
-	// 	if (!gridApi) return;
-
-	// 	const actionColumn = gridApi.getColumn('action');
-	// 	if (!actionColumn) return;
-
-	// 	const colDef: ColDef<Option.Root> = {
-	// 		headerName: t('option_page.action'),
-	// 		colId: 'action',
-	// 		initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
-	// 		minWidth: 80,
-	// 		maxWidth: 80,
-	// 		pinned: 'left',
-	// 		hide: false,
-	// 		sortable: false,
-	// 		resizable: false,
-	// 		cellRenderer: ActionColumn,
-	// 		cellRendererParams: {
-	// 			onAdd,
-	// 			onDelete,
-	// 			addable: true,
-	// 			deletable: id > -1,
-	// 		},
-	// 	};
-
-	// 	actionColumn.setColDef(colDef, colDef, 'api');
-	// }, [id]);
-
-	useEffect(() => {
-		const gridApi = gridRef.current;
-		if (!gridApi) return;
-
-		if (Array.isArray(instantDepositColumnsIndex) && instantDepositColumnsIndex.length > 0) {
-			if (typeof instantDepositColumnsIndex[0] === 'object' && 'colId' in instantDepositColumnsIndex[0]) {
-				gridApi.applyColumnState({ state: instantDepositColumnsIndex, applyOrder: true });
-			} else {
-				dispatch(setDepositWithReceiptColumns(defaultDepositWithReceiptReportsColumn));
-				gridApi.applyColumnState({ state: defaultTransactionColumns, applyOrder: true });
-			}
-		}
-	}, [instantDepositColumnsIndex]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
 		if (!eGrid) return;
 
 		try {
-			const dataIsEmpty = !Array.isArray(reports) || reports.length === 0;
-
-			if (dataIsEmpty) {
-				eGrid.setGridOption('rowData', []);
-				cWatchlistRef.current = [];
-
-				return;
-			}
-
-			const transaction: Record<'add' | 'remove' | 'update', Reports.IWithdrawal[]> = {
-				add: [],
-				remove: [],
-				update: [],
-			};
-
-			const cWatchlistData = cWatchlistRef.current;
-			const length = Math.max(cWatchlistData.length, reports.length);
-			for (let i = 0; i < length; i++) {
-				const newItem = reports[i];
-				if (newItem) {
-					const matchingItem = cWatchlistData.find((item) => item.requestDate === newItem.requestDate);
-					if (matchingItem) transaction.update.push(newItem);
-					else transaction.add.push(newItem);
-				}
-
-				const oldItem = cWatchlistData[i];
-				if (oldItem) {
-					const matchingItem = reports.find((item) => item.requestDate === oldItem.requestDate);
-					if (!matchingItem) transaction.remove.push(oldItem);
-				}
-			}
-
-			eGrid.applyTransactionAsync(transaction);
-			cWatchlistRef.current = reports;
+			eGrid.setGridOption('rowData', reports);
 		} catch (e) {
 			//
 		}
-	}, [JSON.stringify(reports)]);
+	}, [reports]);
 
-	// useEffect(() => {
-	// 	const eGrid = gridRef.current;
-	// 	if (!eGrid || !watchlistColumns) return;
+	useEffect(() => {
+		const eGrid = gridRef.current;
+		if (!eGrid || !Array.isArray(columnsVisibility)) return;
 
-	// 	try {
-	// 		for (let i = 0; i < watchlistColumns.length; i++) {
-	// 			const { isHidden, title } = watchlistColumns[i];
-	// 			eGrid.setColumnsVisible([title], !isHidden);
-	// 		}
-	// 	} catch (e) {
-	// 		//
-	// 	}
-	// }, [watchlistColumns]);
-
-	const dataIsEmpty = !Array.isArray(reports) || reports.length === 0;
+		try {
+			for (let i = 0; i < columnsVisibility.length; i++) {
+				const { hidden, id } = columnsVisibility[i];
+				eGrid.setColumnsVisible([id], !hidden);
+			}
+		} catch (e) {
+			//
+		}
+	}, [columnsVisibility]);
 
 	return (
 		<>

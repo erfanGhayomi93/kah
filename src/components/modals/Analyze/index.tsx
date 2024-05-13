@@ -1,3 +1,4 @@
+import { fetchSymbolInfo } from '@/api/actions';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Switch from '@/components/common/Inputs/Switch';
@@ -10,7 +11,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
-import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
+import { convertSymbolWatchlistToSymbolBasket, sepNumbers, uuidv4 } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -71,6 +72,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			},
 		});
 
+		const [isFetchingBaseSymbol, setIsFetchingBaseSymbol] = useState(false);
+
 		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 		const { inputs, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
@@ -100,11 +103,11 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			dispatch(setAnalyzeModal(null));
 		};
 
-		const addContracts = (contracts: Option.Root[], baseSymbolISIN: null | string) => {
+		const addContracts = async (contracts: Option.Root[], baseSymbolISIN: null | string) => {
 			try {
 				const l = contracts.length;
 
-				const result: ISymbolStrategyContract[] = [];
+				const result: TSymbolStrategy[] = [];
 				const selectedResult: string[] = [];
 
 				for (let i = 0; i < l; i++) {
@@ -114,11 +117,41 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					selectedResult.push(item.id);
 				}
 
+				if (baseSymbolISIN) {
+					try {
+						setIsFetchingBaseSymbol(true);
+
+						const symbol = await fetchSymbolInfo(baseSymbolISIN);
+						if (symbol) {
+							const baseSymbolId = uuidv4();
+
+							result.push({
+								type: 'base',
+								id: baseSymbolId,
+								marketUnit: symbol.marketUnit,
+								quantity: 1,
+								price: symbol.lastTradedPrice,
+								side: 'buy',
+								symbol: {
+									symbolTitle: symbol.symbolTitle,
+									symbolISIN: symbol.symbolISIN,
+									baseSymbolPrice: symbol.lastTradedPrice,
+								},
+							});
+							selectedResult.push(baseSymbolId);
+						}
+					} catch (e) {
+						//
+					} finally {
+						setIsFetchingBaseSymbol(false);
+					}
+				}
+
 				setSymbolContracts(result);
 				setSelectedContracts(selectedResult);
 				onContractsChanged?.(contracts, baseSymbolISIN);
 			} catch (e) {
-				//
+				setIsFetchingBaseSymbol(false);
 			}
 		};
 
@@ -129,16 +162,20 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					maxContracts: null,
 					initialSelectedContracts: symbolContracts
 						.filter((item) => item !== null)
-						.map((item) => item.symbol.symbolInfo.symbolISIN) as string[],
-					canChangeBaseSymbol: true,
+						.map((item) => item.symbol.symbolISIN) as string[],
+					canChangeBaseSymbol: false,
+					canSendBaseSymbol: true,
 					callback: addContracts,
 				}),
 			);
 		};
 
-		const setOrderProperties = (id: string, values: Partial<ISymbolStrategyContract>) => {
+		const setOrderProperties = (
+			id: string,
+			values: Partial<Pick<TSymbolStrategy, 'price' | 'quantity' | 'side'>>,
+		) => {
 			setSymbolContracts((prev) => {
-				const orders = JSON.parse(JSON.stringify(prev)) as ISymbolStrategyContract[];
+				const orders = JSON.parse(JSON.stringify(prev)) as TSymbolStrategy[];
 
 				const orderIndex = orders.findIndex((item) => item.id === id);
 
@@ -245,7 +282,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 			try {
 				const l = data.length;
-				const { baseSymbolPrice } = data[0].symbol.optionWatchlistData;
+				const { baseSymbolPrice } = data[0].symbol;
 				const minMaxIsInvalid = newStates.minPrice >= newStates.maxPrice;
 				newStates.baseAssets = baseSymbolPrice;
 
@@ -263,13 +300,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 				for (let i = 0; i < l; i++) {
 					const item = data[i];
-					const contractType = item.symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put';
-					const {
-						symbol: {
-							symbolInfo: { strikePrice },
-						},
-						price,
-					} = item;
+					const contractType = item.symbol.optionType;
+					const { strikePrice, price } = item;
 
 					let commission = 0;
 					let index = 0;
@@ -287,18 +319,25 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 							if (item.side === 'sell') commission *= -1;
 						}
 					}
+
 					const transactionValue = Math.ceil(Math.abs(item.quantity * price + commission));
 
 					for (let j = lowPrice; j <= highPrice; j++) {
-						const strikeCommission =
-							useCommission && item.side === 'buy'
-								? strikePrice * 0.0005 * (item.type === 'call' ? 1 : -1)
-								: 0;
+						let y = 0;
 
-						const iv = intrinsicValue(strikePrice + strikeCommission, j, contractType);
-						const previousY = newStates.chartData[index]?.y ?? 0;
-						const y = previousY + pnl(iv, transactionValue, item.side);
+						if (item.type === 'base') {
+							y = j - baseSymbolPrice;
+						} else {
+							const strikeCommission =
+								useCommission && item.side === 'buy'
+									? (strikePrice ?? 0) * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
+									: 0;
 
+							const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, contractType ?? 'call');
+							y = pnl(iv, transactionValue, item.side);
+						}
+
+						y += newStates.chartData[index]?.y ?? 0;
 						if (y === 0) newStates.bep = { x: j, y: 0 };
 
 						newStates.chartData[index] = {
@@ -337,7 +376,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 					{symbolContracts.length > 0 ? (
 						<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
-							<div className='gap-8 flex-column'>
+							<div className='relative gap-8 flex-column'>
 								<div style={{ maxHeight: '26.4rem' }} className='flex-1 overflow-auto px-16'>
 									<SymbolStrategyTable
 										selectedContracts={selectedContracts}
@@ -369,6 +408,12 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 										{t('analyze_modal.send_all')}
 									</button>
 								</div>
+
+								{isFetchingBaseSymbol && (
+									<div style={{ zIndex: '99' }} className='absolute left-0 top-0 size-full bg-white'>
+										<Loading />
+									</div>
+								)}
 							</div>
 
 							<div className='h-full overflow-auto px-16 pb-16 pt-12'>

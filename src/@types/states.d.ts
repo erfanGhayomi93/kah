@@ -7,6 +7,14 @@ declare type DatesFilterType = 'dates.day' | 'dates.week' | 'dates.month' | 'dat
 
 declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
+declare interface IUserBankAccount {
+	id: number;
+	shaba: string;
+	accountNumber: string;
+	bankName: string;
+	isDefault: number;
+}
+
 declare interface IOFields {
 	symbolISIN: string;
 	quantity: number;
@@ -25,6 +33,12 @@ declare interface IOFieldsWithID {
 	validity: TBsValidityDates;
 	validityDate: number;
 }
+
+type CashWithdrawBankType = {
+	accountNumber: string;
+	customerAccountId: number;
+	customerBank: string;
+};
 
 type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
 
@@ -244,6 +258,9 @@ declare type IBrokerUrls = Record<
 	| 'getListBrokerBankAccount'
 	| 'getDepositOfflineHistory'
 	| 'customerTurnOverRemain'
+	| 'CreateChangeBrokers'
+	| 'LastChangeBrokers'
+	| 'DeleteChangeBroker'
 	| 'getWithFilterReceipt'
 	| 'getFilteredEPaymentApi'
 	| 'getDepositOnlineHistory'
@@ -251,7 +268,19 @@ declare type IBrokerUrls = Record<
 	| 'GetRemainsWithDate'
 	| 'LastListDrawal'
 	| 'RequestPayment'
-	| 'getFilteredPayment',
+	| 'getFilteredPayment'
+	| 'getCustomerTurnOverCSVExport'
+	| 'getEPaymentExportFilteredCSV'
+	| 'getReceiptExportFilteredCSV'
+	| 'getPaymentExportFilteredCSV',
+	| 'SetCustomerSettings'
+	| 'GetCustomerSettings'
+	| 'getPaymentExportFilteredCSV'
+	| 'getEPaymentApiGetStatuses'
+	| 'getEPaymentApiGetProviderTypes'
+	| 'getPaymentGetStatuses'
+	| 'getChangeBrokerExportFilteredCSV'
+	| 'getChangeBrokerChangeBrokersByFilter',
 	string
 >;
 
@@ -349,31 +378,60 @@ declare namespace OrderBasket {
 
 		orders: OrderBasket.Order[];
 	}
-	export interface Order extends ISymbolStrategyContract {}
+
+	export type Order = TSymbolStrategy;
 }
 
-declare interface ISymbolStrategyContract {
+declare interface ISymbolStrategy {
 	id: string;
 	marketUnit: string;
 	quantity: number;
 	price: number;
+}
+
+declare interface IBaseSymbolStrategy extends ISymbolStrategy {
+	type: 'base';
+	side: TBsSides;
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		baseSymbolPrice: number;
+		optionType?: null;
+		historicalVolatility?: null;
+	};
+	strikePrice?: null;
+	contractSize?: null;
+	settlementDay?: null;
+	commission?: null;
+	requiredMargin?: null;
+}
+
+declare interface IOptionStrategy extends ISymbolStrategy {
+	type: 'option';
 	strikePrice: number;
 	contractSize: number;
 	settlementDay: Date | number | string;
-	type: TOptionSides;
 	side: TBsSides;
-	symbol: Option.Root;
-	commission: {
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		optionType: TOptionSides;
+		baseSymbolPrice: number;
+		historicalVolatility: number;
+	};
+	commission?: {
 		value: number;
 		checked?: boolean;
 		onChecked?: (checked: boolean) => void;
 	};
-	requiredMargin: {
+	requiredMargin?: {
 		value: number;
 		checked?: boolean;
 		onChecked?: (checked: boolean) => void;
 	};
 }
+
+declare type TSymbolStrategy = IBaseSymbolStrategy | IOptionStrategy;
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
@@ -411,8 +469,8 @@ declare namespace InstantDepositReports {
 		fromDate: number;
 		toDate: number;
 		status: string[];
-		toPrice: number | null;
-		fromPrice: number | null;
+		toPrice: number;
+		fromPrice: number;
 		providers: string[];
 	}
 
@@ -436,9 +494,9 @@ declare namespace DepositWithReceiptReports {
 		fromDate: number;
 		toDate: number;
 		status: string[];
-		toPrice: number | null;
-		fromPrice: number | null;
-		receiptNumber: string | null;
+		toPrice: number;
+		fromPrice: number;
+		receiptNumber: string;
 		attachment: boolean | null;
 	}
 
@@ -456,6 +514,12 @@ declare namespace DepositWithReceiptReports {
 }
 
 declare namespace WithdrawalCashReports {
+	export type CashWithdrawBankType = {
+		accountNumber: string;
+		customerAccountId: number;
+		customerBank: string;
+	};
+
 	export interface WithdrawalCashReportsFilters {
 		pageNumber: number;
 		pageSize: number;
@@ -463,9 +527,9 @@ declare namespace WithdrawalCashReports {
 		fromDate: number;
 		toDate: number;
 		status: string[];
-		fromPrice: number | null;
-		toPrice: number | null;
-		banks: CashWithdrawBankType[];
+		fromPrice: number;
+		toPrice: number;
+		banks: IUserBankAccount[];
 	}
 
 	export interface WithdrawalCashReportsParams {
@@ -478,62 +542,53 @@ declare namespace WithdrawalCashReports {
 	}
 }
 
-declare type TTransactionColumnsState = Array<{
-	colId: TTransactionColumns;
-	width?: number;
-	hide?: boolean;
-	pinned?: 'left' | 'right' | null;
-	sort?: 'asc' | 'desc' | null;
-	sortIndex?: null;
-	aggFunc?: null;
-	rowGroup?: boolean;
-	rowGroupIndex?: null;
-	pivot?: boolean;
-	pivotIndex?: null;
-	flex?: number;
-}>;
+declare namespace ChangeBrokerReports {
+	export interface IChangeBrokerReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		attachment: boolean | null;
+	}
 
-declare type TInstantDepositColumnsState = Array<{
-	colId: TInstantDepositColumns;
-	width?: number;
-	hide?: boolean;
-	pinned?: 'left' | 'right' | null;
-	sort?: 'asc' | 'desc' | null;
-	sortIndex?: null;
-	aggFunc?: null;
-	rowGroup?: boolean;
-	rowGroupIndex?: null;
-	pivot?: boolean;
-	pivotIndex?: null;
-	flex?: number;
-}>;
+	export interface IChangeBrokerReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
 
-declare type TDepositWithReceiptReportsColumnsState = Array<{
-	colId: TDepositWithReceiptColumns;
-	width?: number;
-	hide?: boolean;
-	pinned?: 'left' | 'right' | null;
-	sort?: 'asc' | 'desc' | null;
-	sortIndex?: null;
-	aggFunc?: null;
-	rowGroup?: boolean;
-	rowGroupIndex?: null;
-	pivot?: boolean;
-	pivotIndex?: null;
-	flex?: number;
-}>;
+	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
+}
 
-declare type TWithdrawalCashReportsColumnsState = Array<{
-	colId: TWithdrawalCashColumns;
-	width?: number;
-	hide?: boolean;
-	pinned?: 'left' | 'right' | null;
-	sort?: 'asc' | 'desc' | null;
-	sortIndex?: null;
-	aggFunc?: null;
-	rowGroup?: boolean;
-	rowGroupIndex?: null;
-	pivot?: boolean;
-	pivotIndex?: null;
-	flex?: number;
-}>;
+declare type TTransactionColumnsState = {
+	id: string;
+	title: string;
+	hidden: boolean;
+};
+
+declare type TInstantDepositReportsColumnsState = {
+	id: string;
+	title: string;
+	hidden: boolean;
+};
+
+declare type IDepositWithReceiptReportsColumnsState = {
+	id: string;
+	title: string;
+	hidden: boolean;
+};
+
+declare type TDepositWithReceiptReportsColumnsState = {
+	id: string;
+	title: string;
+	hidden: boolean;
+};
+
+declare type TWithdrawalCashReportsColumnsState = {
+	id: string;
+	title: string;
+	hidden: boolean;
+};

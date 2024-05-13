@@ -18,11 +18,15 @@ import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
 import Analyze from './Analyze';
+import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
+import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
+import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
 import ModalLoading from './ModalLoading';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
-import TransactionsFiltersModal from './TrasactionsFilters';
+import TransactionsFiltersModal from './TransactionsFiltersModal';
+import WithdrawalCashFiltersModal from './WithdrawalCashReportsFiltersModal';
 
 const LoginModal = lazy(() => import('./LoginModal'));
 
@@ -60,6 +64,8 @@ const ChangeBroker = lazy(() => import('./ChangeBroker'));
 
 const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
 
+const Description = lazy(() => import('./Description'));
+
 const Modals = () => {
 	const dispatch = useAppDispatch();
 
@@ -87,6 +93,11 @@ const Modals = () => {
 		withdrawal,
 		analyze,
 		transactionsFilters,
+		instantDepositReportsFilters,
+		depositWithReceiptReportsFilters,
+		withdrawalCashReportsFilters,
+		changeBrokerReportsFilters,
+		description,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -119,6 +130,14 @@ const Modals = () => {
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{description && (
+					<ModalSuspense>
+						<Description {...description} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -166,7 +185,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{changeBroker && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChangeBrokerModal(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setChangeBrokerModal(null))} broker>
 							<ChangeBroker {...changeBroker} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -176,7 +195,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{withdrawal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setWithdrawalModal(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setWithdrawalModal(null))} broker>
 							<Withdrawal {...withdrawal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -297,6 +316,34 @@ const Modals = () => {
 				{transactionsFilters && (
 					<ModalSuspense>
 						<TransactionsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{instantDepositReportsFilters && (
+					<ModalSuspense>
+						<InstantDepositFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{depositWithReceiptReportsFilters && (
+					<ModalSuspense>
+						<DepositWithReceiptFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{withdrawalCashReportsFilters && (
+					<ModalSuspense>
+						<WithdrawalCashFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{changeBrokerReportsFilters && (
+					<ModalSuspense>
+						<ChangeBrokerReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

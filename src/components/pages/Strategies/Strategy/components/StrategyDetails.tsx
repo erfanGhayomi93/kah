@@ -12,6 +12,7 @@ import {
 	MenuChocolateSVG,
 	PlaySVG,
 	PlusSVG,
+	RhombicCircleSVG,
 	TeachVideoSVG,
 } from '@/components/icons';
 import { useLocalstorage } from '@/hooks';
@@ -20,16 +21,25 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
-interface DescriptionsProps {
-	strategy: Strategy.GetAll;
+interface StepProps {
+	id: number;
+	title: string;
 }
 
-const Descriptions = ({ strategy }: DescriptionsProps) => {
+interface StrategyDetailsProps {
+	steps: string[];
+	strategy: Strategy.GetAll;
+	condition?: string;
+	readMore?: () => void;
+	trainingVideo?: () => void;
+}
+
+const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }: StrategyDetailsProps) => {
 	const { title, type, imageUrl, tags } = strategy;
 
 	const t = useTranslations();
 
-	const [isExpand, setIsExpand] = useLocalstorage('istre', true);
+	const [isExpand, setIsExpand] = useLocalstorage(`${type}Expand`, true);
 
 	const combinedTags = useMemo(() => {
 		const result: Array<[Strategy.Cheap, string]> = [
@@ -50,15 +60,22 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 		return result;
 	}, []);
 
+	const length = steps.length + Number(Boolean(condition));
+	let sectionHeight = 344;
+	sectionHeight += length - 1 > 0 ? Math.max((length - 3) * 28, 0) : 0;
+	sectionHeight /= 10;
+
 	return (
 		<div className='relative overflow-hidden pb-16 flex-column'>
 			<div
-				style={{ height: isExpand ? '34rem' : '9.6rem' }}
+				style={{
+					height: isExpand ? `${sectionHeight}rem` : '8.4rem',
+				}}
 				className='flex justify-between rounded bg-white p-16 transition-height'
 			>
 				<div className='flex-1 justify-between overflow-hidden flex-column'>
 					<div className='flex-column'>
-						<div className='gap-12 flex-column'>
+						<div className='flex-column'>
 							<div style={{ flex: '0 0 3.2rem' }} className='gap-8 flex-items-center'>
 								<Link href='/strategy' className='size-32 text-gray-900 flex-justify-center'>
 									<ArrowRightSVG width='2.4rem' height='2.4rem' />
@@ -144,11 +161,19 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 
 					{isExpand && (
 						<div className='flex items-center gap-16'>
-							<button type='button' className='gap-8 text-base text-info flex-items-center'>
+							<button
+								onClick={readMore}
+								type='button'
+								className='gap-8 text-base text-info flex-items-center'
+							>
 								<MenuChocolateSVG width='2.4rem' height='2.4rem' />
 								{t('strategy.more_info')}
 							</button>
-							<button type='button' className='gap-8 text-base text-info flex-items-center'>
+							<button
+								onClick={trainingVideo}
+								type='button'
+								className='gap-8 text-base text-info flex-items-center'
+							>
 								<TeachVideoSVG width='2.4rem' height='2.4rem' />
 								{t('strategy.teach_video')}
 							</button>
@@ -159,11 +184,11 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 				{isExpand && (
 					<div
 						style={{ flex: '0 0 43.2rem' }}
-						className='h-full gap-8 overflow-hidden rounded p-16 shadow-card flex-column'
+						className='h-full justify-between gap-8 overflow-hidden rounded p-16 shadow-card flex-column'
 					>
 						<Image
-							width='395'
-							height='170'
+							width='399'
+							height='176'
 							alt={title}
 							src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
 							style={{
@@ -172,24 +197,25 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 							}}
 						/>
 
-						<ul className='gap-8 text-right flex-column'>
-							<li className='gap-4 text-gray-900 flex-items-center'>
-								<PlaySVG />
-								<h3 className='text-tiny font-medium'>{t('strategy.how_to_execute')}:</h3>
-							</li>
-							<li className='gap-4 flex-items-center'>
-								<span className='size-16 rounded-circle border border-gray-500 text-sm text-gray-900 flex-justify-center'>
-									1
-								</span>
-								<p className='flex-1 text-tiny leading-8 text-gray-1000'>{t(`${type}.step_1`)}</p>
-							</li>
-							<li className='gap-4 flex-items-center'>
-								<span className='size-16 rounded-circle border border-gray-500 text-sm text-gray-900 flex-justify-center'>
-									2
-								</span>
-								<p className='flex-1 text-tiny leading-8 text-gray-1000'>{t(`${type}.step_2`)}</p>
-							</li>
-						</ul>
+						{steps.length > 0 && (
+							<ul className='gap-8 text-right flex-column'>
+								<li className='gap-4 text-gray-900 flex-items-center'>
+									<PlaySVG />
+									<h3 className='text-tiny font-medium'>{t('strategy.execution_steps')}:</h3>
+								</li>
+								{steps.map((step, i) => (
+									<Step key={i} id={i + 1} title={step} />
+								))}
+
+								{condition && (
+									<li className='gap-4 text-gray-900 flex-items-center'>
+										<RhombicCircleSVG width='1.6rem' height='1.6rem' />
+										<h3 className='text-tiny font-medium'>{t('strategy.execution_condition')}:</h3>
+										<span className='text-tiny text-gray-1000'>{condition}</span>
+									</li>
+								)}
+							</ul>
+						)}
 					</div>
 				)}
 			</div>
@@ -211,4 +237,13 @@ const Descriptions = ({ strategy }: DescriptionsProps) => {
 	);
 };
 
-export default Descriptions;
+const Step = ({ id, title }: StepProps) => (
+	<li className='gap-4 flex-items-center'>
+		<span className='size-16 rounded-circle border border-gray-500 text-sm text-gray-900 flex-justify-center'>
+			{id}
+		</span>
+		<p className='flex-1 text-tiny leading-8 text-gray-1000'>{title}</p>
+	</li>
+);
+
+export default StrategyDetails;
