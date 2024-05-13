@@ -1,10 +1,8 @@
-import { useLongCallStrategyQuery } from '@/api/queries/strategyQuery';
-import Loading from '@/components/common/Loading';
-import AgTable from '@/components/common/Tables/AgTable';
+import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsLongCall } from '@/constants/strategies';
+import { initialColumnsLongPut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -15,43 +13,43 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface LongCallProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface LongPutProps extends Strategy.GetAll {}
 
-const LongCall = ({ title, type }: LongCallProps) => {
+const LongPut = (strategy: LongPutProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<Strategy.LongCall>>(null);
+	const gridRef = useRef<GridApi<Strategy.LongPut>>(null);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'long_call_strategy_columns',
-		initialColumnsLongCall,
+		'long_put_strategy_columns',
+		initialColumnsLongPut,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useLongCallStrategyQuery({
-		queryKey: ['longCallQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useLongPutStrategyQuery({
+		queryKey: ['longPutQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const execute = (data: Strategy.LongCall) => {
+	const execute = (data: Strategy.LongPut) => {
 		//
 	};
 
-	const analyze = (data: Strategy.LongCall) => {
+	const analyze = (data: Strategy.LongPut) => {
 		const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
@@ -71,11 +69,12 @@ const LongCall = ({ title, type }: LongCallProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsLongPut),
 			}),
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.LongCall>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.LongPut>>>(
 		() => [
 			{
 				colId: 'symbolISIN',
@@ -283,16 +282,6 @@ const LongCall = ({ title, type }: LongCallProps) => {
 		[],
 	);
 
-	const defaultColDef: ColDef<Strategy.LongCall> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			flex: 1,
-		}),
-		[],
-	);
-
 	useEffect(() => {
 		const eGrid = gridRef.current;
 		if (!eGrid) return;
@@ -322,32 +311,30 @@ const LongCall = ({ title, type }: LongCallProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
-			/>
+			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} />
 
-			<AgTable<Strategy.LongCall>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{isFetching && <Loading />}
-
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+					<Table<Strategy.LongPut>
+						ref={gridRef}
+						rowData={rows}
+						columnDefs={columnDefs}
+						isFetching={isFetching}
+					/>
+				</div>
+			</div>
 		</>
 	);
 };
 
-export default LongCall;
+export default LongPut;
