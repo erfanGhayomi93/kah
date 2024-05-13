@@ -12,7 +12,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface TransactionsFiltersModalProps extends IBaseModalConfiguration {}
+interface TransactionsFiltersModalProps extends IBaseModalConfiguration { }
 
 const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersModalProps>((props, ref) => {
 	const t = useTranslations();

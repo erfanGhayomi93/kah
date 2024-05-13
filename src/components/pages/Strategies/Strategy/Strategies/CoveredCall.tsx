@@ -1,56 +1,105 @@
-import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
-import AgTable from '@/components/common/Tables/AgTable';
+import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface LongPutProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface CoveredCallProps extends Strategy.GetAll {}
 
-const LongPut = ({ title, type }: LongPutProps) => {
+const CoveredCall = (strategy: CoveredCallProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<Strategy.LongPut>>(null);
+	const gridRef = useRef<GridApi<Strategy.CoveredCall>>(null);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'long_put_strategy_columns',
-		initialColumnsBullCallSpread,
+		'covered_call_strategy_columns',
+		initialColumnsCoveredCall,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useLongPutStrategyQuery({
-		queryKey: ['longPutQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useCoveredCallStrategyQuery({
+		queryKey: ['coveredCallQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.LongPut) => {
+	const execute = (data: Strategy.CoveredCall) => {
 		//
 	};
 
-	const execute = (data: Strategy.LongPut) => {
-		//
+	const analyze = (data: Strategy.CoveredCall) => {
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.symbolTitle,
+						symbolISIN: data.symbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.premium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
+				},
+				{
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: data.baseMarketUnit,
+					quantity: 1,
+					price: data.baseLastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+						baseSymbolPrice: data.baseLastTradedPrice,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showColumnsPanel = () => {
@@ -59,19 +108,20 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsCoveredCall),
 			}),
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.LongCall>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall>>>(
 		() => [
 			{
-				colId: 'symbolISIN',
+				colId: 'baseSymbolISIN',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer',
-				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
@@ -120,22 +170,11 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'premium',
-				headerName: 'آخرین قیمت نماد آپشن',
-				width: 152,
-				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.premium ?? 0,
-				}),
-				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
-			},
-			{
 				colId: 'optionBestBuyLimitPrice',
 				headerName: 'قیمت بهترین خریدار',
 				width: 152,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -143,7 +182,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				headerName: 'حجم سرخط خرید',
 				width: 152,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -156,21 +195,19 @@ const LongPut = ({ title, type }: LongPutProps) => {
 			},
 			{
 				colId: 'optionBestSellLimitQuantity',
-				headerName: 'حجم سرخط فروش',
+				headerName: 'حجم سر خط فروش',
 				width: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'longCallBEP',
+				colId: 'coveredCallBEP',
 				headerName: 'سر به سر استراتژی',
 				width: 136,
 				cellClass: ({ data }) =>
-					(data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0) < 0
-						? 'text-error-100'
-						: 'text-success-100',
-				valueGetter: ({ data }) => data?.longCallBEP ?? 0,
+					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0)),
+				valueGetter: ({ data }) => data?.coveredCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -185,33 +222,41 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
 					percent: data?.maxProfitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.profitAmount}|${data!.profitPercentUntilSettlement}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data!.profitAmount)),
+				valueGetter: ({ data }) => `${data!.maxProfit}|${data!.maxProfitPercent}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data!.maxProfit)),
 			},
 			{
-				colId: 'blackScholes',
-				headerName: 'بلک شولز',
-				valueGetter: ({ data }) => data?.blackScholes ?? 0,
-				valueFormatter: ({ value }) => toFixed(value, 4),
+				colId: 'nonExpiredProfit',
+				headerName: 'سود عدم اعمال',
+				width: 184,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده تا سررسید در صورت عدم اعمال توسط خریدار آپشن به ازای یک قرارداد آپشن',
+				},
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+					percent: data?.nonExpiredProfitPercent ?? 0,
+				}),
+				valueGetter: ({ data }) => `${data!.nonExpiredProfit}|${data!.nonExpiredProfitPercent}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data!.nonExpiredProfit)),
 			},
 			{
-				colId: 'timeValue',
-				headerName: 'ارزش زمانی',
-				width: 152,
-				valueGetter: ({ data }) => data?.timeValue ?? 0,
+				colId: 'inUseCapital',
+				headerName: 'سرمایه درگیر',
+				width: 96,
+				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'intrinsicValue',
-				headerName: 'ارزش ذاتی',
+				colId: 'premium',
+				headerName: 'آخرین قیمت نماد آپشن',
 				width: 152,
-				valueGetter: ({ data }) => data?.intrinsicValue ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
-			},
-			{
-				colId: 'profit',
-				headerName: 'مقدار سود',
-				valueFormatter: () => t('common.infinity'),
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+					percent: data?.premium ?? 0,
+				}),
+				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
 			},
 			{
 				colId: 'bepDifference',
@@ -238,7 +283,7 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
 				width: 128,
-				valueGetter: ({ data }) => data?.baesTradeCount ?? 0,
+				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -256,27 +301,66 @@ const LongPut = ({ title, type }: LongPutProps) => {
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
 			{
-				colId: 'actions',
+				colId: 'bestBuyYTM',
+				headerName: 'YTM سرخط خرید',
+				width: 120,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'bestSellYTM',
+				headerName: 'YTM سرخط فروش',
+				width: 152,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'riskCoverage',
+				headerName: 'پوشش ریسک',
+				width: 152,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip:
+						'پوشش ریسک یا حاشیه اطمینان درصدی است که سهم پایه می‌تواند حداکثر کاهش خود را داشته باشد، ولی استراتژی کاورد کال وارد زیان نشود.',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.riskCoverage ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'nonExpiredYTM',
+				headerName: 'YTM عدم اعمال',
+				width: 120,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید در صورت عدم اعمال توسط خریدار اختیار',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'action',
 				headerName: 'عملیات',
 				width: 80,
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
+					analyze,
 				},
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Strategy.LongPut> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 96,
-		}),
 		[],
 	);
 
@@ -309,30 +393,28 @@ const LongPut = ({ title, type }: LongPutProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
-			/>
+			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`), t(`${type}.step_2`)]} />
 
-			<AgTable<Strategy.LongPut>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.CoveredCall>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };
 
-export default LongPut;
+export default CoveredCall;

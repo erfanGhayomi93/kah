@@ -2,9 +2,8 @@
 
 import { useGetAllStrategyQuery } from '@/api/queries/strategyQuery';
 import Main from '@/components/layout/Main';
+import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
-import Descriptions from './Descriptions';
-import Table from './Table';
 
 export interface ISelectItem {
 	id: TPriceBasis;
@@ -14,6 +13,14 @@ export interface ISelectItem {
 interface StrategyProps {
 	id: Strategy.Type;
 }
+
+const CoveredCall = dynamic(() => import('./Strategies/CoveredCall'));
+const LongCall = dynamic(() => import('./Strategies/LongCall'));
+const LongPut = dynamic(() => import('./Strategies/LongPut'));
+const ProtectivePut = dynamic(() => import('./Strategies/ProtectivePut'));
+const BullCallSpread = dynamic(() => import('./Strategies/BullCallSpread'));
+const LongStraddle = dynamic(() => import('./Strategies/LongStraddle'));
+const Conversion = dynamic(() => import('./Strategies/Conversion'));
 
 const Strategy = ({ id }: StrategyProps) => {
 	const { data } = useGetAllStrategyQuery({
@@ -30,8 +37,19 @@ const Strategy = ({ id }: StrategyProps) => {
 
 	return (
 		<Main className='!px-8'>
-			<Descriptions strategy={strategy} />
-			<Table strategy={strategy} />
+			{id === 'CoveredCall' && <CoveredCall {...strategy} />}
+
+			{id === 'LongCall' && <LongCall {...strategy} />}
+
+			{id === 'LongPut' && <LongPut {...strategy} />}
+
+			{id === 'ProtectivePut' && <ProtectivePut {...strategy} />}
+
+			{id === 'BullCallSpread' && <BullCallSpread {...strategy} />}
+
+			{id === 'LongStraddle' && <LongStraddle {...strategy} />}
+
+			{id === 'Conversion' && <Conversion {...strategy} />}
 		</Main>
 	);
 };

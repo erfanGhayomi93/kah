@@ -8,7 +8,7 @@
 		"ignore": "بی‌خیال",
 		"cancel": "انصراف",
 		"delete": "حذف",
-		"app_user": "صندوق سرمایه گذاری سهامی اهرمی جهش فارابی",
+		"app_user": "کاربر کهکشان",
 		"rial": "ریال",
 		"toman": "تومان",
 		"from": "از",
@@ -51,6 +51,7 @@
 		"logout": "خروج از حساب کاربری"
 	},
 	"symbol_strategy": {
+		"base_symbol": "نماد پایه",
 		"side": "سمت",
 		"symbol": "نماد",
 		"type": "نوع",
@@ -581,7 +582,8 @@
 		"transactions": "گردش حساب",
 		"instant_deposit": "واریز آنی",
 		"deposit_with_receipt": "واریز با فیش",
-		"withdrawal_cash": "برداشت وجه"
+		"withdrawal_cash": "برداشت وجه",
+		"change_broker_reports": "تغییر کارگزار ناظر"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
@@ -942,6 +944,7 @@
 		"quantity_and_executed_orders": "تعداد / (انجام‌شده)",
 		"remain": "باقی‌مانده",
 		"price": "قیمت",
+		"quantity": "تعداد",
 		"stock": "سهم",
 		"amount": "مبلغ",
 		"symbol": "نماد",
@@ -1002,6 +1005,19 @@
 		"step_1": "داشتن یا خرید دارایی پایه",
 		"step_2": "فروش اختیار خرید با قیمت اعمال  A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)"
 	},
+	"BullCallSpread": {
+		"title": "بول کال اسپرد",
+		"desc": "اسپرد صعودی با اختیار خرید",
+		"summary": "این استراتژی با محدود کردن زیان، در روند صعودی ملایم باعث کاهش هزینه و نقطه سربه سر نسبت  به خرید ساده سهام می‌گردد.",
+		"advantages": "ریسک متعادل و زیان محدود",
+		"disadvantages": "سود محدود",
+		"maximum_loss": "پریمیوم پرداختی - پریمیوم دریافتی",
+		"maximum_profit": "اختلاف دو قیمت اعمال - حداکثر زیان",
+		"required_margin": "از آنجایی که اختیار خرید خریده شده با اعمال پایین وثیقه فروش اختیار خرید با اعمال بالا می شود. این استراتژی نیازی به وجه تضمین ندارد.",
+		"step_1": "خرید یک اختیار خرید با قیمت اعمال پایین",
+		"step_2": "فروش یک اختیار خرید با اعمال بالا",
+		"condition": "سررسید و تعداد خرید هردو قرارداد یکسان"
+	},
 	"LongCall": {
 		"title": "لانگ کال",
 		"desc": "خرید اختیار خرید",
@@ -1011,8 +1027,7 @@
 		"maximum_loss": "به اندازه وجه پرداختی بابت خرید اختیار خرید",
 		"maximum_profit": "نا‌محدود",
 		"required_margin": "این استراتژی نیازی به وجه تضمین ندارد.",
-		"step_1": "خرید اختیار خرید با قیمت اعمال A",
-		"step_2": ""
+		"step_1": "خرید اختیار خرید با قیمت اعمال A"
 	},
 	"LongPut": {
 		"title": "لانگ پوت",
@@ -1023,8 +1038,7 @@
 		"maximum_loss": "به اندازه وجه پرداختی بابت خرید اختیار فروش",
 		"maximum_profit": "نامحدود",
 		"required_margin": "این استراتژی نیازی به وجه تضمین ندارد.",
-		"step_1": "خرید اختیار فروش با قیمت اعمال A",
-		"step_2": ""
+		"step_1": "خرید اختیار فروش با قیمت اعمال A"
 	},
 	"ProtectivePut": {
 		"title": "پروتکتیو پوت",
@@ -1038,18 +1052,6 @@
 		"step_1": "داشتن یا خرید دارایی پایه",
 		"step_2": "خرید یک اختیار فروش با اعمال A"
 	},
-	"BullCallSpread": {
-		"title": "بول کال اسپرد",
-		"desc": "اسپرد صعودی با اختیار خرید",
-		"summary": "این استراتژی با محدود کردن زیان، در روند صعودی ملایم باعث کاهش هزینه و نقطه سربه سر نسبت  به خرید ساده سهام می‌گردد.",
-		"advantages": "ریسک متعادل و زیان محدود",
-		"disadvantages": "سود محدود",
-		"maximum_loss": "پریمیوم پرداختی - پریمیوم دریافتی",
-		"maximum_profit": "اختلاف دو قیمت اعمال - حداکثر زیان",
-		"required_margin": "از آنجایی که اختیار خرید خریده شده با اعمال پایین وثیقه فروش اختیار خرید با اعمال بالا می شود. این استراتژی نیازی به وجه تضمین ندارد.",
-		"step_1": "داشتن یا خرید دارایی پایه",
-		"step_2": "فروش اختیار خرید با قیمت اعمال  A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)"
-	},
 	"Straddle": {
 		"title": "استرادل",
 		"desc": "خرید کال <plus></plus> خرید پوت",
@@ -1059,8 +1061,8 @@
 		"maximum_loss": "مجموع پریمیوم پرداختی (کال و پوت)",
 		"maximum_profit": "نامحدود",
 		"required_margin": "این استراتژی نیازی به وجه تضمین ندارد.",
-		"step_1": "داشتن یا خرید دارایی پایه",
-		"step_2": "فروش اختیار خرید با قیمت اعمال  A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)"
+		"step_1": "",
+		"step_2": ""
 	},
 	"strategy": {
 		"advantages": "مزایا",
@@ -1075,7 +1077,8 @@
 		"last_traded_price": "آخرین قیمت",
 		"closing_price": "قیمت پایانی",
 		"headline": "سرخط هوشمند",
-		"how_to_execute": "نحوه اجرا"
+		"execution_steps": "نحوه اجرا",
+		"execution_condition": "شرط اجرا"
 	},
 	"strategy_cheaps": {
 		"All": "همه",
@@ -1116,7 +1119,8 @@
 		"remove": "حذف",
 		"black_scholes": "ماشین حساب",
 		"add_new_watchlist": "افزودن دیده‌بان جدید",
-		"manage_watchlist_list": "مدیریت دیده‌بان‌ها"
+		"manage_watchlist_list": "مدیریت دیده‌بان‌ها",
+		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد."
 	},
 	"alerts": {
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
@@ -1242,6 +1246,16 @@
 		"receipt_number_placeholder_filter": "شماره فیش",
 		"attachment_placeholder_filter": "پیوست"
 	},
+	"change_broker_reports_page": {
+		"title_page": "گزارشات تغییر کارگزار ناظر",
+		"filter_title_modal": "فیلتر تغییر کارگزار ناظر",
+		"id_column":"ردیف",
+		"date_column": "زمان",
+		"symbol_column": "نماد",
+		"gateway_column": "سامانه",
+		"status_column": "وضعیت",
+		"action_column": "عملیات"
+	},
 
 	"withdrawal_cash_reports_page": {
 		"filter_title_modal": "فیلتر برداشت وجه",
@@ -1249,7 +1263,6 @@
 		"bank_placeholder_filter": "بانک",
 		"status_placeholder_filter": "وضعیت"
 	},
-
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"
@@ -1296,6 +1309,8 @@
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
 		"state_PayFast": "پرداخت سریع",
+		"state_CancellByCustomer": "انصراف توسط مشتری",
+		"state_BankingAction": "اقدام بانکی",
 		"agreement_state_Accepted": "تایید شده",
 		"agreement_state_NotAccepted": "تایید نشده",
 		"agreement_state_NotSpecified": "تعیین نشده",
@@ -1308,9 +1323,6 @@
 		"history_settings": " سابقه ورود خروج",
 		"identity_information": "اطلاعات هویتی",
 		"two_step_login": "ورود دو مرحله ای",
-		"two_step_login_greeting": "کاربر گرامی",
-		"two_step_login_description": "با فعال سازی ورود دو مرحله ای در هر بار ورود، علاوه بر نام کاربری و رمز عبور، لازم است رمز یکبار مصرفی که برای شما پیامک می شود را نیز وارد نمایید. پیشنهاد می شود برای امنیت بیشتر حساب کاربری خود، این امکان را فعال نمایید.",
-		"two_step_login_btn_title": "فعالسازی ورود دو مرحله ای",
 		"name": "نام و نام خانوادگی",
 		"natinal_code": "کد ملی",
 		"bourse_code": "کد بورسی",
@@ -1334,6 +1346,16 @@
 		"top_right": "بالا - راست",
 		"top_left": "بالا - چپ",
 		"bottom_right": "پایین - راست",
-		"bottom_left": "پایین - چپ"
+		"bottom_left": "پایین - چپ",
+		"broker_info_title": "اطلاعات کارگزاری",
+		"activation": "فعالسازی",
+		"changed_toast_position": "محل نمایش پیام های سیستم تغییر یافت",
+		"default_buy_volume": "حجم پیش فرض خرید",
+		"default_sell_volume": "حجم پیش فرض فروش",
+		"confirm_before_send_order": "دریافت تایید قبل از ارسال سفارش",
+		"confirm_before_delete_order": "دریافت تایید قبل از حذف سفارش",
+		"Get_online_price": "دریافت قیمت از سرخط",
+		"market_watcher_message_notification": "ارسال اعلان “پیام ناظر بازار”",
+		"show_symbol_info_in_send_order": "نمایش اطلاعات نماد در ارسال سفارش"
 	}
 }

@@ -51,7 +51,7 @@ const PriceChangesWatchlistChart = () => {
 
 		return DEFAULT_RESULT.map((_, i) => ({
 			x: data[i]?.state ?? `${i}`,
-			y: Math.max(0, Math.min(data[i]?.count ?? 0, 100)),
+			y: Math.max(0, data[i]?.count ?? 0),
 			fillColor: COLORS[i],
 			strokeColor: COLORS[i],
 		}));

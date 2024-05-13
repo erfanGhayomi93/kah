@@ -2,12 +2,14 @@ import { InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { type IBaseSymbolDetails, type IOptionDetails } from '@/features/slices/types/modalSlice.interfaces';
 import { useDebounce, useInputs } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import Checkbox from '../Inputs/Checkbox';
 import Tooltip from '../Tooltip';
 import styles from './SymbolStrategyTable.module.scss';
@@ -23,16 +25,17 @@ interface ISharedProps {
 	onDelete: (id: string) => void;
 }
 
-interface SymbolStrategyProps extends ISharedProps, ISymbolStrategyContract {
-	checked: boolean;
-	onChange: (v: IInput) => void;
-	onSelect: (checked: boolean) => void;
-}
+type SymbolStrategyProps = ISharedProps &
+	TSymbolStrategy & {
+		checked: boolean;
+		onChange: (v: IInput) => void;
+		onSelect: (checked: boolean) => void;
+	};
 
 interface SymbolStrategyTableProps extends ISharedProps {
 	withRequiredMargin?: boolean;
 	withCommission?: boolean;
-	contracts: ISymbolStrategyContract[];
+	contracts: TSymbolStrategy[];
 	selectedContracts: string[];
 	spacing?: string;
 	onSelectionChanged: (rows: string[]) => void;
@@ -61,7 +64,7 @@ const SymbolStrategyTable = ({
 		}
 	};
 
-	const onSelect = (data: ISymbolStrategyContract, checked: boolean) => {
+	const onSelect = (data: TSymbolStrategy, checked: boolean) => {
 		const contracts = [...selectedContracts];
 		const contractIndex = contracts.findIndex((orderId) => orderId === data.id);
 
@@ -132,12 +135,12 @@ const SymbolStrategyTable = ({
 
 const SymbolStrategy = ({
 	id,
+	type,
 	quantity,
 	price,
 	strikePrice,
 	settlementDay,
 	contractSize,
-	type,
 	side,
 	symbol,
 	commission,
@@ -161,23 +164,34 @@ const SymbolStrategy = ({
 	});
 
 	const showInfo = () => {
-		dispatch(
-			setOrderDetailsModal({
-				type: 'option',
-				data: {
-					...inputs,
-					contractSize,
-					settlementDay,
-					strikePrice,
-					requiredMargin: requiredMargin.value,
-					strikeCommission: 0.0005,
-					tradeCommission: commission.value,
-					side,
-					type,
-					symbolTitle: symbol.symbolInfo.symbolTitle,
-				},
-			}),
-		);
+		const symbolDetails: IOptionDetails | IBaseSymbolDetails =
+			type === 'base'
+				? {
+						type: 'base',
+						data: {
+							quantity: inputs.quantity,
+							price: inputs.price,
+							side,
+							symbolTitle: symbol.symbolTitle,
+						},
+					}
+				: {
+						type: 'option',
+						data: {
+							...inputs,
+							contractSize: contractSize ?? 0,
+							settlementDay,
+							strikePrice,
+							requiredMargin: requiredMargin?.value ?? 0,
+							strikeCommission: 0.0005,
+							tradeCommission: commission?.value ?? 0,
+							side,
+							type: symbol.optionType,
+							symbolTitle: symbol.symbolTitle,
+						},
+					};
+
+		dispatch(setOrderDetailsModal(symbolDetails));
 	};
 
 	const dateFormatter = () => {
@@ -185,7 +199,7 @@ const SymbolStrategy = ({
 	};
 
 	const openSymbolInfo = () => {
-		dispatch(setSymbolInfoPanel(symbol.symbolInfo.symbolISIN));
+		dispatch(setSymbolInfoPanel(symbol.symbolISIN));
 	};
 
 	useEffect(() => {
@@ -204,10 +218,14 @@ const SymbolStrategy = ({
 
 			<td className={styles.td}>
 				<button
-					onClick={() => onSideChange(id, side === 'buy' ? 'sell' : 'buy')}
+					onClick={() => {
+						if (type === 'option') onSideChange(id, side === 'buy' ? 'sell' : 'buy');
+						else toast.warning(t('tooltip.can_not_change_base_symbol_side'));
+					}}
 					type='button'
 					className={clsx(
 						'size-40 rounded font-normal transition-colors',
+						type === 'base' && 'cursor-not-allowed',
 						side === 'buy' ? 'bg-success-100/10 text-success-100' : 'bg-error-100/10 text-error-100',
 					)}
 				>
@@ -216,25 +234,37 @@ const SymbolStrategy = ({
 			</td>
 
 			<td onClick={openSymbolInfo} className={clsx(styles.td, 'cursor-pointer')}>
-				<span className='text-gray-1000'>{symbol.symbolInfo.symbolTitle}</span>
+				<span className='text-gray-1000'>{symbol.symbolTitle}</span>
 			</td>
 
 			<td className={styles.td}>
-				<span className={type === 'call' ? 'text-success-100' : 'text-error-100'}>
-					{t(`symbol_strategy.${type}`)}
+				<span
+					className={
+						type === 'base'
+							? 'text-gray-1000'
+							: symbol.optionType === 'call'
+								? 'text-success-100'
+								: 'text-error-100'
+					}
+				>
+					{t(`symbol_strategy.${type === 'base' ? 'base_symbol' : symbol.optionType}`)}
 				</span>
 			</td>
 
 			<td className={styles.td}>
-				<span className='text-gray-1000'>{dateFormatter()}</span>
+				<span className='text-gray-1000'>{type === 'base' ? '−' : dateFormatter()}</span>
 			</td>
 
 			<td className={styles.td}>
 				<div
-					onCopy={(e) => copyNumberToClipboard(e, strikePrice)}
+					onCopy={(e) => {
+						if (type === 'option') copyNumberToClipboard(e, strikePrice);
+					}}
 					className='w-full flex-1 flex-justify-center'
 				>
-					<span className='text-gray-1000'>{sepNumbers(String(strikePrice ?? 0))}</span>
+					<span className='text-gray-1000'>
+						{type === 'base' ? '−' : sepNumbers(String(strikePrice ?? 0))}
+					</span>
 				</div>
 			</td>
 

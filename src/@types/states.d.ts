@@ -273,6 +273,14 @@ declare type IBrokerUrls = Record<
 	| 'getEPaymentExportFilteredCSV'
 	| 'getReceiptExportFilteredCSV'
 	| 'getPaymentExportFilteredCSV',
+	| 'SetCustomerSettings'
+	| 'GetCustomerSettings'
+	| 'getPaymentExportFilteredCSV'
+	| 'getEPaymentApiGetStatuses'
+	| 'getEPaymentApiGetProviderTypes'
+	| 'getPaymentGetStatuses'
+	| 'getChangeBrokerExportFilteredCSV'
+	| 'getChangeBrokerChangeBrokersByFilter',
 	string
 >;
 
@@ -370,31 +378,60 @@ declare namespace OrderBasket {
 
 		orders: OrderBasket.Order[];
 	}
-	export interface Order extends ISymbolStrategyContract {}
+
+	export type Order = TSymbolStrategy;
 }
 
-declare interface ISymbolStrategyContract {
+declare interface ISymbolStrategy {
 	id: string;
 	marketUnit: string;
 	quantity: number;
 	price: number;
+}
+
+declare interface IBaseSymbolStrategy extends ISymbolStrategy {
+	type: 'base';
+	side: TBsSides;
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		baseSymbolPrice: number;
+		optionType?: null;
+		historicalVolatility?: null;
+	};
+	strikePrice?: null;
+	contractSize?: null;
+	settlementDay?: null;
+	commission?: null;
+	requiredMargin?: null;
+}
+
+declare interface IOptionStrategy extends ISymbolStrategy {
+	type: 'option';
 	strikePrice: number;
 	contractSize: number;
 	settlementDay: Date | number | string;
-	type: TOptionSides;
 	side: TBsSides;
-	symbol: Option.Root;
-	commission: {
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		optionType: TOptionSides;
+		baseSymbolPrice: number;
+		historicalVolatility: number;
+	};
+	commission?: {
 		value: number;
 		checked?: boolean;
 		onChecked?: (checked: boolean) => void;
 	};
-	requiredMargin: {
+	requiredMargin?: {
 		value: number;
 		checked?: boolean;
 		onChecked?: (checked: boolean) => void;
 	};
 }
+
+declare type TSymbolStrategy = IBaseSymbolStrategy | IOptionStrategy;
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
@@ -503,6 +540,27 @@ declare namespace WithdrawalCashReports {
 		Statuses: Array<string>;
 		AccountIds: Array<string>;
 	}
+}
+
+declare namespace ChangeBrokerReports {
+	export interface IChangeBrokerReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		attachment: boolean | null;
+	}
+
+	export interface IChangeBrokerReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
 }
 
 declare type TTransactionColumnsState = {

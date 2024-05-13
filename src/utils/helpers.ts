@@ -5,7 +5,7 @@ import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOpt
 import { type AxiosError } from 'axios';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { getClientId } from './cookie';
+import { getBrokerClientId, getClientId } from './cookie';
 
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
@@ -225,7 +225,7 @@ export const downloadFileQueryParams = (
 		headers.append('Accept', 'application/json, text/plain, */*');
 		headers.append('Accept-Language', 'en-US,en;q=0.9,fa;q=0.8');
 
-		const clientId = getClientId();
+		const clientId = getBrokerClientId()[0];
 		if (clientId) headers.append('Authorization', 'Bearer ' + clientId);
 
 		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
@@ -314,6 +314,13 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getEPaymentExportFilteredCSV: data.EPaymentExportFilteredCSV,
 		getReceiptExportFilteredCSV: data.ReceiptExportFilteredCSV,
 		getPaymentExportFilteredCSV: data.PaymentExportFilteredCSV,
+		SetCustomerSettings: data.SetCustomerSettings,
+		GetCustomerSettings: data.GetCustomerSettings,
+		getEPaymentApiGetStatuses: data.EPaymentApiGetStatuses,
+		getEPaymentApiGetProviderTypes: data.EPaymentApiGetProviderTypes,
+		getPaymentGetStatuses: data.PaymentGetStatuses,
+		getChangeBrokerExportFilteredCSV: data.ChangeBrokerExportFilteredCSV,
+		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter,
 	};
 
 	return urls;
@@ -489,24 +496,32 @@ export const xor = <T>(arrays1: T[], arrays2: T[], callback: (a: T, b: T) => boo
 	return result;
 };
 
-export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): OrderBasket.Order => ({
-	id: uuidv4(),
-	symbol,
-	contractSize: symbol.symbolInfo.contractSize,
-	price: symbol.optionWatchlistData.premium || 1,
-	quantity: 1,
-	settlementDay: symbol.symbolInfo.contractEndDate,
-	type: symbol.symbolInfo.optionType === 'Call' ? 'call' : 'put',
-	strikePrice: symbol.symbolInfo.strikePrice,
-	side,
-	marketUnit: symbol.symbolInfo.marketUnit ?? '',
-	commission: {
-		value: 0,
-	},
-	requiredMargin: {
-		value: symbol.optionWatchlistData.requiredMargin,
-	},
-});
+export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: TBsSides): IOptionStrategy => {
+	const { optionWatchlistData, symbolInfo } = symbol;
+	const optionType = symbolInfo.optionType === 'Call' ? 'call' : 'put';
+
+	return {
+		id: uuidv4(),
+		type: 'option',
+		symbol: {
+			symbolTitle: symbolInfo.symbolTitle,
+			symbolISIN: symbolInfo.symbolISIN,
+			optionType,
+			baseSymbolPrice: optionWatchlistData.baseSymbolPrice,
+			historicalVolatility: optionWatchlistData.historicalVolatility,
+		},
+		contractSize: symbolInfo.contractSize,
+		price: optionWatchlistData.premium || 1,
+		quantity: 1,
+		settlementDay: symbolInfo.contractEndDate,
+		strikePrice: symbolInfo.strikePrice,
+		side,
+		marketUnit: symbolInfo.marketUnit ?? '',
+		requiredMargin: {
+			value: symbol.optionWatchlistData.requiredMargin,
+		},
+	};
+};
 
 export const setHours = (d: Date, hour: number, minutes: number, seconds = 0, milliseconds = 0) => {
 	d.setHours(hour, minutes, seconds, milliseconds);

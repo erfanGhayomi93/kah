@@ -1,8 +1,9 @@
 import { useInstantDepositReports } from '@/api/queries/reportsQueries';
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useMemo } from 'react';
+import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
 import InstantDepositReportsTable from './InstantDepositReportsTable';
 
 interface TableProps {
@@ -11,14 +12,27 @@ interface TableProps {
 		name: K,
 		value: InstantDepositReports.IInstantDepositReportsFilters[K],
 	) => void;
+	setFieldsValue: (props: Partial<InstantDepositReports.IInstantDepositReportsFilters>) => void;
 	columnsVisibility: TInstantDepositReportsColumnsState[];
 	setColumnsVisibility: Dispatch<SetStateAction<TInstantDepositReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility }: TableProps) => {
+const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, setFieldsValue }: TableProps) => {
 	const { data: instantDepositReportsData, isLoading } = useInstantDepositReports({
 		queryKey: ['instantDepositReports', filters],
 	});
+
+	const onFiltersChanged = (newFilters: Omit<InstantDepositReports.IInstantDepositReportsFilters, 'pageNumber' | 'pageSize'>) => {
+		setFieldsValue(newFilters);
+	};
+
+	useLayoutEffect(() => {
+		ipcMain.handle('set_instant_deposit_reports_filters', onFiltersChanged);
+
+		return () => {
+			ipcMain.removeChannel('set_transactions_filters');
+		};
+	}, []);
 
 	const reports = useMemo(() => {
 		if (!instantDepositReportsData?.result) return [];
@@ -65,9 +79,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility }:
 			)}
 
 			{dataIsEmpty && !isLoading && (
-				<div className='fixed center'>
-					<NoData />
-				</div>
+				<NoData />
 			)}
 		</>
 	);

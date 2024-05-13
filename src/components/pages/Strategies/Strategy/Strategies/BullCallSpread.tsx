@@ -1,27 +1,27 @@
 import { useBullCallSpreadStrategyQuery } from '@/api/queries/strategyQuery';
-import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface BullCallSpreadProps {
-	title: string;
-	type: Strategy.Type;
-}
+interface BullCallSpreadProps extends Strategy.GetAll {}
 
-const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
+const BullCallSpread = (strategy: BullCallSpreadProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -45,12 +45,22 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.BullCallSpread) => {
+	const execute = (data: Strategy.BullCallSpread) => {
 		//
 	};
 
-	const execute = (data: Strategy.BullCallSpread) => {
-		//
+	const analyze = (data: Strategy.BullCallSpread) => {
+		const contracts: TSymbolStrategy[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts,
+			}),
+		);
 	};
 
 	const showColumnsPanel = () => {
@@ -59,6 +69,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsBullCallSpread),
 			}),
 		);
 	};
@@ -341,7 +352,7 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.ytm ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 6),
 			},
@@ -352,21 +363,11 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
+					analyze,
 				},
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Strategy.BullCallSpread> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 96,
-		}),
 		[],
 	);
 
@@ -399,28 +400,30 @@ const BullCallSpread = ({ title, type }: BullCallSpreadProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				condition={t(`${type}.condition`)}
 			/>
 
-			<AgTable<Strategy.BullCallSpread>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.BullCallSpread>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };

@@ -111,6 +111,7 @@ const Transactions = () => {
 				columns: columnsVisibility,
 				title: t('transactions_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(defaultTransactionColumns),
 			}),
 		);
 	};

@@ -1,26 +1,17 @@
 import { createQuery } from '@/utils/helpers';
 import { type QueryFunction } from '@tanstack/react-query';
+import { fetchSymbolInfo } from '../actions';
 import axios from '../axios';
 import routes from '../routes';
 
 export const symbolInfoQueryFn: QueryFunction<Symbol.Info | null, ['symbolInfoQuery', string | null], never> = async ({
 	queryKey,
-	signal,
 }) => {
 	try {
 		const [, symbolIsin] = queryKey;
-
 		if (!symbolIsin) return null;
 
-		const response = await axios.get<ServerResponse<Symbol.Info>>(routes.symbol.SymbolInfo, {
-			params: { symbolIsin },
-			signal,
-		});
-		const { data } = response;
-
-		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-		return data.result;
+		return await fetchSymbolInfo(symbolIsin);
 	} catch (e) {
 		return null;
 	}
