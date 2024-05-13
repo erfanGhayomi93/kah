@@ -15,7 +15,8 @@ const SettingCardField = ({ icon, title, node, prefixIcon, colon = true, titleCl
 		<div className='flex-justify-between'>
 			<span className={clsx('gap-8 text-gray-900 flex-justify-center', titleClass)}>
 				{icon}
-				{title + (colon ? ':' : '')}
+				{title}
+				{colon ? ':' : ''}
 				{prefixIcon && prefixIcon}
 			</span>
 			<span className={valueClass}>{node}</span>

@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -49,18 +49,44 @@ const LongPut = (strategy: LongPutProps) => {
 		//
 	};
 
-	const analyze = (data: Strategy.LongPut) => {
-		const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+	const analyze = (data: Strategy.LongCall) => {
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.symbolTitle,
+						symbolISIN: data.symbolISIN,
+						optionType: 'put',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.premium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'buy',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
 				},
-				contracts,
-			}),
-		);
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showColumnsPanel = () => {
@@ -324,14 +350,7 @@ const LongPut = (strategy: LongPutProps) => {
 					onCommissionChanged={setUseCommission}
 				/>
 
-				<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
-					<Table<Strategy.LongPut>
-						ref={gridRef}
-						rowData={rows}
-						columnDefs={columnDefs}
-						isFetching={isFetching}
-					/>
-				</div>
+				<Table<Strategy.LongPut> ref={gridRef} rowData={rows} columnDefs={columnDefs} isFetching={isFetching} />
 			</div>
 		</>
 	);

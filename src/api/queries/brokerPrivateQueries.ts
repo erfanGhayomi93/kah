@@ -147,7 +147,10 @@ export const useOptionOrdersQuery = createQuery<Order.OptionOrder[] | null, ['op
 	},
 });
 
-export const useGetCustomerSettings = createQuery<Settings.IFormatedBrokerCustomerSettings | null, ['GetCustomerSettings']>({
+export const useGetCustomerSettings = createQuery<
+	Settings.IFormattedBrokerCustomerSettings | null,
+	['GetCustomerSettings']
+>({
 	staleTime: 6e4,
 	queryKey: ['GetCustomerSettings'],
 	queryFn: async ({ signal }) => {
@@ -160,15 +163,14 @@ export const useGetCustomerSettings = createQuery<Settings.IFormatedBrokerCustom
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-		let formatedData = {} as Settings.IFormatedBrokerCustomerSettings;
-		
-		data?.result.forEach((item) => {
-			let value = item.configValue;
-			if (value === 'true') formatedData[item.configKey] = true;
-			if (value === 'false') formatedData[item.configKey] = false;
-			if (!isNaN(Number(value))) formatedData[item.configKey] = String(value);
+		const formattedData: Partial<Settings.IFormattedBrokerCustomerSettings> = {};
+
+		data?.result.forEach(({ configKey, configValue }) => {
+			if (configValue === 'true') formattedData[configKey] = true;
+			if (configValue === 'false') formattedData[configKey] = false;
+			if (!isNaN(Number(configValue))) formattedData[configKey] = String(configValue);
 		});
 
-		return formatedData;
+		return formattedData as Settings.IFormattedBrokerCustomerSettings;
 	},
 });

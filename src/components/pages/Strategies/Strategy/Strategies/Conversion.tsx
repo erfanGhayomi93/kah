@@ -129,14 +129,12 @@ const Conversion = (strategy: ConversionProps) => {
 					onCommissionChanged={setUseCommission}
 				/>
 
-				<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
-					<Table<Strategy.Conversion>
-						ref={gridRef}
-						rowData={rows}
-						columnDefs={columnDefs}
-						isFetching={isFetching}
-					/>
-				</div>
+				<Table<Strategy.Conversion>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
 			</div>
 		</>
 	);

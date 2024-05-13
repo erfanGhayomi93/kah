@@ -3,7 +3,7 @@
 import LocalstorageInstance from '@/classes/Localstorage';
 import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { ToastPosition } from 'react-toastify';
+import { type ToastPosition } from 'react-toastify';
 import { type RootState } from '../store';
 
 export interface UIState {
@@ -87,7 +87,7 @@ export const {
 	setLsStatus,
 	setSymbolInfoPanelGridLayout,
 	setDashboardGridLayout,
-	setToastPosition
+	setToastPosition,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;

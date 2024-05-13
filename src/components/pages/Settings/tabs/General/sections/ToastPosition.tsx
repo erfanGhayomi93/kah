@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getToastPosition, setToastPosition } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { toast, ToastPosition } from 'react-toastify';
+import { toast, type ToastPosition } from 'react-toastify';
 
 interface IButtons {
 	title: string;
@@ -39,7 +39,6 @@ const ToastPositionSettings = () => {
 			className: 'top-0 right-8',
 		},
 	];
-
 
 	return (
 		<div className='gap-16 flex-justify-between'>

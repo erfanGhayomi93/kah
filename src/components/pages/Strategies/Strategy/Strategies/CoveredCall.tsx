@@ -50,52 +50,56 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	};
 
 	const analyze = (data: Strategy.CoveredCall) => {
-		const contracts: TSymbolStrategy[] = [
-			{
-				type: 'option',
-				id: uuidv4(),
-				symbol: {
-					symbolTitle: data.symbolTitle,
-					symbolISIN: data.symbolISIN,
-					optionType: 'call',
-					baseSymbolPrice: data.baseLastTradedPrice,
-					historicalVolatility: data.historicalVolatility,
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.symbolTitle,
+						symbolISIN: data.symbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.premium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
 				},
-				contractSize: data.contractSize,
-				price: data.premium || 1,
-				quantity: 1,
-				settlementDay: data.contractEndDate,
-				strikePrice: data.strikePrice,
-				side: 'sell',
-				marketUnit: data.marketUnit,
-				requiredMargin: {
-					value: data.requiredMargin,
+				{
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: data.baseMarketUnit,
+					quantity: 1,
+					price: data.baseLastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+						baseSymbolPrice: data.baseLastTradedPrice,
+					},
 				},
-			},
-			{
-				type: 'base',
-				id: uuidv4(),
-				marketUnit: data.baseMarketUnit,
-				quantity: 1,
-				price: data.baseLastTradedPrice,
-				side: 'buy',
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
-					baseSymbolPrice: data.baseLastTradedPrice,
-				},
-			},
-		];
+			];
 
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
-				},
-				contracts,
-			}),
-		);
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showColumnsPanel = () => {
@@ -402,14 +406,12 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					onCommissionChanged={setUseCommission}
 				/>
 
-				<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
-					<Table<Strategy.CoveredCall>
-						ref={gridRef}
-						rowData={rows}
-						columnDefs={columnDefs}
-						isFetching={isFetching}
-					/>
-				</div>
+				<Table<Strategy.CoveredCall>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
 			</div>
 		</>
 	);

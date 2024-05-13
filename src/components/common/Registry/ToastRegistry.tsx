@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import { useAppSelector } from '@/features/hooks';
 import { getToastPosition } from '@/features/slices/uiSlice';
 import React from 'react';

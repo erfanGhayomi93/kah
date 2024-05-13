@@ -417,14 +417,12 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					onCommissionChanged={setUseCommission}
 				/>
 
-				<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
-					<Table<Strategy.BullCallSpread>
-						ref={gridRef}
-						rowData={rows}
-						columnDefs={columnDefs}
-						isFetching={isFetching}
-					/>
-				</div>
+				<Table<Strategy.BullCallSpread>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
 			</div>
 		</>
 	);

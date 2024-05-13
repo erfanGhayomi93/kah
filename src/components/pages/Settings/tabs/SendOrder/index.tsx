@@ -23,9 +23,9 @@ interface IUpdateSettingsBody {
 const SendOrder = () => {
 	const t = useTranslations();
 
-	const defaultFieldValues = useRef<Settings.IFormatedBrokerCustomerSettings>();
+	const defaultFieldValues = useRef<Settings.IFormattedBrokerCustomerSettings>();
 
-	const [fieldValues, setFieldValues] = useState<Settings.IFormatedBrokerCustomerSettings>();
+	const [fieldValues, setFieldValues] = useState<Settings.IFormattedBrokerCustomerSettings>();
 
 	const brokerURLs = useAppSelector(getBrokerURLs);
 
@@ -50,6 +50,8 @@ const SendOrder = () => {
 	});
 
 	const handleFieldValueChange = (fieldName: TFieldName, newValue: string | boolean) => {
+		if (!fieldValues) return;
+
 		const customerSettingsBody: IUpdateSettingsBody[] = [];
 		for (const key in fieldValues) {
 			const keyValue = key as IUpdateSettingsBody['configKey'];
@@ -58,8 +60,9 @@ const SendOrder = () => {
 				configValue: fieldName === keyValue ? String(newValue) : String(fieldValues[keyValue]),
 			});
 		}
+
 		updateCustomerSettings(customerSettingsBody);
-		setFieldValues((prev) => ({ ...prev, [fieldName]: newValue }) as Settings.IFormatedBrokerCustomerSettings);
+		setFieldValues({ ...fieldValues, [fieldName]: newValue });
 	};
 
 	useEffect(() => {
