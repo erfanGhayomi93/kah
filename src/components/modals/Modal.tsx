@@ -116,7 +116,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
 const Header = ({ label, onClose, onClear, onExpanded }: ModalHeaderProps) => (
 	<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
-		<h2 className='text-xl font-medium text-gray-900'>{label}</h2>
+		<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
 
 		<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
 			<XSVG width='2rem' height='2rem' />
@@ -128,14 +128,11 @@ const Header = ({ label, onClose, onClear, onExpanded }: ModalHeaderProps) => (
 			</button>
 		)}
 
-		{
-			!!onClear && (
-				<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
-					<EraserSVG width='2rem' height='2rem' />
-				</button>
-			)
-		}
-
+		{!!onClear && (
+			<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
+				<EraserSVG width='2rem' height='2rem' />
+			</button>
+		)}
 	</div>
 );
 

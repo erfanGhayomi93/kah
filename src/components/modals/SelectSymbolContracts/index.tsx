@@ -27,7 +27,10 @@ const Div = styled.div`
 `;
 
 const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
-	({ symbol, initialSelectedContracts, canChangeBaseSymbol, maxContracts, callback, ...props }, ref) => {
+	(
+		{ symbol, initialSelectedContracts, canChangeBaseSymbol, canSendBaseSymbol, maxContracts, callback, ...props },
+		ref,
+	) => {
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
@@ -65,7 +68,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		};
 
 		const onSubmit = () => {
-			callback(states.contracts, states.sendBaseSymbol && symbol ? symbol.symbolISIN : null);
+			callback(states.contracts, canSendBaseSymbol && states.sendBaseSymbol && symbol ? symbol.symbolISIN : null);
 			onCloseModal();
 		};
 
@@ -82,7 +85,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 					<div className='flex-1 gap-16 p-24 flex-column'>
 						<Toolbar
-							canChangeBaseSymbol={canChangeBaseSymbol ?? true}
+							canChangeBaseSymbol={canChangeBaseSymbol}
 							settlementDay={states.activeSettlement}
 							setSettlementDay={(v) => setStatesValue('activeSettlement', v)}
 							symbol={symbol}
@@ -97,7 +100,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							maxContracts={maxContracts}
 						/>
 
-						{canChangeBaseSymbol && symbol && (
+						{canSendBaseSymbol && symbol && (
 							<div
 								style={{ flex: '0 0 4rem' }}
 								className='rounded bg-white px-8 shadow-card flex-items-center'

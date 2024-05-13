@@ -27,6 +27,14 @@ const ProtectivePut = dynamic(() => import('./StrategyTables/ProtectivePut'), {
 	loading: () => <Loading />,
 });
 
+const LongStraddle = dynamic(() => import('./StrategyTables/LongStraddle'), {
+	loading: () => <Loading />,
+});
+
+const Conversion = dynamic(() => import('./StrategyTables/Conversion'), {
+	loading: () => <Loading />,
+});
+
 const Table = ({ strategy }: TableProps) => {
 	const { type } = strategy;
 
@@ -41,6 +49,10 @@ const Table = ({ strategy }: TableProps) => {
 			{type === 'ProtectivePut' && <ProtectivePut {...strategy} />}
 
 			{type === 'BullCallSpread' && <BullCallSpread {...strategy} />}
+
+			{type === 'LongStraddle' && <LongStraddle {...strategy} />}
+
+			{type === 'Conversion' && <Conversion {...strategy} />}
 		</div>
 	);
 };

@@ -1,13 +1,15 @@
 import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
+import Loading from '@/components/common/Loading';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -45,12 +47,57 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.CoveredCall) => {
+	const execute = (data: Strategy.CoveredCall) => {
 		//
 	};
 
-	const execute = (data: Strategy.CoveredCall) => {
-		//
+	const analyze = (data: Strategy.CoveredCall) => {
+		const contracts: TSymbolStrategy[] = [
+			{
+				type: 'option',
+				id: uuidv4(),
+				symbol: {
+					symbolTitle: data.symbolTitle,
+					symbolISIN: data.symbolISIN,
+					optionType: 'call',
+					baseSymbolPrice: data.baseLastTradedPrice,
+					historicalVolatility: data.historicalVolatility,
+				},
+				contractSize: data.contractSize,
+				price: data.premium || 1,
+				quantity: 1,
+				settlementDay: data.contractEndDate,
+				strikePrice: data.strikePrice,
+				side: 'sell',
+				marketUnit: data.marketUnit,
+				requiredMargin: {
+					value: data.requiredMargin,
+				},
+			},
+			{
+				type: 'base',
+				id: uuidv4(),
+				marketUnit: data.baseMarketUnit,
+				quantity: 1,
+				price: data.baseLastTradedPrice,
+				side: 'buy',
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+					baseSymbolPrice: data.baseLastTradedPrice,
+				},
+			},
+		];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts,
+			}),
+		);
 	};
 
 	const showColumnsPanel = () => {
@@ -156,9 +203,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerName: 'سر به سر استراتژی',
 				width: 136,
 				cellClass: ({ data }) =>
-					(data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0) < 0
-						? 'text-error-100'
-						: 'text-success-100',
+					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0)),
 				valueGetter: ({ data }) => data?.coveredCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -260,7 +305,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -272,7 +317,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -285,7 +330,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 					tooltip:
 						'پوشش ریسک یا حاشیه اطمینان درصدی است که سهم پایه می‌تواند حداکثر کاهش خود را داشته باشد، ولی استراتژی کاورد کال وارد زیان نشود.',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.riskCoverage ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -297,7 +342,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید در صورت عدم اعمال توسط خریدار اختیار',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -308,8 +353,8 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
+					analyze,
 				},
 			},
 		],
@@ -375,6 +420,8 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
 			/>
+
+			{isFetching && <Loading />}
 
 			{rows.length === 0 && !isFetching && <NoTableData />}
 		</>
