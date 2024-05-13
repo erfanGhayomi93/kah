@@ -13,6 +13,17 @@ const Columns = ({ close }: ColumnsProps) => {
 
 	const [columns, setColumns] = useState(manageColumns?.columns ?? []);
 
+	const onResetColumns = () => {
+		try {
+			if (!manageColumns) return;
+
+			if (manageColumns?.initialColumns) setColumns(manageColumns.initialColumns);
+			manageColumns.onReset?.();
+		} catch (e) {
+			//
+		}
+	};
+
 	const onColumnChanged = (updatedCol: IManageColumn) => {
 		try {
 			const newColumns = columns.map((col) => ({
@@ -33,9 +44,11 @@ const Columns = ({ close }: ColumnsProps) => {
 				<h1 className='text-xl font-medium text-gray-900'>{manageColumns?.title}</h1>
 
 				<div className='flex gap-24'>
-					<button className='icon-hover' type='button' onClick={manageColumns?.onReset}>
-						<RefreshSVG width='2.4rem' height='2.4rem' />
-					</button>
+					{manageColumns?.onReset && (
+						<button className='icon-hover' type='button' onClick={onResetColumns}>
+							<RefreshSVG width='2.4rem' height='2.4rem' />
+						</button>
+					)}
 					<button className='icon-hover' type='button' onClick={close}>
 						<XSVG width='2rem' height='2rem' />
 					</button>
