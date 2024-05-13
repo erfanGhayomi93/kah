@@ -644,6 +644,8 @@ declare namespace Broker {
 		| 'ChangeBrokerExportFilteredCSV'
 		| 'ChangeBrokerChangeBrokersByFilter'
 		| 'ChangeBrokerSetCancel'
+		| "FreezeExportFreeze"
+		| 'Freezerequests'
 
 	type URL = Record<UrlKey, string>;
 

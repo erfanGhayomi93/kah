@@ -3,9 +3,9 @@ declare interface INextProps<T extends object = {}> {
 	params: T & { locale: string };
 }
 
-declare type DatesFilterType = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
+declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
 
 declare interface IUserBankAccount {
 	id: number;
@@ -281,7 +281,9 @@ declare type IBrokerUrls = Record<
 	| 'getPaymentGetStatuses'
 	| 'getChangeBrokerExportFilteredCSV'
 	| 'getChangeBrokerChangeBrokersByFilter'
-	| 'changeBrokerSetCancel',
+	| 'changeBrokerSetCancel'
+	| 'getFreezeExportFreeze'
+	| 'getFreezerequests',
 	string
 >;
 
@@ -330,9 +332,9 @@ declare interface IAnalyzeModalInputs {
 
 declare type TSetBsModalInputs = <
 	T extends
-		| Partial<IBsModalInputs>
-		| keyof Partial<IBsModalInputs>
-		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+	| Partial<IBsModalInputs>
+	| keyof Partial<IBsModalInputs>
+	| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
 >(
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
@@ -562,6 +564,29 @@ declare namespace ChangeBrokerReports {
 	}
 
 	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
+}
+
+declare namespace FreezeUnFreezeReports {
+
+	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+
+	export interface IFreezeUnFreezeReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		requestState: TFreezeRequestState | null;
+	}
+
+	export interface IFreezeUnFreezeReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TFreezeUnFreezeReportsColumns = "id" | "symbolTitle" | "confirmedOn" | "requestState" | "action"
 }
 
 declare type TTransactionColumnsState = {

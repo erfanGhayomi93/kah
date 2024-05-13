@@ -1,16 +1,15 @@
 import ipcMain from '@/classes/IpcMain';
 import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
-import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
-import { setChangeBrokerReportsFiltersModal } from '@/features/slices/modalSlice';
+import { setFreezeUnFreezeReportsFiltersModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
-	filters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>;
-	setFilters: Dispatch<SetStateAction<Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>>>
+	filters: Omit<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters, 'pageNumber' | 'pageSize'>;
+	setFilters: Dispatch<SetStateAction<Omit<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters, 'pageNumber' | 'pageSize'>>>;
 }
 
 const Form = ({ filters, setFilters }: IFormProps) => {
@@ -18,9 +17,9 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const setFilterValue = <T extends keyof ChangeBrokerReports.IChangeBrokerReportsFilters>(
+	const setFilterValue = <T extends keyof FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters>(
 		field: T,
-		value: ChangeBrokerReports.IChangeBrokerReportsFilters[T],
+		value: FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters[T],
 	) => {
 		setFilters((prev) => ({
 			...prev,
@@ -29,14 +28,14 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	};
 
 	const onClose = () => {
-		dispatch(setChangeBrokerReportsFiltersModal(null));
+		dispatch(setFreezeUnFreezeReportsFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		try {
-			ipcMain.send('set_changeBroker_reports_filters', filters);
+			ipcMain.send('set_freeze_and_unfreeze_filters', filters);
 		} catch (e) {
 			//
 		} finally {
@@ -46,10 +45,6 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 	const onChangeSymbol = (value: Symbol.Search) => {
 		if (value) setFilterValue('symbol', value);
-	};
-
-	const onChangeStatus = (options: string[]) => {
-		setFilterValue('status', options);
 	};
 
 	return (
@@ -81,35 +76,18 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					</div>
 				</div>
 
-				<MultiSelect<string>
-					onChange={(options) => onChangeStatus(options)}
-					options={[
-						'Reception',
-						'CancellByCustomer',
-						'InProgress',
-						'Done',
-						'BankingAction',
-						'Draft'
-					]}
+
+				<Select<FreezeUnFreezeReports.TFreezeRequestState>
+					onChange={(option) => setFilterValue('requestState', option)}
+					options={['Done', 'InProgress', 'FreezeFailed']}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => <span>{t(`states.state_${option}`)}</span>}
-					placeholder={t('change_broker_reports_page.status_placeholder_filter')}
-					defaultValues={filters.status}
+					getOptionTitle={(option) => (
+						<span>{t(`states.state_${option}`)}</span>
+					)}
+					placeholder={t('freeze_and_unFreeze_reports_page.status_placeholder_filter')}
+					defaultValue={filters.requestState}
 				/>
 
-				<Select<{
-					id: number;
-					label: string;
-				}>
-					onChange={(option) => setFilterValue('attachment', Boolean(option.id))}
-					options={[
-						{ id: 0, label: 'has_not_attachment' },
-						{ id: 1, label: 'has_attachment' },
-					]}
-					getOptionId={(option) => option.id}
-					getOptionTitle={(option) => <span>{t(`deposit_with_receipt_page.${option.label}`)}</span>}
-					placeholder={t('deposit_with_receipt_page.attachment_placeholder_filter')}
-				/>
 
 			</div>
 
