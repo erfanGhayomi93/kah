@@ -273,6 +273,7 @@ declare type IBrokerUrls = Record<
 	| 'getEPaymentExportFilteredCSV'
 	| 'getReceiptExportFilteredCSV'
 	| 'getPaymentExportFilteredCSV',
+	'SetCustomerSettings' | 'GetCustomerSettings',
 	string
 >;
 

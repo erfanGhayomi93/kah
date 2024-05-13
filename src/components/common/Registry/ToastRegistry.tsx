@@ -1,3 +1,6 @@
+'use client'
+import { useAppSelector } from '@/features/hooks';
+import { getToastPosition } from '@/features/slices/uiSlice';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
@@ -6,6 +9,8 @@ interface ToastRegistryProps {
 }
 
 const ToastRegistry = ({ children }: ToastRegistryProps) => {
+	const toastPosition = useAppSelector(getToastPosition);
+
 	return (
 		<>
 			<ToastContainer
@@ -13,7 +18,7 @@ const ToastRegistry = ({ children }: ToastRegistryProps) => {
 				closeOnClick
 				rtl
 				theme='colored'
-				position='bottom-left'
+				position={toastPosition}
 				toastClassName='shadow-sm'
 				newestOnTop={false}
 				closeButton={false}

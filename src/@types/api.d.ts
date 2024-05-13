@@ -634,7 +634,10 @@ declare namespace Broker {
 		| 'CustomerTurnOverCSVExport'
 		| 'EPaymentExportFilteredCSV'
 		| 'ReceiptExportFilteredCSV'
-		| 'PaymentExportFilteredCSV';
+		| 'PaymentExportFilteredCSV'
+		| 'SetCustomerSettings'
+		| 'DepositOnlineHistory'
+		| 'GetCustomerSettings';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1280,6 +1283,23 @@ declare namespace Dashboard {
 			sumOfLegalsSellVolume: number;
 		}
 	}
+}
+
+declare namespace Settings {
+	export interface IBrokerCustomerSettings {
+		id: number;
+		configKey:
+			| 'confirmBeforeDelete'
+			| 'confirmBeforeSendOrder'
+			| 'defaultBuyVolume'
+			| 'defaultSellVolume'
+			| 'sendSupervisorMarketMessage'
+			| 'showSymbolDetailsInBuySellModal'
+			| 'breakEvenPoint';
+		configValue: string;
+		saveDate: string;
+	}
+	export type IFormatedBrokerCustomerSettings = Record<IBrokerCustomerSettings['configKey'], string | boolean>;
 }
 
 declare namespace Payment {

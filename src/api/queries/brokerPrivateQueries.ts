@@ -146,3 +146,29 @@ export const useOptionOrdersQuery = createQuery<Order.OptionOrder[] | null, ['op
 		return data.result;
 	},
 });
+
+export const useGetCustomerSettings = createQuery<Settings.IFormatedBrokerCustomerSettings | null, ['GetCustomerSettings']>({
+	staleTime: 6e4,
+	queryKey: ['GetCustomerSettings'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+
+		if (!url) return null;
+		const response = await axios.get<ServerResponse<Settings.IBrokerCustomerSettings[]>>(url.GetCustomerSettings, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+		let formatedData = {} as Settings.IFormatedBrokerCustomerSettings;
+		
+		data?.result.forEach((item) => {
+			let value = item.configValue;
+			if (value === 'true') formatedData[item.configKey] = true;
+			if (value === 'false') formatedData[item.configKey] = false;
+			if (!isNaN(Number(value))) formatedData[item.configKey] = String(value);
+		});
+
+		return formatedData;
+	},
+});

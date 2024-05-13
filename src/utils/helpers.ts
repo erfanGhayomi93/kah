@@ -314,6 +314,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getEPaymentExportFilteredCSV: data.EPaymentExportFilteredCSV,
 		getReceiptExportFilteredCSV: data.ReceiptExportFilteredCSV,
 		getPaymentExportFilteredCSV: data.PaymentExportFilteredCSV,
+		SetCustomerSettings: data.SetCustomerSettings,
+		GetCustomerSettings: data.GetCustomerSettings,
 	};
 
 	return urls;

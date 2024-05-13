@@ -1309,9 +1309,6 @@
 		"history_settings": " سابقه ورود خروج",
 		"identity_information": "اطلاعات هویتی",
 		"two_step_login": "ورود دو مرحله ای",
-		"two_step_login_greeting": "کاربر گرامی",
-		"two_step_login_description": "با فعال سازی ورود دو مرحله ای در هر بار ورود، علاوه بر نام کاربری و رمز عبور، لازم است رمز یکبار مصرفی که برای شما پیامک می شود را نیز وارد نمایید. پیشنهاد می شود برای امنیت بیشتر حساب کاربری خود، این امکان را فعال نمایید.",
-		"two_step_login_btn_title": "فعالسازی ورود دو مرحله ای",
 		"name": "نام و نام خانوادگی",
 		"natinal_code": "کد ملی",
 		"bourse_code": "کد بورسی",
@@ -1335,6 +1332,16 @@
 		"top_right": "بالا - راست",
 		"top_left": "بالا - چپ",
 		"bottom_right": "پایین - راست",
-		"bottom_left": "پایین - چپ"
+		"bottom_left": "پایین - چپ",
+		"broker_info_title": "اطلاعات کارگزاری",
+		"activation": "فعالسازی",
+		"changed_toast_position": "محل نمایش پیام های سیستم تغییر یافت",
+		"default_buy_volume": "حجم پیش فرض خرید",
+		"default_sell_volume": "حجم پیش فرض فروش",
+		"confirm_before_send_order": "دریافت تایید قبل از ارسال سفارش",
+		"confirm_before_delete_order": "دریافت تایید قبل از حذف سفارش",
+		"Get_online_price": "دریافت قیمت از سرخط",
+		"market_watcher_message_notification": "ارسال اعلان “پیام ناظر بازار”",
+		"show_symbol_info_in_send_order": "نمایش اطلاعات نماد در ارسال سفارش"
 	}
 }
