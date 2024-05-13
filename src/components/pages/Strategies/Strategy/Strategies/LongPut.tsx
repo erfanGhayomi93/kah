@@ -49,7 +49,7 @@ const LongPut = (strategy: LongPutProps) => {
 		//
 	};
 
-	const analyze = (data: Strategy.LongCall) => {
+	const analyze = (data: Strategy.LongPut) => {
 		try {
 			const contracts: TSymbolStrategy[] = [
 				{
