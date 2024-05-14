@@ -39,10 +39,14 @@ const ChangeBrokerReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue, setFieldsValue } =
-		useInputs<ChangeBrokerReports.IChangeBrokerReportsFilters>(initialChangeBrokerReportsFilters);
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<ChangeBrokerReports.IChangeBrokerReportsFilters>(
+		initialChangeBrokerReportsFilters,
+	);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('changeBroker_column', defaultChangeBrokerReportsColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'changeBroker_column',
+		defaultChangeBrokerReportsColumns,
+	);
 
 	const { setDebounce } = useDebounce();
 
@@ -91,7 +95,7 @@ const ChangeBrokerReports = () => {
 			downloadFileQueryParams(
 				urls.getChangeBrokerExportFilteredCSV,
 				`change-broker-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
-				params
+				params,
 			);
 		} catch (e) {
 			//
@@ -101,6 +105,7 @@ const ChangeBrokerReports = () => {
 	const onManageColumns = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: defaultChangeBrokerReportsColumns,
 				columns: columnsVisibility,
 				title: t('transactions_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),

@@ -87,7 +87,10 @@ const initialState: ModalState = {
 	withdrawalCashReportsFilters: null,
 
 	// فیلتر صفحه گزارشات تغییر کارگزار ناظر
-	changeBrokerReportsFilters: null
+	changeBrokerReportsFilters: null,
+
+	// فیلتر صفحه فریز و رفع فریز
+	freezeUnfreezeReportsFilters: null
 };
 
 const modalSlice = createSlice({
@@ -228,12 +231,18 @@ const modalSlice = createSlice({
 			state.withdrawalCashReportsFilters = payload;
 		},
 
-
 		setChangeBrokerReportsFiltersModal: (
 			state,
 			{ payload }: PayloadAction<ModalState['changeBrokerReportsFilters']>,
 		) => {
 			state.changeBrokerReportsFilters = payload;
+		},
+
+		setFreezeUnFreezeReportsFiltersModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['freezeUnfreezeReportsFilters']>,
+		) => {
+			state.freezeUnfreezeReportsFilters = payload;
 		},
 	},
 });
@@ -267,7 +276,8 @@ export const {
 	setInstantDepositReportsFiltersModal,
 	setDepositWithReceiptReportsFiltersModal,
 	setWithdrawalCashReportsFiltersModal,
-	setChangeBrokerReportsFiltersModal
+	setChangeBrokerReportsFiltersModal,
+	setFreezeUnFreezeReportsFiltersModal
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -293,5 +303,6 @@ export const getInstantDepositReportsFiltersModal = (state: RootState) => state.
 export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
 export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.modal.withdrawalCashReportsFilters;
 export const getChangeBrokerReportsFiltersModal = (state: RootState) => state.modal.changeBrokerReportsFilters;
+export const getFreezeUnFreezeReportsFiltersModal = (state: RootState) => state.modal.freezeUnfreezeReportsFilters;
 
 export default modalSlice.reducer;

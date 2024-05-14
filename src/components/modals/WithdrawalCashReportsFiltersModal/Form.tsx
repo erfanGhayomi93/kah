@@ -65,7 +65,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
-				<Select<DatesFilterType>
+				<Select<TDateRange>
 					onChange={(option) => setFilterValue('date', option)}
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}

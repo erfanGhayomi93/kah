@@ -643,7 +643,10 @@ declare namespace Broker {
 		| 'PaymentGetStatuses'
 		| 'ChangeBrokerExportFilteredCSV'
 		| 'ChangeBrokerChangeBrokersByFilter'
-		| 'GetAgreements';
+		| 'GetAgreements'
+		| 'ChangeBrokerSetCancel'
+		| "FreezeExportFreeze"
+		| 'Freezerequests'
 
 	type URL = Record<UrlKey, string>;
 
@@ -938,7 +941,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse {}
+		export interface FaraBourse extends GetMarketState.Bourse { }
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -953,17 +956,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-				| 'ticks'
-				| 'days'
-				| 'hours'
-				| 'milliseconds'
-				| 'minutes'
-				| 'seconds'
-				| 'totalDays'
-				| 'totalHours'
-				| 'totalMilliseconds'
-				| 'totalMinutes'
-				| 'totalSeconds';
+			| 'ticks'
+			| 'days'
+			| 'hours'
+			| 'milliseconds'
+			| 'minutes'
+			| 'seconds'
+			| 'totalDays'
+			| 'totalHours'
+			| 'totalMilliseconds'
+			| 'totalMinutes'
+			| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1295,13 +1298,13 @@ declare namespace Settings {
 	export interface IBrokerCustomerSettings {
 		id: number;
 		configKey:
-			| 'confirmBeforeDelete'
-			| 'confirmBeforeSendOrder'
-			| 'defaultBuyVolume'
-			| 'defaultSellVolume'
-			| 'sendSupervisorMarketMessage'
-			| 'showSymbolDetailsInBuySellModal'
-			| 'breakEvenPoint';
+		| 'confirmBeforeDelete'
+		| 'confirmBeforeSendOrder'
+		| 'defaultBuyVolume'
+		| 'defaultSellVolume'
+		| 'sendSupervisorMarketMessage'
+		| 'showSymbolDetailsInBuySellModal'
+		| 'breakEvenPoint';
 		configValue: string;
 		saveDate: string;
 	}
@@ -1431,14 +1434,17 @@ declare namespace Strategy {
 	declare type Cheap =
 		| 'HighRisk'
 		| 'LowRisk'
+		| 'NoRisk'
 		| 'ModerateRisk'
 		| 'LimitedInterest'
 		| 'UnlimitedInterest'
 		| 'LimitedLoss'
+		| 'NoLimit'
 		| 'UnlimitedLoss'
 		| 'BullishMarket'
 		| 'BearishMarket'
 		| 'NeutralMarket'
+		| 'AllMarket'
 		| 'DirectionalMarket';
 
 	declare type Type =
@@ -1616,13 +1622,14 @@ declare namespace Strategy {
 		baseTradeValue: number;
 		baseTradeCount: number;
 		baseTradeVolume: number;
-		baseLastTradedDate: string;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		callRequiredMargin: number;
+		putRequiredMargin: number;
 		contractEndDate: string;
+		baseLastTradedDate: string;
 		contractSize: number;
-		requiredMargin: number;
 	}
 
 	export interface Conversion {
@@ -1706,6 +1713,8 @@ declare namespace Strategy {
 		lspTimeValue: number;
 		hspTimeValue: number;
 		lspIntrinsicValue: number;
+		lspHistoricalVolatility: number;
+		hspHistoricalVolatility: number;
 		hspIntrinsicValue: number;
 		lspTradeValue: number;
 		hspTradeValue: number;
@@ -1716,13 +1725,54 @@ declare namespace Strategy {
 		ytm: number;
 		marketUnit: string;
 		baseMarketUnit: string;
-		historicalVolatility: number;
 		contractEndDate: string;
 		contractSize: number;
 		requiredMargin: number;
 	}
 
 	export interface ProtectivePut {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		strikePrice: number;
+		openPositionCount: number;
+		iotm: Option.IOTM;
+		premium: number;
+		tradePriceVarPreviousTradePercent: number;
+		optionBestBuyLimitQuantity: number;
+		optionBestBuyLimitPrice: number;
+		baseBestSellLimitPrice: number;
+		baseBestBuyLimitPrice: number;
+		optionBestSellLimitPrice: number;
+		optionBestSellLimitQuantity: number;
+		protectivePutBEP: number;
+		maxLoss: number;
+		profitAmount: number;
+		profitPercent: number;
+		inUseCapital: number;
+		bepDifference: number;
+		baseMarketUnit: string;
+		marketUnit: string;
+		historicalVolatility: number;
+		requiredMargin: number;
+		contractEndDate: string;
+		timeValue: number;
+		intrinsicValue: number;
+		optionBestLimitPrice: number;
+		optionBestLimitVolume: number;
+		tradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		contractSize: number;
+	}
+
+	export interface BearPutSpread {
 		symbolTitle: string;
 		symbolISIN: string;
 		marketUnit: string;
@@ -1753,18 +1803,18 @@ declare namespace Reports {
 		amount: number;
 		providerType: string;
 		state:
-			| 'CanceledByUser'
-			| 'Done'
-			| 'DoubleSpendingCheckedOk'
-			| 'DoubleSpendingCheckFailed'
-			| 'RedirectToBank'
-			| 'Request'
-			| 'RequestBankToken'
-			| 'RequestBankTokenError'
-			| 'Verify'
-			| 'VerifyCheck'
-			| 'VerifyCheckFailed'
-			| 'OkBeforeVerifys';
+		| 'CanceledByUser'
+		| 'Done'
+		| 'DoubleSpendingCheckedOk'
+		| 'DoubleSpendingCheckFailed'
+		| 'RedirectToBank'
+		| 'Request'
+		| 'RequestBankToken'
+		| 'RequestBankTokenError'
+		| 'Verify'
+		| 'VerifyCheck'
+		| 'VerifyCheckFailed'
+		| 'OkBeforeVerifys';
 		errorMessage: string;
 	}
 
@@ -1791,17 +1841,17 @@ declare namespace Reports {
 		bankAccountId: number;
 		accountNumber: string | null;
 		status:
-			| 'Draft'
-			| 'Pending'
-			| 'Confirmed'
-			| 'Canceled'
-			| 'Failed'
-			| 'Voided'
-			| 'Paid'
-			| 'Entry'
-			| 'ErrorOccured'
-			| 'PostedToBackOffice'
-			| 'CreateRequest';
+		| 'Draft'
+		| 'Pending'
+		| 'Confirmed'
+		| 'Canceled'
+		| 'Failed'
+		| 'Voided'
+		| 'Paid'
+		| 'Entry'
+		| 'ErrorOccured'
+		| 'PostedToBackOffice'
+		| 'CreateRequest';
 		prsName: string | null;
 		orderOrigin: 'Broker' | 'Online' | number;
 		orderOriginName: null | string;
@@ -1820,5 +1870,15 @@ declare namespace Reports {
 		attachmentId: number;
 		symbolTitle: string;
 		hasAttachment: boolean;
+	}
+
+	export interface IFreezeUnfreezeReports {
+		symbolISIN: string;
+		symbolTitle: string;
+		requestType: 'Freeze' | 'UnFreeze';
+		requestState: FreezeUnFreezeReports.TFreezeRequestState;
+		description: string;
+		confirmed: boolean;
+		confirmedOn: string
 	}
 }

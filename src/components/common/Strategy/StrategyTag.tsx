@@ -11,12 +11,15 @@ export const StrategyTag = ({ id, title, i }: StrategyTagProps) => {
 		<li
 			className={clsx(
 				'h-32 w-96 cursor-default rounded-oval !border border-current text-tiny flex-justify-center',
-				i === 0 && id === 'HighRisk' && 'font-medium btn-error',
-				i === 0 && id === 'LowRisk' && 'font-medium btn-success',
-				i === 0 && id === 'ModerateRisk' && 'font-medium btn-warning',
-				i === 1 && 'border-success-100 text-success-100',
-				i === 2 && 'border-error-100 text-error-100',
-				i === 3 && 'border-info text-info',
+				i === 0
+					? [
+							'font-medium',
+							id === 'HighRisk' && 'border-error-100 bg-error-100 text-white',
+							id === 'LowRisk' && 'border-success-300 bg-success-300 text-gray-1000',
+							id === 'ModerateRisk' && 'border-warning-100 bg-warning-100 text-gray-1000',
+							id === 'NoRisk' && 'border-success-100 bg-success-100 text-white',
+						]
+					: 'border-gray-500 text-gray-800',
 			)}
 		>
 			{title}

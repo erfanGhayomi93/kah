@@ -199,3 +199,65 @@ export const useBullCallSpreadStrategyQuery = createQuery<
 		}
 	},
 });
+
+export const useBearPutSpreadStrategyQuery = createQuery<
+	Strategy.BearPutSpread[],
+	TStrategyBaseType<'bearPutSpreadQuery'>
+>({
+	staleTime: 6e5,
+	queryKey: ['bearPutSpreadQuery', 'LastTradePrice', false],
+	queryFn: async ({ signal, queryKey }) => {
+		try {
+			const [, priceBasis, commission] = queryKey;
+			const params = {
+				PageSize: 100,
+				PageNumber: 1,
+				CalculateBy: priceBasis,
+				WithCommission: commission,
+			};
+
+			const response = await axios.get<ServerResponse<Strategy.BearPutSpread[]>>(routes.strategy.BearPutSpread, {
+				signal,
+				params,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useProtectivePutStrategyQuery = createQuery<
+	Strategy.ProtectivePut[],
+	TStrategyBaseType<'protectivePutQuery'>
+>({
+	staleTime: 6e5,
+	queryKey: ['protectivePutQuery', 'LastTradePrice', false],
+	queryFn: async ({ signal, queryKey }) => {
+		try {
+			const [, priceBasis, commission] = queryKey;
+			const params = {
+				PageSize: 100,
+				PageNumber: 1,
+				CalculateBy: priceBasis,
+				WithCommission: commission,
+			};
+
+			const response = await axios.get<ServerResponse<Strategy.ProtectivePut[]>>(routes.strategy.ProtectivePut, {
+				signal,
+				params,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});

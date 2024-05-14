@@ -4,18 +4,23 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsLongPut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+
+const LongPutDescription = dynamic(() => import('../Descriptions/LongPutDescription'), {
+	ssr: false,
+});
 
 interface LongPutProps extends Strategy.GetAll {}
 
@@ -49,7 +54,7 @@ const LongPut = (strategy: LongPutProps) => {
 		//
 	};
 
-	const analyze = (data: Strategy.LongCall) => {
+	const analyze = (data: Strategy.LongPut) => {
 		try {
 			const contracts: TSymbolStrategy[] = [
 				{
@@ -89,9 +94,24 @@ const LongPut = (strategy: LongPutProps) => {
 		}
 	};
 
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: () => <LongPutDescription />,
+				onRead: () => dispatch(setDescriptionModal(null)),
+			}),
+		);
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsLongPut,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
@@ -337,7 +357,7 @@ const LongPut = (strategy: LongPutProps) => {
 
 	return (
 		<>
-			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} />
+			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
 				<Filters

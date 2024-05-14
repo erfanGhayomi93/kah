@@ -16,7 +16,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
-import Tabs from '../common/Tabs';
+import Tabs from '../../OptionReports/common/Tabs';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -115,6 +115,7 @@ const InstantDepositReports = () => {
 	const onManageColumns = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: defaultInstantDepositReportsColumn,
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),

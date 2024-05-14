@@ -3,7 +3,6 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
 import ChangeBrokerTable from './ChageBrokerTable';
 
@@ -19,11 +18,11 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
-	const t = useTranslations();
 
 	const { data: changeBrokerReportsData, isLoading } = useChangeBrokerReportsQuery({
 		queryKey: ['changeBrokerReports', filters],
 	});
+
 
 	const onFiltersChanged = (newFilters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>) => {
 		setFieldsValue(newFilters);
@@ -42,6 +41,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 
 		return changeBrokerReportsData?.result;
 	}, [changeBrokerReportsData?.result]);
+
 
 
 	const dataIsEmpty = changeBrokerReportsData?.result.length === 0;

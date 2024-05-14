@@ -22,6 +22,7 @@ import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
+import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
 import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
 import ModalLoading from './ModalLoading';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
@@ -64,6 +65,8 @@ const ChangeBroker = lazy(() => import('./ChangeBroker'));
 
 const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
 
+const Description = lazy(() => import('./Description'));
+
 const Modals = () => {
 	const dispatch = useAppDispatch();
 
@@ -94,7 +97,9 @@ const Modals = () => {
 		instantDepositReportsFilters,
 		depositWithReceiptReportsFilters,
 		withdrawalCashReportsFilters,
-		changeBrokerReportsFilters
+		changeBrokerReportsFilters,
+		freezeUnfreezeReportsFilters,
+		description,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -127,6 +132,14 @@ const Modals = () => {
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{description && (
+					<ModalSuspense>
+						<Description {...description} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -333,6 +346,13 @@ const Modals = () => {
 				{changeBrokerReportsFilters && (
 					<ModalSuspense>
 						<ChangeBrokerReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{freezeUnfreezeReportsFilters && (
+					<ModalSuspense>
+						<FreezeUnFreezeReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

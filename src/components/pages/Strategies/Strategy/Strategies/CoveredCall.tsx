@@ -4,18 +4,23 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+
+const CoveredCallDescription = dynamic(() => import('../Descriptions/CoveredCallDescription'), {
+	ssr: false,
+});
 
 interface CoveredCallProps extends Strategy.GetAll {}
 
@@ -105,10 +110,25 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsCoveredCall,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsCoveredCall),
+			}),
+		);
+	};
+
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: () => <CoveredCallDescription />,
+				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
 	};
@@ -393,7 +413,11 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	return (
 		<>
-			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`), t(`${type}.step_2`)]} />
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				readMore={readMore}
+			/>
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
 				<Filters

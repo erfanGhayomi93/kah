@@ -1,9 +1,9 @@
 import AgTable from '@/components/common/Tables/AgTable';
 import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import WithdrawalCashReportsActionCell from './WithdrawalCashReportsActionCell';
 
 interface WithdrawalCashReportsTableProps {
 	reports: Reports.IWithdrawal[] | null;
@@ -25,11 +25,19 @@ const WithdrawalCashReportsTable = ({
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
+	const onDeleteRow = async () => {
+		//
+	};
+
+	const onEditRow = async () => {
+		//
+	};
+
 	const COLUMNS = useMemo<Array<ColDef<Reports.IWithdrawal>>>(
 		() =>
 			[
 				{
-					headerName: t('instant_deposit_reports_page.id_column'),
+					headerName: t('withdrawal_cash_reports_page.id_column'),
 					field: 'id',
 					maxWidth: 112,
 					minWidth: 112,
@@ -40,7 +48,7 @@ const WithdrawalCashReportsTable = ({
 					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
 				},
 				{
-					headerName: t('instant_deposit_reports_page.date_column'),
+					headerName: t('withdrawal_cash_reports_page.date_column'),
 					field: 'saveDate',
 					maxWidth: 144,
 					minWidth: 144,
@@ -50,7 +58,7 @@ const WithdrawalCashReportsTable = ({
 					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
 				},
 				{
-					headerName: t('instant_deposit_reports_page.time_column'),
+					headerName: t('withdrawal_cash_reports_page.time_column'),
 					field: 'requestDate',
 					initialHide: false,
 					suppressMovable: true,
@@ -58,7 +66,7 @@ const WithdrawalCashReportsTable = ({
 					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss'),
 				},
 				{
-					headerName: t('instant_deposit_reports_page.getway_column'),
+					headerName: t('withdrawal_cash_reports_page.bank_column'),
 					field: 'customerBank',
 					initialHide: false,
 					suppressMovable: true,
@@ -66,31 +74,43 @@ const WithdrawalCashReportsTable = ({
 					valueFormatter: ({ value }) => t('bank_accounts.' + value),
 				},
 				{
-					headerName: t('instant_deposit_reports_page.reservation_number_column'),
+					headerName: t('withdrawal_cash_reports_page.amount_column'),
 					field: 'requestAmount',
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
 				},
 				{
-					headerName: t('instant_deposit_reports_page.price_column'),
+					headerName: t('withdrawal_cash_reports_page.gateway_column'),
+					field: 'channel',
+					initialHide: false,
+					suppressMovable: true,
+					sortable: false,
+					valueFormatter: ({ value }) => t('states.state_' + value),
+				},
+				{
+					headerName: t('withdrawal_cash_reports_page.state_column'),
 					field: 'state',
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
 					maxWidth: 220,
 					minWidth: 220,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
+					valueFormatter: ({ value }) => t('states.state_' + value),
 				},
 				{
-					headerName: t('instant_deposit_reports_page.status_column'),
-					field: 'state',
+					headerName: t('withdrawal_cash_reports_page.action_column'),
+					field: 'action',
 					maxWidth: 112,
 					minWidth: 112,
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => t('states.state_' + value),
+					cellRenderer: WithdrawalCashReportsActionCell,
+					cellRendererParams: {
+						onDeleteRow,
+						onEditRow
+					}
 				},
 			] as Array<ColDef<Reports.IWithdrawal>>,
 		[],

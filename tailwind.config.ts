@@ -75,6 +75,7 @@ const config: Config = {
 			success: {
 				100: 'rgba(0, 194, 136, 1)',
 				200: 'rgba(12, 175, 130, 1)',
+				300: 'rgba(115, 222, 190, 1)',
 			},
 
 			warning: {
@@ -249,17 +250,17 @@ const config: Config = {
 				},
 
 				'.btn-primary:disabled, .btn-gray:disabled, .btn-select:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
-				{
-					'&:not(.not)': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
+					{
+						'&:not(.not)': {
+							'box-shadow': 'none !important',
+							'background-color': `${theme('colors.gray.400')} !important`,
+							color: `${theme('colors.gray.800')} !important`,
+						},
 
-					'&.not': {
-						opacity: '0.5',
+						'&.not': {
+							opacity: '0.5',
+						},
 					},
-				},
 
 				'.btn-primary': {
 					display: 'flex',

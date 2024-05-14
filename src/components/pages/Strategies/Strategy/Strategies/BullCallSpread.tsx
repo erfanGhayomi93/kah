@@ -4,18 +4,23 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+
+const BullCallSpreadDescription = dynamic(() => import('../Descriptions/BullCallSpreadDescription'), {
+	ssr: false,
+});
 
 interface BullCallSpreadProps extends Strategy.GetAll {}
 
@@ -50,15 +55,76 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	};
 
 	const analyze = (data: Strategy.BullCallSpread) => {
-		const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.lspSymbolTitle,
+						symbolISIN: data.lspSymbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.lspHistoricalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.lspPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.lspStrikePrice,
+					side: 'buy',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
 				},
-				contracts,
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.hspSymbolTitle,
+						symbolISIN: data.hspSymbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.hspHistoricalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.hspPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.hspStrikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
+	};
+
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: () => <BullCallSpreadDescription />,
+				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
 	};
@@ -66,6 +132,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsBullCallSpread,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
@@ -187,14 +254,14 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestSellLimitPrice',
 				headerName: 'قیمت بهترین فروشنده کال فروش',
-				width: 192,
+				width: 204,
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspBestSellLimitQuantity',
 				headerName: 'حجم سر خط فروش کال فروش',
-				width: 176,
+				width: 192,
 				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -404,6 +471,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				strategy={strategy}
 				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
 				condition={t(`${type}.condition`)}
+				readMore={readMore}
 			/>
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
