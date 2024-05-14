@@ -331,6 +331,16 @@ export const initialChangeBrokerReportsFilters: ChangeBrokerReports.IChangeBroke
 	attachment: null
 };
 
+export const initialFreezeUnFreezeReportsFilters: FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	date: 'dates.custom',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	requestState: null,
+	symbol: null
+};
+
 export const defaultTransactionColumns: TTransactionColumnsState[] = [
 	{
 		id: 'date',
@@ -486,6 +496,34 @@ export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBroke
 		hidden: false
 	}
 
+];
+
+export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeUnFreezeReportsColumnsState[] = [
+	{
+		id: 'id',
+		title: 'ردیف',
+		hidden: false,
+	},
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false
+	},
+	{
+		id: 'confirmedOn',
+		title: 'تاریخ',
+		hidden: false
+	},
+	{
+		id: 'requestState',
+		title: 'وضعیت',
+		hidden: false
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false
+	}
 ];
 
 

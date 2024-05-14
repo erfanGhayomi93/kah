@@ -22,6 +22,7 @@ import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
+import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
 import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
 import ModalLoading from './ModalLoading';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
@@ -97,6 +98,7 @@ const Modals = () => {
 		depositWithReceiptReportsFilters,
 		withdrawalCashReportsFilters,
 		changeBrokerReportsFilters,
+		freezeUnfreezeReportsFilters,
 		description,
 	} = useAppSelector((state) => state.modal);
 
@@ -344,6 +346,13 @@ const Modals = () => {
 				{changeBrokerReportsFilters && (
 					<ModalSuspense>
 						<ChangeBrokerReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{freezeUnfreezeReportsFilters && (
+					<ModalSuspense>
+						<FreezeUnFreezeReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

@@ -2,7 +2,7 @@ import { useLongStraddleStrategyQuery } from '@/api/queries/strategyQuery';
 import { initialColumnsLongStraddle } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setDescriptionModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setManageColumnsPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
@@ -13,7 +13,7 @@ import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
 
-interface LongStraddleProps extends Strategy.GetAll {}
+interface LongStraddleProps extends Strategy.GetAll { }
 
 const LongStraddle = (strategy: LongStraddleProps) => {
 	const { title, type } = strategy;
@@ -37,9 +37,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		queryKey: ['longStraddleQuery', priceBasis.id, useCommission],
 	});
 
-	const onSymbolTitleClicked = (symbolISIN: string) => {
-		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
 
 	const execute = (data: Strategy.LongStraddle) => {
 		//

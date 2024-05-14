@@ -2,10 +2,10 @@
 
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultInstantDepositReportsColumn, initialInstantDepositReportsFilters } from '@/constants';
+import { defaultFreezeUnFreezeReportsColumns, defaultTransactionColumns, initialFreezeUnFreezeReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setInstantDepositReportsFiltersModal } from '@/features/slices/modalSlice';
+import { setFreezeUnFreezeReportsFiltersModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel } from '@/features/slices/panelSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -16,7 +16,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
-import Tabs from '../../OptionReports/common/Tabs';
+import Tabs from '../common/Tabs';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -33,56 +33,49 @@ const getStates = createSelector(
 	}),
 );
 
-const InstantDepositReports = () => {
+const FreezeUnFreezeReports = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<InstantDepositReports.IInstantDepositReportsFilters>(
-		initialInstantDepositReportsFilters,
-	);
+	const { inputs, setFieldValue, setFieldsValue } =
+		useInputs<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters>(initialFreezeUnFreezeReportsFilters);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'instant_deposit_column',
-		defaultInstantDepositReportsColumn,
-	);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('freezeUnfreeze_column', defaultFreezeUnFreezeReportsColumns);
 
 	const { setDebounce } = useDebounce();
 
 	const { brokerIsSelected, isLoggedIn, urls } = useAppSelector(getStates);
 
 	const onShowFilters = () => {
-		const params: Partial<InstantDepositReports.IInstantDepositReportsFilters> = {};
+		const params: Partial<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters> = {};
 
-		if (inputs.fromPrice) params.fromPrice = inputs.fromPrice;
-		if (inputs.toPrice) params.toPrice = inputs.toPrice;
+		if (inputs.symbol) params.symbol = inputs.symbol;
 		if (inputs.fromDate) params.fromDate = inputs.fromDate;
 		if (inputs.toDate) params.toDate = inputs.toDate;
-		if (inputs.date) params.date = inputs.date;
-		if (inputs.providers) params.providers = inputs.providers;
-		if (inputs.status) params.status = inputs.status;
+		if (inputs.requestState) params.requestState = inputs.requestState;
 
-		dispatch(setInstantDepositReportsFiltersModal(params));
+
+		dispatch(setFreezeUnFreezeReportsFiltersModal(params));
 	};
 
 	const filtersCount = useMemo(() => {
 		let badgeCount = 0;
 
-		if (inputs.fromPrice) badgeCount++;
+		if (inputs.symbol) badgeCount++;
 
-		if (inputs.toPrice) badgeCount++;
-
-		if (Array.isArray(inputs.providers) && inputs.providers.length > 0) badgeCount++;
-
-		if (Array.isArray(inputs.status) && inputs.status.length > 0) badgeCount++;
+		if (Array.isArray(inputs.requestState) && inputs.requestState.length > 0) badgeCount++;
 
 		return badgeCount;
 	}, [JSON.stringify(inputs ?? {})]);
 
 	const onExportExcel = () => {
 		try {
+
+			if (!urls) throw new Error('broker_error');
+
 			const fromDate: Date = new Date(inputs.fromDate);
 			const toDate: Date = new Date(inputs.toDate);
 
@@ -90,22 +83,18 @@ const InstantDepositReports = () => {
 
 			params.append('QueryOption.PageNumber', String(inputs.pageNumber));
 			params.append('QueryOption.PageSize', String(inputs.pageSize));
-			params.append('StartDate', toISOStringWithoutChangeTime(fromDate));
-			params.append('EndDate', toISOStringWithoutChangeTime(toDate));
+			params.append('DateOption.FromDate', toISOStringWithoutChangeTime(fromDate));
+			params.append('DateOption.ToDate', toISOStringWithoutChangeTime(toDate));
 
-			if (inputs.fromPrice) params.append('MinAmount', String(inputs.fromPrice));
-			if (inputs.toPrice) params.append('MaxAmount', String(inputs.toPrice));
+			if (inputs.symbol) params.append('SymbolISIN', inputs.symbol.symbolISIN);
 
-			inputs.status.forEach((st) => params.append('Statuses', st));
+			if (inputs.requestState) params.append('RequestState', inputs.requestState);
 
-			inputs.providers.forEach((providerType) => params.append('ProviderTypes', providerType));
-
-			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
-				urls.getEPaymentExportFilteredCSV,
-				`online-deposit-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
-				params,
+				urls.getFreezeExportFreeze,
+				`freezeUnfreeze-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
+				params
 			);
 		} catch (e) {
 			//
@@ -115,11 +104,10 @@ const InstantDepositReports = () => {
 	const onManageColumns = () => {
 		dispatch(
 			setManageColumnsPanel({
-				initialColumns: defaultInstantDepositReportsColumn,
 				columns: columnsVisibility,
-				title: t('instant_deposit_reports_page.manage_columns'),
+				title: t('transactions_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
-				onReset: () => setColumnsVisibility(defaultInstantDepositReportsColumn),
+				onReset: () => setColumnsVisibility(defaultTransactionColumns),
 			}),
 		);
 	};
@@ -146,10 +134,10 @@ const InstantDepositReports = () => {
 
 			<div className='relative flex-1 overflow-hidden'>
 				<Table
-					filters={inputs}
-					setFilters={setFieldValue}
 					columnsVisibility={columnsVisibility}
 					setColumnsVisibility={setColumnsVisibility}
+					filters={inputs}
+					setFilters={setFieldValue}
 					setFieldsValue={setFieldsValue}
 				/>
 			</div>
@@ -157,4 +145,4 @@ const InstantDepositReports = () => {
 	);
 };
 
-export default InstantDepositReports;
+export default FreezeUnFreezeReports;
