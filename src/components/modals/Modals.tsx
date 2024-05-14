@@ -18,6 +18,7 @@ import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
 import Analyze from './Analyze';
+import CashSettlementReportsFiltersModal from './CashSettlementReportsFiltersModal';
 import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
@@ -25,6 +26,7 @@ import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersMo
 import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
 import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
 import ModalLoading from './ModalLoading';
+import PhysicalSettlementReportsFiltersModal from './PhysicalSettlementReportsFiltersModal';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
 import TransactionsFiltersModal from './TransactionsFiltersModal';
 import WithdrawalCashFiltersModal from './WithdrawalCashReportsFiltersModal';
@@ -100,6 +102,8 @@ const Modals = () => {
 		changeBrokerReportsFilters,
 		freezeUnfreezeReportsFilters,
 		description,
+		cashSettlementReportsFilters,
+		physicalSettlementReportsFilters
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -353,6 +357,20 @@ const Modals = () => {
 				{freezeUnfreezeReportsFilters && (
 					<ModalSuspense>
 						<FreezeUnFreezeReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{cashSettlementReportsFilters && (
+					<ModalSuspense>
+						<CashSettlementReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{physicalSettlementReportsFilters && (
+					<ModalSuspense>
+						<PhysicalSettlementReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

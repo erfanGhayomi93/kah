@@ -75,6 +75,26 @@ export interface IFreezeUnFreezeReportsFiltersModal extends IBaseModalConfigurat
 	requestType?: 'freeze' | 'unFreeze';
 }
 
+export interface ICashSettlementReportsFilters extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	contractStatus?: CashSettlementReports.TContractStatusType;
+	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>;
+	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType, title: string }>;
+}
+
+export interface IPhysicalSettlementReportsFilters extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	contractStatus?: CashSettlementReports.TContractStatusType;
+	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>;
+	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType, title: string }>;
+}
+
 export interface IBuySellModal extends IBaseModalConfiguration {
 	id?: number;
 	mode: TBsModes;
@@ -230,4 +250,6 @@ export type ModalState = TBaseModalProps<{
 	withdrawalCashReportsFilters: IWithdrawalCashReportsFiltersModal;
 	changeBrokerReportsFilters: IChangeBrokerReportsFiltersModal;
 	freezeUnfreezeReportsFilters: IFreezeUnFreezeReportsFiltersModal;
+	cashSettlementReportsFilters: ICashSettlementReportsFilters;
+	physicalSettlementReportsFilters: IPhysicalSettlementReportsFilters
 }>;

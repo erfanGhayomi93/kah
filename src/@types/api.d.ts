@@ -646,6 +646,8 @@ declare namespace Broker {
 		| 'ChangeBrokerSetCancel'
 		| "FreezeExportFreeze"
 		| 'Freezerequests'
+		| 'Settlementcash'
+		| 'Settlementphysical'
 
 	type URL = Record<UrlKey, string>;
 
@@ -1726,6 +1728,7 @@ declare namespace Strategy {
 }
 
 declare namespace Reports {
+
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1821,5 +1824,51 @@ declare namespace Reports {
 		description: string;
 		confirmed: boolean;
 		confirmedOn: string
+	}
+
+	export interface ICashSettlementReports {
+		id: number;
+		symbolTitle: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		openPositionCount: number;
+		cashSettlementDate: string;
+		side: "Call" | "Put";
+		settlementRequestType: "MaximumStrike" | "PartialStrike" | null;
+		requestCount: number;
+		enabled: boolean;
+		status: "Registered" | "Sent" | "Sending" | "Settled" | "Settling" | "Expired" | "Draft" | "SendToBourse" | "InSendQueue";
+		doneCount: number;
+		pandLStatus: string;
+		history: IOptionHistory[];
+		userType: "System" | "UserTitle" | "Backoffice";
+		userName: string;
+		updatedAt: string | null;
+		incomeValue: number;
+	}
+
+	export interface IPhysicalSettlementReports {
+		id: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		openPositionCount: number;
+		cashSettlementDate: string;
+		side: "Call" | "Put";
+		settlementRequestType: "MaximumStrike" | "PartialStrike" | null;
+		requestCount: number;
+		status: "Registered" | "Sent" | "Sending" | "Settled" | "Settling" | "Expired" | "Draft" | "SendToBourse" | "InSendQueue";
+		doneCount: number;
+		pandLStatus: 'Profit' | 'Loss';
+		penCount: number,
+		penValue: string,
+		history: IOptionHistory[];
+		requestForLostOrProfit: boolean;
+		enabled: boolean;
+		userType: "System" | "UserTitle" | "Backoffice";
+		userName: string;
+		updatedAt: string | null;
+		incomeValue: number;
+		penVolume: number;
+		peValue: number;
 	}
 }

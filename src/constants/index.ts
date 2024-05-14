@@ -341,6 +341,30 @@ export const initialFreezeUnFreezeReportsFilters: FreezeUnFreezeReports.IFreezeU
 	symbol: null
 };
 
+export const initialCashSettlementReportsFilters: CashSettlementReports.ICashSettlementReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	date: 'dates.custom',
+	contractStatus: 'All',
+	settlementRequestType: [],
+	requestStatus: [],
+};
+
+export const initialPhysicalSettlementReportsFilters: PhysicalSettlementReports.IPhysicalSettlementReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	date: 'dates.custom',
+	contractStatus: 'All',
+	settlementRequestType: [],
+	requestStatus: [],
+};
+
 export const defaultTransactionColumns: TTransactionColumnsState[] = [
 	{
 		id: 'date',
@@ -518,6 +542,142 @@ export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeU
 		id: 'requestState',
 		title: 'وضعیت',
 		hidden: false
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false
+	}
+];
+
+export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSettlementReportsColumnsState[] = [
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+	},
+	{
+		id: 'side',
+		title: 'موقعیت',
+		hidden: false,
+	},
+	{
+		id: 'openPositionCount',
+		title: 'تعداد موقعیت باز',
+		hidden: false
+	},
+	{
+		id: 'cashSettlementDate',
+		title: 'تاریخ تسویه نقدی',
+		hidden: false,
+	},
+	{
+		id: 'pandLStatus',
+		title: 'وضعیت قرارداد (سود یا زیان)',
+		hidden: false
+	},
+	{
+		id: 'settlementRequestType',
+		title: 'نوع اعمال',
+		hidden: false,
+	},
+	{
+		id: 'incomeValue',
+		title: 'مبلغ تسویه',
+		hidden: false
+	},
+	{
+		id: 'requestCount',
+		title: 'تعداد درخواست برای تسویه',
+		hidden: false
+	},
+	{
+		id: 'doneCount',
+		title: 'تعداد تسویه شده',
+		hidden: false,
+	},
+	{
+		id: 'userType',
+		title: 'درخواست کننده',
+		hidden: false
+	},
+	{
+		id: 'status',
+		title: 'وضعیت',
+		hidden: false,
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false
+	}
+];
+
+export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.IPhysicalSettlementReportsColumnsState[] = [
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+	},
+	{
+		id: 'side',
+		title: 'موقعیت',
+		hidden: false,
+	},
+	{
+		id: 'openPositionCount',
+		title: 'تعداد موقعیت باز',
+		hidden: false
+	},
+	{
+		id: 'cashSettlementDate',
+		title: 'تاریخ تسویه نقدی',
+		hidden: false,
+	},
+	{
+		id: 'pandLStatus',
+		title: 'وضعیت قرارداد (سود یا زیان)',
+		hidden: false
+	},
+	{
+		id: 'settlementRequestType',
+		title: 'نوع اعمال',
+		hidden: false,
+	},
+	{
+		id: 'incomeValue',
+		title: 'مبلغ تسویه',
+		hidden: false
+	},
+	{
+		id: 'requestCount',
+		title: 'تعداد درخواست برای تسویه',
+		hidden: false
+	},
+	{
+		id: 'doneCount',
+		title: 'تعداد تسویه شده',
+		hidden: false,
+	},
+	{
+		id: 'penValue',
+		title: 'تعداد نکول',
+		hidden: false,
+	},
+	{
+		id: 'penVolume',
+		title: 'مبلغ نکول',
+		hidden: false
+	},
+	{
+		id: 'userType',
+		title: 'درخواست کننده',
+		hidden: false
+	},
+	{
+		id: 'status',
+		title: 'وضعیت',
+		hidden: false,
 	},
 	{
 		id: 'action',

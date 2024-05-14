@@ -323,7 +323,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter,
 		changeBrokerSetCancel: data.ChangeBrokerSetCancel,
 		getFreezeExportFreeze: data.FreezeExportFreeze,
-		getFreezerequests: data.Freezerequests
+		getFreezerequests: data.Freezerequests,
+		getSettlementcash: data.Settlementcash
 	};
 
 	return urls;

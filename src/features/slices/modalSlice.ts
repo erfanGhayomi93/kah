@@ -90,7 +90,13 @@ const initialState: ModalState = {
 	changeBrokerReportsFilters: null,
 
 	// فیلتر صفحه فریز و رفع فریز
-	freezeUnfreezeReportsFilters: null
+	freezeUnfreezeReportsFilters: null,
+
+	// فیلتر تسویه نقدی
+	cashSettlementReportsFilters: null,
+
+	// فیلتر تسویه فیزیکی
+	physicalSettlementReportsFilters: null
 };
 
 const modalSlice = createSlice({
@@ -244,6 +250,20 @@ const modalSlice = createSlice({
 		) => {
 			state.freezeUnfreezeReportsFilters = payload;
 		},
+
+		setCashSettlementReportsFiltersModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['cashSettlementReportsFilters']>,
+		) => {
+			state.cashSettlementReportsFilters = payload;
+		},
+
+		setPhysicalSettlementReportsFiltersModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['physicalSettlementReportsFilters']>,
+		) => {
+			state.physicalSettlementReportsFilters = payload;
+		},
 	},
 });
 
@@ -277,7 +297,9 @@ export const {
 	setDepositWithReceiptReportsFiltersModal,
 	setWithdrawalCashReportsFiltersModal,
 	setChangeBrokerReportsFiltersModal,
-	setFreezeUnFreezeReportsFiltersModal
+	setFreezeUnFreezeReportsFiltersModal,
+	setCashSettlementReportsFiltersModal,
+	setPhysicalSettlementReportsFiltersModal
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -304,5 +326,8 @@ export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => st
 export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.modal.withdrawalCashReportsFilters;
 export const getChangeBrokerReportsFiltersModal = (state: RootState) => state.modal.changeBrokerReportsFilters;
 export const getFreezeUnFreezeReportsFiltersModal = (state: RootState) => state.modal.freezeUnfreezeReportsFilters;
+export const getCashSettlementReportsFiltersModal = (state: RootState) => state.modal.cashSettlementReportsFilters;
+export const getPhysicalSettlementReportsFiltersModal = (state: RootState) => state.modal.physicalSettlementReportsFilters;
+
 
 export default modalSlice.reducer;

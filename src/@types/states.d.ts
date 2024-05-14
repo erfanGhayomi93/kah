@@ -7,6 +7,13 @@ declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.ye
 
 declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
 
+declare interface IOptionHistory {
+	dateTime: string;
+	status: 'InSendQueue' | 'Error' | 'SendToBourse' | 'SaveResult';
+	description: string | null
+};
+
+
 declare interface IUserBankAccount {
 	id: number;
 	shaba: string;
@@ -283,7 +290,9 @@ declare type IBrokerUrls = Record<
 	| 'getChangeBrokerChangeBrokersByFilter'
 	| 'changeBrokerSetCancel'
 	| 'getFreezeExportFreeze'
-	| 'getFreezerequests',
+	| 'getFreezerequests'
+	| 'getSettlementcash'
+	| "getSettlementphysical",
 	string
 >;
 
@@ -568,28 +577,7 @@ declare namespace ChangeBrokerReports {
 	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
 }
 
-declare namespace FreezeUnFreezeReports {
 
-	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
-
-	export interface IFreezeUnFreezeReportsFilters {
-		pageNumber: number;
-		pageSize: number;
-		symbol: Symbol.Search | null;
-		date: TDateRange;
-		fromDate: number;
-		toDate: number;
-		requestState: TFreezeRequestState | null;
-	}
-
-	export interface IFreezeUnFreezeReportsColumnsState {
-		id: string;
-		title: string;
-		hidden: boolean;
-	}
-
-	export type TFreezeUnFreezeReportsColumns = "id" | "symbolTitle" | "confirmedOn" | "requestState" | "action"
-}
 
 declare type TTransactionColumnsState = {
 	id: string;
@@ -620,3 +608,89 @@ declare type TWithdrawalCashReportsColumnsState = {
 	title: string;
 	hidden: boolean;
 };
+
+declare namespace FreezeUnFreezeReports {
+
+	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+
+	export interface IFreezeUnFreezeReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		requestState: TFreezeRequestState | null;
+	}
+
+	export interface IFreezeUnFreezeReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TFreezeUnFreezeReportsColumns = "id" | "symbolTitle" | "confirmedOn" | "requestState" | "action"
+}
+
+declare namespace CashSettlementReports {
+
+	export type TContractStatusType = 'Profit' | 'Loss' | 'Indifferent' | 'All';
+
+	export type TSettlementRequestTypeCashType = "MaximumStrike" | "PartialStrike"
+
+	export type TRequestStatusType = "Registered" | "Send" | "Sending" | "Settling" | "Expired" | "Draft";
+
+	export interface ICashSettlementReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		contractStatus: TContractStatusType;
+		settlementRequestType: { id: TSettlementRequestTypeCashType, title: string }[];
+		requestStatus: { id: TRequestStatusType, title: string }[];
+	}
+
+	export interface ICashSettlementReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TCashSettlementReportsColumns = "symbolTitle" | "side" | "openPositionCount" | "cashSettlementDate" | "pandLStatus" | "settlementRequestType" | "incomeValue" | "requestCount" | "doneCount" | "userType" | "status" | "action"
+
+}
+
+declare namespace PhysicalSettlementReports {
+
+	export type TContractStatus = 'Profit' | 'Loss' | 'Indifferent' | 'All';
+
+
+	export type TRequestStatus = "Registered" | "Send" | "Sending" | "Settling" | "Expired" | "Draft";
+
+
+	export type TSettlementRequestTypePhysically = "MaximumStrike" | "PartialStrike" //| "IndifferentAtLoss"
+
+
+	export interface IPhysicalSettlementReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		contractStatus: TContractStatus;
+		settlementRequestType: { id: TSettlementRequestTypePhysically, title: string }[];
+		requestStatus: { id: TRequestStatus, title: string }[];
+	}
+
+	export interface IPhysicalSettlementReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TPhysicalSettlementReportsColumns = "symbolTitle" | "side" | "openPositionCount" | "cashSettlementDate" | "pandLStatus" | "settlementRequestType" | "incomeValue" | "requestCount" | "doneCount" | "penValue" | "penVolume" | "userType" | "status" | "action"
+
+}
