@@ -1,4 +1,4 @@
-import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
+import { useProtectivePutStrategyQuery } from '@/api/queries/strategyQuery';
 import { initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setDescriptionModal } from '@/features/slices/modalSlice';
@@ -38,8 +38,8 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useLongPutStrategyQuery({
-		queryKey: ['longPutQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useProtectivePutStrategyQuery({
+		queryKey: ['protectivePutQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {

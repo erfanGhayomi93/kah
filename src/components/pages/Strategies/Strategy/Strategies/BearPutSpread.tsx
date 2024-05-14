@@ -1,4 +1,4 @@
-import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
+import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import { initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setDescriptionModal } from '@/features/slices/modalSlice';
@@ -27,7 +27,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<Strategy.ProtectivePut>>(null);
+	const gridRef = useRef<GridApi<Strategy.BearPutSpread>>(null);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
@@ -38,19 +38,19 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useLongPutStrategyQuery({
-		queryKey: ['longPutQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useBearPutSpreadStrategyQuery({
+		queryKey: ['bearPutSpreadQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const execute = (data: Strategy.ProtectivePut) => {
+	const execute = (data: Strategy.BearPutSpread) => {
 		//
 	};
 
-	const analyze = (data: Strategy.ProtectivePut) => {
+	const analyze = (data: Strategy.BearPutSpread) => {
 		/* const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
@@ -90,7 +90,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
 		() => [
 			{
 				colId: 'symbolISIN',
@@ -258,7 +258,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					onCommissionChanged={setUseCommission}
 				/>
 
-				<Table<Strategy.ProtectivePut>
+				<Table<Strategy.BearPutSpread>
 					ref={gridRef}
 					rowData={rows}
 					columnDefs={columnDefs}
