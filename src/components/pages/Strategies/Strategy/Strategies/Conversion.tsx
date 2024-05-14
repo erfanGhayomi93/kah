@@ -2,7 +2,7 @@ import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
 import { initialColumnsConversion } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setManageColumnsPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
@@ -41,10 +41,6 @@ const Conversion = (strategy: ConversionProps) => {
 	const { data, isFetching } = useConversionStrategyQuery({
 		queryKey: ['conversionQuery', priceBasis.id, useCommission],
 	});
-
-	const onSymbolTitleClicked = (symbolISIN: string) => {
-		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
 
 	const execute = (data: Strategy.Conversion) => {
 		//

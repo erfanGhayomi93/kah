@@ -66,6 +66,15 @@ export interface IChangeBrokerReportsFiltersModal extends IBaseModalConfiguratio
 	attachment?: boolean | null;
 }
 
+export interface IFreezeUnFreezeReportsFiltersModal extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	requestState?: FreezeUnFreezeReports.TFreezeRequestState | null;
+	requestType?: 'freeze' | 'unFreeze';
+}
+
 export interface IBuySellModal extends IBaseModalConfiguration {
 	id?: number;
 	mode: TBsModes;
@@ -220,4 +229,5 @@ export type ModalState = TBaseModalProps<{
 	depositWithReceiptReportsFilters: IDepositWithReceiptReportsFiltersModal;
 	withdrawalCashReportsFilters: IWithdrawalCashReportsFiltersModal;
 	changeBrokerReportsFilters: IChangeBrokerReportsFiltersModal;
+	freezeUnfreezeReportsFilters: IFreezeUnFreezeReportsFiltersModal;
 }>;
