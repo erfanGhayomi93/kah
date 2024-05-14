@@ -241,9 +241,9 @@ const modalSlice = createSlice({
 
 		setFreezeUnFreezeReportsFiltersModal: (
 			state,
-			{ payload }: PayloadAction<ModalState['changeBrokerReportsFilters']>,
+			{ payload }: PayloadAction<ModalState['freezeUnfreezeReportsFilters']>,
 		) => {
-			state.changeBrokerReportsFilters = payload;
+			state.freezeUnfreezeReportsFilters = payload;
 		},
 	},
 });

@@ -1811,4 +1811,14 @@ declare namespace Reports {
 		symbolTitle: string;
 		hasAttachment: boolean;
 	}
+
+	export interface IFreezeUnfreezeReports {
+		symbolISIN: string;
+		symbolTitle: string;
+		requestType: 'Freeze' | 'UnFreeze';
+		requestState: FreezeUnFreezeReports.TFreezeRequestState;
+		description: string;
+		confirmed: boolean;
+		confirmedOn: string
+	}
 }

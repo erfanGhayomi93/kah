@@ -1275,17 +1275,25 @@
 		"action_column": "عملیات"
 	},
 
-	"options_reports_page": {
-		"options_reports": "گزارشات اختیار",
-		"freeze_and_unFreeze": "فریز و رفع فریز",
-		"option_cash_settlement": "تسویه نقدی",
-		"option_physical_settlement": "تسویه فیزیکی"
+	"option_reports_page": {
+		"option_reports": "گزارشات اختیار",
+		"freeze_and_unfreeze_tab": "فریز و رفع فریز",
+		"cash_settlement_tab": "تسویه نقدی",
+		"physical_settlement_tab": "تسویه فیزیکی"
 	},
 
-	"freeze_and_unFreeze_reports_page": {
+	"freeze_and_unfreeze_reports_page": {
 		"filter_title_modal": "فیلتر فریز و رفع فریز",
 		"manage_columns": "مدیریت ستون‌های جدول",
-		"status_placeholder_filter": "وضعیت"
+		"status_placeholder_filter": "وضعیت",
+		"id_column": "ردیف",
+		"symbol_column": "نماد",
+		"date_column": "تاریخ",
+		"status_column": "وضعیت",
+		"action_column": "عملیات",
+		"state_Done": "تایید",
+		"state_InProgress": "در حال انجام",
+		"state_FreezeFailed": "ناموفق"
 	},
 
 	"bank_accounts": {

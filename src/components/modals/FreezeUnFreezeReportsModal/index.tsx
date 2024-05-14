@@ -40,7 +40,7 @@ const FreezeUnFreezeReportsFiltersModal = forwardRef<HTMLDivElement, FreezeUnFre
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
 			<Div className='gap-40 bg-white flex-column'>
 				<Header
-					label={t('freeze_and_unFreeze_reports_page.filter_title_modal')}
+					label={t('freeze_and_unfreeze_reports_page.filter_title_modal')}
 					onClose={onCloseModal}
 					onClear={onClear}
 				/>

@@ -1,4 +1,5 @@
-import FreezeUnFreezeReports from '@/components/pages/FinancialReports/FreezeUnFreezeReports';
+import FreezeUnFreezeReports from '@/components/pages/OptionReports/FreezeUnFreezeReports';
+
 
 const page = () => {
 	return (

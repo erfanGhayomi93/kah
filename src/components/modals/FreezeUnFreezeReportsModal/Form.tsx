@@ -82,9 +82,9 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['Done', 'InProgress', 'FreezeFailed']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => (
-						<span>{t(`states.state_${option}`)}</span>
+						<span>{t(`freeze_and_unfreeze_reports_page.state_${option}`)}</span>
 					)}
-					placeholder={t('freeze_and_unFreeze_reports_page.status_placeholder_filter')}
+					placeholder={t('freeze_and_unfreeze_reports_page.status_placeholder_filter')}
 					defaultValue={filters.requestState}
 				/>
 

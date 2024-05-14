@@ -85,7 +85,6 @@ const FreezeUnFreezeReports = () => {
 			params.append('QueryOption.PageSize', String(inputs.pageSize));
 			params.append('DateOption.FromDate', toISOStringWithoutChangeTime(fromDate));
 			params.append('DateOption.ToDate', toISOStringWithoutChangeTime(toDate));
-			// params.append('RequestType', type);
 
 			if (inputs.symbol) params.append('SymbolISIN', inputs.symbol.symbolISIN);
 
