@@ -642,7 +642,8 @@ declare namespace Broker {
 		| 'EPaymentApiGetProviderTypes'
 		| 'PaymentGetStatuses'
 		| 'ChangeBrokerExportFilteredCSV'
-		| 'ChangeBrokerChangeBrokersByFilter';
+		| 'ChangeBrokerChangeBrokersByFilter'
+		| 'GetAgreements';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1306,6 +1307,18 @@ declare namespace Settings {
 	}
 
 	export type IFormattedBrokerCustomerSettings = Record<IBrokerCustomerSettings['configKey'], string | boolean>;
+
+	export interface IAgreements {
+		agreementId: number;
+		title: string;
+		state: 'NotSpecified' | 'Accepted' | 'NotAccepted';
+		changeDate: string;
+		description: string;
+		type: string;
+		canChangeByCustomer: boolean;
+		approveBySMS: boolean;
+		attachmentUrl: string | null;
+	}
 }
 
 declare namespace Payment {

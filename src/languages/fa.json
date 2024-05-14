@@ -1356,6 +1356,12 @@
 		"confirm_before_delete_order": "دریافت تایید قبل از حذف سفارش",
 		"Get_online_price": "دریافت قیمت از سرخط",
 		"market_watcher_message_notification": "ارسال اعلان “پیام ناظر بازار”",
-		"show_symbol_info_in_send_order": "نمایش اطلاعات نماد در ارسال سفارش"
+		"show_symbol_info_in_send_order": "نمایش اطلاعات نماد در ارسال سفارش",
+		"agreement_title": "عنوان توافق‌نامه",
+		"accept_reject_date": "تاریخ رد یا تایید",
+		"NotSpecified": "تعیین نشده",
+		"Accepted": "تایید شده",
+		"NotAccepted": "تایید نشده",
+		"expired": "منقضی شده"
 	}
 }

@@ -321,6 +321,7 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getPaymentGetStatuses: data.PaymentGetStatuses,
 		getChangeBrokerExportFilteredCSV: data.ChangeBrokerExportFilteredCSV,
 		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter,
+		GetAgreements: data.GetAgreements,
 	};
 
 	return urls;
