@@ -1,66 +1,81 @@
 import brokerAxios from '@/api/brokerAxios';
-import { useHistoryChangeBrokerQuery } from '@/api/queries/requests';
+import { useRecentFreezeQuery, useRecentUnFreezeQuery } from '@/api/queries/requests';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { SessionHistorySVG, TrashSVG } from '@/components/icons';
+import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { dateFormatter } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { type FC, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useMemo, type FC } from 'react';
 import { toast } from 'react-toastify';
 
-interface HistoryChangeBrokerType {
-	onCloseModal: () => void;
+
+interface HistoryFreezeProps {
+	tabSelected: string;
+	onCloseModal: () => void
 }
 
-
-export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal }) => {
+const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) => {
 
 	const t = useTranslations();
 
-	const url = useSelector(getBrokerURLs);
+	const url = useAppSelector(getBrokerURLs);
 
 	const queryClient = useQueryClient();
 
-	const { data } = useHistoryChangeBrokerQuery({
-		queryKey: ['LastHistoryChangeBroker']
+	const isFreeze = useMemo(() => tabSelected === 'freezeModalTab', [tabSelected]);
+
+	const { data: dataFreeze } = useRecentFreezeQuery({
+		queryKey: ['RecentFreezeList'],
+		enabled: isFreeze
 	});
 
-	const deleteChangeBroker = async (id: number) => {
+	const { data: dataUnFreeze } = useRecentUnFreezeQuery({
+		queryKey: ['RecentUnFreezeList'],
+		enabled: !isFreeze
+	});
+
+	const deleteChangeBroker = async (symbolISIN: string) => {
 		if (!url) return;
+
 		try {
-			const response = await brokerAxios.post(url.DeleteChangeBroker, null, {
+			const response = await brokerAxios.post(url.DeleteFreeze, null, {
 				params: {
-					RequestID: id
+					symbolISIN,
+					type: isFreeze ? 'freeze' : 'unFreeze'
 				},
 			});
 			const { data } = response;
 
-			if (!data.succeeded) {
-				toast.success(t('alerts.change_broker_failure_' + data.errors[0]), {
-					toastId: 'change_broker_successfully'
+			if (!data) {
+				const message = isFreeze ? 'alerts.freeze_request_delete_failed' : 'alerts.unFreeze_request_delete_failed';
+
+				toast.success(t(message), {
+					toastId: message
 				});
 			} else {
-				toast.success(t('alerts.change_broker_request_successfully'), {
-					toastId: 'change_broker_successfully'
+				const message = isFreeze ? 'alerts.freeze_request_deleted' : 'alerts.unFreeze_request_deleted';
+
+				toast.success(t(message), {
+					toastId: message
 				});
 
 				queryClient.refetchQueries({
-					queryKey: ['LastHistoryChangeBroker']
+					queryKey: [isFreeze ? 'RecentFreezeList' : 'RecentUnFreezeList']
 				});
 			}
 		} catch (e) {
-			const { message } = (e as Error);
-			toast.error(t('alerts.change_broker_failure_' + message), {
+			const message = isFreeze ? 'alerts.freeze_request_delete_failed' : 'alerts.unFreeze_request_delete_failed';
+
+			toast.error(t(message), {
 				toastId: message
 			});
 		}
 	};
 
-
-	const columnDefs = useMemo<Array<IColDef<Payment.IChangeBrokerList>>>(() => [
+	const columnDefs = useMemo<Array<IColDef<Payment.IRecentFreezeList>>>(() => [
 		{
 			headerName: t('deposit_modal.time_history'),
 			valueFormatter: (row) => dateFormatter(row.saveDate),
@@ -74,14 +89,14 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 			valueFormatter: (row) => (
 				<div className='flex-justify-center'>
 					<span className='min-w-80'>
-						{t('deposit_modal.' + 'state_' + row.lastState)}
+						{t('freeze_request_state.' + row.requestState)}
 					</span>
 
 					{
-						row.lastState === 'Draft' && (
+						row.requestState === 'InProgress' && (
 							<span
 								className='cursor-pointer'
-								onClick={() => deleteChangeBroker(row.id)}
+								onClick={() => deleteChangeBroker(row.symbolISIN)}
 							>
 								<TrashSVG />
 							</span>
@@ -92,14 +107,14 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 			headerClass: '!bg-white',
 			cellClass: '!text-sm'
 		}
-	], []);
+	], [tabSelected]);
 
 
 	return (
 		<div className="h-full pr-24 flex flex-column">
 			<div className="flex-1 rounded-sm shadow-card p-8">
 				<LightweightTable
-					rowData={data || []}
+					rowData={(isFreeze ? dataFreeze : dataUnFreeze) || []}
 					columnDefs={columnDefs}
 					className="bg-white"
 				/>
@@ -107,7 +122,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 
 			<Link
 				className='h-48 text-info rounded w-full font-medium gap-8 flex-justify-center'
-				href={'/financial-reports/change-broker'}
+				href={'/option-reports/freeze-and-unfreeze'}
 				onClick={() => onCloseModal()}
 			>
 				<SessionHistorySVG />
@@ -117,3 +132,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 		</div>
 	);
 };
+
+
+
+export default HistoryFreeze;

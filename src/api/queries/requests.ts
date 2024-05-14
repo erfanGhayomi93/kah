@@ -107,3 +107,51 @@ export const useHistoryChangeBrokerQuery = createQuery<Payment.IChangeBrokerList
 		},
 	},
 );
+
+export const useRecentFreezeQuery = createQuery<Payment.IRecentFreezeList[] | null, ['RecentFreezeList']>({
+	queryKey: ['RecentFreezeList'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+		const response = await brokerAxios.get<Payment.IRecentFreezeList[]>(url.RecentFreeze, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200) throw new Error();
+
+		return data;
+	},
+});
+
+export const useRecentUnFreezeQuery = createQuery<Payment.IRecentFreezeList[] | null, ['RecentUnFreezeList']>({
+	queryKey: ['RecentUnFreezeList'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+		const response = await brokerAxios.get<Payment.IRecentFreezeList[]>(url.RecentUnFreeze, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200) throw new Error();
+
+		return data;
+	},
+});
+
+export const useCountFreezeQuery = createQuery<Payment.ICountFreeze[] | null, ['CountFreezeList']>({
+	queryKey: ['CountFreezeList'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+		const response = await brokerAxios.get<Payment.ICountFreeze[]>(url.symbolCountFreeze, {
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200) throw new Error();
+
+		return data;
+	},
+});

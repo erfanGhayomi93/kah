@@ -393,6 +393,7 @@ declare namespace Symbol {
 		symbolTitle: string;
 		companyISIN: string;
 		isOption: boolean;
+		isFreeze?: boolean;
 		marketUnit: string;
 		companyName: string;
 		insCode: null | string;
@@ -624,12 +625,17 @@ declare namespace Broker {
 		| 'LastChangeBrokers'
 		| 'GetWithFilterReceipt'
 		| 'GetFilteredEPaymentApi'
+		| 'RecentUnFreeze'
+		| 'DeleteFreeze'
 		| 'DeleteChangeBroker'
 		| 'GetFilteredPayment'
 		| 'GetListBankAccount'
 		| 'GetRemainsWithDate'
 		| 'LastListDrawal'
 		| 'RequestPayment'
+		| 'newKaraFreeze'
+		| 'RecentFreeze'
+		| 'symbolCountFreeze'
 		| 'DepositOnlineHistory'
 		| 'CustomerTurnOverCSVExport'
 		| 'EPaymentExportFilteredCSV'
@@ -1305,6 +1311,8 @@ declare namespace Payment {
 		| 'TokenRequired'
 		| 'TerminalNotFound';
 
+	type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+
 	export type TRemainsWithDay = Record<
 		't1' | 't2',
 		{
@@ -1385,6 +1393,19 @@ declare namespace Payment {
 		requestAmount: number;
 		saveDate: string;
 		state: string;
+	}
+
+	export interface IRecentFreezeList {
+		saveDate: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		requestState: TFreezeRequestState;
+	}
+
+	export interface ICountFreeze {
+		symbolISIN: string;
+		symbolTitle: string;
+		count: number;
 	}
 }
 
