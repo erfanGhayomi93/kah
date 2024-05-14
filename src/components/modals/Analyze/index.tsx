@@ -1,3 +1,4 @@
+import { fetchSymbolInfo } from '@/api/actions';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Switch from '@/components/common/Inputs/Switch';
@@ -10,7 +11,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
-import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
+import { convertSymbolWatchlistToSymbolBasket, sepNumbers, uuidv4 } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -71,6 +72,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			},
 		});
 
+		const [isFetchingBaseSymbol, setIsFetchingBaseSymbol] = useState(false);
+
 		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 		const { inputs, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
@@ -100,7 +103,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			dispatch(setAnalyzeModal(null));
 		};
 
-		const addContracts = (contracts: Option.Root[], baseSymbolISIN: null | string) => {
+		const addContracts = async (contracts: Option.Root[], baseSymbolISIN: null | string) => {
 			try {
 				const l = contracts.length;
 
@@ -114,11 +117,41 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					selectedResult.push(item.id);
 				}
 
+				if (baseSymbolISIN) {
+					try {
+						setIsFetchingBaseSymbol(true);
+
+						const symbol = await fetchSymbolInfo(baseSymbolISIN);
+						if (symbol) {
+							const baseSymbolId = uuidv4();
+
+							result.push({
+								type: 'base',
+								id: baseSymbolId,
+								marketUnit: symbol.marketUnit,
+								quantity: 1,
+								price: symbol.lastTradedPrice,
+								side: 'buy',
+								symbol: {
+									symbolTitle: symbol.symbolTitle,
+									symbolISIN: symbol.symbolISIN,
+									baseSymbolPrice: symbol.lastTradedPrice,
+								},
+							});
+							selectedResult.push(baseSymbolId);
+						}
+					} catch (e) {
+						//
+					} finally {
+						setIsFetchingBaseSymbol(false);
+					}
+				}
+
 				setSymbolContracts(result);
 				setSelectedContracts(selectedResult);
 				onContractsChanged?.(contracts, baseSymbolISIN);
 			} catch (e) {
-				//
+				setIsFetchingBaseSymbol(false);
 			}
 		};
 
@@ -343,7 +376,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 					{symbolContracts.length > 0 ? (
 						<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
-							<div className='gap-8 flex-column'>
+							<div className='relative gap-8 flex-column'>
 								<div style={{ maxHeight: '26.4rem' }} className='flex-1 overflow-auto px-16'>
 									<SymbolStrategyTable
 										selectedContracts={selectedContracts}
@@ -375,6 +408,12 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 										{t('analyze_modal.send_all')}
 									</button>
 								</div>
+
+								{isFetchingBaseSymbol && (
+									<div style={{ zIndex: '99' }} className='absolute left-0 top-0 size-full bg-white'>
+										<Loading />
+									</div>
+								)}
 							</div>
 
 							<div className='h-full overflow-auto px-16 pb-16 pt-12'>

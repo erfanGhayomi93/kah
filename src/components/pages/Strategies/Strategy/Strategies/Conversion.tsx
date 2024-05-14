@@ -1,7 +1,7 @@
 import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
 import { initialColumnsConversion } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -55,9 +55,24 @@ const Conversion = (strategy: ConversionProps) => {
 		);
 	};
 
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: title,
+				onRead: () => dispatch(setDescriptionModal(null)),
+			}),
+		);
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsConversion,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
@@ -112,7 +127,7 @@ const Conversion = (strategy: ConversionProps) => {
 
 	return (
 		<>
-			<StrategyDetails strategy={strategy} steps={[]} />
+			<StrategyDetails strategy={strategy} steps={[]} readMore={readMore} />
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
 				<Filters

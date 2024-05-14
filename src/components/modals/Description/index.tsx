@@ -24,7 +24,6 @@ const Description = forwardRef<HTMLDivElement, DescriptionProps>(({ title, descr
 	return (
 		<Modal
 			ref={ref}
-			transparent
 			style={{ modal: { transform: 'translate(-50%, -50%)', borderRadius: '1.6rem' } }}
 			top='50%'
 			onClose={onCloseModal}
@@ -32,12 +31,20 @@ const Description = forwardRef<HTMLDivElement, DescriptionProps>(({ title, descr
 		>
 			<Div className='bg-white'>
 				<Header label={title} onClose={onCloseModal} />
-				{description}
 
-				<div className='flex-justify-end'>
-					<button style={{ width: '18.4rem' }} type='button' className='h-40 rounded btn-primary'>
-						{t('common.read')}
-					</button>
+				<div className='gap-24 p-24 flex-column'>
+					{description}
+
+					<div className='flex-justify-end'>
+						<button
+							onClick={onRead}
+							style={{ width: '18.4rem' }}
+							type='button'
+							className='h-40 rounded btn-primary'
+						>
+							{t('common.read')}
+						</button>
+					</div>
 				</div>
 			</Div>
 		</Modal>

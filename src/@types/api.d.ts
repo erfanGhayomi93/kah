@@ -1696,6 +1696,8 @@ declare namespace Strategy {
 		lspTimeValue: number;
 		hspTimeValue: number;
 		lspIntrinsicValue: number;
+		lspHistoricalVolatility: number;
+		hspHistoricalVolatility: number;
 		hspIntrinsicValue: number;
 		lspTradeValue: number;
 		hspTradeValue: number;
@@ -1706,7 +1708,6 @@ declare namespace Strategy {
 		ytm: number;
 		marketUnit: string;
 		baseMarketUnit: string;
-		historicalVolatility: number;
 		contractEndDate: string;
 		contractSize: number;
 		requiredMargin: number;

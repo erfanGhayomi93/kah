@@ -4,7 +4,7 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsLongPut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -49,7 +49,7 @@ const LongPut = (strategy: LongPutProps) => {
 		//
 	};
 
-	const analyze = (data: Strategy.LongCall) => {
+	const analyze = (data: Strategy.LongPut) => {
 		try {
 			const contracts: TSymbolStrategy[] = [
 				{
@@ -89,9 +89,24 @@ const LongPut = (strategy: LongPutProps) => {
 		}
 	};
 
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: title,
+				onRead: () => dispatch(setDescriptionModal(null)),
+			}),
+		);
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsLongPut,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
@@ -337,7 +352,7 @@ const LongPut = (strategy: LongPutProps) => {
 
 	return (
 		<>
-			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} />
+			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
 				<Filters

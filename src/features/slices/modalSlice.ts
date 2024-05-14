@@ -231,7 +231,6 @@ const modalSlice = createSlice({
 			state.withdrawalCashReportsFilters = payload;
 		},
 
-
 		setChangeBrokerReportsFiltersModal: (
 			state,
 			{ payload }: PayloadAction<ModalState['changeBrokerReportsFilters']>,
