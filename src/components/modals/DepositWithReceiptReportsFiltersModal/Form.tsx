@@ -4,7 +4,7 @@ import InputLegend from '@/components/common/Inputs/InputLegend';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import { useAppDispatch } from '@/features/hooks';
-import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { setDepositWithReceiptReportsFiltersModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction } from 'react';
 
@@ -31,7 +31,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	};
 
 	const onClose = () => {
-		dispatch(setTransactionsFiltersModal(null));
+		dispatch(setDepositWithReceiptReportsFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {
@@ -53,7 +53,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
-				<Select<DatesFilterType>
+				<Select<TDateRange>
 					onChange={(option) => setFilterValue('date', option)}
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
@@ -108,7 +108,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 						'Registeration',
 					]}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => <span>{t('states.' + option)}</span>}
+					getOptionTitle={(option) => <span>{t('states.state_' + option)}</span>}
 					placeholder={t('deposit_with_receipt_page.status_placeholder_filter')}
 					defaultValues={filters.status}
 				/>
@@ -135,7 +135,6 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					getOptionId={(option) => option.id}
 					getOptionTitle={(option) => <span>{t(`deposit_with_receipt_page.${option.label}`)}</span>}
 					placeholder={t('deposit_with_receipt_page.attachment_placeholder_filter')}
-					// defaultValue={filters.attachment}
 				/>
 			</div>
 

@@ -1,23 +1,28 @@
-import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
-import AgTable from '@/components/common/Tables/AgTable';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { useProtectivePutStrategyQuery } from '@/api/queries/strategyQuery';
+import { initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface ProtectivePutProps {
-	title: string;
-	type: Strategy.Type;
-}
+const ProtectivePutDescription = dynamic(() => import('../Descriptions/ProtectivePutDescription'), {
+	ssr: false,
+});
 
-const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
+interface ProtectivePutProps extends Strategy.GetAll {}
+
+const ProtectivePut = (strategy: ProtectivePutProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -28,33 +33,59 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'protective_put_strategy_columns',
-		initialColumnsBullCallSpread,
+		initialColumnsProtectivePut,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useLongPutStrategyQuery({
-		queryKey: ['longPutQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useProtectivePutStrategyQuery({
+		queryKey: ['protectivePutQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.ProtectivePut) => {
+	const execute = (data: Strategy.ProtectivePut) => {
 		//
 	};
 
-	const execute = (data: Strategy.ProtectivePut) => {
-		//
+	const analyze = (data: Strategy.ProtectivePut) => {
+		/* const contracts: TSymbolStrategy[] = [];
+
+		dispatch(
+			setAnalyzeModal({
+				symbol: {
+					symbolTitle: data.baseSymbolTitle,
+					symbolISIN: data.baseSymbolISIN,
+				},
+				contracts: [],
+			}),
+		); */
+	};
+
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: () => <ProtectivePutDescription />,
+				onRead: () => dispatch(setDescriptionModal(null)),
+			}),
+		);
 	};
 
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsProtectivePut,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsProtectivePut),
 			}),
 		);
 	};
@@ -173,21 +204,11 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
+					analyze,
 				},
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Strategy.ProtectivePut> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 96,
-		}),
 		[],
 	);
 
@@ -220,28 +241,30 @@ const ProtectivePut = ({ title, type }: ProtectivePutProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				readMore={readMore}
 			/>
 
-			<AgTable<Strategy.ProtectivePut>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.ProtectivePut>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };

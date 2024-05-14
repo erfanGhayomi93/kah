@@ -57,6 +57,24 @@ export interface IWithdrawalCashReportsFiltersModal extends IBaseModalConfigurat
 	banks?: IUserBankAccount[];
 }
 
+export interface IChangeBrokerReportsFiltersModal extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	status?: string[];
+	attachment?: boolean | null;
+}
+
+export interface IFreezeUnFreezeReportsFiltersModal extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	requestState?: FreezeUnFreezeReports.TFreezeRequestState | null;
+	requestType?: 'freeze' | 'unFreeze';
+}
+
 export interface IBuySellModal extends IBaseModalConfiguration {
 	id?: number;
 	mode: TBsModes;
@@ -86,6 +104,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 		symbolISIN: string;
 	};
 	canChangeBaseSymbol: boolean;
+	canSendBaseSymbol: boolean;
 	maxContracts: null | number;
 	initialSelectedContracts: string[];
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
@@ -96,6 +115,16 @@ export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfigurat
 export interface IOrderDetails {
 	type: 'order';
 	data: Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
+}
+
+export interface IBaseSymbolDetails {
+	type: 'base';
+	data: {
+		quantity: number;
+		price: number;
+		side: TBsSides;
+		symbolTitle: string;
+	};
 }
 
 export interface IOptionDetails {
@@ -115,7 +144,7 @@ export interface IOptionDetails {
 	};
 }
 
-export type TOrderDetailsModal = IBaseModalConfiguration & (IOrderDetails | IOptionDetails);
+export type TOrderDetailsModal = IBaseModalConfiguration & (IOrderDetails | IBaseSymbolDetails | IOptionDetails);
 
 export interface IMoveSymbolToWatchlistModal extends IBaseModalConfiguration {
 	symbolTitle: string;
@@ -153,7 +182,7 @@ export interface IWithdrawalModal extends IBaseModalConfiguration {
 
 export interface IDescriptionModal extends IBaseModalConfiguration {
 	title: React.ReactNode;
-	description: React.ReactNode;
+	description: () => React.ReactNode;
 	onRead: () => void;
 }
 
@@ -204,4 +233,6 @@ export type ModalState = TBaseModalProps<{
 	instantDepositReportsFilters: IInstantDepositReportsFiltersModal;
 	depositWithReceiptReportsFilters: IDepositWithReceiptReportsFiltersModal;
 	withdrawalCashReportsFilters: IWithdrawalCashReportsFiltersModal;
+	changeBrokerReportsFilters: IChangeBrokerReportsFiltersModal;
+	freezeUnfreezeReportsFilters: IFreezeUnFreezeReportsFiltersModal;
 }>;

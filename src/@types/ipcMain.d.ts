@@ -14,7 +14,9 @@ declare interface IpcMainChannels {
 		DepositWithReceiptReports.DepositWithReceiptReportsFilters,
 		'pageNumber' | 'pageSize'
 	>;
+	set_freeze_and_unfreeze_filters: Omit<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters, 'pageNumber' | 'pageSize'>;
 	set_withdrawal_cash_filters: Omit<WithdrawalCashReports.WithdrawalCashReportsFilters, 'pageNumber' | 'pageSize'>;
+	set_changeBroker_reports_filters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, "pageNumber" | "pageSize">;
 	deselect_orders: undefined;
 	'home.hide_section': { id: TDashboardSections; hidden: boolean };
 }

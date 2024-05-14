@@ -112,9 +112,11 @@ const WithdrawalCashReports = () => {
 	const onManageColumns = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: defaultWithdrawalCashReportsColumn,
 				columns: columnsVisibility,
 				title: t('withdrawal_cash_reports_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(defaultWithdrawalCashReportsColumn),
 			}),
 		);
 	};

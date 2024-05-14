@@ -1,3 +1,4 @@
+import { userCashWithdrawalStatusesQuery } from '@/api/queries/reportsQueries';
 import { useListUserBankAccountQuery } from '@/api/queries/requests';
 import ipcMain from '@/classes/IpcMain';
 import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
@@ -5,7 +6,7 @@ import InputLegend from '@/components/common/Inputs/InputLegend';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import { useAppDispatch } from '@/features/hooks';
-import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { setWithdrawalCashReportsFiltersModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction } from 'react';
 
@@ -25,6 +26,8 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		queryKey: ['userAccount'],
 	});
 
+	const { data: userStatusesData } = userCashWithdrawalStatusesQuery({ queryKey: ['userOnlineDepositStatuses'] });
+
 	const setFilterValue = <T extends keyof WithdrawalCashReports.WithdrawalCashReportsFilters>(
 		field: T,
 		value: WithdrawalCashReports.WithdrawalCashReportsFilters[T],
@@ -36,7 +39,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	};
 
 	const onClose = () => {
-		dispatch(setTransactionsFiltersModal(null));
+		dispatch(setWithdrawalCashReportsFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {
@@ -62,7 +65,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
-				<Select<DatesFilterType>
+				<Select<TDateRange>
 					onChange={(option) => setFilterValue('date', option)}
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
@@ -106,18 +109,9 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 				<MultiSelect<string>
 					onChange={(options) => onChangeState(options)}
-					options={[
-						'Canceled',
-						'Financial',
-						'Approved',
-						'Reception',
-						'Returned',
-						'Rejected',
-						'Finished',
-						'Registeration',
-					]}
+					options={userStatusesData ?? []}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => <span>{t('states.' + option)}</span>}
+					getOptionTitle={(option) => <span>{t('states.state_' + option)}</span>}
 					placeholder={t('withdrawal_cash_reports_page.status_placeholder_filter')}
 					defaultValues={filters.status}
 				/>

@@ -5,7 +5,7 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 
 
 ModuleRegistry.register(ClientSideRowModelModule);
 
-interface AgTableProps<TData extends unknown> extends GridOptions<TData> {
+export interface AgTableProps<TData> extends GridOptions<TData> {
 	className?: ClassesValue;
 	style?: React.CSSProperties;
 	theme?: 'quartz' | 'balham' | 'material' | 'alpine';

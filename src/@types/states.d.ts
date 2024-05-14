@@ -3,9 +3,9 @@ declare interface INextProps<T extends object = {}> {
 	params: T & { locale: string };
 }
 
-declare type DatesFilterType = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
+declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
 
 declare interface IUserBankAccount {
 	id: number;
@@ -278,6 +278,17 @@ declare type IBrokerUrls = Record<
 	| 'getEPaymentExportFilteredCSV'
 	| 'getReceiptExportFilteredCSV'
 	| 'getPaymentExportFilteredCSV',
+	| 'SetCustomerSettings'
+	| 'GetCustomerSettings'
+	| 'getPaymentExportFilteredCSV'
+	| 'getEPaymentApiGetStatuses'
+	| 'getEPaymentApiGetProviderTypes'
+	| 'getPaymentGetStatuses'
+	| 'getChangeBrokerExportFilteredCSV'
+	| 'getChangeBrokerChangeBrokersByFilter'
+	| 'changeBrokerSetCancel'
+	| 'getFreezeExportFreeze'
+	| 'getFreezerequests',
 	string
 >;
 
@@ -326,9 +337,9 @@ declare interface IAnalyzeModalInputs {
 
 declare type TSetBsModalInputs = <
 	T extends
-		| Partial<IBsModalInputs>
-		| keyof Partial<IBsModalInputs>
-		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+	| Partial<IBsModalInputs>
+	| keyof Partial<IBsModalInputs>
+	| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
 >(
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
@@ -375,31 +386,60 @@ declare namespace OrderBasket {
 
 		orders: OrderBasket.Order[];
 	}
-	export interface Order extends ISymbolStrategyContract {}
+
+	export type Order = TSymbolStrategy;
 }
 
-declare interface ISymbolStrategyContract {
+declare interface ISymbolStrategy {
 	id: string;
 	marketUnit: string;
 	quantity: number;
 	price: number;
+}
+
+declare interface IBaseSymbolStrategy extends ISymbolStrategy {
+	type: 'base';
+	side: TBsSides;
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		baseSymbolPrice: number;
+		optionType?: null;
+		historicalVolatility?: null;
+	};
+	strikePrice?: null;
+	contractSize?: null;
+	settlementDay?: null;
+	commission?: null;
+	requiredMargin?: null;
+}
+
+declare interface IOptionStrategy extends ISymbolStrategy {
+	type: 'option';
 	strikePrice: number;
 	contractSize: number;
 	settlementDay: Date | number | string;
-	type: TOptionSides;
 	side: TBsSides;
-	symbol: Option.Root;
-	commission: {
+	symbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		optionType: TOptionSides;
+		baseSymbolPrice: number;
+		historicalVolatility: number;
+	};
+	commission?: {
 		value: number;
 		checked?: boolean;
 		onChecked?: (checked: boolean) => void;
 	};
-	requiredMargin: {
+	requiredMargin?: {
 		value: number;
 		checked?: boolean;
 		onChecked?: (checked: boolean) => void;
 	};
 }
+
+declare type TSymbolStrategy = IBaseSymbolStrategy | IOptionStrategy;
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
@@ -407,6 +447,8 @@ declare interface ISymbolChartStates {
 }
 
 declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_offline' | 'withdrawal_cash';
+
+declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement'
 
 declare namespace Transaction {
 	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
@@ -508,6 +550,50 @@ declare namespace WithdrawalCashReports {
 		Statuses: Array<string>;
 		AccountIds: Array<string>;
 	}
+}
+
+declare namespace ChangeBrokerReports {
+	export interface IChangeBrokerReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		status: string[];
+		attachment: boolean | null;
+	}
+
+	export interface IChangeBrokerReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
+}
+
+declare namespace FreezeUnFreezeReports {
+
+	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+
+	export interface IFreezeUnFreezeReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		requestState: TFreezeRequestState | null;
+	}
+
+	export interface IFreezeUnFreezeReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TFreezeUnFreezeReportsColumns = "id" | "symbolTitle" | "confirmedOn" | "requestState" | "action"
 }
 
 declare type TTransactionColumnsState = {

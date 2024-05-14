@@ -1,27 +1,32 @@
 import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
-import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
-import NoTableData from '../components/NoTableData';
 import StrategyActionCell from '../components/StrategyActionCell';
+import StrategyDetails from '../components/StrategyDetails';
+import Table from '../components/Table';
 
-interface CoveredCallProps {
-	title: string;
-	type: Strategy.Type;
-}
+const CoveredCallDescription = dynamic(() => import('../Descriptions/CoveredCallDescription'), {
+	ssr: false,
+});
 
-const CoveredCall = ({ title, type }: CoveredCallProps) => {
+interface CoveredCallProps extends Strategy.GetAll {}
+
+const CoveredCall = (strategy: CoveredCallProps) => {
+	const { title, type } = strategy;
+
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -45,20 +50,85 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const goToTechnicalChart = (data: Strategy.CoveredCall) => {
+	const execute = (data: Strategy.CoveredCall) => {
 		//
 	};
 
-	const execute = (data: Strategy.CoveredCall) => {
-		//
+	const analyze = (data: Strategy.CoveredCall) => {
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.symbolTitle,
+						symbolISIN: data.symbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.premium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
+				},
+				{
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: data.baseMarketUnit,
+					quantity: 1,
+					price: data.baseLastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+						baseSymbolPrice: data.baseLastTradedPrice,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
+				initialColumns: initialColumnsCoveredCall,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(initialColumnsCoveredCall),
+			}),
+		);
+	};
+
+	const readMore = () => {
+		dispatch(
+			setDescriptionModal({
+				title: (
+					<>
+						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+					</>
+				),
+				description: () => <CoveredCallDescription />,
+				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
 	};
@@ -156,9 +226,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerName: 'سر به سر استراتژی',
 				width: 136,
 				cellClass: ({ data }) =>
-					(data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0) < 0
-						? 'text-error-100'
-						: 'text-success-100',
+					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0)),
 				valueGetter: ({ data }) => data?.coveredCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -260,7 +328,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -272,7 +340,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -285,7 +353,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 					tooltip:
 						'پوشش ریسک یا حاشیه اطمینان درصدی است که سهم پایه می‌تواند حداکثر کاهش خود را داشته باشد، ولی استراتژی کاورد کال وارد زیان نشود.',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.riskCoverage ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -297,7 +365,7 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید در صورت عدم اعمال توسط خریدار اختیار',
 				},
-				cellClass: ({ value }) => (value < 0 ? 'text-error-100' : 'text-success-100'),
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
@@ -308,21 +376,11 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					goToTechnicalChart,
 					execute,
+					analyze,
 				},
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Strategy.CoveredCall> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 96,
-		}),
 		[],
 	);
 
@@ -355,28 +413,30 @@ const CoveredCall = ({ title, type }: CoveredCallProps) => {
 
 	return (
 		<>
-			<Filters
-				type={type}
-				title={title}
-				useCommission={useCommission}
-				priceBasis={priceBasis}
-				onManageColumns={showColumnsPanel}
-				onPriceBasisChanged={setPriceBasis}
-				onCommissionChanged={setUseCommission}
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				readMore={readMore}
 			/>
 
-			<AgTable<Strategy.CoveredCall>
-				suppressColumnVirtualisation={false}
-				ref={gridRef}
-				rowData={rows}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={columnDefs}
-				defaultColDef={defaultColDef}
-				className='h-full border-0'
-			/>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+				<Filters
+					type={type}
+					title={title}
+					useCommission={useCommission}
+					priceBasis={priceBasis}
+					onManageColumns={showColumnsPanel}
+					onPriceBasisChanged={setPriceBasis}
+					onCommissionChanged={setUseCommission}
+				/>
 
-			{rows.length === 0 && !isFetching && <NoTableData />}
+				<Table<Strategy.CoveredCall>
+					ref={gridRef}
+					rowData={rows}
+					columnDefs={columnDefs}
+					isFetching={isFetching}
+				/>
+			</div>
 		</>
 	);
 };

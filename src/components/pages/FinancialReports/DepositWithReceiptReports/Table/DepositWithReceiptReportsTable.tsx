@@ -4,6 +4,7 @@ import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import DepositWithReceiptReportsActionCell from './DepositWithReceiptReportsActionCell';
 
 interface DepositWithReceiptReportsTableProps {
 	reports: Reports.IDepositWithReceipt[] | null;
@@ -19,6 +20,14 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 	const dateFormatter = (v: string | number) => {
 		if (v === undefined || v === null) return '−';
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
+	};
+
+	const onDeleteRow = async () => {
+		//
+	};
+
+	const onEditRow = async () => {
+		//
 	};
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IDepositWithReceipt>>>(
@@ -80,18 +89,22 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
+					valueFormatter: ({ value }) => t(`states.state_${value}`),
 				},
 				{
 					headerName: t('deposit_with_receipt_page.operation_column'),
-					field: 'state',
+					field: 'action',
 					maxWidth: 200,
 					minWidth: 200,
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => t('states.state_' + value),
+					cellRenderer: DepositWithReceiptReportsActionCell,
+					cellRendererParams: {
+						onDeleteRow,
+						onEditRow
+					}
+
 				},
 			] as Array<ColDef<Reports.IDepositWithReceipt>>,
 		[],
