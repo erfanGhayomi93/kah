@@ -281,6 +281,7 @@ declare type IBrokerUrls = Record<
 	| 'getPaymentGetStatuses'
 	| 'getChangeBrokerExportFilteredCSV'
 	| 'getChangeBrokerChangeBrokersByFilter'
+	| 'GetAgreements',
 	| 'changeBrokerSetCancel'
 	| 'getFreezeExportFreeze'
 	| 'getFreezerequests',

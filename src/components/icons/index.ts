@@ -27,6 +27,7 @@ import ColumnsSVG from './columns.svg';
 import DataAnalyticsSVG from './data-analytics.svg';
 import DirectionalMarketSVG from './directional-market.svg';
 import DisadvantagesSVG from './disadvantages.svg';
+import DocSVG from './doc.svg';
 import DoubleArrowLeftSVG from './double-arrow-left.svg';
 import DoubleArrowRightSVG from './double-arrow-right.svg';
 import DragSVG from './drag.svg';
@@ -146,6 +147,7 @@ export {
 	DataAnalyticsSVG,
 	DirectionalMarketSVG,
 	DisadvantagesSVG,
+	DocSVG,
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,
 	DragSVG,
