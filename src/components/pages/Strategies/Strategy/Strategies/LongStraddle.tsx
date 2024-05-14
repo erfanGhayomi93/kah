@@ -258,7 +258,12 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 
 	return (
 		<>
-			<StrategyDetails strategy={strategy} steps={[]} readMore={readMore} />
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				condition={t(`${type}.condition`)}
+				readMore={readMore}
+			/>
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
 				<Filters
