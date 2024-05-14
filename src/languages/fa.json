@@ -710,6 +710,17 @@
 		"amount_column": "مبلغ (ریال)",
 		"date_validation": "تاریخ مورد نظر را انتخاب کنید"
 	},
+	"freeze_modal" : {
+		"title": "فریز و رفع فریز" ,
+		"freeze_tab": "فریز" ,
+		"un_freeze_tab": "رفع فریز" ,
+		"notice1_freeze" : "امکان ثبت درخواست تکراری (فریز سهام) در (یک نماد) وجود ندارد! لطفا تا مشخص شدن نتیجه درخواست قبلی خود صبوری نماید.",
+		"notice2_freeze" : "درصورت ثبت درخواست (فریز سهام) تا زمان دریافت نتیجه درخواست توسط ادمین کارگزاری،امکان فروش به همان تعداد سهام از نماد دارایی پایه فریز شده را ندارید (اگر مازاد درخواست فریز، سهام را در پرتفوی داشته باشید ،مجاز به فروش آن نماد می باشید)" ,
+		"notice3_freeze" : "امکان آزاد سازی (وجه تضمین) در موقعیت (فروش اختیار فروش) نبوده و نمیتوانید از (فریز سهام) استفاده نماید.",
+		"notice4_freeze" : "در صورت تائید درخواست فریز توسط ادمین مبالغ مسدودی در فرآیند پس از معامله آزاد و سهام به عنوان وثیقه لحاظ میشود",
+		"symbol_title" : "نماد",
+		"guaranted_number" : "تعداد وثیقه شده"
+	},
 	"deposit_modal": {
 		"title": "واریز وجه",
 		"liveDepositTab": "واریز آنی",
@@ -1149,6 +1160,12 @@
 		"manage_watchlist_list": "مدیریت دیده‌بان‌ها",
 		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد."
 	},
+	"freeze_request_state": {
+		"Done": "تایید",
+		"InProgress": "در حال انجام",
+		"FreezeFailed": "ناموفق",
+		"NotApprove": "عدم تایید"
+	},
 	"alerts": {
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
 		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
@@ -1178,7 +1195,17 @@
 		"redirecting_to_payment": "در حال انتقال به درگاه پرداخت",
 		"invalid_collateral": "لطفا یک وثیقه را انتخاب نمایید.",
 		"password_changed_successfully": "رمز عبور شما با موفقیت تغییر یافت.",
+		"option_error_cant_freeze": "امکان فریز نماد های اختیار وجود ندارد",
+		"option_already_freezed": "این نماد در حال حاضر فریز شده است",
 		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
+		"freeze_request_succeeded": "درخواست فریز با موفقیت ثبت شد",
+		"freeze_request_failed": "درخواست فریز با خطا مواجه شد",
+		"unFreeze_request_succeeded": "درخواست رفع فریز با موفقیت ثبت شد",
+		"unFreeze_request_failed": "درخواست رفع فریز با خطا مواجه شد",
+		"freeze_request_deleted": "درخواست فریز با موفقیت حذف شد",
+		"unFreeze_request_deleted": "درخواست رفع فریز با موفقیت حذف شد",
+		"freeze_request_delete_failed": "درخواست حذف فریز با خطا مواجه شد",
+		"unFreeze_request_delete_failed": "درخواست حذف رفع فریز با خطا مواجه شد",
 		"change_broker_request_successfully": "درخواست تغییر کارگزار ناظر با موفقیت ارسال شد.",
 		"change_broker_request_delete_successfully": "درخواست حذف تغییر کارگزار ناظر با موفقیت ارسال شد.",
 		"change_broker_failure_SymbolISINisEmpty": "ابتدا یک نماد انتخاب کنید.",

@@ -190,6 +190,10 @@ export interface IDepositModal extends IBaseModalConfiguration {
 	isShow: boolean;
 }
 
+export interface IFreezeModal extends IBaseModalConfiguration {
+	isShow: boolean;
+}
+
 export interface IAnalyzeModal extends IBaseModalConfiguration {
 	symbol: {
 		symbolTitle: string;
@@ -222,6 +226,7 @@ export type ModalState = TBaseModalProps<{
 	changeBroker: IChangeBrokerModal;
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;
+	freeze: IFreezeModal;
 	analyze: IAnalyzeModal;
 	description: IDescriptionModal;
 	transactionsFilters: ITransactionsFiltersModal;
