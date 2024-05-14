@@ -1418,14 +1418,17 @@ declare namespace Strategy {
 	declare type Cheap =
 		| 'HighRisk'
 		| 'LowRisk'
+		| 'NoRisk'
 		| 'ModerateRisk'
 		| 'LimitedInterest'
 		| 'UnlimitedInterest'
 		| 'LimitedLoss'
+		| 'NoLimit'
 		| 'UnlimitedLoss'
 		| 'BullishMarket'
 		| 'BearishMarket'
 		| 'NeutralMarket'
+		| 'AllMarket'
 		| 'DirectionalMarket';
 
 	declare type Type =
@@ -1603,13 +1606,14 @@ declare namespace Strategy {
 		baseTradeValue: number;
 		baseTradeCount: number;
 		baseTradeVolume: number;
-		baseLastTradedDate: string;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		callRequiredMargin: number;
+		putRequiredMargin: number;
 		contractEndDate: string;
+		baseLastTradedDate: string;
 		contractSize: number;
-		requiredMargin: number;
 	}
 
 	export interface Conversion {
@@ -1711,6 +1715,48 @@ declare namespace Strategy {
 	}
 
 	export interface ProtectivePut {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		strikePrice: number;
+		openPositionCount: number;
+		iotm: Option.IOTM;
+		premium: number;
+		tradePriceVarPreviousTradePercent: number;
+		optionBestBuyLimitQuantity: number;
+		optionBestBuyLimitPrice: number;
+		baseBestSellLimitPrice: number;
+		baseBestBuyLimitPrice: number;
+		optionBestSellLimitPrice: number;
+		optionBestSellLimitQuantity: number;
+		protectivePutBEP: number;
+		maxLoss: number;
+		profitAmount: number;
+		profitPercent: number;
+		inUseCapital: number;
+		bepDifference: number;
+		baseMarketUnit: string;
+		marketUnit: string;
+		historicalVolatility: number;
+		requiredMargin: number;
+		contractEndDate: string;
+		timeValue: number;
+		intrinsicValue: number;
+		optionBestLimitPrice: number;
+		optionBestLimitVolume: number;
+		tradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		contractSize: number;
+	}
+
+	export interface BearPutSpread {
 		symbolTitle: string;
 		symbolISIN: string;
 		marketUnit: string;

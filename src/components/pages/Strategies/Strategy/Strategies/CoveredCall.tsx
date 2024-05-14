@@ -10,12 +10,17 @@ import { useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+
+const CoveredCallDescription = dynamic(() => import('../Descriptions/CoveredCallDescription'), {
+	ssr: false,
+});
 
 interface CoveredCallProps extends Strategy.GetAll {}
 
@@ -122,7 +127,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
-				description: <h1>Hello</h1>,
+				description: () => <CoveredCallDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);

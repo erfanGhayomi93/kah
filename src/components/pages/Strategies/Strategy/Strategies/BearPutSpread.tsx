@@ -14,13 +14,13 @@ import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
 
-const ProtectivePutDescription = dynamic(() => import('../Descriptions/ProtectivePutDescription'), {
+const BearPutSpreadDescription = dynamic(() => import('../Descriptions/BearPutSpreadDescription'), {
 	ssr: false,
 });
 
-interface ProtectivePutProps extends Strategy.GetAll {}
+interface BearPutSpreadProps extends Strategy.GetAll {}
 
-const ProtectivePut = (strategy: ProtectivePutProps) => {
+const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	const { title, type } = strategy;
 
 	const t = useTranslations();
@@ -72,7 +72,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
-				description: () => <ProtectivePutDescription />,
+				description: () => <BearPutSpreadDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
@@ -269,4 +269,4 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	);
 };
 
-export default ProtectivePut;
+export default BearPutSpread;
