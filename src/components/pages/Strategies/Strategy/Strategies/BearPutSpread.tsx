@@ -97,7 +97,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer',
+				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 			},
@@ -126,7 +126,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueGetter: ({ data }) => data!.symbolTitle,
 			},
 			{
-				headerName: 'قیمت بهترین فروشنده کال',
+				headerName: 'بهترین فروشنده کال',
 				valueGetter: ({ data }) => data!.symbolTitle,
 			},
 			{
@@ -162,7 +162,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueGetter: ({ data }) => data!.symbolTitle,
 			},
 			{
-				headerName: 'مقدار سود',
+				headerName: 'بازده',
 				valueGetter: ({ data }) => data!.symbolTitle,
 			},
 			{

@@ -16,8 +16,8 @@ const Table = forwardRef<GridApi, TableProps<unknown>>(({ isFetching, rowData, d
 			<AgTable<unknown>
 				ref={ref}
 				suppressColumnVirtualisation={false}
-				rowHeight={40}
-				headerHeight={48}
+				rowHeight={48}
+				headerHeight={40}
 				rowData={data}
 				defaultColDef={{
 					suppressMovable: true,

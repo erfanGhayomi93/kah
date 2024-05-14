@@ -140,7 +140,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer',
+				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -164,7 +164,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'callSymbolISIN',
-				headerName: 'اختیار خرید',
+				headerName: 'کال',
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),

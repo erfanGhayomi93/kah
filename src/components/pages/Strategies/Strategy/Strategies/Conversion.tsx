@@ -1,10 +1,14 @@
 import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
+import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
+import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsConversion } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -92,6 +96,240 @@ const Conversion = (strategy: ConversionProps) => {
 
 	const columnDefs = useMemo<Array<ColDef<Strategy.Conversion>>>(
 		() => [
+			{
+				colId: 'baseSymbolISIN',
+				headerName: 'نماد پایه',
+				width: 104,
+				pinned: 'right',
+				cellClass: 'cursor-pointer justify-end',
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
+				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
+			},
+			{
+				colId: 'baseLastTradedPrice',
+				headerName: 'قیمت پایه',
+				minWidth: 108,
+				valueGetter: ({ data }) =>
+					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
+					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				}),
+			},
+			{
+				colId: 'dueDays',
+				headerName: 'مانده تا سررسید',
+				width: 120,
+				valueGetter: ({ data }) => data?.dueDays ?? 0,
+			},
+			{
+				colId: 'strikePrice',
+				headerName: 'قیمت اعمال',
+				width: 96,
+				cellClass: 'gray',
+				valueGetter: ({ data }) => data?.strikePrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'callPremium',
+				headerName: 'قیمت نماد کال',
+				width: 192,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
+					percent: data?.callPremiumPercent ?? 0,
+				}),
+				valueGetter: ({ data }) => `${data?.callPremium ?? 0}|${data?.callPremiumPercent ?? 0}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data?.callPremium ?? 0)),
+			},
+			{
+				colId: 'putPremium',
+				headerName: 'قیمت نماد پوت',
+				width: 192,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
+					percent: data?.putPremiumPercent ?? 0,
+				}),
+				valueGetter: ({ data }) => `${data?.putPremium ?? 0}|${data?.putPremiumPercent ?? 0}`,
+				valueFormatter: ({ data }) => sepNumbers(String(data?.putPremium ?? 0)),
+			},
+			{
+				colId: 'callSymbolISIN',
+				headerName: 'کال',
+				width: 128,
+				cellClass: 'cursor-pointer',
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.callSymbolISIN),
+				valueGetter: ({ data }) => data?.callSymbolTitle ?? '−',
+				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRendererParams: {
+					getIOTM: (data: Strategy.LongStraddle) => data!.callIOTM,
+				},
+			},
+			{
+				colId: 'callBestBuyLimitPrice',
+				headerName: 'بهترین خریدار کال',
+				width: 176,
+				cellClass: 'buy',
+				valueGetter: ({ data }) => data?.callBestBuyLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'callBestBuyLimitQuantity',
+				headerName: 'حجم سر خط خرید کال',
+				width: 152,
+				cellClass: 'buy',
+				valueGetter: ({ data }) => data?.callBestBuyLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'callOpenPositionCount',
+				headerName: 'موقعیت باز کال',
+				width: 152,
+				valueGetter: ({ data }) => data?.callOpenPositionCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'callBestSellLimitPrice',
+				headerName: 'بهترین فروشنده کال',
+				width: 204,
+				valueGetter: ({ data }) => data?.callBestSellLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'callBestSellLimitQuantity',
+				headerName: 'حجم سر خط فروش کال',
+				width: 192,
+				valueGetter: ({ data }) => data?.callBestSellLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'putSymbolISIN',
+				headerName: 'پوت',
+				width: 128,
+				cellClass: 'cursor-pointer',
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.putSymbolISIN),
+				valueGetter: ({ data }) => data?.putSymbolTitle ?? '−',
+				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRendererParams: {
+					getIOTM: (data: Strategy.LongStraddle) => data!.putIOTM,
+				},
+			},
+			{
+				colId: 'putBestSellLimitPrice',
+				headerName: 'بهترین فروشنده پوت',
+				width: 204,
+				valueGetter: ({ data }) => data?.putBestSellLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'putBestSellLimitQuantity',
+				headerName: 'حجم سر خط فروش پوت',
+				width: 192,
+				valueGetter: ({ data }) => data?.putBestSellLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'putOpenPositionCount',
+				headerName: 'موقعیت باز پوت',
+				width: 152,
+				valueGetter: ({ data }) => data?.putOpenPositionCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'putBestBuyLimitPrice',
+				headerName: 'بهترین خریدار پوت',
+				width: 176,
+				cellClass: 'sell',
+				valueGetter: ({ data }) => data?.putBestBuyLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'putBestBuyLimitQuantity',
+				headerName: 'حجم سر خط خرید پوت',
+				width: 152,
+				cellClass: 'sell',
+				valueGetter: ({ data }) => data?.putBestBuyLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'profit',
+				headerName: 'بازده',
+				minWidth: 104,
+				valueFormatter: () => t('common.infinity'),
+			},
+			{
+				colId: 'inUseCapital',
+				headerName: 'سرمایه درگیر',
+				width: 96,
+				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'bestBuyYTM',
+				headerName: 'YTM سرخط خرید',
+				width: 120,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'bestSellYTM',
+				headerName: 'YTM سرخط فروش',
+				width: 152,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+			},
+			{
+				colId: 'callTradeValue',
+				headerName: 'ارزش معاملات کال',
+				width: 160,
+				valueGetter: ({ data }) => data?.callTradeValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(value),
+			},
+			{
+				colId: 'putTradeValue',
+				headerName: 'ارزش معاملات پوت',
+				width: 160,
+				valueGetter: ({ data }) => data?.putTradeValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(value),
+			},
+			{
+				colId: 'baseTradeValue',
+				headerName: 'ارزش معاملات سهم پایه',
+				width: 152,
+				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(value),
+			},
+			{
+				colId: 'baseTradeCount',
+				headerName: 'تعداد معاملات پایه',
+				width: 152,
+				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'baseTradeVolume',
+				headerName: 'حجم معاملات پایه',
+				width: 152,
+				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'baseLastTradedDate',
+				headerName: 'آخرین معامله پایه',
+				width: 152,
+				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
+				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
+			},
 			{
 				colId: 'actions',
 				headerName: 'عملیات',

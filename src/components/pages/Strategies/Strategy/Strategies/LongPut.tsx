@@ -128,7 +128,7 @@ const LongPut = (strategy: LongPutProps) => {
 				minWidth: 104,
 				flex: 1,
 				pinned: 'right',
-				cellClass: 'cursor-pointer',
+				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -140,7 +140,7 @@ const LongPut = (strategy: LongPutProps) => {
 					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
 			},
@@ -152,14 +152,14 @@ const LongPut = (strategy: LongPutProps) => {
 			},
 			{
 				colId: 'callSymbolISIN',
-				headerName: 'اختیار خرید',
+				headerName: 'کال',
 				minWidth: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
-					getIOTM: (data: Strategy.CoveredCall) => data!.iotm,
+					getIOTM: (data: Strategy.LongPut) => data!.iotm,
 				},
 			},
 			{
@@ -182,7 +182,7 @@ const LongPut = (strategy: LongPutProps) => {
 				headerName: 'آخرین قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
 					percent: data?.premium ?? 0,
 				}),
 				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
@@ -225,8 +225,8 @@ const LongPut = (strategy: LongPutProps) => {
 				headerName: 'سر به سر استراتژی',
 				minWidth: 128,
 				cellClass: ({ data }) =>
-					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0)),
-				valueGetter: ({ data }) => data?.longCallBEP ?? 0,
+					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longPutBEP ?? 0)),
+				valueGetter: ({ data }) => data?.longPutBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -238,10 +238,10 @@ const LongPut = (strategy: LongPutProps) => {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.maxProfitPercent ?? 0,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
+					percent: data?.profitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.profitAmount}|${data!.profitPercentUntilSettlement}`,
+				valueGetter: ({ data }) => `${data!.profitAmount}|${data!.profitPercent}`,
 				valueFormatter: ({ data }) => sepNumbers(String(data!.profitAmount)),
 			},
 			{
@@ -267,7 +267,7 @@ const LongPut = (strategy: LongPutProps) => {
 			},
 			{
 				colId: 'profit',
-				headerName: 'مقدار سود',
+				headerName: 'بازده',
 				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},
