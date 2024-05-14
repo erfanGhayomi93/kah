@@ -2,10 +2,11 @@ import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
 import { initialColumnsConversion } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
@@ -13,7 +14,11 @@ import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
 
-interface ConversionProps extends Strategy.GetAll { }
+const ConversionDescription = dynamic(() => import('../Descriptions/ConversionDescription'), {
+	ssr: false,
+});
+
+interface ConversionProps extends Strategy.GetAll {}
 
 const Conversion = (strategy: ConversionProps) => {
 	const { title, type } = strategy;
@@ -36,6 +41,10 @@ const Conversion = (strategy: ConversionProps) => {
 	const { data, isFetching } = useConversionStrategyQuery({
 		queryKey: ['conversionQuery', priceBasis.id, useCommission],
 	});
+
+	const onSymbolTitleClicked = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
 
 	const execute = (data: Strategy.Conversion) => {
 		//
@@ -63,7 +72,7 @@ const Conversion = (strategy: ConversionProps) => {
 						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
-				description: title,
+				description: () => <ConversionDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);

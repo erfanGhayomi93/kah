@@ -1,4 +1,4 @@
-import { useProtectivePutStrategyQuery } from '@/api/queries/strategyQuery';
+import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import { initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setDescriptionModal } from '@/features/slices/modalSlice';
@@ -14,20 +14,20 @@ import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
 
-const ProtectivePutDescription = dynamic(() => import('../Descriptions/ProtectivePutDescription'), {
+const BearPutSpreadDescription = dynamic(() => import('../Descriptions/BearPutSpreadDescription'), {
 	ssr: false,
 });
 
-interface ProtectivePutProps extends Strategy.GetAll {}
+interface BearPutSpreadProps extends Strategy.GetAll {}
 
-const ProtectivePut = (strategy: ProtectivePutProps) => {
+const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	const { title, type } = strategy;
 
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<Strategy.ProtectivePut>>(null);
+	const gridRef = useRef<GridApi<Strategy.BearPutSpread>>(null);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
@@ -38,19 +38,19 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useProtectivePutStrategyQuery({
-		queryKey: ['protectivePutQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useBearPutSpreadStrategyQuery({
+		queryKey: ['bearPutSpreadQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const execute = (data: Strategy.ProtectivePut) => {
+	const execute = (data: Strategy.BearPutSpread) => {
 		//
 	};
 
-	const analyze = (data: Strategy.ProtectivePut) => {
+	const analyze = (data: Strategy.BearPutSpread) => {
 		/* const contracts: TSymbolStrategy[] = [];
 
 		dispatch(
@@ -72,7 +72,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
-				description: () => <ProtectivePutDescription />,
+				description: () => <BearPutSpreadDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
@@ -90,7 +90,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
 		() => [
 			{
 				colId: 'symbolISIN',
@@ -258,7 +258,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 					onCommissionChanged={setUseCommission}
 				/>
 
-				<Table<Strategy.ProtectivePut>
+				<Table<Strategy.BearPutSpread>
 					ref={gridRef}
 					rowData={rows}
 					columnDefs={columnDefs}
@@ -269,4 +269,4 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	);
 };
 
-export default ProtectivePut;
+export default BearPutSpread;

@@ -21,16 +21,22 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 			[tags[0], t(`strategy_cheaps.${tags[0]}`)],
 			[tags[1], t(`strategy_cheaps.${tags[1]}`)],
 			[tags[2], t(`strategy_cheaps.${tags[2]}`)],
-			[tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)],
 		];
 
-		if (tags.length > 4)
-			result[3][1] +=
-				'/' +
-				tags
-					.slice(4)
-					.map((tag) => t(`strategy_cheaps.${tag}`))
-					.join('/');
+		if (tags.length === 4 && tags[3] === 'AllMarket') {
+			result.push([tags[3], t('strategy_cheaps.AllMarket')]);
+		} else {
+			result.push([tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)]);
+
+			if (tags.length > 4) {
+				result[3][1] +=
+					'/' +
+					tags
+						.slice(4)
+						.map((tag) => t(`strategy_cheaps.${tag}`))
+						.join('/');
+			}
+		}
 
 		return result;
 	}, []);
