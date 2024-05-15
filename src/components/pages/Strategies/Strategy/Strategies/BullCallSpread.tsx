@@ -65,7 +65,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						symbolISIN: data.lspSymbolISIN,
 						optionType: 'call',
 						baseSymbolPrice: data.baseLastTradedPrice,
-						historicalVolatility: data.lspHistoricalVolatility,
+						historicalVolatility: data.historicalVolatility,
 					},
 					contractSize: data.contractSize,
 					price: data.lspPremium || 1,
@@ -86,7 +86,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						symbolISIN: data.hspSymbolISIN,
 						optionType: 'call',
 						baseSymbolPrice: data.baseLastTradedPrice,
-						historicalVolatility: data.hspHistoricalVolatility,
+						historicalVolatility: data.historicalVolatility,
 					},
 					contractSize: data.contractSize,
 					price: data.hspPremium || 1,
@@ -120,7 +120,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
 				description: () => <BullCallSpreadDescription />,
@@ -147,8 +147,8 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				colId: 'baseSymbolISIN',
 				headerName: 'نماد پایه',
 				width: 104,
-				cellClass: 'cursor-pointer',
 				pinned: 'right',
+				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -156,13 +156,16 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'dueDays',
@@ -253,7 +256,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			},
 			{
 				colId: 'hspBestSellLimitPrice',
-				headerName: 'قیمت بهترین فروشنده کال فروش',
+				headerName: 'بهترین فروشنده کال فروش',
 				width: 204,
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -287,8 +290,9 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
 					percent: data?.lspPremiumPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.lspPremium ?? 0}|${data?.lspPremiumPercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.lspPremium ?? 0)),
+				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'hspPremium',
@@ -298,12 +302,13 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
 					percent: data?.hspPremiumPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.hspPremium ?? 0}|${data?.hspPremiumPercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.hspPremium ?? 0)),
+				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'bullCallSpreadBEP',
-				headerName: 'قیمت سر به سر',
+				headerName: 'سر به سر',
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -324,8 +329,9 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
 					percent: data?.maxProfitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.maxProfit ?? 0}|${data?.maxProfitPercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.maxProfit ?? 0)),
+				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'maxLoss',

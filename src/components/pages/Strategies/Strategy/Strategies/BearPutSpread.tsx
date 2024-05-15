@@ -1,10 +1,14 @@
 import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
-import { initialColumnsProtectivePut } from '@/constants/strategies';
+import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
+import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { initialColumnsBearPutSpread, initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setDescriptionModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
+import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -32,8 +36,8 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'protective_put_strategy_columns',
-		initialColumnsProtectivePut,
+		'bear_put_spread_columns',
+		initialColumnsBearPutSpread,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
@@ -51,17 +55,64 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	};
 
 	const analyze = (data: Strategy.BearPutSpread) => {
-		/* const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.lspSymbolTitle,
+						symbolISIN: data.lspSymbolISIN,
+						optionType: 'put',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.lspPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.lspStrikePrice,
+					side: 'buy',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.lspRequiredMargin,
+					},
 				},
-				contracts: [],
-			}),
-		); */
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.hspSymbolTitle,
+						symbolISIN: data.hspSymbolISIN,
+						optionType: 'put',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.hspPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.hspStrikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.hspRequiredMargin,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const readMore = () => {
@@ -69,7 +120,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
 				description: () => <BearPutSpreadDescription />,
@@ -93,109 +144,290 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
 		() => [
 			{
-				colId: 'symbolISIN',
+				colId: 'baseSymbolISIN',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer',
-				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
-				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
+				cellClass: 'cursor-pointer justify-end',
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
+				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
+				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				minWidth: 108,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
+					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
+				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				width: 120,
+				valueGetter: ({ data }) => data?.dueDays ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'قرارداد پوت',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspSymbolISIN',
+				headerName: 'پوت خرید',
+				width: 128,
+				cellClass: 'cursor-pointer',
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.lspSymbolISIN),
+				valueGetter: ({ data }) => data?.lspSymbolTitle ?? '−',
+				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRendererParams: {
+					getIOTM: (data: Strategy.BearPutSpread) => data?.lspiotm ?? 0,
+				},
 			},
 			{
-				headerName: 'قیمت اعمال',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspStrikePrice',
+				headerName: 'قیمت اعمال پوت خرید',
+				width: 176,
+				valueGetter: ({ data }) => data?.lspStrikePrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'موقعیت باز',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspBestSellLimitPrice',
+				headerName: 'قیمت فروشنده پوت خرید',
+				width: 176,
+				valueGetter: ({ data }) => data?.lspBestSellLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'آخرین قیمت نماد آپشن',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspBestSellLimitQuantity',
+				headerName: 'حجم فروشنده پوت خرید',
+				width: 176,
+				valueGetter: ({ data }) => data?.lspBestSellLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'قیمت بهترین فروشنده کال',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspBestBuyLimitPrice',
+				headerName: 'قیمت خریدار پوت خرید',
+				width: 176,
+				valueGetter: ({ data }) => data?.lspBestBuyLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'حجم سرخط فروش',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspBestBuyLimitQuantity',
+				headerName: 'حجم خریدار پوت خرید',
+				width: 176,
+				valueGetter: ({ data }) => data?.lspBestBuyLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'سر به سر استراتژی',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'hspSymbolISIN',
+				headerName: 'پوت فروش',
+				width: 128,
+				cellClass: 'cursor-pointer',
+				onCellClicked: (api) => onSymbolTitleClicked(api.data!.hspSymbolISIN),
+				valueGetter: ({ data }) => data?.hspSymbolTitle ?? '−',
+				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRendererParams: {
+					getIOTM: (data: Strategy.BearPutSpread) => data?.hspiotm ?? 0,
+				},
 			},
 			{
+				colId: 'hspStrikePrice',
+				headerName: 'قیمت اعمال پوت فروش',
+				width: 176,
+				valueGetter: ({ data }) => data?.hspStrikePrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'hspBestBuyLimitPrice',
+				headerName: 'قیمت خریدار پوت فروش',
+				width: 176,
+				valueGetter: ({ data }) => data?.hspBestBuyLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'hspBestBuyLimitQuantity',
+				headerName: 'حجم خریدار پوت فروش',
+				width: 176,
+				valueGetter: ({ data }) => data?.hspBestBuyLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'hspBestSellLimitPrice',
+				headerName: 'قیمت بهترین فروشنده پوت فروش',
+				width: 204,
+				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'hspBestSellLimitQuantity',
+				headerName: 'حجم سر خط فروش پوت فروش',
+				width: 192,
+				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'lspOpenPositionCount',
+				headerName: 'موقعیت باز پوت خرید',
+				width: 152,
+				valueGetter: ({ data }) => data?.lspOpenPositionCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'hspOpenPositionCount',
+				headerName: 'موقعیت باز پوت فروش',
+				width: 152,
+				valueGetter: ({ data }) => data?.hspOpenPositionCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'lspPremium',
+				headerName: 'قیمت نماد پوت خرید',
+				width: 192,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
+					percent: data?.lspPremiumPercent ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+			},
+			{
+				colId: 'hspPremium',
+				headerName: 'قیمت نماد پوت فروش',
+				width: 192,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
+					percent: data?.hspPremiumPercent ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+			},
+			{
+				colId: 'bullCallSpreadBEP',
+				headerName: 'سر به سر',
+				width: 152,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'درصد گرانی یا همان درصد اختلاف سر به سر و قیمت فعلی',
+				},
+				valueGetter: ({ data }) => data?.bearPutSpreadBEP ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'maxProfit',
 				headerName: 'بیشینه سود',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				width: 184,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
+				},
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
+					percent: data?.maxProfitPercent ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
-				headerName: 'سود عدم اعمال',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'maxLoss',
+				headerName: 'حداکثر زیان',
+				width: 152,
+				valueGetter: ({ data }) => data?.maxLoss ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'بلک شولز',
-				valueGetter: ({ data }) => data!.symbolTitle,
-			},
-			{
+				colId: 'inUseCapital',
 				headerName: 'سرمایه درگیر',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				width: 96,
+				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'ارزش زمانی',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspTimeValue',
+				headerName: 'ارزش زمانی پوت خرید',
+				width: 152,
+				valueGetter: ({ data }) => data?.lspTimeValue ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'ارزش ذاتی',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'hspTimeValue',
+				headerName: 'ارزش زمانی پوت فروش',
+				width: 152,
+				valueGetter: ({ data }) => data?.hspTimeValue ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'مقدار سود',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspIntrinsicValue',
+				headerName: 'ارزش ذاتی پوت خرید',
+				width: 152,
+				valueGetter: ({ data }) => data?.lspIntrinsicValue ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'اختلاف تا سر به سر',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'hspIntrinsicValue',
+				headerName: 'ارزش ذاتی پوت فروش',
+				width: 152,
+				valueGetter: ({ data }) => data?.hspIntrinsicValue ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				headerName: 'قیمت بهترین خریدار پوت',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'lspTradeValue',
+				headerName: 'ارزش معاملات آپشن پوت خرید',
+				width: 192,
+				valueGetter: ({ data }) => data?.lspTradeValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
-				headerName: 'حجم سر خط خرید',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				colId: 'hspTradeValue',
+				headerName: 'ارزش معاملات آپشن پوت فروش',
+				width: 192,
+				valueGetter: ({ data }) => data?.hspTradeValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
-				headerName: 'ارزش معاملات آپشن',
-				valueGetter: ({ data }) => data!.symbolTitle,
-			},
-			{
+				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				width: 152,
+				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
+				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				width: 152,
+				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				width: 152,
+				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
-				valueGetter: ({ data }) => data!.symbolTitle,
+				width: 152,
+				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
+				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
+			},
+			{
+				colId: 'ytm',
+				headerName: 'YTM',
+				width: 152,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: 'بازده موثر تا سررسید',
+				},
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
+				valueGetter: ({ data }) => data?.ytm ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 6),
 			},
 			{
 				colId: 'actions',
@@ -244,6 +476,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			<StrategyDetails
 				strategy={strategy}
 				steps={[t(`${type}.step_1`), t(`${type}.step_2`)]}
+				condition={t(`${type}.condition`)}
 				readMore={readMore}
 			/>
 

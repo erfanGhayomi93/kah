@@ -174,3 +174,19 @@ export const useGetCustomerSettings = createQuery<
 		return formattedData as Settings.IFormattedBrokerCustomerSettings;
 	},
 });
+
+export const useGetAgreements = createQuery<Settings.IAgreements[] | null, ['getAgreements']>({
+	staleTime: 6e4,
+	queryKey: ['getAgreements'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+
+		const response = await axios.get<ServerResponse<Settings.IAgreements[]>>(url.GetAgreements, { signal });
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
