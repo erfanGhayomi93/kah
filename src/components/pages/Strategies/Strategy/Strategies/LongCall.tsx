@@ -10,12 +10,17 @@ import { useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type ISelectItem } from '..';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+
+const LongCallDescription = dynamic(() => import('../Descriptions/LongCallDescription'), {
+	ssr: false,
+});
 
 interface LongCallProps extends Strategy.GetAll {}
 
@@ -94,10 +99,10 @@ const LongCall = (strategy: LongCallProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
-				description: title,
+				description: () => <LongCallDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
@@ -123,7 +128,7 @@ const LongCall = (strategy: LongCallProps) => {
 				minWidth: 104,
 				flex: 1,
 				pinned: 'right',
-				cellClass: 'cursor-pointer',
+				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -131,13 +136,16 @@ const LongCall = (strategy: LongCallProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongCall, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'dueDays',
@@ -147,14 +155,14 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'callSymbolISIN',
-				headerName: 'اختیار خرید',
+				headerName: 'کال',
 				minWidth: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
-					getIOTM: (data: Strategy.CoveredCall) => data!.iotm,
+					getIOTM: (data: Strategy.LongCall) => data!.iotm,
 				},
 			},
 			{
@@ -177,11 +185,12 @@ const LongCall = (strategy: LongCallProps) => {
 				headerName: 'آخرین قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongCall, number>) => ({
 					percent: data?.premium ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
+				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
@@ -217,7 +226,7 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'longCallBEP',
-				headerName: 'سر به سر استراتژی',
+				headerName: 'سر به سر',
 				minWidth: 128,
 				cellClass: ({ data }) =>
 					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0)),
@@ -233,11 +242,12 @@ const LongCall = (strategy: LongCallProps) => {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.maxProfitPercent ?? 0,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongCall, number>) => ({
+					percent: data?.profitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.profitAmount}|${data!.profitPercentUntilSettlement}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data!.profitAmount)),
+				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'blackScholes',
@@ -262,7 +272,7 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'profit',
-				headerName: 'مقدار سود',
+				headerName: 'بازده',
 				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},

@@ -9,6 +9,7 @@ import {
 	setChangeBrokerModal,
 	setChoiceCollateralModal,
 	setDepositModal,
+	setFreezeModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
 	setWithdrawalModal,
@@ -22,6 +23,7 @@ import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
 import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
+import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
 import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
 import ModalLoading from './ModalLoading';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
@@ -60,6 +62,8 @@ const Withdrawal = lazy(() => import('./Withdrawal'));
 
 const Deposit = lazy(() => import('./Deposit'));
 
+const Freeze = lazy(() => import('./Freeze'));
+
 const ChangeBroker = lazy(() => import('./ChangeBroker'));
 
 const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
@@ -89,6 +93,7 @@ const Modals = () => {
 		orderDetails,
 		changeBroker,
 		deposit,
+		freeze,
 		manageDashboardLayout,
 		withdrawal,
 		analyze,
@@ -97,6 +102,7 @@ const Modals = () => {
 		depositWithReceiptReportsFilters,
 		withdrawalCashReportsFilters,
 		changeBrokerReportsFilters,
+		freezeUnfreezeReportsFilters,
 		description,
 	} = useAppSelector((state) => state.modal);
 
@@ -210,6 +216,18 @@ const Modals = () => {
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{
+					freeze && (
+						<ModalSuspense>
+							<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
+								<Freeze {...freeze} />
+							</AuthorizeMiddleware>
+						</ModalSuspense>
+					)
+				}
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
@@ -344,6 +362,13 @@ const Modals = () => {
 				{changeBrokerReportsFilters && (
 					<ModalSuspense>
 						<ChangeBrokerReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+			<ModalAnimatePresence>
+				{freezeUnfreezeReportsFilters && (
+					<ModalSuspense>
+						<FreezeUnFreezeReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

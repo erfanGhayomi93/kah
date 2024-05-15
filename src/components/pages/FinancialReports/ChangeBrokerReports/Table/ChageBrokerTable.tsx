@@ -1,8 +1,16 @@
+import axios from '@/api/brokerAxios';
 import AgTable from '@/components/common/Tables/AgTable';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { store } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
+import ChangeBrokerReportsActionCell from './ChangeBrokerReportsActionCell';
+
+
 
 interface ChangeBrokerTableProps {
 	reports: Reports.IChangeBrokerReports[] | null;
@@ -17,12 +25,34 @@ const ChangeBrokerTable = ({
 }: ChangeBrokerTableProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
 	const gridRef = useRef<GridApi<Reports.IChangeBrokerReports>>(null);
 
 	const dateFormatter = (v: string | number) => {
 		if (v === undefined || v === null) return '−';
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
+
+	const onDeleteRow = (data: Reports.IChangeBrokerReports | undefined) => new Promise<void>(async (resolve, reject) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url || !data) return null;
+
+		try {
+			const response = await axios.post<ServerResponse<boolean>>(`${url.changeBrokerSetCancel}?RequestID=${data?.id}`);
+
+			if (response.status !== 200 || !response.data.succeeded) throw new Error(response.data.errors?.[0] ?? '');
+
+
+			toast.success(t('alerts.change_broker_request_delete_successfully'), { toastId: 'change_broker_delete_successfully' });
+
+			queryClient.invalidateQueries({ queryKey: ['changeBrokerReports'] });
+
+			resolve();
+		} catch (e) {
+			reject();
+		}
+	});
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IChangeBrokerReports>>>(
 		() =>
@@ -84,6 +114,10 @@ const ChangeBrokerTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
+					cellRenderer: ChangeBrokerReportsActionCell,
+					cellRendererParams: {
+						onDeleteRow
+					}
 				},
 
 			] as Array<ColDef<Reports.IChangeBrokerReports>>,

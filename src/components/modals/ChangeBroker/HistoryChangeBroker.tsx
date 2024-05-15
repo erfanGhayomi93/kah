@@ -107,7 +107,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 
 			<Link
 				className='h-48 text-info rounded w-full font-medium gap-8 flex-justify-center'
-				href={'/financial-reports/instant-deposit'}
+				href={'/financial-reports/change-broker'}
 				onClick={() => onCloseModal()}
 			>
 				<SessionHistorySVG />

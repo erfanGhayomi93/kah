@@ -1,6 +1,7 @@
 import {
 	initialChangeBrokerReportsFilters,
 	initialDepositWithReceiptReportsFilters,
+	initialFreezeUnFreezeReportsFilters,
 	initialInstantDepositReportsFilters,
 	initialTransactionsFilters,
 	initialWithdrawalCashReportsFilters,
@@ -339,6 +340,52 @@ export const userCashWithdrawalStatusesQuery = createQuery<string[] | null, ['us
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 		return data.result;
+	},
+});
+
+export const useFreezeUnFreezeReportsQuery = createQuery<
+	PaginationResponse<Reports.IFreezeUnfreezeReports[]> | null,
+	['freezeUnFreezeReports', FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters]
+>({
+	staleTime: 18e5,
+	queryKey: ['freezeUnFreezeReports', initialFreezeUnFreezeReportsFilters],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const url = getBrokerURLs(store.getState());
+
+			if (!url) return null;
+
+			const [
+				,
+				{ fromDate, pageNumber, pageSize, toDate, symbol, requestState },
+			] = queryKey;
+
+			const params: Record<string, string> = {
+				'QueryOption.PageNumber': String(pageNumber),
+				'QueryOption.PageSize': String(pageSize),
+				'DateOption.FromDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
+				'DateOption.ToDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
+			};
+
+			if (symbol) params.SymbolISIN = symbol.symbolISIN;
+
+			if (requestState) params.RequestState = requestState;
+
+			const response = await brokerAxios.get<PaginationResponse<Reports.IFreezeUnfreezeReports[]>>(
+				url.getFreezerequests,
+				{
+					params,
+					signal,
+				},
+			);
+			const data = response.data;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data;
+		} catch (e) {
+			return null;
+		}
 	},
 });
 
