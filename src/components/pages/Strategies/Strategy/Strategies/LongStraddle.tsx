@@ -151,13 +151,16 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'dueDays',
@@ -247,8 +250,9 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
 					percent: data?.callPremiumPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.callPremium ?? 0}|${data?.callPremiumPercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.callPremium ?? 0)),
+				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'putPremium',
@@ -258,8 +262,9 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
 					percent: data?.putPremiumPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.putPremium ?? 0}|${data?.putPremiumPercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.putPremium ?? 0)),
+				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'highBEP',

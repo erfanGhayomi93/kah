@@ -1801,14 +1801,56 @@ declare namespace Strategy {
 	}
 
 	export interface BearPutSpread {
-		symbolTitle: string;
-		symbolISIN: string;
-		marketUnit: string;
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		lspSymbolISIN: string;
+		lspSymbolTitle: string;
+		lspStrikePrice: number;
+		lspBestSellLimitPrice: number;
+		lspBestSellLimitQuantity: number;
+		lspBestBuyLimitPrice: number;
+		lspBestBuyLimitQuantity: number;
+		hspSymbolISIN: string;
+		hspSymbolTitle: string;
+		hspStrikePrice: number;
+		hspBestBuyLimitPrice: number;
+		hspBestBuyLimitQuantity: number;
+		hspBestSellLimitPrice: number;
+		hspBestSellLimitQuantity: number;
+		lspOpenPositionCount: number;
+		hspOpenPositionCount: number;
+		lspiotm: Option.IOTM;
+		hspiotm: Option.IOTM;
+		lspPremium: number;
+		lspPremiumPercent: number;
+		hspPremium: number;
+		hspPremiumPercent: number;
+		bearPutSpreadBEP: number;
+		maxProfit: number;
+		maxProfitPercent: number;
+		maxLoss: number;
+		inUseCapital: number;
+		lspTimeValue: number;
+		hspTimeValue: number;
+		lspIntrinsicValue: number;
+		hspIntrinsicValue: number;
+		lspTradeValue: number;
+		hspTradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		lspRequiredMargin: number;
+		hspRequiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
+		ytm: number;
 	}
 }
 

@@ -136,13 +136,16 @@ const LongPut = (strategy: LongPutProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'dueDays',
@@ -185,8 +188,9 @@ const LongPut = (strategy: LongPutProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
 					percent: data?.premium ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
+				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
@@ -222,7 +226,7 @@ const LongPut = (strategy: LongPutProps) => {
 			},
 			{
 				colId: 'longCallBEP',
-				headerName: 'سر به سر استراتژی',
+				headerName: 'سر به سر',
 				minWidth: 128,
 				cellClass: ({ data }) =>
 					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longPutBEP ?? 0)),
@@ -241,8 +245,9 @@ const LongPut = (strategy: LongPutProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
 					percent: data?.profitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.profitAmount}|${data!.profitPercent}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data!.profitAmount)),
+				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'blackScholes',

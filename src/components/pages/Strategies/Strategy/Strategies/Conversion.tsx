@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -55,17 +55,77 @@ const Conversion = (strategy: ConversionProps) => {
 	};
 
 	const analyze = (data: Strategy.Conversion) => {
-		const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: data.baseMarketUnit,
+					quantity: 1,
+					price: data.baseLastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+						baseSymbolPrice: data.baseLastTradedPrice,
+					},
 				},
-				contracts,
-			}),
-		);
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.putSymbolTitle,
+						symbolISIN: data.putSymbolISIN,
+						optionType: 'put',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.putPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'buy',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
+				},
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.callSymbolTitle,
+						symbolISIN: data.callSymbolISIN,
+						optionType: 'call',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.callPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const readMore = () => {
@@ -109,13 +169,16 @@ const Conversion = (strategy: ConversionProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'dueDays',
@@ -139,8 +202,9 @@ const Conversion = (strategy: ConversionProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
 					percent: data?.callPremiumPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.callPremium ?? 0}|${data?.callPremiumPercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.callPremium ?? 0)),
+				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'putPremium',
@@ -150,8 +214,9 @@ const Conversion = (strategy: ConversionProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
 					percent: data?.putPremiumPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.putPremium ?? 0}|${data?.putPremiumPercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.putPremium ?? 0)),
+				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'callSymbolISIN',
@@ -267,7 +332,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'bestBuyYTM',
 				headerName: 'YTM سرخط خرید',
-				width: 120,
+				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
@@ -374,7 +439,12 @@ const Conversion = (strategy: ConversionProps) => {
 
 	return (
 		<>
-			<StrategyDetails strategy={strategy} steps={[]} readMore={readMore} />
+			<StrategyDetails
+				strategy={strategy}
+				steps={[t(`${type}.step_1`), t(`${type}.step_2`), t(`${type}.step_3`)]}
+				condition={t(`${type}.condition`)}
+				readMore={readMore}
+			/>
 
 			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
 				<Filters

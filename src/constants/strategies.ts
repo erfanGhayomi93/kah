@@ -224,7 +224,7 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 	},
 	{
 		id: 'bullCallSpreadBEP',
-		title: 'قیمت سر به سر',
+		title: 'سر به سر',
 		hidden: false,
 	},
 	{
@@ -841,4 +841,303 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 	},
 ];
 
-export const initialColumnsProtectivePut: IManageColumn[] = [];
+export const initialColumnsProtectivePut: IManageColumn[] = [
+	{
+		id: 'symbolISIN',
+		title: 'نماد پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseLastTradedPrice',
+		title: 'قیمت پایه',
+		hidden: false,
+	},
+	{
+		id: 'dueDays',
+		title: 'مانده تا سررسید',
+		hidden: false,
+	},
+	{
+		id: 'lspSymbolTitle',
+		title: 'کال خرید',
+		hidden: false,
+	},
+	{
+		id: 'strikePrice',
+		title: 'قیمت اعمال',
+		hidden: false,
+	},
+	{
+		id: 'openPositionCount',
+		title: 'موقعیت باز',
+		hidden: false,
+	},
+	{
+		id: 'premium',
+		title: 'آخرین قیمت نماد آپشن',
+		hidden: true,
+	},
+	{
+		id: 'optionBestSellLimitPrice',
+		title: 'قیمت بهترین فروشنده',
+		hidden: false,
+	},
+	{
+		id: 'optionBestSellLimitQuantity',
+		title: 'حجم سرخط فروش',
+		hidden: false,
+	},
+	{
+		id: 'optionBestBuyLimitPrice',
+		title: 'قیمت بهترین خریدار',
+		hidden: true,
+	},
+	{
+		id: 'optionBestBuyLimitQuantity',
+		title: 'حجم سرخط خرید',
+		hidden: true,
+	},
+	{
+		id: 'bullCallSpreadBEP',
+		title: 'سر به سر',
+		hidden: false,
+	},
+	{
+		id: 'maxLoss',
+		title: 'حداکثر زیان',
+		hidden: false,
+	},
+	{
+		id: 'profit',
+		title: 'بازده',
+		hidden: true,
+	},
+	{
+		id: 'profitPercent',
+		title: 'درصد بازده تا سررسید',
+		hidden: false,
+	},
+	{
+		id: 'inUseCapital',
+		title: 'سرمایه درگیر',
+		hidden: false,
+	},
+	{
+		id: 'blackScholes',
+		title: 'بلک شولز',
+		hidden: true,
+	},
+	{
+		id: 'timeValue',
+		title: 'ارزش زمانی',
+		hidden: false,
+	},
+	{
+		id: 'intrinsicValue',
+		title: 'ارزش ذاتی',
+		hidden: true,
+	},
+	{
+		id: 'bepDifference',
+		title: 'اختلاف تا سر به سر',
+		hidden: true,
+	},
+	{
+		id: 'tradeValue',
+		title: 'ارزش معاملات آپشن',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeValue',
+		title: 'ارزش معاملات سهم پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeCount',
+		title: 'تعداد معاملات پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseTradeVolume',
+		title: 'حجم معاملات پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseLastTradedDate',
+		title: 'آخرین معامله پایه',
+		hidden: true,
+	},
+];
+
+export const initialColumnsBearPutSpread: IManageColumn[] = [
+	{
+		id: 'baseSymbolISIN',
+		title: 'نماد پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseLastTradedPrice',
+		title: 'قیمت پایه',
+		hidden: false,
+	},
+	{
+		id: 'dueDays',
+		title: 'مانده تا سررسید',
+		hidden: false,
+	},
+	{
+		id: 'lspSymbolISIN',
+		title: 'پوت خرید',
+		hidden: false,
+	},
+	{
+		id: 'lspStrikePrice',
+		title: 'قیمت اعمال پوت خرید',
+		hidden: false,
+	},
+	{
+		id: 'lspBestSellLimitPrice',
+		title: 'قیمت فروشنده پوت خرید',
+		hidden: false,
+	},
+	{
+		id: 'lspBestSellLimitQuantity',
+		title: 'حجم فروشنده پوت خرید',
+		hidden: false,
+	},
+	{
+		id: 'lspBestBuyLimitPrice',
+		title: 'قیمت خریدار پوت خرید',
+		hidden: true,
+	},
+	{
+		id: 'lspBestBuyLimitQuantity',
+		title: 'حجم خریدار پوت خرید',
+		hidden: true,
+	},
+	{
+		id: 'hspSymbolISIN',
+		title: 'پوت فروش',
+		hidden: false,
+	},
+	{
+		id: 'hspStrikePrice',
+		title: 'قیمت اعمال پوت فروش',
+		hidden: false,
+	},
+	{
+		id: 'hspBestBuyLimitPrice',
+		title: 'قیمت خریدار پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'hspBestBuyLimitQuantity',
+		title: 'حجم خریدار پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'hspBestSellLimitPrice',
+		title: 'قیمت بهترین فروشنده پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'hspBestSellLimitQuantity',
+		title: 'حجم سر خط فروش پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'lspOpenPositionCount',
+		title: 'موقعیت باز پوت خرید',
+		hidden: false,
+	},
+	{
+		id: 'hspOpenPositionCount',
+		title: 'موقعیت باز پوت فروش',
+		hidden: false,
+	},
+	{
+		id: 'lspPremium',
+		title: 'قیمت نماد پوت خرید',
+		hidden: true,
+	},
+	{
+		id: 'hspPremium',
+		title: 'قیمت نماد پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'bullCallSpreadBEP',
+		title: 'سر به سر',
+		hidden: false,
+	},
+	{
+		id: 'maxProfit',
+		title: 'بیشینه سود',
+		hidden: false,
+	},
+	{
+		id: 'maxLoss',
+		title: 'حداکثر زیان',
+		hidden: false,
+	},
+	{
+		id: 'inUseCapital',
+		title: 'سرمایه درگیر',
+		hidden: true,
+	},
+	{
+		id: 'lspTimeValue',
+		title: 'ارزش زمانی پوت خرید',
+		hidden: true,
+	},
+	{
+		id: 'hspTimeValue',
+		title: 'ارزش زمانی پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'lspIntrinsicValue',
+		title: 'ارزش ذاتی پوت خرید',
+		hidden: true,
+	},
+	{
+		id: 'hspIntrinsicValue',
+		title: 'ارزش ذاتی پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'lspTradeValue',
+		title: 'ارزش معاملات آپشن پوت خرید',
+		hidden: true,
+	},
+	{
+		id: 'hspTradeValue',
+		title: 'ارزش معاملات آپشن پوت فروش',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeValue',
+		title: 'ارزش معاملات سهم پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeCount',
+		title: 'تعداد معاملات پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseTradeVolume',
+		title: 'حجم معاملات پایه',
+		hidden: true,
+	},
+	{
+		id: 'baseLastTradedDate',
+		title: 'آخرین معامله پایه',
+		hidden: true,
+	},
+	{
+		id: 'ytm',
+		title: 'YTM',
+		hidden: true,
+	},
+];

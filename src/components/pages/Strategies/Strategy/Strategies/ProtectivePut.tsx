@@ -4,10 +4,10 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setDescriptionModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -55,17 +55,56 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	};
 
 	const analyze = (data: Strategy.ProtectivePut) => {
-		/* const contracts: TSymbolStrategy[] = [];
-
-		dispatch(
-			setAnalyzeModal({
-				symbol: {
-					symbolTitle: data.baseSymbolTitle,
-					symbolISIN: data.baseSymbolISIN,
+		try {
+			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: data.baseMarketUnit,
+					quantity: 1,
+					price: data.baseLastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+						baseSymbolPrice: data.baseLastTradedPrice,
+					},
 				},
-				contracts: [],
-			}),
-		); */
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.symbolTitle,
+						symbolISIN: data.symbolISIN,
+						optionType: 'put',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.premium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.strikePrice,
+					side: 'buy',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.requiredMargin,
+					},
+				},
+			];
+
+			dispatch(
+				setAnalyzeModal({
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+					},
+					contracts,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const readMore = () => {
@@ -109,13 +148,16 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'dueDays',
@@ -159,8 +201,9 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
 					percent: data?.premium ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
+				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[0] - valueB[0],
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
@@ -196,7 +239,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			},
 			{
 				colId: 'bullCallSpreadBEP',
-				headerName: 'قیمت سر به سر',
+				headerName: 'سر به سر',
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
