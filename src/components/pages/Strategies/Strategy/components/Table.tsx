@@ -29,12 +29,14 @@ const Table = forwardRef<GridApi, TableProps<unknown>>(({ isFetching, rowData, d
 				{...props}
 			/>
 
-			<div
-				style={{ backdropFilter: 'blur(1px)' }}
-				className='absolute left-0 top-0 size-full flex-justify-center'
-			>
-				<div className='size-48 spinner' />
-			</div>
+			{isFetching && (
+				<div
+					style={{ backdropFilter: 'blur(1px)' }}
+					className='absolute left-0 top-0 size-full flex-justify-center'
+				>
+					<div className='size-48 spinner' />
+				</div>
+			)}
 			{data.length === 0 && !isFetching && <NoTableData />}
 		</div>
 	);
