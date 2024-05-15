@@ -9,6 +9,7 @@ import {
 	setChangeBrokerModal,
 	setChoiceCollateralModal,
 	setDepositModal,
+	setFreezeModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
 	setWithdrawalModal,
@@ -64,6 +65,8 @@ const Withdrawal = lazy(() => import('./Withdrawal'));
 
 const Deposit = lazy(() => import('./Deposit'));
 
+const Freeze = lazy(() => import('./Freeze'));
+
 const ChangeBroker = lazy(() => import('./ChangeBroker'));
 
 const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
@@ -93,6 +96,7 @@ const Modals = () => {
 		orderDetails,
 		changeBroker,
 		deposit,
+		freeze,
 		manageDashboardLayout,
 		withdrawal,
 		analyze,
@@ -218,6 +222,18 @@ const Modals = () => {
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{
+					freeze && (
+						<ModalSuspense>
+							<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
+								<Freeze {...freeze} />
+							</AuthorizeMiddleware>
+						</ModalSuspense>
+					)
+				}
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>

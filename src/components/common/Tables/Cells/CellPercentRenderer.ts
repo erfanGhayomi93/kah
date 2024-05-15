@@ -41,7 +41,9 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 	}
 
 	getValueToDisplay(params: CellPercentRendererProps): string {
-		return params.valueFormatted ? params.valueFormatted : String(params.value ?? 0);
+		return params?.valueFormatted
+			? params.valueFormatted
+			: String(Array.isArray(params.value) ? params.value[0] : params.value ?? 0);
 	}
 
 	setPercentage(percent: number) {

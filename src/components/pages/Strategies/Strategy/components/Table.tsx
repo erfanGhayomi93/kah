@@ -1,4 +1,3 @@
-import Loading from '@/components/common/Loading';
 import AgTable, { type AgTableProps } from '@/components/common/Tables/AgTable';
 import { type GridApi } from '@ag-grid-community/core';
 import { forwardRef } from 'react';
@@ -12,12 +11,12 @@ const Table = forwardRef<GridApi, TableProps<unknown>>(({ isFetching, rowData, d
 	const data = rowData ?? [];
 
 	return (
-		<>
+		<div className='relative flex-1'>
 			<AgTable<unknown>
 				ref={ref}
 				suppressColumnVirtualisation={false}
-				rowHeight={40}
-				headerHeight={48}
+				rowHeight={48}
+				headerHeight={40}
 				rowData={data}
 				defaultColDef={{
 					suppressMovable: true,
@@ -30,9 +29,16 @@ const Table = forwardRef<GridApi, TableProps<unknown>>(({ isFetching, rowData, d
 				{...props}
 			/>
 
-			{isFetching && <Loading />}
+			{isFetching && (
+				<div
+					style={{ backdropFilter: 'blur(1px)' }}
+					className='absolute left-0 top-0 size-full flex-justify-center'
+				>
+					<div className='size-48 spinner' />
+				</div>
+			)}
 			{data.length === 0 && !isFetching && <NoTableData />}
-		</>
+		</div>
 	);
 });
 

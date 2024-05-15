@@ -4,8 +4,10 @@ import routes from '../routes';
 
 type TStrategyBaseType<T> = [T, TPriceBasis, boolean];
 
+const CACHE_TIME = 0;
+
 export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStrategyQuery']>({
-	staleTime: 36e5,
+	staleTime: CACHE_TIME,
 	queryKey: ['getAllStrategyQuery'],
 	queryFn: async ({ signal }) => {
 		try {
@@ -24,7 +26,7 @@ export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStr
 });
 
 export const useCoveredCallStrategyQuery = createQuery<Strategy.CoveredCall[], TStrategyBaseType<'coveredCallQuery'>>({
-	staleTime: 6e5,
+	staleTime: CACHE_TIME,
 	queryKey: ['coveredCallQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
@@ -52,7 +54,7 @@ export const useCoveredCallStrategyQuery = createQuery<Strategy.CoveredCall[], T
 });
 
 export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrategyBaseType<'longCallQuery'>>({
-	staleTime: 6e5,
+	staleTime: CACHE_TIME,
 	queryKey: ['longCallQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
@@ -80,7 +82,7 @@ export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrate
 });
 
 export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategyBaseType<'longPutQuery'>>({
-	staleTime: 6e5,
+	staleTime: CACHE_TIME,
 	queryKey: ['longPutQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
@@ -108,7 +110,7 @@ export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategy
 });
 
 export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TStrategyBaseType<'conversionQuery'>>({
-	staleTime: 6e5,
+	staleTime: CACHE_TIME,
 	queryKey: ['conversionQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
@@ -139,7 +141,7 @@ export const useLongStraddleStrategyQuery = createQuery<
 	Strategy.LongStraddle[],
 	TStrategyBaseType<'longStraddleQuery'>
 >({
-	staleTime: 6e5,
+	staleTime: CACHE_TIME,
 	queryKey: ['longStraddleQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
@@ -170,7 +172,7 @@ export const useBullCallSpreadStrategyQuery = createQuery<
 	Strategy.BullCallSpread[],
 	TStrategyBaseType<'bullCallSpreadQuery'>
 >({
-	staleTime: 6e5,
+	staleTime: CACHE_TIME,
 	queryKey: ['bullCallSpreadQuery', 'LastTradePrice', false],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
@@ -189,6 +191,68 @@ export const useBullCallSpreadStrategyQuery = createQuery<
 					params,
 				},
 			);
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useBearPutSpreadStrategyQuery = createQuery<
+	Strategy.BearPutSpread[],
+	TStrategyBaseType<'bearPutSpreadQuery'>
+>({
+	staleTime: CACHE_TIME,
+	queryKey: ['bearPutSpreadQuery', 'LastTradePrice', false],
+	queryFn: async ({ signal, queryKey }) => {
+		try {
+			const [, priceBasis, commission] = queryKey;
+			const params = {
+				PageSize: 100,
+				PageNumber: 1,
+				CalculateBy: priceBasis,
+				WithCommission: commission,
+			};
+
+			const response = await axios.get<ServerResponse<Strategy.BearPutSpread[]>>(routes.strategy.BearPutSpread, {
+				signal,
+				params,
+			});
+			const { data } = response;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data.result;
+		} catch (e) {
+			return [];
+		}
+	},
+});
+
+export const useProtectivePutStrategyQuery = createQuery<
+	Strategy.ProtectivePut[],
+	TStrategyBaseType<'protectivePutQuery'>
+>({
+	staleTime: CACHE_TIME,
+	queryKey: ['protectivePutQuery', 'LastTradePrice', false],
+	queryFn: async ({ signal, queryKey }) => {
+		try {
+			const [, priceBasis, commission] = queryKey;
+			const params = {
+				PageSize: 100,
+				PageNumber: 1,
+				CalculateBy: priceBasis,
+				WithCommission: commission,
+			};
+
+			const response = await axios.get<ServerResponse<Strategy.ProtectivePut[]>>(routes.strategy.ProtectivePut, {
+				signal,
+				params,
+			});
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

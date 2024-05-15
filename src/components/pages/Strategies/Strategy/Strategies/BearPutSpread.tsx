@@ -1,8 +1,8 @@
-import { useBullCallSpreadStrategyQuery } from '@/api/queries/strategyQuery';
+import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsBearPutSpread, initialColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -18,43 +18,43 @@ import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
 
-const BullCallSpreadDescription = dynamic(() => import('../Descriptions/BullCallSpreadDescription'), {
+const BearPutSpreadDescription = dynamic(() => import('../Descriptions/BearPutSpreadDescription'), {
 	ssr: false,
 });
 
-interface BullCallSpreadProps extends Strategy.GetAll {}
+interface BearPutSpreadProps extends Strategy.GetAll {}
 
-const BullCallSpread = (strategy: BullCallSpreadProps) => {
+const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	const { title, type } = strategy;
 
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<Strategy.BullCallSpread>>(null);
+	const gridRef = useRef<GridApi<Strategy.BearPutSpread>>(null);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'bull_call_spread_strategy_columns',
-		initialColumnsBullCallSpread,
+		'bear_put_spread_columns',
+		initialColumnsBearPutSpread,
 	);
 
 	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
 
-	const { data, isFetching } = useBullCallSpreadStrategyQuery({
-		queryKey: ['bullCallSpreadQuery', priceBasis.id, useCommission],
+	const { data, isFetching } = useBearPutSpreadStrategyQuery({
+		queryKey: ['bearPutSpreadQuery', priceBasis.id, useCommission],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
-	const execute = (data: Strategy.BullCallSpread) => {
+	const execute = (data: Strategy.BearPutSpread) => {
 		//
 	};
 
-	const analyze = (data: Strategy.BullCallSpread) => {
+	const analyze = (data: Strategy.BearPutSpread) => {
 		try {
 			const contracts: TSymbolStrategy[] = [
 				{
@@ -63,7 +63,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					symbol: {
 						symbolTitle: data.lspSymbolTitle,
 						symbolISIN: data.lspSymbolISIN,
-						optionType: 'call',
+						optionType: 'put',
 						baseSymbolPrice: data.baseLastTradedPrice,
 						historicalVolatility: data.historicalVolatility,
 					},
@@ -75,7 +75,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					side: 'buy',
 					marketUnit: data.marketUnit,
 					requiredMargin: {
-						value: data.requiredMargin,
+						value: data.lspRequiredMargin,
 					},
 				},
 				{
@@ -84,7 +84,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					symbol: {
 						symbolTitle: data.hspSymbolTitle,
 						symbolISIN: data.hspSymbolISIN,
-						optionType: 'call',
+						optionType: 'put',
 						baseSymbolPrice: data.baseLastTradedPrice,
 						historicalVolatility: data.historicalVolatility,
 					},
@@ -96,7 +96,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					side: 'sell',
 					marketUnit: data.marketUnit,
 					requiredMargin: {
-						value: data.requiredMargin,
+						value: data.hspRequiredMargin,
 					},
 				},
 			];
@@ -123,7 +123,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
-				description: () => <BullCallSpreadDescription />,
+				description: () => <BearPutSpreadDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
@@ -132,16 +132,16 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
-				initialColumns: initialColumnsBullCallSpread,
+				initialColumns: initialColumnsProtectivePut,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
-				onReset: () => setColumnsVisibility(initialColumnsBullCallSpread),
+				onReset: () => setColumnsVisibility(initialColumnsProtectivePut),
 			}),
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.BullCallSpread>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
 		() => [
 			{
 				colId: 'baseSymbolISIN',
@@ -149,7 +149,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				width: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
-				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
@@ -157,7 +157,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [
@@ -175,119 +175,119 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'lspSymbolTitle',
-				headerName: 'کال خرید',
+				colId: 'lspSymbolISIN',
+				headerName: 'پوت خرید',
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.lspSymbolISIN),
 				valueGetter: ({ data }) => data?.lspSymbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
-					getIOTM: (data: Strategy.BullCallSpread) => data?.lspiotm ?? 0,
+					getIOTM: (data: Strategy.BearPutSpread) => data?.lspiotm ?? 0,
 				},
 			},
 			{
 				colId: 'lspStrikePrice',
-				headerName: 'قیمت اعمال کال خرید',
+				headerName: 'قیمت اعمال پوت خرید',
 				width: 176,
 				valueGetter: ({ data }) => data?.lspStrikePrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspBestSellLimitPrice',
-				headerName: 'قیمت فروشنده کال خرید',
+				headerName: 'قیمت فروشنده پوت خرید',
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspBestSellLimitQuantity',
-				headerName: 'حجم فروشنده کال خرید',
+				headerName: 'حجم فروشنده پوت خرید',
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspBestBuyLimitPrice',
-				headerName: 'قیمت خریدار کال خرید',
+				headerName: 'قیمت خریدار پوت خرید',
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspBestBuyLimitQuantity',
-				headerName: 'حجم خریدار کال خرید',
+				headerName: 'حجم خریدار پوت خرید',
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspSymbolISIN',
-				headerName: 'کال فروش',
+				headerName: 'پوت فروش',
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.hspSymbolISIN),
 				valueGetter: ({ data }) => data?.hspSymbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
-					getIOTM: (data: Strategy.BullCallSpread) => data?.hspiotm ?? 0,
+					getIOTM: (data: Strategy.BearPutSpread) => data?.hspiotm ?? 0,
 				},
 			},
 			{
 				colId: 'hspStrikePrice',
-				headerName: 'قیمت اعمال کال فروش',
+				headerName: 'قیمت اعمال پوت فروش',
 				width: 176,
 				valueGetter: ({ data }) => data?.hspStrikePrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspBestBuyLimitPrice',
-				headerName: 'قیمت خریدار کال فروش',
+				headerName: 'قیمت خریدار پوت فروش',
 				width: 176,
 				valueGetter: ({ data }) => data?.hspBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspBestBuyLimitQuantity',
-				headerName: 'حجم خریدار کال فروش',
+				headerName: 'حجم خریدار پوت فروش',
 				width: 176,
 				valueGetter: ({ data }) => data?.hspBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspBestSellLimitPrice',
-				headerName: 'بهترین فروشنده کال فروش',
+				headerName: 'قیمت بهترین فروشنده پوت فروش',
 				width: 204,
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspBestSellLimitQuantity',
-				headerName: 'حجم سر خط فروش کال فروش',
+				headerName: 'حجم سر خط فروش پوت فروش',
 				width: 192,
 				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspOpenPositionCount',
-				headerName: 'موقعیت باز کال خرید',
+				headerName: 'موقعیت باز پوت خرید',
 				width: 152,
 				valueGetter: ({ data }) => data?.lspOpenPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspOpenPositionCount',
-				headerName: 'موقعیت باز کال فروش',
+				headerName: 'موقعیت باز پوت فروش',
 				width: 152,
 				valueGetter: ({ data }) => data?.hspOpenPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspPremium',
-				headerName: 'قیمت نماد کال خرید',
+				headerName: 'قیمت نماد پوت خرید',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
 					percent: data?.lspPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
@@ -296,10 +296,10 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			},
 			{
 				colId: 'hspPremium',
-				headerName: 'قیمت نماد کال فروش',
+				headerName: 'قیمت نماد پوت فروش',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
 					percent: data?.hspPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
@@ -314,7 +314,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				headerComponentParams: {
 					tooltip: 'درصد گرانی یا همان درصد اختلاف سر به سر و قیمت فعلی',
 				},
-				valueGetter: ({ data }) => data?.bullCallSpreadBEP ?? 0,
+				valueGetter: ({ data }) => data?.bearPutSpreadBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -326,7 +326,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
 					percent: data?.maxProfitPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
@@ -349,42 +349,42 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			},
 			{
 				colId: 'lspTimeValue',
-				headerName: 'ارزش زمانی کال خرید',
+				headerName: 'ارزش زمانی پوت خرید',
 				width: 152,
 				valueGetter: ({ data }) => data?.lspTimeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspTimeValue',
-				headerName: 'ارزش زمانی کال فروش',
+				headerName: 'ارزش زمانی پوت فروش',
 				width: 152,
 				valueGetter: ({ data }) => data?.hspTimeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspIntrinsicValue',
-				headerName: 'ارزش ذاتی کال خرید',
+				headerName: 'ارزش ذاتی پوت خرید',
 				width: 152,
 				valueGetter: ({ data }) => data?.lspIntrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'hspIntrinsicValue',
-				headerName: 'ارزش ذاتی کال فروش',
+				headerName: 'ارزش ذاتی پوت فروش',
 				width: 152,
 				valueGetter: ({ data }) => data?.hspIntrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspTradeValue',
-				headerName: 'ارزش معاملات آپشن کال خرید',
+				headerName: 'ارزش معاملات آپشن پوت خرید',
 				width: 192,
 				valueGetter: ({ data }) => data?.lspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'hspTradeValue',
-				headerName: 'ارزش معاملات آپشن کال فروش',
+				headerName: 'ارزش معاملات آپشن پوت فروش',
 				width: 192,
 				valueGetter: ({ data }) => data?.hspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -491,7 +491,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					onCommissionChanged={setUseCommission}
 				/>
 
-				<Table<Strategy.BullCallSpread>
+				<Table<Strategy.BearPutSpread>
 					ref={gridRef}
 					rowData={rows}
 					columnDefs={columnDefs}
@@ -502,4 +502,4 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	);
 };
 
-export default BullCallSpread;
+export default BearPutSpread;

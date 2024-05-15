@@ -149,7 +149,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
-export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration { }
+export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
 
 export interface IOrderDetails {
 	type: 'order';
@@ -209,7 +209,7 @@ export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 	isOption: boolean;
 }
 
-export interface IManageDashboardLayoutModal extends IBaseModalConfiguration { }
+export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
 
 export interface IChangeBrokerModal extends IBaseModalConfiguration {
 	isShow: boolean;
@@ -221,11 +221,15 @@ export interface IWithdrawalModal extends IBaseModalConfiguration {
 
 export interface IDescriptionModal extends IBaseModalConfiguration {
 	title: React.ReactNode;
-	description: React.ReactNode;
+	description: () => React.ReactNode;
 	onRead: () => void;
 }
 
 export interface IDepositModal extends IBaseModalConfiguration {
+	isShow: boolean;
+}
+
+export interface IFreezeModal extends IBaseModalConfiguration {
 	isShow: boolean;
 }
 
@@ -261,6 +265,7 @@ export type ModalState = TBaseModalProps<{
 	changeBroker: IChangeBrokerModal;
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;
+	freeze: IFreezeModal;
 	analyze: IAnalyzeModal;
 	description: IDescriptionModal;
 	transactionsFilters: ITransactionsFiltersModal;

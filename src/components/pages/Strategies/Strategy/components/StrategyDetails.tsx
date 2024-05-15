@@ -69,13 +69,13 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 		<div className='relative overflow-hidden pb-16 flex-column'>
 			<div
 				style={{
-					height: isExpand ? `${sectionHeight}rem` : '8.4rem',
+					height: isExpand ? `${sectionHeight}rem` : '9.6rem',
 				}}
 				className='flex justify-between rounded bg-white p-16 transition-height'
 			>
 				<div className='flex-1 justify-between overflow-hidden flex-column'>
 					<div className='flex-column'>
-						<div className='flex-column'>
+						<div className='gap-8 flex-column'>
 							<div style={{ flex: '0 0 3.2rem' }} className='gap-8 flex-items-center'>
 								<Link href='/strategy' className='size-32 text-gray-900 flex-justify-center'>
 									<ArrowRightSVG width='2.4rem' height='2.4rem' />
@@ -186,16 +186,18 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 						style={{ flex: '0 0 43.2rem' }}
 						className='h-full justify-between gap-8 overflow-hidden rounded p-16 shadow-card flex-column'
 					>
-						<Image
-							width='399'
-							height='176'
-							alt={title}
-							src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
-							style={{
-								width: '100%',
-								height: 'auto',
-							}}
-						/>
+						<div className='flex-1 flex-justify-center'>
+							<Image
+								width='399'
+								height='176'
+								alt={title}
+								src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
+								style={{
+									width: '100%',
+									height: 'auto',
+								}}
+							/>
+						</div>
 
 						{steps.length > 0 && (
 							<ul className='gap-8 text-right flex-column'>

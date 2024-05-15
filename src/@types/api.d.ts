@@ -393,6 +393,7 @@ declare namespace Symbol {
 		symbolTitle: string;
 		companyISIN: string;
 		isOption: boolean;
+		isFreeze?: boolean;
 		marketUnit: string;
 		companyName: string;
 		insCode: null | string;
@@ -624,12 +625,17 @@ declare namespace Broker {
 		| 'LastChangeBrokers'
 		| 'GetWithFilterReceipt'
 		| 'GetFilteredEPaymentApi'
+		| 'RecentUnFreeze'
+		| 'DeleteFreeze'
 		| 'DeleteChangeBroker'
 		| 'GetFilteredPayment'
 		| 'GetListBankAccount'
 		| 'GetRemainsWithDate'
 		| 'LastListDrawal'
 		| 'RequestPayment'
+		| 'newKaraFreeze'
+		| 'RecentFreeze'
+		| 'symbolCountFreeze'
 		| 'DepositOnlineHistory'
 		| 'CustomerTurnOverCSVExport'
 		| 'EPaymentExportFilteredCSV'
@@ -643,6 +649,7 @@ declare namespace Broker {
 		| 'PaymentGetStatuses'
 		| 'ChangeBrokerExportFilteredCSV'
 		| 'ChangeBrokerChangeBrokersByFilter'
+		| 'GetAgreements'
 		| 'ChangeBrokerSetCancel'
 		| "FreezeExportFreeze"
 		| 'Freezerequests'
@@ -652,6 +659,8 @@ declare namespace Broker {
 		| 'OrderOrders'
 		| 'OrderExportTrades'
 		| 'OrderDetailedOrders'
+		| 'FreezeExportFreeze'
+		| 'Freezerequests';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1315,6 +1324,18 @@ declare namespace Settings {
 	}
 
 	export type IFormattedBrokerCustomerSettings = Record<IBrokerCustomerSettings['configKey'], string | boolean>;
+
+	export interface IAgreements {
+		agreementId: number;
+		title: string;
+		state: 'NotSpecified' | 'Accepted' | 'NotAccepted';
+		changeDate: string;
+		description: string;
+		type: string;
+		canChangeByCustomer: boolean;
+		approveBySMS: boolean;
+		attachmentUrl: string | null;
+	}
 }
 
 declare namespace Payment {
@@ -1339,6 +1360,8 @@ declare namespace Payment {
 		| 'TokenNotFound'
 		| 'TokenRequired'
 		| 'TerminalNotFound';
+
+	type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
 
 	export type TRemainsWithDay = Record<
 		't1' | 't2',
@@ -1421,20 +1444,36 @@ declare namespace Payment {
 		saveDate: string;
 		state: string;
 	}
+
+	export interface IRecentFreezeList {
+		saveDate: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		requestState: TFreezeRequestState;
+	}
+
+	export interface ICountFreeze {
+		symbolISIN: string;
+		symbolTitle: string;
+		count: number;
+	}
 }
 
 declare namespace Strategy {
 	declare type Cheap =
 		| 'HighRisk'
 		| 'LowRisk'
+		| 'NoRisk'
 		| 'ModerateRisk'
 		| 'LimitedInterest'
 		| 'UnlimitedInterest'
 		| 'LimitedLoss'
+		| 'NoLimit'
 		| 'UnlimitedLoss'
 		| 'BullishMarket'
 		| 'BearishMarket'
 		| 'NeutralMarket'
+		| 'AllMarket'
 		| 'DirectionalMarket';
 
 	declare type Type =
@@ -1444,6 +1483,7 @@ declare namespace Strategy {
 		| 'ProtectivePut'
 		| 'BullCallSpread'
 		| 'LongStraddle'
+		| 'BearPutSpread'
 		| 'Conversion';
 
 	export interface GetAll {
@@ -1517,11 +1557,11 @@ declare namespace Strategy {
 		optionBestSellLimitQuantity: number;
 		longCallBEP: number;
 		profitAmount: number;
-		profitPercentUntilSettlement: number;
+		profitPercent: number;
 		blackScholes: number;
+		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		bepDifference: number;
 		optionBestLimitPrice: number;
 		optionBestLimitVolume: number;
 		tradeValue: number;
@@ -1530,12 +1570,12 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		requiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
 	}
 
 	export interface LongPut {
@@ -1553,13 +1593,13 @@ declare namespace Strategy {
 		tradePriceVarPreviousTradePercent: number;
 		optionBestSellLimitPrice: number;
 		optionBestSellLimitQuantity: number;
-		longCallBEP: number;
+		longPutBEP: number;
 		profitAmount: number;
-		profitPercentUntilSettlement: number;
+		profitPercent: number;
 		blackScholes: number;
+		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		bepDifference: number;
 		optionBestLimitPrice: number;
 		optionBestLimitVolume: number;
 		tradeValue: number;
@@ -1568,12 +1608,12 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		requiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
 	}
 
 	export interface LongStraddle {
@@ -1612,13 +1652,14 @@ declare namespace Strategy {
 		baseTradeValue: number;
 		baseTradeCount: number;
 		baseTradeVolume: number;
-		baseLastTradedDate: string;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		callRequiredMargin: number;
+		putRequiredMargin: number;
 		contractEndDate: string;
+		baseLastTradedDate: string;
 		contractSize: number;
-		requiredMargin: number;
 	}
 
 	export interface Conversion {
@@ -1641,11 +1682,17 @@ declare namespace Strategy {
 		putBestSellLimitPrice: number;
 		putBestSellLimitQuantity: number;
 		putOpenPositionCount: number;
+		callBestBuyLimitPrice: number;
+		callBestBuyLimitQuantity: number;
+		putBestBuyLimitPrice: number;
+		putBestBuyLimitQuantity: number;
 		putIOTM: Option.IOTM;
 		putPremium: number;
 		putPremiumPercent: number;
 		profit: number;
 		inUseCapital: number;
+		bestBuyYTM: number;
+		bestSellYTM: number;
 		callTimeValue: number;
 		putTimeValue: number;
 		callIntrinsicValue: number;
@@ -1688,8 +1735,8 @@ declare namespace Strategy {
 		hspBestSellLimitQuantity: number;
 		lspOpenPositionCount: number;
 		hspOpenPositionCount: number;
-		lspiotm: string;
-		hspiotm: string;
+		lspiotm: Option.IOTM;
+		hspiotm: Option.IOTM;
 		lspPremium: number;
 		lspPremiumPercent: number;
 		hspPremium: number;
@@ -1702,8 +1749,7 @@ declare namespace Strategy {
 		lspTimeValue: number;
 		hspTimeValue: number;
 		lspIntrinsicValue: number;
-		lspHistoricalVolatility: number;
-		hspHistoricalVolatility: number;
+		historicalVolatility: number;
 		hspIntrinsicValue: number;
 		lspTradeValue: number;
 		hspTradeValue: number;
@@ -1720,14 +1766,99 @@ declare namespace Strategy {
 	}
 
 	export interface ProtectivePut {
-		symbolTitle: string;
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
 		symbolISIN: string;
-		marketUnit: string;
+		symbolTitle: string;
+		strikePrice: number;
+		openPositionCount: number;
+		iotm: Option.IOTM;
+		premium: number;
+		tradePriceVarPreviousTradePercent: number;
+		optionBestBuyLimitQuantity: number;
+		optionBestBuyLimitPrice: number;
+		contractSize: number;
+		baseBestSellLimitPrice: number;
+		baseBestBuyLimitPrice: number;
+		optionBestSellLimitPrice: number;
+		optionBestSellLimitQuantity: number;
+		protectivePutBEP: number;
+		maxLoss: number;
+		profitAmount: number;
+		profitPercent: number;
+		inUseCapital: number;
+		bepDifference: number;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		requiredMargin: number;
+		contractEndDate: string;
+		timeValue: number;
+		blackScholes: number;
+		intrinsicValue: number;
+		optionBestLimitPrice: number;
+		optionBestLimitVolume: number;
+		tradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+	}
+
+	export interface BearPutSpread {
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		lspSymbolISIN: string;
+		lspSymbolTitle: string;
+		lspStrikePrice: number;
+		lspBestSellLimitPrice: number;
+		lspBestSellLimitQuantity: number;
+		lspBestBuyLimitPrice: number;
+		lspBestBuyLimitQuantity: number;
+		hspSymbolISIN: string;
+		hspSymbolTitle: string;
+		hspStrikePrice: number;
+		hspBestBuyLimitPrice: number;
+		hspBestBuyLimitQuantity: number;
+		hspBestSellLimitPrice: number;
+		hspBestSellLimitQuantity: number;
+		lspOpenPositionCount: number;
+		hspOpenPositionCount: number;
+		lspiotm: Option.IOTM;
+		hspiotm: Option.IOTM;
+		lspPremium: number;
+		lspPremiumPercent: number;
+		hspPremium: number;
+		hspPremiumPercent: number;
+		bearPutSpreadBEP: number;
+		maxProfit: number;
+		maxProfitPercent: number;
+		maxLoss: number;
+		inUseCapital: number;
+		lspTimeValue: number;
+		hspTimeValue: number;
+		lspIntrinsicValue: number;
+		hspIntrinsicValue: number;
+		lspTradeValue: number;
+		hspTradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
+		baseMarketUnit: string;
+		marketUnit: string;
+		historicalVolatility: number;
+		lspRequiredMargin: number;
+		hspRequiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
+		ytm: number;
 	}
 }
 
@@ -1827,7 +1958,7 @@ declare namespace Reports {
 		requestState: FreezeUnFreezeReports.TFreezeRequestState;
 		description: string;
 		confirmed: boolean;
-		confirmedOn: string
+		confirmedOn: string;
 	}
 
 	export interface ICashSettlementReports {

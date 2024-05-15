@@ -1,5 +1,6 @@
+import AgSort from '@/components/common/Tables/classes/AgSort';
 import { englishToPersian } from '@/utils/helpers';
-import { type IHeaderComp, type IHeaderParams } from 'ag-grid-community';
+import { type IHeaderComp, type IHeaderParams } from '@ag-grid-community/core';
 
 type SymbolTitleHeaderProps = IHeaderParams<Order.TOrder>;
 
@@ -10,9 +11,9 @@ class SymbolTitleHeader implements IHeaderComp {
 
 	eInput!: HTMLInputElement;
 
-	eSort!: HTMLSpanElement;
-
 	eEdit: HTMLFormElement | null = null;
+
+	agSort!: AgSort;
 
 	value = '';
 
@@ -28,7 +29,7 @@ class SymbolTitleHeader implements IHeaderComp {
 
 		this.eWrapper = document.createElement('div');
 		this.eWrapper.setAttribute('class', 'flex-justify-end w-full');
-		this.eWrapper.addEventListener('click', () => this.setSorting());
+		this.eWrapper.addEventListener('click', () => this.agSort.sort());
 
 		const btn = document.createElement('button');
 		btn.setAttribute('class', 'h-24 pr-8');
@@ -46,12 +47,10 @@ class SymbolTitleHeader implements IHeaderComp {
 		const span = document.createElement('span');
 		span.textContent = 'نماد';
 
-		this.eSort = document.createElement('span');
-		this.eSort.setAttribute('unselectable', 'on');
-		this.eSort.setAttribute('role', 'presentation');
-		this.updateSortIcon();
+		this.agSort = new AgSort(this.params);
+		this.agSort.create();
 
-		div.appendChild(this.eSort);
+		div.appendChild(this.agSort.eSort!);
 		div.appendChild(span);
 
 		this.eWrapper.appendChild(btn);
@@ -66,34 +65,11 @@ class SymbolTitleHeader implements IHeaderComp {
 
 	refresh(params: SymbolTitleHeaderProps) {
 		this.params = params;
-		this.updateSortIcon();
+
+		this.agSort.setParams(params);
+		this.agSort.update();
 
 		return true;
-	}
-
-	get sorting() {
-		return this.params.column?.getSort();
-	}
-
-	setSorting() {
-		const sorting = this.sorting;
-		const sortingMethod = !sorting ? 'asc' : sorting === 'asc' ? 'desc' : undefined;
-
-		this.params.api.applyColumnState({
-			state: [{ colId: 'symbolTitle', sort: sortingMethod }],
-			defaultState: { sort: null },
-		});
-
-		this.updateSortIcon();
-	}
-
-	updateSortIcon() {
-		const sorting = this.sorting;
-
-		this.eSort.setAttribute('class', 'ag-icon ag-icon-asc transform');
-
-		if (!sorting) this.eSort.classList.add('hidden');
-		else if (sorting === 'desc') this.eSort.classList.add('rotate-180');
 	}
 
 	openEditMode() {

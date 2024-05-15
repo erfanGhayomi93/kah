@@ -1,6 +1,6 @@
 import brokerAxios from '@/api/brokerAxios';
 import { useListBrokerBankAccountQuery } from '@/api/queries/requests';
-import Datepicker from '@/components/common/Datepicker';
+import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
 import Input from '@/components/common/Inputs/Input';
 import Select from '@/components/common/Inputs/Select';
 import { FileTextSVG, XSVG } from '@/components/icons';
@@ -21,7 +21,7 @@ interface inputType {
 	receipt: string;
 	price: string;
 	account: Payment.IBrokerAccount | null;
-	date: number | null;
+	date: Date | null;
 	image: File | null;
 }
 
@@ -54,7 +54,7 @@ export const ReceiptDepositTab = () => {
 			receipt: '',
 			price: '',
 			account: null,
-			date: null,
+			date: new Date(),
 			image: null,
 		},
 		mode: 'onChange',
@@ -97,9 +97,9 @@ export const ReceiptDepositTab = () => {
 	const onSubmit: SubmitHandler<inputType> = async (inputs) => {
 		try {
 			const fd = new FormData();
-			const { account, image, price, receipt } = inputs;
+			const { account, image, price, receipt, date } = inputs;
 
-			if (!url || !userInfo || !account) return;
+			if (!url || !userInfo || !account || !date) return;
 
 			fd.append('NationalCode', userInfo?.nationalCode);
 			fd.append('File', image ?? '');
@@ -108,7 +108,7 @@ export const ReceiptDepositTab = () => {
 			fd.append('CustomerISIN', userInfo.customerISIN);
 			fd.append('Amount', convertStringToInteger(price));
 			fd.append('ReceiptNumber', receipt);
-			fd.append('ReceiptDate', toISOStringWithoutChangeTime(new Date()));
+			fd.append('ReceiptDate', toISOStringWithoutChangeTime(new Date(date)));
 
 			const response = await brokerAxios.post(url.completeRequestReceipt, fd);
 
@@ -190,10 +190,10 @@ export const ReceiptDepositTab = () => {
 						/>
 					</div>
 					<div className='w-2/5'>
-						<Datepicker
+						<AdvancedDatepicker
 							value={getValues('date')}
 							onChange={(value) => {
-								setValue('date', value);
+								setValue('date', value, { shouldValidate: true });
 							}}
 						/>
 					</div>
