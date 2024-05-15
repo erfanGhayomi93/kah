@@ -62,6 +62,9 @@ const Filters = ({
 						onChange={(v) => onPriceBasisChanged?.(v)}
 						getOptionId={(option) => option.id}
 						getOptionTitle={(option) => option.title}
+						classes={{
+							root: '!h-40',
+						}}
 					/>
 
 					<TableActions
