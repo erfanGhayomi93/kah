@@ -3,7 +3,6 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
 import TradeReportsTable from './TradesReportsTable';
 
@@ -19,7 +18,6 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
-	const t = useTranslations();
 
 	const { data: tradesReportsData, isLoading } = useTradesReportsQuery({
 		queryKey: ['tradesReports', filters],
