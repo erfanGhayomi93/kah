@@ -57,7 +57,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 			<div className='gap-32 flex-column'>
 				<SymbolSearch classes={{ root: 'py-12' }} value={filters.symbol} onChange={onChangeSymbol} />
 
-				<Select<DatesFilterType>
+				<Select<TDateRange>
 					onChange={(option) => setFilterValue('date', option)}
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
@@ -93,7 +93,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					]}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(`states.state_${option}`)}</span>}
-					placeholder={t('transactions_reports_page.actions_placeholder_filter')}
+					placeholder={t('change_broker_reports_page.status_placeholder_filter')}
 					defaultValues={filters.status}
 				/>
 

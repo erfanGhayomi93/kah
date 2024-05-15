@@ -9,7 +9,7 @@ import {
 	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setChangeBrokerModal, setDepositModal, setWithdrawalModal } from '@/features/slices/modalSlice';
+import { setChangeBrokerModal, setDepositModal, setFreezeModal, setWithdrawalModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
@@ -56,6 +56,8 @@ const List = ({ isExpand }: ListProps) => {
 				dispatch(setWithdrawalModal({ isShow: true }));
 			} else if (tagName === 'change_broker') {
 				dispatch(setChangeBrokerModal({ isShow: true }));
+			} else if (tagName === 'un_freezing') {
+				dispatch(setFreezeModal({ isShow: true }));
 			}
 		}
 	};
@@ -142,7 +144,7 @@ const List = ({ isExpand }: ListProps) => {
 						{
 							id: 'un_freezing',
 							label: t('sidebar.un_freezing'),
-							to: '/a',
+							isModal: true
 						},
 						{
 							id: 'option_settlement',
@@ -184,6 +186,12 @@ const List = ({ isExpand }: ListProps) => {
 							id: 'change_broker',
 							label: t('sidebar.change_broker'),
 							to: '/financial-reports/change-broker',
+							isBroker: true,
+						},
+						{
+							id: 'freeze_and_unFreeze',
+							label: t('sidebar.freeze_and_unFreeze'),
+							to: '/option-reports/freeze-and-unfreeze',
 							isBroker: true,
 						},
 					],

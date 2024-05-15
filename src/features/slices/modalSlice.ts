@@ -68,6 +68,8 @@ const initialState: ModalState = {
 	// برداشت وجه
 	withdrawal: null,
 
+	freeze: null,
+
 	// آنالیز
 	analyze: null,
 
@@ -88,6 +90,9 @@ const initialState: ModalState = {
 
 	// فیلتر صفحه گزارشات تغییر کارگزار ناظر
 	changeBrokerReportsFilters: null,
+
+	// فیلتر صفحه فریز و رفع فریز
+	freezeUnfreezeReportsFilters: null
 };
 
 const modalSlice = createSlice({
@@ -195,6 +200,10 @@ const modalSlice = createSlice({
 			state.deposit = payload;
 		},
 
+		setFreezeModal: (state, { payload }: PayloadAction<ModalState['freeze']>) => {
+			state.freeze = payload;
+		},
+
 		setAnalyzeModal: (state, { payload }: PayloadAction<ModalState['analyze']>) => {
 			state.analyze = payload;
 		},
@@ -234,6 +243,13 @@ const modalSlice = createSlice({
 		) => {
 			state.changeBrokerReportsFilters = payload;
 		},
+
+		setFreezeUnFreezeReportsFiltersModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['freezeUnfreezeReportsFilters']>,
+		) => {
+			state.freezeUnfreezeReportsFilters = payload;
+		},
 	},
 });
 
@@ -259,6 +275,7 @@ export const {
 	setChangeBrokerModal,
 	setWithdrawalModal,
 	setDepositModal,
+	setFreezeModal,
 	setDescriptionModal,
 	setAnalyzeModal,
 	updateSelectSymbolContractsModal,
@@ -267,6 +284,7 @@ export const {
 	setDepositWithReceiptReportsFiltersModal,
 	setWithdrawalCashReportsFiltersModal,
 	setChangeBrokerReportsFiltersModal,
+	setFreezeUnFreezeReportsFiltersModal
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -292,5 +310,6 @@ export const getInstantDepositReportsFiltersModal = (state: RootState) => state.
 export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
 export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.modal.withdrawalCashReportsFilters;
 export const getChangeBrokerReportsFiltersModal = (state: RootState) => state.modal.changeBrokerReportsFilters;
+export const getFreezeUnFreezeReportsFiltersModal = (state: RootState) => state.modal.freezeUnfreezeReportsFilters;
 
 export default modalSlice.reducer;

@@ -1,5 +1,6 @@
 import { TooltipElement } from '@/classes/Tooltip';
 import { type IHeaderComp, type IHeaderParams } from '@ag-grid-community/core';
+import AgSort from '../classes/AgSort';
 
 interface HeaderHintProps extends IHeaderParams {
 	tooltip: string | number;
@@ -12,21 +13,28 @@ class HeaderHint implements IHeaderComp {
 
 	params!: HeaderHintProps;
 
+	agSort!: AgSort;
+
 	eventListener!: () => void;
 
 	init(params: HeaderHintProps) {
 		this.params = params;
 
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center w-full gap-8');
+		this.eGui.setAttribute('class', 'flex-justify-center cursor-pointer w-full gap-8');
 		this.eGui.textContent = params.displayName;
 
-		this.hint();
+		this.agSort = new AgSort(this.params);
+		this.agSort.create();
 
+		this.createHint();
+
+		this.eGui.addEventListener('click', () => this.agSort.sort());
 		this.eGui.appendChild(this.eHint);
+		this.eGui.appendChild(this.agSort.eSort!);
 	}
 
-	hint() {
+	createHint() {
 		this.eHint = document.createElement('span');
 		this.eHint.setAttribute('class', 'text-gray-900 cursor-pointer');
 		this.eHint.innerHTML =
@@ -41,6 +49,10 @@ class HeaderHint implements IHeaderComp {
 
 	refresh(params: HeaderHintProps) {
 		this.params = params;
+
+		this.agSort.setParams(params);
+		this.agSort.update();
+
 		return false;
 	}
 
