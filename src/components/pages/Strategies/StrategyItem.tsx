@@ -21,16 +21,22 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 			[tags[0], t(`strategy_cheaps.${tags[0]}`)],
 			[tags[1], t(`strategy_cheaps.${tags[1]}`)],
 			[tags[2], t(`strategy_cheaps.${tags[2]}`)],
-			[tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)],
 		];
 
-		if (tags.length > 4)
-			result[3][1] +=
-				'/' +
-				tags
-					.slice(4)
-					.map((tag) => t(`strategy_cheaps.${tag}`))
-					.join('/');
+		if (tags.length === 4 && tags[3] === 'AllMarket') {
+			result.push([tags[3], t('strategy_cheaps.AllMarket')]);
+		} else {
+			result.push([tags[3], t('strategy_cheaps.Market') + ' ' + t(`strategy_cheaps.${tags[3]}`)]);
+
+			if (tags.length > 4) {
+				result[3][1] +=
+					'/' +
+					tags
+						.slice(4)
+						.map((tag) => t(`strategy_cheaps.${tag}`))
+						.join('/');
+			}
+		}
 
 		return result;
 	}, []);
@@ -45,7 +51,7 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
 						<h1 className='text-base font-medium text-gray-900'>
-							{t(`strategies.strategy_title_${type}`)}
+							{t(`${type}.title`)}
 							<span className='text-gray-700'> ({title})</span>
 						</h1>
 
@@ -55,7 +61,7 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 					</div>
 
 					<h3 className='gap-4 whitespace-nowrap text-tiny text-gray-900 flex-items-center'>
-						{t.rich(`strategies.strategy_desc_${type}`, {
+						{t.rich(`${type}.desc`, {
 							plus: () => (
 								<b className='text-gray-1000'>
 									<PlusSVG width='1.4rem' height='1.4rem' />

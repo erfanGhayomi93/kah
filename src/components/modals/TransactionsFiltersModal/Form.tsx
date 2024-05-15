@@ -58,7 +58,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 			<div className='gap-32 flex-column'>
 				<SymbolSearch classes={{ root: 'py-12' }} value={filters.symbol} onChange={onChangeSymbol} />
 
-				<Select<DatesFilterType>
+				<Select<TDateRange>
 					onChange={(option) => setFilterValue('date', option)}
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}

@@ -17,7 +17,7 @@ import { type RootState } from '@/features/store';
 import { useServerDatetime, useUserInfo } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { deleteBrokerClientId } from '@/utils/cookie';
-import { cn, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
+import { cn, copyNumberToClipboard, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -234,7 +234,7 @@ const Header = () => {
 							<span className='text-tiny'>{t('common.rial')}</span>
 						</span>
 						<WalletSVG
-							className={(userRemain.purchasePower ?? 0) < 0 ? 'text-success-100' : 'text-error-100'}
+							className={getColorBasedOnPercent(userRemain?.purchasePower ?? 0)}
 							onClick={handleShowDepositModal}
 						/>
 					</span>

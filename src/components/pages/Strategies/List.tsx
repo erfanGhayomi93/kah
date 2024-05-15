@@ -40,7 +40,7 @@ const List = () => {
 		);
 
 	return (
-		<div className='relative flex h-full flex-wrap rounded bg-white px-8 py-24'>
+		<div className='relative flex flex-1 flex-wrap content-start gap-y-8 rounded bg-white px-8 py-24'>
 			{filteredStrategies.map((item) => (
 				<StrategyItem key={item.id} {...item} />
 			))}
