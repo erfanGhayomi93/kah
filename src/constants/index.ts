@@ -365,6 +365,27 @@ export const initialPhysicalSettlementReportsFilters: PhysicalSettlementReports.
 	requestStatus: [],
 };
 
+export const initialOrdersReportsFilters: OrdersReports.IOrdersReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	date: 'dates.month',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	side: 'All',
+	status: []
+};
+
+export const initialTradesReportsFilters: TradesReports.ITradesReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	date: 'dates.month',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	side: 'All'
+};
+
 export const defaultTransactionColumns: TTransactionColumnsState[] = [
 	{
 		id: 'date',
@@ -682,6 +703,102 @@ export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.
 	{
 		id: 'action',
 		title: 'عملیات',
+		hidden: false
+	}
+];
+
+export const defaultOrdersReportsColumns: OrdersReports.IOrdersReportsColumnsState[] = [
+	{
+		id: 'orderId',
+		title: 'ردیف',
+		hidden: false
+	},
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+	},
+	{
+		id: 'orderSide',
+		title: 'سمت',
+		hidden: false
+	},
+	{
+		id: 'orderDateTime',
+		title: 'تاریخ',
+		hidden: false
+	},
+	{
+		id: 'orderDateTime',
+		title: 'ساعت',
+		hidden: false
+	},
+	{
+		id: 'quantity',
+		title: 'حجم کل',
+		hidden: false
+	},
+	{
+		id: 'price',
+		title: 'قیمت',
+		hidden: false
+	},
+	{
+		id: 'sumExecuted',
+		title: 'حجم انجام شده',
+		hidden: false
+	},
+	{
+		id: 'lastErrorCode',
+		title: 'وضعیت گزارش',
+		hidden: false
+	},
+	{
+		id: 'validity',
+		title: 'اعتبار',
+		hidden: false
+	}
+];
+
+export const defaultTradesReportsColumns: TradesReports.ITradesReportsColumnsState[] = [
+	{
+		id: 'orderId',
+		title: 'ردیف',
+		hidden: false
+	},
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false
+	},
+	{
+		id: 'orderSide',
+		title: 'سمت',
+		hidden: false
+	},
+	{
+		id: 'orderDateTime',
+		title: 'تاریخ',
+		hidden: false
+	},
+	{
+		id: 'orderDateTime',
+		title: 'ساعت',
+		hidden: false,
+	},
+	{
+		id: 'quantity',
+		title: 'حجم کل',
+		hidden: false
+	},
+	{
+		id: 'price',
+		title: 'قیمت',
+		hidden: false
+	},
+	{
+		id: 'validity',
+		title: 'اعتبار',
 		hidden: false
 	}
 ];

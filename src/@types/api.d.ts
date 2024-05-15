@@ -648,6 +648,10 @@ declare namespace Broker {
 		| 'Freezerequests'
 		| 'Settlementcash'
 		| 'Settlementphysical'
+		| 'OrderExportOrders'
+		| 'OrderOrders'
+		| 'OrderExportTrades'
+		| 'OrderDetailedOrders'
 
 	type URL = Record<UrlKey, string>;
 
@@ -1870,5 +1874,76 @@ declare namespace Reports {
 		incomeValue: number;
 		penVolume: number;
 		peValue: number;
+	}
+
+	export interface IOrdersReports {
+		orderId: number,
+		userName: null | string,
+		customerISIN: string,
+		marketUnit: string,
+		symbolISIN: string,
+		price: number,
+		orderVolume: number,
+		triggerPrice: number,
+		orderPlaceInPrice?: null | number,
+		orderVolumeInPrice?: null | number,
+		quantity: number,
+		orderSide: TOrdersSide,
+		orderOrigin: string,
+		parentOrderId: number,
+		orderType: TOrdersTypes,
+		validity: TOrdersValidity,
+		validityDate: string,
+		orderFrom: TOrdersForm,
+		orderAction: TOrdersAction | 0,
+		orderMinimumQuantity: number,
+		orderDateTime: string,
+		hostOrderNumber: null | string,
+		expectedRemainingQuantity: number,
+		sumExecuted: number,
+		symbolTitle: string,
+		position: number,
+		valuePosition: number,
+		lastTradePrice: number,
+		orderStatus: TOrdersStatus,
+		lastErrorCode: string | null,
+		customErrorMsg: string | null,
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		tradeDetails: TTradeDetails;
+		isEditable: boolean;
+		blockType: TOrderSource;
+	}
+
+	export interface ITradesReports {
+		orderId: number,
+		userName: string,
+		customerISIN: string,
+		symbolISIN: string,
+		price: number,
+		triggerPrice: number,
+		quantity: number,
+		orderSide: "Buy" | "Sell",
+		orderOrigin: string,
+		parentOrderId: number,
+		orderType: TOrdersTypes,
+		validity: TOrdersValidity,
+		validityDate: string,
+		orderFrom: TOrdersForm,
+		orderAction: TOrdersAction | 0,
+		orderMinimumQuantity: number,
+		orderDateTime: string,
+		hostOrderNumber: string,
+		expectedRemainingQuantity: number,
+		sumExecuted: number,
+		symbolTitle: string,
+		position: number,
+		valuePosition: number,
+		lastTradePrice: number,
+		orderStatus: TOrdersStatus,
+		lastErrorCode: string,
+		customErrorMsg: string,
+		tradeDetails: TTradeDetails;
+
 	}
 }

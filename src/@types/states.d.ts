@@ -13,6 +13,30 @@ declare interface IOptionHistory {
 	description: string | null
 };
 
+declare type TOrdersSide = "Buy" | "Sell";
+
+declare type TOrdersTypes = "MarketOrder" | "LimitOrder" | "MarketToLimitOrder" | "MarketOnOpeningOrder" | "StopOrder";
+
+declare type TOrdersValidity = "GoodTillDate" | "FillAndKill" | "GoodTillCancelled" | "Day" | "SlidingValidity" | "Session" | "Month" | "Week";
+
+declare type TOrdersForm = "Web" | "Mobile" | "BrokerTrader" | "ClientApi" | "MarketMaker" | "Admin" | "Supervisor";
+
+declare type TOrdersAction = "CreateOrder" | "ModifyOrder" | "CancelOrder" | "ExpireOrder";
+
+declare type TOrdersStatus = "InOMSQueu" | "OnSending" | "Error" | "DeleteByEngine" | "OnBoard" | "Canceled" | "OnModifyFrom" | "OnModifyTo" | "Modified" | "OnBoardModify" | "PartOfTheOrderDone" | "OrderDone" | "OnCanceling" | "OnModifyError" | "OnCancelError" | "Expired" | "RejectByGAP" | "OnCancelingWithBroker" | "TradeCancel"
+
+declare type TTradeDetails = null | {
+	tradedQuantity: number,
+	tradePrice: number,
+	remainingQuantityOrder: number,
+	tradeDate: string,
+	tradeNumber: string,
+	total: number
+}[]
+
+declare type TOrderSource = "Account" | "Portfolio";
+
+
 
 declare interface IUserBankAccount {
 	id: number;
@@ -292,7 +316,11 @@ declare type IBrokerUrls = Record<
 	| 'getFreezeExportFreeze'
 	| 'getFreezerequests'
 	| 'getSettlementcash'
-	| "getSettlementphysical",
+	| 'getSettlementphysical'
+	| 'getOrderExportOrders'
+	| 'getOrderOrders'
+	| 'getOrderExportTrades'
+	| 'getOrderDetailedOrders',
 	string
 >;
 
@@ -454,6 +482,8 @@ declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_
 
 declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement'
 
+declare type TOrdersTradersTab = "orders" | "trades"
+
 declare namespace Transaction {
 	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
 
@@ -577,6 +607,58 @@ declare namespace ChangeBrokerReports {
 	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
 }
 
+declare namespace OrdersReports {
+
+	export type TOrderSide = "All" | "Buy" | "Sell" | "BuyIncremental" | "BuyDecremental" | "SellIncremental" | "SellDecremental";
+
+	export type TOrderStatus = "InOMSQueue" | "OrderDone" | "Error" | "Modified" | "Expired" | "Canceled";
+
+
+	export interface IOrdersReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		side: TOrderSide;
+		status: { id: TOrderStatus, title: string }[]
+	}
+
+	export interface IOrdersReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TOrdersReportsColumns = 'orderId' | 'symbolTitle' | 'orderSide' | 'orderDateTime' | 'orderDateTime' | 'quantity' | 'price' | 'sumExecuted' | 'lastErrorCode' | 'validity'
+
+}
+
+declare namespace TradesReports {
+
+	export type TOrderSide = "All" | "Buy" | "Sell" | "BuyIncremental" | "BuyDecremental" | "SellIncremental" | "SellDecremental";
+
+	export interface ITradesReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		side: TOrderSide;
+	}
+
+	export interface ITradesReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TTradesReportsColumns = 'orderId' | 'symbolTitle' | 'orderSide' | 'orderDateTime' | 'orderDateTime' | 'quantity' | 'price' | 'validity'
+
+}
+
 
 
 declare type TTransactionColumnsState = {
@@ -621,6 +703,7 @@ declare namespace FreezeUnFreezeReports {
 		fromDate: number;
 		toDate: number;
 		requestState: TFreezeRequestState | null;
+
 	}
 
 	export interface IFreezeUnFreezeReportsColumnsState {

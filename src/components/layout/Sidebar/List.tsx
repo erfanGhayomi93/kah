@@ -192,6 +192,18 @@ const List = ({ isExpand }: ListProps) => {
 							to: '/option-reports/freeze-and-unfreeze',
 							isBroker: true,
 						},
+						{
+							id: 'orders',
+							label: t('sidebar.orders'),
+							to: '/orders-and-trades-reports/orders',
+							isBroker: true
+						},
+						{
+							id: 'trades',
+							label: t('sidebar.trades'),
+							to: '/orders-and-trades-reports/trades',
+							isBroker: true
+						},
 					],
 				},
 			],

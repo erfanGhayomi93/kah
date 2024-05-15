@@ -4,7 +4,9 @@ import {
 	initialDepositWithReceiptReportsFilters,
 	initialFreezeUnFreezeReportsFilters,
 	initialInstantDepositReportsFilters,
+	initialOrdersReportsFilters,
 	initialPhysicalSettlementReportsFilters,
+	initialTradesReportsFilters,
 	initialTransactionsFilters,
 	initialWithdrawalCashReportsFilters,
 } from '@/constants';
@@ -367,11 +369,15 @@ export const useFreezeUnFreezeReportsQuery = createQuery<
 				'QueryOption.PageSize': String(pageSize),
 				'DateOption.FromDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
 				'DateOption.ToDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
+				// 'RequestType': '0'
 			};
 
 			if (symbol) params.SymbolISIN = symbol.symbolISIN;
 
 			if (requestState) params.RequestState = requestState;
+
+
+
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.IFreezeUnfreezeReports[]>>(
 				url.getFreezerequests,
@@ -509,4 +515,106 @@ export const usePhysicalSettlementReportsQuery = createQuery<
 		}
 	},
 });
+
+export const useOrdersReportsQuery = createQuery<
+	PaginationResponse<Reports.IOrdersReports[]> | null,
+	['ordersReports', OrdersReports.IOrdersReportsFilters]
+>({
+	staleTime: 18e5,
+	queryKey: ['ordersReports', initialOrdersReportsFilters],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const url = getBrokerURLs(store.getState());
+
+
+			if (!url) return null;
+
+			const [
+				,
+				{ fromDate, pageNumber, pageSize, toDate, symbol, side, status },
+			] = queryKey;
+
+			const params: Record<string, string | string[]> = {
+				'QueryOption.PageNumber': String(pageNumber),
+				'QueryOption.PageSize': String(pageSize),
+				'DateOption.FromDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
+				'DateOption.ToDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59))
+			};
+
+			if (side !== 'All') params.OrderSide = side;
+
+			if (symbol) params.SymbolISIN = symbol.symbolISIN;
+
+			if (Array.isArray(status) && status.length > 0) {
+				params.OMSOrderState = [];
+				status.forEach((st) => {
+					(params.OMSOrderState as string[]).push(st.id);
+				});
+			}
+
+			const response = await brokerAxios.get<PaginationResponse<Reports.IOrdersReports[]>>(
+				url.getOrderOrders,
+				{
+					params,
+					signal,
+				},
+			);
+			const data = response.data;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data;
+		} catch (e) {
+			return null;
+		}
+	},
+});
+
+export const useTradesReportsQuery = createQuery<
+	PaginationResponse<Reports.ITradesReports[]> | null,
+	['tradesReports', TradesReports.ITradesReportsFilters]
+>({
+	staleTime: 18e5,
+	queryKey: ['tradesReports', initialTradesReportsFilters],
+	queryFn: async ({ queryKey, signal }) => {
+		try {
+			const url = getBrokerURLs(store.getState());
+
+
+			if (!url) return null;
+
+			const [
+				,
+				{ fromDate, pageNumber, pageSize, toDate, symbol, side },
+			] = queryKey;
+
+			const params: Record<string, string | string[]> = {
+				'QueryOption.PageNumber': String(pageNumber),
+				'QueryOption.PageSize': String(pageSize),
+				'DateOption.FromDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
+				'DateOption.ToDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59))
+			};
+
+			if (side !== 'All') params.OrderSide = side;
+
+			if (symbol) params.SymbolISIN = symbol.symbolISIN;
+
+			const response = await brokerAxios.get<PaginationResponse<Reports.ITradesReports[]>>(
+				url.getOrderDetailedOrders,
+				{
+					params,
+					signal,
+				},
+			);
+			const data = response.data;
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+			return data;
+		} catch (e) {
+			return null;
+		}
+	},
+});
+
 

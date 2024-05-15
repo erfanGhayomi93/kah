@@ -95,6 +95,25 @@ export interface IPhysicalSettlementReportsFilters extends IBaseModalConfigurati
 	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType, title: string }>;
 }
 
+export interface IOrdersReportsFilters extends IBaseModalConfiguration {
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	side?: TOrderSide;
+	status?: Array<{ id: TOrderStatus, title: string }>
+}
+
+export interface ITradesReportsFilters extends IBaseModalConfiguration {
+	pageNumber?: number;
+	pageSize?: number;
+	symbol?: Symbol.Search | null;
+	date?: TDateRange;
+	fromDate?: number;
+	toDate?: number;
+	side?: TradesReports.TOrderSide;
+}
+
 export interface IBuySellModal extends IBaseModalConfiguration {
 	id?: number;
 	mode: TBsModes;
@@ -251,5 +270,7 @@ export type ModalState = TBaseModalProps<{
 	changeBrokerReportsFilters: IChangeBrokerReportsFiltersModal;
 	freezeUnfreezeReportsFilters: IFreezeUnFreezeReportsFiltersModal;
 	cashSettlementReportsFilters: ICashSettlementReportsFilters;
-	physicalSettlementReportsFilters: IPhysicalSettlementReportsFilters
+	physicalSettlementReportsFilters: IPhysicalSettlementReportsFilters;
+	ordersReportsFilters: IOrdersReportsFilters;
+	tradesReportsFilters: ITradesReportsFilters;
 }>;

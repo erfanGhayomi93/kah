@@ -586,7 +586,9 @@
 		"deposit_with_receipt": "واریز با فیش",
 		"withdrawal_cash": "برداشت وجه",
 		"change_broker_reports": "تغییر کارگزار ناظر",
-		"freeze_and_unFreeze": "فریز و رفع فریز"
+		"freeze_and_unFreeze": "فریز و رفع فریز",
+		"orders": "سفارشات",
+		"trades": "معاملات"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
@@ -1366,6 +1368,62 @@
 		"type_status_Registered": "ثبت شده",
 		"request_type_placeholder_filter": "نوع اعمال",
 		"request_status_type_placeholder_filter": "وضعیت درخواست"
+	},
+
+	"orders_and_trades_reports_page": {
+		"orders_and_trades_reports": "گزارشات سفارشات",
+		"orders_tab": "سفارشات",
+		"trades_tab": "معاملات"
+	},
+
+	"orders_reports_page":{
+		"filter_title_modal": "فیلتر سفارشات",
+		"manage_columns": "مدیریت ستون‌های جدول",
+		"id_column": "ردیف",
+		"symbol_column": "نماد",
+		"side_column": "سمت",
+		"date_column": "تاریخ",
+		"time_column": "ساعت",
+		"overall_volume_column": "حجم کل",
+		"price_column": "قیمت",
+		"done_volume_column": "حجم انجام شده",
+		"status_column": "وضعیت",
+		"validity_column": "اعتبار",
+		"side_filters_placeholder_filter": "سمت",
+		"status_filters_placeholder_filter": "وضعیت",
+		"side": "سمت",
+		"side_All": "همه",
+		"side_Buy": "خرید",
+		"side_Sell": "فروش",
+		"side_BuyIncremental": "خرید فزاینده",
+		"side_BuyDecremental": "خرید کاهنده",
+		"side_SellIncremental": "فروش فزاینده",
+		"side_SellDecremental": "فروش کاهنده"
+	},
+
+	"trades_reports_page": {
+		"filter_title_modal": "فیلتر معاملات",
+		"manage_columns": "مدیریت ستون‌های جدول",
+		"id_column": "ردیف",
+		"symbol_column": "نماد",
+		"side_column": "سمت",
+		"date_column": "تاریخ",
+		"time_column": "ساعت",
+		"overall_volume_column": "حجم کل",
+		"price_column": "قیمت",
+		"done_volume_column": "حجم انجام شده",
+		"status_column": "وضعیت",
+		"validity_column": "اعتبار",
+		"side_filters_placeholder_filter": "سمت",
+		"status_filters_placeholder_filter": "وضعیت",
+		"side": "سمت",
+		"side_All": "همه",
+		"side_Buy": "خرید",
+		"side_Sell": "فروش",
+		"side_BuyIncremental": "خرید فزاینده",
+		"side_BuyDecremental": "خرید کاهنده",
+		"side_SellIncremental": "فروش فزاینده",
+		"side_SellDecremental": "فروش کاهنده"
 	},
 
 	"bank_accounts": {
