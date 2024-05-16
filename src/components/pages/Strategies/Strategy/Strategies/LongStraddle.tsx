@@ -5,13 +5,12 @@ import { initialColumnsLongStraddle } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { type ISelectItem } from '..';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -39,10 +38,15 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		initialColumnsLongStraddle,
 	);
 
-	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+		priceBasis: 'BestLimit',
+		symbolBasis: 'BestLimit',
+		pageSize: 20,
+		pageNumber: 1,
+	});
 
 	const { data, isFetching } = useLongStraddleStrategyQuery({
-		queryKey: ['longStraddleQuery', priceBasis.id, useCommission],
+		queryKey: ['longStraddleQuery', { ...inputs, withCommission: useCommission }],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
@@ -124,6 +128,12 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		);
 	};
 
+	const goToTheNextPage = () => {
+		setFieldsValue((prev) => ({
+			pageNumber: prev.pageNumber + 1,
+		}));
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
@@ -160,7 +170,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -252,7 +262,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'putPremium',
@@ -264,7 +274,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'highBEP',
@@ -400,6 +410,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				colId: 'actions',
 				headerName: 'عملیات',
 				width: 80,
+				sortable: false,
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
@@ -410,17 +421,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
@@ -436,8 +436,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		}
 	}, [columnsVisibility]);
 
-	const rows = data ?? [];
-
 	return (
 		<>
 			<StrategyDetails
@@ -452,17 +450,21 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					priceBasis={priceBasis}
 					onManageColumns={showColumnsPanel}
-					onPriceBasisChanged={setPriceBasis}
+					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
+					priceBasis={inputs.priceBasis}
+					symbolBasis={inputs.symbolBasis}
 				/>
 
 				<Table<Strategy.LongStraddle>
 					ref={gridRef}
-					rowData={rows}
+					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
+					fetchNextPage={goToTheNextPage}
+					pageNumber={inputs.pageNumber}
+					pageSize={inputs.pageSize}
 				/>
 			</div>
 		</>

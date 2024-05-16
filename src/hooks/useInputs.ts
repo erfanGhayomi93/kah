@@ -10,11 +10,18 @@ const useInputs = <T extends object>(props: T) => {
 		}));
 	};
 
-	const setFieldsValue = (props: Partial<T>) => {
-		setInputs((prev) => ({
-			...prev,
-			...props,
-		}));
+	const setFieldsValue = (arg: Partial<T> | ((state: T) => Partial<T>)) => {
+		if (typeof arg === 'function') {
+			setInputs((prev) => ({
+				...prev,
+				...arg(prev),
+			}));
+		} else {
+			setInputs((prev) => ({
+				...prev,
+				...props,
+			}));
+		}
 	};
 
 	return { inputs, setFieldValue, setFieldsValue };

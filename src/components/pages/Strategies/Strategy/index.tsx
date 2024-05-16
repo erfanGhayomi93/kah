@@ -5,11 +5,6 @@ import Main from '@/components/layout/Main';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 
-export interface ISelectItem {
-	id: TPriceBasis;
-	title: string;
-}
-
 interface StrategyProps {
 	id: Strategy.Type;
 }

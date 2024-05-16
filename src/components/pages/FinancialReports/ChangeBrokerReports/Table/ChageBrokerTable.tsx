@@ -10,19 +10,13 @@ import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from '
 import { toast } from 'react-toastify';
 import ChangeBrokerReportsActionCell from './ChangeBrokerReportsActionCell';
 
-
-
 interface ChangeBrokerTableProps {
 	reports: Reports.IChangeBrokerReports[] | null;
 	columnsVisibility: ChangeBrokerReports.IChangeBrokerReportsColumnsState[];
 	setColumnsVisibility: Dispatch<SetStateAction<ChangeBrokerReports.IChangeBrokerReportsColumnsState[]>>;
 }
 
-const ChangeBrokerTable = ({
-	reports,
-	columnsVisibility,
-	setColumnsVisibility,
-}: ChangeBrokerTableProps) => {
+const ChangeBrokerTable = ({ reports, columnsVisibility, setColumnsVisibility }: ChangeBrokerTableProps) => {
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
@@ -34,25 +28,30 @@ const ChangeBrokerTable = ({
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	const onDeleteRow = (data: Reports.IChangeBrokerReports | undefined) => new Promise<void>(async (resolve, reject) => {
-		const url = getBrokerURLs(store.getState());
-		if (!url || !data) return null;
+	const onDeleteRow = (data: Reports.IChangeBrokerReports | undefined) =>
+		new Promise<void>(async (resolve, reject) => {
+			const url = getBrokerURLs(store.getState());
+			if (!url || !data) return null;
 
-		try {
-			const response = await axios.post<ServerResponse<boolean>>(`${url.changeBrokerSetCancel}?RequestID=${data?.id}`);
+			try {
+				const response = await axios.post<ServerResponse<boolean>>(
+					`${url.changeBrokerSetCancel}?RequestID=${data?.id}`,
+				);
 
-			if (response.status !== 200 || !response.data.succeeded) throw new Error(response.data.errors?.[0] ?? '');
+				if (response.status !== 200 || !response.data.succeeded)
+					throw new Error(response.data.errors?.[0] ?? '');
 
+				toast.success(t('alerts.change_broker_request_delete_successfully'), {
+					toastId: 'change_broker_delete_successfully',
+				});
 
-			toast.success(t('alerts.change_broker_request_delete_successfully'), { toastId: 'change_broker_delete_successfully' });
+				queryClient.invalidateQueries({ queryKey: ['changeBrokerReports'] });
 
-			queryClient.invalidateQueries({ queryKey: ['changeBrokerReports'] });
-
-			resolve();
-		} catch (e) {
-			reject();
-		}
-	});
+				resolve();
+			} catch (e) {
+				reject();
+			}
+		});
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IChangeBrokerReports>>>(
 		() =>
@@ -67,7 +66,7 @@ const ChangeBrokerTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1)
+					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
 				},
 				{
 					headerName: t('change_broker_reports_page.date_column'),
@@ -95,7 +94,6 @@ const ChangeBrokerTable = ({
 					suppressMovable: true,
 					sortable: false,
 					valueFormatter: () => t('states.state_Online'),
-
 				},
 				{
 					headerName: t('change_broker_reports_page.status_column'),
@@ -104,7 +102,6 @@ const ChangeBrokerTable = ({
 					suppressMovable: true,
 					sortable: false,
 					valueFormatter: ({ value }) => t('states.state_' + value),
-
 				},
 				{
 					headerName: t('change_broker_reports_page.action_column'),
@@ -116,10 +113,9 @@ const ChangeBrokerTable = ({
 					sortable: false,
 					cellRenderer: ChangeBrokerReportsActionCell,
 					cellRendererParams: {
-						onDeleteRow
-					}
+						onDeleteRow,
+					},
 				},
-
 			] as Array<ColDef<Reports.IChangeBrokerReports>>,
 		[],
 	);
@@ -134,17 +130,6 @@ const ChangeBrokerTable = ({
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

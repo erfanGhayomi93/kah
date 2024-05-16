@@ -248,13 +248,6 @@ const ContractsTable = ({
 	}, [watchlistData]);
 
 	useEffect(() => {
-		const gridApi = gridRef.current;
-		if (!gridApi) return;
-
-		gridApi.setGridOption('rowData', modifiedData);
-	}, [modifiedData]);
-
-	useEffect(() => {
 		contractsRef.current = contracts;
 
 		setTimeout(() => {

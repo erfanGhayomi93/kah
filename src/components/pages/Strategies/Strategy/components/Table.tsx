@@ -1,41 +1,102 @@
-import Loading from '@/components/common/Loading';
 import AgTable, { type AgTableProps } from '@/components/common/Tables/AgTable';
-import { type GridApi } from '@ag-grid-community/core';
-import { forwardRef } from 'react';
+import { type GridApi, type SortChangedEvent } from '@ag-grid-community/core';
+import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import NoTableData from './NoTableData';
 
-interface TableProps<T> extends AgTableProps<T> {
+interface PaginationProps {
+	fetchNextPage: () => void;
+	pageSize: number;
+	pageNumber: number;
+}
+
+interface TableProps<T> extends AgTableProps<T>, PaginationProps {
 	isFetching?: boolean;
 }
 
-const Table = forwardRef<GridApi, TableProps<unknown>>(({ isFetching, rowData, defaultColDef = {}, ...props }, ref) => {
-	const data = rowData ?? [];
+type TableRow = Strategy.AllStrategies;
 
-	return (
-		<>
-			<AgTable<unknown>
-				ref={ref}
-				suppressColumnVirtualisation={false}
-				rowHeight={48}
-				headerHeight={40}
-				rowData={data}
-				defaultColDef={{
-					suppressMovable: true,
-					sortable: true,
-					resizable: false,
-					minWidth: 104,
-					...defaultColDef,
-				}}
-				className='h-full border-0'
-				{...props}
-			/>
+const Table = forwardRef<GridApi, TableProps<TableRow>>(
+	({ isFetching, pageSize, pageNumber, rowData = [], fetchNextPage, defaultColDef = {}, ...props }, ref) => {
+		const gridRef = useRef<GridApi<TableRow>>(null);
 
-			{isFetching && <Loading />}
-			{data.length === 0 && !isFetching && <NoTableData />}
-		</>
-	);
-});
+		const [sorting, setSorting] = useState<{ colId: string; sort: TSortingMethods } | null>(null);
 
-export default Table as <TData extends unknown>(
+		const onSortChanged = ({ columns }: SortChangedEvent<TableRow>) => {
+			try {
+				if (!Array.isArray(columns) || columns.length < 1) return;
+
+				const col = columns[0];
+				const colId = col.getColId();
+				const sort = col.getSort();
+
+				setSorting(sort ? { colId, sort } : null);
+			} catch (e) {
+				//
+			}
+		};
+
+		const data = useMemo<TableRow[]>(() => {
+			try {
+				if (!Array.isArray(rowData)) return [];
+				const rows = JSON.parse(JSON.stringify(rowData)) as typeof rowData;
+
+				if (sorting) {
+					rows.sort((a, b) => {
+						try {
+							// @ts-expect-error: We are using try/catch if something happen
+							return b[sorting.colId] - a[sorting.colId];
+						} catch (e) {
+							return 0;
+						}
+					});
+				}
+
+				return rows.slice(0, pageNumber * pageSize);
+			} catch (e) {
+				return rowData!;
+			}
+		}, [rowData, sorting, pageNumber, pageSize]);
+
+		useImperativeHandle(ref, () => gridRef.current!);
+
+		return (
+			<div className='relative flex-1'>
+				<AgTable<TableRow>
+					ref={gridRef}
+					className='h-full border-0'
+					suppressColumnVirtualisation={false}
+					rowHeight={48}
+					headerHeight={40}
+					rowData={data}
+					onSortChanged={onSortChanged}
+					defaultColDef={{
+						suppressMovable: true,
+						sortable: true,
+						resizable: false,
+						minWidth: 104,
+						...defaultColDef,
+					}}
+					onBodyScrollEnd={({ api }) => {
+						const lastRowIndex = api.getLastDisplayedRowIndex();
+						if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
+					}}
+					{...props}
+				/>
+
+				{isFetching && (
+					<div
+						style={{ backdropFilter: 'blur(1px)' }}
+						className='absolute left-0 top-0 size-full flex-justify-center'
+					>
+						<div className='size-48 spinner' />
+					</div>
+				)}
+				{data.length === 0 && !isFetching && <NoTableData />}
+			</div>
+		);
+	},
+);
+
+export default Table as <TData extends TableRow>(
 	props: TableProps<TData> & { ref?: React.Ref<GridApi<TData>> },
 ) => JSX.Element;
