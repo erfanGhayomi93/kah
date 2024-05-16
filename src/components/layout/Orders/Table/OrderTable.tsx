@@ -10,7 +10,7 @@ import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { deleteOrder } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useLayoutEffect, useMemo, useRef } from 'react';
 import NoData from '../NoData';
 import OrderActionCell from '../common/OrderActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
@@ -245,17 +245,6 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
 		return () => removeHandler();
 	}, []);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	return (
 		<>
