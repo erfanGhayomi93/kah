@@ -31,7 +31,7 @@ export const initialColumnsCoveredCall: IManageColumn[] = [
 	},
 	{
 		id: 'optionBestBuyLimitPrice',
-		title: 'قیمت بهترین خریدار',
+		title: 'بهترین خریدار',
 		hidden: false,
 	},
 	{
@@ -41,7 +41,7 @@ export const initialColumnsCoveredCall: IManageColumn[] = [
 	},
 	{
 		id: 'optionBestSellLimitPrice',
-		title: 'قیمت بهترین فروشنده',
+		title: 'بهترین فروشنده',
 		hidden: true,
 	},
 	{
@@ -51,7 +51,7 @@ export const initialColumnsCoveredCall: IManageColumn[] = [
 	},
 	{
 		id: 'coveredCallBEP',
-		title: 'سر به سر استراتژی',
+		title: 'سر به سر',
 		hidden: false,
 	},
 	{
@@ -71,7 +71,7 @@ export const initialColumnsCoveredCall: IManageColumn[] = [
 	},
 	{
 		id: 'premium',
-		title: 'آخرین قیمت نماد آپشن',
+		title: 'قیمت نماد آپشن',
 		hidden: true,
 	},
 	{
@@ -332,12 +332,12 @@ export const initialColumnsLongCall: IManageColumn[] = [
 	},
 	{
 		id: 'premium',
-		title: 'آخرین قیمت نماد آپشن',
+		title: 'قیمت نماد آپشن',
 		hidden: true,
 	},
 	{
 		id: 'optionBestBuyLimitPrice',
-		title: 'قیمت بهترین خریدار',
+		title: 'بهترین خریدار',
 		hidden: true,
 	},
 	{
@@ -347,7 +347,7 @@ export const initialColumnsLongCall: IManageColumn[] = [
 	},
 	{
 		id: 'optionBestSellLimitPrice',
-		title: 'قیمت بهترین فروشنده',
+		title: 'بهترین فروشنده',
 		hidden: false,
 	},
 	{
@@ -357,7 +357,7 @@ export const initialColumnsLongCall: IManageColumn[] = [
 	},
 	{
 		id: 'longCallBEP',
-		title: 'سر به سر استراتژی',
+		title: 'سر به سر',
 		hidden: false,
 	},
 	{
@@ -450,12 +450,12 @@ export const initialColumnsLongPut: IManageColumn[] = [
 	},
 	{
 		id: 'premium',
-		title: 'آخرین قیمت نماد آپشن',
+		title: 'قیمت نماد آپشن',
 		hidden: false,
 	},
 	{
 		id: 'optionBestBuyLimitPrice',
-		title: 'قیمت بهترین خریدار',
+		title: 'بهترین خریدار',
 		hidden: false,
 	},
 	{
@@ -465,7 +465,7 @@ export const initialColumnsLongPut: IManageColumn[] = [
 	},
 	{
 		id: 'optionBestSellLimitPrice',
-		title: 'قیمت بهترین فروشنده',
+		title: 'بهترین فروشنده',
 		hidden: false,
 	},
 	{
@@ -475,7 +475,7 @@ export const initialColumnsLongPut: IManageColumn[] = [
 	},
 	{
 		id: 'longCallBEP',
-		title: 'سر به سر استراتژی',
+		title: 'سر به سر',
 		hidden: false,
 	},
 	{
@@ -791,7 +791,7 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 	},
 	{
 		id: 'callBestSellLimitPrice',
-		title: 'قیمت بهترین خریدار کال',
+		title: 'بهترین خریدار کال',
 		hidden: false,
 	},
 	{
@@ -801,7 +801,7 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 	},
 	{
 		id: 'putBestSellLimitPrice',
-		title: 'قیمت بهترین خریدار پوت',
+		title: 'بهترین خریدار پوت',
 		hidden: false,
 	},
 	{
@@ -874,12 +874,12 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 	},
 	{
 		id: 'premium',
-		title: 'آخرین قیمت نماد آپشن',
+		title: 'قیمت نماد آپشن',
 		hidden: true,
 	},
 	{
 		id: 'optionBestSellLimitPrice',
-		title: 'قیمت بهترین فروشنده',
+		title: 'بهترین فروشنده',
 		hidden: false,
 	},
 	{
@@ -889,7 +889,7 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 	},
 	{
 		id: 'optionBestBuyLimitPrice',
-		title: 'قیمت بهترین خریدار',
+		title: 'بهترین خریدار',
 		hidden: true,
 	},
 	{
@@ -1037,7 +1037,7 @@ export const initialColumnsBearPutSpread: IManageColumn[] = [
 	},
 	{
 		id: 'hspBestSellLimitPrice',
-		title: 'قیمت بهترین فروشنده پوت فروش',
+		title: 'بهترین فروشنده پوت فروش',
 		hidden: true,
 	},
 	{

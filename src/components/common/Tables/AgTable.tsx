@@ -6,20 +6,21 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 
 ModuleRegistry.register(ClientSideRowModelModule);
 
 export interface AgTableProps<TData> extends GridOptions<TData> {
+	useTransaction?: boolean;
 	className?: ClassesValue;
 	style?: React.CSSProperties;
 	theme?: 'quartz' | 'balham' | 'material' | 'alpine';
 }
 
 const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
-	({ className, style, theme = 'alpine', ...gridOptions }, ref) => {
-		const tableRef = useRef<undefined | GridApi<unknown>>(undefined);
+	({ className, style, useTransaction = false, theme = 'alpine', rowData, ...gridOptions }, ref) => {
+		const gridRef = useRef<undefined | GridApi<unknown>>(undefined);
 
-		useImperativeHandle(ref, () => tableRef.current, [tableRef]);
+		useImperativeHandle(ref, () => gridRef.current, [gridRef]);
 
 		const onTableLoad = useCallback((eGridDiv: HTMLDivElement | null) => {
 			if (!eGridDiv) return;
-			tableRef.current = createGrid<unknown>(eGridDiv, {
+			gridRef.current = createGrid<unknown>(eGridDiv, {
 				rowModelType: 'clientSide',
 				suppressColumnVirtualisation: true,
 				suppressCellFocus: true,
@@ -38,6 +39,7 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 				rowHeight: 48,
 				headerHeight: 48,
 				scrollbarWidth: 12,
+				rowData: rowData ?? [],
 				onColumnVisible: ({ api, column }) => {
 					try {
 						if (!column) return;
@@ -61,13 +63,25 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 			});
 		}, []);
 
+		useEffect(() => {
+			const gridApi = gridRef.current;
+			if (useTransaction || !gridApi) return;
+
+			try {
+				if (Array.isArray(rowData) && !gridApi.isDestroyed()) gridApi.setGridOption('rowData', rowData);
+			} catch (e) {
+				//
+			}
+		}, [rowData]);
+
 		useEffect(
 			() => () => {
 				try {
-					const gridApi = tableRef.current;
-					if (!gridApi) return;
-
-					if (!gridApi.isDestroyed()) gridApi.destroy();
+					const gridApi = gridRef.current;
+					if (gridApi && !gridApi.isDestroyed()) {
+						gridApi.destroy();
+						gridRef.current = undefined;
+					}
 				} catch (e) {
 					//
 				}

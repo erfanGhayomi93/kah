@@ -721,6 +721,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	return (
 		<AgTable
 			ref={gridRef}
+			useTransaction
 			suppressHorizontalScroll={dataIsEmpty}
 			className='h-full border-0'
 			columnDefs={COLUMNS}

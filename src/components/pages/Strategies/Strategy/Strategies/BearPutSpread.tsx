@@ -266,7 +266,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			},
 			{
 				colId: 'hspBestSellLimitPrice',
-				headerName: 'قیمت بهترین فروشنده پوت فروش',
+				headerName: 'بهترین فروشنده پوت فروش',
 				width: 204,
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
