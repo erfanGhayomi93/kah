@@ -1,6 +1,8 @@
 import { ExcelSVG, FilterSVG } from '@/components/icons';
 import OptionWatchlistManagerSVG from '@/components/icons/OptionWatchlistManagerSVG';
+import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
+import Tooltip from '../Tooltip';
 
 interface TableActionsProps {
 	filtersCount?: number;
@@ -60,35 +62,43 @@ const TableActions = ({
 	onShowFilters,
 	onManageColumns,
 }: TableActionsProps) => {
+	const t = useTranslations('tooltip');
+
 	return (
 		<div className='flex gap-8'>
 			{showExcel && (
-				<ExcelBtn
-					onClick={onExportExcel}
-					className='size-40 rounded border border-gray-500 text-gray-900 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
-					type='button'
-				>
-					<ExcelSVG />
-				</ExcelBtn>
+				<Tooltip placement='bottom' content={t('export_excel')}>
+					<ExcelBtn
+						onClick={onExportExcel}
+						className='size-40 rounded border border-gray-500 text-gray-900 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
+						type='button'
+					>
+						<ExcelSVG />
+					</ExcelBtn>
+				</Tooltip>
 			)}
 
 			{showFilter && (
-				<button
-					onClick={onShowFilters}
-					className='relative size-40 rounded border border-gray-500 text-gray-900 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
-					type='button'
-				>
-					{filtersCount > 0 && <Badge className='bg-primary-300 text-white'>{filtersCount}</Badge>}
-					<FilterSVG />
-				</button>
+				<Tooltip placement='bottom' content={t('filters')}>
+					<button
+						onClick={onShowFilters}
+						className='relative size-40 rounded border border-gray-500 text-gray-900 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400 hover:text-white'
+						type='button'
+					>
+						{filtersCount > 0 && <Badge className='bg-primary-300 text-white'>{filtersCount}</Badge>}
+						<FilterSVG />
+					</button>
+				</Tooltip>
 			)}
 
 			{showColumns && (
-				<OptionWatchlistManagerSVG
-					onClick={onManageColumns}
-					className='size-40 rounded border border-gray-500 bg-transparent text-gray-900 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
-					type='button'
-				/>
+				<Tooltip placement='bottom' content={t('manage_columns')}>
+					<OptionWatchlistManagerSVG
+						onClick={onManageColumns}
+						className='size-40 rounded border border-gray-500 bg-transparent text-gray-900 transition-colors flex-justify-center hover:border-primary-400 hover:bg-primary-400'
+						type='button'
+					/>
+				</Tooltip>
 			)}
 		</div>
 	);

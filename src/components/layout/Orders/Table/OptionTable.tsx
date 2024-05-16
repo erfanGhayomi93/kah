@@ -140,6 +140,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				headerName: t('orders.action'),
 				minWidth: 140,
 				maxWidth: 140,
+				sortable: false,
 				cellRenderer: OptionActionCell,
 				cellRendererParams: {
 					onClosePosition,

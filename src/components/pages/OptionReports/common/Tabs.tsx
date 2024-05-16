@@ -17,11 +17,11 @@ const Tabs = () => {
 	},
 	{
 		id: 'cash_settlement',
-		route: '/financial-reports/cash-settlement'
+		route: '/option-reports/cash-settlement'
 	},
 	{
 		id: 'physical_settlement',
-		route: '/financial-reports/physical-settlement'
+		route: '/option-reports/physical-settlement'
 	}
 	]), []);
 
