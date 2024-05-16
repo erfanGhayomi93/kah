@@ -351,17 +351,6 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 		column.setColDef(colDef, colDef, 'api');
 	}, [activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])]);
 
-	useEffect(() => {
-		const gridApi = gridRef.current;
-		if (!gridApi) return;
-
-		try {
-			gridApi.setGridOption('rowData', modifiedData);
-		} catch (e) {
-			//
-		}
-	}, [modifiedData]);
-
 	return (
 		<AgTable<ITableData>
 			gridId='option-chain'

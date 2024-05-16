@@ -12,11 +12,7 @@ interface TradeReportsTableProps {
 	setColumnsVisibility: Dispatch<SetStateAction<TradesReports.ITradesReportsColumnsState[]>>;
 }
 
-const TradeReportsTable = ({
-	reports,
-	columnsVisibility,
-	setColumnsVisibility,
-}: TradeReportsTableProps) => {
+const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }: TradeReportsTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Reports.ITradesReports>>(null);
@@ -39,7 +35,7 @@ const TradeReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1)
+					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
 				},
 				/* نماد */
 				{
@@ -63,7 +59,7 @@ const TradeReportsTable = ({
 						if (!data) return;
 						return clsx({
 							'text-success-200': data.orderSide.includes('Buy'),
-							'text-error-200': data.orderSide.includes('Sell')
+							'text-error-200': data.orderSide.includes('Sell'),
 						});
 					},
 					valueFormatter: ({ value }) => t('trades_reports_page.side_' + value),
@@ -78,7 +74,7 @@ const TradeReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'YYYY/MM/DD')
+					valueFormatter: ({ value }) => dateFormatter(value, 'YYYY/MM/DD'),
 				},
 				/* ساعت */
 				{
@@ -90,7 +86,7 @@ const TradeReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'HH:mm')
+					valueFormatter: ({ value }) => dateFormatter(value, 'HH:mm'),
 				},
 				/* حجم کل */
 				{
@@ -126,8 +122,8 @@ const TradeReportsTable = ({
 
 						if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
 						return t('validity_date.' + validity.toLowerCase());
-					}
-				}
+					},
+				},
 			] as Array<ColDef<Reports.ITradesReports>>,
 		[],
 	);
@@ -142,17 +138,6 @@ const TradeReportsTable = ({
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

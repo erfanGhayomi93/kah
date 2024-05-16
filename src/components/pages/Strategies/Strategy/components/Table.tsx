@@ -1,6 +1,6 @@
 import AgTable, { type AgTableProps } from '@/components/common/Tables/AgTable';
 import { type GridApi, type SortChangedEvent } from '@ag-grid-community/core';
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import NoTableData from './NoTableData';
 
 interface PaginationProps {
@@ -56,17 +56,6 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 				return rowData!;
 			}
 		}, [rowData, sorting, pageNumber, pageSize]);
-
-		useEffect(() => {
-			const eGrid = gridRef.current;
-			if (!eGrid) return;
-
-			try {
-				eGrid.setGridOption('rowData', data);
-			} catch (e) {
-				//
-			}
-		}, [data]);
 
 		useImperativeHandle(ref, () => gridRef.current!);
 

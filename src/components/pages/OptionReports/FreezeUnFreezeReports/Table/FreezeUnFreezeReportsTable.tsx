@@ -69,7 +69,7 @@ const FreezeUnFreezeReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value ? t('freeze_and_unfreeze_report_page.state' + value) : ''
+					valueFormatter: ({ value }) => (value ? t('freeze_and_unfreeze_report_page.state' + value) : ''),
 				},
 				{
 					headerName: t('freeze_and_unfreeze_reports_page.action_column'),
@@ -82,10 +82,8 @@ const FreezeUnFreezeReportsTable = ({
 					cellRenderer: FreezeUnFreezeReportsTableActionCell,
 					cellRendererParams: {
 						onDeleteRow,
-					}
-
+					},
 				},
-
 			] as Array<ColDef<Reports.IFreezeUnfreezeReports>>,
 		[],
 	);
@@ -100,17 +98,6 @@ const FreezeUnFreezeReportsTable = ({
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
