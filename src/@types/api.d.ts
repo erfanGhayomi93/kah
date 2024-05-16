@@ -1486,6 +1486,16 @@ declare namespace Strategy {
 		| 'BearPutSpread'
 		| 'Conversion';
 
+	declare type AllStrategies =
+		| CoveredCall
+		| LongCall
+		| LongPut
+		| LongStraddle
+		| Conversion
+		| BullCallSpread
+		| ProtectivePut
+		| BearPutSpread;
+
 	export interface GetAll {
 		id: number;
 		title: string;

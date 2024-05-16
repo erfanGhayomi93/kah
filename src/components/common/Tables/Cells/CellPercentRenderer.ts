@@ -1,3 +1,4 @@
+import { getColorBasedOnPercent } from '@/utils/helpers';
 import { type ICellRendererComp, type ICellRendererParams } from '@ag-grid-community/core';
 
 type CellPercentRendererProps = ICellRendererParams<unknown, number> & {
@@ -47,14 +48,10 @@ class CellPercentRenderer implements ICellRendererComp<unknown> {
 	}
 
 	setPercentage(percent: number) {
-		const isNegative = percent < 0;
-		const percentage = Math.abs(Number(percent.toFixed(2)));
+		const percentage = Number(Math.abs(percent).toFixed(2));
 
-		this.ePercent.textContent = isNegative ? `(${percentage}%)` : `${percentage}%`;
-
-		if (!isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-tiny text-success-100');
-		else if (isNegative) this.ePercent.setAttribute('class', 'w-max text-tiny text-tiny text-error-100');
-		else if (percent === 0) this.ePercent.setAttribute('class', 'w-max text-tiny text-tiny text-gray-800');
+		this.ePercent.textContent = percent < 0 ? `(${percentage}%)` : `${percentage}%`;
+		this.ePercent.setAttribute('class', `w-max text-tiny ${getColorBasedOnPercent(percent)}`);
 	}
 }
 

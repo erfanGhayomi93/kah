@@ -56,12 +56,12 @@ export const initialColumnsCoveredCall: IManageColumn[] = [
 	},
 	{
 		id: 'maxProfit',
-		title: 'بیشینه سود',
+		title: 'حداکثر بازده',
 		hidden: false,
 	},
 	{
 		id: 'nonExpiredProfit',
-		title: 'سود عدم اعمال',
+		title: 'بازده عدم اعمال',
 		hidden: false,
 	},
 	{
@@ -229,7 +229,7 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 	},
 	{
 		id: 'maxProfit',
-		title: 'بیشینه سود',
+		title: 'حداکثر بازده',
 		hidden: false,
 	},
 	{
@@ -362,7 +362,7 @@ export const initialColumnsLongCall: IManageColumn[] = [
 	},
 	{
 		id: 'maxProfit',
-		title: 'بیشینه سود',
+		title: 'حداکثر بازده',
 		hidden: false,
 	},
 	{
@@ -382,7 +382,7 @@ export const initialColumnsLongCall: IManageColumn[] = [
 	},
 	{
 		id: 'profit',
-		title: 'مقدار سود',
+		title: 'بازده',
 		hidden: true,
 	},
 	{
@@ -480,7 +480,7 @@ export const initialColumnsLongPut: IManageColumn[] = [
 	},
 	{
 		id: 'maxProfit',
-		title: 'بیشینه سود',
+		title: 'حداکثر بازده',
 		hidden: false,
 	},
 	{
@@ -500,7 +500,7 @@ export const initialColumnsLongPut: IManageColumn[] = [
 	},
 	{
 		id: 'profit',
-		title: 'مقدار سود',
+		title: 'بازده',
 		hidden: true,
 	},
 	{
@@ -628,7 +628,7 @@ export const initialColumnsConversion: IManageColumn[] = [
 	},
 	{
 		id: 'profit',
-		title: 'مقدار سود',
+		title: 'بازده',
 		hidden: false,
 	},
 	{
@@ -1072,7 +1072,7 @@ export const initialColumnsBearPutSpread: IManageColumn[] = [
 	},
 	{
 		id: 'maxProfit',
-		title: 'بیشینه سود',
+		title: 'حداکثر بازده',
 		hidden: false,
 	},
 	{

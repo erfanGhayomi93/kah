@@ -16,12 +16,14 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 		<Popup
 			zIndex={99999}
 			defaultPopupWidth={160}
-			renderer={() => (
+			className='symbol-menu'
+			renderer={({ setOpen }) => (
 				<ul style={{ width: '16rem' }} className='overflow-hidden rounded bg-white shadow-tooltip flex-column'>
 					<li>
 						<a
-							href={getTSELink(symbol?.insCode)}
 							target='_blank'
+							onClick={() => setOpen(false)}
+							href={getTSELink(symbol?.insCode)}
 							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
 							<Image width='18' height='18' src='/static/images/tsetmc.png' alt='' />
@@ -31,8 +33,9 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					{!symbol?.isOption && (
 						<li>
 							<a
-								href={getCodalLink(symbol?.symbolTitle)}
 								target='_blank'
+								onClick={() => setOpen(false)}
+								href={getCodalLink(symbol?.symbolTitle)}
 								className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
 							>
 								<Image width='18' height='18' src='/static/images/codal.png' alt='' />
@@ -42,17 +45,26 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					)}
 
 					<li>
-						<button className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'>
+						<button
+							onClick={() => setOpen(false)}
+							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+						>
 							{t('symbol_context_menu.add_note')}
 						</button>
 					</li>
 					<li>
-						<button className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'>
+						<button
+							onClick={() => setOpen(false)}
+							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+						>
 							{t('symbol_context_menu.alarm')}
 						</button>
 					</li>
 					<li>
-						<button className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'>
+						<button
+							onClick={() => setOpen(false)}
+							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+						>
 							{t('symbol_context_menu.technical_chart')}
 						</button>
 					</li>

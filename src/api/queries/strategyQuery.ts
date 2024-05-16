@@ -2,9 +2,21 @@ import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
-type TStrategyBaseType<T> = [T, TPriceBasis, boolean];
+interface IStrategyOptionsKey {
+	priceBasis: TPriceBasis;
+	symbolBasis: TStrategySymbolBasis;
+	withCommission: boolean;
+}
+
+type TStrategyBaseType<T> = [T, IStrategyOptionsKey];
 
 const CACHE_TIME = 0;
+
+const defaultStrategyOptions: IStrategyOptionsKey = {
+	priceBasis: 'BestLimit',
+	symbolBasis: 'BestLimit',
+	withCommission: true,
+};
 
 export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStrategyQuery']>({
 	staleTime: CACHE_TIME,
@@ -27,15 +39,16 @@ export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStr
 
 export const useCoveredCallStrategyQuery = createQuery<Strategy.CoveredCall[], TStrategyBaseType<'coveredCallQuery'>>({
 	staleTime: CACHE_TIME,
-	queryKey: ['coveredCallQuery', 'LastTradePrice', false],
+	queryKey: ['coveredCallQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.CoveredCall[]>>(routes.strategy.CoveredCall, {
@@ -55,15 +68,16 @@ export const useCoveredCallStrategyQuery = createQuery<Strategy.CoveredCall[], T
 
 export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrategyBaseType<'longCallQuery'>>({
 	staleTime: CACHE_TIME,
-	queryKey: ['longCallQuery', 'LastTradePrice', false],
+	queryKey: ['longCallQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.LongCall[]>>(routes.strategy.LongCall, {
@@ -83,15 +97,16 @@ export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrate
 
 export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategyBaseType<'longPutQuery'>>({
 	staleTime: CACHE_TIME,
-	queryKey: ['longPutQuery', 'LastTradePrice', false],
+	queryKey: ['longPutQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.LongPut[]>>(routes.strategy.LongPut, {
@@ -111,15 +126,16 @@ export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategy
 
 export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TStrategyBaseType<'conversionQuery'>>({
 	staleTime: CACHE_TIME,
-	queryKey: ['conversionQuery', 'LastTradePrice', false],
+	queryKey: ['conversionQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.Conversion[]>>(routes.strategy.Conversion, {
@@ -142,15 +158,16 @@ export const useLongStraddleStrategyQuery = createQuery<
 	TStrategyBaseType<'longStraddleQuery'>
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['longStraddleQuery', 'LastTradePrice', false],
+	queryKey: ['longStraddleQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.LongStraddle[]>>(routes.strategy.LongStraddle, {
@@ -173,15 +190,16 @@ export const useBullCallSpreadStrategyQuery = createQuery<
 	TStrategyBaseType<'bullCallSpreadQuery'>
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['bullCallSpreadQuery', 'LastTradePrice', false],
+	queryKey: ['bullCallSpreadQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.BullCallSpread[]>>(
@@ -207,15 +225,16 @@ export const useBearPutSpreadStrategyQuery = createQuery<
 	TStrategyBaseType<'bearPutSpreadQuery'>
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['bearPutSpreadQuery', 'LastTradePrice', false],
+	queryKey: ['bearPutSpreadQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.BearPutSpread[]>>(routes.strategy.BearPutSpread, {
@@ -238,15 +257,16 @@ export const useProtectivePutStrategyQuery = createQuery<
 	TStrategyBaseType<'protectivePutQuery'>
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['protectivePutQuery', 'LastTradePrice', false],
+	queryKey: ['protectivePutQuery', defaultStrategyOptions],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, priceBasis, commission] = queryKey;
+			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
-				WithCommission: commission,
+				SymbolBasis: symbolBasis,
+				WithCommission: withCommission,
 			};
 
 			const response = await axios.get<ServerResponse<Strategy.ProtectivePut[]>>(routes.strategy.ProtectivePut, {

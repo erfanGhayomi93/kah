@@ -2,17 +2,16 @@ import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsBearPutSpread, initialColumnsProtectivePut } from '@/constants/strategies';
+import { initialColumnsBearPutSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { type ISelectItem } from '..';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -40,10 +39,15 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		initialColumnsBearPutSpread,
 	);
 
-	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+		priceBasis: 'BestLimit',
+		symbolBasis: 'BestLimit',
+		pageSize: 20,
+		pageNumber: 1,
+	});
 
 	const { data, isFetching } = useBearPutSpreadStrategyQuery({
-		queryKey: ['bearPutSpreadQuery', priceBasis.id, useCommission],
+		queryKey: ['bearPutSpreadQuery', { ...inputs, withCommission: useCommission }],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
@@ -129,14 +133,20 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		);
 	};
 
+	const goToTheNextPage = () => {
+		setFieldsValue((prev) => ({
+			pageNumber: prev.pageNumber + 1,
+		}));
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
-				initialColumns: initialColumnsProtectivePut,
+				initialColumns: initialColumnsBearPutSpread,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
-				onReset: () => setColumnsVisibility(initialColumnsProtectivePut),
+				onReset: () => setColumnsVisibility(initialColumnsBearPutSpread),
 			}),
 		);
 	};
@@ -165,7 +175,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -292,7 +302,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'hspPremium',
@@ -304,7 +314,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'bullCallSpreadBEP',
@@ -319,7 +329,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			},
 			{
 				colId: 'maxProfit',
-				headerName: 'بیشینه سود',
+				headerName: 'حداکثر بازده',
 				width: 184,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -331,7 +341,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'maxLoss',
@@ -433,6 +443,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'actions',
 				headerName: 'عملیات',
 				width: 80,
+				sortable: false,
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
@@ -443,17 +454,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
@@ -469,8 +469,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		}
 	}, [columnsVisibility]);
 
-	const rows = data ?? [];
-
 	return (
 		<>
 			<StrategyDetails
@@ -485,17 +483,21 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					priceBasis={priceBasis}
 					onManageColumns={showColumnsPanel}
-					onPriceBasisChanged={setPriceBasis}
+					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
+					priceBasis={inputs.priceBasis}
+					symbolBasis={inputs.symbolBasis}
 				/>
 
 				<Table<Strategy.BearPutSpread>
 					ref={gridRef}
-					rowData={rows}
+					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
+					fetchNextPage={goToTheNextPage}
+					pageNumber={inputs.pageNumber}
+					pageSize={inputs.pageSize}
 				/>
 			</div>
 		</>
