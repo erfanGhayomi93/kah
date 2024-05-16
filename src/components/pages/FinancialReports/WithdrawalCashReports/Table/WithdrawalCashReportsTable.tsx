@@ -158,8 +158,8 @@ const WithdrawalCashReportsTable = ({
 					cellRenderer: WithdrawalCashReportsActionCell,
 					cellRendererParams: {
 						onDeleteRow,
-						onEditRow
-					}
+						onEditRow,
+					},
 				},
 			] as Array<ColDef<Reports.IWithdrawal>>,
 		[],
@@ -175,17 +175,6 @@ const WithdrawalCashReportsTable = ({
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

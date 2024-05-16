@@ -38,7 +38,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value ?? ''
+					valueFormatter: ({ value }) => value ?? '',
 				},
 				/* موقعیت */
 				{
@@ -53,10 +53,9 @@ const PhysicalSettlementReportsTable = ({
 					valueFormatter: ({ value }) => t('common.' + String(value).toLowerCase()),
 					cellClass: ({ data }) => {
 						if (!data) return '';
-						return (data?.side === 'Call') ? 'text-success-200' : 'text-error-200';
+						return data?.side === 'Call' ? 'text-success-200' : 'text-error-200';
 					},
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB)
-
+					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				/* تعداد موقعیت باز */
 				{
@@ -68,7 +67,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value >= 0 ? sepNumbers(value) : '',
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
 				},
 				/* تاریخ تسویه نقدی */
 				{
@@ -94,9 +93,10 @@ const PhysicalSettlementReportsTable = ({
 					minWidth: 192,
 					cellClassRules: {
 						'text-success-200 dark:text-dark-success-200 ': ({ value }) => value === 'Profit',
-						'text-error-200 dark:text-dark-error-200 ': ({ value }) => value === 'Loss'
+						'text-error-200 dark:text-dark-error-200 ': ({ value }) => value === 'Loss',
 					},
-					valueFormatter: ({ value }) => value ? t('physical_settlement_reports_page.type_contract_status_' + value) : ''
+					valueFormatter: ({ value }) =>
+						value ? t('physical_settlement_reports_page.type_contract_status_' + value) : '',
 				},
 				/* نوع اعمال */
 				{
@@ -107,8 +107,8 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value ? t('physical_settlement_reports_page.type_request_settlement_' + value) : ''
-
+					valueFormatter: ({ value }) =>
+						value ? t('physical_settlement_reports_page.type_request_settlement_' + value) : '',
 				},
 				/* مبلغ تسویه */
 				{
@@ -120,8 +120,8 @@ const PhysicalSettlementReportsTable = ({
 					suppressMovable: true,
 					sortable: false,
 					// cellRenderer: CellTooltipRenderer,
-					valueFormatter: ({ value }) => value >= 0 ? (value > 1E7 ? numFormatter(value, false) : sepNumbers(value)) : '',
-
+					valueFormatter: ({ value }) =>
+						value >= 0 ? (value > 1e7 ? numFormatter(value, false) : sepNumbers(value)) : '',
 				},
 				/* تعداد درخواست برای تسویه */
 				{
@@ -133,7 +133,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value >= 0 ? sepNumbers(value) : '',
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
 				},
 				/* تعداد پذیرفته شده */
 				{
@@ -145,7 +145,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value >= 0 ? sepNumbers(value) : '',
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
 				},
 				/* تعداد نکول */
 				{
@@ -157,7 +157,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value >= 0 ? sepNumbers(value) : '',
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
 				},
 				/* مبلغ نکول */
 				{
@@ -169,7 +169,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value >= 0 ? sepNumbers(value) : '',
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
 				},
 				/* درخواست کننده */
 				{
@@ -186,7 +186,7 @@ const PhysicalSettlementReportsTable = ({
 						if (data?.userType === 'Backoffice') return t('common.broker');
 
 						return data?.userName ?? '';
-					}
+					},
 				},
 				/* وضعیت */
 				{
@@ -198,7 +198,8 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => value ? t('physical_settlement_reports_page.type_status_' + value) : ''
+					valueFormatter: ({ value }) =>
+						value ? t('physical_settlement_reports_page.type_status_' + value) : '',
 				},
 				/* عملیات */
 				{
@@ -212,10 +213,8 @@ const PhysicalSettlementReportsTable = ({
 					cellRenderer: WithdrawalCashReportsActionCell,
 					cellRendererParams: {
 						onDeleteRow,
-					}
-
+					},
 				},
-
 			] as Array<ColDef<Reports.IPhysicalSettlementReports>>,
 		[],
 	);
@@ -230,17 +229,6 @@ const PhysicalSettlementReportsTable = ({
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

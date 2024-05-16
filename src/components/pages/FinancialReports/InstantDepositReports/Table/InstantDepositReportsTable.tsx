@@ -96,17 +96,6 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
 		if (!eGrid || !Array.isArray(columnsVisibility)) return;
 
 		try {

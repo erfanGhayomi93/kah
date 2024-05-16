@@ -149,9 +149,8 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					cellRenderer: DepositWithReceiptReportsActionCell,
 					cellRendererParams: {
 						onDeleteRow,
-						onEditRow
-					}
-
+						onEditRow,
+					},
 				},
 			] as Array<ColDef<Reports.IDepositWithReceipt>>,
 		[],
@@ -167,17 +166,6 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

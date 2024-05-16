@@ -230,7 +230,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 						data?.optionWatchlistData.tradePriceVarPreviousTradePercent ?? 0,
 					],
 					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-					comparator: (valueA, valueB) => valueA[0] - valueB[0],
+					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
 					headerName: t('option_page.delta'),
@@ -253,7 +253,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 						data?.optionWatchlistData.baseTradePriceVarPreviousTradePercent ?? 0,
 					],
 					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-					comparator: (valueA, valueB) => valueA[0] - valueB[0],
+					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
 					headerName: t('option_page.break_even_point'),
@@ -721,17 +721,18 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	return (
 		<AgTable
 			ref={gridRef}
+			useTransaction
 			suppressHorizontalScroll={dataIsEmpty}
 			className='h-full border-0'
 			columnDefs={COLUMNS}
 			defaultColDef={defaultColDef}
 			onColumnMoved={onColumnMoved}
+			onSortChanged={() => storeColumns()}
+			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			onBodyScrollEnd={({ api }) => {
 				const lastRowIndex = api.getLastDisplayedRowIndex();
 				if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
 			}}
-			onSortChanged={() => storeColumns()}
-			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 		/>
 	);
 };

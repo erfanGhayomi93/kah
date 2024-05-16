@@ -13,11 +13,7 @@ interface OrdersReportsTableProps {
 	setColumnsVisibility: Dispatch<SetStateAction<OrdersReports.IOrdersReportsColumnsState[]>>;
 }
 
-const OrdersReportsTable = ({
-	reports,
-	columnsVisibility,
-	setColumnsVisibility,
-}: OrdersReportsTableProps) => {
+const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }: OrdersReportsTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Reports.IOrdersReports>>(null);
@@ -40,7 +36,7 @@ const OrdersReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1)
+					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
 				},
 				/* نماد */
 				{
@@ -64,7 +60,7 @@ const OrdersReportsTable = ({
 						if (!data) return;
 						return clsx({
 							'text-success-200': data.orderSide.includes('Buy'),
-							'text-error-200': data.orderSide.includes('Sell')
+							'text-error-200': data.orderSide.includes('Sell'),
 						});
 					},
 					valueFormatter: ({ value }) => t('orders_reports_page.side_' + value),
@@ -79,7 +75,7 @@ const OrdersReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'YYYY/MM/DD')
+					valueFormatter: ({ value }) => dateFormatter(value, 'YYYY/MM/DD'),
 				},
 				/* ساعت */
 				{
@@ -91,7 +87,7 @@ const OrdersReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'HH:mm')
+					valueFormatter: ({ value }) => dateFormatter(value, 'HH:mm'),
 				},
 				/* حجم کل */
 				{
@@ -139,8 +135,11 @@ const OrdersReportsTable = ({
 						if (!data) return '-';
 						const { orderStatus, lastErrorCode, customErrorMsg } = data;
 						const errorMessage = lastErrorCode || customErrorMsg;
-						return t('order_status.' + orderStatus) + (errorMessage ? (': ' + t('order_errors.' + errorMessage)) : '');
-					}
+						return (
+							t('order_status.' + orderStatus) +
+							(errorMessage ? ': ' + t('order_errors.' + errorMessage) : '')
+						);
+					},
 				},
 				/* اعتبار */
 				{
@@ -172,17 +171,6 @@ const OrdersReportsTable = ({
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

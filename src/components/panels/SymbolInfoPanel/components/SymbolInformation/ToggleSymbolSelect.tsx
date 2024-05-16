@@ -39,7 +39,7 @@ const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
 									clearable
 									autoFocus
 									classes={{
-										list: 'panel-symbol-search',
+										list: 'symbol-menu',
 									}}
 									value={null}
 									onChange={onChangeSymbol}
