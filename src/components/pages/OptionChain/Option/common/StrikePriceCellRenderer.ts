@@ -22,9 +22,9 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 
 	eSellDropdown: HTMLUListElement | null = null;
 
-	eBuy: HTMLButtonElement | null = null;
+	eCall: HTMLButtonElement | null = null;
 
-	eSell: HTMLButtonElement | null = null;
+	ePut: HTMLButtonElement | null = null;
 
 	params!: StrikePriceCellRendererProps;
 
@@ -137,34 +137,37 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 	}
 
 	renderBuySellBtn() {
-		const targetSide = this.isInSide();
+		const callSide = this.isInSide('buy');
+		const putSide = this.isInSide('sell');
 
-		if (targetSide === 'buy') {
-			if (!this.eBuy) {
-				this.eBuy = this.createBtn();
-				this.eBuy.classList.add('absolute', 'w-40', 'h-32', 'bg-success-100/10', 'text-success-100');
-				this.eBuy.style.right = '1px';
-				this.eBuy.textContent = 'خرید';
+		if (callSide !== null) {
+			if (this.eCall) this.eCall.remove();
 
-				this.eGui.appendChild(this.eBuy);
-			}
-		} else {
-			if (this.eBuy) this.eBuy.remove();
-			this.eBuy = null;
+			const color = callSide === 'buy' ? 'success' : 'error';
+			this.eCall = this.createBtn();
+			this.eCall.style.right = '1px';
+			this.eCall.textContent = callSide === 'buy' ? 'خرید' : 'فروش';
+			this.eCall.setAttribute(
+				'class',
+				`absolute w-40 h-32 rounded flex-justify-center bg-${color}-100/10 text-${color}-100`,
+			);
+
+			this.eGui.appendChild(this.eCall);
 		}
 
-		if (targetSide === 'sell') {
-			if (!this.eSell) {
-				this.eSell = this.createBtn();
-				this.eSell.classList.add('absolute', 'w-40', 'h-32', 'bg-error-100/10', 'text-error-100');
-				this.eSell.style.left = '1px';
-				this.eSell.textContent = 'فروش';
+		if (putSide !== null) {
+			if (this.ePut) this.ePut.remove();
 
-				this.eGui.appendChild(this.eSell);
-			}
-		} else {
-			if (this.eSell) this.eSell.remove();
-			this.eSell = null;
+			const color = putSide === 'buy' ? 'success' : 'error';
+			this.ePut = this.createBtn();
+			this.ePut.style.left = '1px';
+			this.ePut.textContent = putSide === 'buy' ? 'خرید' : 'فروش';
+			this.ePut.setAttribute(
+				'class',
+				`absolute w-40 h-32 rounded flex-justify-center bg-${color}-100/10 text-${color}-100`,
+			);
+
+			this.eGui.appendChild(this.ePut);
 		}
 	}
 
@@ -184,7 +187,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		}
 	}
 
-	isInSide() {
+	isInSide(type: 'buy' | 'sell') {
 		try {
 			const { basket, data } = this.params;
 			let resultSide: 'buy' | 'sell' | null = null;
@@ -194,8 +197,8 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 					symbol: { symbolISIN },
 					side,
 				} = basket[i];
-				const buyData = data!.buy!.symbolInfo;
-				const sellData = data!.sell!.symbolInfo;
+				const buyData = data![type]!.symbolInfo;
+				const sellData = data![type]!.symbolInfo;
 
 				if (symbolISIN === buyData.symbolISIN || symbolISIN === sellData.symbolISIN) {
 					resultSide = side;

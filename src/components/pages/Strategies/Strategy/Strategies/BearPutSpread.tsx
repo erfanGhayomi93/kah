@@ -13,9 +13,9 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
-import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const BearPutSpreadDescription = dynamic(() => import('../Descriptions/BearPutSpreadDescription'), {
 	ssr: false,
@@ -52,10 +52,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const execute = (data: Strategy.BearPutSpread) => {
-		//
 	};
 
 	const analyze = (data: Strategy.BearPutSpread) => {
@@ -447,7 +443,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					execute,
 					analyze,
 				},
 			},
