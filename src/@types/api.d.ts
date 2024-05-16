@@ -651,6 +651,14 @@ declare namespace Broker {
 		| 'ChangeBrokerChangeBrokersByFilter'
 		| 'GetAgreements'
 		| 'ChangeBrokerSetCancel'
+		| "FreezeExportFreeze"
+		| 'Freezerequests'
+		| 'Settlementcash'
+		| 'Settlementphysical'
+		| 'OrderExportOrders'
+		| 'OrderOrders'
+		| 'OrderExportTrades'
+		| 'OrderDetailedOrders'
 		| 'FreezeExportFreeze'
 		| 'Freezerequests';
 
@@ -947,7 +955,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse {}
+		export interface FaraBourse extends GetMarketState.Bourse { }
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -962,17 +970,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-				| 'ticks'
-				| 'days'
-				| 'hours'
-				| 'milliseconds'
-				| 'minutes'
-				| 'seconds'
-				| 'totalDays'
-				| 'totalHours'
-				| 'totalMilliseconds'
-				| 'totalMinutes'
-				| 'totalSeconds';
+			| 'ticks'
+			| 'days'
+			| 'hours'
+			| 'milliseconds'
+			| 'minutes'
+			| 'seconds'
+			| 'totalDays'
+			| 'totalHours'
+			| 'totalMilliseconds'
+			| 'totalMinutes'
+			| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1304,13 +1312,13 @@ declare namespace Settings {
 	export interface IBrokerCustomerSettings {
 		id: number;
 		configKey:
-			| 'confirmBeforeDelete'
-			| 'confirmBeforeSendOrder'
-			| 'defaultBuyVolume'
-			| 'defaultSellVolume'
-			| 'sendSupervisorMarketMessage'
-			| 'showSymbolDetailsInBuySellModal'
-			| 'breakEvenPoint';
+		| 'confirmBeforeDelete'
+		| 'confirmBeforeSendOrder'
+		| 'defaultBuyVolume'
+		| 'defaultSellVolume'
+		| 'sendSupervisorMarketMessage'
+		| 'showSymbolDetailsInBuySellModal'
+		| 'breakEvenPoint';
 		configValue: string;
 		saveDate: string;
 	}
@@ -1865,6 +1873,7 @@ declare namespace Strategy {
 }
 
 declare namespace Reports {
+
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1883,18 +1892,18 @@ declare namespace Reports {
 		amount: number;
 		providerType: string;
 		state:
-			| 'CanceledByUser'
-			| 'Done'
-			| 'DoubleSpendingCheckedOk'
-			| 'DoubleSpendingCheckFailed'
-			| 'RedirectToBank'
-			| 'Request'
-			| 'RequestBankToken'
-			| 'RequestBankTokenError'
-			| 'Verify'
-			| 'VerifyCheck'
-			| 'VerifyCheckFailed'
-			| 'OkBeforeVerifys';
+		| 'CanceledByUser'
+		| 'Done'
+		| 'DoubleSpendingCheckedOk'
+		| 'DoubleSpendingCheckFailed'
+		| 'RedirectToBank'
+		| 'Request'
+		| 'RequestBankToken'
+		| 'RequestBankTokenError'
+		| 'Verify'
+		| 'VerifyCheck'
+		| 'VerifyCheckFailed'
+		| 'OkBeforeVerifys';
 		errorMessage: string;
 	}
 
@@ -1921,17 +1930,17 @@ declare namespace Reports {
 		bankAccountId: number;
 		accountNumber: string | null;
 		status:
-			| 'Draft'
-			| 'Pending'
-			| 'Confirmed'
-			| 'Canceled'
-			| 'Failed'
-			| 'Voided'
-			| 'Paid'
-			| 'Entry'
-			| 'ErrorOccured'
-			| 'PostedToBackOffice'
-			| 'CreateRequest';
+		| 'Draft'
+		| 'Pending'
+		| 'Confirmed'
+		| 'Canceled'
+		| 'Failed'
+		| 'Voided'
+		| 'Paid'
+		| 'Entry'
+		| 'ErrorOccured'
+		| 'PostedToBackOffice'
+		| 'CreateRequest';
 		prsName: string | null;
 		orderOrigin: 'Broker' | 'Online' | number;
 		orderOriginName: null | string;
@@ -1960,5 +1969,122 @@ declare namespace Reports {
 		description: string;
 		confirmed: boolean;
 		confirmedOn: string;
+	}
+
+	export interface ICashSettlementReports {
+		id: number;
+		symbolTitle: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		openPositionCount: number;
+		cashSettlementDate: string;
+		side: "Call" | "Put";
+		settlementRequestType: "MaximumStrike" | "PartialStrike" | null;
+		requestCount: number;
+		enabled: boolean;
+		status: "Registered" | "Sent" | "Sending" | "Settled" | "Settling" | "Expired" | "Draft" | "SendToBourse" | "InSendQueue";
+		doneCount: number;
+		pandLStatus: string;
+		history: IOptionHistory[];
+		userType: "System" | "UserTitle" | "Backoffice";
+		userName: string;
+		updatedAt: string | null;
+		incomeValue: number;
+	}
+
+	export interface IPhysicalSettlementReports {
+		id: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		openPositionCount: number;
+		cashSettlementDate: string;
+		side: "Call" | "Put";
+		settlementRequestType: "MaximumStrike" | "PartialStrike" | null;
+		requestCount: number;
+		status: "Registered" | "Sent" | "Sending" | "Settled" | "Settling" | "Expired" | "Draft" | "SendToBourse" | "InSendQueue";
+		doneCount: number;
+		pandLStatus: 'Profit' | 'Loss';
+		penCount: number,
+		penValue: string,
+		history: IOptionHistory[];
+		requestForLostOrProfit: boolean;
+		enabled: boolean;
+		userType: "System" | "UserTitle" | "Backoffice";
+		userName: string;
+		updatedAt: string | null;
+		incomeValue: number;
+		penVolume: number;
+		peValue: number;
+	}
+
+	export interface IOrdersReports {
+		orderId: number,
+		userName: null | string,
+		customerISIN: string,
+		marketUnit: string,
+		symbolISIN: string,
+		price: number,
+		orderVolume: number,
+		triggerPrice: number,
+		orderPlaceInPrice?: null | number,
+		orderVolumeInPrice?: null | number,
+		quantity: number,
+		orderSide: TOrdersSide,
+		orderOrigin: string,
+		parentOrderId: number,
+		orderType: TOrdersTypes,
+		validity: TOrdersValidity,
+		validityDate: string,
+		orderFrom: TOrdersForm,
+		orderAction: TOrdersAction | 0,
+		orderMinimumQuantity: number,
+		orderDateTime: string,
+		hostOrderNumber: null | string,
+		expectedRemainingQuantity: number,
+		sumExecuted: number,
+		symbolTitle: string,
+		position: number,
+		valuePosition: number,
+		lastTradePrice: number,
+		orderStatus: TOrdersStatus,
+		lastErrorCode: string | null,
+		customErrorMsg: string | null,
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		tradeDetails: TTradeDetails;
+		isEditable: boolean;
+		blockType: TOrderSource;
+	}
+
+	export interface ITradesReports {
+		orderId: number,
+		userName: string,
+		customerISIN: string,
+		symbolISIN: string,
+		price: number,
+		triggerPrice: number,
+		quantity: number,
+		orderSide: "Buy" | "Sell",
+		orderOrigin: string,
+		parentOrderId: number,
+		orderType: TOrdersTypes,
+		validity: TOrdersValidity,
+		validityDate: string,
+		orderFrom: TOrdersForm,
+		orderAction: TOrdersAction | 0,
+		orderMinimumQuantity: number,
+		orderDateTime: string,
+		hostOrderNumber: string,
+		expectedRemainingQuantity: number,
+		sumExecuted: number,
+		symbolTitle: string,
+		position: number,
+		valuePosition: number,
+		lastTradePrice: number,
+		orderStatus: TOrdersStatus,
+		lastErrorCode: string,
+		customErrorMsg: string,
+		tradeDetails: TTradeDetails;
+
 	}
 }

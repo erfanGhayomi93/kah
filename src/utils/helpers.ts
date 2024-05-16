@@ -329,7 +329,13 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		GetAgreements: data.GetAgreements,
 		changeBrokerSetCancel: data.ChangeBrokerSetCancel,
 		getFreezeExportFreeze: data.FreezeExportFreeze,
-		getFreezerequests: data.Freezerequests
+		getFreezerequests: data.Freezerequests,
+		getSettlementcash: data.Settlementcash,
+		getOrderExportOrders: data.OrderExportOrders,
+		getOrderOrders: data.OrderOrders,
+		OrderExportTrades: data.OrderExportTrades,
+		getOrderDetailedOrders: data.OrderDetailedOrders
+
 	};
 
 	return urls;

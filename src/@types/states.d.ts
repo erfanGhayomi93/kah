@@ -9,6 +9,64 @@ declare type TSortingMethods = 'asc' | 'desc';
 
 declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
+declare interface IOptionHistory {
+	dateTime: string;
+	status: 'InSendQueue' | 'Error' | 'SendToBourse' | 'SaveResult';
+	description: string | null;
+}
+
+declare type TOrdersSide = 'Buy' | 'Sell';
+
+declare type TOrdersTypes = 'MarketOrder' | 'LimitOrder' | 'MarketToLimitOrder' | 'MarketOnOpeningOrder' | 'StopOrder';
+
+declare type TOrdersValidity =
+	| 'GoodTillDate'
+	| 'FillAndKill'
+	| 'GoodTillCancelled'
+	| 'Day'
+	| 'SlidingValidity'
+	| 'Session'
+	| 'Month'
+	| 'Week';
+
+declare type TOrdersForm = 'Web' | 'Mobile' | 'BrokerTrader' | 'ClientApi' | 'MarketMaker' | 'Admin' | 'Supervisor';
+
+declare type TOrdersAction = 'CreateOrder' | 'ModifyOrder' | 'CancelOrder' | 'ExpireOrder';
+
+declare type TOrdersStatus =
+	| 'InOMSQueu'
+	| 'OnSending'
+	| 'Error'
+	| 'DeleteByEngine'
+	| 'OnBoard'
+	| 'Canceled'
+	| 'OnModifyFrom'
+	| 'OnModifyTo'
+	| 'Modified'
+	| 'OnBoardModify'
+	| 'PartOfTheOrderDone'
+	| 'OrderDone'
+	| 'OnCanceling'
+	| 'OnModifyError'
+	| 'OnCancelError'
+	| 'Expired'
+	| 'RejectByGAP'
+	| 'OnCancelingWithBroker'
+	| 'TradeCancel';
+
+declare type TTradeDetails =
+	| null
+	| {
+			tradedQuantity: number;
+			tradePrice: number;
+			remainingQuantityOrder: number;
+			tradeDate: string;
+			tradeNumber: string;
+			total: number;
+	  }[];
+
+declare type TOrderSource = 'Account' | 'Portfolio';
+
 declare interface IUserBankAccount {
 	id: number;
 	shaba: string;
@@ -291,7 +349,15 @@ declare type IBrokerUrls = Record<
 	| 'getChangeBrokerExportFilteredCSV'
 	| 'getChangeBrokerChangeBrokersByFilter'
 	| 'GetAgreements',
-	'changeBrokerSetCancel' | 'getFreezeExportFreeze' | 'getFreezerequests',
+	| 'changeBrokerSetCancel'
+	| 'getFreezeExportFreeze'
+	| 'getFreezerequests'
+	| 'getSettlementcash'
+	| 'getSettlementphysical'
+	| 'getOrderExportOrders'
+	| 'getOrderOrders'
+	| 'getOrderExportTrades'
+	| 'getOrderDetailedOrders',
 	string
 >;
 
@@ -460,6 +526,8 @@ declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_
 
 declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement';
 
+declare type TOrdersTradersTab = 'orders' | 'trades';
+
 declare namespace Transaction {
 	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
 
@@ -577,26 +645,83 @@ declare namespace ChangeBrokerReports {
 	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
 }
 
-declare namespace FreezeUnFreezeReports {
-	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+declare namespace OrdersReports {
+	export type TOrderSide =
+		| 'All'
+		| 'Buy'
+		| 'Sell'
+		| 'BuyIncremental'
+		| 'BuyDecremental'
+		| 'SellIncremental'
+		| 'SellDecremental';
 
-	export interface IFreezeUnFreezeReportsFilters {
+	export type TOrderStatus = 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
+
+	export interface IOrdersReportsFilters {
 		pageNumber: number;
 		pageSize: number;
 		symbol: Symbol.Search | null;
 		date: TDateRange;
 		fromDate: number;
 		toDate: number;
-		requestState: TFreezeRequestState | null;
+		side: TOrderSide;
+		status: { id: TOrderStatus; title: string }[];
 	}
 
-	export interface IFreezeUnFreezeReportsColumnsState {
+	export interface IOrdersReportsColumnsState {
 		id: string;
 		title: string;
 		hidden: boolean;
 	}
 
-	export type TFreezeUnFreezeReportsColumns = 'id' | 'symbolTitle' | 'confirmedOn' | 'requestState' | 'action';
+	export type TOrdersReportsColumns =
+		| 'orderId'
+		| 'symbolTitle'
+		| 'orderSide'
+		| 'orderDateTime'
+		| 'orderDateTime'
+		| 'quantity'
+		| 'price'
+		| 'sumExecuted'
+		| 'lastErrorCode'
+		| 'validity';
+}
+
+declare namespace TradesReports {
+	export type TOrderSide =
+		| 'All'
+		| 'Buy'
+		| 'Sell'
+		| 'BuyIncremental'
+		| 'BuyDecremental'
+		| 'SellIncremental'
+		| 'SellDecremental';
+
+	export interface ITradesReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		side: TOrderSide;
+	}
+
+	export interface ITradesReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TTradesReportsColumns =
+		| 'orderId'
+		| 'symbolTitle'
+		| 'orderSide'
+		| 'orderDateTime'
+		| 'orderDateTime'
+		| 'quantity'
+		| 'price'
+		| 'validity';
 }
 
 declare type TTransactionColumnsState = {
@@ -628,3 +753,107 @@ declare type TWithdrawalCashReportsColumnsState = {
 	title: string;
 	hidden: boolean;
 };
+
+declare namespace FreezeUnFreezeReports {
+	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+
+	export interface IFreezeUnFreezeReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		requestState: TFreezeRequestState | null;
+	}
+
+	export interface IFreezeUnFreezeReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TFreezeUnFreezeReportsColumns = 'id' | 'symbolTitle' | 'confirmedOn' | 'requestState' | 'action';
+}
+
+declare namespace CashSettlementReports {
+	export type TContractStatusType = 'Profit' | 'Loss' | 'Indifferent' | 'All';
+
+	export type TSettlementRequestTypeCashType = 'MaximumStrike' | 'PartialStrike';
+
+	export type TRequestStatusType = 'Registered' | 'Send' | 'Sending' | 'Settling' | 'Expired' | 'Draft';
+
+	export interface ICashSettlementReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		contractStatus: TContractStatusType;
+		settlementRequestType: { id: TSettlementRequestTypeCashType; title: string }[];
+		requestStatus: { id: TRequestStatusType; title: string }[];
+	}
+
+	export interface ICashSettlementReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TCashSettlementReportsColumns =
+		| 'symbolTitle'
+		| 'side'
+		| 'openPositionCount'
+		| 'cashSettlementDate'
+		| 'pandLStatus'
+		| 'settlementRequestType'
+		| 'incomeValue'
+		| 'requestCount'
+		| 'doneCount'
+		| 'userType'
+		| 'status'
+		| 'action';
+}
+
+declare namespace PhysicalSettlementReports {
+	export type TContractStatus = 'Profit' | 'Loss' | 'Indifferent' | 'All';
+
+	export type TRequestStatus = 'Registered' | 'Send' | 'Sending' | 'Settling' | 'Expired' | 'Draft';
+
+	export type TSettlementRequestTypePhysically = 'MaximumStrike' | 'PartialStrike'; //| "IndifferentAtLoss"
+
+	export interface IPhysicalSettlementReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		contractStatus: TContractStatus;
+		settlementRequestType: { id: TSettlementRequestTypePhysically; title: string }[];
+		requestStatus: { id: TRequestStatus; title: string }[];
+	}
+
+	export interface IPhysicalSettlementReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TPhysicalSettlementReportsColumns =
+		| 'symbolTitle'
+		| 'side'
+		| 'openPositionCount'
+		| 'cashSettlementDate'
+		| 'pandLStatus'
+		| 'settlementRequestType'
+		| 'incomeValue'
+		| 'requestCount'
+		| 'doneCount'
+		| 'penValue'
+		| 'penVolume'
+		| 'userType'
+		| 'status'
+		| 'action';
+}
