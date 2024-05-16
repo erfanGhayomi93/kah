@@ -4,6 +4,10 @@ export const defaultSymbolISIN = 'IRO1IKCO0001';
 
 export const broadcastChannel = 'tUFN1pQ1Ry';
 
+export const watchlistPriceBasis: TPriceBasis[] = ['LastTradePrice', 'ClosingPrice', 'BestLimit'];
+
+export const watchlistSymbolBasis: TStrategySymbolBasis[] = ['All', 'BestLimit'];
+
 export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 	{
 		colId: 'symbolTitle',
@@ -328,7 +332,7 @@ export const initialChangeBrokerReportsFilters: ChangeBrokerReports.IChangeBroke
 	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	status: [],
-	attachment: null
+	attachment: null,
 };
 
 export const initialFreezeUnFreezeReportsFilters: FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters = {
@@ -338,7 +342,7 @@ export const initialFreezeUnFreezeReportsFilters: FreezeUnFreezeReports.IFreezeU
 	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	requestState: null,
-	symbol: null
+	symbol: null,
 };
 
 export const defaultTransactionColumns: TTransactionColumnsState[] = [
@@ -477,7 +481,7 @@ export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBroke
 	{
 		id: 'gateway',
 		title: 'سامانه',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'symbolTitle',
@@ -490,12 +494,10 @@ export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBroke
 		hidden: false,
 	},
 	{
-
 		id: 'action',
 		title: 'عملیات',
-		hidden: false
-	}
-
+		hidden: false,
+	},
 ];
 
 export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeUnFreezeReportsColumnsState[] = [
@@ -507,26 +509,24 @@ export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeU
 	{
 		id: 'symbolTitle',
 		title: 'نماد',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'confirmedOn',
 		title: 'تاریخ',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'requestState',
 		title: 'وضعیت',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'action',
 		title: 'عملیات',
-		hidden: false
-	}
+		hidden: false,
+	},
 ];
-
-
 
 export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 

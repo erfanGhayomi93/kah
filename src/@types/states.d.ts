@@ -5,7 +5,9 @@ declare interface INextProps<T extends object = {}> {
 
 declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
+declare type TSortingMethods = 'asc' | 'desc';
+
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
 declare interface IUserBankAccount {
 	id: number;
@@ -34,13 +36,15 @@ declare interface IOFieldsWithID {
 	validityDate: number;
 }
 
-type CashWithdrawBankType = {
+declare interface CashWithdrawBankType {
 	accountNumber: string;
 	customerAccountId: number;
 	customerBank: string;
-};
+}
 
 type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
+
+type TStrategySymbolBasis = 'All' | 'BestLimit';
 
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
@@ -287,9 +291,7 @@ declare type IBrokerUrls = Record<
 	| 'getChangeBrokerExportFilteredCSV'
 	| 'getChangeBrokerChangeBrokersByFilter'
 	| 'GetAgreements',
-	| 'changeBrokerSetCancel'
-	| 'getFreezeExportFreeze'
-	| 'getFreezerequests',
+	'changeBrokerSetCancel' | 'getFreezeExportFreeze' | 'getFreezerequests',
 	string
 >;
 
@@ -298,7 +300,7 @@ declare type TOptionWatchlistColumnsState = Array<{
 	width?: number;
 	hide?: boolean;
 	pinned?: 'left' | 'right' | null;
-	sort?: 'asc' | 'desc' | null;
+	sort?: TSortingMethods | null;
 	sortIndex?: null;
 	aggFunc?: null;
 	rowGroup?: boolean;
@@ -338,9 +340,9 @@ declare interface IAnalyzeModalInputs {
 
 declare type TSetBsModalInputs = <
 	T extends
-	| Partial<IBsModalInputs>
-	| keyof Partial<IBsModalInputs>
-	| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+		| Partial<IBsModalInputs>
+		| keyof Partial<IBsModalInputs>
+		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
 >(
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
@@ -415,6 +417,13 @@ declare interface IBaseSymbolStrategy extends ISymbolStrategy {
 	requiredMargin?: null;
 }
 
+declare interface IStrategyFilter {
+	priceBasis: TPriceBasis;
+	symbolBasis: TStrategySymbolBasis;
+	pageNumber: number;
+	pageSize: number;
+}
+
 declare interface IOptionStrategy extends ISymbolStrategy {
 	type: 'option';
 	strikePrice: number;
@@ -449,7 +458,7 @@ declare interface ISymbolChartStates {
 
 declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_offline' | 'withdrawal_cash';
 
-declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement'
+declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement';
 
 declare namespace Transaction {
 	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
@@ -525,12 +534,6 @@ declare namespace DepositWithReceiptReports {
 }
 
 declare namespace WithdrawalCashReports {
-	export type CashWithdrawBankType = {
-		accountNumber: string;
-		customerAccountId: number;
-		customerBank: string;
-	};
-
 	export interface WithdrawalCashReportsFilters {
 		pageNumber: number;
 		pageSize: number;
@@ -575,7 +578,6 @@ declare namespace ChangeBrokerReports {
 }
 
 declare namespace FreezeUnFreezeReports {
-
 	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
 
 	export interface IFreezeUnFreezeReportsFilters {
@@ -594,7 +596,7 @@ declare namespace FreezeUnFreezeReports {
 		hidden: boolean;
 	}
 
-	export type TFreezeUnFreezeReportsColumns = "id" | "symbolTitle" | "confirmedOn" | "requestState" | "action"
+	export type TFreezeUnFreezeReportsColumns = 'id' | 'symbolTitle' | 'confirmedOn' | 'requestState' | 'action';
 }
 
 declare type TTransactionColumnsState = {

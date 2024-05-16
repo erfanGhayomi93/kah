@@ -22,6 +22,10 @@ declare type PartialK<T, K extends PropertyKey = PropertyKey> = Partial<Pick<T, 
 	? { [P in keyof O]: O[P] }
 	: never;
 
+declare type PickByType<T, Value> = {
+	[P in keyof T as T[P] extends Value | undefined ? P : never]: T[P];
+};
+
 declare type RequiredK<T, K extends PropertyKey = PropertyKey> = Required<Pick<T, Extract<keyof T, K>>> &
 	Omit<T, K> extends infer O
 	? { [P in keyof O]: O[P] }

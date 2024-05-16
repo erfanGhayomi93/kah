@@ -6,13 +6,12 @@ import { initialColumnsLongCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { type ISelectItem } from '..';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -40,10 +39,15 @@ const LongCall = (strategy: LongCallProps) => {
 		initialColumnsLongCall,
 	);
 
-	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+		priceBasis: 'BestLimit',
+		symbolBasis: 'BestLimit',
+		pageSize: 20,
+		pageNumber: 1,
+	});
 
 	const { data, isFetching } = useLongCallStrategyQuery({
-		queryKey: ['longCallQuery', priceBasis.id, useCommission],
+		queryKey: ['longCallQuery', { ...inputs, withCommission: useCommission }],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
@@ -108,6 +112,12 @@ const LongCall = (strategy: LongCallProps) => {
 		);
 	};
 
+	const goToTheNextPage = () => {
+		setFieldsValue((prev) => ({
+			pageNumber: prev.pageNumber + 1,
+		}));
+	};
+
 	const showColumnsPanel = () => {
 		dispatch(
 			setManageColumnsPanel({
@@ -145,7 +155,7 @@ const LongCall = (strategy: LongCallProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -190,7 +200,7 @@ const LongCall = (strategy: LongCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
@@ -235,7 +245,7 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'maxProfit',
-				headerName: 'بیشینه سود',
+				headerName: 'حداکثر بازده',
 				minWidth: 160,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -247,7 +257,7 @@ const LongCall = (strategy: LongCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[0] - valueB[0],
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'blackScholes',
@@ -322,6 +332,7 @@ const LongCall = (strategy: LongCallProps) => {
 				colId: 'actions',
 				headerName: 'عملیات',
 				width: 80,
+				sortable: false,
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
@@ -332,17 +343,6 @@ const LongCall = (strategy: LongCallProps) => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
@@ -358,8 +358,6 @@ const LongCall = (strategy: LongCallProps) => {
 		}
 	}, [columnsVisibility]);
 
-	const rows = data ?? [];
-
 	return (
 		<>
 			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
@@ -369,17 +367,21 @@ const LongCall = (strategy: LongCallProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					priceBasis={priceBasis}
 					onManageColumns={showColumnsPanel}
-					onPriceBasisChanged={setPriceBasis}
+					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
+					priceBasis={inputs.priceBasis}
+					symbolBasis={inputs.symbolBasis}
 				/>
 
 				<Table<Strategy.LongCall>
 					ref={gridRef}
-					rowData={rows}
+					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
+					fetchNextPage={goToTheNextPage}
+					pageNumber={inputs.pageNumber}
+					pageSize={inputs.pageSize}
 				/>
 			</div>
 		</>
