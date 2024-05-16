@@ -46,7 +46,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		e.preventDefault();
 
 		try {
-			ipcMain.send('set_withdrawal_cash_filters', filters);
+			ipcMain.send('set_withdrawal_cash_reports_filters', filters);
 		} catch (e) {
 			//
 		} finally {
@@ -70,7 +70,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(option)}</span>}
-					placeholder={t('transactions_reports_page.dates_placeholder_filter')}
+					placeholder={t('withdrawal_cash_reports_page.time_placeholder_filter')}
 					defaultValue={filters.date}
 				/>
 
@@ -93,7 +93,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					<InputLegend
 						value={filters.fromPrice}
 						onChange={(v) => setFilterValue('fromPrice', Number(v))}
-						placeholder={t('transactions_reports_page.from_price_type_placeholder_filter')}
+						placeholder={t('withdrawal_cash_reports_page.from_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>
@@ -101,7 +101,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					<InputLegend
 						value={filters.toPrice}
 						onChange={(v) => setFilterValue('toPrice', Number(v))}
-						placeholder={t('transactions_reports_page.to_price_type_placeholder_filter')}
+						placeholder={t('withdrawal_cash_reports_page.to_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>

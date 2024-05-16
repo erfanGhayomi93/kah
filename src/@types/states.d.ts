@@ -15,6 +15,8 @@ declare interface IOptionHistory {
 
 declare type TOrdersSide = "Buy" | "Sell";
 
+declare type TTradeSide = "Buy" | "Sell"
+
 declare type TOrdersTypes = "MarketOrder" | "LimitOrder" | "MarketToLimitOrder" | "MarketOnOpeningOrder" | "StopOrder";
 
 declare type TOrdersValidity = "GoodTillDate" | "FillAndKill" | "GoodTillCancelled" | "Day" | "SlidingValidity" | "Session" | "Month" | "Week";
@@ -97,42 +99,6 @@ declare type TStrategyMarketTrend =
 	| 'All'
 	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
 
-declare type TTransactionColumns =
-	| 'credit'
-	| 'date'
-	| 'debit'
-	| 'description'
-	| 'remaining'
-	| 'station'
-	| 'transactionType';
-
-declare type TInstantDepositColumns =
-	| 'reservationNumber'
-	| 'referenceNumber'
-	| 'saveDate'
-	| 'amount'
-	| 'providerType'
-	| 'state'
-	| 'errorMessage';
-
-declare type TDepositWithReceiptColumns =
-	| 'id'
-	| 'receiptDate'
-	| 'providerType'
-	| 'receiptNumber'
-	| 'amount'
-	| 'state'
-	| 'state';
-
-declare type TWithdrawalCashColumns =
-	| 'id'
-	| 'saveDate'
-	| 'requestDate'
-	| 'customerBank'
-	| 'requestAmount'
-	| 'channel'
-	| 'state'
-	| 'state';
 
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
@@ -326,7 +292,9 @@ declare type IBrokerUrls = Record<
 	| 'getOrderExportOrders'
 	| 'getOrderOrders'
 	| 'getOrderExportTrades'
-	| 'getOrderDetailedOrders',
+	| 'getOrderDetailedOrders'
+	| 'receiptSetCancel'
+	| 'paymentDeleteRequest',
 	string
 >;
 
@@ -509,6 +477,23 @@ declare namespace Transaction {
 		groupMode: TTransactionGroupModes;
 		transactionType: { id: TransactionTypes; title: string }[];
 	}
+
+
+	export interface ITransactionColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TTransactionColumns =
+		'id'
+		| 'credit'
+		| 'date'
+		| 'debit'
+		| 'description'
+		| 'remaining'
+		| 'station'
+		| 'transactionType';
 }
 
 declare namespace InstantDepositReports {
@@ -534,6 +519,21 @@ declare namespace InstantDepositReports {
 		ProviderTypes: Array<string>;
 		Statuses: Array<string>;
 	}
+
+	export interface TInstantDepositReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TInstantDepositReportsColumns =
+		"id"
+		| 'reservationNumber'
+		| 'referenceNumber'
+		| 'saveDate'
+		| 'amount'
+		| 'providerType'
+		| 'state'
 }
 
 declare namespace DepositWithReceiptReports {
@@ -561,6 +561,21 @@ declare namespace DepositWithReceiptReports {
 		HasAttachment: string;
 		StatesList: Array<string>;
 	}
+
+	export type TDepositWithReceiptReportsColumnsState = {
+		id: string;
+		title: string;
+		hidden: boolean;
+	};
+
+	export type TDepositWithReceiptColumns =
+		| 'id'
+		| 'receiptDate'
+		| 'providerType'
+		| 'receiptNumber'
+		| 'amount'
+		| 'state'
+		| 'action';
 }
 
 declare namespace WithdrawalCashReports {
@@ -590,6 +605,22 @@ declare namespace WithdrawalCashReports {
 		Statuses: Array<string>;
 		AccountIds: Array<string>;
 	}
+
+	export type TWithdrawalCashReportsColumnsState = {
+		id: string;
+		title: string;
+		hidden: boolean;
+	};
+
+	export type TWithdrawalCashReportsColumns =
+		| 'id'
+		| 'saveDate'
+		| 'requestDate'
+		| 'customerBank'
+		| 'requestAmount'
+		| 'channel'
+		| 'state'
+		| 'action';
 }
 
 declare namespace ChangeBrokerReports {
@@ -661,41 +692,11 @@ declare namespace TradesReports {
 		hidden: boolean;
 	}
 
-	export type TTradesReportsColumns = 'orderId' | 'symbolTitle' | 'orderSide' | 'orderDateTime' | 'orderDateTime' | 'quantity' | 'price' | 'validity'
+	export type TTradesReportsColumns = 'orderId' | 'symbolTitle' | 'orderSide' | 'orderDateTime' | 'orderDateTime' | 'tradedQuantity' | 'tradePrice' | 'totalQuota' | 'total'
 
 }
 
 
-
-declare type TTransactionColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
-
-declare type TInstantDepositReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
-
-declare type IDepositWithReceiptReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
-
-declare type TDepositWithReceiptReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
-
-declare type TWithdrawalCashReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
 
 declare namespace FreezeUnFreezeReports {
 

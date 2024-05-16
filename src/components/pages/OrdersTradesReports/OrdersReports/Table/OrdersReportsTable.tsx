@@ -5,6 +5,7 @@ import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import StatusColumnCell from './StatusColumnCell';
 
 interface OrdersReportsTableProps {
 	reports: Reports.IOrdersReports[] | null;
@@ -100,7 +101,7 @@ const OrdersReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: (p) => sepNumbers(p.value),
+					valueFormatter: ({ value }) => sepNumbers(String(value)),
 				},
 				/* قیمت */
 				{
@@ -110,7 +111,7 @@ const OrdersReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: (p) => sepNumbers(p.value),
+					valueFormatter: ({ value }) => sepNumbers(String(value)),
 				},
 				/* حجم انجام شده */
 				{
@@ -120,7 +121,7 @@ const OrdersReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(value || 0),
+					valueFormatter: ({ value }) => sepNumbers(String(value)),
 				},
 				/* وضعیت سفارش */
 				{
@@ -130,7 +131,10 @@ const OrdersReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					cellClass: 'text-right rtl',
+					maxWidth: 250,
+					minWidth: 250,
+					cellClass: 'text-right rtl truncate',
+					cellRenderer: StatusColumnCell,
 					valueGetter: ({ data }) => {
 						if (!data) return '-';
 						const { orderStatus, lastErrorCode, customErrorMsg } = data;
@@ -151,7 +155,7 @@ const OrdersReportsTable = ({
 						const { validity, validityDate } = data;
 
 						if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
-						return t('validity_date.' + validity.toLowerCase());
+						return t('validity_date.' + validity);
 					}
 				}
 			] as Array<ColDef<Reports.IOrdersReports>>,

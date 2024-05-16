@@ -1234,7 +1234,12 @@
 		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
 		"drawal_offline_successFully": "درخواست برداشت وجه با موفقیت انجام شد.",
 		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید.",
-		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است"
+		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است",
+		"instant_deposit_canceled_successfully": "درخواست شما با موفقیت حدف شد.",
+		"instant_deposit_canceled_failed": "خطا در حذف درخواست",
+		"withdrawal_cash_canceled_successfully": "درخواست شما با موفقیت لغو شد.",
+		"withdrawal_cash_canceled_failed": "خطا در حذف درخواست",
+		"withdrawal_cash_AccountNotConfirmed": "شماره حساب مورد نظر تایید نشده است"
 	},
 	"financial_reports_page": {
 		"financial_reports": "گزارشات مالی",
@@ -1243,7 +1248,7 @@
 		"deposit_offline_tab": "واریز با فیش",
 		"withdrawal_cash_tab": "برداشت وجه"
 	},
-	"transactions_reports_page": {
+	"transactions_page": {
 		"filter_title_modal": "فیلتر گردش حساب",
 		"id_column": "شماره ردیف",
 		"date_column": "زمان",
@@ -1295,10 +1300,15 @@
 		"bank_column": "بانک",
 		"system": "سامانه",
 		"manage_columns": "مدیریت ستون‌های جدول",
+		"dates_placeholder_filter": "زمان",
+		"from_date_placeholder_filter": "از تاریخ",
+		"to_date_placeholder_filter": "تا تاریخ",
 		"bank_placeholder_filter": "بانک",
-		"status_placeholder_filter": "وضعیت"
+		"status_placeholder_filter": "وضعیت",
+		"from_price_placeholder_filter": "از مبلغ",
+		"to_price_placeholder_filter": "تا مبلغ"
 	},
-	"deposit_with_receipt_page": {
+	"deposit_with_receipt_reports_page": {
 		"filter_title_modal": "فیلتر واریز با فیش",
 		"id_column": "ردیف",
 		"date_column": "تاریخ",
@@ -1310,9 +1320,12 @@
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"has_attachment": "دارد",
 		"has_not_attachment": "ندارد",
+		"time_placeholder_filter": "زمان",
 		"status_placeholder_filter": "وضعیت",
 		"receipt_number_placeholder_filter": "شماره فیش",
-		"attachment_placeholder_filter": "پیوست"
+		"attachment_placeholder_filter": "پیوست",
+		"from_price_placeholder_filter": "از مبلغ",
+		"to_price_placeholder_filter": "تا مبلغ"
 	},
 	"change_broker_reports_page": {
 		"title_page": "گزارشات تغییر کارگزار ناظر",
@@ -1329,6 +1342,9 @@
 	"withdrawal_cash_reports_page": {
 		"filter_title_modal": "فیلتر برداشت وجه",
 		"manage_columns": "مدیریت ستون‌های جدول",
+		"time_placeholder_filter": "زمان",
+		"from_price_placeholder_filter": "از مبلغ",
+		"to_price_placeholder_filter": "تا مبلغ",
 		"bank_placeholder_filter": "بانک",
 		"status_placeholder_filter": "وضعیت",
 		"id_column": "ردیف",
@@ -1471,6 +1487,8 @@
 		"time_column": "ساعت",
 		"overall_volume_column": "حجم کل",
 		"price_column": "قیمت",
+		"commission_column": "کارمزد",
+		"value_column": "ارزش معامله",
 		"done_volume_column": "حجم انجام شده",
 		"status_column": "وضعیت",
 		"validity_column": "اعتبار",

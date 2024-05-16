@@ -71,7 +71,7 @@ const TradeReportsTable = ({
 				/* تاریخ */
 				{
 					headerName: t('trades_reports_page.date_column'),
-					field: 'orderDateTime',
+					field: 'tradeDate',
 					maxWidth: 144,
 					minWidth: 144,
 					lockPosition: true,
@@ -83,7 +83,7 @@ const TradeReportsTable = ({
 				/* ساعت */
 				{
 					headerName: t('trades_reports_page.time_column'),
-					field: 'orderDateTime',
+					field: 'tradeDate',
 					maxWidth: 144,
 					minWidth: 144,
 					lockPosition: true,
@@ -95,39 +95,59 @@ const TradeReportsTable = ({
 				/* حجم کل */
 				{
 					headerName: t('trades_reports_page.overall_volume_column'),
-					field: 'quantity',
+					field: 'tradedQuantity',
 					lockPosition: true,
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: (p) => sepNumbers(p.value),
+					valueFormatter: ({ value }) => sepNumbers(String(value)),
 				},
 				/* قیمت */
 				{
 					headerName: t('trades_reports_page.price_column'),
-					field: 'price',
+					field: 'tradePrice',
 					lockPosition: true,
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: (p) => sepNumbers(p.value),
+					valueFormatter: ({ value }) => sepNumbers(String(value)),
 				},
-				/* اعتبار */
+				/* کارمزد */
 				{
-					headerName: t('trades_reports_page.validity_column'),
-					field: 'validity',
+					headerName: t('trades_reports_page.commission_column'),
+					field: 'totalQuota',
 					lockPosition: true,
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ data }) => {
-						if (!data) return '-';
-						const { validity, validityDate } = data;
+					valueFormatter: ({ value }) => sepNumbers(String(value)),
+				},
+				/* ارزش معامله */
+				{
+					headerName: t('trades_reports_page.value_column'),
+					field: 'total',
+					lockPosition: true,
+					initialHide: false,
+					suppressMovable: true,
+					sortable: false,
+					valueFormatter: ({ value }) => sepNumbers(String(value)),
+				},
+				// /* اعتبار */
+				// {
+				// 	headerName: t('trades_reports_page.validity_column'),
+				// 	field: 'validity',
+				// 	lockPosition: true,
+				// 	initialHide: false,
+				// 	suppressMovable: true,
+				// 	sortable: false,
+				// 	valueFormatter: ({ data }) => {
+				// 		if (!data) return '-';
+				// 		const { validity, validityDate } = data;
 
-						if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
-						return t('validity_date.' + validity.toLowerCase());
-					}
-				}
+				// 		if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
+				// 		return t('validity_date.' + validity);
+				// 	}
+				// }
 			] as Array<ColDef<Reports.ITradesReports>>,
 		[],
 	);

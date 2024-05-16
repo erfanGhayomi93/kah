@@ -1,33 +1,74 @@
+import brokerAxios from '@/api/brokerAxios';
 import AgTable from '@/components/common/Tables/AgTable';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { type RootState } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { createSelector } from '@reduxjs/toolkit';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
 import WithdrawalCashReportsActionCell from './WithdrawalCashReportsActionCell';
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		urls: getBrokerURLs(state),
+	}),
+);
+
 
 interface WithdrawalCashReportsTableProps {
 	reports: Reports.IWithdrawal[] | null;
-	columnsVisibility: TWithdrawalCashReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<TWithdrawalCashReportsColumnsState[]>>;
+	columnsVisibility: WithdrawalCashReports.TWithdrawalCashReportsColumnsState[];
 }
 
 const WithdrawalCashReportsTable = ({
 	reports,
 	columnsVisibility,
-	setColumnsVisibility,
 }: WithdrawalCashReportsTableProps) => {
 	const gridRef = useRef<GridApi<Reports.IWithdrawal>>(null);
 
 	const t = useTranslations();
+
+	const queryClient = useQueryClient();
+
+	const { urls } = useAppSelector(getStates);
 
 	const dateFormatter = (v: string | number) => {
 		if (v === undefined || v === null) return '−';
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	const onDeleteRow = async () => {
-		//
-	};
+	const onDeleteRow = (data: Reports.IWithdrawal | undefined) => new Promise<void>(async (resolve, reject) => {
+		if (!urls || !data) return;
+
+		try {
+			const response = await brokerAxios.post<ServerResponse<boolean>>(urls.paymentDeleteRequest, {
+				ids: [data?.id]
+			});
+
+			if (response.status !== 200 || !response.data.succeeded) throw new Error(response.data.errors?.[0] ?? '');
+
+			toast.success(t('alerts.withdrawal_cash_canceled_successfully'));
+
+
+			queryClient.invalidateQueries({
+				queryKey: ['withdrawalCashReports']
+			});
+
+			queryClient.invalidateQueries({
+				queryKey: ['userRemainQuery']
+			});
+
+			resolve();
+		} catch (e) {
+			toast.error(t('alerts.withdrawal_cash_canceled_failed'));
+			reject();
+		}
+	});
 
 	const onEditRow = async () => {
 		//
@@ -37,6 +78,7 @@ const WithdrawalCashReportsTable = ({
 		() =>
 			[
 				{
+					/* ردیف */
 					headerName: t('withdrawal_cash_reports_page.id_column'),
 					field: 'id',
 					maxWidth: 112,
@@ -47,6 +89,7 @@ const WithdrawalCashReportsTable = ({
 					sortable: false,
 					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
 				},
+				/* زمان درخواست */
 				{
 					headerName: t('withdrawal_cash_reports_page.date_column'),
 					field: 'saveDate',
@@ -57,6 +100,7 @@ const WithdrawalCashReportsTable = ({
 					sortable: false,
 					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
 				},
+				/* موعد پرداخت */
 				{
 					headerName: t('withdrawal_cash_reports_page.time_column'),
 					field: 'requestDate',
@@ -65,14 +109,16 @@ const WithdrawalCashReportsTable = ({
 					sortable: false,
 					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss'),
 				},
+				/* بانک */
 				{
 					headerName: t('withdrawal_cash_reports_page.bank_column'),
 					field: 'customerBank',
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => t('bank_accounts.' + value),
+					valueFormatter: ({ value }) => value,
 				},
+				/* مبلغ */
 				{
 					headerName: t('withdrawal_cash_reports_page.amount_column'),
 					field: 'requestAmount',
@@ -80,6 +126,7 @@ const WithdrawalCashReportsTable = ({
 					suppressMovable: true,
 					sortable: false,
 				},
+				/* سامانه */
 				{
 					headerName: t('withdrawal_cash_reports_page.gateway_column'),
 					field: 'channel',
@@ -88,6 +135,7 @@ const WithdrawalCashReportsTable = ({
 					sortable: false,
 					valueFormatter: ({ value }) => t('states.state_' + value),
 				},
+				/* وضعیت */
 				{
 					headerName: t('withdrawal_cash_reports_page.state_column'),
 					field: 'state',
@@ -98,6 +146,7 @@ const WithdrawalCashReportsTable = ({
 					minWidth: 220,
 					valueFormatter: ({ value }) => t('states.state_' + value),
 				},
+				/* عملیات */
 				{
 					headerName: t('withdrawal_cash_reports_page.action_column'),
 					field: 'action',
