@@ -2,7 +2,7 @@
 
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultTradesReportsColumns, defaultTransactionColumns, initialTradesReportsFilters } from '@/constants';
+import { defaultTradesReportsColumns, initialTradesReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
@@ -43,7 +43,7 @@ const TradesReports = () => {
 	const { inputs, setFieldValue, setFieldsValue } =
 		useInputs<TradesReports.ITradesReportsFilters>(initialTradesReportsFilters);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('trade_reports_column', defaultTransactionColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('trade_reports_column', defaultTradesReportsColumns);
 
 	const { setDebounce } = useDebounce();
 

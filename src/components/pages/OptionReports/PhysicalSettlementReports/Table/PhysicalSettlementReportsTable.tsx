@@ -1,5 +1,5 @@
 import AgTable from '@/components/common/Tables/AgTable';
-import WithdrawalCashReportsActionCell from '@/components/pages/FinancialReports/WithdrawalCashReports/Table/WithdrawalCashReportsActionCell';
+import WithdrawalCashReportsActionCell from '@/components/pages/FinancialReports/WithdrawalCashReports/Table/ActionC';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';

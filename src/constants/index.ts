@@ -390,7 +390,12 @@ export const initialTradesReportsFilters: TradesReports.ITradesReportsFilters = 
 	side: 'All',
 };
 
-export const defaultTransactionColumns: TTransactionColumnsState[] = [
+export const defaultTransactionColumns: Transaction.ITransactionColumnsState[] = [
+	{
+		id: 'id',
+		title: 'ردیف',
+		hidden: false
+	},
 	{
 		id: 'date',
 		title: 'زمان',
@@ -428,7 +433,12 @@ export const defaultTransactionColumns: TTransactionColumnsState[] = [
 	},
 ];
 
-export const defaultInstantDepositReportsColumn: TInstantDepositReportsColumnsState[] = [
+export const defaultInstantDepositReportsColumn: InstantDepositReports.TInstantDepositReportsColumnsState[] = [
+	{
+		id: 'id',
+		title: 'شماره ردیف',
+		hidden: false
+	},
 	{
 		id: 'saveDate',
 		title: 'زمان',
@@ -456,7 +466,12 @@ export const defaultInstantDepositReportsColumn: TInstantDepositReportsColumnsSt
 	},
 ];
 
-export const defaultDepositWithReceiptReportsColumn: TDepositWithReceiptReportsColumnsState[] = [
+export const defaultDepositWithReceiptReportsColumn: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[] = [
+	{
+		id: 'id',
+		title: 'ردیف',
+		hidden: false,
+	},
 	{
 		id: 'receiptDate',
 		title: 'زمان',
@@ -482,9 +497,19 @@ export const defaultDepositWithReceiptReportsColumn: TDepositWithReceiptReportsC
 		title: 'وضعیت',
 		hidden: false,
 	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false,
+	},
 ];
 
-export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsState[] = [
+export const defaultWithdrawalCashReportsColumn: WithdrawalCashReports.TWithdrawalCashReportsColumnsState[] = [
+	{
+		id: 'id',
+		title: 'ردیف',
+		hidden: false
+	},
 	{
 		id: 'saveDate',
 		title: 'زمان درخواست',
@@ -510,6 +535,11 @@ export const defaultWithdrawalCashReportsColumn: TWithdrawalCashReportsColumnsSt
 		title: 'وضعیت',
 		hidden: false,
 	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false
+	}
 ];
 
 export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBrokerReportsColumnsState[] = [
@@ -800,10 +830,20 @@ export const defaultTradesReportsColumns: TradesReports.ITradesReportsColumnsSta
 		hidden: false,
 	},
 	{
+		id: 'totalQuota',
+		title: 'کارمزد',
+		hidden: false
+	},
+	{
+		id: 'total',
+		title: 'ارزش معامله',
+		hidden: false
+	},
+	{
 		id: 'validity',
 		title: 'اعتبار',
 		hidden: false,
-	},
+	}
 ];
 
 export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];

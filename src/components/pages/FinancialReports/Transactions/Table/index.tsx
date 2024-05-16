@@ -15,8 +15,8 @@ interface TableProps {
 		value: Transaction.ITransactionsFilters[K],
 	) => void;
 	setFieldsValue: (props: Partial<Transaction.ITransactionsFilters>) => void;
-	columnsVisibility: TTransactionColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<TTransactionColumnsState[]>>;
+	columnsVisibility: Transaction.ITransactionColumnsState[];
+	setColumnsVisibility: Dispatch<SetStateAction<Transaction.ITransactionColumnsState[]>>;
 }
 
 const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
@@ -55,7 +55,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 		return response;
 	}, [transactionsReportData]);
 
-	const dataIsEmpty = transactionsReportData?.result.length === 0;
+	const dataIsEmpty = reports.length === 0;
 
 	return (
 		<>
@@ -68,10 +68,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 			>
 				<TransactionsTable
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					reports={reports}
-					lastTrades={lastTrades}
-					finalRemain={finalRemain}
 				/>
 			</div>
 
@@ -79,7 +76,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 				<div className='gap-40 text-base flex-justify-start'>
 					<div className='gap-8 flex-justify-start'>
 						<span className='font-medium text-gray-900'>
-							{t('transactions_reports_page.last_remain')}:{' '}
+							{t('transactions_page.final_remain')}:{' '}
 						</span>
 						<div className='gap-4 flex-justify-start'>
 							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(finalRemain))}`}</span>
@@ -89,7 +86,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 					<div style={{ minWidth: '1px', minHeight: '16px' }} className='bg-gray-700' />
 					<div className='gap-8 flex-justify-start'>
 						<span className='font-medium text-gray-900'>
-							{t('transactions_reports_page.last_remain')}:{' '}
+							{t('transactions_page.last_remain')}:{' '}
 						</span>
 						<div className='gap-4 flex-justify-start'>
 							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(lastTrades))}`}</span>
@@ -117,7 +114,9 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 				</div>
 			)}
 			{dataIsEmpty && !isLoading && (
-				<NoData />
+				<div className='center absolute'>
+					<NoData />
+				</div>
 			)}
 		</>
 	);
