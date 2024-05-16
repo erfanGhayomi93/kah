@@ -1,19 +1,19 @@
 import Select from '@/components/common/Inputs/Select';
 import Switch from '@/components/common/Inputs/Switch';
 import TableActions from '@/components/common/Toolbar/TableActions';
+import { watchlistPriceBasis, watchlistSymbolBasis } from '@/constants';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import { type ISelectItem } from '..';
 
 interface FiltersProps {
 	useCommission: boolean;
-	priceBasis: ISelectItem;
+	priceBasis: TPriceBasis;
+	symbolBasis: TStrategySymbolBasis;
 	title: string;
 	type: Strategy.Type;
 	onManageColumns?: () => void;
 	onShowFilters?: () => void;
 	onExportExcel?: () => void;
-	onPriceBasisChanged?: (v: ISelectItem) => void;
+	setFieldValue?: <T extends keyof IStrategyFilter>(fieldName: T, value: IStrategyFilter[T]) => void;
 	onCommissionChanged?: (v: boolean) => void;
 }
 
@@ -22,22 +22,14 @@ const Filters = ({
 	type,
 	useCommission,
 	priceBasis,
+	symbolBasis,
 	onManageColumns,
 	onShowFilters,
 	onExportExcel,
-	onPriceBasisChanged,
+	setFieldValue,
 	onCommissionChanged,
 }: FiltersProps) => {
 	const t = useTranslations();
-
-	const options: ISelectItem[] = useMemo(
-		() => [
-			{ id: 'LastTradePrice', title: t('strategy.last_traded_price') },
-			{ id: 'ClosingPrice', title: t('strategy.closing_price') },
-			{ id: 'BestLimit', title: t('strategy.headline') },
-		],
-		[],
-	);
 
 	return (
 		<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
@@ -54,14 +46,26 @@ const Filters = ({
 					<Switch checked={useCommission} onChange={(v) => onCommissionChanged?.(v)} />
 				</div>
 
-				<div style={{ flex: '0 0 28.4rem' }} className='flex-1 gap-8 flex-justify-end'>
-					<Select<ISelectItem>
+				<div style={{ flex: '0 0 48.4rem' }} className='flex-1 gap-8 flex-justify-end'>
+					<Select<TStrategySymbolBasis>
+						defaultValue={symbolBasis}
+						options={watchlistSymbolBasis}
+						placeholder={t('strategy.symbol_basis')}
+						onChange={(v) => setFieldValue?.('symbolBasis', v)}
+						getOptionId={(id) => id}
+						getOptionTitle={(id) => t(`strategy.symbol_${id}`)}
+						classes={{
+							root: '!h-40',
+						}}
+					/>
+
+					<Select<TPriceBasis>
 						defaultValue={priceBasis}
-						options={options}
+						options={watchlistPriceBasis}
 						placeholder={t('strategy.price_basis')}
-						onChange={(v) => onPriceBasisChanged?.(v)}
-						getOptionId={(option) => option.id}
-						getOptionTitle={(option) => option.title}
+						onChange={(v) => setFieldValue?.('priceBasis', v)}
+						getOptionId={(id) => id}
+						getOptionTitle={(id) => t(`strategy.price_${id}`)}
 						classes={{
 							root: '!h-40',
 						}}

@@ -172,6 +172,7 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				headerName: t('orders.action'),
 				minWidth: 160,
 				maxWidth: 160,
+				sortable: false,
 				cellRenderer: DraftActionCell,
 				cellRendererParams: {
 					onSend,

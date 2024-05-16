@@ -4,6 +4,10 @@ export const defaultSymbolISIN = 'IRO1IKCO0001';
 
 export const broadcastChannel = 'tUFN1pQ1Ry';
 
+export const watchlistPriceBasis: TPriceBasis[] = ['LastTradePrice', 'ClosingPrice', 'BestLimit'];
+
+export const watchlistSymbolBasis: TStrategySymbolBasis[] = ['All', 'BestLimit'];
+
 export const defaultOptionWatchlistColumns: TOptionWatchlistColumnsState = [
 	{
 		colId: 'symbolTitle',
@@ -328,7 +332,7 @@ export const initialChangeBrokerReportsFilters: ChangeBrokerReports.IChangeBroke
 	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	status: [],
-	attachment: null
+	attachment: null,
 };
 
 export const initialFreezeUnFreezeReportsFilters: FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters = {
@@ -338,7 +342,52 @@ export const initialFreezeUnFreezeReportsFilters: FreezeUnFreezeReports.IFreezeU
 	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
 	toDate: new Date().getTime(),
 	requestState: null,
-	symbol: null
+	symbol: null,
+};
+
+export const initialCashSettlementReportsFilters: CashSettlementReports.ICashSettlementReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	date: 'dates.custom',
+	contractStatus: 'All',
+	settlementRequestType: [],
+	requestStatus: [],
+};
+
+export const initialPhysicalSettlementReportsFilters: PhysicalSettlementReports.IPhysicalSettlementReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	date: 'dates.custom',
+	contractStatus: 'All',
+	settlementRequestType: [],
+	requestStatus: [],
+};
+
+export const initialOrdersReportsFilters: OrdersReports.IOrdersReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	date: 'dates.month',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	side: 'All',
+	status: [],
+};
+
+export const initialTradesReportsFilters: TradesReports.ITradesReportsFilters = {
+	pageNumber: 1,
+	pageSize: 25,
+	symbol: null,
+	date: 'dates.month',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	toDate: new Date().getTime(),
+	side: 'All',
 };
 
 export const defaultTransactionColumns: TTransactionColumnsState[] = [
@@ -477,7 +526,7 @@ export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBroke
 	{
 		id: 'gateway',
 		title: 'سامانه',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'symbolTitle',
@@ -490,12 +539,10 @@ export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBroke
 		hidden: false,
 	},
 	{
-
 		id: 'action',
 		title: 'عملیات',
-		hidden: false
-	}
-
+		hidden: false,
+	},
 ];
 
 export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeUnFreezeReportsColumnsState[] = [
@@ -507,26 +554,257 @@ export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeU
 	{
 		id: 'symbolTitle',
 		title: 'نماد',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'confirmedOn',
 		title: 'تاریخ',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'requestState',
 		title: 'وضعیت',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'action',
 		title: 'عملیات',
-		hidden: false
-	}
+		hidden: false,
+	},
 ];
 
+export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSettlementReportsColumnsState[] = [
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+	},
+	{
+		id: 'side',
+		title: 'موقعیت',
+		hidden: false,
+	},
+	{
+		id: 'openPositionCount',
+		title: 'تعداد موقعیت باز',
+		hidden: false,
+	},
+	{
+		id: 'cashSettlementDate',
+		title: 'تاریخ تسویه نقدی',
+		hidden: false,
+	},
+	{
+		id: 'pandLStatus',
+		title: 'وضعیت قرارداد (سود یا زیان)',
+		hidden: false,
+	},
+	{
+		id: 'settlementRequestType',
+		title: 'نوع اعمال',
+		hidden: false,
+	},
+	{
+		id: 'incomeValue',
+		title: 'مبلغ تسویه',
+		hidden: false,
+	},
+	{
+		id: 'requestCount',
+		title: 'تعداد درخواست برای تسویه',
+		hidden: false,
+	},
+	{
+		id: 'doneCount',
+		title: 'تعداد تسویه شده',
+		hidden: false,
+	},
+	{
+		id: 'userType',
+		title: 'درخواست کننده',
+		hidden: false,
+	},
+	{
+		id: 'status',
+		title: 'وضعیت',
+		hidden: false,
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false,
+	},
+];
 
+export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.IPhysicalSettlementReportsColumnsState[] =
+	[
+		{
+			id: 'symbolTitle',
+			title: 'نماد',
+			hidden: false,
+		},
+		{
+			id: 'side',
+			title: 'موقعیت',
+			hidden: false,
+		},
+		{
+			id: 'openPositionCount',
+			title: 'تعداد موقعیت باز',
+			hidden: false,
+		},
+		{
+			id: 'cashSettlementDate',
+			title: 'تاریخ تسویه نقدی',
+			hidden: false,
+		},
+		{
+			id: 'pandLStatus',
+			title: 'وضعیت قرارداد (سود یا زیان)',
+			hidden: false,
+		},
+		{
+			id: 'settlementRequestType',
+			title: 'نوع اعمال',
+			hidden: false,
+		},
+		{
+			id: 'incomeValue',
+			title: 'مبلغ تسویه',
+			hidden: false,
+		},
+		{
+			id: 'requestCount',
+			title: 'تعداد درخواست برای تسویه',
+			hidden: false,
+		},
+		{
+			id: 'doneCount',
+			title: 'تعداد تسویه شده',
+			hidden: false,
+		},
+		{
+			id: 'penValue',
+			title: 'تعداد نکول',
+			hidden: false,
+		},
+		{
+			id: 'penVolume',
+			title: 'مبلغ نکول',
+			hidden: false,
+		},
+		{
+			id: 'userType',
+			title: 'درخواست کننده',
+			hidden: false,
+		},
+		{
+			id: 'status',
+			title: 'وضعیت',
+			hidden: false,
+		},
+		{
+			id: 'action',
+			title: 'عملیات',
+			hidden: false,
+		},
+	];
+
+export const defaultOrdersReportsColumns: OrdersReports.IOrdersReportsColumnsState[] = [
+	{
+		id: 'orderId',
+		title: 'ردیف',
+		hidden: false,
+	},
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+	},
+	{
+		id: 'orderSide',
+		title: 'سمت',
+		hidden: false,
+	},
+	{
+		id: 'orderDateTime',
+		title: 'تاریخ',
+		hidden: false,
+	},
+	{
+		id: 'orderDateTime',
+		title: 'ساعت',
+		hidden: false,
+	},
+	{
+		id: 'quantity',
+		title: 'حجم کل',
+		hidden: false,
+	},
+	{
+		id: 'price',
+		title: 'قیمت',
+		hidden: false,
+	},
+	{
+		id: 'sumExecuted',
+		title: 'حجم انجام شده',
+		hidden: false,
+	},
+	{
+		id: 'lastErrorCode',
+		title: 'وضعیت گزارش',
+		hidden: false,
+	},
+	{
+		id: 'validity',
+		title: 'اعتبار',
+		hidden: false,
+	},
+];
+
+export const defaultTradesReportsColumns: TradesReports.ITradesReportsColumnsState[] = [
+	{
+		id: 'orderId',
+		title: 'ردیف',
+		hidden: false,
+	},
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+	},
+	{
+		id: 'orderSide',
+		title: 'سمت',
+		hidden: false,
+	},
+	{
+		id: 'orderDateTime',
+		title: 'تاریخ',
+		hidden: false,
+	},
+	{
+		id: 'orderDateTime',
+		title: 'ساعت',
+		hidden: false,
+	},
+	{
+		id: 'quantity',
+		title: 'حجم کل',
+		hidden: false,
+	},
+	{
+		id: 'price',
+		title: 'قیمت',
+		hidden: false,
+	},
+	{
+		id: 'validity',
+		title: 'اعتبار',
+		hidden: false,
+	},
+];
 
 export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
