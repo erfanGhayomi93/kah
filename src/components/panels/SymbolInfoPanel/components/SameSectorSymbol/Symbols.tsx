@@ -3,7 +3,7 @@ import AgTable from '@/components/common/Tables/AgTable';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
 import CoGroupSymbolCompare from './components/CoGroupSymbolCompare';
@@ -98,17 +98,6 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		const gridApi = gridRef.current;
-		if (!gridApi) return;
-
-		try {
-			gridApi.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	if (isLoading) return <Loading />;
 

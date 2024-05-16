@@ -207,7 +207,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
-				headerName: 'قیمت بهترین خریدار',
+				headerName: 'بهترین خریدار',
 				width: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.optionBestBuyLimitPrice ?? 0,
@@ -223,7 +223,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
-				headerName: 'قیمت بهترین فروشنده',
+				headerName: 'بهترین فروشنده',
 				width: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
@@ -287,7 +287,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'premium',
-				headerName: 'آخرین قیمت نماد آپشن',
+				headerName: 'قیمت نماد آپشن',
 				width: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({

@@ -192,7 +192,7 @@ const LongPut = (strategy: LongPutProps) => {
 			},
 			{
 				colId: 'premium',
-				headerName: 'آخرین قیمت نماد آپشن',
+				headerName: 'قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
@@ -204,7 +204,7 @@ const LongPut = (strategy: LongPutProps) => {
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
-				headerName: 'قیمت بهترین خریدار',
+				headerName: 'بهترین خریدار',
 				minWidth: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => 0,
@@ -220,7 +220,7 @@ const LongPut = (strategy: LongPutProps) => {
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
-				headerName: 'قیمت بهترین فروشنده',
+				headerName: 'بهترین فروشنده',
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
