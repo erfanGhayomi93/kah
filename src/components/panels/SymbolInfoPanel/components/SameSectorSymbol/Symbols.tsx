@@ -1,9 +1,9 @@
 import { useSameSectorSymbolsQuery } from '@/api/queries/symbolQuery';
 import AgTable from '@/components/common/Tables/AgTable';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { type ColDef } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
 import CoGroupSymbolCompare from './components/CoGroupSymbolCompare';
@@ -16,7 +16,7 @@ interface SymbolsProps {
 const Symbols = ({ symbolISIN }: SymbolsProps) => {
 	const t = useTranslations();
 
-	const gridRef = useRef<GridApi<Symbol.SameSector>>(null);
+	// const gridRef = useRef<GridApi<Symbol.SameSector>>(null);
 
 	const { data, isLoading } = useSameSectorSymbolsQuery({
 		queryKey: ['sameSectorSymbolsQuery', symbolISIN],
