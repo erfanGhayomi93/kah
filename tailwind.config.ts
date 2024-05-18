@@ -518,6 +518,16 @@ const config: Config = {
 					},
 				},
 
+				'.btn-disabled': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.gray.700'),
+					backgroundColor: 'rgba(140, 142, 151, 0.1)',
+					transition:
+						'color 250ms ease-in-out, background-color 250ms ease-in-out, border-color 250ms ease-in-out',
+				},
+
 				'.btn-disabled-outline': {
 					display: 'flex',
 					'align-items': 'center',

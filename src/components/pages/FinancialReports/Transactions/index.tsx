@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import Tabs from '../common/Tabs';
-import Toolbar from './Toolbar';
+import Toolbar from '../common/Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
 	ssr: false,
@@ -110,7 +110,7 @@ const Transactions = () => {
 			setManageColumnsPanel({
 				initialColumns: defaultTransactionColumns,
 				columns: columnsVisibility,
-				title: t('transactions_reports_page.manage_columns'),
+				title: t('transactions_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultTransactionColumns),
 			}),

@@ -15,7 +15,7 @@ declare interface IpcMainChannels {
 		'pageNumber' | 'pageSize'
 	>;
 	set_freeze_and_unfreeze_filters: Omit<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters, 'pageNumber' | 'pageSize'>;
-	set_withdrawal_cash_filters: Omit<WithdrawalCashReports.WithdrawalCashReportsFilters, 'pageNumber' | 'pageSize'>;
+	set_withdrawal_cash_reports_filters: Omit<WithdrawalCashReports.WithdrawalCashReportsFilters, 'pageNumber' | 'pageSize'>;
 	set_changeBroker_reports_filters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, "pageNumber" | "pageSize">;
 	set_cash_settlement_reports_filters: Omit<CashSettlementReports.ICashSettlementReportsFilters, "pageNumber", "pageSize">;
 	set_physical_settlement_reports_filters: Omit<PhysicalSettlementReports.IPhysicalSettlementReportsFilters, "pageNumber" | "pageSize">;

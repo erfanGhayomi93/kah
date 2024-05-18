@@ -588,7 +588,8 @@
 		"change_broker_reports": "تغییر کارگزار ناظر",
 		"freeze_and_unFreeze": "فریز و رفع فریز",
 		"orders": "سفارشات",
-		"trades": "معاملات"
+		"financial": "مالی",
+		"option": "اختیار"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
@@ -1132,6 +1133,29 @@
 		"execution_steps": "نحوه اجرا",
 		"execution_condition": "شرط اجرا"
 	},
+	"create_strategy": {
+		"strategy": "استراتژی {strategyName} {baseSymbolTitle}",
+		"add_conditional_alert": "افزودن هشدار شرطی",
+		"current_status": "وضعیت لحظه‌ای",
+		"bep": "سر به سر",
+		"most_loss": "بیشترین ضرر",
+		"most_profit": "بیشترین سود",
+		"profit": "سود",
+		"loss": "ضرر",
+		"freeze": "فریز سهم",
+		"best_limit_price": "قیمت سرخط",
+		"base_step_title": "داشتن یا خرید سهم ({symbolTitle})",
+		"status_TODO": "در حال انجام",
+		"status_PENDING": "در انتظار",
+		"status_DONE": "انجام شده",
+		"status_ERROR": "خطا",
+		"stock": "سهم",
+		"remain_quantities": "تعداد باقیمانده مورد نیاز",
+		"free_stock_quantity": "تعداد سهام آزاد",
+		"buy_assets_by_free_stock": "استفاده از سهام آزاد برای خرید دارایی",
+		"estimated_budget": "بودجه تقریبی",
+		"required_quantity": "تعداد سهم جهت اجرای استراتژی"
+	},
 	"strategy_cheaps": {
 		"All": "همه",
 		"HighRisk": "ریسک بالا",
@@ -1240,7 +1264,12 @@
 		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
 		"drawal_offline_successFully": "درخواست برداشت وجه با موفقیت انجام شد.",
 		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید.",
-		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است"
+		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است",
+		"instant_deposit_canceled_successfully": "درخواست شما با موفقیت حدف شد.",
+		"instant_deposit_canceled_failed": "خطا در حذف درخواست",
+		"withdrawal_cash_canceled_successfully": "درخواست شما با موفقیت لغو شد.",
+		"withdrawal_cash_canceled_failed": "خطا در حذف درخواست",
+		"withdrawal_cash_AccountNotConfirmed": "شماره حساب مورد نظر تایید نشده است"
 	},
 	"financial_reports_page": {
 		"financial_reports": "گزارشات مالی",
@@ -1249,7 +1278,7 @@
 		"deposit_offline_tab": "واریز با فیش",
 		"withdrawal_cash_tab": "برداشت وجه"
 	},
-	"transactions_reports_page": {
+	"transactions_page": {
 		"filter_title_modal": "فیلتر گردش حساب",
 		"id_column": "شماره ردیف",
 		"date_column": "زمان",
@@ -1301,10 +1330,15 @@
 		"bank_column": "بانک",
 		"system": "سامانه",
 		"manage_columns": "مدیریت ستون‌های جدول",
+		"dates_placeholder_filter": "زمان",
+		"from_date_placeholder_filter": "از تاریخ",
+		"to_date_placeholder_filter": "تا تاریخ",
 		"bank_placeholder_filter": "بانک",
-		"status_placeholder_filter": "وضعیت"
+		"status_placeholder_filter": "وضعیت",
+		"from_price_placeholder_filter": "از مبلغ",
+		"to_price_placeholder_filter": "تا مبلغ"
 	},
-	"deposit_with_receipt_page": {
+	"deposit_with_receipt_reports_page": {
 		"filter_title_modal": "فیلتر واریز با فیش",
 		"id_column": "ردیف",
 		"date_column": "تاریخ",
@@ -1316,9 +1350,12 @@
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"has_attachment": "دارد",
 		"has_not_attachment": "ندارد",
+		"time_placeholder_filter": "زمان",
 		"status_placeholder_filter": "وضعیت",
 		"receipt_number_placeholder_filter": "شماره فیش",
-		"attachment_placeholder_filter": "پیوست"
+		"attachment_placeholder_filter": "پیوست",
+		"from_price_placeholder_filter": "از مبلغ",
+		"to_price_placeholder_filter": "تا مبلغ"
 	},
 	"change_broker_reports_page": {
 		"title_page": "گزارشات تغییر کارگزار ناظر",
@@ -1335,6 +1372,9 @@
 	"withdrawal_cash_reports_page": {
 		"filter_title_modal": "فیلتر برداشت وجه",
 		"manage_columns": "مدیریت ستون‌های جدول",
+		"time_placeholder_filter": "زمان",
+		"from_price_placeholder_filter": "از مبلغ",
+		"to_price_placeholder_filter": "تا مبلغ",
 		"bank_placeholder_filter": "بانک",
 		"status_placeholder_filter": "وضعیت",
 		"id_column": "ردیف",
@@ -1356,6 +1396,7 @@
 		"filter_title_modal": "فیلتر فریز و رفع فریز",
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"status_placeholder_filter": "وضعیت",
+		"time_placeholder_filter": "زمان",
 		"id_column": "ردیف",
 		"symbol_column": "نماد",
 		"date_column": "تاریخ",
@@ -1363,9 +1404,10 @@
 		"action_column": "عملیات",
 		"state_Done": "تایید",
 		"state_InProgress": "در حال انجام",
-		"state_FreezeFailed": "ناموفق"
-	},
+		"state_FreezeFailed": "ناموفق",
+		"state_NotApprove": "عدم تایید"
 
+	},
 	"cash_settlement_reports_page": {
 		"filter_title_modal": "فیلتر تسویه نقدی",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1375,7 +1417,7 @@
 		"cash_date_column": "تاریخ تسویه نقدی",
 		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
 		"request_type_column": "نوع اعمال",
-		"settlement_price_column":"مبلغ تسویه",
+		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",
 		"done_count_column": "تعداد پذیرفته شده",
 		"user_type_column": "درخواست کننده",
@@ -1397,9 +1439,9 @@
 		"type_status_Draft": "پیش نویس",
 		"type_status_Registered": "ثبت شده",
 		"request_type_placeholder_filter": "نوع اعمال",
-		"request_status_type_placeholder_filter": "وضعیت درخواست"
+		"request_status_type_placeholder_filter": "وضعیت درخواست",
+		"time_placeholder_filter": "زمان"
 	},
-
 	"physical_settlement_reports_page": {
 		"filter_title_modal": "فیلتر تسویه فیزیکی",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1409,7 +1451,7 @@
 		"cash_date_column": "تاریخ تسویه نقدی",
 		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
 		"request_type_column": "نوع اعمال",
-		"settlement_price_column":"مبلغ تسویه",
+		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",
 		"done_count_column": "تعداد پذیرفته شده",
 		"pen_count_column": "تعداد نکول",
@@ -1433,16 +1475,15 @@
 		"type_status_Draft": "پیش نویس",
 		"type_status_Registered": "ثبت شده",
 		"request_type_placeholder_filter": "نوع اعمال",
-		"request_status_type_placeholder_filter": "وضعیت درخواست"
+		"request_status_type_placeholder_filter": "وضعیت درخواست",
+		"time_placeholder_filter": "زمان"
 	},
-
 	"orders_and_trades_reports_page": {
 		"orders_and_trades_reports": "گزارشات سفارشات",
 		"orders_tab": "سفارشات",
 		"trades_tab": "معاملات"
 	},
-
-	"orders_reports_page":{
+	"orders_reports_page": {
 		"filter_title_modal": "فیلتر سفارشات",
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"id_column": "ردیف",
@@ -1457,6 +1498,7 @@
 		"validity_column": "اعتبار",
 		"side_filters_placeholder_filter": "سمت",
 		"status_filters_placeholder_filter": "وضعیت",
+		"dates_placeholder_filter": "زمان",
 		"side": "سمت",
 		"side_All": "همه",
 		"side_Buy": "خرید",
@@ -1466,7 +1508,6 @@
 		"side_SellIncremental": "فروش فزاینده",
 		"side_SellDecremental": "فروش کاهنده"
 	},
-
 	"trades_reports_page": {
 		"filter_title_modal": "فیلتر معاملات",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1477,11 +1518,14 @@
 		"time_column": "ساعت",
 		"overall_volume_column": "حجم کل",
 		"price_column": "قیمت",
+		"commission_column": "کارمزد",
+		"value_column": "ارزش معامله",
 		"done_volume_column": "حجم انجام شده",
 		"status_column": "وضعیت",
 		"validity_column": "اعتبار",
 		"side_filters_placeholder_filter": "سمت",
 		"status_filters_placeholder_filter": "وضعیت",
+		"dates_placeholder_filter": "زمان",
 		"side": "سمت",
 		"side_All": "همه",
 		"side_Buy": "خرید",
@@ -1491,7 +1535,6 @@
 		"side_SellIncremental": "فروش فزاینده",
 		"side_SellDecremental": "فروش کاهنده"
 	},
-
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"

@@ -16,10 +16,10 @@ interface SettlementItemProps {
 
 interface ToolbarProps {
 	inputs: OptionChainFilters;
-	setInputValue: <T extends keyof OptionChainFilters>(name: T, value: OptionChainFilters[T]) => void;
+	setFieldValue: <T extends keyof OptionChainFilters>(name: T, value: OptionChainFilters[T]) => void;
 }
 
-const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
+const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -39,20 +39,17 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 	}, [settlementDays]);
 
 	useEffect(() => {
-		if (Array.isArray(settlementDays)) setInputValue('settlementDay', settlementDays[0]);
+		if (Array.isArray(settlementDays)) setFieldValue('settlementDay', settlementDays[0]);
 	}, [settlementDays, inputs.baseSymbol]);
 
 	return (
-		<div
-			style={{ flex: '0 0 5.6rem' }}
-			className='flex-1 gap-36 overflow-hidden rounded bg-white px-16 flex-justify-between'
-		>
-			<div className='flex-1 gap-24 overflow-hidden flex-items-center'>
+		<div style={{ flex: '0 0 5.6rem' }} className='flex-1 gap-36 rounded bg-white px-16 flex-justify-between'>
+			<div className='flex-1 gap-24 flex-items-center'>
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch
 						nullable={false}
 						value={inputs.baseSymbol}
-						onChange={(symbol) => setInputValue('baseSymbol', symbol)}
+						onChange={(symbol) => setFieldValue('baseSymbol', symbol)}
 					/>
 				</div>
 
@@ -69,7 +66,7 @@ const Toolbar = ({ inputs, setInputValue }: ToolbarProps) => {
 									key={i}
 									activeSettlementDay={inputs.settlementDay}
 									settlementDay={item}
-									setSettlementDay={(v) => setInputValue('settlementDay', v)}
+									setSettlementDay={(v) => setFieldValue('settlementDay', v)}
 								/>
 							))}
 						</ul>

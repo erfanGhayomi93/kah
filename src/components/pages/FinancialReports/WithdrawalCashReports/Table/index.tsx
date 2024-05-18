@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import WithdrawalCashReportsTable from './WithdrawalCashReportsTable';
 
 interface TableProps {
@@ -13,11 +13,10 @@ interface TableProps {
 		value: WithdrawalCashReports.WithdrawalCashReportsFilters[K],
 	) => void;
 	setFieldsValue: (props: Partial<WithdrawalCashReports.WithdrawalCashReportsFilters>) => void;
-	columnsVisibility: TWithdrawalCashReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<TWithdrawalCashReportsColumnsState[]>>;
+	columnsVisibility: WithdrawalCashReports.TWithdrawalCashReportsColumnsState[];
 }
 
-const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, setFieldsValue }: TableProps) => {
+const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: TableProps) => {
 	const { data: withdrawalCashReportsData, isLoading } = useWithdrawalCashReports({
 		queryKey: ['withdrawalCashReports', filters],
 	});
@@ -27,10 +26,10 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle('set_withdrawal_cash_filters', onFiltersChanged);
+		ipcMain.handle('set_withdrawal_cash_reports_filters', onFiltersChanged);
 
 		return () => {
-			ipcMain.removeChannel('set_transactions_filters');
+			ipcMain.removeChannel('set_withdrawal_cash_reports_filters');
 		};
 	}, []);
 
@@ -53,7 +52,6 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 			>
 				<WithdrawalCashReportsTable
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					reports={reports}
 				/>
 			</div>
@@ -79,7 +77,9 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 			)}
 
 			{dataIsEmpty && !isLoading && (
-				<NoData />
+				<div className='absolute center'>
+					<NoData />
+				</div>
 			)}
 		</>
 	);

@@ -1,26 +1,28 @@
 'use client';
 
 import Main from '@/components/layout/Main';
-import { useState } from 'react';
+import { useAppDispatch } from '@/features/hooks';
+import { setOrderBasket } from '@/features/slices/userSlice';
+import { useInputs } from '@/hooks';
+import { useEffect } from 'react';
 import Option from './Option';
 import Toolbar from './Toolbar';
 
 const OptionChain = () => {
-	const [inputs, setInputs] = useState<OptionChainFilters>({
+	const dispatch = useAppDispatch();
+
+	const { inputs, setFieldValue } = useInputs<OptionChainFilters>({
 		baseSymbol: null,
 		settlementDay: null,
 	});
 
-	const setInputValue = <T extends keyof OptionChainFilters>(name: T, value: OptionChainFilters[T]) => {
-		setInputs((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
+	useEffect(() => {
+		dispatch(setOrderBasket(null));
+	}, [inputs.baseSymbol?.symbolISIN]);
 
 	return (
 		<Main className='gap-8 !px-8'>
-			<Toolbar inputs={inputs} setInputValue={setInputValue} />
+			<Toolbar inputs={inputs} setFieldValue={setFieldValue} />
 			<Option settlementDay={inputs.settlementDay} baseSymbol={inputs.baseSymbol ?? null} />
 		</Main>
 	);
