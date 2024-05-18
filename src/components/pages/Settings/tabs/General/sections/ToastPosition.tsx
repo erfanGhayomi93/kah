@@ -53,7 +53,7 @@ const ToastPositionSettings = () => {
 					)}
 					onClick={() => {
 						dispatch(setToastPosition(item.id));
-						toast.success(t('settings_page.changed_toast_position'), { position: item.id });
+						toast.success(t('settings_page.changed_toast_position'), { position: item.id, autoClose: 500 });
 					}}
 				>
 					<span

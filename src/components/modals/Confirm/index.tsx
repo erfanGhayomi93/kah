@@ -77,13 +77,15 @@ const Confirm = forwardRef<HTMLDivElement, ConfirmProps>(
 					</div>
 
 					<div className='flex w-full justify-between gap-8 px-16'>
-						<button
-							onClick={onCloseModalAndNotify}
-							type='button'
-							className='h-40 flex-1 rounded text-lg btn-disabled-outline'
-						>
-							{t('common.cancel')}
-						</button>
+						{onCancel && (
+							<button
+								onClick={onCloseModalAndNotify}
+								type='button'
+								className='h-40 flex-1 rounded text-lg btn-disabled-outline'
+							>
+								{t('common.cancel')}
+							</button>
+						)}
 
 						<button
 							onClick={onConfirm}

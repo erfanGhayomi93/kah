@@ -166,6 +166,13 @@ export interface IConfirmModal extends IBaseModalConfiguration {
 	};
 }
 
+export interface IAcceptAgreement extends IBaseModalConfiguration {
+	data: Settings.IAgreements;
+	getAgreements: (
+		options?: RefetchOptions,
+	) => Promise<QueryObserverResult<Settings.IAgreements[] | null, AxiosError<unknown, any>>>;
+}
+
 export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 	isOption: boolean;
 }
@@ -206,6 +213,7 @@ export type ModalState = TBaseModalProps<{
 	choiceBroker: true;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	confirm: IConfirmModal;
+	acceptAgreement: IAcceptAgreement;
 	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
 	orderDetails: TOrderDetailsModal;

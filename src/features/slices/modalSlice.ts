@@ -90,7 +90,10 @@ const initialState: ModalState = {
 	changeBrokerReportsFilters: null,
 
 	// فیلتر صفحه فریز و رفع فریز
-	freezeUnfreezeReportsFilters: null
+	freezeUnfreezeReportsFilters: null,
+
+	// تایید توافق‌نامه
+	acceptAgreement: null,
 };
 
 const modalSlice = createSlice({
@@ -115,6 +118,10 @@ const modalSlice = createSlice({
 
 		setConfirmModal: (state, { payload }: PayloadAction<ModalState['confirm']>) => {
 			state.confirm = payload;
+		},
+
+		setAcceptAgreement: (state, { payload }: PayloadAction<ModalState['acceptAgreement']>) => {
+			state.acceptAgreement = payload;
 		},
 
 		setLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
@@ -277,7 +284,8 @@ export const {
 	setDepositWithReceiptReportsFiltersModal,
 	setWithdrawalCashReportsFiltersModal,
 	setChangeBrokerReportsFiltersModal,
-	setFreezeUnFreezeReportsFiltersModal
+	setFreezeUnFreezeReportsFiltersModal,
+	setAcceptAgreement,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -287,6 +295,7 @@ export const getMoveSymbolToWatchlistModal = (state: RootState) => state.modal.m
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getBuySellModal = (state: RootState) => state.modal.buySell;
 export const getConfirmModal = (state: RootState) => state.modal.confirm;
+export const getAcceptAgreement = (state: RootState) => state.modal.acceptAgreement;
 export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;

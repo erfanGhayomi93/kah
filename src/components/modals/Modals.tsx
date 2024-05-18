@@ -28,6 +28,7 @@ import ModalLoading from './ModalLoading';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
 import TransactionsFiltersModal from './TransactionsFiltersModal';
 import WithdrawalCashFiltersModal from './WithdrawalCashReportsFiltersModal';
+import AcceptAgreement from './AcceptAgreement';
 
 const LoginModal = lazy(() => import('./LoginModal'));
 
@@ -83,6 +84,7 @@ const Modals = () => {
 		addSymbolToWatchlist,
 		choiceBroker,
 		confirm,
+		acceptAgreement,
 		symbolInfoPanelSetting,
 		choiceCollateral,
 		blackScholes,
@@ -132,6 +134,14 @@ const Modals = () => {
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{acceptAgreement && (
+					<ModalSuspense>
+						<AcceptAgreement {...acceptAgreement} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

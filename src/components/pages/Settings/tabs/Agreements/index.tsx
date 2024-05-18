@@ -3,8 +3,9 @@ import { useGetAgreements } from '@/api/queries/brokerPrivateQueries';
 import Switch from '@/components/common/Inputs/Switch';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { DocSVG } from '@/components/icons';
-import { useAppSelector } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setAcceptAgreement } from '@/features/slices/modalSlice';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
@@ -13,6 +14,7 @@ import SettingCard from '../../components/SettingCard';
 const Agreements = () => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
 	const brokerURLs = useAppSelector(getBrokerURLs);
 
 	const { data: agreements, refetch: getAgreements } = useGetAgreements({
@@ -68,9 +70,12 @@ const Agreements = () => {
 			},
 			{
 				headerName: t('settings_page.action'),
-				valueFormatter: ({ state }) => (
+				valueFormatter: (data) => (
 					<div className='flex-justify-center'>
-						<Switch checked={state === 'Accepted'} onChange={() => {}} />
+						<Switch
+							checked={data?.state === 'Accepted'}
+							onChange={() => dispatch(setAcceptAgreement({ data, getAgreements }))}
+						/>
 					</div>
 				),
 				cellClass: 'w-1/6',

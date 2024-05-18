@@ -645,8 +645,10 @@ declare namespace Broker {
 		| 'ChangeBrokerChangeBrokersByFilter'
 		| 'GetAgreements'
 		| 'ChangeBrokerSetCancel'
-		| "FreezeExportFreeze"
+		| 'FreezeExportFreeze'
 		| 'Freezerequests'
+		| 'AcceptAgreement'
+		| 'MobileOtpRequest';
 
 	type URL = Record<UrlKey, string>;
 
@@ -941,7 +943,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse { }
+		export interface FaraBourse extends GetMarketState.Bourse {}
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -956,17 +958,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-			| 'ticks'
-			| 'days'
-			| 'hours'
-			| 'milliseconds'
-			| 'minutes'
-			| 'seconds'
-			| 'totalDays'
-			| 'totalHours'
-			| 'totalMilliseconds'
-			| 'totalMinutes'
-			| 'totalSeconds';
+				| 'ticks'
+				| 'days'
+				| 'hours'
+				| 'milliseconds'
+				| 'minutes'
+				| 'seconds'
+				| 'totalDays'
+				| 'totalHours'
+				| 'totalMilliseconds'
+				| 'totalMinutes'
+				| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1298,13 +1300,13 @@ declare namespace Settings {
 	export interface IBrokerCustomerSettings {
 		id: number;
 		configKey:
-		| 'confirmBeforeDelete'
-		| 'confirmBeforeSendOrder'
-		| 'defaultBuyVolume'
-		| 'defaultSellVolume'
-		| 'sendSupervisorMarketMessage'
-		| 'showSymbolDetailsInBuySellModal'
-		| 'breakEvenPoint';
+			| 'confirmBeforeDelete'
+			| 'confirmBeforeSendOrder'
+			| 'defaultBuyVolume'
+			| 'defaultSellVolume'
+			| 'sendSupervisorMarketMessage'
+			| 'showSymbolDetailsInBuySellModal'
+			| 'breakEvenPoint';
 		configValue: string;
 		saveDate: string;
 	}
@@ -1321,6 +1323,13 @@ declare namespace Settings {
 		canChangeByCustomer: boolean;
 		approveBySMS: boolean;
 		attachmentUrl: string | null;
+	}
+
+	export interface IMobileOTP {
+		expireDate: number;
+		retryToken: string;
+		starredMessage: string;
+		state: boolean;
 	}
 }
 
@@ -1803,18 +1812,18 @@ declare namespace Reports {
 		amount: number;
 		providerType: string;
 		state:
-		| 'CanceledByUser'
-		| 'Done'
-		| 'DoubleSpendingCheckedOk'
-		| 'DoubleSpendingCheckFailed'
-		| 'RedirectToBank'
-		| 'Request'
-		| 'RequestBankToken'
-		| 'RequestBankTokenError'
-		| 'Verify'
-		| 'VerifyCheck'
-		| 'VerifyCheckFailed'
-		| 'OkBeforeVerifys';
+			| 'CanceledByUser'
+			| 'Done'
+			| 'DoubleSpendingCheckedOk'
+			| 'DoubleSpendingCheckFailed'
+			| 'RedirectToBank'
+			| 'Request'
+			| 'RequestBankToken'
+			| 'RequestBankTokenError'
+			| 'Verify'
+			| 'VerifyCheck'
+			| 'VerifyCheckFailed'
+			| 'OkBeforeVerifys';
 		errorMessage: string;
 	}
 
@@ -1841,17 +1850,17 @@ declare namespace Reports {
 		bankAccountId: number;
 		accountNumber: string | null;
 		status:
-		| 'Draft'
-		| 'Pending'
-		| 'Confirmed'
-		| 'Canceled'
-		| 'Failed'
-		| 'Voided'
-		| 'Paid'
-		| 'Entry'
-		| 'ErrorOccured'
-		| 'PostedToBackOffice'
-		| 'CreateRequest';
+			| 'Draft'
+			| 'Pending'
+			| 'Confirmed'
+			| 'Canceled'
+			| 'Failed'
+			| 'Voided'
+			| 'Paid'
+			| 'Entry'
+			| 'ErrorOccured'
+			| 'PostedToBackOffice'
+			| 'CreateRequest';
 		prsName: string | null;
 		orderOrigin: 'Broker' | 'Online' | number;
 		orderOriginName: null | string;
@@ -1879,6 +1888,6 @@ declare namespace Reports {
 		requestState: FreezeUnFreezeReports.TFreezeRequestState;
 		description: string;
 		confirmed: boolean;
-		confirmedOn: string
+		confirmedOn: string;
 	}
 }
