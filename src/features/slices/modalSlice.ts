@@ -108,6 +108,9 @@ const initialState: ModalState = {
 
 	// ساخت استراتژی
 	createStrategy: null,
+
+	// فیلتر کاورد کال
+	coveredCallFilters: null,
 };
 
 const modalSlice = createSlice({
@@ -291,6 +294,10 @@ const modalSlice = createSlice({
 		setCreateStrategyModal: (state, { payload }: PayloadAction<ModalState['createStrategy']>) => {
 			state.createStrategy = payload;
 		},
+
+		setCoveredCallFilters: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
+			state.coveredCallFilters = payload;
+		},
 	},
 });
 
@@ -331,6 +338,7 @@ export const {
 	setOrdersReportsFiltersModal,
 	setTradesReportsFiltersModal,
 	setCreateStrategyModal,
+	setCoveredCallFilters,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
