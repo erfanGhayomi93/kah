@@ -1,50 +1,31 @@
-import { cn, convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import { cn, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import React from 'react';
 
-interface InputProps<T extends string | number>
+interface InputProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'className' | 'onChange'> {
 	onChange: (v: string) => void;
-	value: T;
+	value: string | number;
 	prefix: string;
 	placeholder: React.ReactNode;
 	separator?: boolean;
+	valueSeparator?: boolean;
 }
 
-const InputLegend = <T extends string | number>({
+const InputLegend = ({
 	value,
+	valueSeparator = true,
 	placeholder,
 	prefix,
 	separator = true,
 	onChange,
 	...props
-}: InputProps<T>) => {
-	const valueFormatter = (value: number | string) => {
-		if (!value) return '';
-		return sepNumbers(String(value));
-	};
-
+}: InputProps) => {
 	const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const element = e.target;
 		const value = element.value;
-		const valueAsNumber = Number(convertStringToInteger(value));
 
-		if (valueAsNumber >= Number.MAX_SAFE_INTEGER) return;
-		onChange(String(valueAsNumber));
-
-		try {
-			const caret = element.selectionStart;
-
-			if (caret && caret !== value.length) {
-				const diffLength = valueFormatter(valueAsNumber).length - value.length;
-				window.requestAnimationFrame(() => {
-					element.selectionStart = caret + diffLength;
-					element.selectionEnd = caret + diffLength;
-				});
-			}
-		} catch (e) {
-			//
-		}
+		onChange(value);
 	};
 
 	const isActive = value && String(value).length > 0;
@@ -56,7 +37,7 @@ const InputLegend = <T extends string | number>({
 				type='text'
 				inputMode='numeric'
 				className='h-full flex-1 bg-transparent px-8 text-left ltr'
-				value={valueFormatter(value)}
+				value={valueSeparator ? sepNumbers(String(value)) : value}
 				onChange={onChangeValue}
 			/>
 
