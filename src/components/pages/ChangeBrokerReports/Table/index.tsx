@@ -3,8 +3,8 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
-import ChangeBrokerTable from './ChageBrokerTable';
+import { useLayoutEffect, useMemo } from 'react';
+import ChangeBrokerTable from './ChangeBrokerTable';
 
 interface TableProps {
 	filters: ChangeBrokerReports.IChangeBrokerReportsFilters;
@@ -14,10 +14,9 @@ interface TableProps {
 	) => void;
 	setFieldsValue: (props: Partial<Transaction.ITransactionsFilters>) => void;
 	columnsVisibility: ChangeBrokerReports.IChangeBrokerReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<ChangeBrokerReports.IChangeBrokerReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
+const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: TableProps) => {
 
 	const { data: changeBrokerReportsData, isLoading } = useChangeBrokerReportsQuery({
 		queryKey: ['changeBrokerReports', filters],
@@ -57,7 +56,6 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 			>
 				<ChangeBrokerTable
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					reports={reports}
 				/>
 			</div>

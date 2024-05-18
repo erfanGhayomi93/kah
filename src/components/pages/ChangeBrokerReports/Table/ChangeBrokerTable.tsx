@@ -6,17 +6,16 @@ import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 import ChangeBrokerReportsActionCell from './ChangeBrokerReportsActionCell';
 
 interface ChangeBrokerTableProps {
 	reports: Reports.IChangeBrokerReports[] | null;
 	columnsVisibility: ChangeBrokerReports.IChangeBrokerReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<ChangeBrokerReports.IChangeBrokerReportsColumnsState[]>>;
 }
 
-const ChangeBrokerTable = ({ reports, columnsVisibility, setColumnsVisibility }: ChangeBrokerTableProps) => {
+const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProps) => {
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();

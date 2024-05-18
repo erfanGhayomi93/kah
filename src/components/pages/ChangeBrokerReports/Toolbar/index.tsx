@@ -1,4 +1,5 @@
-import Actions from './Actions';
+import Actions from '@/components/common/Tables/Actions';
+
 
 const Toolbar = ({
 	onShowFilters,
@@ -14,7 +15,6 @@ const Toolbar = ({
 	return (
 		<Actions
 			onExportExcel={onExportExcel}
-			showFilter={true}
 			onShowFilters={onShowFilters}
 			filtersCount={filtersCount}
 			onManageColumns={onManageColumns}

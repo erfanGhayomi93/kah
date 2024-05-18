@@ -137,7 +137,6 @@ const ChangeBrokerReports = () => {
 			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					filters={inputs}
 					setFilters={setFieldValue}
 					setFieldsValue={setFieldsValue}
