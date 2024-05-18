@@ -1375,7 +1375,11 @@
 		"status_column": "وضعیت",
 		"action_column": "عملیات",
 		"status_placeholder_filter": "وضعیت",
-		"attachment_placeholder_filter": "پیوست"
+		"attachment_placeholder_filter": "پیوست",
+		"time_placeholder_filter": "زمان",
+		"has_attachment": "دارد",
+		"has_not_attachment": "ندارد"
+		
 	},
 	"withdrawal_cash_reports_page": {
 		"filter_title_modal": "فیلتر برداشت وجه",

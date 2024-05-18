@@ -53,10 +53,10 @@ const FreezeUnFreezeReports = () => {
 		const params: Partial<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters> = {};
 
 		if (inputs.symbol) params.symbol = inputs.symbol;
+		if (inputs.date) params.date = inputs.date;
 		if (inputs.fromDate) params.fromDate = inputs.fromDate;
 		if (inputs.toDate) params.toDate = inputs.toDate;
 		if (inputs.requestState) params.requestState = inputs.requestState;
-
 
 		dispatch(setFreezeUnFreezeReportsFiltersModal(params));
 	};

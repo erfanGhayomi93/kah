@@ -1,4 +1,5 @@
 import { onUnauthorize } from '@/api/axios';
+import { getDateMilliseconds } from '@/constants';
 import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
 import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
@@ -615,4 +616,46 @@ export const versionParser = (value: string) => {
 	const [major, minor, patch] = version.split('.');
 
 	return Number(major) * 100 + Number(minor ? Number(minor) * 10 : 0) + Number(patch ? Number(patch) * 1 : 0);
+};
+
+export const today = (): number => {
+	let d: number | Date = new Date();
+
+	d.setHours(23, 59, 59, 0);
+	d = d.getTime();
+
+	return d;
+};
+
+export const calculateDateRange = (
+	date: Exclude<TDateRange, 'dates.custom'>,
+	reverse = false,
+): Record<'fromDate' | 'toDate', number> => {
+	if (reverse) {
+		const fromDate = today();
+
+		let toDate: Date | number = new Date(fromDate);
+		toDate.setHours(0, 0, 0, 0);
+		toDate = toDate.getTime();
+
+		if (date === 'dates.day') toDate += getDateMilliseconds.Day;
+		if (date === 'dates.week') toDate += getDateMilliseconds.Week;
+		if (date === 'dates.month') toDate += getDateMilliseconds.Month;
+		if (date === 'dates.year') toDate += getDateMilliseconds.Year;
+
+		return { fromDate, toDate };
+	}
+
+	const toDate = today();
+
+	let fromDate: Date | number = new Date(toDate);
+	fromDate.setHours(0, 0, 0, 0);
+	fromDate = fromDate.getTime();
+
+	if (date === 'dates.day') fromDate -= getDateMilliseconds.Day;
+	if (date === 'dates.week') fromDate -= getDateMilliseconds.Week;
+	if (date === 'dates.month') fromDate -= getDateMilliseconds.Month;
+	if (date === 'dates.year') fromDate -= getDateMilliseconds.Year;
+
+	return { fromDate, toDate };
 };

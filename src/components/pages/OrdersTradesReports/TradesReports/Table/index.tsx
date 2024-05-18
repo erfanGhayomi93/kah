@@ -28,10 +28,10 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 	};
 
 	useLayoutEffect(() => {
-		ipcMain.handle('set_transactions_filters', onFiltersChanged);
+		ipcMain.handle('set_trades_reports_filters', onFiltersChanged);
 
 		return () => {
-			ipcMain.removeChannel('set_transactions_filters');
+			ipcMain.removeChannel('set_trades_reports_filters');
 		};
 	}, []);
 

@@ -6,9 +6,9 @@ import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import { useAppDispatch } from '@/features/hooks';
 import { setInstantDepositReportsFiltersModal } from '@/features/slices/modalSlice';
-import { convertStringToInteger } from '@/utils/helpers';
+import { calculateDateRange, convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<InstantDepositReports.IInstantDepositReportsFilters, 'pageNumber' | 'pageSize'>;
@@ -61,6 +61,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	const onChangeState = (options: string[]) => {
 		setFilterValue('status', options);
 	};
+
+	useEffect(() => {
+		if (filters.date === 'dates.custom') return;
+
+		setFilters({
+			...filters,
+			...calculateDateRange(filters.date)
+		});
+	}, [filters.date]);
 
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
