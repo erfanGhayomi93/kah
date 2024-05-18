@@ -23,6 +23,7 @@ import CashSettlementReportsFiltersModal from './CashSettlementReportsFiltersMod
 import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
+import CoveredCallFilters from './CovertCallFilters';
 import CreateStrategyModal from './CreateStrategyModal';
 import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
 import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
@@ -114,6 +115,7 @@ const Modals = () => {
 		ordersReportsFilters,
 		createStrategy,
 		tradesReportsFilters,
+		coveredCallFilters,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -422,6 +424,14 @@ const Modals = () => {
 				{tradesReportsFilters && (
 					<ModalSuspense>
 						<TradeReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{coveredCallFilters && (
+					<ModalSuspense>
+						<CoveredCallFilters />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
