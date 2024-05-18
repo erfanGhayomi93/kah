@@ -52,6 +52,7 @@ const CashSettlementReports = () => {
 		const params: Partial<CashSettlementReports.ICashSettlementReportsFilters> = {};
 
 		if (inputs.symbol) params.symbol = inputs.symbol;
+		if (inputs.date) params.date = inputs.date;
 		if (inputs.fromDate) params.fromDate = inputs.fromDate;
 		if (inputs.toDate) params.toDate = inputs.toDate;
 		if (inputs.contractStatus) params.contractStatus = inputs.contractStatus;
@@ -67,8 +68,8 @@ const CashSettlementReports = () => {
 
 		if (inputs.symbol) badgeCount++;
 
+		if (inputs.contractStatus !== 'All') badgeCount++;
 
-		if (Array.isArray(inputs.contractStatus) && inputs.contractStatus.length > 0) badgeCount++;
 		if (Array.isArray(inputs.requestStatus) && inputs.requestStatus.length > 0) badgeCount++;
 		if (Array.isArray(inputs.settlementRequestType) && inputs.settlementRequestType.length > 0) badgeCount++;
 

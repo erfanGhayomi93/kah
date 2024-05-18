@@ -361,7 +361,7 @@ export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 export const getDescriptionModal = (state: RootState) => state.modal.description;
 export const getTransactionsFiltersModal = (state: RootState) => state.modal.transactionsFilters;
 export const getInstantDepositReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
-export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
+export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => state.modal.depositWithReceiptReportsFilters;
 export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.modal.withdrawalCashReportsFilters;
 export const getChangeBrokerReportsFiltersModal = (state: RootState) => state.modal.changeBrokerReportsFilters;
 export const getFreezeUnFreezeReportsFiltersModal = (state: RootState) => state.modal.freezeUnfreezeReportsFilters;

@@ -5,21 +5,21 @@ import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import TransactionsTable from './TransactionsTable';
 
 interface TableProps {
 	filters: Transaction.ITransactionsFilters;
-	setFilters: <K extends keyof Transaction.ITransactionsFilters>(
+	setFieldValue: <K extends keyof Transaction.ITransactionsFilters>(
 		name: K,
 		value: Transaction.ITransactionsFilters[K],
 	) => void;
 	setFieldsValue: (props: Partial<Transaction.ITransactionsFilters>) => void;
 	columnsVisibility: Transaction.ITransactionColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<Transaction.ITransactionColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
+const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: TableProps) => {
+
 	const t = useTranslations();
 
 	const { data: transactionsReportData, isLoading } = useTransactionsReportsQuery({
@@ -102,8 +102,8 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 					totalCount={transactionsReportData?.totalCount ?? 0}
 					currentPage={filters?.pageNumber ?? 1}
 					pageSize={filters?.pageSize ?? 0}
-					onPageChange={(value) => setFilters('pageNumber', value)}
-					onPageSizeChange={(value) => setFilters('pageSize', value)}
+					onPageChange={(value) => setFieldValue('pageNumber', value)}
+					onPageSizeChange={(value) => setFieldValue('pageSize', value)}
 					pageNumber={transactionsReportData?.pageNumber ?? 0}
 				/>
 			</div>

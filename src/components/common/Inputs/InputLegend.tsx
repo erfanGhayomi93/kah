@@ -6,7 +6,7 @@ interface InputProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'className' | 'onChange'> {
 	onChange: (v: string) => void;
 	value: string | number;
-	prefix: string;
+	prefix?: string;
 	placeholder: React.ReactNode;
 	separator?: boolean;
 	valueSeparator?: boolean;
@@ -31,7 +31,7 @@ const InputLegend = ({
 	const isActive = value && String(value).length > 0;
 
 	return (
-		<label className='relative h-48 rounded flex-items-center input-group'>
+		<label className='relative h-48 rounded flex-items-center input-group flex-1'>
 			<input
 				{...props}
 				type='text'
@@ -47,14 +47,16 @@ const InputLegend = ({
 				<legend>{placeholder}</legend>
 			</fieldset>
 
-			<span
-				className={clsx(
-					'h-24 w-36 text-tiny text-gray-700 flex-justify-center',
-					separator && 'border-r border-r-input',
-				)}
-			>
-				{prefix}
-			</span>
+			{prefix && (
+				<span
+					className={clsx(
+						'h-24 w-36 text-tiny text-gray-700 flex-justify-center',
+						separator && 'border-r border-r-input',
+					)}
+				>
+					{prefix}
+				</span>
+			)}
 		</label>
 	);
 };
