@@ -13,7 +13,7 @@ interface TableProps {
 		value: TradesReports.ITradesReportsFilters[K],
 	) => void;
 	setFieldsValue: (props: Partial<TradesReports.ITradesReportsFilters>) => void;
-	columnsVisibility: TTransactionColumnsState[];
+	columnsVisibility: TradesReports.ITradesReportsColumnsState[];
 	setColumnsVisibility: Dispatch<SetStateAction<TradesReports.ITradesReportsColumnsState[]>>;
 }
 
@@ -80,7 +80,9 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 				</div>
 			)}
 			{dataIsEmpty && !isLoading && (
-				<NoData />
+				<div className='absolute center'>
+					<NoData />
+				</div>
 			)}
 		</>
 	);

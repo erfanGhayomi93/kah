@@ -81,8 +81,8 @@ export interface ICashSettlementReportsFilters extends IBaseModalConfiguration {
 	fromDate?: number;
 	toDate?: number;
 	contractStatus?: CashSettlementReports.TContractStatusType;
-	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>;
-	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType, title: string }>;
+	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType; title: string }>;
+	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType; title: string }>;
 }
 
 export interface IPhysicalSettlementReportsFilters extends IBaseModalConfiguration {
@@ -91,8 +91,8 @@ export interface IPhysicalSettlementReportsFilters extends IBaseModalConfigurati
 	fromDate?: number;
 	toDate?: number;
 	contractStatus?: CashSettlementReports.TContractStatusType;
-	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>;
-	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType, title: string }>;
+	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType; title: string }>;
+	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType; title: string }>;
 }
 
 export interface IOrdersReportsFilters extends IBaseModalConfiguration {
@@ -101,7 +101,7 @@ export interface IOrdersReportsFilters extends IBaseModalConfiguration {
 	fromDate?: number;
 	toDate?: number;
 	side?: TOrderSide;
-	status?: Array<{ id: TOrderStatus, title: string }>
+	status?: Array<{ id: TOrderStatus; title: string }>;
 }
 
 export interface ITradesReportsFilters extends IBaseModalConfiguration {
@@ -149,7 +149,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
-export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
+export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration { }
 
 export interface IOrderDetails {
 	type: 'order';
@@ -209,7 +209,7 @@ export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 	isOption: boolean;
 }
 
-export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
+export interface IManageDashboardLayoutModal extends IBaseModalConfiguration { }
 
 export interface IChangeBrokerModal extends IBaseModalConfiguration {
 	isShow: boolean;
@@ -217,6 +217,7 @@ export interface IChangeBrokerModal extends IBaseModalConfiguration {
 
 export interface IWithdrawalModal extends IBaseModalConfiguration {
 	isShow: boolean;
+	data?: Reports.IWithdrawal;
 }
 
 export interface IDescriptionModal extends IBaseModalConfiguration {
@@ -227,10 +228,18 @@ export interface IDescriptionModal extends IBaseModalConfiguration {
 
 export interface IDepositModal extends IBaseModalConfiguration {
 	isShow: boolean;
+	data?: Reports.IDepositWithReceipt | Reports.IInstantDeposit;
+	activeTab?: 'receiptDepositTab' | 'liveDepositTab'
 }
 
 export interface IFreezeModal extends IBaseModalConfiguration {
 	isShow: boolean;
+}
+
+export interface ICreateStrategyModal extends IBaseModalConfiguration {
+	strategy: Strategy.Type;
+	baseSymbol: Record<'symbolISIN' | 'symbolTitle', string>;
+	steps: CreateStrategy.Input[];
 }
 
 export interface IAnalyzeModal extends IBaseModalConfiguration {
@@ -278,4 +287,5 @@ export type ModalState = TBaseModalProps<{
 	physicalSettlementReportsFilters: IPhysicalSettlementReportsFilters;
 	ordersReportsFilters: IOrdersReportsFilters;
 	tradesReportsFilters: ITradesReportsFilters;
+	createStrategy: ICreateStrategyModal;
 }>;

@@ -5,22 +5,16 @@ import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 interface WatchlistTableProps {
 	reports: Reports.ITransactions[] | null;
-	finalRemain: number;
-	lastTrades: number;
-	columnsVisibility: TTransactionColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<TTransactionColumnsState[]>>;
+	columnsVisibility: Transaction.ITransactionColumnsState[];
 }
 
 const TransactionsTable = ({
 	reports,
-	finalRemain,
-	lastTrades,
 	columnsVisibility,
-	setColumnsVisibility,
 }: WatchlistTableProps) => {
 	const t = useTranslations();
 
@@ -35,8 +29,8 @@ const TransactionsTable = ({
 		() =>
 			[
 				{
-					headerName: t('transactions_reports_page.id_column'),
-					field: 'symbolIsin',
+					headerName: t('transactions_page.id_column'),
+					field: 'id',
 					pinned: 'right',
 					maxWidth: 96,
 					lockPosition: true,
@@ -46,7 +40,7 @@ const TransactionsTable = ({
 					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
 				},
 				{
-					headerName: t('transactions_reports_page.date_column'),
+					headerName: t('transactions_page.date_column'),
 					field: 'date',
 					maxWidth: 96,
 					initialHide: false,
@@ -55,12 +49,12 @@ const TransactionsTable = ({
 					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
 				},
 				{
-					headerName: t('transactions_reports_page.operator_column'),
+					headerName: t('transactions_page.operator_column'),
 					field: 'transactionType',
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ data }) => t('transactions_reports_page.operator_type_' + data?.transactionType),
+					valueFormatter: ({ data }) => t('transactions_page.operator_type_' + data?.transactionType),
 					cellClass: ({ data }) => {
 						switch (data?.transactionType) {
 							case 'Buy':
@@ -73,7 +67,7 @@ const TransactionsTable = ({
 					},
 				},
 				{
-					headerName: t('transactions_reports_page.description_column'),
+					headerName: t('transactions_page.description_column'),
 					field: 'description',
 					initialHide: false,
 					suppressMovable: true,
@@ -82,11 +76,11 @@ const TransactionsTable = ({
 					cellRenderer: ConvertToHTML,
 					valueFormatter: ({ data }) =>
 						data?.description === 'payfast-1561'
-							? t('transactions_reports_page.payfast')
+							? t('transactions_page.payfast')
 							: data?.description,
 				},
 				{
-					headerName: t('transactions_reports_page.debit_column'),
+					headerName: t('transactions_page.debit_column'),
 					field: 'debit',
 					initialHide: false,
 					suppressMovable: true,
@@ -101,7 +95,7 @@ const TransactionsTable = ({
 							: `(${sepNumbers(String(data?.debit))})`,
 				},
 				{
-					headerName: t('transactions_reports_page.credit_column'),
+					headerName: t('transactions_page.credit_column'),
 					field: 'credit',
 					initialHide: false,
 					suppressMovable: true,
@@ -116,7 +110,7 @@ const TransactionsTable = ({
 							: `(${sepNumbers(String(data?.credit))})`,
 				},
 				{
-					headerName: t('transactions_reports_page.remain_column'),
+					headerName: t('transactions_page.remain_column'),
 					field: 'remaining',
 					initialHide: false,
 					suppressMovable: true,
@@ -129,7 +123,7 @@ const TransactionsTable = ({
 							: `(${sepNumbers(String(data?.remaining))})`,
 				},
 				{
-					headerName: t('transactions_reports_page.station_column'),
+					headerName: t('transactions_page.station_column'),
 					field: 'station',
 					maxWidth: 144,
 					initialHide: false,
