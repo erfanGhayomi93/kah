@@ -2,7 +2,7 @@ import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import InputLegend from '@/components/common/Inputs/InputLegend';
 import { ArrowLeftSVG } from '@/components/icons';
-import { sepNumbers } from '@/utils/helpers';
+import { convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
 interface BaseSymbolFormProps extends CreateStrategy.IBaseSymbol {
@@ -44,8 +44,8 @@ const BaseSymbolForm = ({
 			<div className='w-full flex-1 gap-16 flex-column'>
 				<InputLegend
 					type='text'
-					value={String(estimatedBudget)}
-					onChange={(v) => setProperty('estimatedBudget', Number(v))}
+					value={estimatedBudget}
+					onChange={(v) => setProperty('estimatedBudget', Number(convertStringToInteger(v)))}
 					placeholder={t('create_strategy.estimated_budget')}
 					prefix={t('common.rial')}
 					maxLength={16}
@@ -53,8 +53,8 @@ const BaseSymbolForm = ({
 
 				<InputLegend
 					type='text'
-					value={sepNumbers(String(quantity))}
-					onChange={(v) => setProperty('quantity', Number(v))}
+					value={quantity}
+					onChange={(v) => setProperty('quantity', Number(convertStringToInteger(v)))}
 					placeholder={t('create_strategy.required_quantity')}
 					prefix={t('create_strategy.stock')}
 					separator={false}
