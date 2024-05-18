@@ -1,16 +1,17 @@
 import { useUserInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import ipcMain from '@/classes/IpcMain';
 import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
+import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
-import { setTradesReportsFiltersModal } from '@/features/slices/modalSlice';
+import { setOrdersReportsFiltersModal } from '@/features/slices/modalSlice';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
-	filters: Omit<TradesReports.ITradesReportsFilters, 'pageNumber' | 'pageSize'>;
-	setFilters: Dispatch<SetStateAction<Omit<TradesReports.ITradesReportsFilters, 'pageNumber' | 'pageSize'>>>;
+	filters: Omit<OrdersReports.IOrdersReportsFilters, 'pageNumber' | 'pageSize'>;
+	setFilters: Dispatch<SetStateAction<Omit<OrdersReports.IOrdersReportsFilters, 'pageNumber' | 'pageSize'>>>;
 }
 
 const Form = ({ filters, setFilters }: IFormProps) => {
@@ -18,9 +19,9 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const setFilterValue = <T extends keyof TradesReports.ITradesReportsFilters>(
+	const setFilterValue = <T extends keyof OrdersReports.IOrdersReportsFilters>(
 		field: T,
-		value: TradesReports.ITradesReportsFilters[T],
+		value: OrdersReports.IOrdersReportsFilters[T],
 	) => {
 		setFilters((prev) => ({
 			...prev,
@@ -31,14 +32,14 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	const { data: userData } = useUserInfoQuery({ queryKey: ['userInfoQuery'] });
 
 	const onClose = () => {
-		dispatch(setTradesReportsFiltersModal(null));
+		dispatch(setOrdersReportsFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		try {
-			ipcMain.send('set_trades_reports_filters', filters);
+			ipcMain.send('set_orders_reports_filters', filters);
 		} catch (e) {
 			//
 		} finally {
@@ -46,11 +47,13 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		}
 	};
 
-
 	const onChangeSymbol = (value: Symbol.Search) => {
 		if (value) setFilterValue('symbol', value);
 	};
 
+	const onChangeOrdersStatus = (options: Array<{ id: OrdersReports.TOrderStatus, title: string }>) => {
+		setFilterValue('status', options);
+	};
 
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
@@ -62,7 +65,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(option)}</span>}
-					placeholder={t('trades_reports_page.dates_placeholder_filter')}
+					placeholder={t('orders_reports_page.dates_placeholder_filter')}
 					defaultValue={filters.date}
 				/>
 
@@ -90,6 +93,22 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					)}
 					placeholder={t('orders_reports_page.side_filters_placeholder_filter')}
 					defaultValue={filters.side}
+				/>
+
+				<MultiSelect<{ id: OrdersReports.TOrderStatus, title: string }>
+					onChange={(options) => onChangeOrdersStatus(options)}
+					options={[
+						{ id: 'InOMSQueue', title: t('order_status.InOMSQueue') },
+						{ id: 'OrderDone', title: t('order_status.OrderDone') },
+						{ id: 'Error', title: t('order_status.Error') },
+						{ id: 'Modified', title: t('order_status.Modified') },
+						{ id: 'Expired', title: t('order_status.Expired') },
+						{ id: 'Canceled', title: t('order_status.Canceled') }
+					]}
+					getOptionId={(option) => option.id}
+					getOptionTitle={(option) => <span>{option.title}</span>}
+					placeholder={t('orders_reports_page.status_filters_placeholder_filter')}
+					defaultValues={filters.status}
 				/>
 
 			</div>

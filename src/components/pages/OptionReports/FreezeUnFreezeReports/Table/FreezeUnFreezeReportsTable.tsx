@@ -3,7 +3,6 @@ import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
-import FreezeUnFreezeReportsTableActionCell from './FreezeUnFreezeReportsTableActionCell';
 
 interface FreezeUnFreezeReportsTableProps {
 	reports: Reports.IFreezeUnfreezeReports[] | null;
@@ -25,9 +24,9 @@ const FreezeUnFreezeReportsTable = ({
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	const onDeleteRow = async () => {
-		//
-	};
+	// const onDeleteRow = async () => {
+	// 	//
+	// };
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IFreezeUnfreezeReports>>>(
 		() =>
@@ -69,21 +68,21 @@ const FreezeUnFreezeReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value ? t('freeze_and_unfreeze_report_page.state' + value) : ''),
+					valueFormatter: ({ value }) => (value ? t('freeze_and_unfreeze_reports_page.state_' + value) : ''),
 				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.action_column'),
-					field: 'action',
-					maxWidth: 200,
-					minWidth: 200,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellRenderer: FreezeUnFreezeReportsTableActionCell,
-					cellRendererParams: {
-						onDeleteRow,
-					},
-				},
+				// {
+				// 	headerName: t('freeze_and_unfreeze_reports_page.action_column'),
+				// 	field: 'action',
+				// 	maxWidth: 200,
+				// 	minWidth: 200,
+				// 	initialHide: false,
+				// 	suppressMovable: true,
+				// 	sortable: false,
+				// 	cellRenderer: FreezeUnFreezeReportsTableActionCell,
+				// 	cellRendererParams: {
+				// 		onDeleteRow,
+				// 	},
+				// },
 			] as Array<ColDef<Reports.IFreezeUnfreezeReports>>,
 		[],
 	);

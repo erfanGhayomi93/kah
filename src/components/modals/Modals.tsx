@@ -28,9 +28,10 @@ import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersMo
 import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
 import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
 import ModalLoading from './ModalLoading';
-import OrdersReportsFiltersModal from './OrdersReportsModal';
+import OrdersReportsFiltersModal from './OrdersReportsFiltersModal';
 import PhysicalSettlementReportsFiltersModal from './PhysicalSettlementReportsFiltersModal';
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
+import TradeReportsFiltersModal from './TradesReportsFiltersModal';
 import TransactionsFiltersModal from './TransactionsFiltersModal';
 import WithdrawalCashFiltersModal from './WithdrawalCashReportsFiltersModal';
 
@@ -112,6 +113,7 @@ const Modals = () => {
 		physicalSettlementReportsFilters,
 		ordersReportsFilters,
 		createStrategy,
+		tradesReportsFilters,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -412,6 +414,14 @@ const Modals = () => {
 				{createStrategy && (
 					<ModalSuspense>
 						<CreateStrategyModal {...createStrategy} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{tradesReportsFilters && (
+					<ModalSuspense>
+						<TradeReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

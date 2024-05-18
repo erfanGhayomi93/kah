@@ -660,7 +660,9 @@ declare namespace Broker {
 		| 'OrderExportTrades'
 		| 'OrderDetailedOrders'
 		| 'FreezeExportFreeze'
-		| 'Freezerequests';
+		| 'Freezerequests'
+		| 'ReceiptSetCancel'
+		| 'PaymentDeleteRequest';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1922,10 +1924,8 @@ declare namespace Reports {
 	}
 
 	export interface IWithdrawal {
-		requestNumber: string;
-		creationDate: string;
-		requestAmount: number;
-		requestDate: string;
+		id: number;
+		accountNumber: string;
 		bankAccountId: number;
 		accountNumber: string | null;
 		status:

@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import Tabs from '../common/Tabs';
-import Toolbar from './Toolbar';
+import Toolbar from '../common/Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
 	ssr: false,
@@ -143,7 +143,6 @@ const WithdrawalCashReports = () => {
 			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					filters={inputs}
 					setFilters={setFieldValue}
 					setFieldsValue={setFieldsValue}
