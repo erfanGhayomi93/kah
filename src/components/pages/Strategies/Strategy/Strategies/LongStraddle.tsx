@@ -145,7 +145,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.LongStraddle>>>(
 		() => [
 			{
-				colId: 'baseSymbolISIN',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -154,7 +154,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -166,7 +166,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -183,7 +182,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'callSymbolISIN',
+				colId: 'callSymbolTitle',
 				headerName: 'کال',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -209,7 +208,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'putSymbolISIN',
+				colId: 'putSymbolTitle',
 				headerName: 'پوت',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -249,7 +248,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'callPremium',
+				colId: 'callPremiumPercent',
 				headerName: 'قیمت نماد کال',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -258,10 +257,9 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'putPremium',
+				colId: 'putPremiumPercent',
 				headerName: 'قیمت نماد پوت',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -270,7 +268,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'highBEP',

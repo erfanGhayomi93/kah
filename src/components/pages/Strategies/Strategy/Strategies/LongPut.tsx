@@ -129,7 +129,7 @@ const LongPut = (strategy: LongPutProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.LongPut>>>(
 		() => [
 			{
-				colId: 'symbolISIN',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				minWidth: 104,
 				flex: 1,
@@ -139,7 +139,7 @@ const LongPut = (strategy: LongPutProps) => {
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -151,7 +151,6 @@ const LongPut = (strategy: LongPutProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -160,7 +159,7 @@ const LongPut = (strategy: LongPutProps) => {
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
-				colId: 'callSymbolISIN',
+				colId: 'symbolTitle',
 				headerName: 'کال',
 				minWidth: 128,
 				cellClass: 'cursor-pointer',
@@ -187,7 +186,7 @@ const LongPut = (strategy: LongPutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'premium',
+				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
@@ -196,7 +195,6 @@ const LongPut = (strategy: LongPutProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
@@ -240,7 +238,7 @@ const LongPut = (strategy: LongPutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'maxProfit',
+				colId: 'profitPercent',
 				headerName: 'حداکثر بازده',
 				minWidth: 160,
 				headerComponent: HeaderHint,
@@ -253,7 +251,6 @@ const LongPut = (strategy: LongPutProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'blackScholes',

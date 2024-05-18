@@ -163,7 +163,7 @@ const Conversion = (strategy: ConversionProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.Conversion>>>(
 		() => [
 			{
-				colId: 'baseSymbolISIN',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -172,7 +172,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -184,7 +184,6 @@ const Conversion = (strategy: ConversionProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -201,7 +200,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'callPremium',
+				colId: 'callPremiumPercent',
 				headerName: 'قیمت نماد کال',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -210,10 +209,9 @@ const Conversion = (strategy: ConversionProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'putPremium',
+				colId: 'putPremiumPercent',
 				headerName: 'قیمت نماد پوت',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -222,10 +220,9 @@ const Conversion = (strategy: ConversionProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'callSymbolISIN',
+				colId: 'callSymbolTitle',
 				headerName: 'کال',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -274,7 +271,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'putSymbolISIN',
+				colId: 'putSymbolTitle',
 				headerName: 'پوت',
 				width: 128,
 				cellClass: 'cursor-pointer',

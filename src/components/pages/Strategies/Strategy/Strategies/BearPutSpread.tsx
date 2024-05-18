@@ -150,7 +150,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
 		() => [
 			{
-				colId: 'baseSymbolISIN',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -159,7 +159,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -171,7 +171,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -289,7 +288,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'hspPremium',
+				colId: 'hspPremiumPercent',
 				headerName: 'قیمت نماد پوت خرید',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -298,10 +297,9 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'lspPremium',
+				colId: 'lspPremiumPercent',
 				headerName: 'قیمت نماد پوت فروش',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -310,7 +308,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'bullCallSpreadBEP',
@@ -324,7 +321,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'maxProfit',
+				colId: 'maxProfitPercent',
 				headerName: 'حداکثر بازده',
 				width: 184,
 				headerComponent: HeaderHint,
@@ -337,7 +334,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'maxLoss',
