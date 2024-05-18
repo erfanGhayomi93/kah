@@ -149,7 +149,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 }
 
-export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration { }
+export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
 
 export interface IOrderDetails {
 	type: 'order';
@@ -209,7 +209,7 @@ export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 	isOption: boolean;
 }
 
-export interface IManageDashboardLayoutModal extends IBaseModalConfiguration { }
+export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
 
 export interface IChangeBrokerModal extends IBaseModalConfiguration {
 	isShow: boolean;
@@ -229,7 +229,7 @@ export interface IDescriptionModal extends IBaseModalConfiguration {
 export interface IDepositModal extends IBaseModalConfiguration {
 	isShow: boolean;
 	data?: Reports.IDepositWithReceipt | Reports.IInstantDeposit;
-	activeTab?: 'receiptDepositTab' | 'liveDepositTab'
+	activeTab?: 'receiptDepositTab' | 'liveDepositTab';
 }
 
 export interface IFreezeModal extends IBaseModalConfiguration {
@@ -250,6 +250,10 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 	contracts: OrderBasket.Order[];
 	onContractsChanged?: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
 	onContractRemoved?: (id: string) => void;
+}
+
+export interface ICavertCallFilters extends IBaseModalConfiguration {
+	isShow: boolean;
 }
 
 export type ModalState = TBaseModalProps<{
@@ -288,4 +292,5 @@ export type ModalState = TBaseModalProps<{
 	ordersReportsFilters: IOrdersReportsFilters;
 	tradesReportsFilters: ITradesReportsFilters;
 	createStrategy: ICreateStrategyModal;
+	coveredCallFilters: ICavertCallFilters;
 }>;
