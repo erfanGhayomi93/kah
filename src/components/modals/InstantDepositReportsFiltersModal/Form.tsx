@@ -6,6 +6,7 @@ import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import { useAppDispatch } from '@/features/hooks';
 import { setInstantDepositReportsFiltersModal } from '@/features/slices/modalSlice';
+import { convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction } from 'react';
 
@@ -34,9 +35,8 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	const { data: userStatusesData } = userOnlineDepositStatusesQuery({ queryKey: ['userOnlineDepositStatuses'] });
 
 	const { data: userProvidersData } = userOnlineDepositProvidersQuery({
-		queryKey: ['userOnlineDepositProviders']
+		queryKey: ['userOnlineDepositProviders'],
 	});
-
 
 	const onClose = () => {
 		dispatch(setInstantDepositReportsFiltersModal(null));
@@ -92,7 +92,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 				<div className=' gap-32 flex-justify-start'>
 					<InputLegend
 						value={filters.fromPrice}
-						onChange={(v) => setFilterValue('fromPrice', Number(v))}
+						onChange={(v) => setFilterValue('fromPrice', Number(convertStringToInteger(v)))}
 						placeholder={t('instant_deposit_reports_page.from_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
@@ -100,7 +100,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 					<InputLegend
 						value={filters.toPrice}
-						onChange={(v) => setFilterValue('toPrice', Number(v))}
+						onChange={(v) => setFilterValue('toPrice', Number(convertStringToInteger(v)))}
 						placeholder={t('instant_deposit_reports_page.to_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}

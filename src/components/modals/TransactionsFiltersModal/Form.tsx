@@ -6,6 +6,7 @@ import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
 import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction } from 'react';
 
@@ -100,9 +101,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					onChange={(option) => setFilterValue('groupMode', option)}
 					options={['Flat', 'GreedyGrouped']}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => (
-						<span>{t(`transactions_page.display_type_group_${option}`)}</span>
-					)}
+					getOptionTitle={(option) => <span>{t(`transactions_page.display_type_group_${option}`)}</span>}
 					placeholder={t('transactions_page.display_type_placeholder_filter')}
 					defaultValue={filters.groupMode}
 				/>
@@ -110,7 +109,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 				<div className=' gap-32 flex-justify-start'>
 					<InputLegend
 						value={filters.fromPrice}
-						onChange={(v) => setFilterValue('fromPrice', Number(v))}
+						onChange={(v) => setFilterValue('fromPrice', Number(convertStringToInteger(v)))}
 						placeholder={t('transactions_page.from_price_type_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
@@ -118,7 +117,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 					<InputLegend
 						value={filters.toPrice}
-						onChange={(v) => setFilterValue('toPrice', Number(v))}
+						onChange={(v) => setFilterValue('toPrice', Number(convertStringToInteger(v)))}
 						placeholder={t('transactions_page.to_price_type_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
