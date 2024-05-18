@@ -31,7 +31,7 @@ const InputLegend = ({
 	const isActive = value && String(value).length > 0;
 
 	return (
-		<label className='relative h-48 rounded flex-items-center input-group'>
+		<label className='relative h-48 rounded flex-items-center input-group flex-1'>
 			<input
 				{...props}
 				type='text'

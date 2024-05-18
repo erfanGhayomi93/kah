@@ -122,21 +122,22 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>
+					<Select<{
+						id: number;
+						label: string;
+					}>
+						onChange={(option) => setFilterValue('attachment', Boolean(option.id))}
+						options={[
+							{ id: 0, label: 'has_not_attachment' },
+							{ id: 1, label: 'has_attachment' },
+						]}
+						getOptionId={(option) => option.id}
+						getOptionTitle={(option) => <span>{t(`deposit_with_receipt_reports_page.${option.label}`)}</span>}
+						placeholder={t('deposit_with_receipt_reports_page.attachment_placeholder_filter')}
+					/>
 				</div>
 
-				<Select<{
-					id: number;
-					label: string;
-				}>
-					onChange={(option) => setFilterValue('attachment', Boolean(option.id))}
-					options={[
-						{ id: 0, label: 'has_not_attachment' },
-						{ id: 1, label: 'has_attachment' },
-					]}
-					getOptionId={(option) => option.id}
-					getOptionTitle={(option) => <span>{t(`deposit_with_receipt_reports_page.${option.label}`)}</span>}
-					placeholder={t('deposit_with_receipt_reports_page.attachment_placeholder_filter')}
-				/>
+
 			</div>
 
 			<button type='submit' className='h-40 flex-1 rounded px-56 py-8 font-medium btn-primary'>
