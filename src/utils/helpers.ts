@@ -338,6 +338,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getOrderDetailedOrders: data.OrderDetailedOrders,
 		receiptSetCancel: data.ReceiptSetCancel,
 		paymentDeleteRequest: data.PaymentDeleteRequest,
+		acceptAgreement: data.AcceptAgreement,
+		mobileOtpRequest: data.MobileOtpRequest,
 	};
 
 	return urls;
