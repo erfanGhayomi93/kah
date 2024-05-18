@@ -12,19 +12,12 @@ const CreateStrategy = ({ inputs, setInputs }: CreateStrategyProps) => {
 		//
 	};
 
-	const setProperties = (values: Partial<CreateStrategy.Input>) => {
-		setInputs((prev) => ({
-			...prev,
-			...values,
-		}));
-	};
-
 	const todo = useMemo(() => inputs.find((item) => item.status === 'TODO')!, [inputs]);
 
 	return (
 		<div className='flex gap-24'>
 			<Steps steps={inputs} />
-			<StepForm step={todo} setProperties={setProperties} nextStep={nextStep} />
+			<StepForm step={todo} nextStep={nextStep} />
 		</div>
 	);
 };

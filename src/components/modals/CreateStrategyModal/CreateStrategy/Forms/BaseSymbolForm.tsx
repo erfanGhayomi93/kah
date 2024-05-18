@@ -4,9 +4,11 @@ import InputLegend from '@/components/common/Inputs/InputLegend';
 import { ArrowLeftSVG } from '@/components/icons';
 import { convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+
+type TEditableInput = Pick<CreateStrategy.IBaseSymbol, 'quantity' | 'estimatedBudget' | 'buyAssetsBySymbol'>;
 
 interface BaseSymbolFormProps extends CreateStrategy.IBaseSymbol {
-	setProperties: (values: Partial<CreateStrategy.Input>) => void;
 	nextStep: () => void;
 }
 
@@ -20,23 +22,21 @@ const BaseSymbolForm = ({
 	orderPrice,
 	orderQuantity,
 	status,
-	setProperties,
 	nextStep,
 }: BaseSymbolFormProps) => {
 	const t = useTranslations();
 
-	const setProperty = <
-		T extends keyof Pick<
-			CreateStrategy.IBaseSymbol,
-			'quantity' | 'estimatedBudget' | 'buyAssetsBySymbol' | 'orderPrice' | 'orderQuantity'
-		>,
-	>(
-		name: T,
-		value: CreateStrategy.IBaseSymbol[T],
-	) => {
-		setProperties({
+	const [inputs, setInputs] = useState<TEditableInput>({
+		quantity,
+		estimatedBudget,
+		buyAssetsBySymbol,
+	});
+
+	const setProperty = <T extends keyof TEditableInput>(name: T, value: CreateStrategy.IBaseSymbol[T]) => {
+		setInputs((prev) => ({
+			...prev,
 			[name]: value,
-		});
+		}));
 	};
 
 	return (
@@ -44,7 +44,7 @@ const BaseSymbolForm = ({
 			<div className='w-full flex-1 gap-16 flex-column'>
 				<InputLegend
 					type='text'
-					value={estimatedBudget}
+					value={inputs.estimatedBudget}
 					onChange={(v) => setProperty('estimatedBudget', Number(convertStringToInteger(v)))}
 					placeholder={t('create_strategy.estimated_budget')}
 					prefix={t('common.rial')}
@@ -53,7 +53,7 @@ const BaseSymbolForm = ({
 
 				<InputLegend
 					type='text'
-					value={quantity}
+					value={inputs.quantity}
 					onChange={(v) => setProperty('quantity', Number(convertStringToInteger(v)))}
 					placeholder={t('create_strategy.required_quantity')}
 					prefix={t('create_strategy.stock')}
@@ -70,7 +70,7 @@ const BaseSymbolForm = ({
 				</div>
 
 				<Checkbox
-					checked={buyAssetsBySymbol}
+					checked={inputs.buyAssetsBySymbol}
 					label={t('create_strategy.buy_assets_by_free_stock')}
 					onChange={(v) => setProperty('buyAssetsBySymbol', v)}
 				/>

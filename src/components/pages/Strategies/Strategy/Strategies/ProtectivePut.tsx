@@ -142,7 +142,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut>>>(
 		() => [
 			{
-				colId: 'symbolISIN',
+				colId: 'symbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -151,7 +151,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -163,7 +163,6 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -173,7 +172,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'lspSymbolTitle',
+				colId: 'symbolTitle',
 				headerName: 'کال خرید',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -200,7 +199,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'premium',
+				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
@@ -209,7 +208,6 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
@@ -244,7 +242,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'bullCallSpreadBEP',
+				colId: 'protectivePutBEP',
 				headerName: 'سر به سر',
 				width: 152,
 				headerComponent: HeaderHint,
