@@ -13,8 +13,8 @@ interface TableProps {
 		value: InstantDepositReports.IInstantDepositReportsFilters[K],
 	) => void;
 	setFieldsValue: (props: Partial<InstantDepositReports.IInstantDepositReportsFilters>) => void;
-	columnsVisibility: TInstantDepositReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<TInstantDepositReportsColumnsState[]>>;
+	columnsVisibility: InstantDepositReports.TInstantDepositReportsColumnsState[];
+	setColumnsVisibility: Dispatch<SetStateAction<InstantDepositReports.TInstantDepositReportsColumnsState[]>>;
 }
 
 const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, setFieldsValue }: TableProps) => {
@@ -53,7 +53,6 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 			>
 				<InstantDepositReportsTable
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					reports={reports}
 				/>
 			</div>
@@ -79,7 +78,9 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 			)}
 
 			{dataIsEmpty && !isLoading && (
-				<NoData />
+				<div className='absolute center'>
+					<NoData />
+				</div>
 			)}
 		</>
 	);

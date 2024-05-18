@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import Tabs from '../common/Tabs';
-import Toolbar from './Toolbar';
+import Toolbar from '../common/Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
 	ssr: false,
@@ -44,7 +44,7 @@ const DepositWithReceiptReports = () => {
 		useInputs<DepositWithReceiptReports.DepositWithReceiptReportsFilters>(initialDepositWithReceiptReportsFilters);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'deposit_with_receipt_column',
+		'deposit_with_receipt_reports_column',
 		defaultDepositWithReceiptReportsColumn,
 	);
 
@@ -102,7 +102,7 @@ const DepositWithReceiptReports = () => {
 
 			downloadFileQueryParams(
 				urls.getReceiptExportFilteredCSV,
-				`offline-deposit-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
+				`deposit_with_receipt-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);
 		} catch (e) {
@@ -147,7 +147,6 @@ const DepositWithReceiptReports = () => {
 					filters={inputs}
 					setFilters={setFieldValue}
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					setFieldsValue={setFieldsValue}
 				/>
 			</div>

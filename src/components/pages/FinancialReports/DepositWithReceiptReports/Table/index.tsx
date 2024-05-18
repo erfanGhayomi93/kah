@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import DepositWithReceiptReportsTable from './DepositWithReceiptReportsTable';
 
 interface TableProps {
@@ -13,11 +13,10 @@ interface TableProps {
 		value: DepositWithReceiptReports.DepositWithReceiptReportsFilters[K],
 	) => void;
 	setFieldsValue: (props: Partial<DepositWithReceiptReports.DepositWithReceiptReportsFilters>) => void;
-	columnsVisibility: IDepositWithReceiptReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<IDepositWithReceiptReportsColumnsState[]>>;
+	columnsVisibility: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[];
 }
 
-const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, setFieldsValue }: TableProps) => {
+const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: TableProps) => {
 	const { data: depositWithReceiptReportsData, isLoading } = useDepositWithReceiptReports({
 		queryKey: ['depositWithReceiptReports', filters],
 	});
@@ -54,7 +53,6 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 				<DepositWithReceiptReportsTable
 					reports={reports}
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 				/>
 			</div>
 
@@ -79,7 +77,9 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 			)}
 
 			{dataIsEmpty && !isLoading && (
-				<NoData />
+				<div className='absolute center'>
+					<NoData />
+				</div>
 			)}
 		</>
 	);

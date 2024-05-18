@@ -80,7 +80,9 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 				</div>
 			)}
 			{dataIsEmpty && !isLoading && (
-				<NoData />
+				<div className='absolute center'>
+					<NoData />
+				</div>
 			)}
 		</>
 	);

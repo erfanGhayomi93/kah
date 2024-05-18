@@ -16,8 +16,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
-import Tabs from '../../OptionReports/common/Tabs';
-import Toolbar from './Toolbar';
+import Tabs from '../common/Tabs';
+import Toolbar from '../common/Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
 	ssr: false,
@@ -45,7 +45,7 @@ const InstantDepositReports = () => {
 	);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
-		'instant_deposit_column',
+		'instant_deposit_reports_column',
 		defaultInstantDepositReportsColumn,
 	);
 
@@ -104,7 +104,7 @@ const InstantDepositReports = () => {
 
 			downloadFileQueryParams(
 				urls.getEPaymentExportFilteredCSV,
-				`online-deposit-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
+				`instant-deposit-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);
 		} catch (e) {

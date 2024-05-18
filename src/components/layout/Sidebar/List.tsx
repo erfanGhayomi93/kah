@@ -159,52 +159,28 @@ const List = ({ isExpand }: ListProps) => {
 					icon: <ReportSVG />,
 					items: [
 						{
-							id: 'transactions',
-							label: t('sidebar.transactions'),
+							id: 'financial',
+							label: t('sidebar.financial'),
 							to: '/financial-reports/transactions',
 							isBroker: true,
 						},
 						{
-							id: 'instant_deposit',
-							label: t('sidebar.instant_deposit'),
-							to: '/financial-reports/instant-deposit',
+							id: 'option',
+							label: t('sidebar.option'),
+							to: '/option-reports/freeze-and-unfreeze',
 							isBroker: true,
 						},
 						{
 							id: 'deposit_with_receipt',
-							label: t('sidebar.deposit_with_receipt'),
-							to: '/financial-reports/deposit-with-receipt',
-							isBroker: true,
-						},
-						{
-							id: 'withdrawal_cash',
-							label: t('sidebar.withdrawal_cash'),
-							to: '/financial-reports/withdrawal-cash',
+							label: t('sidebar.orders'),
+							to: '/orders-and-trades-reports/orders',
 							isBroker: true,
 						},
 						{
 							id: 'change_broker',
 							label: t('sidebar.change_broker'),
-							to: '/financial-reports/change-broker',
+							to: '/change-broker-reports',
 							isBroker: true,
-						},
-						{
-							id: 'freeze_and_unFreeze',
-							label: t('sidebar.freeze_and_unFreeze'),
-							to: '/option-reports/freeze-and-unfreeze',
-							isBroker: true,
-						},
-						{
-							id: 'orders',
-							label: t('sidebar.orders'),
-							to: '/orders-and-trades-reports/orders',
-							isBroker: true
-						},
-						{
-							id: 'trades',
-							label: t('sidebar.trades'),
-							to: '/orders-and-trades-reports/trades',
-							isBroker: true
 						},
 					],
 				},

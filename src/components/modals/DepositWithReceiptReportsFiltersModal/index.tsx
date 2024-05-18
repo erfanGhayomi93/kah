@@ -51,7 +51,7 @@ const DepositWithReceiptFiltersModal = forwardRef<HTMLDivElement, DepositWithRec
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
 			<Div className='gap-40 bg-white flex-column'>
 				<Header
-					label={t('deposit_with_receipt_page.filter_title_modal')}
+					label={t('deposit_with_receipt_reports_page.filter_title_modal')}
 					onClose={onCloseModal}
 					onClear={onClear}
 				/>

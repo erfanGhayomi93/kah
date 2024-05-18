@@ -43,8 +43,17 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 				if (sorting) {
 					rows.sort((a, b) => {
 						try {
-							// @ts-expect-error: We are using try/catch if something happen
-							return b[sorting.colId] - a[sorting.colId];
+							const { colId, sort } = sorting;
+							const valueA = a[colId as keyof Strategy.AllStrategies];
+							const valueB = b[colId as keyof Strategy.AllStrategies];
+
+							if (typeof valueA === 'string') {
+								if (sort === 'asc') return valueA.localeCompare(valueB as string);
+								else return (valueB as string).localeCompare(valueA);
+							} else {
+								if (sort === 'asc') return (valueB as number) - valueA;
+								else return valueA - (valueB as number);
+							}
 						} catch (e) {
 							return 0;
 						}
@@ -74,6 +83,7 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 						sortable: true,
 						resizable: false,
 						minWidth: 104,
+						comparator: (_a, _b) => 0,
 						...defaultColDef,
 					}}
 					onBodyScrollEnd={({ api }) => {
