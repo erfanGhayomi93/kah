@@ -111,6 +111,8 @@ const initialState: ModalState = {
 
 	// فیلتر کاورد کال
 	coveredCallFilters: null,
+	// تایید توافق‌نامه
+	acceptAgreement: null,
 };
 
 const modalSlice = createSlice({
@@ -135,6 +137,10 @@ const modalSlice = createSlice({
 
 		setConfirmModal: (state, { payload }: PayloadAction<ModalState['confirm']>) => {
 			state.confirm = payload;
+		},
+
+		setAcceptAgreement: (state, { payload }: PayloadAction<ModalState['acceptAgreement']>) => {
+			state.acceptAgreement = payload;
 		},
 
 		setLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
@@ -339,6 +345,7 @@ export const {
 	setTradesReportsFiltersModal,
 	setCreateStrategyModal,
 	setCoveredCallFilters,
+	setAcceptAgreement,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -348,6 +355,7 @@ export const getMoveSymbolToWatchlistModal = (state: RootState) => state.modal.m
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getBuySellModal = (state: RootState) => state.modal.buySell;
 export const getConfirmModal = (state: RootState) => state.modal.confirm;
+export const getAcceptAgreement = (state: RootState) => state.modal.acceptAgreement;
 export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
@@ -361,7 +369,8 @@ export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 export const getDescriptionModal = (state: RootState) => state.modal.description;
 export const getTransactionsFiltersModal = (state: RootState) => state.modal.transactionsFilters;
 export const getInstantDepositReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
-export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => state.modal.depositWithReceiptReportsFilters;
+export const getDepositWithReceiptReportsFiltersModal = (state: RootState) =>
+	state.modal.depositWithReceiptReportsFilters;
 export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.modal.withdrawalCashReportsFilters;
 export const getChangeBrokerReportsFiltersModal = (state: RootState) => state.modal.changeBrokerReportsFilters;
 export const getFreezeUnFreezeReportsFiltersModal = (state: RootState) => state.modal.freezeUnfreezeReportsFilters;
