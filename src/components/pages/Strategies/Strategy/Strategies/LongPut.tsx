@@ -197,19 +197,19 @@ const LongPut = (strategy: LongPutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
-				colId: 'optionBestBuyLimitPrice',
+				colId: 'optionBestLimitPrice',
 				headerName: 'بهترین خریدار',
 				minWidth: 152,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'optionBestBuyLimitQuantity',
+				colId: 'optionBestLimitVolume',
 				headerName: 'حجم سرخط خرید',
 				minWidth: 120,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestLimitVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -229,7 +229,7 @@ const LongPut = (strategy: LongPutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'longCallBEP',
+				colId: 'longPutBEP',
 				headerName: 'سر به سر',
 				minWidth: 128,
 				cellClass: ({ data }) =>
