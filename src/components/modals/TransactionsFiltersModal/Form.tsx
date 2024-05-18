@@ -63,7 +63,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(option)}</span>}
-					placeholder={t('transactions_reports_page.dates_placeholder_filter')}
+					placeholder={t('transactions_page.dates_placeholder_filter')}
 					defaultValue={filters.date}
 				/>
 
@@ -85,14 +85,14 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 				<MultiSelect<{ id: Transaction.TransactionTypes; title: string }>
 					onChange={(options) => onChangeTransactionType(options)}
 					options={[
-						{ id: 'Buy', title: t('transactions_reports_page.actions_type_Buy') },
-						{ id: 'Sell', title: t('transactions_reports_page.actions_type_Sell') },
-						{ id: 'Deposit', title: t('transactions_reports_page.actions_type_Deposit') },
-						{ id: 'Payment', title: t('transactions_reports_page.actions_type_Payment') },
+						{ id: 'Buy', title: t('transactions_page.actions_type_Buy') },
+						{ id: 'Sell', title: t('transactions_page.actions_type_Sell') },
+						{ id: 'Deposit', title: t('transactions_page.actions_type_Deposit') },
+						{ id: 'Payment', title: t('transactions_page.actions_type_Payment') },
 					]}
 					getOptionId={(option) => option.id}
 					getOptionTitle={(option) => <span>{option.title}</span>}
-					placeholder={t('transactions_reports_page.actions_placeholder_filter')}
+					placeholder={t('transactions_page.actions_placeholder_filter')}
 					defaultValues={filters.transactionType}
 				/>
 
@@ -101,9 +101,9 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['Flat', 'GreedyGrouped']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => (
-						<span>{t(`transactions_reports_page.display_type_group_${option}`)}</span>
+						<span>{t(`transactions_page.display_type_group_${option}`)}</span>
 					)}
-					placeholder={t('transactions_reports_page.display_type_placeholder_filter')}
+					placeholder={t('transactions_page.display_type_placeholder_filter')}
 					defaultValue={filters.groupMode}
 				/>
 
@@ -111,7 +111,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					<InputLegend
 						value={filters.fromPrice}
 						onChange={(v) => setFilterValue('fromPrice', Number(v))}
-						placeholder={t('transactions_reports_page.from_price_type_placeholder_filter')}
+						placeholder={t('transactions_page.from_price_type_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>
@@ -119,7 +119,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					<InputLegend
 						value={filters.toPrice}
 						onChange={(v) => setFilterValue('toPrice', Number(v))}
-						placeholder={t('transactions_reports_page.to_price_type_placeholder_filter')}
+						placeholder={t('transactions_page.to_price_type_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>

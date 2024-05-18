@@ -7,11 +7,12 @@ interface InputProps<T extends string | number>
 	value: T;
 	prefix: string;
 	placeholder: React.ReactNode;
+	haveText?: boolean;
 }
 
-const InputLegend = <T extends string | number>({ value, placeholder, prefix, onChange, ...props }: InputProps<T>) => {
+const InputLegend = <T extends string | number>({ value, placeholder, prefix, onChange, haveText, ...props }: InputProps<T>) => {
 	const valueFormatter = (value: number | string) => {
-		if (!value) return '';
+		if (!value || haveText) return '';
 		return sepNumbers(String(value));
 	};
 
