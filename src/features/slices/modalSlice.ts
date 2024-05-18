@@ -103,7 +103,10 @@ const initialState: ModalState = {
 	// فیلتر صفحه گزارشات معاملات
 	ordersReportsFilters: null,
 
-	tradesReportsFilters: null
+	tradesReportsFilters: null,
+
+	// فیلتر کاورد کال
+	coveredCallFilters: null,
 };
 
 const modalSlice = createSlice({
@@ -276,18 +279,16 @@ const modalSlice = createSlice({
 			state.physicalSettlementReportsFilters = payload;
 		},
 
-		setOrdersReportsFiltersModal: (
-			state,
-			{ payload }: PayloadAction<ModalState['ordersReportsFilters']>,
-		) => {
+		setOrdersReportsFiltersModal: (state, { payload }: PayloadAction<ModalState['ordersReportsFilters']>) => {
 			state.ordersReportsFilters = payload;
 		},
 
-		setTradesReportsFiltersModal: (
-			state,
-			{ payload }: PayloadAction<ModalState['tradesReportsFilters']>,
-		) => {
+		setTradesReportsFiltersModal: (state, { payload }: PayloadAction<ModalState['tradesReportsFilters']>) => {
 			state.tradesReportsFilters = payload;
+		},
+
+		setCoveredCallFilters: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
+			state.coveredCallFilters = payload;
 		},
 	},
 });
@@ -327,7 +328,8 @@ export const {
 	setCashSettlementReportsFiltersModal,
 	setPhysicalSettlementReportsFiltersModal,
 	setOrdersReportsFiltersModal,
-	setTradesReportsFiltersModal
+	setTradesReportsFiltersModal,
+	setCoveredCallFilters,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -355,9 +357,9 @@ export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.
 export const getChangeBrokerReportsFiltersModal = (state: RootState) => state.modal.changeBrokerReportsFilters;
 export const getFreezeUnFreezeReportsFiltersModal = (state: RootState) => state.modal.freezeUnfreezeReportsFilters;
 export const getCashSettlementReportsFiltersModal = (state: RootState) => state.modal.cashSettlementReportsFilters;
-export const getPhysicalSettlementReportsFiltersModal = (state: RootState) => state.modal.physicalSettlementReportsFilters;
+export const getPhysicalSettlementReportsFiltersModal = (state: RootState) =>
+	state.modal.physicalSettlementReportsFilters;
 export const getOrdersReportsFiltersModal = (state: RootState) => state.modal.ordersReportsFilters;
 export const getTradesReportsFiltersModal = (state: RootState) => state.modal.tradesReportsFilters;
-
 
 export default modalSlice.reducer;

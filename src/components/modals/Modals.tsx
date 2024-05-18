@@ -32,6 +32,7 @@ import PhysicalSettlementReportsFiltersModal from './PhysicalSettlementReportsFi
 import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
 import TransactionsFiltersModal from './TransactionsFiltersModal';
 import WithdrawalCashFiltersModal from './WithdrawalCashReportsFiltersModal';
+import CoveredCallFilters from './CovertCallFilters';
 
 const LoginModal = lazy(() => import('./LoginModal'));
 
@@ -109,7 +110,8 @@ const Modals = () => {
 		description,
 		cashSettlementReportsFilters,
 		physicalSettlementReportsFilters,
-		ordersReportsFilters
+		ordersReportsFilters,
+		coveredCallFilters,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -225,15 +227,13 @@ const Modals = () => {
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
-				{
-					freeze && (
-						<ModalSuspense>
-							<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
-								<Freeze {...freeze} />
-							</AuthorizeMiddleware>
-						</ModalSuspense>
-					)
-				}
+				{freeze && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
+							<Freeze {...freeze} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
@@ -396,6 +396,14 @@ const Modals = () => {
 				{ordersReportsFilters && (
 					<ModalSuspense>
 						<OrdersReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{coveredCallFilters && (
+					<ModalSuspense>
+						<CoveredCallFilters />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

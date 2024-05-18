@@ -81,8 +81,8 @@ export interface ICashSettlementReportsFilters extends IBaseModalConfiguration {
 	fromDate?: number;
 	toDate?: number;
 	contractStatus?: CashSettlementReports.TContractStatusType;
-	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>;
-	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType, title: string }>;
+	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType; title: string }>;
+	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType; title: string }>;
 }
 
 export interface IPhysicalSettlementReportsFilters extends IBaseModalConfiguration {
@@ -91,8 +91,8 @@ export interface IPhysicalSettlementReportsFilters extends IBaseModalConfigurati
 	fromDate?: number;
 	toDate?: number;
 	contractStatus?: CashSettlementReports.TContractStatusType;
-	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>;
-	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType, title: string }>;
+	settlementRequestType?: Array<{ id: CashSettlementReports.TSettlementRequestTypeCashType; title: string }>;
+	requestStatus?: Array<{ id: CashSettlementReports.TRequestStatusType; title: string }>;
 }
 
 export interface IOrdersReportsFilters extends IBaseModalConfiguration {
@@ -101,7 +101,7 @@ export interface IOrdersReportsFilters extends IBaseModalConfiguration {
 	fromDate?: number;
 	toDate?: number;
 	side?: TOrderSide;
-	status?: Array<{ id: TOrderStatus, title: string }>
+	status?: Array<{ id: TOrderStatus; title: string }>;
 }
 
 export interface ITradesReportsFilters extends IBaseModalConfiguration {
@@ -243,6 +243,10 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 	onContractRemoved?: (id: string) => void;
 }
 
+export interface ICavertCallFilters extends IBaseModalConfiguration {
+	isShow: boolean;
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
@@ -278,4 +282,5 @@ export type ModalState = TBaseModalProps<{
 	physicalSettlementReportsFilters: IPhysicalSettlementReportsFilters;
 	ordersReportsFilters: IOrdersReportsFilters;
 	tradesReportsFilters: ITradesReportsFilters;
+	coveredCallFilters: ICavertCallFilters;
 }>;
