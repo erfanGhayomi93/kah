@@ -5,7 +5,7 @@ import Main from '@/components/layout/Main';
 import { defaultTradesReportsColumns, initialTradesReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { setTradesReportsFiltersModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel } from '@/features/slices/panelSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import Tabs from '../common/Tabs';
-import Toolbar from './Toolbar';
+import Toolbar from '../common/Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
 	ssr: false,
@@ -57,7 +57,7 @@ const TradesReports = () => {
 		if (inputs.toDate) params.toDate = inputs.toDate;
 		if (inputs.side) params.side = inputs.side;
 
-		dispatch(setTransactionsFiltersModal(params));
+		dispatch(setTradesReportsFiltersModal(params));
 	};
 
 	const filtersCount = useMemo(() => {

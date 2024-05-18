@@ -1,7 +1,8 @@
 import brokerAxios from '@/api/brokerAxios';
 import AgTable from '@/components/common/Tables/AgTable';
-import { useAppSelector } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setWithdrawalModal } from '@/features/slices/modalSlice';
 import { type RootState } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -34,6 +35,8 @@ const WithdrawalCashReportsTable = ({
 	const t = useTranslations();
 
 	const queryClient = useQueryClient();
+
+	const dispatch = useAppDispatch();
 
 	const { urls } = useAppSelector(getStates);
 
@@ -70,8 +73,14 @@ const WithdrawalCashReportsTable = ({
 		}
 	});
 
-	const onEditRow = async () => {
-		//
+	const onEditRow = async (data: Reports.IWithdrawal | undefined) => {
+		if (!data) return;
+
+		try {
+			dispatch(setWithdrawalModal({ isShow: true, data }));
+		} catch (e) {
+			//
+		}
 	};
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IWithdrawal>>>(
