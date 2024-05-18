@@ -24,9 +24,9 @@ const FreezeUnFreezeReportsTable = ({
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	const onDeleteRow = async () => {
-		//
-	};
+	// const onDeleteRow = async () => {
+	// 	//
+	// };
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IFreezeUnfreezeReports>>>(
 		() =>

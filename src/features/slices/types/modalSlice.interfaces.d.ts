@@ -229,7 +229,7 @@ export interface IDescriptionModal extends IBaseModalConfiguration {
 export interface IDepositModal extends IBaseModalConfiguration {
 	isShow: boolean;
 	data?: Reports.IDepositWithReceipt | Reports.IInstantDeposit;
-	activeTab: 'receiptDepositTab' | 'liveDepositTab'
+	activeTab?: 'receiptDepositTab' | 'liveDepositTab'
 }
 
 export interface IFreezeModal extends IBaseModalConfiguration {
