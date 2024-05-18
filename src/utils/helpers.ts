@@ -336,8 +336,7 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		OrderExportTrades: data.OrderExportTrades,
 		getOrderDetailedOrders: data.OrderDetailedOrders,
 		receiptSetCancel: data.ReceiptSetCancel,
-		paymentDeleteRequest: data.PaymentDeleteRequest
-
+		paymentDeleteRequest: data.PaymentDeleteRequest,
 	};
 
 	return urls;
@@ -609,4 +608,11 @@ export const getColorBasedOnPercent = (v: number) => {
 	if (v === 0) return 'text-gray-900';
 	if (v > 0) return 'text-success-100';
 	return 'text-error-100';
+};
+
+export const versionParser = (value: string) => {
+	const version = value.replace(/[^0-9.]/gi, '');
+	const [major, minor, patch] = version.split('.');
+
+	return Number(major) * 100 + Number(minor ? Number(minor) * 10 : 0) + Number(patch ? Number(patch) * 1 : 0);
 };
