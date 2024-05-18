@@ -37,6 +37,7 @@ const COLORS = {
 
 const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 	const t = useTranslations();
+	console.log(inputs);
 
 	const [chartOptions, setChartOptions] = useState<IChartOptions>({
 		series: [
@@ -176,9 +177,10 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 		);
 		options.offset[0] *= 1.5;
 		options.offset[1] *= 1.5;
+		console.log(options);
 
 		setChartOptions(options);
-	}, [JSON.stringify(inputs)]);
+	}, [inputs]);
 
 	const { series, annotations, colors } = chartOptions;
 
