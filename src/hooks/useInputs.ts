@@ -19,7 +19,7 @@ const useInputs = <T extends object>(props: T) => {
 		} else {
 			setInputs((prev) => ({
 				...prev,
-				...props,
+				...arg,
 			}));
 		}
 	};

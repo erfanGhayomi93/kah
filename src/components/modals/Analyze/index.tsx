@@ -10,7 +10,7 @@ import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
-import { useBasketOrderingSystem, useLocalstorage } from '@/hooks';
+import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers, uuidv4 } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -76,7 +76,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
-		const [inputs, setInputs] = useState<IAnalyzeModalInputs>({
+		const { inputs, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
 			chartData: [],
 			minPrice: 0,
 			maxPrice: 0,
@@ -90,13 +90,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			risk: 0,
 			requiredMargin: 0,
 		});
-
-		const setFieldsValue = (values: Partial<IAnalyzeModalInputs>) => {
-			setInputs((prev) => ({
-				...prev,
-				...values,
-			}));
-		};
 
 		const [symbolContracts, setSymbolContracts] = useState([...contracts]);
 
