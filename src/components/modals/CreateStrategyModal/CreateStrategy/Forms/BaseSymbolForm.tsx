@@ -39,8 +39,12 @@ const BaseSymbolForm = ({
 		}));
 	};
 
+	const onSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+	};
+
 	return (
-		<form className='flex-1 flex-column flex-justify-between' method='get'>
+		<form onSubmit={onSubmit} className='flex-1 flex-column flex-justify-between' method='get'>
 			<div className='w-full flex-1 gap-16 flex-column'>
 				<InputLegend
 					type='text'
