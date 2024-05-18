@@ -1132,6 +1132,29 @@
 		"execution_steps": "نحوه اجرا",
 		"execution_condition": "شرط اجرا"
 	},
+	"create_strategy": {
+		"strategy": "استراتژی {strategyName} {baseSymbolTitle}",
+		"add_conditional_alert": "افزودن هشدار شرطی",
+		"current_status": "وضعیت لحظه‌ای",
+		"bep": "سر به سر",
+		"most_loss": "بیشترین ضرر",
+		"most_profit": "بیشترین سود",
+		"profit": "سود",
+		"loss": "ضرر",
+		"freeze": "فریز سهم",
+		"best_limit_price": "قیمت سرخط",
+		"base_step_title": "داشتن یا خرید سهم ({symbolTitle})",
+		"status_TODO": "در حال انجام",
+		"status_PENDING": "در انتظار",
+		"status_DONE": "انجام شده",
+		"status_ERROR": "خطا",
+		"stock": "سهم",
+		"remain_quantities": "تعداد باقیمانده مورد نیاز",
+		"free_stock_quantity": "تعداد سهام آزاد",
+		"buy_assets_by_free_stock": "استفاده از سهام آزاد برای خرید دارایی",
+		"estimated_budget": "بودجه تقریبی",
+		"required_quantity": "تعداد سهم جهت اجرای استراتژی"
+	},
 	"strategy_cheaps": {
 		"All": "همه",
 		"HighRisk": "ریسک بالا",
@@ -1365,7 +1388,6 @@
 		"state_InProgress": "در حال انجام",
 		"state_FreezeFailed": "ناموفق"
 	},
-
 	"cash_settlement_reports_page": {
 		"filter_title_modal": "فیلتر تسویه نقدی",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1375,7 +1397,7 @@
 		"cash_date_column": "تاریخ تسویه نقدی",
 		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
 		"request_type_column": "نوع اعمال",
-		"settlement_price_column":"مبلغ تسویه",
+		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",
 		"done_count_column": "تعداد پذیرفته شده",
 		"user_type_column": "درخواست کننده",
@@ -1399,7 +1421,6 @@
 		"request_type_placeholder_filter": "نوع اعمال",
 		"request_status_type_placeholder_filter": "وضعیت درخواست"
 	},
-
 	"physical_settlement_reports_page": {
 		"filter_title_modal": "فیلتر تسویه فیزیکی",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1409,7 +1430,7 @@
 		"cash_date_column": "تاریخ تسویه نقدی",
 		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
 		"request_type_column": "نوع اعمال",
-		"settlement_price_column":"مبلغ تسویه",
+		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",
 		"done_count_column": "تعداد پذیرفته شده",
 		"pen_count_column": "تعداد نکول",
@@ -1435,14 +1456,12 @@
 		"request_type_placeholder_filter": "نوع اعمال",
 		"request_status_type_placeholder_filter": "وضعیت درخواست"
 	},
-
 	"orders_and_trades_reports_page": {
 		"orders_and_trades_reports": "گزارشات سفارشات",
 		"orders_tab": "سفارشات",
 		"trades_tab": "معاملات"
 	},
-
-	"orders_reports_page":{
+	"orders_reports_page": {
 		"filter_title_modal": "فیلتر سفارشات",
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"id_column": "ردیف",
@@ -1466,7 +1485,6 @@
 		"side_SellIncremental": "فروش فزاینده",
 		"side_SellDecremental": "فروش کاهنده"
 	},
-
 	"trades_reports_page": {
 		"filter_title_modal": "فیلتر معاملات",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1491,7 +1509,6 @@
 		"side_SellIncremental": "فروش فزاینده",
 		"side_SellDecremental": "فروش کاهنده"
 	},
-
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"

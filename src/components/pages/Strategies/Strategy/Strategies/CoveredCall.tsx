@@ -4,7 +4,7 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
+import { setAnalyzeModal, setCreateStrategyModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -58,7 +58,54 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	};
 
 	const execute = (data: Strategy.CoveredCall) => {
-		//
+		try {
+			dispatch(
+				setCreateStrategyModal({
+					baseSymbol: {
+						symbolISIN: data.baseSymbolISIN,
+						symbolTitle: data.baseSymbolTitle,
+					},
+					strategy: 'CoveredCall',
+					steps: [
+						{
+							type: 'base',
+							quantity: 100,
+							estimatedBudget: 42e4,
+							buyAssetsBySymbol: false,
+							orderPrice: data.baseBestBuyLimitPrice,
+							symbolISIN: data.baseSymbolISIN,
+							symbolTitle: data.baseSymbolTitle,
+							orderQuantity: 90,
+							status: 'TODO',
+						},
+						{
+							type: 'freeze',
+							estimatedBudget: 42e4,
+							status: 'PENDING',
+							baseSymbol: {
+								symbolISIN: data.baseSymbolISIN,
+								symbolTitle: data.baseSymbolTitle,
+							},
+						},
+						{
+							type: 'option',
+							estimatedBudget: 42e4,
+							optionType: 'call',
+							side: 'sell',
+							status: 'PENDING',
+							symbolISIN: data.symbolISIN,
+							symbolTitle: data.symbolTitle,
+							baseSymbol: {
+								symbolISIN: data.baseSymbolISIN,
+								symbolTitle: data.baseSymbolTitle,
+							},
+						},
+					],
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const analyze = (data: Strategy.CoveredCall) => {

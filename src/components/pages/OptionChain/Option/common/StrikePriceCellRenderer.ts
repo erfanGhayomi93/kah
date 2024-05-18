@@ -22,9 +22,9 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 
 	eSellDropdown: HTMLUListElement | null = null;
 
-	eCall: HTMLButtonElement | null = null;
+	eCall: HTMLSpanElement | null = null;
 
-	ePut: HTMLButtonElement | null = null;
+	ePut: HTMLSpanElement | null = null;
 
 	params!: StrikePriceCellRendererProps;
 
@@ -144,7 +144,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			if (this.eCall) this.eCall.remove();
 
 			const color = callSide === 'buy' ? 'success' : 'error';
-			this.eCall = this.createBtn();
+			this.eCall = document.createElement('span');
 			this.eCall.style.right = '1px';
 			this.eCall.textContent = callSide === 'buy' ? 'خرید' : 'فروش';
 			this.eCall.setAttribute(
@@ -159,7 +159,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			if (this.ePut) this.ePut.remove();
 
 			const color = putSide === 'buy' ? 'success' : 'error';
-			this.ePut = this.createBtn();
+			this.ePut = document.createElement('span');
 			this.ePut.style.left = '1px';
 			this.ePut.textContent = putSide === 'buy' ? 'خرید' : 'فروش';
 			this.ePut.setAttribute(

@@ -1,4 +1,5 @@
 import { cn, convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import React from 'react';
 
 interface InputProps<T extends string | number>
@@ -7,9 +8,17 @@ interface InputProps<T extends string | number>
 	value: T;
 	prefix: string;
 	placeholder: React.ReactNode;
+	separator?: boolean;
 }
 
-const InputLegend = <T extends string | number>({ value, placeholder, prefix, onChange, ...props }: InputProps<T>) => {
+const InputLegend = <T extends string | number>({
+	value,
+	placeholder,
+	prefix,
+	separator = true,
+	onChange,
+	...props
+}: InputProps<T>) => {
 	const valueFormatter = (value: number | string) => {
 		if (!value) return '';
 		return sepNumbers(String(value));
@@ -41,7 +50,7 @@ const InputLegend = <T extends string | number>({ value, placeholder, prefix, on
 	const isActive = value && String(value).length > 0;
 
 	return (
-		<label className='relative h-48 flex-1 rounded flex-items-center input-group'>
+		<label className='relative h-48 rounded flex-items-center input-group'>
 			<input
 				{...props}
 				type='text'
@@ -57,7 +66,12 @@ const InputLegend = <T extends string | number>({ value, placeholder, prefix, on
 				<legend>{placeholder}</legend>
 			</fieldset>
 
-			<span className='h-24 w-36 border-r border-r-input text-tiny text-gray-700 flex-justify-center'>
+			<span
+				className={clsx(
+					'h-24 w-36 text-tiny text-gray-700 flex-justify-center',
+					separator && 'border-r border-r-input',
+				)}
+			>
 				{prefix}
 			</span>
 		</label>

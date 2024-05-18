@@ -7,8 +7,6 @@ declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.ye
 
 declare type TSortingMethods = 'asc' | 'desc';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
-
 declare interface IOptionHistory {
 	dateTime: string;
 	status: 'InSendQueue' | 'Error' | 'SendToBourse' | 'SaveResult';
@@ -102,8 +100,6 @@ declare interface CashWithdrawBankType {
 
 type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
 
-type TStrategySymbolBasis = 'All' | 'BestLimit';
-
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
 declare type TOptionSides = 'put' | 'call';
@@ -123,10 +119,6 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
 declare type TDojiType = 'Bullish' | 'Bearish' | 'Neutral';
-
-declare type TStrategyMarketTrend =
-	| 'All'
-	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
 
 declare type TTransactionColumns =
 	| 'credit'
@@ -458,64 +450,6 @@ declare namespace OrderBasket {
 
 	export type Order = TSymbolStrategy;
 }
-
-declare interface ISymbolStrategy {
-	id: string;
-	marketUnit: string;
-	quantity: number;
-	price: number;
-}
-
-declare interface IBaseSymbolStrategy extends ISymbolStrategy {
-	type: 'base';
-	side: TBsSides;
-	symbol: {
-		symbolTitle: string;
-		symbolISIN: string;
-		baseSymbolPrice: number;
-		optionType?: null;
-		historicalVolatility?: null;
-	};
-	strikePrice?: null;
-	contractSize?: null;
-	settlementDay?: null;
-	commission?: null;
-	requiredMargin?: null;
-}
-
-declare interface IStrategyFilter {
-	priceBasis: TPriceBasis;
-	symbolBasis: TStrategySymbolBasis;
-	pageNumber: number;
-	pageSize: number;
-}
-
-declare interface IOptionStrategy extends ISymbolStrategy {
-	type: 'option';
-	strikePrice: number;
-	contractSize: number;
-	settlementDay: Date | number | string;
-	side: TBsSides;
-	symbol: {
-		symbolTitle: string;
-		symbolISIN: string;
-		optionType: TOptionSides;
-		baseSymbolPrice: number;
-		historicalVolatility: number;
-	};
-	commission?: {
-		value: number;
-		checked?: boolean;
-		onChecked?: (checked: boolean) => void;
-	};
-	requiredMargin?: {
-		value: number;
-		checked?: boolean;
-		onChecked?: (checked: boolean) => void;
-	};
-}
-
-declare type TSymbolStrategy = IBaseSymbolStrategy | IOptionStrategy;
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';

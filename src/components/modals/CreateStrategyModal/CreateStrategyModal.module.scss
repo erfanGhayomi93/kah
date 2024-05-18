@@ -1,0 +1,55 @@
+.list {
+	display: flex;
+	flex-direction: column;
+
+	& > .item {
+		padding-right: 36px;
+		gap: 8px;
+		display: flex;
+		flex-direction: column;
+		flex: 0 0 11.6rem;
+		position: relative;
+
+		&::after {
+			z-index: 99;
+			content: "";
+			position: absolute;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			right: 0;
+			top: -6px;
+			border: 3px solid theme("colors.gray.200");
+			background-color: theme("colors.gray.500");
+		}
+
+		&:not(:last-child)::before {
+			content: "";
+			position: absolute;
+			width: 2px;
+			height: calc(100% - 38px);
+			border-radius: 2px;
+			right: 14px;
+			top: 28px;
+			background-color: theme("colors.gray.500");
+		}
+
+		&.active:not(:last-child)::before {
+			background-color: theme("colors.gray.500");
+			background-image: linear-gradient(0deg, theme("colors.gray.500") 50%, theme("colors.primary.400") 50%);
+		}
+
+		&.done:not(:last-child)::before {
+			background-color: theme("colors.primary.400");
+		}
+
+		&.done::after,
+		&.active::after {
+			background-color: theme("colors.primary.400");
+			outline: 1px solid theme("colors.primary.400");
+		}
+
+		&.active::after {
+		}
+	}
+}
