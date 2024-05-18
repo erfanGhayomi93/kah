@@ -225,10 +225,12 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
 						percent: data ? data.optionWatchlistData.tradePriceVarPreviousTradePercent : 0,
 					}),
-					valueGetter: ({ data }) =>
-						`${data!.optionWatchlistData.premium}|${data!.optionWatchlistData.tradePriceVarPreviousTradePercent
-						}`,
-					valueFormatter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.premium)),
+					valueGetter: ({ data }) => [
+						data?.optionWatchlistData.premium ?? 0,
+						data?.optionWatchlistData.tradePriceVarPreviousTradePercent ?? 0,
+					],
+					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
 					headerName: t('option_page.delta'),
@@ -246,10 +248,12 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
 						percent: data ? data.optionWatchlistData.baseTradePriceVarPreviousTradePercent : 0,
 					}),
-					valueGetter: ({ data }) =>
-						`${data!.optionWatchlistData.baseSymbolPrice}|${data!.optionWatchlistData.baseTradePriceVarPreviousTradePercent
-						}`,
-					valueFormatter: ({ data }) => sepNumbers(String(data!.optionWatchlistData.baseSymbolPrice)),
+					valueGetter: ({ data }) => [
+						data?.optionWatchlistData.baseSymbolPrice ?? 0,
+						data?.optionWatchlistData.baseTradePriceVarPreviousTradePercent ?? 0,
+					],
+					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
 					headerName: t('option_page.break_even_point'),
@@ -717,17 +721,18 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	return (
 		<AgTable
 			ref={gridRef}
+			useTransaction
 			suppressHorizontalScroll={dataIsEmpty}
 			className='h-full border-0'
 			columnDefs={COLUMNS}
 			defaultColDef={defaultColDef}
 			onColumnMoved={onColumnMoved}
+			onSortChanged={() => storeColumns()}
+			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			onBodyScrollEnd={({ api }) => {
 				const lastRowIndex = api.getLastDisplayedRowIndex();
 				if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
 			}}
-			onSortChanged={() => storeColumns()}
-			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 		/>
 	);
 };

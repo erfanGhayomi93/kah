@@ -6,13 +6,12 @@ import { initialColumnsLongCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { type ISelectItem } from '..';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -40,10 +39,15 @@ const LongCall = (strategy: LongCallProps) => {
 		initialColumnsLongCall,
 	);
 
-	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+		priceBasis: 'BestLimit',
+		symbolBasis: 'BestLimit',
+		pageSize: 20,
+		pageNumber: 1,
+	});
 
 	const { data, isFetching } = useLongCallStrategyQuery({
-		queryKey: ['longCallQuery', priceBasis.id, useCommission],
+		queryKey: ['longCallQuery', { ...inputs, withCommission: useCommission }],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
@@ -99,13 +103,19 @@ const LongCall = (strategy: LongCallProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
 				description: () => <LongCallDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
+	};
+
+	const goToTheNextPage = () => {
+		setFieldsValue((prev) => ({
+			pageNumber: prev.pageNumber + 1,
+		}));
 	};
 
 	const showColumnsPanel = () => {
@@ -128,7 +138,7 @@ const LongCall = (strategy: LongCallProps) => {
 				minWidth: 104,
 				flex: 1,
 				pinned: 'right',
-				cellClass: 'cursor-pointer',
+				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -136,13 +146,16 @@ const LongCall = (strategy: LongCallProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongCall, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -152,14 +165,14 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'callSymbolISIN',
-				headerName: 'اختیار خرید',
+				headerName: 'کال',
 				minWidth: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
-					getIOTM: (data: Strategy.CoveredCall) => data!.iotm,
+					getIOTM: (data: Strategy.LongCall) => data!.iotm,
 				},
 			},
 			{
@@ -179,18 +192,19 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'premium',
-				headerName: 'آخرین قیمت نماد آپشن',
+				headerName: 'قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongCall, number>) => ({
 					percent: data?.premium ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
+				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
-				headerName: 'قیمت بهترین خریدار',
+				headerName: 'بهترین خریدار',
 				minWidth: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => 0,
@@ -206,7 +220,7 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
-				headerName: 'قیمت بهترین فروشنده',
+				headerName: 'بهترین فروشنده',
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
@@ -222,7 +236,7 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'longCallBEP',
-				headerName: 'سر به سر استراتژی',
+				headerName: 'سر به سر',
 				minWidth: 128,
 				cellClass: ({ data }) =>
 					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longCallBEP ?? 0)),
@@ -231,18 +245,19 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'maxProfit',
-				headerName: 'بیشینه سود',
+				headerName: 'حداکثر بازده',
 				minWidth: 160,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.maxProfitPercent ?? 0,
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongCall, number>) => ({
+					percent: data?.profitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.profitAmount}|${data!.profitPercentUntilSettlement}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data!.profitAmount)),
+				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'blackScholes',
@@ -267,7 +282,7 @@ const LongCall = (strategy: LongCallProps) => {
 			},
 			{
 				colId: 'profit',
-				headerName: 'مقدار سود',
+				headerName: 'بازده',
 				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},
@@ -317,6 +332,7 @@ const LongCall = (strategy: LongCallProps) => {
 				colId: 'actions',
 				headerName: 'عملیات',
 				width: 80,
+				sortable: false,
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
@@ -327,17 +343,6 @@ const LongCall = (strategy: LongCallProps) => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
@@ -353,8 +358,6 @@ const LongCall = (strategy: LongCallProps) => {
 		}
 	}, [columnsVisibility]);
 
-	const rows = data ?? [];
-
 	return (
 		<>
 			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
@@ -364,17 +367,21 @@ const LongCall = (strategy: LongCallProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					priceBasis={priceBasis}
 					onManageColumns={showColumnsPanel}
-					onPriceBasisChanged={setPriceBasis}
+					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
+					priceBasis={inputs.priceBasis}
+					symbolBasis={inputs.symbolBasis}
 				/>
 
 				<Table<Strategy.LongCall>
 					ref={gridRef}
-					rowData={rows}
+					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
+					fetchNextPage={goToTheNextPage}
+					pageNumber={inputs.pageNumber}
+					pageSize={inputs.pageSize}
 				/>
 			</div>
 		</>

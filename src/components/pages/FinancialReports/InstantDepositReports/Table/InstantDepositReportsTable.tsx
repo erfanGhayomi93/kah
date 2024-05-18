@@ -3,12 +3,11 @@ import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 interface InstantDepositReportsTableProps {
 	reports: Reports.IInstantDeposit[] | null;
-	columnsVisibility: TTransactionColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<TTransactionColumnsState[]>>;
+	columnsVisibility: InstantDepositReports.TInstantDepositReportsColumnsState[];
 }
 
 const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepositReportsTableProps) => {
@@ -16,9 +15,9 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 
 	const gridRef = useRef<GridApi<Reports.IInstantDeposit>>(null);
 
-	const dateFormatter = (v: string | number) => {
+	const dateFormatter = (v: string | number, format: string) => {
 		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
+		return dayjs(v).calendar('jalali').format(format);
 	};
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IInstantDeposit>>>(
@@ -26,7 +25,7 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 			[
 				{
 					headerName: t('instant_deposit_reports_page.id_column'),
-					field: 'amount',
+					field: 'id',
 					maxWidth: 112,
 					minWidth: 112,
 					lockPosition: true,
@@ -38,22 +37,12 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 				{
 					headerName: t('instant_deposit_reports_page.date_column'),
 					field: 'saveDate',
-					maxWidth: 144,
-					minWidth: 144,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
-				},
-				{
-					headerName: t('instant_deposit_reports_page.time_column'),
-					field: 'saveDate',
 					maxWidth: 220,
 					minWidth: 220,
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss'),
+					valueFormatter: ({ value }) => dateFormatter(value ?? '', 'YYYY/MM/DD HH:mm'),
 				},
 				{
 					headerName: t('instant_deposit_reports_page.getway_column'),
@@ -104,17 +93,6 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

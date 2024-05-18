@@ -6,13 +6,12 @@ import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { type ISelectItem } from '..';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -40,10 +39,18 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		initialColumnsCoveredCall,
 	);
 
-	const [priceBasis, setPriceBasis] = useState<ISelectItem>({ id: 'BestLimit', title: t('strategy.headline') });
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+		priceBasis: 'BestLimit',
+		symbolBasis: 'BestLimit',
+		pageSize: 20,
+		pageNumber: 1,
+	});
 
 	const { data, isFetching } = useCoveredCallStrategyQuery({
-		queryKey: ['coveredCallQuery', priceBasis.id, useCommission],
+		queryKey: [
+			'coveredCallQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
@@ -57,6 +64,19 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	const analyze = (data: Strategy.CoveredCall) => {
 		try {
 			const contracts: TSymbolStrategy[] = [
+				{
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: data.baseMarketUnit,
+					quantity: 1,
+					price: data.baseLastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: data.baseSymbolTitle,
+						symbolISIN: data.baseSymbolISIN,
+						baseSymbolPrice: data.baseLastTradedPrice,
+					},
+				},
 				{
 					type: 'option',
 					id: uuidv4(),
@@ -76,19 +96,6 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					marketUnit: data.marketUnit,
 					requiredMargin: {
 						value: data.requiredMargin,
-					},
-				},
-				{
-					type: 'base',
-					id: uuidv4(),
-					marketUnit: data.baseMarketUnit,
-					quantity: 1,
-					price: data.baseLastTradedPrice,
-					side: 'buy',
-					symbol: {
-						symbolTitle: data.baseSymbolTitle,
-						symbolISIN: data.baseSymbolISIN,
-						baseSymbolPrice: data.baseLastTradedPrice,
 					},
 				},
 			];
@@ -124,13 +131,19 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`strategies.strategy_title_${type}`)} <span className='text-gray-700'>({title})</span>
+						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
 					</>
 				),
 				description: () => <CoveredCallDescription />,
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
+	};
+
+	const goToTheNextPage = () => {
+		setFieldsValue((prev) => ({
+			pageNumber: prev.pageNumber + 1,
+		}));
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall>>>(
@@ -140,7 +153,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer',
+				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -148,13 +161,16 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				colId: 'baseLastTradedPrice',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
-				valueGetter: ({ data }) =>
-					`${data?.baseLastTradedPrice ?? 0}|${data?.baseTradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.baseLastTradedPrice ?? 0)),
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
+				valueGetter: ({ data }) => [
+					data?.baseLastTradedPrice ?? 0,
+					data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -164,7 +180,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'callSymbolISIN',
-				headerName: 'اختیار خرید',
+				headerName: 'کال',
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
@@ -191,7 +207,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
-				headerName: 'قیمت بهترین خریدار',
+				headerName: 'بهترین خریدار',
 				width: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.optionBestBuyLimitPrice ?? 0,
@@ -207,7 +223,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
-				headerName: 'قیمت بهترین فروشنده',
+				headerName: 'بهترین فروشنده',
 				width: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
@@ -223,7 +239,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'coveredCallBEP',
-				headerName: 'سر به سر استراتژی',
+				headerName: 'سر به سر',
 				width: 136,
 				cellClass: ({ data }) =>
 					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.coveredCallBEP ?? 0)),
@@ -232,22 +248,23 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'maxProfit',
-				headerName: 'بیشینه سود',
+				headerName: 'حداکثر بازده',
 				width: 184,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall>) => ({
 					percent: data?.maxProfitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.maxProfit}|${data!.maxProfitPercent}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data!.maxProfit)),
+				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'nonExpiredProfit',
-				headerName: 'سود عدم اعمال',
+				headerName: 'بازده عدم اعمال',
 				width: 184,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -257,8 +274,9 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
 					percent: data?.nonExpiredProfitPercent ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data!.nonExpiredProfit}|${data!.nonExpiredProfitPercent}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data!.nonExpiredProfit)),
+				valueGetter: ({ data }) => [data?.nonExpiredProfit ?? 0, data?.nonExpiredProfitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'inUseCapital',
@@ -269,14 +287,15 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			},
 			{
 				colId: 'premium',
-				headerName: 'آخرین قیمت نماد آپشن',
+				headerName: 'قیمت نماد آپشن',
 				width: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
 					percent: data?.premium ?? 0,
 				}),
-				valueGetter: ({ data }) => `${data?.premium ?? 0}|${data?.tradePriceVarPreviousTradePercent ?? 0}`,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.premium ?? 0)),
+				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'bepDifference',
@@ -323,7 +342,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			{
 				colId: 'bestBuyYTM',
 				headerName: 'YTM سرخط خرید',
-				width: 120,
+				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
@@ -360,7 +379,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 			{
 				colId: 'nonExpiredYTM',
 				headerName: 'YTM عدم اعمال',
-				width: 120,
+				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید در صورت عدم اعمال توسط خریدار اختیار',
@@ -373,6 +392,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				colId: 'action',
 				headerName: 'عملیات',
 				width: 80,
+				sortable: false,
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
@@ -383,17 +403,6 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
@@ -409,8 +418,6 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		}
 	}, [columnsVisibility]);
 
-	const rows = data ?? [];
-
 	return (
 		<>
 			<StrategyDetails
@@ -424,17 +431,21 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					priceBasis={priceBasis}
 					onManageColumns={showColumnsPanel}
-					onPriceBasisChanged={setPriceBasis}
+					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
+					priceBasis={inputs.priceBasis}
+					symbolBasis={inputs.symbolBasis}
 				/>
 
 				<Table<Strategy.CoveredCall>
 					ref={gridRef}
-					rowData={rows}
+					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
+					fetchNextPage={goToTheNextPage}
+					pageNumber={inputs.pageNumber}
+					pageSize={inputs.pageSize}
 				/>
 			</div>
 		</>

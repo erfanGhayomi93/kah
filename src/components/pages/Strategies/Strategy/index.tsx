@@ -5,11 +5,6 @@ import Main from '@/components/layout/Main';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 
-export interface ISelectItem {
-	id: TPriceBasis;
-	title: string;
-}
-
 interface StrategyProps {
 	id: Strategy.Type;
 }
@@ -21,6 +16,7 @@ const ProtectivePut = dynamic(() => import('./Strategies/ProtectivePut'));
 const BullCallSpread = dynamic(() => import('./Strategies/BullCallSpread'));
 const LongStraddle = dynamic(() => import('./Strategies/LongStraddle'));
 const Conversion = dynamic(() => import('./Strategies/Conversion'));
+const BearPutSpread = dynamic(() => import('./Strategies/BearPutSpread'));
 
 const Strategy = ({ id }: StrategyProps) => {
 	const { data } = useGetAllStrategyQuery({
@@ -50,6 +46,8 @@ const Strategy = ({ id }: StrategyProps) => {
 			{id === 'LongStraddle' && <LongStraddle {...strategy} />}
 
 			{id === 'Conversion' && <Conversion {...strategy} />}
+
+			{id === 'BearPutSpread' && <BearPutSpread {...strategy} />}
 		</Main>
 	);
 };

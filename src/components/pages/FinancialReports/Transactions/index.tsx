@@ -110,7 +110,7 @@ const Transactions = () => {
 			setManageColumnsPanel({
 				initialColumns: defaultTransactionColumns,
 				columns: columnsVisibility,
-				title: t('transactions_reports_page.manage_columns'),
+				title: t('transactions_page.manage_columns'),
 				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultTransactionColumns),
 			}),

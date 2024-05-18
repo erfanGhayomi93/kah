@@ -8,7 +8,7 @@ import { dateConverter, dateFormatter, days, sepNumbers } from '@/utils/helpers'
 import { createOrder, deleteDraft } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useLayoutEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 import NoData from '../NoData';
 import DraftActionCell from '../common/DraftActionCell';
@@ -172,6 +172,7 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				headerName: t('orders.action'),
 				minWidth: 160,
 				maxWidth: 160,
+				sortable: false,
 				cellRenderer: DraftActionCell,
 				cellRendererParams: {
 					onSend,
@@ -205,17 +206,6 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
 		return () => removeHandler();
 	}, []);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', data);
-		} catch (e) {
-			//
-		}
-	}, [data]);
 
 	return (
 		<>

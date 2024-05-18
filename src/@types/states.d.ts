@@ -5,7 +5,69 @@ declare interface INextProps<T extends object = {}> {
 
 declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
 
+declare type TSortingMethods = 'asc' | 'desc';
+
 declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
+
+declare interface IOptionHistory {
+	dateTime: string;
+	status: 'InSendQueue' | 'Error' | 'SendToBourse' | 'SaveResult';
+	description: string | null;
+}
+
+declare type TOrdersSide = 'Buy' | 'Sell';
+
+declare type TTradeSide = "Buy" | "Sell"
+
+declare type TOrdersTypes = "MarketOrder" | "LimitOrder" | "MarketToLimitOrder" | "MarketOnOpeningOrder" | "StopOrder";
+
+declare type TOrdersValidity =
+	| 'GoodTillDate'
+	| 'FillAndKill'
+	| 'GoodTillCancelled'
+	| 'Day'
+	| 'SlidingValidity'
+	| 'Session'
+	| 'Month'
+	| 'Week';
+
+declare type TOrdersForm = 'Web' | 'Mobile' | 'BrokerTrader' | 'ClientApi' | 'MarketMaker' | 'Admin' | 'Supervisor';
+
+declare type TOrdersAction = 'CreateOrder' | 'ModifyOrder' | 'CancelOrder' | 'ExpireOrder';
+
+declare type TOrdersStatus =
+	| 'InOMSQueu'
+	| 'OnSending'
+	| 'Error'
+	| 'DeleteByEngine'
+	| 'OnBoard'
+	| 'Canceled'
+	| 'OnModifyFrom'
+	| 'OnModifyTo'
+	| 'Modified'
+	| 'OnBoardModify'
+	| 'PartOfTheOrderDone'
+	| 'OrderDone'
+	| 'OnCanceling'
+	| 'OnModifyError'
+	| 'OnCancelError'
+	| 'Expired'
+	| 'RejectByGAP'
+	| 'OnCancelingWithBroker'
+	| 'TradeCancel';
+
+declare type TTradeDetails =
+	| null
+	| {
+		tradedQuantity: number;
+		tradePrice: number;
+		remainingQuantityOrder: number;
+		tradeDate: string;
+		tradeNumber: string;
+		total: number;
+	}[];
+
+declare type TOrderSource = 'Account' | 'Portfolio';
 
 declare interface IUserBankAccount {
 	id: number;
@@ -34,13 +96,15 @@ declare interface IOFieldsWithID {
 	validityDate: number;
 }
 
-type CashWithdrawBankType = {
+declare interface CashWithdrawBankType {
 	accountNumber: string;
 	customerAccountId: number;
 	customerBank: string;
-};
+}
 
 type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
+
+type TStrategySymbolBasis = 'All' | 'BestLimit';
 
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
@@ -66,42 +130,6 @@ declare type TStrategyMarketTrend =
 	| 'All'
 	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
 
-declare type TTransactionColumns =
-	| 'credit'
-	| 'date'
-	| 'debit'
-	| 'description'
-	| 'remaining'
-	| 'station'
-	| 'transactionType';
-
-declare type TInstantDepositColumns =
-	| 'reservationNumber'
-	| 'referenceNumber'
-	| 'saveDate'
-	| 'amount'
-	| 'providerType'
-	| 'state'
-	| 'errorMessage';
-
-declare type TDepositWithReceiptColumns =
-	| 'id'
-	| 'receiptDate'
-	| 'providerType'
-	| 'receiptNumber'
-	| 'amount'
-	| 'state'
-	| 'state';
-
-declare type TWithdrawalCashColumns =
-	| 'id'
-	| 'saveDate'
-	| 'requestDate'
-	| 'customerBank'
-	| 'requestAmount'
-	| 'channel'
-	| 'state'
-	| 'state';
 
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
@@ -286,9 +314,18 @@ declare type IBrokerUrls = Record<
 	| 'getPaymentGetStatuses'
 	| 'getChangeBrokerExportFilteredCSV'
 	| 'getChangeBrokerChangeBrokersByFilter'
+	| 'GetAgreements',
 	| 'changeBrokerSetCancel'
 	| 'getFreezeExportFreeze'
-	| 'getFreezerequests',
+	| 'getFreezerequests'
+	| 'getSettlementcash'
+	| 'getSettlementphysical'
+	| 'getOrderExportOrders'
+	| 'getOrderOrders'
+	| 'getOrderExportTrades'
+	| 'getOrderDetailedOrders'
+	| 'receiptSetCancel'
+	| 'paymentDeleteRequest',
 	string
 >;
 
@@ -297,7 +334,7 @@ declare type TOptionWatchlistColumnsState = Array<{
 	width?: number;
 	hide?: boolean;
 	pinned?: 'left' | 'right' | null;
-	sort?: 'asc' | 'desc' | null;
+	sort?: TSortingMethods | null;
 	sortIndex?: null;
 	aggFunc?: null;
 	rowGroup?: boolean;
@@ -414,6 +451,13 @@ declare interface IBaseSymbolStrategy extends ISymbolStrategy {
 	requiredMargin?: null;
 }
 
+declare interface IStrategyFilter {
+	priceBasis: TPriceBasis;
+	symbolBasis: TStrategySymbolBasis;
+	pageNumber: number;
+	pageSize: number;
+}
+
 declare interface IOptionStrategy extends ISymbolStrategy {
 	type: 'option';
 	strikePrice: number;
@@ -448,7 +492,9 @@ declare interface ISymbolChartStates {
 
 declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_offline' | 'withdrawal_cash';
 
-declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement'
+declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement';
+
+declare type TOrdersTradersTab = 'orders' | 'trades';
 
 declare namespace Transaction {
 	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
@@ -469,6 +515,23 @@ declare namespace Transaction {
 		groupMode: TTransactionGroupModes;
 		transactionType: { id: TransactionTypes; title: string }[];
 	}
+
+
+	export interface ITransactionColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TTransactionColumns =
+		'id'
+		| 'credit'
+		| 'date'
+		| 'debit'
+		| 'description'
+		| 'remaining'
+		| 'station'
+		| 'transactionType';
 }
 
 declare namespace InstantDepositReports {
@@ -494,6 +557,21 @@ declare namespace InstantDepositReports {
 		ProviderTypes: Array<string>;
 		Statuses: Array<string>;
 	}
+
+	export interface TInstantDepositReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TInstantDepositReportsColumns =
+		"id"
+		| 'reservationNumber'
+		| 'referenceNumber'
+		| 'saveDate'
+		| 'amount'
+		| 'providerType'
+		| 'state'
 }
 
 declare namespace DepositWithReceiptReports {
@@ -521,15 +599,24 @@ declare namespace DepositWithReceiptReports {
 		HasAttachment: string;
 		StatesList: Array<string>;
 	}
+
+	export type TDepositWithReceiptReportsColumnsState = {
+		id: string;
+		title: string;
+		hidden: boolean;
+	};
+
+	export type TDepositWithReceiptColumns =
+		| 'id'
+		| 'receiptDate'
+		| 'providerType'
+		| 'receiptNumber'
+		| 'amount'
+		| 'state'
+		| 'action';
 }
 
 declare namespace WithdrawalCashReports {
-	export type CashWithdrawBankType = {
-		accountNumber: string;
-		customerAccountId: number;
-		customerBank: string;
-	};
-
 	export interface WithdrawalCashReportsFilters {
 		pageNumber: number;
 		pageSize: number;
@@ -550,6 +637,22 @@ declare namespace WithdrawalCashReports {
 		Statuses: Array<string>;
 		AccountIds: Array<string>;
 	}
+
+	export type TWithdrawalCashReportsColumnsState = {
+		id: string;
+		title: string;
+		hidden: boolean;
+	};
+
+	export type TWithdrawalCashReportsColumns =
+		| 'id'
+		| 'saveDate'
+		| 'requestDate'
+		| 'customerBank'
+		| 'requestAmount'
+		| 'channel'
+		| 'state'
+		| 'action';
 }
 
 declare namespace ChangeBrokerReports {
@@ -573,8 +676,81 @@ declare namespace ChangeBrokerReports {
 	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
 }
 
-declare namespace FreezeUnFreezeReports {
+declare namespace OrdersReports {
+	export type TOrderSide =
+		| 'All'
+		| 'Buy'
+		| 'Sell'
+		| 'BuyIncremental'
+		| 'BuyDecremental'
+		| 'SellIncremental'
+		| 'SellDecremental';
 
+	export type TOrderStatus = 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
+
+	export interface IOrdersReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		side: TOrderSide;
+		status: { id: TOrderStatus; title: string }[];
+	}
+
+	export interface IOrdersReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TOrdersReportsColumns =
+		| 'orderId'
+		| 'symbolTitle'
+		| 'orderSide'
+		| 'orderDateTime'
+		| 'orderDateTime'
+		| 'quantity'
+		| 'price'
+		| 'sumExecuted'
+		| 'lastErrorCode'
+		| 'validity';
+}
+
+declare namespace TradesReports {
+	export type TOrderSide =
+		| 'All'
+		| 'Buy'
+		| 'Sell'
+		| 'BuyIncremental'
+		| 'BuyDecremental'
+		| 'SellIncremental'
+		| 'SellDecremental';
+
+	export interface ITradesReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		side: TOrderSide;
+	}
+
+	export interface ITradesReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TTradesReportsColumns = 'orderId' | 'symbolTitle' | 'orderSide' | 'orderDateTime' | 'orderDateTime' | 'tradedQuantity' | 'tradePrice' | 'totalQuota' | 'total'
+
+}
+
+
+
+declare namespace FreezeUnFreezeReports {
 	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
 
 	export interface IFreezeUnFreezeReportsFilters {
@@ -593,35 +769,87 @@ declare namespace FreezeUnFreezeReports {
 		hidden: boolean;
 	}
 
-	export type TFreezeUnFreezeReportsColumns = "id" | "symbolTitle" | "confirmedOn" | "requestState" | "action"
+	export type TFreezeUnFreezeReportsColumns = 'id' | 'symbolTitle' | 'confirmedOn' | 'requestState' | 'action';
 }
 
-declare type TTransactionColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
+declare namespace CashSettlementReports {
+	export type TContractStatusType = 'Profit' | 'Loss' | 'Indifferent' | 'All';
 
-declare type TInstantDepositReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
+	export type TSettlementRequestTypeCashType = 'MaximumStrike' | 'PartialStrike';
 
-declare type IDepositWithReceiptReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
+	export type TRequestStatusType = 'Registered' | 'Send' | 'Sending' | 'Settling' | 'Expired' | 'Draft';
 
-declare type TDepositWithReceiptReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
+	export interface ICashSettlementReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		contractStatus: TContractStatusType;
+		settlementRequestType: { id: TSettlementRequestTypeCashType; title: string }[];
+		requestStatus: { id: TRequestStatusType; title: string }[];
+	}
 
-declare type TWithdrawalCashReportsColumnsState = {
-	id: string;
-	title: string;
-	hidden: boolean;
-};
+	export interface ICashSettlementReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TCashSettlementReportsColumns =
+		| 'symbolTitle'
+		| 'side'
+		| 'openPositionCount'
+		| 'cashSettlementDate'
+		| 'pandLStatus'
+		| 'settlementRequestType'
+		| 'incomeValue'
+		| 'requestCount'
+		| 'doneCount'
+		| 'userType'
+		| 'status'
+		| 'action';
+}
+
+declare namespace PhysicalSettlementReports {
+	export type TContractStatus = 'Profit' | 'Loss' | 'Indifferent' | 'All';
+
+	export type TRequestStatus = 'Registered' | 'Send' | 'Sending' | 'Settling' | 'Expired' | 'Draft';
+
+	export type TSettlementRequestTypePhysically = 'MaximumStrike' | 'PartialStrike'; //| "IndifferentAtLoss"
+
+	export interface IPhysicalSettlementReportsFilters {
+		pageNumber: number;
+		pageSize: number;
+		symbol: Symbol.Search | null;
+		date: TDateRange;
+		fromDate: number;
+		toDate: number;
+		contractStatus: TContractStatus;
+		settlementRequestType: { id: TSettlementRequestTypePhysically; title: string }[];
+		requestStatus: { id: TRequestStatus; title: string }[];
+	}
+
+	export interface IPhysicalSettlementReportsColumnsState {
+		id: string;
+		title: string;
+		hidden: boolean;
+	}
+
+	export type TPhysicalSettlementReportsColumns =
+		| 'symbolTitle'
+		| 'side'
+		| 'openPositionCount'
+		| 'cashSettlementDate'
+		| 'pandLStatus'
+		| 'settlementRequestType'
+		| 'incomeValue'
+		| 'requestCount'
+		| 'doneCount'
+		| 'penValue'
+		| 'penVolume'
+		| 'userType'
+		| 'status'
+		| 'action';
+}

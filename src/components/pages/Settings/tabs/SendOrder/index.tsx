@@ -5,6 +5,7 @@ import Input from '@/components/common/Inputs/Input';
 import Switch from '@/components/common/Inputs/Switch';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useDebounce } from '@/hooks';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -22,6 +23,8 @@ interface IUpdateSettingsBody {
 
 const SendOrder = () => {
 	const t = useTranslations();
+
+	const { setDebounce } = useDebounce();
 
 	const defaultFieldValues = useRef<Settings.IFormattedBrokerCustomerSettings>();
 
@@ -44,7 +47,7 @@ const SendOrder = () => {
 			defaultFieldValues.current = fieldValues;
 		},
 		onError: () => {
-			toast.warning(t('i_errors.undefined_error'));
+			toast.error(t('i_errors.undefined_error'));
 			setFieldValues(defaultFieldValues.current);
 		},
 	});
@@ -61,8 +64,8 @@ const SendOrder = () => {
 			});
 		}
 
-		updateCustomerSettings(customerSettingsBody);
 		setFieldValues({ ...fieldValues, [fieldName]: newValue });
+		setDebounce(() => updateCustomerSettings(customerSettingsBody), 600);
 	};
 
 	useEffect(() => {

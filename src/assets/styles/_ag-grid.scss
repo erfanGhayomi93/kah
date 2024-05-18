@@ -6,7 +6,7 @@
 			alpine: (
 				// font
 				--ag-font-family: "IRANSans",
-				--ag-font-size: 13px,
+				--ag-font-size: 14px,
 				// header
 				--ag-header-height: 48px,
 				--ag-header-background-color: rgba(248, 250, 253, 1),
@@ -115,6 +115,7 @@
 		box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.1);
 	}
 }
+
 
 .ag-cell.ag-cell-value.shadow {
 	&::after {

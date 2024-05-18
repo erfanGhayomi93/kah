@@ -1,40 +1,87 @@
+import brokerAxios from '@/api/brokerAxios';
 import AgTable from '@/components/common/Tables/AgTable';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { type RootState } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { createSelector } from '@reduxjs/toolkit';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
 import DepositWithReceiptReportsActionCell from './DepositWithReceiptReportsActionCell';
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		urls: getBrokerURLs(state),
+	}),
+);
 
 interface DepositWithReceiptReportsTableProps {
 	reports: Reports.IDepositWithReceipt[] | null;
-	columnsVisibility: IDepositWithReceiptReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<IDepositWithReceiptReportsColumnsState[]>>;
+	columnsVisibility: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[];
 }
 
 const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositWithReceiptReportsTableProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
 	const gridRef = useRef<GridApi<Reports.IDepositWithReceipt>>(null);
+
+	const { urls } = useAppSelector(getStates);
 
 	const dateFormatter = (v: string | number) => {
 		if (v === undefined || v === null) return '−';
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	const onDeleteRow = async () => {
-		//
+	const onEditRow = (data: Reports.IDepositWithReceipt | undefined) => {
+		if (!data) return;
+
+		try {
+			// dispatch(toggleDepositModal(data));
+			// dispatch(setDepositTab('offline'));
+		} catch (e) {
+			//
+		}
 	};
 
-	const onEditRow = async () => {
-		//
-	};
+	const onDeleteRow = (data: Reports.IDepositWithReceipt | undefined) => new Promise<void>(async (resolve, reject) => {
+		if (!urls || !data) return;
+
+		try {
+			const response = await brokerAxios.post<ServerResponse<boolean>>(urls.receiptSetCancel, {
+				ids: [data?.id]
+			});
+
+			if (response.status !== 200 || !response.data.succeeded) throw new Error(response.data.errors?.[0] ?? '');
+
+			toast.success(t('alerts.instant_deposit_canceled_successfully'));
+
+			queryClient.invalidateQueries({
+				queryKey: ['depositWithReceiptReports']
+			});
+
+			queryClient.invalidateQueries({
+				queryKey: ['userRemainQuery']
+			});
+
+			resolve();
+		} catch (e) {
+			toast.error(t('alerts.instant_deposit_canceled_failed'));
+			reject();
+		}
+	});
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IDepositWithReceipt>>>(
 		() =>
 			[
 				{
-					headerName: t('deposit_with_receipt_page.id_column'),
+					headerName: t('deposit_with_receipt_reports_page.id_column'),
 					field: 'id',
 					maxWidth: 112,
 					minWidth: 112,
@@ -45,7 +92,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
 				},
 				{
-					headerName: t('deposit_with_receipt_page.date_column'),
+					headerName: t('deposit_with_receipt_reports_page.date_column'),
 					field: 'receiptDate',
 					maxWidth: 144,
 					minWidth: 144,
@@ -55,7 +102,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
 				},
 				{
-					headerName: t('deposit_with_receipt_page.broker_bank_column'),
+					headerName: t('deposit_with_receipt_reports_page.broker_bank_column'),
 					field: 'providerType',
 					maxWidth: 250,
 					minWidth: 250,
@@ -64,7 +111,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					sortable: false,
 				},
 				{
-					headerName: t('deposit_with_receipt_page.receipt_number_column'),
+					headerName: t('deposit_with_receipt_reports_page.receipt_number_column'),
 					field: 'receiptNumber',
 					initialHide: false,
 					suppressMovable: true,
@@ -74,7 +121,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					// valueFormatter: ({ value }) => t('bank_accounts.' + value)
 				},
 				{
-					headerName: t('deposit_with_receipt_page.price_column'),
+					headerName: t('deposit_with_receipt_reports_page.price_column'),
 					field: 'amount',
 					maxWidth: 250,
 					minWidth: 250,
@@ -84,7 +131,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					valueFormatter: ({ value }) => sepNumbers(String(value)),
 				},
 				{
-					headerName: t('deposit_with_receipt_page.status_column'),
+					headerName: t('deposit_with_receipt_reports_page.status_column'),
 					field: 'state',
 					initialHide: false,
 					suppressMovable: true,
@@ -92,7 +139,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					valueFormatter: ({ value }) => t(`states.state_${value}`),
 				},
 				{
-					headerName: t('deposit_with_receipt_page.operation_column'),
+					headerName: t('deposit_with_receipt_reports_page.operation_column'),
 					field: 'action',
 					maxWidth: 200,
 					minWidth: 200,
@@ -102,9 +149,8 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 					cellRenderer: DepositWithReceiptReportsActionCell,
 					cellRendererParams: {
 						onDeleteRow,
-						onEditRow
-					}
-
+						onEditRow,
+					},
 				},
 			] as Array<ColDef<Reports.IDepositWithReceipt>>,
 		[],
@@ -120,17 +166,6 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 		}),
 		[],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid) return;
-
-		try {
-			eGrid.setGridOption('rowData', reports);
-		} catch (e) {
-			//
-		}
-	}, [reports]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

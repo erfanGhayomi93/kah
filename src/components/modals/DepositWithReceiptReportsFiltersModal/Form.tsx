@@ -58,7 +58,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(option)}</span>}
-					placeholder={t('transactions_reports_page.dates_placeholder_filter')}
+					placeholder={t('deposit_with_receipt_reports_page.time_placeholder_filter')}
 					defaultValue={filters.date}
 				/>
 
@@ -81,7 +81,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					<InputLegend
 						value={filters.fromPrice}
 						onChange={(v) => setFilterValue('fromPrice', Number(v))}
-						placeholder={t('transactions_reports_page.from_price_type_placeholder_filter')}
+						placeholder={t('deposit_with_receipt_reports_page.from_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>
@@ -89,7 +89,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					<InputLegend
 						value={filters.toPrice}
 						onChange={(v) => setFilterValue('toPrice', Number(v))}
-						placeholder={t('transactions_reports_page.to_price_type_placeholder_filter')}
+						placeholder={t('deposit_with_receipt_reports_page.to_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>
@@ -109,7 +109,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					]}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t('states.state_' + option)}</span>}
-					placeholder={t('deposit_with_receipt_page.status_placeholder_filter')}
+					placeholder={t('deposit_with_receipt_reports_page.status_placeholder_filter')}
 					defaultValues={filters.status}
 				/>
 
@@ -117,7 +117,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					<InputLegend
 						value={filters.receiptNumber}
 						onChange={(v) => setFilterValue('receiptNumber', v)}
-						placeholder={t('deposit_with_receipt_page.receipt_number_placeholder_filter')}
+						placeholder={t('deposit_with_receipt_reports_page.receipt_number_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>
@@ -133,8 +133,8 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 						{ id: 1, label: 'has_attachment' },
 					]}
 					getOptionId={(option) => option.id}
-					getOptionTitle={(option) => <span>{t(`deposit_with_receipt_page.${option.label}`)}</span>}
-					placeholder={t('deposit_with_receipt_page.attachment_placeholder_filter')}
+					getOptionTitle={(option) => <span>{t(`deposit_with_receipt_reports_page.${option.label}`)}</span>}
+					placeholder={t('deposit_with_receipt_reports_page.attachment_placeholder_filter')}
 				/>
 			</div>
 

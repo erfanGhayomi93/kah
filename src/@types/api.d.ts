@@ -649,9 +649,20 @@ declare namespace Broker {
 		| 'PaymentGetStatuses'
 		| 'ChangeBrokerExportFilteredCSV'
 		| 'ChangeBrokerChangeBrokersByFilter'
+		| 'GetAgreements'
 		| 'ChangeBrokerSetCancel'
 		| "FreezeExportFreeze"
 		| 'Freezerequests'
+		| 'Settlementcash'
+		| 'Settlementphysical'
+		| 'OrderExportOrders'
+		| 'OrderOrders'
+		| 'OrderExportTrades'
+		| 'OrderDetailedOrders'
+		| 'FreezeExportFreeze'
+		| 'Freezerequests'
+		| 'ReceiptSetCancel'
+		| 'PaymentDeleteRequest'
 
 	type URL = Record<UrlKey, string>;
 
@@ -1315,6 +1326,18 @@ declare namespace Settings {
 	}
 
 	export type IFormattedBrokerCustomerSettings = Record<IBrokerCustomerSettings['configKey'], string | boolean>;
+
+	export interface IAgreements {
+		agreementId: number;
+		title: string;
+		state: 'NotSpecified' | 'Accepted' | 'NotAccepted';
+		changeDate: string;
+		description: string;
+		type: string;
+		canChangeByCustomer: boolean;
+		approveBySMS: boolean;
+		attachmentUrl: string | null;
+	}
 }
 
 declare namespace Payment {
@@ -1462,7 +1485,18 @@ declare namespace Strategy {
 		| 'ProtectivePut'
 		| 'BullCallSpread'
 		| 'LongStraddle'
+		| 'BearPutSpread'
 		| 'Conversion';
+
+	declare type AllStrategies =
+		| CoveredCall
+		| LongCall
+		| LongPut
+		| LongStraddle
+		| Conversion
+		| BullCallSpread
+		| ProtectivePut
+		| BearPutSpread;
 
 	export interface GetAll {
 		id: number;
@@ -1535,11 +1569,11 @@ declare namespace Strategy {
 		optionBestSellLimitQuantity: number;
 		longCallBEP: number;
 		profitAmount: number;
-		profitPercentUntilSettlement: number;
+		profitPercent: number;
 		blackScholes: number;
+		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		bepDifference: number;
 		optionBestLimitPrice: number;
 		optionBestLimitVolume: number;
 		tradeValue: number;
@@ -1548,12 +1582,12 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		requiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
 	}
 
 	export interface LongPut {
@@ -1571,13 +1605,13 @@ declare namespace Strategy {
 		tradePriceVarPreviousTradePercent: number;
 		optionBestSellLimitPrice: number;
 		optionBestSellLimitQuantity: number;
-		longCallBEP: number;
+		longPutBEP: number;
 		profitAmount: number;
-		profitPercentUntilSettlement: number;
+		profitPercent: number;
 		blackScholes: number;
+		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		bepDifference: number;
 		optionBestLimitPrice: number;
 		optionBestLimitVolume: number;
 		tradeValue: number;
@@ -1586,12 +1620,12 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		requiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
 	}
 
 	export interface LongStraddle {
@@ -1660,11 +1694,17 @@ declare namespace Strategy {
 		putBestSellLimitPrice: number;
 		putBestSellLimitQuantity: number;
 		putOpenPositionCount: number;
+		callBestBuyLimitPrice: number;
+		callBestBuyLimitQuantity: number;
+		putBestBuyLimitPrice: number;
+		putBestBuyLimitQuantity: number;
 		putIOTM: Option.IOTM;
 		putPremium: number;
 		putPremiumPercent: number;
 		profit: number;
 		inUseCapital: number;
+		bestBuyYTM: number;
+		bestSellYTM: number;
 		callTimeValue: number;
 		putTimeValue: number;
 		callIntrinsicValue: number;
@@ -1707,8 +1747,8 @@ declare namespace Strategy {
 		hspBestSellLimitQuantity: number;
 		lspOpenPositionCount: number;
 		hspOpenPositionCount: number;
-		lspiotm: string;
-		hspiotm: string;
+		lspiotm: Option.IOTM;
+		hspiotm: Option.IOTM;
 		lspPremium: number;
 		lspPremiumPercent: number;
 		hspPremium: number;
@@ -1721,8 +1761,7 @@ declare namespace Strategy {
 		lspTimeValue: number;
 		hspTimeValue: number;
 		lspIntrinsicValue: number;
-		lspHistoricalVolatility: number;
-		hspHistoricalVolatility: number;
+		historicalVolatility: number;
 		hspIntrinsicValue: number;
 		lspTradeValue: number;
 		hspTradeValue: number;
@@ -1753,6 +1792,7 @@ declare namespace Strategy {
 		tradePriceVarPreviousTradePercent: number;
 		optionBestBuyLimitQuantity: number;
 		optionBestBuyLimitPrice: number;
+		contractSize: number;
 		baseBestSellLimitPrice: number;
 		baseBestBuyLimitPrice: number;
 		optionBestSellLimitPrice: number;
@@ -1769,6 +1809,7 @@ declare namespace Strategy {
 		requiredMargin: number;
 		contractEndDate: string;
 		timeValue: number;
+		blackScholes: number;
 		intrinsicValue: number;
 		optionBestLimitPrice: number;
 		optionBestLimitVolume: number;
@@ -1777,22 +1818,64 @@ declare namespace Strategy {
 		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
-		contractSize: number;
 	}
 
 	export interface BearPutSpread {
-		symbolTitle: string;
-		symbolISIN: string;
-		marketUnit: string;
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseLastTradedPrice: number;
+		baseTradePriceVarPreviousTradePercent: number;
+		dueDays: number;
+		lspSymbolISIN: string;
+		lspSymbolTitle: string;
+		lspStrikePrice: number;
+		lspBestSellLimitPrice: number;
+		lspBestSellLimitQuantity: number;
+		lspBestBuyLimitPrice: number;
+		lspBestBuyLimitQuantity: number;
+		hspSymbolISIN: string;
+		hspSymbolTitle: string;
+		hspStrikePrice: number;
+		hspBestBuyLimitPrice: number;
+		hspBestBuyLimitQuantity: number;
+		hspBestSellLimitPrice: number;
+		hspBestSellLimitQuantity: number;
+		lspOpenPositionCount: number;
+		hspOpenPositionCount: number;
+		lspiotm: Option.IOTM;
+		hspiotm: Option.IOTM;
+		lspPremium: number;
+		lspPremiumPercent: number;
+		hspPremium: number;
+		hspPremiumPercent: number;
+		bearPutSpreadBEP: number;
+		maxProfit: number;
+		maxProfitPercent: number;
+		maxLoss: number;
+		inUseCapital: number;
+		lspTimeValue: number;
+		hspTimeValue: number;
+		lspIntrinsicValue: number;
+		hspIntrinsicValue: number;
+		lspTradeValue: number;
+		hspTradeValue: number;
+		baseTradeValue: number;
+		baseTradeCount: number;
+		baseTradeVolume: number;
+		baseLastTradedDate: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		lspRequiredMargin: number;
+		hspRequiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
+		ytm: number;
 	}
 }
 
 declare namespace Reports {
+
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1842,32 +1925,22 @@ declare namespace Reports {
 	}
 
 	export interface IWithdrawal {
-		requestNumber: string;
-		creationDate: string;
-		requestAmount: number;
-		requestDate: string;
+		id: number;
+		accountNumber: string;
 		bankAccountId: number;
-		accountNumber: string | null;
-		status:
-		| 'Draft'
-		| 'Pending'
-		| 'Confirmed'
-		| 'Canceled'
-		| 'Failed'
-		| 'Voided'
-		| 'Paid'
-		| 'Entry'
-		| 'ErrorOccured'
-		| 'PostedToBackOffice'
-		| 'CreateRequest';
-		prsName: string | null;
-		orderOrigin: 'Broker' | 'Online' | number;
-		orderOriginName: null | string;
-		comments: string;
-		deletable: boolean;
-		bankName: string | null;
-		checkDate: string;
-		reservationNumber: number;
+		branchId: number;
+		comment: string;
+		customerAccountId: number;
+		customerBank: string;
+		customerISIN: string;
+		errorMessage: string;
+		channel: string;
+		id: number;
+		nationalCode: string;
+		requestDate: string;
+		requestAmount: number;
+		saveDate: string;
+		state: string;
 	}
 
 	export interface IChangeBrokerReports {
@@ -1887,6 +1960,104 @@ declare namespace Reports {
 		requestState: FreezeUnFreezeReports.TFreezeRequestState;
 		description: string;
 		confirmed: boolean;
-		confirmedOn: string
+		confirmedOn: string;
+	}
+
+	export interface ICashSettlementReports {
+		id: number;
+		symbolTitle: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		openPositionCount: number;
+		cashSettlementDate: string;
+		side: "Call" | "Put";
+		settlementRequestType: "MaximumStrike" | "PartialStrike" | null;
+		requestCount: number;
+		enabled: boolean;
+		status: "Registered" | "Sent" | "Sending" | "Settled" | "Settling" | "Expired" | "Draft" | "SendToBourse" | "InSendQueue";
+		doneCount: number;
+		pandLStatus: string;
+		history: IOptionHistory[];
+		userType: "System" | "UserTitle" | "Backoffice";
+		userName: string;
+		updatedAt: string | null;
+		incomeValue: number;
+	}
+
+	export interface IPhysicalSettlementReports {
+		id: number;
+		symbolISIN: string;
+		symbolTitle: string;
+		openPositionCount: number;
+		cashSettlementDate: string;
+		side: "Call" | "Put";
+		settlementRequestType: "MaximumStrike" | "PartialStrike" | null;
+		requestCount: number;
+		status: "Registered" | "Sent" | "Sending" | "Settled" | "Settling" | "Expired" | "Draft" | "SendToBourse" | "InSendQueue";
+		doneCount: number;
+		pandLStatus: 'Profit' | 'Loss';
+		penCount: number,
+		penValue: string,
+		history: IOptionHistory[];
+		requestForLostOrProfit: boolean;
+		enabled: boolean;
+		userType: "System" | "UserTitle" | "Backoffice";
+		userName: string;
+		updatedAt: string | null;
+		incomeValue: number;
+		penVolume: number;
+		peValue: number;
+	}
+
+	export interface IOrdersReports {
+		orderId: number,
+		userName: null | string,
+		customerISIN: string,
+		marketUnit: string,
+		symbolISIN: string,
+		price: number,
+		orderVolume: number,
+		triggerPrice: number,
+		orderPlaceInPrice?: null | number,
+		orderVolumeInPrice?: null | number,
+		quantity: number,
+		orderSide: TOrdersSide,
+		orderOrigin: string,
+		parentOrderId: number,
+		orderType: TOrdersTypes,
+		validity: TOrdersValidity,
+		validityDate: string,
+		orderFrom: TOrdersForm,
+		orderAction: TOrdersAction | 0,
+		orderMinimumQuantity: number,
+		orderDateTime: string,
+		hostOrderNumber: null | string,
+		expectedRemainingQuantity: number,
+		sumExecuted: number,
+		symbolTitle: string,
+		position: number,
+		valuePosition: number,
+		lastTradePrice: number,
+		orderStatus: TOrdersStatus,
+		lastErrorCode: string | null,
+		customErrorMsg: string | null,
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		tradeDetails: TTradeDetails;
+		isEditable: boolean;
+		blockType: TOrderSource;
+	}
+
+	export interface ITradesReports {
+		orderSide: TTradeSide;
+		remainingQuantityOrder: number;
+		symbolTitle: string;
+		total: number;
+		totalQuota: number;
+		tradeDate: string;
+		tradeNumber: number;
+		tradePrice: number;
+		tradeTime: string;
+		tradedQuantity: number;
 	}
 }
