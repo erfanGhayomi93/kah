@@ -517,7 +517,7 @@ export const defaultWithdrawalCashReportsColumn: WithdrawalCashReports.TWithdraw
 	},
 	{
 		id: 'requestDate',
-		title: 'موعد درخواست',
+		title: 'موعد پرداخت',
 		hidden: false,
 	},
 	{
@@ -596,11 +596,11 @@ export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeU
 		title: 'وضعیت',
 		hidden: false,
 	},
-	{
-		id: 'action',
-		title: 'عملیات',
-		hidden: false,
-	},
+	// {
+	// 	id: 'action',
+	// 	title: 'عملیات',
+	// 	hidden: false,
+	// },
 ];
 
 export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSettlementReportsColumnsState[] = [

@@ -588,7 +588,8 @@
 		"change_broker_reports": "تغییر کارگزار ناظر",
 		"freeze_and_unFreeze": "فریز و رفع فریز",
 		"orders": "سفارشات",
-		"trades": "معاملات"
+		"financial": "مالی",
+		"option": "اختیار"
 	},
 	"option_page": {
 		"export_excel": "خروجی اکسل",
@@ -1372,6 +1373,7 @@
 		"filter_title_modal": "فیلتر فریز و رفع فریز",
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"status_placeholder_filter": "وضعیت",
+		"time_placeholder_filter": "زمان",
 		"id_column": "ردیف",
 		"symbol_column": "نماد",
 		"date_column": "تاریخ",
@@ -1379,7 +1381,9 @@
 		"action_column": "عملیات",
 		"state_Done": "تایید",
 		"state_InProgress": "در حال انجام",
-		"state_FreezeFailed": "ناموفق"
+		"state_FreezeFailed": "ناموفق",
+		"state_NotApprove": "عدم تایید"
+
 	},
 
 	"cash_settlement_reports_page": {
@@ -1413,7 +1417,8 @@
 		"type_status_Draft": "پیش نویس",
 		"type_status_Registered": "ثبت شده",
 		"request_type_placeholder_filter": "نوع اعمال",
-		"request_status_type_placeholder_filter": "وضعیت درخواست"
+		"request_status_type_placeholder_filter": "وضعیت درخواست",
+		"time_placeholder_filter": "زمان"
 	},
 
 	"physical_settlement_reports_page": {
@@ -1449,7 +1454,8 @@
 		"type_status_Draft": "پیش نویس",
 		"type_status_Registered": "ثبت شده",
 		"request_type_placeholder_filter": "نوع اعمال",
-		"request_status_type_placeholder_filter": "وضعیت درخواست"
+		"request_status_type_placeholder_filter": "وضعیت درخواست",
+		"time_placeholder_filter": "زمان"
 	},
 
 	"orders_and_trades_reports_page": {
@@ -1473,6 +1479,7 @@
 		"validity_column": "اعتبار",
 		"side_filters_placeholder_filter": "سمت",
 		"status_filters_placeholder_filter": "وضعیت",
+		"dates_placeholder_filter": "زمان",
 		"side": "سمت",
 		"side_All": "همه",
 		"side_Buy": "خرید",
@@ -1500,6 +1507,7 @@
 		"validity_column": "اعتبار",
 		"side_filters_placeholder_filter": "سمت",
 		"status_filters_placeholder_filter": "وضعیت",
+		"dates_placeholder_filter": "زمان",
 		"side": "سمت",
 		"side_All": "همه",
 		"side_Buy": "خرید",

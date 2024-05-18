@@ -1,7 +1,8 @@
 import brokerAxios from '@/api/brokerAxios';
 import AgTable from '@/components/common/Tables/AgTable';
-import { useAppSelector } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setDepositModal } from '@/features/slices/modalSlice';
 import { type RootState } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
@@ -30,6 +31,8 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 
 	const queryClient = useQueryClient();
 
+	const dispatch = useAppDispatch();
+
 	const gridRef = useRef<GridApi<Reports.IDepositWithReceipt>>(null);
 
 	const { urls } = useAppSelector(getStates);
@@ -42,9 +45,9 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 	const onEditRow = (data: Reports.IDepositWithReceipt | undefined) => {
 		if (!data) return;
 
+
 		try {
-			// dispatch(toggleDepositModal(data));
-			// dispatch(setDepositTab('offline'));
+			dispatch(setDepositModal({ isShow: true, data, activeTab: 'receiptDepositTab' }));
 		} catch (e) {
 			//
 		}

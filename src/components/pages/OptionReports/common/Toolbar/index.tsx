@@ -1,4 +1,4 @@
-import Actions from './Actions';
+import Actions from '@/components/common/Tables/Actions';
 
 const Toolbar = ({
 	onShowFilters,

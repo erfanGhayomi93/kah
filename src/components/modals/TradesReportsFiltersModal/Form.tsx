@@ -62,7 +62,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(option)}</span>}
-					placeholder={t('transactions_reports_page.dates_placeholder_filter')}
+					placeholder={t('trades_reports_page.dates_placeholder_filter')}
 					defaultValue={filters.date}
 				/>
 
