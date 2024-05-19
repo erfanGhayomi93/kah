@@ -5,6 +5,7 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setWithdrawalModal } from '@/features/slices/modalSlice';
 import { type RootState } from '@/features/store';
 import dayjs from '@/libs/dayjs';
+import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
@@ -131,6 +132,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
+					valueFormatter: ({ value }) => sepNumbers(String(value))
 				},
 				/* سامانه */
 				{
