@@ -1,6 +1,6 @@
 import { initialSymbolInfoPanelGrid } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanelSettingModal } from '@/features/slices/modalSlice';
 import { type ISymbolInfoPanelSetting } from '@/features/slices/types/modalSlice.interfaces';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
@@ -33,7 +33,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 		const [gridLayout, setGridLayout] = useState<typeof symbolInfoPanelGridLayout>([...symbolInfoPanelGridLayout]);
 
 		const onCloseModal = () => {
-			dispatch(setSymbolInfoPanelSetting(null));
+			dispatch(setSymbolInfoPanelSettingModal(null));
 		};
 
 		const onChecked = (id: TSymbolInfoPanelSections, v: boolean) => {

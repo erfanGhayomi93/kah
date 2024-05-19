@@ -5,7 +5,7 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { DocSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setAcceptAgreement } from '@/features/slices/modalSlice';
+import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
@@ -74,7 +74,7 @@ const Agreements = () => {
 					<div className='flex-justify-center'>
 						<Switch
 							checked={data?.state === 'Accepted'}
-							onChange={() => dispatch(setAcceptAgreement({ data, getAgreements }))}
+							onChange={() => dispatch(setAcceptAgreementModal({ data, getAgreements }))}
 						/>
 					</div>
 				),

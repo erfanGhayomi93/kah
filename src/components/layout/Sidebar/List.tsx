@@ -9,7 +9,12 @@ import {
 	TvTradeSVG,
 } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setChangeBrokerModal, setDepositModal, setFreezeModal, setWithdrawalModal } from '@/features/slices/modalSlice';
+import {
+	setChangeBrokerModal,
+	setDepositModal,
+	setFreezeModal,
+	setWithdrawalModal,
+} from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
@@ -51,13 +56,13 @@ const List = ({ isExpand }: ListProps) => {
 		} else {
 			// for open of modal
 			if (tagName === 'deposit') {
-				dispatch(setDepositModal({ isShow: true }));
+				dispatch(setDepositModal({}));
 			} else if (tagName === 'withdrawal') {
-				dispatch(setWithdrawalModal({ isShow: true }));
+				dispatch(setWithdrawalModal({}));
 			} else if (tagName === 'change_broker') {
-				dispatch(setChangeBrokerModal({ isShow: true }));
+				dispatch(setChangeBrokerModal({}));
 			} else if (tagName === 'un_freezing') {
-				dispatch(setFreezeModal({ isShow: true }));
+				dispatch(setFreezeModal({}));
 			}
 		}
 	};
@@ -139,12 +144,12 @@ const List = ({ isExpand }: ListProps) => {
 						{
 							id: 'change_broker',
 							label: t('sidebar.change_broker'),
-							isModal: true
+							isModal: true,
 						},
 						{
 							id: 'un_freezing',
 							label: t('sidebar.un_freezing'),
-							isModal: true
+							isModal: true,
 						},
 						{
 							id: 'option_settlement',

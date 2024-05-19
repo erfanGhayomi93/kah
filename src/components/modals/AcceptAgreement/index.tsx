@@ -3,7 +3,7 @@ import Checkbox from '@/components/common/Inputs/Checkbox';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setAcceptAgreement } from '@/features/slices/modalSlice';
+import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
 import { type IAcceptAgreement } from '@/features/slices/types/modalSlice.interfaces';
 import { store } from '@/features/store';
 import { useMutation } from '@tanstack/react-query';
@@ -45,7 +45,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 
 	const onCloseModal = () => {
 		getAgreements();
-		dispatch(setAcceptAgreement(null));
+		dispatch(setAcceptAgreementModal(null));
 	};
 
 	const onConfirm = () => {

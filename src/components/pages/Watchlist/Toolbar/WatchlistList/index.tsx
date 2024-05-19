@@ -3,7 +3,7 @@ import Tooltip from '@/components/common/Tooltip';
 import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
-	setAddNewOptionWatchlist,
+	setAddNewOptionWatchlistModal,
 	setLoginModal,
 	setManageOptionWatchlistListModal,
 } from '@/features/slices/modalSlice';
@@ -70,7 +70,7 @@ const WatchlistList = () => {
 			return;
 		}
 
-		dispatch(setAddNewOptionWatchlist({}));
+		dispatch(setAddNewOptionWatchlistModal({}));
 	};
 
 	const manageWatchlistList = () => {

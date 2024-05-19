@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
-import { setAddSaturnTemplate } from '@/features/slices/modalSlice';
+import { setAddSaturnTemplateModal } from '@/features/slices/modalSlice';
 import { type IAddSaturnTemplate } from '@/features/slices/types/modalSlice.interfaces';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
@@ -32,7 +32,7 @@ const AddSaturnTemplate = forwardRef<HTMLDivElement, AddSaturnTemplateProps>(
 		const [name, setName] = useState('');
 
 		const onCloseModal = () => {
-			dispatch(setAddSaturnTemplate(null));
+			dispatch(setAddSaturnTemplateModal(null));
 		};
 
 		const onSubmit = async (e: React.FormEvent) => {

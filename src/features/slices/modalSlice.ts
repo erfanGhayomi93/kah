@@ -47,9 +47,6 @@ const initialState: ModalState = {
 	// خرید و فروش
 	buySell: null,
 
-	// جزئیات نماد
-	symbolInfoPanelSetting: null,
-
 	// افزودن قالب جدید زحل
 	addSaturnTemplate: null,
 
@@ -61,6 +58,9 @@ const initialState: ModalState = {
 
 	// تغییر کارگزار ناظر
 	changeBroker: null,
+
+	// تنظیمات جزئیات نماد
+	symbolInfoPanelSetting: null,
 
 	// واریز وجه
 	deposit: null,
@@ -139,16 +139,12 @@ const modalSlice = createSlice({
 			state.confirm = payload;
 		},
 
-		setAcceptAgreement: (state, { payload }: PayloadAction<ModalState['acceptAgreement']>) => {
+		setAcceptAgreementModal: (state, { payload }: PayloadAction<ModalState['acceptAgreement']>) => {
 			state.acceptAgreement = payload;
 		},
 
 		setLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
 			state.loginModal = payload;
-		},
-
-		setSymbolInfoPanelSetting: (state, { payload }: PayloadAction<ModalState['symbolInfoPanelSetting']>) => {
-			state.symbolInfoPanelSetting = payload;
 		},
 
 		setForgetPasswordModal: (state, { payload }: PayloadAction<ModalState['forgetPassword']>) => {
@@ -181,11 +177,15 @@ const modalSlice = createSlice({
 			}
 		},
 
-		setAddSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
+		setAddSaturnTemplateModal: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
 
-		setAddNewOptionWatchlist: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
+		setSymbolInfoPanelSettingModal: (state, { payload }: PayloadAction<ModalState['symbolInfoPanelSetting']>) => {
+			state.symbolInfoPanelSetting = payload;
+		},
+
+		setAddNewOptionWatchlistModal: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
 			state.addNewOptionWatchlist = payload;
 		},
 
@@ -301,7 +301,7 @@ const modalSlice = createSlice({
 			state.createStrategy = payload;
 		},
 
-		setCoveredCallFilters: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
+		setCoveredCallFiltersModal: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
 			state.coveredCallFilters = payload;
 		},
 	},
@@ -311,15 +311,15 @@ export const {
 	setLoginModal,
 	setBuySellModal,
 	setOrderDetailsModal,
+	setSymbolInfoPanelSettingModal,
 	setForgetPasswordModal,
 	setOptionFiltersModal,
 	setLogoutModal,
 	setBlackScholesModal,
 	setConfirmModal,
-	setSymbolInfoPanelSetting,
 	setSelectSymbolContractsModal,
-	setAddSaturnTemplate,
-	setAddNewOptionWatchlist,
+	setAddSaturnTemplateModal,
+	setAddNewOptionWatchlistModal,
 	setChoiceBrokerModal,
 	setMoveSymbolToWatchlistModal,
 	setChoiceCollateralModal,
@@ -344,8 +344,8 @@ export const {
 	setOrdersReportsFiltersModal,
 	setTradesReportsFiltersModal,
 	setCreateStrategyModal,
-	setCoveredCallFilters,
-	setAcceptAgreement,
+	setCoveredCallFiltersModal,
+	setAcceptAgreementModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -380,5 +380,6 @@ export const getPhysicalSettlementReportsFiltersModal = (state: RootState) =>
 export const getOrdersReportsFiltersModal = (state: RootState) => state.modal.ordersReportsFilters;
 export const getTradesReportsFiltersModal = (state: RootState) => state.modal.tradesReportsFilters;
 export const getGetStrategyModal = (state: RootState) => state.modal.createStrategy;
+export const getSymbolInfoPanelSettingModal = (state: RootState) => state.modal.symbolInfoPanelSetting;
 
 export default modalSlice.reducer;
