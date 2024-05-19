@@ -1,3 +1,4 @@
+import { ssrRoutes } from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import Strategy from '@/components/pages/Strategies/Strategy';
@@ -7,7 +8,7 @@ import type { NextPage } from 'next';
 const getStrategy = (id: string) =>
 	new Promise<Strategy.GetAll | undefined>(async (resolve) => {
 		try {
-			const { result } = (await fetch('http://kahkeshanapi-stage.ramandtech.com:7142/Strategies/v1/GetAll', {
+			const { result } = (await fetch(ssrRoutes.strategy.GetAll, {
 				method: 'get',
 				cache: 'default',
 			}).then((res) => res.json())) as ServerResponse<Strategy.GetAll[]>;
