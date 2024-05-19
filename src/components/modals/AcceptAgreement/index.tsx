@@ -8,7 +8,6 @@ import { type IAcceptAgreement } from '@/features/slices/types/modalSlice.interf
 import { store } from '@/features/store';
 import { useMutation } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
 import styled from 'styled-components';
@@ -83,23 +82,21 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 				{submiting ? (
 					<OAuthSMS {...{ sendRequest, ...data }} />
 				) : (
-					<div className='items-center justify-center gap-24 p-24 flex-column' style={{ maxHeight: 600 }}>
-						<p className='overflow-auto whitespace-pre-line pl-2 text-justify text-base leading-10 text-gray-900'>
+					<div className='items-center justify-center py-24 gap-24 flex-column' style={{ maxHeight: 600 }}>
+						<p className='overflow-auto whitespace-pre-line  px-24 text-justify text-base leading-10 text-gray-900'>
 							{data?.description?.toString().replace(/\\n/g, '\n') ?? '-'}
 						</p>
 
-						<div className='w-full gap-8 flex-justify-between'>
+						<div className='w-full gap-8 px-24 flex-justify-between'>
 							<span className='gap-8 flex-justify-start'>
 								<Checkbox
 									checked={isRead || data?.state === 'Accepted'}
 									onChange={(value) => data?.canChangeByCustomer && setIsRead(value)}
 									disabled={!data?.canChangeByCustomer}
 									readOnly={!data?.canChangeByCustomer}
-									className={clsx(
-										data.state === 'Accepted' || !data?.canChangeByCustomer
-											? 'cursor-not-allowed'
-											: '',
-									)}
+									classes={{
+										checkbox: '!size-24 !rounded',
+									}}
 								/>
 								{t('settings_page.read_and_agreed')}
 							</span>
@@ -107,7 +104,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 								onClick={onConfirm}
 								type='button'
 								disabled={!data.canChangeByCustomer || !isRead}
-								className={'h-40 w-1/2 rounded font-medium btn-primary disabled:cursor-not-allowed'}
+								className={'h-40 w-1/2 rounded font-medium btn-primary'}
 							>
 								{data?.state === 'Accepted' ? t('settings_page.unconfirm') : t('settings_page.confirm')}
 							</button>
