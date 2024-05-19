@@ -150,7 +150,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread> & { colId: TBearPutSpreadColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',
@@ -166,7 +166,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [
@@ -183,7 +183,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'hspSymbolISIN',
+				colId: 'hspSymbolTitle',
 				headerName: 'پوت خرید',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -205,6 +205,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestSellLimitPrice',
 				headerName: 'قیمت فروشنده پوت خرید',
 				width: 176,
+				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -212,6 +213,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestSellLimitQuantity',
 				headerName: 'حجم فروشنده پوت خرید',
 				width: 176,
+				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -219,6 +221,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestBuyLimitPrice',
 				headerName: 'قیمت خریدار پوت خرید',
 				width: 176,
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.hspBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -226,11 +229,12 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestBuyLimitQuantity',
 				headerName: 'حجم خریدار پوت خرید',
 				width: 176,
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.hspBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'lspSymbolISIN',
+				colId: 'lspSymbolTitle',
 				headerName: 'پوت فروش',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -271,7 +275,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			},
 			{
 				colId: 'lspBestSellLimitQuantity',
-				headerName: 'حجم سر خط فروش پوت فروش',
+				headerName: 'حجم سرخط فروش پوت فروش',
 				width: 192,
 				valueGetter: ({ data }) => data?.lspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -383,14 +387,14 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			{
 				colId: 'hspTradeValue',
 				headerName: 'ارزش معاملات آپشن پوت خرید',
-				width: 192,
+				width: 208,
 				valueGetter: ({ data }) => data?.hspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'lspTradeValue',
 				headerName: 'ارزش معاملات آپشن پوت فروش',
-				width: 192,
+				width: 208,
 				valueGetter: ({ data }) => data?.lspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},

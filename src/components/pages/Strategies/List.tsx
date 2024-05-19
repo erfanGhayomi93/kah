@@ -24,28 +24,18 @@ const List = () => {
 	}, [strategyTrend, data]);
 
 	if (isLoading)
-		return (
-			<div className='relative flex-1 rounded bg-white'>
-				<Loading />
-			</div>
-		);
+		return <Loading />;
 
 	if (!filteredStrategies?.length)
 		return (
-			<div className='flex-1 rounded bg-white'>
 				<div style={{ marginTop: '9.6rem' }}>
 					<NoData />
 				</div>
-			</div>
 		);
 
-	return (
-		<div className='relative flex flex-1 flex-wrap content-start gap-y-8 rounded bg-white px-8 py-24'>
-			{filteredStrategies.map((item) => (
-				<StrategyItem key={item.id} {...item} />
-			))}
-		</div>
-	);
+	return filteredStrategies.map((item) => (
+		<StrategyItem key={item.id} {...item} />
+	));
 };
 
 export default List;

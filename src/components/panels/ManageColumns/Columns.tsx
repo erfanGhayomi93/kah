@@ -24,7 +24,7 @@ const Columns = ({ close }: ColumnsProps) => {
 		}
 	};
 
-	const onColumnChanged = (updatedCol: IManageColumn) => {
+	const onColumnChanged = (updatedCol: IManageColumn<string>) => {
 		try {
 			const newColumns = columns.map((col) => ({
 				...col,

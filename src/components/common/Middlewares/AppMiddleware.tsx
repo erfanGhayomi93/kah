@@ -58,8 +58,17 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 
 			const userAppVersion = LocalstorageInstance.get('app_version', appVersion);
 
-			if (versionParser(appVersion) > versionParser(userAppVersion)) {
-				const CLEARABLE_KEYS = [''];
+			if (versionParser(appVersion) !== versionParser(userAppVersion)) {
+				const CLEARABLE_KEYS = [
+					'conversion_strategy_columns',
+					'bear_put_spread_columns',
+					'bull_call_spread_strategy_columns',
+					'covered_call_strategy_columns',
+					'long_call_strategy_columns',
+					'long_put_strategy_columns',
+					'Long_straddle_strategy_columns',
+					'protective_put_strategy_columns',
+				];
 				for (let i = 0; i < CLEARABLE_KEYS.length; i++) {
 					LocalstorageInstance.remove(CLEARABLE_KEYS[i]);
 				}

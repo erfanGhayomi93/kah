@@ -144,6 +144,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	};
 	canChangeBaseSymbol: boolean;
 	canSendBaseSymbol: boolean;
+	initialSelectedBaseSymbol?: boolean;
 	maxContracts: null | number;
 	initialSelectedContracts: string[];
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;

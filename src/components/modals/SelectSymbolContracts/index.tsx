@@ -3,9 +3,10 @@ import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type ISelectSymbolContractsModal } from '@/features/slices/types/modalSlice.interfaces';
+import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import ContractsTable from './ContractsTable';
@@ -13,7 +14,9 @@ import Toolbar from './Toolbar';
 
 interface SymbolContractsProps extends ISelectSymbolContractsModal {}
 
-interface ContractProps extends Option.Root {
+interface ContractProps {
+	symbolTitle: string;
+	optionType?: TOptionSides;
 	onRemove: () => void;
 }
 
@@ -28,21 +31,34 @@ const Div = styled.div`
 
 const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 	(
-		{ symbol, initialSelectedContracts, canChangeBaseSymbol, canSendBaseSymbol, maxContracts, callback, ...props },
+		{
+			symbol,
+			initialSelectedBaseSymbol,
+			initialSelectedContracts,
+			canChangeBaseSymbol,
+			canSendBaseSymbol,
+			maxContracts,
+			callback,
+			...props
+		},
 		ref,
 	) => {
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
 
-		const [states, setStates] = useState<SymbolContractModalStates>({
+		const {
+			inputs: states,
+			setFieldValue,
+			setFieldsValue,
+		} = useInputs<SymbolContractModalStates>({
 			contractType: {
 				id: 'buy',
 				title: t('side.buy'),
 			},
 			contracts: [],
 			activeSettlement: null,
-			sendBaseSymbol: true,
+			sendBaseSymbol: Boolean(initialSelectedBaseSymbol),
 			term: '',
 		});
 
@@ -51,19 +67,9 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		};
 
 		const removeContract = (symbolISIN: string) => {
-			setStates((prev) => ({
+			setFieldsValue((prev) => ({
 				...prev,
 				contracts: prev.contracts.filter((item) => item.symbolInfo.symbolISIN !== symbolISIN),
-			}));
-		};
-
-		const setStatesValue = <T extends keyof SymbolContractModalStates>(
-			name: T,
-			value: SymbolContractModalStates[T],
-		) => {
-			setStates((prev) => ({
-				...prev,
-				[name]: value,
 			}));
 		};
 
@@ -87,14 +93,14 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 						<Toolbar
 							canChangeBaseSymbol={canChangeBaseSymbol}
 							settlementDay={states.activeSettlement}
-							setSettlementDay={(v) => setStatesValue('activeSettlement', v)}
+							setSettlementDay={(v) => setFieldValue('activeSettlement', v)}
 							symbol={symbol}
 						/>
 
 						<ContractsTable
 							initialSelectedContracts={initialSelectedContracts ?? []}
 							contracts={states.contracts}
-							setContracts={(v) => setStatesValue('contracts', v)}
+							setContracts={(v) => setFieldValue('contracts', v)}
 							settlementDay={states.activeSettlement}
 							symbolISIN={symbol?.symbolISIN}
 							maxContracts={maxContracts}
@@ -113,7 +119,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 										</>
 									}
 									checked={states.sendBaseSymbol}
-									onChange={(v) => setStatesValue('sendBaseSymbol', v)}
+									onChange={(v) => setFieldValue('sendBaseSymbol', v)}
 								/>
 							</div>
 						)}
@@ -123,11 +129,20 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							className='flex h-auto gap-24 rounded border border-dashed border-gray-500 bg-gray-100 p-24'
 						>
 							<ul className='flex flex-1 flex-wrap gap-16'>
+								{states.sendBaseSymbol && (
+									<Contract
+										key={symbol?.symbolISIN}
+										symbolTitle={symbol?.symbolTitle ?? ''}
+										onRemove={() => setFieldValue('sendBaseSymbol', false)}
+									/>
+								)}
+
 								{states.contracts.map((item) => (
 									<Contract
 										key={item.symbolInfo.symbolISIN}
+										symbolTitle={item.symbolInfo.symbolTitle}
+										optionType={item.symbolInfo.optionType === 'Call' ? 'call' : 'put'}
 										onRemove={() => removeContract(item.symbolInfo.symbolISIN)}
-										{...item}
 									/>
 								))}
 							</ul>
@@ -150,16 +165,16 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 	},
 );
 
-const Contract = ({ onRemove, symbolInfo }: ContractProps) => {
+const Contract = ({ onRemove, symbolTitle, optionType }: ContractProps) => {
 	return (
 		<li
 			style={{ flex: '0 0 10.4rem' }}
 			className={clsx(
-				'h-32 gap-8 rounded flex-justify-center',
-				symbolInfo.optionType === 'Call' ? 'bg-success-100/10' : 'bg-error-100/10',
+				'h-32 gap-8 rounded px-8 flex-justify-between',
+				optionType ? (optionType === 'call' ? 'bg-success-100/10' : 'bg-error-100/10') : 'bg-gray-300',
 			)}
 		>
-			<span className='text-base text-gray-1000'>{symbolInfo.symbolTitle}</span>
+			<span className='text-base text-gray-1000'>{symbolTitle}</span>
 			<button onClick={onRemove} type='button' className='text-gray-900'>
 				<XSVG width='1.4rem' height='1.4rem' />
 			</button>

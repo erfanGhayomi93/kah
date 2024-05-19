@@ -165,6 +165,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 						.map((item) => item.symbol.symbolISIN) as string[],
 					canChangeBaseSymbol: false,
 					canSendBaseSymbol: true,
+					initialSelectedBaseSymbol: symbolContracts.findIndex((c) => c.type === 'base') > -1,
 					callback: addContracts,
 				}),
 			);

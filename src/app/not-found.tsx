@@ -10,6 +10,7 @@ const NotFound = () => {
 	useEffect(() => {
 		router.push('/');
 	}, []);
+
 	return <Loading />;
 };
 
