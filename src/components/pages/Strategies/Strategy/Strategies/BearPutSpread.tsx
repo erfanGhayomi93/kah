@@ -166,7 +166,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
+				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
 					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [
@@ -183,7 +183,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'hspSymbolISIN',
+				colId: 'hspSymbolTitle',
 				headerName: 'پوت خرید',
 				width: 128,
 				cellClass: 'cursor-pointer',

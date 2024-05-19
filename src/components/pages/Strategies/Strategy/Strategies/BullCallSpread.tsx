@@ -2,7 +2,7 @@ import { useBullCallSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsBullCallSpread } from '@/constants/strategies';
+import { initialColumnsBullCallSpread, initialHiddenColumnsBullCallSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -155,6 +155,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
+				initialHide: initialHiddenColumnsBullCallSpread.baseSymbolTitle,
 				width: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
@@ -164,6 +165,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
+				initialHide: initialHiddenColumnsBullCallSpread.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
@@ -178,6 +180,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
+				initialHide: initialHiddenColumnsBullCallSpread.dueDays,
 				width: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -185,6 +188,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspSymbolTitle',
 				headerName: 'کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspSymbolTitle,
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.lspSymbolISIN),
@@ -197,6 +201,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspStrikePrice',
 				headerName: 'قیمت اعمال کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspStrikePrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.lspStrikePrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -204,6 +209,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspBestSellLimitPrice',
 				headerName: 'قیمت فروشنده کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspBestSellLimitPrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -211,6 +217,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspBestSellLimitQuantity',
 				headerName: 'حجم فروشنده کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspBestSellLimitQuantity,
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -218,6 +225,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspBestBuyLimitPrice',
 				headerName: 'قیمت خریدار کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspBestBuyLimitPrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -225,13 +233,15 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspBestBuyLimitQuantity',
 				headerName: 'حجم خریدار کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspBestBuyLimitQuantity,
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'hspSymbolISIN',
+				colId: 'hspSymbolTitle',
 				headerName: 'کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspSymbolTitle,
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.hspSymbolISIN),
@@ -244,6 +254,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspStrikePrice',
 				headerName: 'قیمت اعمال کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspStrikePrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.hspStrikePrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -251,6 +262,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestBuyLimitPrice',
 				headerName: 'قیمت خریدار کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspBestBuyLimitPrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.hspBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -258,6 +270,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestBuyLimitQuantity',
 				headerName: 'حجم خریدار کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspBestBuyLimitQuantity,
 				width: 176,
 				valueGetter: ({ data }) => data?.hspBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -265,6 +278,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestSellLimitPrice',
 				headerName: 'بهترین فروشنده کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspBestSellLimitPrice,
 				width: 204,
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -272,6 +286,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestSellLimitQuantity',
 				headerName: 'حجم سر خط فروش کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -279,6 +294,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspOpenPositionCount',
 				headerName: 'موقعیت باز کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspOpenPositionCount,
 				width: 152,
 				valueGetter: ({ data }) => data?.lspOpenPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -286,6 +302,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspOpenPositionCount',
 				headerName: 'موقعیت باز کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspOpenPositionCount,
 				width: 152,
 				valueGetter: ({ data }) => data?.hspOpenPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -293,6 +310,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspPremiumPercent',
 				headerName: 'قیمت نماد کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
@@ -304,6 +322,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspPremiumPercent',
 				headerName: 'قیمت نماد کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BullCallSpread, number>) => ({
@@ -315,6 +334,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'bullCallSpreadBEP',
 				headerName: 'سر به سر',
+				initialHide: initialHiddenColumnsBullCallSpread.bullCallSpreadBEP,
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -326,6 +346,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'maxProfitPercent',
 				headerName: 'حداکثر بازده',
+				initialHide: initialHiddenColumnsBullCallSpread.maxProfitPercent,
 				width: 184,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -341,6 +362,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'maxLoss',
 				headerName: 'حداکثر زیان',
+				initialHide: initialHiddenColumnsBullCallSpread.maxLoss,
 				width: 152,
 				valueGetter: ({ data }) => data?.maxLoss ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -348,6 +370,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'inUseCapital',
 				headerName: 'سرمایه درگیر',
+				initialHide: initialHiddenColumnsBullCallSpread.inUseCapital,
 				width: 96,
 				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -355,6 +378,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspTimeValue',
 				headerName: 'ارزش زمانی کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspTimeValue,
 				width: 152,
 				valueGetter: ({ data }) => data?.lspTimeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -362,6 +386,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspTimeValue',
 				headerName: 'ارزش زمانی کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspTimeValue,
 				width: 152,
 				valueGetter: ({ data }) => data?.hspTimeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -369,6 +394,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspIntrinsicValue',
 				headerName: 'ارزش ذاتی کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspIntrinsicValue,
 				width: 152,
 				valueGetter: ({ data }) => data?.lspIntrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -376,6 +402,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspIntrinsicValue',
 				headerName: 'ارزش ذاتی کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspIntrinsicValue,
 				width: 152,
 				valueGetter: ({ data }) => data?.hspIntrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -383,6 +410,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'lspTradeValue',
 				headerName: 'ارزش معاملات آپشن کال خرید',
+				initialHide: initialHiddenColumnsBullCallSpread.lspTradeValue,
 				width: 192,
 				valueGetter: ({ data }) => data?.lspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -390,6 +418,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspTradeValue',
 				headerName: 'ارزش معاملات آپشن کال فروش',
+				initialHide: initialHiddenColumnsBullCallSpread.hspTradeValue,
 				width: 192,
 				valueGetter: ({ data }) => data?.hspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -397,6 +426,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
+				initialHide: initialHiddenColumnsBullCallSpread.baseTradeValue,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -404,6 +434,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
+				initialHide: initialHiddenColumnsBullCallSpread.baseTradeCount,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -411,6 +442,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
+				initialHide: initialHiddenColumnsBullCallSpread.baseTradeVolume,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -418,6 +450,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
+				initialHide: initialHiddenColumnsBullCallSpread.baseLastTradedDate,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
@@ -425,6 +458,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'ytm',
 				headerName: 'YTM',
+				initialHide: initialHiddenColumnsBullCallSpread.ytm,
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -437,6 +471,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'actions',
 				headerName: 'عملیات',
+				initialHide: initialHiddenColumnsBullCallSpread.actions,
 				width: 80,
 				sortable: false,
 				pinned: 'left',

@@ -2,7 +2,7 @@ import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsLongPut } from '@/constants/strategies';
+import { initialColumnsLongPut, initialHiddenColumnsLongPut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -134,6 +134,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
+				baseSymbolTitle: initialHiddenColumnsLongPut.baseSymbolTitle,
 				minWidth: 104,
 				flex: 1,
 				pinned: 'right',
@@ -144,6 +145,8 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
+				baseTradePriceVarPreviousTradePercent:
+					initialHiddenColumnsLongPut.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
@@ -158,12 +161,14 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
+				dueDays: initialHiddenColumnsLongPut.dueDays,
 				minWidth: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: 'کال',
+				symbolTitle: initialHiddenColumnsLongPut.symbolTitle,
 				minWidth: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
@@ -176,6 +181,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
+				strikePrice: initialHiddenColumnsLongPut.strikePrice,
 				minWidth: 96,
 				cellClass: 'gray',
 				valueGetter: ({ data }) => data?.strikePrice ?? 0,
@@ -184,6 +190,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'openPositionCount',
 				headerName: 'موقعیت باز',
+				openPositionCount: initialHiddenColumnsLongPut.openPositionCount,
 				minWidth: 112,
 				valueGetter: ({ data }) => data?.openPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -191,6 +198,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
+				tradePriceVarPreviousTradePercent: initialHiddenColumnsLongPut.tradePriceVarPreviousTradePercent,
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
@@ -202,6 +210,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'optionBestLimitPrice',
 				headerName: 'بهترین خریدار',
+				optionBestLimitPrice: initialHiddenColumnsLongPut.optionBestLimitPrice,
 				minWidth: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.optionBestLimitPrice ?? 0,
@@ -210,6 +219,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'optionBestLimitVolume',
 				headerName: 'حجم سرخط خرید',
+				optionBestLimitVolume: initialHiddenColumnsLongPut.optionBestLimitVolume,
 				minWidth: 120,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.optionBestLimitVolume ?? 0,
@@ -218,6 +228,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'optionBestSellLimitPrice',
 				headerName: 'بهترین فروشنده',
+				optionBestSellLimitPrice: initialHiddenColumnsLongPut.optionBestSellLimitPrice,
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
@@ -226,6 +237,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'optionBestSellLimitQuantity',
 				headerName: 'حجم سرخط فروش',
+				optionBestSellLimitQuantity: initialHiddenColumnsLongPut.optionBestSellLimitQuantity,
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitQuantity ?? 0,
@@ -234,6 +246,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'longPutBEP',
 				headerName: 'سر به سر',
+				longPutBEP: initialHiddenColumnsLongPut.longPutBEP,
 				minWidth: 128,
 				cellClass: ({ data }) =>
 					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longPutBEP ?? 0)),
@@ -243,6 +256,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'profitPercent',
 				headerName: 'حداکثر بازده',
+				profitPercent: initialHiddenColumnsLongPut.profitPercent,
 				minWidth: 160,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -258,6 +272,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'blackScholes',
 				headerName: 'بلک شولز',
+				blackScholes: initialHiddenColumnsLongPut.blackScholes,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.blackScholes ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
@@ -265,6 +280,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'timeValue',
 				headerName: 'ارزش زمانی',
+				timeValue: initialHiddenColumnsLongPut.timeValue,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.timeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -272,6 +288,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'intrinsicValue',
 				headerName: 'ارزش ذاتی',
+				intrinsicValue: initialHiddenColumnsLongPut.intrinsicValue,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.intrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -279,12 +296,14 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'profit',
 				headerName: 'بازده',
+				profit: initialHiddenColumnsLongPut.profit,
 				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},
 			{
 				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
+				bepDifference: initialHiddenColumnsLongPut.bepDifference,
 				minWidth: 136,
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
@@ -292,6 +311,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'tradeValue',
 				headerName: 'ارزش معاملات آپشن',
+				tradeValue: initialHiddenColumnsLongPut.tradeValue,
 				minWidth: 136,
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -299,6 +319,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
+				baseTradeValue: initialHiddenColumnsLongPut.baseTradeValue,
 				minWidth: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -306,6 +327,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
+				baseTradeCount: initialHiddenColumnsLongPut.baseTradeCount,
 				minWidth: 128,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -313,6 +335,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
+				baseTradeVolume: initialHiddenColumnsLongPut.baseTradeVolume,
 				minWidth: 136,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -320,6 +343,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
+				baseLastTradedDate: initialHiddenColumnsLongPut.baseLastTradedDate,
 				minWidth: 120,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
@@ -327,6 +351,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'actions',
 				headerName: 'عملیات',
+				actions: initialHiddenColumnsLongPut.actions,
 				width: 80,
 				sortable: false,
 				pinned: 'left',

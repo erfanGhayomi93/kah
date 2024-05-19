@@ -2,7 +2,7 @@ import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsConversion } from '@/constants/strategies';
+import { initialColumnsConversion, initialHiddenColumnsConversion } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -168,6 +168,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
+				initialHide: initialHiddenColumnsConversion.baseSymbolTitle,
 				width: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
@@ -177,6 +178,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
+				initialHide: initialHiddenColumnsConversion.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
@@ -191,12 +193,14 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
+				initialHide: initialHiddenColumnsConversion.dueDays,
 				width: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
 				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
+				initialHide: initialHiddenColumnsConversion.strikePrice,
 				width: 96,
 				cellClass: 'gray',
 				valueGetter: ({ data }) => data?.strikePrice ?? 0,
@@ -205,6 +209,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callPremiumPercent',
 				headerName: 'قیمت نماد کال',
+				initialHide: initialHiddenColumnsConversion.callPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
@@ -216,6 +221,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putPremiumPercent',
 				headerName: 'قیمت نماد پوت',
+				initialHide: initialHiddenColumnsConversion.putPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
@@ -227,6 +233,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callSymbolTitle',
 				headerName: 'کال',
+				initialHide: initialHiddenColumnsConversion.callSymbolTitle,
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.callSymbolISIN),
@@ -239,6 +246,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callBestBuyLimitPrice',
 				headerName: 'بهترین خریدار کال',
+				initialHide: initialHiddenColumnsConversion.callBestBuyLimitPrice,
 				width: 176,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.callBestBuyLimitPrice ?? 0,
@@ -247,6 +255,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callBestBuyLimitQuantity',
 				headerName: 'حجم سر خط خرید کال',
+				initialHide: initialHiddenColumnsConversion.callBestBuyLimitQuantity,
 				width: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.callBestBuyLimitQuantity ?? 0,
@@ -255,6 +264,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callOpenPositionCount',
 				headerName: 'موقعیت باز کال',
+				initialHide: initialHiddenColumnsConversion.callOpenPositionCount,
 				width: 152,
 				valueGetter: ({ data }) => data?.callOpenPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -262,6 +272,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callBestSellLimitPrice',
 				headerName: 'بهترین فروشنده کال',
+				initialHide: initialHiddenColumnsConversion.callBestSellLimitPrice,
 				width: 204,
 				valueGetter: ({ data }) => data?.callBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -269,6 +280,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callBestSellLimitQuantity',
 				headerName: 'حجم سر خط فروش کال',
+				initialHide: initialHiddenColumnsConversion.callBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.callBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -276,6 +288,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putSymbolTitle',
 				headerName: 'پوت',
+				initialHide: initialHiddenColumnsConversion.putSymbolTitle,
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.putSymbolISIN),
@@ -288,6 +301,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putBestSellLimitPrice',
 				headerName: 'بهترین فروشنده پوت',
+				initialHide: initialHiddenColumnsConversion.putBestSellLimitPrice,
 				width: 204,
 				valueGetter: ({ data }) => data?.putBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -295,6 +309,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putBestSellLimitQuantity',
 				headerName: 'حجم سر خط فروش پوت',
+				initialHide: initialHiddenColumnsConversion.putBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.putBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -302,6 +317,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putOpenPositionCount',
 				headerName: 'موقعیت باز پوت',
+				initialHide: initialHiddenColumnsConversion.putOpenPositionCount,
 				width: 152,
 				valueGetter: ({ data }) => data?.putOpenPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -309,6 +325,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putBestBuyLimitPrice',
 				headerName: 'بهترین خریدار پوت',
+				initialHide: initialHiddenColumnsConversion.putBestBuyLimitPrice,
 				width: 176,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.putBestBuyLimitPrice ?? 0,
@@ -317,6 +334,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putBestBuyLimitQuantity',
 				headerName: 'حجم سر خط خرید پوت',
+				initialHide: initialHiddenColumnsConversion.putBestBuyLimitQuantity,
 				width: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.putBestBuyLimitQuantity ?? 0,
@@ -325,12 +343,14 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'profit',
 				headerName: 'بازده',
+				initialHide: initialHiddenColumnsConversion.profit,
 				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},
 			{
 				colId: 'inUseCapital',
 				headerName: 'سرمایه درگیر',
+				initialHide: initialHiddenColumnsConversion.inUseCapital,
 				width: 96,
 				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -338,6 +358,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'bestBuyYTM',
 				headerName: 'YTM سرخط خرید',
+				initialHide: initialHiddenColumnsConversion.bestBuyYTM,
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -350,6 +371,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'bestSellYTM',
 				headerName: 'YTM سرخط فروش',
+				initialHide: initialHiddenColumnsConversion.bestSellYTM,
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -362,6 +384,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callTradeValue',
 				headerName: 'ارزش معاملات کال',
+				initialHide: initialHiddenColumnsConversion.callTradeValue,
 				width: 160,
 				valueGetter: ({ data }) => data?.callTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -369,6 +392,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putTradeValue',
 				headerName: 'ارزش معاملات پوت',
+				initialHide: initialHiddenColumnsConversion.putTradeValue,
 				width: 160,
 				valueGetter: ({ data }) => data?.putTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -376,6 +400,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
+				initialHide: initialHiddenColumnsConversion.baseTradeValue,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -383,6 +408,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
+				initialHide: initialHiddenColumnsConversion.baseTradeCount,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -390,6 +416,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
+				initialHide: initialHiddenColumnsConversion.baseTradeVolume,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -397,6 +424,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
+				initialHide: initialHiddenColumnsConversion.baseLastTradedDate,
 				width: 152,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
@@ -404,6 +432,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'actions',
 				headerName: 'عملیات',
+				initialHide: initialHiddenColumnsConversion.actions,
 				width: 80,
 				sortable: false,
 				pinned: 'left',
