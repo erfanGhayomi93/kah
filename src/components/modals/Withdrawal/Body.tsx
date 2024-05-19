@@ -8,6 +8,7 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { convertStringToInteger, sepNumbers, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
 import { useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 import { useEffect, type FC } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -15,10 +16,11 @@ import { toast } from 'react-toastify';
 import { WithdrawalItem } from './WithdrawalItem';
 
 interface DrawalBodyProps {
-	onClose: () => void
+	onClose: () => void,
+	editData?: Payment.IDrawalHistoryList
 }
 
-export const Body: FC<DrawalBodyProps> = ({ onClose }) => {
+export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 
 	const t = useTranslations();
 
@@ -27,6 +29,8 @@ export const Body: FC<DrawalBodyProps> = ({ onClose }) => {
 	const queryClient = useQueryClient();
 
 	const userInfo: Broker.User | undefined = queryClient.getQueryData(['userInfoQuery']);
+
+	const { customerAccountId, requestAmount, saveDate, id } = editData || {};
 
 
 	const { data: userAccountOptions } = useListUserBankAccountQuery({
@@ -68,6 +72,10 @@ export const Body: FC<DrawalBodyProps> = ({ onClose }) => {
 		mode: 'onChange',
 	});
 
+	const defaultOptionAccount = () => {
+		if (editData) return userAccountOptions?.find(item => item.id === customerAccountId);
+		else if (userAccountOptions) return userAccountOptions[0];
+	};
 
 	const onChangeDate = (type: 't1' | 't2') => {
 		try {
@@ -100,17 +108,18 @@ export const Body: FC<DrawalBodyProps> = ({ onClose }) => {
 				customerAccountId: String(value.bankAccount?.id),
 				customerISIN: userInfo.customerISIN,
 				nationalCode: userInfo.nationalCode,
-				requestAmount: convertStringToInteger(String(value.amount)),
+				[!editData ? 'requestAmount' : 'Amount']: convertStringToInteger(String(value.amount)),
 				requestDate: toISOStringWithoutChangeTime(new Date(withdrawalData?.date)),
+				id: id ?? undefined
 			};
 
-			const response = await brokerAxios.post(url?.RequestPayment, payload);
+			const response = await brokerAxios.post(!editData ? url?.RequestPayment : url?.PaymentUpdateRequest, payload);
 			const data = response.data;
 
 			if (!data.succeeded) {
 				toast.error(t('i_errors.withdrawal_' + data.errors?.[0]));
 			} else {
-				toast.success(t('alerts.drawal_offline_successFully'));
+				!editData ? toast.success(t('alerts.drawal_offline_successFully')) : toast.success(t('alerts.drawal_offline_successFully_edited'));
 				onClose();
 			}
 		} catch (err) {
@@ -121,14 +130,19 @@ export const Body: FC<DrawalBodyProps> = ({ onClose }) => {
 
 	useEffect(() => {
 		if (userAccountOptions) {
-			setValue('bankAccount', userAccountOptions[0], { shouldValidate: true });
+			setValue('bankAccount', defaultOptionAccount() ?? null, { shouldValidate: true });
 		}
 	}, [userAccountOptions]);
 
 
 	useEffect(() => {
-		if (remainsWithDate) {
-			setValue('amount', remainsWithDate.t1.amount, { shouldValidate: true });
+		if (remainsWithDate && !editData) {
+			setValue('amount', remainsWithDate.t1.valid ? remainsWithDate.t1.amount : remainsWithDate.t2.amount, { shouldValidate: true });
+			setValue('withdrawalType', remainsWithDate.t1.valid ? 't1' : 't2', { shouldValidate: true });
+		} else if (editData) {
+			setValue('amount', String(requestAmount), { shouldValidate: true });
+			const isT1 = dayjs(remainsWithDate?.t1.date).isAfter(dayjs(saveDate));
+			setValue('withdrawalType', isT1 ? 't1' : 't2', { shouldValidate: true });
 		}
 	}, [remainsWithDate]);
 
@@ -149,7 +163,7 @@ export const Body: FC<DrawalBodyProps> = ({ onClose }) => {
 							</div>
 						)}
 						placeholder={t('withdrawal_modal.account_number_placeholder')}
-						defaultValue={userAccountOptions ? userAccountOptions[0] : null}
+						defaultValue={defaultOptionAccount()}
 					/>
 				</div>
 
@@ -216,7 +230,12 @@ export const Body: FC<DrawalBodyProps> = ({ onClose }) => {
 						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 						type='submit'
 					>
-						{t('deposit_modal.state_Request')}
+						{
+							!editData ?
+								t('deposit_modal.state_Request') :
+								t('deposit_modal.state_Edit')
+
+						}
 					</button>
 				</div>
 

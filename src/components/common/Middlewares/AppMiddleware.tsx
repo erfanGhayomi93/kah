@@ -1,10 +1,12 @@
 'use client';
 
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
+import LocalstorageInstance from '@/classes/Localstorage';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
+import { versionParser } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -48,6 +50,33 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 		if (brokerURLs) return;
 		onUserLoggedOutFromTheBroker();
 	}, [brokerURLs]);
+
+	useEffect(() => {
+		try {
+			const appVersion = process.env.NEXT_PUBLIC_APP_VERSION;
+			if (typeof appVersion !== 'string') return;
+
+			const userAppVersion = LocalstorageInstance.get('app_version', appVersion);
+
+			if (versionParser(appVersion) !== versionParser(userAppVersion)) {
+				const CLEARABLE_KEYS = [
+					'conversion_strategy_columns',
+					'bear_put_spread_columns',
+					'bull_call_spread_strategy_columns',
+					'covered_call_strategy_columns',
+					'long_call_strategy_columns',
+					'long_put_strategy_columns',
+					'Long_straddle_strategy_columns',
+					'protective_put_strategy_columns',
+				];
+				for (let i = 0; i < CLEARABLE_KEYS.length; i++) {
+					LocalstorageInstance.remove(CLEARABLE_KEYS[i]);
+				}
+			}
+		} catch (e) {
+			//
+		}
+	}, []);
 
 	return children;
 };

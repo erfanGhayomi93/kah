@@ -46,14 +46,14 @@ const ToastPositionSettings = () => {
 				<button
 					key={item.id}
 					className={clsx(
-						'relative flex-1  rounded-md !border py-48 transition-colors flex-justify-center',
+						'relative w-full  rounded-md !border py-48 transition-colors flex-justify-center',
 						item.id === toastPosition
 							? 'border-transparent bg-primary-100'
 							: 'border-gray-500 hover:btn-hover',
 					)}
 					onClick={() => {
 						dispatch(setToastPosition(item.id));
-						toast.success(t('settings_page.changed_toast_position'), { position: item.id });
+						toast.success(t('settings_page.changed_toast_position'), { position: item.id, autoClose: 500 });
 					}}
 				>
 					<span

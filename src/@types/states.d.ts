@@ -67,6 +67,8 @@ declare type TTradeDetails =
 
 declare type TOrderSource = 'Account' | 'Portfolio';
 
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+
 declare interface IUserBankAccount {
 	id: number;
 	shaba: string;
@@ -252,8 +254,8 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
-declare interface IManageColumn {
-	id: string;
+declare interface IManageColumn<T extends string> {
+	id: T;
 	title: string;
 	hidden: boolean;
 }
@@ -324,7 +326,9 @@ declare type IBrokerUrls = Record<
 	| 'newKaraFreeze'
 	| 'RecentFreeze'
 	| 'symbolCountFreeze'
+	| 'ReceiptEditRequest'
 	| 'getDepositOnlineHistory'
+	| 'PaymentUpdateRequest'
 	| 'GetListBankAccount'
 	| 'GetRemainsWithDate'
 	| 'LastListDrawal'

@@ -21,6 +21,7 @@ interface WithdrawalProps extends IWithdrawalModal { }
 
 const Withdrawal = forwardRef<HTMLDivElement, WithdrawalProps>((props, ref) => {
 	const t = useTranslations();
+	const { data } = props;
 
 	const [isShowExpanded, setIsShowExpanded] = useState(false);
 
@@ -55,6 +56,7 @@ const Withdrawal = forwardRef<HTMLDivElement, WithdrawalProps>((props, ref) => {
 				})}>
 					<Body
 						onClose={onCloseModal}
+						editData={data}
 					/>
 				</Div>
 

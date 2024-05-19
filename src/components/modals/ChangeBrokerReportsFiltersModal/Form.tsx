@@ -5,8 +5,9 @@ import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
 import { setChangeBrokerReportsFiltersModal } from '@/features/slices/modalSlice';
+import { calculateDateRange } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>;
@@ -52,6 +53,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		setFilterValue('status', options);
 	};
 
+	useEffect(() => {
+		if (filters.date === 'dates.custom') return;
+
+		setFilters({
+			...filters,
+			...calculateDateRange(filters.date)
+		});
+	}, [filters.date]);
+
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
@@ -62,7 +72,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(option)}</span>}
-					placeholder={t('transactions_reports_page.dates_placeholder_filter')}
+					placeholder={t('change_broker_reports_page.time_placeholder_filter')}
 					defaultValue={filters.date}
 				/>
 
@@ -107,8 +117,8 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 						{ id: 1, label: 'has_attachment' },
 					]}
 					getOptionId={(option) => option.id}
-					getOptionTitle={(option) => <span>{t(`deposit_with_receipt_page.${option.label}`)}</span>}
-					placeholder={t('deposit_with_receipt_page.attachment_placeholder_filter')}
+					getOptionTitle={(option) => <span>{t(`change_broker_reports_page.${option.label}`)}</span>}
+					placeholder={t('change_broker_reports_page.attachment_placeholder_filter')}
 				/>
 
 			</div>

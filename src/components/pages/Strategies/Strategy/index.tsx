@@ -1,13 +1,8 @@
 'use client';
 
-import { useGetAllStrategyQuery } from '@/api/queries/strategyQuery';
-import Main from '@/components/layout/Main';
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
 
-interface StrategyProps {
-	id: Strategy.Type;
-}
+interface StrategyProps extends Strategy.GetAll {}
 
 const CoveredCall = dynamic(() => import('./Strategies/CoveredCall'));
 const LongCall = dynamic(() => import('./Strategies/LongCall'));
@@ -18,38 +13,26 @@ const LongStraddle = dynamic(() => import('./Strategies/LongStraddle'));
 const Conversion = dynamic(() => import('./Strategies/Conversion'));
 const BearPutSpread = dynamic(() => import('./Strategies/BearPutSpread'));
 
-const Strategy = ({ id }: StrategyProps) => {
-	const { data } = useGetAllStrategyQuery({
-		queryKey: ['getAllStrategyQuery'],
-	});
+const Strategy = (strategy: StrategyProps) => {
+	const { type } = strategy;
 
-	const strategy = useMemo(() => {
-		if (!data?.length) return null;
+	if (type === 'CoveredCall') return <CoveredCall {...strategy} />;
 
-		return data.find((item) => item.type === id) ?? null;
-	}, [data]);
+	if (type === 'LongCall') return <LongCall {...strategy} />;
 
-	if (!strategy) return null;
+	if (type === 'LongPut') return <LongPut {...strategy} />;
 
-	return (
-		<Main className='!px-8'>
-			{id === 'CoveredCall' && <CoveredCall {...strategy} />}
+	if (type === 'ProtectivePut') return <ProtectivePut {...strategy} />;
 
-			{id === 'LongCall' && <LongCall {...strategy} />}
+	if (type === 'BullCallSpread') return <BullCallSpread {...strategy} />;
 
-			{id === 'LongPut' && <LongPut {...strategy} />}
+	if (type === 'LongStraddle') return <LongStraddle {...strategy} />;
 
-			{id === 'ProtectivePut' && <ProtectivePut {...strategy} />}
+	if (type === 'Conversion') return <Conversion {...strategy} />;
 
-			{id === 'BullCallSpread' && <BullCallSpread {...strategy} />}
+	if (type === 'BearPutSpread') return <BearPutSpread {...strategy} />;
 
-			{id === 'LongStraddle' && <LongStraddle {...strategy} />}
-
-			{id === 'Conversion' && <Conversion {...strategy} />}
-
-			{id === 'BearPutSpread' && <BearPutSpread {...strategy} />}
-		</Main>
-	);
+	return null;
 };
 
 export default Strategy;

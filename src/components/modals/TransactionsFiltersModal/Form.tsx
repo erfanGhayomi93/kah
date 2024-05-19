@@ -6,9 +6,9 @@ import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
 import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
-import { convertStringToInteger } from '@/utils/helpers';
+import { calculateDateRange, convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>;
@@ -37,6 +37,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
+
 		try {
 			ipcMain.send('set_transactions_filters', filters);
 		} catch (e) {
@@ -53,6 +54,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	const onChangeTransactionType = (options: Array<{ id: Transaction.TransactionTypes; title: string }>) => {
 		setFilterValue('transactionType', options);
 	};
+
+	useEffect(() => {
+		if (filters.date === 'dates.custom') return;
+
+		setFilters({
+			...filters,
+			...calculateDateRange(filters.date)
+		});
+	}, [filters.date]);
 
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
