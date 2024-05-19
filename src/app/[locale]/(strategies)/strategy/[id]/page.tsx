@@ -7,7 +7,7 @@ import type { NextPage } from 'next';
 const getStrategy = (id: string) =>
 	new Promise<Strategy.GetAll | undefined>(async (resolve) => {
 		try {
-			const { result } = (await fetch('http://kahkeshanapi.ramandtech.com:7142/Strategies/v1/GetAll', {
+			const { result } = (await fetch('http://kahkeshanapi-stage.ramandtech.com:7142/Strategies/v1/GetAll', {
 				method: 'get',
 				cache: 'default',
 			}).then((res) => res.json())) as ServerResponse<Strategy.GetAll[]>;
