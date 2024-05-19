@@ -30,7 +30,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 		ipcMain.handle('set_instant_deposit_reports_filters', onFiltersChanged);
 
 		return () => {
-			ipcMain.removeChannel('set_transactions_filters');
+			ipcMain.removeChannel('set_instant_deposit_reports_filters');
 		};
 	}, []);
 

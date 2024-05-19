@@ -8,7 +8,7 @@ interface SettingCardProps {
 
 const SettingCard = ({ title, children, className }: SettingCardProps) => {
 	return (
-		<div className={clsx('gap-16 rounded bg-gray-200 p-24 flex-column', className)}>
+		<div className={clsx('gap-16 rounded bg-gray-200 p-16 flex-column', className)}>
 			<p className='text-lg font-medium text-gray-900'>{title}</p>
 			{children}
 		</div>

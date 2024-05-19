@@ -27,11 +27,9 @@ const General = () => {
 					<KahkeshanInfo isLoggedIn />
 				</SettingCard>
 			)}
-
-			<div className='gap-56 rounded bg-gray-200 p-24 flex-justify-between'>
-				<p className='text-lg font-medium text-gray-900'>{t('settings_page.background_color')}</p>
+			<SettingCard title={t('settings_page.background_color')}>
 				<Theme />
-			</div>
+			</SettingCard>
 			<SettingCard title={t('settings_page.notification_placement')}>
 				<ToastPositionSettings />
 			</SettingCard>

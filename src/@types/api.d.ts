@@ -643,6 +643,8 @@ declare namespace Broker {
 		| 'PaymentExportFilteredCSV'
 		| 'SetCustomerSettings'
 		| 'DepositOnlineHistory'
+		| 'ReceiptEditRequest'
+		| 'PaymentUpdateRequest'
 		| 'GetCustomerSettings'
 		| 'EPaymentApiGetStatuses'
 		| 'EPaymentApiGetProviderTypes'
@@ -662,7 +664,9 @@ declare namespace Broker {
 		| 'FreezeExportFreeze'
 		| 'Freezerequests'
 		| 'ReceiptSetCancel'
-		| 'PaymentDeleteRequest';
+		| 'PaymentDeleteRequest'
+		| 'AcceptAgreement'
+		| 'MobileOtpRequest';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1338,6 +1342,13 @@ declare namespace Settings {
 		approveBySMS: boolean;
 		attachmentUrl: string | null;
 	}
+
+	export interface IMobileOTP {
+		expireDate: number;
+		retryToken: string;
+		starredMessage: string;
+		state: boolean;
+	}
 }
 
 declare namespace Payment {
@@ -1364,6 +1375,8 @@ declare namespace Payment {
 		| 'TerminalNotFound';
 
 	type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+
+	type TDepositTab = 'receiptDepositTab' | 'liveDepositTab';
 
 	export type TRemainsWithDay = Record<
 		't1' | 't2',
@@ -1639,14 +1652,18 @@ declare namespace Strategy {
 		callSymbolTitle: string;
 		callBestSellLimitPrice: number;
 		callBestSellLimitQuantity: number;
+		callBestBuyLimitPrice: number;
+		callBestBuyLimitQuantity: number;
+		putBestBuyLimitPrice: number;
+		putBestBuyLimitQuantity: number;
 		putSymbolISIN: string;
 		putSymbolTitle: string;
 		putBestSellLimitPrice: number;
 		putBestSellLimitQuantity: number;
 		callOpenPositionCount: number;
 		putOpenPositionCount: number;
-		callIOTM: Option.IOTM;
-		putIOTM: Option.IOTM;
+		callIOTM: string;
+		putIOTM: string;
 		callPremium: number;
 		callPremiumPercent: number;
 		putPremium: number;
@@ -1921,33 +1938,26 @@ declare namespace Reports {
 		accountCode: string;
 		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
 		providerType: string;
+		base64Image: File | null;
 	}
 
 	export interface IWithdrawal {
 		id: number;
 		accountNumber: string;
 		bankAccountId: number;
-		accountNumber: string | null;
-		status:
-			| 'Draft'
-			| 'Pending'
-			| 'Confirmed'
-			| 'Canceled'
-			| 'Failed'
-			| 'Voided'
-			| 'Paid'
-			| 'Entry'
-			| 'ErrorOccured'
-			| 'PostedToBackOffice'
-			| 'CreateRequest';
-		prsName: string | null;
-		orderOrigin: 'Broker' | 'Online' | number;
-		orderOriginName: null | string;
-		comments: string;
-		deletable: boolean;
-		bankName: string | null;
-		checkDate: string;
-		reservationNumber: number;
+		branchId: number;
+		comment: string;
+		customerAccountId: number;
+		customerBank: string;
+		customerISIN: string;
+		errorMessage: string;
+		channel: string;
+		id: number;
+		nationalCode: string;
+		requestDate: string;
+		requestAmount: number;
+		saveDate: string;
+		state: string;
 	}
 
 	export interface IChangeBrokerReports {

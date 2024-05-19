@@ -47,15 +47,15 @@ const ToolBar = () => {
 	);
 
 	return (
-		<div className='flex w-full gap-10 py-24'>
+		<div className='flex w-3/5 gap-10 py-24'>
 			{tags.map((item) => (
 				<Link
 					href={item.href}
 					key={item.href}
 					type='button'
 					className={clsx(
-						'h-36 gap-4 rounded !border px-16 text-base  transition-colors',
-						item.isActive ? 'flex-justify-center' : 'hidden',
+						'h-36 w-full gap-4 rounded !border px-16 text-base  transition-colors',
+						item.isActive ? 'flex-justify-center whitespace-nowrap' : 'hidden',
 						path === item.href
 							? 'no-hover btn-select'
 							: 'bg-gray-200 text-gray-900 hover:text-primary-400 hover:btn-hover',

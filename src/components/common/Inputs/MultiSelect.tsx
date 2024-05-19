@@ -71,8 +71,14 @@ const MultiSelect = <T, _D = T>({
 		} else {
 			setValues((prev) => {
 				const spliceValue = prev.splice(optionIndex, 1);
-				// @ts-expect-error
-				return [...prev].filter((value) => value.id !== spliceValue.id);
+				return [...prev].filter((value) => {
+					if (typeof value === 'object' && value !== null) {
+						// @ts-expect-error
+						return value.id !== spliceValue.id;
+					} else {
+						return value === spliceValue;
+					}
+				});
 			});
 			onChange([...values]);
 		}

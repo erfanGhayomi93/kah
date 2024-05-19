@@ -3,31 +3,29 @@ import { useGetAgreements } from '@/api/queries/brokerPrivateQueries';
 import Switch from '@/components/common/Inputs/Switch';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { DocSVG } from '@/components/icons';
-import { useAppSelector } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
 
 const Agreements = () => {
-	const t = useTranslations();
+	const t = useTranslations('settings_page');
 
+	const dispatch = useAppDispatch();
 	const brokerURLs = useAppSelector(getBrokerURLs);
 
 	const { data: agreements, refetch: getAgreements } = useGetAgreements({
 		queryKey: ['getAgreements'],
-		enabled: false,
+		enabled: !!brokerURLs,
 	});
-
-	useEffect(() => {
-		brokerURLs && getAgreements();
-	}, [brokerURLs]);
 
 	const columnDef = useMemo<Array<IColDef<Settings.IAgreements>>>(
 		() => [
 			{
-				headerName: t('settings_page.agreement_title'),
+				headerName: t('agreement_title'),
 				cellClass: 'text-primary',
 				valueFormatter: ({ title }) => (
 					<div className='gap-8 px-12 text-base text-gray-1000 flex-justify-start'>
@@ -39,12 +37,8 @@ const Agreements = () => {
 				),
 			},
 			{
-				headerName: t('settings_page.status'),
-				valueFormatter: ({ state }) => {
-					if (state) {
-						return <span className='text-base'>{t(`settings_page.${state}`)}</span>;
-					} else return <span className='text-base'>{state}</span>;
-				},
+				headerName: t('status'),
+				valueFormatter: ({ state }) => <span className='text-base'>{t(`${state}`)}</span>,
 				headerClass: 'w-1/6',
 				cellClass: ({ state }) =>
 					`w-1/6 ${
@@ -56,7 +50,7 @@ const Agreements = () => {
 					}`,
 			},
 			{
-				headerName: t('settings_page.accept_reject_date'),
+				headerName: t('accept_reject_date'),
 				cellClass: 'w-1/6',
 				headerClass: 'w-1/6',
 				valueFormatter: ({ changeDate }) =>
@@ -67,10 +61,13 @@ const Agreements = () => {
 					),
 			},
 			{
-				headerName: t('settings_page.action'),
-				valueFormatter: ({ state }) => (
+				headerName: t('action'),
+				valueFormatter: (data) => (
 					<div className='flex-justify-center'>
-						<Switch checked={state === 'Accepted'} onChange={() => {}} />
+						<Switch
+							checked={data?.state === 'Accepted'}
+							onChange={() => dispatch(setAcceptAgreementModal({ data, getAgreements }))}
+						/>
 					</div>
 				),
 				cellClass: 'w-1/6',
@@ -81,7 +78,7 @@ const Agreements = () => {
 	);
 
 	return (
-		<SettingCard title={t('settings_page.agreements_settings')} className='h-2/3'>
+		<SettingCard title={t('agreements_settings')} className='h-2/3'>
 			<div className='h-full bg-white'>
 				<LightweightTable<Settings.IAgreements[]> columnDefs={columnDef} rowData={agreements ?? []} />
 			</div>

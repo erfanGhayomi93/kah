@@ -3,7 +3,7 @@ import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { SettingSliderSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setSymbolInfoPanelSetting } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanelSettingModal } from '@/features/slices/modalSlice';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
@@ -84,7 +84,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 	const openSetting = () => {
 		dispatch(
-			setSymbolInfoPanelSetting({
+			setSymbolInfoPanelSettingModal({
 				isOption: Boolean(symbolData?.isOption),
 			}),
 		);

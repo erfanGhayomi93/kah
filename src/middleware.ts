@@ -11,13 +11,17 @@ const middleware = (request: NextRequest) => {
 	});
 	const response = handleI18nRouting(request);
 
-	if (!request.cookies.get('br_client_id')) {
-		for (let i = 0; i < brokerIdMatcher.length; i++) {
-			const reg = new RegExp(brokerIdMatcher[i], 'ig');
-			if (reg.test(request.nextUrl.pathname)) {
-				return NextResponse.redirect(new URL('/', request.url));
+	try {
+		if (!request.cookies.get('br_client_id')) {
+			for (let i = 0; i < brokerIdMatcher.length; i++) {
+				const reg = new RegExp(brokerIdMatcher[i], 'ig');
+				if (reg.test(request.nextUrl.pathname)) {
+					return NextResponse.redirect(new URL('/', request.url));
+				}
 			}
 		}
+	} catch (e) {
+		//
 	}
 
 	return response;

@@ -1,18 +1,11 @@
-import React, { forwardRef, useMemo } from 'react';
-import styled from 'styled-components';
-import Modal from '../Modal';
-import { useTranslations } from 'next-intl';
-import { useAppDispatch } from '@/features/hooks';
-import { setCoveredCallFilters } from '@/features/slices/modalSlice';
-import Header from './components/Header';
 import Tabs from '@/components/common/Tabs/Tabs';
-import Simple from './tabs/Simple';
+import { useAppDispatch } from '@/features/hooks';
+import { setCoveredCallFiltersModal } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
-
-const Div = styled.div`
-	width: 600px;
-	border-radius: 16px;
-`;
+import { useTranslations } from 'next-intl';
+import { forwardRef, useMemo } from 'react';
+import Modal, { Header } from '../Modal';
+import Simple from './tabs/Simple';
 
 interface ICovertCallFilters extends IBaseModalConfiguration {}
 
@@ -22,7 +15,11 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, ICovertCallFilters>((props
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(setCoveredCallFilters(null));
+		dispatch(setCoveredCallFiltersModal(null));
+	};
+
+	const onClear = () => {
+		//
 	};
 
 	const TABS = useMemo(
@@ -44,8 +41,9 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, ICovertCallFilters>((props
 
 	return (
 		<Modal onClose={onCloseModal} {...props} ref={ref}>
-			<Div>
-				<Header onCloseClick={onCloseModal} onEraserClick={() => {}} />
+			<div style={{ width: '70rem' }}>
+				<Header label={t('strategy_filters.title')} onClose={onCloseModal} onClear={onClear} />
+
 				<div className='bg-white p-24'>
 					<Tabs
 						data={TABS}
@@ -64,7 +62,7 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, ICovertCallFilters>((props
 						)}
 					/>
 				</div>
-			</Div>
+			</div>
 		</Modal>
 	);
 });

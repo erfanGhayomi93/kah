@@ -29,7 +29,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 		ipcMain.handle('set_deposit_with_receipt_filters', onFiltersChanged);
 
 		return () => {
-			ipcMain.removeChannel('set_transactions_filters');
+			ipcMain.removeChannel('set_deposit_with_receipt_filters');
 		};
 	}, []);
 

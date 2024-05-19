@@ -1,6 +1,12 @@
-const pushengine = process.env.NEXT_PUBLIC_PUSHENGINE_URL!;
-const oauth = process.env.NEXT_PUBLIC_OAUTH_URL!;
-const rlc = process.env.NEXT_PUBLIC_RLC_URL!;
+export const pushengine = process.env.NEXT_PUBLIC_PUSHENGINE_URL!;
+
+// CSR
+export const oauth = process.env.NEXT_PUBLIC_OAUTH_URL!;
+export const rlc = process.env.NEXT_PUBLIC_RLC_URL!;
+
+// SSR
+export const OAUTH_SSR = process.env.NEXT_PUBLIC_OAUTH_URL_SSR!;
+export const RLC_SSR = process.env.NEXT_PUBLIC_RLC_URL_SSR!;
 
 const routes = {
 	pushengine,
@@ -110,6 +116,12 @@ const routes = {
 		BullCallSpread: `${rlc}/Strategies/v1/BullCallSpread`,
 		BearPutSpread: `${rlc}/Strategies/v1/BearPutSpread`,
 		GetAll: `${rlc}/Strategies/v1/GetAll`,
+	},
+};
+
+export const ssrRoutes = {
+	strategy: {
+		GetAll: `${RLC_SSR}/Strategies/v1/GetAll`,
 	},
 };
 

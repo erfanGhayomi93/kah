@@ -144,6 +144,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	};
 	canChangeBaseSymbol: boolean;
 	canSendBaseSymbol: boolean;
+	initialSelectedBaseSymbol?: boolean;
 	maxContracts: null | number;
 	initialSelectedContracts: string[];
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
@@ -205,19 +206,23 @@ export interface IConfirmModal extends IBaseModalConfiguration {
 	};
 }
 
+export interface IAcceptAgreement extends IBaseModalConfiguration {
+	data: Settings.IAgreements;
+	getAgreements: (
+		options?: RefetchOptions,
+	) => Promise<QueryObserverResult<Settings.IAgreements[] | null, AxiosError<unknown, any>>>;
+}
+
 export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
 	isOption: boolean;
 }
 
 export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
 
-export interface IChangeBrokerModal extends IBaseModalConfiguration {
-	isShow: boolean;
-}
+export interface IChangeBrokerModal extends IBaseModalConfiguration {}
 
 export interface IWithdrawalModal extends IBaseModalConfiguration {
-	isShow: boolean;
-	data?: Reports.IWithdrawal;
+	data?: Payment.IDrawalHistoryList;
 }
 
 export interface IDescriptionModal extends IBaseModalConfiguration {
@@ -227,14 +232,11 @@ export interface IDescriptionModal extends IBaseModalConfiguration {
 }
 
 export interface IDepositModal extends IBaseModalConfiguration {
-	isShow: boolean;
 	data?: Reports.IDepositWithReceipt | Reports.IInstantDeposit;
-	activeTab?: 'receiptDepositTab' | 'liveDepositTab';
+	activeTab?: Payment.TDepositTab;
 }
 
-export interface IFreezeModal extends IBaseModalConfiguration {
-	isShow: boolean;
-}
+export interface IFreezeModal extends IBaseModalConfiguration {}
 
 export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
@@ -252,16 +254,14 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 	onContractRemoved?: (id: string) => void;
 }
 
-export interface ICavertCallFilters extends IBaseModalConfiguration {
-	isShow: boolean;
-}
+export interface ICavertCallFilters extends IBaseModalConfiguration {}
 
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
 	choiceBroker: true;
-	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	confirm: IConfirmModal;
+	acceptAgreement: IAcceptAgreement;
 	blackScholes: IBlackScholes;
 	buySell: IBuySellModal;
 	orderDetails: TOrderDetailsModal;
@@ -292,5 +292,6 @@ export type ModalState = TBaseModalProps<{
 	ordersReportsFilters: IOrdersReportsFilters;
 	tradesReportsFilters: ITradesReportsFilters;
 	createStrategy: ICreateStrategyModal;
+	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	coveredCallFilters: ICavertCallFilters;
 }>;

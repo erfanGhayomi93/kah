@@ -2,8 +2,8 @@
 
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
-	setAddNewOptionWatchlist,
-	setAddSaturnTemplate,
+	setAddNewOptionWatchlistModal,
+	setAddSaturnTemplateModal,
 	setAddSymbolToWatchlistModal,
 	setBuySellModal,
 	setChangeBrokerModal,
@@ -18,6 +18,7 @@ import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
+import AcceptAgreement from './AcceptAgreement';
 import Analyze from './Analyze';
 import CashSettlementReportsFiltersModal from './CashSettlementReportsFiltersModal';
 import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
@@ -92,6 +93,7 @@ const Modals = () => {
 		addSymbolToWatchlist,
 		choiceBroker,
 		confirm,
+		acceptAgreement,
 		symbolInfoPanelSetting,
 		choiceCollateral,
 		blackScholes,
@@ -148,6 +150,14 @@ const Modals = () => {
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{acceptAgreement && (
+					<ModalSuspense>
+						<AcceptAgreement {...acceptAgreement} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -251,7 +261,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{addSaturnTemplate && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setAddSaturnTemplate(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setAddSaturnTemplateModal(null))}>
 							<AddSaturnTemplate {...addSaturnTemplate} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -261,7 +271,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{addNewOptionWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setAddNewOptionWatchlist(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setAddNewOptionWatchlistModal(null))}>
 							<AddNewOptionWatchlist {...addNewOptionWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
