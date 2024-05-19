@@ -221,7 +221,7 @@ export interface IManageDashboardLayoutModal extends IBaseModalConfiguration {}
 export interface IChangeBrokerModal extends IBaseModalConfiguration {}
 
 export interface IWithdrawalModal extends IBaseModalConfiguration {
-	data?: Reports.IWithdrawal;
+	data?: Payment.IDrawalHistoryList;
 }
 
 export interface IDescriptionModal extends IBaseModalConfiguration {

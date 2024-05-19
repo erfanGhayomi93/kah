@@ -18,7 +18,6 @@ interface IFormProps {
 
 const Form = ({ filters, setFilters }: IFormProps) => {
 
-	console.log(filters, 'filtersfilters');
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
