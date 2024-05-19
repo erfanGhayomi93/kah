@@ -5,7 +5,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 	return (
 		<Main>
 			<div className='flex-1 rounded bg-white flex-justify-center'>
-				<div className='h-full w-3/5 flex-column'>
+				<div className='h-full w-8/12 flex-column'>
 					<ToolBar />
 					{children}
 				</div>

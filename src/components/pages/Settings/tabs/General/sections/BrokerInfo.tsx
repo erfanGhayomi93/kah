@@ -90,7 +90,7 @@ const BrokerInfo = () => {
 	];
 
 	return (
-		<div className='grid grid-cols-2 gap-32'>
+		<div className='grid grid-cols-2 gap-y-24 gap-x-88'>
 			{fields.map((item, index) => (
 				<SettingCardField key={index} {...item} />
 			))}
