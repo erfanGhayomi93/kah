@@ -58,9 +58,9 @@ const WithdrawalCashReports = () => {
 
 		if (inputs.fromPrice) params.fromPrice = inputs.fromPrice;
 		if (inputs.toPrice) params.toPrice = inputs.toPrice;
-		if (inputs.fromDate) params.fromDate = inputs.fromDate;
-		if (inputs.toDate) params.toDate = inputs.toDate;
 		if (inputs.status) params.status = inputs.status;
+		if (inputs.banks) params.banks = inputs.banks;
+		if (inputs.date) params.date = inputs.date;
 
 		dispatch(setWithdrawalCashReportsFiltersModal(params));
 	};

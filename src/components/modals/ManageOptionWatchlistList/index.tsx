@@ -4,7 +4,7 @@ import routes from '@/api/routes';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import { PlusSquareSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setAddNewOptionWatchlist, setManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlistModal, setManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useLayoutEffect, useReducer } from 'react';
@@ -22,7 +22,7 @@ interface IDeleting {
 	selected: number[];
 }
 
-interface ManageOptionWatchlistListProps extends IBaseModalConfiguration { }
+interface ManageOptionWatchlistListProps extends IBaseModalConfiguration {}
 
 const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchlistListProps>((props, ref) => {
 	const t = useTranslations();
@@ -91,7 +91,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 	};
 
 	const addNewWatchlist = () => {
-		dispatch(setAddNewOptionWatchlist({ moveable: true }));
+		dispatch(setAddNewOptionWatchlistModal({ moveable: true }));
 	};
 
 	useLayoutEffect(() => {

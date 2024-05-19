@@ -47,7 +47,10 @@ const Conversion = (strategy: ConversionProps) => {
 	});
 
 	const { data, isFetching } = useConversionStrategyQuery({
-		queryKey: ['conversionQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'conversionQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {

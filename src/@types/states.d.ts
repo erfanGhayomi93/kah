@@ -67,6 +67,8 @@ declare type TTradeDetails =
 
 declare type TOrderSource = 'Account' | 'Portfolio';
 
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+
 declare interface IUserBankAccount {
 	id: number;
 	shaba: string;
@@ -324,7 +326,9 @@ declare type IBrokerUrls = Record<
 	| 'newKaraFreeze'
 	| 'RecentFreeze'
 	| 'symbolCountFreeze'
+	| 'ReceiptEditRequest'
 	| 'getDepositOnlineHistory'
+	| 'PaymentUpdateRequest'
 	| 'GetListBankAccount'
 	| 'GetRemainsWithDate'
 	| 'LastListDrawal'

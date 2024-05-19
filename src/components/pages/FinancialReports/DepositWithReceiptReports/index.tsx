@@ -58,9 +58,8 @@ const DepositWithReceiptReports = () => {
 		if (inputs.attachment) params.attachment = inputs.attachment;
 		if (inputs.fromPrice) params.fromPrice = inputs.fromPrice;
 		if (inputs.toPrice) params.toPrice = inputs.toPrice;
-		if (inputs.fromDate) params.fromDate = inputs.fromDate;
-		if (inputs.toDate) params.toDate = inputs.toDate;
 		if (inputs.status) params.status = inputs.status;
+		if (inputs.receiptNumber) params.receiptNumber = inputs.receiptNumber;
 
 		dispatch(setDepositWithReceiptReportsFiltersModal(params));
 	};
@@ -73,6 +72,8 @@ const DepositWithReceiptReports = () => {
 		if (inputs.fromPrice) badgeCount++;
 
 		if (inputs.toPrice) badgeCount++;
+
+		if (inputs.receiptNumber) badgeCount++;
 
 		if (Array.isArray(inputs.status) && inputs.status.length > 0) badgeCount++;
 

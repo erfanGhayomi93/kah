@@ -8,7 +8,7 @@ import Main from '@/components/layout/Main';
 import Orders from '@/components/layout/Orders';
 import { defaultSymbolISIN } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { setAddSaturnTemplate } from '@/features/slices/modalSlice';
+import { setAddSaturnTemplateModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -66,7 +66,7 @@ const Saturn = () => {
 		const { symbolISIN, symbolTitle } = baseSymbolInfo;
 
 		dispatch(
-			setAddSaturnTemplate({
+			setAddSaturnTemplateModal({
 				baseSymbolISIN: symbolISIN,
 				baseSymbolTitle: symbolTitle,
 				activeTab: baseSymbolActiveTab,

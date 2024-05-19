@@ -4,7 +4,7 @@ import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setAddNewOptionWatchlist, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { type IMoveSymbolToWatchlistModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -63,7 +63,7 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 		};
 
 		const addNewWatchlist = () => {
-			dispatch(setAddNewOptionWatchlist({ moveable: true }));
+			dispatch(setAddNewOptionWatchlistModal({ moveable: true }));
 		};
 
 		return (

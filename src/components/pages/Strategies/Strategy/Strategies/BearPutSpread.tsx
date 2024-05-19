@@ -47,7 +47,10 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	});
 
 	const { data, isFetching } = useBearPutSpreadStrategyQuery({
-		queryKey: ['bearPutSpreadQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'bearPutSpreadQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
@@ -293,7 +296,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.lspPremiumPercent ?? 0,
+					percent: data?.hspPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
@@ -304,7 +307,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				width: 192,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.hspPremiumPercent ?? 0,
+					percent: data?.lspPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),

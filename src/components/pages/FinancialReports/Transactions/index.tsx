@@ -43,6 +43,7 @@ const Transactions = () => {
 	const { inputs, setFieldValue, setFieldsValue } =
 		useInputs<Transaction.ITransactionsFilters>(initialTransactionsFilters);
 
+
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('transaction_column', defaultTransactionColumns);
 
 	const { setDebounce } = useDebounce();
@@ -58,6 +59,8 @@ const Transactions = () => {
 		if (inputs.fromDate) params.fromDate = inputs.fromDate;
 		if (inputs.toDate) params.toDate = inputs.toDate;
 		if (inputs.groupMode) params.groupMode = inputs.groupMode;
+		if (inputs.transactionType) params.transactionType = inputs.transactionType;
+		if (inputs.date) params.date = inputs.date;
 
 		dispatch(setTransactionsFiltersModal(params));
 	};
@@ -71,7 +74,7 @@ const Transactions = () => {
 
 		if (inputs.toPrice) badgeCount++;
 
-		if (Array.isArray(inputs.groupMode) && inputs.groupMode.length > 0) badgeCount++;
+		if (Array.isArray(inputs.transactionType) && inputs.transactionType.length > 0) badgeCount++;
 
 		return badgeCount;
 	}, [JSON.stringify(inputs ?? {})]);
@@ -140,9 +143,8 @@ const Transactions = () => {
 			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					filters={inputs}
-					setFilters={setFieldValue}
+					setFieldValue={setFieldValue}
 					setFieldsValue={setFieldsValue}
 				/>
 			</div>

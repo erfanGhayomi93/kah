@@ -7,6 +7,7 @@ import ArrowLeftSVG from './arrow-left.svg';
 import ArrowRightSVG from './arrow-right.svg';
 import ArrowUpSVG from './arrow-up.svg';
 import AssetSVG from './asset.svg';
+import AuthenticationSVG from './authentication.svg';
 import BearishMarketSVG from './bearish-market.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
@@ -127,6 +128,7 @@ export {
 	ArrowRightSVG,
 	ArrowUpSVG,
 	AssetSVG,
+	AuthenticationSVG,
 	BearishMarketSVG,
 	BellSVG,
 	BookmarkSVG,

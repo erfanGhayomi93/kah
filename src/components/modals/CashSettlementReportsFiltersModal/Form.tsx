@@ -5,8 +5,9 @@ import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
 import { setCashSettlementReportsFiltersModal } from '@/features/slices/modalSlice';
+import { calculateDateRange } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<CashSettlementReports.ICashSettlementReportsFilters, 'pageNumber' | 'pageSize'>;
@@ -62,6 +63,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		setFilterValue('settlementRequestType', options);
 	};
 
+
+	useEffect(() => {
+		if (filters.date === 'dates.custom') return;
+
+		setFilters({
+			...filters,
+			...calculateDateRange(filters.date)
+		});
+	}, [filters.date]);
 
 
 	return (

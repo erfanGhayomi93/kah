@@ -58,6 +58,7 @@ const ChangeBrokerReports = () => {
 		if (inputs.symbol) params.symbol = inputs.symbol;
 		if (inputs.fromDate) params.fromDate = inputs.fromDate;
 		if (inputs.toDate) params.toDate = inputs.toDate;
+		if (inputs.date) params.date = inputs.date;
 		if (inputs.attachment) params.attachment = inputs.attachment;
 		if (inputs.status) params.status = inputs.status;
 

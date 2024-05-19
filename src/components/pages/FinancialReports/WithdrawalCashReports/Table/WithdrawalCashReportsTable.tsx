@@ -5,6 +5,7 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setWithdrawalModal } from '@/features/slices/modalSlice';
 import { type RootState } from '@/features/store';
 import dayjs from '@/libs/dayjs';
+import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,16 +21,12 @@ const getStates = createSelector(
 	}),
 );
 
-
 interface WithdrawalCashReportsTableProps {
 	reports: Reports.IWithdrawal[] | null;
 	columnsVisibility: WithdrawalCashReports.TWithdrawalCashReportsColumnsState[];
 }
 
-const WithdrawalCashReportsTable = ({
-	reports,
-	columnsVisibility,
-}: WithdrawalCashReportsTableProps) => {
+const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCashReportsTableProps) => {
 	const gridRef = useRef<GridApi<Reports.IWithdrawal>>(null);
 
 	const t = useTranslations();
@@ -45,39 +42,40 @@ const WithdrawalCashReportsTable = ({
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	const onDeleteRow = (data: Reports.IWithdrawal | undefined) => new Promise<void>(async (resolve, reject) => {
-		if (!urls || !data) return;
+	const onDeleteRow = (data: Reports.IWithdrawal | undefined) =>
+		new Promise<void>(async (resolve, reject) => {
+			if (!urls || !data) return;
 
-		try {
-			const response = await brokerAxios.post<ServerResponse<boolean>>(urls.paymentDeleteRequest, {
-				ids: [data?.id]
-			});
+			try {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.paymentDeleteRequest, {
+					ids: [data?.id],
+				});
 
-			if (response.status !== 200 || !response.data.succeeded) throw new Error(response.data.errors?.[0] ?? '');
+				if (response.status !== 200 || !response.data.succeeded)
+					throw new Error(response.data.errors?.[0] ?? '');
 
-			toast.success(t('alerts.withdrawal_cash_canceled_successfully'));
+				toast.success(t('alerts.withdrawal_cash_canceled_successfully'));
 
+				queryClient.invalidateQueries({
+					queryKey: ['withdrawalCashReports'],
+				});
 
-			queryClient.invalidateQueries({
-				queryKey: ['withdrawalCashReports']
-			});
+				queryClient.invalidateQueries({
+					queryKey: ['userRemainQuery'],
+				});
 
-			queryClient.invalidateQueries({
-				queryKey: ['userRemainQuery']
-			});
-
-			resolve();
-		} catch (e) {
-			toast.error(t('alerts.withdrawal_cash_canceled_failed'));
-			reject();
-		}
-	});
+				resolve();
+			} catch (e) {
+				toast.error(t('alerts.withdrawal_cash_canceled_failed'));
+				reject();
+			}
+		});
 
 	const onEditRow = async (data: Reports.IWithdrawal | undefined) => {
 		if (!data) return;
 
 		try {
-			dispatch(setWithdrawalModal({ isShow: true, data }));
+			dispatch(setWithdrawalModal({ data }));
 		} catch (e) {
 			//
 		}
@@ -134,6 +132,7 @@ const WithdrawalCashReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
+					valueFormatter: ({ value }) => sepNumbers(String(value))
 				},
 				/* سامانه */
 				{
