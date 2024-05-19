@@ -254,7 +254,7 @@ const Conversion = (strategy: ConversionProps) => {
 			},
 			{
 				colId: 'callBestBuyLimitQuantity',
-				headerName: 'حجم سر خط خرید کال',
+				headerName: 'حجم سرخط خرید کال',
 				initialHide: initialHiddenColumnsConversion.callBestBuyLimitQuantity,
 				width: 152,
 				cellClass: 'buy',
@@ -279,7 +279,7 @@ const Conversion = (strategy: ConversionProps) => {
 			},
 			{
 				colId: 'callBestSellLimitQuantity',
-				headerName: 'حجم سر خط فروش کال',
+				headerName: 'حجم سرخط فروش کال',
 				initialHide: initialHiddenColumnsConversion.callBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.callBestSellLimitQuantity ?? 0,
@@ -308,7 +308,7 @@ const Conversion = (strategy: ConversionProps) => {
 			},
 			{
 				colId: 'putBestSellLimitQuantity',
-				headerName: 'حجم سر خط فروش پوت',
+				headerName: 'حجم سرخط فروش پوت',
 				initialHide: initialHiddenColumnsConversion.putBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.putBestSellLimitQuantity ?? 0,
@@ -333,7 +333,7 @@ const Conversion = (strategy: ConversionProps) => {
 			},
 			{
 				colId: 'putBestBuyLimitQuantity',
-				headerName: 'حجم سر خط خرید پوت',
+				headerName: 'حجم سرخط خرید پوت',
 				initialHide: initialHiddenColumnsConversion.putBestBuyLimitQuantity,
 				width: 152,
 				cellClass: 'sell',

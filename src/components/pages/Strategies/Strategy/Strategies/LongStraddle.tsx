@@ -361,7 +361,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 			},
 			{
 				colId: 'callBestBuyLimitQuantity',
-				headerName: 'حجم سر خط خرید کال',
+				headerName: 'حجم سرخط خرید کال',
 				initialHide: initialHiddenColumnsLongStraddle.callBestBuyLimitQuantity,
 				width: 152,
 				cellClass: 'buy',
@@ -379,7 +379,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 			},
 			{
 				colId: 'putBestBuyLimitQuantity',
-				headerName: 'حجم سر خط خرید پوت',
+				headerName: 'حجم سرخط خرید پوت',
 				initialHide: initialHiddenColumnsLongStraddle.putBestBuyLimitQuantity,
 				width: 152,
 				cellClass: 'sell',

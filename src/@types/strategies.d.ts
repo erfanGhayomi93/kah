@@ -289,7 +289,7 @@ declare type TBearPutSpreadColumns =
 	| 'hspBestSellLimitQuantity'
 	| 'hspBestBuyLimitPrice'
 	| 'hspBestBuyLimitQuantity'
-	| 'lspSymbolISIN'
+	| 'lspSymbolTitle'
 	| 'lspStrikePrice'
 	| 'lspBestBuyLimitPrice'
 	| 'lspBestBuyLimitQuantity'
