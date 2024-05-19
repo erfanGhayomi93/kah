@@ -145,13 +145,13 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut> & { colId: TProtectivePutColumns }>>(
 		() => [
 			{
-				colId: 'symbolTitle',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
-				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
-				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
+				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
 				colId: 'baseTradePriceVarPreviousTradePercent',

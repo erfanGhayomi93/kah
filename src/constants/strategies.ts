@@ -157,6 +157,44 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 ];
 
 // ? BullCallSpread
+export const initialHiddenColumnsBullCallSpread: Record<TBullCallSpreadColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseTradePriceVarPreviousTradePercent: false,
+	dueDays: false,
+	lspSymbolTitle: false,
+	lspStrikePrice: false,
+	lspBestSellLimitPrice: false,
+	lspBestSellLimitQuantity: false,
+	lspBestBuyLimitPrice: false,
+	lspBestBuyLimitQuantity: false,
+	hspSymbolISIN: false,
+	hspStrikePrice: false,
+	hspBestBuyLimitPrice: false,
+	hspBestBuyLimitQuantity: false,
+	hspBestSellLimitPrice: false,
+	hspBestSellLimitQuantity: false,
+	lspOpenPositionCount: false,
+	hspOpenPositionCount: false,
+	lspPremiumPercent: false,
+	hspPremiumPercent: false,
+	bullCallSpreadBEP: false,
+	maxProfitPercent: false,
+	maxLoss: false,
+	inUseCapital: false,
+	lspTimeValue: false,
+	hspTimeValue: false,
+	lspIntrinsicValue: false,
+	hspIntrinsicValue: false,
+	lspTradeValue: false,
+	hspTradeValue: false,
+	baseTradeValue: false,
+	baseTradeCount: false,
+	baseTradeVolume: false,
+	baseLastTradedDate: false,
+	ytm: false,
+	actions: false,
+};
+
 export const initialColumnsBullCallSpread: Array<IManageColumn<TBullCallSpreadColumns>> = [
 	{
 		id: 'baseSymbolTitle',
@@ -331,6 +369,33 @@ export const initialColumnsBullCallSpread: Array<IManageColumn<TBullCallSpreadCo
 ];
 
 // ? LongCall
+export const initialHiddenColumnsLongCall: Record<TLongCallColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseTradePriceVarPreviousTradePercent: false,
+	dueDays: false,
+	symbolTitle: false,
+	strikePrice: false,
+	openPositionCount: false,
+	tradePriceVarPreviousTradePercent: false,
+	optionBestLimitPrice: false,
+	optionBestLimitVolume: false,
+	optionBestSellLimitPrice: false,
+	optionBestSellLimitQuantity: false,
+	longCallBEP: false,
+	profitPercent: false,
+	blackScholes: false,
+	timeValue: false,
+	intrinsicValue: false,
+	profit: false,
+	bepDifference: false,
+	tradeValue: false,
+	baseTradeValue: false,
+	baseTradeCount: false,
+	baseTradeVolume: false,
+	baseLastTradedDate: false,
+	actions: false,
+};
+
 export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 	{
 		id: 'baseSymbolTitle',
@@ -450,6 +515,33 @@ export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 ];
 
 // ? LongPut
+export const initialHiddenColumnsLongPut: Record<TLongPutColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseTradePriceVarPreviousTradePercent: false,
+	dueDays: false,
+	symbolTitle: false,
+	strikePrice: false,
+	openPositionCount: false,
+	tradePriceVarPreviousTradePercent: false,
+	optionBestLimitPrice: false,
+	optionBestLimitVolume: false,
+	optionBestSellLimitPrice: false,
+	optionBestSellLimitQuantity: false,
+	longPutBEP: false,
+	profitPercent: false,
+	blackScholes: false,
+	timeValue: false,
+	intrinsicValue: false,
+	profit: false,
+	bepDifference: false,
+	tradeValue: false,
+	baseTradeValue: false,
+	baseTradeCount: false,
+	baseTradeVolume: false,
+	baseLastTradedDate: false,
+	actions: false,
+};
+
 export const initialColumnsLongPut: Array<IManageColumn<TLongPutColumns>> = [
 	{
 		id: 'baseSymbolTitle',
@@ -569,6 +661,38 @@ export const initialColumnsLongPut: Array<IManageColumn<TLongPutColumns>> = [
 ];
 
 // ? Conversion
+export const initialHiddenColumnsConversion: Record<TConversionColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseTradePriceVarPreviousTradePercent: false,
+	dueDays: false,
+	strikePrice: false,
+	callPremiumPercent: false,
+	putPremiumPercent: false,
+	callSymbolTitle: false,
+	callBestBuyLimitPrice: false,
+	callBestBuyLimitQuantity: false,
+	callOpenPositionCount: false,
+	callBestSellLimitPrice: false,
+	callBestSellLimitQuantity: false,
+	putSymbolTitle: false,
+	putBestSellLimitPrice: false,
+	putBestSellLimitQuantity: false,
+	putOpenPositionCount: false,
+	putBestBuyLimitPrice: false,
+	putBestBuyLimitQuantity: false,
+	profit: false,
+	inUseCapital: false,
+	bestBuyYTM: false,
+	bestSellYTM: false,
+	callTradeValue: false,
+	putTradeValue: false,
+	baseTradeValue: false,
+	baseTradeCount: false,
+	baseTradeVolume: false,
+	baseLastTradedDate: false,
+	actions: false,
+};
+
 export const initialColumnsConversion: Array<IManageColumn<TConversionColumns>> = [
 	{
 		id: 'baseSymbolTitle',
@@ -713,6 +837,42 @@ export const initialColumnsConversion: Array<IManageColumn<TConversionColumns>> 
 ];
 
 // ? LongStraddle
+export const initialHiddenColumnsLongStraddle: Record<TLongStraddleColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseTradePriceVarPreviousTradePercent: false,
+	dueDays: false,
+	strikePrice: false,
+	callSymbolTitle: false,
+	callBestSellLimitPrice: false,
+	callBestSellLimitQuantity: false,
+	putSymbolTitle: false,
+	putBestSellLimitPrice: false,
+	putBestSellLimitQuantity: false,
+	callOpenPositionCount: false,
+	putOpenPositionCount: false,
+	callPremiumPercent: false,
+	putPremiumPercent: false,
+	highBEP: false,
+	lowBEP: false,
+	maxLoss: false,
+	inUseCapital: false,
+	callTimeValue: false,
+	putTimeValue: false,
+	callIntrinsicValue: false,
+	putIntrinsicValue: false,
+	callBestBuyLimitPrice: false,
+	callBestBuyLimitQuantity: false,
+	putBestBuyLimitPrice: false,
+	putBestBuyLimitQuantity: false,
+	callTradeValue: false,
+	putTradeValue: false,
+	baseTradeValue: false,
+	baseTradeCount: false,
+	baseTradeVolume: false,
+	baseLastTradedDate: false,
+	actions: false,
+};
+
 export const initialColumnsLongStraddle: Array<IManageColumn<TLongStraddleColumns>> = [
 	{
 		id: 'baseSymbolTitle',
@@ -825,22 +985,22 @@ export const initialColumnsLongStraddle: Array<IManageColumn<TLongStraddleColumn
 		hidden: false,
 	},
 	{
-		id: 'callBestSellLimitPrice',
+		id: 'callBestBuyLimitPrice',
 		title: 'بهترین خریدار کال',
 		hidden: false,
 	},
 	{
-		id: 'callBestSellLimitQuantity',
+		id: 'callBestBuyLimitQuantity',
 		title: 'حجم سر خط خرید کال',
 		hidden: false,
 	},
 	{
-		id: 'putBestSellLimitPrice',
+		id: 'putBestBuyLimitPrice',
 		title: 'بهترین خریدار پوت',
 		hidden: false,
 	},
 	{
-		id: 'putBestSellLimitQuantity',
+		id: 'putBestBuyLimitQuantity',
 		title: 'حجم سر خط خرید پوت',
 		hidden: false,
 	},
@@ -877,9 +1037,38 @@ export const initialColumnsLongStraddle: Array<IManageColumn<TLongStraddleColumn
 ];
 
 // ? ProtectivePut
+export const initialHiddenColumnsProtectivePut: Record<TProtectivePutColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseTradePriceVarPreviousTradePercent: false,
+	dueDays: false,
+	symbolTitle: false,
+	strikePrice: false,
+	openPositionCount: false,
+	tradePriceVarPreviousTradePercent: false,
+	optionBestSellLimitPrice: false,
+	optionBestSellLimitQuantity: false,
+	optionBestBuyLimitPrice: false,
+	optionBestBuyLimitQuantity: false,
+	protectivePutBEP: false,
+	maxLoss: false,
+	profit: false,
+	profitPercent: false,
+	inUseCapital: false,
+	blackScholes: false,
+	timeValue: false,
+	intrinsicValue: false,
+	bepDifference: false,
+	tradeValue: false,
+	baseTradeValue: false,
+	baseTradeCount: false,
+	baseTradeVolume: false,
+	baseLastTradedDate: false,
+	actions: false,
+};
+
 export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColumns>> = [
 	{
-		id: 'symbolTitle',
+		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
 		hidden: false,
 	},
@@ -1006,6 +1195,44 @@ export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColu
 ];
 
 // ? BearPutSpread
+export const initialHiddenColumnsBearPutSpread: Record<TBearPutSpreadColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseTradePriceVarPreviousTradePercent: false,
+	dueDays: false,
+	hspSymbolISIN: false,
+	hspStrikePrice: false,
+	hspBestSellLimitPrice: false,
+	hspBestSellLimitQuantity: false,
+	hspBestBuyLimitPrice: false,
+	hspBestBuyLimitQuantity: false,
+	lspSymbolISIN: false,
+	lspStrikePrice: false,
+	lspBestBuyLimitPrice: false,
+	lspBestBuyLimitQuantity: false,
+	lspBestSellLimitPrice: false,
+	lspBestSellLimitQuantity: false,
+	hspOpenPositionCount: false,
+	lspOpenPositionCount: false,
+	hspPremiumPercent: false,
+	lspPremiumPercent: false,
+	bullCallSpreadBEP: false,
+	maxProfitPercent: false,
+	maxLoss: false,
+	inUseCapital: false,
+	lspTimeValue: false,
+	hspTimeValue: false,
+	hspIntrinsicValue: false,
+	lspIntrinsicValue: false,
+	hspTradeValue: false,
+	lspTradeValue: false,
+	baseTradeValue: false,
+	baseTradeCount: false,
+	baseTradeVolume: false,
+	baseLastTradedDate: false,
+	ytm: false,
+	actions: false,
+};
+
 export const initialColumnsBearPutSpread: Array<IManageColumn<TBearPutSpreadColumns>> = [
 	{
 		id: 'baseSymbolTitle',

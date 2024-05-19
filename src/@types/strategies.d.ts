@@ -223,6 +223,10 @@ declare type TLongStraddleColumns =
 	| 'putSymbolTitle'
 	| 'putBestSellLimitPrice'
 	| 'putBestSellLimitQuantity'
+	| 'callBestBuyLimitPrice'
+	| 'callBestBuyLimitQuantity'
+	| 'putBestBuyLimitPrice'
+	| 'putBestBuyLimitQuantity'
 	| 'callOpenPositionCount'
 	| 'putOpenPositionCount'
 	| 'callPremiumPercent'
@@ -248,7 +252,7 @@ declare type TLongStraddleColumns =
 	| 'actions';
 
 declare type TProtectivePutColumns =
-	| 'symbolTitle'
+	| 'baseSymbolTitle'
 	| 'baseTradePriceVarPreviousTradePercent'
 	| 'dueDays'
 	| 'symbolTitle'
