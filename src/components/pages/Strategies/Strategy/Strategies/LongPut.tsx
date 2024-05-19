@@ -47,7 +47,10 @@ const LongPut = (strategy: LongPutProps) => {
 	});
 
 	const { data, isFetching } = useLongPutStrategyQuery({
-		queryKey: ['longPutQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'longPutQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {

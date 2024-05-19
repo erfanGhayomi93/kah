@@ -46,7 +46,10 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 	});
 
 	const { data, isFetching } = useLongStraddleStrategyQuery({
-		queryKey: ['longStraddleQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'longStraddleQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {

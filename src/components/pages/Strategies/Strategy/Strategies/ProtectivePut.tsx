@@ -47,7 +47,10 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	});
 
 	const { data, isFetching } = useProtectivePutStrategyQuery({
-		queryKey: ['protectivePutQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'protectivePutQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {

@@ -47,7 +47,10 @@ const LongCall = (strategy: LongCallProps) => {
 	});
 
 	const { data, isFetching } = useLongCallStrategyQuery({
-		queryKey: ['longCallQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'longCallQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
