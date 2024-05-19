@@ -47,7 +47,10 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	});
 
 	const { data, isFetching } = useBearPutSpreadStrategyQuery({
-		queryKey: ['bearPutSpreadQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'bearPutSpreadQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {

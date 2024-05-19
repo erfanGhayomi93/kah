@@ -47,7 +47,10 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	});
 
 	const { data, isFetching } = useBullCallSpreadStrategyQuery({
-		queryKey: ['bullCallSpreadQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'bullCallSpreadQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
