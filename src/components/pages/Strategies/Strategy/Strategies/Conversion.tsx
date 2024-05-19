@@ -163,7 +163,7 @@ const Conversion = (strategy: ConversionProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.Conversion>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.Conversion> & { colId: TConversionColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',

@@ -145,7 +145,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.LongStraddle>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.LongStraddle> & { colId: TLongStraddleColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',

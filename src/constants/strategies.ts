@@ -1,139 +1,170 @@
-export const initialColumnsCoveredCall: IManageColumn[] = [
+// ? CoveredCall
+export const initialHiddenColumnsCoveredCall: Record<TCoveredCallColumns, boolean> = {
+	baseSymbolTitle: false,
+	baseLastTradedPrice: false,
+	dueDays: false,
+	symbolTitle: false,
+	strikePrice: false,
+	openPositionCount: false,
+	tradePriceVarPreviousTradePercent: true,
+	optionBestBuyLimitPrice: false,
+	optionBestBuyLimitQuantity: false,
+	optionBestSellLimitPrice: true,
+	optionBestSellLimitQuantity: true,
+	coveredCallBEP: false,
+	maxProfitPercent: false,
+	nonExpiredProfitPercent: false,
+	inUseCapital: false,
+	bestBuyYTM: true,
+	bestSellYTM: true,
+	nonExpiredYTM: true,
+	bepDifference: true,
+	riskCoverage: false,
+	tradeValue: true,
+	baseTradeValue: true,
+	baseTradeCount: true,
+	baseTradeVolume: true,
+	baseLastTradedDate: true,
+	action: false,
+};
+
+export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>> = [
 	{
-		id: 'baseSymbolISIN',
+		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.baseSymbolTitle,
 	},
 	{
 		id: 'baseLastTradedPrice',
 		title: 'قیمت پایه',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.baseLastTradedPrice,
 	},
 	{
 		id: 'dueDays',
 		title: 'مانده تا سررسید',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.dueDays,
 	},
 	{
-		id: 'callSymbolISIN',
-		title: 'اختیار خرید',
-		hidden: false,
+		id: 'symbolTitle',
+		title: 'کال',
+		hidden: initialHiddenColumnsCoveredCall.symbolTitle,
 	},
 	{
 		id: 'strikePrice',
 		title: 'قیمت اعمال',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.strikePrice,
 	},
 	{
 		id: 'openPositionCount',
 		title: 'موقعیت باز',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.openPositionCount,
 	},
 	{
 		id: 'optionBestBuyLimitPrice',
 		title: 'بهترین خریدار',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.optionBestBuyLimitPrice,
 	},
 	{
 		id: 'optionBestBuyLimitQuantity',
 		title: 'حجم سرخط خرید',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.optionBestBuyLimitQuantity,
 	},
 	{
 		id: 'optionBestSellLimitPrice',
 		title: 'بهترین فروشنده',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.optionBestSellLimitPrice,
 	},
 	{
 		id: 'optionBestSellLimitQuantity',
 		title: 'حجم سر خط فروش',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.optionBestSellLimitQuantity,
 	},
 	{
 		id: 'coveredCallBEP',
 		title: 'سر به سر',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.coveredCallBEP,
 	},
 	{
-		id: 'maxProfit',
+		id: 'maxProfitPercent',
 		title: 'حداکثر بازده',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.maxProfitPercent,
 	},
 	{
-		id: 'nonExpiredProfit',
+		id: 'nonExpiredProfitPercent',
 		title: 'بازده عدم اعمال',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.nonExpiredProfitPercent,
 	},
 	{
 		id: 'inUseCapital',
 		title: 'سرمایه درگیر',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.inUseCapital,
 	},
 	{
-		id: 'premium',
+		id: 'tradePriceVarPreviousTradePercent',
 		title: 'قیمت نماد آپشن',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.tradePriceVarPreviousTradePercent,
 	},
 	{
 		id: 'bepDifference',
 		title: 'اختلاف تا سر به سر',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.bepDifference,
 	},
 	{
 		id: 'tradeValue',
 		title: 'ارزش معاملات آپشن',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.tradeValue,
 	},
 	{
 		id: 'baseTradeValue',
 		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.baseTradeValue,
 	},
 	{
 		id: 'baseTradeCount',
 		title: 'تعداد معاملات پایه',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.baseTradeCount,
 	},
 	{
 		id: 'baseTradeVolume',
 		title: 'حجم معاملات پایه',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.baseTradeVolume,
 	},
 	{
 		id: 'baseLastTradedDate',
 		title: 'آخرین معامله پایه',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.baseLastTradedDate,
 	},
 	{
 		id: 'bestBuyYTM',
 		title: 'YTM سرخط خرید',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.bestBuyYTM,
 	},
 	{
 		id: 'bestSellYTM',
 		title: 'YTM سرخط فروش',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.bestSellYTM,
 	},
 	{
 		id: 'riskCoverage',
 		title: 'پوشش ریسک',
-		hidden: false,
+		hidden: initialHiddenColumnsCoveredCall.riskCoverage,
 	},
 	{
 		id: 'nonExpiredYTM',
 		title: 'YTM عدم اعمال',
-		hidden: true,
+		hidden: initialHiddenColumnsCoveredCall.nonExpiredYTM,
 	},
 ];
 
-export const initialColumnsBullCallSpread: IManageColumn[] = [
+// ? BullCallSpread
+export const initialColumnsBullCallSpread: Array<IManageColumn<TBullCallSpreadColumns>> = [
 	{
-		id: 'baseSymbolISIN',
+		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
 		hidden: false,
 	},
 	{
-		id: 'baseLastTradedPrice',
+		id: 'baseTradePriceVarPreviousTradePercent',
 		title: 'قیمت پایه',
 		hidden: false,
 	},
@@ -165,12 +196,12 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 	{
 		id: 'lspBestBuyLimitPrice',
 		title: 'قیمت خریدار کال خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'lspBestBuyLimitQuantity',
 		title: 'حجم خریدار کال خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'hspSymbolISIN',
@@ -213,14 +244,14 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'lspPremium',
+		id: 'lspPremiumPercent',
 		title: 'قیمت نماد کال خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'hspPremium',
+		id: 'hspPremiumPercent',
 		title: 'قیمت نماد کال فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'bullCallSpreadBEP',
@@ -228,7 +259,7 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'maxProfit',
+		id: 'maxProfitPercent',
 		title: 'حداکثر بازده',
 		hidden: false,
 	},
@@ -240,73 +271,74 @@ export const initialColumnsBullCallSpread: IManageColumn[] = [
 	{
 		id: 'inUseCapital',
 		title: 'سرمایه درگیر',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'lspTimeValue',
 		title: 'ارزش زمانی کال خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'hspTimeValue',
 		title: 'ارزش زمانی کال فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'lspIntrinsicValue',
 		title: 'ارزش ذاتی کال خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'hspIntrinsicValue',
 		title: 'ارزش ذاتی کال فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'lspTradeValue',
 		title: 'ارزش معاملات آپشن کال خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'hspTradeValue',
 		title: 'ارزش معاملات آپشن کال فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeValue',
 		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeCount',
 		title: 'تعداد معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeVolume',
 		title: 'حجم معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseLastTradedDate',
 		title: 'آخرین معامله پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'ytm',
 		title: 'YTM',
-		hidden: true,
+		hidden: false,
 	},
 ];
 
-export const initialColumnsLongCall: IManageColumn[] = [
+// ? LongCall
+export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 	{
-		id: 'symbolISIN',
+		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
 		hidden: false,
 	},
 	{
-		id: 'baseLastTradedPrice',
+		id: 'baseTradePriceVarPreviousTradePercent',
 		title: 'قیمت پایه',
 		hidden: false,
 	},
@@ -316,8 +348,8 @@ export const initialColumnsLongCall: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'callSymbolISIN',
-		title: 'اختیار خرید',
+		id: 'symbolTitle',
+		title: 'کال',
 		hidden: false,
 	},
 	{
@@ -331,135 +363,17 @@ export const initialColumnsLongCall: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'premium',
-		title: 'قیمت نماد آپشن',
-		hidden: true,
-	},
-	{
-		id: 'optionBestBuyLimitPrice',
-		title: 'بهترین خریدار',
-		hidden: true,
-	},
-	{
-		id: 'optionBestBuyLimitQuantity',
-		title: 'حجم سرخط خرید',
-		hidden: true,
-	},
-	{
-		id: 'optionBestSellLimitPrice',
-		title: 'بهترین فروشنده',
-		hidden: false,
-	},
-	{
-		id: 'optionBestSellLimitQuantity',
-		title: 'حجم سرخط فروش',
-		hidden: false,
-	},
-	{
-		id: 'longCallBEP',
-		title: 'سر به سر',
-		hidden: false,
-	},
-	{
-		id: 'maxProfit',
-		title: 'حداکثر بازده',
-		hidden: false,
-	},
-	{
-		id: 'blackScholes',
-		title: 'بلک شولز',
-		hidden: false,
-	},
-	{
-		id: 'timeValue',
-		title: 'ارزش زمانی',
-		hidden: true,
-	},
-	{
-		id: 'intrinsicValue',
-		title: 'ارزش ذاتی',
-		hidden: true,
-	},
-	{
-		id: 'profit',
-		title: 'بازده',
-		hidden: true,
-	},
-	{
-		id: 'bepDifference',
-		title: 'اختلاف تا سر به سر',
-		hidden: true,
-	},
-	{
-		id: 'tradeValue',
-		title: 'ارزش معاملات آپشن',
-		hidden: true,
-	},
-	{
-		id: 'baseTradeValue',
-		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
-	},
-	{
-		id: 'baseTradeCount',
-		title: 'تعداد معاملات پایه',
-		hidden: true,
-	},
-	{
-		id: 'baseTradeVolume',
-		title: 'حجم معاملات پایه',
-		hidden: true,
-	},
-	{
-		id: 'baseLastTradedDate',
-		title: 'آخرین معامله پایه',
-		hidden: true,
-	},
-];
-
-export const initialColumnsLongPut: IManageColumn[] = [
-	{
-		id: 'symbolISIN',
-		title: 'نماد پایه',
-		hidden: false,
-	},
-	{
-		id: 'baseLastTradedPrice',
-		title: 'قیمت پایه',
-		hidden: false,
-	},
-	{
-		id: 'dueDays',
-		title: 'مانده تا سررسید',
-		hidden: false,
-	},
-	{
-		id: 'callSymbolISIN',
-		title: 'اختیار خرید',
-		hidden: false,
-	},
-	{
-		id: 'strikePrice',
-		title: 'قیمت اعمال',
-		hidden: false,
-	},
-	{
-		id: 'openPositionCount',
-		title: 'موقعیت باز',
-		hidden: false,
-	},
-	{
-		id: 'premium',
+		id: 'tradePriceVarPreviousTradePercent',
 		title: 'قیمت نماد آپشن',
 		hidden: false,
 	},
 	{
-		id: 'optionBestBuyLimitPrice',
+		id: 'optionBestLimitPrice',
 		title: 'بهترین خریدار',
 		hidden: false,
 	},
 	{
-		id: 'optionBestBuyLimitQuantity',
+		id: 'optionBestLimitVolume',
 		title: 'حجم سرخط خرید',
 		hidden: false,
 	},
@@ -479,7 +393,7 @@ export const initialColumnsLongPut: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'maxProfit',
+		id: 'profitPercent',
 		title: 'حداکثر بازده',
 		hidden: false,
 	},
@@ -496,53 +410,173 @@ export const initialColumnsLongPut: IManageColumn[] = [
 	{
 		id: 'intrinsicValue',
 		title: 'ارزش ذاتی',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'profit',
 		title: 'بازده',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'bepDifference',
 		title: 'اختلاف تا سر به سر',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'tradeValue',
 		title: 'ارزش معاملات آپشن',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeValue',
 		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeCount',
 		title: 'تعداد معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeVolume',
 		title: 'حجم معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseLastTradedDate',
 		title: 'آخرین معامله پایه',
-		hidden: true,
+		hidden: false,
 	},
 ];
 
-export const initialColumnsConversion: IManageColumn[] = [
+// ? LongPut
+export const initialColumnsLongPut: Array<IManageColumn<TLongPutColumns>> = [
 	{
-		id: 'baseSymbolISIN',
+		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
 		hidden: false,
 	},
 	{
-		id: 'baseLastTradedPrice',
+		id: 'baseTradePriceVarPreviousTradePercent',
+		title: 'قیمت پایه',
+		hidden: false,
+	},
+	{
+		id: 'dueDays',
+		title: 'مانده تا سررسید',
+		hidden: false,
+	},
+	{
+		id: 'symbolTitle',
+		title: 'کال',
+		hidden: false,
+	},
+	{
+		id: 'strikePrice',
+		title: 'قیمت اعمال',
+		hidden: false,
+	},
+	{
+		id: 'openPositionCount',
+		title: 'موقعیت باز',
+		hidden: false,
+	},
+	{
+		id: 'tradePriceVarPreviousTradePercent',
+		title: 'قیمت نماد آپشن',
+		hidden: false,
+	},
+	{
+		id: 'optionBestLimitPrice',
+		title: 'بهترین خریدار',
+		hidden: false,
+	},
+	{
+		id: 'optionBestLimitVolume',
+		title: 'حجم سرخط خرید',
+		hidden: false,
+	},
+	{
+		id: 'optionBestSellLimitPrice',
+		title: 'بهترین فروشنده',
+		hidden: false,
+	},
+	{
+		id: 'optionBestSellLimitQuantity',
+		title: 'حجم سرخط فروش',
+		hidden: false,
+	},
+	{
+		id: 'longPutBEP',
+		title: 'سر به سر',
+		hidden: false,
+	},
+	{
+		id: 'profitPercent',
+		title: 'حداکثر بازده',
+		hidden: false,
+	},
+	{
+		id: 'blackScholes',
+		title: 'بلک شولز',
+		hidden: false,
+	},
+	{
+		id: 'timeValue',
+		title: 'ارزش زمانی',
+		hidden: false,
+	},
+	{
+		id: 'intrinsicValue',
+		title: 'ارزش ذاتی',
+		hidden: false,
+	},
+	{
+		id: 'profit',
+		title: 'بازده',
+		hidden: false,
+	},
+	{
+		id: 'bepDifference',
+		title: 'اختلاف تا سر به سر',
+		hidden: false,
+	},
+	{
+		id: 'tradeValue',
+		title: 'ارزش معاملات آپشن',
+		hidden: false,
+	},
+	{
+		id: 'baseTradeValue',
+		title: 'ارزش معاملات سهم پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseTradeCount',
+		title: 'تعداد معاملات پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseTradeVolume',
+		title: 'حجم معاملات پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseLastTradedDate',
+		title: 'آخرین معامله پایه',
+		hidden: false,
+	},
+];
+
+// ? Conversion
+export const initialColumnsConversion: Array<IManageColumn<TConversionColumns>> = [
+	{
+		id: 'baseSymbolTitle',
+		title: 'نماد پایه',
+		hidden: false,
+	},
+	{
+		id: 'baseTradePriceVarPreviousTradePercent',
 		title: 'قیمت پایه',
 		hidden: false,
 	},
@@ -557,17 +591,17 @@ export const initialColumnsConversion: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'callPremium',
+		id: 'callPremiumPercent',
 		title: 'قیمت نماد کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'putPremium',
+		id: 'putPremiumPercent',
 		title: 'قیمت نماد پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'callSymbolISIN',
+		id: 'callSymbolTitle',
 		title: 'کال',
 		hidden: false,
 	},
@@ -584,20 +618,20 @@ export const initialColumnsConversion: IManageColumn[] = [
 	{
 		id: 'callOpenPositionCount',
 		title: 'موقعیت باز کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'callBestSellLimitPrice',
 		title: 'بهترین فروشنده کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'callBestSellLimitQuantity',
 		title: 'حجم سر خط فروش کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'putSymbolISIN',
+		id: 'putSymbolTitle',
 		title: 'پوت',
 		hidden: false,
 	},
@@ -614,17 +648,17 @@ export const initialColumnsConversion: IManageColumn[] = [
 	{
 		id: 'putOpenPositionCount',
 		title: 'موقعیت باز پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'putBestBuyLimitPrice',
 		title: 'بهترین خریدار پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'putBestBuyLimitQuantity',
 		title: 'حجم سر خط خرید پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'profit',
@@ -639,53 +673,54 @@ export const initialColumnsConversion: IManageColumn[] = [
 	{
 		id: 'bestBuyYTM',
 		title: 'YTM سرخط خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'bestSellYTM',
 		title: 'YTM سرخط فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'callTradeValue',
 		title: 'ارزش معاملات کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'putTradeValue',
 		title: 'ارزش معاملات پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeValue',
 		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeCount',
 		title: 'تعداد معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeVolume',
 		title: 'حجم معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseLastTradedDate',
 		title: 'آخرین معامله پایه',
-		hidden: true,
+		hidden: false,
 	},
 ];
 
-export const initialColumnsLongStraddle: IManageColumn[] = [
+// ? LongStraddle
+export const initialColumnsLongStraddle: Array<IManageColumn<TLongStraddleColumns>> = [
 	{
-		id: 'baseSymbolISIN',
+		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
 		hidden: false,
 	},
 	{
-		id: 'baseLastTradedPrice',
+		id: 'baseTradePriceVarPreviousTradePercent',
 		title: 'قیمت پایه',
 		hidden: false,
 	},
@@ -700,7 +735,7 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'callSymbolISIN',
+		id: 'callSymbolTitle',
 		title: 'کال',
 		hidden: false,
 	},
@@ -715,7 +750,7 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'putSymbolISIN',
+		id: 'putSymbolTitle',
 		title: 'پوت',
 		hidden: false,
 	},
@@ -732,22 +767,22 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 	{
 		id: 'callOpenPositionCount',
 		title: 'موقعیت باز کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'putOpenPositionCount',
 		title: 'موقعیت باز پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'callPremium',
+		id: 'callPremiumPercent',
 		title: 'قیمت نماد کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'putPremium',
+		id: 'putPremiumPercent',
 		title: 'قیمت نماد پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'highBEP',
@@ -767,27 +802,27 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 	{
 		id: 'inUseCapital',
 		title: 'سرمایه درگیر',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'callTimeValue',
 		title: 'ارزش زمانی کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'putTimeValue',
 		title: 'ارزش زمانی پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'callIntrinsicValue',
 		title: 'ارزش ذاتی کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'putIntrinsicValue',
 		title: 'ارزش ذاتی پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'callBestSellLimitPrice',
@@ -812,43 +847,44 @@ export const initialColumnsLongStraddle: IManageColumn[] = [
 	{
 		id: 'callTradeValue',
 		title: 'ارزش معاملات کال',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'putTradeValue',
 		title: 'ارزش معاملات پوت',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeValue',
 		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeCount',
 		title: 'تعداد معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeVolume',
 		title: 'حجم معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseLastTradedDate',
 		title: 'آخرین معامله پایه',
-		hidden: true,
+		hidden: false,
 	},
 ];
 
-export const initialColumnsProtectivePut: IManageColumn[] = [
+// ? ProtectivePut
+export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColumns>> = [
 	{
-		id: 'symbolISIN',
+		id: 'symbolTitle',
 		title: 'نماد پایه',
 		hidden: false,
 	},
 	{
-		id: 'baseLastTradedPrice',
+		id: 'baseTradePriceVarPreviousTradePercent',
 		title: 'قیمت پایه',
 		hidden: false,
 	},
@@ -858,7 +894,7 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'lspSymbolTitle',
+		id: 'symbolTitle',
 		title: 'کال خرید',
 		hidden: false,
 	},
@@ -873,9 +909,9 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'premium',
+		id: 'tradePriceVarPreviousTradePercent',
 		title: 'قیمت نماد آپشن',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'optionBestSellLimitPrice',
@@ -890,15 +926,15 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 	{
 		id: 'optionBestBuyLimitPrice',
 		title: 'بهترین خریدار',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'optionBestBuyLimitQuantity',
 		title: 'حجم سرخط خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'bullCallSpreadBEP',
+		id: 'protectivePutBEP',
 		title: 'سر به سر',
 		hidden: false,
 	},
@@ -910,7 +946,7 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 	{
 		id: 'profit',
 		title: 'بازده',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'profitPercent',
@@ -925,7 +961,7 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 	{
 		id: 'blackScholes',
 		title: 'بلک شولز',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'timeValue',
@@ -935,22 +971,22 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 	{
 		id: 'intrinsicValue',
 		title: 'ارزش ذاتی',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'bepDifference',
 		title: 'اختلاف تا سر به سر',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'tradeValue',
 		title: 'ارزش معاملات آپشن',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeValue',
 		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeCount',
@@ -960,23 +996,24 @@ export const initialColumnsProtectivePut: IManageColumn[] = [
 	{
 		id: 'baseTradeVolume',
 		title: 'حجم معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseLastTradedDate',
 		title: 'آخرین معامله پایه',
-		hidden: true,
+		hidden: false,
 	},
 ];
 
-export const initialColumnsBearPutSpread: IManageColumn[] = [
+// ? BearPutSpread
+export const initialColumnsBearPutSpread: Array<IManageColumn<TBearPutSpreadColumns>> = [
 	{
-		id: 'baseSymbolISIN',
+		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
 		hidden: false,
 	},
 	{
-		id: 'baseLastTradedPrice',
+		id: 'baseTradePriceVarPreviousTradePercent',
 		title: 'قیمت پایه',
 		hidden: false,
 	},
@@ -986,84 +1023,84 @@ export const initialColumnsBearPutSpread: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'lspSymbolISIN',
+		id: 'hspSymbolISIN',
 		title: 'پوت خرید',
 		hidden: false,
 	},
 	{
-		id: 'lspStrikePrice',
+		id: 'hspStrikePrice',
 		title: 'قیمت اعمال پوت خرید',
 		hidden: false,
 	},
 	{
-		id: 'lspBestSellLimitPrice',
+		id: 'hspBestSellLimitPrice',
 		title: 'قیمت فروشنده پوت خرید',
 		hidden: false,
 	},
 	{
-		id: 'lspBestSellLimitQuantity',
+		id: 'hspBestSellLimitQuantity',
 		title: 'حجم فروشنده پوت خرید',
 		hidden: false,
 	},
 	{
-		id: 'lspBestBuyLimitPrice',
+		id: 'hspBestBuyLimitPrice',
 		title: 'قیمت خریدار پوت خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'lspBestBuyLimitQuantity',
+		id: 'hspBestBuyLimitQuantity',
 		title: 'حجم خریدار پوت خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'hspSymbolISIN',
+		id: 'lspSymbolISIN',
 		title: 'پوت فروش',
 		hidden: false,
 	},
 	{
-		id: 'hspStrikePrice',
+		id: 'lspStrikePrice',
 		title: 'قیمت اعمال پوت فروش',
 		hidden: false,
 	},
 	{
-		id: 'hspBestBuyLimitPrice',
+		id: 'lspBestBuyLimitPrice',
 		title: 'قیمت خریدار پوت فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'hspBestBuyLimitQuantity',
+		id: 'lspBestBuyLimitQuantity',
 		title: 'حجم خریدار پوت فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'hspBestSellLimitPrice',
+		id: 'lspBestSellLimitPrice',
 		title: 'بهترین فروشنده پوت فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'hspBestSellLimitQuantity',
+		id: 'lspBestSellLimitQuantity',
 		title: 'حجم سر خط فروش پوت فروش',
-		hidden: true,
-	},
-	{
-		id: 'lspOpenPositionCount',
-		title: 'موقعیت باز پوت خرید',
 		hidden: false,
 	},
 	{
 		id: 'hspOpenPositionCount',
+		title: 'موقعیت باز پوت خرید',
+		hidden: false,
+	},
+	{
+		id: 'lspOpenPositionCount',
 		title: 'موقعیت باز پوت فروش',
 		hidden: false,
 	},
 	{
-		id: 'lspPremium',
+		id: 'hspPremiumPercent',
 		title: 'قیمت نماد پوت خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
-		id: 'hspPremium',
+		id: 'lspPremiumPercent',
 		title: 'قیمت نماد پوت فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'bullCallSpreadBEP',
@@ -1071,7 +1108,7 @@ export const initialColumnsBearPutSpread: IManageColumn[] = [
 		hidden: false,
 	},
 	{
-		id: 'maxProfit',
+		id: 'maxProfitPercent',
 		title: 'حداکثر بازده',
 		hidden: false,
 	},
@@ -1083,61 +1120,61 @@ export const initialColumnsBearPutSpread: IManageColumn[] = [
 	{
 		id: 'inUseCapital',
 		title: 'سرمایه درگیر',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'lspTimeValue',
 		title: 'ارزش زمانی پوت خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'hspTimeValue',
 		title: 'ارزش زمانی پوت فروش',
-		hidden: true,
-	},
-	{
-		id: 'lspIntrinsicValue',
-		title: 'ارزش ذاتی پوت خرید',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'hspIntrinsicValue',
-		title: 'ارزش ذاتی پوت فروش',
-		hidden: true,
+		title: 'ارزش ذاتی پوت خرید',
+		hidden: false,
 	},
 	{
-		id: 'lspTradeValue',
-		title: 'ارزش معاملات آپشن پوت خرید',
-		hidden: true,
+		id: 'lspIntrinsicValue',
+		title: 'ارزش ذاتی پوت فروش',
+		hidden: false,
 	},
 	{
 		id: 'hspTradeValue',
+		title: 'ارزش معاملات آپشن پوت خرید',
+		hidden: false,
+	},
+	{
+		id: 'lspTradeValue',
 		title: 'ارزش معاملات آپشن پوت فروش',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeValue',
 		title: 'ارزش معاملات سهم پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeCount',
 		title: 'تعداد معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseTradeVolume',
 		title: 'حجم معاملات پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'baseLastTradedDate',
 		title: 'آخرین معامله پایه',
-		hidden: true,
+		hidden: false,
 	},
 	{
 		id: 'ytm',
 		title: 'YTM',
-		hidden: true,
+		hidden: false,
 	},
 ];

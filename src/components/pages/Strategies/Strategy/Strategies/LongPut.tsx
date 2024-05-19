@@ -129,7 +129,7 @@ const LongPut = (strategy: LongPutProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.LongPut>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.LongPut> & { colId: TLongPutColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',

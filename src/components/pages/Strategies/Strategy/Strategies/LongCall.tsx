@@ -129,7 +129,7 @@ const LongCall = (strategy: LongCallProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.LongCall>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.LongCall> & { colId: TLongCallColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',

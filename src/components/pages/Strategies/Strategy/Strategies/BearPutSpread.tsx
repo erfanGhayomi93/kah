@@ -150,7 +150,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread> & { colId: TBearPutSpreadColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',

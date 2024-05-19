@@ -150,7 +150,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.BullCallSpread>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.BullCallSpread> & { colId: TBullCallSpreadColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',

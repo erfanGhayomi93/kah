@@ -142,7 +142,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut> & { colId: TProtectivePutColumns }>>(
 		() => [
 			{
 				colId: 'symbolTitle',
