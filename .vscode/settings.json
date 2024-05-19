@@ -1,20 +1,20 @@
 {
 	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.codeActionsOnSave": {
 		"source.fixAll": "explicit",
 		"source.fixAll.eslint": "explicit",
 		"source.removeUnused": "never",
 		"source.organizeImports": "explicit"
 	},
-	"cSpell.words": [
-		"clsx",
-		"doji",
-		"kahkeshan",
-		"payfast",
-		"pushengine",
-		"Scholes",
-		"toman",
-		"کدال"
-	],
-	"tailwindCSS.rootFontSize": 10
+	"cSpell.words": ["clsx", "doji", "kahkeshan", "payfast", "pushengine", "Scholes", "toman", "کدال"],
+	"tailwindCSS.rootFontSize": 10,
+	"prettier.printWidth": 120,
+	"prettier.jsxSingleQuote": true,
+	"prettier.singleQuote": true,
+	"prettier.trailingComma": "all",
+	"prettier.bracketSpacing": true,
+	"prettier.semi": true,
+	"prettier.tabWidth": 4,
+	"editor.useTabStops": true
 }

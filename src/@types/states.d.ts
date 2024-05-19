@@ -7,7 +7,7 @@ declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.ye
 
 declare type TSortingMethods = 'asc' | 'desc';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> { }
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
 declare interface IOptionHistory {
 	dateTime: string;
@@ -17,9 +17,9 @@ declare interface IOptionHistory {
 
 declare type TOrdersSide = 'Buy' | 'Sell';
 
-declare type TTradeSide = "Buy" | "Sell"
+declare type TTradeSide = 'Buy' | 'Sell';
 
-declare type TOrdersTypes = "MarketOrder" | "LimitOrder" | "MarketToLimitOrder" | "MarketOnOpeningOrder" | "StopOrder";
+declare type TOrdersTypes = 'MarketOrder' | 'LimitOrder' | 'MarketToLimitOrder' | 'MarketOnOpeningOrder' | 'StopOrder';
 
 declare type TOrdersValidity =
 	| 'GoodTillDate'
@@ -59,13 +59,13 @@ declare type TOrdersStatus =
 declare type TTradeDetails =
 	| null
 	| {
-		tradedQuantity: number;
-		tradePrice: number;
-		remainingQuantityOrder: number;
-		tradeDate: string;
-		tradeNumber: string;
-		total: number;
-	}[];
+			tradedQuantity: number;
+			tradePrice: number;
+			remainingQuantityOrder: number;
+			tradeDate: string;
+			tradeNumber: string;
+			total: number;
+	  }[];
 
 declare type TOrderSource = 'Account' | 'Portfolio';
 
@@ -129,7 +129,6 @@ declare type TDojiType = 'Bullish' | 'Bearish' | 'Neutral';
 declare type TStrategyMarketTrend =
 	| 'All'
 	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
-
 
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
@@ -296,7 +295,9 @@ declare type IBrokerUrls = Record<
 	| 'newKaraFreeze'
 	| 'RecentFreeze'
 	| 'symbolCountFreeze'
+	| 'ReceiptEditRequest'
 	| 'getDepositOnlineHistory'
+	| 'PaymentUpdateRequest'
 	| 'GetListBankAccount'
 	| 'GetRemainsWithDate'
 	| 'LastListDrawal'
@@ -374,9 +375,9 @@ declare interface IAnalyzeModalInputs {
 
 declare type TSetBsModalInputs = <
 	T extends
-	| Partial<IBsModalInputs>
-	| keyof Partial<IBsModalInputs>
-	| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
+		| Partial<IBsModalInputs>
+		| keyof Partial<IBsModalInputs>
+		| ((values: IBsModalInputs) => Partial<IBsModalInputs>),
 >(
 	options: T,
 	value?: (T extends keyof IBsModalInputs ? IBsModalInputs[T] : undefined) | undefined,
@@ -516,7 +517,6 @@ declare namespace Transaction {
 		transactionType: { id: TransactionTypes; title: string }[];
 	}
 
-
 	export interface ITransactionColumnsState {
 		id: string;
 		title: string;
@@ -524,7 +524,7 @@ declare namespace Transaction {
 	}
 
 	export type TTransactionColumns =
-		'id'
+		| 'id'
 		| 'credit'
 		| 'date'
 		| 'debit'
@@ -565,13 +565,13 @@ declare namespace InstantDepositReports {
 	}
 
 	export type TInstantDepositReportsColumns =
-		"id"
+		| 'id'
 		| 'reservationNumber'
 		| 'referenceNumber'
 		| 'saveDate'
 		| 'amount'
 		| 'providerType'
-		| 'state'
+		| 'state';
 }
 
 declare namespace DepositWithReceiptReports {
@@ -744,11 +744,17 @@ declare namespace TradesReports {
 		hidden: boolean;
 	}
 
-	export type TTradesReportsColumns = 'orderId' | 'symbolTitle' | 'orderSide' | 'orderDateTime' | 'orderDateTime' | 'tradedQuantity' | 'tradePrice' | 'totalQuota' | 'total'
-
+	export type TTradesReportsColumns =
+		| 'orderId'
+		| 'symbolTitle'
+		| 'orderSide'
+		| 'orderDateTime'
+		| 'orderDateTime'
+		| 'tradedQuantity'
+		| 'tradePrice'
+		| 'totalQuota'
+		| 'total';
 }
-
-
 
 declare namespace FreezeUnFreezeReports {
 	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';

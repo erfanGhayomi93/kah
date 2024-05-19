@@ -746,6 +746,7 @@
 		"state_Fail": "لغو شد.",
 		"state_CanceledByUser": "درخواست توسط مشتری کنسل شد.",
 		"state_Request": "ثبت درخواست",
+		"state_Edit": "ویرایش درخواست",
 		"state_RequestBankToken": "درخواست توکن",
 		"state_RequestBankTokenOk": "درخواست توکن با موفقیت انجام شد.",
 		"state_RequestBankTokenError": "خطا در درخواست توکن",
@@ -1240,6 +1241,7 @@
 		"offline_deposit_succeeded": "فیش با موفقیت ثبت شد.",
 		"offline_deposit_failed": "ثبت فیش با خطا مواجه شد.",
 		"drawal_offline_successFully": "درخواست برداشت وجه با موفقیت انجام شد.",
+		"drawal_offline_successFully_edited": "درخواست برداشت وجه با موفقیت ویرایش شد.",
 		"add_watchlist": "ابتدا یک دیده‌بان اضافه کنید.",
 		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است",
 		"instant_deposit_canceled_successfully": "درخواست شما با موفقیت حدف شد.",
@@ -1383,7 +1385,6 @@
 		"state_InProgress": "در حال انجام",
 		"state_FreezeFailed": "ناموفق",
 		"state_NotApprove": "عدم تایید"
-
 	},
 
 	"cash_settlement_reports_page": {
@@ -1395,7 +1396,7 @@
 		"cash_date_column": "تاریخ تسویه نقدی",
 		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
 		"request_type_column": "نوع اعمال",
-		"settlement_price_column":"مبلغ تسویه",
+		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",
 		"done_count_column": "تعداد پذیرفته شده",
 		"user_type_column": "درخواست کننده",
@@ -1430,7 +1431,7 @@
 		"cash_date_column": "تاریخ تسویه نقدی",
 		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
 		"request_type_column": "نوع اعمال",
-		"settlement_price_column":"مبلغ تسویه",
+		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",
 		"done_count_column": "تعداد پذیرفته شده",
 		"pen_count_column": "تعداد نکول",
@@ -1464,7 +1465,7 @@
 		"trades_tab": "معاملات"
 	},
 
-	"orders_reports_page":{
+	"orders_reports_page": {
 		"filter_title_modal": "فیلتر سفارشات",
 		"manage_columns": "مدیریت ستون‌های جدول",
 		"id_column": "ردیف",
