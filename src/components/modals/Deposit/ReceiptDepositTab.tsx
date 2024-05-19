@@ -12,11 +12,14 @@ import num2persian from '@/utils/num2persian';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { type MouseEvent, useRef } from 'react';
+import { type FC, type MouseEvent, useEffect, useMemo, useRef } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+interface ReceiptDepositTabProps {
+	dataEdit?: Reports.IDepositWithReceipt,
+}
 interface inputType {
 	receipt: string;
 	price: string;
@@ -25,8 +28,10 @@ interface inputType {
 	image: File | null;
 }
 
-export const ReceiptDepositTab = () => {
+export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 	const t = useTranslations();
+
+	const { receiptNumber, amount, bankAccountId, receiptDate, base64Image, id } = dataEdit || {};
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,6 +47,16 @@ export const ReceiptDepositTab = () => {
 		queryKey: ['brokerAccount'],
 	});
 
+	const findBankAccountSelect = useMemo(() => {
+
+		if (!brokerAccountOption) return null;
+
+		else if (!dataEdit) return brokerAccountOption[0];
+
+		else return brokerAccountOption?.find((item) => String(item.id) === String(bankAccountId));
+
+	}, [brokerAccountOption, bankAccountId]);
+
 	const {
 		register,
 		handleSubmit,
@@ -51,14 +66,22 @@ export const ReceiptDepositTab = () => {
 		watch,
 	} = useForm<inputType>({
 		defaultValues: {
-			receipt: '',
-			price: '',
+			receipt: receiptNumber ?? '',
+			price: amount ? String(amount) : '',
 			account: null,
-			date: new Date(),
-			image: null,
+			date: receiptDate ? new Date(receiptDate) : new Date(),
+			image: base64Image ?? null,
 		},
 		mode: 'onChange',
 	});
+
+
+	useEffect(() => {
+		findBankAccountSelect && setValue('account', findBankAccountSelect, { shouldValidate: true });
+	}, [findBankAccountSelect]);
+
+
+
 
 	const resetInput = () => {
 		if (inputRef.current) inputRef.current.files = new DataTransfer().files;
@@ -101,20 +124,22 @@ export const ReceiptDepositTab = () => {
 
 			if (!url || !userInfo || !account || !date) return;
 
-			fd.append('NationalCode', userInfo?.nationalCode);
-			fd.append('File', image ?? '');
 			fd.append('BankAccountId', account.id);
 			fd.append('AccountNumber', account?.accountNumber);
 			fd.append('CustomerISIN', userInfo.customerISIN);
 			fd.append('Amount', convertStringToInteger(price));
 			fd.append('ReceiptNumber', receipt);
 			fd.append('ReceiptDate', toISOStringWithoutChangeTime(new Date(date)));
+			id && fd.append('Id', String(id));
+			!dataEdit && fd.append('NationalCode', userInfo?.nationalCode);
+			image && fd.append('File', image ?? '');
 
-			const response = await brokerAxios.post(url.completeRequestReceipt, fd);
+
+			const response = await brokerAxios.post(!dataEdit ? url.completeRequestReceipt : url.ReceiptEditRequest, fd);
 
 			const { data } = response;
 			if (data.succeeded) {
-				toast.success(t('alerts.offline_deposit_succeeded'), {
+				toast.success(t(!dataEdit ? 'alerts.offline_deposit_succeeded' : 'offline_deposit_succeeded_edited'), {
 					toastId: 'offline_deposit_succeeded',
 				});
 
@@ -187,6 +212,7 @@ export const ReceiptDepositTab = () => {
 								</div>
 							)}
 							placeholder={t('deposit_modal.account_number_placeholder')}
+							defaultValue={findBankAccountSelect}
 						/>
 					</div>
 					<div className='w-2/5'>
@@ -240,7 +266,6 @@ export const ReceiptDepositTab = () => {
 					<button
 						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 						type='submit'
-					// onClick={handleSubmitReceiptDeposit}
 					>
 						{t('deposit_modal.state_Request')}
 					</button>

@@ -232,7 +232,7 @@ export interface IDescriptionModal extends IBaseModalConfiguration {
 
 export interface IDepositModal extends IBaseModalConfiguration {
 	data?: Reports.IDepositWithReceipt | Reports.IInstantDeposit;
-	activeTab?: 'receiptDepositTab' | 'liveDepositTab';
+	activeTab?: Payment.TDepositTab;
 }
 
 export interface IFreezeModal extends IBaseModalConfiguration {}
