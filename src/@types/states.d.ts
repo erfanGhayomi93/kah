@@ -254,8 +254,8 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
-declare interface IManageColumn {
-	id: string;
+declare interface IManageColumn<T extends string> {
+	id: T;
 	title: string;
 	hidden: boolean;
 }

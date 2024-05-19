@@ -2,7 +2,7 @@ import { useProtectivePutStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { initialColumnsProtectivePut } from '@/constants/strategies';
+import { initialColumnsProtectivePut, initialHiddenColumnsProtectivePut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -142,20 +142,22 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut> & { colId: TProtectivePutColumns }>>(
 		() => [
 			{
-				colId: 'symbolTitle',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
+				initialHide: initialHiddenColumnsProtectivePut.baseSymbolTitle,
 				width: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
-				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
-				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
+				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
 				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
+				initialHide: initialHiddenColumnsProtectivePut.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
@@ -170,6 +172,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
+				initialHide: initialHiddenColumnsProtectivePut.dueDays,
 				width: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -177,6 +180,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'symbolTitle',
 				headerName: 'کال خرید',
+				initialHide: initialHiddenColumnsProtectivePut.symbolTitle,
 				width: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
@@ -189,6 +193,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
+				initialHide: initialHiddenColumnsProtectivePut.strikePrice,
 				width: 96,
 				cellClass: 'gray',
 				valueGetter: ({ data }) => data?.strikePrice ?? 0,
@@ -197,6 +202,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'openPositionCount',
 				headerName: 'موقعیت باز',
+				initialHide: initialHiddenColumnsProtectivePut.openPositionCount,
 				width: 112,
 				valueGetter: ({ data }) => data?.openPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -204,6 +210,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
+				initialHide: initialHiddenColumnsProtectivePut.tradePriceVarPreviousTradePercent,
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
@@ -215,6 +222,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'optionBestSellLimitPrice',
 				headerName: 'بهترین فروشنده',
+				initialHide: initialHiddenColumnsProtectivePut.optionBestSellLimitPrice,
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
@@ -223,6 +231,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'optionBestSellLimitQuantity',
 				headerName: 'حجم سرخط فروش',
+				initialHide: initialHiddenColumnsProtectivePut.optionBestSellLimitQuantity,
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitQuantity ?? 0,
@@ -231,6 +240,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'optionBestBuyLimitPrice',
 				headerName: 'بهترین خریدار',
+				initialHide: initialHiddenColumnsProtectivePut.optionBestBuyLimitPrice,
 				width: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.optionBestBuyLimitPrice ?? 0,
@@ -239,6 +249,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'optionBestBuyLimitQuantity',
 				headerName: 'حجم سرخط خرید',
+				initialHide: initialHiddenColumnsProtectivePut.optionBestBuyLimitQuantity,
 				width: 152,
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.optionBestBuyLimitQuantity ?? 0,
@@ -247,6 +258,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'protectivePutBEP',
 				headerName: 'سر به سر',
+				initialHide: initialHiddenColumnsProtectivePut.protectivePutBEP,
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -258,6 +270,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'maxLoss',
 				headerName: 'حداکثر زیان',
+				initialHide: initialHiddenColumnsProtectivePut.maxLoss,
 				width: 152,
 				valueGetter: ({ data }) => data?.maxLoss ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -265,12 +278,14 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'profit',
 				headerName: 'بازده',
+				initialHide: initialHiddenColumnsProtectivePut.profit,
 				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			},
 			{
 				colId: 'profitPercent',
 				headerName: 'درصد بازده تا سررسید',
+				initialHide: initialHiddenColumnsProtectivePut.profitPercent,
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.profitPercent ?? 0,
 				valueFormatter: ({ value }) => `${toFixed(value, 6)}%`,
@@ -278,6 +293,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'inUseCapital',
 				headerName: 'سرمایه درگیر',
+				initialHide: initialHiddenColumnsProtectivePut.inUseCapital,
 				width: 96,
 				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -285,6 +301,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'blackScholes',
 				headerName: 'بلک شولز',
+				initialHide: initialHiddenColumnsProtectivePut.blackScholes,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.blackScholes ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
@@ -292,6 +309,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'timeValue',
 				headerName: 'ارزش زمانی',
+				initialHide: initialHiddenColumnsProtectivePut.timeValue,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.timeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -299,6 +317,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'intrinsicValue',
 				headerName: 'ارزش ذاتی',
+				initialHide: initialHiddenColumnsProtectivePut.intrinsicValue,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.intrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -306,6 +325,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
+				initialHide: initialHiddenColumnsProtectivePut.bepDifference,
 				minWidth: 136,
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
 				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
@@ -313,6 +333,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'tradeValue',
 				headerName: 'ارزش معاملات آپشن',
+				initialHide: initialHiddenColumnsProtectivePut.tradeValue,
 				minWidth: 136,
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -320,6 +341,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
+				initialHide: initialHiddenColumnsProtectivePut.baseTradeValue,
 				minWidth: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -327,6 +349,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
+				initialHide: initialHiddenColumnsProtectivePut.baseTradeCount,
 				minWidth: 128,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -334,6 +357,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
+				initialHide: initialHiddenColumnsProtectivePut.baseTradeVolume,
 				minWidth: 136,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -341,6 +365,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
+				initialHide: initialHiddenColumnsProtectivePut.baseLastTradedDate,
 				minWidth: 120,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
@@ -348,6 +373,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'actions',
 				headerName: 'عملیات',
+				initialHide: initialHiddenColumnsProtectivePut.actions,
 				width: 80,
 				sortable: false,
 				pinned: 'left',
