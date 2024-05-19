@@ -643,6 +643,8 @@ declare namespace Broker {
 		| 'PaymentExportFilteredCSV'
 		| 'SetCustomerSettings'
 		| 'DepositOnlineHistory'
+		| 'ReceiptEditRequest'
+		| 'PaymentUpdateRequest'
 		| 'GetCustomerSettings'
 		| 'EPaymentApiGetStatuses'
 		| 'EPaymentApiGetProviderTypes'

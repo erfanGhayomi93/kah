@@ -315,6 +315,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		GetRemainsWithDate: data.GetRemainsWithDate,
 		LastListDrawal: data.LastListDrawal,
 		RequestPayment: data.RequestPayment,
+		ReceiptEditRequest: data.ReceiptEditRequest,
+		PaymentUpdateRequest: data.PaymentUpdateRequest,
 		getDepositOnlineHistory: data.DepositOnlineHistory,
 		getCustomerTurnOverCSVExport: data.CustomerTurnOverCSVExport,
 		getEPaymentExportFilteredCSV: data.EPaymentExportFilteredCSV,
