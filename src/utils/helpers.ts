@@ -337,8 +337,9 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		OrderExportTrades: data.OrderExportTrades,
 		getOrderDetailedOrders: data.OrderDetailedOrders,
 		receiptSetCancel: data.ReceiptSetCancel,
-		paymentDeleteRequest: data.PaymentDeleteRequest
-
+		paymentDeleteRequest: data.PaymentDeleteRequest,
+		acceptAgreement: data.AcceptAgreement,
+		mobileOtpRequest: data.MobileOtpRequest,
 	};
 
 	return urls;
@@ -612,6 +613,13 @@ export const getColorBasedOnPercent = (v: number) => {
 	return 'text-error-100';
 };
 
+export const versionParser = (value: string) => {
+	const version = value.replace(/[^0-9.]/gi, '');
+	const [major, minor, patch] = version.split('.');
+
+	return Number(major) * 100 + Number(minor ? Number(minor) * 10 : 0) + Number(patch ? Number(patch) * 1 : 0);
+};
+
 export const today = (): number => {
 	let d: number | Date = new Date();
 
@@ -621,8 +629,10 @@ export const today = (): number => {
 	return d;
 };
 
-
-export const calculateDateRange = (date: Exclude<TDateRange, 'dates.custom'>, reverse = false): Record<'fromDate' | 'toDate', number> => {
+export const calculateDateRange = (
+	date: Exclude<TDateRange, 'dates.custom'>,
+	reverse = false,
+): Record<'fromDate' | 'toDate', number> => {
 	if (reverse) {
 		const fromDate = today();
 

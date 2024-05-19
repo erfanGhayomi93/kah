@@ -662,7 +662,9 @@ declare namespace Broker {
 		| 'FreezeExportFreeze'
 		| 'Freezerequests'
 		| 'ReceiptSetCancel'
-		| 'PaymentDeleteRequest';
+		| 'PaymentDeleteRequest'
+		| 'AcceptAgreement'
+		| 'MobileOtpRequest';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1337,6 +1339,13 @@ declare namespace Settings {
 		canChangeByCustomer: boolean;
 		approveBySMS: boolean;
 		attachmentUrl: string | null;
+	}
+
+	export interface IMobileOTP {
+		expireDate: number;
+		retryToken: string;
+		starredMessage: string;
+		state: boolean;
 	}
 }
 

@@ -1,4 +1,5 @@
 import {
+	AuthenticationSVG,
 	ChangeNameSVG,
 	EditFillSVG,
 	IdentityCardSVG,
@@ -9,6 +10,8 @@ import {
 	NoSVG,
 	UserBoldSVG,
 } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { setConfirmModal } from '@/features/slices/modalSlice';
 import { useUserInfo } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import SettingCardField from '../../../components/SettingCardField';
@@ -18,6 +21,8 @@ const BrokerInfo = () => {
 	const t = useTranslations();
 
 	const { data: userInfo } = useUserInfo();
+
+	const dispatch = useAppDispatch();
 
 	const fields = [
 		{
@@ -63,8 +68,22 @@ const BrokerInfo = () => {
 			),
 		},
 		{
-			icon: <MailSVG />,
-			prefixIcon: <InfoCircleSVG width={'2rem'} height={'2rem'} className={'text-secondary-300'}/>,
+			icon: <AuthenticationSVG />,
+			prefixIcon: (
+				<span
+					onClick={() =>
+						dispatch(
+							setConfirmModal({
+								confirm: { label: t('settings_page.noticed'), type: 'primary' },
+								description: t('settings_page.two_step_login_description'),
+								title: t('settings_page.two_step_login'),
+							}),
+						)
+					}
+				>
+					<InfoCircleSVG width={'2rem'} height={'2rem'} className={'cursor-pointer text-secondary-300'} />
+				</span>
+			),
 			title: t('settings_page.two_step_login'),
 			node: <button className='rounded px-16 py-4 btn-primary'>{t('settings_page.activation')}</button>,
 		},

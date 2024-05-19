@@ -1,13 +1,13 @@
-import React, { forwardRef, useMemo } from 'react';
+import Tabs from '@/components/common/Tabs/Tabs';
+import { useAppDispatch } from '@/features/hooks';
+import { setCoveredCallFiltersModal } from '@/features/slices/modalSlice';
+import { cn } from '@/utils/helpers';
+import { useTranslations } from 'next-intl';
+import { forwardRef, useMemo } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
-import { useTranslations } from 'next-intl';
-import { useAppDispatch } from '@/features/hooks';
-import { setCoveredCallFilters } from '@/features/slices/modalSlice';
 import Header from './components/Header';
-import Tabs from '@/components/common/Tabs/Tabs';
 import Simple from './tabs/Simple';
-import { cn } from '@/utils/helpers';
 
 const Div = styled.div`
 	width: 600px;
@@ -22,7 +22,7 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, ICovertCallFilters>((props
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
-		dispatch(setCoveredCallFilters(null));
+		dispatch(setCoveredCallFiltersModal(null));
 	};
 
 	const TABS = useMemo(

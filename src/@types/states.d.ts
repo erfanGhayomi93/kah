@@ -67,6 +67,8 @@ declare type TTradeDetails =
 
 declare type TOrderSource = 'Account' | 'Portfolio';
 
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+
 declare interface IUserBankAccount {
 	id: number;
 	shaba: string;

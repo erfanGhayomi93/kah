@@ -45,40 +45,41 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 	const onEditRow = (data: Reports.IDepositWithReceipt | undefined) => {
 		if (!data) return;
 
-
 		try {
-			dispatch(setDepositModal({ isShow: true, data, activeTab: 'receiptDepositTab' }));
+			dispatch(setDepositModal({ data, activeTab: 'receiptDepositTab' }));
 		} catch (e) {
 			//
 		}
 	};
 
-	const onDeleteRow = (data: Reports.IDepositWithReceipt | undefined) => new Promise<void>(async (resolve, reject) => {
-		if (!urls || !data) return;
+	const onDeleteRow = (data: Reports.IDepositWithReceipt | undefined) =>
+		new Promise<void>(async (resolve, reject) => {
+			if (!urls || !data) return;
 
-		try {
-			const response = await brokerAxios.post<ServerResponse<boolean>>(urls.receiptSetCancel, {
-				ids: [data?.id]
-			});
+			try {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.receiptSetCancel, {
+					ids: [data?.id],
+				});
 
-			if (response.status !== 200 || !response.data.succeeded) throw new Error(response.data.errors?.[0] ?? '');
+				if (response.status !== 200 || !response.data.succeeded)
+					throw new Error(response.data.errors?.[0] ?? '');
 
-			toast.success(t('alerts.instant_deposit_canceled_successfully'));
+				toast.success(t('alerts.instant_deposit_canceled_successfully'));
 
-			queryClient.invalidateQueries({
-				queryKey: ['depositWithReceiptReports']
-			});
+				queryClient.invalidateQueries({
+					queryKey: ['depositWithReceiptReports'],
+				});
 
-			queryClient.invalidateQueries({
-				queryKey: ['userRemainQuery']
-			});
+				queryClient.invalidateQueries({
+					queryKey: ['userRemainQuery'],
+				});
 
-			resolve();
-		} catch (e) {
-			toast.error(t('alerts.instant_deposit_canceled_failed'));
-			reject();
-		}
-	});
+				resolve();
+			} catch (e) {
+				toast.error(t('alerts.instant_deposit_canceled_failed'));
+				reject();
+			}
+		});
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IDepositWithReceipt>>>(
 		() =>

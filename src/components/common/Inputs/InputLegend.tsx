@@ -1,6 +1,5 @@
 import { cn, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
-import React from 'react';
 
 interface InputProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'className' | 'onChange'> {
@@ -31,7 +30,7 @@ const InputLegend = ({
 	const isActive = value && String(value).length > 0;
 
 	return (
-		<label className='relative h-48 rounded flex-items-center input-group flex-1'>
+		<label className='relative h-48 rounded flex-items-center input-group'>
 			<input
 				{...props}
 				type='text'

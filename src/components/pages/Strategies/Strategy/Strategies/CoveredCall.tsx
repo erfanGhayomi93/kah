@@ -4,7 +4,12 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setCreateStrategyModal, setDescriptionModal } from '@/features/slices/modalSlice';
+import {
+	setAnalyzeModal,
+	setCoveredCallFiltersModal,
+	setCreateStrategyModal,
+	setDescriptionModal,
+} from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -68,6 +73,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					strategy: 'CoveredCall',
 					steps: [
 						{
+							id: uuidv4(),
 							type: 'base',
 							quantity: 100,
 							estimatedBudget: 42e4,
@@ -79,6 +85,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 							status: 'TODO',
 						},
 						{
+							id: uuidv4(),
 							type: 'freeze',
 							estimatedBudget: 42e4,
 							status: 'PENDING',
@@ -88,6 +95,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 							},
 						},
 						{
+							id: uuidv4(),
 							type: 'option',
 							estimatedBudget: 42e4,
 							optionType: 'call',
@@ -479,6 +487,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
+					onShowFilters={() => dispatch(setCoveredCallFiltersModal({}))}
 				/>
 
 				<Table<Strategy.CoveredCall>

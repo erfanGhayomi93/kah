@@ -70,6 +70,7 @@ namespace CreateStrategy {
 	export type TStep = 'option' | 'base';
 
 	export interface IBaseSymbol {
+		id: string;
 		type: 'base';
 		symbolTitle: string;
 		symbolISIN: string;
@@ -82,6 +83,7 @@ namespace CreateStrategy {
 	}
 
 	export interface IOption {
+		id: string;
 		type: 'option';
 		side: TBsSides;
 		optionType: TOptionSides;
@@ -96,6 +98,7 @@ namespace CreateStrategy {
 	}
 
 	export interface IFreeze {
+		id: string;
 		type: 'freeze';
 		estimatedBudget: number;
 		status: Status;
