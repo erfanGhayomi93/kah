@@ -12,7 +12,7 @@ const Theme = () => {
 	];
 
 	return (
-		<>
+		<div className='gap-x-96 flex-justify-between'>
 			{buttons.map((item) => (
 				<button
 					key={item.id}
@@ -27,7 +27,7 @@ const Theme = () => {
 					{item.title}
 				</button>
 			))}
-		</>
+		</div>
 	);
 };
 
