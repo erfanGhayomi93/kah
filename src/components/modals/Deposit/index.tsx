@@ -23,6 +23,8 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 	const t = useTranslations();
 	const [isShowExpanded, setIsShowExpanded] = useState(false);
 
+	const { data, activeTab } = props || {};
+
 	const dispatch = useAppDispatch();
 
 	const onCloseModal = () => {
@@ -53,7 +55,10 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
 					})}
 				>
-					<Body />
+					<Body
+						dataEdit={data}
+						activeTab={activeTab}
+					/>
 				</Div>
 
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>

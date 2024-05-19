@@ -961,7 +961,7 @@ declare namespace Dashboard {
 			tradeCount: number;
 		}
 
-		export interface FaraBourse extends GetMarketState.Bourse { }
+		export interface FaraBourse extends GetMarketState.Bourse {}
 
 		export interface Option {
 			tradeVolume: number | null;
@@ -976,17 +976,17 @@ declare namespace Dashboard {
 			symbolTitle: string;
 			date: string;
 			time:
-			| 'ticks'
-			| 'days'
-			| 'hours'
-			| 'milliseconds'
-			| 'minutes'
-			| 'seconds'
-			| 'totalDays'
-			| 'totalHours'
-			| 'totalMilliseconds'
-			| 'totalMinutes'
-			| 'totalSeconds';
+				| 'ticks'
+				| 'days'
+				| 'hours'
+				| 'milliseconds'
+				| 'minutes'
+				| 'seconds'
+				| 'totalDays'
+				| 'totalHours'
+				| 'totalMilliseconds'
+				| 'totalMinutes'
+				| 'totalSeconds';
 			lastIndexValueInDay: number;
 		}
 
@@ -1318,13 +1318,13 @@ declare namespace Settings {
 	export interface IBrokerCustomerSettings {
 		id: number;
 		configKey:
-		| 'confirmBeforeDelete'
-		| 'confirmBeforeSendOrder'
-		| 'defaultBuyVolume'
-		| 'defaultSellVolume'
-		| 'sendSupervisorMarketMessage'
-		| 'showSymbolDetailsInBuySellModal'
-		| 'breakEvenPoint';
+			| 'confirmBeforeDelete'
+			| 'confirmBeforeSendOrder'
+			| 'defaultBuyVolume'
+			| 'defaultSellVolume'
+			| 'sendSupervisorMarketMessage'
+			| 'showSymbolDetailsInBuySellModal'
+			| 'breakEvenPoint';
 		configValue: string;
 		saveDate: string;
 	}
@@ -1375,6 +1375,8 @@ declare namespace Payment {
 		| 'TerminalNotFound';
 
 	type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+
+	type TDepositTab = 'receiptDepositTab' | 'liveDepositTab';
 
 	export type TRemainsWithDay = Record<
 		't1' | 't2',
@@ -1908,18 +1910,18 @@ declare namespace Reports {
 		amount: number;
 		providerType: string;
 		state:
-		| 'CanceledByUser'
-		| 'Done'
-		| 'DoubleSpendingCheckedOk'
-		| 'DoubleSpendingCheckFailed'
-		| 'RedirectToBank'
-		| 'Request'
-		| 'RequestBankToken'
-		| 'RequestBankTokenError'
-		| 'Verify'
-		| 'VerifyCheck'
-		| 'VerifyCheckFailed'
-		| 'OkBeforeVerifys';
+			| 'CanceledByUser'
+			| 'Done'
+			| 'DoubleSpendingCheckedOk'
+			| 'DoubleSpendingCheckFailed'
+			| 'RedirectToBank'
+			| 'Request'
+			| 'RequestBankToken'
+			| 'RequestBankTokenError'
+			| 'Verify'
+			| 'VerifyCheck'
+			| 'VerifyCheckFailed'
+			| 'OkBeforeVerifys';
 		errorMessage: string;
 	}
 
@@ -1936,6 +1938,7 @@ declare namespace Reports {
 		accountCode: string;
 		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
 		providerType: string;
+		base64Image: File | null;
 	}
 
 	export interface IWithdrawal {
@@ -1989,15 +1992,15 @@ declare namespace Reports {
 		requestCount: number;
 		enabled: boolean;
 		status:
-		| 'Registered'
-		| 'Sent'
-		| 'Sending'
-		| 'Settled'
-		| 'Settling'
-		| 'Expired'
-		| 'Draft'
-		| 'SendToBourse'
-		| 'InSendQueue';
+			| 'Registered'
+			| 'Sent'
+			| 'Sending'
+			| 'Settled'
+			| 'Settling'
+			| 'Expired'
+			| 'Draft'
+			| 'SendToBourse'
+			| 'InSendQueue';
 		doneCount: number;
 		pandLStatus: string;
 		history: IOptionHistory[];
@@ -2017,15 +2020,15 @@ declare namespace Reports {
 		settlementRequestType: 'MaximumStrike' | 'PartialStrike' | null;
 		requestCount: number;
 		status:
-		| 'Registered'
-		| 'Sent'
-		| 'Sending'
-		| 'Settled'
-		| 'Settling'
-		| 'Expired'
-		| 'Draft'
-		| 'SendToBourse'
-		| 'InSendQueue';
+			| 'Registered'
+			| 'Sent'
+			| 'Sending'
+			| 'Settled'
+			| 'Settling'
+			| 'Expired'
+			| 'Draft'
+			| 'SendToBourse'
+			| 'InSendQueue';
 		doneCount: number;
 		pandLStatus: 'Profit' | 'Loss';
 		penCount: number;
