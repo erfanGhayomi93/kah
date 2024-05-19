@@ -180,7 +180,7 @@ const SendOrder = () => {
 
 	return (
 		<SettingCard title={t('settings_page.send_order_settings')}>
-			<div className='grid grid-cols-2 gap-x-32 gap-y-24'>
+			<div className='grid grid-cols-2 gap-x-88 gap-y-24'>
 				{fields.map((item) => (
 					<SettingCardField key={item.title} colon={false} title={item.title} node={item.component} />
 				))}

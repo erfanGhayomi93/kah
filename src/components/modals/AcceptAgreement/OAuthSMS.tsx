@@ -29,13 +29,12 @@ const OAuthSMS = ({ ...props }: OAuthSMSProps) => {
 
 	const { data: otpData, mutate: getOtpData } = useMutation<Settings.IMobileOTP | null, AxiosError, string | null>({
 		mutationFn: async (retryToken) => {
-			if (!brokerURLs) return null;
 			const { data, status } = await brokerAxios.post<ServerResponse<Settings.IMobileOTP>>(
 				brokerURLs.mobileOtpRequest,
 			);
 			if (status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			return data.result;
+			return data?.result;
 		},
 		onSuccess: () => {
 			setIsSubmiting(true);
@@ -99,9 +98,9 @@ const OAuthSMS = ({ ...props }: OAuthSMSProps) => {
 			<Image width={70} height={70} className='size-auto' src='/static/images/passcode.png' alt='' />
 			{otpData ? (
 				<>
-					<p className='font-medium text-info rtl'>
+					<h6 className='font-medium text-info rtl'>
 						{t('code_has_been_sent', { phoneNumber: otpData?.starredMessage, count: 6 })}
-					</p>
+					</h6>
 
 					<form
 						autoComplete='off'

@@ -46,7 +46,7 @@ const ToastPositionSettings = () => {
 				<button
 					key={item.id}
 					className={clsx(
-						'relative flex-1  rounded-md !border py-48 transition-colors flex-justify-center',
+						'relative w-full  rounded-md !border py-48 transition-colors flex-justify-center',
 						item.id === toastPosition
 							? 'border-transparent bg-primary-100'
 							: 'border-gray-500 hover:btn-hover',

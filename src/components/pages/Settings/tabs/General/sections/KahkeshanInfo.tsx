@@ -38,7 +38,7 @@ const KahkeshanInfo = ({ isLoggedIn }: KahkeshanInfoProps) => {
 	];
 
 	return (
-		<div className='grid grid-cols-2 gap-32'>
+		<div className='grid grid-cols-2 gap-x-88'>
 			{fields.map((item, index) => (
 				<SettingCardField key={index} {...item} />
 			))}
