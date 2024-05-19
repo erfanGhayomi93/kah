@@ -178,7 +178,7 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 		options.offset[1] *= 1.5;
 
 		setChartOptions(options);
-	}, [JSON.stringify(inputs)]);
+	}, [inputs]);
 
 	const { series, annotations, colors } = chartOptions;
 

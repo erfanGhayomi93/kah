@@ -664,7 +664,9 @@ declare namespace Broker {
 		| 'FreezeExportFreeze'
 		| 'Freezerequests'
 		| 'ReceiptSetCancel'
-		| 'PaymentDeleteRequest';
+		| 'PaymentDeleteRequest'
+		| 'AcceptAgreement'
+		| 'MobileOtpRequest';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1340,6 +1342,13 @@ declare namespace Settings {
 		approveBySMS: boolean;
 		attachmentUrl: string | null;
 	}
+
+	export interface IMobileOTP {
+		expireDate: number;
+		retryToken: string;
+		starredMessage: string;
+		state: boolean;
+	}
 }
 
 declare namespace Payment {
@@ -1929,19 +1938,27 @@ declare namespace Reports {
 		id: number;
 		accountNumber: string;
 		bankAccountId: number;
-		branchId: number;
-		comment: string;
-		customerAccountId: number;
-		customerBank: string;
-		customerISIN: string;
-		errorMessage: string;
-		channel: string;
-		id: number;
-		nationalCode: string;
-		requestDate: string;
-		requestAmount: number;
-		saveDate: string;
-		state: string;
+		accountNumber: string | null;
+		status:
+			| 'Draft'
+			| 'Pending'
+			| 'Confirmed'
+			| 'Canceled'
+			| 'Failed'
+			| 'Voided'
+			| 'Paid'
+			| 'Entry'
+			| 'ErrorOccured'
+			| 'PostedToBackOffice'
+			| 'CreateRequest';
+		prsName: string | null;
+		orderOrigin: 'Broker' | 'Online' | number;
+		orderOriginName: null | string;
+		comments: string;
+		deletable: boolean;
+		bankName: string | null;
+		checkDate: string;
+		reservationNumber: number;
 	}
 
 	export interface IChangeBrokerReports {
@@ -2068,15 +2085,33 @@ declare namespace Reports {
 	}
 
 	export interface ITradesReports {
-		orderSide: TTradeSide;
-		remainingQuantityOrder: number;
+		orderId: number;
+		userName: string;
+		customerISIN: string;
+		symbolISIN: string;
+		price: number;
+		triggerPrice: number;
+		quantity: number;
+		orderSide: 'Buy' | 'Sell';
+		orderOrigin: string;
+		parentOrderId: number;
+		orderType: TOrdersTypes;
+		validity: TOrdersValidity;
+		validityDate: string;
+		orderFrom: TOrdersForm;
+		orderAction: TOrdersAction | 0;
+		orderMinimumQuantity: number;
+		orderDateTime: string;
+		hostOrderNumber: string;
+		expectedRemainingQuantity: number;
+		sumExecuted: number;
 		symbolTitle: string;
-		total: number;
-		totalQuota: number;
-		tradeDate: string;
-		tradeNumber: number;
-		tradePrice: number;
-		tradeTime: string;
-		tradedQuantity: number;
+		position: number;
+		valuePosition: number;
+		lastTradePrice: number;
+		orderStatus: TOrdersStatus;
+		lastErrorCode: string;
+		customErrorMsg: string;
+		tradeDetails: TTradeDetails;
 	}
 }

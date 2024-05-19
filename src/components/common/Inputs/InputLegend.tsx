@@ -1,53 +1,42 @@
-import { cn, convertStringToInteger, sepNumbers } from '@/utils/helpers';
-import React from 'react';
+import { cn, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 
-interface InputProps<T extends string | number>
+interface InputProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'className' | 'onChange'> {
 	onChange: (v: string) => void;
-	value: T;
-	prefix: string;
+	value: string | number;
+	prefix?: string;
 	placeholder: React.ReactNode;
+	separator?: boolean;
+	valueSeparator?: boolean;
 }
 
-const InputLegend = <T extends string | number>({ value, placeholder, prefix, onChange, ...props }: InputProps<T>) => {
-	const valueFormatter = (value: number | string) => {
-		if (!value) return '';
-		return sepNumbers(String(value));
-	};
-
+const InputLegend = ({
+	value,
+	valueSeparator = true,
+	placeholder,
+	prefix,
+	separator = true,
+	onChange,
+	...props
+}: InputProps) => {
 	const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const element = e.target;
 		const value = element.value;
-		const valueAsNumber = Number(convertStringToInteger(value));
 
-		if (valueAsNumber >= Number.MAX_SAFE_INTEGER) return;
-		onChange(String(valueAsNumber));
-
-		try {
-			const caret = element.selectionStart;
-
-			if (caret && caret !== value.length) {
-				const diffLength = valueFormatter(valueAsNumber).length - value.length;
-				window.requestAnimationFrame(() => {
-					element.selectionStart = caret + diffLength;
-					element.selectionEnd = caret + diffLength;
-				});
-			}
-		} catch (e) {
-			//
-		}
+		onChange(value);
 	};
 
 	const isActive = value && String(value).length > 0;
 
 	return (
-		<label className='relative h-48 flex-1 rounded flex-items-center input-group'>
+		<label className='relative h-48 rounded flex-items-center input-group'>
 			<input
 				{...props}
 				type='text'
 				inputMode='numeric'
 				className='h-full flex-1 bg-transparent px-8 text-left ltr'
-				value={valueFormatter(value)}
+				value={valueSeparator ? sepNumbers(String(value)) : value}
 				onChange={onChangeValue}
 			/>
 
@@ -57,9 +46,16 @@ const InputLegend = <T extends string | number>({ value, placeholder, prefix, on
 				<legend>{placeholder}</legend>
 			</fieldset>
 
-			<span className='h-24 w-36 border-r border-r-input text-tiny text-gray-700 flex-justify-center'>
-				{prefix}
-			</span>
+			{prefix && (
+				<span
+					className={clsx(
+						'h-24 w-36 text-tiny text-gray-700 flex-justify-center',
+						separator && 'border-r border-r-input',
+					)}
+				>
+					{prefix}
+				</span>
+			)}
 		</label>
 	);
 };

@@ -4,9 +4,10 @@ import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
-import { setCashSettlementReportsFiltersModal } from '@/features/slices/modalSlice';
+import { setPhysicalSettlementReportsFiltersModal } from '@/features/slices/modalSlice';
+import { calculateDateRange } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<CashSettlementReports.ICashSettlementReportsFilters, 'pageNumber' | 'pageSize'>;
@@ -29,14 +30,14 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	};
 
 	const onClose = () => {
-		dispatch(setCashSettlementReportsFiltersModal(null));
+		dispatch(setPhysicalSettlementReportsFiltersModal(null));
 	};
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		try {
-			ipcMain.send('set_cash_settlement_reports_filters', filters);
+			ipcMain.send('set_physical_settlement_reports_filters', filters);
 		} catch (e) {
 			//
 		} finally {
@@ -61,6 +62,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	}>) => {
 		setFilterValue('settlementRequestType', options);
 	};
+
+	useEffect(() => {
+		if (filters.date === 'dates.custom') return;
+
+		setFilters({
+			...filters,
+			...calculateDateRange(filters.date)
+		});
+	}, [filters.date]);
 
 
 
@@ -93,7 +103,6 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					</div>
 				</div>
 
-
 				<Select<'Profit' | 'Loss' | 'Indifferent' | 'All'>
 					onChange={(option) => setFilterValue('contractStatus', option)}
 					options={['Profit', 'Loss', 'Indifferent', 'All']}
@@ -104,9 +113,6 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					placeholder={t('freeze_and_unfreeze_reports_page.status_placeholder_filter')}
 					defaultValue={filters.contractStatus}
 				/>
-
-
-
 
 				<MultiSelect<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>
 					onChange={(options) => onChangeSettlementRequestType(options)}
@@ -131,7 +137,6 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					placeholder={t('cash_settlement_reports_page.request_status_type_placeholder_filter')}
 					defaultValues={filters.requestStatus}
 				/>
-
 
 			</div>
 

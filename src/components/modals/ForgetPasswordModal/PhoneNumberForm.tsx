@@ -1,5 +1,5 @@
 import Button from '@/components/common/Button';
-import { ArrowLeftSVG } from '@/components/icons';
+import { AngleLeftSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
@@ -83,7 +83,7 @@ const PhoneNumberForm = ({ setResult, setPhoneNumber, sendOTP, goToOTP }: PhoneN
 				className='!absolute h-48 gap-4 rounded text-lg shadow btn-primary'
 			>
 				{t('common.continue')}
-				<ArrowLeftSVG />
+				<AngleLeftSVG />
 			</Button>
 		</form>
 	);

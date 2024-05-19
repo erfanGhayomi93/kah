@@ -13,9 +13,9 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
-import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const ConversionDescription = dynamic(() => import('../Descriptions/ConversionDescription'), {
 	ssr: false,
@@ -47,15 +47,14 @@ const Conversion = (strategy: ConversionProps) => {
 	});
 
 	const { data, isFetching } = useConversionStrategyQuery({
-		queryKey: ['conversionQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'conversionQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const execute = (data: Strategy.Conversion) => {
-		//
 	};
 
 	const analyze = (data: Strategy.Conversion) => {
@@ -167,7 +166,7 @@ const Conversion = (strategy: ConversionProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.Conversion>>>(
 		() => [
 			{
-				colId: 'baseSymbolISIN',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -176,7 +175,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -188,7 +187,6 @@ const Conversion = (strategy: ConversionProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -205,7 +203,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'callPremium',
+				colId: 'callPremiumPercent',
 				headerName: 'قیمت نماد کال',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -214,10 +212,9 @@ const Conversion = (strategy: ConversionProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'putPremium',
+				colId: 'putPremiumPercent',
 				headerName: 'قیمت نماد پوت',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
@@ -226,10 +223,9 @@ const Conversion = (strategy: ConversionProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'callSymbolISIN',
+				colId: 'callSymbolTitle',
 				headerName: 'کال',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -278,7 +274,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'putSymbolISIN',
+				colId: 'putSymbolTitle',
 				headerName: 'پوت',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -413,7 +409,6 @@ const Conversion = (strategy: ConversionProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					execute,
 					analyze,
 				},
 			},

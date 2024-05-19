@@ -41,7 +41,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 					{error}
 				</span>
 			)}
-
 		</div>
 	);
 });

@@ -47,9 +47,6 @@ const initialState: ModalState = {
 	// خرید و فروش
 	buySell: null,
 
-	// جزئیات نماد
-	symbolInfoPanelSetting: null,
-
 	// افزودن قالب جدید زحل
 	addSaturnTemplate: null,
 
@@ -61,6 +58,9 @@ const initialState: ModalState = {
 
 	// تغییر کارگزار ناظر
 	changeBroker: null,
+
+	// تنظیمات جزئیات نماد
+	symbolInfoPanelSetting: null,
 
 	// واریز وجه
 	deposit: null,
@@ -103,7 +103,16 @@ const initialState: ModalState = {
 	// فیلتر صفحه گزارشات معاملات
 	ordersReportsFilters: null,
 
-	tradesReportsFilters: null
+	// فیلتر گزارش‌ها
+	tradesReportsFilters: null,
+
+	// ساخت استراتژی
+	createStrategy: null,
+
+	// فیلتر کاورد کال
+	coveredCallFilters: null,
+	// تایید توافق‌نامه
+	acceptAgreement: null,
 };
 
 const modalSlice = createSlice({
@@ -130,12 +139,12 @@ const modalSlice = createSlice({
 			state.confirm = payload;
 		},
 
-		setLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
-			state.loginModal = payload;
+		setAcceptAgreementModal: (state, { payload }: PayloadAction<ModalState['acceptAgreement']>) => {
+			state.acceptAgreement = payload;
 		},
 
-		setSymbolInfoPanelSetting: (state, { payload }: PayloadAction<ModalState['symbolInfoPanelSetting']>) => {
-			state.symbolInfoPanelSetting = payload;
+		setLoginModal: (state, { payload }: PayloadAction<ModalState['loginModal']>) => {
+			state.loginModal = payload;
 		},
 
 		setForgetPasswordModal: (state, { payload }: PayloadAction<ModalState['forgetPassword']>) => {
@@ -168,11 +177,15 @@ const modalSlice = createSlice({
 			}
 		},
 
-		setAddSaturnTemplate: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
+		setAddSaturnTemplateModal: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
 
-		setAddNewOptionWatchlist: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
+		setSymbolInfoPanelSettingModal: (state, { payload }: PayloadAction<ModalState['symbolInfoPanelSetting']>) => {
+			state.symbolInfoPanelSetting = payload;
+		},
+
+		setAddNewOptionWatchlistModal: (state, { payload }: PayloadAction<ModalState['addNewOptionWatchlist']>) => {
 			state.addNewOptionWatchlist = payload;
 		},
 
@@ -276,18 +289,20 @@ const modalSlice = createSlice({
 			state.physicalSettlementReportsFilters = payload;
 		},
 
-		setOrdersReportsFiltersModal: (
-			state,
-			{ payload }: PayloadAction<ModalState['ordersReportsFilters']>,
-		) => {
+		setOrdersReportsFiltersModal: (state, { payload }: PayloadAction<ModalState['ordersReportsFilters']>) => {
 			state.ordersReportsFilters = payload;
 		},
 
-		setTradesReportsFiltersModal: (
-			state,
-			{ payload }: PayloadAction<ModalState['tradesReportsFilters']>,
-		) => {
+		setTradesReportsFiltersModal: (state, { payload }: PayloadAction<ModalState['tradesReportsFilters']>) => {
 			state.tradesReportsFilters = payload;
+		},
+
+		setCreateStrategyModal: (state, { payload }: PayloadAction<ModalState['createStrategy']>) => {
+			state.createStrategy = payload;
+		},
+
+		setCoveredCallFiltersModal: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
+			state.coveredCallFilters = payload;
 		},
 	},
 });
@@ -296,15 +311,15 @@ export const {
 	setLoginModal,
 	setBuySellModal,
 	setOrderDetailsModal,
+	setSymbolInfoPanelSettingModal,
 	setForgetPasswordModal,
 	setOptionFiltersModal,
 	setLogoutModal,
 	setBlackScholesModal,
 	setConfirmModal,
-	setSymbolInfoPanelSetting,
 	setSelectSymbolContractsModal,
-	setAddSaturnTemplate,
-	setAddNewOptionWatchlist,
+	setAddSaturnTemplateModal,
+	setAddNewOptionWatchlistModal,
 	setChoiceBrokerModal,
 	setMoveSymbolToWatchlistModal,
 	setChoiceCollateralModal,
@@ -327,7 +342,10 @@ export const {
 	setCashSettlementReportsFiltersModal,
 	setPhysicalSettlementReportsFiltersModal,
 	setOrdersReportsFiltersModal,
-	setTradesReportsFiltersModal
+	setTradesReportsFiltersModal,
+	setCreateStrategyModal,
+	setCoveredCallFiltersModal,
+	setAcceptAgreementModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -337,6 +355,7 @@ export const getMoveSymbolToWatchlistModal = (state: RootState) => state.modal.m
 export const getLogoutModal = (state: RootState) => state.modal.logout;
 export const getBuySellModal = (state: RootState) => state.modal.buySell;
 export const getConfirmModal = (state: RootState) => state.modal.confirm;
+export const getAcceptAgreement = (state: RootState) => state.modal.acceptAgreement;
 export const getBlackScholesModal = (state: RootState) => state.modal.blackScholes;
 export const getForgetPasswordModal = (state: RootState) => state.modal.forgetPassword;
 export const getOptionFiltersModal = (state: RootState) => state.modal.optionFilters;
@@ -350,14 +369,17 @@ export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 export const getDescriptionModal = (state: RootState) => state.modal.description;
 export const getTransactionsFiltersModal = (state: RootState) => state.modal.transactionsFilters;
 export const getInstantDepositReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
-export const getDepositWithReceiptReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
+export const getDepositWithReceiptReportsFiltersModal = (state: RootState) =>
+	state.modal.depositWithReceiptReportsFilters;
 export const getWithdrawalCashReportsFiltersModal = (state: RootState) => state.modal.withdrawalCashReportsFilters;
 export const getChangeBrokerReportsFiltersModal = (state: RootState) => state.modal.changeBrokerReportsFilters;
 export const getFreezeUnFreezeReportsFiltersModal = (state: RootState) => state.modal.freezeUnfreezeReportsFilters;
 export const getCashSettlementReportsFiltersModal = (state: RootState) => state.modal.cashSettlementReportsFilters;
-export const getPhysicalSettlementReportsFiltersModal = (state: RootState) => state.modal.physicalSettlementReportsFilters;
+export const getPhysicalSettlementReportsFiltersModal = (state: RootState) =>
+	state.modal.physicalSettlementReportsFilters;
 export const getOrdersReportsFiltersModal = (state: RootState) => state.modal.ordersReportsFilters;
 export const getTradesReportsFiltersModal = (state: RootState) => state.modal.tradesReportsFilters;
-
+export const getGetStrategyModal = (state: RootState) => state.modal.createStrategy;
+export const getSymbolInfoPanelSettingModal = (state: RootState) => state.modal.symbolInfoPanelSetting;
 
 export default modalSlice.reducer;

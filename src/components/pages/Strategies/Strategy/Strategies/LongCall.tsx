@@ -13,9 +13,9 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
-import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const LongCallDescription = dynamic(() => import('../Descriptions/LongCallDescription'), {
 	ssr: false,
@@ -47,15 +47,14 @@ const LongCall = (strategy: LongCallProps) => {
 	});
 
 	const { data, isFetching } = useLongCallStrategyQuery({
-		queryKey: ['longCallQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'longCallQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const execute = (data: Strategy.LongCall) => {
-		//
 	};
 
 	const analyze = (data: Strategy.LongCall) => {
@@ -133,7 +132,7 @@ const LongCall = (strategy: LongCallProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.LongCall>>>(
 		() => [
 			{
-				colId: 'symbolISIN',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				minWidth: 104,
 				flex: 1,
@@ -143,7 +142,7 @@ const LongCall = (strategy: LongCallProps) => {
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -155,7 +154,6 @@ const LongCall = (strategy: LongCallProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -164,7 +162,7 @@ const LongCall = (strategy: LongCallProps) => {
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
-				colId: 'callSymbolISIN',
+				colId: 'symbolTitle',
 				headerName: 'کال',
 				minWidth: 128,
 				cellClass: 'cursor-pointer',
@@ -191,7 +189,7 @@ const LongCall = (strategy: LongCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'premium',
+				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
@@ -200,22 +198,21 @@ const LongCall = (strategy: LongCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'optionBestBuyLimitPrice',
+				colId: 'optionBestLimitPrice',
 				headerName: 'بهترین خریدار',
 				minWidth: 152,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'optionBestBuyLimitQuantity',
+				colId: 'optionBestLimitVolume',
 				headerName: 'حجم سرخط خرید',
 				minWidth: 120,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => 0,
+				valueGetter: ({ data }) => data?.optionBestLimitVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -244,7 +241,7 @@ const LongCall = (strategy: LongCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'maxProfit',
+				colId: 'profitPercent',
 				headerName: 'حداکثر بازده',
 				minWidth: 160,
 				headerComponent: HeaderHint,
@@ -257,7 +254,6 @@ const LongCall = (strategy: LongCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'blackScholes',
@@ -336,7 +332,6 @@ const LongCall = (strategy: LongCallProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					execute,
 					analyze,
 				},
 			},

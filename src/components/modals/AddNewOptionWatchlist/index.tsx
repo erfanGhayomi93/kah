@@ -3,7 +3,7 @@ import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
-import { setAddNewOptionWatchlist } from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlistModal } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
@@ -19,7 +19,7 @@ const Div = styled.div`
 	text-align: center;
 `;
 
-interface AddNewOptionWatchlistProps extends IBaseModalConfiguration { }
+interface AddNewOptionWatchlistProps extends IBaseModalConfiguration {}
 
 const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistProps>((props, ref) => {
 	const t = useTranslations();
@@ -35,7 +35,7 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 	});
 
 	const onCloseModal = () => {
-		dispatch(setAddNewOptionWatchlist(null));
+		dispatch(setAddNewOptionWatchlistModal(null));
 	};
 
 	const onSubmit = async (e: React.FormEvent) => {

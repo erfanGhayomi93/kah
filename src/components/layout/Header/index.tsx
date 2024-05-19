@@ -122,7 +122,7 @@ const Header = () => {
 	};
 
 	const handleShowDepositModal = () => {
-		dispatch(setDepositModal({ isShow: true }));
+		dispatch(setDepositModal({}));
 	};
 
 	const userStatusIcon = useMemo(() => {

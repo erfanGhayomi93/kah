@@ -4,7 +4,12 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
+import {
+	setAnalyzeModal,
+	setCoveredCallFiltersModal,
+	setCreateStrategyModal,
+	setDescriptionModal,
+} from '@/features/slices/modalSlice';
 import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -13,9 +18,9 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
-import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const CoveredCallDescription = dynamic(() => import('../Descriptions/CoveredCallDescription'), {
 	ssr: false,
@@ -58,7 +63,57 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	};
 
 	const execute = (data: Strategy.CoveredCall) => {
-		//
+		try {
+			dispatch(
+				setCreateStrategyModal({
+					baseSymbol: {
+						symbolISIN: data.baseSymbolISIN,
+						symbolTitle: data.baseSymbolTitle,
+					},
+					strategy: 'CoveredCall',
+					steps: [
+						{
+							id: uuidv4(),
+							type: 'base',
+							quantity: 100,
+							estimatedBudget: 42e4,
+							buyAssetsBySymbol: false,
+							orderPrice: data.baseBestBuyLimitPrice,
+							symbolISIN: data.baseSymbolISIN,
+							symbolTitle: data.baseSymbolTitle,
+							orderQuantity: 90,
+							status: 'TODO',
+						},
+						{
+							id: uuidv4(),
+							type: 'freeze',
+							estimatedBudget: 42e4,
+							status: 'PENDING',
+							baseSymbol: {
+								symbolISIN: data.baseSymbolISIN,
+								symbolTitle: data.baseSymbolTitle,
+							},
+						},
+						{
+							id: uuidv4(),
+							type: 'option',
+							estimatedBudget: 42e4,
+							optionType: 'call',
+							side: 'sell',
+							status: 'PENDING',
+							symbolISIN: data.symbolISIN,
+							symbolTitle: data.symbolTitle,
+							baseSymbol: {
+								symbolISIN: data.baseSymbolISIN,
+								symbolTitle: data.baseSymbolTitle,
+							},
+						},
+					],
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const analyze = (data: Strategy.CoveredCall) => {
@@ -149,7 +204,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall>>>(
 		() => [
 			{
-				colId: 'baseSymbolISIN',
+				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -170,7 +225,6 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -179,7 +233,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
-				colId: 'callSymbolISIN',
+				colId: 'symbolTitle',
 				headerName: 'کال',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -247,7 +301,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'maxProfit',
+				colId: 'maxProfitPercent',
 				headerName: 'حداکثر بازده',
 				width: 184,
 				headerComponent: HeaderHint,
@@ -260,10 +314,9 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
-				colId: 'nonExpiredProfit',
+				colId: 'nonExpiredProfitPercent',
 				headerName: 'بازده عدم اعمال',
 				width: 184,
 				headerComponent: HeaderHint,
@@ -276,7 +329,6 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.nonExpiredProfit ?? 0, data?.nonExpiredProfitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'inUseCapital',
@@ -286,7 +338,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'premium',
+				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
 				width: 152,
 				cellRenderer: CellPercentRenderer,
@@ -295,7 +347,6 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'bepDifference',
@@ -436,6 +487,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
+					onShowFilters={() => dispatch(setCoveredCallFiltersModal({}))}
 				/>
 
 				<Table<Strategy.CoveredCall>

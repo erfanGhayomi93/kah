@@ -17,7 +17,7 @@ import { WithdrawalItem } from './WithdrawalItem';
 
 interface DrawalBodyProps {
 	onClose: () => void,
-	editData?: Reports.IWithdrawal
+	editData?: Payment.IDrawalHistoryList
 }
 
 export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {

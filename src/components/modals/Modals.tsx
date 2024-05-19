@@ -2,8 +2,8 @@
 
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
-	setAddNewOptionWatchlist,
-	setAddSaturnTemplate,
+	setAddNewOptionWatchlistModal,
+	setAddSaturnTemplateModal,
 	setAddSymbolToWatchlistModal,
 	setBuySellModal,
 	setChangeBrokerModal,
@@ -18,11 +18,14 @@ import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
+import AcceptAgreement from './AcceptAgreement';
 import Analyze from './Analyze';
 import CashSettlementReportsFiltersModal from './CashSettlementReportsFiltersModal';
 import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
+import CoveredCallFilters from './CovertCallFilters';
+import CreateStrategyModal from './CreateStrategyModal';
 import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
 import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
 import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
@@ -90,6 +93,7 @@ const Modals = () => {
 		addSymbolToWatchlist,
 		choiceBroker,
 		confirm,
+		acceptAgreement,
 		symbolInfoPanelSetting,
 		choiceCollateral,
 		blackScholes,
@@ -111,7 +115,9 @@ const Modals = () => {
 		cashSettlementReportsFilters,
 		physicalSettlementReportsFilters,
 		ordersReportsFilters,
+		createStrategy,
 		tradesReportsFilters,
+		coveredCallFilters,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -144,6 +150,14 @@ const Modals = () => {
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{acceptAgreement && (
+					<ModalSuspense>
+						<AcceptAgreement {...acceptAgreement} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -227,15 +241,13 @@ const Modals = () => {
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
-				{
-					freeze && (
-						<ModalSuspense>
-							<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
-								<Freeze {...freeze} />
-							</AuthorizeMiddleware>
-						</ModalSuspense>
-					)
-				}
+				{freeze && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
+							<Freeze {...freeze} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
@@ -249,7 +261,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{addSaturnTemplate && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setAddSaturnTemplate(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setAddSaturnTemplateModal(null))}>
 							<AddSaturnTemplate {...addSaturnTemplate} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -259,7 +271,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{addNewOptionWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setAddNewOptionWatchlist(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setAddNewOptionWatchlistModal(null))}>
 							<AddNewOptionWatchlist {...addNewOptionWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
@@ -345,6 +357,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{instantDepositReportsFilters && (
 					<ModalSuspense>
@@ -352,6 +365,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{depositWithReceiptReportsFilters && (
 					<ModalSuspense>
@@ -359,6 +373,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{withdrawalCashReportsFilters && (
 					<ModalSuspense>
@@ -366,6 +381,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{changeBrokerReportsFilters && (
 					<ModalSuspense>
@@ -373,6 +389,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{freezeUnfreezeReportsFilters && (
 					<ModalSuspense>
@@ -380,6 +397,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{cashSettlementReportsFilters && (
 					<ModalSuspense>
@@ -387,6 +405,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{physicalSettlementReportsFilters && (
 					<ModalSuspense>
@@ -394,6 +413,7 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{ordersReportsFilters && (
 					<ModalSuspense>
@@ -401,10 +421,27 @@ const Modals = () => {
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{createStrategy && (
+					<ModalSuspense>
+						<CreateStrategyModal {...createStrategy} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
 			<ModalAnimatePresence>
 				{tradesReportsFilters && (
 					<ModalSuspense>
 						<TradeReportsFiltersModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{coveredCallFilters && (
+					<ModalSuspense>
+						<CoveredCallFilters />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

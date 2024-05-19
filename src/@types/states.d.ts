@@ -7,8 +7,6 @@ declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.ye
 
 declare type TSortingMethods = 'asc' | 'desc';
 
-declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
-
 declare interface IOptionHistory {
 	dateTime: string;
 	status: 'InSendQueue' | 'Error' | 'SendToBourse' | 'SaveResult';
@@ -69,6 +67,8 @@ declare type TTradeDetails =
 
 declare type TOrderSource = 'Account' | 'Portfolio';
 
+declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
+
 declare interface IUserBankAccount {
 	id: number;
 	shaba: string;
@@ -104,8 +104,6 @@ declare interface CashWithdrawBankType {
 
 type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
 
-type TStrategySymbolBasis = 'All' | 'BestLimit';
-
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
 declare type TOptionSides = 'put' | 'call';
@@ -126,9 +124,42 @@ declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancel
 
 declare type TDojiType = 'Bullish' | 'Bearish' | 'Neutral';
 
-declare type TStrategyMarketTrend =
-	| 'All'
-	| Extract<Strategy.Cheap, 'BullishMarket' | 'BearishMarket' | 'NeutralMarket' | 'DirectionalMarket'>;
+declare type TTransactionColumns =
+	| 'credit'
+	| 'date'
+	| 'debit'
+	| 'description'
+	| 'remaining'
+	| 'station'
+	| 'transactionType';
+
+declare type TInstantDepositColumns =
+	| 'reservationNumber'
+	| 'referenceNumber'
+	| 'saveDate'
+	| 'amount'
+	| 'providerType'
+	| 'state'
+	| 'errorMessage';
+
+declare type TDepositWithReceiptColumns =
+	| 'id'
+	| 'receiptDate'
+	| 'providerType'
+	| 'receiptNumber'
+	| 'amount'
+	| 'state'
+	| 'state';
+
+declare type TWithdrawalCashColumns =
+	| 'id'
+	| 'saveDate'
+	| 'requestDate'
+	| 'customerBank'
+	| 'requestAmount'
+	| 'channel'
+	| 'state'
+	| 'state';
 
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
@@ -427,64 +458,6 @@ declare namespace OrderBasket {
 
 	export type Order = TSymbolStrategy;
 }
-
-declare interface ISymbolStrategy {
-	id: string;
-	marketUnit: string;
-	quantity: number;
-	price: number;
-}
-
-declare interface IBaseSymbolStrategy extends ISymbolStrategy {
-	type: 'base';
-	side: TBsSides;
-	symbol: {
-		symbolTitle: string;
-		symbolISIN: string;
-		baseSymbolPrice: number;
-		optionType?: null;
-		historicalVolatility?: null;
-	};
-	strikePrice?: null;
-	contractSize?: null;
-	settlementDay?: null;
-	commission?: null;
-	requiredMargin?: null;
-}
-
-declare interface IStrategyFilter {
-	priceBasis: TPriceBasis;
-	symbolBasis: TStrategySymbolBasis;
-	pageNumber: number;
-	pageSize: number;
-}
-
-declare interface IOptionStrategy extends ISymbolStrategy {
-	type: 'option';
-	strikePrice: number;
-	contractSize: number;
-	settlementDay: Date | number | string;
-	side: TBsSides;
-	symbol: {
-		symbolTitle: string;
-		symbolISIN: string;
-		optionType: TOptionSides;
-		baseSymbolPrice: number;
-		historicalVolatility: number;
-	};
-	commission?: {
-		value: number;
-		checked?: boolean;
-		onChecked?: (checked: boolean) => void;
-	};
-	requiredMargin?: {
-		value: number;
-		checked?: boolean;
-		onChecked?: (checked: boolean) => void;
-	};
-}
-
-declare type TSymbolStrategy = IBaseSymbolStrategy | IOptionStrategy;
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';

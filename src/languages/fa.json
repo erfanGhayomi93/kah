@@ -1001,6 +1001,9 @@
 		"market_process": "روند بازار",
 		"manage_columns": "مدیریت ستون‌های جدول"
 	},
+	"strategy_filters": {
+		"title": "فیلتر"
+	},
 	"CoveredCall": {
 		"title": "کاورد کال",
 		"desc": "اختیار خرید پوششی",
@@ -1017,7 +1020,14 @@
 		"modal_description_5": "اگر صعودی بودن سهم پایه اطمینان دارید، قراردادی را انتخاب می‌کنید که قیمت اعمال آن بسیار بالاتر باشد، هدف از اینکار فروش مستمر اختیارهای خرید قیمت بالا بدون از دست دادن سهم پایه به منظور کسب درآمد می باشد. در این حالت دیدگاه نسبت به سهم پایه این است که روند رنج یا صعودی ملایم داشته باشد اما تا زمان سررسید بالاتر از قیمت اعمال نرود.",
 		"modal_description_6": "اگر قصد فروش سهام پایه خود را در ازای سود مشخصی دارید، یک قرارداد اختیار خرید که قیمت اعمال آن کمی در زیان است یا به قیمت است را می فروشید. در این حالت مبلغ حاصل از فروش اختیار خرید بالا بوده و احتمال اینکه در سررسید قرارداد اعمال شود و سهم شما به قیمت اعمال به شخص خریدار فروخته شود زیاد است",
 		"step_1": "داشتن یا خرید دارایی پایه",
-		"step_2": "فروش اختیار خرید با قیمت اعمال A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)"
+		"step_2": "فروش اختیار خرید با قیمت اعمال A (قیمت A باید بزرگتر از قیمت فعلی سهم پایه باشد)",
+		"simple_filters": "فیلتر ساده",
+		"conditional_filters": "فیلتر شرطی",
+		"buy": "خرید",
+		"sell": "فروش",
+		"status_atm": "ATM",
+		"status_otm": "OTM",
+		"status_itm": "ITM"
 	},
 	"BullCallSpread": {
 		"title": "بول کال اسپرد",
@@ -1133,6 +1143,29 @@
 		"symbol_BestLimit": "نمادهای دارای سرخط",
 		"execution_steps": "نحوه اجرا",
 		"execution_condition": "شرط اجرا"
+	},
+	"create_strategy": {
+		"strategy": "استراتژی {strategyName} {baseSymbolTitle}",
+		"add_conditional_alert": "افزودن هشدار شرطی",
+		"current_status": "وضعیت لحظه‌ای",
+		"bep": "سر به سر",
+		"most_loss": "بیشترین ضرر",
+		"most_profit": "بیشترین سود",
+		"profit": "سود",
+		"loss": "ضرر",
+		"freeze": "فریز سهم",
+		"best_limit_price": "قیمت سرخط",
+		"base_step_title": "داشتن یا خرید سهم ({symbolTitle})",
+		"status_TODO": "در حال انجام",
+		"status_PENDING": "در انتظار",
+		"status_DONE": "انجام شده",
+		"status_ERROR": "خطا",
+		"stock": "سهم",
+		"remain_quantities": "تعداد باقیمانده مورد نیاز",
+		"free_stock_quantity": "تعداد سهام آزاد",
+		"buy_assets_by_free_stock": "استفاده از سهام آزاد برای خرید دارایی",
+		"estimated_budget": "بودجه تقریبی",
+		"required_quantity": "تعداد سهم جهت اجرای استراتژی"
 	},
 	"strategy_cheaps": {
 		"All": "همه",
@@ -1346,7 +1379,10 @@
 		"status_column": "وضعیت",
 		"action_column": "عملیات",
 		"status_placeholder_filter": "وضعیت",
-		"attachment_placeholder_filter": "پیوست"
+		"attachment_placeholder_filter": "پیوست",
+		"time_placeholder_filter": "زمان",
+		"has_attachment": "دارد",
+		"has_not_attachment": "ندارد"
 	},
 	"withdrawal_cash_reports_page": {
 		"filter_title_modal": "فیلتر برداشت وجه",
@@ -1386,7 +1422,6 @@
 		"state_FreezeFailed": "ناموفق",
 		"state_NotApprove": "عدم تایید"
 	},
-
 	"cash_settlement_reports_page": {
 		"filter_title_modal": "فیلتر تسویه نقدی",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1421,7 +1456,6 @@
 		"request_status_type_placeholder_filter": "وضعیت درخواست",
 		"time_placeholder_filter": "زمان"
 	},
-
 	"physical_settlement_reports_page": {
 		"filter_title_modal": "فیلتر تسویه فیزیکی",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1458,13 +1492,11 @@
 		"request_status_type_placeholder_filter": "وضعیت درخواست",
 		"time_placeholder_filter": "زمان"
 	},
-
 	"orders_and_trades_reports_page": {
 		"orders_and_trades_reports": "گزارشات سفارشات",
 		"orders_tab": "سفارشات",
 		"trades_tab": "معاملات"
 	},
-
 	"orders_reports_page": {
 		"filter_title_modal": "فیلتر سفارشات",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1490,7 +1522,6 @@
 		"side_SellIncremental": "فروش فزاینده",
 		"side_SellDecremental": "فروش کاهنده"
 	},
-
 	"trades_reports_page": {
 		"filter_title_modal": "فیلتر معاملات",
 		"manage_columns": "مدیریت ستون‌های جدول",
@@ -1518,7 +1549,6 @@
 		"side_SellIncremental": "فروش فزاینده",
 		"side_SellDecremental": "فروش کاهنده"
 	},
-
 	"bank_accounts": {
 		"Saman": "سامان",
 		"undefined": "یافت نشد"
@@ -1618,6 +1648,17 @@
 		"NotSpecified": "تعیین نشده",
 		"Accepted": "تایید شده",
 		"NotAccepted": "تایید نشده",
-		"expired": "منقضی شده"
+		"expired": "منقضی شده",
+		"noticed": "متوجه شدم",
+		"two_step_login_description": "با فعال سازی ورود دو مرحله ای در هر بار ورود، علاوه بر نام کاربری و رمز عبور، لازم است رمز یکبار مصرفی که برای شما پیامک می شود را نیز وارد نمایید. پیشنهاد می شود برای امنیت بیشتر حساب کاربری خود، این امکان را فعال نمایید.",
+		"confirm": "تایید میکنم",
+		"unconfirm": "عدم تایید",
+		"read_and_agreed": "متن بالا را خواندم و با آن موافقم.",
+		"accept_agreement": "تایید توافق‌نامه",
+		"deny_agreement": "عدم تایید توافق‌نامه",
+		"code_has_been_sent": "یک کد {count} رقمی به شماره ‎{phoneNumber} ارسال شده است.",
+		"resend_code_after": "ارسال دوباره کد بعد از",
+		"resend_code": "ارسال مجدد",
+		"error_occured": "تلاش مجدد"
 	}
 }

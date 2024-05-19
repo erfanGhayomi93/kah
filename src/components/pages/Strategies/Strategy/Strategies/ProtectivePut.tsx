@@ -13,9 +13,9 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
-import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
+import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const ProtectivePutDescription = dynamic(() => import('../Descriptions/ProtectivePutDescription'), {
 	ssr: false,
@@ -47,15 +47,14 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	});
 
 	const { data, isFetching } = useProtectivePutStrategyQuery({
-		queryKey: ['protectivePutQuery', { ...inputs, withCommission: useCommission }],
+		queryKey: [
+			'protectivePutQuery',
+			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
-	};
-
-	const execute = (data: Strategy.ProtectivePut) => {
-		//
 	};
 
 	const analyze = (data: Strategy.ProtectivePut) => {
@@ -146,7 +145,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	const columnDefs = useMemo<Array<ColDef<Strategy.ProtectivePut>>>(
 		() => [
 			{
-				colId: 'symbolISIN',
+				colId: 'symbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
 				pinned: 'right',
@@ -155,7 +154,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
 			},
 			{
-				colId: 'baseLastTradedPrice',
+				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
@@ -167,7 +166,6 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'dueDays',
@@ -177,7 +175,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'lspSymbolTitle',
+				colId: 'symbolTitle',
 				headerName: 'کال خرید',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -204,7 +202,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'premium',
+				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
@@ -213,7 +211,6 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
@@ -248,7 +245,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'bullCallSpreadBEP',
+				colId: 'protectivePutBEP',
 				headerName: 'سر به سر',
 				width: 152,
 				headerComponent: HeaderHint,
@@ -356,7 +353,6 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				pinned: 'left',
 				cellRenderer: StrategyActionCell,
 				cellRendererParams: {
-					execute,
 					analyze,
 				},
 			},

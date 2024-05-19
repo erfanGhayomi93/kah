@@ -241,8 +241,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			return premium - intrinsicValue;
 		};
 
-		const TABS = useMemo(
-			() => [
+		const TABS = useMemo(() => {
+			return [
 				{
 					id: 'normal',
 					title: t('analyze_modal.performance'),
@@ -265,9 +265,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 						</div>
 					),
 				},
-			],
-			[symbolContracts, inputs],
-		);
+			];
+		}, [symbolContracts, inputs]);
 
 		useEffect(() => {
 			const data = selectedContractsAsSymbol;

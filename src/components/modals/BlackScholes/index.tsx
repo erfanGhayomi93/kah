@@ -1,4 +1,3 @@
-import { EraserSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setBlackScholesModal } from '@/features/slices/modalSlice';
 import { type IBlackScholes } from '@/features/slices/types/modalSlice.interfaces';
@@ -7,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { forwardRef, useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
-import Modal from '../Modal';
+import Modal, { Header } from '../Modal';
 import Form from './Form';
 import SearchBasis from './SearchBasis';
 import SelectSymbol from './SelectSymbol';
@@ -55,7 +54,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 		dispatch(setBlackScholesModal(null));
 	};
 
-	const onReset = () => {
+	const onClear = () => {
 		setInputs(initialValues);
 	};
 
@@ -106,19 +105,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 			{...props}
 		>
 			<Div className='bg-white flex-column'>
-				<div className='relative h-56 bg-gray-200 flex-justify-center'>
-					<h2 className='text-xl font-medium text-gray-900'>{t('black_scholes_modal.title')}</h2>
-
-					<div className='absolute left-24 gap-16 flex-items-center'>
-						<button onClick={onReset} type='button' className='icon-hover'>
-							<EraserSVG width='2rem' height='2rem' />
-						</button>
-
-						<button onClick={onCloseModal} type='button' className='icon-hover'>
-							<XSVG width='2rem' height='2rem' />
-						</button>
-					</div>
-				</div>
+				<Header label={t('black_scholes_modal.title')} onClose={onCloseModal} onClear={onClear} />
 
 				<div className='flex-1 gap-24 px-24 flex-column'>
 					<SearchBasis value={searchBasis} onChange={(v) => setSearchBasis(v)} />

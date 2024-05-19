@@ -6,6 +6,8 @@ export interface IColDef<T> {
 	headerName: string;
 	cellClass?: ClassesValue | ((data: T) => ClassesValue);
 	headerClass?: ClassesValue;
+	hidden?: boolean;
+	sort?: TSortingMethods | null;
 	onCellClick?: (row: T, e: React.MouseEvent) => void;
 	valueFormatter: (row: T) => React.ReactNode;
 }

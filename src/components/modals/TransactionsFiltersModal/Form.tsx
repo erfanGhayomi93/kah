@@ -6,8 +6,9 @@ import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
 import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
+import { calculateDateRange, convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>;
@@ -36,6 +37,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
+
 		try {
 			ipcMain.send('set_transactions_filters', filters);
 		} catch (e) {
@@ -53,6 +55,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		setFilterValue('transactionType', options);
 	};
 
+	useEffect(() => {
+		if (filters.date === 'dates.custom') return;
+
+		setFilters({
+			...filters,
+			...calculateDateRange(filters.date)
+		});
+	}, [filters.date]);
+
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
@@ -63,7 +74,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					options={['dates.day', 'dates.week', 'dates.month', 'dates.year', 'dates.custom']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(option)}</span>}
-					placeholder={t('transactions_reports_page.dates_placeholder_filter')}
+					placeholder={t('transactions_page.dates_placeholder_filter')}
 					defaultValue={filters.date}
 				/>
 
@@ -85,14 +96,14 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 				<MultiSelect<{ id: Transaction.TransactionTypes; title: string }>
 					onChange={(options) => onChangeTransactionType(options)}
 					options={[
-						{ id: 'Buy', title: t('transactions_reports_page.actions_type_Buy') },
-						{ id: 'Sell', title: t('transactions_reports_page.actions_type_Sell') },
-						{ id: 'Deposit', title: t('transactions_reports_page.actions_type_Deposit') },
-						{ id: 'Payment', title: t('transactions_reports_page.actions_type_Payment') },
+						{ id: 'Buy', title: t('transactions_page.actions_type_Buy') },
+						{ id: 'Sell', title: t('transactions_page.actions_type_Sell') },
+						{ id: 'Deposit', title: t('transactions_page.actions_type_Deposit') },
+						{ id: 'Payment', title: t('transactions_page.actions_type_Payment') },
 					]}
 					getOptionId={(option) => option.id}
 					getOptionTitle={(option) => <span>{option.title}</span>}
-					placeholder={t('transactions_reports_page.actions_placeholder_filter')}
+					placeholder={t('transactions_page.actions_placeholder_filter')}
 					defaultValues={filters.transactionType}
 				/>
 
@@ -100,26 +111,24 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					onChange={(option) => setFilterValue('groupMode', option)}
 					options={['Flat', 'GreedyGrouped']}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => (
-						<span>{t(`transactions_reports_page.display_type_group_${option}`)}</span>
-					)}
-					placeholder={t('transactions_reports_page.display_type_placeholder_filter')}
+					getOptionTitle={(option) => <span>{t(`transactions_page.display_type_group_${option}`)}</span>}
+					placeholder={t('transactions_page.display_type_placeholder_filter')}
 					defaultValue={filters.groupMode}
 				/>
 
 				<div className=' gap-32 flex-justify-start'>
 					<InputLegend
 						value={filters.fromPrice}
-						onChange={(v) => setFilterValue('fromPrice', Number(v))}
-						placeholder={t('transactions_reports_page.from_price_type_placeholder_filter')}
+						onChange={(v) => setFilterValue('fromPrice', Number(convertStringToInteger(v)))}
+						placeholder={t('transactions_page.from_price_type_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>
 
 					<InputLegend
 						value={filters.toPrice}
-						onChange={(v) => setFilterValue('toPrice', Number(v))}
-						placeholder={t('transactions_reports_page.to_price_type_placeholder_filter')}
+						onChange={(v) => setFilterValue('toPrice', Number(convertStringToInteger(v)))}
+						placeholder={t('transactions_page.to_price_type_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
 					/>

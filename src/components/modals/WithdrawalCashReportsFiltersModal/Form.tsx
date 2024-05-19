@@ -7,8 +7,9 @@ import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import { useAppDispatch } from '@/features/hooks';
 import { setWithdrawalCashReportsFiltersModal } from '@/features/slices/modalSlice';
+import { calculateDateRange, convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction } from 'react';
+import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<WithdrawalCashReports.WithdrawalCashReportsFilters, 'pageNumber' | 'pageSize'>;
@@ -62,6 +63,15 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		setFilterValue('banks', options);
 	};
 
+	useEffect(() => {
+		if (filters.date === 'dates.custom') return;
+
+		setFilters({
+			...filters,
+			...calculateDateRange(filters.date)
+		});
+	}, [filters.date]);
+
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
@@ -92,7 +102,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 				<div className=' gap-32 flex-justify-start'>
 					<InputLegend
 						value={filters.fromPrice}
-						onChange={(v) => setFilterValue('fromPrice', Number(v))}
+						onChange={(v) => setFilterValue('fromPrice', Number(convertStringToInteger(v)))}
 						placeholder={t('withdrawal_cash_reports_page.from_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
@@ -100,7 +110,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 					<InputLegend
 						value={filters.toPrice}
-						onChange={(v) => setFilterValue('toPrice', Number(v))}
+						onChange={(v) => setFilterValue('toPrice', Number(convertStringToInteger(v)))}
 						placeholder={t('withdrawal_cash_reports_page.to_price_placeholder_filter')}
 						prefix={t('common.rial')}
 						maxLength={10}
