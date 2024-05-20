@@ -20,7 +20,7 @@ interface ProvidersProps {
 	children: React.ReactNode;
 }
 
-export const Providers = ({ children }: ProvidersProps) => {
+const Providers = ({ children }: ProvidersProps) => {
 	return (
 		<StyledComponentsRegistry>
 			<QueryClientRegistry>
@@ -42,3 +42,5 @@ export const Providers = ({ children }: ProvidersProps) => {
 		</StyledComponentsRegistry>
 	);
 };
+
+export default Providers;

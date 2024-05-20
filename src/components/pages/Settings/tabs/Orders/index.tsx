@@ -1,14 +1,17 @@
 'use client';
 import brokerAxios from '@/api/brokerAxios';
 import { useGetCustomerSettings } from '@/api/queries/brokerPrivateQueries';
+import ipcMain from '@/classes/IpcMain';
 import Input from '@/components/common/Inputs/Input';
 import Switch from '@/components/common/Inputs/Switch';
+import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useDebounce } from '@/hooks';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import SettingCard from '../../components/SettingCard';
@@ -21,7 +24,7 @@ interface IUpdateSettingsBody {
 	configValue: string | boolean;
 }
 
-const SendOrder = () => {
+const Orders = () => {
 	const t = useTranslations();
 
 	const { setDebounce } = useDebounce();
@@ -32,7 +35,13 @@ const SendOrder = () => {
 
 	const brokerURLs = useAppSelector(getBrokerURLs);
 
-	const { data: customerSettings, refetch: fetchCustomerSettings } = useGetCustomerSettings({
+	const router = useRouter();
+
+	const {
+		data: customerSettings,
+		refetch: fetchCustomerSettings,
+		isFetching: customerSettingsLoading,
+	} = useGetCustomerSettings({
 		queryKey: ['GetCustomerSettings'],
 		enabled: false,
 	});
@@ -178,15 +187,22 @@ const SendOrder = () => {
 		[fieldValues],
 	);
 
+	useEffect(() => {
+		ipcMain.handle('broker:logged_out', () => {
+			router.push('/settings/general/');
+		});
+	}, []);
+
 	return (
-		<SettingCard title={t('settings_page.send_order_settings')}>
+		<SettingCard title={t('settings_page.orders_settings')}>
 			<div className='grid grid-cols-2 gap-x-88 gap-y-24'>
 				{fields.map((item) => (
 					<SettingCardField key={item.title} colon={false} title={item.title} node={item.component} />
 				))}
+				{customerSettingsLoading && <Loading />}
 			</div>
 		</SettingCard>
 	);
 };
 
-export default SendOrder;
+export default Orders;

@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getLsStatus, getOrdersIsExpand, setOrdersIsExpand } from '@/features/slices/uiSlice';
+import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { cn } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
@@ -11,6 +12,7 @@ import Orders from './Orders';
 const getStates = createSelector(
 	(state: RootState) => state,
 	(state) => ({
+		isLoggedIn: getIsLoggedIn(state) && getBrokerIsSelected(state),
 		lsStatus: getLsStatus(state),
 		ordersIsExpand: getOrdersIsExpand(state),
 	}),
@@ -42,11 +44,11 @@ const Footer = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { lsStatus, ordersIsExpand } = useAppSelector(getStates);
+	const { isLoggedIn, lsStatus, ordersIsExpand } = useAppSelector(getStates);
 
 	return (
 		<div className='h-48 flex-column'>
-			<Orders />
+			{isLoggedIn && <Orders />}
 
 			<footer className='h-48 border-t border-gray-600 bg-white pl-24 flex-justify-between'>
 				<div className='h-full flex-justify-start'>

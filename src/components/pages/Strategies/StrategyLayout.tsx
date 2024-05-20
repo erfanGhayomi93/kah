@@ -1,16 +1,17 @@
 import Main from '@/components/layout/Main';
 import { Link } from '@/navigation';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface StrategyLayoutProps {
 	children: React.ReactNode;
 	isBuilding?: boolean;
-	headerRenderer?: () => React.ReactNode;
+	headerRenderer?: React.ReactNode;
 }
 
-const StrategyLayout = async ({ children, isBuilding = false, headerRenderer }: StrategyLayoutProps) => {
-	const t = (v: string) => v;
+const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: StrategyLayoutProps) => {
+	const t = useTranslations('strategies');
 
 	return (
 		<Main className='gap-8 !px-8'>
@@ -52,7 +53,7 @@ const StrategyLayout = async ({ children, isBuilding = false, headerRenderer }: 
 				{headerRenderer && (
 					<>
 						<span className='h-12 w-2 bg-gray-500' />
-						{headerRenderer()}
+						{headerRenderer}
 					</>
 				)}
 			</div>
