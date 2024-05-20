@@ -1,10 +1,9 @@
 import NoData from '@/components/common/NoData';
 import StrategyLayout from '@/components/pages/Strategies/StrategyLayout';
 import type { NextPage } from 'next';
-import { useTranslations } from 'next-intl';
 
 const Page: NextPage<INextProps> = async () => {
-	const t = useTranslations('build_strategy');
+	const t = (v: string) => v;
 
 	return (
 		<StrategyLayout isBuilding>
