@@ -1,3 +1,5 @@
+'use client';
+
 import { broadcastChannel } from '@/constants';
 import { setBrokerClientId } from '@/utils/cookie';
 import { useEffect } from 'react';
