@@ -188,7 +188,7 @@ const Conversion = (strategy: ConversionProps) => {
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'dueDays',
@@ -216,7 +216,7 @@ const Conversion = (strategy: ConversionProps) => {
 					percent: data?.callPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'putPremiumPercent',
@@ -228,7 +228,7 @@ const Conversion = (strategy: ConversionProps) => {
 					percent: data?.putPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'callSymbolTitle',

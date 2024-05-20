@@ -232,7 +232,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 						data?.optionWatchlistData.premium ?? 0,
 						data?.optionWatchlistData.tradePriceVarPreviousTradePercent ?? 0,
 					],
-					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+					valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
@@ -257,7 +257,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 						data?.optionWatchlistData.baseSymbolPrice ?? 0,
 						data?.optionWatchlistData.baseTradePriceVarPreviousTradePercent ?? 0,
 					],
-					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+					valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{

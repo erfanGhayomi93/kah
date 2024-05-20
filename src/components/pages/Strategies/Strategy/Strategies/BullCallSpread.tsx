@@ -175,7 +175,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'dueDays',
@@ -321,7 +321,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					percent: data?.lspPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'hspPremiumPercent',
@@ -333,7 +333,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					percent: data?.hspPremiumPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'bullCallSpreadBEP',
@@ -361,7 +361,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					percent: data?.maxProfitPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'maxLoss',
