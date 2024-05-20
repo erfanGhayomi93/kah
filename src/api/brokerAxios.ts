@@ -1,6 +1,4 @@
 import ipcMain from '@/classes/IpcMain';
-import { setBrokerURLs } from '@/features/slices/brokerSlice';
-import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
@@ -66,8 +64,8 @@ brokerAxios.interceptors.response.use(
 
 export const logoutBroker = () => {
 	try {
-		store.dispatch(setBrokerIsSelected(false));
-		store.dispatch(setBrokerURLs(null));
+		store.dispatch({ payload: false, type: 'user/setBrokerIsSelected' });
+		store.dispatch({ payload: null, type: 'broker/setBrokerURLs' });
 
 		const [token] = getBrokerClientId();
 		deleteBrokerClientId();
