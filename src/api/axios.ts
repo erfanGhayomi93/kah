@@ -1,5 +1,3 @@
-import { setBrokerURLs } from '@/features/slices/brokerSlice';
-import { setBrokerIsSelected, setIsLoggedIn } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
@@ -59,9 +57,9 @@ axios.interceptors.response.use(
 
 const logoutUser = () => {
 	try {
-		store.dispatch(setIsLoggedIn(false));
-		store.dispatch(setBrokerIsSelected(false));
-		store.dispatch(setBrokerURLs(null));
+		store.dispatch({ payload: false, type: 'user/setIsLoggedIn' });
+		store.dispatch({ payload: false, type: 'user/setBrokerIsSelected' });
+		store.dispatch({ payload: null, type: 'broker/setBrokerURLs' });
 
 		const clientId = getClientId();
 		deleteBrokerClientId();
