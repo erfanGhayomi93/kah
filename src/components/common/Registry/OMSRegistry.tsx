@@ -8,7 +8,7 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useUserInfo } from '@/hooks';
 import { getBrokerClientId } from '@/utils/cookie';
 import { uuidv4 } from '@/utils/helpers';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 const OMSRegistry = () => {
 	const brokerURLs = useAppSelector(getBrokerURLs);
@@ -46,7 +46,7 @@ const OMSRegistry = () => {
 		OMSGateway.publish().addAndStart(orders);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!brokerURLs) return;
 
 		const c = new AbortController();
@@ -57,7 +57,7 @@ const OMSRegistry = () => {
 		return () => c.abort();
 	}, [brokerURLs]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!brokerURLs || !userInfo) return;
 
 		// Subscription

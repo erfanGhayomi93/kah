@@ -1,3 +1,4 @@
+import ipcMain from '@/classes/IpcMain';
 import { setBrokerURLs } from '@/features/slices/brokerSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { store } from '@/features/store';
@@ -55,7 +56,7 @@ brokerAxios.interceptors.response.use(
 
 			switch (errStatus) {
 				case 401:
-					onUnauthorize();
+					onLoggedOut();
 			}
 		}
 
@@ -63,7 +64,7 @@ brokerAxios.interceptors.response.use(
 	},
 );
 
-export const onUnauthorize = () => {
+export const onLoggedOut = () => {
 	try {
 		store.dispatch(setBrokerIsSelected(false));
 		store.dispatch(setBrokerURLs(null));
@@ -72,7 +73,8 @@ export const onUnauthorize = () => {
 		deleteBrokerClientId();
 
 		if (token) {
-			toast.warning('متاسفانه از حساب کارگزاری خود خارج شدید.', {
+			ipcMain.send('broker:logged_out', undefined);
+			toast.warning('از حساب کارگزاری خود خارج شدید.', {
 				toastId: 'broker_unauthorize',
 				autoClose: 5000,
 			});

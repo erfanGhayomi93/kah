@@ -1001,6 +1001,9 @@
 		"market_process": "روند بازار",
 		"manage_columns": "مدیریت ستون‌های جدول"
 	},
+	"build_strategy": {
+		"no_data": "هیچ استراتژی وجود ندارد"
+	},
 	"strategy_filters": {
 		"title": "فیلتر"
 	},
