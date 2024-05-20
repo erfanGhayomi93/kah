@@ -1,3 +1,4 @@
+import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
@@ -18,24 +19,25 @@ const Container = () => {
 
 	return (
 		<ErrorBoundary>
-			<div className='relative h-56'>
-				<div
-					style={{
-						height: ordersIsExpand ? '37.6rem' : '7.2rem',
-						width: 'calc(100% - 6rem)',
-						transition: 'height 250ms ease-in, width 300ms ease-in-out',
-						bottom: '4rem',
-					}}
-					className='fixed left-0 rounded bg-gray-300 p-8'
-				>
-					<div className='size-full flex-column'>
-						<div className='relative flex-1 overflow-hidden rounded bg-white shadow-tooltip flex-column'>
-							<Header isExpand={ordersIsExpand} tab={activeTab} setTab={setActiveTab} />
-							{ordersIsExpand && <Body tab={activeTab} />}
+			<AnimatePresence initial={{ animation: 'expandOrders' }} exit={{ animation: 'collapseOrders' }}>
+				{ordersIsExpand && (
+					<div
+						style={{
+							transition: 'height 250ms ease-in, width 300ms ease-in-out',
+							width: 'calc(100% - 6rem)',
+							bottom: '4.8rem',
+						}}
+						className='fixed left-0 w-full rounded bg-gray-300 py-8'
+					>
+						<div className='size-full flex-column'>
+							<div className='relative flex-1 overflow-hidden rounded bg-white shadow-tooltip flex-column'>
+								<Header isExpand={ordersIsExpand} tab={activeTab} setTab={setActiveTab} />
+								{ordersIsExpand && <Body tab={activeTab} />}
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				)}
+			</AnimatePresence>
 		</ErrorBoundary>
 	);
 };

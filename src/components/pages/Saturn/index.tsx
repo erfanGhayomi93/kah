@@ -5,7 +5,6 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import Orders from '@/components/layout/Orders';
 import { defaultSymbolISIN } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddSaturnTemplateModal } from '@/features/slices/modalSlice';
@@ -103,8 +102,6 @@ const Saturn = () => {
 					{t('common.symbol_not_found')}
 				</span>
 			)}
-
-			<Orders />
 		</Main>
 	);
 };

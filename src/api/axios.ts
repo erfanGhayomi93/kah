@@ -1,3 +1,6 @@
+import { setBrokerURLs } from '@/features/slices/brokerSlice';
+import { setBrokerIsSelected, setIsLoggedIn } from '@/features/slices/userSlice';
+import { store } from '@/features/store';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
@@ -46,7 +49,7 @@ axios.interceptors.response.use(
 
 			switch (errStatus) {
 				case 401:
-					onUnauthorize();
+					logoutUser();
 			}
 		}
 
@@ -54,10 +57,13 @@ axios.interceptors.response.use(
 	},
 );
 
-const onUnauthorize = () => {
+const logoutUser = () => {
 	try {
-		const clientId = getClientId();
+		store.dispatch(setIsLoggedIn(false));
+		store.dispatch(setBrokerIsSelected(false));
+		store.dispatch(setBrokerURLs(null));
 
+		const clientId = getClientId();
 		deleteBrokerClientId();
 		deleteClientId();
 
@@ -72,5 +78,5 @@ const onUnauthorize = () => {
 	}
 };
 
-export { AxiosError, onUnauthorize };
+export { AxiosError, logoutUser };
 export default axios;

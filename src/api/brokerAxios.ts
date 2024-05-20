@@ -56,7 +56,7 @@ brokerAxios.interceptors.response.use(
 
 			switch (errStatus) {
 				case 401:
-					onLoggedOut();
+					logoutBroker();
 			}
 		}
 
@@ -64,7 +64,7 @@ brokerAxios.interceptors.response.use(
 	},
 );
 
-export const onLoggedOut = () => {
+export const logoutBroker = () => {
 	try {
 		store.dispatch(setBrokerIsSelected(false));
 		store.dispatch(setBrokerURLs(null));

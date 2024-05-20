@@ -1,4 +1,4 @@
-import { onLoggedOut } from '@/api/brokerAxios';
+import { logoutBroker } from '@/api/brokerAxios';
 import { useUserRemainQuery, useUserStatusQuery } from '@/api/queries/brokerPrivateQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -88,7 +88,7 @@ const Header = () => {
 		dispatch(setForgetPasswordModal({}));
 	};
 
-	const logoutBroker = (callback: () => void) => {
+	const logoutFromBroker = (callback: () => void) => {
 		dispatch(
 			setConfirmModal({
 				title: t('header.logout_broker'),
@@ -99,7 +99,7 @@ const Header = () => {
 				},
 				onCancel: () => dispatch(setConfirmModal(null)),
 				onSubmit: () => {
-					onLoggedOut();
+					logoutBroker();
 					callback();
 				},
 			}),
@@ -174,7 +174,7 @@ const Header = () => {
 									hasBroker={brokerIsSelected}
 									resetPassword={resetPassword}
 									loginBroker={loginBroker}
-									logoutBroker={logoutBroker}
+									logoutBroker={logoutFromBroker}
 									logout={logout}
 									userData={userData}
 									close={() => setOpen(false)}
