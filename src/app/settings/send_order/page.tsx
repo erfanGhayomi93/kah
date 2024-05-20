@@ -1,5 +1,5 @@
-import SendOrder from '@/components/pages/Settings/tabs/SendOrder';
+import Orders from '@/components/pages/Settings/tabs/Orders';
 
-const Page = () => <SendOrder />;
+const Page = () => <Orders />;
 
 export default Page;
