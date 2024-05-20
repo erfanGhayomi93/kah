@@ -4,7 +4,6 @@ import { BearishMarketSVG, BullishMarketSVG, DirectionalMarketSVG, NeutralMarket
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getStrategyTrend, setStrategyTrend } from '@/features/slices/tabSlice';
 import clsx from 'clsx';
-import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 interface ITabItem {
@@ -14,7 +13,7 @@ interface ITabItem {
 }
 
 const Toolbar = () => {
-	const t = useTranslations();
+	const t = (v: string) => v;
 
 	const dispatch = useAppDispatch();
 
