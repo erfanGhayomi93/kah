@@ -1634,7 +1634,7 @@
 	},
 	"settings_page": {
 		"general_settings": "تنظیمات عمومی",
-		"send_order_settings": "ارسال سفارش",
+		"orders_settings": "سفارشات",
 		"agreements_settings": "توافق نامه‌ها",
 		"history_settings": " سابقه ورود خروج",
 		"identity_information": "اطلاعات هویتی",
