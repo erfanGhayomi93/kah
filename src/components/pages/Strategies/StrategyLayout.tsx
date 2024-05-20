@@ -7,7 +7,7 @@ import React from 'react';
 interface StrategyLayoutProps {
 	children: React.ReactNode;
 	isBuilding?: boolean;
-	headerRenderer?: () => React.ReactNode;
+	headerRenderer?: React.ReactNode;
 }
 
 const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: StrategyLayoutProps) => {
@@ -53,7 +53,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 				{headerRenderer && (
 					<>
 						<span className='h-12 w-2 bg-gray-500' />
-						{headerRenderer()}
+						{headerRenderer}
 					</>
 				)}
 			</div>

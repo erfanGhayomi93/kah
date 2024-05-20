@@ -1,37 +1,39 @@
-'use client';
-
-import { broadcastChannel } from '@/constants';
-import { setBrokerClientId } from '@/utils/cookie';
+import Loading from '@/components/common/Loading';
 import type { NextPage } from 'next';
-import { useEffect } from 'react';
 
-const Page: NextPage<INextProps> = () => {
-	useEffect(() => {
-		try {
-			const params = new URLSearchParams(location.search);
+const Page: NextPage<INextProps> = async () => {
+	// useEffect(() => {
+	// 	try {
+	// 		const params = new URLSearchParams(location.search);
 
-			const brokerCode = params.get('brokerCode') ?? '';
-			let clientId = params.get('client_id') ?? '';
-			clientId = clientId.replace(/\s/gi, '+');
+	// 		const brokerCode = params.get('brokerCode') ?? '';
+	// 		let clientId = params.get('client_id') ?? '';
+	// 		clientId = clientId.replace(/\s/gi, '+');
 
-			if (clientId && brokerCode) {
-				setBrokerClientId(`${clientId}^${brokerCode}`);
+	// 		if (clientId && brokerCode) {
+	// 			setBrokerClientId(`${clientId}^${brokerCode}`);
 
-				try {
-					const channel = new BroadcastChannel(broadcastChannel);
-					channel.postMessage(JSON.stringify({ type: 'broker_registered', payload: clientId }));
-				} catch (e) {
-					//
-				}
-			}
-		} catch (e) {
-			//
-		} finally {
-			window.close();
-		}
-	}, []);
+	// 			try {
+	// 				const channel = new BroadcastChannel(broadcastChannel);
+	// 				channel.postMessage(JSON.stringify({ type: 'broker_registered', payload: clientId }));
+	// 			} catch (e) {
+	// 				//
+	// 			}
+	// 		}
+	// 	} catch (e) {
+	// 		//
+	// 	} finally {
+	// 		window.close();
+	// 	}
+	// }, []);
 
-	return null;
+	return (
+		<div className='p-8'>
+			<div className='size-full rounded bg-white flex-justify-center'>
+				<Loading />
+			</div>
+		</div>
+	);
 };
 
 export default Page;

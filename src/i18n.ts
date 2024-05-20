@@ -1,7 +1,10 @@
 import { getRequestConfig } from 'next-intl/server';
+import { locales } from './navigation';
 
-export default getRequestConfig(async ({ locale }) => {
+export default getRequestConfig(async () => {
+	const locale = locales[0];
 	return {
-		messages: (await import(`./languages/${locale ?? 'fa'}.json`)).default,
+		locale,
+		messages: (await import(`../languages/${locale}.json`)).default,
 	};
 });

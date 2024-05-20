@@ -6,7 +6,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer(
-	withNextIntl({
+	{
 		reactStrictMode: false,
 		trailingSlash: true,
 		webpack(config) {
@@ -17,7 +17,7 @@ const nextConfig = withBundleAnalyzer(
 
 			return config
 		}
-	})
+	}
 );
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

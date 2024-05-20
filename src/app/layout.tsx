@@ -1,16 +1,40 @@
-import metadata from '@/metadata';
+import '@/assets/styles/app.scss';
+import '@/assets/styles/libs.scss';
+import Providers from '@/components/common/Providers';
+import Wrapper from '@/components/layout/Wrapper';
 import { getDirection } from '@/utils/helpers';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
+import dynamic from 'next/dynamic';
 import Script from 'next/script';
+import metadata from '../metadata';
 
-interface ILayout extends INextProps {
-	children: React.ReactNode;
-}
+const Modals = dynamic(() => import('@/components/modals/Modals'), {
+	ssr: false,
+});
 
-const Layout = async ({ children, params: { locale = 'fa' } }: ILayout) => {
+const Panels = dynamic(() => import('@/components/panels/Panels'), {
+	ssr: false,
+});
+
+interface ILayout extends INextProps {}
+
+const Layout = async ({ children }: ILayout) => {
+	const locale = await getLocale();
+	const messages = await getMessages();
+
 	return (
 		<html lang={locale} dir={getDirection(locale)}>
 			<body>
-				{children}
+				<NextIntlClientProvider messages={messages}>
+					<Providers>
+						<Wrapper>{children}</Wrapper>
+						<Modals />
+						<Panels />
+					</Providers>
+				</NextIntlClientProvider>
+
+				<div id='__tooltip' />
 
 				{typeof process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID === 'string' && (
 					<Script id='clarity-script' strategy='afterInteractive'>
@@ -22,6 +46,6 @@ const Layout = async ({ children, params: { locale = 'fa' } }: ILayout) => {
 	);
 };
 
-export default Layout;
-
 export { metadata };
+
+export default Layout;
