@@ -1,6 +1,7 @@
 import Main from '@/components/layout/Main';
 import { Link } from '@/navigation';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface StrategyLayoutProps {
@@ -9,8 +10,8 @@ interface StrategyLayoutProps {
 	headerRenderer?: () => React.ReactNode;
 }
 
-const StrategyLayout = async ({ children, isBuilding = false, headerRenderer }: StrategyLayoutProps) => {
-	const t = (v: string) => v;
+const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: StrategyLayoutProps) => {
+	const t = useTranslations('strategies');
 
 	return (
 		<Main className='gap-8 !px-8'>

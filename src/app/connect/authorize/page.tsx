@@ -3,10 +3,10 @@
 import { broadcastChannel } from '@/constants';
 import { setBrokerClientId } from '@/utils/cookie';
 import type { NextPage } from 'next';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 const Page: NextPage<INextProps> = () => {
-	useLayoutEffect(() => {
+	useEffect(() => {
 		try {
 			const params = new URLSearchParams(location.search);
 
