@@ -6,7 +6,7 @@ import NoData from '@/components/common/NoData';
 import { useAppSelector } from '@/features/hooks';
 import { getStrategyTrend } from '@/features/slices/tabSlice';
 import { useMemo } from 'react';
-import StrategyItem from './StrategyItem';
+import StrategyItem from './Item';
 
 const List = () => {
 	const strategyTrend = useAppSelector(getStrategyTrend);
@@ -23,19 +23,16 @@ const List = () => {
 		return data.filter((item) => item.tags.includes(strategyTrend));
 	}, [strategyTrend, data]);
 
-	if (isLoading)
-		return <Loading />;
+	if (isLoading) return <Loading />;
 
 	if (!filteredStrategies?.length)
 		return (
-				<div style={{ marginTop: '9.6rem' }}>
-					<NoData />
-				</div>
+			<div className='absolute center'>
+				<NoData />
+			</div>
 		);
 
-	return filteredStrategies.map((item) => (
-		<StrategyItem key={item.id} {...item} />
-	));
+	return filteredStrategies.map((item) => <StrategyItem key={item.id} {...item} />);
 };
 
 export default List;

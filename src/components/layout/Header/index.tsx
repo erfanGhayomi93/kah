@@ -1,10 +1,10 @@
+import { onLoggedOut } from '@/api/brokerAxios';
 import { useUserRemainQuery, useUserStatusQuery } from '@/api/queries/brokerPrivateQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs, setBrokerURLs } from '@/features/slices/brokerSlice';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import {
 	setBlackScholesModal,
-	setBuySellModal,
 	setChoiceBrokerModal,
 	setConfirmModal,
 	setDepositModal,
@@ -12,17 +12,15 @@ import {
 	setLoginModal,
 	setLogoutModal,
 } from '@/features/slices/modalSlice';
-import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn, setBrokerIsSelected } from '@/features/slices/userSlice';
+import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useServerDatetime, useUserInfo } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import { deleteBrokerClientId } from '@/utils/cookie';
 import { cn, copyNumberToClipboard, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { toast } from 'react-toastify';
 import Popup from '../../common/Popup';
 import Tooltip from '../../common/Tooltip';
 import {
@@ -99,14 +97,9 @@ const Header = () => {
 					label: t('header.exit'),
 					type: 'error',
 				},
+				onCancel: () => dispatch(setConfirmModal(null)),
 				onSubmit: () => {
-					dispatch(setBrokerIsSelected(false));
-					dispatch(setBrokerURLs(null));
-					dispatch(setBuySellModal(null));
-					deleteBrokerClientId();
-
-					toast.success(t('alerts.logged_out_successfully'));
-
+					onLoggedOut();
 					callback();
 				},
 			}),
@@ -191,7 +184,7 @@ const Header = () => {
 							{({ setOpen, open }) => (
 								<button
 									onClick={() => setOpen(!open)}
-									className='h-32 gap-8 px-8 flex-items-center icon-hover'
+									className='h-36 gap-8 px-8 flex-items-center icon-hover'
 								>
 									<span className='text-base font-medium text-gray-1000'>{customerTitle}</span>
 
@@ -212,7 +205,7 @@ const Header = () => {
 							onClick={showAuthenticationModal}
 							type='button'
 							disabled={isFetchingUserData || isLoggingIn}
-							className='h-32 gap-8 rounded px-16 font-medium btn-primary'
+							className='h-36 gap-8 rounded px-16 font-medium btn-primary'
 						>
 							{t('header.login')}
 							<span className='h-12 w-2 rounded bg-white' />

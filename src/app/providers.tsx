@@ -1,18 +1,18 @@
+import AppMiddleware from '@/components/common/Middlewares/AppMiddleware';
 import BroadcastChannelRegistry from '@/components/common/Registry/BroadcastChannelRegistry';
+import OMSRegistry from '@/components/common/Registry/OMSRegistry';
 import QueryClientRegistry from '@/components/common/Registry/QueryClientRegistry';
 import StyledComponentsRegistry from '@/components/common/Registry/StyledComponentsRegistry';
 import ToastRegistry from '@/components/common/Registry/ToastRegistry';
 import ClockProvider from '@/contexts/ClockContext';
 import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
 import dynamic from 'next/dynamic';
-import AppMiddleware from '../common/Middlewares/AppMiddleware';
-import OMSRegistry from '../common/Registry/OMSRegistry';
 
-const LightstreamRegistry = dynamic(() => import('../common/Registry/LightstreamRegistry'), {
+const LightstreamRegistry = dynamic(() => import('@/components/common/Registry/LightstreamRegistry'), {
 	ssr: false,
 });
 
-const ReduxToolkitRegistry = dynamic(() => import('../common/Registry/ReduxToolkitRegistry'), {
+const ReduxToolkitRegistry = dynamic(() => import('@/components/common/Registry/ReduxToolkitRegistry'), {
 	ssr: false,
 });
 
@@ -20,7 +20,7 @@ interface ProvidersProps {
 	children: React.ReactNode;
 }
 
-const Providers = ({ children }: ProvidersProps) => {
+export const Providers = ({ children }: ProvidersProps) => {
 	return (
 		<StyledComponentsRegistry>
 			<QueryClientRegistry>
@@ -42,5 +42,3 @@ const Providers = ({ children }: ProvidersProps) => {
 		</StyledComponentsRegistry>
 	);
 };
-
-export default Providers;
