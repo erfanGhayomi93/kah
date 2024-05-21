@@ -1,6 +1,4 @@
-'use client';
-
-import { getBrokerClientId, getClientId } from '@/utils/cookie';
+import * as cookies from '@/utils/cookie';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
@@ -15,11 +13,11 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-	loggedIn: Boolean(getClientId()),
+	loggedIn: Boolean(cookies.getClientId()),
+
+	brokerIsSelected: Boolean(cookies.getBrokerClientId()[0]),
 
 	loggingIn: true,
-
-	brokerIsSelected: Boolean(getBrokerClientId()[0]),
 
 	orderBasket: null,
 };

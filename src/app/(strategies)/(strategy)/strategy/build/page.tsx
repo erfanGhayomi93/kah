@@ -19,4 +19,12 @@ const Page: NextPage<INextProps> = async () => {
 	);
 };
 
+const generateMetadata = () => {
+	return {
+		title: 'ساخت استراتژی - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;

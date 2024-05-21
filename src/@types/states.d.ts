@@ -1,6 +1,7 @@
-declare interface INextProps<T extends object = {}> {
+declare interface INextProps<T = {}, K = {}> {
 	children: React.ReactNode;
 	params: T & { locale: string };
+	searchParams: K;
 }
 
 declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
