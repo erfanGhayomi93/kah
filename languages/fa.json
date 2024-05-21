@@ -1023,6 +1023,8 @@
 		"itm": "ITM",
 		"from": "از",
 		"to": "تا",
+		"first_value": "مقدار اول",
+		"seconds_value": "مقدار دوم",
 		"apply_filters": "اعمال فیلتر"
 	},
 	"CoveredCall": {

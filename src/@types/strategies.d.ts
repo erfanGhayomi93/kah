@@ -265,6 +265,7 @@ declare type TProtectivePutColumns =
 	| 'optionBestBuyLimitQuantity'
 	| 'protectivePutBEP'
 	| 'maxLoss'
+	| 'maxLossPercent'
 	| 'profit'
 	| 'profitPercent'
 	| 'inUseCapital'

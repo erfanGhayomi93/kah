@@ -15,7 +15,7 @@ const IOTMInput = ({ value, onClick }: IOTMInputProps) => {
 	};
 
 	return (
-		<div className='gap-8 flex-justify-end *:h-40 *:gap-8 *:rounded *:px-20 *:font-medium *:transition-colors *:flex-justify-center'>
+		<div className='flex h-40 gap-8 *:h-full *:flex-1 *:rounded *:!border *:font-medium'>
 			<button
 				type='button'
 				onClick={() => onClick('ATM')}

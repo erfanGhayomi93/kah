@@ -55,23 +55,29 @@ const SimpleFilter = () => {
 				</Filter>
 
 				<Filter title={t('due_days')}>
-					<DueDaysInput value={inputs.dueDays} onChange={console.log} />
+					<DueDaysInput value={inputs.dueDays} onChange={(v) => setFieldValue('dueDays', v)} />
 				</Filter>
 
 				<Filter title={t('open_positions')}>
-					<OpenPositionsInput value={inputs.openPositions} onChange={console.log} />
+					<OpenPositionsInput
+						value={inputs.openPositions}
+						onChange={(v) => setFieldValue('openPositions', v)}
+					/>
 				</Filter>
 
 				<Filter title={t('max_profit')} tooltip={t('max_profit_tooltip')}>
-					<MaxProfitInput value={inputs.maxProfit} onChange={console.log} />
+					<MaxProfitInput value={inputs.maxProfit} onChange={(v) => setFieldValue('maxProfit', v)} />
 				</Filter>
 
 				<Filter title={t('non_expired_profit')} tooltip={t('non_expired_profit_tooltip')}>
-					<NonExpiredProfitInput value={inputs.nonExpiredProfit} onChange={console.log} />
+					<NonExpiredProfitInput
+						value={inputs.nonExpiredProfit}
+						onChange={(v) => setFieldValue('nonExpiredProfit', v)}
+					/>
 				</Filter>
 
 				<Filter title={t('bep_difference')}>
-					<BepDifference value={inputs.bepDifference} onChange={console.log} />
+					<BepDifference value={inputs.bepDifference} onChange={(v) => setFieldValue('bepDifference', v)} />
 				</Filter>
 			</ul>
 			<div className='flex-justify-end'>

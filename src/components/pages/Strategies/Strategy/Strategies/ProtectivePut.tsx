@@ -268,7 +268,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'maxLoss',
+				colId: 'maxLossPercent',
 				headerName: 'حداکثر زیان',
 				initialHide: initialHiddenColumnsProtectivePut.maxLoss,
 				width: 152,
@@ -276,7 +276,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				cellRendererParams: ({ value }: ICellRendererParams<Strategy.ProtectivePut>) => ({
 					percent: value[1] ?? 0,
 				}),
-				valueGetter: ({ data }) => [data?.maxLoss ?? 0, 0],
+				valueGetter: ({ data }) => [data?.maxLoss ?? 0, data?.maxLossPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
