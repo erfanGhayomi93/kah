@@ -2,12 +2,6 @@ type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IB
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
-declare interface IBaseModalConfiguration {
-	moveable?: boolean;
-	animation?: boolean;
-	callbackFunction?: () => void;
-}
-
 export interface IBlackScholes extends IBaseModalConfiguration {
 	symbolISIN?: string;
 }
