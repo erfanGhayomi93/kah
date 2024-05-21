@@ -2,10 +2,10 @@ import { cn, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 
 interface InputLegendProps
-	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'onChange'> {
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'prefix' | 'placeholder' | 'onChange'> {
 	onChange: (v: string) => void;
 	value: string | number | null;
-	prefix?: string;
+	prefix?: React.ReactNode;
 	placeholder: React.ReactNode;
 	separator?: boolean;
 	valueSeparator?: boolean;
@@ -27,7 +27,7 @@ const InputLegend = ({
 	const isActive = autoTranslateLegend || (value && String(value).length > 0);
 
 	return (
-		<label className='relative h-48 rounded flex-items-center input-group'>
+		<label className='relative h-48 flex-1 rounded flex-items-center input-group'>
 			<input
 				placeholder={inputPlaceholder}
 				type='text'
