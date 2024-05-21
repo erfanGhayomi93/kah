@@ -1,14 +1,16 @@
 import { cn, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 
-interface InputProps
-	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'className' | 'onChange'> {
+interface InputLegendProps
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'onChange'> {
 	onChange: (v: string) => void;
-	value: string | number;
+	value: string | number | null;
 	prefix?: string;
 	placeholder: React.ReactNode;
 	separator?: boolean;
 	valueSeparator?: boolean;
+	inputPlaceholder?: string;
+	autoTranslateLegend?: boolean;
 }
 
 const InputLegend = ({
@@ -17,27 +19,23 @@ const InputLegend = ({
 	placeholder,
 	prefix,
 	separator = true,
+	autoTranslateLegend = false,
+	inputPlaceholder,
 	onChange,
 	...props
-}: InputProps) => {
-	const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const element = e.target;
-		const value = element.value;
-
-		onChange(value);
-	};
-
-	const isActive = value && String(value).length > 0;
+}: InputLegendProps) => {
+	const isActive = autoTranslateLegend || (value && String(value).length > 0);
 
 	return (
 		<label className='relative h-48 rounded flex-items-center input-group'>
 			<input
-				{...props}
+				placeholder={inputPlaceholder}
 				type='text'
 				inputMode='numeric'
 				className='h-full flex-1 bg-transparent px-8 text-left ltr'
-				value={valueSeparator ? sepNumbers(String(value)) : value}
-				onChange={onChangeValue}
+				value={value === null ? '' : valueSeparator ? sepNumbers(String(value)) : value}
+				onChange={(e) => onChange(e.target.value)}
+				{...props}
 			/>
 
 			<span className={cn('flexible-placeholder', isActive && 'active')}>{placeholder}</span>

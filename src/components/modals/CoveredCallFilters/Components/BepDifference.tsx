@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 
 interface BepDifferenceProps {
 	value: ICoveredCallFiltersModalStates['bepDifference'];
-	onChange: (v: number | null) => void;
+	onChange: (v: ICoveredCallFiltersModalStates['bepDifference']) => void;
 }
 
 const BepDifference = ({ value, onChange }: BepDifferenceProps) => {

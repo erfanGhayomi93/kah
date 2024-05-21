@@ -1050,7 +1050,7 @@ export const initialHiddenColumnsProtectivePut: Record<TProtectivePutColumns, bo
 	optionBestBuyLimitPrice: true,
 	optionBestBuyLimitQuantity: true,
 	protectivePutBEP: false,
-	maxLoss: false,
+	maxLossPercent: false,
 	profit: true,
 	profitPercent: false,
 	inUseCapital: false,
@@ -1128,7 +1128,7 @@ export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColu
 		hidden: false,
 	},
 	{
-		id: 'maxLoss',
+		id: 'maxLossPercent',
 		title: 'حداکثر زیان',
 		hidden: false,
 	},

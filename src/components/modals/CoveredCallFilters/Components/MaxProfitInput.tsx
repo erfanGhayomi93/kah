@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 
 interface MaxProfitInputProps {
 	value: ICoveredCallFiltersModalStates['maxProfit'];
-	onChange: (v: number | null) => void;
+	onChange: (v: ICoveredCallFiltersModalStates['maxProfit']) => void;
 }
 
 const MaxProfitInput = ({ value, onChange }: MaxProfitInputProps) => {
