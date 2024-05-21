@@ -48,24 +48,34 @@ const Footer = () => {
 
 	return (
 		<div className='h-48 flex-column'>
-			{isLoggedIn && <Orders />}
+			<Orders />
 
 			<footer className='h-48 border-t border-gray-600 bg-white pl-24 flex-justify-between'>
 				<div className='h-full flex-justify-start'>
-					<button
-						type='button'
-						onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
-						className={clsx(
-							'h-full gap-8 px-16 text-base text-gray-1000 transition-colors flex-justify-center',
-							ordersIsExpand ? 'bg-secondary-100' : 'bg-gray-200',
-						)}
-					>
-						{t('orders')}
-						<ArrowDownSVG
-							style={{ transform: ordersIsExpand ? 'rotate(180deg)' : undefined }}
-							className='text-gray-900 transition-transform'
-						/>
-					</button>
+					{isLoggedIn ? (
+						<button
+							type='button'
+							onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
+							className={clsx(
+								'h-full gap-8 px-16 text-base text-gray-1000 transition-colors flex-justify-center',
+								ordersIsExpand ? 'bg-secondary-100' : 'bg-gray-200',
+							)}
+						>
+							{t('orders')}
+							<ArrowDownSVG
+								style={{ transform: ordersIsExpand ? 'rotate(180deg)' : undefined }}
+								className='text-gray-900 transition-transform'
+							/>
+						</button>
+					) : (
+						<a
+							target='_blank'
+							href='https://ramandtech.com/'
+							className='pr-24 text-tiny font-normal text-gray-1000 transition-colors hover:text-secondary-300'
+						>
+							{t('copyright')}
+						</a>
+					)}
 				</div>
 
 				<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
