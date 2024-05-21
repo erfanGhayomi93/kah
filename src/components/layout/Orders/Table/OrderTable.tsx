@@ -1,5 +1,6 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
 import { editableOrdersStatus } from '@/constants';
@@ -11,7 +12,6 @@ import { deleteOrder } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useRef } from 'react';
-import NoData from '../NoData';
 import OrderActionCell from '../common/OrderActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';

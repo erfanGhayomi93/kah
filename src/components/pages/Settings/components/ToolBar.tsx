@@ -14,7 +14,7 @@ interface ITabItem {
 }
 
 const ToolBar = () => {
-	const t = useTranslations();
+	const t = useTranslations('settings_page');
 
 	const brokerURLs = useAppSelector(getBrokerURLs);
 
@@ -23,22 +23,22 @@ const ToolBar = () => {
 	const tags = useMemo<ITabItem[]>(
 		() => [
 			{
-				title: t('settings_page.general_settings'),
+				title: t('general_settings'),
 				href: '/settings/general/',
 				isActive: true,
 			},
 			{
-				title: t('settings_page.send_order_settings'),
-				href: '/settings/send_order/',
+				title: t('orders_settings'),
+				href: '/settings/orders/',
 				isActive: !!brokerURLs,
 			},
 			{
-				title: t('settings_page.agreements_settings'),
+				title: t('agreements_settings'),
 				href: '/settings/agreements/',
 				isActive: !!brokerURLs,
 			},
 			{
-				title: t('settings_page.history_settings'),
+				title: t('history_settings'),
 				href: '/settings/history/',
 				isActive: true,
 			},
@@ -54,8 +54,8 @@ const ToolBar = () => {
 					key={item.href}
 					type='button'
 					className={clsx(
-						'h-36 w-full gap-4 rounded !border px-16 text-base  transition-colors',
-						item.isActive ? 'flex-justify-center whitespace-nowrap' : 'hidden',
+						'h-36 w-1/4 gap-4 rounded !border px-16 text-base  transition-colors',
+						item.isActive ? 'whitespace-nowrap flex-justify-center' : 'hidden',
 						path === item.href
 							? 'no-hover btn-select'
 							: 'bg-gray-200 text-gray-900 hover:text-primary-400 hover:btn-hover',

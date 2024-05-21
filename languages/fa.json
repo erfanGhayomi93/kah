@@ -645,6 +645,7 @@
 		"action": "عملیات"
 	},
 	"footer": {
+		"orders": "سفارش‌ها",
 		"copyright": "© کلیه حقوق این وب سایت متعلق به رامند می باشد."
 	},
 	"orders": {
@@ -1000,6 +1001,9 @@
 		"build_strategy": "ساخت استراتژی",
 		"market_process": "روند بازار",
 		"manage_columns": "مدیریت ستون‌های جدول"
+	},
+	"build_strategy": {
+		"no_data": "هیچ استراتژی وجود ندارد"
 	},
 	"strategy_filters": {
 		"title": "فیلتر"
@@ -1631,7 +1635,7 @@
 	},
 	"settings_page": {
 		"general_settings": "تنظیمات عمومی",
-		"send_order_settings": "ارسال سفارش",
+		"orders_settings": "سفارشات",
 		"agreements_settings": "توافق نامه‌ها",
 		"history_settings": " سابقه ورود خروج",
 		"identity_information": "اطلاعات هویتی",

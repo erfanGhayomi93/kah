@@ -226,7 +226,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'dueDays',
@@ -275,7 +275,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					percent: data?.premium ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
@@ -337,7 +337,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					percent: data?.maxProfitPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'nonExpiredProfitPercent',
@@ -353,7 +353,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					percent: data?.nonExpiredProfitPercent ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.nonExpiredProfit ?? 0, data?.nonExpiredProfitPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'inUseCapital',

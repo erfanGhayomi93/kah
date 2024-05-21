@@ -163,7 +163,7 @@ const Layout = ({
 				style={{
 					flex: '5',
 				}}
-				className='relative size-full flex-1 gap-24 overflow-y-auto overflow-x-hidden rounded bg-white px-16 pb-16 pt-8 flex-column'
+				className='relative size-full flex-1 gap-24 overflow-y-auto overflow-x-hidden rounded bg-white px-16 py-8 flex-column'
 			>
 				<SymbolInfo
 					symbol={baseSymbolInfo}

@@ -9,7 +9,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const OrderTable = dynamic(() => import('./Table/OrderTable'), {
 	ssr: false,
@@ -88,15 +88,9 @@ const Body = ({ tab }: BodyProps) => {
 
 	const updateOrdersCount = (data: Partial<Broker.OrdersCount>) => {
 		const queryKey = ['brokerOrdersCountQuery'];
-		const cache = queryClient.getQueryData(queryKey) ?? {
-			openOrderCnt: 0,
-			todayOrderCnt: 0,
-			executedOrderCnt: 0,
-			orderDraftCnt: 0,
-			orderOptionCount: 0,
-		};
+		const cache = queryClient.getQueryData(queryKey);
 
-		queryClient.setQueryData(['brokerOrdersCountQuery'], { ...cache, ...data });
+		if (cache) queryClient.setQueryData(['brokerOrdersCountQuery'], { ...cache, ...data });
 	};
 
 	const setSelectedRows = (orders: Order.TOrder[]) => {
@@ -116,7 +110,7 @@ const Body = ({ tab }: BodyProps) => {
 		}
 	}, [tab, openOrdersData, draftOrdersData, executedOrdersData, todayOrdersData]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		switch (tab) {
 			case 'draft':
 				if (Array.isArray(draftOrdersData)) updateOrdersCount({ orderDraftCnt: draftOrdersData.length });
@@ -137,12 +131,12 @@ const Body = ({ tab }: BodyProps) => {
 		}
 	}, [tab, openOrdersData, todayOrdersData, executedOrdersData, draftOrdersData, optionOrdersData]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const removeHandler = ipcMain.handle('refetch_active_order_tab', refetchActiveTab);
 		return () => removeHandler();
 	}, [tab]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (tab === 'open_orders') refetchOpenOrders();
 		else if (tab === 'draft') refetchDraftOrders();
 		else if (tab === 'executed_orders') refetchExecutedOrders();
