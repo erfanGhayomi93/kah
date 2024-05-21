@@ -8,6 +8,7 @@ interface FiltersProps {
 	useCommission: boolean;
 	priceBasis: TPriceBasis;
 	symbolBasis: TStrategySymbolBasis;
+	filtersCount?: number;
 	title: string;
 	type: Strategy.Type;
 	onManageColumns?: () => void;
@@ -20,6 +21,7 @@ interface FiltersProps {
 const Filters = ({
 	title,
 	type,
+	filtersCount,
 	useCommission,
 	priceBasis,
 	symbolBasis,
@@ -72,6 +74,7 @@ const Filters = ({
 					/>
 
 					<TableActions
+						filtersCount={filtersCount}
 						onExportExcel={onExportExcel}
 						onShowFilters={onShowFilters}
 						onManageColumns={onManageColumns}

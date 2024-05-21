@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 interface SideInputProps {
-	value: ICoveredCallFiltersModalStates['side'];
+	value: TBsSides;
 	onClick: (v: TBsSides) => void;
 }
 
