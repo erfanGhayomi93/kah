@@ -1,4 +1,5 @@
-import { useTranslations } from 'next-intl';
+import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import Input, { Prefix } from './Input';
 
 interface MaxProfitInputProps {
 	value: ICoveredCallFiltersModalStates['maxProfit'];
@@ -6,9 +7,22 @@ interface MaxProfitInputProps {
 }
 
 const MaxProfitInput = ({ value, onChange }: MaxProfitInputProps) => {
-	const t = useTranslations('strategy_filters');
+	const onChangeValue = (newValue: string) => {
+		const v = convertStringToInteger(newValue);
 
-	return <div />;
+		if (v === '') onChange(null);
+		else onChange(Number(v));
+	};
+
+	return (
+		<Input
+			type='text'
+			value={value === null ? '' : sepNumbers(String(value))}
+			onChange={(e) => onChangeValue(e.target.value)}
+			prefix={<Prefix />}
+			maxLength={16}
+		/>
+	);
 };
 
 export default MaxProfitInput;

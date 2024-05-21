@@ -29,7 +29,7 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, CoveredCallFiltersProps>(
 				{
 					id: 'simple',
 					title: t('simple_filters'),
-					render: () => <SimpleFilter />,
+					render: () => <SimpleFilter initialFilters={initialFilters} onSubmit={onSubmit} />,
 				},
 				{
 					id: 'conditional',

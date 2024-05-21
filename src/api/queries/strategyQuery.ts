@@ -37,19 +37,41 @@ export const useGetAllStrategyQuery = createQuery<Strategy.GetAll[], ['getAllStr
 	},
 });
 
-export const useCoveredCallStrategyQuery = createQuery<Strategy.CoveredCall[], TStrategyBaseType<'coveredCallQuery'>>({
+export const useCoveredCallStrategyQuery = createQuery<
+	Strategy.CoveredCall[],
+	['coveredCallQuery', IStrategyOptionsKey, Partial<ICoveredCallFiltersModalStates>]
+>({
 	staleTime: CACHE_TIME,
-	queryKey: ['coveredCallQuery', defaultStrategyOptions],
+	queryKey: ['coveredCallQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: Record<string, string | number | boolean | string[] | number[]> = {
 				PageSize: 100,
 				PageNumber: 1,
 				CalculateBy: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm[0];
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.bepDifference) {
+				if (typeof filters.bepDifference[0] === 'number') params.LeastBEPDifference = filters.bepDifference[0];
+				if (typeof filters.bepDifference[1] === 'number') params.MostBEPDifference = filters.bepDifference[1];
+			}
+
+			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
+
+			if (filters?.maxProfit && filters.maxProfit) params.IOTM = filters.maxProfit;
+
+			if (filters?.nonExpiredProfit && filters.nonExpiredProfit)
+				params.LeastNonExpiredProfitPercent = filters.nonExpiredProfit;
 
 			const response = await axios.get<ServerResponse<Strategy.CoveredCall[]>>(routes.strategy.CoveredCall, {
 				signal,

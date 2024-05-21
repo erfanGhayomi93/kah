@@ -364,11 +364,12 @@ namespace CreateStrategy {
 }
 
 interface ICoveredCallFiltersModalStates {
-	side: TBsSides[];
+	symbols: Option.BaseSearch[];
 	iotm: Option.IOTM[];
 	dueDays: [null | number, null | number];
-	openPositions: [null | number, null | number];
+	bepDifference: [null | number, null | number];
+	openPosition: null | number;
 	maxProfit: null | number;
 	nonExpiredProfit: null | number;
-	bepDifference: null | number;
+	ytm: null | number;
 }
