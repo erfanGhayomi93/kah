@@ -522,6 +522,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				<Filters
 					type={type}
 					title={title}
+					filtersCount={Object.keys(filters).length}
 					useCommission={useCommission}
 					onManageColumns={showColumnsPanel}
 					setFieldValue={setFieldValue}

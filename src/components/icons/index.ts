@@ -80,6 +80,7 @@ import OptionChainSVG from './option-chain.svg';
 import PasswordSVG from './password.svg';
 import PayMoneySVG from './pay-money.svg';
 import PayOffSVG from './pay-off.svg';
+import PercentSVG from './percent.svg';
 import PinSVG from './pin.svg';
 import PlaySVG from './play.svg';
 import PlusSquareSVG from './plus-square.svg';
@@ -201,6 +202,7 @@ export {
 	PasswordSVG,
 	PayMoneySVG,
 	PayOffSVG,
+	PercentSVG,
 	PinSVG,
 	PlaySVG,
 	PlusSVG,

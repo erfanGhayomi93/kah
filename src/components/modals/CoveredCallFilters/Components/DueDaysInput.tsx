@@ -14,7 +14,10 @@ const DueDaysInput = ({ value, onChange }: DueDaysInputProps) => {
 		<div className='flex h-40 w-full gap-8'>
 			<InputLegend
 				value={value[0]}
-				onChange={(v) => onChange([v === '' ? null : Number(convertStringToInteger(v)), value[1]])}
+				onChange={(v) => {
+					const newValue = convertStringToInteger(v);
+					onChange([newValue === '' ? null : Number(newValue), value[1]]);
+				}}
 				placeholder={t('from')}
 				inputPlaceholder={t('first_value')}
 				maxLength={16}
@@ -24,7 +27,10 @@ const DueDaysInput = ({ value, onChange }: DueDaysInputProps) => {
 
 			<InputLegend
 				value={value[1]}
-				onChange={(v) => onChange([value[0], v === '' ? null : Number(convertStringToInteger(v))])}
+				onChange={(v) => {
+					const newValue = convertStringToInteger(v);
+					onChange([value[0], v === '' ? null : Number(newValue)]);
+				}}
 				placeholder={t('to')}
 				inputPlaceholder={t('seconds_value')}
 				maxLength={16}

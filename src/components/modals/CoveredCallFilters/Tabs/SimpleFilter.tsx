@@ -1,5 +1,7 @@
 import Tooltip from '@/components/common/Tooltip';
 import { InfoCircleSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { setCoveredCallFiltersModal } from '@/features/slices/modalSlice';
 import { useInputs } from '@/hooks';
 import { toggleArrayElement } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
@@ -18,21 +20,47 @@ interface FilterProps {
 	children?: React.ReactNode;
 }
 
-const SimpleFilter = () => {
+interface SimpleFilterProps {
+	initialFilters: Partial<ICoveredCallFiltersModalStates>;
+	onSubmit: (appliedFilters: Partial<ICoveredCallFiltersModalStates>) => void;
+}
+
+const SimpleFilter = ({ initialFilters, onSubmit }: SimpleFilterProps) => {
 	const t = useTranslations('strategy_filters');
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<ICoveredCallFiltersModalStates>({
-		side: [],
-		iotm: [],
-		dueDays: [null, null],
-		openPositions: [null, null],
-		maxProfit: null,
-		nonExpiredProfit: null,
-		bepDifference: null,
+	const dispatch = useAppDispatch();
+
+	const { inputs, setFieldValue } = useInputs<ICoveredCallFiltersModalStates>({
+		side: initialFilters?.side ?? [],
+		iotm: initialFilters?.iotm ?? [],
+		dueDays: initialFilters?.dueDays ?? [null, null],
+		openPositions: initialFilters?.openPositions ?? [null, null],
+		maxProfit: initialFilters?.maxProfit ?? null,
+		nonExpiredProfit: initialFilters?.nonExpiredProfit ?? null,
+		bepDifference: initialFilters?.bepDifference ?? null,
 	});
 
 	const submit = (e: React.FormEvent) => {
 		e.preventDefault();
+
+		try {
+			const { side, iotm, dueDays, openPositions, maxProfit, nonExpiredProfit, bepDifference } = inputs;
+			const appliedFilters: Partial<ICoveredCallFiltersModalStates> = {};
+
+			if (side.length > 0) appliedFilters.side = [...side];
+			if (iotm.length > 0) appliedFilters.iotm = [...iotm];
+			if (dueDays[0] || dueDays[1]) appliedFilters.dueDays = [...dueDays];
+			if (openPositions[0] || openPositions[1]) appliedFilters.openPositions = openPositions;
+			if (maxProfit) appliedFilters.nonExpiredProfit = maxProfit;
+			if (nonExpiredProfit) appliedFilters.nonExpiredProfit = nonExpiredProfit;
+			if (bepDifference) appliedFilters.bepDifference = bepDifference;
+
+			onSubmit(appliedFilters);
+		} catch (e) {
+			//
+		} finally {
+			dispatch(setCoveredCallFiltersModal(null));
+		}
 	};
 
 	const onSideChange = (v: TBsSides) => {
@@ -80,8 +108,11 @@ const SimpleFilter = () => {
 					<BepDifference value={inputs.bepDifference} onChange={(v) => setFieldValue('bepDifference', v)} />
 				</Filter>
 			</ul>
+
 			<div className='flex-justify-end'>
-				<button className='w-1/2 rounded py-8 btn-primary'>{t('apply_filters')}</button>
+				<button type='submit' className='w-1/2 rounded py-8 btn-primary'>
+					{t('apply_filters')}
+				</button>
 			</div>
 		</form>
 	);

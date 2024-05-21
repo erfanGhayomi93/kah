@@ -256,7 +256,7 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 
 export interface ICavertCallFiltersModal extends IBaseModalConfiguration {
 	initialFilters: Partial<ICoveredCallFiltersModalStates>;
-	onSubmit: (appliedFilters: ICoveredCallFiltersModalStates) => void;
+	onSubmit: (appliedFilters: Partial<ICoveredCallFiltersModalStates>) => void;
 }
 
 export type ModalState = TBaseModalProps<{
