@@ -278,12 +278,6 @@ declare interface IDashboardGrid {
 	hidden: boolean;
 }
 
-declare interface IBaseModalConfiguration {
-	moveable?: boolean;
-	animation?: boolean;
-	callbackFunction?: () => void;
-}
-
 declare interface SymbolContractModalStates {
 	term: string;
 	sendBaseSymbol: boolean;

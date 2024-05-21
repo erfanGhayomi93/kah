@@ -51,6 +51,8 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		pageNumber: 1,
 	});
 
+	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ICoveredCallFiltersModalStates>>({});
+
 	const { data, isFetching } = useCoveredCallStrategyQuery({
 		queryKey: [
 			'coveredCallQuery',
@@ -60,6 +62,10 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
+	const onFiltersChanged = (newFilters: Partial<ICoveredCallFiltersModalStates>) => {
+		setFilters(newFilters);
 	};
 
 	const execute = (data: Strategy.CoveredCall) => {
@@ -199,6 +205,15 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		setFieldsValue((prev) => ({
 			pageNumber: prev.pageNumber + 1,
 		}));
+	};
+
+	const showFilters = () => {
+		dispatch(
+			setCoveredCallFiltersModal({
+				initialFilters: filters,
+				onSubmit: onFiltersChanged,
+			}),
+		);
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall> & { colId: TCoveredCallColumns }>>(
@@ -513,7 +528,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
-					onShowFilters={() => dispatch(setCoveredCallFiltersModal({}))}
+					onShowFilters={showFilters}
 				/>
 
 				<Table<Strategy.CoveredCall>

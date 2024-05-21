@@ -24,7 +24,7 @@ import CashSettlementReportsFiltersModal from './CashSettlementReportsFiltersMod
 import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
 import ChoiceCollateral from './ChoiceCollateral';
 import Confirm from './Confirm';
-import CoveredCallFilters from './CovertCallFilters';
+import CoveredCallFilters from './CoveredCallFilters';
 import CreateStrategyModal from './CreateStrategyModal';
 import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
 import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
