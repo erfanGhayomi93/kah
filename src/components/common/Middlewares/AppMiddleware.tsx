@@ -1,9 +1,9 @@
 'use client';
 
 import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
+import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import { useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { versionParser } from '@/utils/helpers';
@@ -19,37 +19,41 @@ const getStates = createSelector(
 	(state: RootState) => state,
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state) && getBrokerIsSelected(state),
-		brokerURLs: getBrokerURLs(state),
 	}),
 );
 
 const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 	const queryClient = useQueryClient();
 
-	const { isLoggedIn, brokerURLs } = useAppSelector(getStates);
+	const { isLoggedIn } = useAppSelector(getStates);
 
 	useGetBrokerUrlQuery({
 		queryKey: ['getBrokerUrlQuery'],
 		enabled: isLoggedIn,
 	});
 
-	const onUserLoggedOutFromTheBroker = () => {
-		queryClient.setQueryData(['userInfoQuery'], null);
-		queryClient.setQueryData(['userRemainQuery'], null);
-		queryClient.setQueryData(['userStatusQuery'], null);
-		queryClient.setQueryData(['brokerOrdersCountQuery'], null);
-		queryClient.setQueryData(['openOrdersQuery'], null);
-		queryClient.setQueryData(['openOrdersQuery'], null);
-		queryClient.setQueryData(['executedOrdersQuery'], null);
-		queryClient.setQueryData(['draftOrdersQuery'], null);
-		queryClient.setQueryData(['optionOrdersQuery'], null);
-		queryClient.setQueryData(['commissionsQuery'], null);
+	const resetQueryClient = () => {
+		const keys = [
+			['userInfoQuery'],
+			['userRemainQuery'],
+			['userStatusQuery'],
+			['brokerOrdersCountQuery'],
+			['openOrdersQuery'],
+			['openOrdersQuery'],
+			['executedOrdersQuery'],
+			['draftOrdersQuery'],
+			['optionOrdersQuery'],
+			['commissionsQuery'],
+		];
+
+		keys.forEach((queryKey) => {
+			queryClient.setQueryData(queryKey, null);
+		});
 	};
 
 	useEffect(() => {
-		if (brokerURLs) return;
-		onUserLoggedOutFromTheBroker();
-	}, [brokerURLs]);
+		ipcMain.handle('broker:logged_out', resetQueryClient);
+	}, []);
 
 	useEffect(() => {
 		try {

@@ -3,6 +3,8 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
+import NoData from '@/components/common/NoData';
+import Loading from '@/components/common/Loading';
 
 const History = () => {
 	const t = useTranslations();
@@ -10,8 +12,9 @@ const History = () => {
 	const columnDefs = useMemo<Array<IColDef<unknown>>>(
 		() => [
 			{
-				headerName: '',
+				headerName: '#',
 				valueFormatter: () => '',
+				headerClass: 'w-36'
 			},
 			{
 				headerName: t('settings_page.username'),
@@ -50,10 +53,12 @@ const History = () => {
 	);
 
 	return (
-		<SettingCard title={t('settings_page.history_settings')} className='h-2/3'>
-			<div className='h-full bg-white'>
+		<SettingCard title={t('settings_page.history_settings')} className='h-3/5'>
+			<div className='bg-white' style={{ height: ([].length || 0) * 40 + 40 }}>
 				<LightweightTable columnDefs={columnDefs} rowData={[]} />
 			</div>
+			{![].length && <NoData/>}
+			{false && <Loading />}
 		</SettingCard>
 	);
 };

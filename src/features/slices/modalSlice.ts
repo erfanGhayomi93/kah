@@ -1,5 +1,3 @@
-'use client';
-
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 import { type ModalState } from './types/modalSlice.interfaces';

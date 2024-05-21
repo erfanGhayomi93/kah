@@ -254,7 +254,10 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 	onContractRemoved?: (id: string) => void;
 }
 
-export interface ICavertCallFilters extends IBaseModalConfiguration {}
+export interface ICavertCallFiltersModal extends IBaseModalConfiguration {
+	initialFilters: Partial<ICoveredCallFiltersModalStates>;
+	onSubmit: (appliedFilters: ICoveredCallFiltersModalStates) => void;
+}
 
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
@@ -293,5 +296,5 @@ export type ModalState = TBaseModalProps<{
 	tradesReportsFilters: ITradesReportsFilters;
 	createStrategy: ICreateStrategyModal;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
-	coveredCallFilters: ICavertCallFilters;
+	coveredCallFilters: ICavertCallFiltersModal;
 }>;

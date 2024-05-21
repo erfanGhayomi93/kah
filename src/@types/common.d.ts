@@ -32,3 +32,9 @@ declare type RequiredK<T, K extends PropertyKey = PropertyKey> = Required<Pick<T
 	: never;
 
 declare type Nullable<T> = null | T;
+
+declare interface IBaseModalConfiguration {
+	moveable?: boolean;
+	animation?: boolean;
+	callbackFunction?: () => void;
+}

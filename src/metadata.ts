@@ -4,6 +4,7 @@ const metadata: Metadata = {
 	metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
 	title: 'کهکشان',
 	applicationName: 'کهکشان',
+	robots: 'index,follow',
 	description:
 		'از دیده‌بان اختیار برای جستجو و فیلتر کردن ابزارها بر اساس ارزش بازار، بازده سود سهام، حجم، سهام‌های دارای نوسان و ... آنها استفاده کنید.',
 	appleWebApp: {

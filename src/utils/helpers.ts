@@ -1,4 +1,4 @@
-import { onUnauthorize } from '@/api/axios';
+import { logoutUser } from '@/api/axios';
 import { getDateMilliseconds } from '@/constants';
 import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
@@ -198,7 +198,7 @@ export const downloadFile = (url: string, name: string, params: Record<string, u
 			.then((response) => {
 				try {
 					const statusCode = Number(response.status);
-					if (statusCode === 401) onUnauthorize();
+					if (statusCode === 401) logoutUser();
 				} catch (e) {
 					//
 				}
@@ -238,7 +238,7 @@ export const downloadFileQueryParams = (
 			.then((response) => {
 				try {
 					const statusCode = Number(response.status);
-					if (statusCode === 401) onUnauthorize();
+					if (statusCode === 401) logoutUser();
 				} catch (e) {
 					//
 				}
@@ -662,4 +662,11 @@ export const calculateDateRange = (
 	if (date === 'dates.year') fromDate -= getDateMilliseconds.Year;
 
 	return { fromDate, toDate };
+};
+
+export const toggleArrayElement = <T>(array: T[], element: T): T[] => {
+	const index = array.indexOf(element);
+
+	if (index === -1) return [...array, element];
+	else return array.filter((item) => item !== element);
 };

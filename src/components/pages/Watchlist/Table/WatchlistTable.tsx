@@ -225,8 +225,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					initialHide: Boolean(modifiedWatchlistColumns?.premium?.isHidden ?? true),
 					minWidth: 128,
 					cellRenderer: CellPercentRenderer,
-					cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
-						percent: data ? data.optionWatchlistData.tradePriceVarPreviousTradePercent : 0,
+					cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+						percent: value[1] ?? 0,
 					}),
 					valueGetter: ({ data }) => [
 						data?.optionWatchlistData.premium ?? 0,
@@ -250,8 +250,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolPrice?.isHidden ?? true),
 					minWidth: 136,
 					cellRenderer: CellPercentRenderer,
-					cellRendererParams: ({ data }: ICellRendererParams<Option.Root, number>) => ({
-						percent: data ? data.optionWatchlistData.baseTradePriceVarPreviousTradePercent : 0,
+					cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+						percent: value[1] ?? 0,
 					}),
 					valueGetter: ({ data }) => [
 						data?.optionWatchlistData.baseSymbolPrice ?? 0,

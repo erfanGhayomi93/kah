@@ -163,8 +163,8 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				initialHide: initialHiddenColumnsLongStraddle.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
-					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongStraddle>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
 					data?.baseLastTradedPrice ?? 0,
@@ -268,8 +268,8 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				initialHide: initialHiddenColumnsLongStraddle.callPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
-					percent: data?.callPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongStraddle>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
@@ -280,8 +280,8 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				initialHide: initialHiddenColumnsLongStraddle.putPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
-					percent: data?.putPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongStraddle>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),

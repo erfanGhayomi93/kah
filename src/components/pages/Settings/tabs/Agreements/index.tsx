@@ -1,6 +1,8 @@
 'use client';
 import { useGetAgreements } from '@/api/queries/brokerPrivateQueries';
+import ipcMain from '@/classes/IpcMain';
 import Switch from '@/components/common/Inputs/Switch';
+import Loading from '@/components/common/Loading';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { DocSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -8,16 +10,23 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
+import NoData from '@/components/common/NoData';
 
 const Agreements = () => {
 	const t = useTranslations('settings_page');
 
 	const dispatch = useAppDispatch();
 	const brokerURLs = useAppSelector(getBrokerURLs);
+	const router = useRouter();
 
-	const { data: agreements, refetch: getAgreements } = useGetAgreements({
+	const {
+		data: agreements,
+		refetch: getAgreements,
+		isFetching: agreementsLoading,
+	} = useGetAgreements({
 		queryKey: ['getAgreements'],
 		enabled: !!brokerURLs,
 	});
@@ -77,11 +86,19 @@ const Agreements = () => {
 		[],
 	);
 
+	useEffect(() => {
+		ipcMain.handle('broker:logged_out', () => {
+			router.push('/settings/general/');
+		});
+	}, []);
+
 	return (
-		<SettingCard title={t('agreements_settings')} className='h-2/3'>
-			<div className='h-full bg-white'>
+		<SettingCard title={t('agreements_settings')} className='h-3/5'>
+			<div className='bg-white' style={{ height: (agreements?.length || 0) * 40 + 40 }}>
 				<LightweightTable<Settings.IAgreements[]> columnDefs={columnDef} rowData={agreements ?? []} />
 			</div>
+			{!agreements?.length && <NoData/>}
+			{agreementsLoading && <Loading />}
 		</SettingCard>
 	);
 };

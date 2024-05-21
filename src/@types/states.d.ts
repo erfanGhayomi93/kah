@@ -1,6 +1,7 @@
-declare interface INextProps<T extends object = {}> {
+declare interface INextProps<T = {}, K = {}> {
 	children: React.ReactNode;
 	params: T & { locale: string };
+	searchParams: K;
 }
 
 declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
@@ -275,12 +276,6 @@ declare interface IDashboardGrid {
 	h: number;
 	i: number;
 	hidden: boolean;
-}
-
-declare interface IBaseModalConfiguration {
-	moveable?: boolean;
-	animation?: boolean;
-	callbackFunction?: () => void;
 }
 
 declare interface SymbolContractModalStates {

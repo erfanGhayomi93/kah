@@ -264,7 +264,7 @@ declare type TProtectivePutColumns =
 	| 'optionBestBuyLimitPrice'
 	| 'optionBestBuyLimitQuantity'
 	| 'protectivePutBEP'
-	| 'maxLoss'
+	| 'maxLossPercent'
 	| 'profit'
 	| 'profitPercent'
 	| 'inUseCapital'
@@ -361,4 +361,14 @@ namespace CreateStrategy {
 	}
 
 	export type Input = CreateStrategy.IBaseSymbol | CreateStrategy.IOption | IFreeze;
+}
+
+interface ICoveredCallFiltersModalStates {
+	side: TBsSides[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPositions: [null | number, null | number];
+	maxProfit: null | number;
+	nonExpiredProfit: null | number;
+	bepDifference: null | number;
 }

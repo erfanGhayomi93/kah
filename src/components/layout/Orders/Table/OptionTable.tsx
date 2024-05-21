@@ -1,5 +1,6 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setChoiceCollateralModal } from '@/features/slices/modalSlice';
@@ -8,7 +9,6 @@ import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useRef } from 'react';
-import NoData from '../NoData';
 import OptionActionCell from '../common/OptionActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';
