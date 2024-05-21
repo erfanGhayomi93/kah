@@ -54,7 +54,10 @@ export const useCoveredCallStrategyQuery = createQuery<
 				WithCommission: withCommission,
 			};
 
-			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm[0];
+			if (filters?.symbols && filters.symbols.length > 0)
+				params.BaseSymbolISIN = filters.symbols.map((item) => item.symbolISIN);
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
 
 			if (filters?.dueDays) {
 				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
