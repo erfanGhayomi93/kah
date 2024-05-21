@@ -1,5 +1,6 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setConfirmModal } from '@/features/slices/modalSlice';
@@ -10,7 +11,6 @@ import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
-import NoData from '../NoData';
 import DraftActionCell from '../common/DraftActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';

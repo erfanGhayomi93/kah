@@ -9,7 +9,7 @@ import { cn, dateConverter } from '@/utils/helpers';
 import { createOrders, deleteDraft, deleteOrder } from '@/utils/orders';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './Orders.module.scss';
 
 interface HeaderProps {
@@ -131,12 +131,12 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 		setSelectedRows([]);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const removeHandler = ipcMain.handle('set_selected_orders', onSelectRows);
 		return () => removeHandler();
 	}, []);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		setSelectedRows([]);
 	}, [tab]);
 

@@ -1,4 +1,4 @@
-import { onUnauthorize } from '@/api/axios';
+import { logoutUser } from '@/api/axios';
 import { getDateMilliseconds } from '@/constants';
 import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
@@ -198,7 +198,7 @@ export const downloadFile = (url: string, name: string, params: Record<string, u
 			.then((response) => {
 				try {
 					const statusCode = Number(response.status);
-					if (statusCode === 401) onUnauthorize();
+					if (statusCode === 401) logoutUser();
 				} catch (e) {
 					//
 				}
@@ -238,7 +238,7 @@ export const downloadFileQueryParams = (
 			.then((response) => {
 				try {
 					const statusCode = Number(response.status);
-					if (statusCode === 401) onUnauthorize();
+					if (statusCode === 401) logoutUser();
 				} catch (e) {
 					//
 				}

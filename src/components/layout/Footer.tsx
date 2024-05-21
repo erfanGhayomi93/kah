@@ -1,7 +1,22 @@
-import { useAppSelector } from '@/features/hooks';
-import { getLsStatus } from '@/features/slices/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getLsStatus, getOrdersIsExpand, setOrdersIsExpand } from '@/features/slices/uiSlice';
+import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { cn } from '@/utils/helpers';
+import { createSelector } from '@reduxjs/toolkit';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { ArrowDownSVG } from '../icons';
+import Orders from './Orders';
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state) && getBrokerIsSelected(state),
+		lsStatus: getLsStatus(state),
+		ordersIsExpand: getOrdersIsExpand(state),
+	}),
+);
 
 const WifiSVG = ({ full }: { full: boolean }) => (
 	<svg width='2.4rem' height='2.4rem' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -25,37 +40,60 @@ const WifiSVG = ({ full }: { full: boolean }) => (
 );
 
 const Footer = () => {
-	const t = useTranslations();
+	const t = useTranslations('footer');
 
-	const lsStatus = useAppSelector(getLsStatus);
+	const dispatch = useAppDispatch();
+
+	const { isLoggedIn, lsStatus, ordersIsExpand } = useAppSelector(getStates);
 
 	return (
-		<footer className='h-40 border-t border-gray-600 bg-gray-200 px-24 flex-justify-between'>
-			<div className='h-full flex-justify-start'>
-				<a
-					target='_blank'
-					href='https://ramandtech.com/'
-					className='text-tiny font-normal text-gray-1000 transition-colors hover:text-secondary-300'
-				>
-					{t('footer.copyright')}
-				</a>
-			</div>
+		<div className='h-48 flex-column'>
+			<Orders />
 
-			<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
-				<span
-					className={cn(
-						'flex items-center gap-8 transition-colors',
-						lsStatus === 'CONNECTING'
-							? 'text-warning-100'
-							: lsStatus === 'DISCONNECTED'
-								? 'text-error-200'
-								: 'text-success-200',
+			<footer className='h-48 border-t border-gray-600 bg-white pl-24 flex-justify-between'>
+				<div className='h-full flex-justify-start'>
+					{isLoggedIn ? (
+						<button
+							type='button'
+							onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
+							className={clsx(
+								'h-full gap-8 px-16 text-base text-gray-1000 transition-colors flex-justify-center',
+								ordersIsExpand ? 'bg-secondary-100' : 'bg-gray-200',
+							)}
+						>
+							{t('orders')}
+							<ArrowDownSVG
+								style={{ transform: ordersIsExpand ? 'rotate(180deg)' : undefined }}
+								className='text-gray-900 transition-transform'
+							/>
+						</button>
+					) : (
+						<a
+							target='_blank'
+							href='https://ramandtech.com/'
+							className='pr-24 text-tiny font-normal text-gray-1000 transition-colors hover:text-secondary-300'
+						>
+							{t('copyright')}
+						</a>
 					)}
-				>
-					<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />
-				</span>
-			</div>
-		</footer>
+				</div>
+
+				<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
+					<span
+						className={cn(
+							'flex items-center gap-8 transition-colors',
+							lsStatus === 'CONNECTING'
+								? 'text-warning-100'
+								: lsStatus === 'DISCONNECTED'
+									? 'text-error-200'
+									: 'text-success-200',
+						)}
+					>
+						<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />
+					</span>
+				</div>
+			</footer>
+		</div>
 	);
 };
 

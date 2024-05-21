@@ -1,6 +1,6 @@
 'use client';
 
-import { store } from '@/features/store';
+import { type AppStore, store } from '@/features/store';
 import { useRef } from 'react';
 import { Provider } from 'react-redux';
 
@@ -9,7 +9,7 @@ interface IReduxToolkitRegistryProps {
 }
 
 export const ReduxToolkitRegistry = ({ children }: IReduxToolkitRegistryProps) => {
-	const storeRef = useRef(store);
+	const storeRef = useRef<AppStore>(store);
 
 	return <Provider store={storeRef.current}>{children}</Provider>;
 };

@@ -167,7 +167,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'dueDays',
@@ -217,7 +217,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 					percent: data?.premium ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
