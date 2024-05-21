@@ -270,7 +270,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			{
 				colId: 'maxLossPercent',
 				headerName: 'حداکثر زیان',
-				initialHide: initialHiddenColumnsProtectivePut.maxLoss,
+				initialHide: initialHiddenColumnsProtectivePut.maxLossPercent,
 				width: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ value }: ICellRendererParams<Strategy.ProtectivePut>) => ({
