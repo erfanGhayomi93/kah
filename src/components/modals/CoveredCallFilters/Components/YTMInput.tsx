@@ -1,15 +1,12 @@
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
-import { useTranslations } from 'next-intl';
 import Input, { Prefix } from './Input';
 
-interface NonExpiredProfitInputProps {
-	value: ICoveredCallFiltersModalStates['nonExpiredProfit'];
-	onChange: (v: ICoveredCallFiltersModalStates['nonExpiredProfit']) => void;
+interface YTMInputProps {
+	value: ICoveredCallFiltersModalStates['ytm'];
+	onChange: (v: ICoveredCallFiltersModalStates['ytm']) => void;
 }
 
-const NonExpiredProfitInput = ({ value, onChange }: NonExpiredProfitInputProps) => {
-	const t = useTranslations('common');
-
+const YTMInput = ({ value, onChange }: YTMInputProps) => {
 	const onChangeValue = (newValue: string) => {
 		const v = convertStringToInteger(newValue);
 
@@ -22,10 +19,10 @@ const NonExpiredProfitInput = ({ value, onChange }: NonExpiredProfitInputProps) 
 			type='text'
 			value={value === null ? '' : sepNumbers(String(value))}
 			onChange={(e) => onChangeValue(e.target.value)}
-			maxLength={16}
 			prefix={<Prefix />}
+			maxLength={16}
 		/>
 	);
 };
 
-export default NonExpiredProfitInput;
+export default YTMInput;

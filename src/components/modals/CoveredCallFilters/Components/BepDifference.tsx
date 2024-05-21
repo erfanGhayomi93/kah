@@ -1,6 +1,7 @@
-import { PercentSVG } from '@/components/icons';
-import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
-import Input from './Input';
+import InputLegend from '@/components/common/Inputs/InputLegend';
+import { convertStringToInteger } from '@/utils/helpers';
+import { useTranslations } from 'next-intl';
+import { Prefix } from './Input';
 
 interface BepDifferenceProps {
 	value: ICoveredCallFiltersModalStates['bepDifference'];
@@ -8,28 +9,40 @@ interface BepDifferenceProps {
 }
 
 const BepDifference = ({ value, onChange }: BepDifferenceProps) => {
-	const onChangeValue = (newValue: string) => {
-		const v = convertStringToInteger(newValue);
-
-		if (v === '') onChange(null);
-		else onChange(Number(v));
-	};
+	const t = useTranslations('strategy_filters');
 
 	return (
-		<Input
-			type='text'
-			value={value === null ? '' : sepNumbers(String(value))}
-			onChange={(e) => onChangeValue(e.target.value)}
-			maxLength={16}
-			prefix={
-				<div className='h-32 cursor-default select-none pl-8 flex-items-center'>
-					<span className='h-16 w-2 bg-gray-500' />
-					<span className='size-32 text-gray-700 flex-justify-center'>
-						<PercentSVG width='1.4rem' height='1.4rem' />
-					</span>
-				</div>
-			}
-		/>
+		<div className='flex gap-8'>
+			<InputLegend
+				value={value[0]}
+				onChange={(v) => {
+					const newValue = convertStringToInteger(v);
+					onChange([newValue === '' ? null : Number(newValue), value[1]]);
+				}}
+				placeholder={t('from')}
+				inputPlaceholder={t('first_value')}
+				maxLength={16}
+				prefix={<Prefix />}
+				className='size-full bg-transparent px-8 text-left ltr placeholder:text-right'
+				separator={false}
+				autoTranslateLegend
+			/>
+
+			<InputLegend
+				value={value[1]}
+				onChange={(v) => {
+					const newValue = convertStringToInteger(v);
+					onChange([value[0], v === '' ? null : Number(newValue)]);
+				}}
+				placeholder={t('to')}
+				inputPlaceholder={t('seconds_value')}
+				maxLength={16}
+				className='size-full bg-transparent px-8 text-left ltr placeholder:text-right'
+				prefix={<Prefix />}
+				separator={false}
+				autoTranslateLegend
+			/>
+		</div>
 	);
 };
 

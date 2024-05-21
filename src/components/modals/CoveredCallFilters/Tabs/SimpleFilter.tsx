@@ -6,13 +6,14 @@ import { useInputs } from '@/hooks';
 import { toggleArrayElement } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import BaseSymbolInput from '../../OptionWatchlistFiltersModal/inputs/BaseSymbolInput';
 import BepDifference from '../Components/BepDifference';
 import DueDaysInput from '../Components/DueDaysInput';
 import IOTMInput from '../Components/IOTMInput';
 import MaxProfitInput from '../Components/MaxProfitInput';
 import NonExpiredProfitInput from '../Components/NonExpiredProfitInput';
-import OpenPositionsInput from '../Components/OpenPositionsInput';
-import SideInput from '../Components/SideInput';
+import OpenPositionsInput from '../Components/OpenPositionInput';
+import YTMInput from '../Components/YTMInput';
 
 interface FilterProps {
 	title: string;
@@ -31,29 +32,31 @@ const SimpleFilter = ({ initialFilters, onSubmit }: SimpleFilterProps) => {
 	const dispatch = useAppDispatch();
 
 	const { inputs, setFieldValue } = useInputs<ICoveredCallFiltersModalStates>({
-		side: initialFilters?.side ?? [],
+		symbols: initialFilters?.symbols ?? [],
 		iotm: initialFilters?.iotm ?? [],
 		dueDays: initialFilters?.dueDays ?? [null, null],
-		openPositions: initialFilters?.openPositions ?? [null, null],
+		bepDifference: initialFilters?.bepDifference ?? [null, null],
+		openPosition: initialFilters?.openPosition ?? null,
 		maxProfit: initialFilters?.maxProfit ?? null,
 		nonExpiredProfit: initialFilters?.nonExpiredProfit ?? null,
-		bepDifference: initialFilters?.bepDifference ?? null,
+		ytm: initialFilters?.ytm ?? null,
 	});
 
 	const submit = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		try {
-			const { side, iotm, dueDays, openPositions, maxProfit, nonExpiredProfit, bepDifference } = inputs;
+			const { symbols, iotm, ytm, dueDays, openPosition, maxProfit, nonExpiredProfit, bepDifference } = inputs;
 			const appliedFilters: Partial<ICoveredCallFiltersModalStates> = {};
 
-			if (side.length > 0) appliedFilters.side = [...side];
+			if (symbols.length > 0) appliedFilters.symbols = [...symbols];
 			if (iotm.length > 0) appliedFilters.iotm = [...iotm];
 			if (dueDays[0] || dueDays[1]) appliedFilters.dueDays = [...dueDays];
-			if (openPositions[0] || openPositions[1]) appliedFilters.openPositions = openPositions;
+			if (bepDifference[0] || bepDifference[1]) appliedFilters.bepDifference = bepDifference;
+			if (openPosition) appliedFilters.openPosition = openPosition;
 			if (maxProfit) appliedFilters.nonExpiredProfit = maxProfit;
 			if (nonExpiredProfit) appliedFilters.nonExpiredProfit = nonExpiredProfit;
-			if (bepDifference) appliedFilters.bepDifference = bepDifference;
+			if (ytm) appliedFilters.ytm = ytm;
 
 			onSubmit(appliedFilters);
 		} catch (e) {
@@ -63,10 +66,6 @@ const SimpleFilter = ({ initialFilters, onSubmit }: SimpleFilterProps) => {
 		}
 	};
 
-	const onSideChange = (v: TBsSides) => {
-		setFieldValue('side', toggleArrayElement(inputs.side, v));
-	};
-
 	const onIOTMChange = (v: Option.IOTM) => {
 		setFieldValue('iotm', toggleArrayElement(inputs.iotm, v));
 	};
@@ -74,10 +73,9 @@ const SimpleFilter = ({ initialFilters, onSubmit }: SimpleFilterProps) => {
 	return (
 		<form onSubmit={submit} method='get' className='gap-32 pt-32 flex-column'>
 			<ul className='gap-32 flex-column'>
-				<Filter title={t('side')}>
-					<SideInput value={inputs.side} onClick={onSideChange} />
-				</Filter>
-
+				<li>
+					<BaseSymbolInput values={inputs.symbols} onChange={(values) => setFieldValue('symbols', values)} />
+				</li>
 				<Filter title={t('iotm')}>
 					<IOTMInput value={inputs.iotm} onClick={onIOTMChange} />
 				</Filter>
@@ -88,8 +86,8 @@ const SimpleFilter = ({ initialFilters, onSubmit }: SimpleFilterProps) => {
 
 				<Filter title={t('open_positions')}>
 					<OpenPositionsInput
-						value={inputs.openPositions}
-						onChange={(v) => setFieldValue('openPositions', v)}
+						value={inputs.openPosition}
+						onChange={(v) => setFieldValue('openPosition', v)}
 					/>
 				</Filter>
 
@@ -106,6 +104,10 @@ const SimpleFilter = ({ initialFilters, onSubmit }: SimpleFilterProps) => {
 
 				<Filter title={t('bep_difference')}>
 					<BepDifference value={inputs.bepDifference} onChange={(v) => setFieldValue('bepDifference', v)} />
+				</Filter>
+
+				<Filter title={t('ytm')}>
+					<YTMInput value={inputs.ytm} onChange={(v) => setFieldValue('ytm', v)} />
 				</Filter>
 			</ul>
 

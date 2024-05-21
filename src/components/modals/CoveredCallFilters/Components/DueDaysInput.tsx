@@ -11,7 +11,7 @@ const DueDaysInput = ({ value, onChange }: DueDaysInputProps) => {
 	const t = useTranslations('strategy_filters');
 
 	return (
-		<div className='flex h-40 w-full gap-8'>
+		<div className='flex gap-8'>
 			<InputLegend
 				value={value[0]}
 				onChange={(v) => {
@@ -21,7 +21,7 @@ const DueDaysInput = ({ value, onChange }: DueDaysInputProps) => {
 				placeholder={t('from')}
 				inputPlaceholder={t('first_value')}
 				maxLength={16}
-				className='h-full flex-1 bg-transparent px-8 text-center ltr'
+				className='size-full bg-transparent px-8 text-center ltr'
 				autoTranslateLegend
 			/>
 
@@ -34,7 +34,7 @@ const DueDaysInput = ({ value, onChange }: DueDaysInputProps) => {
 				placeholder={t('to')}
 				inputPlaceholder={t('seconds_value')}
 				maxLength={16}
-				className='h-full flex-1 bg-transparent px-8 text-center ltr'
+				className='size-full bg-transparent px-8 text-center ltr'
 				autoTranslateLegend
 			/>
 		</div>

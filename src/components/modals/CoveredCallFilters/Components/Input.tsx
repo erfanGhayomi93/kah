@@ -1,3 +1,4 @@
+import { PercentSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { forwardRef, type InputHTMLAttributes } from 'react';
 
@@ -17,5 +18,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 		</div>
 	);
 });
+
+export const Prefix = () => (
+	<span className='h-24 w-36 border-r border-r-input text-tiny text-gray-700 flex-justify-center'>
+		<PercentSVG width='1.2rem' height='1.2rem' className='text-gray-700' />
+	</span>
+);
 
 export default Input;

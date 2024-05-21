@@ -57,6 +57,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		queryKey: [
 			'coveredCallQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+			{ ...filters },
 		],
 	});
 
