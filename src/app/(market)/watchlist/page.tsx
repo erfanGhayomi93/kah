@@ -5,4 +5,12 @@ const Page: NextPage<INextProps> = async () => {
 	return <Watchlist />;
 };
 
+const generateMetadata = () => {
+	return {
+		title: 'دیده‌بان آپشن - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;

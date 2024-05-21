@@ -7,7 +7,17 @@
 		"source.removeUnused": "never",
 		"source.organizeImports": "explicit"
 	},
-	"cSpell.words": ["clsx", "doji", "kahkeshan", "payfast", "pushengine", "Scholes", "toman", "کدال"],
+	"cSpell.words": [
+		"clsx",
+		"doji",
+		"iotm",
+		"kahkeshan",
+		"payfast",
+		"pushengine",
+		"Scholes",
+		"toman",
+		"کدال"
+	],
 	"tailwindCSS.rootFontSize": 10,
 	"prettier.printWidth": 120,
 	"prettier.jsxSingleQuote": true,

@@ -51,6 +51,8 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		pageNumber: 1,
 	});
 
+	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ICoveredCallFiltersModalStates>>({});
+
 	const { data, isFetching } = useCoveredCallStrategyQuery({
 		queryKey: [
 			'coveredCallQuery',
@@ -60,6 +62,10 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
+	const onFiltersChanged = (newFilters: Partial<ICoveredCallFiltersModalStates>) => {
+		setFilters(newFilters);
 	};
 
 	const execute = (data: Strategy.CoveredCall) => {
@@ -201,6 +207,15 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		}));
 	};
 
+	const showFilters = () => {
+		dispatch(
+			setCoveredCallFiltersModal({
+				initialFilters: filters,
+				onSubmit: onFiltersChanged,
+			}),
+		);
+	};
+
 	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall> & { colId: TCoveredCallColumns }>>(
 		() => [
 			{
@@ -219,14 +234,14 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				initialHide: initialHiddenColumnsCoveredCall.baseLastTradedPrice,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'dueDays',
@@ -271,11 +286,11 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				initialHide: initialHiddenColumnsCoveredCall.tradePriceVarPreviousTradePercent,
 				width: 152,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.premium ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'optionBestBuyLimitPrice',
@@ -333,11 +348,11 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall>) => ({
-					percent: data?.maxProfitPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'nonExpiredProfitPercent',
@@ -349,11 +364,11 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					tooltip: 'بازده تا سررسید در صورت عدم اعمال توسط خریدار آپشن به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.CoveredCall, number>) => ({
-					percent: data?.nonExpiredProfitPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.nonExpiredProfit ?? 0, data?.nonExpiredProfitPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'inUseCapital',
@@ -513,7 +528,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
-					onShowFilters={() => dispatch(setCoveredCallFiltersModal({}))}
+					onShowFilters={showFilters}
 				/>
 
 				<Table<Strategy.CoveredCall>

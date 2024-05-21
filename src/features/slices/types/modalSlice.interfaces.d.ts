@@ -2,6 +2,12 @@ type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IB
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
+declare interface IBaseModalConfiguration {
+	moveable?: boolean;
+	animation?: boolean;
+	callbackFunction?: () => void;
+}
+
 export interface IBlackScholes extends IBaseModalConfiguration {
 	symbolISIN?: string;
 }
@@ -254,7 +260,10 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 	onContractRemoved?: (id: string) => void;
 }
 
-export interface ICavertCallFilters extends IBaseModalConfiguration {}
+export interface ICavertCallFiltersModal extends IBaseModalConfiguration {
+	initialFilters: Partial<ICoveredCallFiltersModalStates>;
+	onSubmit: (appliedFilters: ICoveredCallFiltersModalStates) => void;
+}
 
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
@@ -293,5 +302,5 @@ export type ModalState = TBaseModalProps<{
 	tradesReportsFilters: ITradesReportsFilters;
 	createStrategy: ICreateStrategyModal;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
-	coveredCallFilters: ICavertCallFilters;
+	coveredCallFilters: ICavertCallFiltersModal;
 }>;

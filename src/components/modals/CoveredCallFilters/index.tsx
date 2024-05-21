@@ -1,16 +1,17 @@
 import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
 import { setCoveredCallFiltersModal } from '@/features/slices/modalSlice';
+import { type ICavertCallFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useMemo } from 'react';
 import Modal, { Header } from '../Modal';
-import Simple from './tabs/Simple';
+import SimpleFilter from './Tabs/SimpleFilter';
 
-interface ICovertCallFilters extends IBaseModalConfiguration {}
+interface CoveredCallFiltersProps extends ICavertCallFiltersModal {}
 
-const CoveredCallFilters = forwardRef<HTMLDivElement, ICovertCallFilters>((props, ref) => {
-	const t = useTranslations();
+const CoveredCallFilters = forwardRef<HTMLDivElement, CoveredCallFiltersProps>((props, ref) => {
+	const t = useTranslations('strategy_filters');
 
 	const dispatch = useAppDispatch();
 
@@ -25,13 +26,13 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, ICovertCallFilters>((props
 	const TABS = useMemo(
 		() => [
 			{
-				id: 'normal',
-				title: t('CoveredCall.simple_filters'),
-				render: () => <Simple />,
+				id: 'simple',
+				title: t('simple_filters'),
+				render: () => <SimpleFilter />,
 			},
 			{
-				id: 'strategy',
-				title: t('CoveredCall.conditional_filters'),
+				id: 'conditional',
+				title: t('conditional_filters'),
 				render: null,
 				disabled: true,
 			},
@@ -40,14 +41,20 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, ICovertCallFilters>((props
 	);
 
 	return (
-		<Modal onClose={onCloseModal} {...props} ref={ref}>
+		<Modal
+			top='50%'
+			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			onClose={onCloseModal}
+			{...props}
+			ref={ref}
+		>
 			<div style={{ width: '70rem' }}>
-				<Header label={t('strategy_filters.title')} onClose={onCloseModal} onClear={onClear} />
+				<Header label={t('title')} onClose={onCloseModal} onClear={onClear} />
 
 				<div className='bg-white p-24'>
 					<Tabs
 						data={TABS}
-						defaultActiveTab='normal'
+						defaultActiveTab='simple'
 						renderTab={(item, activeTab) => (
 							<button
 								className={cn(

@@ -5,4 +5,12 @@ const Page: NextPage<INextProps> = async () => {
 	return <Saturn />;
 };
 
+const generateMetadata = () => {
+	return {
+		title: 'زحل - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;

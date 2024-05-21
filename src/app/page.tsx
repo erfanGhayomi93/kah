@@ -5,4 +5,12 @@ const Page: NextPage<INextProps> = async () => {
 	return <Dashboard />;
 };
 
+const generateMetadata = () => {
+	return {
+		title: 'داشبورد - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;
