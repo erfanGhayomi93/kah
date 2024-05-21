@@ -3,7 +3,7 @@ import { forwardRef, type InputHTMLAttributes } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	prefix?: string;
-	classInput?: string;
+	classInput?: ClassesValue;
 	num2persianValue?: string;
 	error?: string;
 }
@@ -14,14 +14,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 	return (
 		<div className='relative flex flex-col gap-4'>
 			<div className='h-full flex-1 rounded border border-gray-500 flex-items-center input-group'>
-				<input
-					ref={ref}
-					className={clsx('h-40 flex-1 rounded px-8 text-left ltr', {
-						[classInput ?? '']: !!classInput,
-						[classInput ?? '']: !!classInput,
-					})}
-					{...resProps}
-				/>
+				<input ref={ref} className={clsx('h-40 flex-1 rounded px-8 text-left ltr', classInput)} {...resProps} />
 
 				{!!prefix && (
 					<span className='h-24 w-36 border-r border-r-gray-500 text-tiny text-gray-700 flex-justify-center'>
