@@ -181,14 +181,14 @@ const Conversion = (strategy: ConversionProps) => {
 				initialHide: initialHiddenColumnsConversion.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
-					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.Conversion>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'dueDays',
@@ -212,11 +212,11 @@ const Conversion = (strategy: ConversionProps) => {
 				initialHide: initialHiddenColumnsConversion.callPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
-					percent: data?.callPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.Conversion>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.callPremium ?? 0, data?.callPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'putPremiumPercent',
@@ -224,11 +224,11 @@ const Conversion = (strategy: ConversionProps) => {
 				initialHide: initialHiddenColumnsConversion.putPremiumPercent,
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongStraddle, number>) => ({
-					percent: data?.putPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.Conversion>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.putPremium ?? 0, data?.putPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'callSymbolTitle',
@@ -240,7 +240,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueGetter: ({ data }) => data?.callSymbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
-					getIOTM: (data: Strategy.LongStraddle) => data!.callIOTM,
+					getIOTM: (data: Strategy.Conversion) => data!.callIOTM,
 				},
 			},
 			{
@@ -295,7 +295,7 @@ const Conversion = (strategy: ConversionProps) => {
 				valueGetter: ({ data }) => data?.putSymbolTitle ?? '−',
 				cellRenderer: CellSymbolTitleRendererRenderer,
 				cellRendererParams: {
-					getIOTM: (data: Strategy.LongStraddle) => data!.putIOTM,
+					getIOTM: (data: Strategy.Conversion) => data!.putIOTM,
 				},
 			},
 			{

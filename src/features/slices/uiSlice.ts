@@ -1,5 +1,3 @@
-'use client';
-
 import LocalstorageInstance from '@/classes/Localstorage';
 import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';

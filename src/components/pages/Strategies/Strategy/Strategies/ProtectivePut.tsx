@@ -160,14 +160,14 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				initialHide: initialHiddenColumnsProtectivePut.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
-					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.ProtectivePut>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'dueDays',
@@ -213,11 +213,11 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				initialHide: initialHiddenColumnsProtectivePut.tradePriceVarPreviousTradePercent,
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
-					percent: data?.premium ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.ProtectivePut>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
@@ -272,8 +272,12 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				headerName: 'حداکثر زیان',
 				initialHide: initialHiddenColumnsProtectivePut.maxLoss,
 				width: 152,
-				valueGetter: ({ data }) => data?.maxLoss ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.ProtectivePut>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.maxLoss ?? 0, 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'profit',

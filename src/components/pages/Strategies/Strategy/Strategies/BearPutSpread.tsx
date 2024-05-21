@@ -166,14 +166,14 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'dueDays',
@@ -299,22 +299,22 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'قیمت نماد پوت خرید',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.hspPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'lspPremiumPercent',
 				headerName: 'قیمت نماد پوت فروش',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.lspPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'bullCallSpreadBEP',
@@ -336,11 +336,11 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.maxProfitPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'maxLoss',

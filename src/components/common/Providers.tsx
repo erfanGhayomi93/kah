@@ -7,12 +7,9 @@ import ToastRegistry from '@/components/common/Registry/ToastRegistry';
 import ClockProvider from '@/contexts/ClockContext';
 import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
 import dynamic from 'next/dynamic';
+import ReduxToolkitRegistry from './Registry/ReduxToolkitRegistry';
 
 const LightstreamRegistry = dynamic(() => import('@/components/common/Registry/LightstreamRegistry'), {
-	ssr: false,
-});
-
-const ReduxToolkitRegistry = dynamic(() => import('@/components/common/Registry/ReduxToolkitRegistry'), {
 	ssr: false,
 });
 

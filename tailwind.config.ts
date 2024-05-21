@@ -442,6 +442,44 @@ const config: Config = {
 					},
 				},
 
+				'.btn-secondary': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.white'),
+					border: '2px solid transparent',
+					'background-color': theme('colors.secondary.300'),
+					transition: 'background-color 250ms ease-in-out',
+
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.secondary.400'),
+					},
+				},
+
+				'.btn-secondary-outline': {
+					display: 'flex',
+					'align-items': 'center',
+					'justify-content': 'center',
+					color: theme('colors.secondary.300'),
+					'font-weight': '500',
+					'background-color': 'transparent',
+					border: `2px solid ${theme('colors.secondary.300')}`,
+					transition: 'background-color 250ms, color 250ms, border-color 250ms',
+					'transition-timing-function': 'ease-in-out',
+
+					'&:not(:disabled):hover': {
+						color: theme('colors.white'),
+						'background-color': theme('colors.secondary.300'),
+						'border-color': theme('colors.secondary.300'),
+					},
+
+					'&:disabled': {
+						'box-shadow': 'none !important',
+						'background-color': `${theme('colors.gray.400')} !important`,
+						color: `${theme('colors.gray.800')} !important`,
+					},
+				},
+
 				'.btn-warning': {
 					display: 'flex',
 					'align-items': 'center',
