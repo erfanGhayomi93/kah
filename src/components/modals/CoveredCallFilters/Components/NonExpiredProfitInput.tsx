@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 
 interface NonExpiredProfitInputProps {
 	value: ICoveredCallFiltersModalStates['nonExpiredProfit'];
-	onChange: (v: number | null) => void;
+	onChange: (v: ICoveredCallFiltersModalStates['nonExpiredProfit']) => void;
 }
 
 const NonExpiredProfitInput = ({ value, onChange }: NonExpiredProfitInputProps) => {

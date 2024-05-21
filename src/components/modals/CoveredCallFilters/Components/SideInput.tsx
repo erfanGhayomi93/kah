@@ -14,7 +14,7 @@ const SideInput = ({ value, onClick }: SideInputProps) => {
 	};
 
 	return (
-		<div className='flex h-40 gap-8 *:h-full *:flex-1 *:rounded *:!border'>
+		<div className='flex h-40 gap-8 *:h-full *:flex-1 *:rounded *:!border *:font-medium'>
 			<button
 				type='button'
 				className={clsx(includes('buy') ? 'btn-primary' : 'btn-primary-outline')}

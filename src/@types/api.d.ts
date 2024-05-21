@@ -1816,6 +1816,7 @@ declare namespace Strategy {
 		optionBestSellLimitQuantity: number;
 		protectivePutBEP: number;
 		maxLoss: number;
+		maxLossPercent: number;
 		profitAmount: number;
 		profitPercent: number;
 		inUseCapital: number;
