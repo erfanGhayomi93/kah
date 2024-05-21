@@ -4,6 +4,7 @@ import Main from '@/components/layout/Main';
 import Strategy from '@/components/pages/Strategies/Strategy';
 import { redirect } from '@/navigation';
 import type { NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const getStrategy = (id: string) =>
 	new Promise<Strategy.GetAll | undefined>(async (resolve) => {
@@ -33,6 +34,15 @@ const Page: NextPage<INextStrategyProps> = async ({ params: { id } }) => {
 		</Main>
 	);
 };
+
+const generateMetadata = async ({ params: { id } }: INextStrategyProps) => {
+	const t = await getTranslations(id);
+	return {
+		title: `استراتژی ${t('title')} - کهکشان`,
+	};
+};
+
+export { generateMetadata };
 
 export const revalidate = 3600;
 

@@ -13,4 +13,12 @@ const Page: NextPage<INextProps> = async () => {
 	);
 };
 
+const generateMetadata = () => {
+	return {
+		title: 'استراتژی‌ها - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;

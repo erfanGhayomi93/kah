@@ -149,14 +149,14 @@ const LongPut = (strategy: LongPutProps) => {
 					initialHiddenColumnsLongPut.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
-					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongPut>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
 					data?.baseLastTradedPrice ?? 0,
 					data?.baseTradePriceVarPreviousTradePercent ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'dueDays',
@@ -201,11 +201,11 @@ const LongPut = (strategy: LongPutProps) => {
 				tradePriceVarPreviousTradePercent: initialHiddenColumnsLongPut.tradePriceVarPreviousTradePercent,
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
-					percent: data?.premium ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongPut>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'optionBestSellLimitPrice',
@@ -263,11 +263,11 @@ const LongPut = (strategy: LongPutProps) => {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.LongPut, number>) => ({
-					percent: data?.profitPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongPut>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
-				valueFormatter: ({ value }) => sepNumbers(String(value[1])),
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'profit',

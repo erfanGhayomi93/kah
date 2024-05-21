@@ -30,6 +30,7 @@
 		"accessor-pairs": "off",
 		"@next/next/no-img-element": "off",
 		"n/handle-callback-err": "off",
+		"@typescript-eslint/await-thenable": "off",
 		"@typescript-eslint/prefer-nullish-coalescing": "off",
 		"n/no-callback-literal": "off",
 		"@typescript-eslint/no-unsafe-argument": "off",

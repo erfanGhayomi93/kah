@@ -24,7 +24,7 @@ const useInputs = <T extends object>(props: T) => {
 		}
 	};
 
-	return { inputs, setFieldValue, setFieldsValue };
+	return { inputs, setFieldValue, setFieldsValue, setInputs };
 };
 
 export default useInputs;
