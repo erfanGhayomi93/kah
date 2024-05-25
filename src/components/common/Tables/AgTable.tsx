@@ -46,7 +46,7 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 
 						const colId = column.getColId();
 
-						api.ensureColumnVisible(colId);
+						// api.ensureColumnVisible(colId);
 						api.flashCells({
 							columns: [colId],
 						});
