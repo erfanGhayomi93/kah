@@ -5,11 +5,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './SymbolPriceSlider.module.scss';
 import Tooltip from './Tooltip';
 
-interface IConfig {
-	firstTradedPrice: 0;
-	firstTradedPriceAsPercent: 0;
-	lastTradedPrice: 0;
-	lastTradedPriceAsPercent: 0;
+interface ISymbolPriceSliderConfig {
+	firstTradedPrice: number;
+	firstTradedPriceAsPercent: number;
+	lastTradedPrice: number;
+	lastTradedPriceAsPercent: number;
 	buySliderWidth: number;
 	sellSliderWidth: number;
 	lowestTradePriceOfTradingDayAsPercent: number;
@@ -51,7 +51,7 @@ const SymbolPriceSlider = ({
 
 	const rootRef = useRef<HTMLDivElement>(null);
 
-	const [config, setConfig] = useState<IConfig>({
+	const [config, setConfig] = useState<ISymbolPriceSliderConfig>({
 		firstTradedPrice: 0,
 		firstTradedPriceAsPercent: 0,
 		lastTradedPrice: 0,
@@ -174,7 +174,7 @@ const SymbolPriceSlider = ({
 		try {
 			if (!borderRef.current) return;
 
-			const instanceOfConfig: IConfig = {
+			const instanceOfConfig = {
 				firstTradedPrice: 0,
 				firstTradedPriceAsPercent: 0,
 				lastTradedPrice: 0,
@@ -189,7 +189,23 @@ const SymbolPriceSlider = ({
 
 			const borderWidth = borderRef.current.offsetWidth;
 			const [lowThreshold, highThreshold] = thresholdData;
+			const [firstTradedPrice, lastTradedPrice] = exchangeData;
 			const [lowestTradePriceOfTradingDay, highestTradePriceOfTradingDay] = boundaryData;
+
+			// Calculate (firstTradedPrice, lastTradedPrice)
+			const maxMinusMin = highThreshold - lowThreshold;
+			instanceOfConfig.firstTradedPrice =
+				(1 - (highThreshold - firstTradedPrice) / maxMinusMin) * borderWidth - 5;
+			if (instanceOfConfig.firstTradedPrice > borderWidth - 5)
+				instanceOfConfig.firstTradedPrice = borderWidth - 5;
+			instanceOfConfig.lastTradedPrice = (1 - (highThreshold - lastTradedPrice) / maxMinusMin) * borderWidth - 5;
+			if (instanceOfConfig.lastTradedPrice < -5) instanceOfConfig.lastTradedPrice = -5;
+
+			// Calculate (firstTradedPriceAsPercent, lastTradedPriceAsPercent)
+			instanceOfConfig.firstTradedPriceAsPercent =
+				Number((((firstTradedPrice - yesterdayClosingPrice) / yesterdayClosingPrice) * 100).toFixed(2)) * 1;
+			instanceOfConfig.lastTradedPriceAsPercent =
+				Number((((lastTradedPrice - yesterdayClosingPrice) / yesterdayClosingPrice) * 100).toFixed(2)) * 1;
 
 			// Calculate slider width
 			const halfOfRootWidth = borderWidth / 2;
