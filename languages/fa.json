@@ -1003,7 +1003,16 @@
 		"manage_columns": "مدیریت ستون‌های جدول"
 	},
 	"build_strategy": {
-		"no_data": "هیچ استراتژی وجود ندارد"
+		"no_data": "هیچ استراتژی وجود ندارد",
+		"create_your_strategy": "استراتژی دلخواه خود را بسازید",
+		"most_profit": "بیشترین سود",
+		"break_even_point": "سر به سر",
+		"risk": "ریسک",
+		"time_value": "ارزش زمانی",
+		"most_loss": "بیشترین ضرر",
+		"required_budget": "بودجه مورد نیاز",
+		"profit_probability": "احتمال سود",
+		"required_margin": "وجه تضمین مورد نیاز"
 	},
 	"strategy_filters": {
 		"title": "فیلتر",

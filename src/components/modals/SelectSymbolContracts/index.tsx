@@ -6,7 +6,7 @@ import { type ISelectSymbolContractsModal } from '@/features/slices/types/modalS
 import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import ContractsTable from './ContractsTable';
@@ -47,6 +47,8 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 		const dispatch = useAppDispatch();
 
+		const [baseSymbol, setBaseSymbol] = useState<Record<'symbolTitle' | 'symbolISIN', string> | null>(symbol);
+
 		const {
 			inputs: states,
 			setFieldValue,
@@ -74,7 +76,10 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		};
 
 		const onSubmit = () => {
-			callback(states.contracts, canSendBaseSymbol && states.sendBaseSymbol && symbol ? symbol.symbolISIN : null);
+			callback(
+				states.contracts,
+				canSendBaseSymbol && states.sendBaseSymbol && baseSymbol ? baseSymbol.symbolISIN : null,
+			);
 			onCloseModal();
 		};
 
@@ -91,10 +96,11 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 					<div className='flex-1 gap-16 p-24 flex-column'>
 						<Toolbar
+							symbol={baseSymbol}
 							canChangeBaseSymbol={canChangeBaseSymbol}
 							settlementDay={states.activeSettlement}
-							setSettlementDay={(v) => setFieldValue('activeSettlement', v)}
-							symbol={symbol}
+							onBaseSymbolChange={(v) => setBaseSymbol(v)}
+							onSettlementDayChanged={(v) => setFieldValue('activeSettlement', v)}
 						/>
 
 						<ContractsTable
@@ -102,11 +108,11 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							contracts={states.contracts}
 							setContracts={(v) => setFieldValue('contracts', v)}
 							settlementDay={states.activeSettlement}
-							symbolISIN={symbol?.symbolISIN}
+							symbolISIN={baseSymbol?.symbolISIN}
 							maxContracts={maxContracts}
 						/>
 
-						{canSendBaseSymbol && symbol && (
+						{canSendBaseSymbol && baseSymbol && (
 							<div
 								style={{ flex: '0 0 4rem' }}
 								className='rounded bg-white px-8 shadow-card flex-items-center'
@@ -115,7 +121,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 									label={
 										<>
 											{t('select_symbol_contracts_modal.base_symbol')}:
-											<span className='pr-4 font-medium'>{symbol?.symbolTitle ?? '−'}</span>
+											<span className='pr-4 font-medium'>{baseSymbol?.symbolTitle ?? '−'}</span>
 										</>
 									}
 									checked={states.sendBaseSymbol}
@@ -131,8 +137,8 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							<ul className='flex flex-1 flex-wrap gap-16'>
 								{states.sendBaseSymbol && (
 									<Contract
-										key={symbol?.symbolISIN}
-										symbolTitle={symbol?.symbolTitle ?? ''}
+										key={baseSymbol?.symbolISIN}
+										symbolTitle={baseSymbol?.symbolTitle ?? ''}
 										onRemove={() => setFieldValue('sendBaseSymbol', false)}
 									/>
 								)}

@@ -384,13 +384,16 @@ declare interface IBsModalInputs {
 	holdAfterOrder: boolean;
 }
 
-declare interface IAnalyzeModalInputs {
-	chartData: Array<Record<'x' | 'y', number>>;
+declare interface IAnalyzeInputs {
 	minPrice: number;
 	maxPrice: number;
+	baseAssets: number;
+}
+
+declare interface IAnalyzeModalInputs extends IAnalyzeInputs {
+	chartData: Array<Record<'x' | 'y', number>>;
 	mostProfit: number;
 	mostLoss: number;
-	baseAssets: number;
 	bep: Record<'x' | 'y', number>;
 	budget: number;
 	profitProbability: number;
