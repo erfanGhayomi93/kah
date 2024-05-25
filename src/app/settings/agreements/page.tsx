@@ -1,6 +1,7 @@
 import Agreements from '@/components/pages/Settings/tabs/Agreements';
+import type { NextPage } from 'next';
 
-const Page = () => <Agreements />;
+const Page: NextPage<INextProps> = async () => <Agreements />;
 
 const generateMetadata = () => {
 	return {

@@ -1,10 +1,8 @@
 import FreezeUnFreezeReports from '@/components/pages/OptionReports/FreezeUnFreezeReports';
+import type { NextPage } from 'next';
 
-
-const page = () => {
-	return (
-		<FreezeUnFreezeReports />
-	);
+const Page: NextPage<INextProps> = async () => {
+	return <FreezeUnFreezeReports />;
 };
 
-export default page;
+export default Page;

@@ -1,6 +1,7 @@
 import Transactions from '@/components/pages/FinancialReports/Transactions';
+import { type NextPage } from 'next';
 
-const Page = () => {
+const Page: NextPage<INextProps> = async () => {
 	return <Transactions />;
 };
 

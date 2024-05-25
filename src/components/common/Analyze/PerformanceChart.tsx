@@ -38,7 +38,7 @@ const COLORS = {
 };
 
 const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => {
-	const t = useTranslations();
+	const t = useTranslations('analyze_modal');
 
 	const [chartOptions, setChartOptions] = useState<IChartOptions>({
 		series: [
@@ -90,12 +90,7 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 	};
 
 	const getBepAnnotation = (target: IPoint) => {
-		return getAnnotationStyle(
-			target.x,
-			t('analyze_modal.break_even_point'),
-			String(target.x),
-			'rgba(127, 26, 255, 1)',
-		);
+		return getAnnotationStyle(target.x, t('break_even_point'), String(target.x), 'rgba(127, 26, 255, 1)');
 	};
 
 	useEffect(() => {
@@ -105,13 +100,7 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 
 		const options: IChartOptions = {
 			annotations: [
-				getAnnotationStyle(
-					baseAssets,
-					t('analyze_modal.base_assets'),
-					String(baseAssets),
-					'rgba(0, 87, 255, 1)',
-					true,
-				),
+				getAnnotationStyle(baseAssets, t('base_assets'), String(baseAssets), 'rgba(0, 87, 255, 1)', true),
 			],
 			series: [],
 			colors: [],
@@ -209,10 +198,10 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 						custom: ({ seriesIndex, dataPointIndex, w }) => {
 							const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
 
-							const li1 = `<li><span>${t('analyze_modal.base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(data.x ?? 0))}</span></li>`;
-							const li2 = `<li><span>${t('analyze_modal.current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - inputs.baseAssets)))}</span></li>`;
-							const li3 = `<li><span>${t('analyze_modal.rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
-							const li4 = `<li><span>${t('analyze_modal.ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
+							const li1 = `<li><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(data.x ?? 0))}</span></li>`;
+							const li2 = `<li><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - inputs.baseAssets)))}</span></li>`;
+							const li3 = `<li><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
+							const li4 = `<li><span>${t('ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
 
 							return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
 						},
@@ -265,7 +254,7 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 
 			{chartOptions.series.length < 2 && (
 				<div className='absolute size-full bg-white center'>
-					<NoData />
+					<NoData text={t('no_active_contract_found')} />
 				</div>
 			)}
 		</div>

@@ -1,7 +1,7 @@
 import ChangeBrokerReports from '@/components/pages/ChangeBrokerReports';
+import { type NextPage } from 'next';
 
-
-const Page = () => {
+const Page: NextPage<INextProps> = async () => {
 	return <ChangeBrokerReports />;
 };
 

@@ -798,7 +798,7 @@
 	},
 	"analyze_modal": {
 		"title": "آنالیز",
-		"no_trade_found": "هیچ معامله‌ای وجود ندارد",
+		"no_data": "قراردادی ",
 		"make_your_own_strategy": "استراتژی دلخواه خود را بسازید",
 		"send_all": "ارسال همه",
 		"performance": "بازده (عملکرد)",
@@ -826,7 +826,8 @@
 		"base_symbol_price": "قیمت دارایی پایه",
 		"current_base_price_distance": "فاصله تا قیمت فعلی سهم پایه",
 		"rial_efficiency": "بازده ریالی",
-		"ytm": "YTM بازده موثر سالانه"
+		"ytm": "YTM بازده موثر سالانه",
+		"no_active_contract_found": "هیچ قرارداد فعالی وجود ندارد"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",

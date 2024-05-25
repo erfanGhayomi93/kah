@@ -18,7 +18,7 @@ interface GreeksTableProps {
 }
 
 const GreeksTable = ({ contracts }: GreeksTableProps) => {
-	const t = useTranslations();
+	const t = useTranslations('analyze_modal');
 
 	const dispatch = useAppDispatch();
 
@@ -54,35 +54,35 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<ITableData>>>(
 		() => [
 			{
-				headerName: t('analyze_modal.symbolTitle'),
+				headerName: t('symbolTitle'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.symbol.symbolISIN),
 				valueFormatter: (row) => row.symbol.symbolTitle,
 			},
 			{
-				headerName: t('analyze_modal.delta'),
+				headerName: t('delta'),
 				cellClass: 'ltr',
 				valueFormatter: ({ symbol: { optionType }, deltaCall, deltaPut }) =>
 					toFixed(optionType === 'call' ? deltaCall : deltaPut, 4),
 			},
 			{
-				headerName: t('analyze_modal.theta'),
+				headerName: t('theta'),
 				cellClass: 'ltr',
 				valueFormatter: ({ symbol: { optionType }, thetaCall, thetaPut }) =>
 					toFixed(optionType === 'call' ? thetaCall : thetaPut, 4),
 			},
 			{
-				headerName: t('analyze_modal.gama'),
+				headerName: t('gama'),
 				cellClass: 'ltr',
 				valueFormatter: ({ gamma }) => toFixed(gamma, 8),
 			},
 			{
-				headerName: t('analyze_modal.vega'),
+				headerName: t('vega'),
 				cellClass: 'ltr',
 				valueFormatter: ({ vega }) => toFixed(vega, 4),
 			},
 			{
-				headerName: t('analyze_modal.rho'),
+				headerName: t('rho'),
 				cellClass: 'ltr',
 				valueFormatter: ({ symbol: { optionType }, rhoCall, rhoPut }) =>
 					toFixed(optionType === 'call' ? rhoCall : rhoPut, 4),
@@ -94,7 +94,7 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 	if (dataMapper.length === 0)
 		return (
 			<div className='absolute center'>
-				<NoData />
+				<NoData text={t('no_active_contract_found')} />
 			</div>
 		);
 
