@@ -1,7 +1,7 @@
-import type { NextPage } from 'next';
+import MarketMap from '@/components/pages/MarketMap';
 
-const Page: NextPage<INextProps> = async () => {
-	return <div />;
+const Page = () => {
+	return <MarketMap />;
 };
 
 const generateMetadata = () => {
