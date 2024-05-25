@@ -5,9 +5,9 @@ import { useDebounce } from '@/hooks';
 import { cn, findStringIn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import styles from '../index.module.scss';
+import styles from './BaseSymbolAdvanceSearch.module.scss';
 
-interface BaseSymbolInputProps {
+interface BaseSymbolAdvanceSearchProps {
 	values: Option.BaseSearch[];
 	onChange: (values: IOptionWatchlistFilters['symbols']) => void;
 }
@@ -26,7 +26,7 @@ const SelectedSymbol = ({ title, onRemoveSymbol }: SelectedSymbolProps) => (
 	</li>
 );
 
-const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
+const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchProps) => {
 	const t = useTranslations();
 
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -287,4 +287,4 @@ const BaseSymbolInput = ({ values, onChange }: BaseSymbolInputProps) => {
 	);
 };
 
-export default BaseSymbolInput;
+export default BaseSymbolAdvanceSearch;
