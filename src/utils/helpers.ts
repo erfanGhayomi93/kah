@@ -11,7 +11,7 @@ import { getBrokerClientId, getClientId } from './cookie';
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
-	const formattedIntegerPart: string = num?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	const formattedIntegerPart: string = num?.replace?.(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 	return formattedIntegerPart;
 };
@@ -342,6 +342,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		paymentDeleteRequest: data.PaymentDeleteRequest,
 		acceptAgreement: data.AcceptAgreement,
 		mobileOtpRequest: data.MobileOtpRequest,
+		getDataProviderv1MarketMap: data.DataProviderv1MarketMap,
+		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
 	};
 
 	return urls;

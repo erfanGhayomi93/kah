@@ -67,7 +67,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* تاریخ تسویه نقدی */
 				{
@@ -121,7 +121,7 @@ const PhysicalSettlementReportsTable = ({
 					sortable: false,
 					// cellRenderer: CellTooltipRenderer,
 					valueFormatter: ({ value }) =>
-						value >= 0 ? (value > 1e7 ? numFormatter(value, false) : sepNumbers(value)) : '',
+						value >= 0 ? (value > 1e7 ? numFormatter(value, false) : sepNumbers(String(value))) : '',
 				},
 				/* تعداد درخواست برای تسویه */
 				{
@@ -133,7 +133,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* تعداد پذیرفته شده */
 				{
@@ -145,7 +145,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* تعداد نکول */
 				{
@@ -157,7 +157,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* مبلغ نکول */
 				{
@@ -169,7 +169,7 @@ const PhysicalSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* درخواست کننده */
 				{

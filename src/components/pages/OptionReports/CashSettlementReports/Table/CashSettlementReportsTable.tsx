@@ -67,7 +67,7 @@ const CashSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* تاریخ تسویه نقدی */
 				{
@@ -121,7 +121,7 @@ const CashSettlementReportsTable = ({
 					sortable: false,
 					// cellRenderer: CellTooltipRenderer,
 					valueFormatter: ({ value }) =>
-						value >= 0 ? (value > 1e7 ? numFormatter(value, false) : sepNumbers(value)) : '',
+						value >= 0 ? (value > 1e7 ? numFormatter(value, false) : sepNumbers(String(value))) : '',
 				},
 				/* تعداد درخواست برای تسویه */
 				{
@@ -133,7 +133,7 @@ const CashSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* تعداد پذیرفته شده */
 				{
@@ -145,7 +145,7 @@ const CashSettlementReportsTable = ({
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
+					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
 				/* درخواست کننده */
 				{
