@@ -3,19 +3,14 @@ import WithdrawalCashReportsActionCell from '@/components/pages/FinancialReports
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 interface CashSettlementReportsTableProps {
 	reports: Reports.ICashSettlementReports[] | null;
 	columnsVisibility: CashSettlementReports.ICashSettlementReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<CashSettlementReports.ICashSettlementReportsColumnsState[]>>;
 }
 
-const CashSettlementReportsTable = ({
-	reports,
-	columnsVisibility,
-	setColumnsVisibility,
-}: CashSettlementReportsTableProps) => {
+const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettlementReportsTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Reports.ICashSettlementReports>>(null);
@@ -53,7 +48,7 @@ const CashSettlementReportsTable = ({
 					valueFormatter: ({ value }) => t('common.' + String(value).toLowerCase()),
 					cellClass: ({ data }) => {
 						if (!data) return '';
-						return data?.side === 'Call' ? 'text-success-200' : 'text-error-200';
+						return data?.side === 'Buy' ? 'text-success-200' : 'text-error-200';
 					},
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},

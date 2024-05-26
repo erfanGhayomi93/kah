@@ -139,14 +139,6 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 
 	const dispatchBuySellModal = ({ depth, data }: SectorNode | SymbolNode) => {
 		if (depth < 2) return;
-
-		const side: 'buy' | 'sell' = (data as MarketMap.Symbol).cpp >= 0 ? 'buy' : 'sell';
-		// dispatch(
-		// 	addBuySellModal({
-		// 		symbolISIN: (data as MarketMap.Symbol).si,
-		// 		side,
-		// 	}),
-		// );
 	};
 
 	const onEnter = (d: d3.Selection<d3.EnterElement, SymbolNode, SVGGElement, unknown>) => {
@@ -524,14 +516,11 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 
 	const setSector = (node: SectorNode | SymbolNode) => {
 		try {
-			const sectorList = (queryClient.getQueryData(['marketMapSectorsQuery']) || []) as MarketMap.SectorAPI[];
-
-			const { data } = node;
-			if (!('sc' in data)) return;
-
-			const sectorCode = Number(String(data.sc).trim());
-			const sector = sectorList.find((sector) => Number(sector.id) === sectorCode) || null;
-
+			// const sectorList = (queryClient.getQueryData(['marketMapSectorsQuery']) || []) as MarketMap.SectorAPI[];
+			// const { data } = node;
+			// if (!('sc' in data)) return;
+			// const sectorCode = Number(String(data.sc).trim());
+			// const sector = sectorList.find((sector) => Number(sector.id) === sectorCode) || null;
 			// setFilters((values) => ({
 			// 	...values,
 			// 	sector: Number(values.sector?.id) === sectorCode ? null : sector,
@@ -545,7 +534,7 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 		const result: MarketMap.Sector[] = [];
 
 		try {
-			const { display, map, market, palette, percentage, property, symbolType, sector, watchlist } = filters;
+			const { map, market, percentage, symbolType, sector, watchlist } = filters;
 
 			for (let i = 0; i < data.s.length; i++) {
 				const sectorData = data.s[i];

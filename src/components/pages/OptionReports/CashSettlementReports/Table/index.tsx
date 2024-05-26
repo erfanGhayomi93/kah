@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import CashSettlementReportsTable from './CashSettlementReportsTable';
 
 interface TableProps {
@@ -14,16 +14,16 @@ interface TableProps {
 	) => void;
 	setFieldsValue: (props: Partial<CashSettlementReports.ICashSettlementReportsFilters>) => void;
 	columnsVisibility: CashSettlementReports.ICashSettlementReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<CashSettlementReports.ICashSettlementReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
-
+const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: TableProps) => {
 	const { data: cashSettlementReportsData, isLoading } = useCashSettlementReportsQuery({
 		queryKey: ['cashSettlementReports', filters],
 	});
 
-	const onFiltersChanged = (newFilters: Omit<CashSettlementReports.ICashSettlementReportsFilters, 'pageNumber' | 'pageSize'>) => {
+	const onFiltersChanged = (
+		newFilters: Omit<CashSettlementReports.ICashSettlementReportsFilters, 'pageNumber' | 'pageSize'>,
+	) => {
 		setFieldsValue(newFilters);
 	};
 
@@ -41,7 +41,6 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 		return cashSettlementReportsData?.result;
 	}, [cashSettlementReportsData?.result]);
 
-
 	const dataIsEmpty = reports.length === 0;
 
 	return (
@@ -53,11 +52,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 					transition: 'height 250ms ease',
 				}}
 			>
-				<CashSettlementReportsTable
-					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
-					reports={reports}
-				/>
+				<CashSettlementReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
 			<div className='py-22 flex-justify-end'>

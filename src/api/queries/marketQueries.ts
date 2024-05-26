@@ -11,8 +11,6 @@ export const useMarketMapQuery = createQuery<MarketMap.Root | null, ['marketMapQ
 		try {
 			const urls = getBrokerURLs(store.getState());
 
-			console.log(urls, 'urls');
-
 			if (!urls) return null;
 
 			const response = await brokerAxios.get<ServerResponse<MarketMap.Root>>(urls.getDataProviderv1MarketMap, {

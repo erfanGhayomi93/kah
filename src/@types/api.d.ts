@@ -672,7 +672,8 @@ declare namespace Broker {
 		| 'AcceptAgreement'
 		| 'MobileOtpRequest'
 		| 'DataProviderv1MarketMap'
-		| 'getSectorSectorsWithTrades';
+		| 'getSectorSectorsWithTrades'
+		| 'deleteFreezeUnFreeze';
 
 	type URL = Record<UrlKey, string>;
 
@@ -2016,7 +2017,7 @@ declare namespace Reports {
 		symbolTitle: string;
 		openPositionCount: number;
 		cashSettlementDate: string;
-		side: side;
+		side: 'Buy' | 'Sell';
 		settlementRequestType: 'MaximumStrike' | 'PartialStrike' | null;
 		requestCount: number;
 		enabled: boolean;
@@ -2036,7 +2037,7 @@ declare namespace Reports {
 		symbolTitle: string;
 		openPositionCount: number;
 		cashSettlementDate: string;
-		side: Side;
+		side: 'Buy' | 'Sell';
 		settlementRequestType: 'MaximumStrike' | 'PartialStrike' | null;
 		requestCount: number;
 		status: TstatusSettlement;
