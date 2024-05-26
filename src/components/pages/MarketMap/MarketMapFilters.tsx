@@ -97,13 +97,13 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		[],
 	);
 
-	const MapTypes = useMemo<Array<TMarketMapFilters['map']>>(() => {
-		return [
-			{ id: 'all', label: t('market_map.map_type_all') },
-			{ id: 'portfolio', label: t('market_map.map_type_portfolio') },
-			{ id: 'watchlist', label: t('market_map.map_type_watchlist') },
-		];
-	}, []);
+	// const MapTypes = useMemo<Array<TMarketMapFilters['map']>>(() => {
+	// 	return [
+	// 		{ id: 'all', label: t('market_map.map_type_all') },
+	// 		{ id: 'portfolio', label: t('market_map.map_type_portfolio') },
+	// 		{ id: 'watchlist', label: t('market_map.map_type_watchlist') },
+	// 	];
+	// }, []);
 
 	const ListOfMarkets = useMemo<Array<TMarketMapFilters['market']>>(() => {
 		return [
@@ -129,22 +129,22 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		];
 	}, []);
 
-	const SymbolTypes = useMemo<Array<TMarketMapFilters['symbolType']>>(() => {
-		return [
-			{ id: 'all', label: t('market_map.symbol_type_all') },
-			{ id: 'SharesInFarabourse', label: t('market_map.symbol_type_shares') },
-			{ id: 'PreemptionRight', label: t('market_map.symbol_type_preemption_right') },
-			{ id: 'StockFund', label: t('market_map.symbol_type_stock_fund') },
-			{ id: 'FixedFund', label: t('market_map.symbol_type_fixed_fund') },
-			{ id: 'MixedFund', label: t('market_map.symbol_type_mixed_fund') },
-			{ id: 'RealEstateFund', label: t('market_map.symbol_type_real_estate_fund') },
-			{ id: 'VentureFund', label: t('market_map.symbol_type_venture_fund') },
-			{ id: 'CommodityExchangeFund', label: t('market_map.symbol_type_commodity_exchange_fund') },
-			{ id: 'CommodityDepositCertificate', label: t('market_map.symbol_type_commodity_deposit_certificate') },
-			{ id: 'SaffronCertificate', label: t('market_map.symbol_type_saffron_certificate') },
-			{ id: 'GoldCoinCertificate', label: t('market_map.symbol_type_gold_coin_certificate') },
-		];
-	}, []);
+	// const SymbolTypes = useMemo<Array<TMarketMapFilters['symbolType']>>(() => {
+	// 	return [
+	// 		{ id: 'all', label: t('market_map.symbol_type_all') },
+	// 		{ id: 'SharesInFarabourse', label: t('market_map.symbol_type_shares') },
+	// 		{ id: 'PreemptionRight', label: t('market_map.symbol_type_preemption_right') },
+	// 		{ id: 'StockFund', label: t('market_map.symbol_type_stock_fund') },
+	// 		{ id: 'FixedFund', label: t('market_map.symbol_type_fixed_fund') },
+	// 		{ id: 'MixedFund', label: t('market_map.symbol_type_mixed_fund') },
+	// 		{ id: 'RealEstateFund', label: t('market_map.symbol_type_real_estate_fund') },
+	// 		{ id: 'VentureFund', label: t('market_map.symbol_type_venture_fund') },
+	// 		{ id: 'CommodityExchangeFund', label: t('market_map.symbol_type_commodity_exchange_fund') },
+	// 		{ id: 'CommodityDepositCertificate', label: t('market_map.symbol_type_commodity_deposit_certificate') },
+	// 		{ id: 'SaffronCertificate', label: t('market_map.symbol_type_saffron_certificate') },
+	// 		{ id: 'GoldCoinCertificate', label: t('market_map.symbol_type_gold_coin_certificate') },
+	// 	];
+	// }, []);
 
 	return (
 		<div className=' p-8 '>

@@ -39,9 +39,8 @@ const PhysicalSettlementReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<CashSettlementReports.ICashSettlementReportsFilters>(
-		initialCashSettlementReportsFilters,
-	);
+	const { inputs, setFieldValue, setFieldsValue } =
+		useInputs<PhysicalSettlementReports.IPhysicalSettlementReportsFilters>(initialCashSettlementReportsFilters);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'physical_settlement_column',

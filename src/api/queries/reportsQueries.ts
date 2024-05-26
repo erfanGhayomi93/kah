@@ -471,8 +471,6 @@ export const usePhysicalSettlementReportsQuery = createQuery<
 		try {
 			const url = getBrokerURLs(store.getState());
 
-			console.log(url, 'rul');
-
 			if (!url) return null;
 
 			const [
