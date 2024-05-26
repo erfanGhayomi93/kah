@@ -676,7 +676,8 @@ declare namespace Broker {
 		| 'MobileOtpRequest'
 		| 'DataProviderv1MarketMap'
 		| 'getSectorSectorsWithTrades'
-		| 'deleteFreezeUnFreeze';
+		| 'deleteFreezeUnFreeze'
+		| 'settlementdeleteCash';
 
 	type URL = Record<UrlKey, string>;
 
