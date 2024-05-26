@@ -1,4 +1,3 @@
-import { fetchSymbolInfo } from '@/api/actions';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Switch from '@/components/common/Inputs/Switch';
@@ -72,8 +71,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			},
 		});
 
-		const [isFetchingBaseSymbol, setIsFetchingBaseSymbol] = useState(false);
-
 		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 		const { inputs, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
@@ -103,13 +100,13 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			dispatch(setAnalyzeModal(null));
 		};
 
-		const addContracts = async (contracts: Option.Root[], baseSymbolISIN: null | string) => {
+		const handleContracts = (contracts: Option.Root[], baseSymbol: Symbol.Info | null) => {
+			const l = contracts.length;
+
+			const result: TSymbolStrategy[] = [];
+			const selectedResult: string[] = [];
+
 			try {
-				const l = contracts.length;
-
-				const result: TSymbolStrategy[] = [];
-				const selectedResult: string[] = [];
-
 				for (let i = 0; i < l; i++) {
 					const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
 
@@ -117,56 +114,46 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					selectedResult.push(item.id);
 				}
 
-				if (baseSymbolISIN) {
-					try {
-						setIsFetchingBaseSymbol(true);
+				if (baseSymbol) {
+					const baseSymbolId = uuidv4();
 
-						const symbol = await fetchSymbolInfo(baseSymbolISIN);
-						if (symbol) {
-							const baseSymbolId = uuidv4();
-
-							result.push({
-								type: 'base',
-								id: baseSymbolId,
-								marketUnit: symbol.marketUnit,
-								quantity: 1,
-								price: symbol.lastTradedPrice,
-								side: 'buy',
-								symbol: {
-									symbolTitle: symbol.symbolTitle,
-									symbolISIN: symbol.symbolISIN,
-									baseSymbolPrice: symbol.lastTradedPrice,
-								},
-							});
-							selectedResult.push(baseSymbolId);
-						}
-					} catch (e) {
-						//
-					} finally {
-						setIsFetchingBaseSymbol(false);
-					}
+					result.push({
+						type: 'base',
+						id: baseSymbolId,
+						marketUnit: baseSymbol.marketUnit,
+						quantity: 1,
+						price: baseSymbol.lastTradedPrice,
+						side: 'buy',
+						symbol: {
+							symbolTitle: baseSymbol.symbolTitle,
+							symbolISIN: baseSymbol.symbolISIN,
+							baseSymbolPrice: baseSymbol.lastTradedPrice,
+						},
+					});
+					selectedResult.push(symbol.symbolISIN);
 				}
 
 				setSymbolContracts(result);
 				setSelectedContracts(selectedResult);
-				onContractsChanged?.(contracts, baseSymbolISIN);
+				onContractsChanged?.(contracts, baseSymbol?.symbolISIN ?? null);
 			} catch (e) {
-				setIsFetchingBaseSymbol(false);
+				//
 			}
 		};
 
 		const addNewContracts = () => {
+			const initialSelectedContracts = symbolContracts
+				.filter((item) => item !== null)
+				.map(({ symbol }) => symbol.symbolISIN);
+
 			dispatch(
 				setSelectSymbolContractsModal({
-					symbol,
-					maxContracts: null,
-					initialSelectedContracts: symbolContracts
-						.filter((item) => item !== null)
-						.map((item) => item.symbol.symbolISIN) as string[],
-					canChangeBaseSymbol: false,
-					canSendBaseSymbol: true,
+					initialBaseSymbolISIN: symbol.symbolISIN,
+					initialSelectedContracts,
+					suppressBaseSymbolChange: true,
+					suppressSendBaseSymbol: false,
 					initialSelectedBaseSymbol: symbolContracts.findIndex((c) => c.type === 'base') > -1,
-					callback: addContracts,
+					callback: handleContracts,
 				}),
 			);
 		};
@@ -408,12 +395,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 										{t('analyze_modal.send_all')}
 									</button>
 								</div>
-
-								{isFetchingBaseSymbol && (
-									<div style={{ zIndex: '99' }} className='absolute left-0 top-0 size-full bg-white'>
-										<Loading />
-									</div>
-								)}
 							</div>
 
 							<div className='h-full overflow-auto px-16 pb-16 pt-12'>

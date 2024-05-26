@@ -280,9 +280,9 @@ declare interface IDashboardGrid {
 
 declare interface SymbolContractModalStates {
 	term: string;
+	baseSymbol: Option.BaseSearch | null;
 	sendBaseSymbol: boolean;
 	contracts: Option.Root[];
-	contractType: Record<'id' | 'title', string>;
 	activeSettlement: Option.BaseSettlementDays | null;
 }
 

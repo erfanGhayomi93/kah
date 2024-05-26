@@ -394,7 +394,7 @@ export const defaultTransactionColumns: Transaction.ITransactionColumnsState[] =
 	{
 		id: 'id',
 		title: 'ردیف',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'date',
@@ -437,7 +437,7 @@ export const defaultInstantDepositReportsColumn: InstantDepositReports.TInstantD
 	{
 		id: 'id',
 		title: 'شماره ردیف',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'saveDate',
@@ -466,49 +466,50 @@ export const defaultInstantDepositReportsColumn: InstantDepositReports.TInstantD
 	},
 ];
 
-export const defaultDepositWithReceiptReportsColumn: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[] = [
-	{
-		id: 'id',
-		title: 'ردیف',
-		hidden: false,
-	},
-	{
-		id: 'receiptDate',
-		title: 'زمان',
-		hidden: false,
-	},
-	{
-		id: 'providerType',
-		title: 'بانک کارگزاری',
-		hidden: false,
-	},
-	{
-		id: 'receiptNumber',
-		title: 'شماره فیش',
-		hidden: false,
-	},
-	{
-		id: 'amount',
-		title: 'مبلغ',
-		hidden: false,
-	},
-	{
-		id: 'state',
-		title: 'وضعیت',
-		hidden: false,
-	},
-	{
-		id: 'action',
-		title: 'عملیات',
-		hidden: false,
-	},
-];
+export const defaultDepositWithReceiptReportsColumn: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[] =
+	[
+		{
+			id: 'id',
+			title: 'ردیف',
+			hidden: false,
+		},
+		{
+			id: 'receiptDate',
+			title: 'زمان',
+			hidden: false,
+		},
+		{
+			id: 'providerType',
+			title: 'بانک کارگزاری',
+			hidden: false,
+		},
+		{
+			id: 'receiptNumber',
+			title: 'شماره فیش',
+			hidden: false,
+		},
+		{
+			id: 'amount',
+			title: 'مبلغ',
+			hidden: false,
+		},
+		{
+			id: 'state',
+			title: 'وضعیت',
+			hidden: false,
+		},
+		{
+			id: 'action',
+			title: 'عملیات',
+			hidden: false,
+		},
+	];
 
 export const defaultWithdrawalCashReportsColumn: WithdrawalCashReports.TWithdrawalCashReportsColumnsState[] = [
 	{
 		id: 'id',
 		title: 'ردیف',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'saveDate',
@@ -538,8 +539,8 @@ export const defaultWithdrawalCashReportsColumn: WithdrawalCashReports.TWithdraw
 	{
 		id: 'action',
 		title: 'عملیات',
-		hidden: false
-	}
+		hidden: false,
+	},
 ];
 
 export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBrokerReportsColumnsState[] = [
@@ -832,18 +833,18 @@ export const defaultTradesReportsColumns: TradesReports.ITradesReportsColumnsSta
 	{
 		id: 'totalQuota',
 		title: 'کارمزد',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'total',
 		title: 'ارزش معامله',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'validity',
 		title: 'اعتبار',
 		hidden: false,
-	}
+	},
 ];
 
 export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];

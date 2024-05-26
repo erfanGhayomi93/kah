@@ -77,6 +77,8 @@ const AsyncSelect = <T,>({
 	};
 
 	const onOpen = () => {
+		if (disabled) return;
+
 		setMode('focusing');
 		onChangeTerm('');
 	};
@@ -137,7 +139,7 @@ const AsyncSelect = <T,>({
 						classes?.root,
 						!placeholder && [styles.border, classes?.border],
 						disabled && ['disabled', styles.disabled, classes?.disabled],
-						mode && [styles.focus, classes?.focus],
+						mode && !disabled && [styles.focus, classes?.focus],
 					)}
 				>
 					<input
@@ -145,10 +147,14 @@ const AsyncSelect = <T,>({
 						className={cn(styles.input, classes?.input)}
 						value={term}
 						disabled={disabled}
-						onFocus={() => setOpen(true)}
+						onFocus={() => {
+							if (!disabled) setOpen(true);
+						}}
 						onChange={(e) => {
-							onChangeTerm(e.target.value);
-							setMode('typing');
+							if (!disabled) {
+								onChangeTerm(e.target.value);
+								setMode('typing');
+							}
 						}}
 					/>
 
@@ -188,7 +194,9 @@ const AsyncSelect = <T,>({
 							type='button'
 							style={{ transform: open ? 'rotate(180deg)' : undefined }}
 							className={cn(styles.icon, classes?.icon)}
-							onClick={() => setOpen(!open)}
+							onClick={() => {
+								if (!disabled) setOpen(!open);
+							}}
 						>
 							<ArrowDownSVG width='1.6rem' height='1.6rem' />
 						</button>

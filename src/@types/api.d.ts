@@ -261,7 +261,7 @@ declare namespace Option {
 		companyISIN: string;
 		companyName: string;
 		insCode: null | string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 	}
 
 	export interface Search {
@@ -271,7 +271,7 @@ declare namespace Option {
 		companyISIN: string;
 		companyName: string;
 		insCode: string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 		marketUnit: string;
 		isOption: boolean;
 	}
@@ -283,7 +283,7 @@ declare namespace Option {
 		companyISIN: string;
 		companyName: string;
 		insCode: string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 		marketUnit: string;
 		isOption: boolean;
 	}
@@ -336,9 +336,12 @@ declare namespace Option {
 }
 
 declare namespace Symbol {
+	export type TradeState = 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+
 	export interface Info {
 		symbolISIN: string;
 		symbolTitle: string;
+		companyISIN: string;
 		companyName: string;
 		insCode: string;
 		exchange: string;
@@ -366,7 +369,7 @@ declare namespace Symbol {
 		eps: null | number;
 		pe: null | number;
 		ps: null | number;
-		symbolTradeState: string;
+		symbolTradeState: Symbol.TradeState;
 		individualBuyVolume: number;
 		numberOfIndividualsBuyers: number;
 		individualSellVolume: number;
@@ -397,7 +400,7 @@ declare namespace Symbol {
 		marketUnit: string;
 		companyName: string;
 		insCode: null | string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 	}
 
 	export interface BestLimit {
@@ -464,7 +467,7 @@ declare namespace Symbol {
 		ps: number;
 		marketUnit: string;
 		symbolOrderState: string;
-		symbolTradeState: string;
+		symbolTradeState: Symbol.TradeState;
 		groupState: string;
 		symbolState: string;
 		companyCode: string;

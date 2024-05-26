@@ -3,20 +3,20 @@ import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
 import { SettlementItem } from '@/components/pages/OptionChain/Toolbar';
 import { useEffect, useState } from 'react';
 
-type TSymbol = Record<'symbolISIN' | 'symbolTitle', string> | null;
-
 interface ToolbarProps {
-	canChangeBaseSymbol: boolean;
+	suppressBaseSymbolChange: boolean;
 	settlementDay: Option.BaseSettlementDays | null;
-	symbol: null | TSymbol;
-	onBaseSymbolChange: (v: TSymbol) => void;
+	symbol: Option.BaseSearch | null;
+	isPending: boolean;
+	onBaseSymbolChange: (v: Option.BaseSearch | null) => void;
 	onSettlementDayChanged: (item: Option.BaseSettlementDays) => void;
 }
 
 const Toolbar = ({
 	symbol,
 	settlementDay,
-	canChangeBaseSymbol,
+	suppressBaseSymbolChange,
+	isPending,
 	onBaseSymbolChange,
 	onSettlementDayChanged,
 }: ToolbarProps) => {
@@ -43,17 +43,18 @@ const Toolbar = ({
 		onSettlementDayChanged(settlementDays[0]);
 	}, [JSON.stringify(settlementDays)]);
 
-	useEffect(() => {
-		if (!baseSymbol) return;
-
-		onBaseSymbolChange(baseSymbol);
-	}, [baseSymbol]);
-
 	return (
 		<div className='gap-24 flex-items-center'>
-			{canChangeBaseSymbol && (
+			{!suppressBaseSymbolChange && (
 				<div style={{ flex: '0 0 25.6rem' }}>
-					<BaseSymbolSearch value={baseSymbol} onChange={(symbol) => setBaseSymbol(symbol)} />
+					<BaseSymbolSearch
+						value={baseSymbol}
+						onChange={(symbol) => {
+							setBaseSymbol(symbol);
+							onBaseSymbolChange(symbol);
+						}}
+						disabled={isPending}
+					/>
 				</div>
 			)}
 
