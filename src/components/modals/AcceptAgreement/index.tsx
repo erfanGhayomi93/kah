@@ -1,10 +1,10 @@
 import brokerAxios from '@/api/brokerAxios';
+import { store } from '@/api/inject-store';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import { useAppDispatch } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
 import { type IAcceptAgreement } from '@/features/slices/types/modalSlice.interfaces';
-import { store } from '@/features/store';
 import { useMutation } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 import { useTranslations } from 'next-intl';

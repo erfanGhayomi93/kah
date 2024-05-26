@@ -4,7 +4,7 @@ import StrategyDetails from '@/components/pages/Strategies/BuildStrategy/Strateg
 import StrategyLayout from '@/components/pages/Strategies/StrategyLayout';
 import type { NextPage } from 'next';
 
-const Page: NextPage<INextProps> = async () => {
+const Page: NextPage<INextProps> = () => {
 	return (
 		<StrategyLayout isBuilding>
 			<div className='flex-1 gap-16 rounded bg-white p-24 flex-column'>
