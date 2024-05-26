@@ -1,7 +1,7 @@
 import OptionChain from '@/components/pages/OptionChain';
 import type { NextPage } from 'next';
 
-const Page: NextPage<INextProps> = async () => {
+const Page: NextPage<INextProps> = () => {
 	return <OptionChain />;
 };
 

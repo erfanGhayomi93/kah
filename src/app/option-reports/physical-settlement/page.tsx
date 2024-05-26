@@ -1,9 +1,8 @@
 import PhysicalSettlementReports from '@/components/pages/OptionReports/PhysicalSettlementReports';
+import type { NextPage } from 'next';
 
-const page = () => {
-	return (
-		<PhysicalSettlementReports />
-	);
+const Page: NextPage<INextProps> = () => {
+	return <PhysicalSettlementReports />;
 };
 
-export default page;
+export default Page;

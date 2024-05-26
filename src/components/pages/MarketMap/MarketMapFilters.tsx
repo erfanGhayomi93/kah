@@ -1,3 +1,4 @@
+import Select from '@/components/common/Inputs/Select';
 import Tooltip from '@/components/common/Tooltip';
 import { CameraSVG, LongshotSVG, ReloadSVG } from '@/components/icons';
 import { useDebounce } from '@/hooks';
@@ -147,25 +148,41 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 	return (
 		<div className=' p-8 '>
-			<div className=' flex w-full items-center justify-between gap-32 overflow-hidden rounded bg-white p-8'>
-				<ul className='flex items-center gap-10'>
-					{ListOfMarkets.map(({ id, label }) => (
-						<li key={id}>
-							<button
-								style={{ width: '11.2rem' }}
-								type='button'
-								className={clsx(
-									'h-40  rounded !border transition-colors',
-									id === filters.market.id
-										? 'no-hover font-medium btn-select'
-										: 'border-gray-500 text-gray-900 hover:btn-hover',
-								)}
-							>
-								{label}
-							</button>
-						</li>
-					))}
-				</ul>
+			<div className=' flex w-full items-center justify-between  overflow-hidden rounded bg-white p-8'>
+				<div className='flex items-center gap-10'>
+					<ul className='flex items-center gap-10'>
+						{ListOfMarkets.map(({ id, label }) => (
+							<li key={id}>
+								<button
+									style={{ width: '11.2rem' }}
+									type='button'
+									className={clsx(
+										'h-40  rounded !border transition-colors',
+										id === filters.market.id
+											? 'no-hover font-medium btn-select'
+											: 'border-gray-500 text-gray-900 hover:btn-hover',
+									)}
+								>
+									{label}
+								</button>
+							</li>
+						))}
+					</ul>
+
+					<div style={{ minWidth: '0.1rem', minHeight: '3rem' }} className='mx-8 bg-gray-400' />
+
+					<div className='w-88'>
+						<Select
+							onChange={(option) => setFieldValue('property', option)}
+							options={ListOfProperties}
+							getOptionId={(option) => option.id}
+							getOptionTitle={(option) => <span>{t(option.label)}</span>}
+							placeholder={t('market_map.market_based_on')}
+							defaultValue={filters.property}
+							classes={{ root: 'h-32' }}
+						/>
+					</div>
+				</div>
 
 				<div className='flex items-center gap-24'>
 					<ul role='menu' className='flex h-full flex-row-reverse items-center gap-2'>

@@ -1,6 +1,7 @@
 import MarketMap from '@/components/pages/MarketMap';
+import { type NextPage } from 'next';
 
-const Page = () => {
+const Page: NextPage<INextProps> = () => {
 	return <MarketMap />;
 };
 

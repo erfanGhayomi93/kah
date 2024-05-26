@@ -28,4 +28,5 @@ const tableSlice = createSlice({
 export const { setOptionWatchlistColumns } = tableSlice.actions;
 
 export const getOptionWatchlistColumns = (state: RootState) => state.table.optionWatchlistColumns;
+
 export default tableSlice.reducer;

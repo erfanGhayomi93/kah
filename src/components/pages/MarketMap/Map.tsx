@@ -1,5 +1,3 @@
-'use client';
-
 import { useMarketMapQuery } from '@/api/queries/marketQueries';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
