@@ -29,7 +29,7 @@ export const useOptionWatchlistQuery = createQuery<
 				params.MinimumTradeValue = props.minimumTradesValue;
 
 			if (Array.isArray(props.symbols) && props.symbols.length > 0)
-				params.SymbolISINs = props.symbols.map((item) => item.symbolISIN);
+				params.BaseSymbolISINs = props.symbols.map((item) => item.symbolISIN);
 
 			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
 
