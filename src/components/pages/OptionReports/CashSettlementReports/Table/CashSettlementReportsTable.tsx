@@ -54,7 +54,6 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 		});
 
 	const onRequest = async (data: Reports.ICashSettlementReports | undefined) => {
-		console.log('hii');
 		if (!data || !data?.enabled || data?.status !== 'Draft') return;
 
 		dispatch(setOptionSettlementModal({ data, activeTab: 'optionSettlementCashTab' }));
