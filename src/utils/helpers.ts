@@ -18,7 +18,7 @@ import { getBrokerClientId, getClientId } from './cookie';
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
-	const formattedIntegerPart: string = num?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	const formattedIntegerPart: string = num?.replace?.(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 	return formattedIntegerPart;
 };
@@ -347,7 +347,12 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		changeBrokerSetCancel: data.ChangeBrokerSetCancel,
 		getFreezeExportFreeze: data.FreezeExportFreeze,
 		getFreezerequests: data.Freezerequests,
-		getSettlementcash: data.Settlementcash,
+		Settlementcash: data.Settlementcash,
+		Settlementphysical: data.Settlementphysical,
+		newPhysicalSettlement: data.newPhysicalSettlement,
+		newCashSettlement: data.newCashSettlement,
+		deletePhysicalSettlement: data.deletePhysicalSettlement,
+		deleteCashSettlement: data.deleteCashSettlement,
 		getOrderExportOrders: data.OrderExportOrders,
 		getOrderOrders: data.OrderOrders,
 		OrderExportTrades: data.OrderExportTrades,
@@ -356,6 +361,9 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		paymentDeleteRequest: data.PaymentDeleteRequest,
 		acceptAgreement: data.AcceptAgreement,
 		mobileOtpRequest: data.MobileOtpRequest,
+		getDataProviderv1MarketMap: data.DataProviderv1MarketMap,
+		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
+		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
 	};
 
 	return urls;
@@ -684,3 +692,6 @@ export const toggleArrayElement = <T>(array: T[], element: T): T[] => {
 	if (index === -1) return [...array, element];
 	else return array.filter((item) => item !== element);
 };
+
+export const toPascalCase = (str: string) =>
+	(str.match(/[a-zA-Z0-9]+/g) || []).map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`).join('');

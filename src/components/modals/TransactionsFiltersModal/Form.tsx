@@ -37,7 +37,6 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-
 		try {
 			ipcMain.send('set_transactions_filters', filters);
 		} catch (e) {
@@ -60,7 +59,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 		setFilters({
 			...filters,
-			...calculateDateRange(filters.date)
+			...calculateDateRange(filters.date),
 		});
 	}, [filters.date]);
 
@@ -83,12 +82,14 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 						<AdvancedDatepicker
 							value={filters.fromDate}
 							onChange={(v) => setFilterValue('fromDate', v.getTime())}
+							fixedPlaceholder={t('transactions_page.from_date_placeholder_filter')}
 						/>
 					</div>
 					<div className='flex-1'>
 						<AdvancedDatepicker
 							value={filters.toDate}
 							onChange={(v) => setFilterValue('toDate', v.getTime())}
+							fixedPlaceholder={t('transactions_page.to_date_placeholder_filter')}
 						/>
 					</div>
 				</div>

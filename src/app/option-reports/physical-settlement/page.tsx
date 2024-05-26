@@ -5,4 +5,12 @@ const Page: NextPage<INextProps> = () => {
 	return <PhysicalSettlementReports />;
 };
 
+const generateMetadata = () => {
+	return {
+		title: 'گزارشات تسویه فیزیکی - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;

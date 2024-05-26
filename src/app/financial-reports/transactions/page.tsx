@@ -5,4 +5,12 @@ const Page: NextPage<INextProps> = () => {
 	return <Transactions />;
 };
 
+const generateMetadata = () => {
+	return {
+		title: ' گردش حساب - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;
