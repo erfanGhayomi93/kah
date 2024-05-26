@@ -350,6 +350,7 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getDataProviderv1MarketMap: data.DataProviderv1MarketMap,
 		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
 		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
+		settlementdeleteCash: data.settlementdeleteCash,
 	};
 
 	return urls;

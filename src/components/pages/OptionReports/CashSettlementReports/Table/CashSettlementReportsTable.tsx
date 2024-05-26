@@ -1,9 +1,15 @@
+import brokerAxios from '@/api/brokerAxios';
 import AgTable from '@/components/common/Tables/AgTable';
-import WithdrawalCashReportsActionCell from '@/components/pages/FinancialReports/WithdrawalCashReports/Table/WithdrawalCashReportsActionCell';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setOptionSettlementModal } from '@/features/slices/modalSlice';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
+import CashSettlementReportsTableActionCell from './CashSettlementReportsTableActionCell';
 
 interface CashSettlementReportsTableProps {
 	reports: Reports.ICashSettlementReports[] | null;
@@ -13,9 +19,48 @@ interface CashSettlementReportsTableProps {
 const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettlementReportsTableProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
+	const dispatch = useAppDispatch();
+
 	const gridRef = useRef<GridApi<Reports.ICashSettlementReports>>(null);
 
-	const onDeleteRow = async () => {
+	const url = useAppSelector(getBrokerURLs);
+
+	const onDeleteRow = (data: Reports.ICashSettlementReports) =>
+		new Promise<void>(async (resolve, reject) => {
+			if (!url || !data) return null;
+
+			try {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(url.settlementdeleteCash, {
+					symbolISIN: data?.symbolISIN,
+				});
+
+				if (response.status !== 200 || !response.data) {
+					toast.error('خطای ناشناخته رخ داده است.');
+					throw new Error('Error');
+				}
+
+				toast.success(t('alerts.option_delete_request_settlement_cash_success'));
+
+				queryClient.invalidateQueries({ queryKey: ['cashSettlementReports'] });
+
+				resolve();
+			} catch (error) {
+				toast.error(t('alerts.option_delete_request_settlement_cash_failed'));
+
+				reject();
+			}
+		});
+
+	const onRequest = async (data: Reports.ICashSettlementReports | undefined) => {
+		console.log('hii');
+		if (!data || !data?.enabled || data?.status !== 'Draft') return;
+
+		dispatch(setOptionSettlementModal({ data, activeTab: 'optionSettlementCashTab' }));
+	};
+
+	const onHistory = async (data: Reports.ICashSettlementReports | undefined) => {
 		//
 	};
 
@@ -34,23 +79,6 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 					suppressMovable: true,
 					sortable: false,
 					valueFormatter: ({ value }) => value ?? '',
-				},
-				/* موقعیت */
-				{
-					headerName: t('cash_settlement_reports_page.side_column'),
-					field: 'side',
-					minWidth: 96,
-					maxWidth: 96,
-					flex: 1,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => t('common.' + String(value).toLowerCase()),
-					cellClass: ({ data }) => {
-						if (!data) return '';
-						return data?.side === 'Buy' ? 'text-success-200' : 'text-error-200';
-					},
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				/* تعداد موقعیت باز */
 				{
@@ -74,7 +102,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					// cellRenderer: OptionCashSettlementRemainingDate,
+					valueFormatter: ({ value }) => (value ? dateFormatter(value, 'date') : '-'),
 				},
 				/* وضعیت قرارداد (سود یا زیان)  */
 				{
@@ -103,7 +131,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 					suppressMovable: true,
 					sortable: false,
 					valueFormatter: ({ value }) =>
-						value ? t('cash_settlement_reports_page.type_request_settlement_' + value) : '',
+						value ? t('cash_settlement_reports_page.type_request_settlement_' + value) : '-',
 				},
 				/* مبلغ تسویه */
 				{
@@ -156,7 +184,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 
 						if (data?.userType === 'Backoffice') return t('common.broker');
 
-						return data?.userName ?? '';
+						return data?.userName ?? '-';
 					},
 				},
 				/* وضعیت */
@@ -181,9 +209,11 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 					initialHide: false,
 					suppressMovable: true,
 					sortable: false,
-					cellRenderer: WithdrawalCashReportsActionCell,
+					cellRenderer: CashSettlementReportsTableActionCell,
 					cellRendererParams: {
 						onDeleteRow,
+						onRequest,
+						onHistory,
 					},
 				},
 			] as Array<ColDef<Reports.ICashSettlementReports>>,
