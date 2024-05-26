@@ -239,7 +239,7 @@ export interface IDepositModal extends IBaseModalConfiguration {
 export interface IFreezeModal extends IBaseModalConfiguration {}
 
 export interface IOptionSettlementModal extends IBaseModalConfiguration {
-	data: Reports.ICashSettlementReports | Reports.IPhysicalSettlementReports;
+	data?: Reports.ICashSettlementReports | Reports.IPhysicalSettlementReports;
 	activeTab?: 'optionSettlementCashTab' | 'optionSettlementPhysicalTab';
 }
 
