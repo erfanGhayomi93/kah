@@ -47,7 +47,7 @@ const InputLegend = ({
 			{prefix && (
 				<span
 					className={clsx(
-						'h-24 w-36 text-tiny text-gray-700 flex-justify-center',
+						'h-24 px-8 text-tiny text-gray-700 flex-justify-center',
 						separator && 'border-r border-r-input',
 					)}
 				>

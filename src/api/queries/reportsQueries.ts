@@ -397,9 +397,8 @@ export const useFreezeUnFreezeReportsQuery = createQuery<
 
 export const useCashSettlementReportsQuery = createQuery<
 	PaginationResponse<Reports.ICashSettlementReports[]> | null,
-	['cashSettlementReports', CashSettlementReports.ICashSettlementReportsFilters]
+	['cashSettlementReports', Partial<CashSettlementReports.ICashSettlementReportsFilters>]
 >({
-	staleTime: 18e5,
 	queryKey: ['cashSettlementReports', initialCashSettlementReportsFilters],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
@@ -421,12 +420,12 @@ export const useCashSettlementReportsQuery = createQuery<
 				},
 			] = queryKey;
 
-			const params: Record<string, string | string[]> = {
-				StartDate: toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
-				EndDate: toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
-				SymbolISIN: symbol ? String(symbol?.symbolISIN) : '',
-				'QueryOption.PageNumber': String(pageNumber),
-				'QueryOption.PageSize': String(pageSize),
+			const params: Record<string, string | string[] | undefined> = {
+				StartDate: fromDate ? toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)) : undefined,
+				EndDate: toDate ? toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)) : undefined,
+				SymbolISIN: symbol ? String(symbol?.symbolISIN) : undefined,
+				'QueryOption.PageNumber': pageNumber ? String(pageNumber) : undefined,
+				'QueryOption.PageSize': pageSize ? String(pageSize) : undefined,
 			};
 
 			if (contractStatus) params.PandLStatus = contractStatus;
@@ -446,7 +445,7 @@ export const useCashSettlementReportsQuery = createQuery<
 			}
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.ICashSettlementReports[]>>(
-				url.getSettlementcash,
+				url.Settlementcash,
 				{
 					params,
 					signal,
@@ -465,9 +464,8 @@ export const useCashSettlementReportsQuery = createQuery<
 
 export const usePhysicalSettlementReportsQuery = createQuery<
 	PaginationResponse<Reports.IPhysicalSettlementReports[]> | null,
-	['physicalSettlementReports', PhysicalSettlementReports.IPhysicalSettlementReportsFilters]
+	['physicalSettlementReports', Partial<PhysicalSettlementReports.IPhysicalSettlementReportsFilters>]
 >({
-	staleTime: 18e5,
 	queryKey: ['physicalSettlementReports', initialPhysicalSettlementReportsFilters],
 	queryFn: async ({ queryKey, signal }) => {
 		try {
@@ -488,14 +486,16 @@ export const usePhysicalSettlementReportsQuery = createQuery<
 					contractStatus,
 					requestStatus,
 					settlementRequestType,
+					side,
 				},
 			] = queryKey;
 
-			const params: Record<string, string | string[]> = {
-				StartDate: toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
-				EndDate: toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
-				'QueryOption.PageNumber': String(pageNumber),
-				'QueryOption.PageSize': String(pageSize),
+			const params: Record<string, string | string[] | undefined> = {
+				StartDate: fromDate ? toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)) : undefined,
+				EndDate: toDate ? toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)) : undefined,
+				'QueryOption.PageNumber': pageNumber ? String(pageNumber) : undefined,
+				'QueryOption.PageSize': pageSize ? String(pageSize) : undefined,
+				side: side ?? undefined,
 			};
 			if (symbol?.symbolISIN) params.SymbolISIN = symbol.symbolISIN;
 
@@ -516,7 +516,7 @@ export const usePhysicalSettlementReportsQuery = createQuery<
 			}
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.IPhysicalSettlementReports[]>>(
-				url.getSettlementphysical,
+				url.Settlementphysical,
 				{
 					params,
 					signal,
