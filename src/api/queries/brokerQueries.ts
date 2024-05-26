@@ -1,5 +1,5 @@
+import { store } from '@/api/inject-store';
 import { setBrokerURLs } from '@/features/slices/brokerSlice';
-import { store } from '@/features/store';
 import { getBrokerClientId } from '@/utils/cookie';
 import { createQuery, decodeBrokerUrls } from '@/utils/helpers';
 import axios from '../axios';

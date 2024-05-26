@@ -10,11 +10,11 @@ import { dateFormatter, numFormatter, sepNumbers, uuidv4 } from '@/utils/helpers
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
+import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
-import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const LongStraddleDescription = dynamic(() => import('../Descriptions/LongStraddleDescription'), {
 	ssr: false,
@@ -450,20 +450,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		[],
 	);
 
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
-
 	return (
 		<>
 			<StrategyDetails
@@ -493,6 +479,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					fetchNextPage={goToTheNextPage}
 					pageNumber={inputs.pageNumber}
 					pageSize={inputs.pageSize}
+					columnsVisibility={columnsVisibility}
 				/>
 			</div>
 		</>

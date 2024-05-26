@@ -11,25 +11,25 @@ import { toast } from 'react-toastify';
 import CellSymbolTitleRendererRenderer from './CellSymbolTitleRenderer';
 
 interface ContractsTableProps {
-	initialSelectedContracts: string[];
-	settlementDay: Option.BaseSettlementDays | null;
 	symbolISIN?: string;
+	maxContractsLength?: number;
+	isPending: boolean;
+	isFetchingInitialContracts: boolean;
+	settlementDay: Option.BaseSettlementDays | null;
 	contracts: Option.Root[];
-	maxContracts: number | null;
 	setContracts: (v: Option.Root[]) => void;
 }
 
 const ContractsTable = ({
-	initialSelectedContracts,
 	symbolISIN,
+	isPending,
+	isFetchingInitialContracts,
 	settlementDay,
 	contracts = [],
-	maxContracts,
+	maxContractsLength,
 	setContracts,
 }: ContractsTableProps) => {
 	const t = useTranslations();
-
-	const contractsRef = useRef(contracts);
 
 	const checkedRef = useRef<boolean>(false);
 
@@ -44,7 +44,7 @@ const ContractsTable = ({
 	});
 
 	const toggleContract = (c: Option.Root) => {
-		const newContracts = JSON.parse(JSON.stringify(contractsRef.current)) as typeof contracts;
+		const newContracts = JSON.parse(JSON.stringify(contracts)) as typeof contracts;
 		const index = newContracts.findIndex((item) => item.symbolInfo.symbolISIN === c.symbolInfo.symbolISIN);
 
 		if (index > -1) {
@@ -53,8 +53,8 @@ const ContractsTable = ({
 			newContracts.push(c);
 		}
 
-		if (maxContracts !== null) {
-			const addableContractsLength = maxContracts - newContracts.length;
+		if (typeof maxContractsLength === 'number') {
+			const addableContractsLength = maxContractsLength - newContracts.length;
 
 			if (addableContractsLength < 0) {
 				toast.error(t('alerts.can_not_add_contracts'), {
@@ -68,10 +68,12 @@ const ContractsTable = ({
 	};
 
 	const isContractSelected = (symbolISIN: string) => {
-		return contractsRef.current.findIndex((item) => item.symbolInfo.symbolISIN === symbolISIN) > -1;
+		return contracts.findIndex((item) => item.symbolInfo.symbolISIN === symbolISIN) > -1;
 	};
 
 	const onCellClicked = (e: CellClickedEvent<ITableData>) => {
+		if (isPending) return;
+
 		try {
 			const colId = e.column.getColId();
 			const side = colId.split('-')[1];
@@ -99,6 +101,7 @@ const ContractsTable = ({
 						valueGetter: ({ data }) => data!.buy,
 						cellRendererParams: {
 							reverse: false,
+							disabled: isPending,
 							isSelected: isContractSelected,
 						},
 					},
@@ -193,13 +196,14 @@ const ContractsTable = ({
 						valueGetter: ({ data }) => data!.sell,
 						cellRendererParams: {
 							reverse: true,
+							disabled: isPending,
 							isSelected: isContractSelected,
 						},
 					},
 				],
 			},
 		],
-		[],
+		[contracts, isPending],
 	);
 
 	const defaultColDef: ColDef<ITableData> = useMemo(
@@ -240,52 +244,28 @@ const ContractsTable = ({
 					sell: item?.sell,
 				});
 			}
-
-			return dataAsArray;
 		} catch (e) {
-			return dataAsArray;
+			//
 		}
+
+		return dataAsArray;
 	}, [watchlistData]);
 
 	useEffect(() => {
-		contractsRef.current = contracts;
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
 
-		setTimeout(() => {
-			const gridApi = gridRef.current;
-			if (!gridApi) return;
-
-			gridApi.refreshCells({
-				columns: ['symbolTitle-buy', 'symbolTitle-sell'],
-				force: true,
-			});
-		});
-	}, [contracts]);
+		try {
+			gridApi.setGridOption('onCellClicked', onCellClicked);
+			gridApi.setGridOption('columnDefs', COLUMNS);
+		} catch (e) {
+			//
+		}
+	}, [contracts, isPending]);
 
 	useEffect(() => {
 		checkedRef.current = false;
 	}, [settlementDay]);
-
-	useEffect(() => {
-		try {
-			if (checkedRef.current || !watchlistData?.length) return;
-
-			const initialContracts: Option.Root[] = [];
-
-			for (let i = 0; i < watchlistData.length; i++) {
-				const item = watchlistData[i];
-				const exists = initialSelectedContracts.find((symbolISIN) => symbolISIN === item.symbolInfo.symbolISIN);
-
-				if (!exists) continue;
-
-				initialContracts.push(item);
-			}
-
-			checkedRef.current = true;
-			setContracts(initialContracts);
-		} catch (e) {
-			//
-		}
-	}, [initialSelectedContracts, watchlistData]);
 
 	return (
 		<div className='relative flex-1'>
@@ -294,10 +274,9 @@ const ContractsTable = ({
 				className='h-full'
 				rowData={modifiedData}
 				columnDefs={COLUMNS}
+				defaultColDef={defaultColDef}
 				suppressRowVirtualisation
 				suppressColumnVirtualisation
-				defaultColDef={defaultColDef}
-				onCellClicked={onCellClicked}
 			/>
 
 			{!isFetching && (!settlementDay || modifiedData.length === 0) && (
@@ -306,7 +285,7 @@ const ContractsTable = ({
 				</div>
 			)}
 
-			{isFetching && (
+			{(isFetching || isFetchingInitialContracts) && (
 				<div className='absolute left-0 top-0 size-full bg-white'>
 					<Loading />
 				</div>

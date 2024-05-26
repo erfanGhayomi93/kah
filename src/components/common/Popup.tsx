@@ -157,7 +157,7 @@ const Popup = ({
 		} catch (e) {
 			//
 		}
-	}, [open]);
+	}, [open, disabled]);
 
 	return (
 		<React.Fragment>

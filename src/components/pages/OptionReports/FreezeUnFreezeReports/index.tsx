@@ -2,7 +2,11 @@
 
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultFreezeUnFreezeReportsColumns, defaultTransactionColumns, initialFreezeUnFreezeReportsFilters } from '@/constants';
+import {
+	defaultFreezeUnFreezeReportsColumns,
+	defaultTransactionColumns,
+	initialFreezeUnFreezeReportsFilters,
+} from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setFreezeUnFreezeReportsFiltersModal } from '@/features/slices/modalSlice';
@@ -40,10 +44,14 @@ const FreezeUnFreezeReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue, setFieldsValue } =
-		useInputs<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters>(initialFreezeUnFreezeReportsFilters);
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters>(
+		initialFreezeUnFreezeReportsFilters,
+	);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('freezeUnfreeze_column', defaultFreezeUnFreezeReportsColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'freezeUnfreeze_column',
+		defaultFreezeUnFreezeReportsColumns,
+	);
 
 	const { setDebounce } = useDebounce();
 
@@ -73,7 +81,6 @@ const FreezeUnFreezeReports = () => {
 
 	const onExportExcel = () => {
 		try {
-
 			if (!urls) throw new Error('broker_error');
 
 			const fromDate: Date = new Date(inputs.fromDate);
@@ -90,11 +97,10 @@ const FreezeUnFreezeReports = () => {
 
 			if (inputs.requestState) params.append('RequestState', inputs.requestState);
 
-
 			downloadFileQueryParams(
 				urls.getFreezeExportFreeze,
 				`freezeUnfreeze-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
-				params
+				params,
 			);
 		} catch (e) {
 			//
@@ -135,7 +141,6 @@ const FreezeUnFreezeReports = () => {
 			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					filters={inputs}
 					setFilters={setFieldValue}
 					setFieldsValue={setFieldsValue}

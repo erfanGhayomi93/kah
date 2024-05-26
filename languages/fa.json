@@ -26,7 +26,9 @@
 		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {n} باشد",
 		"infinity": "نامحدود",
 		"system": "سیستم",
-		"backoffice": "بک آفیس"
+		"backoffice": "بک آفیس",
+		"buy": "خرید",
+		"sell": "فروش"
 	},
 	"side": {
 		"buy": "خرید",
@@ -727,6 +729,18 @@
 		"symbol_title": "نماد",
 		"guaranted_number": "تعداد وثیقه شده"
 	},
+	"optionSettlementModal": {
+		"title": "تسویه اختیار",
+		"cash_tab": "نقدی",
+		"physical_tab": "فیزیکی",
+		"status_contract": "وضعیت قرارداد",
+		"settlement_date": "تاریخ تسویه",
+		"notice_attention": "ثبت درخواست تسویه فیزیکی فقط برای سمت خرید اختیارهای معامله امکان پذیر می باشد.",
+		"notice_attention_request_physical": "زمان ثبت درخواست تسویه فیزیکی، از زمان خرید قرارداد الی 15:00 روز تسویه نقدی می باشد. لطفا در زمان ثبت درخواست، از کافی بودن مانده حساب خود اطمینان حاصل فرمایید.",
+		"notice_attention_request_cash": "ثبت درخواست تا ساعت 15:00 روز تسویه نقدی 1403/02/08 امکان پذیر است. طبق قوانین ثبت درخواست نقدی صرفا برای قراردادهای در سود امکان پذیر خواهد بود. لازم به ذکر است ثبت درخواست تسویه نقدی، به معنای پذیرفته شدن آن نیست و منوط به ثبت درخواست طرف مقابل خواهد بود.",
+		"choose_type_of_action": "انتخاب نوع اعمال",
+		"desired_number_position": "انتخاب تعداد موقعیت های مورد نظر جهت تسویه"
+	},
 	"deposit_modal": {
 		"title": "واریز وجه",
 		"liveDepositTab": "واریز آنی",
@@ -798,7 +812,7 @@
 	},
 	"analyze_modal": {
 		"title": "آنالیز",
-		"no_trade_found": "هیچ معامله‌ای وجود ندارد",
+		"no_data": "قراردادی ",
 		"make_your_own_strategy": "استراتژی دلخواه خود را بسازید",
 		"send_all": "ارسال همه",
 		"performance": "بازده (عملکرد)",
@@ -826,7 +840,8 @@
 		"base_symbol_price": "قیمت دارایی پایه",
 		"current_base_price_distance": "فاصله تا قیمت فعلی سهم پایه",
 		"rial_efficiency": "بازده ریالی",
-		"ytm": "YTM بازده موثر سالانه"
+		"ytm": "YTM بازده موثر سالانه",
+		"no_active_contract_found": "هیچ قرارداد فعالی وجود ندارد"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
@@ -1003,7 +1018,16 @@
 		"manage_columns": "مدیریت ستون‌های جدول"
 	},
 	"build_strategy": {
-		"no_data": "هیچ استراتژی وجود ندارد"
+		"no_data": "هیچ استراتژی وجود ندارد",
+		"create_your_strategy": "استراتژی دلخواه خود را بسازید",
+		"most_profit": "بیشترین سود",
+		"break_even_point": "سر به سر",
+		"risk": "ریسک",
+		"time_value": "ارزش زمانی",
+		"most_loss": "بیشترین ضرر",
+		"required_budget": "بودجه مورد نیاز",
+		"profit_probability": "احتمال سود",
+		"required_margin": "وجه تضمین مورد نیاز"
 	},
 	"strategy_filters": {
 		"title": "فیلتر",
@@ -1268,6 +1292,8 @@
 		"NotApprove": "عدم تایید"
 	},
 	"alerts": {
+		"is_pending": "در حال دریافت اطلاعات",
+		"fetch_symbol_failed": "خطا در دریافت اطلاعات نماد",
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
 		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
 		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",
@@ -1326,6 +1352,23 @@
 		"invalid_inputs": "پارامترهای ورودی دچار خطا شده است",
 		"instant_deposit_canceled_successfully": "درخواست شما با موفقیت حدف شد.",
 		"instant_deposit_canceled_failed": "خطا در حذف درخواست",
+		"option_physical_settlement_error_Too Many Request": "تعداد درخواست تسویه بیش از حد مجاز است. لطفا پس از چند ثانیه مجدد تلاش نمایید",
+		"option_physical_settlement_error_Not_Enough_Remain": "جهت ثبت درخواست تسویه فیزیکی, مانده کافی نیست",
+		"option_physical_settlement_error_Save_PhysicalSettlement_Is_Not_Valid_In_AtRisk": "ثبت درخواست تسویه فیزیکی در این وضعیت مشتری امکان پذیر نیست",
+		"option_physical_settlement_error_RequestCountIsNotValid": "ثبت درخواست تسویه فیزیکی با تعداد موردنظر امکان پذیر نیست",
+		"option_cash_settlement_error_RequestCountIsNotValid": "ثبت درخواست تسویه نقدی با تعداد موردنظر امکان پذیر نیست",
+		"option_cash_settlement_error_Too Many Request": "تعداد درخواست تسویه بیش از حد مجاز است. لطفا پس از چند ثانیه مجدد تلاش نمایید",
+		"option_cash_settlement_error_Not_Enough_Remain": "جهت ثبت درخواست تسویه نقدی, مانده کافی نیست",
+		"option_cash_settlement_error_Save_PhysicalSettlement_Is_Not_Valid_In_AtRisk": "ثبت درخواست تسویه نقدی در این وضعیت مشتری امکان پذیر نیست",
+		"option_cash_settlement_error_ContractIsOnLoss": "تسویه نقدی موقعیت اختیار در حالت زیان امکان پذیر نیست",
+		"option_edit_request_settlement_cash_success": "درخواست تسویه نقدی با موفقیت ویرایش شد.",
+		"option_edit_request_settlement_cash_failed": "ویرایش درخواست تسویه نقدی با خطا مواجه شد.",
+		"option_edit_request_settlement_physical_success": "درخواست تسویه فیزیکی با موفقیت ویرایش شد.",
+		"option_edit_request_settlement_physical_failed": "ویرایش درخواست تسویه فیزیکی با خطا مواجه شد.",
+		"option_request_settlement_cash_success": "درخواست تسویه نقدی با موفقیت ثبت شد.",
+		"option_request_settlement_cash_failed": "درخواست تسویه نقدی با خطا مواجه شد.",
+		"option_request_settlement_physical_success": "درخواست تسویه فیزیکی با موفقیت ثبت شد.",
+		"option_request_settlement_physical_failed": "درخواست تسویه فیزیکی با خطا مواجه شد.",
 		"withdrawal_cash_canceled_successfully": "درخواست شما با موفقیت لغو شد.",
 		"withdrawal_cash_canceled_failed": "خطا در حذف درخواست",
 		"withdrawal_cash_AccountNotConfirmed": "شماره حساب مورد نظر تایید نشده است"
@@ -1707,5 +1750,58 @@
 		"resend_code_after": "ارسال دوباره کد بعد از",
 		"resend_code": "ارسال مجدد",
 		"error_occured": "تلاش مجدد"
+	},
+
+	"market_map": {
+		"market_map": "نقشه بازار",
+		"all": "همه",
+		"type_of_symbol": "نوع سهم",
+		"type_of_map": "انتخاب نقشه",
+		"watchlist_name": "نام دیده‌بان",
+		"display_based_on": "نمایش بر اساس",
+		"market_type": "بازار",
+		"market_based_on": "بازار بر اساس",
+		"sector": "صنعت",
+		"map_type_all": "کل بازار",
+		"map_type_portfolio": "پرتفوی",
+		"map_type_watchlist": "دیده‌بان",
+		"display_symbol": "نماد",
+		"display_sectors": "صنایع",
+		"market_type_all": "کل بازار",
+		"market_type_base_symbol_option": "سهام پایه اختیار",
+		"market_type_contract": "قرارداد",
+		"market_type_call_option": "اختیار خرید",
+		"market_type_put_option": "اختیار فروش",
+		"volume": "حجم",
+		"value": "ارزش",
+		"quantity": "تعداد",
+		"take_screnshot": "تصویر از صفحه",
+		"manual_refetch": "بروزرسانی دستی",
+		"fulscreen": "تمام صفحه",
+		"palette": "رنگ بندی",
+		"daily_efficiency": "بازدهی روزانه",
+		"supply_demand": "فشار عرضه و تقاضا",
+		"weekly_efficiency": "بازدهی هفتگی",
+		"monthly_efficiency": "بازدهی ماهانه",
+		"three_monthly_efficiency": "بازدهی 3 ماه",
+		"six_monthly_efficiency": "بازدهی 6 ماه",
+		"yearly_efficiency": "بازدهی سالانه",
+		"suspicious_volume": "حجم مشکوک",
+		"technical_condition": "وضعیت تکنیکال",
+		"real_purchase_power": "قدرت خرید حقیقی",
+		"legal_purchase_power": "قدرت خرید حقوقی",
+		"real_and_legal_change": "تغییر حقیقی و حقوقی",
+		"symbol_type_all": "همه",
+		"symbol_type_shares": "سهام",
+		"symbol_type_preemption_right": "حق تقدم",
+		"symbol_type_stock_fund": "صندوق سهام",
+		"symbol_type_fixed_fund": "صندوق ثابت",
+		"symbol_type_mixed_fund": "صندوق مختلط",
+		"symbol_type_real_estate_fund": "صندوق زمین و ساختمان",
+		"symbol_type_venture_fund": "صندوق جسورانه",
+		"symbol_type_commodity_exchange_fund": "صندوق بورس کالا",
+		"symbol_type_commodity_deposit_certificate": "گواهی سپرده کالایی",
+		"symbol_type_saffron_certificate": "گواهی زعفران",
+		"symbol_type_gold_coin_certificate": "گواهی سکه"
 	}
 }

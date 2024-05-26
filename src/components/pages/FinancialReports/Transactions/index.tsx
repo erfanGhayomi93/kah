@@ -43,7 +43,6 @@ const Transactions = () => {
 	const { inputs, setFieldValue, setFieldsValue } =
 		useInputs<Transaction.ITransactionsFilters>(initialTransactionsFilters);
 
-
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('transaction_column', defaultTransactionColumns);
 
 	const { setDebounce } = useDebounce();

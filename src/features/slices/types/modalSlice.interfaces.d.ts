@@ -138,16 +138,13 @@ export interface IForgetPasswordModal extends IBaseModalConfiguration {
 }
 
 export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
-	symbol: null | {
-		symbolTitle: string;
-		symbolISIN: string;
-	};
-	canChangeBaseSymbol: boolean;
-	canSendBaseSymbol: boolean;
+	initialBaseSymbolISIN?: string;
+	suppressBaseSymbolChange?: boolean;
+	suppressSendBaseSymbol?: boolean;
 	initialSelectedBaseSymbol?: boolean;
-	maxContracts: null | number;
-	initialSelectedContracts: string[];
-	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
+	initialSelectedContracts?: string[];
+	maxContractsLength?: number;
+	callback: (result: Option.Root[], baseSymbol: Symbol.Info | null) => void;
 }
 
 export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
@@ -238,6 +235,8 @@ export interface IDepositModal extends IBaseModalConfiguration {
 
 export interface IFreezeModal extends IBaseModalConfiguration {}
 
+export interface IOptionSettlementModal extends IBaseModalConfiguration {}
+
 export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
 	baseSymbol: Record<'symbolISIN' | 'symbolTitle', string>;
@@ -282,6 +281,7 @@ export type ModalState = TBaseModalProps<{
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;
 	freeze: IFreezeModal;
+	optionSettlement: IOptionSettlementModal;
 	analyze: IAnalyzeModal;
 	description: IDescriptionModal;
 	transactionsFilters: ITransactionsFiltersModal;

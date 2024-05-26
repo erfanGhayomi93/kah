@@ -1,4 +1,4 @@
-import { store } from '@/features/store';
+import { store } from '@/api/inject-store';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';

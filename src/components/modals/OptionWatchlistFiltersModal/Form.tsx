@@ -1,4 +1,5 @@
 import ipcMain from '@/classes/IpcMain';
+import BaseSymbolAdvanceSearch from '@/components/common/Symbol/BaseSymbolAdvanceSearch';
 import { initialOptionWatchlistFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOptionFiltersModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
@@ -7,7 +8,6 @@ import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import styled from 'styled-components';
-import BaseSymbolInput from './inputs/BaseSymbolInput';
 import DeltaInput from './inputs/DeltaInput';
 import EndDateInput from './inputs/EndDateInput';
 import MinimumTradesValueInput from './inputs/MinimumTradesValueInput';
@@ -72,7 +72,7 @@ const Form = () => {
 					<span className='flex-1 font-medium text-gray-1000'>
 						{t('option_watchlist_filters_modal.base_symbol')}
 					</span>
-					<BaseSymbolInput
+					<BaseSymbolAdvanceSearch
 						values={filters.symbols}
 						onChange={(values) => setFilterValue('symbols', values)}
 					/>
