@@ -161,20 +161,6 @@ const modalSlice = createSlice({
 			state.selectSymbolContracts = payload;
 		},
 
-		updateSelectSymbolContractsModal: (
-			state,
-			{ payload }: PayloadAction<Partial<ModalState['selectSymbolContracts']>>,
-		) => {
-			const prev = {
-				...state.selectSymbolContracts,
-				...payload,
-			};
-
-			if (state.selectSymbolContracts !== null) {
-				state.selectSymbolContracts = prev as ModalState['selectSymbolContracts'];
-			}
-		},
-
 		setAddSaturnTemplateModal: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
@@ -330,7 +316,6 @@ export const {
 	setFreezeModal,
 	setDescriptionModal,
 	setAnalyzeModal,
-	updateSelectSymbolContractsModal,
 	setTransactionsFiltersModal,
 	setInstantDepositReportsFiltersModal,
 	setDepositWithReceiptReportsFiltersModal,

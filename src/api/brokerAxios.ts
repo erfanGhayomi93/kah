@@ -1,5 +1,5 @@
+import { store } from '@/api/inject-store';
 import ipcMain from '@/classes/IpcMain';
-import { store } from '@/features/store';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';

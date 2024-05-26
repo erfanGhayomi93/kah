@@ -502,7 +502,7 @@ const NoContractExists = ({ addNewStrategy }: NoContractExistsProps) => {
 
 	return (
 		<div style={{ width: '30rem' }} className='gap-24 flex-column'>
-			<NoData text={t('analyze_modal.no_trade_found')} />
+			<NoData text={t('analyze_modal.no_data')} />
 
 			<button type='button' className='h-40 rounded text-base btn-primary' onClick={addNewStrategy}>
 				{t('analyze_modal.make_your_own_strategy')}

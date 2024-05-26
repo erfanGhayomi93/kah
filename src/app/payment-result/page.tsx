@@ -1,7 +1,7 @@
 import PaymentResultPage from '@/components/pages/paymentResultPage';
 
-const PaymentResult = () => {
+const Page = () => {
 	return <PaymentResultPage />;
 };
 
-export default PaymentResult;
+export default Page;
