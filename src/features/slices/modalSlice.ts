@@ -66,7 +66,11 @@ const initialState: ModalState = {
 	// برداشت وجه
 	withdrawal: null,
 
+	// فریر و رفع فریز
 	freeze: null,
+
+	// تسویه اختیار
+	optionSettlement: null,
 
 	// آنالیز
 	analyze: null,
@@ -161,20 +165,6 @@ const modalSlice = createSlice({
 			state.selectSymbolContracts = payload;
 		},
 
-		updateSelectSymbolContractsModal: (
-			state,
-			{ payload }: PayloadAction<Partial<ModalState['selectSymbolContracts']>>,
-		) => {
-			const prev = {
-				...state.selectSymbolContracts,
-				...payload,
-			};
-
-			if (state.selectSymbolContracts !== null) {
-				state.selectSymbolContracts = prev as ModalState['selectSymbolContracts'];
-			}
-		},
-
 		setAddSaturnTemplateModal: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
@@ -224,6 +214,10 @@ const modalSlice = createSlice({
 
 		setFreezeModal: (state, { payload }: PayloadAction<ModalState['freeze']>) => {
 			state.freeze = payload;
+		},
+
+		setOptionSettlementModal: (state, { payload }: PayloadAction<ModalState['optionSettlement']>) => {
+			state.optionSettlement = payload;
 		},
 
 		setAnalyzeModal: (state, { payload }: PayloadAction<ModalState['analyze']>) => {
@@ -328,9 +322,9 @@ export const {
 	setWithdrawalModal,
 	setDepositModal,
 	setFreezeModal,
+	setOptionSettlementModal,
 	setDescriptionModal,
 	setAnalyzeModal,
-	updateSelectSymbolContractsModal,
 	setTransactionsFiltersModal,
 	setInstantDepositReportsFiltersModal,
 	setDepositWithReceiptReportsFiltersModal,

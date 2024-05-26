@@ -1,3 +1,6 @@
+import { useOptionInfoMutation } from '@/api/mutations/optionMutations';
+import { useSymbolInfoMutation } from '@/api/mutations/symbolMutations';
+import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import { XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
@@ -6,7 +9,8 @@ import { type ISelectSymbolContractsModal } from '@/features/slices/types/modalS
 import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef } from 'react';
+import { forwardRef, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import ContractsTable from './ContractsTable';
@@ -32,12 +36,12 @@ const Div = styled.div`
 const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 	(
 		{
-			symbol,
-			initialSelectedBaseSymbol,
-			initialSelectedContracts,
-			canChangeBaseSymbol,
-			canSendBaseSymbol,
-			maxContracts,
+			initialBaseSymbolISIN,
+			suppressBaseSymbolChange = true,
+			suppressSendBaseSymbol = false,
+			initialSelectedBaseSymbol = false,
+			initialSelectedContracts = [],
+			maxContractsLength,
 			callback,
 			...props
 		},
@@ -47,19 +51,33 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 		const dispatch = useAppDispatch();
 
-		const {
-			inputs: states,
-			setFieldValue,
-			setFieldsValue,
-		} = useInputs<SymbolContractModalStates>({
-			contractType: {
-				id: 'buy',
-				title: t('side.buy'),
-			},
+		const { inputs, setFieldValue, setFieldsValue } = useInputs<SymbolContractModalStates>({
 			contracts: [],
 			activeSettlement: null,
 			sendBaseSymbol: Boolean(initialSelectedBaseSymbol),
+			baseSymbol: null,
 			term: '',
+		});
+
+		const { mutate: fetchSymbolInfo, isPending: isFetchingBaseSymbol } = useSymbolInfoMutation({
+			onSuccess: (symbol, { type = 'initial' }) => {
+				if (!symbol) return;
+
+				if (type === 'initial') setFieldValue('baseSymbol', symbol);
+				else submit(symbol);
+			},
+			onError: () => {
+				toast.error(t('alerts.fetch_symbol_failed'));
+			},
+		});
+
+		const { mutate: fetchInitialContracts, isPending: isFetchingInitialContracts } = useOptionInfoMutation({
+			onSuccess: (initialContracts) => {
+				setFieldValue('contracts', initialContracts);
+			},
+			onError: () => {
+				toast.error(t('alerts.fetch_symbol_failed'));
+			},
 		});
 
 		const onCloseModal = () => {
@@ -74,39 +92,69 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		};
 
 		const onSubmit = () => {
-			callback(states.contracts, canSendBaseSymbol && states.sendBaseSymbol && symbol ? symbol.symbolISIN : null);
-			onCloseModal();
+			try {
+				const shouldSendBaseSymbol = !suppressSendBaseSymbol && inputs.sendBaseSymbol;
+
+				if (shouldSendBaseSymbol) {
+					if (isFetchingBaseSymbol) toast.info(t('alerts.is_pending'));
+					else fetchSymbolInfo({ symbolISIN: inputs.baseSymbol!.symbolISIN });
+
+					return;
+				}
+
+				submit(null);
+			} catch (e) {
+				//
+			}
 		};
+
+		const submit = (baseSymbol: Symbol.Info | null) => {
+			try {
+				callback(inputs.contracts, baseSymbol);
+
+				onCloseModal();
+			} catch (e) {
+				//
+			}
+		};
+
+		useEffect(() => {
+			if (initialSelectedContracts.length > 0) fetchInitialContracts(initialSelectedContracts);
+			if (initialBaseSymbolISIN) fetchSymbolInfo({ symbolISIN: initialBaseSymbolISIN, type: 'initial' });
+		}, []);
 
 		return (
 			<Modal
 				top='50%'
 				style={{ modal: { transform: 'translate(-50%, -50%)' } }}
 				onClose={onCloseModal}
-				{...props}
 				ref={ref}
+				{...props}
 			>
 				<Div className='bg-white'>
 					<Header label={t('select_symbol_contracts_modal.title')} onClose={onCloseModal} />
 
-					<div className='flex-1 gap-16 p-24 flex-column'>
+					<div className='relative flex-1 gap-16 p-24 flex-column'>
 						<Toolbar
-							canChangeBaseSymbol={canChangeBaseSymbol}
-							settlementDay={states.activeSettlement}
-							setSettlementDay={(v) => setFieldValue('activeSettlement', v)}
-							symbol={symbol}
+							symbol={inputs.baseSymbol}
+							settlementDay={inputs.activeSettlement}
+							suppressBaseSymbolChange={suppressBaseSymbolChange}
+							onBaseSymbolChange={(v) => setFieldValue('baseSymbol', v)}
+							onSettlementDayChanged={(v) => setFieldValue('activeSettlement', v)}
+							isPending={isFetchingBaseSymbol}
 						/>
 
 						<ContractsTable
-							initialSelectedContracts={initialSelectedContracts ?? []}
-							contracts={states.contracts}
+							contracts={inputs.contracts}
 							setContracts={(v) => setFieldValue('contracts', v)}
-							settlementDay={states.activeSettlement}
-							symbolISIN={symbol?.symbolISIN}
-							maxContracts={maxContracts}
+							settlementDay={inputs.activeSettlement}
+							symbolISIN={inputs.baseSymbol?.symbolISIN}
+							maxContractsLength={maxContractsLength}
+							isPending={isFetchingBaseSymbol}
+							isFetchingInitialContracts={isFetchingInitialContracts}
 						/>
 
-						{canSendBaseSymbol && symbol && (
+						{!suppressSendBaseSymbol && inputs.baseSymbol && (
 							<div
 								style={{ flex: '0 0 4rem' }}
 								className='rounded bg-white px-8 shadow-card flex-items-center'
@@ -115,11 +163,14 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 									label={
 										<>
 											{t('select_symbol_contracts_modal.base_symbol')}:
-											<span className='pr-4 font-medium'>{symbol?.symbolTitle ?? '−'}</span>
+											<span className='pr-4 font-medium'>
+												{inputs.baseSymbol?.symbolTitle ?? '−'}
+											</span>
 										</>
 									}
-									checked={states.sendBaseSymbol}
+									checked={inputs.sendBaseSymbol}
 									onChange={(v) => setFieldValue('sendBaseSymbol', v)}
+									disabled={isFetchingBaseSymbol}
 								/>
 							</div>
 						)}
@@ -129,15 +180,14 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							className='flex h-auto gap-24 rounded border border-dashed border-gray-500 bg-gray-100 p-24'
 						>
 							<ul className='flex flex-1 flex-wrap gap-16'>
-								{states.sendBaseSymbol && (
+								{inputs.baseSymbol && inputs.sendBaseSymbol && (
 									<Contract
-										key={symbol?.symbolISIN}
-										symbolTitle={symbol?.symbolTitle ?? ''}
+										symbolTitle={inputs.baseSymbol?.symbolTitle ?? ''}
 										onRemove={() => setFieldValue('sendBaseSymbol', false)}
 									/>
 								)}
 
-								{states.contracts.map((item) => (
+								{inputs.contracts.map((item) => (
 									<Contract
 										key={item.symbolInfo.symbolISIN}
 										symbolTitle={item.symbolInfo.symbolTitle}
@@ -148,14 +198,15 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							</ul>
 
 							<div style={{ flex: '0 0 14.4rem' }} className='flex-items-end'>
-								<button
+								<Button
 									type='button'
 									onClick={onSubmit}
-									disabled={states.contracts.length === 0}
+									disabled={inputs.contracts.length === 0 || !inputs.baseSymbol}
 									className='h-40 w-full rounded btn-primary'
+									loading={isFetchingBaseSymbol}
 								>
 									{t('select_symbol_contracts_modal.add')}
-								</button>
+								</Button>
 							</div>
 						</div>
 					</div>

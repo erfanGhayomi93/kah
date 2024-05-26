@@ -1,6 +1,9 @@
 import History from '@/components/pages/Settings/tabs/History';
+import type { NextPage } from 'next';
 
-const Page = () => <History />;
+const Page: NextPage<INextProps> = () => {
+	return <History />;
+};
 
 const generateMetadata = () => {
 	return {

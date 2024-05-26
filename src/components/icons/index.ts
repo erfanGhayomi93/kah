@@ -14,6 +14,7 @@ import BookmarkSVG from './bookmark.svg';
 import BullishMarketSVG from './bullish-market.svg';
 import CalculatorSVG from './calculator.svg';
 import CalendarSVG from './calendar.svg';
+import CameraSVG from './camera.svg';
 import CandleChartSVG from './candle-chart.svg';
 import ChainSVG from './chain.svg';
 import ChangeBrokerSVG from './change-broker.svg';
@@ -48,6 +49,7 @@ import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import GuaranteeSVG from './guarantee.svg';
+import HandWriteSVG from './handWrite.svg';
 import HomeSVG from './home.svg';
 import IdentityCardSVG from './identity-card.svg';
 import InfoCircleOutlineSVG from './info-circle-outline.svg';
@@ -57,6 +59,7 @@ import KeySVG from './key.svg';
 import LinearChartSVG from './linear-chart.svg';
 import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
+import LongshotSVG from './longshot.svg';
 import MailSVG from './mail.svg';
 import ManageSVG from './manage.svg';
 import MarketMapSVG from './market-map.svg';
@@ -87,6 +90,7 @@ import PlusSquareSVG from './plus-square.svg';
 import PlusSVG from './plus.svg';
 import ReceptionSVG from './reception.svg';
 import RefreshSVG from './refresh.svg';
+import ReloadSVG from './reload.svg';
 import ReportSVG from './report.svg';
 import RhombicCircleSVG from './rhombic-circle.svg';
 import SaturnSVG from './saturn.svg';
@@ -136,6 +140,7 @@ export {
 	BullishMarketSVG,
 	CalculatorSVG,
 	CalendarSVG,
+	CameraSVG,
 	CandleChartSVG,
 	ChainSVG,
 	ChangeBrokerSVG,
@@ -170,6 +175,7 @@ export {
 	GrowDownSVG,
 	GrowUpSVG,
 	GuaranteeSVG,
+	HandWriteSVG,
 	HomeSVG,
 	IdentityCardSVG,
 	InfoCircleOutlineSVG,
@@ -179,6 +185,7 @@ export {
 	LinearChartSVG,
 	LockSVG,
 	LogoutSVG,
+	LongshotSVG,
 	MailSVG,
 	ManageSVG,
 	MarketMapSVG,
@@ -209,6 +216,7 @@ export {
 	PlusSquareSVG,
 	ReceptionSVG,
 	RefreshSVG,
+	ReloadSVG,
 	ReportSVG,
 	RhombicCircleSVG,
 	SaturnSVG,

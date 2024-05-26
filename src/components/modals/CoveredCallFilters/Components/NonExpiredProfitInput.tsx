@@ -1,5 +1,4 @@
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
-import { useTranslations } from 'next-intl';
 import Input, { Prefix } from './Input';
 
 interface NonExpiredProfitInputProps {
@@ -8,8 +7,6 @@ interface NonExpiredProfitInputProps {
 }
 
 const NonExpiredProfitInput = ({ value, onChange }: NonExpiredProfitInputProps) => {
-	const t = useTranslations('common');
-
 	const onChangeValue = (newValue: string) => {
 		const v = convertStringToInteger(newValue);
 

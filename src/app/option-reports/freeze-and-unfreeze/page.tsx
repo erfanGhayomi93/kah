@@ -1,10 +1,16 @@
 import FreezeUnFreezeReports from '@/components/pages/OptionReports/FreezeUnFreezeReports';
+import type { NextPage } from 'next';
 
-
-const page = () => {
-	return (
-		<FreezeUnFreezeReports />
-	);
+const Page: NextPage<INextProps> = () => {
+	return <FreezeUnFreezeReports />;
 };
 
-export default page;
+const generateMetadata = () => {
+	return {
+		title: 'گزارشات فریز و رفع فریز - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
+export default Page;

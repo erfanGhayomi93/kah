@@ -1,7 +1,7 @@
 import axios from '@/api/brokerAxios';
+import { store } from '@/api/inject-store';
 import AgTable from '@/components/common/Tables/AgTable';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { store } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
