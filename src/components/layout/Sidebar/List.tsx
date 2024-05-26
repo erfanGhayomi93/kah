@@ -13,7 +13,8 @@ import {
 	setChangeBrokerModal,
 	setDepositModal,
 	setFreezeModal,
-	setWithdrawalModal,
+	setOptionSettlementModal,
+	setWithdrawalModal
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
@@ -63,6 +64,8 @@ const List = ({ isExpand }: ListProps) => {
 				dispatch(setChangeBrokerModal({}));
 			} else if (tagName === 'un_freezing') {
 				dispatch(setFreezeModal({}));
+			} else if (tagName === 'option_settlement') {
+				dispatch(setOptionSettlementModal({}));
 			}
 		}
 	};
@@ -154,7 +157,7 @@ const List = ({ isExpand }: ListProps) => {
 						{
 							id: 'option_settlement',
 							label: t('sidebar.option_settlement'),
-							to: '/a',
+							isModal: true
 						},
 					],
 				},

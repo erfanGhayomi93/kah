@@ -1,5 +1,5 @@
 import { cn } from '@/utils/helpers';
-import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
 import { EraserSVG, SessionHistorySVG, XSVG } from '../icons';
@@ -17,10 +17,11 @@ interface ModalProps extends IBaseModalConfiguration {
 }
 
 interface ModalHeaderProps {
-	label: React.ReactNode;
-	onClose: () => void;
+	label?: React.ReactNode;
+	onClose?: () => void;
 	onExpanded?: () => void;
 	onClear?: () => void;
+	children?: React.ReactNode;
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
@@ -114,25 +115,31 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 	},
 );
 
-const Header = ({ label, onClose, onClear, onExpanded }: ModalHeaderProps) => (
+const Header = ({ label, onClose, onClear, onExpanded, children }: ModalHeaderProps) => (
 	<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
-		<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
+		{
+			!children ? (
+				<React.Fragment>
+					<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
 
-		<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
-			<XSVG width='2rem' height='2rem' />
-		</button>
+					<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
+						<XSVG width='2rem' height='2rem' />
+					</button>
 
-		{!!onExpanded && (
-			<button onClick={onExpanded} type='button' className='absolute left-64 z-10 icon-hover'>
-				<SessionHistorySVG width='1.8rem' height='1.8rem' />
-			</button>
-		)}
+					{!!onExpanded && (
+						<button onClick={onExpanded} type='button' className='absolute left-64 z-10 icon-hover'>
+							<SessionHistorySVG width='1.8rem' height='1.8rem' />
+						</button>
+					)}
 
-		{!!onClear && (
-			<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
-				<EraserSVG width='2rem' height='2rem' />
-			</button>
-		)}
+					{!!onClear && (
+						<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
+							<EraserSVG width='2rem' height='2rem' />
+						</button>
+					)}
+				</React.Fragment>
+			) : children
+		}
 	</div>
 );
 

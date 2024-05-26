@@ -238,6 +238,8 @@ export interface IDepositModal extends IBaseModalConfiguration {
 
 export interface IFreezeModal extends IBaseModalConfiguration {}
 
+export interface IOptionSettlementModal extends IBaseModalConfiguration {}
+
 export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
 	baseSymbol: Record<'symbolISIN' | 'symbolTitle', string>;
@@ -282,6 +284,7 @@ export type ModalState = TBaseModalProps<{
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;
 	freeze: IFreezeModal;
+	optionSettlement: IOptionSettlementModal;
 	analyze: IAnalyzeModal;
 	description: IDescriptionModal;
 	transactionsFilters: ITransactionsFiltersModal;
