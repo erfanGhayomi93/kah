@@ -657,6 +657,10 @@ declare namespace Broker {
 		| 'Freezerequests'
 		| 'Settlementcash'
 		| 'Settlementphysical'
+		| 'newPhysicalSettlement'
+		| 'newCashSettlement'
+		| 'deletePhysicalSettlement'
+		| 'deleteCashSettlement'
 		| 'OrderExportOrders'
 		| 'OrderOrders'
 		| 'OrderExportTrades'
@@ -1888,6 +1892,28 @@ declare namespace Strategy {
 }
 
 declare namespace Reports {
+	export type TstatusSettlement =
+		| 'Registered'
+		| 'Sent'
+		| 'Sending'
+		| 'Settled'
+		| 'Settling'
+		| 'Expired'
+		| 'Draft'
+		| 'SendToBourse'
+		| 'InSendQueue';
+	export interface TCashOrPhysicalSettlement {
+		symbolTitle: string;
+		cashSettlementDate: string;
+		side: Side;
+		openPositionCount: pandLStatus;
+		pandLStatus: string;
+		from: 'cash' | 'physical';
+		doneCount: number;
+		symbolISIN: string;
+		enabled: boolean;
+		status: TstatusSettlement;
+	}
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1983,20 +2009,11 @@ declare namespace Reports {
 		symbolTitle: string;
 		openPositionCount: number;
 		cashSettlementDate: string;
-		side: 'Call' | 'Put';
+		side: side;
 		settlementRequestType: 'MaximumStrike' | 'PartialStrike' | null;
 		requestCount: number;
 		enabled: boolean;
-		status:
-			| 'Registered'
-			| 'Sent'
-			| 'Sending'
-			| 'Settled'
-			| 'Settling'
-			| 'Expired'
-			| 'Draft'
-			| 'SendToBourse'
-			| 'InSendQueue';
+		status: TstatusSettlement;
 		doneCount: number;
 		pandLStatus: string;
 		history: IOptionHistory[];
@@ -2012,19 +2029,10 @@ declare namespace Reports {
 		symbolTitle: string;
 		openPositionCount: number;
 		cashSettlementDate: string;
-		side: 'Call' | 'Put';
+		side: Side;
 		settlementRequestType: 'MaximumStrike' | 'PartialStrike' | null;
 		requestCount: number;
-		status:
-			| 'Registered'
-			| 'Sent'
-			| 'Sending'
-			| 'Settled'
-			| 'Settling'
-			| 'Expired'
-			| 'Draft'
-			| 'SendToBourse'
-			| 'InSendQueue';
+		status: TstatusSettlement;
 		doneCount: number;
 		pandLStatus: 'Profit' | 'Loss';
 		penCount: number;

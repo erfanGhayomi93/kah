@@ -12,7 +12,8 @@ import {
 	setFreezeModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
-	setWithdrawalModal,
+	setOptionSettlementModal,
+	setWithdrawalModal
 } from '@/features/slices/modalSlice';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
@@ -71,6 +72,8 @@ const Deposit = lazy(() => import('./Deposit'));
 
 const Freeze = lazy(() => import('./Freeze'));
 
+const OptionSettlement = lazy(() => import('./OptionSettlement'));
+
 const ChangeBroker = lazy(() => import('./ChangeBroker'));
 
 const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
@@ -102,6 +105,7 @@ const Modals = () => {
 		changeBroker,
 		deposit,
 		freeze,
+		optionSettlement,
 		manageDashboardLayout,
 		withdrawal,
 		analyze,
@@ -245,6 +249,16 @@ const Modals = () => {
 					<ModalSuspense>
 						<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
 							<Freeze {...freeze} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{optionSettlement && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setOptionSettlementModal(null))} broker>
+							<OptionSettlement {...optionSettlement} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}

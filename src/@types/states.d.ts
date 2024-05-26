@@ -350,8 +350,12 @@ declare type IBrokerUrls = Record<
 	| 'changeBrokerSetCancel'
 	| 'getFreezeExportFreeze'
 	| 'getFreezerequests'
-	| 'getSettlementcash'
-	| 'getSettlementphysical'
+	| 'Settlementcash'
+	| 'Settlementphysical'
+	| 'newPhysicalSettlement'
+	| 'newCashSettlement'
+	| 'deletePhysicalSettlement'
+	| 'deleteCashSettlement'
 	| 'getOrderExportOrders'
 	| 'getOrderOrders'
 	| 'getOrderExportTrades'
@@ -808,6 +812,7 @@ declare namespace PhysicalSettlementReports {
 		contractStatus: TContractStatus;
 		settlementRequestType: { id: TSettlementRequestTypePhysically; title: string }[];
 		requestStatus: { id: TRequestStatus; title: string }[];
+		side?: TOrdersSide;
 	}
 
 	export interface IPhysicalSettlementReportsColumnsState {

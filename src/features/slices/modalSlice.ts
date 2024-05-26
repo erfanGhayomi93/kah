@@ -68,7 +68,11 @@ const initialState: ModalState = {
 	// برداشت وجه
 	withdrawal: null,
 
+	// فریر و رفع فریز
 	freeze: null,
+
+	// تسویه اختیار
+	optionSettlement: null,
 
 	// آنالیز
 	analyze: null,
@@ -228,6 +232,10 @@ const modalSlice = createSlice({
 			state.freeze = payload;
 		},
 
+		setOptionSettlementModal: (state, { payload }: PayloadAction<ModalState['optionSettlement']>) => {
+			state.optionSettlement = payload;
+		},
+
 		setAnalyzeModal: (state, { payload }: PayloadAction<ModalState['analyze']>) => {
 			state.analyze = payload;
 		},
@@ -330,6 +338,7 @@ export const {
 	setWithdrawalModal,
 	setDepositModal,
 	setFreezeModal,
+	setOptionSettlementModal,
 	setDescriptionModal,
 	setAnalyzeModal,
 	updateSelectSymbolContractsModal,

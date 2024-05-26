@@ -48,6 +48,7 @@ import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import GuaranteeSVG from './guarantee.svg';
+import HandWriteSVG from './handWrite.svg';
 import HomeSVG from './home.svg';
 import IdentityCardSVG from './identity-card.svg';
 import InfoCircleOutlineSVG from './info-circle-outline.svg';
@@ -169,6 +170,7 @@ export {
 	GrowDownSVG,
 	GrowUpSVG,
 	GuaranteeSVG,
+	HandWriteSVG,
 	HomeSVG,
 	IdentityCardSVG,
 	InfoCircleOutlineSVG,
