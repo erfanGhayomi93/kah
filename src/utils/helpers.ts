@@ -2,7 +2,14 @@ import { logoutUser } from '@/api/axios';
 import { getDateMilliseconds } from '@/constants';
 import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
-import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
+import {
+	useMutation,
+	useQuery,
+	type QueryClient,
+	type QueryKey,
+	type UndefinedInitialDataOptions,
+	type UseMutationOptions,
+} from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -152,6 +159,13 @@ export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey =
 	queryClient?: QueryClient,
 ) => {
 	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, queryClient);
+};
+
+export const createMutation = <TData = unknown, TVariables = void, TError = AxiosError, TContext = unknown>(
+	initialOptions: UseMutationOptions<TData, TError, TVariables, TContext>,
+	queryClient?: QueryClient,
+) => {
+	return (options: Partial<typeof initialOptions>) => useMutation({ ...initialOptions, ...options }, queryClient);
 };
 
 export const URLIsValid = (url: string) => {

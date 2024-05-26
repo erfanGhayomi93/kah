@@ -1292,6 +1292,8 @@
 		"NotApprove": "عدم تایید"
 	},
 	"alerts": {
+		"is_pending": "در حال دریافت اطلاعات",
+		"fetch_symbol_failed": "خطا در دریافت اطلاعات نماد",
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
 		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
 		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",

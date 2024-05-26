@@ -4,6 +4,7 @@ import routes from '../routes';
 
 export interface IOptionWatchlistQuery {
 	SymbolISINs: string[];
+	BaseSymbolISINs: string[];
 	Id: string;
 	FromDueDays: string;
 	ToDueDays: string;

@@ -18,6 +18,8 @@ export interface UIState {
 	dashboardGridLayout: IDashboardGrid[];
 
 	toastPosition: ToastPosition;
+
+	builtStrategy: TSymbolStrategy[];
 }
 
 const initialState: UIState = {
@@ -26,6 +28,8 @@ const initialState: UIState = {
 	sidebarIsExpand: false,
 
 	saturnActiveTemplate: null,
+
+	builtStrategy: [],
 
 	lsStatus: 'CONNECTING',
 
@@ -74,6 +78,10 @@ const uiSlice = createSlice({
 			LocalstorageInstance.set('tp', payload);
 			state.toastPosition = payload;
 		},
+
+		setBuiltStrategy: (state, { payload }: PayloadAction<UIState['builtStrategy']>) => {
+			state.builtStrategy = payload;
+		},
 	},
 });
 
@@ -86,6 +94,7 @@ export const {
 	setSymbolInfoPanelGridLayout,
 	setDashboardGridLayout,
 	setToastPosition,
+	setBuiltStrategy,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
@@ -95,5 +104,6 @@ export const getSaturnActiveTemplate = (state: RootState) => state.ui.saturnActi
 export const getSymbolInfoPanelGridLayout = (state: RootState) => state.ui.symbolInfoPanelGridLayout;
 export const getDashboardGridLayout = (state: RootState) => state.ui.dashboardGridLayout;
 export const getToastPosition = (state: RootState) => state.ui.toastPosition;
+export const getBuiltStrategy = (state: RootState) => state.ui.builtStrategy;
 
 export default uiSlice.reducer;

@@ -727,26 +727,28 @@ const config: Config = {
 					'-webkit-transition': 'border-color 200ms ease-in-out',
 					'-moz-transition': 'border-color 200ms ease-in-out',
 
-					'&:focus-within,input:focus,textarea:focus,&.focus': {
-						'border-color': theme('colors.primary.300'),
-
-						'.flexible-placeholder': {
-							color: theme('colors.primary.300'),
-							top: '0',
-							right: '1.25rem !important',
-							'font-size': '1.2rem',
-							transform: 'translateY(calc(-100% + 0.9rem))',
-							'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
-						},
-
-						'.flexible-fieldset': {
+					'&:not(.disabled)': {
+						'&:focus-within,input:focus,textarea:focus,&.focus': {
 							'border-color': theme('colors.primary.300'),
 
-							legend: {
+							'.flexible-placeholder': {
+								color: theme('colors.primary.300'),
+								top: '0',
+								right: '1.25rem !important',
 								'font-size': '1.2rem',
-								'max-width': '100%',
-								'-webkit-transition': 'max-width 500ms',
-								transition: 'max-width 500ms',
+								transform: 'translateY(calc(-100% + 0.9rem))',
+								'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
+							},
+
+							'.flexible-fieldset': {
+								'border-color': theme('colors.primary.300'),
+
+								legend: {
+									'font-size': '1.2rem',
+									'max-width': '100%',
+									'-webkit-transition': 'max-width 500ms',
+									transition: 'max-width 500ms',
+								},
 							},
 						},
 					},
