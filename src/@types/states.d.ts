@@ -354,7 +354,8 @@ declare type IBrokerUrls = Record<
 	| 'receiptSetCancel'
 	| 'paymentDeleteRequest'
 	| 'getDataProviderv1MarketMap'
-	| 'getSectorSectorsWithTrades',
+	| 'getSectorSectorsWithTrades'
+	| 'deleteFreezeUnFreeze',
 	string
 >;
 

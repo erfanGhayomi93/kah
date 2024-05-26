@@ -171,17 +171,15 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 					<div style={{ minWidth: '0.1rem', minHeight: '3rem' }} className='mx-8 bg-gray-400' />
 
-					<div className='w-88'>
-						<Select
-							onChange={(option) => setFieldValue('property', option)}
-							options={ListOfProperties}
-							getOptionId={(option) => option.id}
-							getOptionTitle={(option) => <span>{t(option.label)}</span>}
-							placeholder={t('market_map.market_based_on')}
-							defaultValue={filters.property}
-							classes={{ root: 'h-32' }}
-						/>
-					</div>
+					<Select
+						onChange={(option) => setFieldValue('property', option)}
+						options={ListOfProperties}
+						getOptionId={(option) => option.id}
+						getOptionTitle={(option) => <span>{t(option.label)}</span>}
+						placeholder={t('market_map.market_based_on')}
+						defaultValue={filters.property}
+						classes={{ root: 'max-h-40  min-w-96' }}
+					/>
 				</div>
 
 				<div className='flex items-center gap-24'>

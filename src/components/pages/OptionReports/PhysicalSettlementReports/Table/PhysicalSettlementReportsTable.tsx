@@ -3,19 +3,14 @@ import WithdrawalCashReportsActionCell from '@/components/pages/FinancialReports
 import { numFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 interface PhysicalSettlementReportsTableProps {
 	reports: Reports.IPhysicalSettlementReports[] | null;
 	columnsVisibility: PhysicalSettlementReports.IPhysicalSettlementReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<PhysicalSettlementReports.IPhysicalSettlementReportsColumnsState[]>>;
 }
 
-const PhysicalSettlementReportsTable = ({
-	reports,
-	columnsVisibility,
-	setColumnsVisibility,
-}: PhysicalSettlementReportsTableProps) => {
+const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: PhysicalSettlementReportsTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Reports.IPhysicalSettlementReports>>(null);
@@ -53,7 +48,7 @@ const PhysicalSettlementReportsTable = ({
 					valueFormatter: ({ value }) => t('common.' + String(value).toLowerCase()),
 					cellClass: ({ data }) => {
 						if (!data) return '';
-						return data?.side === 'Call' ? 'text-success-200' : 'text-error-200';
+						return data?.side === 'Buy' ? 'text-success-200' : 'text-error-200';
 					},
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
@@ -69,7 +64,7 @@ const PhysicalSettlementReportsTable = ({
 					sortable: false,
 					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(String(value)) : ''),
 				},
-				/* تاریخ تسویه نقدی */
+				/* تاریخ تسویه فیزیکی */
 				{
 					headerName: t('physical_settlement_reports_page.cash_date_column'),
 					field: 'cashSettlementDate',

@@ -5,4 +5,12 @@ const Page: NextPage<INextProps> = () => {
 	return <DepositWithReceiptReports />;
 };
 
+const generateMetadata = () => {
+	return {
+		title: 'گزارشات واریز با فیش - کهکشان',
+	};
+};
+
+export { generateMetadata };
+
 export default Page;

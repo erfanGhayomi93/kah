@@ -344,6 +344,7 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		mobileOtpRequest: data.MobileOtpRequest,
 		getDataProviderv1MarketMap: data.DataProviderv1MarketMap,
 		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
+		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
 	};
 
 	return urls;
@@ -672,3 +673,6 @@ export const toggleArrayElement = <T>(array: T[], element: T): T[] => {
 	if (index === -1) return [...array, element];
 	else return array.filter((item) => item !== element);
 };
+
+export const toPascalCase = (str: string) =>
+	(str.match(/[a-zA-Z0-9]+/g) || []).map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`).join('');

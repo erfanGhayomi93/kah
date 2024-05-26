@@ -1,32 +1,63 @@
+import brokerAxios from '@/api/brokerAxios';
 import AgTable from '@/components/common/Tables/AgTable';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { toast } from 'react-toastify';
+import FreezeUnFreezeReportsTableActionCell from './FreezeUnFreezeReportsTableActionCell';
 
 interface FreezeUnFreezeReportsTableProps {
 	reports: Reports.IFreezeUnfreezeReports[] | null;
 	columnsVisibility: FreezeUnFreezeReports.IFreezeUnFreezeReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<FreezeUnFreezeReports.IFreezeUnFreezeReportsColumnsState[]>>;
 }
 
-const FreezeUnFreezeReportsTable = ({
-	reports,
-	columnsVisibility,
-	setColumnsVisibility,
-}: FreezeUnFreezeReportsTableProps) => {
+const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFreezeReportsTableProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
 	const gridRef = useRef<GridApi<Reports.IFreezeUnfreezeReports>>(null);
+
+	const url = useAppSelector(getBrokerURLs);
 
 	const dateFormatter = (v: string | number) => {
 		if (v === undefined || v === null) return '−';
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	// const onDeleteRow = async () => {
-	// 	//
-	// };
+	const onDeleteRow = (data: Reports.IFreezeUnfreezeReports) =>
+		new Promise<void>(async (resolve, reject) => {
+			if (!url || !data) return null;
+
+			try {
+				const response = await brokerAxios.post<number>(url.deleteFreezeUnFreeze, null, {
+					params: {
+						symbolISIN: data.symbolISIN,
+						type: data.requestType,
+					},
+				});
+
+				if (response.status !== 200 || !response.data) throw new Error('Error');
+
+				toast.success(t('alerts.' + data.requestType.toLowerCase() + '_request_deleted'), {
+					toastId: data.requestType + '_request_deleted',
+				});
+
+				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
+
+				resolve();
+			} catch (error) {
+				toast.error(t('alerts.' + data.requestType.toLowerCase() + '_request_delete_failed'), {
+					toastId: data.requestType + '_request_delete_failed',
+				});
+
+				reject();
+			}
+		});
 
 	const COLUMNS = useMemo<Array<ColDef<Reports.IFreezeUnfreezeReports>>>(
 		() =>
@@ -70,19 +101,19 @@ const FreezeUnFreezeReportsTable = ({
 					sortable: false,
 					valueFormatter: ({ value }) => (value ? t('freeze_and_unfreeze_reports_page.state_' + value) : ''),
 				},
-				// {
-				// 	headerName: t('freeze_and_unfreeze_reports_page.action_column'),
-				// 	field: 'action',
-				// 	maxWidth: 200,
-				// 	minWidth: 200,
-				// 	initialHide: false,
-				// 	suppressMovable: true,
-				// 	sortable: false,
-				// 	cellRenderer: FreezeUnFreezeReportsTableActionCell,
-				// 	cellRendererParams: {
-				// 		onDeleteRow,
-				// 	},
-				// },
+				{
+					headerName: t('freeze_and_unfreeze_reports_page.action_column'),
+					field: 'action',
+					maxWidth: 200,
+					minWidth: 200,
+					initialHide: false,
+					suppressMovable: true,
+					sortable: false,
+					cellRenderer: FreezeUnFreezeReportsTableActionCell,
+					cellRendererParams: {
+						onDeleteRow,
+					},
+				},
 			] as Array<ColDef<Reports.IFreezeUnfreezeReports>>,
 		[],
 	);

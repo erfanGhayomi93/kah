@@ -26,7 +26,9 @@
 		"file_size_must_be_less_than": "حجم تصویر باید کمتر از {n} باشد",
 		"infinity": "نامحدود",
 		"system": "سیستم",
-		"backoffice": "بک آفیس"
+		"backoffice": "بک آفیس",
+		"buy": "خرید",
+		"sell": "فروش"
 	},
 	"side": {
 		"buy": "خرید",
