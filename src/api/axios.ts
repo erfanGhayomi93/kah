@@ -1,3 +1,4 @@
+import { store } from '@/api/inject-store';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
@@ -46,7 +47,7 @@ axios.interceptors.response.use(
 
 			switch (errStatus) {
 				case 401:
-					onUnauthorize();
+					logoutUser();
 			}
 		}
 
@@ -54,10 +55,13 @@ axios.interceptors.response.use(
 	},
 );
 
-const onUnauthorize = () => {
+const logoutUser = () => {
 	try {
-		const clientId = getClientId();
+		store.dispatch({ payload: false, type: 'user/setIsLoggedIn' });
+		store.dispatch({ payload: false, type: 'user/setBrokerIsSelected' });
+		store.dispatch({ payload: null, type: 'broker/setBrokerURLs' });
 
+		const clientId = getClientId();
 		deleteBrokerClientId();
 		deleteClientId();
 
@@ -72,5 +76,5 @@ const onUnauthorize = () => {
 	}
 };
 
-export { AxiosError, onUnauthorize };
+export { AxiosError, logoutUser };
 export default axios;

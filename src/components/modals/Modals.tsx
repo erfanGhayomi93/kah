@@ -19,24 +19,6 @@ import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
-import AcceptAgreement from './AcceptAgreement';
-import Analyze from './Analyze';
-import CashSettlementReportsFiltersModal from './CashSettlementReportsFiltersModal';
-import ChangeBrokerReportsFiltersModal from './ChangeBrokerReportsFiltersModal';
-import ChoiceCollateral from './ChoiceCollateral';
-import Confirm from './Confirm';
-import CoveredCallFilters from './CovertCallFilters';
-import CreateStrategyModal from './CreateStrategyModal';
-import DepositWithReceiptFiltersModal from './DepositWithReceiptReportsFiltersModal';
-import FreezeUnFreezeReportsFiltersModal from './FreezeUnFreezeReportsModal';
-import InstantDepositFiltersModal from './InstantDepositReportsFiltersModal';
-import ModalLoading from './ModalLoading';
-import OrdersReportsFiltersModal from './OrdersReportsFiltersModal';
-import PhysicalSettlementReportsFiltersModal from './PhysicalSettlementReportsFiltersModal';
-import SymbolInfoPanelSetting from './SymbolInfoPanelSetting';
-import TradeReportsFiltersModal from './TradesReportsFiltersModal';
-import TransactionsFiltersModal from './TransactionsFiltersModal';
-import WithdrawalCashFiltersModal from './WithdrawalCashReportsFiltersModal';
 
 const LoginModal = lazy(() => import('./LoginModal'));
 
@@ -79,6 +61,42 @@ const ChangeBroker = lazy(() => import('./ChangeBroker'));
 const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
 
 const Description = lazy(() => import('./Description'));
+
+const AcceptAgreement = lazy(() => import('./AcceptAgreement'));
+
+const Analyze = lazy(() => import('./Analyze'));
+
+const CashSettlementReportsFiltersModal = lazy(() => import('./CashSettlementReportsFiltersModal'));
+
+const ChangeBrokerReportsFiltersModal = lazy(() => import('./ChangeBrokerReportsFiltersModal'));
+
+const ChoiceCollateral = lazy(() => import('./ChoiceCollateral'));
+
+const Confirm = lazy(() => import('./Confirm'));
+
+const CoveredCallFilters = lazy(() => import('./CoveredCallFilters'));
+
+const CreateStrategyModal = lazy(() => import('./CreateStrategyModal'));
+
+const DepositWithReceiptFiltersModal = lazy(() => import('./DepositWithReceiptReportsFiltersModal'));
+
+const FreezeUnFreezeReportsModal = lazy(() => import('./FreezeUnFreezeReportsModal'));
+
+const InstantDepositReportsFiltersModal = lazy(() => import('./InstantDepositReportsFiltersModal'));
+
+const ModalLoading = lazy(() => import('./ModalLoading'));
+
+const OrdersReportsFiltersModal = lazy(() => import('./OrdersReportsFiltersModal'));
+
+const PhysicalSettlementReportsFiltersModal = lazy(() => import('./PhysicalSettlementReportsFiltersModal'));
+
+const SymbolInfoPanelSetting = lazy(() => import('./SymbolInfoPanelSetting'));
+
+const TradesReportsFiltersModal = lazy(() => import('./TradesReportsFiltersModal'));
+
+const TransactionsFiltersModal = lazy(() => import('./TransactionsFiltersModal'));
+
+const WithdrawalCashReportsFiltersModal = lazy(() => import('./WithdrawalCashReportsFiltersModal'));
 
 const Modals = () => {
 	const dispatch = useAppDispatch();
@@ -375,7 +393,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{instantDepositReportsFilters && (
 					<ModalSuspense>
-						<InstantDepositFiltersModal />
+						<InstantDepositReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -391,7 +409,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{withdrawalCashReportsFilters && (
 					<ModalSuspense>
-						<WithdrawalCashFiltersModal />
+						<WithdrawalCashReportsFiltersModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -407,7 +425,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{freezeUnfreezeReportsFilters && (
 					<ModalSuspense>
-						<FreezeUnFreezeReportsFiltersModal />
+						<FreezeUnFreezeReportsModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -447,7 +465,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{tradesReportsFilters && (
 					<ModalSuspense>
-						<TradeReportsFiltersModal />
+						<TradesReportsFiltersModal {...tradesReportsFilters} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -455,7 +473,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{coveredCallFilters && (
 					<ModalSuspense>
-						<CoveredCallFilters />
+						<CoveredCallFilters {...coveredCallFilters} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

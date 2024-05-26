@@ -144,6 +144,7 @@ export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
 	};
 	canChangeBaseSymbol: boolean;
 	canSendBaseSymbol: boolean;
+	initialSelectedBaseSymbol?: boolean;
 	maxContracts: null | number;
 	initialSelectedContracts: string[];
 	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
@@ -255,7 +256,10 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 	onContractRemoved?: (id: string) => void;
 }
 
-export interface ICavertCallFilters extends IBaseModalConfiguration {}
+export interface ICavertCallFiltersModal extends IBaseModalConfiguration {
+	initialFilters: Partial<ICoveredCallFiltersModalStates>;
+	onSubmit: (appliedFilters: Partial<ICoveredCallFiltersModalStates>) => void;
+}
 
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
@@ -295,5 +299,5 @@ export type ModalState = TBaseModalProps<{
 	tradesReportsFilters: ITradesReportsFilters;
 	createStrategy: ICreateStrategyModal;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
-	coveredCallFilters: ICavertCallFilters;
+	coveredCallFilters: ICavertCallFiltersModal;
 }>;

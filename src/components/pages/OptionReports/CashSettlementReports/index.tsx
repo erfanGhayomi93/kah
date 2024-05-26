@@ -39,10 +39,14 @@ const CashSettlementReports = () => {
 
 	const router = useRouter();
 
-	const { inputs, setFieldValue, setFieldsValue } =
-		useInputs<CashSettlementReports.ICashSettlementReportsFilters>(initialCashSettlementReportsFilters);
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<CashSettlementReports.ICashSettlementReportsFilters>(
+		initialCashSettlementReportsFilters,
+	);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('cashSettlement_column', defaultCashSettlementReportsColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'cashSettlement_column',
+		defaultCashSettlementReportsColumns,
+	);
 
 	const { setDebounce } = useDebounce();
 
@@ -58,7 +62,6 @@ const CashSettlementReports = () => {
 		if (inputs.contractStatus) params.contractStatus = inputs.contractStatus;
 		if (inputs.requestStatus) params.requestStatus = inputs.requestStatus;
 		if (inputs.settlementRequestType) params.settlementRequestType = inputs.settlementRequestType;
-
 
 		dispatch(setCashSettlementReportsFiltersModal(params));
 	};

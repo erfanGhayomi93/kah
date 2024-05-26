@@ -1,5 +1,5 @@
+import { store } from '@/api/inject-store';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { store } from '@/features/store';
 import { createQuery } from '@/utils/helpers';
 import axios from '../brokerAxios';
 
@@ -51,19 +51,29 @@ export const useUserStatusQuery = createQuery<Broker.Status | null, ['userStatus
 	},
 });
 
-export const useBrokerOrdersCountQuery = createQuery<Broker.OrdersCount | null, ['brokerOrdersCountQuery']>({
+export const useBrokerOrdersCountQuery = createQuery<Broker.OrdersCount, ['brokerOrdersCountQuery']>({
 	staleTime: 18e5,
 	queryKey: ['brokerOrdersCountQuery'],
 	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
-		if (!url) return null;
+		try {
+			const url = getBrokerURLs(store.getState());
+			if (!url) throw new Error();
 
-		const response = await axios.get<ServerResponse<Broker.OrdersCount>>(url.ordersCount, { signal });
-		const data = response.data;
+			const response = await axios.get<ServerResponse<Broker.OrdersCount>>(url.ordersCount, { signal });
+			const data = response.data;
 
-		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-		return data.result;
+			return data.result;
+		} catch (e) {
+			return {
+				executedOrderCnt: 0,
+				openOrderCnt: 0,
+				orderDraftCnt: 0,
+				orderOptionCount: 0,
+				todayOrderCnt: 0,
+			};
+		}
 	},
 });
 

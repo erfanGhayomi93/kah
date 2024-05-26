@@ -670,7 +670,9 @@ declare namespace Broker {
 		| 'ReceiptSetCancel'
 		| 'PaymentDeleteRequest'
 		| 'AcceptAgreement'
-		| 'MobileOtpRequest';
+		| 'MobileOtpRequest'
+		| 'DataProviderv1MarketMap'
+		| 'getSectorSectorsWithTrades';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1656,14 +1658,18 @@ declare namespace Strategy {
 		callSymbolTitle: string;
 		callBestSellLimitPrice: number;
 		callBestSellLimitQuantity: number;
+		callBestBuyLimitPrice: number;
+		callBestBuyLimitQuantity: number;
+		putBestBuyLimitPrice: number;
+		putBestBuyLimitQuantity: number;
 		putSymbolISIN: string;
 		putSymbolTitle: string;
 		putBestSellLimitPrice: number;
 		putBestSellLimitQuantity: number;
 		callOpenPositionCount: number;
 		putOpenPositionCount: number;
-		callIOTM: Option.IOTM;
-		putIOTM: Option.IOTM;
+		callIOTM: string;
+		putIOTM: string;
 		callPremium: number;
 		callPremiumPercent: number;
 		putPremium: number;
@@ -1816,6 +1822,7 @@ declare namespace Strategy {
 		optionBestSellLimitQuantity: number;
 		protectivePutBEP: number;
 		maxLoss: number;
+		maxLossPercent: number;
 		profitAmount: number;
 		profitPercent: number;
 		inUseCapital: number;
@@ -2118,3 +2125,138 @@ declare namespace Reports {
 		tradeDetails: TTradeDetails;
 	}
 }
+
+declare namespace MarketMap {
+	export interface Root {
+		title: string;
+		/**
+		 * Sectors
+		 */
+		s: MarketMap.Sector[];
+	}
+
+	export interface Sector {
+		/**
+		 * Sector Code
+		 */
+		sc: string;
+		/**
+		 * Sector name
+		 */
+		sn: string;
+		/**
+		 * Symbols
+		 */
+		s: MarketMap.Symbol[];
+	}
+
+	export interface TWatchlist {
+		id: number;
+		createDate: string;
+		watchListName: string;
+		isPinned: boolean;
+	}
+
+	export interface Symbol {
+		/**
+		 * SymbolISIN
+		 */
+		si: string;
+		/**
+		 * Symbol Title
+		 */
+		st: string;
+		/**
+		 * Company Name
+		 */
+		cn: string;
+		/**
+		 * Sector Code
+		 */
+		sc: string;
+		/**
+		 * Last Traded Price
+		 */
+		l: number;
+		/**
+		 * Closing Price
+		 */
+		c: number;
+		/**
+		 * Closing Price Var Reference Price Percent
+		 */
+		cpp: number;
+		/**
+		 * Trade Price Var Previous Trade Percent
+		 */
+		lpp: number;
+		/**
+		 * Last Trade Price Vs Reference Price
+		 */
+		lp: number;
+		/**
+		 * Total Trade Value
+		 */
+		t: number;
+		/**
+		 * Total Number Of Trades
+		 */
+		tt: number;
+		/**
+		 * Number Of ILegals Buyers
+		 */
+		nlb: number;
+		/**
+		 * Number Of Individuals Sellers
+		 */
+		nis: number;
+		/**
+		 * Number Of Individuals Buyers
+		 */
+		nib: number;
+		/**
+		 * Number Of Legals Sellers
+		 */
+		nls: number;
+		/**
+		 * Sum Of Individuals Buy Volume
+		 */
+		sibv: number;
+		/**
+		 * Sum Of Individuals Sell Volume
+		 */
+		sisv: number;
+		/**
+		 * Sum Of Legals Buy Volume
+		 */
+		slbv: number;
+		/**
+		 * Sum Of Legals Sell Volume
+		 */
+		slsv: number;
+		/**
+		 * Market Cap
+		 */
+		mCap: number;
+		marketUnit: string;
+		symbolTag: null;
+		symbolType: string;
+		marketCode: null;
+		exchange: null;
+	}
+
+	export interface SectorAPI {
+		id: string;
+		title: string;
+	}
+}
+
+declare type LimitSymbol = {
+	watchlistId: number;
+	customerISIN: string;
+	symbolISIN: string;
+	symbolTitle: string;
+	takeProfit: number;
+	stopLoss: number;
+	closingPrice: number;
+};

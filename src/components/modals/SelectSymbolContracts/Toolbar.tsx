@@ -1,20 +1,25 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
 import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
 import { SettlementItem } from '@/components/pages/OptionChain/Toolbar';
-import { useAppDispatch } from '@/features/hooks';
-import { updateSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { useEffect, useState } from 'react';
+
+type TSymbol = Record<'symbolISIN' | 'symbolTitle', string> | null;
 
 interface ToolbarProps {
 	canChangeBaseSymbol: boolean;
 	settlementDay: Option.BaseSettlementDays | null;
-	symbol: null | Record<'symbolTitle' | 'symbolISIN', string>;
-	setSettlementDay: (item: Option.BaseSettlementDays) => void;
+	symbol: null | TSymbol;
+	onBaseSymbolChange: (v: TSymbol) => void;
+	onSettlementDayChanged: (item: Option.BaseSettlementDays) => void;
 }
 
-const Toolbar = ({ symbol, settlementDay, canChangeBaseSymbol, setSettlementDay }: ToolbarProps) => {
-	const dispatch = useAppDispatch();
-
+const Toolbar = ({
+	symbol,
+	settlementDay,
+	canChangeBaseSymbol,
+	onBaseSymbolChange,
+	onSettlementDayChanged,
+}: ToolbarProps) => {
 	const [baseSymbol, setBaseSymbol] = useState<Option.BaseSearch | null>(
 		!symbol
 			? null
@@ -35,21 +40,17 @@ const Toolbar = ({ symbol, settlementDay, canChangeBaseSymbol, setSettlementDay 
 
 	useEffect(() => {
 		if (!settlementDays) return;
-		setSettlementDay(settlementDays[0]);
+		onSettlementDayChanged(settlementDays[0]);
 	}, [JSON.stringify(settlementDays)]);
 
 	useEffect(() => {
 		if (!baseSymbol) return;
 
-		dispatch(
-			updateSelectSymbolContractsModal({
-				symbol,
-			}),
-		);
+		onBaseSymbolChange(baseSymbol);
 	}, [baseSymbol]);
 
 	return (
-		<div className='gap-24 overflow-hidden flex-items-center'>
+		<div className='gap-24 flex-items-center'>
 			{canChangeBaseSymbol && (
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch value={baseSymbol} onChange={(symbol) => setBaseSymbol(symbol)} />
@@ -69,7 +70,7 @@ const Toolbar = ({ symbol, settlementDay, canChangeBaseSymbol, setSettlementDay 
 								key={i}
 								activeSettlementDay={settlementDay}
 								settlementDay={item}
-								setSettlementDay={setSettlementDay}
+								setSettlementDay={onSettlementDayChanged}
 							/>
 						))}
 					</ul>

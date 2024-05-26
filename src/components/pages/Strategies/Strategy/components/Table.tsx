@@ -1,6 +1,6 @@
 import AgTable, { type AgTableProps } from '@/components/common/Tables/AgTable';
 import { type GridApi, type SortChangedEvent } from '@ag-grid-community/core';
-import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import NoTableData from './NoTableData';
 
 interface PaginationProps {
@@ -10,13 +10,26 @@ interface PaginationProps {
 }
 
 interface TableProps<T> extends AgTableProps<T>, PaginationProps {
+	columnsVisibility: Array<IManageColumn<string>>;
 	isFetching?: boolean;
 }
 
 type TableRow = Strategy.AllStrategies;
 
 const Table = forwardRef<GridApi, TableProps<TableRow>>(
-	({ isFetching, pageSize, pageNumber, rowData = [], fetchNextPage, defaultColDef = {}, ...props }, ref) => {
+	(
+		{
+			isFetching,
+			pageSize,
+			pageNumber,
+			columnsVisibility,
+			rowData = [],
+			fetchNextPage,
+			defaultColDef = {},
+			...props
+		},
+		ref,
+	) => {
 		const gridRef = useRef<GridApi<TableRow>>(null);
 
 		const [sorting, setSorting] = useState<{ colId: string; sort: TSortingMethods } | null>(null);
@@ -34,6 +47,8 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 				//
 			}
 		};
+
+		useImperativeHandle(ref, () => gridRef.current!);
 
 		const data = useMemo<TableRow[]>(() => {
 			try {
@@ -66,7 +81,19 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 			}
 		}, [rowData, sorting, pageNumber, pageSize]);
 
-		useImperativeHandle(ref, () => gridRef.current!);
+		useEffect(() => {
+			const eGrid = gridRef.current;
+			if (!eGrid || !Array.isArray(columnsVisibility)) return;
+
+			try {
+				for (let i = 0; i < columnsVisibility.length; i++) {
+					const { hidden, id } = columnsVisibility[i];
+					eGrid.setColumnsVisible([id], !hidden);
+				}
+			} catch (e) {
+				//
+			}
+		}, [columnsVisibility]);
 
 		return (
 			<div className='relative flex-1'>

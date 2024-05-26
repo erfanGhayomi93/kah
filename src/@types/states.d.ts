@@ -1,6 +1,7 @@
-declare interface INextProps<T extends object = {}> {
+declare interface INextProps<T = {}, K = {}> {
 	children: React.ReactNode;
 	params: T & { locale: string };
+	searchParams: K;
 }
 
 declare type TDateRange = 'dates.day' | 'dates.week' | 'dates.month' | 'dates.year' | 'dates.custom';
@@ -254,8 +255,8 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
-declare interface IManageColumn {
-	id: string;
+declare interface IManageColumn<T extends string> {
+	id: T;
 	title: string;
 	hidden: boolean;
 }
@@ -275,12 +276,6 @@ declare interface IDashboardGrid {
 	h: number;
 	i: number;
 	hidden: boolean;
-}
-
-declare interface IBaseModalConfiguration {
-	moveable?: boolean;
-	animation?: boolean;
-	callbackFunction?: () => void;
 }
 
 declare interface SymbolContractModalStates {
@@ -361,7 +356,9 @@ declare type IBrokerUrls = Record<
 	| 'getOrderExportTrades'
 	| 'getOrderDetailedOrders'
 	| 'receiptSetCancel'
-	| 'paymentDeleteRequest',
+	| 'paymentDeleteRequest'
+	| 'getDataProviderv1MarketMap'
+	| 'getSectorSectorsWithTrades',
 	string
 >;
 
@@ -393,13 +390,16 @@ declare interface IBsModalInputs {
 	holdAfterOrder: boolean;
 }
 
-declare interface IAnalyzeModalInputs {
-	chartData: Array<Record<'x' | 'y', number>>;
+declare interface IAnalyzeInputs {
 	minPrice: number;
 	maxPrice: number;
+	baseAssets: number;
+}
+
+declare interface IAnalyzeModalInputs extends IAnalyzeInputs {
+	chartData: Array<Record<'x' | 'y', number>>;
 	mostProfit: number;
 	mostLoss: number;
-	baseAssets: number;
 	bep: Record<'x' | 'y', number>;
 	budget: number;
 	profitProbability: number;
@@ -473,6 +473,8 @@ declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_
 declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement';
 
 declare type TOrdersTradersTab = 'orders' | 'trades';
+
+declare type TMarketMapTab = 'market' | 'base_symbol_option' | 'contract' | 'call_option' | 'put_option';
 
 declare namespace Transaction {
 	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
@@ -837,3 +839,51 @@ declare namespace PhysicalSettlementReports {
 		| 'status'
 		| 'action';
 }
+
+declare type TMarketMapFilters = {
+	map: {
+		id: 'all' | 'portfolio' | 'watchlist';
+		label: string;
+	};
+
+	market: {
+		id: 'all' | 'baseSymbolOption' | 'contract' | 'putOption' | 'callOption';
+		label: string;
+	};
+
+	display: {
+		id: 'symbol' | 'sectors';
+		label: string;
+	};
+
+	property: {
+		id: 'volume' | 'value' | 'quantity';
+		label: string;
+	};
+
+	symbolType: {
+		id:
+			| 'all'
+			| 'SharesInFarabourse'
+			| 'Shares'
+			| 'PreemptionRight'
+			| 'StockFund'
+			| 'FixedFund'
+			| 'MixedFund'
+			| 'RealEstateFund'
+			| 'VentureFund'
+			| 'CommodityExchangeFund'
+			| 'CommodityDepositCertificate'
+			| 'SaffronCertificate'
+			| 'GoldCoinCertificate';
+		label: string;
+	};
+
+	sector: MarketMap.SectorAPI | null;
+
+	percentage: string | null;
+
+	watchlist: MarketMap.TWatchlist | null;
+
+	palette: Record<'id' | 'label', string> | null;
+};

@@ -1,3 +1,4 @@
+import { store } from '@/api/inject-store';
 import {
 	initialCashSettlementReportsFilters,
 	initialChangeBrokerReportsFilters,
@@ -11,7 +12,6 @@ import {
 	initialWithdrawalCashReportsFilters,
 } from '@/constants';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { store } from '@/features/store';
 import dayjs from '@/libs/dayjs';
 import { createQuery, setHours, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import brokerAxios from '../brokerAxios';

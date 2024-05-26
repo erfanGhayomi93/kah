@@ -1,5 +1,3 @@
-'use client';
-
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 import { type ModalState } from './types/modalSlice.interfaces';
@@ -167,20 +165,6 @@ const modalSlice = createSlice({
 			state.selectSymbolContracts = payload;
 		},
 
-		updateSelectSymbolContractsModal: (
-			state,
-			{ payload }: PayloadAction<Partial<ModalState['selectSymbolContracts']>>,
-		) => {
-			const prev = {
-				...state.selectSymbolContracts,
-				...payload,
-			};
-
-			if (state.selectSymbolContracts !== null) {
-				state.selectSymbolContracts = prev as ModalState['selectSymbolContracts'];
-			}
-		},
-
 		setAddSaturnTemplateModal: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
 			state.addSaturnTemplate = payload;
 		},
@@ -341,7 +325,6 @@ export const {
 	setOptionSettlementModal,
 	setDescriptionModal,
 	setAnalyzeModal,
-	updateSelectSymbolContractsModal,
 	setTransactionsFiltersModal,
 	setInstantDepositReportsFiltersModal,
 	setDepositWithReceiptReportsFiltersModal,

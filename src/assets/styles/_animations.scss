@@ -204,3 +204,21 @@
 		-moz-transform: translate3d(48rem, 0, 0);
 	}
 }
+
+@keyframes expandOrders {
+	from {
+		height: 0rem;
+	}
+	to {
+		height: 37.6rem;
+	}
+}
+
+@keyframes collapseOrders {
+	from {
+		height: 37.6rem;
+	}
+	to {
+		height: 0rem;
+	}
+}

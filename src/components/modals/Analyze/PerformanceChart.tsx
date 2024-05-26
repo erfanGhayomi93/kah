@@ -174,8 +174,20 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 			(total, { data }) => [...total, data[1].y < 0 ? COLORS.RED : COLORS.GREEN],
 			[],
 		);
-		options.offset[0] *= 1.5;
-		options.offset[1] *= 1.5;
+
+		// Update Min/Max
+		if (options.offset[0] !== 0) {
+			options.offset[0] *= 1.25;
+			options.offset[0] =
+				(options.offset[0] < 0 ? Math.floor(options.offset[0] / 100) : Math.ceil(options.offset[0] / 100)) *
+				100;
+		}
+		if (options.offset[1] !== 0) {
+			options.offset[1] *= 1.25;
+			options.offset[1] =
+				(options.offset[1] < 0 ? Math.floor(options.offset[1] / 100) : Math.ceil(options.offset[1] / 100)) *
+				100;
+		}
 
 		setChartOptions(options);
 	}, [inputs]);

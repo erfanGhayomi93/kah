@@ -1,5 +1,3 @@
-'use client';
-
 import LocalstorageInstance from '@/classes/Localstorage';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';

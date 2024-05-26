@@ -11,11 +11,11 @@ import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixe
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
+import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
-import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const BearPutSpreadDescription = dynamic(() => import('../Descriptions/BearPutSpreadDescription'), {
 	ssr: false,
@@ -150,7 +150,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread>>>(
+	const columnDefs = useMemo<Array<ColDef<Strategy.BearPutSpread> & { colId: TBearPutSpreadColumns }>>(
 		() => [
 			{
 				colId: 'baseSymbolTitle',
@@ -166,8 +166,8 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'قیمت پایه',
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.ProtectivePut, number>) => ({
-					percent: data?.baseTradePriceVarPreviousTradePercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
 					data?.baseLastTradedPrice ?? 0,
@@ -183,7 +183,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'hspSymbolISIN',
+				colId: 'hspSymbolTitle',
 				headerName: 'پوت خرید',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -205,6 +205,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestSellLimitPrice',
 				headerName: 'قیمت فروشنده پوت خرید',
 				width: 176,
+				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -212,6 +213,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestSellLimitQuantity',
 				headerName: 'حجم فروشنده پوت خرید',
 				width: 176,
+				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -219,6 +221,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestBuyLimitPrice',
 				headerName: 'قیمت خریدار پوت خرید',
 				width: 176,
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.hspBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -226,11 +229,12 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'hspBestBuyLimitQuantity',
 				headerName: 'حجم خریدار پوت خرید',
 				width: 176,
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.hspBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'lspSymbolISIN',
+				colId: 'lspSymbolTitle',
 				headerName: 'پوت فروش',
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -271,7 +275,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			},
 			{
 				colId: 'lspBestSellLimitQuantity',
-				headerName: 'حجم سر خط فروش پوت فروش',
+				headerName: 'حجم سرخط فروش پوت فروش',
 				width: 192,
 				valueGetter: ({ data }) => data?.lspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -295,8 +299,8 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'قیمت نماد پوت خرید',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.hspPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.hspPremium ?? 0, data?.hspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
@@ -306,8 +310,8 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				headerName: 'قیمت نماد پوت فروش',
 				width: 192,
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.lspPremiumPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.lspPremium ?? 0, data?.lspPremiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
@@ -332,8 +336,8 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
 				},
 				cellRenderer: CellPercentRenderer,
-				cellRendererParams: ({ data }: ICellRendererParams<Strategy.BearPutSpread, number>) => ({
-					percent: data?.maxProfitPercent ?? 0,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.BearPutSpread>) => ({
+					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
@@ -383,14 +387,14 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			{
 				colId: 'hspTradeValue',
 				headerName: 'ارزش معاملات آپشن پوت خرید',
-				width: 192,
+				width: 208,
 				valueGetter: ({ data }) => data?.hspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
 			{
 				colId: 'lspTradeValue',
 				headerName: 'ارزش معاملات آپشن پوت فروش',
-				width: 192,
+				width: 208,
 				valueGetter: ({ data }) => data?.lspTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
@@ -449,20 +453,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		[],
 	);
 
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
-
 	return (
 		<>
 			<StrategyDetails
@@ -492,6 +482,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					fetchNextPage={goToTheNextPage}
 					pageNumber={inputs.pageNumber}
 					pageSize={inputs.pageSize}
+					columnsVisibility={columnsVisibility}
 				/>
 			</div>
 		</>

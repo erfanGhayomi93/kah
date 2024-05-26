@@ -1,7 +1,7 @@
 import brokerAxios from '@/api/brokerAxios';
+import { store } from '@/api/inject-store';
 import ipcMain from '@/classes/IpcMain';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { store } from '@/features/store';
 
 export const createOrder = (fields: IOFields) =>
 	new Promise<string | undefined>((resolve) => {
