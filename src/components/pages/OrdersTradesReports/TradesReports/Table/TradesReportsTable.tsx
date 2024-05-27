@@ -1,4 +1,4 @@
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -22,129 +22,85 @@ const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }:
 		return dayjs(v).calendar('jalali').format(format);
 	};
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.ITradesReports>>>(
-		() =>
-			[
-				/* ردیف */
-				{
-					headerName: t('trades_reports_page.id_column'),
-					field: 'orderId',
-					maxWidth: 112,
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
+	const COLUMNS = useMemo<Array<IColDef<Reports.ITradesReports>>>(
+		() => [
+			/* ردیف */
+			{
+				headerName: t('trades_reports_page.id_column'),
+				// maxWidth: 112,
+				// minWidth: 112,
+				valueFormatter: (row) => 1,
+			},
+			/* نماد */
+			{
+				headerName: t('trades_reports_page.symbol_column'),
+				// field: 'symbolTitle',
+				cellClass: 'text-right',
+				valueFormatter: (row) => row.symbolTitle,
+			},
+			/* سمت */
+			{
+				headerName: t('trades_reports_page.side_column'),
+				// field: 'orderSide',
+				cellClass: (row) => {
+					if (!row) return;
+					return clsx({
+						'text-success-200': row.orderSide.includes('Buy'),
+						'text-error-200': row.orderSide.includes('Sell'),
+					});
 				},
-				/* نماد */
-				{
-					headerName: t('trades_reports_page.symbol_column'),
-					field: 'symbolTitle',
-					cellClass: 'text-right',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-				},
-				/* سمت */
-				{
-					headerName: t('trades_reports_page.side_column'),
-					field: 'orderSide',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellClass: ({ data }) => {
-						if (!data) return;
-						return clsx({
-							'text-success-200': data.orderSide.includes('Buy'),
-							'text-error-200': data.orderSide.includes('Sell'),
-						});
-					},
-					valueFormatter: ({ value }) => t('trades_reports_page.side_' + value),
-				},
-				/* تاریخ */
-				{
-					headerName: t('trades_reports_page.date_column'),
-					field: 'tradeDate',
-					maxWidth: 144,
-					minWidth: 144,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'YYYY/MM/DD'),
-				},
-				/* ساعت */
-				{
-					headerName: t('trades_reports_page.time_column'),
-					field: 'tradeDate',
-					maxWidth: 144,
-					minWidth: 144,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'HH:mm'),
-				},
-				/* حجم کل */
-				{
-					headerName: t('trades_reports_page.overall_volume_column'),
-					field: 'tradedQuantity',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				/* قیمت */
-				{
-					headerName: t('trades_reports_page.price_column'),
-					field: 'tradePrice',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				/* کارمزد */
-				{
-					headerName: t('trades_reports_page.commission_column'),
-					field: 'totalQuota',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				/* ارزش معامله */
-				{
-					headerName: t('trades_reports_page.value_column'),
-					field: 'total',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				// /* اعتبار */
-				// {
-				// 	headerName: t('trades_reports_page.validity_column'),
-				// 	field: 'validity',
-				// 	lockPosition: true,
-				// 	initialHide: false,
-				// 	suppressMovable: true,
-				// 	sortable: false,
-				// 	valueFormatter: ({ data }) => {
-				// 		if (!data) return '-';
-				// 		const { validity, validityDate } = data;
+				valueFormatter: (row) => t('trades_reports_page.side_' + row.orderSide),
+			},
+			/* تاریخ */
+			{
+				headerName: t('trades_reports_page.date_column'),
+				// field: 'tradeDate',
+				// maxWidth: 144,
+				// minWidth: 144,
+				cellClass: 'ltr',
+				valueFormatter: (row) => dateFormatter(row.tradeDate, 'YYYY/MM/DD HH:mm'),
+			},
+			/* حجم کل */
+			{
+				headerName: t('trades_reports_page.overall_volume_column'),
+				// field: 'tradedQuantity',
+				valueFormatter: (row) => sepNumbers(String(row.tradedQuantity)),
+			},
+			/* قیمت */
+			{
+				headerName: t('trades_reports_page.price_column'),
+				field: 'tradePrice',
+				valueFormatter: (row) => sepNumbers(String(row.tradePrice)),
+			},
+			/* کارمزد */
+			{
+				headerName: t('trades_reports_page.commission_column'),
+				// field: 'totalQuota',
+				valueFormatter: (row) => sepNumbers(String(row.totalQuota)),
+			},
+			/* ارزش معامله */
+			{
+				headerName: t('trades_reports_page.value_column'),
+				// field: 'total',
+				valueFormatter: (row) => sepNumbers(String(row.total)),
+			},
+			// /* اعتبار */
+			// {
+			// 	headerName: t('trades_reports_page.validity_column'),
+			// 	field: 'validity',
+			// 	lockPosition: true,
+			// 	initialHide: false,
+			// 	suppressMovable: true,
+			// 	sortable: false,
+			// 	valueFormatter: ({ data }) => {
+			// 		if (!data) return '-';
+			// 		const { validity, validityDate } = data;
 
-				// 		if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
-				// 		return t('validity_date.' + validity);
-				// 	}
-				// }
-			] as Array<ColDef<Reports.ITradesReports>>,
+			// 		if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
+			// 		return t('validity_date.' + validity);
+			// 	}
+			// }
+		],
 		[],
 	);
 
@@ -175,16 +131,7 @@ const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }:
 
 	return (
 		<>
-			<AgTable<Reports.ITradesReports>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };

@@ -1,6 +1,6 @@
 import axios from '@/api/brokerAxios';
 import { store } from '@/api/inject-store';
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import dayjs from '@/libs/dayjs';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
-import ChangeBrokerReportsActionCell from './ChangeBrokerReportsActionCell';
+import ChangeBrokerReportsTableActionCell from './ChangeBrokerReportsActionCell';
 
 interface ChangeBrokerTableProps {
 	reports: Reports.IChangeBrokerReports[] | null;
@@ -52,70 +52,49 @@ const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProp
 			}
 		});
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IChangeBrokerReports>>>(
-		() =>
-			[
-				{
-					headerName: t('change_broker_reports_page.id_column'),
-					field: 'id',
-					pinned: 'right',
-					maxWidth: 112,
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
-				},
-				{
-					headerName: t('change_broker_reports_page.date_column'),
-					field: 'saveDate',
-					maxWidth: 96,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
-				},
-				{
-					headerName: t('change_broker_reports_page.symbol_column'),
-					field: 'symbolTitle',
-					cellClass: 'ltr text-right',
-					minWidth: 150,
-					maxWidth: 250,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-				},
-				{
-					headerName: t('change_broker_reports_page.gateway_column'),
-					field: 'id',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: () => t('states.state_Online'),
-				},
-				{
-					headerName: t('change_broker_reports_page.status_column'),
-					field: 'lastState',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => t('states.state_' + value),
-				},
-				{
-					headerName: t('change_broker_reports_page.action_column'),
-					field: 'action',
-					maxWidth: 112,
-					minWidth: 112,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellRenderer: ChangeBrokerReportsActionCell,
-					cellRendererParams: {
-						onDeleteRow,
-					},
-				},
-			] as Array<ColDef<Reports.IChangeBrokerReports>>,
+	const COLUMNS = useMemo<Array<IColDef<Reports.IChangeBrokerReports>>>(
+		() => [
+			{
+				headerName: t('change_broker_reports_page.id_column'),
+				// field: 'id',
+				// pinned: 'right',
+				// maxWidth: 112,
+				// minWidth: 112,
+				valueFormatter: (row) => row.id,
+			},
+			{
+				headerName: t('change_broker_reports_page.date_column'),
+				// field: 'saveDate',
+				// maxWidth: 96,
+				valueFormatter: (row) => dateFormatter(row.saveDate ?? ''),
+			},
+			{
+				headerName: t('change_broker_reports_page.symbol_column'),
+				// field: 'symbolTitle',
+				// minWidth: 150,
+				// maxWidth: 250,
+				cellClass: 'ltr text-right',
+				valueFormatter: (row) => row.symbolTitle,
+			},
+			{
+				headerName: t('change_broker_reports_page.gateway_column'),
+				// field: 'id',
+				valueFormatter: () => t('states.state_Online'),
+			},
+			{
+				headerName: t('change_broker_reports_page.status_column'),
+				// field: 'lastState',
+				valueFormatter: (row) => t('states.state_' + row.lastState),
+			},
+			{
+				headerName: t('change_broker_reports_page.action_column'),
+				// field: 'action',
+				// maxWidth: 112,
+				// minWidth: 112,
+				cellClass: 'flex-justify-center',
+				valueFormatter: (row) => <ChangeBrokerReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />,
+			},
+		],
 		[],
 	);
 
@@ -146,16 +125,7 @@ const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProp
 
 	return (
 		<>
-			<AgTable<Reports.IChangeBrokerReports>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };
