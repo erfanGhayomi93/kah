@@ -1,10 +1,10 @@
 'use client';
+import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
-import NoData from '@/components/common/NoData';
-import Loading from '@/components/common/Loading';
 
 const History = () => {
 	const t = useTranslations();
@@ -12,41 +12,50 @@ const History = () => {
 	const columnDefs = useMemo<Array<IColDef<unknown>>>(
 		() => [
 			{
+				colId: 'id',
 				headerName: '#',
-				valueFormatter: () => '',
-				headerClass: 'w-36'
+				width: 36,
+				valueGetter: () => '',
 			},
 			{
+				colId: 'username',
 				headerName: t('settings_page.username'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 			{
+				colId: 'system_title',
 				headerName: t('settings_page.system_title'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 			{
+				colId: 'device_address',
 				headerName: t('settings_page.device_address'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 			{
+				colId: 'device_type',
 				headerName: t('settings_page.device_type'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 			{
+				colId: 'status',
 				headerName: t('settings_page.status'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 			{
+				colId: 'entrance_date',
 				headerName: t('settings_page.entrance_date'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 			{
+				colId: 'exit_date',
 				headerName: t('settings_page.exit_date'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 			{
+				colId: 'action',
 				headerName: t('settings_page.action'),
-				valueFormatter: () => '',
+				valueGetter: () => '',
 			},
 		],
 		[],
@@ -57,7 +66,7 @@ const History = () => {
 			<div className='bg-white' style={{ height: ([].length || 0) * 40 + 40 }}>
 				<LightweightTable columnDefs={columnDefs} rowData={[]} />
 			</div>
-			{![].length && <NoData/>}
+			{![].length && <NoData />}
 			{false && <Loading />}
 		</SettingCard>
 	);

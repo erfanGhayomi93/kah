@@ -1,22 +1,25 @@
+.wrapper {
+	height: 100%;
+	overflow-x: scroll;
+}
+
 .table {
 	width: 100%;
-	height: 100%;
+	table-layout: fixed;
 	direction: rtl;
 }
 
 .thead,
 .tbody {
-	display: block;
-	overflow: auto;
-
 	.tr {
-		display: table;
-		table-layout: fixed;
-		width: 100%;
 		height: 4rem;
 
 		.th,
 		.td {
+			border-collapse: collapse;
+			padding: 0 8px;
+			overflow: hidden;
+			white-space: nowrap;
 			vertical-align: middle;
 			text-align: center;
 		}
@@ -28,7 +31,21 @@
 		background-color: theme("colors.gray.200");
 		font-size: 1.2rem;
 		font-weight: 400;
+		user-select: none;
 		color: theme("colors.gray.900");
+
+		&.selectable {
+			cursor: pointer;
+		}
+
+		.cell {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			justify-content: center;
+			align-items: center;
+			display: flex;
+		}
 	}
 }
 
@@ -44,4 +61,13 @@
 			font-size: 1.2rem;
 		}
 	}
+}
+
+.icon {
+	width: 17px;
+	height: 17px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: rgb(93, 96, 109);
 }
