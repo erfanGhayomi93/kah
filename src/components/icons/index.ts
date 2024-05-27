@@ -1,7 +1,9 @@
 import AdvantagesSVG from './advantages.svg';
 import Agreement from './agreement.svg';
+import AngleDownSVG from './angle-down.svg';
 import AngleLeftCircleSVG from './angle-left-circle.svg';
 import AngleLeftSVG from './angle-left.svg';
+import AngleUpSVG from './angle-up.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import ArrowRightSVG from './arrow-right.svg';
@@ -126,8 +128,10 @@ import XSVG from './x.svg';
 export {
 	AdvantagesSVG,
 	Agreement,
+	AngleDownSVG,
 	AngleLeftCircleSVG,
 	AngleLeftSVG,
+	AngleUpSVG,
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	ArrowRightSVG,

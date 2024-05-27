@@ -54,38 +54,49 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<ITableData>>>(
 		() => [
 			{
-				headerName: t('symbolTitle'),
+				colId: 'symbolTitle',
+				headerName: t('analyze_modal.symbolTitle'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.symbol.symbolISIN),
-				valueFormatter: (row) => row.symbol.symbolTitle,
+				valueGetter: (row) => row.symbol.symbolTitle,
 			},
 			{
-				headerName: t('delta'),
+				colId: 'delta',
+				headerName: t('analyze_modal.delta'),
 				cellClass: 'ltr',
-				valueFormatter: ({ symbol: { optionType }, deltaCall, deltaPut }) =>
-					toFixed(optionType === 'call' ? deltaCall : deltaPut, 4),
+				valueGetter: ({ symbol: { optionType }, deltaCall, deltaPut }) =>
+					optionType === 'call' ? deltaCall : deltaPut,
+				valueFormatter: ({ value }) => toFixed(Number(value), 4),
 			},
 			{
-				headerName: t('theta'),
+				colId: 'theta',
+				headerName: t('analyze_modal.theta'),
 				cellClass: 'ltr',
-				valueFormatter: ({ symbol: { optionType }, thetaCall, thetaPut }) =>
-					toFixed(optionType === 'call' ? thetaCall : thetaPut, 4),
+				valueGetter: ({ symbol: { optionType }, thetaCall, thetaPut }) =>
+					optionType === 'call' ? thetaCall : thetaPut,
+				valueFormatter: ({ value }) => toFixed(Number(value), 4),
 			},
 			{
-				headerName: t('gama'),
+				colId: 'gama',
+				headerName: t('analyze_modal.gama'),
 				cellClass: 'ltr',
-				valueFormatter: ({ gamma }) => toFixed(gamma, 8),
+				valueGetter: ({ gamma }) => gamma,
+				valueFormatter: ({ value }) => toFixed(Number(value), 4),
 			},
 			{
-				headerName: t('vega'),
+				colId: 'vega',
+				headerName: t('analyze_modal.vega'),
 				cellClass: 'ltr',
-				valueFormatter: ({ vega }) => toFixed(vega, 4),
+				valueGetter: ({ vega }) => toFixed(vega, 4),
+				valueFormatter: ({ value }) => toFixed(Number(value), 4),
 			},
 			{
-				headerName: t('rho'),
+				colId: 'rho',
+				headerName: t('analyze_modal.rho'),
 				cellClass: 'ltr',
-				valueFormatter: ({ symbol: { optionType }, rhoCall, rhoPut }) =>
-					toFixed(optionType === 'call' ? rhoCall : rhoPut, 4),
+				valueGetter: ({ symbol: { optionType }, rhoCall, rhoPut }) =>
+					optionType === 'call' ? rhoCall : rhoPut,
+				valueFormatter: ({ value }) => toFixed(Number(value), 4),
 			},
 		],
 		[],
