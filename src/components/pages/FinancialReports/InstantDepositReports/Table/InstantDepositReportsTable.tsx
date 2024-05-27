@@ -1,4 +1,4 @@
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
@@ -20,66 +20,48 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 		return dayjs(v).calendar('jalali').format(format);
 	};
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IInstantDeposit>>>(
-		() =>
-			[
-				{
-					headerName: t('instant_deposit_reports_page.id_column'),
-					field: 'id',
-					maxWidth: 112,
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
-				},
-				{
-					headerName: t('instant_deposit_reports_page.date_column'),
-					field: 'saveDate',
-					maxWidth: 220,
-					minWidth: 220,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value ?? '', 'YYYY/MM/DD HH:mm'),
-				},
-				{
-					headerName: t('instant_deposit_reports_page.getway_column'),
-					field: 'providerType',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					maxWidth: 220,
-					minWidth: 220,
-					valueFormatter: ({ value }) => t('bank_accounts.' + value),
-				},
-				{
-					headerName: t('instant_deposit_reports_page.reservation_number_column'),
-					field: 'reservationNumber',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-				},
-				{
-					headerName: t('instant_deposit_reports_page.price_column'),
-					field: 'amount',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					maxWidth: 220,
-					minWidth: 220,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				{
-					headerName: t('instant_deposit_reports_page.status_column'),
-					field: 'state',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => t('states.state_' + value),
-				},
-			] as Array<ColDef<Reports.IInstantDeposit>>,
+	const COLUMNS = useMemo<Array<IColDef<Reports.IInstantDeposit>>>(
+		() => [
+			{
+				headerName: t('instant_deposit_reports_page.id_column'),
+				// field:row
+				// maxWidth: 112,
+				// minWidth: 112,
+				valueFormatter: (row) => 1,
+			},
+			{
+				headerName: t('instant_deposit_reports_page.date_column'),
+				// field: 'saveDate',
+				// maxWidth: 220,
+				// minWidth: 220,
+				cellClass: 'ltr',
+				valueFormatter: (row) => dateFormatter(row.saveDate ?? '', 'YYYY/MM/DD HH:mm'),
+			},
+			{
+				headerName: t('instant_deposit_reports_page.getway_column'),
+				// field: 'providerType',
+				// maxWidth: 220,
+				// minWidth: 220,
+				valueFormatter: (row) => t('bank_accounts.' + row.providerType),
+			},
+			{
+				headerName: t('instant_deposit_reports_page.reservation_number_column'),
+				// field: 'reservationNumber',
+				valueFormatter: (row) => row.reservationNumber,
+			},
+			{
+				headerName: t('instant_deposit_reports_page.price_column'),
+				// field: 'amount',
+				// maxWidth: 220,
+				// minWidth: 220,
+				valueFormatter: (row) => sepNumbers(String(row.amount)),
+			},
+			{
+				headerName: t('instant_deposit_reports_page.status_column'),
+				// field: 'state',
+				valueFormatter: (row) => t('states.state_' + row.state),
+			},
+		],
 		[],
 	);
 
@@ -110,16 +92,7 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 
 	return (
 		<>
-			<AgTable<Reports.IInstantDeposit>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };
