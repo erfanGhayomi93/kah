@@ -1,5 +1,5 @@
 import brokerAxios from '@/api/brokerAxios';
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setDepositModal } from '@/features/slices/modalSlice';
@@ -81,82 +81,59 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 			}
 		});
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IDepositWithReceipt>>>(
-		() =>
-			[
-				{
-					headerName: t('deposit_with_receipt_reports_page.id_column'),
-					field: 'id',
-					maxWidth: 112,
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
-				},
-				{
-					headerName: t('deposit_with_receipt_reports_page.date_column'),
-					field: 'receiptDate',
-					maxWidth: 144,
-					minWidth: 144,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
-				},
-				{
-					headerName: t('deposit_with_receipt_reports_page.broker_bank_column'),
-					field: 'providerType',
-					maxWidth: 250,
-					minWidth: 250,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-				},
-				{
-					headerName: t('deposit_with_receipt_reports_page.receipt_number_column'),
-					field: 'receiptNumber',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					maxWidth: 250,
-					minWidth: 250,
-					// valueFormatter: ({ value }) => t('bank_accounts.' + value)
-				},
-				{
-					headerName: t('deposit_with_receipt_reports_page.price_column'),
-					field: 'amount',
-					maxWidth: 250,
-					minWidth: 250,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				{
-					headerName: t('deposit_with_receipt_reports_page.status_column'),
-					field: 'state',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => t(`states.state_${value}`),
-				},
-				{
-					headerName: t('deposit_with_receipt_reports_page.operation_column'),
-					field: 'action',
-					maxWidth: 200,
-					minWidth: 200,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellRenderer: DepositWithReceiptReportsActionCell,
-					cellRendererParams: {
-						onDeleteRow,
-						onEditRow,
-					},
-				},
-			] as Array<ColDef<Reports.IDepositWithReceipt>>,
+	const COLUMNS = useMemo<Array<IColDef<Reports.IDepositWithReceipt>>>(
+		() => [
+			{
+				headerName: t('deposit_with_receipt_reports_page.id_column'),
+				// field: 'id',
+				// maxWidth: 112,
+				// minWidth: 112,
+				valueFormatter: () => 1,
+			},
+			{
+				headerName: t('deposit_with_receipt_reports_page.date_column'),
+				// field: 'receiptDate',
+				// maxWidth: 144,
+				// minWidth: 144,
+				valueFormatter: (row) => dateFormatter(row.receiptNumber ?? ''),
+			},
+			{
+				headerName: t('deposit_with_receipt_reports_page.broker_bank_column'),
+				// field: 'providerType',
+				// maxWidth: 250,
+				// minWidth: 250,
+				valueFormatter: (row) => row.providerType,
+			},
+			{
+				headerName: t('deposit_with_receipt_reports_page.receipt_number_column'),
+				// field: 'receiptNumber',
+				// maxWidth: 250,
+				// minWidth: 250,
+				valueFormatter: (row) => row.receiptNumber,
+			},
+			{
+				headerName: t('deposit_with_receipt_reports_page.price_column'),
+				// field: 'amount',
+				// maxWidth: 250,
+				// minWidth: 250,
+				valueFormatter: (row) => sepNumbers(String(row.amount)),
+			},
+			{
+				headerName: t('deposit_with_receipt_reports_page.status_column'),
+				// field: 'state',
+				valueFormatter: (row) => t(`states.state_${row.state}`),
+			},
+			{
+				headerName: t('deposit_with_receipt_reports_page.operation_column'),
+				// field: 'action',
+				// maxWidth: 200,
+				// minWidth: 200,
+				cellClass: 'flex-justify-center',
+				valueFormatter: (row) => (
+					<DepositWithReceiptReportsActionCell data={row} onDeleteRow={onDeleteRow} onEditRow={onEditRow} />
+				),
+			},
+		],
 		[],
 	);
 
@@ -187,16 +164,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 
 	return (
 		<>
-			<AgTable<Reports.IDepositWithReceipt>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };

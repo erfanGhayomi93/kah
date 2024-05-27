@@ -1,5 +1,5 @@
 import brokerAxios from '@/api/brokerAxios';
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setWithdrawalModal } from '@/features/slices/modalSlice';
@@ -81,95 +81,68 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 		}
 	};
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IWithdrawal>>>(
-		() =>
-			[
-				{
-					/* ردیف */
-					headerName: t('withdrawal_cash_reports_page.id_column'),
-					field: 'id',
-					maxWidth: 112,
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
-				},
-				/* زمان درخواست */
-				{
-					headerName: t('withdrawal_cash_reports_page.date_column'),
-					field: 'saveDate',
-					maxWidth: 144,
-					minWidth: 144,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
-				},
-				/* موعد پرداخت */
-				{
-					headerName: t('withdrawal_cash_reports_page.time_column'),
-					field: 'requestDate',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dayjs(value).calendar('jalali').format('HH:mm:ss'),
-				},
-				/* بانک */
-				{
-					headerName: t('withdrawal_cash_reports_page.bank_column'),
-					field: 'customerBank',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => value,
-				},
-				/* مبلغ */
-				{
-					headerName: t('withdrawal_cash_reports_page.amount_column'),
-					field: 'requestAmount',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value))
-				},
-				/* سامانه */
-				{
-					headerName: t('withdrawal_cash_reports_page.gateway_column'),
-					field: 'channel',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => t('states.state_' + value),
-				},
-				/* وضعیت */
-				{
-					headerName: t('withdrawal_cash_reports_page.state_column'),
-					field: 'state',
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					maxWidth: 220,
-					minWidth: 220,
-					valueFormatter: ({ value }) => t('states.state_' + value),
-				},
-				/* عملیات */
-				{
-					headerName: t('withdrawal_cash_reports_page.action_column'),
-					field: 'action',
-					maxWidth: 112,
-					minWidth: 112,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellRenderer: WithdrawalCashReportsActionCell,
-					cellRendererParams: {
-						onDeleteRow,
-						onEditRow,
-					},
-				},
-			] as Array<ColDef<Reports.IWithdrawal>>,
+	const COLUMNS = useMemo<Array<IColDef<Reports.IWithdrawal>>>(
+		() => [
+			{
+				/* ردیف */
+				headerName: t('withdrawal_cash_reports_page.id_column'),
+				// field: 'id',
+				// maxWidth: 112,
+				// minWidth: 112,
+				valueFormatter: (row) => 1,
+			},
+			/* زمان درخواست */
+			{
+				headerName: t('withdrawal_cash_reports_page.date_column'),
+				// field: 'saveDate',
+				// maxWidth: 144,
+				// minWidth: 144,
+				valueFormatter: (row) => dateFormatter(row.saveDate ?? ''),
+			},
+			/* موعد پرداخت */
+			{
+				headerName: t('withdrawal_cash_reports_page.time_column'),
+				// field: 'requestDate',
+				valueFormatter: (row) => dayjs(row.requestDate).calendar('jalali').format('HH:mm:ss'),
+			},
+			/* بانک */
+			{
+				headerName: t('withdrawal_cash_reports_page.bank_column'),
+				// field: 'customerBank',
+				valueFormatter: (row) => row.customerBank,
+			},
+			/* مبلغ */
+			{
+				headerName: t('withdrawal_cash_reports_page.amount_column'),
+				// field: 'requestAmount',
+				valueFormatter: (row) => sepNumbers(String(row.requestAmount)),
+			},
+			/* سامانه */
+			{
+				headerName: t('withdrawal_cash_reports_page.gateway_column'),
+				// field: 'channel',
+				valueFormatter: (row) => t('states.state_' + row.channel),
+			},
+			/* وضعیت */
+			{
+				headerName: t('withdrawal_cash_reports_page.state_column'),
+				// field: 'state',
+				// maxWidth: 220,
+				// minWidth: 220,
+				valueFormatter: (row) => t('states.state_' + row.state),
+			},
+			/* عملیات */
+			{
+				headerName: t('withdrawal_cash_reports_page.action_column'),
+				// field: 'action',
+				// maxWidth: 112,
+				// minWidth: 112,
+				cellClass: 'flex-justify-center',
+				valueFormatter: (row) => (
+					<WithdrawalCashReportsActionCell data={row} onDeleteRow={onDeleteRow} onEditRow={onEditRow} />
+				),
+			},
+		],
 		[],
 	);
 
@@ -200,16 +173,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 
 	return (
 		<>
-			<AgTable<Reports.IWithdrawal>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };
