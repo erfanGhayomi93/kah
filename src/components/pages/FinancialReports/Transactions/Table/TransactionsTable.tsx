@@ -1,7 +1,6 @@
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
-import * as DOMPurify from 'dompurify';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -48,15 +47,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				headerName: t('transactions_page.description_column'),
 				valueGetter: (row) => row.description,
 				valueFormatter: ({ row }) =>
-					row.description === 'payfast-1561' ? (
-						t('transactions_page.payfast')
-					) : (
-						<span
-							dangerouslySetInnerHTML={{
-								__html: DOMPurify.sanitize(row.description ?? ''),
-							}}
-						/>
-					),
+					row.description === 'payfast-1561' ? t('transactions_page.payfast') : <span />,
 				width: 180,
 			},
 			{
