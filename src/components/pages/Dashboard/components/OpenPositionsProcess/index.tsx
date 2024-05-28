@@ -14,6 +14,7 @@ const OpenPositionsProcess = () => {
 		<Section<Dashboard.TInterval>
 			id='open_positions_process'
 			title={t('home.open_positions_process')}
+			info={t('tooltip.open_position_process_section')}
 			defaultTopActiveTab={interval}
 			onTopTabChange={setInterval}
 			tabs={{

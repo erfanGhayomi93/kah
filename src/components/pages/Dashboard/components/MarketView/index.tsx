@@ -113,6 +113,7 @@ const MarketView = () => {
 		<Section<Dashboard.TInterval, Dashboard.TIndex>
 			id='market_view'
 			title={t('home.market_view')}
+			info={t('tooltip.market_view_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
