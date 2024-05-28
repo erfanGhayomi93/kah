@@ -44,8 +44,8 @@ const QueryClientRegistry = ({ children }: QueryClientRegistryProps) => {
 	const brokerQueryClient = getBrokerQueryClient();
 
 	return (
-		<QueryClientProvider client={appQueryClient}>
-			<QueryClientProvider client={brokerQueryClient}>{children}</QueryClientProvider>
+		<QueryClientProvider client={brokerQueryClient}>
+			<QueryClientProvider client={appQueryClient}>{children}</QueryClientProvider>
 		</QueryClientProvider>
 	);
 };

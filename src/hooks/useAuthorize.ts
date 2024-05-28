@@ -4,7 +4,7 @@ import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlic
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { createSelector } from '@reduxjs/toolkit';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 const getStates = createSelector(
 	(state: RootState) => state,
@@ -28,7 +28,7 @@ const useAuthorize = ({ isBroker, enabled }: { isBroker: boolean; enabled: boole
 		dispatch(setChoiceBrokerModal({}));
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!isLoggedIn && enabled) {
 			showUserLoginModal();
 			return;
