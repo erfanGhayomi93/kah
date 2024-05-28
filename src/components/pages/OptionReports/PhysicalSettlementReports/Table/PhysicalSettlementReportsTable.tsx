@@ -3,12 +3,11 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setOptionSettlementModal } from '@/features/slices/modalSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
-import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { toast } from 'react-toastify';
 import PhysicalSettlementReportsTableActionCell from './PhysicalSettlementReportsTableActionCell';
 
@@ -22,18 +21,16 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 
 	const dispatch = useAppDispatch();
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
-	const gridRef = useRef<GridApi<Reports.IPhysicalSettlementReports>>(null);
-
-	const url = useAppSelector(getBrokerURLs);
+	const urls = useAppSelector(getBrokerURLs);
 
 	const onDeleteRow = (data: Reports.ICashSettlementReports | undefined) =>
 		new Promise<void>(async (resolve, reject) => {
-			if (!url || !data) return null;
+			if (!urls || !data) return null;
 
 			try {
-				const response = await brokerAxios.post<ServerResponse<boolean>>(url.settlementdeleteCash, {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.settlementdeleteCash, {
 					symbolISIN: data?.symbolISIN,
 				});
 
@@ -60,10 +57,6 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 		dispatch(setOptionSettlementModal({ data, activeTab: 'optionSettlementPhysicalTab' }));
 	};
 
-	const onHistory = async (data: Reports.IPhysicalSettlementReports | undefined) => {
-		//
-	};
-
 	const COLUMNS = useMemo<Array<IColDef<Reports.IPhysicalSettlementReports>>>(
 		() => [
 			/* نماد */
@@ -71,6 +64,17 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 				colId: 'id',
 				headerName: t('physical_settlement_reports_page.symbol_column'),
 				valueGetter: (row) => row.symbolTitle,
+			},
+			/* سمت */
+			{
+				colId: 'side',
+				headerName: t('physical_settlement_reports_page.side_column'),
+				valueGetter: (row) => t(`common.${row.side.toLowerCase()}`),
+				cellClass: (row) =>
+					clsx({
+						'text-success-200': row.side === 'Buy',
+						'text-error-200': row.side === 'Sell',
+					}),
 			},
 			/* تعداد موقعیت باز */
 			{
@@ -81,7 +85,7 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 			/* تاریخ تسویه فیزیکی */
 			{
 				colId: 'cashSettlementDate',
-				headerName: t('physical_settlement_reports_page.cash_date_column'),
+				headerName: t('physical_settlement_reports_page.physical_date_column'),
 				valueGetter: (row) => (row.cashSettlementDate ? dateFormatter(row.cashSettlementDate, 'date') : '-'),
 			},
 			/* وضعیت قرارداد (سود یا زیان)  */
@@ -175,7 +179,6 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 					<PhysicalSettlementReportsTableActionCell
 						data={row}
 						onDeleteRow={onDeleteRow}
-						onHistory={onHistory}
 						onRequest={onRequest}
 					/>
 				),
@@ -183,31 +186,6 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 		],
 		[],
 	);
-
-	const defaultColDef: ColDef<Reports.IPhysicalSettlementReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
-		[],
-	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
 
 	return (
 		<>

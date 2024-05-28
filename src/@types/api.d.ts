@@ -1970,7 +1970,7 @@ declare namespace Reports {
 		comment: string;
 		receiptDate: string;
 		accountCode: string;
-		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
+		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled' | 'Registeration';
 		providerType: string;
 		base64Image: File | null;
 	}

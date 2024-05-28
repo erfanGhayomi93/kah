@@ -5,7 +5,7 @@ import Checkbox from '@/components/common/Inputs/Checkbox';
 import { PlusSquareSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
-import { useQueryClient } from '@tanstack/react-query';
+import { useBrokerQueryClient } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useLayoutEffect, useReducer } from 'react';
 import styled from 'styled-components';
@@ -27,7 +27,7 @@ interface ManageOptionWatchlistListProps extends IBaseModalConfiguration {}
 const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchlistListProps>((props, ref) => {
 	const t = useTranslations();
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const dispatch = useAppDispatch();
 

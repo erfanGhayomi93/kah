@@ -1,10 +1,9 @@
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
-import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import Tooltip from '@/components/common/Tooltip';
+import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { type Dispatch, type SetStateAction, useMemo } from 'react';
 
 interface OrdersReportsTableProps {
 	reports: Reports.IOrdersReports[] | null;
@@ -15,20 +14,13 @@ interface OrdersReportsTableProps {
 const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }: OrdersReportsTableProps) => {
 	const t = useTranslations();
 
-	const gridRef = useRef<GridApi<Reports.IOrdersReports>>(null);
-
-	const dateFormatter = (v: string | number, format: string) => {
-		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format(format);
-	};
-
 	const COLUMNS = useMemo<Array<IColDef<Reports.IOrdersReports>>>(
 		() => [
 			/* ردیف */
 			{
 				colId: 'id',
 				headerName: t('orders_reports_page.id_column'),
-				valueGetter: (row) => row.orderId,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
 			/* نماد */
 			{
@@ -55,7 +47,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 				colId: 'orderDateTime',
 				headerName: t('orders_reports_page.date_column'),
 				cellClass: 'ltr',
-				valueGetter: (row) => dateFormatter(row.orderDateTime, 'YYYY/MM/DD HH:mm'),
+				valueGetter: (row) => dateFormatter(row.orderDateTime ?? '-', 'datetime'),
 			},
 			/* حجم کل */
 			{
@@ -80,13 +72,23 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 				colId: 'lastErrorCode',
 				headerName: t('orders_reports_page.status_column'),
 				cellClass: 'text-right rtl truncate',
-				valueGetter: (row) => {
+				valueGetter: (row) => row.lastErrorCode ?? '',
+				valueFormatter: ({ row }) => {
 					if (!row) return '-';
 					const { orderStatus, lastErrorCode, customErrorMsg } = row;
 					const errorMessage = lastErrorCode || customErrorMsg;
 					return (
-						t('order_status.' + orderStatus) +
-						(errorMessage ? ': ' + t('order_errors.' + errorMessage) : '')
+						<Tooltip
+							content={
+								t('order_status.' + orderStatus) +
+								(errorMessage ? ': ' + t('order_errors.' + errorMessage) : '')
+							}
+						>
+							<span>
+								{t('order_status.' + orderStatus) +
+									(errorMessage ? ': ' + t('order_errors.' + errorMessage) : '')}
+							</span>
+						</Tooltip>
 					);
 				},
 			},
@@ -98,38 +100,13 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 					if (!row) return '-';
 					const { validity, validityDate } = row;
 
-					if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
+					if (validity === 'GoodTillDate') return dateFormatter(validityDate ?? '', 'date');
 					return t('validity_date.' + validity);
 				},
 			},
 		],
 		[],
 	);
-
-	const defaultColDef: ColDef<Reports.IOrdersReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
-		[],
-	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
 
 	return (
 		<>

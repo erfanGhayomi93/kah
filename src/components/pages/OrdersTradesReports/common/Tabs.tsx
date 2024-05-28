@@ -1,9 +1,8 @@
 'use client';
 
-import { Link } from '@/navigation';
+import { Link, usePathname } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 const Tabs = () => {
@@ -27,7 +26,9 @@ const Tabs = () => {
 
 	return (
 		<div className='gap-24 flex-justify-start'>
-			<span className='text-xl font-medium'>{t('orders_and_trades_reports_page.orders_and_trades_reports')}</span>
+			<span className='text-xl font-medium text-gray-700'>
+				{t('orders_and_trades_reports_page.orders_and_trades_reports')}
+			</span>
 			<ul className='gap-8 flex-justify-start'>
 				{FINANCIAL_TYPE.map((type) => (
 					<li key={type.id}>
