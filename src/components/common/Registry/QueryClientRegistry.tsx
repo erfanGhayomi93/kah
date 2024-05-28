@@ -8,7 +8,7 @@ interface QueryClientRegistryProps {
 	children: React.ReactNode;
 }
 
-export let browserQueryClient: QueryClient | undefined;
+export let appQueryClient: QueryClient | undefined;
 
 export let brokerQueryClient: QueryClient | undefined;
 
@@ -26,17 +26,17 @@ const makeQueryClient = () => {
 const getBrowserQueryClient = () => {
 	if (typeof window === 'undefined') return makeQueryClient();
 
-	if (!browserQueryClient) browserQueryClient = makeQueryClient();
+	if (!appQueryClient) appQueryClient = makeQueryClient();
 
-	return browserQueryClient;
+	return appQueryClient;
 };
 
 const getBrokerQueryClient = () => {
 	if (typeof window === 'undefined') return makeQueryClient();
 
-	if (!browserQueryClient) browserQueryClient = makeQueryClient();
+	if (!brokerQueryClient) brokerQueryClient = makeQueryClient();
 
-	return browserQueryClient;
+	return brokerQueryClient;
 };
 
 const QueryClientRegistry = ({ children }: QueryClientRegistryProps) => {
