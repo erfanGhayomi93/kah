@@ -1,4 +1,8 @@
 import Tabs from '@/components/common/Tabs/Tabs';
+import { useAppSelector } from '@/features/hooks';
+import { getOptionSettlementModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { type FC, useMemo } from 'react';
@@ -10,8 +14,17 @@ interface PrimarySettlementTabProps {
 	clickItemSettlement: (item: Reports.TCashOrPhysicalSettlement) => void;
 }
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		optionSettlement: getOptionSettlementModal(state),
+	}),
+);
+
 export const PrimarySettlementTab: FC<PrimarySettlementTabProps> = ({ onCloseModal, clickItemSettlement }) => {
 	const t = useTranslations();
+
+	const { optionSettlement } = useAppSelector(getStates);
 
 	const TABS = useMemo(
 		() => [
@@ -37,8 +50,7 @@ export const PrimarySettlementTab: FC<PrimarySettlementTabProps> = ({ onCloseMod
 		<div className='flex h-full flex-column'>
 			<Tabs
 				data={TABS}
-				defaultActiveTab='optionSettlementCashTab'
-				// onChange={(id) => setTabSelected(id)}
+				defaultActiveTab={optionSettlement?.activeTab ?? ''}
 				renderTab={(item, activeTab) => (
 					<button
 						className={clsx(
