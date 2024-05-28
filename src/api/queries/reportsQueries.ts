@@ -13,10 +13,10 @@ import {
 } from '@/constants';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import dayjs from '@/libs/dayjs';
-import { createQuery, setHours, toISOStringWithoutChangeTime } from '@/utils/helpers';
+import { createBrokerQuery, setHours, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import brokerAxios from '../brokerAxios';
 
-export const useTransactionsReportsQuery = createQuery<
+export const useTransactionsReportsQuery = createBrokerQuery<
 	PaginationResponse<Reports.ITransactions[]> | null,
 	['transactionsReport', Transaction.ITransactionsFilters]
 >({
@@ -66,7 +66,7 @@ export const useTransactionsReportsQuery = createQuery<
 	},
 });
 
-export const useInstantDepositReports = createQuery<
+export const useInstantDepositReports = createBrokerQuery<
 	PaginationResponse<Reports.IInstantDeposit[]> | null,
 	['instantDepositReports', InstantDepositReports.IInstantDepositReportsFilters]
 >({
@@ -121,7 +121,7 @@ export const useInstantDepositReports = createQuery<
 	},
 });
 
-export const useDepositWithReceiptReports = createQuery<
+export const useDepositWithReceiptReports = createBrokerQuery<
 	PaginationResponse<Reports.IDepositWithReceipt[]> | null,
 	['depositWithReceiptReports', DepositWithReceiptReports.DepositWithReceiptReportsFilters]
 >({
@@ -174,7 +174,7 @@ export const useDepositWithReceiptReports = createQuery<
 	},
 });
 
-export const useWithdrawalCashReports = createQuery<
+export const useWithdrawalCashReports = createBrokerQuery<
 	PaginationResponse<Reports.IWithdrawal[]> | null,
 	['withdrawalCashReports', WithdrawalCashReports.WithdrawalCashReportsFilters]
 >({
@@ -235,7 +235,7 @@ export const useWithdrawalCashReports = createQuery<
 	},
 });
 
-export const userOnlineDepositStatusesQuery = createQuery<string[] | null, ['userOnlineDepositStatuses']>({
+export const userOnlineDepositStatusesQuery = createBrokerQuery<string[] | null, ['userOnlineDepositStatuses']>({
 	queryKey: ['userOnlineDepositStatuses'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -252,7 +252,7 @@ export const userOnlineDepositStatusesQuery = createQuery<string[] | null, ['use
 	},
 });
 
-export const useChangeBrokerReportsQuery = createQuery<
+export const useChangeBrokerReportsQuery = createBrokerQuery<
 	PaginationResponse<Reports.IChangeBrokerReports[]> | null,
 	['changeBrokerReports', ChangeBrokerReports.IChangeBrokerReportsFilters]
 >({
@@ -317,7 +317,7 @@ export const useChangeBrokerReportsQuery = createQuery<
 	},
 });
 
-export const userOnlineDepositProvidersQuery = createQuery<string[] | null, ['userOnlineDepositProviders']>({
+export const userOnlineDepositProvidersQuery = createBrokerQuery<string[] | null, ['userOnlineDepositProviders']>({
 	queryKey: ['userOnlineDepositProviders'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -334,7 +334,7 @@ export const userOnlineDepositProvidersQuery = createQuery<string[] | null, ['us
 	},
 });
 
-export const userCashWithdrawalStatusesQuery = createQuery<string[] | null, ['userOnlineDepositStatuses']>({
+export const userCashWithdrawalStatusesQuery = createBrokerQuery<string[] | null, ['userOnlineDepositStatuses']>({
 	queryKey: ['userOnlineDepositStatuses'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -351,7 +351,7 @@ export const userCashWithdrawalStatusesQuery = createQuery<string[] | null, ['us
 	},
 });
 
-export const useFreezeUnFreezeReportsQuery = createQuery<
+export const useFreezeUnFreezeReportsQuery = createBrokerQuery<
 	PaginationResponse<Reports.IFreezeUnfreezeReports[]> | null,
 	['freezeUnFreezeReports', FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters]
 >({
@@ -395,7 +395,7 @@ export const useFreezeUnFreezeReportsQuery = createQuery<
 	},
 });
 
-export const useCashSettlementReportsQuery = createQuery<
+export const useCashSettlementReportsQuery = createBrokerQuery<
 	PaginationResponse<Reports.ICashSettlementReports[]> | null,
 	['cashSettlementReports', Partial<CashSettlementReports.ICashSettlementReportsFilters>]
 >({
@@ -462,7 +462,7 @@ export const useCashSettlementReportsQuery = createQuery<
 	},
 });
 
-export const usePhysicalSettlementReportsQuery = createQuery<
+export const usePhysicalSettlementReportsQuery = createBrokerQuery<
 	PaginationResponse<Reports.IPhysicalSettlementReports[]> | null,
 	['physicalSettlementReports', Partial<PhysicalSettlementReports.IPhysicalSettlementReportsFilters>]
 >({
@@ -531,7 +531,7 @@ export const usePhysicalSettlementReportsQuery = createQuery<
 	},
 });
 
-export const useOrdersReportsQuery = createQuery<
+export const useOrdersReportsQuery = createBrokerQuery<
 	PaginationResponse<Reports.IOrdersReports[]> | null,
 	['ordersReports', OrdersReports.IOrdersReportsFilters]
 >({
@@ -578,7 +578,7 @@ export const useOrdersReportsQuery = createQuery<
 	},
 });
 
-export const useTradesReportsQuery = createQuery<
+export const useTradesReportsQuery = createBrokerQuery<
 	PaginationResponse<Reports.ITradesReports[]> | null,
 	['tradesReports', TradesReports.ITradesReportsFilters]
 >({

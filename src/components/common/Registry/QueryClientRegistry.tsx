@@ -8,9 +8,11 @@ interface QueryClientRegistryProps {
 	children: React.ReactNode;
 }
 
-let browserQueryClient: QueryClient | undefined;
+export let browserQueryClient: QueryClient | undefined;
 
-export const makeQueryClient = () => {
+export let brokerQueryClient: QueryClient | undefined;
+
+const makeQueryClient = () => {
 	return new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -21,7 +23,15 @@ export const makeQueryClient = () => {
 	});
 };
 
-const getQueryClient = () => {
+const getBrowserQueryClient = () => {
+	if (typeof window === 'undefined') return makeQueryClient();
+
+	if (!browserQueryClient) browserQueryClient = makeQueryClient();
+
+	return browserQueryClient;
+};
+
+const getBrokerQueryClient = () => {
 	if (typeof window === 'undefined') return makeQueryClient();
 
 	if (!browserQueryClient) browserQueryClient = makeQueryClient();
@@ -30,8 +40,14 @@ const getQueryClient = () => {
 };
 
 const QueryClientRegistry = ({ children }: QueryClientRegistryProps) => {
-	const queryClient = getQueryClient();
-	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+	const appQueryClient = getBrowserQueryClient();
+	const brokerQueryClient = getBrokerQueryClient();
+
+	return (
+		<QueryClientProvider client={appQueryClient}>
+			<QueryClientProvider client={brokerQueryClient}>{children}</QueryClientProvider>
+		</QueryClientProvider>
+	);
 };
 
 export default QueryClientRegistry;

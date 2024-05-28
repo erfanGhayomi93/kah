@@ -1,4 +1,5 @@
 import useBasketOrderingSystem from './useBasketOrderingSystem';
+import useBrokerQueryClient from './useBrokerQueryClient';
 import useDebounce from './useDebounce';
 import useErrors from './useErrors';
 import useFirstViewportEntry from './useFirstViewportEntry';
@@ -13,6 +14,7 @@ import useWatchlistColumns from './useWatchlistColumns';
 
 export {
 	useBasketOrderingSystem,
+	useBrokerQueryClient,
 	useDebounce,
 	useErrors,
 	useFirstViewportEntry,
