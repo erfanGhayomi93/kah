@@ -261,6 +261,15 @@ export interface ICavertCallFiltersModal extends IBaseModalConfiguration {
 	onSubmit: (appliedFilters: Partial<ICoveredCallFiltersModalStates>) => void;
 }
 
+export interface IManageColumnsModal extends IBaseModalConfiguration {
+	initialColumns?: IManageColumn[];
+	title: React.ReactNode;
+	columns: IManageColumn[];
+	applyChangesAfterClose?: boolean;
+	onReset?: () => void;
+	onColumnChanged: (updatedCol: IManageColumn, columns: IManageColumn[]) => void;
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
@@ -300,4 +309,5 @@ export type ModalState = TBaseModalProps<{
 	createStrategy: ICreateStrategyModal;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	coveredCallFilters: ICavertCallFiltersModal;
+	manageColumns: IManageColumnsModal;
 }>;
