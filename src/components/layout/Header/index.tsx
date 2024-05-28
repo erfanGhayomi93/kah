@@ -14,8 +14,7 @@ import {
 } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
-import { useServerDatetime, useUserInfo } from '@/hooks';
-import dayjs from '@/libs/dayjs';
+import { useUserInfo } from '@/hooks';
 import { cn, copyNumberToClipboard, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
@@ -36,6 +35,7 @@ import {
 } from '../../icons';
 import Notifications from './Notifications';
 import SearchSymbol from './SearchSymbol';
+import ServerDateTime from './ServerDateTime';
 import UserDropdown from './UserDropdown';
 
 const getStates = createSelector(
@@ -53,8 +53,6 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { timestamp } = useServerDatetime();
-
 	const { isLoggedIn, isLoggingIn, brokerURLs, brokerIsSelected } = useAppSelector(getStates);
 
 	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
@@ -66,14 +64,14 @@ const Header = () => {
 
 	const { data: userInfo } = useUserInfo();
 
-	const { data: userStatus, refetch: refetchUserStatus } = useUserStatusQuery({
+	const { data: userStatus } = useUserStatusQuery({
 		queryKey: ['userStatusQuery'],
-		enabled: false,
+		enabled: Boolean(brokerURLs),
 	});
 
-	const { data: userRemain, refetch: refetchUserRemain } = useUserRemainQuery({
+	const { data: userRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
-		enabled: false,
+		enabled: Boolean(brokerURLs),
 	});
 
 	const showAuthenticationModal = () => {
@@ -128,17 +126,6 @@ const Header = () => {
 
 		return <ShieldCheckSVG fill='currentColor' fillOpacity='0.1' width='2.4rem' height='2.4rem' />;
 	}, [userStatus]);
-
-	const [serverTime, serverDate] = useMemo(() => {
-		return dayjs(timestamp).calendar('jalali').format('HH:mm:ss YYYY/MM/DD').split(' ');
-	}, [timestamp]);
-
-	useEffect(() => {
-		if (!brokerURLs) return;
-
-		refetchUserStatus();
-		refetchUserRemain();
-	}, [brokerURLs]);
 
 	useEffect(() => {
 		setIsDropdownOpened(false);
@@ -290,14 +277,7 @@ const Header = () => {
 					<span className='mr-8 h-12 w-2 bg-gray-500' />
 				</div>
 
-				<div className='h-full gap-12 ltr flex-justify-start'>
-					<span style={{ width: '6.6rem' }} className='text-left text-base text-gray-900'>
-						{serverDate}
-					</span>
-					<span style={{ width: '5.2rem' }} className='text-left text-base text-gray-900'>
-						{serverTime}
-					</span>
-				</div>
+				<ServerDateTime />
 			</div>
 
 			{isDropdownOpened &&

@@ -1,9 +1,9 @@
 import { store } from '@/api/inject-store';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { createQuery } from '@/utils/helpers';
+import { createBrokerQuery } from '@/utils/helpers';
 import axios from '../brokerAxios';
 
-export const useUserInfoQuery = createQuery<Broker.User | null, ['userInfoQuery']>({
+export const useUserInfoQuery = createBrokerQuery<Broker.User | null, ['userInfoQuery']>({
 	staleTime: 18e5,
 	queryKey: ['userInfoQuery'],
 	queryFn: async ({ signal }) => {
@@ -19,7 +19,7 @@ export const useUserInfoQuery = createQuery<Broker.User | null, ['userInfoQuery'
 	},
 });
 
-export const useUserRemainQuery = createQuery<Broker.Remain | null, ['userRemainQuery']>({
+export const useUserRemainQuery = createBrokerQuery<Broker.Remain | null, ['userRemainQuery']>({
 	staleTime: 18e5,
 	queryKey: ['userRemainQuery'],
 	queryFn: async ({ signal }) => {
@@ -35,7 +35,7 @@ export const useUserRemainQuery = createQuery<Broker.Remain | null, ['userRemain
 	},
 });
 
-export const useUserStatusQuery = createQuery<Broker.Status | null, ['userStatusQuery']>({
+export const useUserStatusQuery = createBrokerQuery<Broker.Status | null, ['userStatusQuery']>({
 	staleTime: 18e5,
 	queryKey: ['userStatusQuery'],
 	queryFn: async ({ signal }) => {
@@ -51,7 +51,7 @@ export const useUserStatusQuery = createQuery<Broker.Status | null, ['userStatus
 	},
 });
 
-export const useBrokerOrdersCountQuery = createQuery<Broker.OrdersCount, ['brokerOrdersCountQuery']>({
+export const useBrokerOrdersCountQuery = createBrokerQuery<Broker.OrdersCount, ['brokerOrdersCountQuery']>({
 	staleTime: 18e5,
 	queryKey: ['brokerOrdersCountQuery'],
 	queryFn: async ({ signal }) => {
@@ -77,7 +77,7 @@ export const useBrokerOrdersCountQuery = createQuery<Broker.OrdersCount, ['broke
 	},
 });
 
-export const useOpenOrdersQuery = createQuery<Order.OpenOrder[] | null, ['openOrdersQuery']>({
+export const useOpenOrdersQuery = createBrokerQuery<Order.OpenOrder[] | null, ['openOrdersQuery']>({
 	staleTime: 6e4,
 	queryKey: ['openOrdersQuery'],
 	queryFn: async ({ signal }) => {
@@ -93,7 +93,7 @@ export const useOpenOrdersQuery = createQuery<Order.OpenOrder[] | null, ['openOr
 	},
 });
 
-export const useTodayOrdersQuery = createQuery<Order.TodayOrder[] | null, ['openOrdersQuery']>({
+export const useTodayOrdersQuery = createBrokerQuery<Order.TodayOrder[] | null, ['openOrdersQuery']>({
 	staleTime: 6e4,
 	queryKey: ['openOrdersQuery'],
 	queryFn: async ({ signal }) => {
@@ -109,7 +109,7 @@ export const useTodayOrdersQuery = createQuery<Order.TodayOrder[] | null, ['open
 	},
 });
 
-export const useExecutedOrdersQuery = createQuery<Order.ExecutedOrder[] | null, ['executedOrdersQuery']>({
+export const useExecutedOrdersQuery = createBrokerQuery<Order.ExecutedOrder[] | null, ['executedOrdersQuery']>({
 	staleTime: 6e4,
 	queryKey: ['executedOrdersQuery'],
 	queryFn: async ({ signal }) => {
@@ -125,7 +125,7 @@ export const useExecutedOrdersQuery = createQuery<Order.ExecutedOrder[] | null, 
 	},
 });
 
-export const useDraftOrdersQuery = createQuery<Order.DraftOrder[] | null, ['draftOrdersQuery']>({
+export const useDraftOrdersQuery = createBrokerQuery<Order.DraftOrder[] | null, ['draftOrdersQuery']>({
 	staleTime: 6e4,
 	queryKey: ['draftOrdersQuery'],
 	queryFn: async ({ signal }) => {
@@ -141,7 +141,7 @@ export const useDraftOrdersQuery = createQuery<Order.DraftOrder[] | null, ['draf
 	},
 });
 
-export const useOptionOrdersQuery = createQuery<Order.OptionOrder[] | null, ['optionOrdersQuery']>({
+export const useOptionOrdersQuery = createBrokerQuery<Order.OptionOrder[] | null, ['optionOrdersQuery']>({
 	staleTime: 6e4,
 	queryKey: ['optionOrdersQuery'],
 	queryFn: async ({ signal }) => {
@@ -157,7 +157,7 @@ export const useOptionOrdersQuery = createQuery<Order.OptionOrder[] | null, ['op
 	},
 });
 
-export const useGetCustomerSettings = createQuery<
+export const useGetCustomerSettings = createBrokerQuery<
 	Settings.IFormattedBrokerCustomerSettings | null,
 	['GetCustomerSettings']
 >({
@@ -185,7 +185,7 @@ export const useGetCustomerSettings = createQuery<
 	},
 });
 
-export const useGetAgreements = createQuery<Settings.IAgreements[] | null, ['getAgreements']>({
+export const useGetAgreements = createBrokerQuery<Settings.IAgreements[] | null, ['getAgreements']>({
 	staleTime: 6e4,
 	queryKey: ['getAgreements'],
 	queryFn: async ({ signal }) => {

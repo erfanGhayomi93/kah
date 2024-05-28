@@ -1,28 +1,30 @@
 import { store } from '@/api/inject-store';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { createQuery } from '@/utils/helpers';
+import { createBrokerQuery } from '@/utils/helpers';
 import brokerAxios from '../brokerAxios';
 
-export const useDepositHistoryQuery = createQuery<Payment.IDepositHistoryList[] | null, ['depositHistoryOnline']>({
-	queryKey: ['depositHistoryOnline'],
-	queryFn: async ({ signal }) => {
-		const url = getBrokerURLs(store.getState());
-		if (!url) return null;
-		const response = await brokerAxios.get<ServerResponse<Payment.IDepositHistoryList[]>>(
-			url.getDepositOnlineHistory,
-			{
-				signal,
-			},
-		);
-		const data = response.data;
+export const useDepositHistoryQuery = createBrokerQuery<Payment.IDepositHistoryList[] | null, ['depositHistoryOnline']>(
+	{
+		queryKey: ['depositHistoryOnline'],
+		queryFn: async ({ signal }) => {
+			const url = getBrokerURLs(store.getState());
+			if (!url) return null;
+			const response = await brokerAxios.get<ServerResponse<Payment.IDepositHistoryList[]>>(
+				url.getDepositOnlineHistory,
+				{
+					signal,
+				},
+			);
+			const data = response.data;
 
-		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-		return data.result;
+			return data.result;
+		},
 	},
-});
+);
 
-export const useListBrokerBankAccountQuery = createQuery<Payment.IBrokerAccount[] | null, ['brokerAccount']>({
+export const useListBrokerBankAccountQuery = createBrokerQuery<Payment.IBrokerAccount[] | null, ['brokerAccount']>({
 	queryKey: ['brokerAccount'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -39,7 +41,7 @@ export const useListBrokerBankAccountQuery = createQuery<Payment.IBrokerAccount[
 	},
 });
 
-export const useListUserBankAccountQuery = createQuery<Payment.IUserBankAccount[] | null, ['userAccount']>({
+export const useListUserBankAccountQuery = createBrokerQuery<Payment.IUserBankAccount[] | null, ['userAccount']>({
 	queryKey: ['userAccount'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -56,7 +58,7 @@ export const useListUserBankAccountQuery = createQuery<Payment.IUserBankAccount[
 	},
 });
 
-export const useRemainsWithDateQuery = createQuery<Payment.TRemainsWithDay | null, ['remainsWithDay']>({
+export const useRemainsWithDateQuery = createBrokerQuery<Payment.TRemainsWithDay | null, ['remainsWithDay']>({
 	queryKey: ['remainsWithDay'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -73,7 +75,7 @@ export const useRemainsWithDateQuery = createQuery<Payment.TRemainsWithDay | nul
 	},
 });
 
-export const useDrawalHistoryQuery = createQuery<Payment.IDrawalHistoryList[] | null, ['drawalHistoryOnline']>({
+export const useDrawalHistoryQuery = createBrokerQuery<Payment.IDrawalHistoryList[] | null, ['drawalHistoryOnline']>({
 	queryKey: ['drawalHistoryOnline'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -90,25 +92,26 @@ export const useDrawalHistoryQuery = createQuery<Payment.IDrawalHistoryList[] | 
 	},
 });
 
-export const useHistoryChangeBrokerQuery = createQuery<Payment.IChangeBrokerList[] | null, ['LastHistoryChangeBroker']>(
-	{
-		queryKey: ['LastHistoryChangeBroker'],
-		queryFn: async ({ signal }) => {
-			const url = getBrokerURLs(store.getState());
-			if (!url) return null;
-			const response = await brokerAxios.get<ServerResponse<Payment.IChangeBrokerList[]>>(url.LastChangeBrokers, {
-				signal,
-			});
-			const data = response.data;
+export const useHistoryChangeBrokerQuery = createBrokerQuery<
+	Payment.IChangeBrokerList[] | null,
+	['LastHistoryChangeBroker']
+>({
+	queryKey: ['LastHistoryChangeBroker'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+		const response = await brokerAxios.get<ServerResponse<Payment.IChangeBrokerList[]>>(url.LastChangeBrokers, {
+			signal,
+		});
+		const data = response.data;
 
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			return data.result;
-		},
+		return data.result;
 	},
-);
+});
 
-export const useRecentFreezeQuery = createQuery<Payment.IRecentFreezeList[] | null, ['RecentFreezeList']>({
+export const useRecentFreezeQuery = createBrokerQuery<Payment.IRecentFreezeList[] | null, ['RecentFreezeList']>({
 	queryKey: ['RecentFreezeList'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -124,7 +127,7 @@ export const useRecentFreezeQuery = createQuery<Payment.IRecentFreezeList[] | nu
 	},
 });
 
-export const useRecentUnFreezeQuery = createQuery<Payment.IRecentFreezeList[] | null, ['RecentUnFreezeList']>({
+export const useRecentUnFreezeQuery = createBrokerQuery<Payment.IRecentFreezeList[] | null, ['RecentUnFreezeList']>({
 	queryKey: ['RecentUnFreezeList'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -140,7 +143,7 @@ export const useRecentUnFreezeQuery = createQuery<Payment.IRecentFreezeList[] | 
 	},
 });
 
-export const useCountFreezeQuery = createQuery<Payment.ICountFreeze[] | null, ['CountFreezeList']>({
+export const useCountFreezeQuery = createBrokerQuery<Payment.ICountFreeze[] | null, ['CountFreezeList']>({
 	queryKey: ['CountFreezeList'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
