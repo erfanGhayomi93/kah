@@ -52,6 +52,7 @@ import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import GuaranteeSVG from './guarantee.svg';
 import HandWriteSVG from './handWrite.svg';
+import HintSVG from './hint.svg';
 import HomeSVG from './home.svg';
 import IdentityCardSVG from './identity-card.svg';
 import InfoCircleOutlineSVG from './info-circle-outline.svg';
@@ -180,6 +181,7 @@ export {
 	GrowUpSVG,
 	GuaranteeSVG,
 	HandWriteSVG,
+	HintSVG,
 	HomeSVG,
 	IdentityCardSVG,
 	InfoCircleOutlineSVG,
