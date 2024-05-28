@@ -611,6 +611,11 @@ export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSet
 		hidden: false,
 	},
 	{
+		id: 'side',
+		title: 'سمت',
+		hidden: false,
+	},
+	{
 		id: 'openPositionCount',
 		title: 'تعداد موقعیت باز',
 		hidden: false,
@@ -667,6 +672,11 @@ export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.
 		{
 			id: 'symbolTitle',
 			title: 'نماد',
+			hidden: false,
+		},
+		{
+			id: 'side',
+			title: 'سمت',
 			hidden: false,
 		},
 		{

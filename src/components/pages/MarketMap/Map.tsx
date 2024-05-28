@@ -1,9 +1,8 @@
 import { useMarketMapQuery } from '@/api/queries/marketQueries';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
-import { useDebounce } from '@/hooks';
+import { useBrokerQueryClient, useDebounce } from '@/hooks';
 import { isBetween, numFormatter, sepNumbers } from '@/utils/helpers';
-import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
@@ -19,7 +18,7 @@ interface MapPropsType {
 const PADDING = { top: 24, left: 1, bottom: 4, right: 1, inner: 4 };
 
 const Map = ({ filters, setFilters }: MapPropsType) => {
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const mouseDebounceTimer = useRef<NodeJS.Timeout | null>(null);
 
