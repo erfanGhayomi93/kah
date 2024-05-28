@@ -1,9 +1,8 @@
 import Select from '@/components/common/Inputs/Select';
 import Tooltip from '@/components/common/Tooltip';
 import { CameraSVG, LongshotSVG, ReloadSVG } from '@/components/icons';
-import { useDebounce } from '@/hooks';
+import { useBrokerQueryClient, useDebounce } from '@/hooks';
 import dayjs from '@/libs/dayjs';
-import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -20,7 +19,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 	const { setDebounce } = useDebounce();
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const setFieldValue = <T extends keyof TMarketMapFilters>(name: T, value: TMarketMapFilters[T]) => {
 		setFilters((filters) => ({

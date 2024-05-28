@@ -2,11 +2,11 @@ import axios from '@/api/brokerAxios';
 import { store } from '@/api/inject-store';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import dayjs from '@/libs/dayjs';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
-import { useQueryClient } from '@tanstack/react-query';
+import { useBrokerQueryClient } from '@/hooks';
+import { dateFormatter } from '@/utils/helpers';
+import { type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 import ChangeBrokerReportsTableActionCell from './ChangeBrokerReportsActionCell';
 
@@ -18,14 +18,9 @@ interface ChangeBrokerTableProps {
 const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProps) => {
 	const t = useTranslations();
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const gridRef = useRef<GridApi<Reports.IChangeBrokerReports>>(null);
-
-	const dateFormatter = (v: string | number) => {
-		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
-	};
 
 	const onDeleteRow = (data: Reports.IChangeBrokerReports | undefined) =>
 		new Promise<void>(async (resolve, reject) => {
@@ -62,7 +57,7 @@ const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProp
 			{
 				colId: 'saveDate',
 				headerName: t('change_broker_reports_page.date_column'),
-				valueGetter: (row) => dateFormatter(row.saveDate ?? ''),
+				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'date'),
 			},
 			{
 				colId: 'symbolTitle',
@@ -83,7 +78,6 @@ const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProp
 			{
 				colId: 'action',
 				headerName: t('change_broker_reports_page.action_column'),
-				cellClass: 'flex-justify-center',
 				valueGetter: (row) => row.id,
 				valueFormatter: ({ row }) => (
 					<ChangeBrokerReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />
@@ -92,31 +86,6 @@ const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProp
 		],
 		[],
 	);
-
-	const defaultColDef: ColDef<Reports.IChangeBrokerReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
-		[],
-	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
 
 	return (
 		<>

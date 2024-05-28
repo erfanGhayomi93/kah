@@ -3,9 +3,9 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setOptionSettlementModal } from '@/features/slices/modalSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
-import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
@@ -20,7 +20,7 @@ interface CashSettlementReportsTableProps {
 const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettlementReportsTableProps) => {
 	const t = useTranslations();
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const dispatch = useAppDispatch();
 
@@ -60,10 +60,6 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 		dispatch(setOptionSettlementModal({ data, activeTab: 'optionSettlementCashTab' }));
 	};
 
-	const onHistory = async (data: Reports.ICashSettlementReports | undefined) => {
-		//
-	};
-
 	const COLUMNS = useMemo<Array<IColDef<Reports.ICashSettlementReports>>>(
 		() => [
 			/* نماد */
@@ -71,6 +67,17 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				colId: 'symbolTitle',
 				headerName: t('cash_settlement_reports_page.symbol_column'),
 				valueGetter: (row) => row.symbolTitle ?? '',
+			},
+			/* سمت */
+			{
+				colId: 'side',
+				headerName: t('physical_settlement_reports_page.side_column'),
+				valueGetter: (row) => t(`common.${row.side.toLowerCase()}`),
+				cellClass: (row) =>
+					clsx({
+						'text-success-200': row.side === 'Buy',
+						'text-error-200': row.side === 'Sell',
+					}),
 			},
 			/* تعداد موقعیت باز */
 			{
@@ -152,15 +159,9 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 			{
 				colId: 'action',
 				headerName: t('cash_settlement_reports_page.action_column'),
-				cellClass: 'flex-justify-center',
 				valueGetter: (row) => row.id,
 				valueFormatter: ({ row }) => (
-					<CashSettlementReportsTableActionCell
-						data={row}
-						onDeleteRow={onDeleteRow}
-						onHistory={onHistory}
-						onRequest={onRequest}
-					/>
+					<CashSettlementReportsTableActionCell data={row} onDeleteRow={onDeleteRow} onRequest={onRequest} />
 				),
 			},
 		],

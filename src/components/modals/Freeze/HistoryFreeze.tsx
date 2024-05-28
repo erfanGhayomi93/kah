@@ -4,8 +4,8 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { SessionHistorySVG, TrashSVG } from '@/components/icons';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter } from '@/utils/helpers';
-import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo, type FC } from 'react';
@@ -21,7 +21,7 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 
 	const url = useAppSelector(getBrokerURLs);
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const isFreeze = useMemo(() => tabSelected === 'freezeModalTab', [tabSelected]);
 

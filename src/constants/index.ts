@@ -392,42 +392,42 @@ export const initialTradesReportsFilters: TradesReports.ITradesReportsFilters = 
 
 export const defaultTransactionColumns: Transaction.ITransactionColumnsState[] = [
 	{
-		id: 'id',
+		colId: 'id',
 		title: 'ردیف',
 		hidden: false,
 	},
 	{
-		id: 'date',
+		colId: 'date',
 		title: 'زمان',
 		hidden: false,
 	},
 	{
-		id: 'transactionType',
+		colId: 'transactionType',
 		title: 'عملیات',
 		hidden: false,
 	},
 	{
-		id: 'description',
+		colId: 'description',
 		title: 'شرح تراکنش',
 		hidden: false,
 	},
 	{
-		id: 'debit',
+		colId: 'debit',
 		title: 'بدهکار',
 		hidden: false,
 	},
 	{
-		id: 'credit',
+		colId: 'credit',
 		title: 'بستانکار',
 		hidden: false,
 	},
 	{
-		id: 'remaining',
+		colId: 'remaining',
 		title: 'مانده',
 		hidden: false,
 	},
 	{
-		id: 'station',
+		colId: 'station',
 		title: 'ایستگاه معاملاتی',
 		hidden: false,
 	},
@@ -611,6 +611,11 @@ export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSet
 		hidden: false,
 	},
 	{
+		id: 'side',
+		title: 'سمت',
+		hidden: false,
+	},
+	{
 		id: 'openPositionCount',
 		title: 'تعداد موقعیت باز',
 		hidden: false,
@@ -667,6 +672,11 @@ export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.
 		{
 			id: 'symbolTitle',
 			title: 'نماد',
+			hidden: false,
+		},
+		{
+			id: 'side',
+			title: 'سمت',
 			hidden: false,
 		},
 		{
