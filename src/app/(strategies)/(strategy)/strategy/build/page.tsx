@@ -15,7 +15,7 @@ const Page: NextPage<INextProps> = () => {
 					<StrategyContracts />
 				</div>
 
-				<div style={{ flex: '1', minHeight: '61rem' }} className='gap-16 flex-column'>
+				<div style={{ minHeight: '61rem' }} className='flex-1 gap-16 flex-column'>
 					<StrategyDetails />
 					<StrategyAnalyzer />
 				</div>

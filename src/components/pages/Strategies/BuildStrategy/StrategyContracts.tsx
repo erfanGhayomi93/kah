@@ -3,7 +3,8 @@
 import NoData from '@/components/common/NoData';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
-import { getBuiltStrategy } from '@/features/slices/uiSlice';
+import { getBuiltStrategy, setBuiltStrategy } from '@/features/slices/uiSlice';
+import { convertSymbolWatchlistToSymbolBasket, uuidv4 } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
 const StrategyContracts = () => {
@@ -14,7 +15,35 @@ const StrategyContracts = () => {
 	const builtStrategy = useAppSelector(getBuiltStrategy);
 
 	const handleContracts = (contracts: Option.Root[], baseSymbol: Symbol.Info | null) => {
-		//
+		const l = contracts.length;
+
+		const result: TSymbolStrategy[] = [];
+
+		try {
+			for (let i = 0; i < l; i++) {
+				result.push(convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'));
+			}
+
+			if (baseSymbol) {
+				result.push({
+					type: 'base',
+					id: uuidv4(),
+					marketUnit: baseSymbol.marketUnit,
+					quantity: 1,
+					price: baseSymbol.lastTradedPrice,
+					side: 'buy',
+					symbol: {
+						symbolTitle: baseSymbol.symbolTitle,
+						symbolISIN: baseSymbol.symbolISIN,
+						baseSymbolPrice: baseSymbol.lastTradedPrice,
+					},
+				});
+			}
+
+			dispatch(setBuiltStrategy(result));
+		} catch (e) {
+			//
+		}
 	};
 
 	const buildStrategy = () => {

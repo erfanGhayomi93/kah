@@ -55,14 +55,14 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 		() => [
 			{
 				colId: 'symbolTitle',
-				headerName: t('analyze_modal.symbolTitle'),
+				headerName: t('symbolTitle'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.symbol.symbolISIN),
 				valueGetter: (row) => row.symbol.symbolTitle,
 			},
 			{
 				colId: 'delta',
-				headerName: t('analyze_modal.delta'),
+				headerName: t('delta'),
 				cellClass: 'ltr',
 				valueGetter: ({ symbol: { optionType }, deltaCall, deltaPut }) =>
 					optionType === 'call' ? deltaCall : deltaPut,
@@ -70,7 +70,7 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 			},
 			{
 				colId: 'theta',
-				headerName: t('analyze_modal.theta'),
+				headerName: t('theta'),
 				cellClass: 'ltr',
 				valueGetter: ({ symbol: { optionType }, thetaCall, thetaPut }) =>
 					optionType === 'call' ? thetaCall : thetaPut,
@@ -78,21 +78,21 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 			},
 			{
 				colId: 'gama',
-				headerName: t('analyze_modal.gama'),
+				headerName: t('gama'),
 				cellClass: 'ltr',
 				valueGetter: ({ gamma }) => gamma,
 				valueFormatter: ({ value }) => toFixed(Number(value), 4),
 			},
 			{
 				colId: 'vega',
-				headerName: t('analyze_modal.vega'),
+				headerName: t('vega'),
 				cellClass: 'ltr',
 				valueGetter: ({ vega }) => toFixed(vega, 4),
 				valueFormatter: ({ value }) => toFixed(Number(value), 4),
 			},
 			{
 				colId: 'rho',
-				headerName: t('analyze_modal.rho'),
+				headerName: t('rho'),
 				cellClass: 'ltr',
 				valueGetter: ({ symbol: { optionType }, rhoCall, rhoPut }) =>
 					optionType === 'call' ? rhoCall : rhoPut,
