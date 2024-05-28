@@ -9,6 +9,7 @@ type TValueGetterResult = string | number | boolean;
 
 interface IFValueFormatter<K> {
 	row: K;
+	rowIndex: number;
 	value: TValueGetterResult;
 }
 
@@ -25,7 +26,7 @@ export interface IColDef<K> {
 	sortable?: boolean; // !== false
 	comparator?: (valueA: TValueGetterResult, valueB: TValueGetterResult, rowA: K, rowB: K) => number;
 	onCellClick?: (row: K, e: React.MouseEvent) => void;
-	valueGetter: (row: K) => TValueGetterResult;
+	valueGetter: (row: K, rowIndex: number) => TValueGetterResult;
 	valueFormatter?: (api: IFValueFormatter<K>) => React.ReactNode;
 }
 
@@ -96,10 +97,10 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 		});
 	};
 
-	const renderCell = (column: IColDef<K>, row: K): React.ReactNode => {
-		const value = column.valueGetter(row);
+	const renderCell = (column: IColDef<K>, row: K, rowIndex: number): React.ReactNode => {
+		const value = column.valueGetter(row, rowIndex);
 
-		if (typeof column?.valueFormatter === 'function') return column.valueFormatter?.({ row, value });
+		if (typeof column?.valueFormatter === 'function') return column.valueFormatter?.({ row, value, rowIndex });
 
 		return value;
 	};
@@ -112,8 +113,8 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 		const comparator = (a: K, b: K): number => {
 			const { column, type } = sorting;
 
-			const valueA = column.valueGetter(a);
-			const valueB = column.valueGetter(b);
+			const valueA = column.valueGetter(a, 0);
+			const valueB = column.valueGetter(b, 0);
 
 			let sortingResult = 0;
 
@@ -166,7 +167,7 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 										typeof col.cellClass === 'function' ? col.cellClass(row) : col.cellClass,
 									)}
 								>
-									{renderCell(col, row)}
+									{renderCell(col, row, i)}
 								</td>
 							))}
 						</tr>

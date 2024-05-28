@@ -1,11 +1,10 @@
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
-import StatusColumnCell from './StatusColumnCell';
 
 interface OrdersReportsTableProps {
 	reports: Reports.IOrdersReports[] | null;
@@ -23,141 +22,87 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 		return dayjs(v).calendar('jalali').format(format);
 	};
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IOrdersReports>>>(
-		() =>
-			[
-				/* ردیف */
-				{
-					headerName: t('orders_reports_page.id_column'),
-					field: 'orderId',
-					maxWidth: 112,
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
+	const COLUMNS = useMemo<Array<IColDef<Reports.IOrdersReports>>>(
+		() => [
+			/* ردیف */
+			{
+				colId: 'id',
+				headerName: t('orders_reports_page.id_column'),
+				valueGetter: (row) => row.orderId,
+			},
+			/* نماد */
+			{
+				colId: 'symbolTitle',
+				headerName: t('orders_reports_page.symbol_column'),
+				cellClass: 'text-right',
+				valueGetter: (row) => row.symbolTitle,
+			},
+			/* سمت */
+			{
+				colId: 'orderSide',
+				headerName: t('orders_reports_page.side_column'),
+				cellClass: (row) => {
+					if (!row) return;
+					return clsx({
+						'text-success-200': row.orderSide.includes('Buy'),
+						'text-error-200': row.orderSide.includes('Sell'),
+					});
 				},
-				/* نماد */
-				{
-					headerName: t('orders_reports_page.symbol_column'),
-					field: 'symbolTitle',
-					cellClass: 'text-right',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
+				valueGetter: (row) => t('orders_reports_page.side_' + row.orderSide),
+			},
+			/* تاریخ */
+			{
+				colId: 'orderDateTime',
+				headerName: t('orders_reports_page.date_column'),
+				cellClass: 'ltr',
+				valueGetter: (row) => dateFormatter(row.orderDateTime, 'YYYY/MM/DD HH:mm'),
+			},
+			/* حجم کل */
+			{
+				colId: 'quantity',
+				headerName: t('orders_reports_page.overall_volume_column'),
+				valueGetter: (row) => sepNumbers(String(row.quantity)),
+			},
+			/* قیمت */
+			{
+				colId: 'price',
+				headerName: t('orders_reports_page.price_column'),
+				valueGetter: (row) => sepNumbers(String(row.price)),
+			},
+			/* حجم انجام شده */
+			{
+				colId: 'sumExecuted',
+				headerName: t('orders_reports_page.done_volume_column'),
+				valueGetter: (row) => sepNumbers(String(row.sumExecuted)),
+			},
+			/* وضعیت سفارش */
+			{
+				colId: 'lastErrorCode',
+				headerName: t('orders_reports_page.status_column'),
+				cellClass: 'text-right rtl truncate',
+				valueGetter: (row) => {
+					if (!row) return '-';
+					const { orderStatus, lastErrorCode, customErrorMsg } = row;
+					const errorMessage = lastErrorCode || customErrorMsg;
+					return (
+						t('order_status.' + orderStatus) +
+						(errorMessage ? ': ' + t('order_errors.' + errorMessage) : '')
+					);
 				},
-				/* سمت */
-				{
-					headerName: t('orders_reports_page.side_column'),
-					field: 'orderSide',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellClass: ({ data }) => {
-						if (!data) return;
-						return clsx({
-							'text-success-200': data.orderSide.includes('Buy'),
-							'text-error-200': data.orderSide.includes('Sell'),
-						});
-					},
-					valueFormatter: ({ value }) => t('orders_reports_page.side_' + value),
-				},
-				/* تاریخ */
-				{
-					headerName: t('orders_reports_page.date_column'),
-					field: 'orderDateTime',
-					maxWidth: 144,
-					minWidth: 144,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'YYYY/MM/DD'),
-				},
-				/* ساعت */
-				{
-					headerName: t('orders_reports_page.time_column'),
-					field: 'orderDateTime',
-					maxWidth: 144,
-					minWidth: 144,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value, 'HH:mm'),
-				},
-				/* حجم کل */
-				{
-					headerName: t('orders_reports_page.overall_volume_column'),
-					field: 'quantity',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				/* قیمت */
-				{
-					headerName: t('orders_reports_page.price_column'),
-					field: 'price',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				/* حجم انجام شده */
-				{
-					headerName: t('orders_reports_page.done_volume_column'),
-					field: 'sumExecuted',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-				},
-				/* وضعیت سفارش */
-				{
-					headerName: t('orders_reports_page.status_column'),
-					field: 'lastErrorCode',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					maxWidth: 250,
-					minWidth: 250,
-					cellClass: 'text-right rtl truncate',
-					cellRenderer: StatusColumnCell,
-					valueGetter: ({ data }) => {
-						if (!data) return '-';
-						const { orderStatus, lastErrorCode, customErrorMsg } = data;
-						const errorMessage = lastErrorCode || customErrorMsg;
-						return (
-							t('order_status.' + orderStatus) +
-							(errorMessage ? ': ' + t('order_errors.' + errorMessage) : '')
-						);
-					},
-				},
-				/* اعتبار */
-				{
-					headerName: t('orders_reports_page.validity_column'),
-					field: 'validity',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ data }) => {
-						if (!data) return '-';
-						const { validity, validityDate } = data;
+			},
+			/* اعتبار */
+			{
+				colId: 'validity',
+				headerName: t('orders_reports_page.validity_column'),
+				valueGetter: (row) => {
+					if (!row) return '-';
+					const { validity, validityDate } = row;
 
-						if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
-						return t('validity_date.' + validity);
-					}
-				}
-			] as Array<ColDef<Reports.IOrdersReports>>,
+					if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
+					return t('validity_date.' + validity);
+				},
+			},
+		],
 		[],
 	);
 
@@ -188,16 +133,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 
 	return (
 		<>
-			<AgTable<Reports.IOrdersReports>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };
