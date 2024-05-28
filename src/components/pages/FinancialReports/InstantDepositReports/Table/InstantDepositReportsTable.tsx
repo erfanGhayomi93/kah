@@ -22,44 +22,43 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.IInstantDeposit>>>(
 		() => [
+			/* ردیف */
 			{
+				colId: 'id',
 				headerName: t('instant_deposit_reports_page.id_column'),
-				// field:row
-				// maxWidth: 112,
-				// minWidth: 112,
-				valueFormatter: (row) => 1,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
+			/* تاریخ */
 			{
+				colId: 'saveDate',
 				headerName: t('instant_deposit_reports_page.date_column'),
-				// field: 'saveDate',
-				// maxWidth: 220,
-				// minWidth: 220,
 				cellClass: 'ltr',
-				valueFormatter: (row) => dateFormatter(row.saveDate ?? '', 'YYYY/MM/DD HH:mm'),
+				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'YYYY/MM/DD HH:mm'),
 			},
+			/* درگاه */
 			{
+				colId: 'providerType',
 				headerName: t('instant_deposit_reports_page.getway_column'),
-				// field: 'providerType',
-				// maxWidth: 220,
-				// minWidth: 220,
-				valueFormatter: (row) => t('bank_accounts.' + row.providerType),
+				valueGetter: (row) => t('bank_accounts.' + row.providerType),
 			},
+			/* شماره پیگیری */
 			{
+				colId: 'reservationNumber',
 				headerName: t('instant_deposit_reports_page.reservation_number_column'),
-				// field: 'reservationNumber',
-				valueFormatter: (row) => row.reservationNumber,
+				valueGetter: (row) => row.reservationNumber,
 			},
+			/* مبلغ */
 			{
+				colId: 'amount',
 				headerName: t('instant_deposit_reports_page.price_column'),
-				// field: 'amount',
-				// maxWidth: 220,
-				// minWidth: 220,
-				valueFormatter: (row) => sepNumbers(String(row.amount)),
+				// width: 220,
+				valueGetter: (row) => sepNumbers(String(row.amount)),
 			},
+			/* وضعیت */
 			{
+				colId: 'state',
 				headerName: t('instant_deposit_reports_page.status_column'),
-				// field: 'state',
-				valueFormatter: (row) => t('states.state_' + row.state),
+				valueGetter: (row) => t('states.state_' + row.state),
 			},
 		],
 		[],

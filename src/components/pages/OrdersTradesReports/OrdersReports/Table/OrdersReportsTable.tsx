@@ -26,23 +26,21 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 		() => [
 			/* ردیف */
 			{
+				colId: 'id',
 				headerName: t('orders_reports_page.id_column'),
-				// field: 'orderId',
-				// maxWidth: 112,
-				// minWidth: 112,
-				valueFormatter: (row) => row.orderId,
+				valueGetter: (row) => row.orderId,
 			},
 			/* نماد */
 			{
+				colId: 'symbolTitle',
 				headerName: t('orders_reports_page.symbol_column'),
-				// field: 'symbolTitle',
 				cellClass: 'text-right',
-				valueFormatter: (row) => row.symbolTitle,
+				valueGetter: (row) => row.symbolTitle,
 			},
 			/* سمت */
 			{
+				colId: 'orderSide',
 				headerName: t('orders_reports_page.side_column'),
-				// field: 'orderSide',
 				cellClass: (row) => {
 					if (!row) return;
 					return clsx({
@@ -50,43 +48,39 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 						'text-error-200': row.orderSide.includes('Sell'),
 					});
 				},
-				valueFormatter: (row) => t('orders_reports_page.side_' + row.orderSide),
+				valueGetter: (row) => t('orders_reports_page.side_' + row.orderSide),
 			},
 			/* تاریخ */
 			{
+				colId: 'orderDateTime',
 				headerName: t('orders_reports_page.date_column'),
-				// field: 'orderDateTime',
-				// maxWidth: 144,
-				// minWidth: 144,
 				cellClass: 'ltr',
-				valueFormatter: (row) => dateFormatter(row.orderDateTime, 'YYYY/MM/DD HH:mm'),
+				valueGetter: (row) => dateFormatter(row.orderDateTime, 'YYYY/MM/DD HH:mm'),
 			},
 			/* حجم کل */
 			{
+				colId: 'quantity',
 				headerName: t('orders_reports_page.overall_volume_column'),
-				// field: 'quantity',
-				valueFormatter: (row) => sepNumbers(String(row.quantity)),
+				valueGetter: (row) => sepNumbers(String(row.quantity)),
 			},
 			/* قیمت */
 			{
+				colId: 'price',
 				headerName: t('orders_reports_page.price_column'),
-				// field: 'price',
-				valueFormatter: (row) => sepNumbers(String(row.price)),
+				valueGetter: (row) => sepNumbers(String(row.price)),
 			},
 			/* حجم انجام شده */
 			{
+				colId: 'sumExecuted',
 				headerName: t('orders_reports_page.done_volume_column'),
-				// field: 'sumExecuted',
-				valueFormatter: (row) => sepNumbers(String(row.sumExecuted)),
+				valueGetter: (row) => sepNumbers(String(row.sumExecuted)),
 			},
 			/* وضعیت سفارش */
 			{
+				colId: 'lastErrorCode',
 				headerName: t('orders_reports_page.status_column'),
-				// field: 'lastErrorCode',
-				// maxWidth: 250,
-				// minWidth: 250,
 				cellClass: 'text-right rtl truncate',
-				valueFormatter: (row) => {
+				valueGetter: (row) => {
 					if (!row) return '-';
 					const { orderStatus, lastErrorCode, customErrorMsg } = row;
 					const errorMessage = lastErrorCode || customErrorMsg;
@@ -98,9 +92,9 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 			},
 			/* اعتبار */
 			{
+				colId: 'validity',
 				headerName: t('orders_reports_page.validity_column'),
-				// field: 'validity',
-				valueFormatter: (row) => {
+				valueGetter: (row) => {
 					if (!row) return '-';
 					const { validity, validityDate } = row;
 

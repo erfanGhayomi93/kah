@@ -83,62 +83,55 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.IWithdrawal>>>(
 		() => [
+			/* ردیف */
 			{
-				/* ردیف */
+				colId: 'id',
 				headerName: t('withdrawal_cash_reports_page.id_column'),
-				// field: 'id',
-				// maxWidth: 112,
-				// minWidth: 112,
-				valueFormatter: (row) => 1,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
 			/* زمان درخواست */
 			{
+				colId: 'saveDate',
 				headerName: t('withdrawal_cash_reports_page.date_column'),
-				// field: 'saveDate',
-				// maxWidth: 144,
-				// minWidth: 144,
-				valueFormatter: (row) => dateFormatter(row.saveDate ?? ''),
+				valueGetter: (row) => dateFormatter(row.saveDate ?? ''),
 			},
 			/* موعد پرداخت */
 			{
+				colId: 'requestDate',
 				headerName: t('withdrawal_cash_reports_page.time_column'),
-				// field: 'requestDate',
-				valueFormatter: (row) => dayjs(row.requestDate).calendar('jalali').format('HH:mm:ss'),
+				valueGetter: (row) => dayjs(row.requestDate).calendar('jalali').format('HH:mm:ss'),
 			},
 			/* بانک */
 			{
+				colId: 'customerBank',
 				headerName: t('withdrawal_cash_reports_page.bank_column'),
-				// field: 'customerBank',
-				valueFormatter: (row) => row.customerBank,
+				valueGetter: (row) => row.customerBank,
 			},
 			/* مبلغ */
 			{
+				colId: 'requestAmount',
 				headerName: t('withdrawal_cash_reports_page.amount_column'),
-				// field: 'requestAmount',
-				valueFormatter: (row) => sepNumbers(String(row.requestAmount)),
+				valueGetter: (row) => sepNumbers(String(row.requestAmount)),
 			},
 			/* سامانه */
 			{
+				colId: 'channel',
 				headerName: t('withdrawal_cash_reports_page.gateway_column'),
-				// field: 'channel',
-				valueFormatter: (row) => t('states.state_' + row.channel),
+				valueGetter: (row) => t('states.state_' + row.channel),
 			},
 			/* وضعیت */
 			{
+				colId: 'state',
 				headerName: t('withdrawal_cash_reports_page.state_column'),
-				// field: 'state',
-				// maxWidth: 220,
-				// minWidth: 220,
-				valueFormatter: (row) => t('states.state_' + row.state),
+				valueGetter: (row) => t('states.state_' + row.state),
 			},
 			/* عملیات */
 			{
+				colId: 'action',
 				headerName: t('withdrawal_cash_reports_page.action_column'),
-				// field: 'action',
-				// maxWidth: 112,
-				// minWidth: 112,
 				cellClass: 'flex-justify-center',
-				valueFormatter: (row) => (
+				valueGetter: (row) => row.id,
+				valueFormatter: ({ row }) => (
 					<WithdrawalCashReportsActionCell data={row} onDeleteRow={onDeleteRow} onEditRow={onEditRow} />
 				),
 			},

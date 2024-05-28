@@ -20,18 +20,21 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 	const columnDefs = useMemo<Array<IColDef<Payment.IDepositHistoryList>>>(
 		() => [
 			{
+				colId: 'saveDate',
 				headerName: t('deposit_modal.time_history'),
-				valueFormatter: (row) => dateFormatter(row.saveDate),
+				valueGetter: (row) => dateFormatter(row.saveDate),
 				headerClass: '!bg-white',
 			},
 			{
+				colId: 'amount',
 				headerName: t('deposit_modal.price_history'),
-				valueFormatter: (row) => sepNumbers(String(row.amount)),
+				valueGetter: (row) => sepNumbers(String(row.amount)),
 				headerClass: '!bg-white',
 			},
 			{
+				colId: 'state',
 				headerName: t('deposit_modal.status_history'),
-				valueFormatter: (row) => t('deposit_modal.' + 'state_' + row.state),
+				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
 				headerClass: '!bg-white',
 				cellClass: '!text-sm',
 			},

@@ -26,22 +26,21 @@ const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }:
 		() => [
 			/* ردیف */
 			{
+				colId: 'id',
 				headerName: t('trades_reports_page.id_column'),
-				// maxWidth: 112,
-				// minWidth: 112,
-				valueFormatter: (row) => 1,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
 			/* نماد */
 			{
+				colId: 'symbolTitle',
 				headerName: t('trades_reports_page.symbol_column'),
-				// field: 'symbolTitle',
 				cellClass: 'text-right',
-				valueFormatter: (row) => row.symbolTitle,
+				valueGetter: (row) => row.symbolTitle,
 			},
 			/* سمت */
 			{
+				colId: 'orderSide',
 				headerName: t('trades_reports_page.side_column'),
-				// field: 'orderSide',
 				cellClass: (row) => {
 					if (!row) return;
 					return clsx({
@@ -49,40 +48,38 @@ const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }:
 						'text-error-200': row.orderSide.includes('Sell'),
 					});
 				},
-				valueFormatter: (row) => t('trades_reports_page.side_' + row.orderSide),
+				valueGetter: (row) => t('trades_reports_page.side_' + row.orderSide),
 			},
 			/* تاریخ */
 			{
+				colId: 'tradeDate',
 				headerName: t('trades_reports_page.date_column'),
-				// field: 'tradeDate',
-				// maxWidth: 144,
-				// minWidth: 144,
 				cellClass: 'ltr',
-				valueFormatter: (row) => dateFormatter(row.tradeDate, 'YYYY/MM/DD HH:mm'),
+				valueGetter: (row) => dateFormatter(row.tradeDate, 'YYYY/MM/DD HH:mm'),
 			},
 			/* حجم کل */
 			{
+				colId: 'tradedQuantity',
 				headerName: t('trades_reports_page.overall_volume_column'),
-				// field: 'tradedQuantity',
-				valueFormatter: (row) => sepNumbers(String(row.tradedQuantity)),
+				valueGetter: (row) => sepNumbers(String(row.tradedQuantity)),
 			},
 			/* قیمت */
 			{
+				colId: 'tradePrice',
 				headerName: t('trades_reports_page.price_column'),
-				field: 'tradePrice',
-				valueFormatter: (row) => sepNumbers(String(row.tradePrice)),
+				valueGetter: (row) => sepNumbers(String(row.tradePrice)),
 			},
 			/* کارمزد */
 			{
+				colId: 'totalQuota',
 				headerName: t('trades_reports_page.commission_column'),
-				// field: 'totalQuota',
-				valueFormatter: (row) => sepNumbers(String(row.totalQuota)),
+				valueGetter: (row) => sepNumbers(String(row.totalQuota)),
 			},
 			/* ارزش معامله */
 			{
+				colId: 'total',
 				headerName: t('trades_reports_page.value_column'),
-				// field: 'total',
-				valueFormatter: (row) => sepNumbers(String(row.total)),
+				valueGetter: (row) => sepNumbers(String(row.total)),
 			},
 			// /* اعتبار */
 			// {

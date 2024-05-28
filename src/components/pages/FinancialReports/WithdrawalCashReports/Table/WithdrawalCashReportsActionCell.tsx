@@ -19,10 +19,20 @@ const WithdrawalCashReportsActionCell = ({ onDeleteRow, onEditRow, data }: IWith
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<button type='button' onClick={() => onEditRow(data)}>
-							<EditSVG className='text-gray-900' width='2rem' height='2rem' />
+						<button
+							className='text-gray-900 disabled:text-gray-700'
+							disabled={data.state !== 'Registeration'}
+							type='button'
+							onClick={() => onEditRow(data)}
+						>
+							<EditSVG width='2rem' height='2rem' />
 						</button>
-						<button type='button' onClick={() => setConfirmDelete(true)}>
+						<button
+							disabled={data.state !== 'Registeration'}
+							className='text-gray-900 disabled:text-gray-700'
+							type='button'
+							onClick={() => setConfirmDelete(true)}
+						>
 							<TrashSVG className='text-gray-900' width='2rem' height='2rem' />
 						</button>
 					</>

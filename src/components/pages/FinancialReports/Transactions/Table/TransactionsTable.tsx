@@ -25,21 +25,21 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 	const COLUMNS = useMemo<Array<IColDef<Reports.ITransactions>>>(
 		() => [
 			{
+				colId: 'id',
 				headerName: t('transactions_page.id_column'),
-				maxWidth: 96,
-				flex: 1,
-				valueFormatter: (row) => 1,
+				width: 62,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
 			{
+				colId: 'date',
 				headerName: t('transactions_page.date_column'),
-				maxWidth: 96,
-				flex: 1,
-				valueFormatter: (row) => dateFormatter(row?.date ?? ''),
+				// width: 96,
+				valueGetter: (row) => dateFormatter(row?.date ?? ''),
 			},
 			{
+				colId: 'transactionType',
 				headerName: t('transactions_page.operator_column'),
-				valueFormatter: (row) => t('transactions_page.operator_type_' + row?.transactionType),
-				flex: 1,
+				valueGetter: (row) => t('transactions_page.operator_type_' + row?.transactionType),
 				cellClass: (row) => {
 					switch (row?.transactionType) {
 						case 'Buy':
@@ -52,11 +52,11 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				},
 			},
 			{
+				colId: 'description',
 				headerName: t('transactions_page.description_column'),
-				maxWidth: 144,
-				flex: 1,
-				valueFormatter: (row) =>
-					row?.description === 'payfast-1561' ? (
+				valueGetter: (row) => row.description,
+				valueFormatter: ({ row }) =>
+					row.description === 'payfast-1561' ? (
 						t('transactions_page.payfast')
 					) : (
 						<span
@@ -65,41 +65,43 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 							}}
 						/>
 					),
+				width: 180,
 			},
 			{
+				colId: 'debit',
 				headerName: t('transactions_page.debit_column'),
-				flex: 1,
 				cellClass: (row) =>
 					clsx('ltr', {
 						'text-error-100': Number(row?.debit) < 0,
 					}),
-				valueFormatter: (row) =>
-					Number(row?.debit) >= 0 ? sepNumbers(String(row?.debit)) : `(${sepNumbers(String(row?.debit))})`,
+				valueGetter: (row) => row.debit,
+				valueFormatter: ({ value }) =>
+					Number(value) >= 0 ? sepNumbers(String(value)) : `(${sepNumbers(String(value))})`,
 			},
 			{
+				colId: 'credit',
 				headerName: t('transactions_page.credit_column'),
-				flex: 1,
 				cellClass: (row) =>
 					clsx('ltr', {
 						'text-error-100': Number(row?.credit) < 0,
 					}),
-				valueFormatter: (row) =>
+				valueGetter: (row) =>
 					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
 			},
 			{
+				colId: 'remaining',
 				headerName: t('transactions_page.remain_column'),
 				cellClass: (row) => clsx('ltr', Number(row?.remaining) > 0 ? 'text-success-400' : 'text-error-300'),
-				flex: 1,
-				valueFormatter: (row) =>
+				valueGetter: (row) =>
 					Number(row?.remaining) >= 0
 						? sepNumbers(String(row?.remaining))
 						: `(${sepNumbers(String(row?.remaining))})`,
 			},
 			{
+				colId: 'station',
 				headerName: t('transactions_page.station_column'),
-				flex: 1,
-				maxWidth: 144,
-				valueFormatter: (row) => row?.station,
+				width: 62,
+				valueGetter: (row) => row?.station,
 			},
 		],
 		[],

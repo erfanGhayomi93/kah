@@ -62,38 +62,34 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 	const COLUMNS = useMemo<Array<IColDef<Reports.IFreezeUnfreezeReports>>>(
 		() => [
 			{
+				colId: 'id',
 				headerName: t('freeze_and_unfreeze_reports_page.id_column'),
-				// field: 'id',
-				// pinned: 'right',
-				// maxWidth: 112,
-				valueFormatter: () => 1,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
 			{
+				colId: 'symbolTitle',
 				headerName: t('freeze_and_unfreeze_reports_page.symbol_column'),
-				// field: 'symbolTitle',
-				// minWidth: 112,
-				valueFormatter: (row) => row.symbolTitle ?? '',
+				valueGetter: (row) => row.symbolTitle ?? '',
 			},
 			{
+				colId: 'confirmedOn',
 				headerName: t('freeze_and_unfreeze_reports_page.date_column'),
-				// field: 'confirmedOn',
-				// minWidth: 112,
-				valueFormatter: (row) => dateFormatter(row.confirmedOn ?? ''),
+				valueGetter: (row) => dateFormatter(row.confirmedOn ?? ''),
 			},
 			{
+				colId: 'requestState',
 				headerName: t('freeze_and_unfreeze_reports_page.status_column'),
-				// field: 'requestState',
-				// minWidth: 128,
-				valueFormatter: (row) =>
+				valueGetter: (row) =>
 					row.requestState ? t('freeze_and_unfreeze_reports_page.state_' + row.requestState) : '',
 			},
 			{
+				colId: 'action',
 				headerName: t('freeze_and_unfreeze_reports_page.action_column'),
-				// field: 'action',
-				// maxWidth: 200,
-				// minWidth: 200,
 				cellClass: 'flex-justify-center',
-				valueFormatter: (row) => <FreezeUnFreezeReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />,
+				valueGetter: (row) => row.symbolISIN,
+				valueFormatter: ({ row }) => (
+					<FreezeUnFreezeReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />
+				),
 			},
 		],
 		[],

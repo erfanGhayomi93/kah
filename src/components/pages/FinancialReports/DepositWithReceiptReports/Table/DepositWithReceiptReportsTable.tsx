@@ -84,52 +84,41 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 	const COLUMNS = useMemo<Array<IColDef<Reports.IDepositWithReceipt>>>(
 		() => [
 			{
+				colId: 'id',
 				headerName: t('deposit_with_receipt_reports_page.id_column'),
-				// field: 'id',
-				// maxWidth: 112,
-				// minWidth: 112,
-				valueFormatter: () => 1,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
 			{
+				colId: 'receiptDate',
 				headerName: t('deposit_with_receipt_reports_page.date_column'),
-				// field: 'receiptDate',
-				// maxWidth: 144,
-				// minWidth: 144,
-				valueFormatter: (row) => dateFormatter(row.receiptNumber ?? ''),
+				valueGetter: (row) => dateFormatter(row.receiptNumber ?? ''),
 			},
 			{
+				colId: 'providerType',
 				headerName: t('deposit_with_receipt_reports_page.broker_bank_column'),
-				// field: 'providerType',
-				// maxWidth: 250,
-				// minWidth: 250,
-				valueFormatter: (row) => row.providerType,
+				valueGetter: (row) => row.providerType,
 			},
 			{
+				colId: 'receiptNumber',
 				headerName: t('deposit_with_receipt_reports_page.receipt_number_column'),
-				// field: 'receiptNumber',
-				// maxWidth: 250,
-				// minWidth: 250,
-				valueFormatter: (row) => row.receiptNumber,
+				valueGetter: (row) => row.receiptNumber,
 			},
 			{
+				colId: 'amount',
 				headerName: t('deposit_with_receipt_reports_page.price_column'),
-				// field: 'amount',
-				// maxWidth: 250,
-				// minWidth: 250,
-				valueFormatter: (row) => sepNumbers(String(row.amount)),
+				valueGetter: (row) => sepNumbers(String(row.amount)),
 			},
 			{
+				colId: 'state',
 				headerName: t('deposit_with_receipt_reports_page.status_column'),
-				// field: 'state',
-				valueFormatter: (row) => t(`states.state_${row.state}`),
+				valueGetter: (row) => t(`states.state_${row.state}`),
 			},
 			{
+				colId: 'action',
 				headerName: t('deposit_with_receipt_reports_page.operation_column'),
-				// field: 'action',
-				// maxWidth: 200,
-				// minWidth: 200,
 				cellClass: 'flex-justify-center',
-				valueFormatter: (row) => (
+				valueGetter: (row) => row.id,
+				valueFormatter: ({ row }) => (
 					<DepositWithReceiptReportsActionCell data={row} onDeleteRow={onDeleteRow} onEditRow={onEditRow} />
 				),
 			},
