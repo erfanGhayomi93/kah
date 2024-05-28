@@ -7,7 +7,7 @@ import { type RootState } from '@/features/store';
 import { useBrokerQueryClient } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
@@ -122,17 +122,6 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				),
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Reports.IDepositWithReceipt> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
 		[],
 	);
 

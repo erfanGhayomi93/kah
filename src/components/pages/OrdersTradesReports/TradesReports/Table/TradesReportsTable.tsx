@@ -1,7 +1,6 @@
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
-import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { dateFormatter, sepNumbers } from '@/utils/helpers';
+import { type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
@@ -16,11 +15,6 @@ const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }:
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Reports.ITradesReports>>(null);
-
-	const dateFormatter = (v: string | number, format: string) => {
-		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format(format);
-	};
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.ITradesReports>>>(
 		() => [
@@ -55,7 +49,7 @@ const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }:
 				colId: 'tradeDate',
 				headerName: t('trades_reports_page.date_column'),
 				cellClass: 'ltr',
-				valueGetter: (row) => dateFormatter(row.tradeDate, 'YYYY/MM/DD HH:mm'),
+				valueGetter: (row) => dateFormatter(row.tradeDate, 'datetime'),
 			},
 			/* حجم کل */
 			{
@@ -81,34 +75,7 @@ const TradeReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }:
 				headerName: t('trades_reports_page.value_column'),
 				valueGetter: (row) => sepNumbers(String(row.total)),
 			},
-			// /* اعتبار */
-			// {
-			// 	headerName: t('trades_reports_page.validity_column'),
-			// 	field: 'validity',
-			// 	lockPosition: true,
-			// 	initialHide: false,
-			// 	suppressMovable: true,
-			// 	sortable: false,
-			// 	valueFormatter: ({ data }) => {
-			// 		if (!data) return '-';
-			// 		const { validity, validityDate } = data;
-
-			// 		if (validity === 'GoodTillDate') return dateFormatter(validityDate, 'YYYY/MM/DD');
-			// 		return t('validity_date.' + validity);
-			// 	}
-			// }
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Reports.ITradesReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
 		[],
 	);
 

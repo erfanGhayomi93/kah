@@ -4,9 +4,8 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter } from '@/utils/helpers';
-import { type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { toast } from 'react-toastify';
 import ChangeBrokerReportsTableActionCell from './ChangeBrokerReportsActionCell';
 
@@ -19,8 +18,6 @@ const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProp
 	const t = useTranslations();
 
 	const queryClient = useBrokerQueryClient();
-
-	const gridRef = useRef<GridApi<Reports.IChangeBrokerReports>>(null);
 
 	const onDeleteRow = (data: Reports.IChangeBrokerReports | undefined) =>
 		new Promise<void>(async (resolve, reject) => {

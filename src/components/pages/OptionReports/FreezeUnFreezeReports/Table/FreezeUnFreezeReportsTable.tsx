@@ -4,7 +4,7 @@ import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -86,17 +86,6 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 				),
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Reports.IFreezeUnfreezeReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
 		[],
 	);
 

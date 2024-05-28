@@ -499,7 +499,7 @@ declare namespace Transaction {
 	}
 
 	export interface ITransactionColumnsState {
-		colId: string;
+		id: string;
 		title: string;
 		hidden: boolean;
 	}

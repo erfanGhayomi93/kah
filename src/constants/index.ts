@@ -392,42 +392,42 @@ export const initialTradesReportsFilters: TradesReports.ITradesReportsFilters = 
 
 export const defaultTransactionColumns: Transaction.ITransactionColumnsState[] = [
 	{
-		colId: 'id',
+		id: 'id',
 		title: 'ردیف',
 		hidden: false,
 	},
 	{
-		colId: 'date',
+		id: 'date',
 		title: 'زمان',
 		hidden: false,
 	},
 	{
-		colId: 'transactionType',
+		id: 'transactionType',
 		title: 'عملیات',
 		hidden: false,
 	},
 	{
-		colId: 'description',
+		id: 'description',
 		title: 'شرح تراکنش',
 		hidden: false,
 	},
 	{
-		colId: 'debit',
+		id: 'debit',
 		title: 'بدهکار',
 		hidden: false,
 	},
 	{
-		colId: 'credit',
+		id: 'credit',
 		title: 'بستانکار',
 		hidden: false,
 	},
 	{
-		colId: 'remaining',
+		id: 'remaining',
 		title: 'مانده',
 		hidden: false,
 	},
 	{
-		colId: 'station',
+		id: 'station',
 		title: 'ایستگاه معاملاتی',
 		hidden: false,
 	},

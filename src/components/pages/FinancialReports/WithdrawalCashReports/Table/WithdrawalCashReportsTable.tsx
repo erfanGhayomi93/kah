@@ -6,7 +6,7 @@ import { setWithdrawalModal } from '@/features/slices/modalSlice';
 import { type RootState } from '@/features/store';
 import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
@@ -130,17 +130,6 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 				),
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Reports.IWithdrawal> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
 		[],
 	);
 

@@ -5,7 +5,7 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setOptionSettlementModal } from '@/features/slices/modalSlice';
 import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
@@ -165,17 +165,6 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				),
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Reports.ICashSettlementReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
 		[],
 	);
 
