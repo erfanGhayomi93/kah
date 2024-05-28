@@ -3,8 +3,8 @@ import { useHistoryChangeBrokerQuery } from '@/api/queries/requests';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { SessionHistorySVG, TrashSVG } from '@/components/icons';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter } from '@/utils/helpers';
-import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { type FC, useMemo } from 'react';
@@ -20,7 +20,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 
 	const url = useSelector(getBrokerURLs);
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const { data } = useHistoryChangeBrokerQuery({
 		queryKey: ['LastHistoryChangeBroker'],

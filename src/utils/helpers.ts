@@ -1,4 +1,5 @@
 import { logoutUser } from '@/api/axios';
+import { appQueryClient, brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
 import { getDateMilliseconds } from '@/constants';
 import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
@@ -154,11 +155,16 @@ export const base64decode = (value: string) => {
 	}
 };
 
+export const createBrokerQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
+	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
+) => {
+	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, brokerQueryClient);
+};
+
 export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
 	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
-	queryClient?: QueryClient,
 ) => {
-	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, queryClient);
+	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, appQueryClient);
 };
 
 export const createMutation = <TData = unknown, TVariables = void, TError = AxiosError, TContext = unknown>(

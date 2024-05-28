@@ -1,4 +1,5 @@
 import AnimatePresence from '@/components/common/animation/AnimatePresence';
+import Tooltip from '@/components/common/Tooltip';
 import { EditSVG, TrashSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -19,16 +20,30 @@ const DepositWithReceiptReportsActionCell = ({
 	const [confirmDelete, setConfirmDelete] = useState(false);
 
 	return (
-		<div className='gap-16 flex-justify-start'>
+		<div className='gap-16 flex-justify-center'>
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<button type='button' onClick={() => onEditRow(data)}>
-							<EditSVG className='text-gray-900' width='2rem' height='2rem' />
-						</button>
-						<button type='button' onClick={() => setConfirmDelete(true)}>
-							<TrashSVG className='text-gray-900' width='2rem' height='2rem' />
-						</button>
+						<Tooltip content={t('common.edit')}>
+							<button
+								disabled={data.state !== 'Registeration'}
+								type='button'
+								onClick={() => onEditRow(data)}
+								className='text-gray-900 disabled:text-gray-700'
+							>
+								<EditSVG width='2rem' height='2rem' />
+							</button>
+						</Tooltip>
+						<Tooltip content={t('common.delete')}>
+							<button
+								disabled={data.state !== 'Registeration'}
+								type='button'
+								onClick={() => setConfirmDelete(true)}
+								className='text-gray-900 disabled:text-gray-700'
+							>
+								<TrashSVG width='2rem' height='2rem' />
+							</button>
+						</Tooltip>
 					</>
 				</AnimatePresence>
 			)}

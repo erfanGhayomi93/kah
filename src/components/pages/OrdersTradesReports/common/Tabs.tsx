@@ -11,20 +11,26 @@ const Tabs = () => {
 
 	const pathName = usePathname();
 
-	const FINANCIAL_TYPE = useMemo<Array<{ id: TOrdersTradersTab, route: string }>>(() => ([{
-		id: 'orders',
-		route: '/orders-and-trades-reports/orders'
-	},
-	{
-		id: 'trades',
-		route: '/orders-and-trades-reports/trades'
-	},
-	]), []);
+	const FINANCIAL_TYPE = useMemo<Array<{ id: TOrdersTradersTab; route: string }>>(
+		() => [
+			{
+				id: 'orders',
+				route: '/orders-and-trades-reports/orders',
+			},
+			{
+				id: 'trades',
+				route: '/orders-and-trades-reports/trades',
+			},
+		],
+		[],
+	);
 
 	return (
-		<div className="flex-justify-start gap-24">
-			<span className='text-xl font-medium'>{t('orders_and_trades_reports_page.orders_and_trades_reports')}</span>
-			<ul className='flex-justify-start gap-8'>
+		<div className='gap-24 flex-justify-start'>
+			<span className='text-xl font-medium text-gray-700'>
+				{t('orders_and_trades_reports_page.orders_and_trades_reports')}
+			</span>
+			<ul className='gap-8 flex-justify-start'>
 				{FINANCIAL_TYPE.map((type) => (
 					<li key={type.id}>
 						<Link href={type.route}>

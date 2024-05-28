@@ -7,9 +7,9 @@ import { FileTextSVG, XSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setDepositModal } from '@/features/slices/modalSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { convertStringToInteger, sepNumbers, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
-import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { type FC, type MouseEvent, useEffect, useMemo, useRef } from 'react';
@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface ReceiptDepositTabProps {
-	dataEdit?: Reports.IDepositWithReceipt,
+	dataEdit?: Reports.IDepositWithReceipt;
 }
 interface inputType {
 	receipt: string;
@@ -37,7 +37,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 
 	const url = useSelector(getBrokerURLs);
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const userInfo: Broker.User | undefined = queryClient.getQueryData(['userInfoQuery']);
 
@@ -48,13 +48,9 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 	});
 
 	const findBankAccountSelect = useMemo(() => {
-
 		if (!brokerAccountOption) return null;
-
 		else if (!dataEdit) return brokerAccountOption[0];
-
 		else return brokerAccountOption?.find((item) => String(item.id) === String(bankAccountId));
-
 	}, [brokerAccountOption, bankAccountId]);
 
 	const {
@@ -75,13 +71,9 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 		mode: 'onChange',
 	});
 
-
 	useEffect(() => {
 		findBankAccountSelect && setValue('account', findBankAccountSelect, { shouldValidate: true });
 	}, [findBankAccountSelect]);
-
-
-
 
 	const resetInput = () => {
 		if (inputRef.current) inputRef.current.files = new DataTransfer().files;
@@ -134,8 +126,10 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 			!dataEdit && fd.append('NationalCode', userInfo?.nationalCode);
 			image && fd.append('File', image ?? '');
 
-
-			const response = await brokerAxios.post(!dataEdit ? url.completeRequestReceipt : url.ReceiptEditRequest, fd);
+			const response = await brokerAxios.post(
+				!dataEdit ? url.completeRequestReceipt : url.ReceiptEditRequest,
+				fd,
+			);
 
 			const { data } = response;
 			if (data.succeeded) {
