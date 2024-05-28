@@ -14,6 +14,7 @@ const Meetings = () => {
 		<Section<string, Dashboard.GetAnnualReport.Type>
 			id='meetings'
 			title={t('home.meetings')}
+			info={t('tooltip.meting_process_section')}
 			defaultTopActiveTab={type}
 			onBottomTabChange={setType}
 			tabs={{

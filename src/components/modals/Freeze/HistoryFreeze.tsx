@@ -5,9 +5,9 @@ import { SessionHistorySVG, TrashSVG } from '@/components/icons';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useBrokerQueryClient } from '@/hooks';
+import { Link } from '@/navigation';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useMemo, type FC } from 'react';
 import { toast } from 'react-toastify';
 

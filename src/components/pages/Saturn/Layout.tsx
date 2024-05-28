@@ -10,7 +10,7 @@ import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/sli
 import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
 	ssr: false,
@@ -101,18 +101,22 @@ const Layout = ({
 	};
 
 	const onBeforeUnload = (e: BeforeUnloadEvent) => {
-		if (saturnActiveTemplate === null) e.preventDefault();
+		const l = baseSymbolContracts.filter((item) => item !== null).length;
+		if (saturnActiveTemplate === null && l > 0) e.preventDefault();
 	};
 
-	useLayoutEffect(() => {
-		window.addEventListener('beforeunload', onBeforeUnload);
+	useEffect(() => {
+		const c = new AbortController();
+		window.addEventListener('beforeunload', onBeforeUnload, {
+			signal: c.signal,
+		});
 
 		return () => {
-			window.removeEventListener('beforeunload', onBeforeUnload);
+			c.abort();
 		};
-	}, [saturnActiveTemplate]);
+	}, [saturnActiveTemplate, baseSymbolContracts]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		try {
 			const contractISIN = searchParams.get('contractISIN');
 			if (!contractISIN || saturnActiveTemplate) throw new Error();
@@ -123,11 +127,11 @@ const Layout = ({
 		}
 	}, []);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (selectedSymbol) LocalstorageInstance.set('selected_symbol', selectedSymbol);
 	}, [selectedSymbol]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		try {
 			if (!saturnActiveTemplate) return;
 
@@ -144,12 +148,12 @@ const Layout = ({
 		}
 	}, [saturnActiveTemplate]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!activeTemplate) return;
 		dispatch(setSaturnActiveTemplate(activeTemplate));
 	}, [activeTemplate]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		try {
 			updateTemplate();
 		} catch (e) {

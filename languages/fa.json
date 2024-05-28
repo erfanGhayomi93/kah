@@ -68,9 +68,18 @@
 		"price": "قیمت",
 		"quantity": "تعداد",
 		"required_margin": "وجه تضمین",
-		"commission": "کارمزد",
+		"trade_commission": "کارمزد معامله",
+		"strike_commission": "کارمزد اعمال",
+		"tax": "مالیات",
+		"default": "نکول",
 		"call": "اختیار خرید",
-		"put": "اختیار فروش"
+		"put": "اختیار فروش",
+		"buy": "خرید",
+		"sell": "فروش",
+		"price_hint": "محاسبه خودکار با سرخط",
+		"more_info": "اطلاعات بیشتر",
+		"remove": "حذف",
+		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد."
 	},
 	"home": {
 		"market_view": "نمای بازار",
@@ -1021,15 +1030,19 @@
 		"manage_columns": "مدیریت ستون‌های جدول"
 	},
 	"build_strategy": {
-		"no_data": "هیچ استراتژی وجود ندارد",
 		"create_your_strategy": "استراتژی دلخواه خود را بسازید",
 		"most_profit": "بیشترین سود",
+		"aggregate": "مجموع",
 		"break_even_point": "سر به سر",
 		"risk": "ریسک",
+		"upsert": "افزودن / ویرایش",
+		"add_to_virtual_portfolio": "افزودن به پرتفوی مجازی",
+		"send_all": "ارسال همه",
 		"time_value": "ارزش زمانی",
 		"most_loss": "بیشترین ضرر",
 		"required_budget": "بودجه مورد نیاز",
 		"profit_probability": "احتمال سود",
+		"new_strategy": "استراتژی جدید",
 		"required_margin": "وجه تضمین مورد نیاز"
 	},
 	"strategy_filters": {
@@ -1280,13 +1293,30 @@
 		"remove_all_selected_orders": "حذف سفارشات انتخاب شده",
 		"more_info": "اطلاعات بیشتر",
 		"remove": "حذف",
+		"request": "درخواست",
 		"export_excel": "خروجی اکسل",
 		"manage_columns": "مدیریت ستون‌ها",
 		"filters": "فیلتر‌ها",
 		"black_scholes": "ماشین حساب",
 		"add_new_watchlist": "افزودن دیده‌بان جدید",
 		"manage_watchlist_list": "مدیریت دیده‌بان‌ها",
-		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد."
+		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد.",
+		"market_state_section": "نشان دهنده وضعیت کلی برای بازارهای اختیار، بورس و فرابورس",
+		"market_view_section": "نمودارهای شاخص کل و هموزن و ارزش معاملات خرید",
+		"best_section": "نمایش برترین نماد ها بر اساس طبقه بندی های مختلف",
+		"user_progress_section": "روند پیشرفت شما در باشگاه مشتریان رامند",
+		"compare_transaction_value_section": "نمودار مقایسه ارزش معاملات کل اختیار، اختیارهای خرید، اختیارهای فروش، با کل بازار سهام",
+		"option_contract_section": "تفکیک حجم و ارزش معاملات نمادهای اختیار بر اساس نوع قرارداد و وضعیبت در سود بودن",
+		"option_trade_value_section": "نمودارهای روند ارزش معاملات بازار اختیار و نسبت ارزش معاملات اختیارهای فروش به اختیار های خرید",
+		"option_market_process_section": "نمودار روند حجم، ارزش معاملات و ارزش مفهمومی بازار اختیار",
+		"individual_and_legal_section": "نمایش حجم خرید و فروش اشخاص حقوقی  و سرانه خرید و فروش اشخاص حقیقی در نماد های اختیار معامله و سهام های پایه",
+		"price_change_watchlist_section": "نمایش تعداد نماد های بازار سهام در بازه های مختلف قیمتی",
+		"open_position_process_section": "مشاهده نمودار موقعیت های باز قراردادهای اختیار خرید و اختیار فروش",
+		"meting_process_section": "نمایش مجامع پیشرو کل بازار سهام",
+		"new_and_old_section": "نمایش نماد های اختیاری که برای اولین بار معامله شده اند در تازه معامله شده ها و نمایش نمادهایی که بیشترین روز کاری روی آنها صورت گرفته در بیشترین روزهای معاملاتی",
+		"top_base_assets_section": "مرتب سازی سهام بر اساس ارزش معاملات قرارداد های اختیار آنها",
+		"recent_activities_section": "",
+		"due_dates_section": "نمایش نزدیکترین سررسید های سهام پایه اختیار و جدیدترین قراردادهای منتشر شده بر روی سهام پایه اختیار"
 	},
 	"freeze_request_state": {
 		"Done": "تایید",
@@ -1754,7 +1784,6 @@
 		"resend_code": "ارسال مجدد",
 		"error_occured": "تلاش مجدد"
 	},
-
 	"market_map": {
 		"market_map": "نقشه بازار",
 		"all": "همه",

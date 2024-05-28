@@ -84,7 +84,7 @@ const Watchlist = ({
 				<div className='flex items-center'>
 					<div className='w-28'>
 						{hasNotCheckbox ? (
-							<button type='button' className='h-16 grow-0 text-gray-600 flex-justify-start'>
+							<button type='button' className='h-16 grow-0 text-gray-500 flex-justify-start'>
 								<DragSVG width='2.4rem' height='2.4rem' />
 							</button>
 						) : (

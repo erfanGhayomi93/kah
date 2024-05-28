@@ -107,7 +107,7 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 								type='button'
 								className={clsx(
 									'size-24 rounded-sm transition-colors flex-justify-center',
-									inputs.type === 'area' ? 'btn-primary' : 'bg-gray-600 text-gray-900',
+									inputs.type === 'area' ? 'btn-primary' : 'bg-gray-500 text-gray-900',
 								)}
 							>
 								<LinearChartSVG width='2rem' height='2rem' />
@@ -119,7 +119,7 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 								type='button'
 								className={clsx(
 									'size-24 rounded-sm transition-colors flex-justify-center',
-									inputs.type === 'candlestick' ? 'btn-primary' : 'bg-gray-600 text-gray-900',
+									inputs.type === 'candlestick' ? 'btn-primary' : 'bg-gray-500 text-gray-900',
 								)}
 							>
 								<CandleChartSVG width='2rem' height='2rem' />

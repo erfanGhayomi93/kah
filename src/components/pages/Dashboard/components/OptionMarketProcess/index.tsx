@@ -29,6 +29,7 @@ const OptionMarketProcess = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_market_process'
 			title={t('home.option_market_process')}
+			info={t('tooltip.option_market_process_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
