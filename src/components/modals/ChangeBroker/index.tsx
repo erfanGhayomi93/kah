@@ -17,13 +17,12 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface ChangeBrokerProps extends IChangeBrokerModal { }
+interface ChangeBrokerProps extends IChangeBrokerModal {}
 
 const ChangeBroker = forwardRef<HTMLDivElement, ChangeBrokerProps>((props, ref) => {
 	const t = useTranslations();
 
 	const [isShowExpanded, setIsShowExpanded] = useState(false);
-
 
 	const dispatch = useAppDispatch();
 
@@ -43,21 +42,14 @@ const ChangeBroker = forwardRef<HTMLDivElement, ChangeBrokerProps>((props, ref) 
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Header
-				label={t('change_broker_modal.title')}
-				onClose={onCloseModal}
-				onExpanded={onExpanded}
-
-			/>
+			<Header label={t('change_broker_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} />
 			<div className='flex bg-white p-24'>
 				<Div
 					className={clsx('flex-column', {
 						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
 					})}
 				>
-					<Body
-						onCloseModal={onCloseModal}
-					/>
+					<Body onCloseModal={onCloseModal} />
 				</Div>
 
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>

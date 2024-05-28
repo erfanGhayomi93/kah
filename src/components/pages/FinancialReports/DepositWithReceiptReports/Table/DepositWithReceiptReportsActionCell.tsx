@@ -1,14 +1,19 @@
 import AnimatePresence from '@/components/common/animation/AnimatePresence';
-import { TrashSVG } from '@/components/icons';
+import { EditSVG, TrashSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-interface IFreezeUnFreezeReportsTableActionCellProps {
-	onDeleteRow: (data: Reports.IFreezeUnfreezeReports | undefined) => void;
-	data: Reports.IFreezeUnfreezeReports;
+interface IDepositWithReceiptReportsActionCellProps {
+	onDeleteRow: (data: Reports.IDepositWithReceipt | undefined) => void;
+	onEditRow: (data: Reports.IDepositWithReceipt | undefined) => void;
+	data: Reports.IDepositWithReceipt;
 }
 
-const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFreezeReportsTableActionCellProps) => {
+const DepositWithReceiptReportsActionCell = ({
+	onDeleteRow,
+	onEditRow,
+	data,
+}: IDepositWithReceiptReportsActionCellProps) => {
 	const t = useTranslations();
 
 	const [confirmDelete, setConfirmDelete] = useState(false);
@@ -18,13 +23,11 @@ const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFr
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<button
-							disabled={data.requestState !== 'InProgress'}
-							type='button'
-							onClick={() => setConfirmDelete(true)}
-							className='text-gray-900 disabled:text-gray-700'
-						>
-							<TrashSVG width='2rem' height='2rem' />
+						<button type='button' onClick={() => onEditRow(data)}>
+							<EditSVG className='text-gray-900' width='2rem' height='2rem' />
+						</button>
+						<button type='button' onClick={() => setConfirmDelete(true)}>
+							<TrashSVG className='text-gray-900' width='2rem' height='2rem' />
 						</button>
 					</>
 				</AnimatePresence>
@@ -46,4 +49,4 @@ const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFr
 	);
 };
 
-export default FreezeUnFreezeReportsTableActionCell;
+export default DepositWithReceiptReportsActionCell;

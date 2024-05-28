@@ -19,7 +19,6 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: TableProps) => {
-
 	const t = useTranslations();
 
 	const { data: transactionsReportData, isLoading } = useTransactionsReportsQuery({
@@ -66,18 +65,13 @@ const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: Ta
 					transition: 'height 250ms ease',
 				}}
 			>
-				<TransactionsTable
-					columnsVisibility={columnsVisibility}
-					reports={reports}
-				/>
+				<TransactionsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
 			<div className='py-22 flex-justify-between'>
 				<div className='gap-40 text-base flex-justify-start'>
 					<div className='gap-8 flex-justify-start'>
-						<span className='font-medium text-gray-900'>
-							{t('transactions_page.final_remain')}:{' '}
-						</span>
+						<span className='font-medium text-gray-900'>{t('transactions_page.final_remain')}: </span>
 						<div className='gap-4 flex-justify-start'>
 							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(finalRemain))}`}</span>
 							<span className=' text-gray-700'>{t('common.rial')}</span>
@@ -85,9 +79,7 @@ const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: Ta
 					</div>
 					<div style={{ minWidth: '1px', minHeight: '16px' }} className='bg-gray-700' />
 					<div className='gap-8 flex-justify-start'>
-						<span className='font-medium text-gray-900'>
-							{t('transactions_page.last_remain')}:{' '}
-						</span>
+						<span className='font-medium text-gray-900'>{t('transactions_page.last_remain')}: </span>
 						<div className='gap-4 flex-justify-start'>
 							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(lastTrades))}`}</span>
 							<span className=' text-gray-700'>{t('common.rial')}</span>
@@ -114,7 +106,7 @@ const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: Ta
 				</div>
 			)}
 			{dataIsEmpty && !isLoading && (
-				<div className='center absolute'>
+				<div className='absolute center'>
 					<NoData />
 				</div>
 			)}

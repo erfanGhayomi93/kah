@@ -2100,34 +2100,16 @@ declare namespace Reports {
 	}
 
 	export interface ITradesReports {
-		orderId: number;
-		userName: string;
-		customerISIN: string;
-		symbolISIN: string;
-		price: number;
-		triggerPrice: number;
-		quantity: number;
-		orderSide: 'Buy' | 'Sell';
-		orderOrigin: string;
-		parentOrderId: number;
-		orderType: TOrdersTypes;
-		validity: TOrdersValidity;
-		validityDate: string;
-		orderFrom: TOrdersForm;
-		orderAction: TOrdersAction | 0;
-		orderMinimumQuantity: number;
-		orderDateTime: string;
-		hostOrderNumber: string;
-		expectedRemainingQuantity: number;
-		sumExecuted: number;
+		orderSide: 'Sell' | 'Buy';
+		remainingQuantityOrder: number;
 		symbolTitle: string;
-		position: number;
-		valuePosition: number;
-		lastTradePrice: number;
-		orderStatus: TOrdersStatus;
-		lastErrorCode: string;
-		customErrorMsg: string;
-		tradeDetails: TTradeDetails;
+		total: number;
+		totalQuota: number;
+		tradeDate: string;
+		tradeNumber: number;
+		tradePrice: number;
+		tradeTime: string;
+		tradedQuantity: number;
 	}
 }
 
