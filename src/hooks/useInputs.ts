@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useInputs = <T extends object>(props: T) => {
+const useInputs = <T extends object>(props: T, keepUpdate?: boolean) => {
 	const [inputs, setInputs] = useState(props);
 
 	const setFieldValue = <K extends keyof T>(name: K, value: T[K]) => {
@@ -23,6 +23,10 @@ const useInputs = <T extends object>(props: T) => {
 			}));
 		}
 	};
+
+	useEffect(() => {
+		if (keepUpdate) setInputs(props);
+	}, [keepUpdate, JSON.stringify(props)]);
 
 	return { inputs, setFieldValue, setFieldsValue, setInputs };
 };

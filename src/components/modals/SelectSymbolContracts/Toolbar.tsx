@@ -49,11 +49,12 @@ const Toolbar = ({
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch
 						value={baseSymbol}
+						disabled={isPending}
+						nullable={false}
 						onChange={(symbol) => {
 							setBaseSymbol(symbol);
 							onBaseSymbolChange(symbol);
 						}}
-						disabled={isPending}
 					/>
 				</div>
 			)}

@@ -26,13 +26,20 @@ interface AnalyzeProps {
 const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, useCommission }: AnalyzeProps) => {
 	const t = useTranslations('analyze_modal');
 
-	const { inputs, setFieldsValue } = useInputs<IAnalyzeInputs>({
-		minPrice: minPrice ?? 0,
-		maxPrice: maxPrice ?? 0,
-		baseAssets,
-	});
+	const { inputs, setFieldsValue } = useInputs<IAnalyzeInputs>(
+		{
+			minPrice: minPrice ?? 0,
+			maxPrice: maxPrice ?? 0,
+			baseAssets,
+		},
+		true,
+	);
 
-	const { data } = useAnalyze(contracts, {
+	const {
+		data,
+		maxPrice: newMaxPrice,
+		minPrice: newMinPrice,
+	} = useAnalyze(contracts, {
 		baseAssets: inputs.baseAssets,
 		maxPrice: inputs.maxPrice,
 		minPrice: inputs.minPrice,
@@ -46,7 +53,13 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, useCommission }: A
 			render: () => (
 				<div style={{ height: '40rem' }} className='relative py-16'>
 					<ErrorBoundary>
-						<PerformanceChart data={data} inputs={inputs} onChange={setFieldsValue} />
+						<PerformanceChart
+							data={data}
+							baseAssets={inputs.baseAssets}
+							maxPrice={newMaxPrice}
+							minPrice={newMinPrice}
+							onChange={setFieldsValue}
+						/>
 					</ErrorBoundary>
 				</div>
 			),
