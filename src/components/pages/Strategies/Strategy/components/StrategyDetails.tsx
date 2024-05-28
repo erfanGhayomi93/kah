@@ -95,7 +95,7 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 							<span className='gap-4 whitespace-nowrap pr-40 text-tiny text-gray-700 flex-items-center'>
 								{t.rich(`${type}.desc`, {
 									plus: () => (
-										<b className='text-gray-600'>
+										<b className='text-gray-500'>
 											<PlusSVG width='1.4rem' height='1.4rem' />
 										</b>
 									),

@@ -1,9 +1,9 @@
 import { useDepositHistoryQuery } from '@/api/queries/requests';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { SessionHistorySVG } from '@/components/icons';
+import { Link } from '@/navigation';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { type FC, useMemo } from 'react';
 
 interface HistoryDepositType {

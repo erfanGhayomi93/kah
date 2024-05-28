@@ -1,9 +1,8 @@
 'use client';
 
+import { Link, usePathname } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 const Tabs = () => {

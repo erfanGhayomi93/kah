@@ -36,6 +36,12 @@ interface HeaderCellProps<K> extends IColDef<K> {
 	sorting: TSorting<K>;
 }
 
+interface RowCellProps<K> {
+	column: IColDef<K>;
+	row: K;
+	rowIndex: number;
+}
+
 interface LightweightTableProps<T extends unknown[], K extends unknown> {
 	rowData: T;
 	className?: ClassesValue;
@@ -97,17 +103,8 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 		});
 	};
 
-	const renderCell = (column: IColDef<K>, row: K, rowIndex: number): React.ReactNode => {
-		const value = column.valueGetter(row, rowIndex);
-
-		if (typeof column?.valueFormatter === 'function') return column.valueFormatter?.({ row, value, rowIndex });
-
-		return value;
-	};
-
 	const rowDataMapper = useMemo(() => {
 		const data = JSON.parse(JSON.stringify(rowData)) as K[];
-
 		if (!sorting) return data;
 
 		const comparator = (a: K, b: K): number => {
@@ -159,16 +156,7 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 							key={i}
 						>
 							{columnDefs.map((col) => (
-								<td
-									key={col.colId}
-									onClick={(e) => col.onCellClick?.(row, e)}
-									className={clsx(
-										styles.td,
-										typeof col.cellClass === 'function' ? col.cellClass(row) : col.cellClass,
-									)}
-								>
-									{renderCell(col, row, i)}
-								</td>
+								<RowCell column={col} row={row} rowIndex={i} />
 							))}
 						</tr>
 					))}
@@ -222,6 +210,25 @@ const HeaderCell = <K,>({
 					</div>
 				)}
 			</div>
+		</td>
+	);
+};
+
+const RowCell = <K,>({ column, row, rowIndex }: RowCellProps<K>) => {
+	if (column.hidden) return null;
+
+	const value = column.valueGetter(row, rowIndex);
+
+	return (
+		<td
+			key={column.colId}
+			onClick={(e) => column.onCellClick?.(row, e)}
+			className={clsx(
+				styles.td,
+				typeof column.cellClass === 'function' ? column.cellClass(row) : column.cellClass,
+			)}
+		>
+			{typeof column?.valueFormatter === 'function' ? column.valueFormatter?.({ row, value, rowIndex }) : value}
 		</td>
 	);
 };
