@@ -1,5 +1,5 @@
 import brokerAxios from '@/api/brokerAxios';
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import dayjs from '@/libs/dayjs';
@@ -29,7 +29,7 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
-	const onDeleteRow = (data: Reports.IFreezeUnfreezeReports) =>
+	const onDeleteRow = (data: Reports.IFreezeUnfreezeReports | undefined) =>
 		new Promise<void>(async (resolve, reject) => {
 			if (!url || !data) return null;
 
@@ -59,62 +59,39 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 			}
 		});
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IFreezeUnfreezeReports>>>(
-		() =>
-			[
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.id_column'),
-					field: 'id',
-					pinned: 'right',
-					maxWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.symbol_column'),
-					field: 'symbolTitle',
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => value ?? '',
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.date_column'),
-					field: 'confirmedOn',
-					minWidth: 112,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.status_column'),
-					field: 'requestState',
-					minWidth: 128,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => (value ? t('freeze_and_unfreeze_reports_page.state_' + value) : ''),
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.action_column'),
-					field: 'action',
-					maxWidth: 200,
-					minWidth: 200,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellRenderer: FreezeUnFreezeReportsTableActionCell,
-					cellRendererParams: {
-						onDeleteRow,
-					},
-				},
-			] as Array<ColDef<Reports.IFreezeUnfreezeReports>>,
+	const COLUMNS = useMemo<Array<IColDef<Reports.IFreezeUnfreezeReports>>>(
+		() => [
+			{
+				colId: 'id',
+				headerName: t('freeze_and_unfreeze_reports_page.id_column'),
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+			},
+			{
+				colId: 'symbolTitle',
+				headerName: t('freeze_and_unfreeze_reports_page.symbol_column'),
+				valueGetter: (row) => row.symbolTitle ?? '',
+			},
+			{
+				colId: 'confirmedOn',
+				headerName: t('freeze_and_unfreeze_reports_page.date_column'),
+				valueGetter: (row) => dateFormatter(row.confirmedOn ?? ''),
+			},
+			{
+				colId: 'requestState',
+				headerName: t('freeze_and_unfreeze_reports_page.status_column'),
+				valueGetter: (row) =>
+					row.requestState ? t('freeze_and_unfreeze_reports_page.state_' + row.requestState) : '',
+			},
+			{
+				colId: 'action',
+				headerName: t('freeze_and_unfreeze_reports_page.action_column'),
+				cellClass: 'flex-justify-center',
+				valueGetter: (row) => row.symbolISIN,
+				valueFormatter: ({ row }) => (
+					<FreezeUnFreezeReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />
+				),
+			},
+		],
 		[],
 	);
 
@@ -145,16 +122,7 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 
 	return (
 		<>
-			<AgTable<Reports.IFreezeUnfreezeReports>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };

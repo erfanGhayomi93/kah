@@ -36,27 +36,24 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<Dashboard.GetOptionSettlementInfo.Data>>>(
 		() => [
 			{
+				colId: 'symbolISIN',
 				headerName: t('home.symbol_title'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.symbolISIN),
-				valueFormatter: (row) => row.symbolTitle,
+				valueGetter: (row) => row.symbolTitle,
 			},
 			{
+				colId: 'closestDueDays',
 				headerName: t(`home.${type === 'Closest' ? 'due_days' : 'passed_days'}`),
-				valueFormatter: (row) =>
-					dateFormatter(
-						'mostRecentPassedDays' in row
-							? Math.max(row.mostRecentPassedDays ?? 0, 0)
-							: Math.max(row.closestDueDays ?? 0, 0),
-					),
+				valueGetter: (row) =>
+					'mostRecentPassedDays' in row ? row.mostRecentPassedDays ?? 0 : row.closestDueDays ?? 0,
+				valueFormatter: ({ value }) => dateFormatter(Number(value)),
 			},
 			{
+				colId: 'totalTradeValue',
 				headerName: t('home.today_value'),
-				valueFormatter: (row) => numFormatter(row.totalTradeValue ?? 0),
-			},
-			{
-				headerName: t('home.today_volume'),
-				valueFormatter: (row) => numFormatter(row.totalTradeVolume ?? 0),
+				valueGetter: (row) => row.totalTradeValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(Number(value)),
 			},
 		],
 		[type],
@@ -66,7 +63,7 @@ const DueDatesTable = ({ type }: DueDatesTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable rowData={data} columnDefs={columnDefs} />;
+	return <LightweightTable rowHeight={40} headerHeight={40} rowData={data} columnDefs={columnDefs} />;
 };
 
 export default DueDatesTable;

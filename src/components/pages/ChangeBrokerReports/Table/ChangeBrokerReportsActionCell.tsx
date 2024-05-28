@@ -3,12 +3,12 @@ import { TrashSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-interface IFreezeUnFreezeReportsTableActionCellProps {
-	onDeleteRow: (data: Reports.IFreezeUnfreezeReports | undefined) => void;
-	data: Reports.IFreezeUnfreezeReports;
+interface IChangeBrokerReportsTableActionCellProps {
+	onDeleteRow: (data: Reports.IChangeBrokerReports | undefined) => void;
+	data: Reports.IChangeBrokerReports;
 }
 
-const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFreezeReportsTableActionCellProps) => {
+const ChangeBrokerReportsTableActionCell = ({ onDeleteRow, data }: IChangeBrokerReportsTableActionCellProps) => {
 	const t = useTranslations();
 
 	const [confirmDelete, setConfirmDelete] = useState(false);
@@ -19,7 +19,7 @@ const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFr
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
 						<button
-							disabled={data.requestState !== 'InProgress'}
+							disabled={data.lastState !== 'Draft'}
 							type='button'
 							onClick={() => setConfirmDelete(true)}
 							className='text-gray-900 disabled:text-gray-700'
@@ -46,4 +46,4 @@ const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFr
 	);
 };
 
-export default FreezeUnFreezeReportsTableActionCell;
+export default ChangeBrokerReportsTableActionCell;

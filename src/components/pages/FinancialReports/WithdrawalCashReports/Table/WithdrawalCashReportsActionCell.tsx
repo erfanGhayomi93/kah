@@ -1,14 +1,15 @@
 import AnimatePresence from '@/components/common/animation/AnimatePresence';
-import { TrashSVG } from '@/components/icons';
+import { EditSVG, TrashSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-interface IFreezeUnFreezeReportsTableActionCellProps {
-	onDeleteRow: (data: Reports.IFreezeUnfreezeReports | undefined) => void;
-	data: Reports.IFreezeUnfreezeReports;
+interface IWithdrawalCashReportsActionCellProps {
+	onDeleteRow: (data: Reports.IWithdrawal | undefined) => void;
+	onEditRow: (data: Reports.IWithdrawal | undefined) => void;
+	data: Reports.IWithdrawal;
 }
 
-const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFreezeReportsTableActionCellProps) => {
+const WithdrawalCashReportsActionCell = ({ onDeleteRow, onEditRow, data }: IWithdrawalCashReportsActionCellProps) => {
 	const t = useTranslations();
 
 	const [confirmDelete, setConfirmDelete] = useState(false);
@@ -19,12 +20,20 @@ const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFr
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
 						<button
-							disabled={data.requestState !== 'InProgress'}
+							className='text-gray-900 disabled:text-gray-700'
+							disabled={data.state !== 'Registeration'}
+							type='button'
+							onClick={() => onEditRow(data)}
+						>
+							<EditSVG width='2rem' height='2rem' />
+						</button>
+						<button
+							disabled={data.state !== 'Registeration'}
+							className='text-gray-900 disabled:text-gray-700'
 							type='button'
 							onClick={() => setConfirmDelete(true)}
-							className='text-gray-900 disabled:text-gray-700'
 						>
-							<TrashSVG width='2rem' height='2rem' />
+							<TrashSVG className='text-gray-900' width='2rem' height='2rem' />
 						</button>
 					</>
 				</AnimatePresence>
@@ -46,4 +55,4 @@ const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFr
 	);
 };
 
-export default FreezeUnFreezeReportsTableActionCell;
+export default WithdrawalCashReportsActionCell;

@@ -115,11 +115,9 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				}
 
 				if (baseSymbol) {
-					const baseSymbolId = uuidv4();
-
 					result.push({
 						type: 'base',
-						id: baseSymbolId,
+						id: uuidv4(),
 						marketUnit: baseSymbol.marketUnit,
 						quantity: 1,
 						price: baseSymbol.lastTradedPrice,
