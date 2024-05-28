@@ -156,7 +156,7 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 							key={i}
 						>
 							{columnDefs.map((col) => (
-								<RowCell column={col} row={row} rowIndex={i} />
+								<RowCell key={col.colId} column={col} row={row} rowIndex={i} />
 							))}
 						</tr>
 					))}

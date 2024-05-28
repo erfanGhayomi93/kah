@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { HintSVG, InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setOrderDetailsModal } from '@/features/slices/modalSlice';
