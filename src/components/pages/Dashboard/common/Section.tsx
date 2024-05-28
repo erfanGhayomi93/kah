@@ -2,7 +2,8 @@ import ipcMain from '@/classes/IpcMain';
 import NoData from '@/components/common/NoData';
 import RenderOnViewportEntry from '@/components/common/RenderOnViewportEntry ';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
-import { ExpandSVG, XCircleSVG } from '@/components/icons';
+import Tooltip from '@/components/common/Tooltip';
+import { ExpandSVG, InfoCircleSVG, XCircleSVG } from '@/components/icons';
 import clsx from 'clsx';
 
 export interface ITab<T> {
@@ -14,6 +15,7 @@ interface SectionProps<T, B> {
 	id: TDashboardSections;
 	title: string;
 	expandable?: boolean;
+	info?: string;
 	defaultTopActiveTab?: T;
 	defaultBottomActiveTab?: B;
 	children?: React.ReactNode;
@@ -34,6 +36,7 @@ const Section = <T extends string = string, B extends string = string>({
 	defaultTopActiveTab,
 	defaultBottomActiveTab,
 	expandable,
+	info,
 	onExpand,
 	onTopTabChange,
 	onBottomTabChange,
@@ -63,6 +66,14 @@ const Section = <T extends string = string, B extends string = string>({
 							>
 								<ExpandSVG width='1.4rem' height='1.4rem' />
 							</button>
+						)}
+
+						{info && (
+							<Tooltip className='text-tiny font-medium' content={info ?? ''}>
+								<div className='size-18 rounded-circle  text-gray-700 transition-colors flex-justify-center hover:text-info'>
+									<InfoCircleSVG width='1.8rem' height='1.8rem' />
+								</div>
+							</Tooltip>
 						)}
 					</div>
 

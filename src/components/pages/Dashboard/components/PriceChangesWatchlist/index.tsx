@@ -8,7 +8,11 @@ const PriceChangesWatchlist = () => {
 	const t = useTranslations();
 
 	return (
-		<Section id='price_changes_watchlist' title={t('home.price_changes_watchlist')}>
+		<Section
+			id='price_changes_watchlist'
+			title={t('home.price_changes_watchlist')}
+			info={t('tooltip.price_change_watchlist_section')}
+		>
 			<PriceChangesWatchlistChart />
 		</Section>
 	);
