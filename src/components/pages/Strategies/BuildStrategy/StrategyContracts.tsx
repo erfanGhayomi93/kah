@@ -167,12 +167,14 @@ const StrategyContracts = () => {
 						onSideChange={(id, value) => setContractProperties(id, { side: value })}
 						onDelete={deleteContract}
 						showDetails={false}
-						withTradeCommission
-						withStrikeCommission
-						withContractSize
-						withRequiredMargin
-						withDefault
-						withTax
+						features={{
+							withTradeCommission: true,
+							withStrikeCommission: true,
+							withContractSize: true,
+							withRequiredMargin: true,
+							withDefault: true,
+							withTax: true,
+						}}
 					/>
 				</div>
 			</div>

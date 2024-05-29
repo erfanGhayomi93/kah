@@ -25,23 +25,25 @@ interface OptionRendererProps extends ICheckboxProps {
 }
 
 interface ISharedProps {
-	withRequiredMargin?: boolean;
-	withTradeCommission?: boolean;
-	withStrikeCommission?: boolean;
-	withTax?: boolean;
-	withDefault?: boolean;
-	withContractSize?: boolean;
+	features?: {
+		withRequiredMargin: boolean;
+		withTradeCommission: boolean;
+		withStrikeCommission: boolean;
+		withTax: boolean;
+		withDefault: boolean;
+		withContractSize: boolean;
+	};
 	showDetails?: boolean;
 	onSideChange: (id: string, side: TBsSides) => void;
 	onDelete: (id: string) => void;
 }
 
-type SymbolStrategyProps = ISharedProps &
-	TSymbolStrategy & {
-		checked: boolean;
-		onChange: (v: IInput) => void;
-		onSelect: (checked: boolean) => void;
-	};
+type SymbolStrategyProps = ISharedProps & {
+	contract: TSymbolStrategy;
+	checked: boolean;
+	onChange: (v: IInput) => void;
+	onSelect: (checked: boolean) => void;
+};
 
 interface SymbolStrategyTableProps extends ISharedProps {
 	contracts: TSymbolStrategy[];
@@ -56,12 +58,7 @@ const SymbolStrategyTable = ({
 	selectedContracts,
 	contracts,
 	showDetails = true,
-	withRequiredMargin = false,
-	withTradeCommission = false,
-	withStrikeCommission = false,
-	withTax = false,
-	withDefault = false,
-	withContractSize = false,
+	features,
 	onChange,
 	onSideChange,
 	onDelete,
@@ -118,7 +115,7 @@ const SymbolStrategyTable = ({
 
 					<div className={`${styles.th} w-88`}>{t('strike_price')}</div>
 
-					{withContractSize && <div className={`${styles.th} w-88`}>{t('contract_size')}</div>}
+					{features?.withContractSize && <div className={`${styles.th} w-88`}>{t('contract_size')}</div>}
 
 					<div className={`${styles.th} w-88`}>
 						<div className={styles.flex}>
@@ -133,7 +130,7 @@ const SymbolStrategyTable = ({
 
 					<div className={`${styles.th} w-88`}>{t('quantity')}</div>
 
-					{withRequiredMargin && (
+					{features?.withRequiredMargin && (
 						<div className={`${styles.th} w-88 pr-8`}>
 							<Checkbox
 								checked={false}
@@ -144,7 +141,7 @@ const SymbolStrategyTable = ({
 						</div>
 					)}
 
-					{withTradeCommission && (
+					{features?.withTradeCommission && (
 						<div className={`${styles.th} w-88 pr-8`}>
 							<Checkbox
 								checked={false}
@@ -155,7 +152,7 @@ const SymbolStrategyTable = ({
 						</div>
 					)}
 
-					{withStrikeCommission && (
+					{features?.withStrikeCommission && (
 						<div className={`${styles.th} w-88 pr-8`}>
 							<Checkbox
 								checked={false}
@@ -166,7 +163,7 @@ const SymbolStrategyTable = ({
 						</div>
 					)}
 
-					{withTax && (
+					{features?.withTax && (
 						<div className={`${styles.th} w-88 pr-8`}>
 							<Checkbox
 								checked={false}
@@ -177,7 +174,7 @@ const SymbolStrategyTable = ({
 						</div>
 					)}
 
-					{withDefault && (
+					{features?.withDefault && (
 						<div className={`${styles.th} w-88 pr-8`}>
 							<Checkbox
 								checked={false}
@@ -193,21 +190,16 @@ const SymbolStrategyTable = ({
 			</div>
 
 			<div className={styles.tbody}>
-				{contracts.map((item) => (
+				{contracts.map((c) => (
 					<SymbolStrategy
-						key={item.id}
-						{...item}
-						checked={isContractSelected(item.id)}
-						onChange={(v) => onChange(item.id, v)}
+						key={c.id}
+						contract={c}
+						checked={isContractSelected(c.id)}
+						onChange={(v) => onChange(c.id, v)}
 						onSideChange={onSideChange}
 						onDelete={onDelete}
-						onSelect={(v) => onSelect(item, v)}
-						withRequiredMargin={withRequiredMargin}
-						withTradeCommission={withTradeCommission}
-						withStrikeCommission={withStrikeCommission}
-						withTax={withTax}
-						withDefault={withDefault}
-						withContractSize={withContractSize}
+						onSelect={(v) => onSelect(c, v)}
+						features={features}
 						showDetails={showDetails}
 					/>
 				))}
@@ -217,26 +209,8 @@ const SymbolStrategyTable = ({
 };
 
 const SymbolStrategy = ({
-	id,
-	type,
-	quantity,
-	price,
-	side,
-	symbol,
-	withRequiredMargin,
-	withTradeCommission,
-	withStrikeCommission,
-	withTax,
-	withDefault,
-	withContractSize,
-	requiredMargin,
-	contractSize,
-	vDefault,
-	strikeCommission,
-	tax,
-	settlementDay,
-	strikePrice,
-	tradeCommission,
+	contract,
+	features,
 	checked,
 	showDetails,
 	onSelect,
@@ -244,6 +218,23 @@ const SymbolStrategy = ({
 	onSideChange,
 	onDelete,
 }: SymbolStrategyProps) => {
+	const {
+		id,
+		type,
+		side,
+		symbol,
+		tradeCommission,
+		contractSize,
+		settlementDay,
+		strikePrice,
+		requiredMargin,
+		strikeCommission,
+		tax,
+		vDefault,
+		price,
+		quantity,
+	} = contract;
+
 	const t = useTranslations('symbol_strategy');
 
 	const dispatch = useAppDispatch();
@@ -360,7 +351,7 @@ const SymbolStrategy = ({
 				</div>
 			</div>
 
-			{withContractSize && (
+			{features?.withContractSize && (
 				<div className={styles.td}>
 					<span className='text-gray-1000'>{contractSize ?? 0}</span>
 				</div>
@@ -392,7 +383,7 @@ const SymbolStrategy = ({
 				/>
 			</div>
 
-			{withRequiredMargin && (
+			{features?.withRequiredMargin && (
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
@@ -404,7 +395,7 @@ const SymbolStrategy = ({
 				</div>
 			)}
 
-			{withTradeCommission && (
+			{features?.withTradeCommission && (
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
@@ -416,7 +407,7 @@ const SymbolStrategy = ({
 				</div>
 			)}
 
-			{withStrikeCommission && (
+			{features?.withStrikeCommission && (
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
@@ -428,7 +419,7 @@ const SymbolStrategy = ({
 				</div>
 			)}
 
-			{withTax && (
+			{features?.withTax && (
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
@@ -440,7 +431,7 @@ const SymbolStrategy = ({
 				</div>
 			)}
 
-			{withDefault && (
+			{features?.withDefault && (
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
