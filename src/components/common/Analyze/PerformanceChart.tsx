@@ -26,9 +26,8 @@ interface IChartOptions {
 	offset: [number, number];
 }
 
-interface PerformanceChartProps {
+interface PerformanceChartProps extends IAnalyzeInputs {
 	data: Array<Record<'x' | 'y', number>>;
-	inputs: IAnalyzeInputs;
 	onChange: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
@@ -37,7 +36,7 @@ const COLORS = {
 	RED: 'rgb(255, 82, 109)',
 };
 
-const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => {
+const PerformanceChart = ({ data, baseAssets, maxPrice, minPrice, onChange }: PerformanceChartProps) => {
 	const t = useTranslations('analyze_modal');
 
 	const [chartOptions, setChartOptions] = useState<IChartOptions>({
@@ -94,8 +93,6 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 	};
 
 	useEffect(() => {
-		const { baseAssets, maxPrice, minPrice } = inputs;
-
 		if (maxPrice - minPrice <= 0) return;
 
 		const options: IChartOptions = {
@@ -182,7 +179,7 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 		}
 
 		setChartOptions(options);
-	}, [data, inputs]);
+	}, [data, JSON.stringify({ maxPrice, minPrice, baseAssets })]);
 
 	const { series, annotations, colors } = chartOptions;
 
@@ -199,7 +196,7 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 							const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
 
 							const li1 = `<li><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(data.x ?? 0))}</span></li>`;
-							const li2 = `<li><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - inputs.baseAssets)))}</span></li>`;
+							const li2 = `<li><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - baseAssets)))}</span></li>`;
 							const li3 = `<li><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
 							const li4 = `<li><span>${t('ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
 
@@ -207,8 +204,8 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 						},
 					},
 					xaxis: {
-						min: inputs.minPrice,
-						max: inputs.maxPrice,
+						min: minPrice,
+						max: maxPrice,
 						offsetX: 0,
 						offsetY: 0,
 						tickAmount: 5,
@@ -250,9 +247,9 @@ const PerformanceChart = ({ data, inputs, onChange }: PerformanceChartProps) => 
 				height={304}
 			/>
 
-			<PriceRange maxPrice={inputs.maxPrice} minPrice={inputs.minPrice} onChange={onChange} />
+			<PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />
 
-			{chartOptions.series.length < 2 && (
+			{chartOptions.series[0].data.length < 2 && (
 				<div className='absolute size-full bg-white center'>
 					<NoData text={t('no_active_contract_found')} />
 				</div>

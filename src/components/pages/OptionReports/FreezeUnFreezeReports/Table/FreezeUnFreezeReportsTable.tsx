@@ -1,10 +1,10 @@
 import brokerAxios from '@/api/brokerAxios';
-import AgTable from '@/components/common/Tables/AgTable';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import dayjs from '@/libs/dayjs';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
-import { useQueryClient } from '@tanstack/react-query';
+import { useBrokerQueryClient } from '@/hooks';
+import { dateFormatter } from '@/utils/helpers';
+import { type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -18,18 +18,13 @@ interface FreezeUnFreezeReportsTableProps {
 const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFreezeReportsTableProps) => {
 	const t = useTranslations();
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const gridRef = useRef<GridApi<Reports.IFreezeUnfreezeReports>>(null);
 
 	const url = useAppSelector(getBrokerURLs);
 
-	const dateFormatter = (v: string | number) => {
-		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
-	};
-
-	const onDeleteRow = (data: Reports.IFreezeUnfreezeReports) =>
+	const onDeleteRow = (data: Reports.IFreezeUnfreezeReports | undefined) =>
 		new Promise<void>(async (resolve, reject) => {
 			if (!url || !data) return null;
 
@@ -59,73 +54,38 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 			}
 		});
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IFreezeUnfreezeReports>>>(
-		() =>
-			[
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.id_column'),
-					field: 'id',
-					pinned: 'right',
-					maxWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueGetter: ({ node }) => String((node?.childIndex ?? 0) + 1),
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.symbol_column'),
-					field: 'symbolTitle',
-					minWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => value ?? '',
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.date_column'),
-					field: 'confirmedOn',
-					minWidth: 112,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => dateFormatter(value ?? ''),
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.status_column'),
-					field: 'requestState',
-					minWidth: 128,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => (value ? t('freeze_and_unfreeze_reports_page.state_' + value) : ''),
-				},
-				{
-					headerName: t('freeze_and_unfreeze_reports_page.action_column'),
-					field: 'action',
-					maxWidth: 200,
-					minWidth: 200,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellRenderer: FreezeUnFreezeReportsTableActionCell,
-					cellRendererParams: {
-						onDeleteRow,
-					},
-				},
-			] as Array<ColDef<Reports.IFreezeUnfreezeReports>>,
-		[],
-	);
-
-	const defaultColDef: ColDef<Reports.IFreezeUnfreezeReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
+	const COLUMNS = useMemo<Array<IColDef<Reports.IFreezeUnfreezeReports>>>(
+		() => [
+			{
+				colId: 'id',
+				headerName: t('freeze_and_unfreeze_reports_page.id_column'),
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+			},
+			{
+				colId: 'symbolTitle',
+				headerName: t('freeze_and_unfreeze_reports_page.symbol_column'),
+				valueGetter: (row) => row.symbolTitle ?? '',
+			},
+			{
+				colId: 'confirmedOn',
+				headerName: t('freeze_and_unfreeze_reports_page.date_column'),
+				valueGetter: (row) => dateFormatter(row.confirmedOn ?? '', 'date'),
+			},
+			{
+				colId: 'requestState',
+				headerName: t('freeze_and_unfreeze_reports_page.status_column'),
+				valueGetter: (row) =>
+					row.requestState ? t('freeze_and_unfreeze_reports_page.state_' + row.requestState) : '',
+			},
+			{
+				colId: 'action',
+				headerName: t('freeze_and_unfreeze_reports_page.action_column'),
+				valueGetter: (row) => row.symbolISIN,
+				valueFormatter: ({ row }) => (
+					<FreezeUnFreezeReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />
+				),
+			},
+		],
 		[],
 	);
 
@@ -145,16 +105,7 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 
 	return (
 		<>
-			<AgTable<Reports.IFreezeUnfreezeReports>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };

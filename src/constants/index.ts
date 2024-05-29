@@ -612,7 +612,7 @@ export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSet
 	},
 	{
 		id: 'side',
-		title: 'موقعیت',
+		title: 'سمت',
 		hidden: false,
 	},
 	{
@@ -676,7 +676,7 @@ export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.
 		},
 		{
 			id: 'side',
-			title: 'موقعیت',
+			title: 'سمت',
 			hidden: false,
 		},
 		{

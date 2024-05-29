@@ -29,6 +29,7 @@ const OptionTradesValue = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_trades_value'
 			title={t('home.option_trades_value')}
+			info={t('tooltip.option_trade_value_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}

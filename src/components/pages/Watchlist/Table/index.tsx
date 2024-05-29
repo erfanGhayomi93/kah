@@ -12,7 +12,7 @@ import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import WatchlistTable from './WatchlistTable';
 
 interface TableProps {
@@ -102,7 +102,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 		setFilters(newFilters);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		ipcMain.handle('set_option_watchlist_filters', onFiltersChanged);
 
 		return () => {
@@ -122,7 +122,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			<div
 				className='overflow-hidden rounded border border-gray-500 flex-column'
 				style={{
-					height: 'calc(100dvh - 18.4rem)',
+					height: 'calc(100dvh - 19.2rem)',
 					transition: 'height 250ms ease',
 				}}
 			>

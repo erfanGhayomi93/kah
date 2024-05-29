@@ -50,7 +50,7 @@ const Footer = () => {
 		<div className='h-48 flex-column'>
 			<Orders />
 
-			<footer className='h-48 border-t border-gray-600 bg-white pl-24 flex-justify-between'>
+			<footer className='h-48 bg-white pl-24 flex-justify-between'>
 				<div className='h-full flex-justify-start'>
 					{isLoggedIn ? (
 						<button

@@ -4,6 +4,8 @@ import useInputs from './useInputs';
 
 interface IInput {
 	data: Array<Record<'x' | 'y', number>>;
+	maxPrice: number;
+	minPrice: number;
 }
 
 interface IConfiguration {
@@ -17,6 +19,8 @@ interface IConfiguration {
 const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 	const { inputs, setInputs } = useInputs<IInput>({
 		data: [],
+		maxPrice: config?.maxPrice ?? 0,
+		minPrice: config?.minPrice ?? 0,
 	});
 
 	const { data: commissionData } = useCommissionsQuery({
@@ -45,15 +49,13 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		newInputs.data = [];
 		if (data.length === 0) return;
 
-		if (!config?.minPrice) config.minPrice = Math.floor(config.baseAssets * 0.5);
-		if (!config?.maxPrice) config.maxPrice = Math.ceil(config.baseAssets * 1.5);
-
-		config.minPrice = Math.min(config.minPrice, config.maxPrice);
-		config.maxPrice = Math.max(config.minPrice, config.maxPrice);
+		newInputs.minPrice = config?.minPrice || Math.floor(config.baseAssets * 0.5);
+		newInputs.maxPrice = config?.maxPrice || Math.floor(config.baseAssets * 1.5);
 
 		try {
 			const l = data.length;
-			const { maxPrice, minPrice, baseAssets, useCommission } = config;
+			const { baseAssets, useCommission } = config;
+			const { maxPrice, minPrice } = newInputs;
 
 			for (let i = 0; i < l; i++) {
 				const item = data[i];

@@ -21,7 +21,7 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const fromNow = (v: string) => {
+	const fromNow = (v: string | number) => {
 		return dayjs(v).calendar('jalali').locale('fa').fromNow();
 	};
 
@@ -44,24 +44,34 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<TTableData>>>(
 		() => [
 			{
+				colId: 'symbolISIN',
 				headerName: t('home.symbol_title'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.symbolISIN),
-				valueFormatter: (row) => row.symbolTitle ?? '−',
+				valueGetter: (row) => row.symbolTitle ?? '−',
 			},
 			{
+				colId: 'contractEndDate',
 				headerName: t('home.strike_date'),
-				valueFormatter: (row) => dateFormatter(row.contractEndDate, 'date'),
+				valueGetter: (row) => new Date(row.contractEndDate).getTime(),
+				valueFormatter: ({ value }) => dateFormatter(Number(value), 'date'),
 			},
 			{
+				colId: 'workingDaysTradedCount',
 				headerName: t(
 					`home.${type === 'FirstTradedOptionSymbol' ? 'first_trade_date' : 'working_days_traded_count'}`,
 				),
-				valueFormatter: (row) =>
-					'firstTradeDate' in row ? fromNow(row.firstTradeDate) : row.workingDaysTradedCount,
+				valueGetter: (row) =>
+					'firstTradeDate' in row
+						? new Date(row.firstTradeDate).getTime()
+						: String(row.workingDaysTradedCount),
+				valueFormatter: ({ value }) => (typeof value === 'number' ? fromNow(value) : value),
 			},
 			{
+				colId: 'detail',
 				headerName: t('home.detail'),
+				sortable: false,
+				valueGetter: (row) => row.symbolISIN,
 				valueFormatter: () => (
 					<button type='button' className='mx-auto text-gray-900 flex-justify-center'>
 						<ChainSVG width='2.4rem' height='2.4rem' />
@@ -81,7 +91,7 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable rowData={data} columnDefs={columnDefs} />;
+	return <LightweightTable rowHeight={40} headerHeight={40} rowData={data} columnDefs={columnDefs} />;
 };
 
 export default NewAndOldTable;

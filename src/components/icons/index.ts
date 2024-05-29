@@ -1,7 +1,9 @@
 import AdvantagesSVG from './advantages.svg';
 import Agreement from './agreement.svg';
+import AngleDownSVG from './angle-down.svg';
 import AngleLeftCircleSVG from './angle-left-circle.svg';
 import AngleLeftSVG from './angle-left.svg';
+import AngleUpSVG from './angle-up.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import ArrowRightSVG from './arrow-right.svg';
@@ -50,6 +52,7 @@ import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import GuaranteeSVG from './guarantee.svg';
 import HandWriteSVG from './handWrite.svg';
+import HintSVG from './hint.svg';
 import HomeSVG from './home.svg';
 import IdentityCardSVG from './identity-card.svg';
 import InfoCircleOutlineSVG from './info-circle-outline.svg';
@@ -126,8 +129,10 @@ import XSVG from './x.svg';
 export {
 	AdvantagesSVG,
 	Agreement,
+	AngleDownSVG,
 	AngleLeftCircleSVG,
 	AngleLeftSVG,
+	AngleUpSVG,
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	ArrowRightSVG,
@@ -176,6 +181,7 @@ export {
 	GrowUpSVG,
 	GuaranteeSVG,
 	HandWriteSVG,
+	HintSVG,
 	HomeSVG,
 	IdentityCardSVG,
 	InfoCircleOutlineSVG,

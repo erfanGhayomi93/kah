@@ -329,7 +329,7 @@ export const useGetAnnualReportQuery = createQuery<
 		const response = await axios.get<ServerResponse<Dashboard.GetAnnualReport.Data[]>>(
 			routes.dashboard.GetAnnualReport,
 			{
-				params: { type },
+				params: { type, pageSize: 4 },
 				signal,
 			},
 		);

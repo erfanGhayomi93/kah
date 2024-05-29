@@ -6,9 +6,9 @@ interface MainProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Main = ({ children, className, ...props }: MainProps) => (
-	<div {...props} className={clsx(styles.root, className)}>
+	<main {...props} className={clsx(styles.root, className)}>
 		{children}
-	</div>
+	</main>
 );
 
 export default Main;

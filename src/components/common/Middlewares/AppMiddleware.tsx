@@ -6,9 +6,9 @@ import LocalstorageInstance from '@/classes/Localstorage';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
+import { useBrokerQueryClient } from '@/hooks';
 import { versionParser } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 interface AppMiddlewareProps {
@@ -23,7 +23,7 @@ const getStates = createSelector(
 );
 
 const AppMiddleware = ({ children }: AppMiddlewareProps) => {
-	const queryClient = useQueryClient();
+	const bQueryClient = useBrokerQueryClient();
 
 	const { isLoggedIn } = useAppSelector(getStates);
 
@@ -33,22 +33,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 	});
 
 	const resetQueryClient = () => {
-		const keys = [
-			['userInfoQuery'],
-			['userRemainQuery'],
-			['userStatusQuery'],
-			['brokerOrdersCountQuery'],
-			['openOrdersQuery'],
-			['openOrdersQuery'],
-			['executedOrdersQuery'],
-			['draftOrdersQuery'],
-			['optionOrdersQuery'],
-			['commissionsQuery'],
-		];
-
-		keys.forEach((queryKey) => {
-			queryClient.setQueryData(queryKey, null);
-		});
+		bQueryClient.clear();
 	};
 
 	useEffect(() => {

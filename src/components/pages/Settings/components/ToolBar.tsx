@@ -1,10 +1,9 @@
 'use client';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { Link } from '@/navigation';
+import { Link, usePathname } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 interface ITabItem {

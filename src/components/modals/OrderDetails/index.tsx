@@ -161,6 +161,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 				{
 					name: t('order_details_modal.type'),
 					value: t(`order_details_modal.${data.type}`),
+					className: data.type === 'call' ? 'text-success-100' : 'text-error-100',
 				},
 				{
 					name: t('order_details_modal.end_date'),

@@ -1,4 +1,5 @@
 import { logoutUser } from '@/api/axios';
+import { appQueryClient, brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
 import { getDateMilliseconds } from '@/constants';
 import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
@@ -154,11 +155,16 @@ export const base64decode = (value: string) => {
 	}
 };
 
+export const createBrokerQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
+	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
+) => {
+	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, brokerQueryClient);
+};
+
 export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
 	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
-	queryClient?: QueryClient,
 ) => {
-	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, queryClient);
+	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, appQueryClient);
 };
 
 export const createMutation = <TData = unknown, TVariables = void, TError = AxiosError, TContext = unknown>(
@@ -364,6 +370,7 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getDataProviderv1MarketMap: data.DataProviderv1MarketMap,
 		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
 		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
+		settlementdeleteCash: data.settlementdeleteCash,
 	};
 
 	return urls;
@@ -695,3 +702,10 @@ export const toggleArrayElement = <T>(array: T[], element: T): T[] => {
 
 export const toPascalCase = (str: string) =>
 	(str.match(/[a-zA-Z0-9]+/g) || []).map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`).join('');
+
+export const textToHtml = (htmlAsText: string) => {
+	const div = document.createElement('div');
+	div.innerHTML = htmlAsText;
+
+	return div.children;
+};
