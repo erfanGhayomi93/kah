@@ -1,5 +1,5 @@
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
-import { dateFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, sanitizeHTML, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -52,7 +52,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					) : (
 						<span
 							dangerouslySetInnerHTML={{
-								__html: row.description,
+								__html: sanitizeHTML(row.description ?? ''),
 							}}
 						/>
 					),

@@ -709,3 +709,22 @@ export const textToHtml = (htmlAsText: string) => {
 
 	return div.children;
 };
+
+export const sanitizeHTML = (html: string) => {
+	const doc = new DOMParser().parseFromString(html, 'text/html');
+
+	const scriptsAndStyles = doc.querySelectorAll('script, style');
+	scriptsAndStyles.forEach((node) => node?.parentNode?.removeChild(node));
+
+	const elements = doc.body.getElementsByTagName('*');
+	for (let i = 0; i < elements.length; i++) {
+		const attributes = elements[i].attributes;
+		for (let j = attributes.length - 1; j >= 0; j--) {
+			if (attributes[j].name.startsWith('on')) {
+				elements[i].removeAttribute(attributes[j].name);
+			}
+		}
+	}
+
+	return doc.body.innerHTML;
+};

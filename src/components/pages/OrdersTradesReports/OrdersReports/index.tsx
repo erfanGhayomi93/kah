@@ -1,5 +1,6 @@
 'use client';
 
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultOrdersReportsColumns, initialOrdersReportsFilters } from '@/constants';
@@ -43,7 +44,10 @@ const OrdersReports = () => {
 	const { inputs, setFieldValue, setFieldsValue } =
 		useInputs<OrdersReports.IOrdersReportsFilters>(initialOrdersReportsFilters);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('orders_reports_column', defaultOrdersReportsColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'orders_reports_column',
+		defaultOrdersReportsColumns,
+	);
 
 	const { setDebounce } = useDebounce();
 
@@ -86,16 +90,17 @@ const OrdersReports = () => {
 			params.append('DateOption.ToDate', toISOStringWithoutChangeTime(toDate));
 			if (inputs.symbol) params.append('SymbolISIN', inputs.symbol.symbolISIN);
 			if (inputs.side !== 'All') params.append('OrderSide', inputs.side);
-			if (inputs.status.length > 0) inputs.status.forEach((st) => {
-				params.append('OMSOrderState', st.id);
-			});
+			if (inputs.status.length > 0)
+				inputs.status.forEach((st) => {
+					params.append('OMSOrderState', st.id);
+				});
 
 			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
 				urls.getOrderExportOrders,
 				`orders-history-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
-				params
+				params,
 			);
 		} catch (e) {
 			//
@@ -115,9 +120,9 @@ const OrdersReports = () => {
 	};
 
 	useEffect(() => {
-		if (!isLoggedIn || !brokerIsSelected) {
+		ipcMain.handle('broker:logged_out', () => {
 			router.push('/');
-		}
+		});
 	}, []);
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
