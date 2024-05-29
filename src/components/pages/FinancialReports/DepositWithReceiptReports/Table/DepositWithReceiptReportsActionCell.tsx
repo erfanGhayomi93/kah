@@ -24,7 +24,7 @@ const DepositWithReceiptReportsActionCell = ({
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<Tooltip content={t('common.edit')}>
+						<Tooltip content={t('tooltip.edit')}>
 							<button
 								disabled={data.state !== 'Registeration'}
 								type='button'
@@ -34,7 +34,7 @@ const DepositWithReceiptReportsActionCell = ({
 								<EditSVG width='2rem' height='2rem' />
 							</button>
 						</Tooltip>
-						<Tooltip content={t('common.delete')}>
+						<Tooltip content={t('tooltip.remove')}>
 							<button
 								disabled={data.state !== 'Registeration'}
 								type='button'

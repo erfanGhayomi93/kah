@@ -19,7 +19,7 @@ const ChangeBrokerReportsTableActionCell = ({ onDeleteRow, data }: IChangeBroker
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<Tooltip content={t('common.delete')}>
+						<Tooltip content={t('tooltip.remove')}>
 							<button
 								disabled={data.lastState !== 'Draft'}
 								type='button'
