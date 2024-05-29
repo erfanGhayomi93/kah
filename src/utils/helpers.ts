@@ -569,6 +569,7 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 		marketUnit: symbolInfo.marketUnit ?? '',
 		requiredMargin: {
 			value: symbol.optionWatchlistData.requiredMargin,
+			checked: true,
 		},
 	};
 };
