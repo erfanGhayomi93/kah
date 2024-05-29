@@ -7,7 +7,7 @@ const Page = () => {
 
 const generateMetadata = () => {
 	return getMetadata({
-		title: 'نتیجه پرداخت',
+		title: 'نتیجه تراکنش',
 		robots: {
 			follow: false,
 			index: false,
