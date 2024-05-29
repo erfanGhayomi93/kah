@@ -702,3 +702,10 @@ export const toggleArrayElement = <T>(array: T[], element: T): T[] => {
 
 export const toPascalCase = (str: string) =>
 	(str.match(/[a-zA-Z0-9]+/g) || []).map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`).join('');
+
+export const textToHtml = (htmlAsText: string) => {
+	const div = document.createElement('div');
+	div.innerHTML = htmlAsText;
+
+	return div.children;
+};
