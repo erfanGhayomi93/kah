@@ -255,8 +255,11 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
+declare type TManageColumnTag = 'PanelDetail' | 'Computational';
+
 declare interface IManageColumn<T extends string> {
 	id: T;
+	tag?: TManageColumnTag;
 	title: string;
 	hidden: boolean;
 }
