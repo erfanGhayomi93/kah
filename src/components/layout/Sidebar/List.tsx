@@ -114,6 +114,7 @@ const List = ({ isExpand }: ListProps) => {
 							id: 'market_map',
 							label: t('sidebar.market_map'),
 							to: '/market-map',
+							isBroker: true,
 						},
 					],
 				},
@@ -126,7 +127,7 @@ const List = ({ isExpand }: ListProps) => {
 				{
 					id: 'technical',
 					label: t('sidebar.technical'),
-					to: '/a',
+					to: '/technical',
 					icon: <DataAnalyticsSVG />,
 				},
 				{

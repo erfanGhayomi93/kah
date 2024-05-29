@@ -1,4 +1,5 @@
 import OptionChain from '@/components/pages/OptionChain';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,9 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'زنجیره قرارداد - کهکشان',
-	};
+	return getMetadata({
+		title: 'زنجیره قرارداد',
+	});
 };
 
 export { generateMetadata };

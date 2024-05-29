@@ -1,4 +1,5 @@
 import Agreements from '@/components/pages/Settings/tabs/Agreements';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'توافق‌نامه‌ها - کهکشان',
-	};
+	return getMetadata({
+		title: 'توافق‌نامه‌ها',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

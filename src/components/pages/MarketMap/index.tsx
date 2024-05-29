@@ -1,12 +1,31 @@
 'use client';
 
+import ipcMain from '@/classes/IpcMain';
+import Loading from '@/components/common/Loading';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
+import { useRouter } from '@/navigation';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Map from './Map';
 import MarketMapFilters from './MarketMapFilters';
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		brokerIsSelected: getBrokerIsSelected(state),
+	}),
+);
+
 const MarketMap = () => {
 	const t = useTranslations();
+
+	const router = useRouter();
+
+	const { brokerIsSelected, isLoggedIn } = useAppSelector(getStates);
 
 	const [filters, setFilters] = useState<TMarketMapFilters>({
 		map: { id: 'all', label: t('market_map.map_type_all') },
@@ -34,8 +53,16 @@ const MarketMap = () => {
 		});
 	};
 
+	useEffect(() => {
+		ipcMain.handle('broker:logged_out', () => {
+			router.push('/');
+		});
+	}, []);
+
+	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
+
 	return (
-		<div className='flex h-full flex-col'>
+		<div className='flex h-full flex-col rounded bg-white'>
 			<MarketMapFilters filters={filters} setFilters={setFilters} onReset={onReset} />
 
 			<div className='flex  flex-1 overflow-hidden p-8 pt-0'>

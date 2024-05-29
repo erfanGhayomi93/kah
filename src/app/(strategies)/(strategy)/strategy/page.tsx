@@ -1,6 +1,7 @@
 import Strategies from '@/components/pages/Strategies/List';
 import StrategiesToolbar from '@/components/pages/Strategies/List/Toolbar';
 import StrategyLayout from '@/components/pages/Strategies/StrategyLayout';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -14,9 +15,9 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'استراتژی‌ها - کهکشان',
-	};
+	return getMetadata({
+		title: 'استراتژی‌ها',
+	});
 };
 
 export { generateMetadata };
