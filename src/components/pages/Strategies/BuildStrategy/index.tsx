@@ -8,7 +8,7 @@ import { getBuiltStrategy, setBuiltStrategy } from '@/features/slices/uiSlice';
 import { convertSymbolWatchlistToSymbolBasket, uuidv4 } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const StrategyContracts = dynamic(() => import('./StrategyContracts'));
 
@@ -31,7 +31,25 @@ const BuildStrategy = () => {
 
 		try {
 			for (let i = 0; i < l; i++) {
-				const contract = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
+				const contract: IOptionStrategy = {
+					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
+					tradeCommission: {
+						checked: true,
+						value: 0,
+					},
+					strikeCommission: {
+						checked: true,
+						value: 0,
+					},
+					tax: {
+						checked: true,
+						value: 0,
+					},
+					vDefault: {
+						checked: true,
+						value: 0,
+					},
+				};
 
 				result.push(contract);
 				selectedResult.push(contract.id);
@@ -74,6 +92,18 @@ const BuildStrategy = () => {
 		);
 	};
 
+	const selectedContractsSymbol = useMemo(() => {
+		const result: OrderBasket.Order[] = [];
+
+		for (let i = 0; i < selectedContracts.length; i++) {
+			const orderId = selectedContracts[i];
+			const order = builtStrategyContracts.find((order) => order.id === orderId);
+			if (order) result.push(order);
+		}
+
+		return result;
+	}, [selectedContracts, builtStrategyContracts]);
+
 	return (
 		<div className='relative flex-1 gap-16 overflow-auto rounded bg-white p-24 flex-column'>
 			{builtStrategyContracts.length === 0 ? (
@@ -97,9 +127,9 @@ const BuildStrategy = () => {
 				</ErrorBoundary>
 			)}
 
-			{builtStrategyContracts.length > 0 && (
+			{selectedContractsSymbol.length > 0 && (
 				<ErrorBoundary>
-					<StrategyDetails contracts={builtStrategyContracts} />
+					<StrategyDetails contracts={selectedContractsSymbol} />
 				</ErrorBoundary>
 			)}
 		</div>
