@@ -27,7 +27,7 @@
 	width: 1.6rem;
 	height: 1.6rem;
 	border: 1px solid theme("colors.input");
-	border-radius: 4px;
+	border-radius: 5px;
 	background-color: transparent;
 
 	&.checked {
@@ -41,6 +41,11 @@
 
 	&.disabled {
 		cursor: default;
-		border-color: theme("colors.gray.400");
+		border-color: theme("colors.gray.1100");
+		opacity: 0.6;
+
+		&.checked {
+			background-color: theme("colors.gray.1100");
+		}
 	}
 }
