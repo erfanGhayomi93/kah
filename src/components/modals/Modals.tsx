@@ -98,6 +98,8 @@ const TransactionsFiltersModal = lazy(() => import('./TransactionsFiltersModal')
 
 const WithdrawalCashReportsFiltersModal = lazy(() => import('./WithdrawalCashReportsFiltersModal'));
 
+const ManageColumnsModal = lazy(() => import('./ManageColumnsModal'));
+
 const Modals = () => {
 	const dispatch = useAppDispatch();
 
@@ -140,6 +142,7 @@ const Modals = () => {
 		createStrategy,
 		tradesReportsFilters,
 		coveredCallFilters,
+		manageColumns,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -474,6 +477,14 @@ const Modals = () => {
 				{coveredCallFilters && (
 					<ModalSuspense>
 						<CoveredCallFilters {...coveredCallFilters} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{manageColumns && (
+					<ModalSuspense>
+						<ManageColumnsModal {...manageColumns} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

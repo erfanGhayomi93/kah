@@ -7,14 +7,14 @@ import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { toast } from 'react-toastify';
-import ChangeBrokerReportsTableActionCell from './ChangeBrokerReportsActionCell';
+import ChangeBrokerReportsTableActionCell from './ChangeBrokerReportsTableActionCell';
 
-interface ChangeBrokerTableProps {
+interface IChangeBrokerReportsTableProps {
 	reports: Reports.IChangeBrokerReports[] | null;
 	columnsVisibility: ChangeBrokerReports.IChangeBrokerReportsColumnsState[];
 }
 
-const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProps) => {
+const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerReportsTableProps) => {
 	const t = useTranslations();
 
 	const queryClient = useBrokerQueryClient();
@@ -91,4 +91,4 @@ const ChangeBrokerTable = ({ reports, columnsVisibility }: ChangeBrokerTableProp
 	);
 };
 
-export default ChangeBrokerTable;
+export default ChangeBrokerReportsTable;

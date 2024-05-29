@@ -4,7 +4,7 @@ import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
 import { useLayoutEffect, useMemo } from 'react';
-import ChangeBrokerTable from './ChangeBrokerTable';
+import ChangeBrokerReportsTable from './ChangeBrokerReportsTable';
 
 interface TableProps {
 	filters: ChangeBrokerReports.IChangeBrokerReportsFilters;
@@ -17,13 +17,13 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: TableProps) => {
-
 	const { data: changeBrokerReportsData, isLoading } = useChangeBrokerReportsQuery({
 		queryKey: ['changeBrokerReports', filters],
 	});
 
-
-	const onFiltersChanged = (newFilters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>) => {
+	const onFiltersChanged = (
+		newFilters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>,
+	) => {
 		setFieldsValue(newFilters);
 	};
 
@@ -41,8 +41,6 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 		return changeBrokerReportsData?.result;
 	}, [changeBrokerReportsData?.result]);
 
-
-
 	const dataIsEmpty = changeBrokerReportsData?.result.length === 0;
 
 	return (
@@ -54,10 +52,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 					transition: 'height 250ms ease',
 				}}
 			>
-				<ChangeBrokerTable
-					columnsVisibility={columnsVisibility}
-					reports={reports}
-				/>
+				<ChangeBrokerReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
 			<div className='py-22 flex-justify-end'>

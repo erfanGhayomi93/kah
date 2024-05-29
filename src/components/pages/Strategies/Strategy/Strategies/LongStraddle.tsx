@@ -3,8 +3,8 @@ import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRen
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import { initialColumnsLongStraddle, initialHiddenColumnsLongStraddle } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setAnalyzeModal, setDescriptionModal, setManageColumnsModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
@@ -133,13 +133,13 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		}));
 	};
 
-	const showColumnsPanel = () => {
+	const showColumnsManagementModal = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: initialColumnsLongStraddle,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsLongStraddle),
 			}),
 		);
@@ -464,7 +464,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					onManageColumns={showColumnsPanel}
+					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}

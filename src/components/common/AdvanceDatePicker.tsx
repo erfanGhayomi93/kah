@@ -1,11 +1,4 @@
-import {
-	ArrowLeftSVG,
-	ArrowRightSVG,
-	CalendarSVG,
-	DoubleArrowLeftSVG,
-	DoubleArrowRightSVG,
-	XSVG,
-} from '@/components/icons';
+import { ArrowRightSVG, CalendarSVG, DoubleArrowLeftSVG, DoubleArrowRightSVG, XSVG } from '@/components/icons';
 import { getDateMilliseconds, weekDaysName, yearMonthsName } from '@/constants';
 import dayjs from '@/libs/dayjs';
 import { cn, isAfter, isBefore, isBetween, isSameOrAfter, isSameOrBefore } from '@/utils/helpers';
@@ -291,9 +284,9 @@ const AdvancedDatepicker = ({
 			)}
 		>
 			<div className={clsx(styles.container, classes?.container, 'relative input-group')}>
-				<span className={cn('flexible-placeholder active')}>{fixedPlaceholder}</span>
+				<span className={cn(' flexible-placeholder active')}>{fixedPlaceholder}</span>
 
-				<fieldset className={cn('flexible-fieldset active')}>
+				<fieldset className={cn('flexible-fieldset  active')}>
 					<legend>{fixedPlaceholder}</legend>
 				</fieldset>
 
@@ -517,7 +510,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 							type='button'
 							data-testid={`${dataTestId}_prev_year`}
 						>
-							<DoubleArrowLeftSVG width='1.6rem' height='1.6rem' />
+							<DoubleArrowRightSVG width='1.6rem' height='1.6rem' />
 						</button>
 
 						<button
@@ -555,8 +548,9 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 							onClick={() => onEditDate('add', 'month')}
 							type='button'
 							data-testid={`${dataTestId}_next_month`}
+							className='rotate-180'
 						>
-							<ArrowLeftSVG width='1.6rem' height='1.6rem' />
+							<ArrowRightSVG width='1.6rem' height='1.6rem' />
 						</button>
 
 						<button
@@ -565,7 +559,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 							type='button'
 							data-testid={`${dataTestId}_next_year`}
 						>
-							<DoubleArrowRightSVG width='1.6rem' height='1.6rem' />
+							<DoubleArrowLeftSVG width='1.6rem' height='1.6rem' />
 						</button>
 					</div>
 				</div>

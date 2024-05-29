@@ -9,8 +9,9 @@ import {
 	setCoveredCallFiltersModal,
 	setCreateStrategyModal,
 	setDescriptionModal,
+	setManageColumnsModal,
 } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
@@ -176,13 +177,13 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		}
 	};
 
-	const showColumnsPanel = () => {
+	const showColumnsManagementModal = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: initialColumnsCoveredCall,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsCoveredCall),
 			}),
 		);
@@ -511,7 +512,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					title={title}
 					filtersCount={Object.keys(filters).length}
 					useCommission={useCommission}
-					onManageColumns={showColumnsPanel}
+					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
