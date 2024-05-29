@@ -818,7 +818,7 @@
 		"number_transaction": "شماره تراکنش",
 		"tracking_code": "کد رهگیری",
 		"type_payment": "شیوه پرداخت",
-		"return_rivas": "بازگشت به کهکشان",
+		"return_to_app": "بازگشت به کهکشان",
 		"payment_again": "پرداخت مجدد",
 		"gateway_bank": "درگاه بانک"
 	},
