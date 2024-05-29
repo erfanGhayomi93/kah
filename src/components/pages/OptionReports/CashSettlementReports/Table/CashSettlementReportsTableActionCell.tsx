@@ -28,7 +28,7 @@ const CashSettlementReportsTableActionCell = ({
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<Tooltip content={t('common.request')}>
+						<Tooltip content={t('tooltip.request')}>
 							<button
 								disabled={isDisabled || cashSettlementStatus !== 'Draft' || !data?.openPositionCount}
 								type='button'
@@ -38,7 +38,7 @@ const CashSettlementReportsTableActionCell = ({
 								<HandWriteSVG width='2rem' height='2rem' />
 							</button>
 						</Tooltip>
-						<Tooltip content={t('common.delete')}>
+						<Tooltip content={t('tooltip.remove')}>
 							<button
 								disabled={
 									isDisabled ||

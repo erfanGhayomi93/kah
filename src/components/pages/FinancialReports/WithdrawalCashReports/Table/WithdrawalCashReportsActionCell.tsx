@@ -20,7 +20,7 @@ const WithdrawalCashReportsActionCell = ({ onDeleteRow, onEditRow, data }: IWith
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<Tooltip content={t('common.edit')}>
+						<Tooltip content={t('tooltip.edit')}>
 							<button
 								className='text-gray-900 disabled:text-gray-700'
 								disabled={data.state !== 'Registeration'}
@@ -30,7 +30,7 @@ const WithdrawalCashReportsActionCell = ({ onDeleteRow, onEditRow, data }: IWith
 								<EditSVG width='2rem' height='2rem' />
 							</button>
 						</Tooltip>
-						<Tooltip content={t('common.delete')}>
+						<Tooltip content={t('tooltip.remove')}>
 							<button
 								disabled={data.state !== 'Registeration'}
 								className='text-gray-900 disabled:text-gray-700'
