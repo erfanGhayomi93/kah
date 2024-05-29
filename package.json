@@ -1,6 +1,7 @@
 {
 	"name": "kahkeshan",
 	"private": true,
+	"sideEffects": false,
 	"scripts": {
 		"preinstall": "npx only-allow npm",
 		"start": "env-cmd -f ./environments/.env.development next dev -p 3002",
