@@ -1,4 +1,5 @@
 import WithdrawalCashReports from '@/components/pages/FinancialReports/WithdrawalCashReports';
+import { getMetadata } from '@/metadata';
 import { type NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'گزارشات برداشت وجه - کهکشان',
-	};
+	return getMetadata({
+		title: 'گزارشات برداشت وجه',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

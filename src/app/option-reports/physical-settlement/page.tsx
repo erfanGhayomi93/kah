@@ -1,4 +1,5 @@
 import PhysicalSettlementReports from '@/components/pages/OptionReports/PhysicalSettlementReports';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'گزارشات تسویه فیزیکی - کهکشان',
-	};
+	return getMetadata({
+		title: 'گزارشات تسویه فیزیکی',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

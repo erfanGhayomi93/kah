@@ -1,4 +1,5 @@
 import Transactions from '@/components/pages/FinancialReports/Transactions';
+import { getMetadata } from '@/metadata';
 import { type NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: ' گردش حساب - کهکشان',
-	};
+	return getMetadata({
+		title: 'گردش حساب',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

@@ -105,7 +105,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 					<Header
 						label={t('manage_option_watchlist_columns.title')}
 						onClose={onClose}
-						CustomeNode={
+						CustomHeader={
 							<button className='icon-hover' onClick={onResetColumns}>
 								<RefreshSVG />
 							</button>

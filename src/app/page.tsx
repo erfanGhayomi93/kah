@@ -1,4 +1,5 @@
 import Dashboard from '@/components/pages/Dashboard';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = async () => {
@@ -6,9 +7,9 @@ const Page: NextPage<INextProps> = async () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'داشبورد - کهکشان',
-	};
+	return getMetadata({
+		title: 'داشبورد',
+	});
 };
 
 export { generateMetadata };

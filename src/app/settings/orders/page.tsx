@@ -1,4 +1,5 @@
 import Orders from '@/components/pages/Settings/tabs/Orders';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'سفارشات - کهکشان',
-	};
+	return getMetadata({
+		title: 'سفارشات',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

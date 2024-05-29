@@ -1,4 +1,5 @@
 import Saturn from '@/components/pages/Saturn';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,9 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'زحل - کهکشان',
-	};
+	return getMetadata({
+		title: 'زحل',
+	});
 };
 
 export { generateMetadata };
