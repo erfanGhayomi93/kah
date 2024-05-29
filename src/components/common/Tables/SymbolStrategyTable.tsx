@@ -388,6 +388,7 @@ const SymbolStrategy = ({
 					<OptionCheckbox
 						type={type}
 						checked={Boolean(requiredMargin?.checked)}
+						disabled={!checked}
 						onChange={console.log}
 						label={sepNumbers(String(requiredMargin?.value))}
 						classes={{ text: '!text-tiny' }}
@@ -399,7 +400,8 @@ const SymbolStrategy = ({
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
-						checked={Boolean(requiredMargin?.checked)}
+						checked={Boolean(tradeCommission?.checked)}
+						disabled={!checked}
 						onChange={console.log}
 						label={sepNumbers(String(tradeCommission?.value ?? 0))}
 						classes={{ text: '!text-tiny' }}
@@ -411,7 +413,8 @@ const SymbolStrategy = ({
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
-						checked={Boolean(requiredMargin?.checked)}
+						checked={Boolean(strikeCommission?.checked)}
+						disabled={!checked}
 						onChange={console.log}
 						label={String(strikeCommission?.value ?? 0)}
 						classes={{ text: '!text-tiny' }}
@@ -423,7 +426,8 @@ const SymbolStrategy = ({
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
-						checked={Boolean(requiredMargin?.checked)}
+						checked={Boolean(tax?.checked)}
+						disabled={!checked}
 						onChange={console.log}
 						label={String(tax?.value ?? 0)}
 						classes={{ text: '!text-tiny' }}
@@ -435,7 +439,8 @@ const SymbolStrategy = ({
 				<div className={`${styles.td} pr-8`}>
 					<OptionCheckbox
 						type={type}
-						checked={Boolean(requiredMargin?.checked)}
+						checked={Boolean(vDefault?.checked)}
+						disabled={!checked}
 						onChange={console.log}
 						label={String(vDefault?.value ?? 0)}
 						classes={{ text: '!text-tiny' }}
