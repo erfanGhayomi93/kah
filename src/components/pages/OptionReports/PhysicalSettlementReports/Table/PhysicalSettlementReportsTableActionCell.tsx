@@ -28,7 +28,7 @@ const PhysicalSettlementReportsTableActionCell = ({
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<Tooltip content={t('common.request')}>
+						<Tooltip content={t('tooltip.request')}>
 							<button
 								disabled={
 									isDisabled || physicalSettlementStatus !== 'Draft' || !data?.openPositionCount
@@ -41,7 +41,7 @@ const PhysicalSettlementReportsTableActionCell = ({
 							</button>
 						</Tooltip>
 
-						<Tooltip content={t('common.delete')}>
+						<Tooltip content={t('tooltip.remove')}>
 							<button
 								disabled={
 									isDisabled ||

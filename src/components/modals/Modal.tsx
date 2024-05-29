@@ -1,5 +1,6 @@
+import { usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
-import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
 import { EraserSVG, SessionHistorySVG, XSVG } from '../icons';
@@ -16,16 +17,24 @@ interface ModalProps extends IBaseModalConfiguration {
 	onClose: () => void;
 }
 
-interface ModalHeaderProps {
+interface ModalHeaderChildrenProps {
+	children: React.ReactNode;
+}
+
+interface ModalHeaderCustomProps {
 	label?: React.ReactNode;
+	CustomHeader?: React.ReactNode;
 	onClose?: () => void;
 	onExpanded?: () => void;
 	onClear?: () => void;
-	children?: React.ReactNode;
 }
+
+type ModalHeaderProps = ModalHeaderChildrenProps | ModalHeaderCustomProps;
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
 	({ portalElement, moveable = false, transparent = false, children, style, classes, size, top, onClose }, ref) => {
+		const pathname = usePathname();
+
 		const rootRef = useRef<HTMLDivElement>(null);
 
 		const modalRef = useRef<HTMLDivElement | null>(null);
@@ -60,7 +69,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
 		useImperativeHandle(ref, () => rootRef.current!);
 
-		useLayoutEffect(() => {
+		useEffect(() => {
 			const controller = new AbortController();
 
 			window.addEventListener('mousedown', (e) => onWindowClick(e, () => controller.abort()), {
@@ -87,6 +96,8 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 				//
 			}
 		}, []);
+
+		useEffect(() => () => onClose(), [pathname]);
 
 		return createPortal(
 			<div
@@ -115,33 +126,37 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 	},
 );
 
-const Header = ({ label, onClose, onClear, onExpanded, children }: ModalHeaderProps) => (
-	<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
-		{
-			!children ? (
-				<React.Fragment>
-					<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
+const Header = (props: ModalHeaderProps) => {
+	if ('children' in props) {
+		return <div className='relative h-56 w-full bg-gray-200 flex-justify-center'>{props.children}</div>;
+	}
 
-					<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
-						<XSVG width='2rem' height='2rem' />
-					</button>
+	const { label, CustomHeader, onClose, onExpanded, onClear } = props;
 
-					{!!onExpanded && (
-						<button onClick={onExpanded} type='button' className='absolute left-64 z-10 icon-hover'>
-							<SessionHistorySVG width='1.8rem' height='1.8rem' />
-						</button>
-					)}
+	return (
+		<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
+			<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
 
-					{!!onClear && (
-						<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
-							<EraserSVG width='2rem' height='2rem' />
-						</button>
-					)}
-				</React.Fragment>
-			) : children
-		}
-	</div>
-);
+			<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
+				<XSVG width='2rem' height='2rem' />
+			</button>
+
+			{!!onExpanded && (
+				<button onClick={onExpanded} type='button' className='absolute left-64 z-10 icon-hover'>
+					<SessionHistorySVG width='1.8rem' height='1.8rem' />
+				</button>
+			)}
+
+			{!!onClear && (
+				<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
+					<EraserSVG width='2rem' height='2rem' />
+				</button>
+			)}
+
+			{CustomHeader}
+		</div>
+	);
+};
 
 export { Header };
 export default Modal;

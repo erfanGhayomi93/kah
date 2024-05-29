@@ -5,9 +5,9 @@ import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import SettingCard from '../../components/SettingCard';
 import BrokerInfo from './sections/BrokerInfo';
-import KahkeshanInfo from './sections/KahkeshanInfo';
 import Theme from './sections/Theme';
 import ToastPositionSettings from './sections/ToastPosition';
+import UserInfo from './sections/UserInfo';
 
 const General = () => {
 	const t = useTranslations();
@@ -22,11 +22,13 @@ const General = () => {
 					<BrokerInfo />
 				</SettingCard>
 			)}
+
 			{isLoggedIn && (
 				<SettingCard title={<>{t('settings_page.general_info_title')}</>}>
-					<KahkeshanInfo isLoggedIn />
+					<UserInfo isLoggedIn />
 				</SettingCard>
 			)}
+
 			<SettingCard title={t('settings_page.background_color')}>
 				<Theme />
 			</SettingCard>

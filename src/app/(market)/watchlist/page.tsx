@@ -1,4 +1,5 @@
 import Watchlist from '@/components/pages/Watchlist';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,9 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'دیده‌بان آپشن - کهکشان',
-	};
+	return getMetadata({
+		title: 'دیده‌بان آپشن',
+	});
 };
 
 export { generateMetadata };

@@ -115,6 +115,9 @@ const initialState: ModalState = {
 	coveredCallFilters: null,
 	// تایید توافق‌نامه
 	acceptAgreement: null,
+
+	// تنظیمات ستون
+	manageColumns: null,
 };
 
 const modalSlice = createSlice({
@@ -296,6 +299,10 @@ const modalSlice = createSlice({
 		setCoveredCallFiltersModal: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
 			state.coveredCallFilters = payload;
 		},
+
+		setManageColumnsModal: (state, { payload }: PayloadAction<ModalState['manageColumns']>) => {
+			state.manageColumns = payload;
+		},
 	},
 });
 
@@ -338,6 +345,7 @@ export const {
 	setCreateStrategyModal,
 	setCoveredCallFiltersModal,
 	setAcceptAgreementModal,
+	setManageColumnsModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;

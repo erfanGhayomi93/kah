@@ -115,7 +115,7 @@ const PaymentResultPage = () => {
 						onClick={() => router.push('/')}
 						className='rounded-base h-48 w-full text-base font-medium btn-info-outline'
 					>
-						{t('payment_result.return_rivas')}
+						{t('payment_result.return_to_app')}
 					</button>
 				</div>
 			</div>

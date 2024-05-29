@@ -19,7 +19,7 @@ const FreezeUnFreezeReportsTableActionCell = ({ onDeleteRow, data }: IFreezeUnFr
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<Tooltip content={t('common.delete')}>
+						<Tooltip content={t('tooltip.remove')}>
 							<button
 								disabled={data.requestState !== 'InProgress'}
 								type='button'

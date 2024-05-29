@@ -1,25 +1,23 @@
 import clsx from 'clsx';
 
-interface IFieldProps {
+interface ISettingCardField {
 	icon?: React.ReactNode;
-	title: string | React.ReactNode;
-	node: React.ReactNode;
+	title: React.ReactNode;
+	value: React.ReactNode;
 	prefixIcon?: React.ReactNode;
-	colon?: boolean;
-	titleClass?: string;
-	valueClass?: string;
+	titleClass?: ClassesValue;
+	valueClass?: ClassesValue;
 }
 
-const SettingCardField = ({ icon, title, node, prefixIcon, colon = true, titleClass, valueClass }: IFieldProps) => {
+const SettingCardField = ({ icon, title, value, prefixIcon, titleClass, valueClass }: ISettingCardField) => {
 	return (
 		<div className='flex-justify-between'>
 			<span className={clsx('gap-8 text-gray-900 flex-justify-center', titleClass)}>
 				{icon}
 				{title}
-				{colon ? ':' : ''}
 				{prefixIcon && prefixIcon}
 			</span>
-			<span className={valueClass}>{node}</span>
+			<span className={clsx(valueClass)}>{value}</span>
 		</div>
 	);
 };

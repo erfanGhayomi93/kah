@@ -9,13 +9,9 @@ import dynamic from 'next/dynamic';
 import Script from 'next/script';
 import metadata from '../metadata';
 
-const Modals = dynamic(() => import('@/components/modals/Modals'), {
-	ssr: false,
-});
+const Modals = dynamic(() => import('@/components/modals/Modals'));
 
-const Panels = dynamic(() => import('@/components/panels/Panels'), {
-	ssr: false,
-});
+const Panels = dynamic(() => import('@/components/panels/Panels'));
 
 interface ILayout extends INextProps {}
 
