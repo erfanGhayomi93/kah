@@ -1,4 +1,5 @@
 import Switch from '@/components/common/Inputs/Switch';
+import { initialDashboardGridState } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setManageDashboardLayoutModal } from '@/features/slices/modalSlice';
 import { type IManageDashboardLayoutModal } from '@/features/slices/types/modalSlice.interfaces';
@@ -40,6 +41,10 @@ const ManageDashboardLayout = forwardRef<HTMLDivElement, ManageDashboardLayoutPr
 
 	const onCloseModal = () => {
 		dispatch(setManageDashboardLayoutModal(null));
+	};
+
+	const onResetModal = () => {
+		setVisibleItems(initialDashboardGridState);
 	};
 
 	const onChange = (id: TDashboardSections, v: boolean) => {
@@ -95,7 +100,11 @@ const ManageDashboardLayout = forwardRef<HTMLDivElement, ManageDashboardLayoutPr
 			{...props}
 		>
 			<Div className='bg-white flex-column'>
-				<Header label={t('manage_dashboard_layout_modal.title')} onClose={onCloseModal} />
+				<Header
+					onReset={onResetModal}
+					label={t('manage_dashboard_layout_modal.title')}
+					onClose={onCloseModal}
+				/>
 
 				<div className='flex-1 justify-between gap-24 p-24 flex-column'>
 					<div className='flex gap-24 rounded bg-white p-8 shadow-card'>

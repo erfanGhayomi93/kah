@@ -3,7 +3,7 @@ import { cn } from '@/utils/helpers';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
-import { EraserSVG, SessionHistorySVG, XSVG } from '../icons';
+import { EraserSVG, RefreshSVG, SessionHistorySVG, XSVG } from '../icons';
 import styles from './Modal.module.scss';
 
 interface ModalProps extends IBaseModalConfiguration {
@@ -27,6 +27,7 @@ interface ModalHeaderCustomProps {
 	onClose?: () => void;
 	onExpanded?: () => void;
 	onClear?: () => void;
+	onReset?: () => void;
 }
 
 type ModalHeaderProps = ModalHeaderChildrenProps | ModalHeaderCustomProps;
@@ -131,7 +132,7 @@ const Header = (props: ModalHeaderProps) => {
 		return <div className='relative h-56 w-full bg-gray-200 flex-justify-center'>{props.children}</div>;
 	}
 
-	const { label, CustomHeader, onClose, onExpanded, onClear } = props;
+	const { label, CustomHeader, onClose, onExpanded, onClear, onReset } = props;
 
 	return (
 		<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
@@ -140,6 +141,12 @@ const Header = (props: ModalHeaderProps) => {
 			<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
 				<XSVG width='2rem' height='2rem' />
 			</button>
+
+			{!!onReset && (
+				<button onClick={onReset} type='button' className='absolute left-64 z-10 icon-hover'>
+					<RefreshSVG width='1.8rem' height='1.8rem' />
+				</button>
+			)}
 
 			{!!onExpanded && (
 				<button onClick={onExpanded} type='button' className='absolute left-64 z-10 icon-hover'>

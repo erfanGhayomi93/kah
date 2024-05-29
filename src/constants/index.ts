@@ -253,6 +253,26 @@ export const initialDashboardGrid: IDashboardGrid[] = [
 	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 16 },
 ];
 
+export const initialDashboardGridState: Record<TDashboardSections, boolean> = {
+	best: true,
+	compare_transaction_value: true,
+	custom: true,
+	due_dates: true,
+	individual_and_legal: true,
+	market_state: true,
+	market_view: true,
+	meetings: true,
+	new_and_old: true,
+	open_positions_process: true,
+	option_contracts: true,
+	option_market_process: true,
+	option_trades_value: true,
+	price_changes_watchlist: true,
+	recent_activities: true,
+	top_base_assets: true,
+	user_progress_bar: true,
+};
+
 export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
 	symbols: [],
 	type: [],
