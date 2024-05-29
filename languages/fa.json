@@ -822,6 +822,13 @@
 		"payment_again": "پرداخت مجدد",
 		"gateway_bank": "درگاه بانک"
 	},
+
+	"designing_page": {
+		"return": "بازگشت",
+		"page_on_designing": "صفحه در دست طراحی است ...",
+		"please_try_again_later": "لطفا بعدا تلاش کنید."
+	},
+
 	"analyze_modal": {
 		"title": "آنالیز",
 		"no_data": "قراردادی ",

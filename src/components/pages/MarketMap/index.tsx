@@ -62,7 +62,7 @@ const MarketMap = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<div className='flex h-full flex-col'>
+		<div className='flex h-full flex-col rounded bg-white'>
 			<MarketMapFilters filters={filters} setFilters={setFilters} onReset={onReset} />
 
 			<div className='flex  flex-1 overflow-hidden p-8 pt-0'>

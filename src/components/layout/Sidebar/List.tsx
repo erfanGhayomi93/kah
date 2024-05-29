@@ -127,7 +127,7 @@ const List = ({ isExpand }: ListProps) => {
 				{
 					id: 'technical',
 					label: t('sidebar.technical'),
-					to: '/a',
+					to: '/technical',
 					icon: <DataAnalyticsSVG />,
 				},
 				{

@@ -115,6 +115,7 @@ const config: Config = {
 			DEFAULT: '8px',
 			md: '16px',
 			lg: '24px',
+			'3xl': '48px',
 			oval: '9999px',
 			circle: '50%',
 		},
@@ -198,6 +199,27 @@ const config: Config = {
 				'.flex-column': {
 					display: 'flex',
 					'flex-direction': 'column',
+				},
+
+				'.flex-column-justify-start': {
+					display: 'flex',
+					'flex-direction': 'column',
+					'align-items': 'center',
+					'justify-content': 'flex-start',
+				},
+
+				'flex-column-justify-center': {
+					display: 'flex',
+					'flex-direction': 'column',
+					'align-items': 'center',
+					'justify-content': 'center',
+				},
+
+				'flex-column-justify-end': {
+					display: 'flex',
+					'flex-direction': 'column',
+					'align-items': 'center',
+					'justify-content': 'flex-end',
 				},
 
 				'.flex-justify-start': {
