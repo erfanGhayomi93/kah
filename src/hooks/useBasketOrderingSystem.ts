@@ -17,12 +17,12 @@ interface IOrdersSentEvent {
 }
 
 interface IOptions {
-	onOrderRemoved?: (item: OrderBasket.Order) => void;
-	onOrdersSent?: (items: IOrdersSentEvent) => void;
-	onOrderSentSuccessfully?: (item: OrderBasket.Order) => void;
+	onRemoved?: (item: OrderBasket.Order) => void;
+	onSingleSent?: (item: OrderBasket.Order) => void;
+	onSent?: (items: IOrdersSentEvent) => void;
 }
 
-const useBasketOrderingSystem = ({ onOrderSentSuccessfully, onOrdersSent, onOrderRemoved }: IOptions = {}) => {
+const useBasketOrderingSystem = ({ onSent, onSingleSent, onRemoved }: IOptions = {}) => {
 	const sendingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	const basketSnapshot = useRef<OrderBasket.Order[]>([]);
@@ -71,7 +71,7 @@ const useBasketOrderingSystem = ({ onOrderSentSuccessfully, onOrdersSent, onOrde
 
 	const onOrderMessageReceived = (item: OrderBasket.Order, id: string) => (result: IpcMainChannels['order_sent']) => {
 		if (id !== result.id) return;
-		onOrderRemoved?.(item);
+		onRemoved?.(item);
 
 		sentOrders.current.push({
 			order: item,
@@ -87,12 +87,12 @@ const useBasketOrderingSystem = ({ onOrderSentSuccessfully, onOrdersSent, onOrde
 
 		setSubmitting(false);
 
-		if (onOrdersSent) {
+		if (onSent) {
 			const failedOrders = sentOrders.current.filter((order) => {
 				return order.result.id && order.result.response !== 'error';
 			});
 
-			onOrdersSent({
+			onSent({
 				failedOrders,
 				sentOrders: sentOrders.current,
 			});
@@ -116,7 +116,7 @@ const useBasketOrderingSystem = ({ onOrderSentSuccessfully, onOrdersSent, onOrde
 			});
 
 			if (uuid) addNewHandler(item, uuid);
-			else onOrderSentSuccessfully?.(item);
+			else onSingleSent?.(item);
 
 			if (index < basketSnapshot.current.length - 1) sendOrder(index + 1);
 		} catch (e) {
@@ -130,12 +130,22 @@ const useBasketOrderingSystem = ({ onOrderSentSuccessfully, onOrdersSent, onOrde
 		if (sendingTimeoutRef.current) clearTimeout(sendingTimeoutRef.current);
 
 		sendingTimeoutRef.current = setTimeout(() => {
-			onOrderSentSuccessfully?.(item);
+			onSingleSent?.(item);
 			removeHandler();
 		}, 2000);
 	};
 
 	return { submit, submitting };
+};
+
+export const getBasketAlertMessage = (failedOrdersLength: number, sentOrdersLength: number) => {
+	return failedOrdersLength === 0
+		? 'alerts.orders_sent_successfully'
+		: failedOrdersLength === sentOrdersLength
+			? 'alerts.orders_sent_failed'
+			: failedOrdersLength >= sentOrdersLength / 2
+				? 'alerts.some_orders_sent_successfully'
+				: 'alerts.most_orders_sent_successfully';
 };
 
 export default useBasketOrderingSystem;

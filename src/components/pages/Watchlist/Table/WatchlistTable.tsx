@@ -768,13 +768,10 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		}
 	}, [watchlistColumns]);
 
-	const dataIsEmpty = !Array.isArray(data) || data.length === 0;
-
 	return (
 		<AgTable
 			ref={gridRef}
 			useTransaction
-			suppressHorizontalScroll={dataIsEmpty}
 			className='h-full border-0'
 			columnDefs={COLUMNS}
 			defaultColDef={defaultColDef}

@@ -1,4 +1,5 @@
-import { InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
+/* eslint-disable no-console */
+import { HintSVG, InfoCircleOutlineSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -10,7 +11,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import Checkbox from '../Inputs/Checkbox';
+import Checkbox, { type ICheckboxProps } from '../Inputs/Checkbox';
 import Tooltip from '../Tooltip';
 import styles from './SymbolStrategyTable.module.scss';
 
@@ -19,22 +20,32 @@ interface IInput {
 	quantity: number;
 }
 
+interface OptionRendererProps extends ICheckboxProps {
+	type: 'base' | 'option';
+}
+
 interface ISharedProps {
-	withContractSize?: boolean;
+	features?: {
+		withRequiredMargin: boolean;
+		withTradeCommission: boolean;
+		withStrikeCommission: boolean;
+		withTax: boolean;
+		withDefault: boolean;
+		withContractSize: boolean;
+	};
+	showDetails?: boolean;
 	onSideChange: (id: string, side: TBsSides) => void;
 	onDelete: (id: string) => void;
 }
 
-type SymbolStrategyProps = ISharedProps &
-	TSymbolStrategy & {
-		checked: boolean;
-		onChange: (v: IInput) => void;
-		onSelect: (checked: boolean) => void;
-	};
+type SymbolStrategyProps = ISharedProps & {
+	contract: TSymbolStrategy;
+	checked: boolean;
+	onChange: (v: IInput) => void;
+	onSelect: (checked: boolean) => void;
+};
 
 interface SymbolStrategyTableProps extends ISharedProps {
-	withRequiredMargin?: boolean;
-	withCommission?: boolean;
 	contracts: TSymbolStrategy[];
 	selectedContracts: string[];
 	spacing?: string;
@@ -43,18 +54,17 @@ interface SymbolStrategyTableProps extends ISharedProps {
 }
 
 const SymbolStrategyTable = ({
-	spacing,
+	spacing = '8px 16px',
 	selectedContracts,
 	contracts,
-	withCommission,
-	withRequiredMargin,
-	withContractSize,
+	showDetails = true,
+	features,
 	onChange,
 	onSideChange,
 	onDelete,
 	onSelectionChanged,
 }: SymbolStrategyTableProps) => {
-	const t = useTranslations();
+	const t = useTranslations('symbol_strategy');
 
 	const toggleAll = () => {
 		if (isAllContractsSelected) {
@@ -84,75 +94,148 @@ const SymbolStrategyTable = ({
 	const isAllContractsSelected = contracts.length > 0 && selectedContracts.length === contracts.length;
 
 	return (
-		<table style={{ borderSpacing: spacing ?? '8px 16px' }} className={styles.table}>
-			<thead className={styles.thead}>
-				<tr className={styles.tr}>
-					<th className={styles.th} style={{ width: '2.4rem' }}>
+		<div style={{ borderSpacing: spacing }} className={styles.table}>
+			<div className={styles.thead}>
+				<div className={styles.tr}>
+					<div className={`${styles.th} w-24`}>
 						<Checkbox
 							disabled={contracts.length === 0}
 							checked={isAllContractsSelected}
 							onChange={toggleAll}
 						/>
-					</th>
-					<th className={styles.th} style={{ width: '4rem' }}>
-						{t('symbol_strategy.side')}
-					</th>
-					<th className={styles.th} style={{ width: '12rem' }}>
-						{t('symbol_strategy.symbol')}
-					</th>
-					<th style={{ width: '8rem' }} className={styles.th}>
-						{t('symbol_strategy.type')}
-					</th>
-					<th className={styles.th}>{t('symbol_strategy.end_date')}</th>
-					<th className={styles.th}>{t('symbol_strategy.strike_price')}</th>
-					{withContractSize && <th className={styles.th}>{t('symbol_strategy.contract_size')}</th>}
-					<th className={styles.th}>{t('symbol_strategy.price')}</th>
-					<th className={styles.th}>{t('symbol_strategy.quantity')}</th>
-					{withRequiredMargin && <th className={styles.th}>{t('symbol_strategy.required_margin')}</th>}
+					</div>
 
-					{withCommission && <th className={styles.th}>{t('symbol_strategy.commission')}</th>}
+					<div className={`${styles.th} w-40`}>{t('side')}</div>
 
-					<th className={styles.th} style={{ width: '5.6rem' }} />
-				</tr>
-			</thead>
-			<tbody className={styles.tbody}>
-				{contracts.map((item) => (
+					<div className={styles.th}>{t('symbol')}</div>
+
+					<div className={`${styles.th} w-80`}>{t('type')}</div>
+
+					<div className={`${styles.th} w-88`}>{t('end_date')}</div>
+
+					<div className={`${styles.th} w-88`}>{t('strike_price')}</div>
+
+					{features?.withContractSize && <div className={`${styles.th} w-88`}>{t('contract_size')}</div>}
+
+					<div className={`${styles.th} w-88`}>
+						<div className={styles.flex}>
+							{t('price')}
+							<Tooltip content={t('price_hint')} placement='top'>
+								<span>
+									<HintSVG />
+								</span>
+							</Tooltip>
+						</div>
+					</div>
+
+					<div className={`${styles.th} w-88`}>{t('quantity')}</div>
+
+					{features?.withRequiredMargin && (
+						<div className={`${styles.th} w-88 pr-8`}>
+							<Checkbox
+								checked={false}
+								onChange={console.log}
+								label={t('required_margin')}
+								classes={{ text: '!text-tiny', label: '!gap-4' }}
+							/>
+						</div>
+					)}
+
+					{features?.withTradeCommission && (
+						<div className={`${styles.th} w-88 pr-8`}>
+							<Checkbox
+								checked={false}
+								onChange={console.log}
+								label={t('trade_commission')}
+								classes={{ text: '!text-tiny', label: '!gap-4' }}
+							/>
+						</div>
+					)}
+
+					{features?.withStrikeCommission && (
+						<div className={`${styles.th} w-88 pr-8`}>
+							<Checkbox
+								checked={false}
+								onChange={console.log}
+								label={t('strike_commission')}
+								classes={{ text: '!text-tiny', label: '!gap-4' }}
+							/>
+						</div>
+					)}
+
+					{features?.withTax && (
+						<div className={`${styles.th} w-88 pr-8`}>
+							<Checkbox
+								checked={false}
+								onChange={console.log}
+								label={t('tax')}
+								classes={{ text: '!text-tiny', label: '!gap-4' }}
+							/>
+						</div>
+					)}
+
+					{features?.withDefault && (
+						<div className={`${styles.th} w-88 pr-8`}>
+							<Checkbox
+								checked={false}
+								onChange={console.log}
+								label={t('default')}
+								classes={{ text: '!text-tiny', label: '!gap-4' }}
+							/>
+						</div>
+					)}
+
+					<div className={`${styles.th} w-${showDetails ? '56' : '32'}`} />
+				</div>
+			</div>
+
+			<div className={styles.tbody}>
+				{contracts.map((c) => (
 					<SymbolStrategy
-						key={item.id}
-						{...item}
-						checked={isContractSelected(item.id)}
-						withContractSize={Boolean(withContractSize)}
-						onChange={(v) => onChange(item.id, v)}
+						key={c.id}
+						contract={c}
+						checked={isContractSelected(c.id)}
+						onChange={(v) => onChange(c.id, v)}
 						onSideChange={onSideChange}
 						onDelete={onDelete}
-						onSelect={(v) => onSelect(item, v)}
+						onSelect={(v) => onSelect(c, v)}
+						features={features}
+						showDetails={showDetails}
 					/>
 				))}
-			</tbody>
-		</table>
+			</div>
+		</div>
 	);
 };
 
 const SymbolStrategy = ({
-	id,
-	type,
-	quantity,
-	price,
-	strikePrice,
-	settlementDay,
-	contractSize,
-	side,
-	symbol,
-	commission,
-	requiredMargin,
-	withContractSize,
+	contract,
+	features,
 	checked,
+	showDetails,
 	onSelect,
 	onChange,
 	onSideChange,
 	onDelete,
 }: SymbolStrategyProps) => {
-	const t = useTranslations();
+	const {
+		id,
+		type,
+		side,
+		symbol,
+		tradeCommission,
+		contractSize,
+		settlementDay,
+		strikePrice,
+		requiredMargin,
+		strikeCommission,
+		tax,
+		vDefault,
+		price,
+		quantity,
+	} = contract;
+
+	const t = useTranslations('symbol_strategy');
 
 	const dispatch = useAppDispatch();
 
@@ -164,34 +247,34 @@ const SymbolStrategy = ({
 	});
 
 	const showInfo = () => {
-		const symbolDetails: IOptionDetails | IBaseSymbolDetails =
-			type === 'base'
-				? {
-						type: 'base',
-						data: {
-							quantity: inputs.quantity,
-							price: inputs.price,
-							side,
-							symbolTitle: symbol.symbolTitle,
-						},
-					}
-				: {
-						type: 'option',
-						data: {
-							...inputs,
-							contractSize: contractSize ?? 0,
-							settlementDay,
-							strikePrice,
-							requiredMargin: requiredMargin?.value ?? 0,
-							strikeCommission: 0.0005,
-							tradeCommission: commission?.value ?? 0,
-							side,
-							type: symbol.optionType,
-							symbolTitle: symbol.symbolTitle,
-						},
-					};
+		const symbolDetails: { base: IBaseSymbolDetails; option: IOptionDetails } = {
+			base: {
+				type: 'base',
+				data: {
+					quantity: inputs.quantity,
+					price: inputs.price,
+					side,
+					symbolTitle: symbol.symbolTitle,
+				},
+			},
+			option: {
+				type: 'option',
+				data: {
+					...inputs,
+					contractSize: contractSize ?? 0,
+					settlementDay: settlementDay!,
+					strikePrice: strikePrice!,
+					requiredMargin: requiredMargin?.value ?? 0,
+					strikeCommission: 0.0005,
+					tradeCommission: tradeCommission?.value ?? 0,
+					side,
+					type: symbol.optionType!,
+					symbolTitle: symbol.symbolTitle,
+				},
+			},
+		};
 
-		dispatch(setOrderDetailsModal(symbolDetails));
+		dispatch(setOrderDetailsModal(symbolDetails[type]));
 	};
 
 	const dateFormatter = () => {
@@ -211,16 +294,16 @@ const SymbolStrategy = ({
 	}, [inputs]);
 
 	return (
-		<tr className={styles.tr}>
-			<td className={styles.td}>
+		<div className={styles.tr}>
+			<div className={styles.td}>
 				<Checkbox checked={checked} onChange={onSelect} />
-			</td>
+			</div>
 
-			<td className={styles.td}>
+			<div className={styles.td}>
 				<button
 					onClick={() => {
 						if (type === 'option') onSideChange(id, side === 'buy' ? 'sell' : 'buy');
-						else toast.warning(t('tooltip.can_not_change_base_symbol_side'));
+						else toast.warning(t('can_not_change_base_symbol_side'));
 					}}
 					type='button'
 					className={clsx(
@@ -229,15 +312,15 @@ const SymbolStrategy = ({
 						side === 'buy' ? 'bg-success-100/10 text-success-100' : 'bg-error-100/10 text-error-100',
 					)}
 				>
-					{t(`side.${side}`)}
+					{t(`${side}`)}
 				</button>
-			</td>
+			</div>
 
-			<td onClick={openSymbolInfo} className={clsx(styles.td, 'cursor-pointer')}>
+			<div onClick={openSymbolInfo} className={clsx(styles.td, 'cursor-pointer')}>
 				<span className='text-gray-1000'>{symbol.symbolTitle}</span>
-			</td>
+			</div>
 
-			<td className={styles.td}>
+			<div className={styles.td}>
 				<span
 					className={
 						type === 'base'
@@ -247,15 +330,15 @@ const SymbolStrategy = ({
 								: 'text-error-100'
 					}
 				>
-					{t(`symbol_strategy.${type === 'base' ? 'base_symbol' : symbol.optionType}`)}
+					{t(`${type === 'base' ? 'base_symbol' : symbol.optionType}`)}
 				</span>
-			</td>
+			</div>
 
-			<td className={styles.td}>
+			<div className={styles.td}>
 				<span className='text-gray-1000'>{type === 'base' ? '−' : dateFormatter()}</span>
-			</td>
+			</div>
 
-			<td className={styles.td}>
+			<div className={styles.td}>
 				<div
 					onCopy={(e) => {
 						if (type === 'option') copyNumberToClipboard(e, strikePrice);
@@ -266,15 +349,15 @@ const SymbolStrategy = ({
 						{type === 'base' ? '−' : sepNumbers(String(strikePrice ?? 0))}
 					</span>
 				</div>
-			</td>
+			</div>
 
-			{withContractSize && (
-				<td className={styles.td}>
-					<span className='text-gray-1000'>{contractSize}</span>
-				</td>
+			{features?.withContractSize && (
+				<div className={styles.td}>
+					<span className='text-gray-1000'>{contractSize ?? 0}</span>
+				</div>
 			)}
 
-			<td className={styles.td}>
+			<div className={styles.td}>
 				<input
 					maxLength={16}
 					onCopy={(e) => copyNumberToClipboard(e, inputs.price)}
@@ -285,9 +368,9 @@ const SymbolStrategy = ({
 					value={sepNumbers(String(inputs.price))}
 					onChange={(e) => setFieldValue('price', Number(convertStringToInteger(e.target.value)))}
 				/>
-			</td>
+			</div>
 
-			<td className={styles.td}>
+			<div className={styles.td}>
 				<input
 					maxLength={9}
 					onCopy={(e) => copyNumberToClipboard(e, inputs.quantity)}
@@ -298,29 +381,96 @@ const SymbolStrategy = ({
 					value={sepNumbers(String(inputs.quantity))}
 					onChange={(e) => setFieldValue('quantity', Number(convertStringToInteger(e.target.value)))}
 				/>
-			</td>
+			</div>
 
-			{requiredMargin?.checked && <td className={styles.td} />}
+			{features?.withRequiredMargin && (
+				<div className={`${styles.td} pr-8`}>
+					<OptionCheckbox
+						type={type}
+						checked={Boolean(requiredMargin?.checked)}
+						onChange={console.log}
+						label={sepNumbers(String(requiredMargin?.value))}
+						classes={{ text: '!text-tiny' }}
+					/>
+				</div>
+			)}
 
-			{commission?.checked && <td className={styles.td} />}
+			{features?.withTradeCommission && (
+				<div className={`${styles.td} pr-8`}>
+					<OptionCheckbox
+						type={type}
+						checked={Boolean(requiredMargin?.checked)}
+						onChange={console.log}
+						label={sepNumbers(String(tradeCommission?.value ?? 0))}
+						classes={{ text: '!text-tiny' }}
+					/>
+				</div>
+			)}
 
-			<td style={{ flex: '0 0 5.6rem' }} className={styles.td}>
+			{features?.withStrikeCommission && (
+				<div className={`${styles.td} pr-8`}>
+					<OptionCheckbox
+						type={type}
+						checked={Boolean(requiredMargin?.checked)}
+						onChange={console.log}
+						label={String(strikeCommission?.value ?? 0)}
+						classes={{ text: '!text-tiny' }}
+					/>
+				</div>
+			)}
+
+			{features?.withTax && (
+				<div className={`${styles.td} pr-8`}>
+					<OptionCheckbox
+						type={type}
+						checked={Boolean(requiredMargin?.checked)}
+						onChange={console.log}
+						label={String(tax?.value ?? 0)}
+						classes={{ text: '!text-tiny' }}
+					/>
+				</div>
+			)}
+
+			{features?.withDefault && (
+				<div className={`${styles.td} pr-8`}>
+					<OptionCheckbox
+						type={type}
+						checked={Boolean(requiredMargin?.checked)}
+						onChange={console.log}
+						label={String(vDefault?.value ?? 0)}
+						classes={{ text: '!text-tiny' }}
+					/>
+				</div>
+			)}
+
+			<div className={styles.td}>
 				<div className='gap-8 flex-justify-center'>
-					<Tooltip placement='bottom' content={t('tooltip.more_info')}>
-						<button onClick={showInfo} type='button' className='icon-hover'>
-							<InfoCircleOutlineSVG className='2.4rem' height='2.4rem' />
-						</button>
-					</Tooltip>
+					{showDetails && (
+						<Tooltip placement='bottom' content={t('more_info')}>
+							<button onClick={showInfo} type='button' className='size-24 flex-justify-center icon-hover'>
+								<InfoCircleOutlineSVG className='2.4rem' height='2.4rem' />
+							</button>
+						</Tooltip>
+					)}
 
-					<Tooltip placement='bottom' content={t('tooltip.remove')}>
-						<button onClick={() => onDelete(id)} type='button' className='icon-hover'>
+					<Tooltip placement='bottom' content={t('remove')}>
+						<button
+							onClick={() => onDelete(id)}
+							type='button'
+							className='size-24 flex-justify-center icon-hover'
+						>
 							<TrashSVG className='2rem' height='2rem' />
 						</button>
 					</Tooltip>
 				</div>
-			</td>
-		</tr>
+			</div>
+		</div>
 	);
+};
+
+const OptionCheckbox = ({ type, ...props }: OptionRendererProps) => {
+	if (type === 'base') return '−';
+	return <Checkbox {...props} classes={{ text: '!text-tiny', root: 'mx-auto' }} />;
 };
 
 export default SymbolStrategyTable;

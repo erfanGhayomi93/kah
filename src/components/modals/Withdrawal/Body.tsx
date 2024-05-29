@@ -5,9 +5,9 @@ import Select from '@/components/common/Inputs/Select';
 import { InfoCircleSVG } from '@/components/icons';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { convertStringToInteger, sepNumbers, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 import { useEffect, type FC } from 'react';
@@ -16,25 +16,23 @@ import { toast } from 'react-toastify';
 import { WithdrawalItem } from './WithdrawalItem';
 
 interface DrawalBodyProps {
-	onClose: () => void,
-	editData?: Payment.IDrawalHistoryList
+	onClose: () => void;
+	editData?: Payment.IDrawalHistoryList;
 }
 
 export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
-
 	const t = useTranslations();
 
 	const url = useAppSelector(getBrokerURLs);
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const userInfo: Broker.User | undefined = queryClient.getQueryData(['userInfoQuery']);
 
 	const { customerAccountId, requestAmount, saveDate, id } = editData || {};
 
-
 	const { data: userAccountOptions } = useListUserBankAccountQuery({
-		queryKey: ['userAccount']
+		queryKey: ['userAccount'],
 	});
 
 	const { data: remainsWithDate } = useRemainsWithDateQuery({
@@ -44,18 +42,17 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 				return {
 					t1: {
 						...data?.t1,
-						date: new Date(data?.t1.date).getTime()
+						date: new Date(data?.t1.date).getTime(),
 					},
 					t2: {
 						...data?.t2,
-						date: new Date(data?.t2.date).getTime()
-					}
+						date: new Date(data?.t2.date).getTime(),
+					},
 				};
 			}
 			return data;
 		},
 	});
-
 
 	const {
 		register,
@@ -67,27 +64,26 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 		defaultValues: {
 			amount: '',
 			bankAccount: null,
-			withdrawalType: 't1'
+			withdrawalType: 't1',
 		},
 		mode: 'onChange',
 	});
 
 	const defaultOptionAccount = () => {
-		if (editData) return userAccountOptions?.find(item => item.id === customerAccountId);
+		if (editData) return userAccountOptions?.find((item) => item.id === customerAccountId);
 		else if (userAccountOptions) return userAccountOptions[0];
 	};
 
 	const onChangeDate = (type: 't1' | 't2') => {
 		try {
-			const data = (type === 't2') ? remainsWithDate?.t2 : remainsWithDate?.t1;
+			const data = type === 't2' ? remainsWithDate?.t2 : remainsWithDate?.t1;
 
 			if (!data?.valid) {
 				toast.error(t('withdrawal_modal.withdrawal_not_allowed_datetime'), {
-					toastId: 'withdrawal_not_allowed_datetime'
+					toastId: 'withdrawal_not_allowed_datetime',
 				});
 				return;
 			}
-
 
 			setValue('amount', data.amount, { shouldValidate: true });
 			setValue('withdrawalType', type, { shouldValidate: true });
@@ -97,9 +93,8 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 	};
 
 	const onSubmit: SubmitHandler<Payment.IWithdrawalForm> = async (value) => {
-
 		try {
-			const withdrawalData = (value.withdrawalType === 't2') ? remainsWithDate?.t2 : remainsWithDate?.t1;
+			const withdrawalData = value.withdrawalType === 't2' ? remainsWithDate?.t2 : remainsWithDate?.t1;
 
 			if (!url || !userInfo || !withdrawalData) return;
 
@@ -110,22 +105,26 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 				nationalCode: userInfo.nationalCode,
 				[!editData ? 'requestAmount' : 'Amount']: convertStringToInteger(String(value.amount)),
 				requestDate: toISOStringWithoutChangeTime(new Date(withdrawalData?.date)),
-				id: id ?? undefined
+				id: id ?? undefined,
 			};
 
-			const response = await brokerAxios.post(!editData ? url?.RequestPayment : url?.PaymentUpdateRequest, payload);
+			const response = await brokerAxios.post(
+				!editData ? url?.RequestPayment : url?.PaymentUpdateRequest,
+				payload,
+			);
 			const data = response.data;
 
 			if (!data.succeeded) {
 				toast.error(t('i_errors.withdrawal_' + data.errors?.[0]));
 			} else {
-				!editData ? toast.success(t('alerts.drawal_offline_successFully')) : toast.success(t('alerts.drawal_offline_successFully_edited'));
+				!editData
+					? toast.success(t('alerts.drawal_offline_successFully'))
+					: toast.success(t('alerts.drawal_offline_successFully_edited'));
 				onClose();
 			}
 		} catch (err) {
 			toast.error(t('alerts.invalid_inputs'));
 		}
-
 	};
 
 	useEffect(() => {
@@ -134,10 +133,11 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 		}
 	}, [userAccountOptions]);
 
-
 	useEffect(() => {
 		if (remainsWithDate && !editData) {
-			setValue('amount', remainsWithDate.t1.valid ? remainsWithDate.t1.amount : remainsWithDate.t2.amount, { shouldValidate: true });
+			setValue('amount', remainsWithDate.t1.valid ? remainsWithDate.t1.amount : remainsWithDate.t2.amount, {
+				shouldValidate: true,
+			});
 			setValue('withdrawalType', remainsWithDate.t1.valid ? 't1' : 't2', { shouldValidate: true });
 		} else if (editData) {
 			setValue('amount', String(requestAmount), { shouldValidate: true });
@@ -146,11 +146,9 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 		}
 	}, [remainsWithDate]);
 
-
-
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<div className='h-full flex flex-column'>
+			<div className='flex h-full flex-column'>
 				<div>
 					<Select<Payment.IUserBankAccount>
 						onChange={(option) => setValue('bankAccount', option, { shouldValidate: true })}
@@ -169,37 +167,32 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 
 				<div className='my-24 shadow-sm'>
 					<div className='p-8'>
-						<p className='text-gray-700 mb-16'>{t('withdrawal_modal.receive_date_placeholder')}</p>
+						<p className='mb-16 text-gray-700'>{t('withdrawal_modal.receive_date_placeholder')}</p>
 
-						<ul className='flex flex-col text-gray-1000 gap-8'>
-							{
-								remainsWithDate?.t1 && (
-									<WithdrawalItem
-										checked={getValues('withdrawalType') === 't1'}
-										onChecked={() => onChangeDate('t1')}
-										{...{ ...remainsWithDate.t1 }}
-									/>
-								)
-							}
+						<ul className='flex flex-col gap-8 text-gray-1000'>
+							{remainsWithDate?.t1 && (
+								<WithdrawalItem
+									checked={getValues('withdrawalType') === 't1'}
+									onChecked={() => onChangeDate('t1')}
+									{...{ ...remainsWithDate.t1 }}
+								/>
+							)}
 
-							{
-								remainsWithDate?.t2 && (
-									<WithdrawalItem
-										checked={getValues('withdrawalType') === 't2'}
-										onChecked={() => onChangeDate('t2')}
-										{...{ ...remainsWithDate.t2 }}
-									/>
-								)
-							}
+							{remainsWithDate?.t2 && (
+								<WithdrawalItem
+									checked={getValues('withdrawalType') === 't2'}
+									onChecked={() => onChangeDate('t2')}
+									{...{ ...remainsWithDate.t2 }}
+								/>
+							)}
 						</ul>
 
-						<div className='flex items-center mt-16 gap-4'>
-							<InfoCircleSVG className='text-info' width="2rem" height="2rem" />
+						<div className='mt-16 flex items-center gap-4'>
+							<InfoCircleSVG className='text-info' width='2rem' height='2rem' />
 							<span className='text-tiny tracking-normal text-info'>
 								{t('withdrawal_modal.day_attention')}
 							</span>
 						</div>
-
 					</div>
 				</div>
 
@@ -208,12 +201,13 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 						{...register('amount', {
 							required: {
 								value: true,
-								message: t('deposit_modal.placeholderDepositInput')
+								message: t('deposit_modal.placeholderDepositInput'),
 							},
-
 						})}
 						value={sepNumbers(String(getValues('amount')))}
-						onChange={(e) => setValue('amount', convertStringToInteger(e.target.value), { shouldValidate: true })}
+						onChange={(e) =>
+							setValue('amount', convertStringToInteger(e.target.value), { shouldValidate: true })
+						}
 						type='text'
 						prefix={t('common.rial')}
 						placeholder={t('deposit_modal.placeholderDepositInput')}
@@ -230,16 +224,9 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 						type='submit'
 					>
-						{
-							!editData ?
-								t('deposit_modal.state_Request') :
-								t('deposit_modal.state_Edit')
-
-						}
+						{!editData ? t('deposit_modal.state_Request') : t('deposit_modal.state_Edit')}
 					</button>
 				</div>
-
-
 			</div>
 		</form>
 	);

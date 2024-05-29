@@ -1,11 +1,11 @@
 import AnimatePresence from '@/components/common/animation/AnimatePresence';
-import { HandWriteSVG, RefreshSVG, TrashSVG } from '@/components/icons';
+import Tooltip from '@/components/common/Tooltip';
+import { HandWriteSVG, TrashSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface IPhysicalSettlementReportsTableActionCellProps {
 	onDeleteRow: (data: Reports.IPhysicalSettlementReports | undefined) => void;
-	onHistory: (data: Reports.IPhysicalSettlementReports | undefined) => void;
 	onRequest: (data: Reports.IPhysicalSettlementReports | undefined) => void;
 	data: Reports.IPhysicalSettlementReports;
 }
@@ -13,7 +13,6 @@ interface IPhysicalSettlementReportsTableActionCellProps {
 const PhysicalSettlementReportsTableActionCell = ({
 	onDeleteRow,
 	data,
-	onHistory,
 	onRequest,
 }: IPhysicalSettlementReportsTableActionCellProps) => {
 	const t = useTranslations();
@@ -25,40 +24,39 @@ const PhysicalSettlementReportsTableActionCell = ({
 	const physicalSettlementStatus = data?.status ?? undefined;
 
 	return (
-		<div className='gap-16 flex-justify-start'>
+		<div className='gap-16 flex-justify-center'>
 			{!confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<>
-						<button
-							disabled={isDisabled || physicalSettlementStatus !== 'Draft' || !data?.openPositionCount}
-							type='button'
-							className='text-gray-900 disabled:text-gray-700'
-							onClick={() => onRequest(data)}
-						>
-							<HandWriteSVG width='2rem' height='2rem' />
-						</button>
-						<button
-							onClick={() => onHistory(data)}
-							type='button'
-							className='text-gray-900 disabled:text-gray-700'
-						>
-							<RefreshSVG width='2rem' height='2rem' />
-						</button>
+						<Tooltip content={t('common.request')}>
+							<button
+								disabled={
+									isDisabled || physicalSettlementStatus !== 'Draft' || !data?.openPositionCount
+								}
+								type='button'
+								className='text-gray-900 disabled:text-gray-700'
+								onClick={() => onRequest(data)}
+							>
+								<HandWriteSVG width='2rem' height='2rem' />
+							</button>
+						</Tooltip>
 
-						<button
-							disabled={
-								isDisabled ||
-								!(
-									physicalSettlementStatus === 'InSendQueue' ||
-									physicalSettlementStatus === 'Registered'
-								)
-							}
-							type='button'
-							onClick={() => setConfirmDelete(true)}
-							className='text-gray-900 disabled:text-gray-700'
-						>
-							<TrashSVG width='2rem' height='2rem' />
-						</button>
+						<Tooltip content={t('common.delete')}>
+							<button
+								disabled={
+									isDisabled ||
+									!(
+										physicalSettlementStatus === 'InSendQueue' ||
+										physicalSettlementStatus === 'Registered'
+									)
+								}
+								type='button'
+								onClick={() => setConfirmDelete(true)}
+								className='text-gray-900 disabled:text-gray-700'
+							>
+								<TrashSVG width='2rem' height='2rem' />
+							</button>
+						</Tooltip>
 					</>
 				</AnimatePresence>
 			)}

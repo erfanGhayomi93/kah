@@ -50,21 +50,22 @@ const config: Config = {
 				100: 'rgba(219, 238, 255, 1)',
 				200: 'rgba(151, 217, 255, 1)',
 				300: 'rgba(0, 182, 237, 1)',
-				400: 'rgba(0, 142, 186, 1)',
-				500: 'rgba(0, 104, 137, 1)',
+				400: 'rgba(28, 48, 85, 1)',
+				500: 'rgba(23, 32, 53, 1)',
 			},
 
 			gray: {
-				100: 'rgba(252, 253, 254, 1)',
+				100: 'rgba(251, 251, 251, 1)',
 				200: 'rgba(248, 250, 253, 1)',
 				300: 'rgba(242, 242, 242, 1)',
 				400: 'rgba(233, 236, 239, 1)',
 				500: 'rgba(226, 231, 237, 1)',
-				600: 'rgba(219, 225, 232, 1)',
+				600: 'rgba(219, 225, 232, 1)', // Deleted: Don't use this color
 				700: 'rgba(166, 169, 173, 1)',
 				800: 'rgba(154, 156, 164, 1)',
 				900: 'rgba(93, 96, 109, 1)',
 				1000: 'rgba(24, 28, 47, 1)',
+				1100: 'rgba(140, 142, 151, 1)',
 			},
 
 			error: {
@@ -276,6 +277,14 @@ const config: Config = {
 
 					'&:not(.justify-start,.justify-end)': {
 						'justify-content': 'center',
+					},
+				},
+
+				'.btn-primary-hover': {
+					'&:not(:disabled):hover': {
+						'background-color': theme('colors.primary.400'),
+						'border-color': theme('colors.primary.400'),
+						color: theme('colors.white'),
 					},
 				},
 

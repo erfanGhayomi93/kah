@@ -14,6 +14,7 @@ const NewAndOld = () => {
 		<Section<string, Dashboard.TNewAndOld>
 			id='new_and_old'
 			title={t('home.new_and_old')}
+			info={t('tooltip.new_and_old_section')}
 			defaultTopActiveTab={type}
 			onBottomTabChange={setType}
 			tabs={{

@@ -4,11 +4,10 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setWithdrawalModal } from '@/features/slices/modalSlice';
 import { type RootState } from '@/features/store';
-import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { useBrokerQueryClient } from '@/hooks';
+import { dateFormatter, sepNumbers } from '@/utils/helpers';
+import { type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
-import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -31,16 +30,11 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 
 	const t = useTranslations();
 
-	const queryClient = useQueryClient();
+	const queryClient = useBrokerQueryClient();
 
 	const dispatch = useAppDispatch();
 
 	const { urls } = useAppSelector(getStates);
-
-	const dateFormatter = (v: string | number) => {
-		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
-	};
 
 	const onDeleteRow = (data: Reports.IWithdrawal | undefined) =>
 		new Promise<void>(async (resolve, reject) => {
@@ -93,13 +87,14 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 			{
 				colId: 'saveDate',
 				headerName: t('withdrawal_cash_reports_page.date_column'),
-				valueGetter: (row) => dateFormatter(row.saveDate ?? ''),
+				cellClass: 'ltr',
+				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'datetime'),
 			},
 			/* موعد پرداخت */
 			{
 				colId: 'requestDate',
 				headerName: t('withdrawal_cash_reports_page.time_column'),
-				valueGetter: (row) => dayjs(row.requestDate).calendar('jalali').format('HH:mm:ss'),
+				valueGetter: (row) => dateFormatter(row.requestDate ?? '', 'date'),
 			},
 			/* بانک */
 			{
@@ -129,24 +124,12 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 			{
 				colId: 'action',
 				headerName: t('withdrawal_cash_reports_page.action_column'),
-				cellClass: 'flex-justify-center',
 				valueGetter: (row) => row.id,
 				valueFormatter: ({ row }) => (
 					<WithdrawalCashReportsActionCell data={row} onDeleteRow={onDeleteRow} onEditRow={onEditRow} />
 				),
 			},
 		],
-		[],
-	);
-
-	const defaultColDef: ColDef<Reports.IWithdrawal> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
 		[],
 	);
 

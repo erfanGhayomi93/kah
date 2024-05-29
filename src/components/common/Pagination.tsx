@@ -1,7 +1,6 @@
 import { usePagination } from '@/hooks';
 import { cn } from '@/utils/helpers';
-import { useTranslations } from 'next-intl';
-import { DoubleArrowLeftSVG, DoubleArrowRightSVG } from '../icons';
+import { ArrowLeftSVG, ArrowRightSVG } from '../icons';
 import styles from './Pagination.module.scss';
 
 interface PaginationProps extends Record<'totalCount' | 'pageNumber' | 'pageSize' | 'totalPages', number> {
@@ -20,8 +19,6 @@ const Pagination = ({
 	totalPages,
 	...props
 }: PaginationProps) => {
-	const t = useTranslations();
-
 	const pag = usePagination({
 		...props,
 		siblingCount: props.siblingCount ?? 1,
@@ -41,25 +38,25 @@ const Pagination = ({
 		<ul className={styles.pagination}>
 			<li className={styles.prev}>
 				<button onClick={onPrevious} disabled={!hasPreviousPage} type='button'>
-					<DoubleArrowRightSVG width='1.6rem' height='1.6rem' />
-					{t('pagination.prev_page')}
+					<ArrowRightSVG width='1.6rem' height='1.6rem' />
 				</button>
 			</li>
-			{pag.map((pn) => (
-				<li className={cn(styles.page, pn === props.pageNumber && styles.active)} key={pn}>
-					<button
-						disabled={typeof pn === 'string'}
-						onClick={typeof pn === 'string' ? undefined : () => onPageChange(pn)}
-						type='button'
-					>
-						{pn}
-					</button>
-				</li>
-			))}
+			<div className={styles.pageWrapper}>
+				{pag.map((pn) => (
+					<li className={cn(styles.page, pn === props.pageNumber && styles.active)} key={pn}>
+						<button
+							disabled={typeof pn === 'string'}
+							onClick={typeof pn === 'string' ? undefined : () => onPageChange(pn)}
+							type='button'
+						>
+							{pn}
+						</button>
+					</li>
+				))}
+			</div>
 			<li className={styles.next}>
 				<button onClick={onNext} disabled={!hasNextPage} type='button'>
-					{t('pagination.next_page')}
-					<DoubleArrowLeftSVG width='1.6rem' height='1.6rem' />
+					<ArrowLeftSVG width='1.6rem' height='1.6rem' />
 				</button>
 			</li>
 		</ul>

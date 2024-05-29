@@ -9,9 +9,9 @@ import { DocSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
+import { useRouter } from '@/navigation';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
 

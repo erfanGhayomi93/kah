@@ -13,6 +13,13 @@ declare interface ISymbolStrategy {
 	price: number;
 }
 
+declare interface IStrategyFilter {
+	priceBasis: TPriceBasis;
+	symbolBasis: TStrategySymbolBasis;
+	pageNumber: number;
+	pageSize: number;
+}
+
 declare interface IBaseSymbolStrategy extends ISymbolStrategy {
 	type: 'base';
 	side: TBsSides;
@@ -23,18 +30,17 @@ declare interface IBaseSymbolStrategy extends ISymbolStrategy {
 		optionType?: null;
 		historicalVolatility?: null;
 	};
-	strikePrice?: null;
-	contractSize?: null;
-	settlementDay?: null;
-	commission?: null;
-	requiredMargin?: null;
-}
-
-declare interface IStrategyFilter {
-	priceBasis: TPriceBasis;
-	symbolBasis: TStrategySymbolBasis;
-	pageNumber: number;
-	pageSize: number;
+	tradeCommission?: {
+		value: number;
+		checked?: boolean;
+	};
+	contractSize?: undefined;
+	settlementDay?: undefined;
+	strikePrice?: undefined;
+	requiredMargin?: undefined;
+	strikeCommission?: undefined;
+	tax?: undefined;
+	vDefault?: undefined;
 }
 
 declare interface IOptionStrategy extends ISymbolStrategy {
@@ -50,15 +56,25 @@ declare interface IOptionStrategy extends ISymbolStrategy {
 		baseSymbolPrice: number;
 		historicalVolatility: number;
 	};
-	commission?: {
-		value: number;
-		checked?: boolean;
-		onChecked?: (checked: boolean) => void;
-	};
 	requiredMargin?: {
 		value: number;
 		checked?: boolean;
-		onChecked?: (checked: boolean) => void;
+	};
+	tradeCommission?: {
+		value: number;
+		checked?: boolean;
+	};
+	strikeCommission?: {
+		value: number;
+		checked?: boolean;
+	};
+	tax?: {
+		value: number;
+		checked?: boolean;
+	};
+	vDefault?: {
+		value: number;
+		checked?: boolean;
 	};
 }
 

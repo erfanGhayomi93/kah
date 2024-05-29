@@ -14,6 +14,7 @@ const DueDates = () => {
 		<Section<string, Dashboard.GetOptionSettlementInfo.Type>
 			id='due_dates'
 			title={t('home.due_dates')}
+			info={t('tooltip.due_dates_section')}
 			defaultBottomActiveTab={type}
 			onBottomTabChange={setType}
 			tabs={{

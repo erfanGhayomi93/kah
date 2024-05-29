@@ -367,6 +367,7 @@ export const getManageOptionWatchlistListModal = (state: RootState) => state.mod
 export const getAddSymbolToWatchlistModal = (state: RootState) => state.modal.addSymbolToWatchlist;
 export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 export const getDescriptionModal = (state: RootState) => state.modal.description;
+export const getOptionSettlementModal = (state: RootState) => state.modal.optionSettlement;
 export const getTransactionsFiltersModal = (state: RootState) => state.modal.transactionsFilters;
 export const getInstantDepositReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
 export const getDepositWithReceiptReportsFiltersModal = (state: RootState) =>

@@ -10,6 +10,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
+import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers, uuidv4 } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -54,20 +55,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 		const dispatch = useAppDispatch();
 
 		const { submit, submitting } = useBasketOrderingSystem({
-			onOrdersSent: ({ failedOrders, sentOrders }) => {
-				const failedOrdersLength = failedOrders.length;
-				const sentOrdersLength = sentOrders.length;
-
-				const message =
-					failedOrdersLength === 0
-						? 'alerts.orders_sent_successfully'
-						: failedOrdersLength === sentOrdersLength
-							? 'alerts.orders_sent_failed'
-							: failedOrdersLength >= sentOrdersLength / 2
-								? 'alerts.some_orders_sent_successfully'
-								: 'alerts.most_orders_sent_successfully';
-
-				toast.success(t(message));
+			onSent: ({ failedOrders, sentOrders }) => {
+				toast.success(t(getBasketAlertMessage(failedOrders.length, sentOrders.length)));
 			},
 		});
 

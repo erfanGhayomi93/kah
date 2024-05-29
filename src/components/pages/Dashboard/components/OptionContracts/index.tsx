@@ -29,6 +29,7 @@ const OptionContracts = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_contracts'
 			title={t('home.option_contracts')}
+			info={t('tooltip.option_contract_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
