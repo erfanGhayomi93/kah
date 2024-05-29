@@ -130,7 +130,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 		}));
 	};
 
-	const showColumnsPanel = () => {
+	const showColumnsManagementModal = () => {
 		dispatch(
 			setManageColumnsModal({
 				initialColumns: initialColumnsProtectivePut,
@@ -138,7 +138,6 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsProtectivePut),
-				NonEditableColumns: ['baseSymbolTitle'],
 			}),
 		);
 	};
@@ -404,7 +403,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					onManageColumns={showColumnsPanel}
+					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}

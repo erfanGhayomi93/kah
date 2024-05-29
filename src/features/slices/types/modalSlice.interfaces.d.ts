@@ -268,7 +268,6 @@ export interface IManageColumnsModal extends IBaseModalConfiguration {
 	applyChangesAfterClose?: boolean;
 	onReset?: () => void;
 	onColumnChanged: (columns: IManageColumn[]) => void;
-	NonEditableColumns?: string[];
 }
 
 export type ModalState = TBaseModalProps<{

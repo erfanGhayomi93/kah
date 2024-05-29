@@ -255,13 +255,14 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
-declare type TManageColumnTag = 'PanelDetail' | 'Computational';
+declare type TManageColumnTag = 'PanelDetail' | 'Computational' | 'None';
 
 declare interface IManageColumn<T extends string> {
 	id: T;
-	tag?: TManageColumnTag;
+	tag: TManageColumnTag;
 	title: string;
 	hidden: boolean;
+	nonEditable?: boolean;
 }
 
 declare interface ISymbolInfoPanelGrid {

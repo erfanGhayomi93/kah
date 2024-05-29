@@ -39,7 +39,6 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 		applyChangesAfterClose,
 		onReset,
 		onColumnChanged: onColumnChangedCallBack,
-		NonEditableColumns = [],
 		...props
 	}) => {
 		const dispatch = useAppDispatch();
@@ -51,9 +50,9 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 
 			for (let i = 0; i < columns.length; i++) {
 				const column = columns[i];
-				const tag = column.tag! as TManageColumnTag;
-				if (!(tag in tags)) tags[tag] = [];
-				if (!NonEditableColumns.includes(column.id)) {
+				if (!column.nonEditable) {
+					const tag = column.tag as TManageColumnTag;
+					if (!(tag in tags)) tags[tag] = [];
 					tags[tag]?.push(column);
 				}
 			}
@@ -89,7 +88,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 		const onAllColumnSwitch = (headerState: boolean, tag: TManageColumnTag) => {
 			const newColumns = columns.map((col) => ({
 				...col,
-				hidden: tag === col.tag ? !headerState : col.hidden,
+				hidden: tag === col.tag && !col.nonEditable ? !headerState : col.hidden,
 			}));
 
 			setColumns(newColumns);
@@ -132,7 +131,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 const ColumnSwitchField = ({ checked, onChange, title }: ISwitchColumnFieldProps) => (
 	<>
 		<Switch checked={checked} onChange={onChange} />
-		<span className={clsx('text-tiny', checked ? 'text-gray-1000' : 'text-gray-900')}>{title}</span>
+		<span className={clsx('text-nowrap text-tiny', checked ? 'text-gray-1000' : 'text-gray-900')}>{title}</span>
 	</>
 );
 
@@ -153,7 +152,7 @@ const CategoryCard = ({ columnsArray, onColumnSwitch, onAllColumnSwitch, tag }: 
 			</div>
 			<div className='grid h-full grid-flow-col grid-rows-9 gap-x-24'>
 				{columnsArray.map((item) => (
-					<div key={item.id} className='gap-8 flex-justify-start' style={{ minWidth: 160 }}>
+					<div key={item.id} className='gap-8 flex-justify-start'>
 						<ColumnSwitchField
 							checked={!item.hidden}
 							onChange={() => onColumnSwitch(item)}
