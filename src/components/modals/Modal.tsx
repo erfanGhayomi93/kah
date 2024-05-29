@@ -22,6 +22,7 @@ interface ModalHeaderProps {
 	onExpanded?: () => void;
 	onClear?: () => void;
 	children?: React.ReactNode;
+	CustomeNode?: React.ReactNode;
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
@@ -115,31 +116,42 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 	},
 );
 
-const Header = ({ label, onClose, onClear, onExpanded, children }: ModalHeaderProps) => (
+const Header = ({
+	label,
+	onClose,
+	onClear,
+	onExpanded,
+	children,
+	CustomeNode,
+}: ModalHeaderProps) => (
 	<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
-		{
-			!children ? (
-				<React.Fragment>
-					<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
+		{!children ? (
+			<React.Fragment>
+				<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
 
-					<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
-						<XSVG width='2rem' height='2rem' />
+				<div className='absolute left-24 z-10 flex items-center gap-10 ltr'>
+					<button onClick={onClose} type='button' className='icon-hover'>
+						<XSVG width='2.4rem' height='2.4rem' />
 					</button>
 
 					{!!onExpanded && (
-						<button onClick={onExpanded} type='button' className='absolute left-64 z-10 icon-hover'>
-							<SessionHistorySVG width='1.8rem' height='1.8rem' />
+						<button onClick={onExpanded} type='button' className='icon-hover'>
+							<SessionHistorySVG width='2rem' height='2rem' />
 						</button>
 					)}
 
 					{!!onClear && (
-						<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
-							<EraserSVG width='2rem' height='2rem' />
+						<button onClick={onClear} type='button' className='icon-hover'>
+							<EraserSVG width='2.4rem' height='2.4rem' />
 						</button>
 					)}
-				</React.Fragment>
-			) : children
-		}
+
+					{!!CustomeNode && <div className='flex items-center'>{CustomeNode}</div>}
+				</div>
+			</React.Fragment>
+		) : (
+			children
+		)}
 	</div>
 );
 
