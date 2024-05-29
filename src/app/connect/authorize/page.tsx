@@ -1,4 +1,5 @@
 import Authorize from '@/components/pages/Authorize';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,10 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'احراز هویت کارگزاری - کهکشان',
-		robots: 'noindex,nofollow',
-	};
+	return getMetadata({
+		title: 'احراز هویت کارگزاری',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

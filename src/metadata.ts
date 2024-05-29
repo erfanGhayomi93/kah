@@ -4,7 +4,11 @@ const metadata: Metadata = {
 	metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
 	title: 'کهکشان',
 	applicationName: 'کهکشان',
-	robots: 'index,follow',
+	keywords: ['آپشن', 'اختیار', 'اختیار آپشن', 'بازار آپشن', 'معاملات اختیار'],
+	robots: {
+		index: true,
+		follow: true,
+	},
 	description:
 		'از دیده‌بان اختیار برای جستجو و فیلتر کردن ابزارها بر اساس ارزش بازار، بازده سود سهام، حجم، سهام‌های دارای نوسان و ... آنها استفاده کنید.',
 	appleWebApp: {
@@ -22,7 +26,6 @@ const metadata: Metadata = {
 	},
 	twitter: {
 		card: 'summary',
-		title: process.env.APP_TITLE,
 		description: process.env.APP_DESCRIPTION,
 		images: '/static/images/logo-preview.png',
 	},
@@ -37,5 +40,7 @@ const metadata: Metadata = {
 		},
 	},
 };
+
+export const getMetadata = (config: Metadata) => config;
 
 export default metadata;

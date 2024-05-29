@@ -1,4 +1,5 @@
 import OrdersReports from '@/components/pages/OrdersTradesReports/OrdersReports';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'گزارشات سفارشات - کهکشان',
-	};
+	return getMetadata({
+		title: 'گزارشات سفارشات',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

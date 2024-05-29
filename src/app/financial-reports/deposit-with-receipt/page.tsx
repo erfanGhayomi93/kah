@@ -1,4 +1,5 @@
 import DepositWithReceiptReports from '@/components/pages/FinancialReports/DepositWithReceiptReports';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'گزارشات واریز با فیش - کهکشان',
-	};
+	return getMetadata({
+		title: 'گزارشات واریز با فیش',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

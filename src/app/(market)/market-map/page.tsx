@@ -1,4 +1,5 @@
 import MarketMap from '@/components/pages/MarketMap';
+import { getMetadata } from '@/metadata';
 import { type NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,9 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'نقشه بازار - کهکشان',
-	};
+	return getMetadata({
+		title: 'نقشه بازار',
+	});
 };
 
 export { generateMetadata };

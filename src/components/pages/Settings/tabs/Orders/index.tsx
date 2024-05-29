@@ -1,4 +1,5 @@
 'use client';
+
 import brokerAxios from '@/api/brokerAxios';
 import { useGetCustomerSettings } from '@/api/queries/brokerPrivateQueries';
 import ipcMain from '@/classes/IpcMain';
@@ -7,7 +8,7 @@ import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { useDebounce } from '@/hooks';
+import useDebounce from '@/hooks/useDebounce';
 import { useRouter } from '@/navigation';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import { useMutation } from '@tanstack/react-query';
@@ -37,13 +38,9 @@ const Orders = () => {
 
 	const router = useRouter();
 
-	const {
-		data: customerSettings,
-		refetch: fetchCustomerSettings,
-		isFetching: customerSettingsLoading,
-	} = useGetCustomerSettings({
+	const { data: customerSettings, isFetching: customerSettingsLoading } = useGetCustomerSettings({
 		queryKey: ['GetCustomerSettings'],
-		enabled: false,
+		enabled: Boolean(brokerURLs),
 	});
 
 	const { mutate: updateCustomerSettings } = useMutation({
@@ -78,10 +75,6 @@ const Orders = () => {
 	};
 
 	useEffect(() => {
-		brokerURLs && fetchCustomerSettings();
-	}, [brokerURLs]);
-
-	useEffect(() => {
 		if (customerSettings) {
 			setFieldValues(customerSettings);
 			defaultFieldValues.current = customerSettings;
@@ -92,7 +85,7 @@ const Orders = () => {
 		() => [
 			{
 				title: t('settings_page.default_buy_volume'),
-				component: (
+				value: (
 					<Input
 						classInput='text-right'
 						value={
@@ -111,7 +104,7 @@ const Orders = () => {
 			},
 			{
 				title: t('settings_page.default_sell_volume'),
-				component: (
+				value: (
 					<Input
 						classInput='text-right'
 						value={
@@ -130,7 +123,7 @@ const Orders = () => {
 			},
 			{
 				title: t('settings_page.confirm_before_send_order'),
-				component: (
+				value: (
 					<>
 						<Switch
 							checked={!!fieldValues?.confirmBeforeSendOrder}
@@ -141,7 +134,7 @@ const Orders = () => {
 			},
 			{
 				title: t('settings_page.confirm_before_delete_order'),
-				component: (
+				value: (
 					<>
 						<Switch
 							checked={!!fieldValues?.confirmBeforeDelete}
@@ -152,7 +145,7 @@ const Orders = () => {
 			},
 			{
 				title: t('settings_page.Get_online_price'),
-				component: (
+				value: (
 					<>
 						<Switch
 							checked={!!fieldValues?.breakEvenPoint}
@@ -163,7 +156,7 @@ const Orders = () => {
 			},
 			{
 				title: t('settings_page.market_watcher_message_notification'),
-				component: (
+				value: (
 					<>
 						<Switch
 							checked={!!fieldValues?.sendSupervisorMarketMessage}
@@ -174,7 +167,7 @@ const Orders = () => {
 			},
 			{
 				title: t('settings_page.show_symbol_info_in_send_order'),
-				component: (
+				value: (
 					<>
 						<Switch
 							checked={!!fieldValues?.showSymbolDetailsInBuySellModal}
@@ -197,8 +190,9 @@ const Orders = () => {
 		<SettingCard title={t('settings_page.orders_settings')}>
 			<div className='grid grid-cols-2 gap-x-88 gap-y-24'>
 				{fields.map((item) => (
-					<SettingCardField key={item.title} colon={false} title={item.title} node={item.component} />
+					<SettingCardField key={item.title} {...item} />
 				))}
+
 				{customerSettingsLoading && <Loading />}
 			</div>
 		</SettingCard>

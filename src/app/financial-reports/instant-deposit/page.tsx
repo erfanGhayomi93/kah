@@ -1,4 +1,5 @@
 import InstantDepositReports from '@/components/pages/FinancialReports/InstantDepositReports';
+import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 
 const Page: NextPage<INextProps> = () => {
@@ -6,9 +7,13 @@ const Page: NextPage<INextProps> = () => {
 };
 
 const generateMetadata = () => {
-	return {
-		title: 'گزارشات واریز آنی - کهکشان',
-	};
+	return getMetadata({
+		title: 'گزارشات واریز آنی',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

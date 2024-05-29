@@ -1,15 +1,16 @@
 'use client';
+
 import { useUserInformationQuery } from '@/api/queries/userQueries';
 import { EditFillSVG, KeySVG, MobileSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import SettingCardField from '../../../components/SettingCardField';
 import SettingCardFieldValue from '../../../components/SettingCardFieldValue';
 
-interface KahkeshanInfoProps {
+interface UserInfoProps {
 	isLoggedIn: boolean;
 }
 
-const KahkeshanInfo = ({ isLoggedIn }: KahkeshanInfoProps) => {
+const UserInfo = ({ isLoggedIn }: UserInfoProps) => {
 	const t = useTranslations();
 
 	const { data: userData } = useUserInformationQuery({
@@ -21,12 +22,12 @@ const KahkeshanInfo = ({ isLoggedIn }: KahkeshanInfoProps) => {
 		{
 			icon: <MobileSVG />,
 			title: t('settings_page.phone_number'),
-			node: <SettingCardFieldValue value={userData?.mobile || '-'} />,
+			value: <SettingCardFieldValue value={userData?.mobile || '-'} />,
 		},
 		{
 			icon: <KeySVG />,
 			title: t('settings_page.password'),
-			node: (
+			value: (
 				<span className='gap-8 flex-justify-center'>
 					<SettingCardFieldValue value='***************' />
 					<button className='text-gray-900' onClick={() => {}}>
@@ -46,4 +47,4 @@ const KahkeshanInfo = ({ isLoggedIn }: KahkeshanInfoProps) => {
 	);
 };
 
-export default KahkeshanInfo;
+export default UserInfo;

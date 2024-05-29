@@ -27,38 +27,38 @@ const BrokerInfo = () => {
 	const fields = [
 		{
 			icon: <UserBoldSVG />,
-			title: t('settings_page.name'),
-			node: <SettingCardFieldValue value={userInfo?.customerTitle || '-'} />,
+			title: `${t('settings_page.name')}:`,
+			value: <SettingCardFieldValue value={userInfo?.customerTitle || '-'} />,
 		},
 		{
 			icon: <IdentityCardSVG />,
-			title: t('settings_page.natinal_code'),
-			node: <SettingCardFieldValue value={userInfo?.nationalCode || '-'} />,
+			title: `${t('settings_page.natinal_code')}:`,
+			value: <SettingCardFieldValue value={userInfo?.nationalCode || '-'} />,
 		},
 		{
 			icon: <NoSVG width={'2.4rem'} height={'2.4rem'} />,
-			title: t('settings_page.bourse_code'),
-			node: <SettingCardFieldValue value={userInfo?.bourseCode || '-'} />,
+			title: `${t('settings_page.bourse_code')}:`,
+			value: <SettingCardFieldValue value={userInfo?.bourseCode || '-'} />,
 		},
 		{
 			icon: <ChangeNameSVG />,
-			title: t('settings_page.username'),
-			node: <SettingCardFieldValue value={userInfo?.userName || '-'} />,
+			title: `${t('settings_page.username')}:`,
+			value: <SettingCardFieldValue value={userInfo?.userName || '-'} />,
 		},
 		{
 			icon: <MobileSVG />,
-			title: t('settings_page.phone_number'),
-			node: <SettingCardFieldValue value={userInfo?.mobilePhone || '-'} />,
+			title: `${t('settings_page.phone_number')}:`,
+			value: <SettingCardFieldValue value={userInfo?.mobilePhone || '-'} />,
 		},
 		{
 			icon: <MailSVG />,
-			title: t('settings_page.email'),
-			node: <SettingCardFieldValue value={userInfo?.email || '-'} />,
+			title: `${t('settings_page.email')}:`,
+			value: <SettingCardFieldValue value={userInfo?.email || '-'} />,
 		},
 		{
 			icon: <KeySVG />,
-			title: t('settings_page.password'),
-			node: (
+			title: `${t('settings_page.password')}:`,
+			value: (
 				<span className='gap-8 flex-justify-center'>
 					<SettingCardFieldValue value='***************' />
 					<button className='text-gray-900' onClick={() => {}}>
@@ -76,7 +76,7 @@ const BrokerInfo = () => {
 							setConfirmModal({
 								confirm: { label: t('settings_page.noticed'), type: 'primary' },
 								description: t('settings_page.two_step_login_description'),
-								title: t('settings_page.two_step_login'),
+								title: `${t('settings_page.two_step_login')}:`,
 							}),
 						)
 					}
@@ -84,13 +84,13 @@ const BrokerInfo = () => {
 					<InfoCircleSVG width={'2rem'} height={'2rem'} className={'cursor-pointer text-secondary-300'} />
 				</span>
 			),
-			title: t('settings_page.two_step_login'),
-			node: <button className='rounded px-16 py-4 btn-primary'>{t('settings_page.activation')}</button>,
+			title: `${t('settings_page.two_step_login')}:`,
+			value: <button className='rounded px-16 py-4 btn-primary'>{t('settings_page.activation')}</button>,
 		},
 	];
 
 	return (
-		<div className='grid grid-cols-2 gap-y-24 gap-x-88'>
+		<div className='grid grid-cols-2 gap-x-88 gap-y-24'>
 			{fields.map((item, index) => (
 				<SettingCardField key={index} {...item} />
 			))}

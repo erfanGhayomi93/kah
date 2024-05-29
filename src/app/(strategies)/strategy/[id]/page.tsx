@@ -2,6 +2,7 @@ import { ssrRoutes } from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import Strategy from '@/components/pages/Strategies/Strategy';
+import { getMetadata } from '@/metadata';
 import { redirect } from '@/navigation';
 import type { NextPage } from 'next';
 import { getTranslations } from 'next-intl/server';
@@ -37,9 +38,10 @@ const Page: NextPage<INextStrategyProps> = async ({ params: { id } }) => {
 
 const generateMetadata = async ({ params: { id } }: INextStrategyProps) => {
 	const t = await getTranslations(id);
-	return {
-		title: `استراتژی ${t('title')} - کهکشان`,
-	};
+
+	return getMetadata({
+		title: `استراتژی ${t('title')}`,
+	});
 };
 
 export { generateMetadata };

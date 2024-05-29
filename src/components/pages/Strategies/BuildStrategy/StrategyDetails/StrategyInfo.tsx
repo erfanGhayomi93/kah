@@ -1,5 +1,3 @@
-'use client';
-
 import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -10,7 +8,7 @@ interface StrategyInfoItemProps {
 	value: React.ReactNode;
 }
 
-const StrategyDetails = () => {
+const StrategyInfo = () => {
 	const t = useTranslations('build_strategy');
 
 	return (
@@ -52,4 +50,4 @@ const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => {
 	);
 };
 
-export default StrategyDetails;
+export default StrategyInfo;
