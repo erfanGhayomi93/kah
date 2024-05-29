@@ -39,6 +39,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 		applyChangesAfterClose,
 		onReset,
 		onColumnChanged: onColumnChangedCallBack,
+		NonEditableColumns = [],
 		...props
 	}) => {
 		const dispatch = useAppDispatch();
@@ -52,7 +53,9 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 				const column = columns[i];
 				const tag = column.tag! as TManageColumnTag;
 				if (!(tag in tags)) tags[tag] = [];
-				tags[tag]?.push(column);
+				if (!NonEditableColumns.includes(column.id)) {
+					tags[tag]?.push(column);
+				}
 			}
 
 			return tags as Record<TManageColumnTag, Array<IManageColumn<string>>>;

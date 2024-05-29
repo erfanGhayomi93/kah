@@ -138,6 +138,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsProtectivePut),
+				NonEditableColumns: ['baseSymbolTitle'],
 			}),
 		);
 	};
