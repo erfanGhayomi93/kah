@@ -9,7 +9,7 @@ interface KahkeshanInfoProps {
 	isLoggedIn: boolean;
 }
 
-const AppInfo = ({ isLoggedIn }: KahkeshanInfoProps) => {
+const KahkeshanInfo = ({ isLoggedIn }: KahkeshanInfoProps) => {
 	const t = useTranslations();
 
 	const { data: userData } = useUserInformationQuery({
@@ -46,4 +46,4 @@ const AppInfo = ({ isLoggedIn }: KahkeshanInfoProps) => {
 	);
 };
 
-export default AppInfo;
+export default KahkeshanInfo;
