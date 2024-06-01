@@ -84,11 +84,7 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 		[],
 	);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default ChangeBrokerReportsTable;

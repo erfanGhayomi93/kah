@@ -154,6 +154,7 @@ const config: Config = {
 			'80': '8.0rem',
 			'88': '8.8rem',
 			'96': '9.6rem',
+			'104': '10.4rem',
 		},
 
 		transitionProperty: {
