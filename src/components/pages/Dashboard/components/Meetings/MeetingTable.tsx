@@ -4,7 +4,6 @@ import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -28,18 +27,22 @@ const MeetingTable = ({ type }: MeetingTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<Dashboard.GetAnnualReport.Data>>>(
 		() => [
 			{
+				colId: 'symbol_title',
 				headerName: t('home.symbol_title'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.symbolISIN),
-				valueFormatter: (row) => row.symbolTitle ?? '−',
+				valueGetter: (row) => row.symbolTitle ?? '−',
 			},
 			{
+				colId: 'date',
 				headerName: t('home.date'),
-				valueFormatter: (row) => dateFormatter(row.dateTime, 'date'),
+				valueGetter: (row) => new Date(row.dateTime).getTime(),
+				valueType: 'date',
 			},
 			{
+				colId: 'title',
 				headerName: t('home.title'),
-				valueFormatter: (row) => row.title,
+				valueGetter: (row) => row.title,
 			},
 		],
 		[],
@@ -49,7 +52,7 @@ const MeetingTable = ({ type }: MeetingTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable rowData={data} columnDefs={columnDefs} />;
+	return <LightweightTable rowHeight={40} headerHeight={40} rowData={data} columnDefs={columnDefs} />;
 };
 
 export default MeetingTable;

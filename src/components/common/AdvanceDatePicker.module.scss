@@ -14,14 +14,11 @@
 	border-color: var(--rg-dp-border-color);
 	width: 100%;
 	max-width: 100%;
+	border-color: transparent;
 
 	&.nonBorder {
 		border-color: transparent;
 		box-shadow: 0px 2px 11px 0px rgba(0, 0, 0, 0.03) !important;
-	}
-
-	&.opened {
-		border-color: var(--rg-dp-active-border-color);
 	}
 }
 
@@ -33,14 +30,6 @@
 	width: 100%;
 	height: var(--rg-dp-height);
 	border-radius: theme('borderRadius.DEFAULT');
-}
-
-.labels {
-	flex: 1;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	gap: 4px;
 }
 
 .icon {

@@ -1,5 +1,6 @@
 'use client';
 
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultChangeBrokerReportsColumns, initialChangeBrokerReportsFilters } from '@/constants';
@@ -116,9 +117,9 @@ const ChangeBrokerReports = () => {
 	};
 
 	useEffect(() => {
-		if (!isLoggedIn || !brokerIsSelected) {
+		ipcMain.handle('broker:logged_out', () => {
 			router.push('/');
-		}
+		});
 	}, []);
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
@@ -126,7 +127,7 @@ const ChangeBrokerReports = () => {
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
 			<div className='flex-justify-between'>
-				<span className='text-xl font-medium text-gray-900'>{t('change_broker_reports_page.title_page')}</span>
+				<span className='text-xl font-medium text-gray-700'>{t('change_broker_reports_page.title_page')}</span>
 				<Toolbar
 					filtersCount={filtersCount}
 					onShowFilters={onShowFilters}

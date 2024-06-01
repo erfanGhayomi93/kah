@@ -1,11 +1,4 @@
-import {
-	ArrowLeftSVG,
-	ArrowRightSVG,
-	CalendarSVG,
-	DoubleArrowLeftSVG,
-	DoubleArrowRightSVG,
-	XSVG,
-} from '@/components/icons';
+import { ArrowRightSVG, CalendarSVG, DoubleArrowLeftSVG, DoubleArrowRightSVG, XSVG } from '@/components/icons';
 import { getDateMilliseconds, weekDaysName, yearMonthsName } from '@/constants';
 import dayjs from '@/libs/dayjs';
 import { cn, isAfter, isBefore, isBetween, isSameOrAfter, isSameOrBefore } from '@/utils/helpers';
@@ -290,54 +283,39 @@ const AdvancedDatepicker = ({
 				nonBorder && styles.nonBorder,
 			)}
 		>
-			<div className={clsx(styles.container, classes?.container)}>
-				<div className={clsx(styles.labels, classes?.labels)}>
-					{fixedPlaceholder && (
-						<span
-							className={cn(
-								'dark:text-dark-gray-800 text-base text-gray-800',
-								inputValue && 'dark:text-dark-gray-600 text-gray-600',
-							)}
-						>
-							{fixedPlaceholder}
-						</span>
-					)}
-					<input
-						type='text'
-						ref={inputRef}
-						className={clsx(
-							styles.input,
-							visibleCalendar && [styles.active, classes?.active],
-							classes?.input,
-						)}
-						placeholder={placeholder || 'ــ / ــ / ــــ'}
-						value={focusing ? inputValue : valueAsJalali}
-						onKeyDown={onKeydown}
-						onChange={(e) => setInputValue(dateFormatter(e.target.value))}
-						onFocus={(e) => {
-							e.stopPropagation();
-							openCalendar();
-						}}
-						onBlur={(e) => onBlurInput(e.target.value)}
-						onClick={() => {
-							if (focusing && !visibleCalendar) setVisibleCalendar(true);
-						}}
-						data-testid={`${dataTestId}_input`}
-					/>
+			<div className={clsx(styles.container, classes?.container, 'relative input-group')}>
+				<span className={cn(' flexible-placeholder active')}>{fixedPlaceholder}</span>
 
-					<span
-						tabIndex={-1}
-						role='button'
-						onClick={onClickIcon}
-						className={clsx(styles.icon, classes?.icon)}
-					>
-						{!inputValue ? (
-							<CalendarSVG width='1.6rem' height='1.6rem' />
-						) : (
-							<XSVG width='1.6rem' height='1.6rem' />
-						)}
-					</span>
-				</div>
+				<fieldset className={cn('flexible-fieldset  active')}>
+					<legend>{fixedPlaceholder}</legend>
+				</fieldset>
+
+				<input
+					type='text'
+					ref={inputRef}
+					className={clsx(styles.input, visibleCalendar && [styles.active, classes?.active], classes?.input)}
+					placeholder={placeholder || 'ــ / ــ / ــــ'}
+					value={focusing ? inputValue : valueAsJalali}
+					onKeyDown={onKeydown}
+					onChange={(e) => setInputValue(dateFormatter(e.target.value))}
+					onFocus={(e) => {
+						e.stopPropagation();
+						openCalendar();
+					}}
+					onBlur={(e) => onBlurInput(e.target.value)}
+					onClick={() => {
+						if (focusing && !visibleCalendar) setVisibleCalendar(true);
+					}}
+					data-testid={`${dataTestId}_input`}
+				/>
+
+				<span tabIndex={-1} role='button' onClick={onClickIcon} className={clsx(styles.icon, classes?.icon)}>
+					{!inputValue ? (
+						<CalendarSVG width='1.6rem' height='1.6rem' />
+					) : (
+						<XSVG width='1.6rem' height='1.6rem' />
+					)}
+				</span>
 			</div>
 
 			{visibleCalendar &&
@@ -532,7 +510,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 							type='button'
 							data-testid={`${dataTestId}_prev_year`}
 						>
-							<DoubleArrowLeftSVG width='1.6rem' height='1.6rem' />
+							<DoubleArrowRightSVG width='1.6rem' height='1.6rem' />
 						</button>
 
 						<button
@@ -570,8 +548,9 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 							onClick={() => onEditDate('add', 'month')}
 							type='button'
 							data-testid={`${dataTestId}_next_month`}
+							className='rotate-180'
 						>
-							<ArrowLeftSVG width='1.6rem' height='1.6rem' />
+							<ArrowRightSVG width='1.6rem' height='1.6rem' />
 						</button>
 
 						<button
@@ -580,7 +559,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 							type='button'
 							data-testid={`${dataTestId}_next_year`}
 						>
-							<DoubleArrowRightSVG width='1.6rem' height='1.6rem' />
+							<DoubleArrowLeftSVG width='1.6rem' height='1.6rem' />
 						</button>
 					</div>
 				</div>

@@ -60,7 +60,7 @@ const SymbolContracts = ({
 		}
 	};
 
-	const onContractsAdded = (contracts: Option.Root[]) => {
+	const handleContracts = (contracts: Option.Root[]) => {
 		try {
 			let i = 0;
 			const newContracts = baseSymbolContracts.map<Saturn.ContentOption | null>((item) => {
@@ -93,19 +93,18 @@ const SymbolContracts = ({
 	};
 
 	const addNewContract = () => {
+		const initialSelectedContracts = baseSymbolContracts
+			.filter((item) => item !== null)
+			.map((symbol) => symbol!.symbolISIN);
+
 		dispatch(
 			setSelectSymbolContractsModal({
-				symbol: {
-					symbolTitle: baseSymbol.symbolTitle,
-					symbolISIN: baseSymbol.symbolISIN,
-				},
-				initialSelectedContracts: (
-					baseSymbolContracts.filter((item) => item !== null) as Saturn.ContentOption[]
-				).map((item) => item.symbolISIN),
-				canChangeBaseSymbol: false,
-				canSendBaseSymbol: false,
-				maxContracts: 4,
-				callback: onContractsAdded,
+				initialBaseSymbolISIN: baseSymbol.symbolISIN,
+				initialSelectedContracts,
+				suppressBaseSymbolChange: true,
+				suppressSendBaseSymbol: true,
+				maxContractsLength: 4,
+				callback: handleContracts,
 			}),
 		);
 	};

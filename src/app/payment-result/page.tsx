@@ -1,7 +1,20 @@
 import PaymentResultPage from '@/components/pages/paymentResultPage';
+import { getMetadata } from '@/metadata';
 
-const PaymentResult = () => {
+const Page = () => {
 	return <PaymentResultPage />;
 };
 
-export default PaymentResult;
+const generateMetadata = () => {
+	return getMetadata({
+		title: 'نتیجه تراکنش',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
+};
+
+export { generateMetadata };
+
+export default Page;

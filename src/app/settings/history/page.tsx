@@ -1,11 +1,19 @@
 import History from '@/components/pages/Settings/tabs/History';
+import { getMetadata } from '@/metadata';
+import type { NextPage } from 'next';
 
-const Page = () => <History />;
+const Page: NextPage<INextProps> = () => {
+	return <History />;
+};
 
 const generateMetadata = () => {
-	return {
-		title: 'سابقه ورود و خروج - کهکشان',
-	};
+	return getMetadata({
+		title: 'سابقه ورود و خروج',
+		robots: {
+			follow: false,
+			index: false,
+		},
+	});
 };
 
 export { generateMetadata };

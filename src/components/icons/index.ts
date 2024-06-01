@@ -1,7 +1,9 @@
 import AdvantagesSVG from './advantages.svg';
 import Agreement from './agreement.svg';
+import AngleDownSVG from './angle-down.svg';
 import AngleLeftCircleSVG from './angle-left-circle.svg';
 import AngleLeftSVG from './angle-left.svg';
+import AngleUpSVG from './angle-up.svg';
 import ArrowDownSVG from './arrow-down.svg';
 import ArrowLeftSVG from './arrow-left.svg';
 import ArrowRightSVG from './arrow-right.svg';
@@ -14,6 +16,7 @@ import BookmarkSVG from './bookmark.svg';
 import BullishMarketSVG from './bullish-market.svg';
 import CalculatorSVG from './calculator.svg';
 import CalendarSVG from './calendar.svg';
+import CameraSVG from './camera.svg';
 import CandleChartSVG from './candle-chart.svg';
 import ChainSVG from './chain.svg';
 import ChangeBrokerSVG from './change-broker.svg';
@@ -48,6 +51,8 @@ import GalaxySVG from './galaxy.svg';
 import GrowDownSVG from './grow-down.svg';
 import GrowUpSVG from './grow-up.svg';
 import GuaranteeSVG from './guarantee.svg';
+import HandWriteSVG from './handWrite.svg';
+import HintSVG from './hint.svg';
 import HomeSVG from './home.svg';
 import IdentityCardSVG from './identity-card.svg';
 import InfoCircleOutlineSVG from './info-circle-outline.svg';
@@ -57,6 +62,7 @@ import KeySVG from './key.svg';
 import LinearChartSVG from './linear-chart.svg';
 import LockSVG from './lock.svg';
 import LogoutSVG from './logout.svg';
+import LongshotSVG from './longshot.svg';
 import MailSVG from './mail.svg';
 import ManageSVG from './manage.svg';
 import MarketMapSVG from './market-map.svg';
@@ -87,6 +93,7 @@ import PlusSquareSVG from './plus-square.svg';
 import PlusSVG from './plus.svg';
 import ReceptionSVG from './reception.svg';
 import RefreshSVG from './refresh.svg';
+import ReloadSVG from './reload.svg';
 import ReportSVG from './report.svg';
 import RhombicCircleSVG from './rhombic-circle.svg';
 import SaturnSVG from './saturn.svg';
@@ -122,8 +129,10 @@ import XSVG from './x.svg';
 export {
 	AdvantagesSVG,
 	Agreement,
+	AngleDownSVG,
 	AngleLeftCircleSVG,
 	AngleLeftSVG,
+	AngleUpSVG,
 	ArrowDownSVG,
 	ArrowLeftSVG,
 	ArrowRightSVG,
@@ -136,6 +145,7 @@ export {
 	BullishMarketSVG,
 	CalculatorSVG,
 	CalendarSVG,
+	CameraSVG,
 	CandleChartSVG,
 	ChainSVG,
 	ChangeBrokerSVG,
@@ -170,6 +180,8 @@ export {
 	GrowDownSVG,
 	GrowUpSVG,
 	GuaranteeSVG,
+	HandWriteSVG,
+	HintSVG,
 	HomeSVG,
 	IdentityCardSVG,
 	InfoCircleOutlineSVG,
@@ -179,6 +191,7 @@ export {
 	LinearChartSVG,
 	LockSVG,
 	LogoutSVG,
+	LongshotSVG,
 	MailSVG,
 	ManageSVG,
 	MarketMapSVG,
@@ -209,6 +222,7 @@ export {
 	PlusSquareSVG,
 	ReceptionSVG,
 	RefreshSVG,
+	ReloadSVG,
 	ReportSVG,
 	RhombicCircleSVG,
 	SaturnSVG,

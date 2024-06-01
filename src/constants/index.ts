@@ -253,6 +253,26 @@ export const initialDashboardGrid: IDashboardGrid[] = [
 	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 16 },
 ];
 
+export const initialDashboardGridState: Record<TDashboardSections, boolean> = {
+	best: true,
+	compare_transaction_value: true,
+	custom: true,
+	due_dates: true,
+	individual_and_legal: true,
+	market_state: true,
+	market_view: true,
+	meetings: true,
+	new_and_old: true,
+	open_positions_process: true,
+	option_contracts: true,
+	option_market_process: true,
+	option_trades_value: true,
+	price_changes_watchlist: true,
+	recent_activities: true,
+	top_base_assets: true,
+	user_progress_bar: true,
+};
+
 export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
 	symbols: [],
 	type: [],
@@ -278,7 +298,7 @@ export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
-	date: 'dates.custom',
+	date: 'dates.year',
 	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	fromPrice: 0,
@@ -292,7 +312,7 @@ export const initialInstantDepositReportsFilters: InstantDepositReports.IInstant
 	pageSize: 25,
 	toPrice: 0,
 	fromPrice: 0,
-	date: 'dates.month',
+	date: 'dates.year',
 	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	providers: [],
@@ -302,10 +322,10 @@ export const initialInstantDepositReportsFilters: InstantDepositReports.IInstant
 export const initialDepositWithReceiptReportsFilters: DepositWithReceiptReports.DepositWithReceiptReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	status: [],
-	date: 'dates.month',
 	toPrice: 0,
 	fromPrice: 0,
 	receiptNumber: '',
@@ -315,10 +335,10 @@ export const initialDepositWithReceiptReportsFilters: DepositWithReceiptReports.
 export const initialWithdrawalCashReportsFilters: WithdrawalCashReports.WithdrawalCashReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	status: [],
-	date: 'dates.month',
 	toPrice: 0,
 	fromPrice: 0,
 	banks: [],
@@ -328,8 +348,8 @@ export const initialChangeBrokerReportsFilters: ChangeBrokerReports.IChangeBroke
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
-	date: 'dates.month',
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	status: [],
 	attachment: null,
@@ -338,8 +358,8 @@ export const initialChangeBrokerReportsFilters: ChangeBrokerReports.IChangeBroke
 export const initialFreezeUnFreezeReportsFilters: FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	date: 'dates.month',
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	requestState: null,
 	symbol: null,
@@ -349,9 +369,9 @@ export const initialCashSettlementReportsFilters: CashSettlementReports.ICashSet
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
-	date: 'dates.month',
 	contractStatus: 'All',
 	settlementRequestType: [],
 	requestStatus: [],
@@ -361,9 +381,9 @@ export const initialPhysicalSettlementReportsFilters: PhysicalSettlementReports.
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
-	date: 'dates.month',
 	contractStatus: 'All',
 	settlementRequestType: [],
 	requestStatus: [],
@@ -373,8 +393,8 @@ export const initialOrdersReportsFilters: OrdersReports.IOrdersReportsFilters = 
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
-	date: 'dates.month',
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	side: 'All',
 	status: [],
@@ -384,8 +404,8 @@ export const initialTradesReportsFilters: TradesReports.ITradesReportsFilters = 
 	pageNumber: 1,
 	pageSize: 25,
 	symbol: null,
-	date: 'dates.month',
-	fromDate: new Date().getTime() - DateAsMillisecond.Year * 3,
+	date: 'dates.year',
+	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
 	side: 'All',
 };
@@ -394,7 +414,7 @@ export const defaultTransactionColumns: Transaction.ITransactionColumnsState[] =
 	{
 		id: 'id',
 		title: 'ردیف',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'date',
@@ -437,7 +457,7 @@ export const defaultInstantDepositReportsColumn: InstantDepositReports.TInstantD
 	{
 		id: 'id',
 		title: 'شماره ردیف',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'saveDate',
@@ -466,49 +486,50 @@ export const defaultInstantDepositReportsColumn: InstantDepositReports.TInstantD
 	},
 ];
 
-export const defaultDepositWithReceiptReportsColumn: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[] = [
-	{
-		id: 'id',
-		title: 'ردیف',
-		hidden: false,
-	},
-	{
-		id: 'receiptDate',
-		title: 'زمان',
-		hidden: false,
-	},
-	{
-		id: 'providerType',
-		title: 'بانک کارگزاری',
-		hidden: false,
-	},
-	{
-		id: 'receiptNumber',
-		title: 'شماره فیش',
-		hidden: false,
-	},
-	{
-		id: 'amount',
-		title: 'مبلغ',
-		hidden: false,
-	},
-	{
-		id: 'state',
-		title: 'وضعیت',
-		hidden: false,
-	},
-	{
-		id: 'action',
-		title: 'عملیات',
-		hidden: false,
-	},
-];
+export const defaultDepositWithReceiptReportsColumn: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[] =
+	[
+		{
+			id: 'id',
+			title: 'ردیف',
+			hidden: false,
+		},
+		{
+			id: 'receiptDate',
+			title: 'زمان',
+			hidden: false,
+		},
+		{
+			id: 'providerType',
+			title: 'بانک کارگزاری',
+			hidden: false,
+		},
+		{
+			id: 'receiptNumber',
+			title: 'شماره فیش',
+			hidden: false,
+		},
+		{
+			id: 'amount',
+			title: 'مبلغ',
+			hidden: false,
+		},
+		{
+			id: 'state',
+			title: 'وضعیت',
+			hidden: false,
+		},
+		{
+			id: 'action',
+			title: 'عملیات',
+			hidden: false,
+		},
+	];
 
 export const defaultWithdrawalCashReportsColumn: WithdrawalCashReports.TWithdrawalCashReportsColumnsState[] = [
 	{
 		id: 'id',
 		title: 'ردیف',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'saveDate',
@@ -538,8 +559,8 @@ export const defaultWithdrawalCashReportsColumn: WithdrawalCashReports.TWithdraw
 	{
 		id: 'action',
 		title: 'عملیات',
-		hidden: false
-	}
+		hidden: false,
+	},
 ];
 
 export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBrokerReportsColumnsState[] = [
@@ -596,11 +617,11 @@ export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeU
 		title: 'وضعیت',
 		hidden: false,
 	},
-	// {
-	// 	id: 'action',
-	// 	title: 'عملیات',
-	// 	hidden: false,
-	// },
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false,
+	},
 ];
 
 export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSettlementReportsColumnsState[] = [
@@ -611,7 +632,7 @@ export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSet
 	},
 	{
 		id: 'side',
-		title: 'موقعیت',
+		title: 'سمت',
 		hidden: false,
 	},
 	{
@@ -675,7 +696,7 @@ export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.
 		},
 		{
 			id: 'side',
-			title: 'موقعیت',
+			title: 'سمت',
 			hidden: false,
 		},
 		{
@@ -832,18 +853,18 @@ export const defaultTradesReportsColumns: TradesReports.ITradesReportsColumnsSta
 	{
 		id: 'totalQuota',
 		title: 'کارمزد',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'total',
 		title: 'ارزش معامله',
-		hidden: false
+		hidden: false,
 	},
 	{
 		id: 'validity',
 		title: 'اعتبار',
 		hidden: false,
-	}
+	},
 ];
 
 export const weekDaysName = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];

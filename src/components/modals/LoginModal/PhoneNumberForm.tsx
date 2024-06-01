@@ -23,7 +23,7 @@ const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 	} = useForm<Inputs>({ mode: 'onChange' });
 
 	const onSubmit: SubmitHandler<Inputs> = ({ phoneNumber }) =>
-		new Promise<void>((resolve, reject) => {
+		new Promise<void>((resolve) => {
 			sendOTP(phoneNumber)
 				.catch((e) => {
 					const { message } = e as Error;

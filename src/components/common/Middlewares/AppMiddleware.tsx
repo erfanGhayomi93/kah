@@ -6,9 +6,9 @@ import LocalstorageInstance from '@/classes/Localstorage';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
+import { useBrokerQueryClient } from '@/hooks';
 import { versionParser } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 interface AppMiddlewareProps {
@@ -23,7 +23,7 @@ const getStates = createSelector(
 );
 
 const AppMiddleware = ({ children }: AppMiddlewareProps) => {
-	const queryClient = useQueryClient();
+	const bQueryClient = useBrokerQueryClient();
 
 	const { isLoggedIn } = useAppSelector(getStates);
 
@@ -33,22 +33,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 	});
 
 	const resetQueryClient = () => {
-		const keys = [
-			['userInfoQuery'],
-			['userRemainQuery'],
-			['userStatusQuery'],
-			['brokerOrdersCountQuery'],
-			['openOrdersQuery'],
-			['openOrdersQuery'],
-			['executedOrdersQuery'],
-			['draftOrdersQuery'],
-			['optionOrdersQuery'],
-			['commissionsQuery'],
-		];
-
-		keys.forEach((queryKey) => {
-			queryClient.setQueryData(queryKey, null);
-		});
+		bQueryClient.clear();
 	};
 
 	useEffect(() => {
@@ -57,13 +42,14 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 
 	useEffect(() => {
 		try {
-			const appVersion = process.env.NEXT_PUBLIC_APP_VERSION;
-			if (typeof appVersion !== 'string') return;
+			const lsVersion = process.env.NEXT_PUBLIC_LOCAL_STORAGE_VERSION;
+			if (typeof lsVersion !== 'string') return;
 
-			const userAppVersion = LocalstorageInstance.get('app_version', appVersion);
+			const userLsVersion = LocalstorageInstance.get('ls_version', lsVersion);
 
-			if (versionParser(appVersion) !== versionParser(userAppVersion)) {
+			if (versionParser(lsVersion) !== versionParser(userLsVersion)) {
 				const CLEARABLE_KEYS = [
+					'app_version',
 					'conversion_strategy_columns',
 					'bear_put_spread_columns',
 					'bull_call_spread_strategy_columns',
@@ -73,6 +59,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 					'Long_straddle_strategy_columns',
 					'protective_put_strategy_columns',
 				];
+
 				for (let i = 0; i < CLEARABLE_KEYS.length; i++) {
 					LocalstorageInstance.remove(CLEARABLE_KEYS[i]);
 				}

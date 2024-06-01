@@ -1,5 +1,6 @@
 'use client';
 
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultPhysicalSettlementReportsColumns, initialCashSettlementReportsFilters } from '@/constants';
@@ -40,9 +41,12 @@ const PhysicalSettlementReports = () => {
 	const router = useRouter();
 
 	const { inputs, setFieldValue, setFieldsValue } =
-		useInputs<CashSettlementReports.ICashSettlementReportsFilters>(initialCashSettlementReportsFilters);
+		useInputs<PhysicalSettlementReports.IPhysicalSettlementReportsFilters>(initialCashSettlementReportsFilters);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('physical_settlement_column', defaultPhysicalSettlementReportsColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'physical_settlement_column',
+		defaultPhysicalSettlementReportsColumns,
+	);
 
 	const { setDebounce } = useDebounce();
 
@@ -58,7 +62,6 @@ const PhysicalSettlementReports = () => {
 		if (inputs.contractStatus) params.contractStatus = inputs.contractStatus;
 		if (inputs.requestStatus) params.requestStatus = inputs.requestStatus;
 		if (inputs.settlementRequestType) params.settlementRequestType = inputs.settlementRequestType;
-
 
 		dispatch(setPhysicalSettlementReportsFiltersModal(params));
 	};
@@ -96,9 +99,9 @@ const PhysicalSettlementReports = () => {
 	};
 
 	useEffect(() => {
-		if (!isLoggedIn || !brokerIsSelected) {
+		ipcMain.handle('broker:logged_out', () => {
 			router.push('/');
-		}
+		});
 	}, []);
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
@@ -118,7 +121,6 @@ const PhysicalSettlementReports = () => {
 			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					filters={inputs}
 					setFilters={setFieldValue}
 					setFieldsValue={setFieldsValue}

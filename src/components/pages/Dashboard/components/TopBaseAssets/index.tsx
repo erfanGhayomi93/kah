@@ -8,7 +8,7 @@ const TopBaseAssets = () => {
 	const t = useTranslations();
 
 	return (
-		<Section id='top_base_assets' title={t('home.top_base_assets')}>
+		<Section id='top_base_assets' title={t('home.top_base_assets')} info={t('tooltip.top_base_assets_section')}>
 			<TopBaseAssetsTable />
 		</Section>
 	);

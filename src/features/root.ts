@@ -8,10 +8,10 @@ import uiSlice from './slices/uiSlice';
 import userSlice from './slices/userSlice';
 
 const rootReducer = combineReducers({
+	user: userSlice,
 	ui: uiSlice,
 	modal: modalSlice,
 	panel: panelSlice,
-	user: userSlice,
 	broker: brokerSlice,
 	table: tableSlice,
 	tab: tabSlice,

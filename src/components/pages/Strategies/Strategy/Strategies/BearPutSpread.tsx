@@ -4,18 +4,18 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsBearPutSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setAnalyzeModal, setDescriptionModal, setManageColumnsModal } from '@/features/slices/modalSlice';
+import {  setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
+import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
-import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const BearPutSpreadDescription = dynamic(() => import('../Descriptions/BearPutSpreadDescription'), {
 	ssr: false,
@@ -64,27 +64,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					type: 'option',
 					id: uuidv4(),
 					symbol: {
-						symbolTitle: data.lspSymbolTitle,
-						symbolISIN: data.lspSymbolISIN,
-						optionType: 'put',
-						baseSymbolPrice: data.baseLastTradedPrice,
-						historicalVolatility: data.historicalVolatility,
-					},
-					contractSize: data.contractSize,
-					price: data.lspPremium || 1,
-					quantity: 1,
-					settlementDay: data.contractEndDate,
-					strikePrice: data.lspStrikePrice,
-					side: 'buy',
-					marketUnit: data.marketUnit,
-					requiredMargin: {
-						value: data.lspRequiredMargin,
-					},
-				},
-				{
-					type: 'option',
-					id: uuidv4(),
-					symbol: {
 						symbolTitle: data.hspSymbolTitle,
 						symbolISIN: data.hspSymbolISIN,
 						optionType: 'put',
@@ -96,10 +75,31 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					quantity: 1,
 					settlementDay: data.contractEndDate,
 					strikePrice: data.hspStrikePrice,
-					side: 'sell',
+					side: 'buy',
 					marketUnit: data.marketUnit,
 					requiredMargin: {
 						value: data.hspRequiredMargin,
+					},
+				},
+				{
+					type: 'option',
+					id: uuidv4(),
+					symbol: {
+						symbolTitle: data.lspSymbolTitle,
+						symbolISIN: data.lspSymbolISIN,
+						optionType: 'put',
+						baseSymbolPrice: data.baseLastTradedPrice,
+						historicalVolatility: data.historicalVolatility,
+					},
+					contractSize: data.contractSize,
+					price: data.lspPremium || 1,
+					quantity: 1,
+					settlementDay: data.contractEndDate,
+					strikePrice: data.lspStrikePrice,
+					side: 'sell',
+					marketUnit: data.marketUnit,
+					requiredMargin: {
+						value: data.lspRequiredMargin,
 					},
 				},
 			];
@@ -138,13 +138,13 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		}));
 	};
 
-	const showColumnsPanel = () => {
+	const showColumnsManagementModal = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: initialColumnsBearPutSpread,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsBearPutSpread),
 			}),
 		);
@@ -453,20 +453,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		[],
 	);
 
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
-
 	return (
 		<>
 			<StrategyDetails
@@ -481,7 +467,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					onManageColumns={showColumnsPanel}
+					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
@@ -496,6 +482,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					fetchNextPage={goToTheNextPage}
 					pageNumber={inputs.pageNumber}
 					pageSize={inputs.pageSize}
+					columnsVisibility={columnsVisibility}
 				/>
 			</div>
 		</>

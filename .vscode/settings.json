@@ -16,7 +16,10 @@
 		"pushengine",
 		"Scholes",
 		"toman",
-		"کدال"
+		"upsert",
+		"آپشن",
+		"کدال",
+		"نکول"
 	],
 	"tailwindCSS.rootFontSize": 10,
 	"prettier.printWidth": 120,

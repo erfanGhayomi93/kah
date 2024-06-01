@@ -7,54 +7,51 @@ import { useTranslations } from 'next-intl';
 import { useMemo, type FC } from 'react';
 
 interface historyDrawalProps {
-	onCloseModal: () => void
+	onCloseModal: () => void;
 }
 
-
-
 export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
-
 	const t = useTranslations();
 
 	const { data } = useDrawalHistoryQuery({
-		queryKey: ['drawalHistoryOnline']
+		queryKey: ['drawalHistoryOnline'],
 	});
 
-	const columnDefs = useMemo<Array<IColDef<Payment.IDrawalHistoryList>>>(() => [
-		/* موعد پرداخت */
-		{
-			headerName: t('withdrawal_modal.withdrawal_date_column'),
-			valueFormatter: (row) => dateFormatter(row.requestDate),
-			headerClass: '!bg-white',
-		},
-		/* مبلغ */
-		{
-			headerName: t('withdrawal_modal.amount_column'),
-			valueFormatter: (row) => sepNumbers(String(row.requestAmount)),
-			headerClass: '!bg-white',
-		},
-		/* وضعیت */
-		{
-			headerName: t('withdrawal_modal.status_column'),
-			valueFormatter: (row) => t('deposit_modal.' + 'state_' + row.state),
-			headerClass: '!bg-white',
-			cellClass: ''
-		}
-	], []);
-
+	const columnDefs = useMemo<Array<IColDef<Payment.IDrawalHistoryList>>>(
+		() => [
+			/* موعد پرداخت */
+			{
+				colId: 'requestDate',
+				headerName: t('withdrawal_modal.withdrawal_date_column'),
+				valueGetter: (row) => dateFormatter(row.requestDate),
+				headerClass: '!bg-white',
+			},
+			/* مبلغ */
+			{
+				colId: 'requestAmount',
+				headerName: t('withdrawal_modal.amount_column'),
+				valueGetter: (row) => sepNumbers(String(row.requestAmount)),
+				headerClass: '!bg-white',
+			},
+			/* وضعیت */
+			{
+				colId: 'state',
+				headerName: t('withdrawal_modal.status_column'),
+				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
+				headerClass: '!bg-white',
+			},
+		],
+		[],
+	);
 
 	return (
-		<div className="h-full pr-24 flex flex-column">
-			<div className="flex-1 rounded-sm shadow-card p-8">
-				<LightweightTable
-					rowData={data || []}
-					columnDefs={columnDefs}
-					className="bg-white"
-				/>
+		<div className='flex h-full pr-24 flex-column'>
+			<div className='flex-1 rounded-sm p-8 shadow-card'>
+				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
 			</div>
 
 			<Link
-				className='h-48 text-info rounded w-full font-medium gap-8 flex-justify-center'
+				className='h-48 w-full gap-8 rounded font-medium text-info flex-justify-center'
 				href={'/financial-reports/withdrawal-cash'}
 				onClick={() => onCloseModal()}
 			>

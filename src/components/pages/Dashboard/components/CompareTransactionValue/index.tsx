@@ -29,6 +29,7 @@ const CompareTransactionValue = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='compare_transaction_value'
 			title={t('home.compare_transaction_value')}
+			info={t('tooltip.compare_transaction_value_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}

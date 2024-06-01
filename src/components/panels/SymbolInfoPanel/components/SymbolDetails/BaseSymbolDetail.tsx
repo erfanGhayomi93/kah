@@ -130,7 +130,7 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 					width='1.4rem'
 					height='1.4rem'
 					className='transition-transform'
-					style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }}
+					style={{ transform: `rotate(${isExpand ? 0 : 180}deg)` }}
 				/>
 			</button>
 		</div>

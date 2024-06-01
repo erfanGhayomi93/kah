@@ -66,7 +66,11 @@ const initialState: ModalState = {
 	// برداشت وجه
 	withdrawal: null,
 
+	// فریر و رفع فریز
 	freeze: null,
+
+	// تسویه اختیار
+	optionSettlement: null,
 
 	// آنالیز
 	analyze: null,
@@ -111,6 +115,9 @@ const initialState: ModalState = {
 	coveredCallFilters: null,
 	// تایید توافق‌نامه
 	acceptAgreement: null,
+
+	// تنظیمات ستون
+	manageColumns: null,
 };
 
 const modalSlice = createSlice({
@@ -159,20 +166,6 @@ const modalSlice = createSlice({
 
 		setSelectSymbolContractsModal: (state, { payload }: PayloadAction<ModalState['selectSymbolContracts']>) => {
 			state.selectSymbolContracts = payload;
-		},
-
-		updateSelectSymbolContractsModal: (
-			state,
-			{ payload }: PayloadAction<Partial<ModalState['selectSymbolContracts']>>,
-		) => {
-			const prev = {
-				...state.selectSymbolContracts,
-				...payload,
-			};
-
-			if (state.selectSymbolContracts !== null) {
-				state.selectSymbolContracts = prev as ModalState['selectSymbolContracts'];
-			}
 		},
 
 		setAddSaturnTemplateModal: (state, { payload }: PayloadAction<ModalState['addSaturnTemplate']>) => {
@@ -224,6 +217,10 @@ const modalSlice = createSlice({
 
 		setFreezeModal: (state, { payload }: PayloadAction<ModalState['freeze']>) => {
 			state.freeze = payload;
+		},
+
+		setOptionSettlementModal: (state, { payload }: PayloadAction<ModalState['optionSettlement']>) => {
+			state.optionSettlement = payload;
 		},
 
 		setAnalyzeModal: (state, { payload }: PayloadAction<ModalState['analyze']>) => {
@@ -302,6 +299,10 @@ const modalSlice = createSlice({
 		setCoveredCallFiltersModal: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
 			state.coveredCallFilters = payload;
 		},
+
+		setManageColumnsModal: (state, { payload }: PayloadAction<ModalState['manageColumns']>) => {
+			state.manageColumns = payload;
+		},
 	},
 });
 
@@ -328,9 +329,9 @@ export const {
 	setWithdrawalModal,
 	setDepositModal,
 	setFreezeModal,
+	setOptionSettlementModal,
 	setDescriptionModal,
 	setAnalyzeModal,
-	updateSelectSymbolContractsModal,
 	setTransactionsFiltersModal,
 	setInstantDepositReportsFiltersModal,
 	setDepositWithReceiptReportsFiltersModal,
@@ -344,6 +345,7 @@ export const {
 	setCreateStrategyModal,
 	setCoveredCallFiltersModal,
 	setAcceptAgreementModal,
+	setManageColumnsModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -365,6 +367,7 @@ export const getManageOptionWatchlistListModal = (state: RootState) => state.mod
 export const getAddSymbolToWatchlistModal = (state: RootState) => state.modal.addSymbolToWatchlist;
 export const getAnalyzeModal = (state: RootState) => state.modal.analyze;
 export const getDescriptionModal = (state: RootState) => state.modal.description;
+export const getOptionSettlementModal = (state: RootState) => state.modal.optionSettlement;
 export const getTransactionsFiltersModal = (state: RootState) => state.modal.transactionsFilters;
 export const getInstantDepositReportsFiltersModal = (state: RootState) => state.modal.instantDepositReportsFilters;
 export const getDepositWithReceiptReportsFiltersModal = (state: RootState) =>

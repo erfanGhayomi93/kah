@@ -1,5 +1,6 @@
 'use client';
 
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultTradesReportsColumns, initialTradesReportsFilters } from '@/constants';
@@ -43,7 +44,10 @@ const TradesReports = () => {
 	const { inputs, setFieldValue, setFieldsValue } =
 		useInputs<TradesReports.ITradesReportsFilters>(initialTradesReportsFilters);
 
-	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('trade_reports_column', defaultTradesReportsColumns);
+	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
+		'trade_reports_column',
+		defaultTradesReportsColumns,
+	);
 
 	const { setDebounce } = useDebounce();
 
@@ -90,7 +94,7 @@ const TradesReports = () => {
 			downloadFileQueryParams(
 				urls.OrderExportTrades,
 				`trades-history-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
-				params
+				params,
 			);
 		} catch (e) {
 			//
@@ -110,9 +114,9 @@ const TradesReports = () => {
 	};
 
 	useEffect(() => {
-		if (!isLoggedIn || !brokerIsSelected) {
+		ipcMain.handle('broker:logged_out', () => {
 			router.push('/');
-		}
+		});
 	}, []);
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;

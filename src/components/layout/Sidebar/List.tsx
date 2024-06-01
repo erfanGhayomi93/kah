@@ -13,13 +13,14 @@ import {
 	setChangeBrokerModal,
 	setDepositModal,
 	setFreezeModal,
+	setOptionSettlementModal,
 	setWithdrawalModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
+import { usePathname } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
 import { memo, useEffect, useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
@@ -63,6 +64,8 @@ const List = ({ isExpand }: ListProps) => {
 				dispatch(setChangeBrokerModal({}));
 			} else if (tagName === 'un_freezing') {
 				dispatch(setFreezeModal({}));
+			} else if (tagName === 'option_settlement') {
+				dispatch(setOptionSettlementModal({}));
 			}
 		}
 	};
@@ -111,6 +114,7 @@ const List = ({ isExpand }: ListProps) => {
 							id: 'market_map',
 							label: t('sidebar.market_map'),
 							to: '/market-map',
+							isBroker: true,
 						},
 					],
 				},
@@ -123,7 +127,7 @@ const List = ({ isExpand }: ListProps) => {
 				{
 					id: 'technical',
 					label: t('sidebar.technical'),
-					to: '/a',
+					to: '/technical',
 					icon: <DataAnalyticsSVG />,
 				},
 				{
@@ -154,7 +158,7 @@ const List = ({ isExpand }: ListProps) => {
 						{
 							id: 'option_settlement',
 							label: t('sidebar.option_settlement'),
-							to: '/a',
+							isModal: true,
 						},
 					],
 				},

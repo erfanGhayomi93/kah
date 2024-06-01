@@ -4,18 +4,18 @@ import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/Ce
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { initialColumnsLongPut, initialHiddenColumnsLongPut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel, setSymbolInfoPanel } from '@/features/slices/panelSlice';
+import { setAnalyzeModal, setDescriptionModal, setManageColumnsModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
+import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
 import Table from '../components/Table';
-import StrategyActionCell from '../TableComponents/StrategyActionCell';
 
 const LongPutDescription = dynamic(() => import('../Descriptions/LongPutDescription'), {
 	ssr: false,
@@ -117,13 +117,13 @@ const LongPut = (strategy: LongPutProps) => {
 		}));
 	};
 
-	const showColumnsPanel = () => {
+	const showColumnsManagementModal = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: initialColumnsLongPut,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsLongPut),
 			}),
 		);
@@ -364,20 +364,6 @@ const LongPut = (strategy: LongPutProps) => {
 		[],
 	);
 
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
-
 	return (
 		<>
 			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
@@ -387,7 +373,7 @@ const LongPut = (strategy: LongPutProps) => {
 					type={type}
 					title={title}
 					useCommission={useCommission}
-					onManageColumns={showColumnsPanel}
+					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
@@ -402,6 +388,7 @@ const LongPut = (strategy: LongPutProps) => {
 					fetchNextPage={goToTheNextPage}
 					pageNumber={inputs.pageNumber}
 					pageSize={inputs.pageSize}
+					columnsVisibility={columnsVisibility}
 				/>
 			</div>
 		</>

@@ -1,5 +1,6 @@
 'use client';
 
+import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultTransactionColumns, initialTransactionsFilters } from '@/constants';
@@ -42,7 +43,6 @@ const Transactions = () => {
 
 	const { inputs, setFieldValue, setFieldsValue } =
 		useInputs<Transaction.ITransactionsFilters>(initialTransactionsFilters);
-
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage('transaction_column', defaultTransactionColumns);
 
@@ -121,9 +121,9 @@ const Transactions = () => {
 	};
 
 	useEffect(() => {
-		if (!isLoggedIn || !brokerIsSelected) {
+		ipcMain.handle('broker:logged_out', () => {
 			router.push('/');
-		}
+		});
 	}, []);
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;

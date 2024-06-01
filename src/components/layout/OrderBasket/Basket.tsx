@@ -9,6 +9,7 @@ import {
 	setOrderBasketOrders,
 } from '@/features/slices/userSlice';
 import { useBasketOrderingSystem } from '@/hooks';
+import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -32,21 +33,8 @@ const Basket = () => {
 	const dispatch = useAppDispatch();
 
 	const { submit, submitting } = useBasketOrderingSystem({
-		onOrderRemoved: (item) => removeOrder(item.id),
-		onOrdersSent: ({ failedOrders, sentOrders }) => {
-			const failedOrdersLength = failedOrders.length;
-			const sentOrdersLength = sentOrders.length;
-
-			const message =
-				failedOrdersLength === 0
-					? 'alerts.orders_sent_successfully'
-					: failedOrdersLength === sentOrdersLength
-						? 'alerts.orders_sent_failed'
-						: failedOrdersLength >= sentOrdersLength / 2
-							? 'alerts.some_orders_sent_successfully'
-							: 'alerts.most_orders_sent_successfully';
-
-			toast.success(t(message));
+		onSent: ({ failedOrders, sentOrders }) => {
+			toast.success(t(getBasketAlertMessage(failedOrders.length, sentOrders.length)));
 		},
 	});
 
@@ -90,6 +78,7 @@ const Basket = () => {
 					title: t('order_basket.delete_order_basket'),
 					description: t('order_basket.empty_order_basket'),
 					onSubmit: close,
+					onCancel: () => dispatch(setConfirmModal(null)),
 					confirm: {
 						label: t('common.delete'),
 						type: 'error',
@@ -208,7 +197,6 @@ const Basket = () => {
 								contracts={basketOrders}
 								onSelectionChanged={setSelectedContracts}
 								onChange={(id, v) => setOrderProperties(id, v)}
-								onSideChange={(id, value) => setOrderProperties(id, { side: value })}
 								onDelete={removeOrder}
 							/>
 						</div>

@@ -138,16 +138,13 @@ export interface IForgetPasswordModal extends IBaseModalConfiguration {
 }
 
 export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
-	symbol: null | {
-		symbolTitle: string;
-		symbolISIN: string;
-	};
-	canChangeBaseSymbol: boolean;
-	canSendBaseSymbol: boolean;
+	initialBaseSymbolISIN?: string;
+	suppressBaseSymbolChange?: boolean;
+	suppressSendBaseSymbol?: boolean;
 	initialSelectedBaseSymbol?: boolean;
-	maxContracts: null | number;
-	initialSelectedContracts: string[];
-	callback: (contracts: Option.Root[], baseSymbolISIN: null | string) => void;
+	initialSelectedContracts?: string[];
+	maxContractsLength?: number;
+	callback: (result: Option.Root[], baseSymbol: Symbol.Info | null) => void;
 }
 
 export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}
@@ -238,6 +235,11 @@ export interface IDepositModal extends IBaseModalConfiguration {
 
 export interface IFreezeModal extends IBaseModalConfiguration {}
 
+export interface IOptionSettlementModal extends IBaseModalConfiguration {
+	data?: Reports.ICashSettlementReports | Reports.IPhysicalSettlementReports;
+	activeTab?: 'optionSettlementCashTab' | 'optionSettlementPhysicalTab';
+}
+
 export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
 	baseSymbol: Record<'symbolISIN' | 'symbolTitle', string>;
@@ -257,6 +259,15 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 export interface ICavertCallFiltersModal extends IBaseModalConfiguration {
 	initialFilters: Partial<ICoveredCallFiltersModalStates>;
 	onSubmit: (appliedFilters: Partial<ICoveredCallFiltersModalStates>) => void;
+}
+
+export interface IManageColumnsModal extends IBaseModalConfiguration {
+	initialColumns?: IManageColumn[];
+	title: React.ReactNode;
+	columns: IManageColumn[];
+	applyChangesAfterClose?: boolean;
+	onReset?: () => void;
+	onColumnChanged: (columns: IManageColumn[]) => void;
 }
 
 export type ModalState = TBaseModalProps<{
@@ -282,6 +293,7 @@ export type ModalState = TBaseModalProps<{
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;
 	freeze: IFreezeModal;
+	optionSettlement: IOptionSettlementModal;
 	analyze: IAnalyzeModal;
 	description: IDescriptionModal;
 	transactionsFilters: ITransactionsFiltersModal;
@@ -297,4 +309,5 @@ export type ModalState = TBaseModalProps<{
 	createStrategy: ICreateStrategyModal;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	coveredCallFilters: ICavertCallFiltersModal;
+	manageColumns: IManageColumnsModal;
 }>;

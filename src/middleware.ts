@@ -1,6 +1,10 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-const brokerIdMatcher = ['^/?settings/(agreements|send_order)/?$'];
+const brokerIdMatcher = [
+	'^/?settings/(agreements|send_order)/?$',
+	'^/?market-map',
+	'^/?(orders-and-trades-reports|option-reports|financial-reports|change-broker-reports)',
+];
 
 const middleware = (request: NextRequest) => {
 	try {

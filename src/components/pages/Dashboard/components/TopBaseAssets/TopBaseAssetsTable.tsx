@@ -57,22 +57,25 @@ const TopBaseAssetsTable = () => {
 	const columnDefs = useMemo<Array<IColDef<ITableData>>>(
 		() => [
 			{
+				colId: 'daily',
 				headerName: t('dates.daily'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.today.symbolISIN),
-				valueFormatter: (row) => row.today.symbolTitle ?? '−',
+				valueGetter: (row) => row.today.symbolTitle ?? '−',
 			},
 			{
+				colId: 'weekly',
 				headerName: t('dates.weekly'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.month.symbolISIN),
-				valueFormatter: (row) => row.month.symbolTitle ?? '−',
+				valueGetter: (row) => row.month.symbolTitle ?? '−',
 			},
 			{
+				colId: 'monthly',
 				headerName: t('dates.monthly'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.week.symbolISIN),
-				valueFormatter: (row) => row.week.symbolTitle ?? '−',
+				valueGetter: (row) => row.week.symbolTitle ?? '−',
 			},
 		],
 		[],
@@ -90,7 +93,7 @@ const TopBaseAssetsTable = () => {
 	)
 		return <NoData />;
 
-	return <LightweightTable rowData={dataMapper} columnDefs={columnDefs} />;
+	return <LightweightTable rowHeight={40} headerHeight={40} rowData={dataMapper} columnDefs={columnDefs} />;
 };
 
 export default TopBaseAssetsTable;

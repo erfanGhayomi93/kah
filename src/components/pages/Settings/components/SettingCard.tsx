@@ -3,7 +3,7 @@ import clsx from 'clsx';
 interface SettingCardProps {
 	title: string | React.ReactNode;
 	children?: React.ReactNode;
-	className?: string;
+	className?: ClassesValue;
 }
 
 const SettingCard = ({ title, children, className }: SettingCardProps) => {

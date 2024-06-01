@@ -46,7 +46,7 @@ const Toolbar = ({ setSymbol, saveTemplate }: ToolbarProps) => {
 					</button>
 					<button
 						type='button'
-						className='size-40 rounded bg-white text-primary-400 shadow transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+						className='btn-primary-hover size-40 rounded bg-white text-primary-400 shadow transition-colors flex-justify-center'
 						onClick={openSavedTemplates}
 					>
 						<BookmarkSVG />

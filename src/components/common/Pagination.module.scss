@@ -10,29 +10,37 @@
 		height: 3.2rem;
 		font-size: 1.6rem;
 		font-weight: 400;
-		font-family: "IRANSans";
+		font-family: 'IRANSans';
 	}
 }
 
 .prev,
 .next {
-	color: theme("colors.gray.900");
+	color: theme('colors.gray.900');
+	border-radius: 0.8rem;
+	background-color: theme('colors.gray.200');
+	width: 3.2rem;
+	height: 3.2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	button {
 		gap: 0.4rem;
 
 		&:disabled {
-			color: theme("colors.gray.1000");
+			color: theme('colors.gray.800');
 		}
 	}
 }
 
-.prev {
-	padding-left: 1.6rem;
-}
-
-.next {
-	padding-right: 1.6rem;
+.pageWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.8rem;
+	border-radius: 0.8rem;
+	background-color: theme('colors.gray.200');
 }
 
 .page {
@@ -40,7 +48,7 @@
 		border-radius: 0.8rem;
 		width: 3.2rem;
 		background-color: transparent;
-		color: theme("colors.gray.900");
+		color: theme('colors.gray.900');
 		transition:
 			background-color 250ms,
 			color 250ms;
@@ -50,7 +58,7 @@
 	}
 
 	&.active button {
-		color: theme("colors.white");
-		background-color: theme("colors.primary.400");
+		color: theme('colors.white');
+		background-color: theme('colors.primary.400');
 	}
 }

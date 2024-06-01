@@ -1,261 +1,195 @@
-import AgTable from '@/components/common/Tables/AgTable';
-import WithdrawalCashReportsActionCell from '@/components/pages/FinancialReports/WithdrawalCashReports/Table/WithdrawalCashReportsActionCell';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import brokerAxios from '@/api/brokerAxios';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setOptionSettlementModal } from '@/features/slices/modalSlice';
+import { useBrokerQueryClient } from '@/hooks';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
+import { toast } from 'react-toastify';
+import PhysicalSettlementReportsTableActionCell from './PhysicalSettlementReportsTableActionCell';
 
 interface PhysicalSettlementReportsTableProps {
 	reports: Reports.IPhysicalSettlementReports[] | null;
 	columnsVisibility: PhysicalSettlementReports.IPhysicalSettlementReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<PhysicalSettlementReports.IPhysicalSettlementReportsColumnsState[]>>;
 }
 
-const PhysicalSettlementReportsTable = ({
-	reports,
-	columnsVisibility,
-	setColumnsVisibility,
-}: PhysicalSettlementReportsTableProps) => {
+const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: PhysicalSettlementReportsTableProps) => {
 	const t = useTranslations();
 
-	const gridRef = useRef<GridApi<Reports.IPhysicalSettlementReports>>(null);
+	const dispatch = useAppDispatch();
 
-	const onDeleteRow = async () => {
-		//
+	const queryClient = useBrokerQueryClient();
+
+	const urls = useAppSelector(getBrokerURLs);
+
+	const onDeleteRow = (data: Reports.ICashSettlementReports | undefined) =>
+		new Promise<void>(async (resolve, reject) => {
+			if (!urls || !data) return null;
+
+			try {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.settlementdeleteCash, {
+					symbolISIN: data?.symbolISIN,
+				});
+
+				if (response.status !== 200 || !response.data) {
+					toast.error('خطای ناشناخته رخ داده است.');
+					throw new Error('Error');
+				}
+
+				toast.success(t('alerts.option_delete_request_settlement_cash_success'));
+
+				queryClient.invalidateQueries({ queryKey: ['cashSettlementReports'] });
+
+				resolve();
+			} catch (error) {
+				toast.error(t('alerts.option_delete_request_settlement_cash_failed'));
+
+				reject();
+			}
+		});
+
+	const onRequest = async (data: Reports.ICashSettlementReports | undefined) => {
+		if (!data?.enabled || data?.status !== 'Draft') return;
+
+		dispatch(setOptionSettlementModal({ data, activeTab: 'optionSettlementPhysicalTab' }));
 	};
 
-	const COLUMNS = useMemo<Array<ColDef<Reports.IPhysicalSettlementReports>>>(
-		() =>
-			[
-				/* نماد */
-				{
-					headerName: t('physical_settlement_reports_page.symbol_column'),
-					field: 'symbolTitle',
-					pinned: 'right',
-					minWidth: 112,
-					maxWidth: 112,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => value ?? '',
-				},
-				/* موقعیت */
-				{
-					headerName: t('physical_settlement_reports_page.side_column'),
-					field: 'side',
-					minWidth: 96,
-					maxWidth: 96,
-					flex: 1,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => t('common.' + String(value).toLowerCase()),
-					cellClass: ({ data }) => {
-						if (!data) return '';
-						return data?.side === 'Call' ? 'text-success-200' : 'text-error-200';
-					},
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
-				},
-				/* تعداد موقعیت باز */
-				{
-					headerName: t('physical_settlement_reports_page.open_position_count_column'),
-					field: 'openPositionCount',
-					cellClass: 'ltr',
-					minWidth: 144,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
-				},
-				/* تاریخ تسویه نقدی */
-				{
-					headerName: t('physical_settlement_reports_page.cash_date_column'),
-					field: 'cashSettlementDate',
-					maxWidth: 144,
-					minWidth: 144,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					// cellRenderer: OptionCashSettlementRemainingDate,
-				},
-				/* وضعیت قرارداد (سود یا زیان)  */
-				{
-					headerName: t('physical_settlement_reports_page.status_contract_column'),
-					field: 'pandLStatus',
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					flex: 1,
-					minWidth: 192,
-					cellClassRules: {
-						'text-success-200 dark:text-dark-success-200 ': ({ value }) => value === 'Profit',
-						'text-error-200 dark:text-dark-error-200 ': ({ value }) => value === 'Loss',
-					},
-					valueFormatter: ({ value }) =>
-						value ? t('physical_settlement_reports_page.type_contract_status_' + value) : '',
-				},
-				/* نوع اعمال */
-				{
-					headerName: t('physical_settlement_reports_page.request_type_column'),
-					field: 'settlementRequestType',
-					minWidth: 128,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) =>
-						value ? t('physical_settlement_reports_page.type_request_settlement_' + value) : '',
-				},
-				/* مبلغ تسویه */
-				{
-					headerName: t('physical_settlement_reports_page.settlement_price_column'),
-					field: 'incomeValue',
-					minWidth: 128,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					// cellRenderer: CellTooltipRenderer,
-					valueFormatter: ({ value }) =>
-						value >= 0 ? (value > 1e7 ? numFormatter(value, false) : sepNumbers(value)) : '',
-				},
-				/* تعداد درخواست برای تسویه */
-				{
-					headerName: t('physical_settlement_reports_page.request_for_settlement_column'),
-					field: 'requestCount',
-					cellClass: 'ltr',
-					minWidth: 192,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
-				},
-				/* تعداد پذیرفته شده */
-				{
-					headerName: t('physical_settlement_reports_page.done_count_column'),
-					field: 'doneCount',
-					cellClass: 'ltr',
-					minWidth: 192,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
-				},
-				/* تعداد نکول */
-				{
-					headerName: t('physical_settlement_reports_page.pen_count_column'),
-					field: 'penValue',
-					cellClass: 'ltr',
-					minWidth: 192,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
-				},
-				/* مبلغ نکول */
-				{
-					headerName: t('physical_settlement_reports_page.pen_volume_column'),
-					field: 'penVolume',
-					cellClass: 'ltr',
-					minWidth: 192,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) => (value >= 0 ? sepNumbers(value) : ''),
-				},
-				/* درخواست کننده */
-				{
-					headerName: t('physical_settlement_reports_page.user_type_column'),
-					field: 'userType',
-					minWidth: 128,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ data }) => {
-						if (data?.userType === 'System') return t('common.system');
+	const COLUMNS = useMemo<Array<IColDef<Reports.IPhysicalSettlementReports>>>(
+		() => [
+			/* نماد */
+			{
+				colId: 'id',
+				headerName: t('physical_settlement_reports_page.symbol_column'),
+				valueGetter: (row) => row.symbolTitle,
+			},
+			/* سمت */
+			{
+				colId: 'side',
+				headerName: t('physical_settlement_reports_page.side_column'),
+				valueGetter: (row) => t(`common.${row.side.toLowerCase()}`),
+				cellClass: (row) =>
+					clsx({
+						'text-success-200': row.side === 'Buy',
+						'text-error-200': row.side === 'Sell',
+					}),
+			},
+			/* تعداد موقعیت باز */
+			{
+				colId: 'openPositionCount',
+				headerName: t('physical_settlement_reports_page.open_position_count_column'),
+				valueGetter: (row) => (row.openPositionCount >= 0 ? sepNumbers(String(row.openPositionCount)) : ''),
+			},
+			/* تاریخ تسویه فیزیکی */
+			{
+				colId: 'cashSettlementDate',
+				headerName: t('physical_settlement_reports_page.physical_date_column'),
+				valueGetter: (row) => (row.cashSettlementDate ? dateFormatter(row.cashSettlementDate, 'date') : '-'),
+			},
+			/* وضعیت قرارداد (سود یا زیان)  */
+			{
+				colId: 'pandLStatus',
+				headerName: t('physical_settlement_reports_page.status_contract_column'),
+				cellClass: (row) =>
+					clsx({
+						'dark:text-dark-success-200 text-success-200 ': row.pandLStatus === 'Profit',
+						'dark:text-dark-error-200 text-error-200 ': row.pandLStatus === 'Loss',
+					}),
+				valueGetter: (row) =>
+					row.pandLStatus
+						? t('physical_settlement_reports_page.type_contract_status_' + row.pandLStatus)
+						: '',
+			},
+			/* نوع اعمال */
+			{
+				colId: 'settlementRequestType',
+				headerName: t('physical_settlement_reports_page.request_type_column'),
+				valueGetter: (row) =>
+					row.settlementRequestType
+						? t('physical_settlement_reports_page.type_request_settlement_' + row.settlementRequestType)
+						: '-',
+			},
+			/* مبلغ تسویه */
+			{
+				colId: 'incomeValue',
+				headerName: t('physical_settlement_reports_page.settlement_price_column'),
+				valueGetter: (row) =>
+					row.incomeValue >= 0
+						? row.incomeValue > 1e7
+							? numFormatter(row.incomeValue, false)
+							: sepNumbers(String(row.incomeValue))
+						: '',
+			},
+			/* تعداد درخواست برای تسویه */
+			{
+				colId: 'requestCount',
+				headerName: t('physical_settlement_reports_page.request_for_settlement_column'),
+				cellClass: 'ltr',
+				valueGetter: (row) => (row.requestCount >= 0 ? sepNumbers(String(row.requestCount)) : ''),
+			},
+			/* تعداد پذیرفته شده */
+			{
+				colId: 'doneCount',
+				headerName: t('physical_settlement_reports_page.done_count_column'),
+				cellClass: 'ltr',
+				valueGetter: (row) => (row.doneCount >= 0 ? sepNumbers(String(row.doneCount)) : ''),
+			},
+			/* تعداد نکول */
+			{
+				colId: 'penValue',
+				headerName: t('physical_settlement_reports_page.pen_count_column'),
+				cellClass: 'ltr',
+				valueGetter: (row) => (row.peValue >= 0 ? sepNumbers(String(row.penValue)) : ''),
+			},
+			/* مبلغ نکول */
+			{
+				colId: 'penVolume',
+				headerName: t('physical_settlement_reports_page.pen_volume_column'),
+				cellClass: 'ltr',
+				valueGetter: (row) => (row.penVolume >= 0 ? sepNumbers(String(row.penVolume)) : ''),
+			},
+			/* درخواست کننده */
+			{
+				colId: 'userType',
+				headerName: t('physical_settlement_reports_page.user_type_column'),
+				valueGetter: (row) => {
+					if (row?.userType === 'System') return t('common.system');
 
-						if (data?.userType === 'Backoffice') return t('common.broker');
+					if (row?.userType === 'Backoffice') return t('common.broker');
 
-						return data?.userName ?? '';
-					},
+					return row?.userName ?? '-';
 				},
-				/* وضعیت */
-				{
-					headerName: t('physical_settlement_reports_page.status_column'),
-					field: 'status',
-					cellClass: 'text-right',
-					minWidth: 128,
-					lockPosition: true,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					valueFormatter: ({ value }) =>
-						value ? t('physical_settlement_reports_page.type_status_' + value) : '',
-				},
-				/* عملیات */
-				{
-					headerName: t('physical_settlement_reports_page.action_column'),
-					field: 'action',
-					maxWidth: 200,
-					minWidth: 200,
-					initialHide: false,
-					suppressMovable: true,
-					sortable: false,
-					cellRenderer: WithdrawalCashReportsActionCell,
-					cellRendererParams: {
-						onDeleteRow,
-					},
-				},
-			] as Array<ColDef<Reports.IPhysicalSettlementReports>>,
+			},
+			/* وضعیت */
+			{
+				colId: 'status',
+				headerName: t('physical_settlement_reports_page.status_column'),
+				cellClass: 'text-right',
+				valueGetter: (row) =>
+					row.status ? t('physical_settlement_reports_page.type_status_' + row.status) : '',
+			},
+			/* عملیات */
+			{
+				colId: 'action',
+				headerName: t('physical_settlement_reports_page.action_column'),
+				valueGetter: (row) => row.symbolISIN,
+				valueFormatter: ({ row }) => (
+					<PhysicalSettlementReportsTableActionCell
+						data={row}
+						onDeleteRow={onDeleteRow}
+						onRequest={onRequest}
+					/>
+				),
+			},
+		],
 		[],
 	);
-
-	const defaultColDef: ColDef<Reports.IPhysicalSettlementReports> = useMemo(
-		() => ({
-			suppressMovable: true,
-			sortable: true,
-			resizable: false,
-			minWidth: 114,
-			flex: 1,
-		}),
-		[],
-	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
 
 	return (
 		<>
-			<AgTable<Reports.IPhysicalSettlementReports>
-				ref={gridRef}
-				rowData={reports}
-				rowHeight={40}
-				headerHeight={48}
-				columnDefs={COLUMNS}
-				defaultColDef={defaultColDef}
-				suppressRowClickSelection={false}
-				className='h-full border-0'
-			/>
+			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
 		</>
 	);
 };

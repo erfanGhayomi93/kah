@@ -1,8 +1,16 @@
 import { logoutUser } from '@/api/axios';
+import { appQueryClient, brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
 import { getDateMilliseconds } from '@/constants';
 import { DateAsMillisecond } from '@/constants/enums';
 import dayjs from '@/libs/dayjs';
-import { useQuery, type QueryClient, type QueryKey, type UndefinedInitialDataOptions } from '@tanstack/react-query';
+import {
+	useMutation,
+	useQuery,
+	type QueryClient,
+	type QueryKey,
+	type UndefinedInitialDataOptions,
+	type UseMutationOptions,
+} from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -11,7 +19,7 @@ import { getBrokerClientId, getClientId } from './cookie';
 export const sepNumbers = (num: string | undefined): string => {
 	if (num === undefined || isNaN(Number(num))) return '−';
 
-	const formattedIntegerPart: string = num?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	const formattedIntegerPart: string = num?.replace?.(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 	return formattedIntegerPart;
 };
@@ -147,11 +155,23 @@ export const base64decode = (value: string) => {
 	}
 };
 
+export const createBrokerQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
+	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
+) => {
+	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, brokerQueryClient);
+};
+
 export const createQuery = <TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey, TError = AxiosError>(
 	initialOptions: UndefinedInitialDataOptions<TQueryFnData, TError, TQueryFnData, TQueryKey>,
+) => {
+	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, appQueryClient);
+};
+
+export const createMutation = <TData = unknown, TVariables = void, TError = AxiosError, TContext = unknown>(
+	initialOptions: UseMutationOptions<TData, TError, TVariables, TContext>,
 	queryClient?: QueryClient,
 ) => {
-	return (options: Partial<typeof initialOptions>) => useQuery({ ...initialOptions, ...options }, queryClient);
+	return (options: Partial<typeof initialOptions>) => useMutation({ ...initialOptions, ...options }, queryClient);
 };
 
 export const URLIsValid = (url: string) => {
@@ -333,7 +353,12 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		changeBrokerSetCancel: data.ChangeBrokerSetCancel,
 		getFreezeExportFreeze: data.FreezeExportFreeze,
 		getFreezerequests: data.Freezerequests,
-		getSettlementcash: data.Settlementcash,
+		Settlementcash: data.Settlementcash,
+		Settlementphysical: data.Settlementphysical,
+		newPhysicalSettlement: data.newPhysicalSettlement,
+		newCashSettlement: data.newCashSettlement,
+		deletePhysicalSettlement: data.deletePhysicalSettlement,
+		deleteCashSettlement: data.deleteCashSettlement,
 		getOrderExportOrders: data.OrderExportOrders,
 		getOrderOrders: data.OrderOrders,
 		OrderExportTrades: data.OrderExportTrades,
@@ -342,6 +367,10 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		paymentDeleteRequest: data.PaymentDeleteRequest,
 		acceptAgreement: data.AcceptAgreement,
 		mobileOtpRequest: data.MobileOtpRequest,
+		getDataProviderv1MarketMap: data.DataProviderv1MarketMap,
+		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
+		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
+		settlementdeleteCash: data.settlementdeleteCash,
 	};
 
 	return urls;
@@ -540,6 +569,7 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 		marketUnit: symbolInfo.marketUnit ?? '',
 		requiredMargin: {
 			value: symbol.optionWatchlistData.requiredMargin,
+			checked: true,
 		},
 	};
 };
@@ -669,4 +699,33 @@ export const toggleArrayElement = <T>(array: T[], element: T): T[] => {
 
 	if (index === -1) return [...array, element];
 	else return array.filter((item) => item !== element);
+};
+
+export const toPascalCase = (str: string) =>
+	(str.match(/[a-zA-Z0-9]+/g) || []).map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`).join('');
+
+export const textToHtml = (htmlAsText: string) => {
+	const div = document.createElement('div');
+	div.innerHTML = htmlAsText;
+
+	return div.children;
+};
+
+export const sanitizeHTML = (html: string) => {
+	const doc = new DOMParser().parseFromString(html, 'text/html');
+
+	const scriptsAndStyles = doc.querySelectorAll('script, style');
+	scriptsAndStyles.forEach((node) => node?.parentNode?.removeChild(node));
+
+	const elements = doc.body.getElementsByTagName('*');
+	for (let i = 0; i < elements.length; i++) {
+		const attributes = elements[i].attributes;
+		for (let j = attributes.length - 1; j >= 0; j--) {
+			if (attributes[j].name.startsWith('on')) {
+				elements[i].removeAttribute(attributes[j].name);
+			}
+		}
+	}
+
+	return doc.body.innerHTML;
 };

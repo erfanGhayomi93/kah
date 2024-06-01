@@ -25,6 +25,7 @@ const MarketState = () => {
 		<Section<string, Dashboard.TMarketStateExchange>
 			id='market_state'
 			title={t('home.market_state')}
+			info={t('tooltip.market_state_section')}
 			onBottomTabChange={setExchange}
 			tabs={{
 				bottom: [

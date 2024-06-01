@@ -261,7 +261,7 @@ declare namespace Option {
 		companyISIN: string;
 		companyName: string;
 		insCode: null | string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 	}
 
 	export interface Search {
@@ -271,7 +271,7 @@ declare namespace Option {
 		companyISIN: string;
 		companyName: string;
 		insCode: string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 		marketUnit: string;
 		isOption: boolean;
 	}
@@ -283,7 +283,7 @@ declare namespace Option {
 		companyISIN: string;
 		companyName: string;
 		insCode: string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 		marketUnit: string;
 		isOption: boolean;
 	}
@@ -336,9 +336,12 @@ declare namespace Option {
 }
 
 declare namespace Symbol {
+	export type TradeState = 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+
 	export interface Info {
 		symbolISIN: string;
 		symbolTitle: string;
+		companyISIN: string;
 		companyName: string;
 		insCode: string;
 		exchange: string;
@@ -366,7 +369,7 @@ declare namespace Symbol {
 		eps: null | number;
 		pe: null | number;
 		ps: null | number;
-		symbolTradeState: string;
+		symbolTradeState: Symbol.TradeState;
 		individualBuyVolume: number;
 		numberOfIndividualsBuyers: number;
 		individualSellVolume: number;
@@ -397,7 +400,7 @@ declare namespace Symbol {
 		marketUnit: string;
 		companyName: string;
 		insCode: null | string;
-		symbolTradeState: 'NULL' | 'Reserved' | 'Suspended' | 'Open' | 'Frozen' | null;
+		symbolTradeState: Symbol.TradeState;
 	}
 
 	export interface BestLimit {
@@ -464,7 +467,7 @@ declare namespace Symbol {
 		ps: number;
 		marketUnit: string;
 		symbolOrderState: string;
-		symbolTradeState: string;
+		symbolTradeState: Symbol.TradeState;
 		groupState: string;
 		symbolState: string;
 		companyCode: string;
@@ -657,6 +660,10 @@ declare namespace Broker {
 		| 'Freezerequests'
 		| 'Settlementcash'
 		| 'Settlementphysical'
+		| 'newPhysicalSettlement'
+		| 'newCashSettlement'
+		| 'deletePhysicalSettlement'
+		| 'deleteCashSettlement'
 		| 'OrderExportOrders'
 		| 'OrderOrders'
 		| 'OrderExportTrades'
@@ -666,7 +673,11 @@ declare namespace Broker {
 		| 'ReceiptSetCancel'
 		| 'PaymentDeleteRequest'
 		| 'AcceptAgreement'
-		| 'MobileOtpRequest';
+		| 'MobileOtpRequest'
+		| 'DataProviderv1MarketMap'
+		| 'getSectorSectorsWithTrades'
+		| 'deleteFreezeUnFreeze'
+		| 'settlementdeleteCash';
 
 	type URL = Record<UrlKey, string>;
 
@@ -1893,6 +1904,28 @@ declare namespace Strategy {
 }
 
 declare namespace Reports {
+	export type TstatusSettlement =
+		| 'Registered'
+		| 'Sent'
+		| 'Sending'
+		| 'Settled'
+		| 'Settling'
+		| 'Expired'
+		| 'Draft'
+		| 'SendToBourse'
+		| 'InSendQueue';
+	export interface TCashOrPhysicalSettlement {
+		symbolTitle: string;
+		cashSettlementDate: string;
+		side: Side;
+		openPositionCount: pandLStatus;
+		pandLStatus: string;
+		from: 'cash' | 'physical';
+		doneCount: number;
+		symbolISIN: string;
+		enabled: boolean;
+		status: TstatusSettlement;
+	}
 	export interface ITransactions {
 		debit: string;
 		credit: string;
@@ -1937,7 +1970,7 @@ declare namespace Reports {
 		comment: string;
 		receiptDate: string;
 		accountCode: string;
-		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
+		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled' | 'Registeration';
 		providerType: string;
 		base64Image: File | null;
 	}
@@ -1988,20 +2021,11 @@ declare namespace Reports {
 		symbolTitle: string;
 		openPositionCount: number;
 		cashSettlementDate: string;
-		side: 'Call' | 'Put';
+		side: 'Buy' | 'Sell';
 		settlementRequestType: 'MaximumStrike' | 'PartialStrike' | null;
 		requestCount: number;
 		enabled: boolean;
-		status:
-			| 'Registered'
-			| 'Sent'
-			| 'Sending'
-			| 'Settled'
-			| 'Settling'
-			| 'Expired'
-			| 'Draft'
-			| 'SendToBourse'
-			| 'InSendQueue';
+		status: TstatusSettlement;
 		doneCount: number;
 		pandLStatus: string;
 		history: IOptionHistory[];
@@ -2017,19 +2041,10 @@ declare namespace Reports {
 		symbolTitle: string;
 		openPositionCount: number;
 		cashSettlementDate: string;
-		side: 'Call' | 'Put';
+		side: 'Buy' | 'Sell';
 		settlementRequestType: 'MaximumStrike' | 'PartialStrike' | null;
 		requestCount: number;
-		status:
-			| 'Registered'
-			| 'Sent'
-			| 'Sending'
-			| 'Settled'
-			| 'Settling'
-			| 'Expired'
-			| 'Draft'
-			| 'SendToBourse'
-			| 'InSendQueue';
+		status: TstatusSettlement;
 		doneCount: number;
 		pandLStatus: 'Profit' | 'Loss';
 		penCount: number;
@@ -2085,33 +2100,150 @@ declare namespace Reports {
 	}
 
 	export interface ITradesReports {
-		orderId: number;
-		userName: string;
-		customerISIN: string;
-		symbolISIN: string;
-		price: number;
-		triggerPrice: number;
-		quantity: number;
-		orderSide: 'Buy' | 'Sell';
-		orderOrigin: string;
-		parentOrderId: number;
-		orderType: TOrdersTypes;
-		validity: TOrdersValidity;
-		validityDate: string;
-		orderFrom: TOrdersForm;
-		orderAction: TOrdersAction | 0;
-		orderMinimumQuantity: number;
-		orderDateTime: string;
-		hostOrderNumber: string;
-		expectedRemainingQuantity: number;
-		sumExecuted: number;
+		orderSide: 'Sell' | 'Buy';
+		remainingQuantityOrder: number;
 		symbolTitle: string;
-		position: number;
-		valuePosition: number;
-		lastTradePrice: number;
-		orderStatus: TOrdersStatus;
-		lastErrorCode: string;
-		customErrorMsg: string;
-		tradeDetails: TTradeDetails;
+		total: number;
+		totalQuota: number;
+		tradeDate: string;
+		tradeNumber: number;
+		tradePrice: number;
+		tradeTime: string;
+		tradedQuantity: number;
 	}
 }
+
+declare namespace MarketMap {
+	export interface Root {
+		title: string;
+		/**
+		 * Sectors
+		 */
+		s: MarketMap.Sector[];
+	}
+
+	export interface Sector {
+		/**
+		 * Sector Code
+		 */
+		sc: string;
+		/**
+		 * Sector name
+		 */
+		sn: string;
+		/**
+		 * Symbols
+		 */
+		s: MarketMap.Symbol[];
+	}
+
+	export interface TWatchlist {
+		id: number;
+		createDate: string;
+		watchListName: string;
+		isPinned: boolean;
+	}
+
+	export interface Symbol {
+		/**
+		 * SymbolISIN
+		 */
+		si: string;
+		/**
+		 * Symbol Title
+		 */
+		st: string;
+		/**
+		 * Company Name
+		 */
+		cn: string;
+		/**
+		 * Sector Code
+		 */
+		sc: string;
+		/**
+		 * Last Traded Price
+		 */
+		l: number;
+		/**
+		 * Closing Price
+		 */
+		c: number;
+		/**
+		 * Closing Price Var Reference Price Percent
+		 */
+		cpp: number;
+		/**
+		 * Trade Price Var Previous Trade Percent
+		 */
+		lpp: number;
+		/**
+		 * Last Trade Price Vs Reference Price
+		 */
+		lp: number;
+		/**
+		 * Total Trade Value
+		 */
+		t: number;
+		/**
+		 * Total Number Of Trades
+		 */
+		tt: number;
+		/**
+		 * Number Of ILegals Buyers
+		 */
+		nlb: number;
+		/**
+		 * Number Of Individuals Sellers
+		 */
+		nis: number;
+		/**
+		 * Number Of Individuals Buyers
+		 */
+		nib: number;
+		/**
+		 * Number Of Legals Sellers
+		 */
+		nls: number;
+		/**
+		 * Sum Of Individuals Buy Volume
+		 */
+		sibv: number;
+		/**
+		 * Sum Of Individuals Sell Volume
+		 */
+		sisv: number;
+		/**
+		 * Sum Of Legals Buy Volume
+		 */
+		slbv: number;
+		/**
+		 * Sum Of Legals Sell Volume
+		 */
+		slsv: number;
+		/**
+		 * Market Cap
+		 */
+		mCap: number;
+		marketUnit: string;
+		symbolTag: null;
+		symbolType: string;
+		marketCode: null;
+		exchange: null;
+	}
+
+	export interface SectorAPI {
+		id: string;
+		title: string;
+	}
+}
+
+declare type LimitSymbol = {
+	watchlistId: number;
+	customerISIN: string;
+	symbolISIN: string;
+	symbolTitle: string;
+	takeProfit: number;
+	stopLoss: number;
+	closingPrice: number;
+};

@@ -255,10 +255,14 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
+declare type TManageColumnTag = 'PanelDetail' | 'Computational' | 'None';
+
 declare interface IManageColumn<T extends string> {
 	id: T;
+	tag: TManageColumnTag;
 	title: string;
 	hidden: boolean;
+	nonEditable?: boolean;
 }
 
 declare interface ISymbolInfoPanelGrid {
@@ -280,9 +284,9 @@ declare interface IDashboardGrid {
 
 declare interface SymbolContractModalStates {
 	term: string;
+	baseSymbol: Option.BaseSearch | null;
 	sendBaseSymbol: boolean;
 	contracts: Option.Root[];
-	contractType: Record<'id' | 'title', string>;
 	activeSettlement: Option.BaseSettlementDays | null;
 }
 
@@ -345,14 +349,22 @@ declare type IBrokerUrls = Record<
 	| 'changeBrokerSetCancel'
 	| 'getFreezeExportFreeze'
 	| 'getFreezerequests'
-	| 'getSettlementcash'
-	| 'getSettlementphysical'
+	| 'Settlementcash'
+	| 'Settlementphysical'
+	| 'newPhysicalSettlement'
+	| 'newCashSettlement'
+	| 'deletePhysicalSettlement'
+	| 'deleteCashSettlement'
 	| 'getOrderExportOrders'
 	| 'getOrderOrders'
 	| 'getOrderExportTrades'
 	| 'getOrderDetailedOrders'
 	| 'receiptSetCancel'
-	| 'paymentDeleteRequest',
+	| 'paymentDeleteRequest'
+	| 'getDataProviderv1MarketMap'
+	| 'getSectorSectorsWithTrades'
+	| 'deleteFreezeUnFreeze'
+	| 'settlementdeleteCash',
 	string
 >;
 
@@ -384,13 +396,16 @@ declare interface IBsModalInputs {
 	holdAfterOrder: boolean;
 }
 
-declare interface IAnalyzeModalInputs {
-	chartData: Array<Record<'x' | 'y', number>>;
+declare interface IAnalyzeInputs {
 	minPrice: number;
 	maxPrice: number;
+	baseAssets: number;
+}
+
+declare interface IAnalyzeModalInputs extends IAnalyzeInputs {
+	chartData: Array<Record<'x' | 'y', number>>;
 	mostProfit: number;
 	mostLoss: number;
-	baseAssets: number;
 	bep: Record<'x' | 'y', number>;
 	budget: number;
 	profitProbability: number;
@@ -464,6 +479,8 @@ declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_
 declare type TOptionReportsTab = 'freeze_and_unfreeze' | 'cash_settlement' | 'physical_settlement';
 
 declare type TOrdersTradersTab = 'orders' | 'trades';
+
+declare type TMarketMapTab = 'market' | 'base_symbol_option' | 'contract' | 'call_option' | 'put_option';
 
 declare namespace Transaction {
 	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
@@ -803,6 +820,7 @@ declare namespace PhysicalSettlementReports {
 		contractStatus: TContractStatus;
 		settlementRequestType: { id: TSettlementRequestTypePhysically; title: string }[];
 		requestStatus: { id: TRequestStatus; title: string }[];
+		side?: TOrdersSide;
 	}
 
 	export interface IPhysicalSettlementReportsColumnsState {
@@ -827,3 +845,51 @@ declare namespace PhysicalSettlementReports {
 		| 'status'
 		| 'action';
 }
+
+declare type TMarketMapFilters = {
+	map: {
+		id: 'all' | 'portfolio' | 'watchlist';
+		label: string;
+	};
+
+	market: {
+		id: 'all' | 'baseSymbolOption' | 'contract' | 'putOption' | 'callOption';
+		label: string;
+	};
+
+	display: {
+		id: 'symbol' | 'sectors';
+		label: string;
+	};
+
+	property: {
+		id: 'volume' | 'value' | 'quantity';
+		label: string;
+	};
+
+	symbolType: {
+		id:
+			| 'all'
+			| 'SharesInFarabourse'
+			| 'Shares'
+			| 'PreemptionRight'
+			| 'StockFund'
+			| 'FixedFund'
+			| 'MixedFund'
+			| 'RealEstateFund'
+			| 'VentureFund'
+			| 'CommodityExchangeFund'
+			| 'CommodityDepositCertificate'
+			| 'SaffronCertificate'
+			| 'GoldCoinCertificate';
+		label: string;
+	};
+
+	sector: MarketMap.SectorAPI | null;
+
+	percentage: string | null;
+
+	watchlist: MarketMap.TWatchlist | null;
+
+	palette: Record<'id' | 'label', string> | null;
+};

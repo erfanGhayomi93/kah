@@ -32,7 +32,7 @@
 				--ag-row-border-width: 0px,
 
 				// Rows
-				--ag-row-height: 40px,
+				--ag-row-height: 48px,
 				--ag-value-change-value-highlight-background-color: rgb(83, 168, 255, 0.1),
 				// Spacing
 				--ag-grid-size: 3px,
@@ -115,7 +115,6 @@
 		box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.1);
 	}
 }
-
 
 .ag-cell.ag-cell-value.shadow {
 	&::after {

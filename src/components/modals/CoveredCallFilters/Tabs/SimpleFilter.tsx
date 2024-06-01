@@ -1,3 +1,4 @@
+import BaseSymbolAdvanceSearch from '@/components/common/Symbol/BaseSymbolAdvanceSearch';
 import Tooltip from '@/components/common/Tooltip';
 import { InfoCircleSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
@@ -6,7 +7,6 @@ import { useInputs } from '@/hooks';
 import { toggleArrayElement } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import BaseSymbolInput from '../../OptionWatchlistFiltersModal/inputs/BaseSymbolInput';
 import BepDifference from '../Components/BepDifference';
 import DueDaysInput from '../Components/DueDaysInput';
 import IOTMInput from '../Components/IOTMInput';
@@ -74,7 +74,10 @@ const SimpleFilter = ({ initialFilters, onSubmit }: SimpleFilterProps) => {
 		<form onSubmit={submit} method='get' className='gap-32 pt-32 flex-column'>
 			<ul className='gap-32 flex-column'>
 				<li>
-					<BaseSymbolInput values={inputs.symbols} onChange={(values) => setFieldValue('symbols', values)} />
+					<BaseSymbolAdvanceSearch
+						values={inputs.symbols}
+						onChange={(values) => setFieldValue('symbols', values)}
+					/>
 				</li>
 				<Filter title={t('iotm')}>
 					<IOTMInput value={inputs.iotm} onClick={onIOTMChange} />

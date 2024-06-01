@@ -53,38 +53,49 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 	const columnDefs = useMemo<Array<IColDef<ITableData>>>(
 		() => [
 			{
-				headerName: t('analyze_modal.symbolTitle'),
+				colId: 'symbolTitle',
+				headerName: t('symbolTitle'),
 				cellClass: 'cursor-pointer',
 				onCellClick: (row) => setSymbol(row.symbol.symbolISIN),
-				valueFormatter: (row) => row.symbol.symbolTitle,
+				valueGetter: (row) => row.symbol.symbolTitle,
 			},
 			{
-				headerName: t('analyze_modal.delta'),
+				colId: 'delta',
+				headerName: t('delta'),
 				cellClass: 'ltr',
-				valueFormatter: ({ symbol: { optionType }, deltaCall, deltaPut }) =>
-					toFixed(optionType === 'call' ? deltaCall : deltaPut, 4),
+				valueGetter: ({ symbol: { optionType }, deltaCall, deltaPut }) =>
+					optionType === 'call' ? deltaCall : deltaPut,
+				valueType: 'decimal',
 			},
 			{
-				headerName: t('analyze_modal.theta'),
+				colId: 'theta',
+				headerName: t('theta'),
 				cellClass: 'ltr',
-				valueFormatter: ({ symbol: { optionType }, thetaCall, thetaPut }) =>
-					toFixed(optionType === 'call' ? thetaCall : thetaPut, 4),
+				valueGetter: ({ symbol: { optionType }, thetaCall, thetaPut }) =>
+					optionType === 'call' ? thetaCall : thetaPut,
+				valueType: 'decimal',
 			},
 			{
-				headerName: t('analyze_modal.gama'),
+				colId: 'gama',
+				headerName: t('gama'),
 				cellClass: 'ltr',
-				valueFormatter: ({ gamma }) => toFixed(gamma, 8),
+				valueGetter: ({ gamma }) => gamma,
+				valueType: 'decimal',
 			},
 			{
-				headerName: t('analyze_modal.vega'),
+				colId: 'vega',
+				headerName: t('vega'),
 				cellClass: 'ltr',
-				valueFormatter: ({ vega }) => toFixed(vega, 4),
+				valueGetter: ({ vega }) => toFixed(vega, 4),
+				valueType: 'decimal',
 			},
 			{
-				headerName: t('analyze_modal.rho'),
+				colId: 'rho',
+				headerName: t('rho'),
 				cellClass: 'ltr',
-				valueFormatter: ({ symbol: { optionType }, rhoCall, rhoPut }) =>
-					toFixed(optionType === 'call' ? rhoCall : rhoPut, 4),
+				valueGetter: ({ symbol: { optionType }, rhoCall, rhoPut }) =>
+					optionType === 'call' ? rhoCall : rhoPut,
+				valueType: 'decimal',
 			},
 		],
 		[],
