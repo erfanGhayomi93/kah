@@ -61,7 +61,7 @@ type SymbolStrategyProps = ISharedProps & {
 interface SymbolStrategyTableProps extends ISharedProps {
 	contracts: TSymbolStrategy[];
 	selectedContracts: string[];
-	spacing?: string;
+	maxHeight?: string | number;
 	onSelectionChanged: (rows: string[]) => void;
 	onChange: (id: string, v: IInput) => void;
 	onToggleAll?: (name: TCheckboxes, value: boolean) => void;
@@ -69,10 +69,10 @@ interface SymbolStrategyTableProps extends ISharedProps {
 }
 
 const SymbolStrategyTable = ({
-	spacing = '8px 16px',
 	selectedContracts,
 	contracts,
 	showDetails = true,
+	maxHeight,
 	features,
 	onToggleAll,
 	onChange,
@@ -143,8 +143,8 @@ const SymbolStrategyTable = ({
 	const isAllContractsSelected = contracts.length > 0 && selectedContracts.length === contracts.length;
 
 	return (
-		<div className={styles.wrapper}>
-			<table style={{ borderSpacing: spacing }} className={styles.table}>
+		<div className={styles.wrapper} style={{ maxHeight }}>
+			<table className={styles.table}>
 				<thead className={styles.thead}>
 					<tr className={styles.tr}>
 						<th className={`${styles.th} w-24 min-w-24`}>
@@ -167,7 +167,7 @@ const SymbolStrategyTable = ({
 
 						{features?.contractSize && <th className={styles.th}>{t('contract_size')}</th>}
 
-						<th className={`${styles.th} w-88 min-w-88`}>
+						<th className={`${styles.th} w-96 min-w-88`}>
 							<div className={styles.flex}>
 								{t('price')}
 								<Tooltip content={t('price_hint')} placement='top'>
@@ -178,7 +178,7 @@ const SymbolStrategyTable = ({
 							</div>
 						</th>
 
-						<th className={`${styles.th} w-88 min-w-88`}>{t('quantity')}</th>
+						<th className={`${styles.th} w-96 min-w-88`}>{t('quantity')}</th>
 
 						{features?.requiredMargin && (
 							<th className={`${styles.th} w-104 pr-8`}>
@@ -426,7 +426,7 @@ const SymbolStrategy = ({
 
 			{features?.contractSize && (
 				<td className={styles.td}>
-					<span className='text-gray-1000'>{contractSize ?? 0}</span>
+					<span className='text-gray-1000'>{sepNumbers(String(contractSize ?? 0))}</span>
 				</td>
 			)}
 
