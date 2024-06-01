@@ -113,11 +113,15 @@ const initialState: ModalState = {
 
 	// فیلتر کاورد کال
 	coveredCallFilters: null,
+
 	// تایید توافق‌نامه
 	acceptAgreement: null,
 
 	// تنظیمات ستون
 	manageColumns: null,
+
+	// مدال وضعیت بازار صفحه داشبورد
+	marketState: null,
 };
 
 const modalSlice = createSlice({
@@ -303,6 +307,10 @@ const modalSlice = createSlice({
 		setManageColumnsModal: (state, { payload }: PayloadAction<ModalState['manageColumns']>) => {
 			state.manageColumns = payload;
 		},
+
+		setMarketStateModal: (state, { payload }: PayloadAction<ModalState['marketState']>) => {
+			state.marketState = payload;
+		},
 	},
 });
 
@@ -346,6 +354,7 @@ export const {
 	setCoveredCallFiltersModal,
 	setAcceptAgreementModal,
 	setManageColumnsModal,
+	setMarketStateModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -382,5 +391,6 @@ export const getOrdersReportsFiltersModal = (state: RootState) => state.modal.or
 export const getTradesReportsFiltersModal = (state: RootState) => state.modal.tradesReportsFilters;
 export const getGetStrategyModal = (state: RootState) => state.modal.createStrategy;
 export const getSymbolInfoPanelSettingModal = (state: RootState) => state.modal.symbolInfoPanelSetting;
+export const getMarketStateModal = (state: RootState) => state.modal.marketState;
 
 export default modalSlice.reducer;

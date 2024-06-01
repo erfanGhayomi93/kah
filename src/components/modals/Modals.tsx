@@ -13,7 +13,7 @@ import {
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
 	setOptionSettlementModal,
-	setWithdrawalModal
+	setWithdrawalModal,
 } from '@/features/slices/modalSlice';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
@@ -100,6 +100,8 @@ const WithdrawalCashReportsFiltersModal = lazy(() => import('./WithdrawalCashRep
 
 const ManageColumnsModal = lazy(() => import('./ManageColumnsModal'));
 
+const MarketStateModal = lazy(() => import('./DashboardModals/MarketStateModal'));
+
 const Modals = () => {
 	const dispatch = useAppDispatch();
 
@@ -143,6 +145,7 @@ const Modals = () => {
 		tradesReportsFilters,
 		coveredCallFilters,
 		manageColumns,
+		marketState,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -485,6 +488,14 @@ const Modals = () => {
 				{manageColumns && (
 					<ModalSuspense>
 						<ManageColumnsModal {...manageColumns} />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{marketState && (
+					<ModalSuspense>
+						<MarketStateModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

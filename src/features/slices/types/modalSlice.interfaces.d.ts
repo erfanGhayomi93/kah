@@ -270,6 +270,8 @@ export interface IManageColumnsModal extends IBaseModalConfiguration {
 	onColumnChanged: (columns: IManageColumn[]) => void;
 }
 
+export interface IMarketStateModal extends IBaseModalConfiguration {}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: true;
 	logout: true;
@@ -310,4 +312,5 @@ export type ModalState = TBaseModalProps<{
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	coveredCallFilters: ICavertCallFiltersModal;
 	manageColumns: IManageColumnsModal;
+	marketState: IMarketStateModal;
 }>;

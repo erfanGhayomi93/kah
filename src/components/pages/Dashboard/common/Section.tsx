@@ -26,6 +26,7 @@ interface SectionProps<T, B> {
 	onExpand?: () => void;
 	onTopTabChange?: (v: T) => void;
 	onBottomTabChange?: (v: B) => void;
+	closeable?: boolean;
 }
 
 const Section = <T extends string = string, B extends string = string>({
@@ -40,6 +41,7 @@ const Section = <T extends string = string, B extends string = string>({
 	onExpand,
 	onTopTabChange,
 	onBottomTabChange,
+	closeable = true,
 }: SectionProps<T, B>) => {
 	const onClose = () => {
 		ipcMain.send('home.hide_section', { id, hidden: true });
@@ -47,16 +49,18 @@ const Section = <T extends string = string, B extends string = string>({
 
 	return (
 		<div className='size-full justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'>
-			<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
+			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div className='h-full gap-8 rounded bg-gray-200 px-8 flex-items-center'>
-						<button
-							onClick={onClose}
-							type='button'
-							className='text-gray-700 transition-colors flex-justify-center hover:text-error-100'
-						>
-							<XCircleSVG width='1.8rem' height='1.8rem' />
-						</button>
+						{closeable && (
+							<button
+								onClick={onClose}
+								type='button'
+								className='text-gray-700 transition-colors flex-justify-center hover:text-error-100'
+							>
+								<XCircleSVG width='1.8rem' height='1.8rem' />
+							</button>
+						)}
 
 						{expandable && (
 							<button
