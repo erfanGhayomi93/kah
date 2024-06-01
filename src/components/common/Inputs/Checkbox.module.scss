@@ -20,21 +20,21 @@
 }
 
 .checkbox {
+	position: relative;
 	appearance: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	cursor: pointer;
 	width: 1.6rem;
 	height: 1.6rem;
-	border: 1px solid theme("colors.input");
+	border: 1px solid;
+	border-color: theme("colors.input");
 	border-radius: 5px;
 	background-color: transparent;
 
 	&.checked {
-		position: relative;
 		border-color: theme("colors.primary.400");
 		background-color: theme("colors.primary.400");
-		color: theme("colors.white");
 		background-position: center;
 		background-repeat: no-repeat;
 	}

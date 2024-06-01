@@ -90,6 +90,7 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 				title: t(`orders.delete_${tab === 'draft' ? 'drafts' : 'orders'}`),
 				description: t(`orders.delete_${tab === 'draft' ? 'drafts' : 'orders'}_confirm`),
 				onSubmit: () => deleteAll(ids),
+				onCancel: () => dispatch(setConfirmModal(null)),
 				confirm: {
 					label: t('common.delete'),
 					type: 'error',

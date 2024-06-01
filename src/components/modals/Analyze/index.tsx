@@ -357,7 +357,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 										contracts={symbolContracts}
 										onSelectionChanged={setSelectedContracts}
 										onChange={(id, values) => setOrderProperties(id, values)}
-										onSideChange={(id, value) => setOrderProperties(id, { side: value })}
 										onDelete={removeOrder}
 									/>
 								</div>

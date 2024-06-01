@@ -4,7 +4,6 @@ import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -38,7 +37,7 @@ const MeetingTable = ({ type }: MeetingTableProps) => {
 				colId: 'date',
 				headerName: t('home.date'),
 				valueGetter: (row) => new Date(row.dateTime).getTime(),
-				valueFormatter: ({ value }) => dateFormatter(Number(value), 'date'),
+				valueType: 'date',
 			},
 			{
 				colId: 'title',

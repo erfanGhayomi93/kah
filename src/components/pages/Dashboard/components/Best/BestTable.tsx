@@ -8,7 +8,7 @@ import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { dateFormatter, getColorBasedOnPercent, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useCallback } from 'react';
@@ -70,19 +70,19 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'totalTradeValue',
 			headerName: 'ارزش',
 			valueGetter: (row) => row[side]?.totalTradeValue ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'lastTradedPrice',
 			headerName: 'آخرین قیمت',
 			valueGetter: (row) => row[side]?.lastTradedPrice ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'dueDays',
 			headerName: 'مانده تا سررسید (روز)',
 			valueGetter: (row) => row[side]?.dueDays ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 	];
 
@@ -100,7 +100,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'openPositionCount',
 			headerName: 'موقعیت باز',
 			valueGetter: (row) => row[side]?.openPositionCount ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'openPositionCountDiff',
@@ -116,7 +116,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'dueDays',
 			headerName: 'مانده تا سررسید (روز)',
 			valueGetter: (row) => row[side]?.dueDays ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 	];
 
@@ -134,20 +134,20 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'totalNumberOfTrades',
 			headerName: 'تعداد معاملات',
 			valueGetter: (row) => row[side]?.totalNumberOfTrades ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'totalNumberOfTradesVarPercent',
 			headerName: 'درصد تغییر تعداد',
 			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side]?.totalNumberOfTradesVarPercent)],
 			valueGetter: (row) => row[side]?.totalNumberOfTradesVarPercent ?? 0,
-			valueFormatter: ({ value }) => `${toFixed(Number(value))}%`,
+			valueType: 'percent',
 		},
 		{
 			colId: 'dueDays',
 			headerName: 'مانده تا سررسید (روز)',
 			valueGetter: (row) => row[side]?.dueDays ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 	];
 
@@ -166,19 +166,19 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			headerName: 'درصد تغییر قیمت',
 			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side]?.closingPriceVarReferencePricePercent)],
 			valueGetter: (row) => row[side]?.closingPriceVarReferencePricePercent ?? 0,
-			valueFormatter: ({ value }) => `${toFixed(Number(value))}%`,
+			valueType: 'percent',
 		},
 		{
 			colId: 'closingPriceVarReferencePrice',
 			headerName: 'مقدار تغییر',
 			valueGetter: (row) => row[side]?.closingPriceVarReferencePrice ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'dueDays',
 			headerName: 'مانده تا سررسید (روز)',
 			valueGetter: (row) => row[side]?.dueDays ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 	];
 
@@ -196,20 +196,20 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'totalNumberOfSharesTraded',
 			headerName: 'حجم معاملات',
 			valueGetter: (row) => row[side]?.totalNumberOfSharesTraded ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'totalNumberOfSharesTradedVarPercent',
 			headerName: 'درصد تغییر حجم',
 			cellClass: (row) => ['ltr', getColorBasedOnPercent(row[side]?.totalNumberOfSharesTradedVarPercent)],
 			valueGetter: (row) => row[side]?.totalNumberOfSharesTradedVarPercent ?? 0,
-			valueFormatter: ({ value }) => `${toFixed(Number(value))}%`,
+			valueType: 'percent',
 		},
 		{
 			colId: 'dueDays',
 			headerName: 'مانده تا سررسید (روز)',
 			valueGetter: (row) => row[side]?.dueDays ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 	];
 
@@ -227,20 +227,20 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'openPosition',
 			headerName: 'تعداد موقعیت‌های باز خرید',
 			valueGetter: (row) => row.openPosition ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'openPositionVarPercent',
 			headerName: 'تغییر موقعیت‌های باز خرید',
 			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueGetter: (row) => row.openPositionVarPercent ?? 0,
-			valueFormatter: ({ value }) => `${toFixed(Number(value))}%`,
+			valueType: 'percent',
 		},
 		{
 			colId: 'contractCount',
 			headerName: 'تعداد قراردادهای دارای موقعیت باز خرید',
 			valueGetter: (row) => row.contractCount ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'closestEndDate',
@@ -264,20 +264,20 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'openPosition',
 			headerName: 'تعداد موقعیت‌های باز فروش',
 			valueGetter: (row) => row.openPosition ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'openPositionVarPercent',
 			headerName: 'تغییر موقعیت‌های باز فروش',
 			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueGetter: (row) => row.openPositionVarPercent ?? 0,
-			valueFormatter: ({ value }) => `${toFixed(Number(value))}%`,
+			valueType: 'percent',
 		},
 		{
 			colId: 'contractCount',
 			headerName: 'تعداد قراردادهای دارای موقعیت باز فروش',
 			valueGetter: (row) => row.contractCount ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'closestEndDate',
@@ -299,19 +299,19 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'totalNumberOfSharesTraded',
 			headerName: 'حجم معاملات',
 			valueGetter: (row) => row.totalNumberOfSharesTraded ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'thirtyDayVolume',
 			headerName: 'میانگین حجم 30 روز',
 			valueGetter: (row) => row.thirtyDayVolume ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'ninetyDayVolume',
 			headerName: 'میانگین حجم 90 روز',
 			valueGetter: (row) => row.ninetyDayVolume ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'lastTradedPrice',
@@ -336,19 +336,19 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'totalTradeValue',
 			headerName: 'ارزش معاملات',
 			valueGetter: (row) => row.totalTradeValue ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'thirtyDayValue',
 			headerName: 'میانگین ارزش 30 روز',
 			valueGetter: (row) => row.thirtyDayValue ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'ninetyDayValue',
 			headerName: 'میانگین ارزش 90 روز',
 			valueGetter: (row) => row.ninetyDayValue ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'lastTradedPrice',
@@ -373,20 +373,20 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'openPosition',
 			headerName: 'تعداد موقعیت باز',
 			valueGetter: (row) => row.openPosition ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'openPositionVarPercent',
 			headerName: 'تغییر موقعیت باز',
 			cellClass: (row) => ['ltr', getColorBasedOnPercent(row.openPositionVarPercent)],
 			valueGetter: (row) => row.openPositionVarPercent ?? 0,
-			valueFormatter: ({ value }) => `${toFixed(Number(value))}%`,
+			valueType: 'percent',
 		},
 		{
 			colId: 'contractCount',
 			headerName: 'تعداد قراردادهای دارای موقعیت باز',
 			valueGetter: (row) => row.contractCount ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'closestEndDate',
@@ -408,19 +408,19 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'totalNumberOfSharesTraded',
 			headerName: 'حجم معاملات',
 			valueGetter: (row) => row.totalNumberOfSharesTraded ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'thirtyDayVolume',
 			headerName: 'میانگین حجم 30 روز',
 			valueGetter: (row) => row.thirtyDayVolume ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'ninetyDayVolume',
 			headerName: 'میانگین حجم 90 روز',
 			valueGetter: (row) => row.ninetyDayVolume ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'tradePriceVarPreviousTradePercent',
@@ -445,19 +445,19 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 			colId: 'totalTradeValue',
 			headerName: 'ارزش معاملات',
 			valueGetter: (row) => row.totalTradeValue ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'thirtyDayValue',
 			headerName: 'میانگین ارزش 30 روز',
 			valueGetter: (row) => row.thirtyDayValue ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'ninetyDayValue',
 			headerName: 'میانگین ارزش 90 روز',
 			valueGetter: (row) => row.ninetyDayValue ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			valueType: 'separate',
 		},
 		{
 			colId: 'lastTradedPrice',
