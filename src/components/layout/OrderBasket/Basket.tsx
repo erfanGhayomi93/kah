@@ -78,6 +78,7 @@ const Basket = () => {
 					title: t('order_basket.delete_order_basket'),
 					description: t('order_basket.empty_order_basket'),
 					onSubmit: close,
+					onCancel: () => dispatch(setConfirmModal(null)),
 					confirm: {
 						label: t('common.delete'),
 						type: 'error',
@@ -196,7 +197,6 @@ const Basket = () => {
 								contracts={basketOrders}
 								onSelectionChanged={setSelectedContracts}
 								onChange={(id, v) => setOrderProperties(id, v)}
-								onSideChange={(id, value) => setOrderProperties(id, { side: value })}
 								onDelete={removeOrder}
 							/>
 						</div>

@@ -1,5 +1,5 @@
 import Button from '@/components/common/Button';
-import SymbolStrategyTable from '@/components/common/Tables/SymbolStrategyTable';
+import SymbolStrategyTable, { type TCheckboxes } from '@/components/common/Tables/SymbolStrategyTable';
 import { BookmarkSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuiltStrategy } from '@/features/slices/uiSlice';
@@ -52,6 +52,39 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		setSelectedContracts(filteredContracts.map(({ id }) => id));
 	};
 
+	const onChecked = (
+		id: string,
+		n: 'requiredMargin' | 'tradeCommission' | 'strikeCommission' | 'tax' | 'vDefault',
+		v: boolean,
+	) => {
+		const data = JSON.parse(JSON.stringify(contracts)) as TSymbolStrategy[];
+
+		const orderIndex = data.findIndex((item) => item.id === id);
+		if (orderIndex === -1) return;
+
+		data[orderIndex] = {
+			...data[orderIndex],
+			[n]: {
+				value: data[orderIndex][n]?.value ?? 0,
+				checked: v,
+			},
+		};
+
+		dispatch(setBuiltStrategy(data));
+	};
+
+	const onToggleAll = (name: TCheckboxes, value: boolean) => {
+		const data = contracts.map((item) => ({
+			...item,
+			[name]: {
+				...item[name],
+				checked: value,
+			},
+		}));
+
+		dispatch(setBuiltStrategy(data));
+	};
+
 	const storeBuiltStrategy = () => {
 		//
 	};
@@ -76,11 +109,11 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		for (let i = 0; i < contracts.length; i++) {
 			const contract = contracts[i];
 
-			result.requiredMargin += contract.requiredMargin?.value ?? 0;
-			result.tradeCommission += contract.tradeCommission?.value ?? 0;
-			result.strikeCommission += contract.strikeCommission?.value ?? 0;
-			result.tax += contract.tax?.value ?? 0;
-			result.vDefault += contract.vDefault?.value ?? 0;
+			if (contract.requiredMargin?.checked) result.requiredMargin += contract.requiredMargin?.value ?? 0;
+			if (contract.tradeCommission?.checked) result.tradeCommission += contract.tradeCommission?.value ?? 0;
+			if (contract.strikeCommission?.checked) result.strikeCommission += contract.strikeCommission?.value ?? 0;
+			if (contract.tax?.checked) result.tax += contract.tax?.value ?? 0;
+			if (contract.vDefault?.checked) result.vDefault += contract.vDefault?.value ?? 0;
 		}
 
 		return result;
@@ -88,7 +121,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 
 	return (
 		<div
-			style={{ flex: '0.77', minHeight: '47rem' }}
+			style={{ flex: '0.77', minHeight: '48.8rem' }}
 			className='relative overflow-hidden rounded-md border border-gray-500'
 		>
 			<div className='h-full justify-between py-16 flex-column'>
@@ -101,18 +134,19 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 						<SymbolStrategyTable
 							selectedContracts={selectedContracts}
 							contracts={contracts}
-							onSelectionChanged={setSelectedContracts}
-							onChange={(id, v) => setContractProperties(id, v)}
-							onSideChange={(id, value) => setContractProperties(id, { side: value })}
-							onDelete={deleteContract}
 							showDetails={false}
+							onDelete={deleteContract}
+							onChecked={onChecked}
+							onChange={(id, v) => setContractProperties(id, v)}
+							onSelectionChanged={setSelectedContracts}
+							onToggleAll={onToggleAll}
 							features={{
-								withTradeCommission: true,
-								withStrikeCommission: true,
-								withContractSize: true,
-								withRequiredMargin: true,
-								withDefault: true,
-								withTax: true,
+								tradeCommission: true,
+								strikeCommission: true,
+								contractSize: true,
+								requiredMargin: true,
+								vDefault: true,
+								tax: true,
 							}}
 						/>
 					</div>
@@ -122,30 +156,30 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 					<div className='relative h-24 border-t border-t-gray-500'>
 						<ul
 							style={{ top: '-1.2rem' }}
-							className='absolute left-24 gap-8 bg-white px-16 flex-items-center *:gap-4 *:truncate *:pr-8 *:flex-items-center'
+							className='absolute left-32 bg-white px-16 flex-items-center *:gap-4 *:truncate *:flex-items-center'
 						>
-							<li className='w-72 justify-end font-medium text-gray-900'>
+							<li className='justify-end pl-24 font-medium text-gray-900'>
 								{t('build_strategy.aggregate')}:
 							</li>
-							<li className='w-88 text-gray-1000'>
+							<li className='w-104 text-gray-1000'>
 								{sepNumbers(String(requiredMargin))}
-								<span className='text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-gray-700'>{t('common.rial')}</span>
 							</li>
-							<li className='w-88 text-gray-1000'>
+							<li className='w-104 text-gray-1000'>
 								{sepNumbers(String(tradeCommission))}
-								<span className='text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-gray-700'>{t('common.rial')}</span>
 							</li>
-							<li className='w-88 text-gray-1000'>
+							<li className='w-104 text-gray-1000'>
 								{sepNumbers(String(strikeCommission))}
-								<span className='text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-gray-700'>{t('common.rial')}</span>
 							</li>
-							<li className='w-88 text-gray-1000'>
+							<li className='w-104 text-gray-1000'>
 								{sepNumbers(String(tax))}
-								<span className='text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-gray-700'>{t('common.rial')}</span>
 							</li>
-							<li className='w-88 text-gray-1000'>
+							<li className='w-104 text-gray-1000'>
 								{sepNumbers(String(vDefault))}
-								<span className='text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-gray-700'>{t('common.rial')}</span>
 							</li>
 						</ul>
 					</div>
@@ -172,7 +206,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 						<Button
 							onClick={storeBuiltStrategy}
 							type='button'
-							className='btn-primary-hover w-40 rounded border border-gray-500 text-primary-400 transition-colors flex-justify-center'
+							className='w-40 rounded border border-gray-500 text-primary-400 transition-colors flex-justify-center btn-primary-hover'
 						>
 							<BookmarkSVG />
 						</Button>

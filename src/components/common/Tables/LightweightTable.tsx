@@ -1,4 +1,5 @@
 import { AngleDownSVG, AngleUpSVG } from '@/components/icons';
+import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './LightweightTable.module.scss';
@@ -7,13 +8,21 @@ type TSorting<K> = null | { column: IColDef<K>; type: TSortingMethods };
 
 type TValueGetterResult = string | number | boolean;
 
-interface IFValueFormatter<K> {
+interface IValueFormatterAPI<K> {
 	row: K;
 	rowIndex: number;
 	value: TValueGetterResult;
 }
 
-export interface IColDef<K> {
+interface IVFormatters<K> {
+	valueFormatter?: (api: IValueFormatterAPI<K>) => React.ReactNode;
+}
+
+interface IVType {
+	valueType?: 'separate' | 'percent' | 'decimal' | 'date' | 'time' | 'datetime' | 'abbreviations';
+}
+
+export type IColDef<K> = (IVFormatters<K> | IVType) & {
 	colId: string;
 	headerName: string;
 	cellClass?: ClassesValue | ((data: K) => ClassesValue);
@@ -23,18 +32,17 @@ export interface IColDef<K> {
 	minWidth?: number;
 	maxWidth?: number;
 	sort?: TSortingMethods | null;
-	sortable?: boolean; // !== false
+	sortable?: boolean;
 	comparator?: (valueA: TValueGetterResult, valueB: TValueGetterResult, rowA: K, rowB: K) => number;
 	onCellClick?: (row: K, e: React.MouseEvent) => void;
 	valueGetter: (row: K, rowIndex: number) => TValueGetterResult;
-	valueFormatter?: (api: IFValueFormatter<K>) => React.ReactNode;
-}
+};
 
-interface HeaderCellProps<K> extends IColDef<K> {
+type HeaderCellProps<K> = IColDef<K> & {
 	onClick?: (e: React.MouseEvent) => void;
 	onSortDetect: (type: TSortingMethods) => void;
 	sorting: TSorting<K>;
-}
+};
 
 interface RowCellProps<K> {
 	column: IColDef<K>;
@@ -217,7 +225,44 @@ const HeaderCell = <K,>({
 const RowCell = <K,>({ column, row, rowIndex }: RowCellProps<K>) => {
 	if (column.hidden) return null;
 
-	const value = column.valueGetter(row, rowIndex);
+	const getFormattedValue = () => {
+		const value = column.valueGetter(row, rowIndex);
+
+		try {
+			if ('valueFormatter' in column && typeof column?.valueFormatter === 'function') {
+				return column.valueFormatter?.({ row, value, rowIndex });
+			}
+
+			if ('valueType' in column && typeof column?.valueType === 'string') {
+				const valueAsNumber = Number(value);
+				const isNumber = !isNaN(valueAsNumber);
+
+				if (column.valueType === 'separate') {
+					return isNumber ? sepNumbers(String(value)) : '−';
+				}
+
+				if (column.valueType === 'percent') {
+					return isNumber ? `${toFixed(valueAsNumber)}%` : '−';
+				}
+
+				if (column.valueType === 'decimal') {
+					return isNumber ? toFixed(Number(value), 4) : '−';
+				}
+
+				if (column.valueType === 'abbreviations') {
+					return isNumber ? numFormatter(valueAsNumber) : '−';
+				}
+
+				if (column.valueType === 'date' || column.valueType === 'datetime' || column.valueType === 'time') {
+					return typeof value !== 'boolean' ? dateFormatter(value, column.valueType) : '−';
+				}
+			}
+		} catch (e) {
+			//
+		}
+
+		return value;
+	};
 
 	return (
 		<td
@@ -228,7 +273,7 @@ const RowCell = <K,>({ column, row, rowIndex }: RowCellProps<K>) => {
 				typeof column.cellClass === 'function' ? column.cellClass(row) : column.cellClass,
 			)}
 		>
-			{typeof column?.valueFormatter === 'function' ? column.valueFormatter?.({ row, value, rowIndex }) : value}
+			{getFormattedValue()}
 		</td>
 	);
 };

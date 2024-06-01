@@ -39,7 +39,6 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 				headerName: t('withdrawal_modal.status_column'),
 				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
 				headerClass: '!bg-white',
-				cellClass: '',
 			},
 		],
 		[],

@@ -6,7 +6,6 @@ import { ChainSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
-import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -54,7 +53,7 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 				colId: 'contractEndDate',
 				headerName: t('home.strike_date'),
 				valueGetter: (row) => new Date(row.contractEndDate).getTime(),
-				valueFormatter: ({ value }) => dateFormatter(Number(value), 'date'),
+				valueType: 'date',
 			},
 			{
 				colId: 'workingDaysTradedCount',
