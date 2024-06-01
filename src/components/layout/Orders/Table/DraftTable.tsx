@@ -63,6 +63,7 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				title: t('orders.delete_draft'),
 				description: t('orders.delete_draft_confirm', { title: order.symbolTitle }),
 				onSubmit: () => deleteDraft([order.id]),
+				onCancel: () => dispatch(setConfirmModal(null)),
 				confirm: {
 					label: t('common.delete'),
 					type: 'error',
