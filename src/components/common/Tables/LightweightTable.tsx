@@ -14,29 +14,27 @@ interface IValueFormatterAPI<K> {
 	value: TValueGetterResult;
 }
 
-interface IVFormatters<K> {
-	valueFormatter?: (api: IValueFormatterAPI<K>) => React.ReactNode;
-}
+type TCellValue<K> =
+	| { valueType?: 'separate' | 'percent' | 'decimal' | 'date' | 'time' | 'datetime' | 'abbreviations' }
+	| { valueFormatter?: (api: IValueFormatterAPI<K>) => React.ReactNode };
 
-interface IVType {
-	valueType?: 'separate' | 'percent' | 'decimal' | 'date' | 'time' | 'datetime' | 'abbreviations';
-}
+type THeaderValue = { headerName: string } | { headerComponent: () => React.ReactNode };
 
-export type IColDef<K> = (IVFormatters<K> | IVType) & {
-	colId: string;
-	headerName: string;
-	cellClass?: ClassesValue | ((data: K) => ClassesValue);
-	headerClass?: ClassesValue;
-	hidden?: boolean;
-	width?: number;
-	minWidth?: number;
-	maxWidth?: number;
-	sort?: TSortingMethods | null;
-	sortable?: boolean;
-	comparator?: (valueA: TValueGetterResult, valueB: TValueGetterResult, rowA: K, rowB: K) => number;
-	onCellClick?: (row: K, e: React.MouseEvent) => void;
-	valueGetter: (row: K, rowIndex: number) => TValueGetterResult;
-};
+export type IColDef<K> = TCellValue<K> &
+	THeaderValue & {
+		colId: string;
+		cellClass?: ClassesValue | ((data: K) => ClassesValue);
+		headerClass?: ClassesValue;
+		hidden?: boolean;
+		width?: number;
+		minWidth?: number;
+		maxWidth?: number;
+		sort?: TSortingMethods | null;
+		sortable?: boolean;
+		comparator?: (valueA: TValueGetterResult, valueB: TValueGetterResult, rowA: K, rowB: K) => number;
+		onCellClick?: (row: K, e: React.MouseEvent) => void;
+		valueGetter: (row: K, rowIndex: number) => TValueGetterResult;
+	};
 
 type HeaderCellProps<K> = IColDef<K> & {
 	onClick?: (e: React.MouseEvent) => void;
@@ -56,6 +54,7 @@ interface LightweightTableProps<T extends unknown[], K extends unknown> {
 	columnDefs: Array<IColDef<K>>;
 	rowHeight?: number;
 	headerHeight?: number;
+	reverseColors?: boolean;
 	onRowClick?: (row: K, e: React.MouseEvent) => void;
 	onHeaderClick?: (column: IColDef<K>, e: React.MouseEvent) => void;
 }
@@ -64,6 +63,7 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 	columnDefs,
 	rowData,
 	className,
+	reverseColors,
 	rowHeight = 48,
 	headerHeight = 48,
 	onRowClick,
@@ -138,7 +138,7 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 
 	return (
 		<div className={styles.wrapper}>
-			<table className={clsx(styles.table, className)}>
+			<table className={clsx(styles.table, reverseColors && styles.reverseColors, className)}>
 				<thead className={styles.thead}>
 					<tr style={{ height: `${headerHeight}px` }} className={styles.tr}>
 						{columnDefs.map((col) => (
@@ -176,7 +176,6 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 
 const HeaderCell = <K,>({
 	colId,
-	headerName,
 	headerClass,
 	hidden,
 	minWidth,
@@ -187,6 +186,7 @@ const HeaderCell = <K,>({
 	sortable,
 	onClick,
 	onSortDetect,
+	...props
 }: HeaderCellProps<K>) => {
 	const sortingColId = sorting?.column.colId ?? undefined;
 
@@ -207,7 +207,8 @@ const HeaderCell = <K,>({
 			className={clsx(styles.th, sortable !== false && styles.selectable, headerClass)}
 		>
 			<div className={styles.cell}>
-				<span>{headerName}</span>
+				{'headerName' in props ? props.headerName : props.headerComponent()}
+
 				{sorting !== null && sortingColId === colId && (
 					<div className={styles.icon}>
 						{sorting.type === 'desc' ? (

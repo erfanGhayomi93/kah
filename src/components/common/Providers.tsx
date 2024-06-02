@@ -26,11 +26,11 @@ const Providers = ({ children }: ProvidersProps) => {
 						<AppMiddleware>
 							<OMSRegistry />
 							<BroadcastChannelRegistry>
-								<ClockProvider>
-									<WatchlistColumnsProvider>
+								<WatchlistColumnsProvider>
+									<ClockProvider>
 										<ToastRegistry>{children}</ToastRegistry>
-									</WatchlistColumnsProvider>
-								</ClockProvider>
+									</ClockProvider>
+								</WatchlistColumnsProvider>
 							</BroadcastChannelRegistry>
 						</AppMiddleware>
 					</LightstreamRegistry>

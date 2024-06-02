@@ -1,5 +1,4 @@
 'use client';
-import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { useTranslations } from 'next-intl';
@@ -62,12 +61,11 @@ const History = () => {
 	);
 
 	return (
-		<SettingCard title={t('settings_page.history_settings')} className='h-3/5'>
-			<div className='bg-white' style={{ height: ([].length || 0) * 40 + 40 }}>
-				<LightweightTable columnDefs={columnDefs} rowData={[]} />
+		<SettingCard title={t('settings_page.history_settings')} className='relative h-3/5 overflow-hidden'>
+			<LightweightTable reverseColors columnDefs={columnDefs} rowData={[]} />
+			<div className='absolute left-0 top-0 size-full'>
+				<NoData />
 			</div>
-			{![].length && <NoData />}
-			{false && <Loading />}
 		</SettingCard>
 	);
 };

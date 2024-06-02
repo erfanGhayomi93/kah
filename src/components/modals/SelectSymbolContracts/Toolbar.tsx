@@ -1,7 +1,13 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
 import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
 import { SettlementItem } from '@/components/pages/OptionChain/Toolbar';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
+
+interface SettlementDaysProps {
+	data: Option.BaseSettlementDays[];
+	activeSettlementDay: Option.BaseSettlementDays | null;
+	onSelect: (item: Option.BaseSettlementDays) => void;
+}
 
 interface ToolbarProps {
 	suppressBaseSymbolChange: boolean;
@@ -20,28 +26,21 @@ const Toolbar = ({
 	onBaseSymbolChange,
 	onSettlementDayChanged,
 }: ToolbarProps) => {
-	const [baseSymbol, setBaseSymbol] = useState<Option.BaseSearch | null>(
-		!symbol
-			? null
-			: {
-					symbolISIN: symbol.symbolISIN,
-					symbolTitle: symbol.symbolTitle,
-					insCode: '0',
-					companyISIN: '0',
-					companyName: '−',
-					symbolTradeState: 'Open',
-				},
-	);
+	const [baseSymbol, setBaseSymbol] = useState<Option.BaseSearch | null>(symbol);
 
 	const { data: settlementDays, isFetching } = useBaseSettlementDaysQuery({
-		queryKey: ['baseSettlementDaysQuery', symbol ? symbol.symbolISIN : ''],
-		enabled: symbol !== null,
+		queryKey: ['baseSettlementDaysQuery', baseSymbol ? baseSymbol.symbolISIN : ''],
+		enabled: baseSymbol !== null,
 	});
 
 	useEffect(() => {
 		if (!settlementDays) return;
 		onSettlementDayChanged(settlementDays[0]);
 	}, [JSON.stringify(settlementDays)]);
+
+	useEffect(() => {
+		setBaseSymbol(symbol);
+	}, [symbol]);
 
 	return (
 		<div className='gap-24 flex-items-center'>
@@ -66,20 +65,39 @@ const Toolbar = ({
 						<div className='skeleton h-40 w-88 rounded' />
 					</>
 				) : (
-					<ul className='flex gap-8 overflow-auto'>
-						{settlementDays?.map((item, i) => (
-							<SettlementItem
-								key={i}
-								activeSettlementDay={settlementDay}
-								settlementDay={item}
-								setSettlementDay={onSettlementDayChanged}
-							/>
-						))}
-					</ul>
+					<SettlementDays
+						data={settlementDays ?? []}
+						activeSettlementDay={settlementDay}
+						onSelect={onSettlementDayChanged}
+					/>
 				)}
 			</div>
 		</div>
 	);
 };
 
-export default Toolbar;
+const SettlementDays = memo(
+	({ data, activeSettlementDay, onSelect }: SettlementDaysProps) => (
+		<ul className='flex gap-8 overflow-auto'>
+			{data.map((item, i) => (
+				<SettlementItem
+					key={item.contractEndDate}
+					activeSettlementDay={activeSettlementDay}
+					settlementDay={item}
+					setSettlementDay={() => onSelect(item)}
+				/>
+			))}
+		</ul>
+	),
+	(prev, next) =>
+		prev.activeSettlementDay?.contractEndDate === next.activeSettlementDay?.contractEndDate &&
+		JSON.stringify(prev) === JSON.stringify(next),
+);
+
+export default memo(
+	Toolbar,
+	(prev, next) =>
+		prev.symbol?.symbolISIN === next.symbol?.symbolISIN &&
+		prev.isPending === next.isPending &&
+		prev.settlementDay?.contractEndDate === next.settlementDay?.contractEndDate,
+);
