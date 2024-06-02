@@ -7,7 +7,7 @@ import Modal from '../../Modal';
 
 const Div = styled.div`
 	width: 800px;
-	// min-height: 500px;
+	min-height: 500px;
 	display: flex;
 	flex-direction: column;
 `;
@@ -32,7 +32,6 @@ const BestModal = forwardRef<HTMLDivElement, IBestModalProps>((props, ref) => {
 			<Div className='bg-white'>
 				<Best isModal />
 			</Div>
-			<div></div>
 		</Modal>
 	);
 });

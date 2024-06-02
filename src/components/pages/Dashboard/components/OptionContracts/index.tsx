@@ -48,7 +48,7 @@ const OptionContracts = ({ isModal = false }: IOptionContractProps) => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_contracts'
 			title={t('home.option_contracts')}
-			info={isModal ? '' : t('tooltip.option_contract_section')}
+			info={t('tooltip.option_contract_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -64,7 +64,7 @@ const OptionContracts = ({ isModal = false }: IOptionContractProps) => {
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setOptionContractModal(getOptionContract ? null : {}))}
 		>
 			<OptionContractsContainer type={defaultTab.bottom} basis={defaultTab.top} />

@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import Modal from '../../Modal';
 
 const Div = styled.div`
-	width: 800px;
-	// min-height: 500px;
+	width: 1000px;
+	min-height: 500px;
 	display: flex;
 	flex-direction: column;
 `;

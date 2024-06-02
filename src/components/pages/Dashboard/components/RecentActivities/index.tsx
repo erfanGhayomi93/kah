@@ -28,7 +28,7 @@ const RecentActivities = ({ isModal = false }: IRecentActivitiesProps) => {
 			id='recent_activities'
 			title={t('home.recent_activities')}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setRecentActivitiesModal(getRecentActivities ? null : {}))}
 		/>
 	);

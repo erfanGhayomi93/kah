@@ -33,9 +33,9 @@ const DueDates = ({ isModal = false }: IDueDatesProps) => {
 		<Section<string, Dashboard.GetOptionSettlementInfo.Type>
 			id='due_dates'
 			title={t('home.due_dates')}
-			info={isModal ? '' : t('tooltip.due_dates_section')}
-			closeable
-			expandable
+			info={t('tooltip.due_dates_section')}
+			closeable={!isModal}
+			expandable={!isModal}
 			onExpand={() => dispatch(setDueDatesModal(getDueDates ? null : {}))}
 			defaultBottomActiveTab={type}
 			onBottomTabChange={setType}

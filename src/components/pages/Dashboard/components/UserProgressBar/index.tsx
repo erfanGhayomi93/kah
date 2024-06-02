@@ -72,10 +72,10 @@ const UserProgressBar = ({ isModal = false }: IUserProgressBarProps) => {
 		<Section
 			id='user_progress_bar'
 			title={t('home.user_progress_bar')}
-			info={isModal ? '' : t('tooltip.user_progress_section')}
-			expandable
+			info={t('tooltip.user_progress_section')}
 			onExpand={() => dispatch(setUserProgressBarModal(getUserProgressBar ? null : {}))}
 			closeable={!isModal}
+			expandable={!isModal}
 		>
 			<div className='h-full gap-24 pt-8 flex-column'>
 				<div style={{ flex: '0 0 1.6rem' }} className='gap-8 flex-items-center'>

@@ -30,9 +30,9 @@ const PriceChangesWatchlist = ({ isModal = false }: IPriceChangeWatchlistProps) 
 		<Section
 			id='price_changes_watchlist'
 			title={t('home.price_changes_watchlist')}
-			info={isModal ? '' : t('tooltip.price_change_watchlist_section')}
+			info={t('tooltip.price_change_watchlist_section')}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setPriceChangeWatchlistModal(getPriceChangeWatchlist ? null : {}))}
 		>
 			<PriceChangesWatchlistChart />

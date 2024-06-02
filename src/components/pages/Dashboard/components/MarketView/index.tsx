@@ -132,15 +132,15 @@ const MarketView = ({ isModal = false }: IMarketViewProps) => {
 		<Section<Dashboard.TInterval, Dashboard.TIndex>
 			id='market_view'
 			title={t('home.market_view')}
-			info={isModal ? '' : t('tooltip.market_view_section')}
+			info={t('tooltip.market_view_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
 			onBottomTabChange={(v) => setDefaultTabByPosition('bottom', v)}
 			tabs={tabs}
-			expandable
 			onExpand={() => dispatch(setMarketViewModal(getMarketView ? null : {}))}
 			closeable={!isModal}
+			expandable={!isModal}
 		>
 			<MarketViewChart interval={defaultTab.top} type={defaultTab.bottom} data={data as TIndexData} />
 			<Suspend isLoading={isLoading} isEmpty={dataIsEmpty} />

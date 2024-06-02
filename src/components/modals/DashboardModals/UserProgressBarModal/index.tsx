@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import Modal from '../../Modal';
 
 const Div = styled.div`
-	width: 800px;
-	// min-height: 500px;
+	width: 600px;
+	min-height: 400px;
 	display: flex;
 	flex-direction: column;
 `;
@@ -32,7 +32,6 @@ const UserProgressBarModal = forwardRef<HTMLDivElement, IUserProgressBarModalPro
 			<Div className='bg-white'>
 				<UserProgressBar isModal />
 			</Div>
-			<div></div>
 		</Modal>
 	);
 });

@@ -48,7 +48,7 @@ const CompareTransactionValue = ({ isModal }: ICompareTransactionValueProps) => 
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='compare_transaction_value'
 			title={t('home.compare_transaction_value')}
-			info={isModal ? '' : t('tooltip.compare_transaction_value_section')}
+			info={t('tooltip.compare_transaction_value_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -67,7 +67,7 @@ const CompareTransactionValue = ({ isModal }: ICompareTransactionValueProps) => 
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setCompareTransactionValueModal(getCompareTransactionValue ? null : {}))}
 		>
 			<CompareTransactionValueChart interval={defaultTab.top} type={defaultTab.bottom} />

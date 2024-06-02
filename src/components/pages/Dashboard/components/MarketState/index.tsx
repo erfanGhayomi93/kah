@@ -44,8 +44,7 @@ const MarketState = ({ isModal = false }: IModalStateProps) => {
 		<Section<string, Dashboard.TMarketStateExchange>
 			id='market_state'
 			title={t('home.market_state')}
-			info={isModal ? '' : t('tooltip.market_state_section')}
-			expandable
+			info={t('tooltip.market_state_section')}
 			onBottomTabChange={setExchange}
 			onExpand={() => dispatch(setMarketStateModal(getMarketState ? null : {}))}
 			tabs={{
@@ -57,6 +56,7 @@ const MarketState = ({ isModal = false }: IModalStateProps) => {
 				top: <Clock />,
 			}}
 			closeable={!isModal}
+			expandable={!isModal}
 		>
 			{isLoading && <Loading />}
 

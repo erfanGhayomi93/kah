@@ -77,7 +77,7 @@ const Best = ({ isModal }: IBestProps) => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='best'
 			title={t('home.best')}
-			info={isModal ? '' : t('tooltip.best_section')}
+			info={t('tooltip.best_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -91,7 +91,7 @@ const Best = ({ isModal }: IBestProps) => {
 				bottom: bottomTabs,
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setBestModal(getBest ? null : {}))}
 		>
 			<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />

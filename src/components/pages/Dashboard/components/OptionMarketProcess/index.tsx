@@ -48,7 +48,7 @@ const OptionMarketProcess = ({ isModal = false }: IOptionMarketProcessProps) => 
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_market_process'
 			title={t('home.option_market_process')}
-			info={isModal ? '' : t('tooltip.option_market_process_section')}
+			info={t('tooltip.option_market_process_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -67,7 +67,7 @@ const OptionMarketProcess = ({ isModal = false }: IOptionMarketProcessProps) => 
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setOptionMarketProcessModal(getOptionMarketProcess ? null : {}))}
 		>
 			<OptionMarketProcessChart interval={defaultTab.top} type={defaultTab.bottom} />

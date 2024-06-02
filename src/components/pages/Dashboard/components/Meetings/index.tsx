@@ -33,7 +33,7 @@ const Meetings = ({ isModal = false }: IMeetingsProps) => {
 		<Section<string, Dashboard.GetAnnualReport.Type>
 			id='meetings'
 			title={t('home.meetings')}
-			info={isModal ? '' : t('tooltip.meting_process_section')}
+			info={t('tooltip.meting_process_section')}
 			defaultTopActiveTab={type}
 			onBottomTabChange={setType}
 			tabs={{
@@ -43,7 +43,7 @@ const Meetings = ({ isModal = false }: IMeetingsProps) => {
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setMeetingsModal(getMeetings ? null : {}))}
 		>
 			<MeetingTable type={type} />

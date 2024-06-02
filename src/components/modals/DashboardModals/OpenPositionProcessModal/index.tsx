@@ -1,14 +1,13 @@
-import OptionTradesValue from '@/components/pages/Dashboard/components/OptionTradesValue';
+import OpenPositionsProcess from '@/components/pages/Dashboard/components/OpenPositionsProcess';
 import { useAppDispatch } from '@/features/hooks';
 import { setOpenPositionProcessModal } from '@/features/slices/modalSlice';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../../Modal';
-import OpenPositionsProcess from '@/components/pages/Dashboard/components/OpenPositionsProcess';
 
 const Div = styled.div`
 	width: 800px;
-	// min-height: 500px;
+	min-height: 500px;
 	display: flex;
 	flex-direction: column;
 `;

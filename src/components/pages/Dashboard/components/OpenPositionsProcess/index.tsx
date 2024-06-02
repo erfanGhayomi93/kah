@@ -33,7 +33,7 @@ const OpenPositionsProcess = ({ isModal = false }: IOpenPositionProcessProps) =>
 		<Section<Dashboard.TInterval>
 			id='open_positions_process'
 			title={t('home.open_positions_process')}
-			info={isModal ? '' : t('tooltip.open_position_process_section')}
+			info={t('tooltip.open_position_process_section')}
 			defaultTopActiveTab={interval}
 			onTopTabChange={setInterval}
 			tabs={{
@@ -45,7 +45,7 @@ const OpenPositionsProcess = ({ isModal = false }: IOpenPositionProcessProps) =>
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setOpenPositionProcessModal(getOpenPositionProcess ? null : {}))}
 		>
 			<OpenPositionsProcessChart interval={interval} />

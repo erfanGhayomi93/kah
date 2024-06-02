@@ -46,7 +46,7 @@ const IndividualAndLegal = ({ isModal = false }: IIndividualAndLegalProps) => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='individual_and_legal'
 			title={t('home.individual_and_legal')}
-			info={isModal ? '' : t('tooltip.individual_and_legal_section')}
+			info={t('tooltip.individual_and_legal_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -62,7 +62,7 @@ const IndividualAndLegal = ({ isModal = false }: IIndividualAndLegalProps) => {
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setIndividualAndLegalModal(getIndividualAndLegal ? null : {}))}
 		>
 			<IndividualAndLegalChart symbolType={defaultTab.top} type={defaultTab.bottom} />

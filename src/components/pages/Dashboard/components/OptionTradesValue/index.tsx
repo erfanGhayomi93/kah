@@ -48,7 +48,7 @@ const OptionTradesValueModal = ({ isModal }: IOptionTradesValueModalProps) => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_trades_value'
 			title={t('home.option_trades_value')}
-			info={isModal ? '' : t('tooltip.option_trade_value_section')}
+			info={t('tooltip.option_trade_value_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -66,7 +66,7 @@ const OptionTradesValueModal = ({ isModal }: IOptionTradesValueModalProps) => {
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setOptionTradeValueModal(getOptionTradeValue ? null : {}))}
 		>
 			<OptionTradesValueChart interval={defaultTab.top} type={defaultTab.bottom} />

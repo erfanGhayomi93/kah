@@ -33,7 +33,7 @@ const NewAndOld = ({ isModal = false }: INewAndOldProps) => {
 		<Section<string, Dashboard.TNewAndOld>
 			id='new_and_old'
 			title={t('home.new_and_old')}
-			info={isModal ? '' : t('tooltip.new_and_old_section')}
+			info={t('tooltip.new_and_old_section')}
 			defaultTopActiveTab={type}
 			onBottomTabChange={setType}
 			tabs={{
@@ -43,7 +43,7 @@ const NewAndOld = ({ isModal = false }: INewAndOldProps) => {
 				],
 			}}
 			closeable={!isModal}
-			expandable
+			expandable={!isModal}
 			onExpand={() => dispatch(setNewAndOldModal(getNewAndOld ? null : {}))}
 		>
 			<NewAndOldTable type={type} />

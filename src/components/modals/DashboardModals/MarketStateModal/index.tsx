@@ -6,10 +6,11 @@ import styled from 'styled-components';
 import Modal from '../../Modal';
 
 const Div = styled.div`
-	width: 800px;
-	// min-height: 500px;
+	width: 600px;
+	min-height: 500px;
 	display: flex;
 	flex-direction: column;
+	flex: 1;
 `;
 
 interface IMarketStateModalProps extends IBaseModalConfiguration {}
@@ -32,7 +33,6 @@ const MarketStateModal = forwardRef<HTMLDivElement, IMarketStateModalProps>((pro
 			<Div className='bg-white'>
 				<MarketState isModal />
 			</Div>
-			<div></div>
 		</Modal>
 	);
 });
