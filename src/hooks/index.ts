@@ -10,6 +10,7 @@ import useLocalstorage from './useLocalstorage';
 import usePagination from './usePagination';
 import usePrevious from './usePrevious';
 import useServerDatetime from './useServerDatetime';
+import useStateRef from './useStateRef';
 import useSubscription from './useSubscription';
 import useTradingFeatures from './useTradingFeatures';
 import useUserInfo from './useUserInfo';
@@ -28,6 +29,7 @@ export {
 	usePagination,
 	usePrevious,
 	useServerDatetime,
+	useStateRef,
 	useSubscription,
 	useTradingFeatures,
 	useUserInfo,

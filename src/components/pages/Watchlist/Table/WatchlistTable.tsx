@@ -690,7 +690,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		};
 
 		actionColumn.setColDef(colDef, colDef, 'api');
-	}, [id]);
+	}, [isLoggedIn, id]);
 
 	useEffect(() => {
 		const gridApi = gridRef.current;

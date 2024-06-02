@@ -7,6 +7,18 @@
 	width: 100%;
 	table-layout: fixed;
 	direction: rtl;
+
+	&.reverseColors {
+		--tb-header-bg: theme("colors.white");
+		--tb-row-bg: theme("colors.gray.200");
+		--tb-row-odd-bg: theme("colors.white");
+	}
+
+	&:not(.reverseColors) {
+		--tb-header-bg: theme("colors.gray.200");
+		--tb-row-bg: theme("colors.white");
+		--tb-row-odd-bg: theme("colors.gray.200");
+	}
 }
 
 .thead,
@@ -27,8 +39,14 @@
 }
 
 .thead {
+	background-color: var(--tb-header-bg);
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 99;
+
 	.tr > .th {
-		background-color: theme("colors.gray.200");
+		background-color: var(--tb-header-bg);
 		font-size: 1.2rem;
 		font-weight: 400;
 		user-select: none;
@@ -50,11 +68,10 @@
 }
 
 .tbody {
-	height: calc(100% - 4rem);
-
 	.tr {
+		background-color: var(--tb-row-bg);
 		&:nth-child(2n) {
-			background-color: theme("colors.gray.200");
+			background-color: var(--tb-row-odd-bg);
 		}
 
 		& > .td {
