@@ -109,7 +109,7 @@ const Section = <T extends string = string, B extends string = string>({
 				<h1 className='text-lg font-medium text-gray-900'>{title}</h1>
 			</div>
 
-			<RenderOnViewportEntry className='relative h-full flex-1 overflow-hidden p-8 flex-justify-center'>
+			<RenderOnViewportEntry className='relative h-full flex-1 overflow-hidden p-8 '>
 				{children ?? <NoData />}
 			</RenderOnViewportEntry>
 
