@@ -167,8 +167,8 @@ class TooltipElement extends TooltipWrapper {
 				break;
 		}
 
-		left = Math.max(0, Math.min(window.innerWidth - offset.width, left));
-		top = Math.max(0, Math.min(window.innerHeight - offset.height, top));
+		left = Math.max(8, Math.min(window.innerWidth - offset.width, left));
+		top = Math.max(8, Math.min(window.innerHeight - offset.height, top));
 
 		this._eTooltip.style.transform = `translate(${left}px,${top}px)`;
 	}
