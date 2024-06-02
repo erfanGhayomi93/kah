@@ -1,6 +1,5 @@
 .wrapper {
 	height: 100%;
-	padding: 0 1.6rem;
 	overflow-x: scroll;
 }
 
@@ -14,7 +13,7 @@
 
 	.th,
 	.td {
-		padding: 0 8px;
+		padding: 0 4px;
 		border-collapse: collapse;
 		overflow: hidden;
 		white-space: nowrap;
@@ -24,10 +23,10 @@
 }
 
 .thead {
+	background-color: theme("colors.white");
 	position: sticky;
 	top: 0;
 	left: 0;
-	background-color: theme("colors.white");
 	z-index: 99;
 
 	.tr {

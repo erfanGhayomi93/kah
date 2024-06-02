@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { memo } from 'react';
 
 interface StrategyTagProps {
 	id: Strategy.Cheap | string;
@@ -6,7 +7,7 @@ interface StrategyTagProps {
 	i: number;
 }
 
-export const StrategyTag = ({ id, title, i }: StrategyTagProps) => {
+const StrategyTag = ({ id, title, i }: StrategyTagProps) => {
 	return (
 		<li
 			className={clsx(
@@ -26,3 +27,5 @@ export const StrategyTag = ({ id, title, i }: StrategyTagProps) => {
 		</li>
 	);
 };
+
+export default memo(StrategyTag, (prev, next) => prev.id === next.id);

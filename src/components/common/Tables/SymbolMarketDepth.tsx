@@ -148,7 +148,6 @@ const SymbolMarketDepth = ({ symbolISIN, length, compact = true }: SymbolMarketD
 
 		const sub = subscribeSymbolInfo(symbolISIN, 'ordersData');
 		sub.addEventListener('onItemUpdate', onItemUpdate);
-		sub.start();
 
 		subscribe(sub);
 	}, [symbolISIN]);

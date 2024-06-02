@@ -8,52 +8,49 @@ import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/fe
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import GridLayout, { type Layout } from 'react-grid-layout';
+import SymbolInformation from './components/SymbolInformation';
 
 const BaseSymbolContracts = dynamic(() => import('./components/BaseSymbolContracts'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const Chart = dynamic(() => import('./components/Chart'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const IndividualAndLegal = dynamic(() => import('./components/IndividualAndLegal'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const MarketDepth = dynamic(() => import('./components/MarketDepth'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const Messages = dynamic(() => import('./components/Messages'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const OpenPositions = dynamic(() => import('./components/OpenPositions'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const OptionBaseSymbolInformation = dynamic(() => import('./components/OptionBaseSymbolInformation'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 const OptionDetail = dynamic(() => import('./components/OptionDetail'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const Quotes = dynamic(() => import('./components/Quotes'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const SameSectorSymbol = dynamic(() => import('./components/SameSectorSymbol'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 const SymbolDetails = dynamic(() => import('./components/SymbolDetails'), {
-	loading: () => <Loading />,
-});
-
-const SymbolInformation = dynamic(() => import('./components/SymbolInformation'), {
-	loading: () => <Loading />,
+	loading: () => <div className='skeleton h-full rounded' />,
 });
 
 interface ContainerProps {
@@ -150,15 +147,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 			</div>
 
 			{isLoading && (
-				<div
-					style={{
-						left: '1.6rem',
-						height: 'calc(100% - 1.6rem)',
-						bottom: '1.6rem',
-						backdropFilter: 'blur(2px)',
-					}}
-					className='absolute top-0 w-full rounded'
-				>
+				<div className='absolute left-0 top-0 size-full rounded bg-gray-300'>
 					<Loading />
 				</div>
 			)}

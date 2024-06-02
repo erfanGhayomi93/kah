@@ -58,6 +58,8 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 					'long_put_strategy_columns',
 					'Long_straddle_strategy_columns',
 					'protective_put_strategy_columns',
+					'sipg',
+					'owci',
 				];
 
 				for (let i = 0; i < CLEARABLE_KEYS.length; i++) {
