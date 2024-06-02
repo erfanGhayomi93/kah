@@ -1,5 +1,6 @@
 import axios from '@/api/axios';
 import routes from '@/api/routes';
+import lightStreamInstance from '@/classes/Lightstream';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { defaultOptionWatchlistColumns } from '@/constants';
@@ -8,7 +9,7 @@ import { setLoginModal, setMoveSymbolToWatchlistModal } from '@/features/slices/
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
-import { useWatchlistColumns } from '@/hooks';
+import { useSubscription, useWatchlistColumns } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import {
@@ -19,6 +20,7 @@ import {
 	type ICellRendererParams,
 } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -33,11 +35,13 @@ interface WatchlistTableProps {
 const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	const t = useTranslations();
 
+	const { subscribe } = useSubscription();
+
 	const queryClient = useQueryClient();
 
 	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
-	const cWatchlistRef = useRef<Option.Root[]>([]);
+	const visualData = useRef<Option.Root[]>([]);
 
 	const gridRef = useRef<GridApi<Option.Root>>(null);
 
@@ -157,6 +161,33 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			}),
 		);
 	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const symbolISIN: string = updateInfo.getItemName();
+		const symbolIndex = visualData.current.findIndex(({ symbolInfo }) => symbolInfo.symbolISIN === symbolISIN);
+
+		if (symbolIndex === -1) return;
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				const symbol = visualData.current[symbolIndex];
+
+				if (value !== null && fieldName in symbol) {
+					// eslint-disable-next-line no-console
+					console.log(fieldName, value);
+				}
+			} catch (e) {
+				//
+			}
+		});
+
+		queryClient.setQueryData(['sameSectorSymbolsQuery', symbolISIN], visualData.current);
+	};
+
+	const symbolsISIN = useMemo(() => {
+		if (!Array.isArray(data)) return [];
+		return data.map((item) => item.symbolInfo.symbolISIN);
+	}, [data]);
 
 	const modifiedWatchlistColumns = useMemo(() => {
 		const result: Record<string, Option.Column> = {};
@@ -715,7 +746,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 			if (dataIsEmpty) {
 				eGrid.setGridOption('rowData', []);
-				cWatchlistRef.current = [];
+				visualData.current = [];
 
 				return;
 			}
@@ -726,7 +757,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 				update: [],
 			};
 
-			const cWatchlistData = cWatchlistRef.current;
+			const cWatchlistData = visualData.current;
 			const length = Math.max(cWatchlistData.length, data.length);
 			for (let i = 0; i < length; i++) {
 				const newItem = data[i];
@@ -748,7 +779,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			}
 
 			eGrid.applyTransactionAsync(transaction);
-			cWatchlistRef.current = data;
+			visualData.current = data;
 		} catch (e) {
 			//
 		}
@@ -768,6 +799,64 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		}
 	}, [watchlistColumns]);
 
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: symbolsISIN,
+			fields: [
+				'tradeValue',
+				'notionalValue',
+				'IntrinsicValue',
+				'lastTradedPrice',
+				'delta',
+				'baseSymbolPrice',
+				'breakEvenPoint',
+				'leverage',
+				'openPositionCount',
+				'impliedVolatility',
+				'iotm',
+				'blackScholes',
+				'tradeVolume',
+				'dueDays',
+				'strikePrice',
+				'bestBuyPrice',
+				'bestSellPrice',
+				'baseSymbolTitle',
+				'closingPrice',
+				'historicalVolatility',
+				'contractSize',
+				'timeValue',
+				'theta',
+				'tradeCount',
+				'contractEndDate',
+				'spread',
+				'blackScholesDifference',
+				'baseClosingPrice',
+				'gamma',
+				'optionType',
+				'requiredMargin',
+				'initialMargin',
+				'rho',
+				'vega',
+				'growth',
+				'contractValueType',
+				'highOpenPosition',
+				'lastTradeDate',
+				'legalBuyVolume',
+				'individualBuyVolume',
+				'legalSellVolume',
+				'individualSellVolume',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [symbolsISIN.join(',')]);
+
 	return (
 		<AgTable
 			ref={gridRef}
@@ -776,7 +865,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 			columnDefs={COLUMNS}
 			defaultColDef={defaultColDef}
 			onColumnMoved={onColumnMoved}
-			onSortChanged={() => storeColumns()}
+			onSortChanged={storeColumns}
 			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
 			onBodyScrollEnd={({ api }) => {
 				const lastRowIndex = api.getLastDisplayedRowIndex();
