@@ -67,7 +67,7 @@ const OptionContracts = ({ isModal = false }: IOptionContractProps) => {
 			expandable={!isModal}
 			onExpand={() => dispatch(setOptionContractModal(getOptionContract ? null : {}))}
 		>
-			<OptionContractsContainer type={defaultTab.bottom} basis={defaultTab.top} />
+			<OptionContractsContainer isModal={isModal} type={defaultTab.bottom} basis={defaultTab.top} />
 		</Section>
 	);
 };

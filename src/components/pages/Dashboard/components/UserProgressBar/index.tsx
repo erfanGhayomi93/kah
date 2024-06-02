@@ -88,7 +88,11 @@ const UserProgressBar = ({ isModal = false }: IUserProgressBarProps) => {
 					</div>
 				</div>
 
-				<ul className='flex-1 justify-between pr-32 rtl flex-column'>
+				<ul
+					className={clsx('flex-1 justify-between pr-32 rtl flex-column', {
+						'gap-16': isModal,
+					})}
+				>
 					{data.map(({ id, passed, title }) => (
 						<li key={id} className={clsx('flex gap-10', passed ? 'text-success-100' : 'text-gray-900')}>
 							{passed ? (
