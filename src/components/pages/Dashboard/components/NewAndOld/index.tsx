@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setNewAndOldModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -5,8 +9,23 @@ import Section from '../../common/Section';
 
 const NewAndOldTable = dynamic(() => import('./NewAndOldTable'));
 
-const NewAndOld = () => {
+interface INewAndOldProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getNewAndOld: state.modal.newAndOld,
+	}),
+);
+
+const NewAndOld = ({ isModal = false }: INewAndOldProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getNewAndOld } = useAppSelector(getStates);
 
 	const [type, setType] = useState<Dashboard.TNewAndOld>('FirstTradedOptionSymbol');
 
@@ -23,6 +42,9 @@ const NewAndOld = () => {
 					{ id: 'MostTradedOptionSymbol', title: t('home.tab_most_trading_day') },
 				],
 			}}
+			closeable={!isModal}
+			expandable={!isModal}
+			onExpand={() => dispatch(setNewAndOldModal(getNewAndOld ? null : {}))}
 		>
 			<NewAndOldTable type={type} />
 		</Section>

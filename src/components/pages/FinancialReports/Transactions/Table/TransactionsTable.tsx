@@ -17,18 +17,21 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 			{
 				colId: 'id',
 				headerName: t('transactions_page.id_column'),
-				width: 62,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				maxWidth: 112,
+				minWidth: 112,
 			},
 			{
 				colId: 'date',
 				headerName: t('transactions_page.date_column'),
-				// width: 96,
+				maxWidth: 144,
+				minWidth: 144,
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row?.date ?? '', 'datetime'),
 			},
 			{
 				colId: 'transactionType',
+				maxWidth: 128,
 				headerName: t('transactions_page.operator_column'),
 				valueGetter: (row) => t('transactions_page.operator_type_' + row?.transactionType),
 				cellClass: (row) => {
@@ -56,7 +59,6 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 							}}
 						/>
 					),
-				width: 180,
 			},
 			{
 				colId: 'debit',
@@ -65,6 +67,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					clsx(' ltr', {
 						'text-error-100': Number(row?.debit) < 0,
 					}),
+				maxWidth: 160,
 				valueGetter: (row) => row.debit,
 				valueFormatter: ({ value }) =>
 					Number(value) >= 0 ? sepNumbers(String(value)) : `(${sepNumbers(String(value))})`,
@@ -76,6 +79,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					clsx('ltr', {
 						'text-error-100': Number(row?.credit) < 0,
 					}),
+				maxWidth: 160,
 				valueGetter: (row) =>
 					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
 			},
@@ -87,11 +91,12 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					Number(row?.remaining) >= 0
 						? sepNumbers(String(row?.remaining))
 						: `(${sepNumbers(String(row?.remaining))})`,
+				maxWidth: 160,
 			},
 			{
 				colId: 'station',
 				headerName: t('transactions_page.station_column'),
-				width: 62,
+				maxWidth: 160,
 				valueGetter: (row) => row?.station,
 			},
 		],
