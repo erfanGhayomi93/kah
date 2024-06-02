@@ -176,7 +176,6 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 		const sub = subscribeSymbolInfo(selectedSymbol, 'symbolData');
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
-		sub.start();
 
 		subscribe(sub);
 	}, [selectedSymbol]);

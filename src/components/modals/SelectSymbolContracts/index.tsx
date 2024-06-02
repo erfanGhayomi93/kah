@@ -9,7 +9,7 @@ import { type ISelectSymbolContractsModal } from '@/features/slices/types/modalS
 import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, memo, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
@@ -22,6 +22,14 @@ interface ContractProps {
 	symbolTitle: string;
 	optionType?: TOptionSides;
 	onRemove: () => void;
+}
+
+interface BaseSymbolCheckboxProps {
+	title: string;
+	symbolTitle: string;
+	checked: boolean;
+	disabled: boolean;
+	onChange: (v: boolean) => void;
 }
 
 const Div = styled.div`
@@ -155,24 +163,13 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 						/>
 
 						{!suppressSendBaseSymbol && inputs.baseSymbol && (
-							<div
-								style={{ flex: '0 0 4rem' }}
-								className='rounded bg-white px-8 shadow-card flex-items-center'
-							>
-								<Checkbox
-									label={
-										<>
-											{t('select_symbol_contracts_modal.base_symbol')}:
-											<span className='pr-4 font-medium'>
-												{inputs.baseSymbol?.symbolTitle ?? '−'}
-											</span>
-										</>
-									}
-									checked={inputs.sendBaseSymbol}
-									onChange={(v) => setFieldValue('sendBaseSymbol', v)}
-									disabled={isFetchingBaseSymbol}
-								/>
-							</div>
+							<BaseSymbolCheckbox
+								title={t('select_symbol_contracts_modal.base_symbol')}
+								symbolTitle={inputs.baseSymbol?.symbolTitle ?? '−'}
+								checked={inputs.sendBaseSymbol}
+								onChange={(v) => setFieldValue('sendBaseSymbol', v)}
+								disabled={isFetchingBaseSymbol}
+							/>
 						)}
 
 						<div
@@ -232,5 +229,24 @@ const Contract = ({ onRemove, symbolTitle, optionType }: ContractProps) => {
 		</li>
 	);
 };
+
+const BaseSymbolCheckbox = memo(
+	({ title, symbolTitle, checked, disabled, onChange }: BaseSymbolCheckboxProps) => (
+		<div style={{ flex: '0 0 4rem' }} className='rounded bg-white px-8 shadow-card flex-items-center'>
+			<Checkbox
+				label={
+					<>
+						{title}:<span className='pr-4 font-medium'>{symbolTitle}</span>
+					</>
+				}
+				checked={checked}
+				onChange={onChange}
+				disabled={disabled}
+			/>
+		</div>
+	),
+	(prev, next) =>
+		prev.checked === next.checked && prev.disabled === next.disabled && prev.symbolTitle === next.symbolTitle,
+);
 
 export default SelectSymbolContracts;

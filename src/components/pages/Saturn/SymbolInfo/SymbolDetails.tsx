@@ -164,7 +164,6 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	useEffect(() => {
 		const sub = subscribeSymbolInfo(symbol.symbolISIN, 'symbolData,individualLegal');
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
-		sub.start();
 
 		subscribe(sub);
 	}, [symbol.symbolISIN]);

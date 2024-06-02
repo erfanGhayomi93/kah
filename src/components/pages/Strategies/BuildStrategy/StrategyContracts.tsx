@@ -1,13 +1,15 @@
 import Button from '@/components/common/Button';
+import Select from '@/components/common/Inputs/Select';
 import SymbolStrategyTable, { type TCheckboxes } from '@/components/common/Tables/SymbolStrategyTable';
-import { BookmarkSVG } from '@/components/icons';
+import { BookmarkSVG, EraserSVG, RefreshSVG } from '@/components/icons';
+import { watchlistPriceBasis } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuiltStrategy } from '@/features/slices/uiSlice';
 import { useBasketOrderingSystem } from '@/hooks';
 import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface StrategyContractsProps {
@@ -27,6 +29,8 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 			toast.success(t(getBasketAlertMessage(failedOrders.length, sentOrders.length)));
 		},
 	});
+
+	const [priceBasis, setPriceBasis] = useState<TPriceBasis>('LastTradePrice');
 
 	const setContractProperties = (
 		id: string,
@@ -97,6 +101,10 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		//
 	};
 
+	const updatePrice = () => {
+		//
+	};
+
 	const { requiredMargin, tradeCommission, strikeCommission, tax, vDefault } = useMemo(() => {
 		const result: Record<'requiredMargin' | 'tradeCommission' | 'strikeCommission' | 'tax' | 'vDefault', number> = {
 			requiredMargin: 0,
@@ -124,10 +132,43 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 			style={{ flex: '0.77', minHeight: '48.8rem' }}
 			className='relative overflow-hidden rounded-md border border-gray-500'
 		>
-			<div className='h-full justify-between py-16 flex-column'>
-				<div className='flex-1 overflow-hidden flex-column'>
-					<div className='px-16 flex-justify-between'>
+			<div className='h-full justify-between pb-16 flex-column'>
+				<div className='flex-1 gap-16 overflow-hidden pt-16 flex-column'>
+					<div className='w-full px-16 flex-justify-between'>
 						<h1 className='text-base font-medium'>{t('build_strategy.new_strategy')}</h1>
+
+						<div className='flex-1 gap-16 flex-justify-end'>
+							<div style={{ flex: '0 0 15.2rem' }}>
+								<Select<TPriceBasis>
+									defaultValue={priceBasis}
+									options={watchlistPriceBasis}
+									placeholder={t('strategy.price_basis')}
+									onChange={(v) => setPriceBasis(v)}
+									getOptionId={(id) => id}
+									getOptionTitle={(id) => t(`strategy.price_${id}`)}
+									classes={{
+										root: '!h-40',
+									}}
+								/>
+							</div>
+
+							<button
+								onClick={updatePrice}
+								type='button'
+								className='h-24 gap-4 text-base text-info flex-items-center'
+							>
+								{t('build_strategy.update_price')}
+								<RefreshSVG width='2rem' height='2rem' />
+							</button>
+
+							<button
+								onClick={() => dispatch(setBuiltStrategy([]))}
+								type='button'
+								className='size-24 text-gray-900 flex-justify-center'
+							>
+								<EraserSVG width='2rem' height='2rem' />
+							</button>
+						</div>
 					</div>
 
 					<div className='flex-1 overflow-auto px-8'>
@@ -152,11 +193,11 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 					</div>
 				</div>
 
-				<div className='justify-between gap-16 bg-white px-16 pt-20 flex-column'>
+				<div className='justify-between gap-16 bg-white px-16 pt-12 flex-column'>
 					<div className='relative h-24 border-t border-t-gray-500'>
 						<ul
 							style={{ top: '-1.2rem' }}
-							className='absolute left-32 bg-white px-16 flex-items-center *:gap-4 *:truncate *:flex-items-center'
+							className='absolute left-8 bg-white px-16 flex-items-center *:gap-4 *:truncate *:flex-items-center'
 						>
 							<li className='justify-end pl-24 font-medium text-gray-900'>
 								{t('build_strategy.aggregate')}:

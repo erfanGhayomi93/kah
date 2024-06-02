@@ -152,9 +152,9 @@ const Basket = () => {
 					</div>
 				</div>
 
-				<div className='gap-8 overflow-hidden py-16 flex-column'>
-					<div className='px-16 flex-justify-between'>
-						<div onClick={onExpand} className='cursor-pointer gap-12 pl-16 flex-items-center'>
+				<div className='gap-8 overflow-hidden px-12 py-16 flex-column'>
+					<div className='px-4 flex-justify-between'>
+						<div onClick={onExpand} className='cursor-pointer gap-12 flex-items-center'>
 							<span className='select-none whitespace-nowrap rounded text-base text-gray-1000'>
 								<span className='font-medium'>{selectedContracts.length} </span>
 								{t('order_basket.selected_trade')}
@@ -191,15 +191,14 @@ const Basket = () => {
 					</div>
 
 					{isMaximized && (
-						<div style={{ maxHeight: '40rem' }} className='overflow-y-auto'>
-							<SymbolStrategyTable
-								selectedContracts={selectedContracts}
-								contracts={basketOrders}
-								onSelectionChanged={setSelectedContracts}
-								onChange={(id, v) => setOrderProperties(id, v)}
-								onDelete={removeOrder}
-							/>
-						</div>
+						<SymbolStrategyTable
+							maxHeight='40rem'
+							selectedContracts={selectedContracts}
+							contracts={basketOrders}
+							onSelectionChanged={setSelectedContracts}
+							onChange={(id, v) => setOrderProperties(id, v)}
+							onDelete={removeOrder}
+						/>
 					)}
 				</div>
 			</div>

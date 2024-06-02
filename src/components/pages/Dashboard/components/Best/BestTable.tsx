@@ -547,7 +547,9 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 const TableWrapper = ({ children, title, isOption, type }: TableWrapperProps) => (
 	<div className='h-full text-center flex-column'>
 		{isOption && (
-			<h3 className={clsx('pb-8 text-base', type === 'call' ? 'text-success-100' : 'text-error-100')}>{title}</h3>
+			<span className={clsx('pb-8 text-base', type === 'call' ? 'text-success-100' : 'text-error-100')}>
+				{title}
+			</span>
 		)}
 		<div
 			className={clsx(

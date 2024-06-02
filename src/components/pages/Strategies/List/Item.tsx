@@ -1,4 +1,4 @@
-import { StrategyTag } from '@/components/common/Strategy/StrategyTag';
+import StrategyTag from '@/components/common/Strategy/StrategyTag';
 import { AngleLeftSVG, PlusSVG } from '@/components/icons';
 import { useRouter } from '@/navigation';
 import { useTranslations } from 'next-intl';
