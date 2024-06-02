@@ -1,6 +1,6 @@
 'use client';
 
-import { StrategyTag } from '@/components/common/Strategy/StrategyTag';
+import StrategyTag from '@/components/common/Strategy/StrategyTag';
 import {
 	AdvantagesSVG,
 	ArrowDownSVG,
@@ -19,7 +19,7 @@ import { useLocalstorage } from '@/hooks';
 import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 interface StepProps {
 	id: number;
@@ -92,6 +92,7 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 									))}
 								</ul>
 							</div>
+
 							<span className='gap-4 whitespace-nowrap pr-40 text-tiny text-gray-700 flex-items-center'>
 								{t.rich(`${type}.desc`, {
 									plus: () => (
@@ -248,4 +249,4 @@ const Step = ({ id, title }: StepProps) => (
 	</li>
 );
 
-export default StrategyDetails;
+export default memo(StrategyDetails, () => true);

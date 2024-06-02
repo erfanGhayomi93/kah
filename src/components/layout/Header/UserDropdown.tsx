@@ -1,5 +1,6 @@
 import Tooltip from '@/components/common/Tooltip';
 import { EditSVG, LogoutSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '@/components/icons';
+import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 
 interface UserDropdownProps {
@@ -83,8 +84,9 @@ const UserDropdown = ({
 			<nav className='gap-16 px-8 flex-column'>
 				<ul className='flex-column'>
 					<li>
-						<button
-							type='button'
+						<Link
+							onClick={() => close()}
+							href='/settings/general'
 							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
 							<span className='size-24 flex-justify-center'>
@@ -92,11 +94,12 @@ const UserDropdown = ({
 							</span>
 
 							<span>{t('header.user_account')}</span>
-						</button>
+						</Link>
 					</li>
 					<li>
-						<button
-							type='button'
+						<Link
+							onClick={() => close()}
+							href='/settings/history'
 							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
 							<span className='size-24 flex-justify-center'>
@@ -104,11 +107,12 @@ const UserDropdown = ({
 							</span>
 
 							<span>{t('header.session_history')}</span>
-						</button>
+						</Link>
 					</li>
 					<li>
-						<button
-							type='button'
+						<Link
+							onClick={() => close()}
+							href='/settings/general'
 							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
 						>
 							<span className='size-24 flex-justify-center'>
@@ -116,7 +120,7 @@ const UserDropdown = ({
 							</span>
 
 							<span>{t('header.setting')}</span>
-						</button>
+						</Link>
 					</li>
 				</ul>
 

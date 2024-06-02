@@ -106,13 +106,22 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 						/>
 					</button>
 
-					<button type='button' className='drag-handler text-gray-800'>
+					<button
+						type='button'
+						className='drag-handler text-gray-800'
+						onClick={(e) => {
+							e.stopPropagation();
+							e.preventDefault();
+						}}
+					>
 						<DragSVG width='2rem' height='2rem' />
 					</button>
 				</div>
 			</div>
 
-			{isExpand && <RenderOnViewportEntry className='relative h-full'>{children}</RenderOnViewportEntry>}
+			{isExpand && (
+				<RenderOnViewportEntry className='relative h-full overflow-hidden'>{children}</RenderOnViewportEntry>
+			)}
 		</div>
 	);
 };

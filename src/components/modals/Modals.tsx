@@ -19,6 +19,7 @@ import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
+import ModalLoading from './ModalLoading';
 
 const LoginModal = lazy(() => import('./LoginModal'));
 
@@ -83,8 +84,6 @@ const DepositWithReceiptFiltersModal = lazy(() => import('./DepositWithReceiptRe
 const FreezeUnFreezeReportsModal = lazy(() => import('./FreezeUnFreezeReportsModal'));
 
 const InstantDepositReportsFiltersModal = lazy(() => import('./InstantDepositReportsFiltersModal'));
-
-const ModalLoading = lazy(() => import('./ModalLoading'));
 
 const OrdersReportsFiltersModal = lazy(() => import('./OrdersReportsFiltersModal'));
 

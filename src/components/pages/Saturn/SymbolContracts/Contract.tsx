@@ -144,7 +144,6 @@ const Contract = ({
 
 		const sub = subscribeSymbolInfo(option.symbolISIN, 'symbolData');
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
-		sub.start();
 
 		subscribe(sub);
 	}, [option?.symbolISIN]);
