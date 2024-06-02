@@ -350,18 +350,17 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 					{symbolContracts.length > 0 ? (
 						<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
-							<div className='relative gap-8 flex-column'>
-								<div style={{ maxHeight: '26.4rem' }} className='flex-1 overflow-auto px-16'>
-									<SymbolStrategyTable
-										selectedContracts={selectedContracts}
-										contracts={symbolContracts}
-										onSelectionChanged={setSelectedContracts}
-										onChange={(id, values) => setOrderProperties(id, values)}
-										onDelete={removeOrder}
-									/>
-								</div>
+							<div className='relative px-16 pt-16 flex-column'>
+								<SymbolStrategyTable
+									maxHeight='26.4rem'
+									selectedContracts={selectedContracts}
+									contracts={symbolContracts}
+									onSelectionChanged={setSelectedContracts}
+									onChange={(id, values) => setOrderProperties(id, values)}
+									onDelete={removeOrder}
+								/>
 
-								<div className='flex pl-28 pr-56 flex-justify-between'>
+								<div className='flex pl-8 pr-28 flex-justify-between'>
 									<button
 										disabled={submitting}
 										type='button'

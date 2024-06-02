@@ -1,55 +1,77 @@
 import { useSameSectorSymbolsQuery } from '@/api/queries/symbolQuery';
-import AgTable from '@/components/common/Tables/AgTable';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef } from '@ag-grid-community/core';
+import lightStreamInstance from '@/classes/Lightstream';
+import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
+import { useSubscription } from '@/hooks';
+import useStateWithRef from '@/hooks/useStateRef';
+import { getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
-import CoGroupSymbolCompare from './components/CoGroupSymbolCompare';
-import CoGroupSymbolCompareHeader from './components/CoGroupSymbolCompareHeader';
 
 interface SymbolsProps {
 	symbolISIN: string;
 }
 
 const Symbols = ({ symbolISIN }: SymbolsProps) => {
-	const t = useTranslations();
+	const t = useTranslations('same_sector_symbol');
 
-	// const gridRef = useRef<GridApi<Symbol.SameSector>>(null);
+	const queryClient = useQueryClient();
+
+	const { subscribe } = useSubscription();
 
 	const { data, isLoading } = useSameSectorSymbolsQuery({
 		queryKey: ['sameSectorSymbolsQuery', symbolISIN],
 	});
 
-	const COLUMNS = useMemo<Array<ColDef<Symbol.SameSector>>>(
+	const visualData = useStateWithRef(JSON.parse(JSON.stringify(data ?? [])) as Symbol.SameSector[]);
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const symbolISIN: string = updateInfo.getItemName();
+		const symbolIndex = visualData.findIndex((item) => item.symbolISIN === symbolISIN);
+
+		if (symbolIndex === -1) return;
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				const symbol = visualData[symbolIndex];
+
+				if (value !== null && fieldName in symbol) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Lightstream returns the wrong data type
+					visualData[symbolIndex] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			} catch (e) {
+				//
+			}
+		});
+
+		queryClient.setQueryData(['sameSectorSymbolsQuery', symbolISIN], visualData);
+	};
+
+	const COLUMNS = useMemo<Array<IColDef<Symbol.SameSector>>>(
 		() => [
 			/* نماد */
 			{
-				headerName: t('same_sector_symbol.symbol'),
+				headerName: t('symbol'),
 				colId: 'symbolTitle',
 				headerClass: 'text-sm',
-				cellClass: 'justify-end',
-				sortable: false,
-				flex: 2,
-				minWidth: 64,
-				valueGetter: ({ data }) => data!.symbolTitle ?? '−',
+				valueGetter: (row) => row?.symbolTitle ?? '−',
 			},
 
 			/* حجم */
 			{
-				headerName: t('same_sector_symbol.volume'),
+				headerName: t('volume'),
 				colId: 'totalNumberOfSharesTraded',
 				headerClass: 'text-sm',
-				cellClass: 'flex items-center justify-center ltr',
-				initialSort: 'desc',
-				flex: 1,
-				minWidth: 88,
-				valueGetter: ({ data }) => data!.totalNumberOfSharesTraded ?? 0,
-				valueFormatter: (data) => {
-					if (!data) return '-';
-
-					const value = data.value;
+				sort: 'desc',
+				valueGetter: (row) => row?.totalNumberOfSharesTraded ?? 0,
+				valueFormatter: (row) => {
+					const value = Number(row.value);
 					return value > 1e7 ? String(numFormatter(value)) : sepNumbers(String(value));
 				},
 			},
@@ -57,67 +79,95 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 			/* آخرین قیمت/درصد تغییر */
 			{
 				colId: 'lastTradedPrice',
-				headerName: t('same_sector_symbol.last_traded_price'),
-				headerComponent: CoGroupSymbolCompareHeader,
-				cellRenderer: CoGroupSymbolCompare,
-				minWidth: 96,
-				valueGetter: ({ data }) => data!.lastTradedPrice ?? 0,
-				headerComponentParams: {
-					top: t('same_sector_symbol.last_traded_price'),
-					bottom: t('same_sector_symbol.last_traded_price_percent'),
-				},
-				cellRendererParams: {
-					top: (data: Symbol.SameSector) => sepNumbers(String(data.lastTradedPrice ?? 0)),
-					bottom: (data: Symbol.SameSector) =>
-						`${isNaN(data?.lastTradedPriceVarPercent) ? 0 : data.lastTradedPriceVarPercent.toFixed(2)}%`,
-					topClass: () => undefined,
-					bottomClass: (data: Symbol.SameSector) =>
-						data?.lastTradedPriceVarPercent >= 0 ? 'text-success-100' : 'text-error-100',
+				cellClass: 'ltr',
+				valueGetter: (row) => row?.lastTradedPriceVarPercent ?? 0,
+				headerComponent: () => (
+					<div className='flex size-full flex-col items-center justify-center gap-4 overflow-hidden'>
+						<span className='h-16 text-tiny font-normal leading-normal'>{t('last_traded_price')}</span>
+						<span className='h-16 text-tiny font-normal leading-normal'>
+							{t('last_traded_price_percent')}
+						</span>
+					</div>
+				),
+				valueFormatter: ({ row }) => {
+					const lastTradedPrice = row?.lastTradedPrice ?? 0;
+					const lastTradedPriceVarPercent = row?.lastTradedPriceVarPercent ?? 0;
+
+					return (
+						<div className='flex size-full flex-col items-center justify-center gap-4 overflow-hidden'>
+							<span className='text-tiny leading-normal ltr'>{sepNumbers(String(lastTradedPrice))}</span>
+							<span
+								className={clsx(
+									'text-tiny leading-normal ltr',
+									getColorBasedOnPercent(lastTradedPriceVarPercent),
+								)}
+							>
+								{toFixed(lastTradedPriceVarPercent)}%
+							</span>
+						</div>
+					);
 				},
 			},
 
 			/* عرضه/تقاضا */
 			{
-				headerName: t('same_sector_symbol.supply'),
 				colId: 'bestLimitPrice',
-				headerComponent: CoGroupSymbolCompareHeader,
-				cellRenderer: CoGroupSymbolCompare,
-				sortable: false,
-				minWidth: 96,
-				headerComponentParams: {
-					top: t('same_sector_symbol.demand'),
-					bottom: t('same_sector_symbol.supply'),
-				},
-				cellRendererParams: {
-					top: (data: Symbol.SameSector) => sepNumbers(String(data?.bestBuyLimitPrice_1 ?? 0)),
-					bottom: (data: Symbol.SameSector) => sepNumbers(String(data?.bestSellLimitPrice_1 ?? 0)),
-					topClass: () => 'text-success-100',
-					bottomClass: () => 'text-error-100',
-				},
+				cellClass: 'ltr',
+				valueGetter: (row) => row.bestBuyLimitPrice_1,
+				headerComponent: () => (
+					<div className='flex size-full flex-col items-center justify-center gap-4 overflow-hidden'>
+						<span className='h-16 text-tiny font-normal leading-normal'>{t('demand')}</span>
+						<span className='h-16 text-tiny font-normal leading-normal'>{t('supply')}</span>
+					</div>
+				),
+				valueFormatter: ({ row }) => (
+					<div className='flex size-full flex-col items-center justify-center gap-4 overflow-hidden'>
+						<span className='text-tiny leading-normal text-success-100 ltr'>
+							{sepNumbers(String(row?.bestBuyLimitPrice_1 ?? 0))}
+						</span>
+						<span className='text-tiny leading-normal text-error-100 ltr'>
+							{sepNumbers(String(row?.bestSellLimitPrice_1 ?? 0))}
+						</span>
+					</div>
+				),
 			},
 		],
 		[],
 	);
 
+	const symbolsISIN = useMemo(() => {
+		if (!data) return [];
+		return data.map((item) => item.symbolISIN);
+	}, [data]);
+
+	useEffect(() => {
+		if (!data) return;
+
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: symbolsISIN,
+			fields: [
+				'totalNumberOfSharesTraded',
+				'lastTradedPrice',
+				'lastTradedPriceVarPercent',
+				'bestBuyLimitPrice_1',
+				'bestSellLimitPrice_1',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [symbolsISIN.join(',')]);
+
 	if (isLoading) return <Loading />;
 
 	if (!Array.isArray(data) || data.length === 0) return <NoData />;
 
-	return (
-		<AgTable
-			className='transparent-header h-full rounded-0 border-0'
-			columnDefs={COLUMNS}
-			rowData={data ?? []}
-			getRowId={({ data }) => data.symbolISIN}
-			headerHeight={48}
-			rowHeight={48}
-			defaultColDef={{
-				flex: 1,
-				sortable: true,
-				resizable: false,
-			}}
-		/>
-	);
+	return <LightweightTable reverseColors columnDefs={COLUMNS} rowData={data ?? []} />;
 };
 
 export default Symbols;

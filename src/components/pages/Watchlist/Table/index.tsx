@@ -122,7 +122,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 			<div
 				className='overflow-hidden rounded border border-gray-500 flex-column'
 				style={{
-					height: 'calc(100dvh - 19.2rem)',
+					height: 'calc(100dvh - 17.6rem)',
 					transition: 'height 250ms ease',
 				}}
 			>

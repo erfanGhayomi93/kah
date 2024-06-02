@@ -17,7 +17,7 @@ interface GreeksTableProps {
 }
 
 const GreeksTable = ({ contracts }: GreeksTableProps) => {
-	const t = useTranslations();
+	const t = useTranslations('analyze_modal');
 
 	const dispatch = useAppDispatch();
 

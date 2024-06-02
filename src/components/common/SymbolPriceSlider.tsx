@@ -252,6 +252,12 @@ const SymbolPriceSlider = ({
 					),
 				) * 1;
 
+			instanceOfConfig.firstTradedPrice = Math.min(
+				Math.max(instanceOfConfig.firstTradedPrice, 0),
+				borderWidth - 6,
+			);
+			instanceOfConfig.lastTradedPrice = Math.min(Math.max(instanceOfConfig.lastTradedPrice, 0), borderWidth - 6);
+
 			setConfig(instanceOfConfig);
 		} catch (e) {
 			//
@@ -295,8 +301,8 @@ const SymbolPriceSlider = ({
 								className={clsx('transition duration-300', styles.value)}
 							>
 								<svg
-									width='1.2rem'
-									height='1.5rem'
+									width='12px'
+									height='15px'
 									viewBox='0 0 14 17'
 									fill='none'
 									xmlns='http://www.w3.org/2000/svg'
@@ -329,8 +335,8 @@ const SymbolPriceSlider = ({
 								className={clsx('transition duration-300', styles.value)}
 							>
 								<svg
-									width='1.2rem'
-									height='1.5rem'
+									width='12px'
+									height='15px'
 									viewBox='0 0 14 17'
 									fill='none'
 									xmlns='http://www.w3.org/2000/svg'
