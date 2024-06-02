@@ -1,8 +1,12 @@
 import { useGetMarketStateQuery } from '@/api/queries/dashboardQueries';
 import Loading from '@/components/common/Loading';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setMarketStateModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
 import { useServerDatetime } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, toFixed } from '@/utils/helpers';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
@@ -12,8 +16,23 @@ interface ItemProps {
 	value: string | number;
 }
 
-const MarketState = () => {
+interface IModalStateProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getMarketState: state.modal.marketState,
+	}),
+);
+
+const MarketState = ({ isModal = false }: IModalStateProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getMarketState } = useAppSelector(getStates);
 
 	const [exchange, setExchange] = useState<Dashboard.TMarketStateExchange>('Option');
 
@@ -27,6 +46,7 @@ const MarketState = () => {
 			title={t('home.market_state')}
 			info={t('tooltip.market_state_section')}
 			onBottomTabChange={setExchange}
+			onExpand={() => dispatch(setMarketStateModal(getMarketState ? null : {}))}
 			tabs={{
 				bottom: [
 					{ id: 'Option', title: t('home.tab_option') },
@@ -35,6 +55,8 @@ const MarketState = () => {
 				],
 				top: <Clock />,
 			}}
+			closeable={!isModal}
+			expandable={!isModal}
 		>
 			{isLoading && <Loading />}
 

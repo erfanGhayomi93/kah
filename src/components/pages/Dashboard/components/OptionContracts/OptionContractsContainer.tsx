@@ -18,6 +18,7 @@ interface IData {
 interface OptionContractsContainerProps {
 	basis: Dashboard.GetOptionContractAdditionalInfo.Basis;
 	type: Dashboard.GetOptionContractAdditionalInfo.Type;
+	isModal?: boolean;
 }
 
 const COLORS: Record<NonNullable<Dashboard.GetOptionContractAdditionalInfo.DataPoint>, string> = {
@@ -28,7 +29,7 @@ const COLORS: Record<NonNullable<Dashboard.GetOptionContractAdditionalInfo.DataP
 	put: 'text-error-100',
 };
 
-const OptionContractsContainer = ({ basis, type }: OptionContractsContainerProps) => {
+const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsContainerProps) => {
 	const t = useTranslations();
 
 	const [dataPointHover, setDataPointHover] = useState<Dashboard.GetOptionContractAdditionalInfo.DataPoint>(null);
@@ -86,7 +87,12 @@ const OptionContractsContainer = ({ basis, type }: OptionContractsContainerProps
 	};
 
 	return (
-		<div className='relative flex h-full px-8'>
+		<div
+			className={clsx('relative flex h-full px-8 ltr', {
+				'flex-row': !isModal,
+				'flex-col': isModal,
+			})}
+		>
 			<OptionContractsChart
 				type={type}
 				basis={basis}
