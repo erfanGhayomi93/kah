@@ -3,7 +3,11 @@ import {
 	useGetIndexQuery,
 	useGetRetailTradeValuesQuery,
 } from '@/api/queries/dashboardQueries';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setMarketViewModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
 import { sepNumbers, toFixed } from '@/utils/helpers';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import Section, { type ITab } from '../../common/Section';
@@ -22,8 +26,23 @@ interface IDefaultActiveTab {
 	bottom: Dashboard.TIndex;
 }
 
-const MarketView = () => {
+interface IMarketViewProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getMarketView: state.modal.marketView,
+	}),
+);
+
+const MarketView = ({ isModal = false }: IMarketViewProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getMarketView } = useAppSelector(getStates);
 
 	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Today',
@@ -113,12 +132,15 @@ const MarketView = () => {
 		<Section<Dashboard.TInterval, Dashboard.TIndex>
 			id='market_view'
 			title={t('home.market_view')}
-			info={t('tooltip.market_view_section')}
+			info={isModal ? '' : t('tooltip.market_view_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
 			onBottomTabChange={(v) => setDefaultTabByPosition('bottom', v)}
 			tabs={tabs}
+			expandable
+			onExpand={() => dispatch(setMarketViewModal(getMarketView ? null : {}))}
+			closeable={!isModal}
 		>
 			<MarketViewChart interval={defaultTab.top} type={defaultTab.bottom} data={data as TIndexData} />
 			<Suspend isLoading={isLoading} isEmpty={dataIsEmpty} />

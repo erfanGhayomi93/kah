@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setOptionContractModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -10,8 +14,23 @@ interface IDefaultActiveTab {
 	bottom: Dashboard.GetOptionContractAdditionalInfo.Type;
 }
 
-const OptionContracts = () => {
+interface IOptionContractProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getOptionContract: state.modal.optionContract,
+	}),
+);
+
+const OptionContracts = ({ isModal = false }: IOptionContractProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getOptionContract } = useAppSelector(getStates);
 
 	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Volume',
@@ -29,7 +48,7 @@ const OptionContracts = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_contracts'
 			title={t('home.option_contracts')}
-			info={t('tooltip.option_contract_section')}
+			info={isModal ? '' : t('tooltip.option_contract_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -44,6 +63,9 @@ const OptionContracts = () => {
 					{ id: 'IOTM', title: t('home.tab_in_profit') },
 				],
 			}}
+			closeable={!isModal}
+			expandable
+			onExpand={() => dispatch(setOptionContractModal(getOptionContract ? null : {}))}
 		>
 			<OptionContractsContainer type={defaultTab.bottom} basis={defaultTab.top} />
 		</Section>

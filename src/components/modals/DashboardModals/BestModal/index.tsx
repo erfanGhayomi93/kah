@@ -1,6 +1,6 @@
-import MarketState from '@/components/pages/Dashboard/components/MarketState';
+import Best from '@/components/pages/Dashboard/components/Best';
 import { useAppDispatch } from '@/features/hooks';
-import { setMarketStateModal } from '@/features/slices/modalSlice';
+import { setBestModal } from '@/features/slices/modalSlice';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../../Modal';
@@ -12,13 +12,13 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface IMarketStateModalProps extends IBaseModalConfiguration {}
+interface IBestModalProps extends IBaseModalConfiguration {}
 
-const MarketStateModal = forwardRef<HTMLDivElement, IMarketStateModalProps>((props, ref) => {
+const BestModal = forwardRef<HTMLDivElement, IBestModalProps>((props, ref) => {
 	const dispatch = useAppDispatch();
 
 	const onClose = () => {
-		dispatch(setMarketStateModal(null));
+		dispatch(setBestModal(null));
 	};
 
 	return (
@@ -30,11 +30,11 @@ const MarketStateModal = forwardRef<HTMLDivElement, IMarketStateModalProps>((pro
 			ref={ref}
 		>
 			<Div className='bg-white'>
-				<MarketState isModal />
+				<Best isModal />
 			</Div>
 			<div></div>
 		</Modal>
 	);
 });
 
-export default MarketStateModal;
+export default BestModal;

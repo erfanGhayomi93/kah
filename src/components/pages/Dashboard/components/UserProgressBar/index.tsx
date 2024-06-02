@@ -1,4 +1,8 @@
 import { ShieldFillSVG, ShieldOutlineSVG } from '@/components/icons';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setUserProgressBarModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -10,8 +14,23 @@ interface Item {
 	passed: boolean;
 }
 
-const UserProgressBar = () => {
+interface IUserProgressBarProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getUserProgressBar: state.modal.userProgressBar,
+	}),
+);
+
+const UserProgressBar = ({ isModal = false }: IUserProgressBarProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getUserProgressBar } = useAppSelector(getStates);
 
 	const data: Item[] = useMemo(
 		() => [
@@ -50,7 +69,14 @@ const UserProgressBar = () => {
 	);
 
 	return (
-		<Section id='user_progress_bar' title={t('home.user_progress_bar')} info={t('tooltip.user_progress_section')}>
+		<Section
+			id='user_progress_bar'
+			title={t('home.user_progress_bar')}
+			info={isModal ? '' : t('tooltip.user_progress_section')}
+			expandable
+			onExpand={() => dispatch(setUserProgressBarModal(getUserProgressBar ? null : {}))}
+			closeable={!isModal}
+		>
 			<div className='h-full gap-24 pt-8 flex-column'>
 				<div style={{ flex: '0 0 1.6rem' }} className='gap-8 flex-items-center'>
 					<span className='text-lg font-medium text-success-100'>32%</span>

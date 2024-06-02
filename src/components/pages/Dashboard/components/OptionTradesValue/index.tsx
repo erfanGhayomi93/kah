@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setOptionTradeValueModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -10,8 +14,23 @@ interface IDefaultActiveTab {
 	bottom: Dashboard.GetOptionTradeProcess.TChartType;
 }
 
-const OptionTradesValue = () => {
+interface IOptionTradesValueModalProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getOptionTradeValue: state.modal.optionTradeValue,
+	}),
+);
+
+const OptionTradesValueModal = ({ isModal }: IOptionTradesValueModalProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getOptionTradeValue } = useAppSelector(getStates);
 
 	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Today',
@@ -29,7 +48,7 @@ const OptionTradesValue = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='option_trades_value'
 			title={t('home.option_trades_value')}
-			info={t('tooltip.option_trade_value_section')}
+			info={isModal ? '' : t('tooltip.option_trade_value_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -46,10 +65,13 @@ const OptionTradesValue = () => {
 					{ id: 'PutToCall', title: t('home.tab_put_option_relative_call') },
 				],
 			}}
+			closeable={!isModal}
+			expandable
+			onExpand={() => dispatch(setOptionTradeValueModal(getOptionTradeValue ? null : {}))}
 		>
 			<OptionTradesValueChart interval={defaultTab.top} type={defaultTab.bottom} />
 		</Section>
 	);
 };
 
-export default OptionTradesValue;
+export default OptionTradesValueModal;

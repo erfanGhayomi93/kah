@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setBestModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useState } from 'react';
 import Section, { type ITab } from '../../common/Section';
@@ -8,8 +12,23 @@ interface IDefaultActiveTab {
 	bottom: Dashboard.TTopSymbol;
 }
 
-const Best = () => {
+interface IBestProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getBest: state.modal.best,
+	}),
+);
+
+const Best = ({ isModal }: IBestProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getBest } = useAppSelector(getStates);
 
 	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Option',
@@ -58,7 +77,7 @@ const Best = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='best'
 			title={t('home.best')}
-			info={t('tooltip.best_section')}
+			info={isModal ? '' : t('tooltip.best_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -71,6 +90,9 @@ const Best = () => {
 				],
 				bottom: bottomTabs,
 			}}
+			closeable={!isModal}
+			expandable
+			onExpand={() => dispatch(setBestModal(getBest ? null : {}))}
 		>
 			<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
 		</Section>

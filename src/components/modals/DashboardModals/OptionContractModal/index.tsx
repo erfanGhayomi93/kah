@@ -1,6 +1,6 @@
-import MarketState from '@/components/pages/Dashboard/components/MarketState';
+import OptionContracts from '@/components/pages/Dashboard/components/OptionContracts';
 import { useAppDispatch } from '@/features/hooks';
-import { setMarketStateModal } from '@/features/slices/modalSlice';
+import { setOptionContractModal } from '@/features/slices/modalSlice';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../../Modal';
@@ -12,29 +12,28 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface IMarketStateModalProps extends IBaseModalConfiguration {}
+interface IOptionContractModalProps extends IBaseModalConfiguration {}
 
-const MarketStateModal = forwardRef<HTMLDivElement, IMarketStateModalProps>((props, ref) => {
+const OptionContractModal = forwardRef<HTMLDivElement, IOptionContractModalProps>((props, ref) => {
 	const dispatch = useAppDispatch();
 
-	const onClose = () => {
-		dispatch(setMarketStateModal(null));
+	const onclose = () => {
+		dispatch(setOptionContractModal(null));
 	};
 
 	return (
 		<Modal
-			onClose={onClose}
+			onClose={onclose}
 			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
 			top='50%'
 			{...props}
 			ref={ref}
 		>
 			<Div className='bg-white'>
-				<MarketState isModal />
+				<OptionContracts isModal />
 			</Div>
-			<div></div>
 		</Modal>
 	);
 });
 
-export default MarketStateModal;
+export default OptionContractModal;

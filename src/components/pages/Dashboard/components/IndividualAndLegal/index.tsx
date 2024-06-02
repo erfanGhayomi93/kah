@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setIndividualAndLegalModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Section from '../../common/Section';
@@ -8,8 +12,23 @@ interface IDefaultActiveTab {
 	bottom: Dashboard.GetIndividualLegalInfo.Type;
 }
 
-const IndividualAndLegal = () => {
+interface IIndividualAndLegalProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getIndividualAndLegal: state.modal.individualAndLegal,
+	}),
+);
+
+const IndividualAndLegal = ({ isModal = false }: IIndividualAndLegalProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getIndividualAndLegal } = useAppSelector(getStates);
 
 	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Option',
@@ -27,7 +46,7 @@ const IndividualAndLegal = () => {
 		<Section<IDefaultActiveTab['top'], IDefaultActiveTab['bottom']>
 			id='individual_and_legal'
 			title={t('home.individual_and_legal')}
-			info={t('tooltip.individual_and_legal_section')}
+			info={isModal ? '' : t('tooltip.individual_and_legal_section')}
 			defaultTopActiveTab={defaultTab.top}
 			defaultBottomActiveTab={defaultTab.bottom}
 			onTopTabChange={(v) => setDefaultTabByPosition('top', v)}
@@ -42,6 +61,9 @@ const IndividualAndLegal = () => {
 					{ id: 'Individual', title: t('home.tab_individual_capita') },
 				],
 			}}
+			closeable={!isModal}
+			expandable
+			onExpand={() => dispatch(setIndividualAndLegalModal(getIndividualAndLegal ? null : {}))}
 		>
 			<IndividualAndLegalChart symbolType={defaultTab.top} type={defaultTab.bottom} />
 		</Section>

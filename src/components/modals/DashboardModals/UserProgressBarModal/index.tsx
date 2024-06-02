@@ -1,6 +1,6 @@
-import MarketState from '@/components/pages/Dashboard/components/MarketState';
+import UserProgressBar from '@/components/pages/Dashboard/components/UserProgressBar';
 import { useAppDispatch } from '@/features/hooks';
-import { setMarketStateModal } from '@/features/slices/modalSlice';
+import { setUserProgressBarModal } from '@/features/slices/modalSlice';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../../Modal';
@@ -12,29 +12,29 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface IMarketStateModalProps extends IBaseModalConfiguration {}
+interface IUserProgressBarModalProps extends IBaseModalConfiguration {}
 
-const MarketStateModal = forwardRef<HTMLDivElement, IMarketStateModalProps>((props, ref) => {
+const UserProgressBarModal = forwardRef<HTMLDivElement, IUserProgressBarModalProps>((props, ref) => {
 	const dispatch = useAppDispatch();
 
-	const onClose = () => {
-		dispatch(setMarketStateModal(null));
+	const onclose = () => {
+		dispatch(setUserProgressBarModal(null));
 	};
 
 	return (
 		<Modal
-			onClose={onClose}
+			onClose={onclose}
 			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
 			top='50%'
 			{...props}
 			ref={ref}
 		>
 			<Div className='bg-white'>
-				<MarketState isModal />
+				<UserProgressBar isModal />
 			</Div>
 			<div></div>
 		</Modal>
 	);
 });
 
-export default MarketStateModal;
+export default UserProgressBarModal;

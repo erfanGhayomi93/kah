@@ -102,6 +102,36 @@ const ManageColumnsModal = lazy(() => import('./ManageColumnsModal'));
 
 const MarketStateModal = lazy(() => import('./DashboardModals/MarketStateModal'));
 
+const MarketViewModal = lazy(() => import('./DashboardModals/MarketViewModal'));
+
+const BestModal = lazy(() => import('./DashboardModals/BestModal'));
+
+const UserInprogressBarModal = lazy(() => import('./DashboardModals/UserProgressBarModal'));
+
+const CompareTransactionValueModal = lazy(() => import('./DashboardModals/CompareTransactionValueModal'));
+
+const OptionContractModal = lazy(() => import('./DashboardModals/OptionContractModal'));
+
+const OptionTradeValueModal = lazy(() => import('./DashboardModals/OptionTradeValueModal'));
+
+const OptionMarketProcessModal = lazy(() => import('./DashboardModals/OptionMarketProcessModal'));
+
+const IndividualAndLegalModal = lazy(() => import('./DashboardModals/IndividualAndLegalModal'));
+
+const PriceChangeWatchlistModal = lazy(() => import('./DashboardModals/PriceChangeWatchlistModal'));
+
+const OpenPositionProcessModal = lazy(() => import('./DashboardModals/OpenPositionProcessModal'));
+
+const MeetingsModal = lazy(() => import('./DashboardModals/MeetingsModal'));
+
+const NewAndOldModal = lazy(() => import('./DashboardModals/NewAndOldModal'));
+
+const TopBaseAssetsModal = lazy(() => import('./DashboardModals/TopBaseAssetsModal'));
+
+const RecentActivitiesModal = lazy(() => import('./DashboardModals/RecentActivitiesModal'));
+
+const DueDatesModal = lazy(() => import('./DashboardModals/DueDatesModal'));
+
 const Modals = () => {
 	const dispatch = useAppDispatch();
 
@@ -146,6 +176,21 @@ const Modals = () => {
 		coveredCallFilters,
 		manageColumns,
 		marketState,
+		marketView,
+		best,
+		userProgressBar,
+		compareTransactionValue,
+		optionContract,
+		optionTradeValue,
+		optionMarketProcess,
+		individualAndLegal,
+		priceChangeWatchlist,
+		openPositionProcess,
+		meetings,
+		newAndOld,
+		topBaseAssets,
+		recentActivities,
+		dueDates,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -496,6 +541,126 @@ const Modals = () => {
 				{marketState && (
 					<ModalSuspense>
 						<MarketStateModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{marketView && (
+					<ModalSuspense>
+						<MarketViewModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{best && (
+					<ModalSuspense>
+						<BestModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{userProgressBar && (
+					<ModalSuspense>
+						<UserInprogressBarModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{compareTransactionValue && (
+					<ModalSuspense>
+						<CompareTransactionValueModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{optionContract && (
+					<ModalSuspense>
+						<OptionContractModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{optionTradeValue && (
+					<ModalSuspense>
+						<OptionTradeValueModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{optionMarketProcess && (
+					<ModalSuspense>
+						<OptionMarketProcessModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{individualAndLegal && (
+					<ModalSuspense>
+						<IndividualAndLegalModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{priceChangeWatchlist && (
+					<ModalSuspense>
+						<PriceChangeWatchlistModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{openPositionProcess && (
+					<ModalSuspense>
+						<OpenPositionProcessModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{meetings && (
+					<ModalSuspense>
+						<MeetingsModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{newAndOld && (
+					<ModalSuspense>
+						<NewAndOldModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{topBaseAssets && (
+					<ModalSuspense>
+						<TopBaseAssetsModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{recentActivities && (
+					<ModalSuspense>
+						<RecentActivitiesModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{dueDates && (
+					<ModalSuspense>
+						<DueDatesModal />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

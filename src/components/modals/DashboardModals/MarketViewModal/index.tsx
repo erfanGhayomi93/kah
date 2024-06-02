@@ -1,6 +1,6 @@
-import MarketState from '@/components/pages/Dashboard/components/MarketState';
+import MarketView from '@/components/pages/Dashboard/components/MarketView';
 import { useAppDispatch } from '@/features/hooks';
-import { setMarketStateModal } from '@/features/slices/modalSlice';
+import { setMarketViewModal } from '@/features/slices/modalSlice';
 import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../../Modal';
@@ -12,29 +12,29 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface IMarketStateModalProps extends IBaseModalConfiguration {}
+interface IMarketViewModalProps extends IBaseModalConfiguration {}
 
-const MarketStateModal = forwardRef<HTMLDivElement, IMarketStateModalProps>((props, ref) => {
+const MarketViewModal = forwardRef<HTMLDivElement, IMarketViewModalProps>((props, ref) => {
 	const dispatch = useAppDispatch();
 
-	const onClose = () => {
-		dispatch(setMarketStateModal(null));
+	const onclose = () => {
+		dispatch(setMarketViewModal(null));
 	};
 
 	return (
 		<Modal
-			onClose={onClose}
+			onClose={onclose}
 			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
 			top='50%'
 			{...props}
 			ref={ref}
 		>
 			<Div className='bg-white'>
-				<MarketState isModal />
+				<MarketView isModal />
 			</Div>
 			<div></div>
 		</Modal>
 	);
 });
 
-export default MarketStateModal;
+export default MarketViewModal;
