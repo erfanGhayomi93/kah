@@ -9,7 +9,7 @@ import Section from '../../common/Section';
 const PriceChangesWatchlistChart = dynamic(() => import('./PriceChangesWatchlistChart'));
 
 interface IPriceChangeWatchlistProps {
-	isModal: boolean;
+	isModal?: boolean;
 }
 
 const getStates = createSelector(
