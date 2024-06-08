@@ -6,7 +6,6 @@ import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultSymbolISIN } from '@/constants';
-import { useAppDispatch } from '@/features/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -19,8 +18,6 @@ const Layout = dynamic(() => import('./Layout'), {
 
 const Saturn = () => {
 	const t = useTranslations();
-
-	const dispatch = useAppDispatch();
 
 	const searchParams = useSearchParams();
 

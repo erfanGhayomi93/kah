@@ -9,13 +9,6 @@ import Suspend from '../../common/Suspend';
 
 const OptionContractsChart = dynamic(() => import('./OptionContractsChart'));
 
-interface IData {
-	id: Dashboard.GetOptionContractAdditionalInfo.DataPoint;
-	title: string;
-	value: string;
-	percent: string;
-}
-
 interface OptionContractsContainerProps {
 	basis: Dashboard.GetOptionContractAdditionalInfo.Basis;
 	type: Dashboard.GetOptionContractAdditionalInfo.Type;
