@@ -196,7 +196,11 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 										!cells.market_depth && (
 											<div key='market_depth'>
 												<ErrorBoundary>
-													<MarketDepth symbolISIN={symbolISIN} />
+													<MarketDepth
+														symbolISIN={symbolISIN}
+														lowThreshold={symbolData.lowThreshold}
+														highThreshold={symbolData.highThreshold}
+													/>
 												</ErrorBoundary>
 											</div>
 										),
@@ -232,7 +236,11 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 										!cells.quotes && (
 											<div key='quotes'>
 												<ErrorBoundary>
-													<Quotes symbolISIN={symbolISIN} />
+													<Quotes
+														symbolISIN={symbolISIN}
+														lowThreshold={symbolData.lowThreshold}
+														highThreshold={symbolData.highThreshold}
+													/>
 												</ErrorBoundary>
 											</div>
 										),

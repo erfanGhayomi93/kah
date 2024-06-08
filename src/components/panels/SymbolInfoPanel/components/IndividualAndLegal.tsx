@@ -40,6 +40,7 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 					sellVolume={individualSellVolume}
 					sellCount={0}
 					title={t('individual')}
+					totalVolume={legalBuyVolume + individualBuyVolume}
 				/>
 
 				<Progressbar
@@ -48,6 +49,7 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 					sellVolume={legalSellVolume}
 					sellCount={0}
 					title={t('legal')}
+					totalVolume={legalSellVolume + individualSellVolume}
 				/>
 
 				<div className='text-tiny flex-justify-between'>

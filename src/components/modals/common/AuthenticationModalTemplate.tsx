@@ -17,7 +17,7 @@ const Div = styled.div`
 	width: 578px;
 	height: 560px;
 	display: flex;
-	padding: 2.4rem;
+	padding: 2.4rem 2.4rem 0 2.4rem;
 	flex-direction: column;
 	border-radius: 1.6rem;
 `;
@@ -38,8 +38,8 @@ const AuthenticationModalTemplate = forwardRef<HTMLDivElement, AuthenticationMod
 							<h1 className='text-3xl font-bold text-gray-1000'>{title}</h1>
 							{description && (
 								<p
-									style={{ maxWidth: '30rem', ...styles?.description }}
-									className='mx-auto text-center text-base text-primary-400'
+									style={{ maxWidth: '39.2rem', top: '6rem', ...styles?.description }}
+									className='center-x absolute w-full text-center text-base font-bold text-gray-1000'
 								>
 									{description}
 								</p>

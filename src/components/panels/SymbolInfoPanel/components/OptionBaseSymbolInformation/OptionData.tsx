@@ -28,6 +28,8 @@ const OptionData = ({ symbolISIN, baseSymbolISIN }: OptionDataProps) => {
 		closingPriceVarReferencePricePercent,
 		tradeValue,
 		tradeVolume,
+		lowThreshold,
+		highThreshold,
 	} = symbolData;
 
 	return (
@@ -65,7 +67,11 @@ const OptionData = ({ symbolISIN, baseSymbolISIN }: OptionDataProps) => {
 			</div>
 
 			<div className='relative'>
-				<SymbolMarketDepth symbolISIN={baseSymbolISIN} />
+				<SymbolMarketDepth
+					symbolISIN={baseSymbolISIN}
+					lowThreshold={lowThreshold}
+					highThreshold={highThreshold}
+				/>
 			</div>
 		</div>
 	);

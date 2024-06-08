@@ -7,6 +7,8 @@ import { useMemo } from 'react';
 
 interface GridProps {
 	symbolISIN: string;
+	lowThreshold: number;
+	highThreshold: number;
 }
 
 const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/SymbolMarketDepth'), {
@@ -19,7 +21,7 @@ const Chart = dynamic(() => import('./Chart'), {
 	loading: () => <Loading />,
 });
 
-const Grid = ({ symbolISIN }: GridProps) => {
+const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 	const t = useTranslations();
 
 	const tabs = useMemo(
@@ -29,7 +31,12 @@ const Grid = ({ symbolISIN }: GridProps) => {
 				title: t('bs_modal.market_depth'),
 				render: () => (
 					<div className='relative flex-1 px-8 pb-8 pt-16'>
-						<SymbolMarketDepth symbolISIN={symbolISIN} compact={false} />
+						<SymbolMarketDepth
+							symbolISIN={symbolISIN}
+							compact={false}
+							lowThreshold={lowThreshold}
+							highThreshold={highThreshold}
+						/>
 					</div>
 				),
 			},

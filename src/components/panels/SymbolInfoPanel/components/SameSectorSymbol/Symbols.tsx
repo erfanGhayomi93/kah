@@ -1,6 +1,8 @@
 import { useSameSectorSymbolsQuery } from '@/api/queries/symbolQuery';
 import lightStreamInstance from '@/classes/Lightstream';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useSubscription } from '@/hooks';
 import useStateWithRef from '@/hooks/useStateRef';
 import { getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
@@ -18,6 +20,8 @@ interface SymbolsProps {
 
 const Symbols = ({ symbolISIN }: SymbolsProps) => {
 	const t = useTranslations('same_sector_symbol');
+
+	const dispatch = useAppDispatch();
 
 	const queryClient = useQueryClient();
 
@@ -60,6 +64,8 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 				headerName: t('symbol'),
 				colId: 'symbolTitle',
 				headerClass: 'text-sm',
+				cellClass: 'cursor-pointer',
+				onCellClick: (row) => dispatch(setSymbolInfoPanel(row.symbolISIN)),
 				valueGetter: (row) => row?.symbolTitle ?? '−',
 			},
 

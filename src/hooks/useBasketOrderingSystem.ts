@@ -33,7 +33,7 @@ const useBasketOrderingSystem = ({ onSent, onSingleSent, onRemoved }: IOptions =
 
 	const dispatch = useAppDispatch();
 
-	const showLoginModal = () => dispatch(setLoginModal({}));
+	const showLoginModal = () => dispatch(setLoginModal({ showForceLoginAlert: true }));
 
 	const showChoiceBrokerModal = () => {
 		dispatch(setBrokerIsSelected(false));

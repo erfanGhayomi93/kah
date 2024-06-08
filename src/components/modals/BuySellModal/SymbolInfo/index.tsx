@@ -25,6 +25,8 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 		lastTradedPrice,
 		closingPrice,
 		closingPriceVarReferencePrice,
+		lowThreshold,
+		highThreshold,
 	} = symbolData;
 
 	return (
@@ -53,7 +55,7 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 				</div>
 			</div>
 
-			<Grid symbolISIN={symbolISIN} />
+			<Grid symbolISIN={symbolISIN} lowThreshold={lowThreshold} highThreshold={highThreshold} />
 		</div>
 	);
 };

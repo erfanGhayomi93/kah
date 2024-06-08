@@ -8,6 +8,7 @@ interface ProgressbarProps {
 	sellCount: number;
 	buyVolume: number;
 	buyCount: number;
+	totalVolume: number;
 }
 
 interface PartProps {
@@ -19,12 +20,11 @@ interface PartProps {
 	bottomLeft?: React.ReactNode;
 }
 
-const Progressbar = ({ title, sellVolume, sellCount, buyVolume, buyCount }: ProgressbarProps) => {
+const Progressbar = ({ title, sellVolume, sellCount, buyVolume, buyCount, totalVolume }: ProgressbarProps) => {
 	const t = useTranslations();
 
-	const sum = sellVolume + buyVolume;
-	const buyPercent = Number((divide(buyVolume, sum) * 100).toFixed(2));
-	const sellPercent = Number((divide(sellVolume, sum) * 100).toFixed(2));
+	const buyPercent = Number((divide(buyVolume, totalVolume) * 100).toFixed(2));
+	const sellPercent = Number((divide(sellVolume, totalVolume) * 100).toFixed(2));
 
 	return (
 		<div className='flex gap-8'>

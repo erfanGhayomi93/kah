@@ -2,7 +2,11 @@ type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IB
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
-export interface IBlackScholes extends IBaseModalConfiguration {
+export interface ILoginModal extends IBaseModalConfiguration {
+	showForceLoginAlert?: boolean;
+}
+
+export interface IBlackScholesModal extends IBaseModalConfiguration {
 	symbolISIN?: string;
 }
 
@@ -270,8 +274,41 @@ export interface IManageColumnsModal extends IBaseModalConfiguration {
 	onColumnChanged: (columns: IManageColumn[]) => void;
 }
 
+export interface IMarketStateModal extends IBaseModalConfiguration {}
+
+export interface IMarketViewModal extends IBaseModalConfiguration {}
+
+export interface IBestModal extends IBaseModalConfiguration {}
+
+export interface IUserProgressBarModal extends IBaseModalConfiguration {}
+
+export interface ICompareTransactionValueModal extends IBaseModalConfiguration {}
+
+export interface IContractOptionModal extends IBaseModalConfiguration {}
+
+export interface IOptionTradeValueModal extends IBaseModalConfiguration {}
+
+export interface IOptionMarketProcessModal extends IBaseModalConfiguration {}
+
+export interface IIndividualAndLegalModal extends IBaseModalConfiguration {}
+
+export interface IPriceChangeWatchlistModal extends IBaseModalConfiguration {}
+
+export interface IOpenPositionProcessModal extends IBaseModalConfiguration {}
+
+export interface IMeetingModal extends IBaseModalConfiguration {}
+
+export interface INewAndOldModal extends IBaseModalConfiguration {}
+
+export interface ITopBaseAssetsModal extends IBaseModalConfiguration {}
+
+export interface IRecentActivitiesModal extends IBaseModalConfiguration {}
+
+export interface IDueDatesModal extends IBaseModalConfiguration {}
+
 export type ModalState = TBaseModalProps<{
-	loginModal: true;
+	loginModal: ILoginModal;
+	forgetPassword: IForgetPasswordModal;
 	logout: true;
 	choiceBroker: true;
 	confirm: IConfirmModal;
@@ -286,7 +323,6 @@ export type ModalState = TBaseModalProps<{
 	moveSymbolToWatchlist: IMoveSymbolToWatchlistModal;
 	addSaturnTemplate: IAddSaturnTemplate;
 	selectSymbolContracts: ISelectSymbolContractsModal;
-	forgetPassword: IForgetPasswordModal;
 	optionFilters: IOptionFiltersModal;
 	manageDashboardLayout: IManageDashboardLayoutModal;
 	changeBroker: IChangeBrokerModal;
@@ -310,4 +346,20 @@ export type ModalState = TBaseModalProps<{
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	coveredCallFilters: ICavertCallFiltersModal;
 	manageColumns: IManageColumnsModal;
+	marketState: IMarketStateModal;
+	marketView: IMarketViewModal;
+	best: IBestModal;
+	userProgressBar: IUserProgressBarModal;
+	compareTransactionValue: ICompareTransactionValueModal;
+	optionContract: IOptionContractModal;
+	optionTradeValue: IOptionTradeValueModal;
+	optionMarketProcess: IOptionMarketProcessModal;
+	individualAndLegal: IIndividualAndLegalModal;
+	priceChangeWatchlist: IPriceChangeWatchlistModal;
+	openPositionProcess: IOpenPositionProcessModal;
+	meetings: IMeetingModal;
+	newAndOld: INewAndOldModal;
+	topBaseAssets: ITopBaseAssetsModal;
+	recentActivities: IRecentActivitiesModal;
+	dueDates: IDueDatesModal;
 }>;

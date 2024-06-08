@@ -5,6 +5,7 @@ import styles from './Tabs.module.scss';
 
 export type ITabIem<ID extends string | number, T extends object> = T & {
 	id: ID;
+	disabled?: boolean;
 	render: null | (() => React.ReactElement | JSX.Element);
 };
 
@@ -102,7 +103,9 @@ const Tabs = <ID extends string | number, T extends object>({
 				{data.map((item) => (
 					<Fragment key={item.id}>
 						{cloneElement(renderTab(item, activeTab), {
-							onClick: () => setActiveTab(item.id),
+							onClick: () => {
+								if (!item.disabled) setActiveTab(item.id);
+							},
 							ref: activeTab === item.id ? onTabChange : undefined,
 							'data-active': activeTab === item.id ? 'true' : 'false',
 						})}
