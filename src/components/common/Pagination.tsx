@@ -1,6 +1,6 @@
 import { usePagination } from '@/hooks';
 import { cn } from '@/utils/helpers';
-import { ArrowLeftSVG, ArrowRightSVG } from '../icons';
+import { AngleLeftSVG, ArrowRightSVG } from '../icons';
 import styles from './Pagination.module.scss';
 
 interface PaginationProps extends Record<'totalCount' | 'pageNumber' | 'pageSize' | 'totalPages', number> {
@@ -56,7 +56,7 @@ const Pagination = ({
 			</div>
 			<li className={styles.next}>
 				<button onClick={onNext} disabled={!hasNextPage} type='button'>
-					<ArrowLeftSVG width='1.6rem' height='1.6rem' />
+					<AngleLeftSVG width='1.6rem' height='1.6rem' />
 				</button>
 			</li>
 		</ul>

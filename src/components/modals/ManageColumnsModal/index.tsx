@@ -1,5 +1,4 @@
 import Switch from '@/components/common/Inputs/Switch';
-import { RefreshSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setManageColumnsModal } from '@/features/slices/modalSlice';
 import { type IManageColumnsModal } from '@/features/slices/types/modalSlice.interfaces';
@@ -105,11 +104,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 					<Header
 						label={t('manage_option_watchlist_columns.title')}
 						onClose={onClose}
-						CustomHeader={
-							<button className='icon-hover' onClick={onResetColumns}>
-								<RefreshSVG />
-							</button>
-						}
+						onReset={onResetColumns}
 					/>
 					<div className='flex flex-1 gap-16 p-24'>
 						{Object.keys(dataMapper).map((tag) => (

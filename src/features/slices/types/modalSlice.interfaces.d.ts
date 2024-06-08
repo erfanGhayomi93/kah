@@ -2,7 +2,11 @@ type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IB
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
-export interface IBlackScholes extends IBaseModalConfiguration {
+export interface ILoginModal extends IBaseModalConfiguration {
+	showForceLoginAlert?: boolean;
+}
+
+export interface IBlackScholesModal extends IBaseModalConfiguration {
 	symbolISIN?: string;
 }
 
@@ -303,7 +307,8 @@ export interface IRecentActivitiesModal extends IBaseModalConfiguration {}
 export interface IDueDatesModal extends IBaseModalConfiguration {}
 
 export type ModalState = TBaseModalProps<{
-	loginModal: true;
+	loginModal: ILoginModal;
+	forgetPassword: IForgetPasswordModal;
 	logout: true;
 	choiceBroker: true;
 	confirm: IConfirmModal;
@@ -318,7 +323,6 @@ export type ModalState = TBaseModalProps<{
 	moveSymbolToWatchlist: IMoveSymbolToWatchlistModal;
 	addSaturnTemplate: IAddSaturnTemplate;
 	selectSymbolContracts: ISelectSymbolContractsModal;
-	forgetPassword: IForgetPasswordModal;
 	optionFilters: IOptionFiltersModal;
 	manageDashboardLayout: IManageDashboardLayoutModal;
 	changeBroker: IChangeBrokerModal;

@@ -21,7 +21,7 @@ import { toggleSidebar } from '@/features/slices/uiSlice';
 import { usePathname } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
 
@@ -241,4 +241,4 @@ const List = ({ isExpand }: ListProps) => {
 	);
 };
 
-export default memo(List);
+export default List;

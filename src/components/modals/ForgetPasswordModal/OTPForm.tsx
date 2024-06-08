@@ -97,7 +97,7 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 	}, []);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 pb-64 flex-column'>
 			<div style={{ marginTop: '12rem' }} className='gap-24 flex-column'>
 				<Controller
 					defaultValue=''
@@ -167,14 +167,11 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 			</div>
 
 			<Button
-				style={{
-					bottom: '6.4rem',
-					width: 'calc(100% - 17.6rem)',
-				}}
 				type='submit'
 				loading={isSubmitting}
 				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded text-lg shadow btn-primary'
+				className='h-48 rounded text-lg shadow btn-primary'
+				afterArrow
 			>
 				{t('common.continue')}
 			</Button>

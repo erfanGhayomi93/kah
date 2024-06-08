@@ -48,7 +48,7 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 				params.MinimumTradeValue = filters.minimumTradesValue;
 
 			if (Array.isArray(filters.symbols) && filters.symbols.length > 0)
-				params.SymbolISINs = filters.symbols.map((item) => item.symbolISIN);
+				params.BaseSymbolISINs = filters.symbols.map((item) => item.symbolISIN);
 
 			if (Array.isArray(filters.type) && filters.type.length > 0) params.OptionType = filters.type;
 

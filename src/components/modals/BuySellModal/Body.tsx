@@ -74,7 +74,7 @@ const Body = (props: BodyProps) => {
 		try {
 			const clientId = getClientId();
 			if (!clientId) {
-				dispatch(setLoginModal({}));
+				dispatch(setLoginModal({ showForceLoginAlert: true }));
 				throw new Error('login_to_your_account');
 			}
 
