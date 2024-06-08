@@ -1,7 +1,7 @@
 import { AngleLeftSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSidebarIsExpand, toggleSidebar } from '@/features/slices/uiSlice';
-import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import dynamic from 'next/dynamic';
 import styles from './Sidebar.module.scss';
 
@@ -14,9 +14,7 @@ const Sidebar = () => {
 
 	const isExpand = useAppSelector(getSidebarIsExpand);
 
-	const toggle = () => {
-		dispatch(toggleSidebar(!isExpand));
-	};
+	const toggle = () => dispatch(toggleSidebar(!isExpand));
 
 	return (
 		<div
@@ -28,7 +26,7 @@ const Sidebar = () => {
 			className='fixed right-0 top-0 h-full bg-sidebar'
 		>
 			<div className='relative h-full flex-column'>
-				<button type='button' onClick={toggle} className={cn(styles.toggler, isExpand && styles.expand)}>
+				<button type='button' onClick={toggle} className={clsx(styles.toggler, isExpand && styles.expand)}>
 					<AngleLeftSVG width='1.6rem' height='1.6rem' />
 				</button>
 

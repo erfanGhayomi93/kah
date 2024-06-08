@@ -5,9 +5,11 @@ import Section, { type ITabIem } from '../common/Section';
 
 interface QuotesProps {
 	symbolISIN: string;
+	lowThreshold: number;
+	highThreshold: number;
 }
 
-const Quotes = ({ symbolISIN }: QuotesProps) => {
+const Quotes = ({ symbolISIN, lowThreshold, highThreshold }: QuotesProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -23,7 +25,7 @@ const Quotes = ({ symbolISIN }: QuotesProps) => {
 	return (
 		<Section name='quotes' defaultActiveTab='5_quotes' tabs={tabs}>
 			<div className='px-8 py-16'>
-				<SymbolMarketDepth symbolISIN={symbolISIN} />
+				<SymbolMarketDepth symbolISIN={symbolISIN} lowThreshold={lowThreshold} highThreshold={highThreshold} />
 			</div>
 		</Section>
 	);

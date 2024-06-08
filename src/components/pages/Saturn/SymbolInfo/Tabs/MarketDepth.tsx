@@ -7,11 +7,16 @@ interface MarketDepthProps {
 }
 
 const MarketDepth = ({ symbol }: MarketDepthProps) => {
-	const { individualBuyVolume, individualSellVolume, legalBuyVolume, legalSellVolume } = symbol;
+	const { individualBuyVolume, individualSellVolume, legalBuyVolume, legalSellVolume, lowThreshold, highThreshold } =
+		symbol;
 
 	return (
 		<div className='relative flex-1 gap-40 flex-column'>
-			<SymbolMarketDepth symbolISIN={symbol.symbolISIN} />
+			<SymbolMarketDepth
+				symbolISIN={symbol.symbolISIN}
+				lowThreshold={lowThreshold}
+				highThreshold={highThreshold}
+			/>
 
 			<div style={{ gap: '8.8rem' }} className='relative w-full items-center flex-justify-between'>
 				<Progressbar side='buy' individualVolume={individualBuyVolume} legalVolume={legalBuyVolume} />

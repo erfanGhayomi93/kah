@@ -23,7 +23,6 @@ interface ModalHeaderChildrenProps {
 
 interface ModalHeaderCustomProps {
 	label?: React.ReactNode;
-	CustomHeader?: React.ReactNode;
 	onClose?: () => void;
 	onExpanded?: () => void;
 	onClear?: () => void;
@@ -132,35 +131,35 @@ const Header = (props: ModalHeaderProps) => {
 		return <div className='relative h-56 w-full bg-gray-200 flex-justify-center'>{props.children}</div>;
 	}
 
-	const { label, CustomHeader, onClose, onExpanded, onClear, onReset } = props;
+	const { label, onClose, onExpanded, onClear, onReset } = props;
 
 	return (
 		<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
 			<h2 className='select-none text-xl font-medium text-gray-900'>{label}</h2>
 
-			<button onClick={onClose} type='button' className='absolute left-24 z-10 icon-hover'>
-				<XSVG width='2rem' height='2rem' />
-			</button>
-
-			{!!onReset && (
-				<button onClick={onReset} type='button' className='absolute left-64 z-10 icon-hover'>
-					<RefreshSVG width='1.8rem' height='1.8rem' />
+			<div className='absolute left-24 z-10 gap-8 ltr flex-items-end *:size-24 *:flex-justify-center *:icon-hover'>
+				<button onClick={onClose} type='button'>
+					<XSVG width='2rem' height='2rem' />
 				</button>
-			)}
 
-			{!!onExpanded && (
-				<button onClick={onExpanded} type='button' className='absolute left-64 z-10 icon-hover'>
-					<SessionHistorySVG width='1.8rem' height='1.8rem' />
-				</button>
-			)}
+				{!!onReset && (
+					<button onClick={onReset} type='button'>
+						<RefreshSVG width='2rem' height='2rem' />
+					</button>
+				)}
 
-			{!!onClear && (
-				<button onClick={onClear} type='button' className='absolute left-56 z-10 icon-hover'>
-					<EraserSVG width='2rem' height='2rem' />
-				</button>
-			)}
+				{!!onExpanded && (
+					<button onClick={onExpanded} type='button'>
+						<SessionHistorySVG width='2rem' height='2rem' />
+					</button>
+				)}
 
-			{CustomHeader}
+				{!!onClear && (
+					<button onClick={onClear} type='button'>
+						<EraserSVG width='2rem' height='2rem' />
+					</button>
+				)}
+			</div>
 		</div>
 	);
 };
