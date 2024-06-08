@@ -1232,7 +1232,7 @@
 		"symbol_basis": "مشاهده بر اساس",
 		"price_LastTradePrice": "آخرین قیمت",
 		"price_ClosingPrice": "قیمت پایانی",
-		"price_BestLimit": "سرخط هوشمند",
+		"price_BestLimitPrice": "سرخط هوشمند",
 		"symbol_All": "همه",
 		"symbol_BestLimit": "نمادهای دارای سرخط",
 		"execution_steps": "نحوه اجرا",
