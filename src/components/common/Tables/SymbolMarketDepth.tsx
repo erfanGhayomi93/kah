@@ -1,6 +1,6 @@
 import { useSymbolBestLimitQuery } from '@/api/queries/symbolQuery';
 import { useSubscription } from '@/hooks';
-import { cn, isBetween, sepNumbers } from '@/utils/helpers';
+import { cn, copyNumberToClipboard, isBetween, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -184,13 +184,13 @@ const SymbolMarketDepth = ({
 	);
 };
 
-const Row = ({ side, price, count, quantity, percent, compact, disabled }: RowProps) => (
+const Row = ({ price = 0, count = 0, quantity = 0, side, percent, compact, disabled }: RowProps) => (
 	<div
-		className={cn(
+		className={clsx(
 			'relative flex-justify-between *:text-base *:text-gray-900',
 			side === 'sell' && 'flex-row-reverse',
 			compact ? 'h-32' : 'h-40',
-			disabled && 'opacity-50',
+			disabled && 'cursor-default opacity-50',
 		)}
 	>
 		{!disabled && (
@@ -203,13 +203,25 @@ const Row = ({ side, price, count, quantity, percent, compact, disabled }: RowPr
 			/>
 		)}
 
-		<div style={{ flex: '0 0 25%', maxWidth: '7.2rem' }} className='text-center'>
+		<div
+			onCopy={(e) => copyNumberToClipboard(e, count)}
+			style={{ flex: '0 0 25%', maxWidth: '7.2rem' }}
+			className='text-center'
+		>
 			{sepNumbers(String(count))}
 		</div>
-		<div style={{ flex: '0 0 50%' }} className='px-8 text-center'>
+		<div
+			onCopy={(e) => copyNumberToClipboard(e, quantity)}
+			style={{ flex: '0 0 50%' }}
+			className='px-8 text-center'
+		>
 			{sepNumbers(String(quantity))}
 		</div>
-		<div style={{ flex: '0 0 25%' }} className={clsx(side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}>
+		<div
+			onCopy={(e) => copyNumberToClipboard(e, price)}
+			style={{ flex: '0 0 25%' }}
+			className={clsx(side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}
+		>
 			{sepNumbers(String(price))}
 		</div>
 	</div>

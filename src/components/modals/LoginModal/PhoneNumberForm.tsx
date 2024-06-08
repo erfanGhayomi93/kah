@@ -1,5 +1,4 @@
 import Button from '@/components/common/Button';
-import { AngleLeftSVG } from '@/components/icons';
 import { cn, convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
@@ -84,15 +83,14 @@ const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 			<Button
 				style={{
 					bottom: '6.4rem',
-					width: 'calc(100% - 17.6rem)',
 				}}
 				loading={isSubmitting}
 				type='submit'
 				disabled={!isValid}
-				className='!absolute h-48 gap-4 rounded text-lg shadow btn-primary'
+				className='h-48 gap-4 rounded text-lg shadow btn-primary'
+				afterArrow
 			>
 				{t('common.continue')}
-				<AngleLeftSVG />
 			</Button>
 		</form>
 	);

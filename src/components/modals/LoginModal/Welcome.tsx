@@ -1,5 +1,3 @@
-import { useAppDispatch } from '@/features/hooks';
-import { setLoginModal } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -8,16 +6,11 @@ import { useEffect } from 'react';
 interface WelcomeProps {
 	isNeedsToSetPassword: boolean;
 	goToSetPassword: () => void;
+	onCloseModal: () => void;
 }
 
-const Welcome = ({ isNeedsToSetPassword, goToSetPassword }: WelcomeProps) => {
+const Welcome = ({ isNeedsToSetPassword, goToSetPassword, onCloseModal }: WelcomeProps) => {
 	const t = useTranslations();
-
-	const dispatch = useAppDispatch();
-
-	const onCloseModal = () => {
-		dispatch(setLoginModal(null));
-	};
 
 	useEffect(() => {
 		if (isNeedsToSetPassword) return;

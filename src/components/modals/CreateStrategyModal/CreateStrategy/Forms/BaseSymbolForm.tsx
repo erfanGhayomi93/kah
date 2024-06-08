@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import InputLegend from '@/components/common/Inputs/InputLegend';
-import { ArrowLeftSVG } from '@/components/icons';
+import { AngleLeftSVG } from '@/components/icons';
 import { convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -91,7 +91,7 @@ const BaseSymbolForm = ({
 
 				<Button type='submit' className='h-48 rounded text-lg shadow btn-success'>
 					{t('side.buy')}
-					<ArrowLeftSVG />
+					<AngleLeftSVG />
 				</Button>
 			</div>
 		</form>

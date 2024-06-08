@@ -48,23 +48,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 			const userLsVersion = LocalstorageInstance.get('ls_version', lsVersion);
 
 			if (versionParser(lsVersion) !== versionParser(userLsVersion)) {
-				const CLEARABLE_KEYS = [
-					'app_version',
-					'conversion_strategy_columns',
-					'bear_put_spread_columns',
-					'bull_call_spread_strategy_columns',
-					'covered_call_strategy_columns',
-					'long_call_strategy_columns',
-					'long_put_strategy_columns',
-					'Long_straddle_strategy_columns',
-					'protective_put_strategy_columns',
-					'sipg',
-					'owci',
-				];
-
-				for (let i = 0; i < CLEARABLE_KEYS.length; i++) {
-					LocalstorageInstance.remove(CLEARABLE_KEYS[i]);
-				}
+				LocalstorageInstance.clear();
 			}
 		} catch (e) {
 			//

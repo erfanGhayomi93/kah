@@ -56,7 +56,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 
 	const onAuthorizing = () => {
 		if (!isLoggedIn) {
-			dispatch(setLoginModal({}));
+			dispatch(setLoginModal({ showForceLoginAlert: true }));
 		}
 
 		if (!brokerIsSelected && isLoggedIn) {
