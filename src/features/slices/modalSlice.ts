@@ -167,6 +167,9 @@ const initialState: ModalState = {
 
 	// مدال سررسیدها صفحه داشبورد
 	dueDates: null,
+
+	// مدال فیلتر استراتژی‌ها
+	strategyFilters: null,
 };
 
 const modalSlice = createSlice({
@@ -416,6 +419,10 @@ const modalSlice = createSlice({
 		setDueDatesModal: (state, { payload }: PayloadAction<ModalState['dueDates']>) => {
 			state.dueDates = payload;
 		},
+
+		setStrategyFiltersModal: (state, { payload }: PayloadAction<ModalState['strategyFilters']>) => {
+			state.strategyFilters = payload;
+		},
 	},
 });
 
@@ -475,6 +482,7 @@ export const {
 	setTopBaseAssetsModal,
 	setRecentActivitiesModal,
 	setDueDatesModal,
+	setStrategyFiltersModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -527,5 +535,6 @@ export const getNewAndOldModal = (state: RootState) => state.modal.newAndOld;
 export const getTopBaseAssetsModal = (state: RootState) => state.modal.topBaseAssets;
 export const getRecentActivitiesModal = (state: RootState) => state.modal.recentActivities;
 export const getDueDatesModal = (state: RootState) => state.modal.dueDates;
+export const getStrategyFiltersModal = (state: RootState) => state.modal.strategyFilters;
 
 export default modalSlice.reducer;
