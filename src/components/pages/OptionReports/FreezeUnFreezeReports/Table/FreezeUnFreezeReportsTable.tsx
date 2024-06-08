@@ -59,34 +59,40 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 			{
 				colId: 'id',
 				headerName: t('freeze_and_unfreeze_reports_page.id_column'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: t('freeze_and_unfreeze_reports_page.symbol_column'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'symbolTitle')]?.hidden,
 				valueGetter: (row) => row.symbolTitle ?? '',
 			},
 			{
 				colId: 'confirmedOn',
 				headerName: t('freeze_and_unfreeze_reports_page.date_column'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'confirmedOn')]?.hidden,
 				valueGetter: (row) => dateFormatter(row.confirmedOn ?? '', 'date'),
 			},
 			{
 				colId: 'requestState',
 				headerName: t('freeze_and_unfreeze_reports_page.status_column'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestState')]
+					?.hidden,
 				valueGetter: (row) =>
 					row.requestState ? t('freeze_and_unfreeze_reports_page.state_' + row.requestState) : '',
 			},
 			{
 				colId: 'action',
 				headerName: t('freeze_and_unfreeze_reports_page.action_column'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'action')]?.hidden,
 				valueGetter: (row) => row.symbolISIN,
 				valueFormatter: ({ row }) => (
 					<FreezeUnFreezeReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />
 				),
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
 
 	useEffect(() => {
