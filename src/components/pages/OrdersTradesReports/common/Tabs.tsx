@@ -36,7 +36,7 @@ const Tabs = () => {
 							<button
 								type='button'
 								className={clsx(
-									'h-40 w-88 rounded !border transition-colors',
+									'h-40 w-104 rounded !border transition-colors',
 									type.route + '/' === pathName
 										? 'no-hover font-medium btn-select'
 										: 'border-gray-500 text-gray-900 hover:btn-hover',

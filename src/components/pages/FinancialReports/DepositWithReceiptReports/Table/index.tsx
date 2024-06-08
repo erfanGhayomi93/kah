@@ -21,7 +21,9 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 		queryKey: ['depositWithReceiptReports', filters],
 	});
 
-	const onFiltersChanged = (newFilters: Omit<DepositWithReceiptReports.DepositWithReceiptReportsFilters, 'pageNumber' | 'pageSize'>) => {
+	const onFiltersChanged = (
+		newFilters: Omit<DepositWithReceiptReports.DepositWithReceiptReportsFilters, 'pageNumber' | 'pageSize'>,
+	) => {
 		setFieldsValue(newFilters);
 	};
 
@@ -50,10 +52,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 					transition: 'height 250ms ease',
 				}}
 			>
-				<DepositWithReceiptReportsTable
-					reports={reports}
-					columnsVisibility={columnsVisibility}
-				/>
+				<DepositWithReceiptReportsTable reports={reports} columnsVisibility={columnsVisibility} />
 			</div>
 
 			<div className='py-22 flex-justify-end'>

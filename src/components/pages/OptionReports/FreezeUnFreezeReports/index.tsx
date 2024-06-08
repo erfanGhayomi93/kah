@@ -3,15 +3,10 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import {
-	defaultFreezeUnFreezeReportsColumns,
-	defaultTransactionColumns,
-	initialFreezeUnFreezeReportsFilters,
-} from '@/constants';
+import { defaultFreezeUnFreezeReportsColumns, initialFreezeUnFreezeReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setFreezeUnFreezeReportsFiltersModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setFreezeUnFreezeReportsFiltersModal, setManageColumnsModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
@@ -110,11 +105,12 @@ const FreezeUnFreezeReports = () => {
 
 	const onManageColumns = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
+				initialColumns: defaultFreezeUnFreezeReportsColumns,
 				columns: columnsVisibility,
 				title: t('freeze_and_unfreeze_reports_page.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
-				onReset: () => setColumnsVisibility(defaultTransactionColumns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onReset: () => setColumnsVisibility(defaultFreezeUnFreezeReportsColumns),
 			}),
 		);
 	};

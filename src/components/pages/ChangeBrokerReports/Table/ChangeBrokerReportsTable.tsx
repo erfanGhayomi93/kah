@@ -50,27 +50,32 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 				colId: 'id',
 				headerName: t('change_broker_reports_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			{
 				colId: 'saveDate',
 				headerName: t('change_broker_reports_page.date_column'),
 				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'date'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'saveDate')]?.hidden,
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: t('change_broker_reports_page.symbol_column'),
 				cellClass: 'ltr text-right',
 				valueGetter: (row) => row.symbolTitle,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'symbolTitle')]?.hidden,
 			},
 			{
-				colId: 'online',
+				colId: 'gateway',
 				headerName: t('change_broker_reports_page.gateway_column'),
 				valueGetter: () => t('states.state_Online'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'gateway')]?.hidden,
 			},
 			{
 				colId: 'lastState',
 				headerName: t('change_broker_reports_page.status_column'),
 				valueGetter: (row) => t('states.state_' + row.lastState),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'lastState')]?.hidden,
 			},
 			{
 				colId: 'action',
@@ -79,9 +84,10 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 				valueFormatter: ({ row }) => (
 					<ChangeBrokerReportsTableActionCell data={row} onDeleteRow={onDeleteRow} />
 				),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'action')]?.hidden,
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
 
 	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
