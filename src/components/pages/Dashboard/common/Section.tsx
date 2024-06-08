@@ -110,7 +110,7 @@ const Section = <T extends string = string, B extends string = string>({
 			</div>
 
 			<RenderOnViewportEntry className='relative h-full flex-1 overflow-hidden p-8 '>
-				{children ?? <NoData />}
+				{children ?? <NoData className='absolute center' />}
 			</RenderOnViewportEntry>
 
 			{Array.isArray(tabs?.bottom) ? (

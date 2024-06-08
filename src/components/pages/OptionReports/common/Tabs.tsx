@@ -31,25 +31,52 @@ const Tabs = () => {
 	return (
 		<div className='gap-24 flex-justify-start'>
 			<span className='text-xl font-medium text-gray-700'>{t('option_reports_page.option_reports')}</span>
-			<ul className='gap-8 flex-justify-start'>
-				{FINANCIAL_TYPE.map((type) => (
-					<li key={type.id}>
-						<Link href={type.route}>
-							<button
-								type='button'
-								className={clsx(
-									'h-40 w-88 rounded !border transition-colors',
-									type.route + '/' === pathName
-										? 'no-hover font-medium btn-select'
-										: 'border-gray-500 text-gray-900 hover:btn-hover',
-								)}
-							>
-								{t('option_reports_page.' + type.id + '_tab')}
-							</button>
-						</Link>
-					</li>
-				))}
-			</ul>
+			<div className='gap-8 flex-justify-start'>
+				<div>
+					<Link href='/option-reports/freeze-and-unfreeze'>
+						<button
+							type='button'
+							className={clsx(
+								'h-40 w-104 rounded !border transition-colors',
+								'/option-reports/freeze-and-unfreeze' + '/' === pathName
+									? 'no-hover font-medium btn-select'
+									: 'border-gray-500 text-gray-900 hover:btn-hover',
+							)}
+						>
+							{t('option_reports_page.' + 'freeze_and_unfreeze' + '_tab')}
+						</button>
+					</Link>
+				</div>
+				<div
+					style={{
+						minWidth: '16px',
+						minHeight: '1px',
+					}}
+					className='rotate-90 bg-gray-200'
+				/>
+				<ul className='gap-8 flex-justify-start'>
+					{FINANCIAL_TYPE.map((type) => {
+						if (type.id === 'freeze_and_unfreeze') return null;
+						return (
+							<li key={type.id}>
+								<Link href={type.route}>
+									<button
+										type='button'
+										className={clsx(
+											'h-40 w-104 rounded !border transition-colors',
+											type.route + '/' === pathName
+												? 'no-hover font-medium btn-select'
+												: 'border-gray-500 text-gray-900 hover:btn-hover',
+										)}
+									>
+										{t('option_reports_page.' + type.id + '_tab')}
+									</button>
+								</Link>
+							</li>
+						);
+					})}
+				</ul>
+			</div>
 		</div>
 	);
 };

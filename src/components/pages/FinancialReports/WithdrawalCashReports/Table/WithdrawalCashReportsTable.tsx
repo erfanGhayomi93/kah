@@ -82,6 +82,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 				colId: 'id',
 				headerName: t('withdrawal_cash_reports_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			/* زمان درخواست */
 			{
@@ -89,36 +90,44 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 				headerName: t('withdrawal_cash_reports_page.date_column'),
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'datetime'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'saveDate')]?.hidden,
 			},
 			/* موعد پرداخت */
 			{
 				colId: 'requestDate',
 				headerName: t('withdrawal_cash_reports_page.time_column'),
 				valueGetter: (row) => dateFormatter(row.requestDate ?? '', 'date'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestDate')]?.hidden,
 			},
 			/* بانک */
 			{
 				colId: 'customerBank',
 				headerName: t('withdrawal_cash_reports_page.bank_column'),
 				valueGetter: (row) => row.customerBank,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'customerBank')]
+					?.hidden,
 			},
 			/* مبلغ */
 			{
 				colId: 'requestAmount',
 				headerName: t('withdrawal_cash_reports_page.amount_column'),
 				valueGetter: (row) => sepNumbers(String(row.requestAmount)),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestAmount')]
+					?.hidden,
 			},
 			/* سامانه */
 			{
 				colId: 'channel',
 				headerName: t('withdrawal_cash_reports_page.gateway_column'),
 				valueGetter: (row) => t('states.state_' + row.channel),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'channel')]?.hidden,
 			},
 			/* وضعیت */
 			{
 				colId: 'state',
 				headerName: t('withdrawal_cash_reports_page.state_column'),
 				valueGetter: (row) => t('states.state_' + row.state),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'state')]?.hidden,
 			},
 			/* عملیات */
 			{
@@ -128,9 +137,10 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 				valueFormatter: ({ row }) => (
 					<WithdrawalCashReportsActionCell data={row} onDeleteRow={onDeleteRow} onEditRow={onEditRow} />
 				),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'action')]?.hidden,
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
 
 	useEffect(() => {
