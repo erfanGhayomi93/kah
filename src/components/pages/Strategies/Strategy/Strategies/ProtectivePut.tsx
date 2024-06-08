@@ -40,7 +40,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	);
 
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
-		priceBasis: 'BestLimit',
+		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
 		pageNumber: 1,

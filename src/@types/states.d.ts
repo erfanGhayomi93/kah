@@ -103,7 +103,7 @@ declare interface CashWithdrawBankType {
 	customerBank: string;
 }
 
-type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
+type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimitPrice';
 
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 

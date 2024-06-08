@@ -39,7 +39,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 	);
 
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
-		priceBasis: 'BestLimit',
+		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
 		pageNumber: 1,
@@ -143,6 +143,14 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				onReset: () => setColumnsVisibility(initialColumnsLongStraddle),
 			}),
 		);
+	};
+
+	const showFilters = () => {
+		try {
+			//
+		} catch (e) {
+			//
+		}
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Strategy.LongStraddle> & { colId: TLongStraddleColumns }>>(
@@ -467,6 +475,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
+					onShowFilters={showFilters}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
 				/>

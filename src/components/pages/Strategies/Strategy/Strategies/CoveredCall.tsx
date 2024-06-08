@@ -46,7 +46,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	);
 
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
-		priceBasis: 'BestLimit',
+		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
 		pageNumber: 1,

@@ -306,6 +306,72 @@ export interface IRecentActivitiesModal extends IBaseModalConfiguration {}
 
 export interface IDueDatesModal extends IBaseModalConfiguration {}
 
+export namespace NStrategyFilter {
+	// Number
+	export interface IRangeNumber {
+		mode: 'range';
+		type: 'percent' | 'number' | 'decimal';
+		initialValue: [number, number];
+	}
+
+	export interface ISingleNumber {
+		mode: 'single';
+		type: 'percent' | 'number' | 'decimal';
+		initialValue: number;
+	}
+
+	// String
+	export interface IArrayString {
+		mode: 'array';
+		type: 'string';
+		initialValue: string[];
+	}
+
+	export interface IRangeString {
+		mode: 'range';
+		type: 'string';
+		initialValue: [string, string];
+	}
+
+	export interface ISIngleString {
+		mode: 'single';
+		type: 'string';
+		initialValue: string;
+	}
+
+	// Data
+	export interface IRangeData {
+		mode: 'range';
+		type: 'date';
+		initialValue: [Date, Date];
+	}
+
+	export interface ISIngleData {
+		mode: 'single';
+		type: 'date';
+		initialValue: Date;
+	}
+
+	export type TFilter = (
+		| NStrategyFilter.IRangeNumber
+		| NStrategyFilter.ISingleNumber
+		| NStrategyFilter.IArrayString
+		| NStrategyFilter.IRangeString
+		| NStrategyFilter.ISIngleString
+		| NStrategyFilter.IRangeData
+		| NStrategyFilter.ISIngleData
+	) & {
+		title: string;
+		titleHint?: string;
+	};
+
+	export interface IFilters extends IBaseModalConfiguration {
+		initialFilters?: unknown;
+		filters: NStrategyFilter.TFilter[];
+		onSubmit: () => void;
+	}
+}
+
 export type ModalState = TBaseModalProps<{
 	loginModal: ILoginModal;
 	forgetPassword: IForgetPasswordModal;
@@ -362,4 +428,5 @@ export type ModalState = TBaseModalProps<{
 	topBaseAssets: ITopBaseAssetsModal;
 	recentActivities: IRecentActivitiesModal;
 	dueDates: IDueDatesModal;
+	strategyFilters: NStrategyFilter.IFilters;
 }>;
