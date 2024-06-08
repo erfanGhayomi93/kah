@@ -78,7 +78,7 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged, onCancel }
 	const newPasswordFieldIsTouched = touchedFields?.newPassword;
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 pb-16 flex-column'>
 			<div style={{ marginTop: '5.6rem' }} className='gap-24 flex-column'>
 				<input type='hidden' name='username' value={phoneNumber ?? ''} />
 
@@ -202,13 +202,7 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged, onCancel }
 				</label>
 			</div>
 
-			<div
-				style={{
-					bottom: '2.4rem',
-					width: 'calc(100% - 17.6rem)',
-				}}
-				className='!absolute flex flex-col gap-8'
-			>
+			<div className='gap-8 flex-column'>
 				<Button
 					loading={isSubmitting}
 					type='submit'
@@ -218,7 +212,7 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged, onCancel }
 					{t('common.register')}
 				</Button>
 
-				<button type='button' onClick={onCancel} className='h-48 font-medium text-primary-400'>
+				<button type='button' onClick={onCancel} className='h-40 font-medium text-primary-400'>
 					{t('common.cancel')}
 				</button>
 			</div>

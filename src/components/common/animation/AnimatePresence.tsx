@@ -9,7 +9,12 @@ interface AnimatePresenceProps {
 	children: ReactNode;
 	exit: IAnimation;
 	initial: IAnimation;
-	disabled?: boolean;
+	disabled?:
+		| boolean
+		| {
+				exit: boolean;
+				initial: boolean;
+		  };
 	onRefLoad?: (el: HTMLElement | null) => void;
 }
 

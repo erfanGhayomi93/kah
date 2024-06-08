@@ -17,7 +17,7 @@ const Div = styled.div`
 	width: 578px;
 	height: 560px;
 	display: flex;
-	padding: 2.4rem;
+	padding: 2.4rem 2.4rem 0 2.4rem;
 	flex-direction: column;
 	border-radius: 1.6rem;
 `;

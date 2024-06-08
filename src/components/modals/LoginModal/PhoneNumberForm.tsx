@@ -47,7 +47,7 @@ const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 		});
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 pb-64 flex-column'>
 			<div style={{ marginTop: '12rem' }} className='gap-24 flex-column'>
 				<Controller
 					defaultValue=''
@@ -81,13 +81,10 @@ const PhoneNumberForm = ({ sendOTP }: PhoneNumberFormProps) => {
 			</div>
 
 			<Button
-				style={{
-					bottom: '6.4rem',
-				}}
 				loading={isSubmitting}
 				type='submit'
 				disabled={!isValid}
-				className='h-48 gap-4 rounded text-lg shadow btn-primary'
+				className='h-48 rounded text-lg shadow btn-primary'
 				afterArrow
 			>
 				{t('common.continue')}
