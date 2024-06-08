@@ -4,7 +4,7 @@ export const defaultSymbolISIN = 'IRO1IKCO0001';
 
 export const broadcastChannel = 'tUFN1pQ1Ry';
 
-export const watchlistPriceBasis: TPriceBasis[] = ['LastTradePrice', 'ClosingPrice', 'BestLimit'];
+export const watchlistPriceBasis: TPriceBasis[] = ['LastTradePrice', 'ClosingPrice', 'BestLimitPrice'];
 
 export const watchlistSymbolBasis: TStrategySymbolBasis[] = ['All', 'BestLimit'];
 

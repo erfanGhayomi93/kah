@@ -20,10 +20,6 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, CoveredCallFiltersProps>(
 			dispatch(setCoveredCallFiltersModal(null));
 		};
 
-		const onClear = () => {
-			//
-		};
-
 		const TABS = useMemo(
 			() => [
 				{
@@ -50,7 +46,7 @@ const CoveredCallFilters = forwardRef<HTMLDivElement, CoveredCallFiltersProps>(
 				{...props}
 			>
 				<div style={{ width: '70rem' }}>
-					<Header label={t('title')} onClose={onCloseModal} onClear={onClear} />
+					<Header label={t('title')} onClose={onCloseModal} />
 
 					<div className='bg-white p-24'>
 						<Tabs
