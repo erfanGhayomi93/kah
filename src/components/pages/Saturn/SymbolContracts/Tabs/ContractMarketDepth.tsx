@@ -7,7 +7,13 @@ interface ContractMarketDepthProps {
 const ContractMarketDepth = ({ symbol }: ContractMarketDepthProps) => {
 	if (!symbol) return null;
 
-	return <SymbolMarketDepth symbolISIN={symbol.symbolISIN} />;
+	return (
+		<SymbolMarketDepth
+			symbolISIN={symbol.symbolISIN}
+			lowThreshold={symbol.lowThreshold}
+			highThreshold={symbol.highThreshold}
+		/>
+	);
 };
 
 export default ContractMarketDepth;

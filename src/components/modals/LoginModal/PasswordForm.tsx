@@ -82,7 +82,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 	}, [loginResult]);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 pb-16 flex-column'>
 			<input type='hidden' name='username' value={phoneNumber ?? ''} />
 
 			<div style={{ marginTop: '12rem' }} className='gap-24 flex-column'>
@@ -129,13 +129,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 				/>
 			</div>
 
-			<div
-				style={{
-					bottom: '2.4rem',
-					width: 'calc(100% - 17.6rem)',
-				}}
-				className='!absolute flex flex-col gap-8 pt-24'
-			>
+			<div className='gap-8 flex-column'>
 				<Button
 					type='submit'
 					loading={isSubmitting}
@@ -145,7 +139,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 					{t('login_modal.login')}
 				</Button>
 
-				<button type='button' onClick={goToLoginWithOTP} className='h-48 font-medium text-primary-400'>
+				<button type='button' onClick={goToLoginWithOTP} className='h-40 font-medium text-primary-400'>
 					{t('login_modal.login_with_otp')}
 				</button>
 			</div>

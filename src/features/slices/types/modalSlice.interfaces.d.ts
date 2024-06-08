@@ -2,7 +2,11 @@ type TModalType<T> = null | (T extends object ? T & IBaseModalConfiguration : IB
 
 type TBaseModalProps<T> = { [P in keyof T]: TModalType<T[P]> };
 
-export interface IBlackScholes extends IBaseModalConfiguration {
+export interface ILoginModal extends IBaseModalConfiguration {
+	showForceLoginAlert?: boolean;
+}
+
+export interface IBlackScholesModal extends IBaseModalConfiguration {
 	symbolISIN?: string;
 }
 
@@ -302,8 +306,75 @@ export interface IRecentActivitiesModal extends IBaseModalConfiguration {}
 
 export interface IDueDatesModal extends IBaseModalConfiguration {}
 
+export namespace NStrategyFilter {
+	// Number
+	export interface IRangeNumber {
+		mode: 'range';
+		type: 'percent' | 'number' | 'decimal';
+		initialValue: [number, number];
+	}
+
+	export interface ISingleNumber {
+		mode: 'single';
+		type: 'percent' | 'number' | 'decimal';
+		initialValue: number;
+	}
+
+	// String
+	export interface IArrayString {
+		mode: 'array';
+		type: 'string';
+		initialValue: string[];
+	}
+
+	export interface IRangeString {
+		mode: 'range';
+		type: 'string';
+		initialValue: [string, string];
+	}
+
+	export interface ISIngleString {
+		mode: 'single';
+		type: 'string';
+		initialValue: string;
+	}
+
+	// Data
+	export interface IRangeData {
+		mode: 'range';
+		type: 'date';
+		initialValue: [Date, Date];
+	}
+
+	export interface ISIngleData {
+		mode: 'single';
+		type: 'date';
+		initialValue: Date;
+	}
+
+	export type TFilter = (
+		| NStrategyFilter.IRangeNumber
+		| NStrategyFilter.ISingleNumber
+		| NStrategyFilter.IArrayString
+		| NStrategyFilter.IRangeString
+		| NStrategyFilter.ISIngleString
+		| NStrategyFilter.IRangeData
+		| NStrategyFilter.ISIngleData
+	) & {
+		title: string;
+		titleHint?: string;
+	};
+
+	export interface IFilters extends IBaseModalConfiguration {
+		initialFilters?: unknown;
+		filters: NStrategyFilter.TFilter[];
+		onSubmit: () => void;
+	}
+}
+
 export type ModalState = TBaseModalProps<{
-	loginModal: true;
+	loginModal: ILoginModal;
+	forgetPassword: IForgetPasswordModal;
 	logout: true;
 	choiceBroker: true;
 	confirm: IConfirmModal;
@@ -318,7 +389,6 @@ export type ModalState = TBaseModalProps<{
 	moveSymbolToWatchlist: IMoveSymbolToWatchlistModal;
 	addSaturnTemplate: IAddSaturnTemplate;
 	selectSymbolContracts: ISelectSymbolContractsModal;
-	forgetPassword: IForgetPasswordModal;
 	optionFilters: IOptionFiltersModal;
 	manageDashboardLayout: IManageDashboardLayoutModal;
 	changeBroker: IChangeBrokerModal;
@@ -358,4 +428,5 @@ export type ModalState = TBaseModalProps<{
 	topBaseAssets: ITopBaseAssetsModal;
 	recentActivities: IRecentActivitiesModal;
 	dueDates: IDueDatesModal;
+	strategyFilters: NStrategyFilter.IFilters;
 }>;

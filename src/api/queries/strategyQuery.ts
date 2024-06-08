@@ -13,7 +13,7 @@ type TStrategyBaseType<T> = [T, IStrategyOptionsKey];
 const CACHE_TIME = 0;
 
 const defaultStrategyOptions: IStrategyOptionsKey = {
-	priceBasis: 'BestLimit',
+	priceBasis: 'BestLimitPrice',
 	symbolBasis: 'BestLimit',
 	withCommission: true,
 };

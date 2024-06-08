@@ -5,9 +5,11 @@ import Section, { type ITabIem } from '../common/Section';
 
 interface MarketDepthProps {
 	symbolISIN: string;
+	lowThreshold: number;
+	highThreshold: number;
 }
 
-const MarketDepth = ({ symbolISIN }: MarketDepthProps) => {
+const MarketDepth = ({ symbolISIN, lowThreshold, highThreshold }: MarketDepthProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -23,7 +25,12 @@ const MarketDepth = ({ symbolISIN }: MarketDepthProps) => {
 	return (
 		<Section name='market_depth' defaultActiveTab='market_depth' tabs={tabs}>
 			<div className='px-8 py-16'>
-				<SymbolMarketDepth length={3} symbolISIN={symbolISIN} />
+				<SymbolMarketDepth
+					length={3}
+					symbolISIN={symbolISIN}
+					lowThreshold={lowThreshold}
+					highThreshold={highThreshold}
+				/>
 			</div>
 		</Section>
 	);

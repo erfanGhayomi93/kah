@@ -754,6 +754,16 @@ const config: Config = {
 					transform: 'translate(-50%, -50%)',
 				},
 
+				'.center-x': {
+					left: '50%',
+					transform: 'translateX(-50%)',
+				},
+
+				'.center-y': {
+					top: '50%',
+					transform: 'translateY(-50%)',
+				},
+
 				'.input-group': {
 					transition: 'border-color 200ms ease-in-out',
 					'-webkit-transition': 'border-color 200ms ease-in-out',
