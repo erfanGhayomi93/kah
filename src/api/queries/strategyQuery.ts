@@ -2,6 +2,8 @@ import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
+type TParams = Record<string, string | number | boolean | string[] | number[]>;
+
 interface IStrategyOptionsKey {
 	priceBasis: TPriceBasis;
 	symbolBasis: TStrategySymbolBasis;
@@ -46,7 +48,7 @@ export const useCoveredCallStrategyQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		try {
 			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
-			const params: Record<string, string | number | boolean | string[] | number[]> = {
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
@@ -54,8 +56,8 @@ export const useCoveredCallStrategyQuery = createQuery<
 				WithCommission: withCommission,
 			};
 
-			if (filters?.symbols && filters.symbols.length > 0)
-				params.BaseSymbolISIN = filters.symbols.map((item) => item.symbolISIN);
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
 
 			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
 
@@ -73,8 +75,7 @@ export const useCoveredCallStrategyQuery = createQuery<
 
 			if (filters?.maxProfit && filters.maxProfit) params.IOTM = filters.maxProfit;
 
-			if (filters?.nonExpiredProfit && filters.nonExpiredProfit)
-				params.LeastNonExpiredProfitPercent = filters.nonExpiredProfit;
+			if (filters?.nonExpiredProfit) params.LeastNonExpiredProfitPercent = filters.nonExpiredProfit;
 
 			const response = await axios.get<ServerResponse<Strategy.CoveredCall[]>>(routes.strategy.CoveredCall, {
 				signal,
@@ -180,20 +181,33 @@ export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TSt
 
 export const useLongStraddleStrategyQuery = createQuery<
 	Strategy.LongStraddle[],
-	TStrategyBaseType<'longStraddleQuery'>
+	['longStraddleQuery', IStrategyOptionsKey, Partial<ILongStraddleFiltersModalStates>]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['longStraddleQuery', defaultStrategyOptions],
+	queryKey: ['longStraddleQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.callOpenPosition) params.CallLeastOpenPositions = filters.callOpenPosition;
+			if (filters?.putOpenPosition) params.PutLeastOpenPositions = filters.putOpenPosition;
 
 			const response = await axios.get<ServerResponse<Strategy.LongStraddle[]>>(routes.strategy.LongStraddle, {
 				signal,

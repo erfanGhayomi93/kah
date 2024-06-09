@@ -8,6 +8,7 @@ interface InputLegendProps
 	prefix?: React.ReactNode;
 	placeholder: React.ReactNode;
 	separator?: boolean;
+	height?: string;
 	valueSeparator?: boolean;
 	inputPlaceholder?: string;
 	autoTranslateLegend?: boolean;
@@ -21,13 +22,19 @@ const InputLegend = ({
 	separator = true,
 	autoTranslateLegend = false,
 	inputPlaceholder,
+	height = '48',
 	onChange,
 	...props
 }: InputLegendProps) => {
 	const isActive = autoTranslateLegend || (value && String(value).length > 0);
 
 	return (
-		<label className='relative h-48 flex-1 rounded flex-items-center input-group'>
+		<label
+			className={clsx(
+				`relative h-${height} flex-1 rounded flex-items-center input-group`,
+				!placeholder && 'border border-gray-500',
+			)}
+		>
 			<input
 				placeholder={inputPlaceholder}
 				type='text'
@@ -38,11 +45,15 @@ const InputLegend = ({
 				{...props}
 			/>
 
-			<span className={cn('flexible-placeholder', isActive && 'active')}>{placeholder}</span>
+			{placeholder && (
+				<>
+					<span className={cn('flexible-placeholder', isActive && 'active')}>{placeholder}</span>
 
-			<fieldset className={cn('flexible-fieldset', isActive && 'active')}>
-				<legend>{placeholder}</legend>
-			</fieldset>
+					<fieldset className={cn('flexible-fieldset', isActive && 'active')}>
+						<legend>{placeholder}</legend>
+					</fieldset>
+				</>
+			)}
 
 			{prefix && (
 				<span

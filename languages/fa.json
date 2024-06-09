@@ -1076,7 +1076,7 @@
 		"ytm": "YTM",
 		"first_value": "مقدار اول",
 		"value": "مقدار",
-		"seconds_value": "مقدار دوم",
+		"second_value": "مقدار دوم",
 		"apply_filters": "اعمال فیلتر"
 	},
 	"CoveredCall": {

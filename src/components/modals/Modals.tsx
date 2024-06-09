@@ -75,8 +75,6 @@ const ChoiceCollateral = lazy(() => import('./ChoiceCollateral'));
 
 const Confirm = lazy(() => import('./Confirm'));
 
-const CoveredCallFilters = lazy(() => import('./CoveredCallFilters'));
-
 const CreateStrategyModal = lazy(() => import('./CreateStrategyModal'));
 
 const DepositWithReceiptFiltersModal = lazy(() => import('./DepositWithReceiptReportsFiltersModal'));
@@ -174,7 +172,6 @@ const Modals = () => {
 		ordersReportsFilters,
 		createStrategy,
 		tradesReportsFilters,
-		coveredCallFilters,
 		manageColumns,
 		marketState,
 		marketView,
@@ -519,14 +516,6 @@ const Modals = () => {
 				{tradesReportsFilters && (
 					<ModalSuspense>
 						<TradesReportsFiltersModal {...tradesReportsFilters} />
-					</ModalSuspense>
-				)}
-			</ModalAnimatePresence>
-
-			<ModalAnimatePresence>
-				{coveredCallFilters && (
-					<ModalSuspense>
-						<CoveredCallFilters {...coveredCallFilters} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

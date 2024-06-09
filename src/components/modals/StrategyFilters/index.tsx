@@ -1,45 +1,62 @@
+import ErrorBoundary from '@/components/common/ErrorBoundary';
+import InputLegend from '@/components/common/Inputs/InputLegend';
+import BaseSymbolAdvanceSearch from '@/components/common/Symbol/BaseSymbolAdvanceSearch';
 import Tooltip from '@/components/common/Tooltip';
-import { InfoCircleSVG } from '@/components/icons';
+import { InfoCircleSVG, PercentSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setStrategyFiltersModal } from '@/features/slices/modalSlice';
 import { type NStrategyFilter } from '@/features/slices/types/modalSlice.interfaces';
 import { useInputs } from '@/hooks';
+import { convertStringToInteger } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import Modal, { Header } from '../Modal';
 
-type TInput = Record<string, string | string[] | number | number[] | Date | Date[]>;
+type TFilterValue = Record<
+	string,
+	string | number | Date | [number | null, number | null] | Array<string | null> | [Date | null, Date | null] | null
+>;
+
+type TInput = TFilterValue & {
+	baseSymbols: Option.BaseSearch[];
+};
 
 interface ShareInputProps<T> {
 	value: T;
-	onChange: (id: string, v: T) => void;
+	onChange: (v: T) => void;
 }
 
-interface RangeNumberProps extends ShareInputProps<[number, number]>, NStrategyFilter.IRangeNumber {}
+interface RangeNumberProps extends ShareInputProps<[number | null, number | null]>, NStrategyFilter.IRangeNumber {}
 
-interface SingleNumberProps extends ShareInputProps<number>, NStrategyFilter.ISingleNumber {}
+interface SingleNumberProps extends ShareInputProps<number | null>, NStrategyFilter.ISingleNumber {}
 
-interface ArrayStringProps extends ShareInputProps<string[]>, NStrategyFilter.IArrayString {}
+interface ArrayStringProps extends ShareInputProps<Array<string | null>>, NStrategyFilter.IArrayString {}
 
-interface SingleStringProps extends ShareInputProps<string>, NStrategyFilter.ISingleString {}
+interface SingleStringProps extends ShareInputProps<string | null>, NStrategyFilter.ISingleString {}
 
-interface RangeDateProps extends ShareInputProps<[Date, Date]>, NStrategyFilter.IRangeDate {}
+interface RangeDateProps extends ShareInputProps<[Date | null, Date | null]>, NStrategyFilter.IRangeDate {}
 
-interface SingleDateProps extends ShareInputProps<Date>, NStrategyFilter.ISingleDate {}
+interface SingleDateProps extends ShareInputProps<Date | null>, NStrategyFilter.ISingleDate {}
 
 interface FilterProps {
 	title: string;
 	titleHint?: string;
 	children?: React.ReactNode;
+	className?: string;
 }
 
 interface StrategyFiltersProps extends NStrategyFilter.IFilters {}
 
 const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
-	({ initialFilters, filters, suppressBaseSymbol = false, onSubmit, ...props }, ref) => {
+	({ filters, suppressBaseSymbol = false, baseSymbols, onSubmit, ...props }, ref) => {
 		const t = useTranslations('strategy_filters');
 
-		const { inputs, setFieldValue, setInputs } = useInputs<TInput>({});
+		const [loading, setLoading] = useState(true);
+
+		const { inputs, setFieldValue, setInputs } = useInputs<TInput>({
+			baseSymbols: [],
+		});
 
 		const dispatch = useAppDispatch();
 
@@ -51,7 +68,23 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 			e.preventDefault();
 
 			try {
-				onSubmit();
+				const changedFilters: TFilterValue = {};
+				const keys = Object.keys(inputs);
+
+				for (let i = 0; i < keys.length; i++) {
+					const key = keys[i];
+					const values = inputs[key];
+
+					if (Array.isArray(values)) {
+						if (values.length === 2) {
+							if (values.filter((v) => v !== null).length !== 0) changedFilters[key] = [...values];
+						} else if (values.length > 0) changedFilters[key] = [...values];
+					} else if (values !== null) {
+						changedFilters[key] = values;
+					}
+				}
+
+				onSubmit(changedFilters);
 			} catch (e) {
 				//
 			} finally {
@@ -65,7 +98,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 					<ArrayString
 						{...item}
 						value={inputs[item.id] as string[]}
-						onChange={(n, v) => setFieldValue(n, v)}
+						onChange={(v) => setFieldValue(item.id, v)}
 					/>
 				);
 			}
@@ -76,7 +109,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 						<SingleDate
 							{...item}
 							value={inputs[item.id] as Date}
-							onChange={(n, v) => setFieldValue(n, v)}
+							onChange={(v) => setFieldValue(item.id, v)}
 						/>
 					);
 				}
@@ -86,7 +119,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 						<SingleString
 							{...item}
 							value={inputs[item.id] as string}
-							onChange={(n, v) => setFieldValue(n, v)}
+							onChange={(v) => setFieldValue(item.id, v)}
 						/>
 					);
 				}
@@ -95,7 +128,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 					<SingleNumber
 						{...item}
 						value={inputs[item.id] as number}
-						onChange={(n, v) => setFieldValue(n, v)}
+						onChange={(v) => setFieldValue(item.id, v)}
 					/>
 				);
 			}
@@ -106,7 +139,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 						<RangeDate
 							{...item}
 							value={inputs[item.id] as [Date, Date]}
-							onChange={(n, v) => setFieldValue(n, v)}
+							onChange={(v) => setFieldValue(item.id, v)}
 						/>
 					);
 				}
@@ -115,7 +148,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 					<RangeNumber
 						{...item}
 						value={inputs[item.id] as [number, number]}
-						onChange={(n, v) => setFieldValue(n, v)}
+						onChange={(v) => setFieldValue(item.id, v)}
 					/>
 				);
 			}
@@ -124,7 +157,11 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 		};
 
 		useEffect(() => {
-			const values: TInput = {};
+			const values: TInput = {
+				baseSymbols: [],
+			};
+
+			values.baseSymbols = baseSymbols ?? [];
 
 			for (let i = 0; i < filters.length; i++) {
 				const item = filters[i];
@@ -132,6 +169,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 			}
 
 			setInputs(values);
+			setLoading(false);
 		}, []);
 
 		return (
@@ -147,13 +185,27 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 
 					<form onSubmit={submit} className='gap-24 bg-white p-24 flex-column'>
 						<ul className='gap-32 flex-column'>
-							{filters.map((item) => (
-								<li key={item.id}>
-									<Filter title={item.title} titleHint={item.titleHint}>
-										{renderFilterChildren(item)}
-									</Filter>
-								</li>
-							))}
+							{!loading && (
+								<>
+									<li>
+										<BaseSymbolAdvanceSearch
+											values={inputs.baseSymbols}
+											onChange={(values) => setFieldValue('baseSymbols', values)}
+										/>
+									</li>
+
+									{filters.map((item) => (
+										<Filter
+											key={item.id}
+											title={item.title}
+											titleHint={item.titleHint}
+											className={item.mode === 'array' ? 'h-40' : 'h-48'}
+										>
+											<ErrorBoundary>{renderFilterChildren(item)}</ErrorBoundary>
+										</Filter>
+									))}
+								</>
+							)}
 						</ul>
 
 						<div className='flex-justify-end'>
@@ -168,8 +220,8 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 	},
 );
 
-const Filter = ({ title, titleHint, children }: FilterProps) => (
-	<li className='h-40 flex-justify-between'>
+const Filter = ({ title, titleHint, children, className }: FilterProps) => (
+	<li className={clsx('flex-justify-between', className)}>
 		<div className='gap-8 flex-justify-start'>
 			<h3 className='text-gray-900'>{title}:</h3>
 			{titleHint && (
@@ -181,22 +233,97 @@ const Filter = ({ title, titleHint, children }: FilterProps) => (
 			)}
 		</div>
 
-		<div style={{ flex: '0 0 32.8rem' }} className='flex h-40 gap-8'>
+		<div style={{ flex: '0 0 32.8rem' }} className='flex h-full gap-8'>
 			{children}
 		</div>
 	</li>
 );
 
-const RangeNumber = (props: RangeNumberProps) => {
-	return <></>;
+const RangeNumber = ({ value, label, placeholder, type, onChange, initialValue, ...item }: RangeNumberProps) => {
+	return (
+		<>
+			<InputLegend
+				{...item}
+				value={value[0] === null ? '' : value[0]}
+				onChange={(v) => {
+					const valueAsNumber = convertStringToInteger(v);
+					onChange([valueAsNumber === '' ? null : Number(valueAsNumber), value[1]]);
+				}}
+				placeholder={label ? label[0] : undefined}
+				inputPlaceholder={placeholder ? placeholder[0] : undefined}
+				className='size-full bg-transparent px-8 text-center ltr placeholder:text-center'
+				prefix={type === 'percent' ? <PercentPrefix /> : undefined}
+				autoTranslateLegend
+			/>
+
+			<InputLegend
+				{...item}
+				value={value[1] === null ? '' : value[1]}
+				onChange={(v) => {
+					const valueAsNumber = convertStringToInteger(v);
+					onChange([value[0], valueAsNumber === '' ? null : Number(valueAsNumber)]);
+				}}
+				placeholder={label ? label[1] : undefined}
+				inputPlaceholder={placeholder ? placeholder[1] : undefined}
+				className='size-full bg-transparent px-8 text-center ltr placeholder:text-center'
+				prefix={type === 'percent' ? <PercentPrefix /> : undefined}
+				autoTranslateLegend
+			/>
+		</>
+	);
 };
 
-const SingleNumber = (props: SingleNumberProps) => {
-	return <div />;
+const SingleNumber = ({ value, placeholder, label, type, initialValue, onChange }: SingleNumberProps) => {
+	return (
+		<InputLegend
+			value={value === null ? '' : value}
+			onChange={(v) => {
+				const valueAsNumber = convertStringToInteger(v);
+				onChange(valueAsNumber === '' ? null : Number(valueAsNumber));
+			}}
+			placeholder={label}
+			inputPlaceholder={placeholder}
+			maxLength={16}
+			className='size-full bg-transparent px-8 text-left ltr placeholder:text-right'
+			autoTranslateLegend
+			prefix={type === 'percent' ? <PercentPrefix /> : undefined}
+		/>
+	);
 };
 
-const ArrayString = (props: ArrayStringProps) => {
-	return <div />;
+const ArrayString = ({ value, data, initialValue, onChange }: ArrayStringProps) => {
+	const isExists = (v: string) => {
+		return value.includes(v);
+	};
+
+	const onClick = (v: string, exists: boolean) => {
+		onChange(exists ? value.filter((item) => item !== v) : [...value, v]);
+	};
+
+	return data.map((item) => {
+		const exists = isExists(item.value);
+
+		return (
+			<button
+				onClick={() => onClick(item.value, exists)}
+				key={item.value}
+				type='button'
+				className={clsx(
+					'flex-1 gap-8 rounded !border font-medium',
+					!item?.className
+						? exists
+							? 'btn-primary'
+							: 'btn-primary-outline'
+						: exists
+							? item.className.enable
+							: item.className.disabled,
+				)}
+			>
+				{item?.icon}
+				{item.title}
+			</button>
+		);
+	});
 };
 
 const SingleString = (props: SingleStringProps) => {
@@ -210,5 +337,11 @@ const RangeDate = (props: RangeDateProps) => {
 const SingleDate = (props: SingleDateProps) => {
 	return <div />;
 };
+
+export const PercentPrefix = () => (
+	<span className='h-24 w-36 text-tiny text-gray-700 flex-justify-center'>
+		<PercentSVG width='1.2rem' height='1.2rem' className='text-gray-700' />
+	</span>
+);
 
 export default StrategyFilters;

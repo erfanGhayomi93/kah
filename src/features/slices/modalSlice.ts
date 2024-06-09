@@ -111,9 +111,6 @@ const initialState: ModalState = {
 	// ساخت استراتژی
 	createStrategy: null,
 
-	// فیلتر کاورد کال
-	coveredCallFilters: null,
-
 	// تایید توافق‌نامه
 	acceptAgreement: null,
 
@@ -348,10 +345,6 @@ const modalSlice = createSlice({
 			state.createStrategy = payload;
 		},
 
-		setCoveredCallFiltersModal: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
-			state.coveredCallFilters = payload;
-		},
-
 		setManageColumnsModal: (state, { payload }: PayloadAction<ModalState['manageColumns']>) => {
 			state.manageColumns = payload;
 		},
@@ -463,7 +456,6 @@ export const {
 	setOrdersReportsFiltersModal,
 	setTradesReportsFiltersModal,
 	setCreateStrategyModal,
-	setCoveredCallFiltersModal,
 	setAcceptAgreementModal,
 	setManageColumnsModal,
 	setMarketStateModal,
