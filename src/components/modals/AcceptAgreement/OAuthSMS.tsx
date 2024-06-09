@@ -21,7 +21,7 @@ interface TMutationVariables {
 }
 
 interface OAuthSMSProps extends Settings.IAgreements {
-	sendRequest: UseMutateFunction<unknown, AxiosError, TMutationVariables, unknown>;
+	sendRequest: UseMutateFunction<unknown, AxiosError, TMutationVariables>;
 }
 
 const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
