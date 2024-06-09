@@ -3,24 +3,24 @@ import Tooltip from '@/components/common/Tooltip';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { type Dispatch, type SetStateAction, useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface OrdersReportsTableProps {
 	reports: Reports.IOrdersReports[] | null;
 	columnsVisibility: OrdersReports.IOrdersReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<OrdersReports.IOrdersReportsColumnsState[]>>;
 }
 
-const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }: OrdersReportsTableProps) => {
+const OrdersReportsTable = ({ reports, columnsVisibility }: OrdersReportsTableProps) => {
 	const t = useTranslations();
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.IOrdersReports>>>(
 		() => [
 			/* ردیف */
 			{
-				colId: 'id',
+				colId: 'orderId',
 				headerName: t('orders_reports_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderId')]?.hidden,
 			},
 			/* نماد */
 			{
@@ -28,6 +28,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 				headerName: t('orders_reports_page.symbol_column'),
 				cellClass: 'text-right',
 				valueGetter: (row) => row.symbolTitle,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'symbolTitle')]?.hidden,
 			},
 			/* سمت */
 			{
@@ -41,6 +42,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 					});
 				},
 				valueGetter: (row) => t('orders_reports_page.side_' + row.orderSide),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderSide')]?.hidden,
 			},
 			/* تاریخ */
 			{
@@ -48,24 +50,29 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 				headerName: t('orders_reports_page.date_column'),
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row.orderDateTime ?? '-', 'datetime'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderDateTime')]
+					?.hidden,
 			},
 			/* حجم کل */
 			{
 				colId: 'quantity',
 				headerName: t('orders_reports_page.overall_volume_column'),
 				valueGetter: (row) => sepNumbers(String(row.quantity)),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'quantity')]?.hidden,
 			},
 			/* قیمت */
 			{
 				colId: 'price',
 				headerName: t('orders_reports_page.price_column'),
 				valueGetter: (row) => sepNumbers(String(row.price)),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'price')]?.hidden,
 			},
 			/* حجم انجام شده */
 			{
 				colId: 'sumExecuted',
 				headerName: t('orders_reports_page.done_volume_column'),
 				valueGetter: (row) => sepNumbers(String(row.sumExecuted)),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'sumExecuted')]?.hidden,
 			},
 			/* وضعیت سفارش */
 			{
@@ -91,6 +98,8 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 						</Tooltip>
 					);
 				},
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'lastErrorCode')]
+					?.hidden,
 			},
 			/* اعتبار */
 			{
@@ -103,9 +112,10 @@ const OrdersReportsTable = ({ reports, columnsVisibility, setColumnsVisibility }
 					if (validity === 'GoodTillDate') return dateFormatter(validityDate ?? '', 'date');
 					return t('validity_date.' + validity);
 				},
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'validity')]?.hidden,
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
 
 	return (

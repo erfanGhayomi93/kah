@@ -6,8 +6,7 @@ import Main from '@/components/layout/Main';
 import { defaultChangeBrokerReportsColumns, initialChangeBrokerReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setChangeBrokerReportsFiltersModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setChangeBrokerReportsFiltersModal, setManageColumnsModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
@@ -106,11 +105,11 @@ const ChangeBrokerReports = () => {
 
 	const onManageColumns = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: defaultChangeBrokerReportsColumns,
 				columns: columnsVisibility,
-				title: t('transactions_reports_page.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				title: t('change_broker_reports_page.manage_columns'),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultChangeBrokerReportsColumns),
 			}),
 		);

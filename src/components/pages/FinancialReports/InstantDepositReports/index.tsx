@@ -6,8 +6,7 @@ import Main from '@/components/layout/Main';
 import { defaultInstantDepositReportsColumn, initialInstantDepositReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setInstantDepositReportsFiltersModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setInstantDepositReportsFiltersModal, setManageColumnsModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
@@ -115,11 +114,11 @@ const InstantDepositReports = () => {
 
 	const onManageColumns = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: defaultInstantDepositReportsColumn,
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultInstantDepositReportsColumn),
 			}),
 		);
@@ -150,7 +149,6 @@ const InstantDepositReports = () => {
 					filters={inputs}
 					setFilters={setFieldValue}
 					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
 					setFieldsValue={setFieldsValue}
 				/>
 			</div>

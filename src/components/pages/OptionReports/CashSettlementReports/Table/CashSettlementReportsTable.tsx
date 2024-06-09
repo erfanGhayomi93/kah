@@ -5,10 +5,9 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setOptionSettlementModal } from '@/features/slices/modalSlice';
 import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { type GridApi } from '@ag-grid-community/core';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { toast } from 'react-toastify';
 import CashSettlementReportsTableActionCell from './CashSettlementReportsTableActionCell';
 
@@ -23,8 +22,6 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 	const queryClient = useBrokerQueryClient();
 
 	const dispatch = useAppDispatch();
-
-	const gridRef = useRef<GridApi<Reports.ICashSettlementReports>>(null);
 
 	const url = useAppSelector(getBrokerURLs);
 
@@ -67,6 +64,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				colId: 'symbolTitle',
 				headerName: t('cash_settlement_reports_page.symbol_column'),
 				valueGetter: (row) => row.symbolTitle ?? '',
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'symbolTitle')]?.hidden,
 			},
 			/* سمت */
 			{
@@ -78,6 +76,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 						'text-success-200': row.side === 'Buy',
 						'text-error-200': row.side === 'Sell',
 					}),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'side')]?.hidden,
 			},
 			/* تعداد موقعیت باز */
 			{
@@ -85,12 +84,16 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				headerName: t('cash_settlement_reports_page.open_position_count_column'),
 				cellClass: 'ltr',
 				valueGetter: (row) => (row.openPositionCount >= 0 ? sepNumbers(String(row.openPositionCount)) : ''),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'openPositionCount')]
+					?.hidden,
 			},
 			/* تاریخ تسویه نقدی */
 			{
 				colId: 'cashSettlementDate',
 				headerName: t('cash_settlement_reports_page.cash_date_column'),
 				valueGetter: (row) => (row.cashSettlementDate ? dateFormatter(row.cashSettlementDate, 'date') : '-'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'cashSettlementDate')]
+					?.hidden,
 			},
 			/* وضعیت قرارداد (سود یا زیان)  */
 			{
@@ -103,6 +106,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 					}),
 				valueGetter: (row) =>
 					row.pandLStatus ? t('cash_settlement_reports_page.type_contract_status_' + row.pandLStatus) : '',
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'pandLStatus')]?.hidden,
 			},
 			/* نوع اعمال */
 			{
@@ -112,6 +116,9 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 					row.settlementRequestType
 						? t('cash_settlement_reports_page.type_request_settlement_' + row.settlementRequestType)
 						: '-',
+				hidden: columnsVisibility[
+					columnsVisibility.findIndex((column) => column.id === 'settlementRequestType')
+				]?.hidden,
 			},
 			/* مبلغ تسویه */
 			{
@@ -123,6 +130,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 							? numFormatter(row.incomeValue, false)
 							: sepNumbers(String(row.incomeValue))
 						: '',
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'incomeValue')]?.hidden,
 			},
 			/* تعداد درخواست برای تسویه */
 			{
@@ -130,6 +138,8 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				headerName: t('cash_settlement_reports_page.request_for_settlement_column'),
 				cellClass: 'ltr',
 				valueGetter: (row) => (row.requestCount >= 0 ? sepNumbers(String(row.requestCount)) : ''),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestCount')]
+					?.hidden,
 			},
 			/* تعداد پذیرفته شده */
 			{
@@ -137,6 +147,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				headerName: t('cash_settlement_reports_page.done_count_column'),
 				cellClass: 'ltr',
 				valueGetter: (value) => (value.doneCount >= 0 ? sepNumbers(String(value.doneCount)) : ''),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'doneCount')]?.hidden,
 			},
 			/* درخواست کننده */
 			{
@@ -147,6 +158,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 					if (row.userType === 'Backoffice') return t('common.broker');
 					return row?.userName ?? '-';
 				},
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'userType')]?.hidden,
 			},
 			/* وضعیت */
 			{
@@ -154,6 +166,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				headerName: t('cash_settlement_reports_page.status_column'),
 				cellClass: 'text-right',
 				valueGetter: (row) => (row.status ? t('cash_settlement_reports_page.type_status_' + row.status) : ''),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'status')]?.hidden,
 			},
 			/* عملیات */
 			{
@@ -163,24 +176,11 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				valueFormatter: ({ row }) => (
 					<CashSettlementReportsTableActionCell data={row} onDeleteRow={onDeleteRow} onRequest={onRequest} />
 				),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'action')]?.hidden,
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
-
-	useEffect(() => {
-		const eGrid = gridRef.current;
-		if (!eGrid || !Array.isArray(columnsVisibility)) return;
-
-		try {
-			for (let i = 0; i < columnsVisibility.length; i++) {
-				const { hidden, id } = columnsVisibility[i];
-				eGrid.setColumnsVisible([id], !hidden);
-			}
-		} catch (e) {
-			//
-		}
-	}, [columnsVisibility]);
 
 	return (
 		<>
