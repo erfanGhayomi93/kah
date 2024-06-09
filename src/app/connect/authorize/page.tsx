@@ -1,14 +1,17 @@
 import Authorize from '@/components/pages/Authorize';
 import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return <Authorize />;
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return getMetadata({
-		title: 'احراز هویت کارگزاری',
+		title: t('authorize'),
 		robots: {
 			follow: false,
 			index: false,

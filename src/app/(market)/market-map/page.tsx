@@ -2,6 +2,7 @@ import Main from '@/components/layout/Main';
 import MarketMap from '@/components/pages/MarketMap';
 import { getMetadata } from '@/metadata';
 import { type NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return (
@@ -11,9 +12,11 @@ const Page: NextPage<INextProps> = () => {
 	);
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return getMetadata({
-		title: 'نقشه بازار - کهکشان',
+		title: t('market_map'),
 	});
 };
 

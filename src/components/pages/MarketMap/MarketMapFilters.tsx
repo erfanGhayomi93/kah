@@ -153,7 +153,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 						{ListOfMarkets.map(({ id, label }) => (
 							<li key={id}>
 								<button
-									style={{ width: '11.2rem' }}
+									style={{ width: '12rem' }}
 									type='button'
 									className={clsx(
 										'h-40  rounded !border transition-colors',
@@ -168,7 +168,13 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 						))}
 					</ul>
 
-					<div style={{ minWidth: '0.1rem', minHeight: '3rem' }} className='mx-8 bg-gray-400' />
+					<div
+						style={{
+							minWidth: '16px',
+							minHeight: '1px',
+						}}
+						className='rotate-90 bg-gray-500'
+					/>
 
 					<Select
 						onChange={(option) => setFieldValue('property', option)}
@@ -177,7 +183,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 						getOptionTitle={(option) => <span>{t(option.label)}</span>}
 						placeholder={t('market_map.market_based_on')}
 						defaultValue={filters.property}
-						classes={{ root: 'max-h-40  min-w-96' }}
+						classes={{ root: 'max-h-40  min-w-[12rem]' }}
 					/>
 				</div>
 
