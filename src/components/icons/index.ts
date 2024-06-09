@@ -110,6 +110,7 @@ import ShieldOutlineSVG from './shield-outline.svg';
 import ShieldXSVG from './shield-x.svg';
 import SnowFlakeSVG from './snow-flake.svg';
 import SquareXSVG from './square-x.svg';
+import StraightLineSVG from './straight-line.svg';
 import StrategySVG from './strategy.svg';
 import SunSVG from './sun.svg';
 import TeachVideoSVG from './teach-video.svg';
@@ -239,6 +240,7 @@ export {
 	ShieldXSVG,
 	SnowFlakeSVG,
 	SquareXSVG,
+	StraightLineSVG,
 	StrategySVG,
 	SunSVG,
 	TeachVideoSVG,

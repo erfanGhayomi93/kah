@@ -4,34 +4,23 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
 import { useTranslations } from 'next-intl';
-import { type SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 export const LiveDepositTab = () => {
 	const t = useTranslations();
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		resetField,
-		setValue,
-		getValues,
-	} =
-		useForm<{ value: string }>({
-			defaultValues: {
-				value: ''
-			},
-			mode: 'onChange',
-		});
-
+	const { control, handleSubmit, resetField, getValues } = useForm<{ value: string }>({
+		defaultValues: {
+			value: '',
+		},
+		mode: 'onChange',
+	});
 
 	const url = useSelector(getBrokerURLs);
 
-	const onSubmitForm: SubmitHandler<{ value: string }> = async ({
-		value
-	}) => {
+	const onSubmitForm: SubmitHandler<{ value: string }> = async ({ value }) => {
 		if (!url) return;
 
 		const { data } = await brokerAxios.post<ServerResponse<Payment.IDepositResponse>>(
@@ -52,38 +41,36 @@ export const LiveDepositTab = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmitForm)} className='h-full flex'>
+		<form onSubmit={handleSubmit(onSubmitForm)} className='flex h-full'>
 			<div className='mt-24 flex flex-1 flex-col justify-between'>
-				<Input
-					{...register('value', {
-						required: {
-							value: true,
-							message: t('deposit_modal.placeholderDepositInput')
-						},
-						// value: sepNumbers(String(getValues('value'))),
-						// setValueAs(value) {
-						// 	convertStringToInteger(value);
-						// },
-					})}
-					value={sepNumbers(String(getValues('value')))}
-					onChange={(e) => setValue('value', convertStringToInteger(e.target.value), { shouldValidate: true })}
-					type='text'
-					prefix={t('common.rial')}
-					placeholder={t('deposit_modal.placeholderDepositInput')}
-					classInput='placeholder:text-right'
-					inputMode='numeric'
-					maxLength={25}
-					num2persianValue={num2persian(String(getValues('value')))}
-					error={errors.value?.message}
+				<Controller
+					name='value'
+					defaultValue=''
+					control={control}
+					rules={{
+						required: { value: true, message: t('deposit_modal.placeholderDepositInput') },
+						validate: (value) => +value >= 1000 || t('deposit_modal.minimum_value_error'),
+					}}
+					render={({ field, fieldState: { invalid, isTouched, error } }) => (
+						<Input
+							type='text'
+							prefix={t('common.rial')}
+							placeholder={t('deposit_modal.placeholderDepositInput')}
+							classInput='placeholder:text-right'
+							inputMode='numeric'
+							maxLength={25}
+							num2persianValue={num2persian(String(field.value))}
+							error={invalid && isTouched ? error?.message : ''}
+							{...field}
+							value={sepNumbers(String(getValues('value')))}
+							onChange={(e) => field.onChange(convertStringToInteger(e.target.value))}
+						/>
+					)}
 				/>
 
-				<button className='h-48 w-full rounded btn-success'
-					type='submit'
-				// onClick={handleClickDeposit}
-				>
+				<button className='h-48 w-full rounded btn-success' type='submit'>
 					{t('deposit_modal.submitDeposit')}
 				</button>
-
 			</div>
 		</form>
 	);

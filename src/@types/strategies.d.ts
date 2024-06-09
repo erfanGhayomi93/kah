@@ -380,7 +380,7 @@ namespace CreateStrategy {
 }
 
 interface ICoveredCallFiltersModalStates {
-	symbols: Option.BaseSearch[];
+	baseSymbols: Option.BaseSearch[];
 	iotm: Option.IOTM[];
 	dueDays: [null | number, null | number];
 	bepDifference: [null | number, null | number];
@@ -388,4 +388,12 @@ interface ICoveredCallFiltersModalStates {
 	maxProfit: null | number;
 	nonExpiredProfit: null | number;
 	ytm: null | number;
+}
+
+interface ILongStraddleFiltersModalStates {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	callOpenPosition: number;
+	putOpenPosition: number;
 }

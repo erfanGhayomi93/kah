@@ -1,6 +1,7 @@
 import { useLongStraddleStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsLongStraddle, initialHiddenColumnsLongStraddle } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import {
@@ -50,15 +51,22 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		pageNumber: 1,
 	});
 
+	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ILongStraddleFiltersModalStates>>({});
+
 	const { data, isFetching } = useLongStraddleStrategyQuery({
 		queryKey: [
 			'longStraddleQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+			{ ...filters },
 		],
 	});
 
 	const onSymbolTitleClicked = (symbolISIN: string) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
+	const onFiltersChanged = (newFilters: Partial<ILongStraddleFiltersModalStates>) => {
+		setFilters(newFilters);
 	};
 
 	const analyze = (data: Strategy.LongStraddle) => {
@@ -154,25 +162,9 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		try {
 			dispatch(
 				setStrategyFiltersModal({
-					initialFilters: {},
+					baseSymbols: filters?.baseSymbols ?? [],
+					onSubmit: onFiltersChanged,
 					filters: [
-						{
-							id: 'side',
-							title: t('strategy_filters.side'),
-							mode: 'array',
-							type: 'string',
-							data: [
-								{
-									value: 'buy',
-									title: t('side.buy'),
-								},
-								{
-									value: 'sell',
-									title: t('side.sell'),
-								},
-							],
-							initialValue: [],
-						},
 						{
 							id: 'iotm',
 							title: t('strategy_filters.iotm'),
@@ -181,7 +173,8 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 							data: [
 								{
 									value: 'atm',
-									title: t('side.atm'),
+									title: t('strategy_filters.atm'),
+									icon: <StraightLineSVG />,
 									className: {
 										enable: 'btn-secondary',
 										disabled: 'btn-secondary-outline',
@@ -189,7 +182,8 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 								},
 								{
 									value: 'otm',
-									title: t('side.otm'),
+									title: t('strategy_filters.otm'),
+									icon: <ChartDownSVG />,
 									className: {
 										enable: 'btn-error',
 										disabled: 'btn-error-outline',
@@ -197,38 +191,42 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 								},
 								{
 									value: 'itm',
-									title: t('side.itm'),
+									title: t('strategy_filters.itm'),
+									icon: <ChartUpSVG />,
 									className: {
 										enable: 'btn-success',
 										disabled: 'btn-success-outline',
 									},
 								},
 							],
-							initialValue: [],
+							initialValue: filters.iotm ?? [],
 						},
 						{
 							id: 'dueDays',
 							title: t('strategy_filters.due_days'),
 							mode: 'range',
 							type: 'integer',
-							initialValue: [0, 0],
+							label: [t('strategy_filters.from'), t('strategy_filters.to')],
+							placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+							initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
 						},
 						{
 							id: 'callOpenPositions',
 							title: t('strategy_filters.call_open_positions'),
-							mode: 'range',
+							mode: 'single',
 							type: 'integer',
-							initialValue: [0, 0],
+							label: t('strategy_filters.from'),
+							initialValue: filters.callOpenPosition ?? null,
 						},
 						{
 							id: 'putOpenPositions',
 							title: t('strategy_filters.put_open_positions'),
-							mode: 'range',
+							mode: 'single',
 							type: 'integer',
-							initialValue: [0, 0],
+							label: t('strategy_filters.from'),
+							initialValue: filters.putOpenPosition ?? null,
 						},
 					],
-					onSubmit: console.log,
 				}),
 			);
 		} catch (e) {
@@ -554,6 +552,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				<Filters
 					type={type}
 					title={title}
+					filtersCount={Object.keys(filters).length}
 					useCommission={useCommission}
 					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
