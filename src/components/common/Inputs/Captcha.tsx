@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 
 interface CaptchaProps extends React.InputHTMLAttributes<HTMLInputElement> {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	control: Control<any>;
 }
 
