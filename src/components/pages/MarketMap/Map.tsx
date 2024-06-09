@@ -517,8 +517,6 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 		try {
 			const sectorList = (queryClient.getQueryData(['marketMapQuery']) || []) as MarketMap.SectorAPI[];
 
-			console.log(sectorList, 'sectorList');
-
 			const { data } = node;
 			if (!('sc' in data)) return;
 

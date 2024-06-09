@@ -326,3 +326,75 @@ export const useOptionOpenPositionQuery = createQuery<
 		}
 	},
 });
+
+export const useOpenPositionChartDataQuery = createQuery<
+	Option.OpenPositionChart[],
+	['openPositionChartDataQuery', string, 'Today' | 'Weekly' | 'Monthly' | 'Yearly']
+>({
+	staleTime: 18e5,
+	queryKey: ['openPositionChartDataQuery', '', 'Today'],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, SymbolISIN, Duration] = queryKey;
+
+		const response = await axios.get<ServerResponse<Option.OpenPositionChart[]>>(
+			routes.option.OptionOpenPositionHistory,
+			{
+				params: { SymbolISIN, Duration },
+				signal,
+			},
+		);
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useBaseOpenPositionChartDataQuery = createQuery<
+	Option.BaseOpenPositionChart[],
+	['baseOpenPositionChartDataQuery', string, 'Today' | 'Weekly' | 'Monthly' | 'Yearly']
+>({
+	staleTime: 18e5,
+	queryKey: ['baseOpenPositionChartDataQuery', '', 'Today'],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, SymbolISIN, Duration] = queryKey;
+
+		const response = await axios.get<ServerResponse<Option.BaseOpenPositionChart[]>>(
+			routes.option.BaseOpenPositionHistory,
+			{
+				params: { SymbolISIN, Duration },
+				signal,
+			},
+		);
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useNotionalValueChartDataQuery = createQuery<
+	Option.NotionalValueChart[],
+	['notionalValueChartDataQuery', string, 'Today' | 'Weekly' | 'Monthly' | 'Yearly']
+>({
+	staleTime: 18e5,
+	queryKey: ['notionalValueChartDataQuery', '', 'Today'],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, SymbolISIN, Duration] = queryKey;
+
+		const response = await axios.get<ServerResponse<Option.NotionalValueChart[]>>(
+			routes.option.NotionalValueHistory,
+			{
+				params: { SymbolISIN, Duration },
+				signal,
+			},
+		);
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});

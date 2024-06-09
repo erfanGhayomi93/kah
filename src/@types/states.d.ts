@@ -445,9 +445,12 @@ declare namespace OrderBasket {
 	export type Order = TSymbolStrategy;
 }
 
+declare type TSymbolChartTabStates = 'symbol_chart' | 'open_positions' | 'notional_value_tab';
+
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';
 	type: 'area' | 'candlestick';
+	tab: TSymbolChartTabStates;
 }
 
 declare type TFinancialReportsTab = 'transaction' | 'deposit_online' | 'deposit_offline' | 'withdrawal_cash';
