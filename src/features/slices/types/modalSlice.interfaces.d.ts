@@ -347,7 +347,7 @@ export namespace NStrategyFilter {
 		initialValue: string | null;
 	}
 
-	// Data
+	// Date
 	export interface IRangeDate extends NStrategyFilter.ShareProps {
 		mode: 'range';
 		type: 'date';

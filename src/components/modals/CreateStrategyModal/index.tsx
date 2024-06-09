@@ -6,6 +6,7 @@ import { forwardRef, useState } from 'react';
 import Modal, { Header } from '../Modal';
 import AddConditionalAlarm from './AddConditionalAlarm';
 import CreateStrategy from './CreateStrategy';
+import BaseSymbolInfo from './CreateStrategy/BaseSymbolInfo';
 import StrategyChartDetails from './StrategyChartDetails';
 
 interface CreateStrategyModalProps extends ICreateStrategyModal {}
@@ -30,7 +31,7 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 				{...props}
 				ref={ref}
 			>
-				<div style={{ width: '60rem' }} className='bg-white flex-column'>
+				<div style={{ width: '102.4rem' }} className='overflow-hidden bg-white flex-column'>
 					<Header
 						label={t('create_strategy.strategy', {
 							strategyName: t(`${strategy}.title`),
@@ -39,12 +40,14 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 						onClose={onCloseModal}
 					/>
 
-					<div className='flex p-24'>
+					<div className='flex gap-24 p-24'>
 						<div className='w-full justify-between gap-16 flex-column'>
 							<CreateStrategy inputs={inputs} setInputs={setInputs} />
 							<StrategyChartDetails />
 							<AddConditionalAlarm />
 						</div>
+
+						<BaseSymbolInfo baseSymbolISIN={baseSymbol.symbolISIN} />
 					</div>
 				</div>
 			</Modal>

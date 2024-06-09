@@ -24,6 +24,7 @@ const Steps = ({ steps }: StepsProps) => {
 								{...item}
 							/>
 						)}
+
 						{item.type === 'freeze' && (
 							<FreezeStep
 								className={clsx(
@@ -33,6 +34,7 @@ const Steps = ({ steps }: StepsProps) => {
 								{...item}
 							/>
 						)}
+
 						{item.type === 'option' && (
 							<OptionStep
 								className={clsx(
