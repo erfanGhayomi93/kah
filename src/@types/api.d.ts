@@ -333,6 +333,21 @@ declare namespace Option {
 		name: string;
 		isHidden: boolean;
 	}
+
+	export interface OpenPositionChart {
+		saveDate: string;
+		openPosition: number;
+	}
+
+	export interface BaseOpenPositionChart {
+		saveDate: string;
+		openPosition: number;
+	}
+
+	export interface NotionalValueChart {
+		intervalDateTime: string;
+		notionalValue: number;
+	}
 }
 
 declare namespace Symbol {
