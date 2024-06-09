@@ -37,8 +37,8 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 	};
 
 	const setLsVersion = (lsVersion: string) => {
-		LocalstorageInstance.set('ls_version', lsVersion);
 		LocalstorageInstance.clear();
+		LocalstorageInstance.set('ls_version', lsVersion);
 	};
 
 	useEffect(() => {
