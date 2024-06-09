@@ -131,6 +131,8 @@ const RecentActivitiesModal = lazy(() => import('./DashboardModals/RecentActivit
 
 const DueDatesModal = lazy(() => import('./DashboardModals/DueDatesModal'));
 
+const StrategyFilters = lazy(() => import('./StrategyFilters'));
+
 const Modals = () => {
 	const dispatch = useAppDispatch();
 
@@ -190,6 +192,7 @@ const Modals = () => {
 		topBaseAssets,
 		recentActivities,
 		dueDates,
+		strategyFilters,
 	} = useAppSelector((state) => state.modal);
 
 	return (
@@ -660,6 +663,14 @@ const Modals = () => {
 				{dueDates && (
 					<ModalSuspense>
 						<DueDatesModal />
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{strategyFilters && (
+					<ModalSuspense>
+						<StrategyFilters {...strategyFilters} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
