@@ -1,13 +1,16 @@
 import ChangeBrokerReports from '@/components/pages/ChangeBrokerReports';
 import { type NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return <ChangeBrokerReports />;
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return {
-		title: 'گزارشات تغییر کارگزار ناظر - کهکشان',
+		title: t('change_broker_reports'),
 	};
 };
 
