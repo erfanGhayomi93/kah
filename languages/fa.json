@@ -759,6 +759,7 @@
 		"liveDepositTab": "واریز آنی",
 		"receiptDepositTab": "واریز با ثبت فیش",
 		"placeholderDepositInput": "مبلغ مورد نظر را وارد کنید",
+		"date_placeholder" : "تاریخ",
 		"submitDeposit": "پرداخت",
 		"time_history": "زمان",
 		"price_history": "مبلغ (ریال)",
@@ -808,7 +809,8 @@
 		"state_Paid": "پرداخت شده",
 		"state_Error": "خطا",
 		"state_PayFast": "پرداخت سریع",
-		"more_reports_deposit": "مشاهده در گزارشات"
+		"more_reports_deposit": "مشاهده در گزارشات",
+		"minimum_value_error": "این مبلغ باید بیشتر از 1000 ریال باشد"
 	},
 	"payment_result": {
 		"payment_success_title": "پرداخت موفق",
