@@ -481,10 +481,10 @@ const config: Config = {
 					color: theme('colors.white'),
 					border: '2px solid transparent',
 					'background-color': theme('colors.secondary.300'),
-					transition: 'background-color 250ms ease-in-out',
+					transition: 'opacity 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.secondary.400'),
+						opacity: '0.8',
 					},
 				},
 
