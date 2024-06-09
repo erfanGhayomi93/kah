@@ -211,6 +211,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 					</div>
 					<div className='w-2/5'>
 						<AdvancedDatepicker
+							fixedPlaceholder={t('deposit_modal.date_placeholder')}
 							value={getValues('date')}
 							onChange={(value) => {
 								setValue('date', value, { shouldValidate: true });
@@ -239,7 +240,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 								تصویر فیش بانکی خود را اینجا رها کنید یا بارگذاری کنید(اختیاری)
 							</p>
 
-							<p className='text-gray-700'>{t('deposit_modal.receipt_upload_size')}</p>
+							<p className='text-gray-700 text-tiny'>{t('deposit_modal.receipt_upload_size')}</p>
 						</div>
 					) : (
 						<div className='relative flex justify-center'>
