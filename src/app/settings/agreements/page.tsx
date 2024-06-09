@@ -1,14 +1,17 @@
 import Agreements from '@/components/pages/Settings/tabs/Agreements';
 import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return <Agreements />;
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return getMetadata({
-		title: 'توافق‌نامه‌ها',
+		title: t('agreement'),
 		robots: {
 			follow: false,
 			index: false,
