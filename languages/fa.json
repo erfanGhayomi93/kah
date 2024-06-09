@@ -1066,6 +1066,8 @@
 		"non_expired_profit": "بازده عدم اعمال",
 		"non_expired_profit_tooltip": "مقدار سود در صورت اعمال به ازای یک قرارداد آپشن",
 		"bep_difference": "اختلاف تا سر به سر",
+		"call_open_positions": "موقعیت باز کال",
+		"put_open_positions": "موقعیت باز پوت",
 		"atm": "ATM",
 		"otm": "OTM",
 		"itm": "ITM",

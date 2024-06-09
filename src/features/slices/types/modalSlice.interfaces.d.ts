@@ -310,13 +310,13 @@ export namespace NStrategyFilter {
 	// Number
 	export interface IRangeNumber {
 		mode: 'range';
-		type: 'percent' | 'number' | 'decimal';
+		type: 'percent' | 'integer' | 'decimal';
 		initialValue: [number, number];
 	}
 
 	export interface ISingleNumber {
 		mode: 'single';
-		type: 'percent' | 'number' | 'decimal';
+		type: 'percent' | 'integer' | 'decimal';
 		initialValue: number;
 	}
 
@@ -324,29 +324,31 @@ export namespace NStrategyFilter {
 	export interface IArrayString {
 		mode: 'array';
 		type: 'string';
+		data: Array<{
+			value: string;
+			title: string;
+			className?: {
+				enable: string;
+				disabled: string;
+			};
+		}>;
 		initialValue: string[];
 	}
 
-	export interface IRangeString {
-		mode: 'range';
-		type: 'string';
-		initialValue: [string, string];
-	}
-
-	export interface ISIngleString {
+	export interface ISingleString {
 		mode: 'single';
 		type: 'string';
 		initialValue: string;
 	}
 
 	// Data
-	export interface IRangeData {
+	export interface IRangeDate {
 		mode: 'range';
 		type: 'date';
 		initialValue: [Date, Date];
 	}
 
-	export interface ISIngleData {
+	export interface ISingleDate {
 		mode: 'single';
 		type: 'date';
 		initialValue: Date;
@@ -356,16 +358,17 @@ export namespace NStrategyFilter {
 		| NStrategyFilter.IRangeNumber
 		| NStrategyFilter.ISingleNumber
 		| NStrategyFilter.IArrayString
-		| NStrategyFilter.IRangeString
-		| NStrategyFilter.ISIngleString
-		| NStrategyFilter.IRangeData
-		| NStrategyFilter.ISIngleData
+		| NStrategyFilter.ISingleString
+		| NStrategyFilter.IRangeDate
+		| NStrategyFilter.ISingleDate
 	) & {
+		id: string;
 		title: string;
 		titleHint?: string;
 	};
 
 	export interface IFilters extends IBaseModalConfiguration {
+		suppressBaseSymbol?: boolean;
 		initialFilters?: unknown;
 		filters: NStrategyFilter.TFilter[];
 		onSubmit: () => void;
