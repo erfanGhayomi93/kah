@@ -62,6 +62,7 @@ const PriceChangesWatchlistChart = () => {
 			<AppChart
 				options={{
 					tooltip: {
+						intersect: false,
 						y: {
 							formatter: (val) => {
 								return `‏${t('home.count')}: ${sepNumbers(String(val ?? 0))}`;
@@ -84,6 +85,7 @@ const PriceChangesWatchlistChart = () => {
 						bar: {
 							columnWidth: '32%',
 							borderRadius: 6,
+
 							colors: {
 								backgroundBarColors: BG_COLORS,
 								backgroundBarRadius: 6,
