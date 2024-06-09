@@ -21,7 +21,9 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 		queryKey: ['withdrawalCashReports', filters],
 	});
 
-	const onFiltersChanged = (newFilters: Omit<WithdrawalCashReports.WithdrawalCashReportsFilters, 'pageNumber' | 'pageSize'>) => {
+	const onFiltersChanged = (
+		newFilters: Omit<WithdrawalCashReports.WithdrawalCashReportsFilters, 'pageNumber' | 'pageSize'>,
+	) => {
 		setFieldsValue(newFilters);
 	};
 
@@ -50,10 +52,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 					transition: 'height 250ms ease',
 				}}
 			>
-				<WithdrawalCashReportsTable
-					columnsVisibility={columnsVisibility}
-					reports={reports}
-				/>
+				<WithdrawalCashReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
 			<div className='py-22 flex-justify-end'>

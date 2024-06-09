@@ -103,7 +103,7 @@ declare interface CashWithdrawBankType {
 	customerBank: string;
 }
 
-type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimit';
+type TPriceBasis = 'LastTradePrice' | 'ClosingPrice' | 'BestLimitPrice';
 
 declare type TLoginModalStates = 'phoneNumber' | 'login-with-otp' | 'welcome' | 'login-with-password' | 'set-password';
 
@@ -124,43 +124,6 @@ declare type TOrdersTab = 'open_orders' | 'today_orders' | 'executed_orders' | '
 declare type TBsValidityDates = 'GoodTillDate' | 'FillAndKill' | 'GoodTillCancelled' | 'Day' | 'Week' | 'Month';
 
 declare type TDojiType = 'Bullish' | 'Bearish' | 'Neutral';
-
-declare type TTransactionColumns =
-	| 'credit'
-	| 'date'
-	| 'debit'
-	| 'description'
-	| 'remaining'
-	| 'station'
-	| 'transactionType';
-
-declare type TInstantDepositColumns =
-	| 'reservationNumber'
-	| 'referenceNumber'
-	| 'saveDate'
-	| 'amount'
-	| 'providerType'
-	| 'state'
-	| 'errorMessage';
-
-declare type TDepositWithReceiptColumns =
-	| 'id'
-	| 'receiptDate'
-	| 'providerType'
-	| 'receiptNumber'
-	| 'amount'
-	| 'state'
-	| 'state';
-
-declare type TWithdrawalCashColumns =
-	| 'id'
-	| 'saveDate'
-	| 'requestDate'
-	| 'customerBank'
-	| 'requestAmount'
-	| 'channel'
-	| 'state'
-	| 'state';
 
 declare type TSymbolInfoPanelSections =
 	| 'option_detail'
@@ -255,7 +218,20 @@ declare type LightstreamStatus =
 
 declare type TSaturnBaseSymbolContracts = (Saturn.ContentOption | null)[];
 
-declare type TManageColumnTag = 'PanelDetail' | 'Computational' | 'None';
+declare type TManageColumnTag =
+	| 'PanelDetail'
+	| 'Computational'
+	| 'Transaction'
+	| 'InstantDepositReports'
+	| 'DepositWithReceiptReports'
+	| 'WithdrawalCashReports'
+	| 'ChangeBrokerReports'
+	| 'OrdersReports'
+	| 'TradesReports'
+	| 'FreezeUnFreezeReports'
+	| 'CashSettlementReports'
+	| 'PhysicalSettlementReports'
+	| 'None';
 
 declare interface IManageColumn<T extends string> {
 	id: T;
@@ -658,7 +634,7 @@ declare namespace ChangeBrokerReports {
 		hidden: boolean;
 	}
 
-	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'symbolTitle' | 'lastState';
+	export type TChangeBrokerReportsColumns = 'id' | 'saveDate' | 'gateway' | 'symbolTitle' | 'lastState' | 'action';
 }
 
 declare namespace OrdersReports {
@@ -730,15 +706,17 @@ declare namespace TradesReports {
 	}
 
 	export type TTradesReportsColumns =
-		| 'orderId'
+		| 'id'
 		| 'symbolTitle'
 		| 'orderSide'
-		| 'orderDateTime'
-		| 'orderDateTime'
+		| 'tradeDate'
+		| 'tradeTime'
 		| 'tradedQuantity'
 		| 'tradePrice'
 		| 'totalQuota'
-		| 'total';
+		| 'total'
+		| 'quantity'
+		| 'price';
 }
 
 declare namespace FreezeUnFreezeReports {

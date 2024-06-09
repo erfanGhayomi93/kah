@@ -135,7 +135,7 @@ const OTPForm = ({
 	}, []);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 flex-column'>
+		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 pb-64 flex-column'>
 			<div style={{ marginTop: hasDescription ? '5.6rem' : '12rem' }} className='gap-24 flex-column'>
 				<Controller
 					defaultValue=''
@@ -204,22 +204,14 @@ const OTPForm = ({
 				/>
 			</div>
 
-			<div
-				style={{
-					bottom: '6.4rem',
-					width: 'calc(100% - 17.6rem)',
-				}}
-				className='!absolute flex flex-col gap-8 pt-24'
+			<Button
+				type='submit'
+				loading={isSubmitting}
+				disabled={!isValid}
+				className='h-48 rounded text-lg shadow btn-primary'
 			>
-				<Button
-					type='submit'
-					loading={isSubmitting}
-					disabled={!isValid}
-					className='h-48 rounded text-lg shadow btn-primary'
-				>
-					{t('login_modal.login')}
-				</Button>
-			</div>
+				{t('login_modal.login')}
+			</Button>
 		</form>
 	);
 };

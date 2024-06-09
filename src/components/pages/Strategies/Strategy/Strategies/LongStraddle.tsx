@@ -3,7 +3,12 @@ import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRen
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import { initialColumnsLongStraddle, initialHiddenColumnsLongStraddle } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal, setManageColumnsModal } from '@/features/slices/modalSlice';
+import {
+	setAnalyzeModal,
+	setDescriptionModal,
+	setManageColumnsModal,
+	setStrategyFiltersModal,
+} from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, uuidv4 } from '@/utils/helpers';
@@ -39,7 +44,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 	);
 
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
-		priceBasis: 'BestLimit',
+		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
 		pageNumber: 1,
@@ -143,6 +148,92 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				onReset: () => setColumnsVisibility(initialColumnsLongStraddle),
 			}),
 		);
+	};
+
+	const showFilters = () => {
+		try {
+			dispatch(
+				setStrategyFiltersModal({
+					initialFilters: {},
+					filters: [
+						{
+							id: 'side',
+							title: t('strategy_filters.side'),
+							mode: 'array',
+							type: 'string',
+							data: [
+								{
+									value: 'buy',
+									title: t('side.buy'),
+								},
+								{
+									value: 'sell',
+									title: t('side.sell'),
+								},
+							],
+							initialValue: [],
+						},
+						{
+							id: 'iotm',
+							title: t('strategy_filters.iotm'),
+							mode: 'array',
+							type: 'string',
+							data: [
+								{
+									value: 'atm',
+									title: t('side.atm'),
+									className: {
+										enable: 'btn-secondary',
+										disabled: 'btn-secondary-outline',
+									},
+								},
+								{
+									value: 'otm',
+									title: t('side.otm'),
+									className: {
+										enable: 'btn-error',
+										disabled: 'btn-error-outline',
+									},
+								},
+								{
+									value: 'itm',
+									title: t('side.itm'),
+									className: {
+										enable: 'btn-success',
+										disabled: 'btn-success-outline',
+									},
+								},
+							],
+							initialValue: [],
+						},
+						{
+							id: 'dueDays',
+							title: t('strategy_filters.due_days'),
+							mode: 'range',
+							type: 'integer',
+							initialValue: [0, 0],
+						},
+						{
+							id: 'callOpenPositions',
+							title: t('strategy_filters.call_open_positions'),
+							mode: 'range',
+							type: 'integer',
+							initialValue: [0, 0],
+						},
+						{
+							id: 'putOpenPositions',
+							title: t('strategy_filters.put_open_positions'),
+							mode: 'range',
+							type: 'integer',
+							initialValue: [0, 0],
+						},
+					],
+					onSubmit: console.log,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Strategy.LongStraddle> & { colId: TLongStraddleColumns }>>(
@@ -467,6 +558,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					onManageColumns={showColumnsManagementModal}
 					setFieldValue={setFieldValue}
 					onCommissionChanged={setUseCommission}
+					onShowFilters={showFilters}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
 				/>

@@ -6,8 +6,7 @@ import Main from '@/components/layout/Main';
 import { defaultDepositWithReceiptReportsColumn, initialDepositWithReceiptReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setDepositWithReceiptReportsFiltersModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setDepositWithReceiptReportsFiltersModal, setManageColumnsModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
@@ -114,11 +113,11 @@ const DepositWithReceiptReports = () => {
 
 	const onManageColumns = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: defaultDepositWithReceiptReportsColumn,
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultDepositWithReceiptReportsColumn),
 			}),
 		);

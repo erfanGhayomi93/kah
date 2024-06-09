@@ -6,8 +6,7 @@ import Main from '@/components/layout/Main';
 import { defaultTransactionColumns, initialTransactionsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setManageColumnsModal, setTransactionsFiltersModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
@@ -110,11 +109,11 @@ const Transactions = () => {
 
 	const onManageColumns = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: defaultTransactionColumns,
 				columns: columnsVisibility,
 				title: t('transactions_page.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultTransactionColumns),
 			}),
 		);

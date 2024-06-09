@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setOpenPositionProcessModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -5,8 +9,23 @@ import Section from '../../common/Section';
 
 const OpenPositionsProcessChart = dynamic(() => import('./OpenPositionsProcessChart'));
 
-const OpenPositionsProcess = () => {
+interface IOpenPositionProcessProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getOpenPositionProcess: state.modal.openPositionProcess,
+	}),
+);
+
+const OpenPositionsProcess = ({ isModal = false }: IOpenPositionProcessProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getOpenPositionProcess } = useAppSelector(getStates);
 
 	const [interval, setInterval] = useState<Dashboard.TInterval>('Today');
 
@@ -25,6 +44,9 @@ const OpenPositionsProcess = () => {
 					{ id: 'Year', title: t('home.tab_year') },
 				],
 			}}
+			closeable={!isModal}
+			expandable={!isModal}
+			onExpand={() => dispatch(setOpenPositionProcessModal(getOpenPositionProcess ? null : {}))}
 		>
 			<OpenPositionsProcessChart interval={interval} />
 		</Section>

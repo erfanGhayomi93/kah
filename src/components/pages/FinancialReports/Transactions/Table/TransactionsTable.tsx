@@ -17,18 +17,23 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 			{
 				colId: 'id',
 				headerName: t('transactions_page.id_column'),
-				width: 62,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				maxWidth: 112,
+				minWidth: 112,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			{
 				colId: 'date',
 				headerName: t('transactions_page.date_column'),
-				// width: 96,
+				maxWidth: 144,
+				minWidth: 144,
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row?.date ?? '', 'datetime'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'date')]?.hidden,
 			},
 			{
 				colId: 'transactionType',
+				maxWidth: 128,
 				headerName: t('transactions_page.operator_column'),
 				valueGetter: (row) => t('transactions_page.operator_type_' + row?.transactionType),
 				cellClass: (row) => {
@@ -41,6 +46,8 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 							return 'text-text-100';
 					}
 				},
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'transactionType')]
+					.hidden,
 			},
 			{
 				colId: 'description',
@@ -56,7 +63,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 							}}
 						/>
 					),
-				width: 180,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'description')]?.hidden,
 			},
 			{
 				colId: 'debit',
@@ -65,9 +72,11 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					clsx(' ltr', {
 						'text-error-100': Number(row?.debit) < 0,
 					}),
+				maxWidth: 160,
 				valueGetter: (row) => row.debit,
 				valueFormatter: ({ value }) =>
 					Number(value) >= 0 ? sepNumbers(String(value)) : `(${sepNumbers(String(value))})`,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'debit')]?.hidden,
 			},
 			{
 				colId: 'credit',
@@ -76,8 +85,10 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					clsx('ltr', {
 						'text-error-100': Number(row?.credit) < 0,
 					}),
+				maxWidth: 160,
 				valueGetter: (row) =>
 					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'credit')]?.hidden,
 			},
 			{
 				colId: 'remaining',
@@ -87,15 +98,18 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					Number(row?.remaining) >= 0
 						? sepNumbers(String(row?.remaining))
 						: `(${sepNumbers(String(row?.remaining))})`,
+				maxWidth: 160,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'remaining')]?.hidden,
 			},
 			{
 				colId: 'station',
 				headerName: t('transactions_page.station_column'),
-				width: 62,
+				maxWidth: 160,
 				valueGetter: (row) => row?.station,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'station')]?.hidden,
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
 
 	return (

@@ -6,8 +6,7 @@ import Main from '@/components/layout/Main';
 import { defaultWithdrawalCashReportsColumn, initialWithdrawalCashReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setWithdrawalCashReportsFiltersModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setManageColumnsModal, setWithdrawalCashReportsFiltersModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
@@ -112,11 +111,11 @@ const WithdrawalCashReports = () => {
 
 	const onManageColumns = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
 				initialColumns: defaultWithdrawalCashReportsColumn,
 				columns: columnsVisibility,
 				title: t('withdrawal_cash_reports_page.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultWithdrawalCashReportsColumn),
 			}),
 		);

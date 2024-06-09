@@ -1,16 +1,16 @@
-'use client';
-
 import axios from '@/api/axios';
 import { symbolInfoQueryFn } from '@/api/queries/symbolQuery';
 import routes from '@/api/routes';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setAddSaturnTemplateModal } from '@/features/slices/modalSlice';
 import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/slices/uiSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import Toolbar from './Toolbar';
 
 const SymbolContracts = dynamic(() => import('./SymbolContracts'), {
 	ssr: false,
@@ -105,6 +105,21 @@ const Layout = ({
 		if (saturnActiveTemplate === null && l > 0) e.preventDefault();
 	};
 
+	const saveTemplate = () => {
+		if (!baseSymbolInfo) return;
+
+		const { symbolISIN, symbolTitle } = baseSymbolInfo;
+
+		dispatch(
+			setAddSaturnTemplateModal({
+				baseSymbolISIN: symbolISIN,
+				baseSymbolTitle: symbolTitle,
+				activeTab: baseSymbolActiveTab,
+				options: baseSymbolContracts.filter(Boolean) as Saturn.ContentOption[],
+			}),
+		);
+	};
+
 	useEffect(() => {
 		const c = new AbortController();
 		window.addEventListener('beforeunload', onBeforeUnload, {
@@ -162,7 +177,7 @@ const Layout = ({
 	}, [JSON.stringify(baseSymbolContracts), baseSymbolActiveTab]);
 
 	return (
-		<div className='flex flex-1 gap-8 overflow-hidden pb-8'>
+		<div className='flex flex-1 gap-8 overflow-hidden pb-8 flex-column xl:flex-row'>
 			<div
 				style={{
 					flex: '5',
@@ -176,13 +191,17 @@ const Layout = ({
 				/>
 			</div>
 
-			<div style={{ flex: '7' }} className='relative gap-8 overflow-auto rounded flex-column'>
-				<SymbolContracts
-					baseSymbol={baseSymbolInfo}
-					setBaseSymbol={(value) => onChangeSymbol(value)}
-					baseSymbolContracts={baseSymbolContracts}
-					setBaseSymbolContracts={(value) => onChangeBaseSymbolContracts(value)}
-				/>
+			<div style={{ flex: '7' }} className='gap-8 rounded flex-column'>
+				<Toolbar saveTemplate={saveTemplate} />
+
+				<div className='relative flex-1 gap-8 overflow-auto rounded flex-column'>
+					<SymbolContracts
+						baseSymbol={baseSymbolInfo}
+						setBaseSymbol={(value) => onChangeSymbol(value)}
+						baseSymbolContracts={baseSymbolContracts}
+						setBaseSymbolContracts={(value) => onChangeBaseSymbolContracts(value)}
+					/>
+				</div>
 			</div>
 		</div>
 	);

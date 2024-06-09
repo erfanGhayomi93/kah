@@ -207,7 +207,8 @@
 		"change_phone_number": "تغییر شماره همراه",
 		"register_password_btn": "ثبت کلمه عبور",
 		"user_not_found": "برای شماره موبایل وارد شده حساب کاربری یافت نشد. برای ایجاد حساب، کد تایید را وارد کنید.",
-		"set_password_description": "برای تجربه کاربری بهتر، می توانید رمز عبور تعیین کنید."
+		"set_password_description": "برای تجربه کاربری بهتر، می توانید رمز عبور تعیین کنید.",
+		"login_before_use": "برای دسترسی به این قسمت ابتدا باید وارد حساب کاربری خود شوید."
 	},
 	"logout_modal": {
 		"title": "خروج از حساب کاربری",
@@ -1065,6 +1066,8 @@
 		"non_expired_profit": "بازده عدم اعمال",
 		"non_expired_profit_tooltip": "مقدار سود در صورت اعمال به ازای یک قرارداد آپشن",
 		"bep_difference": "اختلاف تا سر به سر",
+		"call_open_positions": "موقعیت باز کال",
+		"put_open_positions": "موقعیت باز پوت",
 		"atm": "ATM",
 		"otm": "OTM",
 		"itm": "ITM",
@@ -1231,7 +1234,7 @@
 		"symbol_basis": "مشاهده بر اساس",
 		"price_LastTradePrice": "آخرین قیمت",
 		"price_ClosingPrice": "قیمت پایانی",
-		"price_BestLimit": "سرخط هوشمند",
+		"price_BestLimitPrice": "سرخط هوشمند",
 		"symbol_All": "همه",
 		"symbol_BestLimit": "نمادهای دارای سرخط",
 		"execution_steps": "نحوه اجرا",
@@ -1845,6 +1848,16 @@
 	},
 	"manage_column_categories": {
 		"PanelDetail": "جزئیات تابلو",
-		"Computational": "محاسباتی"
+		"Computational": "محاسباتی",
+		"Transaction": "گردش حساب",
+		"InstantDepositReports": "واریز آنی",
+		"DepositWithReceiptReports": "واریز با فیش",
+		"WithdrawalCashReports": "برداشت وجه",
+		"ChangeBrokerReports": "تغییر کارگزار ناظر",
+		"OrdersReports": "سفارشات",
+		"TradesReports": "معاملات",
+		"FreezeUnFreezeReports": "فریز و رفع فریز",
+		"CashSettlementReports": "تسویه نقدی",
+		"PhysicalSettlementReports": "تسویه فیزیکی"
 	}
 }

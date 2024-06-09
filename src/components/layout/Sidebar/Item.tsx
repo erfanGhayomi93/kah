@@ -47,6 +47,7 @@ const getStates = createSelector(
 		brokerURLs: getBrokerURLs(state),
 	}),
 );
+
 const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...props }: ItemProps) => {
 	const pathname = usePathname();
 
@@ -56,7 +57,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 
 	const onAuthorizing = () => {
 		if (!isLoggedIn) {
-			dispatch(setLoginModal({}));
+			dispatch(setLoginModal({ showForceLoginAlert: true }));
 		}
 
 		if (!brokerIsSelected && isLoggedIn) {
@@ -144,4 +145,12 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 	);
 };
 
-export default memo(Item);
+export default memo(
+	Item,
+	(prev, next) =>
+		prev.sidebarIsExpand === next.sidebarIsExpand &&
+		prev.isBroker === next.isBroker &&
+		'isExpand' in prev &&
+		'isExpand' in next &&
+		prev.isExpand === next.isExpand,
+);

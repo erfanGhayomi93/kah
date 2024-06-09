@@ -29,7 +29,14 @@ const AuthorizeMiddleware = forwardRef<HTMLElement, AuthorizeMiddlewareProps>(({
 	const { isLoggedIn, brokerIsSelected, brokerURLs } = useAppSelector(getStates);
 
 	const showUserLoginModal = () => {
-		dispatch(setLoginModal({}));
+		dispatch(
+			setLoginModal({
+				showForceLoginAlert: true,
+				callbackFunction: () => {
+					if (broker) showBrokerLoginModal();
+				},
+			}),
+		);
 	};
 
 	const showBrokerLoginModal = () => {

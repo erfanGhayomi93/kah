@@ -4,7 +4,7 @@ export const defaultSymbolISIN = 'IRO1IKCO0001';
 
 export const broadcastChannel = 'tUFN1pQ1Ry';
 
-export const watchlistPriceBasis: TPriceBasis[] = ['LastTradePrice', 'ClosingPrice', 'BestLimit'];
+export const watchlistPriceBasis: TPriceBasis[] = ['LastTradePrice', 'ClosingPrice', 'BestLimitPrice'];
 
 export const watchlistSymbolBasis: TStrategySymbolBasis[] = ['All', 'BestLimit'];
 
@@ -410,460 +410,550 @@ export const initialTradesReportsFilters: TradesReports.ITradesReportsFilters = 
 	side: 'All',
 };
 
-export const defaultTransactionColumns: Transaction.ITransactionColumnsState[] = [
+export const defaultTransactionColumns: Array<IManageColumn<Transaction.TTransactionColumns>> = [
 	{
 		id: 'id',
 		title: 'ردیف',
 		hidden: false,
+		tag: 'Transaction',
 	},
 	{
 		id: 'date',
 		title: 'زمان',
 		hidden: false,
+		tag: 'Transaction',
 	},
 	{
 		id: 'transactionType',
 		title: 'عملیات',
 		hidden: false,
+		tag: 'Transaction',
 	},
 	{
 		id: 'description',
 		title: 'شرح تراکنش',
 		hidden: false,
+		tag: 'Transaction',
 	},
 	{
 		id: 'debit',
 		title: 'بدهکار',
 		hidden: false,
+		tag: 'Transaction',
 	},
 	{
 		id: 'credit',
 		title: 'بستانکار',
 		hidden: false,
+		tag: 'Transaction',
 	},
 	{
 		id: 'remaining',
 		title: 'مانده',
 		hidden: false,
+		tag: 'Transaction',
 	},
 	{
 		id: 'station',
 		title: 'ایستگاه معاملاتی',
 		hidden: false,
+		tag: 'Transaction',
 	},
 ];
 
-export const defaultInstantDepositReportsColumn: InstantDepositReports.TInstantDepositReportsColumnsState[] = [
+export const defaultInstantDepositReportsColumn: Array<
+	IManageColumn<InstantDepositReports.TInstantDepositReportsColumns>
+> = [
 	{
 		id: 'id',
 		title: 'شماره ردیف',
 		hidden: false,
+		tag: 'InstantDepositReports',
 	},
 	{
 		id: 'saveDate',
 		title: 'زمان',
 		hidden: false,
+		tag: 'InstantDepositReports',
 	},
 	{
 		id: 'providerType',
 		title: 'درگاه',
 		hidden: false,
+		tag: 'InstantDepositReports',
 	},
 	{
 		id: 'reservationNumber',
 		title: 'شماره پیگیری',
 		hidden: false,
+		tag: 'InstantDepositReports',
 	},
 	{
 		id: 'amount',
 		title: 'مقدار',
 		hidden: false,
+		tag: 'InstantDepositReports',
 	},
 	{
 		id: 'state',
 		title: 'وضعیت',
 		hidden: false,
+		tag: 'InstantDepositReports',
 	},
 ];
 
-export const defaultDepositWithReceiptReportsColumn: DepositWithReceiptReports.TDepositWithReceiptReportsColumnsState[] =
-	[
-		{
-			id: 'id',
-			title: 'ردیف',
-			hidden: false,
-		},
-		{
-			id: 'receiptDate',
-			title: 'زمان',
-			hidden: false,
-		},
-		{
-			id: 'providerType',
-			title: 'بانک کارگزاری',
-			hidden: false,
-		},
-		{
-			id: 'receiptNumber',
-			title: 'شماره فیش',
-			hidden: false,
-		},
-		{
-			id: 'amount',
-			title: 'مبلغ',
-			hidden: false,
-		},
-		{
-			id: 'state',
-			title: 'وضعیت',
-			hidden: false,
-		},
-		{
-			id: 'action',
-			title: 'عملیات',
-			hidden: false,
-		},
-	];
-
-export const defaultWithdrawalCashReportsColumn: WithdrawalCashReports.TWithdrawalCashReportsColumnsState[] = [
+export const defaultDepositWithReceiptReportsColumn: Array<
+	IManageColumn<DepositWithReceiptReports.TDepositWithReceiptColumns>
+> = [
 	{
 		id: 'id',
 		title: 'ردیف',
 		hidden: false,
+		tag: 'DepositWithReceiptReports',
+	},
+	{
+		id: 'receiptDate',
+		title: 'زمان',
+		hidden: false,
+		tag: 'DepositWithReceiptReports',
+	},
+	{
+		id: 'providerType',
+		title: 'بانک کارگزاری',
+		hidden: false,
+		tag: 'DepositWithReceiptReports',
+	},
+	{
+		id: 'receiptNumber',
+		title: 'شماره فیش',
+		hidden: false,
+		tag: 'DepositWithReceiptReports',
+	},
+	{
+		id: 'amount',
+		title: 'مبلغ',
+		hidden: false,
+		tag: 'DepositWithReceiptReports',
+	},
+	{
+		id: 'state',
+		title: 'وضعیت',
+		hidden: false,
+		tag: 'DepositWithReceiptReports',
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false,
+		tag: 'DepositWithReceiptReports',
+	},
+];
+
+export const defaultWithdrawalCashReportsColumn: Array<
+	IManageColumn<WithdrawalCashReports.TWithdrawalCashReportsColumns>
+> = [
+	{
+		id: 'id',
+		title: 'ردیف',
+		hidden: false,
+		tag: 'WithdrawalCashReports',
 	},
 	{
 		id: 'saveDate',
 		title: 'زمان درخواست',
 		hidden: false,
+		tag: 'WithdrawalCashReports',
 	},
 	{
 		id: 'requestDate',
 		title: 'موعد پرداخت',
 		hidden: false,
+		tag: 'WithdrawalCashReports',
 	},
 	{
 		id: 'customerBank',
 		title: 'بانک',
 		hidden: false,
+		tag: 'WithdrawalCashReports',
 	},
 	{
 		id: 'requestAmount',
 		title: 'مبلغ',
 		hidden: false,
+		tag: 'WithdrawalCashReports',
 	},
 	{
 		id: 'state',
 		title: 'وضعیت',
 		hidden: false,
+		tag: 'WithdrawalCashReports',
 	},
 	{
 		id: 'action',
 		title: 'عملیات',
 		hidden: false,
+		tag: 'WithdrawalCashReports',
 	},
 ];
 
-export const defaultChangeBrokerReportsColumns: ChangeBrokerReports.IChangeBrokerReportsColumnsState[] = [
-	{
-		id: 'id',
-		title: 'ردیف',
-		hidden: false,
-	},
-	{
-		id: 'saveDate',
-		title: 'زمان',
-		hidden: false,
-	},
-	{
-		id: 'gateway',
-		title: 'سامانه',
-		hidden: false,
-	},
-	{
-		id: 'symbolTitle',
-		title: 'نماد',
-		hidden: false,
-	},
-	{
-		id: 'lastState',
-		title: 'وضعیت',
-		hidden: false,
-	},
-	{
-		id: 'action',
-		title: 'عملیات',
-		hidden: false,
-	},
-];
-
-export const defaultFreezeUnFreezeReportsColumns: FreezeUnFreezeReports.IFreezeUnFreezeReportsColumnsState[] = [
-	{
-		id: 'id',
-		title: 'ردیف',
-		hidden: false,
-	},
-	{
-		id: 'symbolTitle',
-		title: 'نماد',
-		hidden: false,
-	},
-	{
-		id: 'confirmedOn',
-		title: 'تاریخ',
-		hidden: false,
-	},
-	{
-		id: 'requestState',
-		title: 'وضعیت',
-		hidden: false,
-	},
-	{
-		id: 'action',
-		title: 'عملیات',
-		hidden: false,
-	},
-];
-
-export const defaultCashSettlementReportsColumns: CashSettlementReports.ICashSettlementReportsColumnsState[] = [
-	{
-		id: 'symbolTitle',
-		title: 'نماد',
-		hidden: false,
-	},
-	{
-		id: 'side',
-		title: 'سمت',
-		hidden: false,
-	},
-	{
-		id: 'openPositionCount',
-		title: 'تعداد موقعیت باز',
-		hidden: false,
-	},
-	{
-		id: 'cashSettlementDate',
-		title: 'تاریخ تسویه نقدی',
-		hidden: false,
-	},
-	{
-		id: 'pandLStatus',
-		title: 'وضعیت قرارداد (سود یا زیان)',
-		hidden: false,
-	},
-	{
-		id: 'settlementRequestType',
-		title: 'نوع اعمال',
-		hidden: false,
-	},
-	{
-		id: 'incomeValue',
-		title: 'مبلغ تسویه',
-		hidden: false,
-	},
-	{
-		id: 'requestCount',
-		title: 'تعداد درخواست برای تسویه',
-		hidden: false,
-	},
-	{
-		id: 'doneCount',
-		title: 'تعداد تسویه شده',
-		hidden: false,
-	},
-	{
-		id: 'userType',
-		title: 'درخواست کننده',
-		hidden: false,
-	},
-	{
-		id: 'status',
-		title: 'وضعیت',
-		hidden: false,
-	},
-	{
-		id: 'action',
-		title: 'عملیات',
-		hidden: false,
-	},
-];
-
-export const defaultPhysicalSettlementReportsColumns: PhysicalSettlementReports.IPhysicalSettlementReportsColumnsState[] =
+export const defaultChangeBrokerReportsColumns: Array<IManageColumn<ChangeBrokerReports.TChangeBrokerReportsColumns>> =
 	[
+		{
+			id: 'id',
+			title: 'ردیف',
+			hidden: false,
+			tag: 'ChangeBrokerReports',
+		},
+		{
+			id: 'saveDate',
+			title: 'زمان',
+			hidden: false,
+			tag: 'ChangeBrokerReports',
+		},
+		{
+			id: 'gateway',
+			title: 'سامانه',
+			hidden: false,
+			tag: 'ChangeBrokerReports',
+		},
 		{
 			id: 'symbolTitle',
 			title: 'نماد',
 			hidden: false,
+			tag: 'ChangeBrokerReports',
 		},
 		{
-			id: 'side',
-			title: 'سمت',
-			hidden: false,
-		},
-		{
-			id: 'openPositionCount',
-			title: 'تعداد موقعیت باز',
-			hidden: false,
-		},
-		{
-			id: 'cashSettlementDate',
-			title: 'تاریخ تسویه نقدی',
-			hidden: false,
-		},
-		{
-			id: 'pandLStatus',
-			title: 'وضعیت قرارداد (سود یا زیان)',
-			hidden: false,
-		},
-		{
-			id: 'settlementRequestType',
-			title: 'نوع اعمال',
-			hidden: false,
-		},
-		{
-			id: 'incomeValue',
-			title: 'مبلغ تسویه',
-			hidden: false,
-		},
-		{
-			id: 'requestCount',
-			title: 'تعداد درخواست برای تسویه',
-			hidden: false,
-		},
-		{
-			id: 'doneCount',
-			title: 'تعداد تسویه شده',
-			hidden: false,
-		},
-		{
-			id: 'penValue',
-			title: 'تعداد نکول',
-			hidden: false,
-		},
-		{
-			id: 'penVolume',
-			title: 'مبلغ نکول',
-			hidden: false,
-		},
-		{
-			id: 'userType',
-			title: 'درخواست کننده',
-			hidden: false,
-		},
-		{
-			id: 'status',
+			id: 'lastState',
 			title: 'وضعیت',
 			hidden: false,
+			tag: 'ChangeBrokerReports',
 		},
 		{
 			id: 'action',
 			title: 'عملیات',
 			hidden: false,
+			tag: 'ChangeBrokerReports',
 		},
 	];
 
-export const defaultOrdersReportsColumns: OrdersReports.IOrdersReportsColumnsState[] = [
+export const defaultFreezeUnFreezeReportsColumns: Array<
+	IManageColumn<FreezeUnFreezeReports.TFreezeUnFreezeReportsColumns>
+> = [
 	{
-		id: 'orderId',
+		id: 'id',
 		title: 'ردیف',
 		hidden: false,
+		tag: 'FreezeUnFreezeReports',
 	},
 	{
 		id: 'symbolTitle',
 		title: 'نماد',
 		hidden: false,
+		tag: 'FreezeUnFreezeReports',
+	},
+	{
+		id: 'confirmedOn',
+		title: 'تاریخ درخواست',
+		hidden: false,
+		tag: 'FreezeUnFreezeReports',
+	},
+	{
+		id: 'requestState',
+		title: 'وضعیت',
+		hidden: false,
+		tag: 'FreezeUnFreezeReports',
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false,
+		tag: 'FreezeUnFreezeReports',
+	},
+];
+
+export const defaultCashSettlementReportsColumns: Array<
+	IManageColumn<CashSettlementReports.TCashSettlementReportsColumns>
+> = [
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'side',
+		title: 'سمت',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'openPositionCount',
+		title: 'تعداد موقعیت باز',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'cashSettlementDate',
+		title: 'تاریخ تسویه نقدی',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'pandLStatus',
+		title: 'وضعیت قرارداد (سود یا زیان)',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'settlementRequestType',
+		title: 'نوع اعمال',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'incomeValue',
+		title: 'مبلغ تسویه',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'requestCount',
+		title: 'تعداد درخواست برای تسویه',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'doneCount',
+		title: 'تعداد تسویه شده',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'userType',
+		title: 'درخواست کننده',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'status',
+		title: 'وضعیت',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+];
+
+export const defaultPhysicalSettlementReportsColumns: Array<
+	IManageColumn<PhysicalSettlementReports.TPhysicalSettlementReportsColumns>
+> = [
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'side',
+		title: 'سمت',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'openPositionCount',
+		title: 'تعداد موقعیت باز',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'cashSettlementDate',
+		title: 'تاریخ تسویه نقدی',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'pandLStatus',
+		title: 'وضعیت قرارداد (سود یا زیان)',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'settlementRequestType',
+		title: 'نوع اعمال',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'incomeValue',
+		title: 'مبلغ تسویه',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'requestCount',
+		title: 'تعداد درخواست برای تسویه',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'doneCount',
+		title: 'تعداد پذیرفته شده',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'penValue',
+		title: 'تعداد نکول',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'penVolume',
+		title: 'مبلغ نکول',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'userType',
+		title: 'درخواست کننده',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'status',
+		title: 'وضعیت',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
+		id: 'action',
+		title: 'عملیات',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+];
+
+export const defaultOrdersReportsColumns: Array<IManageColumn<OrdersReports.TOrdersReportsColumns>> = [
+	{
+		id: 'orderId',
+		title: 'ردیف',
+		hidden: false,
+		tag: 'OrdersReports',
+	},
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'orderSide',
 		title: 'سمت',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'orderDateTime',
 		title: 'تاریخ',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'orderDateTime',
 		title: 'ساعت',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'quantity',
 		title: 'حجم کل',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'price',
 		title: 'قیمت',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'sumExecuted',
 		title: 'حجم انجام شده',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'lastErrorCode',
 		title: 'وضعیت گزارش',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 	{
 		id: 'validity',
 		title: 'اعتبار',
 		hidden: false,
+		tag: 'OrdersReports',
 	},
 ];
 
-export const defaultTradesReportsColumns: TradesReports.ITradesReportsColumnsState[] = [
+export const defaultTradesReportsColumns: Array<IManageColumn<TradesReports.TTradesReportsColumns>> = [
 	{
-		id: 'orderId',
+		id: 'id',
 		title: 'ردیف',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
 		id: 'symbolTitle',
 		title: 'نماد',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
 		id: 'orderSide',
 		title: 'سمت',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
-		id: 'orderDateTime',
+		id: 'tradeDate',
 		title: 'تاریخ',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
-		id: 'orderDateTime',
+		id: 'tradeTime',
 		title: 'ساعت',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
-		id: 'quantity',
+		id: 'tradedQuantity',
 		title: 'حجم کل',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
-		id: 'price',
+		id: 'tradePrice',
 		title: 'قیمت',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
 		id: 'totalQuota',
 		title: 'کارمزد',
 		hidden: false,
+		tag: 'TradesReports',
 	},
 	{
 		id: 'total',
 		title: 'ارزش معامله',
 		hidden: false,
-	},
-	{
-		id: 'validity',
-		title: 'اعتبار',
-		hidden: false,
+		tag: 'TradesReports',
 	},
 ];
 

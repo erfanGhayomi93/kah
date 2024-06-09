@@ -113,11 +113,63 @@ const initialState: ModalState = {
 
 	// فیلتر کاورد کال
 	coveredCallFilters: null,
+
 	// تایید توافق‌نامه
 	acceptAgreement: null,
 
 	// تنظیمات ستون
 	manageColumns: null,
+
+	// وضعیت بازار صفحه داشبورد
+	marketState: null,
+
+	// نمای بازار صفحه داشبورد
+	marketView: null,
+
+	// برترین‌ها صفحه داشبورد
+	best: null,
+
+	// کهکشان صفحه داشبورد
+	userProgressBar: null,
+
+	//  مقایسه ارزش معاملات صفحه داشبورد
+	compareTransactionValue: null,
+
+	// قراردادهای اختیار صفحه داشبورد
+	optionContract: null,
+
+	// ارزش در معاملات اختیار صفحه داشبورد
+	optionTradeValue: null,
+
+	// مدال روند بازار آپشن صفحه داشبورد
+	optionMarketProcess: null,
+
+	// مدال حقیقی و حقوقی صفحه داشبورد
+	individualAndLegal: null,
+
+	// مدال دیده بان تغییر قیمت صفحه داشبورد
+	priceChangeWatchlist: null,
+
+	// مدال روند موقعیت های باز صفحه داشبورد
+	openPositionProcess: null,
+
+	// مدال مجامع صفحه داشبورد
+	meetings: null,
+
+	// مدال جدید و قدیم صفحه داشبورد
+	newAndOld: null,
+
+	// مدال برترین دارایی‌های پایه صفحه داشبورد
+	topBaseAssets: null,
+
+	// مدال فعالیت‌های اخیر صفحه داشبورد
+	recentActivities: null,
+
+	// مدال سررسیدها صفحه داشبورد
+	dueDates: null,
+
+	// مدال فیلتر استراتژی‌ها
+	strategyFilters: null,
 };
 
 const modalSlice = createSlice({
@@ -303,6 +355,74 @@ const modalSlice = createSlice({
 		setManageColumnsModal: (state, { payload }: PayloadAction<ModalState['manageColumns']>) => {
 			state.manageColumns = payload;
 		},
+
+		setMarketStateModal: (state, { payload }: PayloadAction<ModalState['marketState']>) => {
+			state.marketState = payload;
+		},
+
+		setMarketViewModal: (state, { payload }: PayloadAction<ModalState['marketView']>) => {
+			state.marketView = payload;
+		},
+
+		setBestModal: (state, { payload }: PayloadAction<ModalState['best']>) => {
+			state.best = payload;
+		},
+
+		setUserProgressBarModal: (state, { payload }: PayloadAction<ModalState['userProgressBar']>) => {
+			state.userProgressBar = payload;
+		},
+
+		setCompareTransactionValueModal: (state, { payload }: PayloadAction<ModalState['compareTransactionValue']>) => {
+			state.compareTransactionValue = payload;
+		},
+
+		setOptionContractModal: (state, { payload }: PayloadAction<ModalState['optionContract']>) => {
+			state.optionContract = payload;
+		},
+
+		setOptionTradeValueModal: (state, { payload }: PayloadAction<ModalState['optionTradeValue']>) => {
+			state.optionTradeValue = payload;
+		},
+
+		setOptionMarketProcessModal: (state, { payload }: PayloadAction<ModalState['optionMarketProcess']>) => {
+			state.optionMarketProcess = payload;
+		},
+
+		setIndividualAndLegalModal: (state, { payload }: PayloadAction<ModalState['individualAndLegal']>) => {
+			state.individualAndLegal = payload;
+		},
+
+		setPriceChangeWatchlistModal: (state, { payload }: PayloadAction<ModalState['priceChangeWatchlist']>) => {
+			state.priceChangeWatchlist = payload;
+		},
+
+		setOpenPositionProcessModal: (state, { payload }: PayloadAction<ModalState['openPositionProcess']>) => {
+			state.openPositionProcess = payload;
+		},
+
+		setMeetingsModal: (state, { payload }: PayloadAction<ModalState['meetings']>) => {
+			state.meetings = payload;
+		},
+
+		setNewAndOldModal: (state, { payload }: PayloadAction<ModalState['newAndOld']>) => {
+			state.newAndOld = payload;
+		},
+
+		setTopBaseAssetsModal: (state, { payload }: PayloadAction<ModalState['newAndOld']>) => {
+			state.topBaseAssets = payload;
+		},
+
+		setRecentActivitiesModal: (state, { payload }: PayloadAction<ModalState['recentActivities']>) => {
+			state.recentActivities = payload;
+		},
+
+		setDueDatesModal: (state, { payload }: PayloadAction<ModalState['dueDates']>) => {
+			state.dueDates = payload;
+		},
+
+		setStrategyFiltersModal: (state, { payload }: PayloadAction<ModalState['strategyFilters']>) => {
+			state.strategyFilters = payload;
+		},
 	},
 });
 
@@ -346,6 +466,23 @@ export const {
 	setCoveredCallFiltersModal,
 	setAcceptAgreementModal,
 	setManageColumnsModal,
+	setMarketStateModal,
+	setMarketViewModal,
+	setBestModal,
+	setUserProgressBarModal,
+	setCompareTransactionValueModal,
+	setOptionContractModal,
+	setOptionTradeValueModal,
+	setOptionMarketProcessModal,
+	setIndividualAndLegalModal,
+	setPriceChangeWatchlistModal,
+	setOpenPositionProcessModal,
+	setMeetingsModal,
+	setNewAndOldModal,
+	setTopBaseAssetsModal,
+	setRecentActivitiesModal,
+	setDueDatesModal,
+	setStrategyFiltersModal,
 } = modalSlice.actions;
 
 export const getChoiceBrokerModal = (state: RootState) => state.modal.choiceBroker;
@@ -382,5 +519,22 @@ export const getOrdersReportsFiltersModal = (state: RootState) => state.modal.or
 export const getTradesReportsFiltersModal = (state: RootState) => state.modal.tradesReportsFilters;
 export const getGetStrategyModal = (state: RootState) => state.modal.createStrategy;
 export const getSymbolInfoPanelSettingModal = (state: RootState) => state.modal.symbolInfoPanelSetting;
+export const getMarketStateModal = (state: RootState) => state.modal.marketState;
+export const getMarketViewModal = (state: RootState) => state.modal.marketView;
+export const getBestModal = (state: RootState) => state.modal.best;
+export const getUserProgressBarModal = (state: RootState) => state.modal.userProgressBar;
+export const getCompareTransactionValueModal = (state: RootState) => state.modal.compareTransactionValue;
+export const getOptionContractModal = (state: RootState) => state.modal.optionContract;
+export const getOptionTradeValueModal = (state: RootState) => state.modal.optionTradeValue;
+export const getOptionMarketProcessModal = (state: RootState) => state.modal.optionMarketProcess;
+export const getIndividualAndLegalModal = (state: RootState) => state.modal.individualAndLegal;
+export const getPriceChangeWatchlistModal = (state: RootState) => state.modal.priceChangeWatchlist;
+export const getOpenPositionProcessModal = (state: RootState) => state.modal.openPositionProcess;
+export const getMeetingModal = (state: RootState) => state.modal.meetings;
+export const getNewAndOldModal = (state: RootState) => state.modal.newAndOld;
+export const getTopBaseAssetsModal = (state: RootState) => state.modal.topBaseAssets;
+export const getRecentActivitiesModal = (state: RootState) => state.modal.recentActivities;
+export const getDueDatesModal = (state: RootState) => state.modal.dueDates;
+export const getStrategyFiltersModal = (state: RootState) => state.modal.strategyFilters;
 
 export default modalSlice.reducer;

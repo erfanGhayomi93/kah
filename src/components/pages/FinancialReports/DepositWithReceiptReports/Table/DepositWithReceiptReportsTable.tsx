@@ -87,31 +87,39 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				colId: 'id',
 				headerName: t('deposit_with_receipt_reports_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			{
 				colId: 'receiptDate',
 				headerName: t('deposit_with_receipt_reports_page.date_column'),
 				valueGetter: (row) => dateFormatter(row.receiptDate ?? ''),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'receiptDate')]?.hidden,
 			},
 			{
 				colId: 'providerType',
 				headerName: t('deposit_with_receipt_reports_page.broker_bank_column'),
 				valueGetter: (row) => row.providerType,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'providerType')]
+					?.hidden,
 			},
 			{
 				colId: 'receiptNumber',
 				headerName: t('deposit_with_receipt_reports_page.receipt_number_column'),
 				valueGetter: (row) => row.receiptNumber,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'receiptNumber')]
+					.hidden,
 			},
 			{
 				colId: 'amount',
 				headerName: t('deposit_with_receipt_reports_page.price_column'),
 				valueGetter: (row) => sepNumbers(String(row.amount)),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'amount')]?.hidden,
 			},
 			{
 				colId: 'state',
 				headerName: t('deposit_with_receipt_reports_page.status_column'),
 				valueGetter: (row) => t(`states.state_${row.state}`),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'state')]?.hidden,
 			},
 			{
 				colId: 'action',
@@ -120,9 +128,10 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				valueFormatter: ({ row }) => (
 					<DepositWithReceiptReportsActionCell data={row} onDeleteRow={onDeleteRow} onEditRow={onEditRow} />
 				),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'action')]?.hidden,
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
 
 	useEffect(() => {

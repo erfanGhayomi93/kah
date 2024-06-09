@@ -35,6 +35,11 @@ declare type Nullable<T> = null | T;
 
 declare interface IBaseModalConfiguration {
 	moveable?: boolean;
-	animation?: boolean;
+	animation?:
+		| boolean
+		| {
+				exit: boolean;
+				initial: boolean;
+		  };
 	callbackFunction?: () => void;
 }

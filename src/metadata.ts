@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-	metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+	metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!), 
 	title: 'کهکشان',
 	applicationName: 'کهکشان',
 	keywords: ['آپشن', 'اختیار', 'اختیار آپشن', 'بازار آپشن', 'معاملات اختیار'],

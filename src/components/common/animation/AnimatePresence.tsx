@@ -9,7 +9,12 @@ interface AnimatePresenceProps {
 	children: ReactNode;
 	exit: IAnimation;
 	initial: IAnimation;
-	disabled?: boolean;
+	disabled?:
+		| boolean
+		| {
+				exit: boolean;
+				initial: boolean;
+		  };
 	onRefLoad?: (el: HTMLElement | null) => void;
 }
 
@@ -27,11 +32,14 @@ const AnimatePresence = ({ exit, initial, children, disabled, onRefLoad }: Anima
 	};
 
 	const toggleAnimation = () => {
-		if (!elRef.current || disabled) return;
+		if (!elRef.current || disabled === true) return;
 
 		const isInitial = Boolean(children);
+		const isDisabled =
+			typeof disabled === 'object' ? (isInitial && disabled.initial) || (!isInitial && disabled.exit) : false;
 		const { animation, duration } = isInitial ? initial : exit;
 
+		if (isDisabled) return;
 		elRef.current.style.animation = `${animation} ${duration ?? 250}ms 1 forwards ease-in-out`;
 	};
 
@@ -46,11 +54,15 @@ const AnimatePresence = ({ exit, initial, children, disabled, onRefLoad }: Anima
 			}
 
 			if (!elRef.current) return;
-
 			toggleAnimation();
 		},
 		[children],
 	);
+
+	const exitOperation = () => {
+		setIsRender(false);
+		setComponent(null);
+	};
 
 	useEffect(() => {
 		const isVisible = Boolean(children);
@@ -61,12 +73,13 @@ const AnimatePresence = ({ exit, initial, children, disabled, onRefLoad }: Anima
 		if (isVisible) {
 			setComponent(children as React.ReactElement);
 			setIsRender(true);
-		} else {
-			debounceRef.current = setTimeout(() => {
-				setIsRender(false);
-				setComponent(null);
-			}, exit.duration ?? 250);
+			return;
 		}
+
+		const isDisabled = disabled === true || (typeof disabled === 'object' && disabled.exit);
+
+		if (isDisabled) exitOperation();
+		else debounceRef.current = setTimeout(exitOperation, exit.duration ?? 250);
 	}, [children]);
 
 	if (!isRender) return null;

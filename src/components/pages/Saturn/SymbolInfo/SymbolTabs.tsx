@@ -1,3 +1,4 @@
+import { useSymbolChartDataQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { cn } from '@/utils/helpers';
@@ -6,6 +7,11 @@ import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 
 const MarketDepth = dynamic(() => import('./Tabs/MarketDepth'), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+const SymbolChart = dynamic(() => import('@/components/common/Symbol/SymbolChart'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -20,6 +26,10 @@ type TTab = ITabIem<Saturn.SymbolTab, { title: string }>;
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
 
+	const { data } = useSymbolChartDataQuery({
+		queryKey: ['symbolChartDataQuery', symbol.symbolISIN, 'Today'],
+	});
+
 	const tabs = useMemo<TTab[]>(
 		() => [
 			{
@@ -27,10 +37,18 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 				title: t('saturn_page.tab_market_depth'),
 				render: () => <MarketDepth symbol={symbol} />,
 			},
-			{ id: 'tab_chart', title: t('saturn_page.tab_chart'), disabled: true, render: null },
+			{
+				id: 'tab_chart',
+				title: t('saturn_page.tab_chart'),
+				render: () => (
+					<div className='relative size-full pb-16'>
+						<SymbolChart data={data ?? []} />
+					</div>
+				),
+			},
 			{ id: 'tab_my_asset', title: t('saturn_page.tab_my_asset'), disabled: true, render: null },
 		],
-		[symbol],
+		[symbol, data],
 	);
 
 	return (

@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import TradeReportsTable from './TradesReportsTable';
 
 interface TableProps {
@@ -14,11 +14,9 @@ interface TableProps {
 	) => void;
 	setFieldsValue: (props: Partial<TradesReports.ITradesReportsFilters>) => void;
 	columnsVisibility: TradesReports.ITradesReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<TradesReports.ITradesReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
-
+const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: TableProps) => {
 	const { data: tradesReportsData, isLoading } = useTradesReportsQuery({
 		queryKey: ['tradesReports', filters],
 	});
@@ -41,7 +39,6 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 		return tradesReportsData?.result;
 	}, [tradesReportsData?.result]);
 
-
 	const dataIsEmpty = tradesReportsData?.result.length === 0;
 
 	return (
@@ -53,11 +50,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 					transition: 'height 250ms ease',
 				}}
 			>
-				<TradeReportsTable
-					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
-					reports={reports}
-				/>
+				<TradeReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
 			<div className='py-22 flex-justify-end'>

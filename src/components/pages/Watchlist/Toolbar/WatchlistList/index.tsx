@@ -2,11 +2,7 @@ import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import Tooltip from '@/components/common/Tooltip';
 import { MoreOptionsSVG, PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import {
-	setAddNewOptionWatchlistModal,
-	setLoginModal,
-	setManageOptionWatchlistListModal,
-} from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlistModal, setManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId, setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
@@ -62,26 +58,10 @@ const WatchlistList = () => {
 	};
 
 	const addNewWatchlist = () => {
-		if (!isLoggedIn) {
-			dispatch(setLoginModal({}));
-			toast.error(t('alerts.login_to_your_account'), {
-				toastId: 'login_to_your_account',
-			});
-			return;
-		}
-
 		dispatch(setAddNewOptionWatchlistModal({}));
 	};
 
 	const manageWatchlistList = () => {
-		if (!isLoggedIn) {
-			dispatch(setLoginModal({}));
-			toast.error(t('alerts.login_to_your_account'), {
-				toastId: 'login_to_your_account',
-			});
-			return;
-		}
-
 		if (!Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0) {
 			toast.warning(t('alerts.add_watchlist'));
 			return;

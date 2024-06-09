@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { setCompareTransactionValueModal } from '@/features/slices/modalSlice';
+import { type RootState } from '@/features/store';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
@@ -10,8 +14,23 @@ interface IDefaultActiveTab {
 	bottom: Dashboard.GetOptionMarketComparison.TChartType;
 }
 
-const CompareTransactionValue = () => {
+interface ICompareTransactionValueProps {
+	isModal?: boolean;
+}
+
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		getCompareTransactionValue: state.modal.compareTransactionValue,
+	}),
+);
+
+const CompareTransactionValue = ({ isModal }: ICompareTransactionValueProps) => {
 	const t = useTranslations();
+
+	const dispatch = useAppDispatch();
+
+	const { getCompareTransactionValue } = useAppSelector(getStates);
 
 	const [defaultTab, setDefaultTab] = useState<IDefaultActiveTab>({
 		top: 'Today',
@@ -47,6 +66,9 @@ const CompareTransactionValue = () => {
 					{ id: 'OptionSellToMarket', title: t('home.tab_put_market_option') },
 				],
 			}}
+			closeable={!isModal}
+			expandable={!isModal}
+			onExpand={() => dispatch(setCompareTransactionValueModal(getCompareTransactionValue ? null : {}))}
 		>
 			<CompareTransactionValueChart interval={defaultTab.top} type={defaultTab.bottom} />
 		</Section>

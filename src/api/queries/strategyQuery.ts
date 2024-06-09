@@ -13,7 +13,7 @@ type TStrategyBaseType<T> = [T, IStrategyOptionsKey];
 const CACHE_TIME = 0;
 
 const defaultStrategyOptions: IStrategyOptionsKey = {
-	priceBasis: 'BestLimit',
+	priceBasis: 'BestLimitPrice',
 	symbolBasis: 'BestLimit',
 	withCommission: true,
 };
@@ -49,7 +49,7 @@ export const useCoveredCallStrategyQuery = createQuery<
 			const params: Record<string, string | number | boolean | string[] | number[]> = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
@@ -100,7 +100,7 @@ export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrate
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
@@ -129,7 +129,7 @@ export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategy
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
@@ -158,7 +158,7 @@ export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TSt
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
@@ -190,7 +190,7 @@ export const useLongStraddleStrategyQuery = createQuery<
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
@@ -222,7 +222,7 @@ export const useBullCallSpreadStrategyQuery = createQuery<
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
@@ -257,7 +257,7 @@ export const useBearPutSpreadStrategyQuery = createQuery<
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
@@ -289,7 +289,7 @@ export const useProtectivePutStrategyQuery = createQuery<
 			const params = {
 				PageSize: 100,
 				PageNumber: 1,
-				CalculateBy: priceBasis,
+				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
