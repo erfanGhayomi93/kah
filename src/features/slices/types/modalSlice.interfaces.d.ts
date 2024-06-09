@@ -211,7 +211,7 @@ export interface IAcceptAgreement extends IBaseModalConfiguration {
 	data: Settings.IAgreements;
 	getAgreements: (
 		options?: RefetchOptions,
-	) => Promise<QueryObserverResult<Settings.IAgreements[] | null, AxiosError<unknown, any>>>;
+	) => Promise<QueryObserverResult<Settings.IAgreements[] | null, AxiosError>>;
 }
 
 export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
@@ -260,11 +260,6 @@ export interface IAnalyzeModal extends IBaseModalConfiguration {
 	onContractRemoved?: (id: string) => void;
 }
 
-export interface ICavertCallFiltersModal extends IBaseModalConfiguration {
-	initialFilters: Partial<ICoveredCallFiltersModalStates>;
-	onSubmit: (appliedFilters: Partial<ICoveredCallFiltersModalStates>) => void;
-}
-
 export interface IManageColumnsModal extends IBaseModalConfiguration {
 	initialColumns?: IManageColumn[];
 	title: React.ReactNode;
@@ -307,71 +302,78 @@ export interface IRecentActivitiesModal extends IBaseModalConfiguration {}
 export interface IDueDatesModal extends IBaseModalConfiguration {}
 
 export namespace NStrategyFilter {
-	// Number
-	export interface IRangeNumber {
-		mode: 'range';
-		type: 'percent' | 'integer' | 'decimal';
-		initialValue: [number, number];
+	export interface ShareProps {
+		id: string;
+		title: string;
+		titleHint?: string;
 	}
 
-	export interface ISingleNumber {
+	// Number
+	export interface IRangeNumber extends NStrategyFilter.ShareProps {
+		mode: 'range';
+		type: 'percent' | 'integer' | 'decimal';
+		initialValue: [number | null, number | null];
+		label?: [string, string];
+		placeholder?: [string, string];
+	}
+
+	export interface ISingleNumber extends NStrategyFilter.ShareProps {
 		mode: 'single';
 		type: 'percent' | 'integer' | 'decimal';
-		initialValue: number;
+		initialValue: number | null;
+		label?: string;
+		placeholder?: string;
 	}
 
 	// String
-	export interface IArrayString {
+	export interface IArrayString extends NStrategyFilter.ShareProps {
 		mode: 'array';
 		type: 'string';
 		data: Array<{
 			value: string;
 			title: string;
+			icon?: React.ReactNode;
 			className?: {
 				enable: string;
 				disabled: string;
 			};
 		}>;
-		initialValue: string[];
+		initialValue: Array<string | null>;
 	}
 
-	export interface ISingleString {
+	export interface ISingleString extends NStrategyFilter.ShareProps {
 		mode: 'single';
 		type: 'string';
-		initialValue: string;
+		initialValue: string | null;
 	}
 
 	// Data
-	export interface IRangeDate {
+	export interface IRangeDate extends NStrategyFilter.ShareProps {
 		mode: 'range';
 		type: 'date';
-		initialValue: [Date, Date];
+		initialValue: [Date | null, Date | null];
 	}
 
-	export interface ISingleDate {
+	export interface ISingleDate extends NStrategyFilter.ShareProps {
 		mode: 'single';
 		type: 'date';
-		initialValue: Date;
+		initialValue: Date | null;
 	}
 
-	export type TFilter = (
+	export type TFilter =
 		| NStrategyFilter.IRangeNumber
 		| NStrategyFilter.ISingleNumber
 		| NStrategyFilter.IArrayString
 		| NStrategyFilter.ISingleString
 		| NStrategyFilter.IRangeDate
-		| NStrategyFilter.ISingleDate
-	) & {
-		id: string;
-		title: string;
-		titleHint?: string;
-	};
+		| NStrategyFilter.ISingleDate;
 
 	export interface IFilters extends IBaseModalConfiguration {
 		suppressBaseSymbol?: boolean;
-		initialFilters?: unknown;
+		baseSymbols?: Option.BaseSearch[];
 		filters: NStrategyFilter.TFilter[];
-		onSubmit: () => void;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		onSubmit: (data: any) => void;
 	}
 }
 
@@ -413,7 +415,6 @@ export type ModalState = TBaseModalProps<{
 	tradesReportsFilters: ITradesReportsFilters;
 	createStrategy: ICreateStrategyModal;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
-	coveredCallFilters: ICavertCallFiltersModal;
 	manageColumns: IManageColumnsModal;
 	marketState: IMarketStateModal;
 	marketView: IMarketViewModal;

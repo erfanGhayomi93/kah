@@ -14,11 +14,17 @@ import {
 	type InputHTMLAttributes,
 } from 'react';
 
-interface OAuthSMSProps extends Settings.IAgreements {
-	sendRequest: UseMutateFunction<unknown, AxiosError<unknown, any>, Record<string, any>, unknown>;
+interface TMutationVariables {
+	otp: string | null;
+	agreementState: string;
+	customerAgreementIds: number[];
 }
 
-const OAuthSMS = ({ ...props }: OAuthSMSProps) => {
+interface OAuthSMSProps extends Settings.IAgreements {
+	sendRequest: UseMutateFunction<unknown, AxiosError, TMutationVariables, unknown>;
+}
+
+const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
 	const t = useTranslations('settings_page');
 
 	const [otpValue, setOTPValue] = useState<string[]>(['', '', '', '', '', '']);
@@ -47,7 +53,7 @@ const OAuthSMS = ({ ...props }: OAuthSMSProps) => {
 
 	useEffect(() => {
 		if (otpValue.filter(Boolean).length === 6) {
-			props.sendRequest({
+			sendRequest({
 				otp: otpValue.join('') || null,
 				agreementState: props.state === 'Accepted' ? 'NotAccepted' : 'Accepted',
 				customerAgreementIds: [props.agreementId],

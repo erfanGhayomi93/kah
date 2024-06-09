@@ -13,6 +13,12 @@ import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import OAuthSMS from './OAuthSMS';
 
+interface TMutationVariables {
+	otp: string | null;
+	agreementState: string;
+	customerAgreementIds: number[];
+}
+
 interface AcceptAgreementProps extends IAcceptAgreement {}
 
 const Div = styled.div`
@@ -23,14 +29,15 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 	const t = useTranslations('settings_page');
 
 	const [isRead, setIsRead] = useState(false);
-	const [submiting, setSubmiting] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
 
 	const dispatch = useAppDispatch();
 
-	const { mutate: sendAcceptRequest } = useMutation<unknown | null, AxiosError, Record<string, any>>({
+	const { mutate: sendAcceptRequest } = useMutation<unknown | null, AxiosError, TMutationVariables>({
 		mutationFn: async (body) => {
 			const urls = getBrokerURLs(store.getState());
 			if (!urls) return null;
+
 			const { data, status } = await brokerAxios.post<ServerResponse<unknown>>(urls.acceptAgreement, body);
 			if (status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
@@ -48,7 +55,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 
 	const onConfirm = () => {
 		if (data.approveBySMS) {
-			setSubmiting(true);
+			setSubmitting(true);
 		} else {
 			sendAcceptRequest({
 				otp: null,
@@ -70,7 +77,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 			<Div className='bg-white'>
 				<Header
 					label={
-						submiting
+						submitting
 							? data.state === 'Accepted'
 								? t('accept_agreement')
 								: t('deny_agreement')
@@ -78,7 +85,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 					}
 					onClose={onCloseModal}
 				/>
-				{submiting ? (
+				{submitting ? (
 					<OAuthSMS {...{ sendRequest: sendAcceptRequest, ...data }} />
 				) : (
 					<div className='justify-between gap-24 py-24 flex-column' style={{ height: 600 }}>
