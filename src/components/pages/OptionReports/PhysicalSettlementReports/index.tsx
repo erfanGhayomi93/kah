@@ -6,8 +6,7 @@ import Main from '@/components/layout/Main';
 import { defaultPhysicalSettlementReportsColumns, initialCashSettlementReportsFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setPhysicalSettlementReportsFiltersModal } from '@/features/slices/modalSlice';
-import { setManageColumnsPanel } from '@/features/slices/panelSlice';
+import { setManageColumnsModal, setPhysicalSettlementReportsFiltersModal } from '@/features/slices/modalSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
@@ -89,10 +88,11 @@ const PhysicalSettlementReports = () => {
 
 	const onManageColumns = () => {
 		dispatch(
-			setManageColumnsPanel({
+			setManageColumnsModal({
+				initialColumns: defaultPhysicalSettlementReportsColumns,
 				columns: columnsVisibility,
 				title: t('physical_settlement_reports_page.manage_columns'),
-				onColumnChanged: (_, columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(defaultPhysicalSettlementReportsColumns),
 			}),
 		);

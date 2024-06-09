@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import InstantDepositReportsTable from './InstantDepositReportsTable';
 
 interface TableProps {
@@ -14,15 +14,16 @@ interface TableProps {
 	) => void;
 	setFieldsValue: (props: Partial<InstantDepositReports.IInstantDepositReportsFilters>) => void;
 	columnsVisibility: InstantDepositReports.TInstantDepositReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<InstantDepositReports.TInstantDepositReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, setFieldsValue }: TableProps) => {
+const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: TableProps) => {
 	const { data: instantDepositReportsData, isLoading } = useInstantDepositReports({
 		queryKey: ['instantDepositReports', filters],
 	});
 
-	const onFiltersChanged = (newFilters: Omit<InstantDepositReports.IInstantDepositReportsFilters, 'pageNumber' | 'pageSize'>) => {
+	const onFiltersChanged = (
+		newFilters: Omit<InstantDepositReports.IInstantDepositReportsFilters, 'pageNumber' | 'pageSize'>,
+	) => {
 		setFieldsValue(newFilters);
 	};
 
@@ -51,10 +52,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setColumnsVisibility, s
 					transition: 'height 250ms ease',
 				}}
 			>
-				<InstantDepositReportsTable
-					columnsVisibility={columnsVisibility}
-					reports={reports}
-				/>
+				<InstantDepositReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
 			<div className='py-22 flex-justify-end'>

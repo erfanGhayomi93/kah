@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { type Dispatch, type SetStateAction, useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import OrdersReportsTable from './OrdersReportsTable';
 
 interface TableProps {
@@ -14,11 +14,9 @@ interface TableProps {
 	) => void;
 	setFieldsValue: (props: Partial<OrdersReports.IOrdersReportsFilters>) => void;
 	columnsVisibility: OrdersReports.IOrdersReportsColumnsState[];
-	setColumnsVisibility: Dispatch<SetStateAction<OrdersReports.IOrdersReportsColumnsState[]>>;
 }
 
-const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColumnsVisibility }: TableProps) => {
-
+const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: TableProps) => {
 	const { data: ordersReportData, isLoading } = useOrdersReportsQuery({
 		queryKey: ['ordersReports', filters],
 	});
@@ -41,7 +39,6 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 		return ordersReportData?.result;
 	}, [ordersReportData?.result]);
 
-
 	const dataIsEmpty = ordersReportData?.result.length === 0;
 
 	return (
@@ -53,11 +50,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility, setColu
 					transition: 'height 250ms ease',
 				}}
 			>
-				<OrdersReportsTable
-					columnsVisibility={columnsVisibility}
-					setColumnsVisibility={setColumnsVisibility}
-					reports={reports}
-				/>
+				<OrdersReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
 			<div className='py-22 flex-justify-end'>

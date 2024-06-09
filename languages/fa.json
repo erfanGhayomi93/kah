@@ -1848,6 +1848,16 @@
 	},
 	"manage_column_categories": {
 		"PanelDetail": "جزئیات تابلو",
-		"Computational": "محاسباتی"
+		"Computational": "محاسباتی",
+		"Transaction": "گردش حساب",
+		"InstantDepositReports": "واریز آنی",
+		"DepositWithReceiptReports": "واریز با فیش",
+		"WithdrawalCashReports": "برداشت وجه",
+		"ChangeBrokerReports": "تغییر کارگزار ناظر",
+		"OrdersReports": "سفارشات",
+		"TradesReports": "معاملات",
+		"FreezeUnFreezeReports": "فریز و رفع فریز",
+		"CashSettlementReports": "تسویه نقدی",
+		"PhysicalSettlementReports": "تسویه فیزیکی"
 	}
 }

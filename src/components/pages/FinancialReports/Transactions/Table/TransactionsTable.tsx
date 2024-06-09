@@ -20,6 +20,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				maxWidth: 112,
 				minWidth: 112,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			{
 				colId: 'date',
@@ -28,6 +29,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				minWidth: 144,
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row?.date ?? '', 'datetime'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'date')]?.hidden,
 			},
 			{
 				colId: 'transactionType',
@@ -44,6 +46,8 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 							return 'text-text-100';
 					}
 				},
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'transactionType')]
+					.hidden,
 			},
 			{
 				colId: 'description',
@@ -59,6 +63,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 							}}
 						/>
 					),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'description')]?.hidden,
 			},
 			{
 				colId: 'debit',
@@ -71,6 +76,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				valueGetter: (row) => row.debit,
 				valueFormatter: ({ value }) =>
 					Number(value) >= 0 ? sepNumbers(String(value)) : `(${sepNumbers(String(value))})`,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'debit')]?.hidden,
 			},
 			{
 				colId: 'credit',
@@ -82,6 +88,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				maxWidth: 160,
 				valueGetter: (row) =>
 					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'credit')]?.hidden,
 			},
 			{
 				colId: 'remaining',
@@ -92,15 +99,17 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 						? sepNumbers(String(row?.remaining))
 						: `(${sepNumbers(String(row?.remaining))})`,
 				maxWidth: 160,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'remaining')]?.hidden,
 			},
 			{
 				colId: 'station',
 				headerName: t('transactions_page.station_column'),
 				maxWidth: 160,
 				valueGetter: (row) => row?.station,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'station')]?.hidden,
 			},
 		],
-		[],
+		[columnsVisibility],
 	);
 
 	return (
