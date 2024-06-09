@@ -211,7 +211,7 @@ const PerformanceChart = ({ inputs, onChange }: PerformanceChartProps) => {
 							const li3 = `<li><span>${t('analyze_modal.rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
 							const li4 = `<li><span>${t('analyze_modal.ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
 
-							return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
+							return `<ul class="flex-column gap-8 pointer-events-none *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
 						},
 					},
 					xaxis: {

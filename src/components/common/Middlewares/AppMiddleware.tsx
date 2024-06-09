@@ -36,22 +36,29 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 		bQueryClient.clear();
 	};
 
+	const setLsVersion = (lsVersion: string) => {
+		LocalstorageInstance.clear();
+		LocalstorageInstance.set('ls_version', lsVersion);
+	};
+
 	useEffect(() => {
 		ipcMain.handle('broker:logged_out', resetQueryClient);
 	}, []);
 
 	useEffect(() => {
+		const lsVersion = process.env.NEXT_PUBLIC_LOCAL_STORAGE_VERSION;
+		if (typeof lsVersion !== 'string') return;
+
 		try {
-			const lsVersion = process.env.NEXT_PUBLIC_LOCAL_STORAGE_VERSION;
-			if (typeof lsVersion !== 'string') return;
+			const userLsVersion = LocalstorageInstance.get<string | undefined>('ls_version', undefined);
 
-			const userLsVersion = LocalstorageInstance.get('ls_version', lsVersion);
-
-			if (versionParser(lsVersion) !== versionParser(userLsVersion)) {
-				LocalstorageInstance.clear();
+			if (userLsVersion && typeof userLsVersion === 'string') {
+				if (versionParser(lsVersion) !== versionParser(userLsVersion)) setLsVersion(lsVersion);
+			} else {
+				setLsVersion(lsVersion);
 			}
 		} catch (e) {
-			//
+			setLsVersion(lsVersion);
 		}
 	}, []);
 
