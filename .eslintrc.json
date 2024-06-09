@@ -44,6 +44,7 @@
 		],
 		"@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
 		"prefer-promise-reject-errors": "off",
+		"@typescript-eslint/no-explicit-any": "error",
 		"accessor-pairs": "off",
 		"@next/next/no-img-element": "off",
 		"n/handle-callback-err": "off",
