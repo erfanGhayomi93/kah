@@ -33,6 +33,31 @@
 		"request": "درخواست",
 		"history": "تاریخچه"
 	},
+	"meta_title": {
+		"dashboard": "داشبورد - کهکشان",
+		"saturn": "زحل - کهکشان",
+		"market_map": "نقشه بازار - کهکشان",
+		"option_chain": "زنجیره قرارداد - کهکشان",
+		"watchlist": "دیده‌بان - کهکشان",
+		"change_broker_reports": "گزارشات تغییر کارگزار ناظر - کهکشان",
+		"deposit_with_receipt_reports": "گزارشات واریز با فیش - کهکشان",
+		"instant_deposit_reposts": "گزارشات واریز آنی - کهکشان",
+		"transaction": "گردش حساب - کهکشان",
+		"cash_settlement_reports": "گزارشات تسویه نقدی - کهکشان",
+		"freeze_and_unfreeze_reports": "گزارشات فریز و رفع فریز - کهکشان",
+		"physical_settlement_reports": "گزارشات تسویه فیزیکی - کهکشان",
+		"orders_reports": "گزارشات سفارشات - کهکشان",
+		"trades_reports": "گزارشات معاملات - کهکشان",
+		"strategies": "استراتژی ها - کهکشان",
+		"build_strategy": "ساخت استراتژی - کهکشان",
+		"authorize": "احراز هویت کارگزاری - کهکشان",
+		"payment_result": "نتیجه تراکنش - کهکشان",
+		"agreement": "توافق‌نامه‌ها - کهکشان",
+		"general": "تنظیمات عمومی - کهکشان",
+		"sessions": "سابقه ورود و خروج - کهکشان",
+		"technical": "تکنیکال - کهکشان"
+	},
+
 	"side": {
 		"buy": "خرید",
 		"sell": "فروش"
@@ -1741,7 +1766,7 @@
 		"general_settings": "تنظیمات عمومی",
 		"orders_settings": "سفارشات",
 		"agreements_settings": "توافق نامه‌ها",
-		"history_settings": " سابقه ورود خروج",
+		"sessions_settings": " سابقه ورود خروج",
 		"identity_information": "اطلاعات هویتی",
 		"two_step_login": "ورود دو مرحله ای",
 		"name": "نام و نام خانوادگی",

@@ -583,6 +583,12 @@ export const defaultWithdrawalCashReportsColumn: Array<
 		tag: 'WithdrawalCashReports',
 	},
 	{
+		id: 'channel',
+		title: 'سامانه',
+		hidden: false,
+		tag: 'WithdrawalCashReports',
+	},
+	{
 		id: 'state',
 		title: 'وضعیت',
 		hidden: false,

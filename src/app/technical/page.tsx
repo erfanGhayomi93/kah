@@ -2,6 +2,7 @@ import DesigningPage from '@/components/common/DesigningPage';
 import Main from '@/components/layout/Main';
 import { getMetadata } from '@/metadata';
 import { type NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return (
@@ -13,9 +14,11 @@ const Page: NextPage<INextProps> = () => {
 	);
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return getMetadata({
-		title: ' تکنیکال - کهکشان',
+		title: t('technical'),
 	});
 };
 
