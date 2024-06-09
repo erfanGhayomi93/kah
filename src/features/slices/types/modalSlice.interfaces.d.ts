@@ -211,7 +211,7 @@ export interface IAcceptAgreement extends IBaseModalConfiguration {
 	data: Settings.IAgreements;
 	getAgreements: (
 		options?: RefetchOptions,
-	) => Promise<QueryObserverResult<Settings.IAgreements[] | null, AxiosError<unknown, any>>>;
+	) => Promise<QueryObserverResult<Settings.IAgreements[] | null, AxiosError>>;
 }
 
 export interface ISymbolInfoPanelSetting extends IBaseModalConfiguration {
@@ -372,6 +372,7 @@ export namespace NStrategyFilter {
 		suppressBaseSymbol?: boolean;
 		baseSymbols?: Option.BaseSearch[];
 		filters: NStrategyFilter.TFilter[];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		onSubmit: (data: any) => void;
 	}
 }
