@@ -8,6 +8,7 @@ import {
 	setBuySellModal,
 	setChangeBrokerModal,
 	setChoiceCollateralModal,
+	setCreateStrategyModal,
 	setDepositModal,
 	setFreezeModal,
 	setManageOptionWatchlistListModal,
@@ -507,7 +508,9 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{createStrategy && (
 					<ModalSuspense>
-						<CreateStrategyModal {...createStrategy} />
+						<AuthorizeMiddleware callback={() => dispatch(setCreateStrategyModal(null))}>
+							<CreateStrategyModal {...createStrategy} />
+						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

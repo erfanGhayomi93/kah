@@ -247,7 +247,7 @@ export interface IOptionSettlementModal extends IBaseModalConfiguration {
 export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
 	baseSymbol: Record<'symbolISIN' | 'symbolTitle', string>;
-	steps: CreateStrategy.Input[];
+	steps: CreateStrategy.Step[];
 }
 
 export interface IAnalyzeModal extends IBaseModalConfiguration {

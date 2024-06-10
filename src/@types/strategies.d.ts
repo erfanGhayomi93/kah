@@ -347,6 +347,7 @@ namespace CreateStrategy {
 		buyAssetsBySymbol: boolean;
 		orderPrice: number;
 		orderQuantity: number;
+		bestLimitPrice: number;
 		status: Status;
 	}
 
@@ -359,6 +360,8 @@ namespace CreateStrategy {
 		symbolTitle: string;
 		symbolISIN: string;
 		status: Status;
+		bestSellLimitPrice: number;
+		bestBuyLimitPrice: number;
 		baseSymbol: {
 			symbolTitle: string;
 			symbolISIN: string;
@@ -376,7 +379,7 @@ namespace CreateStrategy {
 		};
 	}
 
-	export type Input = CreateStrategy.IBaseSymbol | CreateStrategy.IOption | IFreeze;
+	export type Step = CreateStrategy.IBaseSymbol | CreateStrategy.IOption | IFreeze;
 }
 
 interface ICoveredCallFiltersModalStates {

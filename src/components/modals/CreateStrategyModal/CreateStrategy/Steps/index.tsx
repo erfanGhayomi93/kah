@@ -6,7 +6,7 @@ import FreezeStep from './FreezeStep';
 import OptionStep from './OptionStep';
 
 interface StepsProps {
-	steps: CreateStrategy.Input[];
+	steps: CreateStrategy.Step[];
 }
 
 const Steps = ({ steps }: StepsProps) => {

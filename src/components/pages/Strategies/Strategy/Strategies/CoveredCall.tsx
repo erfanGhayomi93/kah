@@ -91,6 +91,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 							symbolISIN: data.baseSymbolISIN,
 							symbolTitle: data.baseSymbolTitle,
 							orderQuantity: 90,
+							bestLimitPrice: data.baseBestSellLimitPrice ?? 0,
 							status: 'TODO',
 						},
 						{
@@ -110,6 +111,8 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 							optionType: 'call',
 							side: 'sell',
 							status: 'PENDING',
+							bestBuyLimitPrice: data.optionBestBuyLimitPrice ?? 0,
+							bestSellLimitPrice: data.optionBestSellLimitPrice ?? 0,
 							symbolISIN: data.symbolISIN,
 							symbolTitle: data.symbolTitle,
 							baseSymbol: {
