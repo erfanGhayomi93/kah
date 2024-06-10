@@ -358,13 +358,13 @@ const LongPut = (strategy: LongPutProps) => {
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
-			{
-				colId: 'profit',
-				headerName: 'بازده',
-				profit: initialHiddenColumnsLongPut.profit,
-				minWidth: 104,
-				valueFormatter: () => t('common.infinity'),
-			},
+			// {
+			// 	colId: 'profit',
+			// 	headerName: 'بازده',
+			// 	profit: initialHiddenColumnsLongPut.profit,
+			// 	minWidth: 104,
+			// 	valueFormatter: () => t('common.infinity'),
+			// },
 			{
 				colId: 'blackScholes',
 				headerName: 'بلک شولز',
