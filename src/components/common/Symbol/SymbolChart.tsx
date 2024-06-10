@@ -62,10 +62,12 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		notional_value: ['rgba(68, 34, 140, 1)'],
 	};
 
+	const activeColor = COLORS[tab];
+
 	return (
 		<AppChart
 			options={{
-				colors: COLORS[tab],
+				colors: activeColor,
 				tooltip: {
 					y: {
 						formatter: (val) => {
@@ -111,6 +113,24 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 						formatter: (val) => {
 							return numFormatter(val);
 						},
+					},
+				},
+				fill: {
+					type: 'gradient',
+					gradient: {
+						type: 'vertical',
+						colorStops: [
+							{
+								offset: 10,
+								color: activeColor[0],
+								opacity: 0.1,
+							},
+							{
+								offset: 100,
+								color: activeColor[0],
+								opacity: 0,
+							},
+						],
 					},
 				},
 			}}
