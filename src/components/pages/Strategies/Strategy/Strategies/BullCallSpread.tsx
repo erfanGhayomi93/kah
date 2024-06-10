@@ -13,7 +13,7 @@ import {
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
+import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -612,7 +612,11 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				},
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.ytm ?? 0,
-				valueFormatter: ({ value }) => toFixed(value, 6),
+				valueFormatter: ({ value }) => {
+					if (+value === 10000) return 'بزرگتر از 10,000';
+					else if (+value === -10000) return 'کمتر از 10,000';
+					else return value;
+				},
 			},
 			{
 				colId: 'actions',
