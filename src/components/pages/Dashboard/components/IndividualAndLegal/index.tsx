@@ -61,7 +61,6 @@ const IndividualAndLegal = ({ isModal = false }: IIndividualAndLegalProps) => {
 					{ id: 'Individual', title: t('home.tab_individual_capita') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setIndividualAndLegalModal(getIndividualAndLegal ? null : {}))}
 		>

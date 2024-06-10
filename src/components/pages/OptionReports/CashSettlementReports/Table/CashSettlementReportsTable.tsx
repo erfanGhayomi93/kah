@@ -95,7 +95,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'cashSettlementDate')]
 					?.hidden,
 			},
-			/* وضعیت قرارداد (سود یا زیان)  */
+			/* وضعیت قرارداد */
 			{
 				colId: 'pandLStatus',
 				headerName: t('cash_settlement_reports_page.status_contract_column'),
