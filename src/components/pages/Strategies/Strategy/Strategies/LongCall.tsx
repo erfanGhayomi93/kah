@@ -198,7 +198,6 @@ const LongCall = (strategy: LongCallProps) => {
 						title: t('strategy_filters.open_positions'),
 						mode: 'single',
 						type: 'integer',
-						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.openPosition ?? null,
 					},

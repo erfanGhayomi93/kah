@@ -209,7 +209,6 @@ const LongPut = (strategy: LongPutProps) => {
 						title: t('strategy_filters.bep_difference'),
 						mode: 'single',
 						type: 'percent',
-						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.bepDifference ?? null,
 					},
