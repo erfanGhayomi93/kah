@@ -176,7 +176,6 @@ const Modals = () => {
 		marketState,
 		marketView,
 		best,
-		userProgressBar,
 		compareTransactionValue,
 		optionContract,
 		optionTradeValue,
