@@ -90,7 +90,6 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 				([symbolISIN, fieldName]) =>
 					new Promise<IpcMainChannels['execute_strategy:symbol_data'] | null>((resolve) => {
 						const data = subscriptionResultRef.current[symbolISIN];
-						console.log(subscriptionResultRef.current[symbolISIN], symbolISIN, fieldName);
 						if (!Array.isArray(data)) resolve(null);
 
 						resolve(
