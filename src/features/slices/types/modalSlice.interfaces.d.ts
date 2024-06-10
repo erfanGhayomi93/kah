@@ -247,7 +247,7 @@ export interface IOptionSettlementModal extends IBaseModalConfiguration {
 export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
 	baseSymbol: Record<'symbolISIN' | 'symbolTitle', string>;
-	steps: CreateStrategy.Input[];
+	steps: CreateStrategy.Step[];
 }
 
 export interface IAnalyzeModal extends IBaseModalConfiguration {
@@ -347,7 +347,7 @@ export namespace NStrategyFilter {
 		initialValue: string | null;
 	}
 
-	// Data
+	// Date
 	export interface IRangeDate extends NStrategyFilter.ShareProps {
 		mode: 'range';
 		type: 'date';

@@ -197,6 +197,15 @@ const config: Config = {
 					direction: 'rtl',
 				},
 
+				'.skeleton': {
+					'background-color': 'var(--skeleton-bg)',
+					background:
+						'linear-gradient(100deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 60% ) var(--skeleton-bg)',
+					'background-position-x': '120%',
+					'background-size': '200% 100%',
+					animation: '1000ms skeleton-loading ease-in-out infinite',
+				},
+
 				'.flex-column': {
 					display: 'flex',
 					'flex-direction': 'column',
@@ -275,15 +284,7 @@ const config: Config = {
 
 				'.btn-primary:disabled, .btn-gray:disabled, .btn-select:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
 					{
-						'&:not(.not)': {
-							'box-shadow': 'none !important',
-							'background-color': `${theme('colors.gray.400')} !important`,
-							color: `${theme('colors.gray.800')} !important`,
-						},
-
-						'&.not': {
-							opacity: '0.5',
-						},
+						opacity: '0.5',
 					},
 
 				'.btn-primary': {
@@ -327,14 +328,6 @@ const config: Config = {
 						'background-color': theme('colors.primary.400'),
 						'border-color': theme('colors.primary.400'),
 					},
-
-					'&:disabled': {
-						'font-weight': '400',
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						'border-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
 				},
 
 				'.btn-gray': {
@@ -369,12 +362,6 @@ const config: Config = {
 						color: theme('colors.white'),
 						'background-color': theme('colors.gray.900'),
 						'border-color': theme('colors.gray.900'),
-					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -428,12 +415,6 @@ const config: Config = {
 						'background-color': theme('colors.success.100'),
 						'border-color': theme('colors.success.100'),
 					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
 				},
 
 				'.btn-error': {
@@ -465,12 +446,6 @@ const config: Config = {
 						color: theme('colors.white'),
 						'background-color': theme('colors.error.100'),
 						'border-color': theme('colors.error.100'),
-					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -504,12 +479,6 @@ const config: Config = {
 						'background-color': theme('colors.secondary.300'),
 						'border-color': theme('colors.secondary.300'),
 					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
 				},
 
 				'.btn-warning': {
@@ -542,12 +511,6 @@ const config: Config = {
 						'background-color': theme('colors.warning.100'),
 						'border-color': theme('colors.warning.100'),
 					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
-					},
 				},
 
 				'.btn-choose': {
@@ -579,12 +542,6 @@ const config: Config = {
 						color: theme('colors.white'),
 						'background-color': theme('colors.primary.300'),
 						'border-color': theme('colors.primary.300'),
-					},
-
-					'&:disabled': {
-						'box-shadow': 'none !important',
-						'background-color': `${theme('colors.gray.400')} !important`,
-						color: `${theme('colors.gray.800')} !important`,
 					},
 				},
 
@@ -896,4 +853,5 @@ const config: Config = {
 		}),
 	],
 };
+
 export default config;
