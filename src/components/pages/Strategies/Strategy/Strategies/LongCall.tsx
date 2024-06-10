@@ -2,9 +2,15 @@ import { useLongCallStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsLongCall, initialHiddenColumnsLongCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal, setManageColumnsModal } from '@/features/slices/modalSlice';
+import {
+	setAnalyzeModal,
+	setDescriptionModal,
+	setManageColumnsModal,
+	setStrategyFiltersModal,
+} from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -39,6 +45,8 @@ const LongCall = (strategy: LongCallProps) => {
 		initialColumnsLongCall,
 	);
 
+	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ILongCallFiltersModalState>>({});
+
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
@@ -50,6 +58,7 @@ const LongCall = (strategy: LongCallProps) => {
 		queryKey: [
 			'longCallQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+			{ ...filters },
 		],
 	});
 
@@ -125,6 +134,84 @@ const LongCall = (strategy: LongCallProps) => {
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsLongCall),
+			}),
+		);
+	};
+
+	const onFiltersChanged = (newFilters: Partial<ILongCallFiltersModalState>) => {
+		setFilters(newFilters);
+	};
+
+	const showFilters = () => {
+		dispatch(
+			setStrategyFiltersModal({
+				baseSymbols: filters.baseSymbols ?? [],
+				onSubmit: onFiltersChanged,
+				filters: [
+					{
+						id: 'iotm',
+						title: t('strategy_filters.iotm'),
+						mode: 'array',
+						type: 'string',
+						data: [
+							{
+								value: 'atm',
+								title: t('strategy_filters.atm'),
+								icon: <StraightLineSVG />,
+								className: {
+									enable: 'btn-secondary',
+									disabled: 'btn-secondary-outline',
+								},
+							},
+							{
+								value: 'otm',
+								title: t('strategy_filters.otm'),
+								icon: <ChartDownSVG />,
+								className: {
+									enable: 'btn-error',
+									disabled: 'btn-error-outline',
+								},
+							},
+							{
+								value: 'itm',
+								title: t('strategy_filters.itm'),
+								icon: <ChartUpSVG />,
+								className: {
+									enable: 'btn-success',
+									disabled: 'btn-success-outline',
+								},
+							},
+						],
+						initialValue: filters?.iotm ?? [],
+					},
+					{
+						id: 'dueDays',
+						title: t('strategy_filters.due_days'),
+						mode: 'range',
+						type: 'integer',
+						label: [t('strategy_filters.from'), t('strategy_filters.to')],
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
+					},
+					{
+						id: 'openPosition',
+						title: t('strategy_filters.open_positions'),
+						mode: 'single',
+						type: 'integer',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.openPosition ?? null,
+					},
+					{
+						id: 'bepDifference',
+						title: t('strategy_filters.bep_difference'),
+						mode: 'single',
+						type: 'percent',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.bepDifference ?? null,
+					},
+				],
 			}),
 		);
 	};
@@ -377,6 +464,7 @@ const LongCall = (strategy: LongCallProps) => {
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
+					onShowFilters={showFilters}
 				/>
 
 				<Table<Strategy.LongCall>
