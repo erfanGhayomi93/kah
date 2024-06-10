@@ -27,7 +27,6 @@ const RecentActivities = ({ isModal = false }: IRecentActivitiesProps) => {
 		<Section
 			id='recent_activities'
 			title={t('home.recent_activities')}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setRecentActivitiesModal(getRecentActivities ? null : {}))}
 		/>

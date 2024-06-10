@@ -92,12 +92,7 @@ const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsConta
 	if (sum === 0) return <NoData />;
 
 	return (
-		<div
-			className={clsx('relative flex h-full px-8 ltr', {
-				'flex-row': !isModal,
-				'flex-col': isModal,
-			})}
-		>
+		<div style={isModal ? { minHeight: '30rem' } : {}} className='relative flex size-full  px-8 ltr'>
 			<OptionContractsChart
 				type={type}
 				basis={basis}
@@ -105,7 +100,7 @@ const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsConta
 				setDataPointHover={(v) => setDataPointHover(v)}
 			/>
 
-			<ul className='flex-1 justify-center gap-32 rtl flex-column'>
+			<ul className=' flex-1 justify-center gap-32 rtl flex-column'>
 				{dataMapper.map((item, i) => (
 					<li
 						key={i}

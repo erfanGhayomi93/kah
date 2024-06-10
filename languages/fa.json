@@ -57,7 +57,6 @@
 		"sessions": "سابقه ورود و خروج - کهکشان",
 		"technical": "تکنیکال - کهکشان"
 	},
-
 	"side": {
 		"buy": "خرید",
 		"sell": "فروش"
@@ -784,7 +783,7 @@
 		"liveDepositTab": "واریز آنی",
 		"receiptDepositTab": "واریز با ثبت فیش",
 		"placeholderDepositInput": "مبلغ مورد نظر را وارد کنید",
-		"date_placeholder" : "تاریخ",
+		"date_placeholder": "تاریخ",
 		"submitDeposit": "پرداخت",
 		"time_history": "زمان",
 		"price_history": "مبلغ (ریال)",
@@ -1283,7 +1282,12 @@
 		"status_PENDING": "در انتظار",
 		"status_DONE": "انجام شده",
 		"status_ERROR": "خطا",
+		"order_value": "ارزش سفارش",
 		"stock": "سهم",
+		"quantity_input": "تعداد",
+		"price_input": "قیمت",
+		"validity_input": "اعتبار سفارش",
+		"send_order": "ارسال سفارش",
 		"remain_quantities": "تعداد باقیمانده مورد نیاز",
 		"free_stock_quantity": "تعداد سهام آزاد",
 		"buy_assets_by_free_stock": "استفاده از سهام آزاد برای خرید دارایی",
@@ -1589,7 +1593,7 @@
 		"side_column": "سمت",
 		"open_position_count_column": "تعداد موقعیت باز",
 		"cash_date_column": "تاریخ تسویه نقدی",
-		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
+		"status_contract_column": "وضعیت قرارداد",
 		"request_type_column": "نوع اعمال",
 		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",
@@ -1623,7 +1627,7 @@
 		"side_column": "سمت",
 		"open_position_count_column": "تعداد موقعیت باز",
 		"physical_date_column": "تاریخ تسویه فیزیکی",
-		"status_contract_column": "وضعیت قرارداد (سود یا زیان)",
+		"status_contract_column": "وضعیت قرارداد",
 		"request_type_column": "نوع اعمال",
 		"settlement_price_column": "مبلغ تسویه",
 		"request_for_settlement_column": "تعداد درخواست برای تسویه",

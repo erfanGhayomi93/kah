@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import Modal from '../../Modal';
 
 const Div = styled.div`
-	width: 800px;
-	min-height: 500px;
+	width: 1000px;
+	height: 615px;
 	display: flex;
 	flex-direction: column;
 `;
@@ -24,12 +24,14 @@ const BestModal = forwardRef<HTMLDivElement, IBestModalProps>((props, ref) => {
 	return (
 		<Modal
 			onClose={onClose}
-			style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+			style={{
+				modal: { transform: 'translate(-50%, -50%)' },
+			}}
 			top='50%'
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='   bg-white'>
 				<Best isModal />
 			</Div>
 		</Modal>

@@ -16,6 +16,7 @@ import { useCallback } from 'react';
 interface TableProps {
 	symbolType: Dashboard.TTopSymbols;
 	type: Dashboard.TTopSymbol;
+	isModal?: boolean;
 }
 
 interface TableWrapperProps {
@@ -32,23 +33,23 @@ interface ValuePercentProps {
 
 type TCol = Array<IColDef<Record<TOptionSides, Dashboard.GetTopSymbols.Option.All>>>;
 
-const BestTable = ({ symbolType, type }: TableProps) => {
+const BestTable = ({ symbolType, type, isModal = false }: TableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
 	const { data: optionTopSymbolsData, isLoading: isLoadingOptionTopSymbols } = useGetOptionTopSymbolsQuery({
-		queryKey: ['getOptionTopSymbolsQuery', type as Dashboard.GetTopSymbols.Option.Type],
+		queryKey: ['getOptionTopSymbolsQuery', type as Dashboard.GetTopSymbols.Option.Type, isModal ? 100 : 4],
 		enabled: symbolType === 'Option',
 	});
 
 	const { data: baseTopSymbolsData, isLoading: isLoadingBaseTopSymbolsData } = useGetBaseTopSymbolsQuery({
-		queryKey: ['getBaseTopSymbolsQuery', type as Dashboard.GetTopSymbols.BaseSymbol.Type],
+		queryKey: ['getBaseTopSymbolsQuery', type as Dashboard.GetTopSymbols.BaseSymbol.Type, isModal ? 100 : 4],
 		enabled: symbolType === 'BaseSymbol',
 	});
 
 	const { data: topSymbolsData, isLoading: isLoadingTopSymbolsData } = useGetTopSymbolsQuery({
-		queryKey: ['getTopSymbolsQuery', type as Dashboard.GetTopSymbols.Symbol.Type],
+		queryKey: ['getTopSymbolsQuery', type as Dashboard.GetTopSymbols.Symbol.Type, isModal ? 100 : 4],
 		enabled: symbolType === 'Symbol',
 	});
 
@@ -512,7 +513,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 				: [topSymbolsData ?? [], isLoadingTopSymbolsData];
 
 	return (
-		<div className='relative h-full'>
+		<div className='h-full'>
 			{isLoading ? (
 				<Loading />
 			) : data.length > 0 ? (
@@ -538,7 +539,7 @@ const BestTable = ({ symbolType, type }: TableProps) => {
 					)}
 				</div>
 			) : (
-				<NoData />
+				<NoData className='absolute center' />
 			)}
 		</div>
 	);

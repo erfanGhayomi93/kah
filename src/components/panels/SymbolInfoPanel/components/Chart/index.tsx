@@ -14,7 +14,7 @@ import { dateTypesAPI } from '@/constants';
 import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import Section, { type ITabIem } from '../../common/Section';
 
 interface ChartIntervalProps {
@@ -38,11 +38,11 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 		tab: 'symbol_chart',
 	});
 
-	const { data, isLoading } = useSymbolChartDataQuery({
+	const { data: symbolChartData, isLoading } = useSymbolChartDataQuery({
 		queryKey: ['symbolChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
 	});
 
-	const { data: openPositionData } = useOpenPositionChartDataQuery({
+	const { data: optionOpenPositionData } = useOpenPositionChartDataQuery({
 		queryKey: ['openPositionChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
 		enabled: inputs.tab === 'open_positions' && isOption,
 	});
@@ -54,7 +54,7 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 
 	const { data: nationalValueData } = useNotionalValueChartDataQuery({
 		queryKey: ['notionalValueChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
-		enabled: inputs.tab === 'notional_value_tab' && isOption,
+		enabled: inputs.tab === 'notional_value' && isOption,
 	});
 
 	const onChangeTab = (id: TSymbolChartTabStates | string) => {
@@ -75,7 +75,7 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 
 		if (isOption) {
 			value.push({
-				id: 'notional_value_tab',
+				id: 'notional_value',
 				title: t('symbol_info_panel.notional_value_tab'),
 			});
 		}
@@ -83,48 +83,26 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 		return value;
 	}, [isOption]);
 
-	const RenderChart = useCallback(() => {
-		if (inputs.tab === 'symbol_chart') {
-			return (
-				<SymbolChart<Symbol.ChartData> kindChart='symbolChart' data={data ?? []} height='208px' {...inputs} />
-			);
-		}
-		if (inputs.tab === 'open_positions' && !isOption) {
-			return (
-				<SymbolChart<Option.BaseOpenPositionChart>
-					data={baseOpenPositionData ?? []}
-					height='208px'
-					kindChart='openPosition'
-					{...inputs}
-				/>
-			);
-		}
-		if (inputs.tab === 'open_positions' && isOption) {
-			return (
-				<SymbolChart<Option.OpenPositionChart>
-					kindChart='openPosition'
-					data={openPositionData ?? []}
-					height='208px'
-					{...inputs}
-				/>
-			);
-		}
-		if (inputs.tab === 'notional_value_tab' && isOption) {
-			return (
-				<SymbolChart<Option.NotionalValueChart>
-					kindChart='nationalValue'
-					data={nationalValueData ?? []}
-					height='208px'
-					{...inputs}
-				/>
-			);
-		}
-	}, [inputs.tab, isOption, data, openPositionData, baseOpenPositionData, nationalValueData]);
+	const chartData =
+		(inputs.tab === 'symbol_chart'
+			? symbolChartData
+			: inputs.tab === 'notional_value'
+				? nationalValueData
+				: isOption
+					? optionOpenPositionData
+					: baseOpenPositionData) ?? [];
 
 	return (
 		<Section name='chart' defaultActiveTab={inputs.tab} tabs={tabs} onChange={onChangeTab}>
 			<div className='relative h-full pb-16 flex-column'>
-				{Array.isArray(data) && data.length > 0 ? <div className='pt-16'>{RenderChart()}</div> : <NoData />}
+				{Array.isArray(chartData) && chartData.length > 0 ? (
+					<div className='pt-16'>
+						{/* @ts-expect-error: Typescript can not detect "chartData" type based on input.tab, It's working fine */}
+						<SymbolChart data={chartData ?? []} height='208px' {...inputs} />
+					</div>
+				) : (
+					<NoData />
+				)}
 
 				<div style={{ flex: '0 0 2.4rem' }} className='px-8 flex-items-center'>
 					<ul className='flex-1 gap-16 flex-items-start'>

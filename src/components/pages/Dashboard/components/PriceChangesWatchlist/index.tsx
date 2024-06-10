@@ -31,7 +31,6 @@ const PriceChangesWatchlist = ({ isModal = false }: IPriceChangeWatchlistProps) 
 			id='price_changes_watchlist'
 			title={t('home.price_changes_watchlist')}
 			info={t('tooltip.price_change_watchlist_section')}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setPriceChangeWatchlistModal(getPriceChangeWatchlist ? null : {}))}
 		>

@@ -13,7 +13,7 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 	});
 
 	return (
-		<div className='relative flex-1 p-8'>
+		<div className='relative flex-1 pt-16'>
 			{isLoading ? (
 				<Loading />
 			) : !Array.isArray(data) || data.length === 0 ? (

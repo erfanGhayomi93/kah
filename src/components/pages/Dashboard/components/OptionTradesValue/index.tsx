@@ -65,7 +65,6 @@ const OptionTradesValueModal = ({ isModal }: IOptionTradesValueModalProps) => {
 					{ id: 'PutToCall', title: t('home.tab_put_option_relative_call') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setOptionTradeValueModal(getOptionTradeValue ? null : {}))}
 		>

@@ -7,7 +7,7 @@ import Modal from '../../Modal';
 
 const Div = styled.div`
 	width: 800px;
-	min-height: 500px;
+	min-height: 600px;
 	display: flex;
 	flex-direction: column;
 `;

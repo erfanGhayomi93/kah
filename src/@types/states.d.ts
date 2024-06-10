@@ -445,7 +445,7 @@ declare namespace OrderBasket {
 	export type Order = TSymbolStrategy;
 }
 
-declare type TSymbolChartTabStates = 'symbol_chart' | 'open_positions' | 'notional_value_tab';
+declare type TSymbolChartTabStates = 'symbol_chart' | 'open_positions' | 'notional_value';
 
 declare interface ISymbolChartStates {
 	interval: 'daily' | 'weekly' | 'monthly' | 'yearly';

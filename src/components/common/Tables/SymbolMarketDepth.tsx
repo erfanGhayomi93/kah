@@ -17,32 +17,32 @@ interface IRowData {
 
 interface RowProps extends IRowData {
 	side: 'buy' | 'sell';
-	compact: boolean;
 	disabled: boolean;
+	rowHeight: number;
 }
 
 interface GridProps {
 	side: 'buy' | 'sell';
-	compact: boolean;
 	data: IRowData[];
 	lowThreshold: number;
 	highThreshold: number;
+	rowHeight: number;
 }
 
 interface SymbolMarketDepthProps {
 	symbolISIN: string;
-	length?: number;
-	compact?: boolean;
 	lowThreshold: number;
 	highThreshold: number;
+	length?: number;
+	rowHeight?: number;
 }
 
 const SymbolMarketDepth = ({
 	symbolISIN,
+	rowHeight = 32,
 	lowThreshold,
 	highThreshold,
 	length,
-	compact = true,
 }: SymbolMarketDepthProps) => {
 	const queryClient = useQueryClient();
 
@@ -50,7 +50,6 @@ const SymbolMarketDepth = ({
 
 	const { data } = useSymbolBestLimitQuery({
 		queryKey: ['symbolBestLimitQuery', symbolISIN],
-		enabled: Boolean(symbolISIN),
 	});
 
 	const onItemUpdate = (updateInfo: ItemUpdate) => {
@@ -168,15 +167,15 @@ const SymbolMarketDepth = ({
 		<div className='flex flex-1 gap-8'>
 			<Grid
 				side='buy'
+				rowHeight={rowHeight}
 				data={dataModify.buy}
-				compact={compact}
 				lowThreshold={lowThreshold}
 				highThreshold={highThreshold}
 			/>
 			<Grid
 				side='sell'
+				rowHeight={rowHeight}
 				data={dataModify.sell}
-				compact={compact}
 				lowThreshold={lowThreshold}
 				highThreshold={highThreshold}
 			/>
@@ -184,50 +183,50 @@ const SymbolMarketDepth = ({
 	);
 };
 
-const Row = ({ price = 0, count = 0, quantity = 0, side, percent, compact, disabled }: RowProps) => (
+const Row = ({ price = 0, count = 0, quantity = 0, side, percent, rowHeight, disabled }: RowProps) => (
 	<div
+		style={{ height: `${rowHeight}px` }}
 		className={clsx(
 			'relative flex-justify-between *:text-base *:text-gray-900',
 			side === 'sell' && 'flex-row-reverse',
-			compact ? 'h-32' : 'h-40',
 			disabled && 'cursor-default opacity-50',
 		)}
 	>
-		{!disabled && (
-			<div
-				style={{ width: `${Math.min(percent, 100)}%`, height: '2.8rem', borderRadius: '2px' }}
-				className={cn(
-					'pointer-events-none absolute top-1/2 -translate-y-1/2 transform',
-					side === 'buy' ? 'left-0 bg-success-200/10' : 'right-0 bg-error-200/10',
-				)}
-			/>
-		)}
-
 		<div
 			onCopy={(e) => copyNumberToClipboard(e, count)}
-			style={{ flex: '0 0 25%', maxWidth: '7.2rem' }}
-			className='text-center'
+			style={{ flex: '0 0 30%', maxWidth: '7.2rem' }}
+			className='relative z-10 text-center'
 		>
 			{sepNumbers(String(count))}
 		</div>
 		<div
 			onCopy={(e) => copyNumberToClipboard(e, quantity)}
-			style={{ flex: '0 0 50%' }}
-			className='px-8 text-center'
+			style={{ flex: '0 0 40%' }}
+			className='relative z-10 text-center'
 		>
 			{sepNumbers(String(quantity))}
 		</div>
 		<div
 			onCopy={(e) => copyNumberToClipboard(e, price)}
-			style={{ flex: '0 0 25%' }}
-			className={clsx(side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}
+			style={{ flex: '0 0 30%' }}
+			className={clsx('relative z-10', side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}
 		>
 			{sepNumbers(String(price))}
 		</div>
+
+		{!disabled && (
+			<div
+				style={{ width: `${Math.min(percent, 100)}%`, height: `${rowHeight - 4}px` }}
+				className={clsx(
+					'pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-sm',
+					side === 'buy' ? 'left-0 bg-success-100/10' : 'right-0 bg-error-100/10',
+				)}
+			/>
+		)}
 	</div>
 );
 
-const Grid = ({ side, data, compact, lowThreshold, highThreshold }: GridProps) => {
+const Grid = ({ side, data, lowThreshold, highThreshold, rowHeight = 40 }: GridProps) => {
 	const t = useTranslations();
 
 	return (
@@ -238,13 +237,13 @@ const Grid = ({ side, data, compact, lowThreshold, highThreshold }: GridProps) =
 					side === 'sell' && 'flex-row-reverse',
 				)}
 			>
-				<div style={{ flex: '0 0 25%', maxWidth: '7.2rem' }} className='text-center'>
+				<div style={{ flex: '0 0 30%', maxWidth: '7.2rem' }} className='text-center'>
 					{t('market_depth.count_column')}
 				</div>
-				<div style={{ flex: '0 0 50%' }} className='text-center'>
+				<div style={{ flex: '0 0 40%' }} className='text-center'>
 					{t('market_depth.quantity_column')}
 				</div>
-				<div style={{ flex: '0 0 25%' }} className={cn(side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}>
+				<div style={{ flex: '0 0 30%' }} className={cn(side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}>
 					{t('market_depth.price_column')}
 				</div>
 			</div>
@@ -258,7 +257,7 @@ const Grid = ({ side, data, compact, lowThreshold, highThreshold }: GridProps) =
 						quantity={quantity}
 						count={count}
 						percent={percent}
-						compact={compact}
+						rowHeight={rowHeight}
 						disabled={!isBetween(lowThreshold, price, highThreshold)}
 					/>
 				))}

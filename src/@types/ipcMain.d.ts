@@ -1,3 +1,5 @@
+type TExecuteStrategyFieldName = 'bestSellLimitPrice_1' | 'bestBuyLimitPrice_1';
+
 declare interface IpcMainChannels {
 	send_order: IOFields;
 	send_orders: IOFields[];
@@ -6,6 +8,12 @@ declare interface IpcMainChannels {
 	set_transactions_filters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>;
 	refetch_active_order_tab: undefined;
 	set_selected_orders: Order.TOrder[];
+	'execute_strategy:symbol_data': {
+		itemName: string;
+		fieldName: TExecuteStrategyFieldName;
+		value: number;
+	};
+	'execute_strategy:get_symbol_data': [string, TExecuteStrategyFieldName];
 	set_instant_deposit_reports_filters: Omit<
 		InstantDepositReports.IInstantDepositReportsFilters,
 		'pageNumber' | 'pageSize'
