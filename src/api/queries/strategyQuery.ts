@@ -121,19 +121,38 @@ export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrate
 	},
 });
 
-export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategyBaseType<'longPutQuery'>>({
+export const useLongPutStrategyQuery = createQuery<
+	Strategy.LongPut[],
+	['longPutQuery', IStrategyOptionsKey, Partial<ILongPutFiltersModalState>]
+>({
 	staleTime: CACHE_TIME,
-	queryKey: ['longPutQuery', defaultStrategyOptions],
+	queryKey: ['longPutQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.bepDifference) {
+				if (typeof filters.bepDifference === 'number') params.LeastBEPDifference = filters.bepDifference;
+			}
+
+			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
 
 			const response = await axios.get<ServerResponse<Strategy.LongPut[]>>(routes.strategy.LongPut, {
 				signal,
