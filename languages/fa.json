@@ -1110,7 +1110,13 @@
 		"LSPIOTM": "وضعیت اختیار خرید اعمال پایین",
 		"HSP_least_open_positions": "موقعیت باز کال خرید",
 		"LSP_least_open_positions": "موقعیت باز کال فروش",
-		"least_YTM": "YTM بازده موثر تا سررسید"
+		"least_YTM": "YTM بازده موثر تا سررسید",
+		"call_IOTM": "وضعیت اختیار خرید",
+		"put_IOTM": "وضعیت اختیار فروش",
+		"call_least_open_positions": "موقعیت باز کال",
+		"put_least_open_positions": "موقعیت باز پوت",
+		"least_profit_percent": "YTM بازده موثر تا سررسید",
+		"least_YTM_put": "YTM سرخط فروش"
 	},
 	"CoveredCall": {
 		"title": "کاورد کال",

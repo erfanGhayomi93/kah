@@ -188,19 +188,41 @@ export const useLongPutStrategyQuery = createQuery<
 	},
 });
 
-export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TStrategyBaseType<'conversionQuery'>>({
+export const useConversionStrategyQuery = createQuery<
+	Strategy.Conversion[],
+	['conversionQuery', IStrategyOptionsKey, Partial<IConversionFiltersModalState>]
+>({
 	staleTime: CACHE_TIME,
-	queryKey: ['conversionQuery', defaultStrategyOptions],
+	queryKey: ['conversionQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.callIOTM && filters.callIOTM.length > 0)
+				params.CallIOTM = filters.callIOTM.map((item) => item);
+			if (filters?.putIOTM && filters.putIOTM.length > 0) params.PutIOTM = filters.putIOTM.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters.callLeastOpenPositions) params.CallLeastOpenPositions = filters.callLeastOpenPositions;
+			if (filters.putLeastOpenPositions) params.PutLeastOpenPositions = filters.putLeastOpenPositions;
+
+			if (filters.leastProfitPercent) params.LeastProfitPercent = filters.leastProfitPercent;
+
+			if (filters.leastYTM) params.LeastYTM = filters.leastYTM;
 
 			const response = await axios.get<ServerResponse<Strategy.Conversion[]>>(routes.strategy.Conversion, {
 				signal,
@@ -294,7 +316,7 @@ export const useBullCallSpreadStrategyQuery = createQuery<
 			if (filters.LSPLeastOpenPositions) params.LSPLeastOpenPositions = filters.LSPLeastOpenPositions;
 
 			if (filters.leastMaxProfitPercent) params.LeastMaxProfitPercent = filters.leastMaxProfitPercent;
-			
+
 			if (filters.leastYTM) params.LeastYTM = filters.leastYTM;
 
 			const response = await axios.get<ServerResponse<Strategy.BullCallSpread[]>>(
