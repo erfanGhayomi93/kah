@@ -6,7 +6,7 @@ import FreezeStep from './FreezeStep';
 import OptionStep from './OptionStep';
 
 interface StepsProps {
-	steps: CreateStrategy.Input[];
+	steps: CreateStrategy.Step[];
 }
 
 const Steps = ({ steps }: StepsProps) => {
@@ -24,6 +24,7 @@ const Steps = ({ steps }: StepsProps) => {
 								{...item}
 							/>
 						)}
+
 						{item.type === 'freeze' && (
 							<FreezeStep
 								className={clsx(
@@ -33,6 +34,7 @@ const Steps = ({ steps }: StepsProps) => {
 								{...item}
 							/>
 						)}
+
 						{item.type === 'option' && (
 							<OptionStep
 								className={clsx(

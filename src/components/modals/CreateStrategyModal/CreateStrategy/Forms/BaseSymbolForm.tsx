@@ -1,46 +1,35 @@
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import InputLegend from '@/components/common/Inputs/InputLegend';
-import { AngleLeftSVG } from '@/components/icons';
+import { ArrowLeftSVG } from '@/components/icons';
 import { convertStringToInteger } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-
-type TEditableInput = Pick<CreateStrategy.IBaseSymbol, 'quantity' | 'estimatedBudget' | 'buyAssetsBySymbol'>;
 
 interface BaseSymbolFormProps extends CreateStrategy.IBaseSymbol {
+	pending: boolean;
 	nextStep: () => void;
+	onChange: <T extends keyof CreateStrategy.IBaseSymbol>(name: T, value: CreateStrategy.IBaseSymbol[T]) => void;
 }
 
 const BaseSymbolForm = ({
-	type,
-	symbolTitle,
-	symbolISIN,
 	quantity,
 	estimatedBudget,
 	buyAssetsBySymbol,
-	orderPrice,
-	orderQuantity,
-	status,
+	pending,
 	nextStep,
+	onChange,
 }: BaseSymbolFormProps) => {
 	const t = useTranslations();
 
-	const [inputs, setInputs] = useState<TEditableInput>({
-		quantity,
-		estimatedBudget,
-		buyAssetsBySymbol,
-	});
-
-	const setProperty = <T extends keyof TEditableInput>(name: T, value: CreateStrategy.IBaseSymbol[T]) => {
-		setInputs((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
-
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+
+		try {
+			if (pending) throw new Error();
+			nextStep();
+		} catch (e) {
+			//
+		}
 	};
 
 	return (
@@ -48,8 +37,8 @@ const BaseSymbolForm = ({
 			<div className='w-full flex-1 gap-16 flex-column'>
 				<InputLegend
 					type='text'
-					value={inputs.estimatedBudget}
-					onChange={(v) => setProperty('estimatedBudget', Number(convertStringToInteger(v)))}
+					value={estimatedBudget}
+					onChange={(v) => onChange('estimatedBudget', Number(convertStringToInteger(v)))}
 					placeholder={t('create_strategy.estimated_budget')}
 					prefix={t('common.rial')}
 					maxLength={16}
@@ -57,8 +46,8 @@ const BaseSymbolForm = ({
 
 				<InputLegend
 					type='text'
-					value={inputs.quantity}
-					onChange={(v) => setProperty('quantity', Number(convertStringToInteger(v)))}
+					value={quantity}
+					onChange={(v) => onChange('quantity', Number(convertStringToInteger(v)))}
 					placeholder={t('create_strategy.required_quantity')}
 					prefix={t('create_strategy.stock')}
 					separator={false}
@@ -74,9 +63,9 @@ const BaseSymbolForm = ({
 				</div>
 
 				<Checkbox
-					checked={inputs.buyAssetsBySymbol}
+					checked={buyAssetsBySymbol}
 					label={t('create_strategy.buy_assets_by_free_stock')}
-					onChange={(v) => setProperty('buyAssetsBySymbol', v)}
+					onChange={(v) => onChange('buyAssetsBySymbol', v)}
 				/>
 			</div>
 
@@ -89,9 +78,9 @@ const BaseSymbolForm = ({
 					</span>
 				</div>
 
-				<Button type='submit' className='h-48 rounded text-lg shadow btn-success'>
+				<Button disabled={pending} type='submit' className='h-48 rounded text-lg shadow btn-success'>
 					{t('side.buy')}
-					<AngleLeftSVG />
+					<ArrowLeftSVG />
 				</Button>
 			</div>
 		</form>

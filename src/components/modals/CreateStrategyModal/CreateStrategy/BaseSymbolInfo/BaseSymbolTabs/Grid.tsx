@@ -30,8 +30,9 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 				id: 'market_map',
 				title: t('bs_modal.market_depth'),
 				render: () => (
-					<div className='relative flex-1 px-8 pb-8 pt-16'>
+					<div className='relative flex-1 pt-16'>
 						<SymbolMarketDepth
+							rowHeight={40}
 							symbolISIN={symbolISIN}
 							lowThreshold={lowThreshold}
 							highThreshold={highThreshold}
@@ -49,14 +50,14 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 	);
 
 	return (
-		<div style={{ height: '30.8rem' }} className='relative rounded border border-gray-500 bg-white flex-column'>
+		<div style={{ height: '30.8rem' }} className='relative bg-white flex-column'>
 			<Tabs
 				data={tabs}
 				defaultActiveTab='market_map'
 				renderTab={(item, activeTab) => (
 					<button
 						className={clsx(
-							'flex-1 p-8 transition-colors',
+							'h-44 w-88 transition-colors',
 							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
 						)}
 						type='button'

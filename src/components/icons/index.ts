@@ -91,6 +91,7 @@ import PinSVG from './pin.svg';
 import PlaySVG from './play.svg';
 import PlusSquareSVG from './plus-square.svg';
 import PlusSVG from './plus.svg';
+import QuestionCircleOutlineSVG from './question-circle-outline.svg';
 import ReceptionSVG from './reception.svg';
 import RefreshSVG from './refresh.svg';
 import ReloadSVG from './reload.svg';
@@ -221,6 +222,7 @@ export {
 	PlaySVG,
 	PlusSVG,
 	PlusSquareSVG,
+	QuestionCircleOutlineSVG,
 	ReceptionSVG,
 	RefreshSVG,
 	ReloadSVG,

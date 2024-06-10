@@ -31,7 +31,7 @@ const InputLegend = ({
 	return (
 		<label
 			className={clsx(
-				`relative h-${height} flex-1 rounded flex-items-center input-group`,
+				`relative h-${height} w-full rounded flex-items-center input-group`,
 				!placeholder && 'border border-gray-500',
 			)}
 		>
