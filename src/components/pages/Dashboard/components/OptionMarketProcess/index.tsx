@@ -66,7 +66,6 @@ const OptionMarketProcess = ({ isModal = false }: IOptionMarketProcessProps) => 
 					{ id: 'NotionalValue', title: t('home.tab_notional_value') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setOptionMarketProcessModal(getOptionMarketProcess ? null : {}))}
 		>
