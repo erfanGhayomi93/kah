@@ -1116,7 +1116,9 @@
 		"call_least_open_positions": "موقعیت باز کال",
 		"put_least_open_positions": "موقعیت باز پوت",
 		"least_profit_percent": "YTM بازده موثر تا سررسید",
-		"least_YTM_put": "YTM سرخط فروش"
+		"least_YTM_put": "YTM سرخط فروش",
+		"HSP_least_open_positions_put": "موقعیت باز پوت خرید",
+		"LSP_least_open_positions_put": "موقعیت باز پوت فروش"
 	},
 	"CoveredCall": {
 		"title": "کاورد کال",

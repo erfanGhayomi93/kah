@@ -2,9 +2,15 @@ import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsBearPutSpread } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal, setManageColumnsModal } from '@/features/slices/modalSlice';
+import {
+	setAnalyzeModal,
+	setDescriptionModal,
+	setManageColumnsModal,
+	setStrategyFiltersModal,
+} from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -39,6 +45,8 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		initialColumnsBearPutSpread,
 	);
 
+	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<IBearPutSpreadSpreadFiltersModalState>>({});
+
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
@@ -50,6 +58,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		queryKey: [
 			'bearPutSpreadQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+			{ ...filters },
 		],
 	});
 
@@ -146,6 +155,139 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsBearPutSpread),
+			}),
+		);
+	};
+
+	const onFiltersChanged = (newFilters: Partial<ILongCallFiltersModalState>) => {
+		setFilters(newFilters);
+	};
+
+	const showFilters = () => {
+		dispatch(
+			setStrategyFiltersModal({
+				baseSymbols: filters.baseSymbols ?? [],
+				onSubmit: onFiltersChanged,
+				filters: [
+					{
+						id: 'HSPIOTM',
+						title: t('strategy_filters.HSPIOTM'),
+						mode: 'array',
+						type: 'string',
+						data: [
+							{
+								value: 'atm',
+								title: t('strategy_filters.atm'),
+								icon: <StraightLineSVG />,
+								className: {
+									enable: 'btn-secondary',
+									disabled: 'btn-secondary-outline',
+								},
+							},
+							{
+								value: 'otm',
+								title: t('strategy_filters.otm'),
+								icon: <ChartDownSVG />,
+								className: {
+									enable: 'btn-error',
+									disabled: 'btn-error-outline',
+								},
+							},
+							{
+								value: 'itm',
+								title: t('strategy_filters.itm'),
+								icon: <ChartUpSVG />,
+								className: {
+									enable: 'btn-success',
+									disabled: 'btn-success-outline',
+								},
+							},
+						],
+						initialValue: filters?.HSPIOTM ?? [],
+					},
+					{
+						id: 'LSPIOTM',
+						title: t('strategy_filters.LSPIOTM'),
+						mode: 'array',
+						type: 'string',
+						data: [
+							{
+								value: 'atm',
+								title: t('strategy_filters.atm'),
+								icon: <StraightLineSVG />,
+								className: {
+									enable: 'btn-secondary',
+									disabled: 'btn-secondary-outline',
+								},
+							},
+							{
+								value: 'otm',
+								title: t('strategy_filters.otm'),
+								icon: <ChartDownSVG />,
+								className: {
+									enable: 'btn-error',
+									disabled: 'btn-error-outline',
+								},
+							},
+							{
+								value: 'itm',
+								title: t('strategy_filters.itm'),
+								icon: <ChartUpSVG />,
+								className: {
+									enable: 'btn-success',
+									disabled: 'btn-success-outline',
+								},
+							},
+						],
+						initialValue: filters?.LSPIOTM ?? [],
+					},
+					{
+						id: 'dueDays',
+						title: t('strategy_filters.due_days'),
+						mode: 'range',
+						type: 'integer',
+						label: [t('strategy_filters.from'), t('strategy_filters.to')],
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
+					},
+					{
+						id: 'HSPLeastOpenPositions',
+						title: t('strategy_filters.HSP_least_open_positions_put'),
+						mode: 'single',
+						type: 'integer',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.HSPLeastOpenPositions ?? null,
+					},
+					{
+						id: 'LSPLeastOpenPositions',
+						title: t('strategy_filters.LSP_least_open_positions_put'),
+						mode: 'single',
+						type: 'integer',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.LSPLeastOpenPositions ?? null,
+					},
+					{
+						id: 'leastMaxProfitPercent',
+						title: t('strategy_filters.max_profit'),
+						mode: 'single',
+						type: 'percent',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.leastMaxProfitPercent ?? null,
+						titleHint: t('strategy_filters.max_profit_tooltip'),
+					},
+					{
+						id: 'leastYTM',
+						title: t('strategy_filters.least_YTM'),
+						mode: 'single',
+						type: 'percent',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.leastYTM ?? null,
+					},
+				],
 			}),
 		);
 	};
@@ -472,6 +614,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
+					onShowFilters={showFilters}
 				/>
 
 				<Table<Strategy.BearPutSpread>
