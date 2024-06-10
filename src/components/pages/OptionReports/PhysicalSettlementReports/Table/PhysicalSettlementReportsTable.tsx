@@ -94,7 +94,7 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 					?.hidden,
 				valueGetter: (row) => (row.cashSettlementDate ? dateFormatter(row.cashSettlementDate, 'date') : '-'),
 			},
-			/* وضعیت قرارداد (سود یا زیان)  */
+			/* وضعیت قرارداد */
 			{
 				colId: 'pandLStatus',
 				headerName: t('physical_settlement_reports_page.status_contract_column'),

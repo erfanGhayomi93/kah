@@ -103,7 +103,7 @@ const MarketViewModal = lazy(() => import('./DashboardModals/MarketViewModal'));
 
 const BestModal = lazy(() => import('./DashboardModals/BestModal'));
 
-const UserInprogressBarModal = lazy(() => import('./DashboardModals/UserProgressBarModal'));
+// const UserInprogressBarModal = lazy(() => import('./DashboardModals/UserProgressBarModal')); //
 
 const CompareTransactionValueModal = lazy(() => import('./DashboardModals/CompareTransactionValueModal'));
 
@@ -552,13 +552,13 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			{/* <ModalAnimatePresence>
 				{userProgressBar && (
 					<ModalSuspense>
 						<UserInprogressBarModal />
 					</ModalSuspense>
 				)}
-			</ModalAnimatePresence>
+			</ModalAnimatePresence> */}
 
 			<ModalAnimatePresence>
 				{compareTransactionValue && (

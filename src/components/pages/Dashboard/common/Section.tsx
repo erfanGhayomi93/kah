@@ -4,6 +4,7 @@ import RenderOnViewportEntry from '@/components/common/RenderOnViewportEntry ';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import Tooltip from '@/components/common/Tooltip';
 import { ExpandSVG, InfoCircleSVG, XCircleSVG } from '@/components/icons';
+import { cn } from '@/utils/helpers';
 import clsx from 'clsx';
 
 export interface ITab<T> {
@@ -27,6 +28,7 @@ interface SectionProps<T, B> {
 	onTopTabChange?: (v: T) => void;
 	onBottomTabChange?: (v: B) => void;
 	closeable?: boolean;
+	isModal?: boolean;
 }
 
 const Section = <T extends string = string, B extends string = string>({
@@ -42,6 +44,7 @@ const Section = <T extends string = string, B extends string = string>({
 	onTopTabChange,
 	onBottomTabChange,
 	closeable = true,
+	isModal = false,
 }: SectionProps<T, B>) => {
 	const onClose = () => {
 		ipcMain.send('home.hide_section', { id, hidden: true });
@@ -51,14 +54,21 @@ const Section = <T extends string = string, B extends string = string>({
 		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
-					<div className='h-full gap-8 rounded bg-gray-200 px-8 flex-items-center'>
-						<button
-							onClick={closeable ? onClose : onExpand}
-							type='button'
-							className='text-gray-700 transition-colors flex-justify-center hover:text-error-100'
-						>
-							<XCircleSVG width='1.8rem' height='1.8rem' />
-						</button>
+					<div
+						className={cn(
+							'h-full gap-8 rounded bg-gray-200 px-8 flex-items-center',
+							!closeable && !expandable && !info && 'bg-transparent',
+						)}
+					>
+						{closeable && (
+							<button
+								onClick={expandable ? onClose : onExpand}
+								type='button'
+								className='text-gray-700 transition-colors flex-justify-center hover:text-error-100'
+							>
+								<XCircleSVG width='1.8rem' height='1.8rem' />
+							</button>
+						)}
 
 						{expandable && (
 							<button
@@ -109,7 +119,12 @@ const Section = <T extends string = string, B extends string = string>({
 				<h1 className='text-lg font-medium text-gray-900'>{title}</h1>
 			</div>
 
-			<RenderOnViewportEntry className='relative h-full flex-1 overflow-hidden p-8 '>
+			<RenderOnViewportEntry
+				className={clsx(
+					'relative h-full flex-1 overflow-hidden p-8',
+					isModal && 'flex flex-col items-center justify-center',
+				)}
+			>
 				{children ?? <NoData className='absolute center' />}
 			</RenderOnViewportEntry>
 

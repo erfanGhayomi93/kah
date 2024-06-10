@@ -85,7 +85,7 @@ const ManageDashboardLayout = forwardRef<HTMLDivElement, ManageDashboardLayoutPr
 				{ id: 'due_dates', title: t('home.due_dates') },
 				{ id: 'meetings', title: t('home.meetings') },
 				{ id: 'recent_activities', title: t('home.recent_activities') },
-				{ id: 'user_progress_bar', title: t('home.user_progress_bar') },
+				// { id: 'user_progress_bar', title: t('home.user_progress_bar') },
 			],
 		],
 		[visibleItems],
