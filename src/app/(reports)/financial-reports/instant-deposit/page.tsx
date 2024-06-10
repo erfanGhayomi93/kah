@@ -1,13 +1,16 @@
 import InstantDepositReports from '@/components/pages/FinancialReports/InstantDepositReports';
 import type { NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return <InstantDepositReports />;
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return {
-		title: 'گزارشات واریز آنی - کهکشان',
+		title: t('instant_deposit_reposts'),
 	};
 };
 

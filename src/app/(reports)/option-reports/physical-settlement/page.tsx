@@ -1,13 +1,16 @@
 import PhysicalSettlementReports from '@/components/pages/OptionReports/PhysicalSettlementReports';
 import type { NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return <PhysicalSettlementReports />;
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return {
-		title: 'گزارشات تسویه فیزیکی - کهکشان',
+		title: t('physical_settlement_reports'),
 	};
 };
 

@@ -37,8 +37,8 @@ const ToolBar = () => {
 				isActive: !!brokerURLs,
 			},
 			{
-				title: t('history_settings'),
-				href: '/settings/history/',
+				title: t('sessions_settings'),
+				href: '/settings/sessions/',
 				isActive: true,
 			},
 		],

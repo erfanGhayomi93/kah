@@ -1,13 +1,16 @@
 import CashSettlementReports from '@/components/pages/OptionReports/CashSettlementReports';
 import type { NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return <CashSettlementReports />;
 };
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return {
-		title: 'گزارشات تسویه نقدی - کهکشان',
+		title: t('cash_settlement_reports'),
 	};
 };
 

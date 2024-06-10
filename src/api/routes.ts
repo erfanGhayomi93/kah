@@ -61,6 +61,9 @@ const routes = {
 		GetContractInfoHistory: `${BASE_URL}/Option/v1/GetContractInfoHistory`,
 		GetOpenPositionReport: `${BASE_URL}/Option/v1/GetOpenPositionReport`,
 		OptionSymbolSearch: `${BASE_URL}/Option/v1/OptionSymbolSearch`,
+		OptionOpenPositionHistory: `${BASE_URL}/Option/v1/OptionOpenPositionHistory`,
+		BaseOpenPositionHistory: `${BASE_URL}/Option/v1/BaseOpenPositionHistory`,
+		NotionalValueHistory: `${BASE_URL}/Option/v1/NotionalValueHistory`,
 	},
 
 	optionWatchlist: {

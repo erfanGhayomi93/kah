@@ -515,15 +515,18 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 
 	const setSector = (node: SectorNode | SymbolNode) => {
 		try {
-			// const sectorList = (queryClient.getQueryData(['marketMapSectorsQuery']) || []) as MarketMap.SectorAPI[];
-			// const { data } = node;
-			// if (!('sc' in data)) return;
-			// const sectorCode = Number(String(data.sc).trim());
-			// const sector = sectorList.find((sector) => Number(sector.id) === sectorCode) || null;
-			// setFilters((values) => ({
-			// 	...values,
-			// 	sector: Number(values.sector?.id) === sectorCode ? null : sector,
-			// }));
+			const sectorList = (queryClient.getQueryData(['marketMapQuery']) || []) as MarketMap.SectorAPI[];
+
+			const { data } = node;
+			if (!('sc' in data)) return;
+
+			const sectorCode = Number(String(data.sc).trim());
+			const sector = sectorList.find((sector) => Number(sector.id) === sectorCode) || null;
+
+			setFilters((values) => ({
+				...values,
+				sector: Number(values.sector?.id) === sectorCode ? null : sector,
+			}));
 		} catch (e) {
 			//
 		}
