@@ -1,11 +1,13 @@
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import BaseSymbolAdvanceSearch from '@/components/common/Symbol/BaseSymbolAdvanceSearch';
+import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
 import { setStrategyFiltersModal } from '@/features/slices/modalSlice';
 import { type NStrategyFilter } from '@/features/slices/types/modalSlice.interfaces';
 import { useInputs } from '@/hooks';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import Modal, { Header } from '../Modal';
 import ArrayString from './components/ArrayString';
 import Filter from './components/Filter';
@@ -134,6 +136,23 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 			return null;
 		};
 
+		const TABS = useMemo(
+			() => [
+				{
+					id: 'simple',
+					title: t('simple_filters'),
+					render: null,
+				},
+				{
+					id: 'conditional',
+					title: t('conditional_filters'),
+					render: null,
+					disabled: true,
+				},
+			],
+			[],
+		);
+
 		useEffect(() => {
 			const values: TInput = {
 				baseSymbols: [],
@@ -158,40 +177,59 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 				ref={ref}
 				{...props}
 			>
-				<div style={{ width: '70rem' }} className='max-w-full flex-column'>
+				<div style={{ width: '70rem' }} className='max-w-full bg-white flex-column'>
 					<Header label={t('title')} onClose={onCloseModal} />
 
-					<form onSubmit={submit} className='gap-24 bg-white p-24 flex-column'>
-						<ul className='gap-32 flex-column'>
-							{!loading && (
-								<>
-									<li>
-										<BaseSymbolAdvanceSearch
-											values={inputs.baseSymbols}
-											onChange={(values) => setFieldValue('baseSymbols', values)}
-										/>
-									</li>
-
-									{filters.map((item) => (
-										<Filter
-											key={item.id}
-											title={item.title}
-											titleHint={item.titleHint}
-											className={item.mode === 'array' ? 'h-40' : 'h-48'}
-										>
-											<ErrorBoundary>{renderFilterChildren(item)}</ErrorBoundary>
-										</Filter>
-									))}
-								</>
+					<div className='gap-32 p-24 flex-column'>
+						<Tabs
+							data={TABS}
+							defaultActiveTab='simple'
+							renderTab={(item, activeTab) => (
+								<button
+									className={clsx(
+										'h-40 flex-1 transition-colors',
+										item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+									)}
+									type='button'
+									disabled={item?.disabled}
+								>
+									{item.title}
+								</button>
 							)}
-						</ul>
+						/>
 
-						<div className='flex-justify-end'>
-							<button type='submit' className='w-1/2 rounded py-8 btn-primary'>
-								{t('apply_filters')}
-							</button>
-						</div>
-					</form>
+						<form onSubmit={submit} className='gap-24 bg-white flex-column'>
+							<ul className='gap-32 flex-column'>
+								{!loading && (
+									<>
+										<li>
+											<BaseSymbolAdvanceSearch
+												values={inputs.baseSymbols}
+												onChange={(values) => setFieldValue('baseSymbols', values)}
+											/>
+										</li>
+
+										{filters.map((item) => (
+											<Filter
+												key={item.id}
+												title={item.title}
+												titleHint={item.titleHint}
+												className={item.mode === 'array' ? 'h-40' : 'h-48'}
+											>
+												<ErrorBoundary>{renderFilterChildren(item)}</ErrorBoundary>
+											</Filter>
+										))}
+									</>
+								)}
+							</ul>
+
+							<div className='flex-justify-end'>
+								<button type='submit' className='w-1/2 rounded py-8 btn-primary'>
+									{t('apply_filters')}
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</Modal>
 		);
