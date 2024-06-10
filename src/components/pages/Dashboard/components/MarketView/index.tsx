@@ -139,7 +139,6 @@ const MarketView = ({ isModal = false }: IMarketViewProps) => {
 			onBottomTabChange={(v) => setDefaultTabByPosition('bottom', v)}
 			tabs={tabs}
 			onExpand={() => dispatch(setMarketViewModal(getMarketView ? null : {}))}
-			closeable={!isModal}
 			expandable={!isModal}
 		>
 			<MarketViewChart interval={defaultTab.top} type={defaultTab.bottom} data={data as TIndexData} />

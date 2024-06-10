@@ -34,7 +34,6 @@ const DueDates = ({ isModal = false }: IDueDatesProps) => {
 			id='due_dates'
 			title={t('home.due_dates')}
 			info={t('tooltip.due_dates_section')}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setDueDatesModal(getDueDates ? null : {}))}
 			defaultBottomActiveTab={type}

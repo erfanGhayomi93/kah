@@ -7,7 +7,7 @@ import Modal from '../../Modal';
 
 const Div = styled.div`
 	width: 1000px;
-	min-height: 500px;
+	min-height: 615px;
 	display: flex;
 	flex-direction: column;
 `;
@@ -32,7 +32,6 @@ const CompareTransactionValueModal = forwardRef<HTMLDivElement, ICompareTransact
 			<Div className='bg-white'>
 				<CompareTransactionValue isModal />
 			</Div>
-			<div></div>
 		</Modal>
 	);
 });
