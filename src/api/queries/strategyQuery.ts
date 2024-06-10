@@ -264,20 +264,38 @@ export const useLongStraddleStrategyQuery = createQuery<
 
 export const useBullCallSpreadStrategyQuery = createQuery<
 	Strategy.BullCallSpread[],
-	TStrategyBaseType<'bullCallSpreadQuery'>
+	['bullCallSpreadQuery', IStrategyOptionsKey, Partial<IBullCallSpreadFiltersModalState>]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['bullCallSpreadQuery', defaultStrategyOptions],
+	queryKey: ['bullCallSpreadQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.HSPIOTM && filters.HSPIOTM.length > 0) params.HSPIOTM = filters.HSPIOTM.map((item) => item);
+			if (filters?.LSPIOTM && filters.LSPIOTM.length > 0) params.LSPIOTM = filters.LSPIOTM.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters.HSPLeastOpenPositions) params.HSPLeastOpenPositions = filters.HSPLeastOpenPositions;
+			if (filters.LSPLeastOpenPositions) params.LSPLeastOpenPositions = filters.LSPLeastOpenPositions;
+
+			if (filters.leastMaxProfitPercent) params.LeastMaxProfitPercent = filters.leastMaxProfitPercent;
+			
+			if (filters.leastYTM) params.LeastYTM = filters.leastYTM;
 
 			const response = await axios.get<ServerResponse<Strategy.BullCallSpread[]>>(
 				routes.strategy.BullCallSpread,

@@ -422,3 +422,14 @@ interface IProtectivePutFiltersModalState {
 	maxLoss: null | number;
 	bepDifference: null | number;
 }
+
+interface IBullCallSpreadFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	HSPIOTM: Option.IOTM[];
+	LSPIOTM: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	HSPLeastOpenPositions: null | number;
+	LSPLeastOpenPositions: null | number;
+	leastMaxProfitPercent: null | number;
+	leastYTM: null | number;
+}

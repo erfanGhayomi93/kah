@@ -1105,7 +1105,12 @@
 		"value": "مقدار",
 		"second_value": "مقدار دوم",
 		"apply_filters": "اعمال فیلتر",
-		"max_loss": "حداکثر زیان"
+		"max_loss": "حداکثر زیان",
+		"HSPIOTM": "وضعیت اختیار خرید اعمال بالا",
+		"LSPIOTM": "وضعیت اختیار خرید اعمال پایین",
+		"HSP_least_open_positions": "موقعیت باز کال خرید",
+		"LSP_least_open_positions": "موقعیت باز کال فروش",
+		"least_YTM": "YTM بازده موثر تا سررسید"
 	},
 	"CoveredCall": {
 		"title": "کاورد کال",
