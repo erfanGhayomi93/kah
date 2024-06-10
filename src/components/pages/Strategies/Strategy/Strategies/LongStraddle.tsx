@@ -66,7 +66,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 	};
 
 	const onFiltersChanged = (newFilters: Partial<ILongStraddleFiltersModalStates>) => {
-		console.log(newFilters);
 		setFilters(newFilters);
 	};
 
