@@ -68,9 +68,10 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 							<button
 								onClick={(e) => onTabClick(e, tab)}
 								type='button'
-								style={{ minWidth: '13.6rem' }}
+								style={{ minWidth: tabs.length <= 2 ? '13.6rem' : undefined }}
 								className={clsx(
-									'relative h-40 w-full rounded-t px-16 text-base transition-colors flex-justify-center',
+									'relative h-40 w-full rounded-t text-base transition-colors flex-justify-center',
+									tabs.length <= 2 ? 'px-16' : 'px-8',
 									isExpand && tab.id === activeTab
 										? 'bg-white font-medium text-gray-900'
 										: 'text-gray-700',
