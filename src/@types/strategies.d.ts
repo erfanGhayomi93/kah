@@ -405,3 +405,12 @@ interface ILongPutFiltersModalState {
 	openPosition: null | number;
 	bepDifference: null | number;
 }
+
+interface IProtectivePutFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPosition: null | number;
+	maxLoss: null | number;
+	bepDifference: null | number;
+}

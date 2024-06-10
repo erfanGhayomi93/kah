@@ -312,20 +312,36 @@ export const useBearPutSpreadStrategyQuery = createQuery<
 
 export const useProtectivePutStrategyQuery = createQuery<
 	Strategy.ProtectivePut[],
-	TStrategyBaseType<'protectivePutQuery'>
+	['protectivePutQuery', IStrategyOptionsKey, Partial<IProtectivePutFiltersModalState>]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['protectivePutQuery', defaultStrategyOptions],
+	queryKey: ['protectivePutQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
+
+			if (filters?.maxLoss) params.MostMaxLossPercent = filters.maxLoss;
+
+			if (filters?.bepDifference) params.LeastBEPDifference = filters.bepDifference;
 
 			const response = await axios.get<ServerResponse<Strategy.ProtectivePut[]>>(routes.strategy.ProtectivePut, {
 				signal,

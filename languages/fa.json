@@ -784,7 +784,7 @@
 		"liveDepositTab": "واریز آنی",
 		"receiptDepositTab": "واریز با ثبت فیش",
 		"placeholderDepositInput": "مبلغ مورد نظر را وارد کنید",
-		"date_placeholder" : "تاریخ",
+		"date_placeholder": "تاریخ",
 		"submitDeposit": "پرداخت",
 		"time_history": "زمان",
 		"price_history": "مبلغ (ریال)",
@@ -1104,7 +1104,8 @@
 		"first_value": "مقدار اول",
 		"value": "مقدار",
 		"second_value": "مقدار دوم",
-		"apply_filters": "اعمال فیلتر"
+		"apply_filters": "اعمال فیلتر",
+		"max_loss": "حداکثر زیان"
 	},
 	"CoveredCall": {
 		"title": "کاورد کال",
