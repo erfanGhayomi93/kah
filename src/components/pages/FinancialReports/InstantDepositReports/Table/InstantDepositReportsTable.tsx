@@ -17,6 +17,7 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 			{
 				colId: 'id',
 				headerName: t('instant_deposit_reports_page.id_column'),
+				width: 42,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
@@ -56,6 +57,7 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 			{
 				colId: 'state',
 				headerName: t('instant_deposit_reports_page.status_column'),
+				width: 200,
 				valueGetter: (row) => t('states.state_' + row.state),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'state')]?.hidden,
 			},
