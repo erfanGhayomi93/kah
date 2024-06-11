@@ -2,21 +2,12 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import NoData from '@/components/common/NoData';
 import clsx from 'clsx';
 import React from 'react';
-import BaseSymbolTabs from './BaseSymbolTabs';
-import BuyForm from './BuyForm';
-import SymbolMainDetails from './SymbolMainDetails';
+import BaseSymbolTabs from '../SymbolInfo/BaseSymbolTabs';
+import SymbolMainDetails from '../SymbolInfo/SymbolMainDetails';
 
-interface BuyBaseSymbolProps {
-	bestLimitPrice: number;
-	baseSymbolISIN: string;
-	quantity: number;
-	price: number;
-	onSubmit: () => void;
-	toggleExpand: (v: boolean) => void;
-	setFieldValue: <K extends keyof CreateStrategy.CoveredCallInput>(
-		name: K,
-		value: CreateStrategy.CoveredCallInput[K],
-	) => void;
+interface SymbolInfoProps {
+	symbolISIN: string;
+	children: (symbolData: Symbol.Info) => React.ReactNode;
 }
 
 interface WrapperProps {
@@ -24,16 +15,9 @@ interface WrapperProps {
 	className: string;
 }
 
-const BaseSymbolInfo = ({
-	bestLimitPrice,
-	baseSymbolISIN,
-	quantity,
-	price,
-	onSubmit,
-	setFieldValue,
-}: BuyBaseSymbolProps) => {
+const SymbolInfo = ({ symbolISIN, children }: SymbolInfoProps) => {
 	const { data: symbolData, isLoading: isLoadingSymbolData } = useSymbolInfoQuery({
-		queryKey: ['symbolInfoQuery', baseSymbolISIN],
+		queryKey: ['symbolInfoQuery', symbolISIN],
 	});
 
 	if (isLoadingSymbolData) return <Wrapper className='skeleton' />;
@@ -50,15 +34,7 @@ const BaseSymbolInfo = ({
 		<Wrapper className='gap-8 bg-white px-16 py-20 flex-column'>
 			<SymbolMainDetails {...symbolData} />
 			<BaseSymbolTabs symbolData={symbolData} isLoading={isLoadingSymbolData} />
-			<BuyForm
-				bestLimitPrice={bestLimitPrice}
-				quantity={quantity}
-				validityDate='Day'
-				price={price}
-				marketUnit={symbolData.marketUnit}
-				onSubmit={onSubmit}
-				onChangePrice={(v) => setFieldValue('basePrice', v)}
-			/>
+			{children(symbolData)}
 		</Wrapper>
 	);
 };
@@ -69,4 +45,4 @@ const Wrapper = ({ children, className }: WrapperProps) => (
 	</div>
 );
 
-export default BaseSymbolInfo;
+export default SymbolInfo;

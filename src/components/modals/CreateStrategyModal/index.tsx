@@ -9,10 +9,12 @@ import { useTranslations } from 'next-intl';
 import { forwardRef, useEffect, useState } from 'react';
 import Modal, { Header } from '../Modal';
 import AddConditionalAlarm from './AddConditionalAlarm';
-import BaseSymbolInfo from './CreateStrategy/BaseSymbolInfo';
+import BuyBaseSymbol from './BuyBaseSymbol';
 import StepForm from './CreateStrategy/StepForm';
 import Steps from './CreateStrategy/Steps';
+import OrderOption from './OrderOption';
 import StrategyChartDetails from './StrategyChartDetails';
+import SymbolInfo from './SymbolInfo';
 
 interface CreateStrategyModalProps extends ICreateStrategyModal {}
 
@@ -95,6 +97,21 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 			}
 		};
 
+		const onSubmitOption = () => {
+			try {
+				createOrder({
+					price: inputs.optionPrice,
+					quantity: inputs.quantity / contractSize,
+					orderSide: 'buy',
+					symbolISIN: option.symbolISIN,
+					validity: 'Day',
+					validityDate: 0,
+				});
+			} catch (e) {
+				//
+			}
+		};
+
 		const goToNextStep = () => {
 			switch (step) {
 				case 'base':
@@ -162,6 +179,7 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 									quantity={inputs.quantity}
 									contractSize={contractSize}
 									inUseCapital={inUseCapital}
+									optionQUantity={Math.floor(inputs.quantity / contractSize)}
 								/>
 								<Steps baseSymbol={baseSymbol} option={option} step={step} />
 							</div>
@@ -172,27 +190,36 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 						{isExpand && (
 							<>
 								{step === 'base' && (
-									<BaseSymbolInfo
-										bestLimitPrice={baseSymbol.bestLimitPrice}
-										quantity={inputs.quantity}
-										price={inputs.basePrice}
-										baseSymbolISIN={baseSymbol.symbolISIN}
-										toggleExpand={setIsExpand}
-										setFieldValue={setFieldValue}
-										onSubmit={onSubmitBaseSymbol}
-									/>
+									<SymbolInfo symbolISIN={baseSymbol.symbolISIN}>
+										{(symbolData) => (
+											<BuyBaseSymbol
+												symbolTitle={symbolData.symbolTitle}
+												bestLimitPrice={baseSymbol.bestLimitPrice}
+												quantity={inputs.quantity}
+												price={inputs.basePrice}
+												marketUnit={symbolData.marketUnit}
+												validityDate='Day'
+												onSubmit={onSubmitBaseSymbol}
+												onChangePrice={(v) => setFieldValue('basePrice', v)}
+											/>
+										)}
+									</SymbolInfo>
 								)}
 
 								{step === 'option' && (
-									<BaseSymbolInfo
-										bestLimitPrice={baseSymbol.bestLimitPrice}
-										quantity={inputs.quantity}
-										price={inputs.basePrice}
-										baseSymbolISIN={baseSymbol.symbolISIN}
-										toggleExpand={setIsExpand}
-										setFieldValue={setFieldValue}
-										onSubmit={onSubmitBaseSymbol}
-									/>
+									<SymbolInfo symbolISIN={option.symbolISIN}>
+										{(symbolData) => (
+											<OrderOption
+												symbolTitle={symbolData.symbolTitle}
+												bestLimitPrice={option.bestLimitPrice}
+												quantity={inputs.quantity / contractSize}
+												price={inputs.optionPrice}
+												marketUnit={symbolData.marketUnit}
+												onSubmit={onSubmitOption}
+												onChangePrice={(v) => setFieldValue('optionPrice', v)}
+											/>
+										)}
+									</SymbolInfo>
 								)}
 							</>
 						)}
