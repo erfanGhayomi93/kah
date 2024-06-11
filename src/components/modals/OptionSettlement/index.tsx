@@ -5,10 +5,11 @@ import { setOptionSettlementModal } from '@/features/slices/modalSlice';
 import { type IOptionSettlementModal } from '@/features/slices/types/modalSlice.interfaces';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import Body from './Body';
+import { HistorySettlement } from './HistorySettlement';
 
 const Div = styled.div`
 	width : 420px;
@@ -20,12 +21,13 @@ const Div = styled.div`
 
 export type TModePage = 'primary' | 'secondary' | 'tertiary';
 
-
 interface OptionSettlementProps extends IOptionSettlementModal { }
 
 const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((props, ref) => {
 
 	const t = useTranslations();
+
+	const { activeTab, data } = props;
 
 	const [isShowExpanded, setIsShowExpanded] = useState(false);
 
@@ -33,7 +35,7 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 
 	const [dataSecondaryDetails, setDataSecondaryDetails] = useState<Reports.TCashOrPhysicalSettlement>();
 
-	// const [tabSelected, setTabSelected] = useState('optionSettlementCashTab');
+	const [tabSelected, setTabSelected] = useState<string>('optionSettlementCashTab');
 
 	const dispatch = useAppDispatch();
 
@@ -52,8 +54,26 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 		} else if (modePage === 'secondary') {
 			setModePage('tertiary');
 		}
-
 	};
+
+	useEffect(() => {
+		if (data) {
+			setModePage('secondary');
+			setDataSecondaryDetails({
+				cashSettlementDate: data.cashSettlementDate,
+				doneCount: data.doneCount,
+				enabled: data.enabled,
+				openPositionCount: data.openPositionCount,
+				pandLStatus: data.pandLStatus,
+				side: data.side,
+				status: data.status,
+				symbolISIN: data.symbolISIN,
+				symbolTitle: data.symbolTitle,
+				from: activeTab === 'optionSettlementCashTab' ? 'cash' : 'physical'
+			});
+		}
+	}, [props]);
+
 
 	return (
 		<Modal
@@ -110,16 +130,18 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 						modePage={modePage}
 						clickItemSettlement={clickItemSettlement}
 						dataSecondaryDetails={dataSecondaryDetails}
+						tabSelected={tabSelected}
+						setTabSelected={setTabSelected}
 					/>
 				</Div>
 
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
 					{isShowExpanded && (
 						<Div className='bg-white'>
-							{/* <HistoryFreeze
+							<HistorySettlement
 								tabSelected={tabSelected}
 								onCloseModal={onCloseModal}
-							/> */}
+							/>
 						</Div>
 					)}
 				</AnimatePresence>
