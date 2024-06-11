@@ -1,3 +1,4 @@
+import { useMarketMapSectorsQuery } from '@/api/queries/marketQueries';
 import Select from '@/components/common/Inputs/Select';
 import Tooltip from '@/components/common/Tooltip';
 import { CameraSVG, LongshotSVG, ReloadSVG } from '@/components/icons';
@@ -28,6 +29,8 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		}));
 	};
 
+	const { data: sectorData } = useMarketMapSectorsQuery({ queryKey: ['marketMapSectorsQuery'] });
+
 	const goToFullscreen = () => {
 		try {
 			const treemap = document.getElementById('treemap') as HTMLDivElement;
@@ -51,7 +54,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 	const refetch = () => {
 		setDebounce(() => {
-			queryClient.refetchQueries({ queryKey: ['marketMapQuery'], type: 'active' });
+			queryClient.refetchQueries({ queryKey: ['marketMapQuery'], type: 'active', exact: false });
 		}, 500);
 	};
 
@@ -180,7 +183,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 						onChange={(option) => setFieldValue('property', option)}
 						options={ListOfProperties}
 						getOptionId={(option) => option.id}
-						getOptionTitle={(option) => <span>{t(option.label)}</span>}
+						getOptionTitle={(option) => option.label}
 						placeholder={t('market_map.market_based_on')}
 						defaultValue={filters.property}
 						classes={{ root: 'max-h-40  min-w-[12rem]' }}

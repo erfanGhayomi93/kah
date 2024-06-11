@@ -1,10 +1,10 @@
+import { store } from '@/api/inject-store';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { store } from '@/features/store';
-import { createQuery } from '@/utils/helpers';
+import { createBrokerQuery } from '@/utils/helpers';
 import brokerAxios from '../brokerAxios';
 
 // Market Map
-export const useMarketMapQuery = createQuery<MarketMap.Root | null, ['marketMapQuery']>({
+export const useMarketMapQuery = createBrokerQuery<MarketMap.Root | null, ['marketMapQuery']>({
 	staleTime: 18e5,
 	queryKey: ['marketMapQuery'],
 	queryFn: async ({ signal }) => {
@@ -26,7 +26,7 @@ export const useMarketMapQuery = createQuery<MarketMap.Root | null, ['marketMapQ
 	},
 });
 
-export const useMarketMapSectorsQuery = createQuery<MarketMap.SectorAPI[] | null, ['marketMapSectorsQuery']>({
+export const useMarketMapSectorsQuery = createBrokerQuery<MarketMap.SectorAPI[] | null, ['marketMapSectorsQuery']>({
 	staleTime: 18e5,
 	queryKey: ['marketMapSectorsQuery'],
 	queryFn: async ({ signal }) => {
