@@ -768,7 +768,6 @@ const config: Config = {
 					top: '50%',
 					'font-weight': '400',
 					right: '0.8rem',
-					'pointer-events': 'none',
 					color: theme('colors.gray.700'),
 					transform: 'translateY(-50%)',
 					'-webkit-transform': 'translateY(-50%)',

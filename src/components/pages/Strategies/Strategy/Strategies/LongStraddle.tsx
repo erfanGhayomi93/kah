@@ -158,6 +158,36 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		);
 	};
 
+	const iotm = [
+		{
+			value: 'atm',
+			title: t('strategy_filters.atm'),
+			icon: <StraightLineSVG />,
+			className: {
+				enable: 'btn-secondary',
+				disabled: 'btn-secondary-outline',
+			},
+		},
+		{
+			value: 'otm',
+			title: t('strategy_filters.otm'),
+			icon: <ChartDownSVG />,
+			className: {
+				enable: 'btn-error',
+				disabled: 'btn-error-outline',
+			},
+		},
+		{
+			value: 'itm',
+			title: t('strategy_filters.itm'),
+			icon: <ChartUpSVG />,
+			className: {
+				enable: 'btn-success',
+				disabled: 'btn-success-outline',
+			},
+		},
+	];
+
 	const showFilters = () => {
 		try {
 			dispatch(
@@ -166,40 +196,20 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					onSubmit: onFiltersChanged,
 					filters: [
 						{
-							id: 'iotm',
+							id: 'callIOTM',
 							title: t('strategy_filters.iotm'),
 							mode: 'array',
 							type: 'string',
-							data: [
-								{
-									value: 'atm',
-									title: t('strategy_filters.atm'),
-									icon: <StraightLineSVG />,
-									className: {
-										enable: 'btn-secondary',
-										disabled: 'btn-secondary-outline',
-									},
-								},
-								{
-									value: 'otm',
-									title: t('strategy_filters.otm'),
-									icon: <ChartDownSVG />,
-									className: {
-										enable: 'btn-error',
-										disabled: 'btn-error-outline',
-									},
-								},
-								{
-									value: 'itm',
-									title: t('strategy_filters.itm'),
-									icon: <ChartUpSVG />,
-									className: {
-										enable: 'btn-success',
-										disabled: 'btn-success-outline',
-									},
-								},
-							],
-							initialValue: filters.iotm ?? [],
+							data: iotm,
+							initialValue: filters.callIOTM ?? [],
+						},
+						{
+							id: 'putIOTM',
+							title: t('strategy_filters.iotm'),
+							mode: 'array',
+							type: 'string',
+							data: iotm,
+							initialValue: filters.putIOTM ?? [],
 						},
 						{
 							id: 'dueDays',

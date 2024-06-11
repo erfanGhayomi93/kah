@@ -1576,6 +1576,7 @@ declare namespace Strategy {
 		maxProfit: number;
 		maxProfitPercent: number;
 		inUseCapital: number;
+		ytm: number;
 		bestBuyYTM: number;
 		bestSellYTM: number;
 		bepDifference: number;
@@ -1613,8 +1614,8 @@ declare namespace Strategy {
 		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		optionBestLimitPrice: number;
-		optionBestLimitVolume: number;
+		optionBestBuyLimitPrice: number;
+		optionBestBuyLimitQuantity: number;
 		tradeValue: number;
 		baseTradeValue: number;
 		baseTradeCount: number;

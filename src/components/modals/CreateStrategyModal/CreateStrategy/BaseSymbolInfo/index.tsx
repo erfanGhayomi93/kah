@@ -7,11 +7,16 @@ import BuyForm from './BuyForm';
 import SymbolMainDetails from './SymbolMainDetails';
 
 interface BuyBaseSymbolProps {
+	bestLimitPrice: number;
 	baseSymbolISIN: string;
 	quantity: number;
 	price: number;
+	onSubmit: () => void;
 	toggleExpand: (v: boolean) => void;
-	onChange: <T extends keyof CreateStrategy.IBaseSymbol>(name: T, value: CreateStrategy.IBaseSymbol[T]) => void;
+	setFieldValue: <K extends keyof CreateStrategy.CoveredCallInput>(
+		name: K,
+		value: CreateStrategy.CoveredCallInput[K],
+	) => void;
 }
 
 interface WrapperProps {
@@ -19,7 +24,14 @@ interface WrapperProps {
 	className: string;
 }
 
-const BaseSymbolInfo = ({ baseSymbolISIN, quantity, price, onChange }: BuyBaseSymbolProps) => {
+const BaseSymbolInfo = ({
+	bestLimitPrice,
+	baseSymbolISIN,
+	quantity,
+	price,
+	onSubmit,
+	setFieldValue,
+}: BuyBaseSymbolProps) => {
 	const { data: symbolData, isLoading: isLoadingSymbolData } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', baseSymbolISIN],
 	});
@@ -39,12 +51,13 @@ const BaseSymbolInfo = ({ baseSymbolISIN, quantity, price, onChange }: BuyBaseSy
 			<SymbolMainDetails {...symbolData} />
 			<BaseSymbolTabs symbolData={symbolData} isLoading={isLoadingSymbolData} />
 			<BuyForm
-				symbolISIN={symbolData.symbolISIN}
+				bestLimitPrice={bestLimitPrice}
 				quantity={quantity}
 				validityDate='Day'
 				price={price}
 				marketUnit={symbolData.marketUnit}
-				onChangePrice={(v) => onChange('orderPrice', v)}
+				onSubmit={onSubmit}
+				onChangePrice={(v) => setFieldValue('basePrice', v)}
 			/>
 		</Wrapper>
 	);
