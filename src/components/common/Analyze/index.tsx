@@ -7,11 +7,11 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 
-const PerformanceChart = dynamic(() => import('./PerformanceChart'), {
+const AnalyzeChart = dynamic(() => import('./AnalyzeChart'), {
 	loading: () => <Loading />,
 });
 
-const GreeksTable = dynamic(() => import('./GreeksTable'), {
+const AnalyzeGreeksTable = dynamic(() => import('./AnalyzeGreeksTable'), {
 	loading: () => <Loading />,
 });
 
@@ -20,10 +20,11 @@ interface AnalyzeProps {
 	useCommission: boolean;
 	minPrice?: number;
 	maxPrice?: number;
+	chartHeight?: number;
 	baseAssets: number;
 }
 
-const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, useCommission }: AnalyzeProps) => {
+const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCommission }: AnalyzeProps) => {
 	const t = useTranslations('analyze_modal');
 
 	const { inputs, setFieldsValue } = useInputs<IAnalyzeInputs>(
@@ -53,12 +54,13 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, useCommission }: A
 			render: () => (
 				<div style={{ height: '40rem' }} className='relative py-16'>
 					<ErrorBoundary>
-						<PerformanceChart
+						<AnalyzeChart
 							data={data}
 							baseAssets={inputs.baseAssets}
 							maxPrice={newMaxPrice}
 							minPrice={newMinPrice}
 							onChange={setFieldsValue}
+							height={chartHeight}
 						/>
 					</ErrorBoundary>
 				</div>
@@ -70,7 +72,7 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, useCommission }: A
 			render: () => (
 				<div style={{ height: '40rem' }} className='relative py-16'>
 					<ErrorBoundary>
-						<GreeksTable contracts={contracts} />
+						<AnalyzeGreeksTable contracts={contracts} />
 					</ErrorBoundary>
 				</div>
 			),

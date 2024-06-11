@@ -507,7 +507,7 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{createStrategy && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setCreateStrategyModal(null))}>
+						<AuthorizeMiddleware callback={() => dispatch(setCreateStrategyModal(null))} broker>
 							<CreateStrategyModal {...createStrategy} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>

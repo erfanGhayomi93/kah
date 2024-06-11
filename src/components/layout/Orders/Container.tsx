@@ -26,6 +26,7 @@ const Container = () => {
 							transition: 'height 250ms ease-in, width 300ms ease-in-out',
 							width: 'calc(100% - 6rem)',
 							bottom: '4.8rem',
+							zIndex: '9999',
 						}}
 						className='fixed left-0 w-full rounded bg-gray-300 py-8'
 					>

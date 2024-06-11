@@ -121,6 +121,9 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 					? toast.success(t('alerts.drawal_offline_successFully'))
 					: toast.success(t('alerts.drawal_offline_successFully_edited'));
 				onClose();
+
+				queryClient.invalidateQueries({ queryKey: ['withdrawalCashReports'] });
+
 			}
 		} catch (err) {
 			toast.error(t('alerts.invalid_inputs'));

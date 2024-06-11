@@ -7,6 +7,7 @@ interface StepFormProps extends Pick<CreateStrategy.CoveredCallInput, 'budget' |
 	pending: boolean;
 	contractSize: number;
 	inUseCapital: number;
+	optionQUantity: number;
 	baseBestLimitPrice: number;
 	optionBestLimitPrice: number;
 	nextStep: () => void;
@@ -20,6 +21,7 @@ interface StepFormProps extends Pick<CreateStrategy.CoveredCallInput, 'budget' |
 const StepForm = ({
 	baseBestLimitPrice,
 	optionBestLimitPrice,
+	optionQUantity,
 	step,
 	pending,
 	contractSize,
@@ -49,7 +51,8 @@ const StepForm = ({
 
 	if (step === 'freeze') return <FreezeForm budget={budget} nextStep={nextStep} />;
 
-	if (step === 'option') return <OptionForm budget={budget} nextStep={nextStep} />;
+	if (step === 'option')
+		return <OptionForm quantity={optionQUantity} contractSize={contractSize} budget={budget} nextStep={nextStep} />;
 
 	return null;
 };

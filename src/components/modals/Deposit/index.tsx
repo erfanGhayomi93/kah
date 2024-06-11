@@ -13,6 +13,7 @@ import { HistoryDeposit } from './History';
 const Div = styled.div`
 	width: 420px;
 	min-height: 312px;
+	max-height: 532px;
 	display: flex;
 	flex-direction: column;
 `;

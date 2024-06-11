@@ -43,6 +43,9 @@ const FreezeForm = ({ budget, nextStep }: FreezeFormProps) => {
 					maxLength={16}
 					legendWidth={96}
 					autoTranslateLegend
+					classes={{
+						prefix: 'w-40',
+					}}
 				/>
 
 				<span className='text-base font-medium text-gray-1000'>
