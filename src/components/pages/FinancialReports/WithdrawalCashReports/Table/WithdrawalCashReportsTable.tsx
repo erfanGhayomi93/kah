@@ -126,6 +126,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 			{
 				colId: 'state',
 				headerName: t('withdrawal_cash_reports_page.state_column'),
+				width: 200,
 				valueGetter: (row) => t('states.state_' + row.state),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'state')]?.hidden,
 			},
