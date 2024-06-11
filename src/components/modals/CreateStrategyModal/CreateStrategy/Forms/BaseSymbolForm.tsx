@@ -2,9 +2,10 @@ import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import InputLegend from '@/components/common/Inputs/InputLegend';
 import Tooltip from '@/components/common/Tooltip';
-import { QuestionCircleOutlineSVG } from '@/components/icons';
+import { QuestionCircleOutlineSVG, XCircleSVG } from '@/components/icons';
 import { convertStringToInteger, divide } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 interface BaseSymbolFormProps extends Pick<CreateStrategy.CoveredCallInput, 'useFreeStock' | 'budget' | 'quantity'> {
 	contractSize: number;
@@ -35,6 +36,8 @@ const BaseSymbolForm = ({
 }: BaseSymbolFormProps) => {
 	const t = useTranslations();
 
+	const [isQuantityTouched, setIsQuantityTouched] = useState(false);
+
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -48,7 +51,7 @@ const BaseSymbolForm = ({
 
 	const onChangeBudget = (v: number) => {
 		// ? orderQuantity = budget / inUseCapital
-		const quantity = Math.floor(divide(v, inUseCapital));
+		const quantity = Math.floor(divide(v, inUseCapital)) * contractSize;
 
 		setFieldsValue({
 			budget: v,
@@ -65,6 +68,8 @@ const BaseSymbolForm = ({
 			budget,
 		});
 	};
+
+	const isQuantityInvalid = quantity % contractSize !== 0;
 
 	return (
 		<form onSubmit={onSubmit} className='flex-1 flex-column flex-justify-between' method='get'>
@@ -85,18 +90,38 @@ const BaseSymbolForm = ({
 					maxLength={16}
 					legendWidth={96}
 					autoTranslateLegend
+					classes={{
+						prefix: 'w-40',
+					}}
 				/>
 
-				<InputLegend
-					type='text'
-					value={quantity}
-					onChange={(v) => onChangeQuantity(Number(convertStringToInteger(v)))}
-					placeholder={t('create_strategy.required_quantity')}
-					prefix={t('create_strategy.stock')}
-					separator={false}
-					maxLength={10}
-					autoTranslateLegend
-				/>
+				<div className='gap-8 flex-column'>
+					<InputLegend
+						type='text'
+						value={quantity}
+						onChange={(v) => onChangeQuantity(Number(convertStringToInteger(v)))}
+						placeholder={t('create_strategy.required_quantity')}
+						prefix={t('create_strategy.stock')}
+						maxLength={10}
+						autoTranslateLegend
+						onBlur={() => setIsQuantityTouched(true)}
+						hasError={isQuantityTouched && isQuantityInvalid}
+						classes={{
+							prefix: 'w-40',
+						}}
+					/>
+
+					<div className='h-20 text-error-100 flex-items-center'>
+						{isQuantityTouched && isQuantityInvalid && (
+							<>
+								<XCircleSVG width='2rem' height='2rem' />
+								<span className='text-tiny'>
+									{t('create_strategy.strategy_quantity_invalid', { n: contractSize })}
+								</span>
+							</>
+						)}
+					</div>
+				</div>
 
 				<div className='text-tiny text-gray-900 flex-justify-between'>
 					<span>{t('create_strategy.free_stock_quantity')}:</span>
@@ -124,7 +149,7 @@ const BaseSymbolForm = ({
 
 				<Button
 					afterArrow
-					disabled={pending || quantity === 0 || budget === 0}
+					disabled={pending || quantity === 0 || budget === 0 || isQuantityInvalid}
 					type='submit'
 					className='h-48 rounded text-lg shadow btn-success'
 				>

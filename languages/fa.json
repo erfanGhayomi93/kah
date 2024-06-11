@@ -387,7 +387,7 @@
 		"notional_value_tab": "ارزش مفهومی",
 		"contract_end_date": "تاریخ سررسید",
 		"contract_size": "اندازه قرارداد",
-		"open_positions": "موقعیت‌های باز",
+		"open_positions": "قراردادهای باز",
 		"last_trade_date": "آخرین معامله",
 		"linear": "خطی",
 		"candle": "شمعی"
@@ -411,7 +411,7 @@
 		"description": "شما می‌توانید مواردی را که می‌خواهید در ستون اطلاعات نماد نمایش داده شوند، انتخاب کنید.",
 		"symbol_detail": "جزئیات نماد",
 		"contracts": "قراردادها",
-		"user_open_positions": "موقعیت‌های باز",
+		"user_open_positions": "قراردادهای باز",
 		"market_depth": "عمق بازار",
 		"5_quotes": "پنج مظنه",
 		"individual_and_legal": "حقیقی و حقوقی",
@@ -1307,7 +1307,10 @@
 		"quantity_input": "تعداد",
 		"price_input": "قیمت",
 		"validity_input": "اعتبار سفارش",
-		"send_order": "ارسال سفارش",
+		"send_buy_order": "ارسال خرید {n}",
+		"send_sell_order": "ارسال فروش {n}",
+		"strategy_quantity_invalid": "تعداد باید مضربی از اندازه قرارداد ({n}) باشد",
+		"option_quantity_description": "با توجه به اینکه تعداد نماد پایه خریداری شده {n} می‌باشد تعداد قرارداد قابل فروش به تعداد فوق است. ",
 		"sellable_contracts": "تعداد قرارداد قابل فروش",
 		"contract": "قرارداد",
 		"remain_quantities": "تعداد باقیمانده مورد نیاز",
@@ -1457,7 +1460,6 @@
 		"option_cash_settlement_error_Not_Enough_Remain": "جهت ثبت درخواست تسویه نقدی, مانده کافی نیست",
 		"option_cash_settlement_error_Save_PhysicalSettlement_Is_Not_Valid_In_AtRisk": "ثبت درخواست تسویه نقدی در این وضعیت مشتری امکان پذیر نیست",
 		"option_cash_settlement_error_ContractIsOnLoss": "تسویه نقدی موقعیت اختیار در حالت زیان امکان پذیر نیست",
-
 		"option_cash_settlement_error_PhysicalSettlementTimeNotValid": "زمان تسویه فیزیکی به پایان رسیده است.",
 		"option_cash_settlement_error_Contract_OrderValidity_Must_Be_Less_Than_CashSettlementDate": "تاریخ ثبت سفارش معتبر تا لغو نمی تواند از تاریخ پایان قرارداد اختیار بیشتر باشد.",
 		"option_cash_settlement_error_Physical_Loss_Approval": "Physical_Loss_Approval",
@@ -1472,11 +1474,9 @@
 		"option_cash_settlement_error_ContractNotValid": "قرارداد اختیار معتبر نیست.",
 		"option_cash_settlement_error_SettlementDateNotValid": "تاریخ درخواست تسویه معتبر نیست.",
 		"option_cash_settlement_error_FailToGetBaseSymbolData": "خطایی در سیستم رخ داده است.",
-		"option_cash_settlement_error_ContractIsOnLoss": "ثبت درخواست تسویه برای قراردادهای در زیان امکان پذیر نمی باشد.",
 		"option_cash_settlement_error_NotEnoughRemain": "مانده کافی نیست.",
 		"option_cash_settlement_error_RequestCount_Exceed": "مجموع درخواست‌های تسویه نقدی و فیزیکی نباید از تعداد کل موقعیت‌ها بیشتر باشد.",
 		"option_cash_settlement_error_cant_freeze": "امکان فریز نماد های اختیار وجود ندارد",
-
 		"option_physical_settlement_error_PhysicalSettlementTimeNotValid": "زمان تسویه فیزیکی به پایان رسیده است.",
 		"option_physical_settlement_error_Contract_OrderValidity_Must_Be_Less_Than_physicalSettlementDate": "تاریخ ثبت سفارش معتبر تا لغو نمی تواند از تاریخ پایان قرارداد اختیار بیشتر باشد.",
 		"option_physical_settlement_error_Physical_Loss_Approval": "Physical_Loss_Approval",
@@ -1495,7 +1495,6 @@
 		"option_physical_settlement_error_NotEnoughRemain": "مانده کافی نیست.",
 		"option_physical_settlement_error_RequestCount_Exceed": "مجموع درخواست‌های تسویه نقدی و فیزیکی نباید از تعداد کل موقعیت‌ها بیشتر باشد.",
 		"option_physical_settlement_error_cant_freeze": "امکان فریز نماد های اختیار وجود ندارد",
-
 		"option_edit_request_settlement_cash_success": "درخواست تسویه نقدی با موفقیت ویرایش شد.",
 		"option_edit_request_settlement_cash_failed": "ویرایش درخواست تسویه نقدی با خطا مواجه شد.",
 		"option_edit_request_settlement_physical_success": "درخواست تسویه فیزیکی با موفقیت ویرایش شد.",
@@ -1504,9 +1503,7 @@
 		"option_request_settlement_cash_failed": "درخواست تسویه نقدی با خطا مواجه شد.",
 		"option_request_settlement_physical_success": "درخواست تسویه فیزیکی با موفقیت ثبت شد.",
 		"option_request_settlement_physical_failed": "درخواست تسویه فیزیکی با خطا مواجه شد.",
-
 		"option_request_settlement_SellerCannotRequestPhysicalSettlement": "مشتری دارای موقعیت باز فروش، امکان ثبت درخواست تسویه فیزیکی را ندارد.",
-
 		"withdrawal_cash_canceled_successfully": "درخواست شما با موفقیت لغو شد.",
 		"withdrawal_cash_canceled_failed": "خطا در حذف درخواست",
 		"withdrawal_cash_AccountNotConfirmed": "شماره حساب مورد نظر تایید نشده است"

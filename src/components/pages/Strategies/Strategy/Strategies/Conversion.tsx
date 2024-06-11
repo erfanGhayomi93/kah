@@ -604,6 +604,7 @@ const Conversion = (strategy: ConversionProps) => {
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
 					onShowFilters={showFilters}
+					filtersCount={Object.keys(filters).length}
 				/>
 
 				<Table<Strategy.Conversion>

@@ -1,8 +1,73 @@
-import { sepNumbers } from '@/utils/helpers';
+import AnalyzeChart from '@/components/common/Analyze/AnalyzeChart';
+import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
+import { useAnalyze } from '@/hooks';
+import { divide, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
-const StrategyChartDetails = () => {
+interface StrategyChartDetailsProps
+	extends CreateStrategy.CoveredCallInput,
+		Pick<ICreateStrategyModal, 'baseSymbol' | 'option' | 'contractSize'> {}
+
+const StrategyChartDetails = ({
+	quantity,
+	useFreeStock,
+	basePrice,
+	optionPrice,
+	baseSymbol,
+	option,
+	contractSize,
+}: StrategyChartDetailsProps) => {
 	const t = useTranslations('create_strategy');
+
+	const minPrice = Math.floor(basePrice * 0.5);
+	const maxPrice = Math.ceil(basePrice * 1.5);
+
+	const getContracts = () => {
+		const result: TSymbolStrategy[] = [];
+
+		// Base Symbol
+		result.push({
+			id: uuidv4(),
+			type: 'base',
+			side: 'buy',
+			price: basePrice,
+			quantity,
+			marketUnit: baseSymbol.marketUnit,
+			symbol: {
+				symbolTitle: baseSymbol.symbolTitle,
+				symbolISIN: baseSymbol.symbolISIN,
+				baseSymbolPrice: basePrice,
+			},
+		});
+
+		// Contract
+		result.push({
+			id: uuidv4(),
+			type: 'option',
+			price: optionPrice,
+			contractSize,
+			marketUnit: option.marketUnit,
+			quantity: Math.floor(divide(quantity, contractSize)),
+			settlementDay: option.settlementDay,
+			strikePrice: option.strikePrice,
+			side: 'sell',
+			symbol: {
+				symbolTitle: option.symbolTitle,
+				symbolISIN: option.symbolISIN,
+				optionType: 'call',
+				baseSymbolPrice: baseSymbol.bestLimitPrice,
+				historicalVolatility: option.historicalVolatility,
+			},
+		});
+
+		return result;
+	};
+
+	const { data } = useAnalyze(getContracts(), {
+		minPrice,
+		maxPrice,
+		baseAssets: basePrice,
+	});
 
 	return (
 		<div style={{ flex: '0 0 18.4rem' }} className='flex gap-40 border-y border-gray-500 py-16'>
@@ -27,7 +92,16 @@ const StrategyChartDetails = () => {
 					<span>:{t('most_profit')}</span>
 				</li>
 			</ul>
-			<div className='flex-1'></div>
+
+			<div className='flex-1'>
+				<AnalyzeChart
+					removeBorders
+					data={data}
+					minPrice={minPrice}
+					maxPrice={maxPrice}
+					baseAssets={basePrice}
+				/>
+			</div>
 		</div>
 	);
 };
