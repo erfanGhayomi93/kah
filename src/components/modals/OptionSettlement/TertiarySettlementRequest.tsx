@@ -4,21 +4,17 @@ import InputLegend from '@/components/common/Inputs/InputLegend';
 import Radiobox from '@/components/common/Inputs/Radiobox';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { convertStringToInteger } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState, type FC } from 'react';
 import { toast } from 'react-toastify';
 
-
-
-
 interface TertiarySettlementRequestProps {
 	dataSecondaryDetails?: Reports.TCashOrPhysicalSettlement;
 	onCloseModal: () => void;
 }
-
-
 
 
 const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onCloseModal, dataSecondaryDetails }) => {
@@ -27,6 +23,7 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 
 	const url = useAppSelector(getBrokerURLs);
 
+	const queryClient = useBrokerQueryClient();
 
 	const [isMaximumStrike, setIsMaximumStrike] = useState(true);
 
@@ -56,6 +53,8 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 			}
 
 			toast.success(t(isPhysical ? 'alerts.option_request_settlement_physical_success' : 'alerts.option_request_settlement_cash_success'));
+
+			queryClient.invalidateQueries({ queryKey: isPhysical ? ['physicalSettlementReports'] : ['cashSettlementReports'] });
 
 			onCloseModal();
 		} catch (e) {

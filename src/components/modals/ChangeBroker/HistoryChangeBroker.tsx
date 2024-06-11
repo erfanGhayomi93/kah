@@ -48,6 +48,11 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 				queryClient.refetchQueries({
 					queryKey: ['LastHistoryChangeBroker'],
 				});
+
+				queryClient.invalidateQueries({
+					queryKey: ['changeBrokerReports']
+				});
+
 			}
 		} catch (e) {
 			const { message } = e as Error;
@@ -94,7 +99,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 	);
 
 	return (
-		<div className='flex h-full pr-24 flex-column'>
+		<div className='flex h-full pr-24 flex-column overflow-auto'>
 			<div className='flex-1 rounded-sm p-8 shadow-card'>
 				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
 			</div>
