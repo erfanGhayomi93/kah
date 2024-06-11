@@ -14,7 +14,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 			<StrategyInfo key='details' />
 
 			<ErrorBoundary>
-				<Analyze contracts={contracts} baseAssets={baseSymbolPrice} useCommission />
+				<Analyze contracts={contracts} baseAssets={baseSymbolPrice} chartHeight={420} useCommission />
 			</ErrorBoundary>
 		</div>
 	);

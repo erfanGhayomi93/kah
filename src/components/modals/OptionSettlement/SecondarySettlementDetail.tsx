@@ -19,7 +19,7 @@ export const SecondarySettlementDetail: FC<SecondarySettlementDetailProps> = ({ 
 
 	const t = useTranslations();
 
-	const isDisbled = !dataSecondaryDetails?.enabled || dataSecondaryDetails?.status !== 'Draft' || !dataSecondaryDetails?.openPositionCount;
+	const isDisabled = !dataSecondaryDetails?.enabled || dataSecondaryDetails?.status !== 'Draft' || !dataSecondaryDetails?.openPositionCount;
 
 	const data: IDataType[] = useMemo(() => [
 		{
@@ -74,7 +74,7 @@ export const SecondarySettlementDetail: FC<SecondarySettlementDetailProps> = ({ 
 					className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 					type='submit'
 					onClick={clickItemSettlement}
-					disabled={isDisbled}
+					disabled={isDisabled}
 				>
 					{t('deposit_modal.state_Request')}
 				</button>

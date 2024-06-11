@@ -46,18 +46,21 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.IChangeBrokerReports>>>(
 		() => [
+			/* ردیف */
 			{
 				colId: 'id',
 				headerName: t('change_broker_reports_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
+			/* زمان */
 			{
 				colId: 'saveDate',
 				headerName: t('change_broker_reports_page.date_column'),
 				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'date'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'saveDate')]?.hidden,
 			},
+			/* نماد */
 			{
 				colId: 'symbolTitle',
 				headerName: t('change_broker_reports_page.symbol_column'),
@@ -65,18 +68,22 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 				valueGetter: (row) => row.symbolTitle,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'symbolTitle')]?.hidden,
 			},
+			/* سامانه */
 			{
 				colId: 'gateway',
 				headerName: t('change_broker_reports_page.gateway_column'),
 				valueGetter: () => t('states.state_Online'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'gateway')]?.hidden,
 			},
+			/* وضعیت */
 			{
 				colId: 'lastState',
 				headerName: t('change_broker_reports_page.status_column'),
+				width: 180,
 				valueGetter: (row) => t('states.state_' + row.lastState),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'lastState')]?.hidden,
 			},
+			/* عملیات */
 			{
 				colId: 'action',
 				headerName: t('change_broker_reports_page.action_column'),

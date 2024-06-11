@@ -28,6 +28,7 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 			{
 				colId: 'symbolTitle',
 				headerName: t('trades_reports_page.symbol_column'),
+				width: 100,
 				cellClass: 'text-right',
 				valueGetter: (row) => row.symbolTitle,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'symbolTitle')]?.hidden,

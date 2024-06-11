@@ -1,7 +1,8 @@
 import AppChart from '@/components/common/AppChart';
 import { divide, sepNumbers, toFixed } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import ErrorBoundary from '../ErrorBoundary';
 import NoData from '../NoData';
 import PriceRange from './PriceRange';
 
@@ -26,9 +27,13 @@ interface IChartOptions {
 	offset: [number, number];
 }
 
-interface PerformanceChartProps extends IAnalyzeInputs {
+interface AnalyzeChartProps extends IAnalyzeInputs {
 	data: Array<Record<'x' | 'y', number>>;
-	onChange: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
+	minPrice: number;
+	maxPrice: number;
+	height?: number;
+	removeBorders?: boolean;
+	onChange?: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
 const COLORS = {
@@ -36,7 +41,15 @@ const COLORS = {
 	RED: 'rgb(255, 82, 109)',
 };
 
-const PerformanceChart = ({ data, baseAssets, maxPrice, minPrice, onChange }: PerformanceChartProps) => {
+const AnalyzeChart = ({
+	data,
+	baseAssets,
+	maxPrice,
+	minPrice,
+	height,
+	removeBorders = false,
+	onChange,
+}: AnalyzeChartProps) => {
 	const t = useTranslations('analyze_modal');
 
 	const [chartOptions, setChartOptions] = useState<IChartOptions>({
@@ -178,84 +191,97 @@ const PerformanceChart = ({ data, baseAssets, maxPrice, minPrice, onChange }: Pe
 				100;
 		}
 
+		if (options.series.length === 0) {
+			options.series.push({
+				data: [{ x: 0, y: 0 }],
+			});
+		}
+
 		setChartOptions(options);
 	}, [data, JSON.stringify({ maxPrice, minPrice, baseAssets })]);
 
 	const { series, annotations, colors } = chartOptions;
 
 	return (
-		<div className='gap-8 flex-column'>
-			<AppChart
-				options={{
-					colors,
-					annotations: {
-						xaxis: annotations,
-					},
-					tooltip: {
-						custom: ({ seriesIndex, dataPointIndex, w }) => {
-							const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-
-							const li1 = `<li><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(data.x ?? 0))}</span></li>`;
-							const li2 = `<li><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - baseAssets)))}</span></li>`;
-							const li3 = `<li><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
-							const li4 = `<li><span>${t('ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
-
-							return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
-						},
-					},
-					xaxis: {
-						min: minPrice,
-						max: maxPrice,
-						offsetX: 0,
-						offsetY: 0,
-						tickAmount: 5,
-						axisBorder: {
-							show: false,
-						},
-						axisTicks: {
-							show: false,
-						},
-						labels: {
-							formatter: (value) => toFixed(Number(value), 0),
-						},
-					},
-					yaxis: {
-						min: chartOptions.offset[0] || undefined,
-						max: chartOptions.offset[1] || undefined,
-						floating: false,
-						labels: {
-							formatter: (value) => toFixed(Number(value), 0),
-						},
-					},
-					stroke: {
-						// ! Don't change this: monotoneCubic
-						curve: 'monotoneCubic',
-					},
-					fill: {
-						type: 'gradient',
+		<ErrorBoundary>
+			<div className='gap-8 flex-column'>
+				<AppChart
+					options={{
 						colors,
-						gradient: {
-							shadeIntensity: 0,
-							opacityFrom: 0.7,
-							opacityTo: 0.2,
+						annotations: {
+							xaxis: annotations,
 						},
-					},
-				}}
-				series={series}
-				type='area'
-				width='100%'
-				height={304}
-			/>
+						tooltip: {
+							custom: ({ seriesIndex, dataPointIndex, w }) => {
+								const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
 
-			<PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />
+								const li1 = `<li><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(data.x ?? 0))}</span></li>`;
+								const li2 = `<li><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - baseAssets)))}</span></li>`;
+								const li3 = `<li><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
+								const li4 = `<li><span>${t('ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
 
-			{chartOptions.series[0].data.length < 2 && (
-				<div className='absolute size-full bg-white center'>
-					<NoData text={t('no_active_contract_found')} />
-				</div>
-			)}
-		</div>
+								return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
+							},
+						},
+						xaxis: {
+							min: minPrice,
+							max: maxPrice,
+							offsetX: 0,
+							offsetY: 0,
+							tickAmount: 5,
+							axisBorder: {
+								show: false,
+							},
+							axisTicks: {
+								show: false,
+							},
+							labels: {
+								show: !removeBorders,
+								formatter: (value) => toFixed(Number(value), 0),
+							},
+						},
+						yaxis: {
+							show: !removeBorders,
+							min: chartOptions.offset[0] || undefined,
+							max: chartOptions.offset[1] || undefined,
+							floating: false,
+							labels: {
+								formatter: (value) => toFixed(Number(value), 0),
+							},
+						},
+						stroke: {
+							// ! Don't change this: monotoneCubic
+							curve: 'monotoneCubic',
+						},
+						fill: {
+							type: 'gradient',
+							colors,
+							gradient: {
+								shadeIntensity: 0,
+								opacityFrom: 0.7,
+								opacityTo: 0.2,
+							},
+						},
+						grid: {
+							show: !removeBorders,
+						},
+					}}
+					series={series}
+					type='area'
+					width='100%'
+					height={height}
+				/>
+
+				{onChange && <PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />}
+
+				{chartOptions.series.length > 0 && chartOptions.series[0].data.length < 2 && (
+					<div className='absolute size-full bg-white center'>
+						<NoData text={t('no_active_contract_found')} />
+					</div>
+				)}
+			</div>
+		</ErrorBoundary>
 	);
 };
 
-export default memo(PerformanceChart);
+export default AnalyzeChart;

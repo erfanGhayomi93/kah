@@ -13,6 +13,8 @@ interface InputLegendProps
 	inputPlaceholder?: string;
 	autoTranslateLegend?: boolean;
 	legendWidth?: number;
+	hasError?: boolean;
+	classes?: RecordClasses<'prefix'>;
 }
 
 const InputLegend = ({
@@ -22,11 +24,13 @@ const InputLegend = ({
 	prefix,
 	separator = true,
 	autoTranslateLegend = false,
+	hasError = false,
 	inputPlaceholder,
 	height = '48',
 	legendWidth,
-	onChange,
 	disabled,
+	classes,
+	onChange,
 	...props
 }: InputLegendProps) => {
 	const isActive = autoTranslateLegend || (value && String(value).length > 0);
@@ -43,7 +47,10 @@ const InputLegend = ({
 				placeholder={inputPlaceholder}
 				type='text'
 				inputMode='numeric'
-				className='h-full flex-1 bg-transparent px-8 text-left ltr'
+				className={clsx(
+					'h-full flex-1 bg-transparent px-8 text-left ltr',
+					hasError ? 'text-error-100' : 'text-gray-1000',
+				)}
 				value={value === null ? '' : valueSeparator ? sepNumbers(String(value)) : value}
 				disabled={disabled}
 				onChange={(e) => {
@@ -54,11 +61,19 @@ const InputLegend = ({
 
 			{placeholder && (
 				<>
-					<div className={cn('gap-8 flex-items-center flexible-placeholder', isActive && 'active')}>
+					<div
+						className={cn(
+							'gap-8 flex-items-center flexible-placeholder',
+							hasError && '!text-error-100',
+							isActive && 'active',
+						)}
+					>
 						{placeholder}
 					</div>
 
-					<fieldset className={cn('flexible-fieldset', isActive && 'active')}>
+					<fieldset
+						className={cn('flexible-fieldset', hasError && '!border-error-100', isActive && 'active')}
+					>
 						<legend style={{ width: legendWidth ? `${legendWidth / 10}rem` : undefined }}>
 							{placeholder}
 						</legend>
@@ -70,6 +85,7 @@ const InputLegend = ({
 				<span
 					className={clsx(
 						'h-24 px-8 text-tiny text-gray-700 flex-justify-center',
+						classes?.prefix,
 						separator && 'border-r border-r-input',
 					)}
 				>

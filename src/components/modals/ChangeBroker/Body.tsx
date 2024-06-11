@@ -3,6 +3,7 @@ import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { InfoCircleSVG } from '@/components/icons';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { type FC, useEffect, useState } from 'react';
@@ -17,6 +18,8 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 	const t = useTranslations();
 
 	const url = useAppSelector(getBrokerURLs);
+
+	const queryClient = useBrokerQueryClient();
 
 	const [symbol, setSymbol] = useState<Symbol.Search | null>(null);
 
@@ -49,6 +52,9 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 				toast.success(t('alerts.change_broker_request_successfully'), {
 					toastId: 'change_broker_successfully'
 				});
+
+				queryClient.invalidateQueries({ queryKey: ['changeBrokerReports'] });
+
 				onCloseModal();
 			}
 

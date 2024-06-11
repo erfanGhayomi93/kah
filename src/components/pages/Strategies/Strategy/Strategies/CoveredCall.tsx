@@ -83,11 +83,16 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 						symbolISIN: data.baseSymbolISIN,
 						symbolTitle: data.baseSymbolTitle,
 						bestLimitPrice: data.baseBestSellLimitPrice,
+						marketUnit: data.baseMarketUnit,
 					},
 					option: {
 						symbolISIN: data.symbolISIN,
 						symbolTitle: data.symbolTitle,
 						bestLimitPrice: data.optionBestBuyLimitPrice,
+						marketUnit: data.marketUnit,
+						settlementDay: data.contractEndDate,
+						strikePrice: data.strikePrice,
+						historicalVolatility: data.historicalVolatility,
 					},
 				}),
 			);

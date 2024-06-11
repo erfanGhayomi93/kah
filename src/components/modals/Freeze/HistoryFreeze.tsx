@@ -65,6 +65,9 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 				queryClient.refetchQueries({
 					queryKey: [isFreeze ? 'RecentFreezeList' : 'RecentUnFreezeList'],
 				});
+
+				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
+
 			}
 		} catch (e) {
 			const message = isFreeze ? 'alerts.freeze_request_delete_failed' : 'alerts.unFreeze_request_delete_failed';

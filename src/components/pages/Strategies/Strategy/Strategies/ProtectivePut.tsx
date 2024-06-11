@@ -503,6 +503,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
 					onShowFilters={showFilters}
+					filtersCount={Object.keys(filters).length}
 				/>
 
 				<Table<Strategy.ProtectivePut>

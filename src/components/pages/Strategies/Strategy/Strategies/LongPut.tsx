@@ -467,6 +467,7 @@ const LongPut = (strategy: LongPutProps) => {
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
 					onShowFilters={showFilters}
+					filtersCount={Object.keys(filters).length}
 				/>
 
 				<Table<Strategy.LongPut>
