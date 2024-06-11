@@ -78,6 +78,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility }: OrdersReportsTablePr
 			{
 				colId: 'lastErrorCode',
 				headerName: t('orders_reports_page.status_column'),
+				width: 180,
 				cellClass: 'text-right rtl truncate',
 				valueGetter: (row) => row.lastErrorCode ?? '',
 				valueFormatter: ({ row }) => {

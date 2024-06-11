@@ -26,7 +26,11 @@ const Sidebar = () => {
 			className='fixed right-0 top-0 h-full bg-sidebar'
 		>
 			<div className='relative h-full flex-column'>
-				<button type='button' onClick={toggle} className={clsx(styles.toggler, isExpand && styles.expand)}>
+				<button
+					type='button'
+					onClick={toggle}
+					className={clsx('sidebar-toggler', styles.toggler, isExpand && styles.expand)}
+				>
 					<AngleLeftSVG width='1.6rem' height='1.6rem' />
 				</button>
 

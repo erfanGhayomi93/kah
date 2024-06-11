@@ -63,9 +63,9 @@ const OptionContracts = ({ isModal = false }: IOptionContractProps) => {
 					{ id: 'IOTM', title: t('home.tab_in_profit') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setOptionContractModal(getOptionContract ? null : {}))}
+			isModal={isModal}
 		>
 			<OptionContractsContainer isModal={isModal} type={defaultTab.bottom} basis={defaultTab.top} />
 		</Section>

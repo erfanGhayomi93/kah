@@ -9,15 +9,16 @@ import { useMemo } from 'react';
 
 interface MeetingTableProps {
 	type: Dashboard.GetAnnualReport.Type;
+	isModal?: boolean;
 }
 
-const MeetingTable = ({ type }: MeetingTableProps) => {
+const MeetingTable = ({ type, isModal = false }: MeetingTableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
 	const { data, isLoading } = useGetAnnualReportQuery({
-		queryKey: ['getAnnualReportQuery', type],
+		queryKey: ['getAnnualReportQuery', type, isModal ? 100 : 4],
 	});
 
 	const setSymbol = (symbolISIN: string) => {

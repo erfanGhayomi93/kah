@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 interface InputLegendProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'prefix' | 'placeholder' | 'onChange'> {
-	onChange: (v: string) => void;
+	onChange?: (v: string) => void;
 	value: string | number | null;
 	prefix?: React.ReactNode;
 	placeholder: React.ReactNode;
@@ -12,6 +12,7 @@ interface InputLegendProps
 	valueSeparator?: boolean;
 	inputPlaceholder?: string;
 	autoTranslateLegend?: boolean;
+	legendWidth?: number;
 }
 
 const InputLegend = ({
@@ -23,7 +24,9 @@ const InputLegend = ({
 	autoTranslateLegend = false,
 	inputPlaceholder,
 	height = '48',
+	legendWidth,
 	onChange,
+	disabled,
 	...props
 }: InputLegendProps) => {
 	const isActive = autoTranslateLegend || (value && String(value).length > 0);
@@ -31,8 +34,9 @@ const InputLegend = ({
 	return (
 		<label
 			className={clsx(
-				`relative h-${height} flex-1 rounded flex-items-center input-group`,
+				`relative h-${height} w-full rounded flex-items-center input-group`,
 				!placeholder && 'border border-gray-500',
+				disabled && 'bg-gray-200',
 			)}
 		>
 			<input
@@ -41,16 +45,23 @@ const InputLegend = ({
 				inputMode='numeric'
 				className='h-full flex-1 bg-transparent px-8 text-left ltr'
 				value={value === null ? '' : valueSeparator ? sepNumbers(String(value)) : value}
-				onChange={(e) => onChange(e.target.value)}
+				disabled={disabled}
+				onChange={(e) => {
+					if (!disabled) onChange?.(e.target.value);
+				}}
 				{...props}
 			/>
 
 			{placeholder && (
 				<>
-					<span className={cn('flexible-placeholder', isActive && 'active')}>{placeholder}</span>
+					<div className={cn('gap-8 flex-items-center flexible-placeholder', isActive && 'active')}>
+						{placeholder}
+					</div>
 
 					<fieldset className={cn('flexible-fieldset', isActive && 'active')}>
-						<legend>{placeholder}</legend>
+						<legend style={{ width: legendWidth ? `${legendWidth / 10}rem` : undefined }}>
+							{placeholder}
+						</legend>
 					</fieldset>
 				</>
 			)}

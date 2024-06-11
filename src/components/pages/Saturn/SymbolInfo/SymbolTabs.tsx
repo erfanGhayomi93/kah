@@ -42,7 +42,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 				title: t('saturn_page.tab_chart'),
 				render: () => (
 					<div className='relative size-full pb-16'>
-						<SymbolChart data={data ?? []} />
+						<SymbolChart data={data ?? []} type='area' tab='symbol_chart' />
 					</div>
 				),
 			},

@@ -31,7 +31,6 @@ const TopBaseAssets = ({ isModal = false }: ITopBaseAssetsProps) => {
 			id='top_base_assets'
 			title={t('home.top_base_assets')}
 			info={t('tooltip.top_base_assets_section')}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setTopBaseAssetsModal(getTopBaseAssets ? null : {}))}
 		>

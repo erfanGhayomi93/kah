@@ -42,11 +42,10 @@ const Meetings = ({ isModal = false }: IMeetingsProps) => {
 					{ id: 'Other', title: t('home.tab_another_meetings') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setMeetingsModal(getMeetings ? null : {}))}
 		>
-			<MeetingTable type={type} />
+			<MeetingTable type={type} isModal={isModal} />
 		</Section>
 	);
 };

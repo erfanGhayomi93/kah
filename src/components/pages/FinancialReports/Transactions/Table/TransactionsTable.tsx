@@ -14,26 +14,27 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.ITransactions>>>(
 		() => [
+			/* ردیف */
 			{
 				colId: 'id',
 				headerName: t('transactions_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
-				maxWidth: 112,
-				minWidth: 112,
+				width: 40,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
+			/* تاریخ */
 			{
 				colId: 'date',
 				headerName: t('transactions_page.date_column'),
-				maxWidth: 144,
-				minWidth: 144,
+				width: 144,
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row?.date ?? '', 'datetime'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'date')]?.hidden,
 			},
+			/* عملیات */
 			{
 				colId: 'transactionType',
-				maxWidth: 128,
+				width: 128,
 				headerName: t('transactions_page.operator_column'),
 				valueGetter: (row) => t('transactions_page.operator_type_' + row?.transactionType),
 				cellClass: (row) => {
@@ -49,9 +50,11 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'transactionType')]
 					.hidden,
 			},
+			/* شرح تراکنش */
 			{
 				colId: 'description',
 				headerName: t('transactions_page.description_column'),
+				width: 200,
 				valueGetter: (row) => row.description,
 				valueFormatter: ({ row }) =>
 					row.description === 'payfast-1561' ? (
@@ -65,6 +68,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'description')]?.hidden,
 			},
+			/* بدهکار */
 			{
 				colId: 'debit',
 				headerName: t('transactions_page.debit_column'),
@@ -72,12 +76,13 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					clsx(' ltr', {
 						'text-error-100': Number(row?.debit) < 0,
 					}),
-				maxWidth: 160,
+				width: 160,
 				valueGetter: (row) => row.debit,
 				valueFormatter: ({ value }) =>
 					Number(value) >= 0 ? sepNumbers(String(value)) : `(${sepNumbers(String(value))})`,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'debit')]?.hidden,
 			},
+			/* بستانکار */
 			{
 				colId: 'credit',
 				headerName: t('transactions_page.credit_column'),
@@ -85,11 +90,12 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					clsx('ltr', {
 						'text-error-100': Number(row?.credit) < 0,
 					}),
-				maxWidth: 160,
+				width: 160,
 				valueGetter: (row) =>
 					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'credit')]?.hidden,
 			},
+			/* مانده */
 			{
 				colId: 'remaining',
 				headerName: t('transactions_page.remain_column'),
@@ -98,9 +104,10 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 					Number(row?.remaining) >= 0
 						? sepNumbers(String(row?.remaining))
 						: `(${sepNumbers(String(row?.remaining))})`,
-				maxWidth: 160,
+				width: 160,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'remaining')]?.hidden,
 			},
+			/* ایستگاه معاملاتی */
 			{
 				colId: 'station',
 				headerName: t('transactions_page.station_column'),

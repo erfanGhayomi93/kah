@@ -90,11 +90,10 @@ const Best = ({ isModal }: IBestProps) => {
 				],
 				bottom: bottomTabs,
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setBestModal(getBest ? null : {}))}
 		>
-			<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} />
+			<BestTable symbolType={defaultTab.top} type={defaultTab.bottom} isModal={isModal} />
 		</Section>
 	);
 };

@@ -1,4 +1,6 @@
 import { ArrowUpSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import OptionData from './OptionData';
@@ -10,6 +12,8 @@ interface OptionBaseSymbolInformationProps {
 const OptionBaseSymbolInformation = ({ symbolData }: OptionBaseSymbolInformationProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const [isExpand, setIsExpand] = useLocalstorage('bsio', false);
 
 	const { baseSymbolTitle, baseSymbolISIN, symbolISIN, symbolTitle } = symbolData;
@@ -20,10 +24,10 @@ const OptionBaseSymbolInformation = ({ symbolData }: OptionBaseSymbolInformation
 				height: isExpand ? '35.6rem' : '4.8rem',
 				transition: 'height 250ms ease-in',
 			}}
-			className='select-none rounded bg-white px-8 flex-column'
+			className='select-none overflow-hidden rounded bg-white px-8 flex-column'
 		>
 			<div onClick={() => setIsExpand(!isExpand)} className='min-h-48 cursor-pointer flex-justify-between'>
-				<div className='text-base text-gray-900'>
+				<div onClick={() => dispatch(setSymbolInfoPanel(baseSymbolISIN))} className='text-base text-gray-900'>
 					{t('symbol_info_panel.base_symbol_information') + ' '}
 					<span className='border-b border-b-info text-info'>{baseSymbolTitle ?? symbolTitle}</span>
 				</div>

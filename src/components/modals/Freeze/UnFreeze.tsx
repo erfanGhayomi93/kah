@@ -3,6 +3,7 @@ import { useCountFreezeQuery } from '@/api/queries/requests';
 import Radiobox from '@/components/common/Inputs/Radiobox';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { type FC, useState } from 'react';
@@ -19,6 +20,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 
 	const url = useAppSelector(getBrokerURLs);
 
+	const queryClient = useBrokerQueryClient();
 
 	const [value, setValue] = useState('');
 
@@ -46,6 +48,9 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 				toast.success(t('alerts.unFreeze_request_succeeded'), {
 					toastId: 'unFreeze_request_succeeded'
 				});
+
+				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
+
 				onCloseModal();
 			}
 		} catch (e) {

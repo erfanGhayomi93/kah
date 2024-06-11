@@ -2,6 +2,7 @@ import brokerAxios from '@/api/brokerAxios';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { type FC, useEffect, useState } from 'react';
@@ -21,6 +22,7 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 
 	const [isShowValidationSymbol, setIsShowValidationSymbol] = useState(false);
 
+	const queryClient = useBrokerQueryClient();
 
 	const onChangeSymbol = (value: Symbol.Search) => {
 		if (value) setSymbol(value);
@@ -70,6 +72,9 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 				toast.success(t('alerts.freeze_request_succeeded'), {
 					toastId: 'freeze_request_succeeded'
 				});
+
+				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
+
 				onCloseModal();
 			}
 

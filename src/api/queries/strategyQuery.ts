@@ -259,7 +259,10 @@ export const useLongStraddleStrategyQuery = createQuery<
 			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
 				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
 
-			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
+			if (filters?.callIOTM && filters.callIOTM.length > 0)
+				params.CallIOTM = filters.callIOTM.map((item) => item);
+
+			if (filters?.putIOTM && filters.putIOTM.length > 0) params.PutIOTM = filters.putIOTM.map((item) => item);
 
 			if (filters?.dueDays) {
 				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];

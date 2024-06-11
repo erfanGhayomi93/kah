@@ -334,50 +334,19 @@ declare type TBearPutSpreadColumns =
 	| 'actions';
 
 namespace CreateStrategy {
-	export type Status = 'TODO' | 'PENDING' | 'DONE' | 'ERROR';
+	export type Status = 'TODO' | 'PENDING' | 'DONE';
 
 	export type TStep = 'option' | 'base';
 
-	export interface IBaseSymbol {
-		id: string;
-		type: 'base';
-		symbolTitle: string;
-		symbolISIN: string;
+	export type TCoveredCallSteps = 'base' | 'freeze' | 'option';
+
+	export interface CoveredCallInput {
+		budget: number;
 		quantity: number;
-		estimatedBudget: number;
-		buyAssetsBySymbol: boolean;
-		orderPrice: number;
-		orderQuantity: number;
-		status: Status;
+		useFreeStock: boolean;
+		basePrice: number;
+		optionPrice: number;
 	}
-
-	export interface IOption {
-		id: string;
-		type: 'option';
-		side: TBsSides;
-		optionType: TOptionSides;
-		estimatedBudget: number;
-		symbolTitle: string;
-		symbolISIN: string;
-		status: Status;
-		baseSymbol: {
-			symbolTitle: string;
-			symbolISIN: string;
-		};
-	}
-
-	export interface IFreeze {
-		id: string;
-		type: 'freeze';
-		estimatedBudget: number;
-		status: Status;
-		baseSymbol: {
-			symbolTitle: string;
-			symbolISIN: string;
-		};
-	}
-
-	export type Input = CreateStrategy.IBaseSymbol | CreateStrategy.IOption | IFreeze;
 }
 
 interface ICoveredCallFiltersModalStates {
@@ -393,7 +362,8 @@ interface ICoveredCallFiltersModalStates {
 
 interface ILongStraddleFiltersModalStates {
 	baseSymbols: Option.BaseSearch[];
-	iotm: Option.IOTM[];
+	callIOTM: Option.IOTM[];
+	putIOTM: Option.IOTM[];
 	dueDays: [null | number, null | number];
 	callOpenPosition: number;
 	putOpenPosition: number;

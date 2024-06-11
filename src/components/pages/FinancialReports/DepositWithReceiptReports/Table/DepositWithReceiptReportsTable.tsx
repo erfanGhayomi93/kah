@@ -83,18 +83,21 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.IDepositWithReceipt>>>(
 		() => [
+			/* ردیف */
 			{
 				colId: 'id',
 				headerName: t('deposit_with_receipt_reports_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
+			/* تاریخ */
 			{
 				colId: 'receiptDate',
 				headerName: t('deposit_with_receipt_reports_page.date_column'),
 				valueGetter: (row) => dateFormatter(row.receiptDate ?? ''),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'receiptDate')]?.hidden,
 			},
+			/* بانک کارگزاری */
 			{
 				colId: 'providerType',
 				headerName: t('deposit_with_receipt_reports_page.broker_bank_column'),
@@ -102,6 +105,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'providerType')]
 					?.hidden,
 			},
+			/* شماره فیش */
 			{
 				colId: 'receiptNumber',
 				headerName: t('deposit_with_receipt_reports_page.receipt_number_column'),
@@ -109,18 +113,23 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'receiptNumber')]
 					.hidden,
 			},
+			/* مبلغ */
 			{
 				colId: 'amount',
 				headerName: t('deposit_with_receipt_reports_page.price_column'),
 				valueGetter: (row) => sepNumbers(String(row.amount)),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'amount')]?.hidden,
 			},
+			/* وضعیت */
 			{
 				colId: 'state',
 				headerName: t('deposit_with_receipt_reports_page.status_column'),
+				width: 200,
 				valueGetter: (row) => t(`states.state_${row.state}`),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'state')]?.hidden,
 			},
+			/* عملیات */
+
 			{
 				colId: 'action',
 				headerName: t('deposit_with_receipt_reports_page.operation_column'),
