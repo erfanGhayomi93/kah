@@ -71,6 +71,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 			onSuccess: (symbol, { type = 'initial' }) => {
 				if (!symbol) return;
 
+				console.log(type);
 				if (type === 'initial') setFieldValue('baseSymbol', symbol);
 				else submit(symbol);
 			},
@@ -105,7 +106,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 				if (shouldSendBaseSymbol) {
 					if (isFetchingBaseSymbol) toast.info(t('alerts.is_pending'));
-					else fetchSymbolInfo({ symbolISIN: inputs.baseSymbol!.symbolISIN });
+					else fetchSymbolInfo({ symbolISIN: inputs.baseSymbol!.symbolISIN, type: 'submit' });
 
 					return;
 				}
