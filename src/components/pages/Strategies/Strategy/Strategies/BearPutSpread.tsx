@@ -617,6 +617,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
 					onShowFilters={showFilters}
+					filtersCount={Object.keys(filters).length}
 				/>
 
 				<Table<Strategy.BearPutSpread>
