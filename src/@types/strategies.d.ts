@@ -396,7 +396,8 @@ interface ICoveredCallFiltersModalStates {
 
 interface ILongStraddleFiltersModalStates {
 	baseSymbols: Option.BaseSearch[];
-	iotm: Option.IOTM[];
+	callIOTM: Option.IOTM[];
+	putIOTM: Option.IOTM[];
 	dueDays: [null | number, null | number];
 	callOpenPosition: number;
 	putOpenPosition: number;

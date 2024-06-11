@@ -80,8 +80,8 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 								{tab.title}
 								{activeTab === tab.id && (
 									<>
-										{index > 0 && <RoundSVG style={{ left: '100%' }} />}
-										<RoundSVG style={{ right: '100%' }} />
+										{index > 0 && <RoundRightSVG style={{ left: '100%' }} />}
+										<RoundLeftSVG style={{ right: '100%' }} />
 									</>
 								)}
 							</button>
@@ -127,7 +127,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 	);
 };
 
-const RoundSVG = (props: React.SVGProps<SVGSVGElement>) => (
+const RoundLeftSVG = (props: React.SVGProps<SVGSVGElement>) => (
 	<svg
 		width='12'
 		height='9'
@@ -138,6 +138,20 @@ const RoundSVG = (props: React.SVGProps<SVGSVGElement>) => (
 		{...props}
 	>
 		<path d='M0 9C10.8 9 12 3 12 0V9H0Z' fill='currentColor' />
+	</svg>
+);
+
+const RoundRightSVG = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg
+		width='12'
+		height='9'
+		viewBox='0 0 12 9'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+		className='absolute bottom-0 text-white'
+		{...props}
+	>
+		<path d='M12 9C1.2 9 0 3 0 0V9H12Z' fill='white' />
 	</svg>
 );
 

@@ -20,7 +20,7 @@ const Navbar = ({ isExpand }: NavbarProps) => {
 	};
 
 	return (
-		<Click enabled={isExpand} onClickOutside={collapseSidebar}>
+		<Click dependency='.sidebar-toggler' enabled={isExpand} onClickOutside={collapseSidebar}>
 			<div className='z-10 flex-1 select-none overflow-hidden flex-column'>
 				<div
 					style={{ minWidth: '5.4rem', height: '5.4rem' }}
