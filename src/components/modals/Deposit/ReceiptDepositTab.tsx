@@ -139,6 +139,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 
 				queryClient.refetchQueries({ queryKey: ['userRemainQuery'] });
 				queryClient.refetchQueries({ queryKey: ['depositHistoryOnline'] });
+				queryClient.refetchQueries({ queryKey: ['depositWithReceiptReports'] });
 			} else {
 				toast.error(t('alerts.offline_deposit_failed'), {
 					toastId: 'offline_deposit_succeeded',

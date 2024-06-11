@@ -45,20 +45,22 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 	);
 
 	return (
-		<div className='flex h-full pr-24 flex-column'>
-			<div className='flex-1 rounded-sm p-8 shadow-card'>
+		<div className='flex h-full pr-24 flex-column overflow-auto'>
+			<div className='flex-1 rounded-sm p-8 shadow-card overflow-auto'>
 				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
 			</div>
 
-			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info flex-justify-center'
-				href={'/financial-reports/withdrawal-cash'}
-				onClick={() => onCloseModal()}
-			>
-				<SessionHistorySVG />
+			<div>
+				<Link
+					className='h-48 w-full gap-8 rounded font-medium text-info flex-justify-center'
+					href={'/financial-reports/withdrawal-cash'}
+					onClick={() => onCloseModal()}
+				>
+					<SessionHistorySVG />
 
-				{t('deposit_modal.more_reports_deposit')}
-			</Link>
+					{t('deposit_modal.more_reports_deposit')}
+				</Link>
+			</div>
 		</div>
 	);
 };

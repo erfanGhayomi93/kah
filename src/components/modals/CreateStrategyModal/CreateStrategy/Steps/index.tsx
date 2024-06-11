@@ -18,17 +18,17 @@ const Steps = ({ step, baseSymbol, option }: StepsProps) => {
 				<BaseSymbolStep
 					symbolTitle={baseSymbol.symbolTitle}
 					bestLimitPrice={baseSymbol.bestLimitPrice}
-					status={step === 'base' ? 'PENDING' : 'DONE'}
+					status={step === 'base' ? 'TODO' : 'DONE'}
 					className={clsx(styles.item, step === 'base' ? styles.active : styles.done)}
 				/>
 
 				<FreezeStep
-					status={step === 'freeze' ? 'PENDING' : step === 'option' ? 'DONE' : 'TODO'}
+					status={step === 'freeze' ? 'TODO' : step === 'option' ? 'DONE' : 'PENDING'}
 					className={clsx(styles.item, step === 'freeze' ? styles.active : step === 'option' && styles.done)}
 				/>
 
 				<OptionStep
-					status={step === 'option' ? 'PENDING' : 'TODO'}
+					status={step === 'option' ? 'TODO' : 'PENDING'}
 					symbolTitle={option.symbolTitle}
 					bestLimitPrice={option.bestLimitPrice}
 					className={clsx(styles.item, step === 'option' && styles.active)}

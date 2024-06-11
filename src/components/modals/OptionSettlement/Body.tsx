@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type Dispatch, type FC, type SetStateAction } from 'react';
 import { type TModePage } from '.';
 import { PrimarySettlementTab } from './PrimarySettlementTab';
 import { SecondarySettlementDetail } from './SecondarySettlementDetail';
@@ -8,10 +8,19 @@ interface BodyOptionSettlementProps {
 	onCloseModal: () => void;
 	modePage: TModePage;
 	clickItemSettlement: (item?: Reports.TCashOrPhysicalSettlement) => void;
-	dataSecondaryDetails?: Reports.TCashOrPhysicalSettlement
+	dataSecondaryDetails?: Reports.TCashOrPhysicalSettlement;
+	tabSelected: string;
+	setTabSelected: Dispatch<SetStateAction<string>>;
 }
 
-const Body: FC<BodyOptionSettlementProps> = ({ onCloseModal, modePage, clickItemSettlement, dataSecondaryDetails }) => {
+const Body: FC<BodyOptionSettlementProps> = (
+	{ onCloseModal,
+		modePage,
+		clickItemSettlement,
+		dataSecondaryDetails,
+		tabSelected,
+		setTabSelected
+	}) => {
 
 	return (
 		<div className='h-full'>
@@ -19,6 +28,9 @@ const Body: FC<BodyOptionSettlementProps> = ({ onCloseModal, modePage, clickItem
 				modePage === 'primary' && <PrimarySettlementTab
 					onCloseModal={onCloseModal}
 					clickItemSettlement={clickItemSettlement}
+					modePage={modePage}
+					tabSelected={tabSelected}
+					setTabSelected={setTabSelected}
 				/>
 			}
 

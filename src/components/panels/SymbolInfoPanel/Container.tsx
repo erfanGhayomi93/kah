@@ -11,46 +11,47 @@ import GridLayout, { type Layout } from 'react-grid-layout';
 import SymbolInformation from './components/SymbolInformation';
 
 const BaseSymbolContracts = dynamic(() => import('./components/BaseSymbolContracts'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const Chart = dynamic(() => import('./components/Chart'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const IndividualAndLegal = dynamic(() => import('./components/IndividualAndLegal'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const MarketDepth = dynamic(() => import('./components/MarketDepth'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const Messages = dynamic(() => import('./components/Messages'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const OpenPositions = dynamic(() => import('./components/OpenPositions'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const OptionBaseSymbolInformation = dynamic(() => import('./components/OptionBaseSymbolInformation'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
+
 const OptionDetail = dynamic(() => import('./components/OptionDetail'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const Quotes = dynamic(() => import('./components/Quotes'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const SameSectorSymbol = dynamic(() => import('./components/SameSectorSymbol'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 const SymbolDetails = dynamic(() => import('./components/SymbolDetails'), {
-	loading: () => <div className='skeleton h-full rounded' />,
+	loading: () => <div className='h-full rounded skeleton' />,
 });
 
 interface ContainerProps {
@@ -153,8 +154,8 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 			)}
 
 			{symbolData && (
-				<div className='flex-column'>
-					<div className='gap-16 flex-column'>
+				<div className='gap-8 flex-column'>
+					<div className='sticky left-0 top-0 z-20 rounded-b bg-gray-300 pb-8 flex-column'>
 						<ErrorBoundary>
 							<SymbolInformation symbolData={symbolData} />
 						</ErrorBoundary>
@@ -166,7 +167,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 						)}
 					</div>
 
-					<div className='relative'>
+					<div className='relative -mt-16'>
 						<GridLayout
 							draggableHandle='.drag-handler'
 							useCSSTransforms

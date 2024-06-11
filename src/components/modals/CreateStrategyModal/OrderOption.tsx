@@ -1,35 +1,32 @@
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
-import Tooltip from '@/components/common/Tooltip';
-import { LockSVG, QuestionCircleOutlineSVG, UnlockSVG } from '@/components/icons';
+import { LockSVG, UnlockSVG } from '@/components/icons';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-interface BuyFormProps {
+interface OrderOptionProps {
+	symbolTitle: string;
 	bestLimitPrice: number;
 	quantity: number;
 	price: number;
 	marketUnit: string;
-	validityDate: TBsValidityDates;
-	onSubmit: () => void;
 	onChangePrice: (v: number) => void;
+	onSubmit: () => void;
 }
 
-const BuyForm = ({
+const OrderOption = ({
 	bestLimitPrice,
-	price,
+	symbolTitle,
 	quantity,
-	validityDate,
+	price,
 	marketUnit,
-	onSubmit,
 	onChangePrice,
-}: BuyFormProps) => {
+	onSubmit,
+}: OrderOptionProps) => {
 	const t = useTranslations();
 
-	const inputRef = useRef<HTMLInputElement>(null);
-
-	const { data: commission, isLoading } = useCommissionsQuery({
+	const { data: commission } = useCommissionsQuery({
 		queryKey: ['commissionQuery'],
 	});
 
@@ -65,7 +62,6 @@ const BuyForm = ({
 					<label className='h-full flex-1 gap-8 rounded border border-input px-8 flex-justify-center'>
 						<span className='text-gray-900'>{t('create_strategy.price_input')}</span>
 						<input
-							ref={inputRef}
 							value={sepNumbers(String(price))}
 							type='text'
 							inputMode='numeric'
@@ -73,6 +69,7 @@ const BuyForm = ({
 							onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
 						/>
 					</label>
+
 					<button
 						onClick={() => setIsPriceLocked(!isPriceLocked)}
 						type='button'
@@ -88,46 +85,17 @@ const BuyForm = ({
 						)}
 					</button>
 				</div>
-
-				<div className='h-40 cursor-default rounded border border-input px-8 text-gray-900 flex-justify-between'>
-					<span>{t('create_strategy.validity_input')}</span>
-					<span className='no-hover h-24 w-40 rounded !border flex-justify-center btn-select'>
-						{t(`validity_date.${validityDate}`)}
-					</span>
-				</div>
 			</div>
 
-			<div className='gap-16 flex-column'>
-				<div className='h-24 flex-justify-between'>
-					<div className='gap-4 text-gray-900 flex-items-center'>
-						{t('create_strategy.order_value') + ':'}
-						<Tooltip content='ارزش سفارش' placement='top'>
-							<QuestionCircleOutlineSVG width='1.6rem' height='1.6rem' />
-						</Tooltip>
-					</div>
-
-					<div className='flex gap-4'>
-						{isLoading ? (
-							<div className='size-16 spinner' />
-						) : (
-							<>
-								{sepNumbers(String(transactionCommission))}
-								<span className='text-gray-700'>{t('common.rial')}</span>
-							</>
-						)}
-					</div>
-				</div>
-
-				<button
-					disabled={quantity === 0 || price === 0}
-					type='submit'
-					className='h-40 rounded text-base font-medium flex-justify-center btn-success'
-				>
-					{t('create_strategy.send_order') + ' ' + t('side.buy')}
-				</button>
-			</div>
+			<button
+				disabled={quantity === 0 || price === 0}
+				type='submit'
+				className='h-40 rounded text-base font-medium flex-justify-center btn-error'
+			>
+				{t('create_strategy.send_sell_order', { n: symbolTitle })}
+			</button>
 		</form>
 	);
 };
 
-export default BuyForm;
+export default OrderOption;

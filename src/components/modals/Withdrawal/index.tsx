@@ -13,6 +13,7 @@ import { HistoryDrawal } from './HistoryDrawal';
 const Div = styled.div`
 	width: 420px;
 	min-height: 312px;
+	max-height: 442px;
 	display: flex;
 	flex-direction: column;
 `;
