@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Badge from './Badge';
 
-interface FreezeStepProps extends CreateStrategy.IFreeze {
+interface FreezeStepProps {
+	status: CreateStrategy.Status;
 	className: string;
 }
 

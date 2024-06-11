@@ -333,6 +333,21 @@ declare namespace Option {
 		name: string;
 		isHidden: boolean;
 	}
+
+	export interface OpenPositionChart {
+		saveDate: string;
+		openPosition: number;
+	}
+
+	export interface BaseOpenPositionChart {
+		saveDate: string;
+		openPosition: number;
+	}
+
+	export interface NotionalValueChart {
+		intervalDateTime: string;
+		notionalValue: number;
+	}
 }
 
 declare namespace Symbol {
@@ -1561,6 +1576,7 @@ declare namespace Strategy {
 		maxProfit: number;
 		maxProfitPercent: number;
 		inUseCapital: number;
+		ytm: number;
 		bestBuyYTM: number;
 		bestSellYTM: number;
 		bepDifference: number;
@@ -1598,8 +1614,8 @@ declare namespace Strategy {
 		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		optionBestLimitPrice: number;
-		optionBestLimitVolume: number;
+		optionBestBuyLimitPrice: number;
+		optionBestBuyLimitQuantity: number;
 		tradeValue: number;
 		baseTradeValue: number;
 		baseTradeCount: number;

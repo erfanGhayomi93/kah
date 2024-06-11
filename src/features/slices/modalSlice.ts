@@ -111,9 +111,6 @@ const initialState: ModalState = {
 	// ساخت استراتژی
 	createStrategy: null,
 
-	// فیلتر کاورد کال
-	coveredCallFilters: null,
-
 	// تایید توافق‌نامه
 	acceptAgreement: null,
 
@@ -348,8 +345,10 @@ const modalSlice = createSlice({
 			state.createStrategy = payload;
 		},
 
-		setCoveredCallFiltersModal: (state, { payload }: PayloadAction<ModalState['coveredCallFilters']>) => {
-			state.coveredCallFilters = payload;
+		updateCreateStrategyModal: (state, { payload }: PayloadAction<Partial<ModalState['createStrategy']>>) => {
+			if (state.createStrategy !== null) {
+				state.createStrategy = { ...state.createStrategy, ...payload };
+			}
 		},
 
 		setManageColumnsModal: (state, { payload }: PayloadAction<ModalState['manageColumns']>) => {
@@ -432,6 +431,7 @@ export const {
 	setOrderDetailsModal,
 	setSymbolInfoPanelSettingModal,
 	setForgetPasswordModal,
+	updateCreateStrategyModal,
 	setOptionFiltersModal,
 	setLogoutModal,
 	setBlackScholesModal,
@@ -463,7 +463,6 @@ export const {
 	setOrdersReportsFiltersModal,
 	setTradesReportsFiltersModal,
 	setCreateStrategyModal,
-	setCoveredCallFiltersModal,
 	setAcceptAgreementModal,
 	setManageColumnsModal,
 	setMarketStateModal,
@@ -517,7 +516,7 @@ export const getPhysicalSettlementReportsFiltersModal = (state: RootState) =>
 	state.modal.physicalSettlementReportsFilters;
 export const getOrdersReportsFiltersModal = (state: RootState) => state.modal.ordersReportsFilters;
 export const getTradesReportsFiltersModal = (state: RootState) => state.modal.tradesReportsFilters;
-export const getGetStrategyModal = (state: RootState) => state.modal.createStrategy;
+export const getCreateStrategyModal = (state: RootState) => state.modal.createStrategy;
 export const getSymbolInfoPanelSettingModal = (state: RootState) => state.modal.symbolInfoPanelSetting;
 export const getMarketStateModal = (state: RootState) => state.modal.marketState;
 export const getMarketViewModal = (state: RootState) => state.modal.marketView;

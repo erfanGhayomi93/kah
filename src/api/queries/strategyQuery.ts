@@ -2,6 +2,8 @@ import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
 
+type TParams = Record<string, string | number | boolean | string[] | number[]>;
+
 interface IStrategyOptionsKey {
 	priceBasis: TPriceBasis;
 	symbolBasis: TStrategySymbolBasis;
@@ -46,7 +48,7 @@ export const useCoveredCallStrategyQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		try {
 			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
-			const params: Record<string, string | number | boolean | string[] | number[]> = {
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
@@ -54,8 +56,8 @@ export const useCoveredCallStrategyQuery = createQuery<
 				WithCommission: withCommission,
 			};
 
-			if (filters?.symbols && filters.symbols.length > 0)
-				params.BaseSymbolISIN = filters.symbols.map((item) => item.symbolISIN);
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
 
 			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
 
@@ -73,8 +75,7 @@ export const useCoveredCallStrategyQuery = createQuery<
 
 			if (filters?.maxProfit && filters.maxProfit) params.IOTM = filters.maxProfit;
 
-			if (filters?.nonExpiredProfit && filters.nonExpiredProfit)
-				params.LeastNonExpiredProfitPercent = filters.nonExpiredProfit;
+			if (filters?.nonExpiredProfit) params.LeastNonExpiredProfitPercent = filters.nonExpiredProfit;
 
 			const response = await axios.get<ServerResponse<Strategy.CoveredCall[]>>(routes.strategy.CoveredCall, {
 				signal,
@@ -91,19 +92,38 @@ export const useCoveredCallStrategyQuery = createQuery<
 	},
 });
 
-export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrategyBaseType<'longCallQuery'>>({
+export const useLongCallStrategyQuery = createQuery<
+	Strategy.LongCall[],
+	['longCallQuery', IStrategyOptionsKey, Partial<ILongCallFiltersModalState>]
+>({
 	staleTime: CACHE_TIME,
-	queryKey: ['longCallQuery', defaultStrategyOptions],
+	queryKey: ['longCallQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.bepDifference) {
+				if (typeof filters.bepDifference === 'number') params.LeastBEPDifference = filters.bepDifference;
+			}
+
+			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
 
 			const response = await axios.get<ServerResponse<Strategy.LongCall[]>>(routes.strategy.LongCall, {
 				signal,
@@ -120,19 +140,38 @@ export const useLongCallStrategyQuery = createQuery<Strategy.LongCall[], TStrate
 	},
 });
 
-export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategyBaseType<'longPutQuery'>>({
+export const useLongPutStrategyQuery = createQuery<
+	Strategy.LongPut[],
+	['longPutQuery', IStrategyOptionsKey, Partial<ILongPutFiltersModalState>]
+>({
 	staleTime: CACHE_TIME,
-	queryKey: ['longPutQuery', defaultStrategyOptions],
+	queryKey: ['longPutQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.bepDifference) {
+				if (typeof filters.bepDifference === 'number') params.LeastBEPDifference = filters.bepDifference;
+			}
+
+			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
 
 			const response = await axios.get<ServerResponse<Strategy.LongPut[]>>(routes.strategy.LongPut, {
 				signal,
@@ -149,19 +188,41 @@ export const useLongPutStrategyQuery = createQuery<Strategy.LongPut[], TStrategy
 	},
 });
 
-export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TStrategyBaseType<'conversionQuery'>>({
+export const useConversionStrategyQuery = createQuery<
+	Strategy.Conversion[],
+	['conversionQuery', IStrategyOptionsKey, Partial<IConversionFiltersModalState>]
+>({
 	staleTime: CACHE_TIME,
-	queryKey: ['conversionQuery', defaultStrategyOptions],
+	queryKey: ['conversionQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.callIOTM && filters.callIOTM.length > 0)
+				params.CallIOTM = filters.callIOTM.map((item) => item);
+			if (filters?.putIOTM && filters.putIOTM.length > 0) params.PutIOTM = filters.putIOTM.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters.callLeastOpenPositions) params.CallLeastOpenPositions = filters.callLeastOpenPositions;
+			if (filters.putLeastOpenPositions) params.PutLeastOpenPositions = filters.putLeastOpenPositions;
+
+			if (filters.leastProfitPercent) params.LeastProfitPercent = filters.leastProfitPercent;
+
+			if (filters.leastYTM) params.LeastYTM = filters.leastYTM;
 
 			const response = await axios.get<ServerResponse<Strategy.Conversion[]>>(routes.strategy.Conversion, {
 				signal,
@@ -180,20 +241,36 @@ export const useConversionStrategyQuery = createQuery<Strategy.Conversion[], TSt
 
 export const useLongStraddleStrategyQuery = createQuery<
 	Strategy.LongStraddle[],
-	TStrategyBaseType<'longStraddleQuery'>
+	['longStraddleQuery', IStrategyOptionsKey, Partial<ILongStraddleFiltersModalStates>]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['longStraddleQuery', defaultStrategyOptions],
+	queryKey: ['longStraddleQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.callIOTM && filters.callIOTM.length > 0)
+				params.CallIOTM = filters.callIOTM.map((item) => item);
+
+			if (filters?.putIOTM && filters.putIOTM.length > 0) params.PutIOTM = filters.putIOTM.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.callOpenPosition) params.CallLeastOpenPositions = filters.callOpenPosition;
+			if (filters?.putOpenPosition) params.PutLeastOpenPositions = filters.putOpenPosition;
 
 			const response = await axios.get<ServerResponse<Strategy.LongStraddle[]>>(routes.strategy.LongStraddle, {
 				signal,
@@ -212,20 +289,38 @@ export const useLongStraddleStrategyQuery = createQuery<
 
 export const useBullCallSpreadStrategyQuery = createQuery<
 	Strategy.BullCallSpread[],
-	TStrategyBaseType<'bullCallSpreadQuery'>
+	['bullCallSpreadQuery', IStrategyOptionsKey, Partial<IBullCallSpreadFiltersModalState>]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['bullCallSpreadQuery', defaultStrategyOptions],
+	queryKey: ['bullCallSpreadQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.HSPIOTM && filters.HSPIOTM.length > 0) params.HSPIOTM = filters.HSPIOTM.map((item) => item);
+			if (filters?.LSPIOTM && filters.LSPIOTM.length > 0) params.LSPIOTM = filters.LSPIOTM.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters.HSPLeastOpenPositions) params.HSPLeastOpenPositions = filters.HSPLeastOpenPositions;
+			if (filters.LSPLeastOpenPositions) params.LSPLeastOpenPositions = filters.LSPLeastOpenPositions;
+
+			if (filters.leastMaxProfitPercent) params.LeastMaxProfitPercent = filters.leastMaxProfitPercent;
+
+			if (filters.leastYTM) params.LeastYTM = filters.leastYTM;
 
 			const response = await axios.get<ServerResponse<Strategy.BullCallSpread[]>>(
 				routes.strategy.BullCallSpread,
@@ -247,20 +342,38 @@ export const useBullCallSpreadStrategyQuery = createQuery<
 
 export const useBearPutSpreadStrategyQuery = createQuery<
 	Strategy.BearPutSpread[],
-	TStrategyBaseType<'bearPutSpreadQuery'>
+	['bearPutSpreadQuery', IStrategyOptionsKey, Partial<IBearPutSpreadSpreadFiltersModalState>]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['bearPutSpreadQuery', defaultStrategyOptions],
+	queryKey: ['bearPutSpreadQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.HSPIOTM && filters.HSPIOTM.length > 0) params.HSPIOTM = filters.HSPIOTM.map((item) => item);
+			if (filters?.LSPIOTM && filters.LSPIOTM.length > 0) params.LSPIOTM = filters.LSPIOTM.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters.HSPLeastOpenPositions) params.HSPLeastOpenPositions = filters.HSPLeastOpenPositions;
+			if (filters.LSPLeastOpenPositions) params.LSPLeastOpenPositions = filters.LSPLeastOpenPositions;
+
+			if (filters.leastMaxProfitPercent) params.LeastMaxProfitPercent = filters.leastMaxProfitPercent;
+
+			if (filters.leastYTM) params.LeastYTM = filters.leastYTM;
 
 			const response = await axios.get<ServerResponse<Strategy.BearPutSpread[]>>(routes.strategy.BearPutSpread, {
 				signal,
@@ -279,20 +392,36 @@ export const useBearPutSpreadStrategyQuery = createQuery<
 
 export const useProtectivePutStrategyQuery = createQuery<
 	Strategy.ProtectivePut[],
-	TStrategyBaseType<'protectivePutQuery'>
+	['protectivePutQuery', IStrategyOptionsKey, Partial<IProtectivePutFiltersModalState>]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['protectivePutQuery', defaultStrategyOptions],
+	queryKey: ['protectivePutQuery', defaultStrategyOptions, {}],
 	queryFn: async ({ signal, queryKey }) => {
 		try {
-			const [, { priceBasis, symbolBasis, withCommission }] = queryKey;
-			const params = {
+			const [, { priceBasis, symbolBasis, withCommission }, filters] = queryKey;
+			const params: TParams = {
 				PageSize: 100,
 				PageNumber: 1,
 				PriceType: priceBasis,
 				SymbolBasis: symbolBasis,
 				WithCommission: withCommission,
 			};
+
+			if (filters?.baseSymbols && filters.baseSymbols.length > 0)
+				params.BaseSymbolISIN = filters.baseSymbols.map((item) => item.symbolISIN);
+
+			if (filters?.iotm && filters.iotm.length > 0) params.IOTM = filters.iotm.map((item) => item);
+
+			if (filters?.dueDays) {
+				if (typeof filters.dueDays[0] === 'number') params.FromDueDays = filters.dueDays[0];
+				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
+			}
+
+			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
+
+			if (filters?.maxLoss) params.MostMaxLossPercent = filters.maxLoss;
+
+			if (filters?.bepDifference) params.LeastBEPDifference = filters.bepDifference;
 
 			const response = await axios.get<ServerResponse<Strategy.ProtectivePut[]>>(routes.strategy.ProtectivePut, {
 				signal,

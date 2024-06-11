@@ -42,7 +42,6 @@ const NewAndOld = ({ isModal = false }: INewAndOldProps) => {
 					{ id: 'MostTradedOptionSymbol', title: t('home.tab_most_trading_day') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setNewAndOldModal(getNewAndOld ? null : {}))}
 		>

@@ -91,6 +91,7 @@ import PinSVG from './pin.svg';
 import PlaySVG from './play.svg';
 import PlusSquareSVG from './plus-square.svg';
 import PlusSVG from './plus.svg';
+import QuestionCircleOutlineSVG from './question-circle-outline.svg';
 import ReceptionSVG from './reception.svg';
 import RefreshSVG from './refresh.svg';
 import ReloadSVG from './reload.svg';
@@ -110,6 +111,7 @@ import ShieldOutlineSVG from './shield-outline.svg';
 import ShieldXSVG from './shield-x.svg';
 import SnowFlakeSVG from './snow-flake.svg';
 import SquareXSVG from './square-x.svg';
+import StraightLineSVG from './straight-line.svg';
 import StrategySVG from './strategy.svg';
 import SunSVG from './sun.svg';
 import TeachVideoSVG from './teach-video.svg';
@@ -220,6 +222,7 @@ export {
 	PlaySVG,
 	PlusSVG,
 	PlusSquareSVG,
+	QuestionCircleOutlineSVG,
 	ReceptionSVG,
 	RefreshSVG,
 	ReloadSVG,
@@ -239,6 +242,7 @@ export {
 	ShieldXSVG,
 	SnowFlakeSVG,
 	SquareXSVG,
+	StraightLineSVG,
 	StrategySVG,
 	SunSVG,
 	TeachVideoSVG,

@@ -1,3 +1,4 @@
+import { useMarketMapSectorsQuery } from '@/api/queries/marketQueries';
 import Select from '@/components/common/Inputs/Select';
 import Tooltip from '@/components/common/Tooltip';
 import { CameraSVG, LongshotSVG, ReloadSVG } from '@/components/icons';
@@ -28,6 +29,8 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		}));
 	};
 
+	const { data: sectorData } = useMarketMapSectorsQuery({ queryKey: ['marketMapSectorsQuery'] });
+
 	const goToFullscreen = () => {
 		try {
 			const treemap = document.getElementById('treemap') as HTMLDivElement;
@@ -51,7 +54,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 	const refetch = () => {
 		setDebounce(() => {
-			queryClient.refetchQueries({ queryKey: ['marketMapQuery'], type: 'active' });
+			queryClient.refetchQueries({ queryKey: ['marketMapQuery'], type: 'active', exact: false });
 		}, 500);
 	};
 
@@ -153,7 +156,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 						{ListOfMarkets.map(({ id, label }) => (
 							<li key={id}>
 								<button
-									style={{ width: '11.2rem' }}
+									style={{ width: '12rem' }}
 									type='button'
 									className={clsx(
 										'h-40  rounded !border transition-colors',
@@ -168,16 +171,22 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 						))}
 					</ul>
 
-					<div style={{ minWidth: '0.1rem', minHeight: '3rem' }} className='mx-8 bg-gray-400' />
+					<div
+						style={{
+							minWidth: '16px',
+							minHeight: '1px',
+						}}
+						className='rotate-90 bg-gray-500'
+					/>
 
 					<Select
 						onChange={(option) => setFieldValue('property', option)}
 						options={ListOfProperties}
 						getOptionId={(option) => option.id}
-						getOptionTitle={(option) => <span>{t(option.label)}</span>}
+						getOptionTitle={(option) => option.label}
 						placeholder={t('market_map.market_based_on')}
 						defaultValue={filters.property}
-						classes={{ root: 'max-h-40  min-w-96' }}
+						classes={{ root: 'max-h-40  min-w-[12rem]' }}
 					/>
 				</div>
 

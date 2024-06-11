@@ -33,7 +33,6 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 					<div className='relative flex-1 px-8 pb-8 pt-16'>
 						<SymbolMarketDepth
 							symbolISIN={symbolISIN}
-							compact={false}
 							lowThreshold={lowThreshold}
 							highThreshold={highThreshold}
 						/>

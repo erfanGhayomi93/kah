@@ -55,7 +55,6 @@ const MarketState = ({ isModal = false }: IModalStateProps) => {
 				],
 				top: <Clock />,
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 		>
 			{isLoading && <Loading />}

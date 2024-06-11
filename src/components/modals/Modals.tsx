@@ -8,6 +8,7 @@ import {
 	setBuySellModal,
 	setChangeBrokerModal,
 	setChoiceCollateralModal,
+	setCreateStrategyModal,
 	setDepositModal,
 	setFreezeModal,
 	setManageOptionWatchlistListModal,
@@ -75,8 +76,6 @@ const ChoiceCollateral = lazy(() => import('./ChoiceCollateral'));
 
 const Confirm = lazy(() => import('./Confirm'));
 
-const CoveredCallFilters = lazy(() => import('./CoveredCallFilters'));
-
 const CreateStrategyModal = lazy(() => import('./CreateStrategyModal'));
 
 const DepositWithReceiptFiltersModal = lazy(() => import('./DepositWithReceiptReportsFiltersModal'));
@@ -105,7 +104,7 @@ const MarketViewModal = lazy(() => import('./DashboardModals/MarketViewModal'));
 
 const BestModal = lazy(() => import('./DashboardModals/BestModal'));
 
-const UserInprogressBarModal = lazy(() => import('./DashboardModals/UserProgressBarModal'));
+// const UserInprogressBarModal = lazy(() => import('./DashboardModals/UserProgressBarModal')); //
 
 const CompareTransactionValueModal = lazy(() => import('./DashboardModals/CompareTransactionValueModal'));
 
@@ -174,12 +173,10 @@ const Modals = () => {
 		ordersReportsFilters,
 		createStrategy,
 		tradesReportsFilters,
-		coveredCallFilters,
 		manageColumns,
 		marketState,
 		marketView,
 		best,
-		userProgressBar,
 		compareTransactionValue,
 		optionContract,
 		optionTradeValue,
@@ -510,7 +507,9 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{createStrategy && (
 					<ModalSuspense>
-						<CreateStrategyModal {...createStrategy} />
+						<AuthorizeMiddleware callback={() => dispatch(setCreateStrategyModal(null))}>
+							<CreateStrategyModal {...createStrategy} />
+						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -519,14 +518,6 @@ const Modals = () => {
 				{tradesReportsFilters && (
 					<ModalSuspense>
 						<TradesReportsFiltersModal {...tradesReportsFilters} />
-					</ModalSuspense>
-				)}
-			</ModalAnimatePresence>
-
-			<ModalAnimatePresence>
-				{coveredCallFilters && (
-					<ModalSuspense>
-						<CoveredCallFilters {...coveredCallFilters} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
@@ -563,13 +554,13 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			{/* <ModalAnimatePresence>
 				{userProgressBar && (
 					<ModalSuspense>
 						<UserInprogressBarModal />
 					</ModalSuspense>
 				)}
-			</ModalAnimatePresence>
+			</ModalAnimatePresence> */}
 
 			<ModalAnimatePresence>
 				{compareTransactionValue && (

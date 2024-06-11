@@ -26,6 +26,7 @@ export const initialHiddenColumnsCoveredCall: Record<TCoveredCallColumns, boolea
 	baseTradeVolume: true,
 	baseLastTradedDate: true,
 	action: false,
+	ytm: false,
 };
 
 export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>> = [
@@ -227,7 +228,7 @@ export const initialColumnsBullCallSpread: Array<IManageColumn<TBullCallSpreadCo
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsBullCallSpread.baseSymbolTitle,
 		tag: 'PanelDetail',
-		nonEditable: true
+		nonEditable: true,
 	},
 	{
 		id: 'baseTradePriceVarPreviousTradePercent',
@@ -440,8 +441,8 @@ export const initialHiddenColumnsLongCall: Record<TLongCallColumns, boolean> = {
 	tradePriceVarPreviousTradePercent: false,
 	optionBestSellLimitPrice: false,
 	optionBestSellLimitQuantity: false,
-	optionBestLimitPrice: true,
-	optionBestLimitVolume: true,
+	optionBestBuyLimitPrice: true,
+	optionBestBuyLimitQuantity: true,
 	longCallBEP: false,
 	profitPercent: true,
 	blackScholes: false,
@@ -502,15 +503,15 @@ export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 		tag: 'PanelDetail',
 	},
 	{
-		id: 'optionBestLimitPrice',
+		id: 'optionBestBuyLimitPrice',
 		title: 'بهترین خریدار',
-		hidden: initialHiddenColumnsLongCall.optionBestLimitPrice,
+		hidden: initialHiddenColumnsLongCall.optionBestBuyLimitPrice,
 		tag: 'PanelDetail',
 	},
 	{
-		id: 'optionBestLimitVolume',
+		id: 'optionBestBuyLimitQuantity',
 		title: 'حجم سرخط خرید',
-		hidden: initialHiddenColumnsLongCall.optionBestLimitVolume,
+		hidden: initialHiddenColumnsLongCall.optionBestBuyLimitPrice,
 		tag: 'PanelDetail',
 	},
 	{

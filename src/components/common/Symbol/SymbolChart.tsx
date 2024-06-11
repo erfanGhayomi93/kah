@@ -2,31 +2,72 @@ import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { useMemo } from 'react';
 import AppChart from '../AppChart';
 
-interface SymbolChartProps extends Partial<ISymbolChartStates> {
+interface IChartData {
 	data: Symbol.ChartData[];
-	height?: number | string;
+	tab: 'symbol_chart';
+	type: 'area' | 'candlestick';
 }
+
+interface IOpenPositionChart {
+	data: Option.OpenPositionChart[];
+	tab: 'open_positions';
+	type: 'area';
+}
+
+interface INotionalValueChart {
+	data: Option.NotionalValueChart[];
+	tab: 'notional_value';
+	type: 'area';
+}
+
+export type SymbolChartProps = (IChartData | IOpenPositionChart | INotionalValueChart) & {
+	interval?: 'daily' | 'weekly' | 'monthly' | 'yearly';
+	height?: number | string;
+};
 
 type TLinearChartResponse = Record<'x' | 'y', number>;
 type TCandleChartResponse = [number, [number, number, number, number]];
 
-const SymbolChart = ({ height, data, type = 'area', interval = 'daily' }: SymbolChartProps) => {
+const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChartProps) => {
 	const dataMapper: TLinearChartResponse[] | TCandleChartResponse[] = useMemo(() => {
-		if (!Array.isArray(data)) return [];
-		if (type === 'area') {
-			return data.map<TLinearChartResponse>((item) => ({
-				x: item.x,
-				y: item.c,
-			}));
+		try {
+			if (!Array.isArray(data)) return [];
+
+			if (type === 'candlestick')
+				return data.map<TCandleChartResponse>((item) => [item.x, [item.o, item.h, item.l, item.c]]);
+
+			if (tab === 'symbol_chart') return data.map<TLinearChartResponse>((item) => ({ x: item.x, y: item.c }));
+
+			if (tab === 'open_positions')
+				return data.map<TLinearChartResponse>((item) => ({
+					x: new Date(item.saveDate).getTime(),
+					y: item.openPosition,
+				}));
+
+			if (tab === 'notional_value')
+				return data.map<TLinearChartResponse>((item) => ({
+					x: new Date(item.intervalDateTime).getTime(),
+					y: item.notionalValue,
+				}));
+		} catch (e) {
+			//
 		}
 
-		return data.map<TCandleChartResponse>((item) => [item.x, [item.o, item.h, item.l, item.c]]);
-	}, [type, data]);
+		return [];
+	}, [type, data, tab]);
+
+	const COLORS: Record<SymbolChartProps['tab'], string[]> = {
+		symbol_chart: ['rgba(0, 87, 255, 1)'],
+		open_positions: ['rgba(137, 118, 255, 1)'],
+		notional_value: ['rgba(68, 34, 140, 1)'],
+	};
+
+	const activeColor = COLORS[tab];
 
 	return (
 		<AppChart
 			options={{
-				colors: ['rgb(34, 180, 150)'],
+				colors: activeColor,
 				tooltip: {
 					y: {
 						formatter: (val) => {
@@ -72,6 +113,24 @@ const SymbolChart = ({ height, data, type = 'area', interval = 'daily' }: Symbol
 						formatter: (val) => {
 							return numFormatter(val);
 						},
+					},
+				},
+				fill: {
+					type: 'gradient',
+					gradient: {
+						type: 'vertical',
+						colorStops: [
+							{
+								offset: 10,
+								color: activeColor[0],
+								opacity: 0.1,
+							},
+							{
+								offset: 100,
+								color: activeColor[0],
+								opacity: 0,
+							},
+						],
 					},
 				},
 			}}

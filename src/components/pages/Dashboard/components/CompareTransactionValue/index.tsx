@@ -66,7 +66,6 @@ const CompareTransactionValue = ({ isModal }: ICompareTransactionValueProps) => 
 					{ id: 'OptionSellToMarket', title: t('home.tab_put_market_option') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setCompareTransactionValueModal(getCompareTransactionValue ? null : {}))}
 		>

@@ -3,14 +3,16 @@ import clsx from 'clsx';
 
 interface InputLegendProps
 	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'prefix' | 'placeholder' | 'onChange'> {
-	onChange: (v: string) => void;
+	onChange?: (v: string) => void;
 	value: string | number | null;
 	prefix?: React.ReactNode;
 	placeholder: React.ReactNode;
 	separator?: boolean;
+	height?: string;
 	valueSeparator?: boolean;
 	inputPlaceholder?: string;
 	autoTranslateLegend?: boolean;
+	legendWidth?: number;
 }
 
 const InputLegend = ({
@@ -21,28 +23,48 @@ const InputLegend = ({
 	separator = true,
 	autoTranslateLegend = false,
 	inputPlaceholder,
+	height = '48',
+	legendWidth,
 	onChange,
+	disabled,
 	...props
 }: InputLegendProps) => {
 	const isActive = autoTranslateLegend || (value && String(value).length > 0);
 
 	return (
-		<label className='relative h-48 flex-1 rounded flex-items-center input-group'>
+		<label
+			className={clsx(
+				`relative h-${height} w-full rounded flex-items-center input-group`,
+				!placeholder && 'border border-gray-500',
+				disabled && 'bg-gray-200',
+			)}
+		>
 			<input
 				placeholder={inputPlaceholder}
 				type='text'
 				inputMode='numeric'
 				className='h-full flex-1 bg-transparent px-8 text-left ltr'
 				value={value === null ? '' : valueSeparator ? sepNumbers(String(value)) : value}
-				onChange={(e) => onChange(e.target.value)}
+				disabled={disabled}
+				onChange={(e) => {
+					if (!disabled) onChange?.(e.target.value);
+				}}
 				{...props}
 			/>
 
-			<span className={cn('flexible-placeholder', isActive && 'active')}>{placeholder}</span>
+			{placeholder && (
+				<>
+					<div className={cn('gap-8 flex-items-center flexible-placeholder', isActive && 'active')}>
+						{placeholder}
+					</div>
 
-			<fieldset className={cn('flexible-fieldset', isActive && 'active')}>
-				<legend>{placeholder}</legend>
-			</fieldset>
+					<fieldset className={cn('flexible-fieldset', isActive && 'active')}>
+						<legend style={{ width: legendWidth ? `${legendWidth / 10}rem` : undefined }}>
+							{placeholder}
+						</legend>
+					</fieldset>
+				</>
+			)}
 
 			{prefix && (
 				<span

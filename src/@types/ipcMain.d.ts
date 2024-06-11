@@ -1,3 +1,5 @@
+type TExecuteStrategyFieldName = 'bestSellLimitPrice_1' | 'bestBuyLimitPrice_1';
+
 declare interface IpcMainChannels {
 	send_order: IOFields;
 	send_orders: IOFields[];

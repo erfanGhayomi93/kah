@@ -44,7 +44,6 @@ const OpenPositionsProcess = ({ isModal = false }: IOpenPositionProcessProps) =>
 					{ id: 'Year', title: t('home.tab_year') },
 				],
 			}}
-			closeable={!isModal}
 			expandable={!isModal}
 			onExpand={() => dispatch(setOpenPositionProcessModal(getOpenPositionProcess ? null : {}))}
 		>

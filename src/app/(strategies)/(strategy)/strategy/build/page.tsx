@@ -2,6 +2,7 @@ import BuildStrategy from '@/components/pages/Strategies/BuildStrategy';
 import StrategyLayout from '@/components/pages/Strategies/StrategyLayout';
 import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => (
 	<StrategyLayout isBuilding>
@@ -9,9 +10,11 @@ const Page: NextPage<INextProps> = () => (
 	</StrategyLayout>
 );
 
-const generateMetadata = () => {
+const generateMetadata = async () => {
+	const t = await getTranslations('meta_title');
+
 	return getMetadata({
-		title: 'ساخت استراتژی',
+		title: t('build_strategy'),
 	});
 };
 

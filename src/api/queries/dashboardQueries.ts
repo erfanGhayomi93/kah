@@ -92,17 +92,17 @@ export const useGetRetailTradeValuesQuery = createQuery<
 
 export const useGetOptionTopSymbolsQuery = createQuery<
 	Dashboard.GetTopSymbols.Option.Data,
-	['getOptionTopSymbolsQuery', Dashboard.GetTopSymbols.Option.Type]
+	['getOptionTopSymbolsQuery', Dashboard.GetTopSymbols.Option.Type, number]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['getOptionTopSymbolsQuery', 'OptionOpenPosition'],
+	queryKey: ['getOptionTopSymbolsQuery', 'OptionOpenPosition', 4],
 	queryFn: async ({ signal, queryKey }) => {
-		const [, type] = queryKey;
+		const [, type, pageSize] = queryKey;
 
 		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.Option.FakeData>>(
 			routes.dashboard.GetOptionTopSymbols,
 			{
-				params: { type, pageSize: 4 },
+				params: { type, pageSize },
 				signal,
 			},
 		);
@@ -130,17 +130,17 @@ export const useGetOptionTopSymbolsQuery = createQuery<
 
 export const useGetBaseTopSymbolsQuery = createQuery<
 	Dashboard.GetTopSymbols.BaseSymbol.Data,
-	['getBaseTopSymbolsQuery', Dashboard.GetTopSymbols.BaseSymbol.Type]
+	['getBaseTopSymbolsQuery', Dashboard.GetTopSymbols.BaseSymbol.Type, number]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['getBaseTopSymbolsQuery', 'BaseSymbolCallOpenPosition'],
+	queryKey: ['getBaseTopSymbolsQuery', 'BaseSymbolCallOpenPosition', 4],
 	queryFn: async ({ signal, queryKey }) => {
-		const [, type] = queryKey;
+		const [, type, pageSize] = queryKey;
 
 		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.BaseSymbol.Data>>(
 			routes.dashboard.GetBaseTopSymbols,
 			{
-				params: { type },
+				params: { type, pageSize },
 				signal,
 			},
 		);
@@ -154,17 +154,17 @@ export const useGetBaseTopSymbolsQuery = createQuery<
 
 export const useGetTopSymbolsQuery = createQuery<
 	Dashboard.GetTopSymbols.Symbol.Data,
-	['getTopSymbolsQuery', Dashboard.GetTopSymbols.Symbol.Type]
+	['getTopSymbolsQuery', Dashboard.GetTopSymbols.Symbol.Type, number]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['getTopSymbolsQuery', 'SymbolValue'],
+	queryKey: ['getTopSymbolsQuery', 'SymbolValue', 4],
 	queryFn: async ({ signal, queryKey }) => {
-		const [, type] = queryKey;
+		const [, type, pageSize] = queryKey;
 
 		const response = await axios.get<ServerResponse<Dashboard.GetTopSymbols.Symbol.Data>>(
 			routes.dashboard.GetTopSymbols,
 			{
-				params: { type },
+				params: { type, pageSize },
 				signal,
 			},
 		);
@@ -319,17 +319,17 @@ export const useGetOpenPositionProcessQuery = createQuery<
 
 export const useGetAnnualReportQuery = createQuery<
 	Dashboard.GetAnnualReport.Data[],
-	['getAnnualReportQuery', Dashboard.GetAnnualReport.Type]
+	['getAnnualReportQuery', Dashboard.GetAnnualReport.Type, number]
 >({
 	staleTime: CACHE_TIME,
-	queryKey: ['getAnnualReportQuery', 'FundIncrease'],
+	queryKey: ['getAnnualReportQuery', 'FundIncrease', 4],
 	queryFn: async ({ signal, queryKey }) => {
-		const [, type] = queryKey;
+		const [, type, pageSize] = queryKey;
 
 		const response = await axios.get<ServerResponse<Dashboard.GetAnnualReport.Data[]>>(
 			routes.dashboard.GetAnnualReport,
 			{
-				params: { type, pageSize: 4 },
+				params: { type, pageSize },
 				signal,
 			},
 		);

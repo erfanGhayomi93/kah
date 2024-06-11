@@ -52,20 +52,6 @@
 	direction: ltr;
 }
 
-.skeleton {
-	background-color: var(--skeleton-bg);
-	background: linear-gradient(
-			100deg,
-			rgba(255, 255, 255, 0) 40%,
-			rgba(255, 255, 255, 0.5) 50%,
-			rgba(255, 255, 255, 0) 60%
-		)
-		var(--skeleton-bg);
-	background-position-x: 120%;
-	background-size: 200% 100%;
-	animation: 1000ms skeleton-loading ease-in-out infinite;
-}
-
 .react-grid-item:not(.react-draggable-dragging) {
 	transition:
 		height 200ms ease-in,

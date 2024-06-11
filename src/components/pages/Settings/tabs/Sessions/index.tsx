@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
 
-const History = () => {
+const Sessions = () => {
 	const t = useTranslations();
 
 	const columnDefs = useMemo<Array<IColDef<unknown>>>(
@@ -61,7 +61,7 @@ const History = () => {
 	);
 
 	return (
-		<SettingCard title={t('settings_page.history_settings')} className='relative h-3/5 overflow-hidden'>
+		<SettingCard title={t('settings_page.sessions_settings')} className='relative h-3/5 overflow-hidden'>
 			<LightweightTable reverseColors columnDefs={columnDefs} rowData={[]} />
 			<div className='absolute left-0 top-0 size-full'>
 				<NoData />
@@ -70,4 +70,4 @@ const History = () => {
 	);
 };
 
-export default History;
+export default Sessions;

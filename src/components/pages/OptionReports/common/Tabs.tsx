@@ -52,7 +52,7 @@ const Tabs = () => {
 						minWidth: '16px',
 						minHeight: '1px',
 					}}
-					className='rotate-90 bg-gray-200'
+					className='rotate-90 bg-gray-500'
 				/>
 				<ul className='gap-8 flex-justify-start'>
 					{FINANCIAL_TYPE.map((type) => {

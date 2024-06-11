@@ -3,11 +3,14 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Badge from './Badge';
 
-interface BaseSymbolStepProps extends CreateStrategy.IBaseSymbol {
+interface BaseSymbolStepProps {
+	bestLimitPrice: number;
+	symbolTitle: string;
+	status: CreateStrategy.Status;
 	className: string;
 }
 
-const BaseSymbolStep = ({ symbolTitle, className, status }: BaseSymbolStepProps) => {
+const BaseSymbolStep = ({ symbolTitle, bestLimitPrice, className, status }: BaseSymbolStepProps) => {
 	const t = useTranslations();
 
 	return (
@@ -20,7 +23,7 @@ const BaseSymbolStep = ({ symbolTitle, className, status }: BaseSymbolStepProps)
 				<span className='text-gray-900'>{t('create_strategy.best_limit_price')}:</span>
 				<div className='gap-4 text-gray-700 ltr flex-items-end'>
 					{t('common.rial')}
-					<span className='text-base font-medium text-gray-1000'>{sepNumbers('17025')}</span>
+					<span className='text-base font-medium text-gray-1000'>{sepNumbers(String(bestLimitPrice))}</span>
 				</div>
 			</div>
 

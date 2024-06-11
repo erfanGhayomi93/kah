@@ -2,14 +2,15 @@ import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsCoveredCall, initialHiddenColumnsCoveredCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
 import {
 	setAnalyzeModal,
-	setCoveredCallFiltersModal,
 	setCreateStrategyModal,
 	setDescriptionModal,
 	setManageColumnsModal,
+	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
@@ -72,51 +73,22 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	const execute = (data: Strategy.CoveredCall) => {
 		try {
+			// ? baseSymbolEstimatedBudget = (contractSize * (baseBestSellLimitPrice - optionBestBuyLimitPrice)) * orderQuantity
 			dispatch(
 				setCreateStrategyModal({
+					contractSize: data.contractSize ?? 0,
+					inUseCapital: data.inUseCapital ?? 0,
+					strategy: 'CoveredCall',
 					baseSymbol: {
 						symbolISIN: data.baseSymbolISIN,
 						symbolTitle: data.baseSymbolTitle,
+						bestLimitPrice: data.baseBestSellLimitPrice,
 					},
-					strategy: 'CoveredCall',
-					steps: [
-						{
-							id: uuidv4(),
-							type: 'base',
-							quantity: 100,
-							estimatedBudget: 42e4,
-							buyAssetsBySymbol: false,
-							orderPrice: data.baseBestBuyLimitPrice,
-							symbolISIN: data.baseSymbolISIN,
-							symbolTitle: data.baseSymbolTitle,
-							orderQuantity: 90,
-							status: 'TODO',
-						},
-						{
-							id: uuidv4(),
-							type: 'freeze',
-							estimatedBudget: 42e4,
-							status: 'PENDING',
-							baseSymbol: {
-								symbolISIN: data.baseSymbolISIN,
-								symbolTitle: data.baseSymbolTitle,
-							},
-						},
-						{
-							id: uuidv4(),
-							type: 'option',
-							estimatedBudget: 42e4,
-							optionType: 'call',
-							side: 'sell',
-							status: 'PENDING',
-							symbolISIN: data.symbolISIN,
-							symbolTitle: data.symbolTitle,
-							baseSymbol: {
-								symbolISIN: data.baseSymbolISIN,
-								symbolTitle: data.baseSymbolTitle,
-							},
-						},
-					],
+					option: {
+						symbolISIN: data.symbolISIN,
+						symbolTitle: data.symbolTitle,
+						bestLimitPrice: data.optionBestBuyLimitPrice,
+					},
 				}),
 			);
 		} catch (e) {
@@ -211,9 +183,99 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	const showFilters = () => {
 		dispatch(
-			setCoveredCallFiltersModal({
-				initialFilters: filters,
+			setStrategyFiltersModal({
+				baseSymbols: filters?.baseSymbols ?? [],
 				onSubmit: onFiltersChanged,
+				filters: [
+					{
+						id: 'iotm',
+						title: t('strategy_filters.iotm'),
+						mode: 'array',
+						type: 'string',
+						data: [
+							{
+								value: 'atm',
+								title: t('strategy_filters.atm'),
+								icon: <StraightLineSVG />,
+								className: {
+									enable: 'btn-secondary',
+									disabled: 'btn-secondary-outline',
+								},
+							},
+							{
+								value: 'otm',
+								title: t('strategy_filters.otm'),
+								icon: <ChartDownSVG />,
+								className: {
+									enable: 'btn-error',
+									disabled: 'btn-error-outline',
+								},
+							},
+							{
+								value: 'itm',
+								title: t('strategy_filters.itm'),
+								icon: <ChartUpSVG />,
+								className: {
+									enable: 'btn-success',
+									disabled: 'btn-success-outline',
+								},
+							},
+						],
+						initialValue: filters?.iotm ?? [],
+					},
+					{
+						id: 'dueDays',
+						title: t('strategy_filters.due_days'),
+						mode: 'range',
+						type: 'integer',
+						label: [t('strategy_filters.from'), t('strategy_filters.to')],
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
+					},
+					{
+						id: 'openPosition',
+						title: t('strategy_filters.open_positions'),
+						mode: 'single',
+						type: 'integer',
+						initialValue: filters?.openPosition ?? null,
+						label: t('strategy_filters.from'),
+					},
+					{
+						id: 'maxProfit',
+						title: t('strategy_filters.max_profit'),
+						titleHint: t('strategy_filters.max_profit_tooltip'),
+						mode: 'single',
+						type: 'percent',
+						label: t('strategy_filters.from'),
+						initialValue: filters?.maxProfit ?? null,
+					},
+					{
+						id: 'nonExpiredProfit',
+						title: t('strategy_filters.non_expired_profit'),
+						titleHint: t('strategy_filters.non_expired_profit_tooltip'),
+						mode: 'single',
+						type: 'percent',
+						label: t('strategy_filters.from'),
+						initialValue: filters?.nonExpiredProfit ?? null,
+					},
+					{
+						id: 'bepDifference',
+						title: t('strategy_filters.bep_difference'),
+						mode: 'range',
+						type: 'percent',
+						label: [t('strategy_filters.from'), t('strategy_filters.to')],
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: [filters.bepDifference?.[0] ?? null, filters.bepDifference?.[1] ?? null],
+					},
+					{
+						id: 'ytm',
+						title: t('strategy_filters.ytm'),
+						mode: 'single',
+						type: 'percent',
+						initialValue: filters?.ytm ?? null,
+						label: t('strategy_filters.from'),
+					},
+				],
 			}),
 		);
 	};
@@ -381,29 +443,12 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'bestBuyYTM',
-				headerName: t('CoveredCall.bestBuyYTM'),
-				initialHide: initialHiddenColumnsCoveredCall.bestBuyYTM,
+				colId: 'ytm',
+				headerName: t('CoveredCall.ytm'),
+				initialHide: initialHiddenColumnsCoveredCall.ytm,
 				width: 152,
-				headerComponent: HeaderHint,
-				headerComponentParams: {
-					tooltip: 'بازده موثر تا سررسید',
-				},
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
-				valueFormatter: ({ value }) => toFixed(value, 4),
-			},
-			{
-				colId: 'bestSellYTM',
-				headerName: t('CoveredCall.bestSellYTM'),
-				initialHide: initialHiddenColumnsCoveredCall.bestSellYTM,
-				width: 152,
-				headerComponent: HeaderHint,
-				headerComponentParams: {
-					tooltip: 'بازده موثر تا سررسید',
-				},
-				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
+				valueGetter: ({ data }) => data?.ytm ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
@@ -411,14 +456,49 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: t('CoveredCall.nonExpiredYTM'),
 				initialHide: initialHiddenColumnsCoveredCall.nonExpiredYTM,
 				width: 152,
-				headerComponent: HeaderHint,
-				headerComponentParams: {
-					tooltip: 'بازده موثر تا سررسید در صورت عدم اعمال توسط خریدار اختیار',
-				},
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
+			// {
+			// 	colId: 'bestBuyYTM',
+			// 	headerName: t('CoveredCall.bestBuyYTM'),
+			// 	initialHide: initialHiddenColumnsCoveredCall.bestBuyYTM,
+			// 	width: 152,
+			// 	headerComponent: HeaderHint,
+			// 	headerComponentParams: {
+			// 		tooltip: 'بازده موثر تا سررسید',
+			// 	},
+			// 	cellClass: ({ value }) => getColorBasedOnPercent(value),
+			// 	valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
+			// 	valueFormatter: ({ value }) => toFixed(value, 4),
+			// },
+			// {
+			// 	colId: 'bestSellYTM',
+			// 	headerName: t('CoveredCall.bestSellYTM'),
+			// 	initialHide: initialHiddenColumnsCoveredCall.bestSellYTM,
+			// 	width: 152,
+			// 	headerComponent: HeaderHint,
+			// 	headerComponentParams: {
+			// 		tooltip: 'بازده موثر تا سررسید',
+			// 	},
+			// 	cellClass: ({ value }) => getColorBasedOnPercent(value),
+			// 	valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
+			// 	valueFormatter: ({ value }) => toFixed(value, 4),
+			// },
+			// {
+			// 	colId: 'nonExpiredYTM',
+			// 	headerName: t('CoveredCall.nonExpiredYTM'),
+			// 	initialHide: initialHiddenColumnsCoveredCall.nonExpiredYTM,
+			// 	width: 152,
+			// 	headerComponent: HeaderHint,
+			// 	headerComponentParams: {
+			// 		tooltip: 'بازده موثر تا سررسید در صورت عدم اعمال توسط خریدار اختیار',
+			// 	},
+			// 	cellClass: ({ value }) => getColorBasedOnPercent(value),
+			// 	valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
+			// 	valueFormatter: ({ value }) => toFixed(value, 4),
+			// },
 			{
 				colId: 'bepDifference',
 				headerName: t('CoveredCall.bepDifference'),
