@@ -96,6 +96,7 @@ declare type TCoveredCallColumns =
 	| 'maxProfitPercent'
 	| 'nonExpiredProfitPercent'
 	| 'inUseCapital'
+	| 'ytm'
 	| 'bestBuyYTM'
 	| 'bestSellYTM'
 	| 'nonExpiredYTM'
@@ -153,8 +154,8 @@ declare type TLongCallColumns =
 	| 'strikePrice'
 	| 'openPositionCount'
 	| 'tradePriceVarPreviousTradePercent'
-	| 'optionBestLimitPrice'
-	| 'optionBestLimitVolume'
+	| 'optionBestBuyLimitPrice'
+	| 'optionBestBuyLimitQuantity'
 	| 'optionBestSellLimitPrice'
 	| 'optionBestSellLimitQuantity'
 	| 'longCallBEP'
@@ -399,4 +400,62 @@ interface ILongStraddleFiltersModalStates {
 	dueDays: [null | number, null | number];
 	callOpenPosition: number;
 	putOpenPosition: number;
+}
+
+interface ILongCallFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPosition: null | number;
+	bepDifference: null | number;
+}
+
+interface ILongPutFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPosition: null | number;
+	bepDifference: null | number;
+}
+
+interface IProtectivePutFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPosition: null | number;
+	maxLoss: null | number;
+	bepDifference: null | number;
+}
+
+interface IBullCallSpreadFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	HSPIOTM: Option.IOTM[];
+	LSPIOTM: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	HSPLeastOpenPositions: null | number;
+	LSPLeastOpenPositions: null | number;
+	leastMaxProfitPercent: null | number;
+	leastYTM: null | number;
+}
+
+interface IConversionFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	callIOTM: Option.IOTM[];
+	putIOTM: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	callLeastOpenPositions: null | number;
+	putLeastOpenPositions: null | number;
+	leastProfitPercent: null | number;
+	leastYTM: null | number;
+}
+
+interface IBearPutSpreadSpreadFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	HSPIOTM: Option.IOTM[];
+	LSPIOTM: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	HSPLeastOpenPositions: null | number;
+	LSPLeastOpenPositions: null | number;
+	leastMaxProfitPercent: null | number;
+	leastYTM: null | number;
 }
