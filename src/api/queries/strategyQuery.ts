@@ -10,8 +10,6 @@ interface IStrategyOptionsKey {
 	withCommission: boolean;
 }
 
-type TStrategyBaseType<T> = [T, IStrategyOptionsKey];
-
 const CACHE_TIME = 0;
 
 const defaultStrategyOptions: IStrategyOptionsKey = {
