@@ -41,6 +41,9 @@ const OptionForm = ({ budget, contractSize, quantity, nextStep }: OptionFormProp
 					maxLength={16}
 					legendWidth={96}
 					autoTranslateLegend
+					classes={{
+						prefix: 'w-40',
+					}}
 				/>
 
 				<div className='text-tiny text-gray-900 flex-justify-between'>

@@ -251,11 +251,16 @@ export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	baseSymbol: {
 		symbolTitle: string;
 		symbolISIN: string;
+		marketUnit: string;
 		bestLimitPrice: number;
 	};
 	option: {
 		symbolTitle: string;
 		symbolISIN: string;
+		marketUnit: string;
+		settlementDay: string;
+		historicalVolatility: number;
+		strikePrice: number;
 		bestLimitPrice: number;
 	};
 }

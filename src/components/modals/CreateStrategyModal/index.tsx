@@ -183,7 +183,14 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 								/>
 								<Steps baseSymbol={baseSymbol} option={option} step={step} />
 							</div>
-							<StrategyChartDetails />
+
+							<StrategyChartDetails
+								contractSize={contractSize}
+								baseSymbol={baseSymbol}
+								option={option}
+								{...inputs}
+							/>
+
 							<AddConditionalAlarm />
 						</div>
 

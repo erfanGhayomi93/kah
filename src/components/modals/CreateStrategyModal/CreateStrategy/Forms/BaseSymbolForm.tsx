@@ -90,6 +90,9 @@ const BaseSymbolForm = ({
 					maxLength={16}
 					legendWidth={96}
 					autoTranslateLegend
+					classes={{
+						prefix: 'w-40',
+					}}
 				/>
 
 				<div className='gap-8 flex-column'>
@@ -99,11 +102,13 @@ const BaseSymbolForm = ({
 						onChange={(v) => onChangeQuantity(Number(convertStringToInteger(v)))}
 						placeholder={t('create_strategy.required_quantity')}
 						prefix={t('create_strategy.stock')}
-						separator={false}
 						maxLength={10}
 						autoTranslateLegend
 						onBlur={() => setIsQuantityTouched(true)}
 						hasError={isQuantityTouched && isQuantityInvalid}
+						classes={{
+							prefix: 'w-40',
+						}}
 					/>
 
 					<div className='h-20 text-error-100 flex-items-center'>

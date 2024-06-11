@@ -13,11 +13,11 @@ interface ITableData extends IBlackScholesResponse {
 	symbol: TSymbolStrategy['symbol'];
 }
 
-interface GreeksTableProps {
+interface AnalyzeGreeksTableProps {
 	contracts: TSymbolStrategy[];
 }
 
-const GreeksTable = ({ contracts }: GreeksTableProps) => {
+const AnalyzeGreeksTable = ({ contracts }: AnalyzeGreeksTableProps) => {
 	const t = useTranslations('analyze_modal');
 
 	const dispatch = useAppDispatch();
@@ -112,4 +112,4 @@ const GreeksTable = ({ contracts }: GreeksTableProps) => {
 	return <LightweightTable rowData={dataMapper} columnDefs={columnDefs} />;
 };
 
-export default GreeksTable;
+export default AnalyzeGreeksTable;

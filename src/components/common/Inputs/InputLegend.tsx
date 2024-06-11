@@ -14,6 +14,7 @@ interface InputLegendProps
 	autoTranslateLegend?: boolean;
 	legendWidth?: number;
 	hasError?: boolean;
+	classes?: RecordClasses<'prefix'>;
 }
 
 const InputLegend = ({
@@ -27,8 +28,9 @@ const InputLegend = ({
 	inputPlaceholder,
 	height = '48',
 	legendWidth,
-	onChange,
 	disabled,
+	classes,
+	onChange,
 	...props
 }: InputLegendProps) => {
 	const isActive = autoTranslateLegend || (value && String(value).length > 0);
@@ -83,6 +85,7 @@ const InputLegend = ({
 				<span
 					className={clsx(
 						'h-24 px-8 text-tiny text-gray-700 flex-justify-center',
+						classes?.prefix,
 						separator && 'border-r border-r-input',
 					)}
 				>
