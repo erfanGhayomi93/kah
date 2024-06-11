@@ -71,7 +71,6 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 			onSuccess: (symbol, { type = 'initial' }) => {
 				if (!symbol) return;
 
-				console.log(type);
 				if (type === 'initial') setFieldValue('baseSymbol', symbol);
 				else submit(symbol);
 			},
