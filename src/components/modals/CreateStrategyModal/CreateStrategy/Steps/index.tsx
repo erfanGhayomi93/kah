@@ -1,51 +1,38 @@
+import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
 import clsx from 'clsx';
-import { Fragment } from 'react';
 import styles from '../../CreateStrategyModal.module.scss';
 import BaseSymbolStep from './BaseSymbolStep';
 import FreezeStep from './FreezeStep';
 import OptionStep from './OptionStep';
 
 interface StepsProps {
-	steps: CreateStrategy.Step[];
+	baseSymbol: ICreateStrategyModal['baseSymbol'];
+	option: ICreateStrategyModal['option'];
+	step: CreateStrategy.TCoveredCallSteps;
 }
 
-const Steps = ({ steps }: StepsProps) => {
+const Steps = ({ step, baseSymbol, option }: StepsProps) => {
 	return (
 		<div style={{ flex: '0 0 23.6rem', minHeight: '9.6rem' }} className='rounded bg-gray-200 p-16'>
 			<ul className={styles.list}>
-				{steps.map((item, i) => (
-					<Fragment key={i}>
-						{item.type === 'base' && (
-							<BaseSymbolStep
-								className={clsx(
-									styles.item,
-									item.status === 'DONE' ? styles.done : item.status !== 'PENDING' && styles.active,
-								)}
-								{...item}
-							/>
-						)}
+				<BaseSymbolStep
+					symbolTitle={baseSymbol.symbolTitle}
+					bestLimitPrice={baseSymbol.bestLimitPrice}
+					status={step === 'base' ? 'PENDING' : 'DONE'}
+					className={clsx(styles.item, step === 'base' ? styles.active : styles.done)}
+				/>
 
-						{item.type === 'freeze' && (
-							<FreezeStep
-								className={clsx(
-									styles.item,
-									item.status === 'DONE' ? styles.done : item.status !== 'PENDING' && styles.active,
-								)}
-								{...item}
-							/>
-						)}
+				<FreezeStep
+					status={step === 'freeze' ? 'PENDING' : step === 'option' ? 'DONE' : 'TODO'}
+					className={clsx(styles.item, step === 'freeze' ? styles.active : step === 'option' && styles.done)}
+				/>
 
-						{item.type === 'option' && (
-							<OptionStep
-								className={clsx(
-									styles.item,
-									item.status === 'DONE' ? styles.done : item.status !== 'PENDING' && styles.active,
-								)}
-								{...item}
-							/>
-						)}
-					</Fragment>
-				))}
+				<OptionStep
+					status={step === 'option' ? 'PENDING' : 'TODO'}
+					symbolTitle={option.symbolTitle}
+					bestLimitPrice={option.bestLimitPrice}
+					className={clsx(styles.item, step === 'option' && styles.active)}
+				/>
 			</ul>
 		</div>
 	);

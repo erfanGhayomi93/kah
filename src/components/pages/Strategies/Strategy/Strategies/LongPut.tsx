@@ -2,9 +2,15 @@ import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsLongPut, initialHiddenColumnsLongPut } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
-import { setAnalyzeModal, setDescriptionModal, setManageColumnsModal } from '@/features/slices/modalSlice';
+import {
+	setAnalyzeModal,
+	setDescriptionModal,
+	setManageColumnsModal,
+	setStrategyFiltersModal,
+} from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
@@ -34,6 +40,8 @@ const LongPut = (strategy: LongPutProps) => {
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
+	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ILongPutFiltersModalState>>({});
+
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'long_put_strategy_columns',
 		initialColumnsLongPut,
@@ -50,6 +58,7 @@ const LongPut = (strategy: LongPutProps) => {
 		queryKey: [
 			'longPutQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
+			{ ...filters },
 		],
 	});
 
@@ -125,6 +134,85 @@ const LongPut = (strategy: LongPutProps) => {
 				title: t('strategies.manage_columns'),
 				onColumnChanged: (columns) => setColumnsVisibility(columns),
 				onReset: () => setColumnsVisibility(initialColumnsLongPut),
+			}),
+		);
+	};
+
+	
+
+	const onFiltersChanged = (newFilters: Partial<ILongPutFiltersModalState>) => {
+		setFilters(newFilters);
+	};
+
+	const showFilters = () => {
+		dispatch(
+			setStrategyFiltersModal({
+				baseSymbols: filters?.baseSymbols ?? [],
+				onSubmit: onFiltersChanged,
+				filters: [
+					{
+						id: 'iotm',
+						title: t('strategy_filters.iotm'),
+						mode: 'array',
+						type: 'string',
+						data: [
+							{
+								value: 'atm',
+								title: t('strategy_filters.atm'),
+								icon: <StraightLineSVG />,
+								className: {
+									enable: 'btn-secondary',
+									disabled: 'btn-secondary-outline',
+								},
+							},
+							{
+								value: 'otm',
+								title: t('strategy_filters.otm'),
+								icon: <ChartDownSVG />,
+								className: {
+									enable: 'btn-error',
+									disabled: 'btn-error-outline',
+								},
+							},
+							{
+								value: 'itm',
+								title: t('strategy_filters.itm'),
+								icon: <ChartUpSVG />,
+								className: {
+									enable: 'btn-success',
+									disabled: 'btn-success-outline',
+								},
+							},
+						],
+						initialValue: filters?.iotm ?? [],
+					},
+					{
+						id: 'dueDays',
+						title: t('strategy_filters.due_days'),
+						mode: 'range',
+						type: 'integer',
+						label: [t('strategy_filters.from'), t('strategy_filters.to')],
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
+					},
+					{
+						id: 'openPosition',
+						title: t('strategy_filters.open_positions'),
+						mode: 'single',
+						type: 'integer',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.openPosition ?? null,
+					},
+					{
+						id: 'bepDifference',
+						title: t('strategy_filters.bep_difference'),
+						mode: 'single',
+						type: 'percent',
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.bepDifference ?? null,
+					},
+				],
 			}),
 		);
 	};
@@ -269,13 +357,13 @@ const LongPut = (strategy: LongPutProps) => {
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
-			{
-				colId: 'profit',
-				headerName: 'بازده',
-				profit: initialHiddenColumnsLongPut.profit,
-				minWidth: 104,
-				valueFormatter: () => t('common.infinity'),
-			},
+			// {
+			// 	colId: 'profit',
+			// 	headerName: 'بازده',
+			// 	profit: initialHiddenColumnsLongPut.profit,
+			// 	minWidth: 104,
+			// 	valueFormatter: () => t('common.infinity'),
+			// },
 			{
 				colId: 'blackScholes',
 				headerName: 'بلک شولز',
@@ -378,6 +466,7 @@ const LongPut = (strategy: LongPutProps) => {
 					onCommissionChanged={setUseCommission}
 					priceBasis={inputs.priceBasis}
 					symbolBasis={inputs.symbolBasis}
+					onShowFilters={showFilters}
 				/>
 
 				<Table<Strategy.LongPut>

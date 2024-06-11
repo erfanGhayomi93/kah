@@ -246,8 +246,18 @@ export interface IOptionSettlementModal extends IBaseModalConfiguration {
 
 export interface ICreateStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
-	baseSymbol: Record<'symbolISIN' | 'symbolTitle', string>;
-	steps: CreateStrategy.Step[];
+	contractSize: number;
+	inUseCapital: number;
+	baseSymbol: {
+		symbolTitle: string;
+		symbolISIN: string;
+		bestLimitPrice: number;
+	};
+	option: {
+		symbolTitle: string;
+		symbolISIN: string;
+		bestLimitPrice: number;
+	};
 }
 
 export interface IAnalyzeModal extends IBaseModalConfiguration {

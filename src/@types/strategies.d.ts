@@ -96,6 +96,7 @@ declare type TCoveredCallColumns =
 	| 'maxProfitPercent'
 	| 'nonExpiredProfitPercent'
 	| 'inUseCapital'
+	| 'ytm'
 	| 'bestBuyYTM'
 	| 'bestSellYTM'
 	| 'nonExpiredYTM'
@@ -153,8 +154,8 @@ declare type TLongCallColumns =
 	| 'strikePrice'
 	| 'openPositionCount'
 	| 'tradePriceVarPreviousTradePercent'
-	| 'optionBestLimitPrice'
-	| 'optionBestLimitVolume'
+	| 'optionBestBuyLimitPrice'
+	| 'optionBestBuyLimitQuantity'
 	| 'optionBestSellLimitPrice'
 	| 'optionBestSellLimitQuantity'
 	| 'longCallBEP'
@@ -333,53 +334,19 @@ declare type TBearPutSpreadColumns =
 	| 'actions';
 
 namespace CreateStrategy {
-	export type Status = 'TODO' | 'PENDING' | 'DONE' | 'ERROR';
+	export type Status = 'TODO' | 'PENDING' | 'DONE';
 
 	export type TStep = 'option' | 'base';
 
-	export interface IBaseSymbol {
-		id: string;
-		type: 'base';
-		symbolTitle: string;
-		symbolISIN: string;
+	export type TCoveredCallSteps = 'base' | 'freeze' | 'option';
+
+	export interface CoveredCallInput {
+		budget: number;
 		quantity: number;
-		estimatedBudget: number;
-		buyAssetsBySymbol: boolean;
-		orderPrice: number;
-		orderQuantity: number;
-		bestLimitPrice: number;
-		status: Status;
+		useFreeStock: boolean;
+		basePrice: number;
+		optionPrice: number;
 	}
-
-	export interface IOption {
-		id: string;
-		type: 'option';
-		side: TBsSides;
-		optionType: TOptionSides;
-		estimatedBudget: number;
-		symbolTitle: string;
-		symbolISIN: string;
-		status: Status;
-		bestSellLimitPrice: number;
-		bestBuyLimitPrice: number;
-		baseSymbol: {
-			symbolTitle: string;
-			symbolISIN: string;
-		};
-	}
-
-	export interface IFreeze {
-		id: string;
-		type: 'freeze';
-		estimatedBudget: number;
-		status: Status;
-		baseSymbol: {
-			symbolTitle: string;
-			symbolISIN: string;
-		};
-	}
-
-	export type Step = CreateStrategy.IBaseSymbol | CreateStrategy.IOption | IFreeze;
 }
 
 interface ICoveredCallFiltersModalStates {
@@ -395,8 +362,67 @@ interface ICoveredCallFiltersModalStates {
 
 interface ILongStraddleFiltersModalStates {
 	baseSymbols: Option.BaseSearch[];
-	iotm: Option.IOTM[];
+	callIOTM: Option.IOTM[];
+	putIOTM: Option.IOTM[];
 	dueDays: [null | number, null | number];
 	callOpenPosition: number;
 	putOpenPosition: number;
+}
+
+interface ILongCallFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPosition: null | number;
+	bepDifference: null | number;
+}
+
+interface ILongPutFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPosition: null | number;
+	bepDifference: null | number;
+}
+
+interface IProtectivePutFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	iotm: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	openPosition: null | number;
+	maxLoss: null | number;
+	bepDifference: null | number;
+}
+
+interface IBullCallSpreadFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	HSPIOTM: Option.IOTM[];
+	LSPIOTM: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	HSPLeastOpenPositions: null | number;
+	LSPLeastOpenPositions: null | number;
+	leastMaxProfitPercent: null | number;
+	leastYTM: null | number;
+}
+
+interface IConversionFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	callIOTM: Option.IOTM[];
+	putIOTM: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	callLeastOpenPositions: null | number;
+	putLeastOpenPositions: null | number;
+	leastProfitPercent: null | number;
+	leastYTM: null | number;
+}
+
+interface IBearPutSpreadSpreadFiltersModalState {
+	baseSymbols: Option.BaseSearch[];
+	HSPIOTM: Option.IOTM[];
+	LSPIOTM: Option.IOTM[];
+	dueDays: [null | number, null | number];
+	HSPLeastOpenPositions: null | number;
+	LSPLeastOpenPositions: null | number;
+	leastMaxProfitPercent: null | number;
+	leastYTM: null | number;
 }

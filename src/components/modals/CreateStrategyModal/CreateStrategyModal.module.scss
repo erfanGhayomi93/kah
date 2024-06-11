@@ -46,10 +46,16 @@
 		&.done::after,
 		&.active::after {
 			background-color: theme("colors.primary.400");
-			outline: 1px solid theme("colors.primary.400");
 		}
 
 		&.active::after {
+			outline: 1px solid theme("colors.primary.400");
+		}
+
+		&.done::after {
+			background-image: url("data:image/svg+xml,<svg width='12' height='10' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1.66675 4.03968L3.88897 6.26191L8.33341 1.5' stroke='rgb(255,255,255)'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/></svg>");
+			background-position: center;
+			background-repeat: no-repeat;
 		}
 	}
 }
