@@ -1,80 +1,60 @@
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
-import ipcMain from '@/classes/IpcMain';
 import Tooltip from '@/components/common/Tooltip';
 import { LockSVG, QuestionCircleOutlineSVG, UnlockSVG } from '@/components/icons';
-import { useInputs } from '@/hooks';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface BuyFormProps {
-	symbolISIN: string;
+	bestLimitPrice: number;
 	quantity: number;
 	price: number;
 	marketUnit: string;
 	validityDate: TBsValidityDates;
+	onSubmit: () => void;
 	onChangePrice: (v: number) => void;
 }
 
-const BuyForm = ({ symbolISIN, price, quantity, validityDate, marketUnit, onChangePrice }: BuyFormProps) => {
+const BuyForm = ({
+	bestLimitPrice,
+	price,
+	quantity,
+	validityDate,
+	marketUnit,
+	onSubmit,
+	onChangePrice,
+}: BuyFormProps) => {
 	const t = useTranslations();
 
 	const inputRef = useRef<HTMLInputElement>(null);
-
-	const {
-		inputs: priceInfo,
-		setFieldValue: setPriceInfoField,
-		setInputs: setPriceInfo,
-	} = useInputs({
-		isLocked: false,
-		value: price,
-	});
 
 	const { data: commission, isLoading } = useCommissionsQuery({
 		queryKey: ['commissionQuery'],
 	});
 
+	const [isPriceLocked, setIsPriceLocked] = useState(false);
+
 	const onChange = (v: number) => {
-		if (priceInfo.isLocked) setPriceInfoField('isLocked', false);
+		if (isPriceLocked) setIsPriceLocked(false);
 		onChangePrice(v);
 	};
 
 	useEffect(() => {
-		ipcMain
-			.sendAsync<
-				IpcMainChannels['execute_strategy:symbol_data'] | null
-			>('execute_strategy:get_symbol_data', [symbolISIN, 'bestSellLimitPrice_1'])
-			.then((data) => {
-				if (data) {
-					setPriceInfoField('value', data.value ?? 0);
-					onChangePrice(data.value ?? 0);
-				}
-			});
-	}, []);
-
-	useEffect(() => {
-		const abort = ipcMain.handle('execute_strategy:symbol_data', ({ itemName, fieldName, value }) => {
-			if (itemName === symbolISIN && fieldName === 'bestSellLimitPrice_1') {
-				setPriceInfo({
-					isLocked: priceInfo.isLocked,
-					value,
-				});
-
-				if (priceInfo.isLocked) onChangePrice(value);
-			}
-		});
-
-		return () => {
-			abort();
-		};
-	}, [priceInfo.isLocked]);
+		if (isPriceLocked) onChangePrice(bestLimitPrice);
+	}, [isPriceLocked]);
 
 	const symbolCommission = commission?.find((item) => item.marketUnitTitle === marketUnit)?.buyCommission ?? 0;
 	const transactionCommission = Math.ceil(price * quantity + price * quantity * symbolCommission);
 
 	return (
-		<form className='flex-1 justify-between gap-24 pt-8 flex-column'>
+		<form
+			onSubmit={(e) => {
+				e.preventDefault();
+				if (price !== 0 && quantity !== 0) onSubmit();
+			}}
+			className='flex-1 justify-between gap-24 pt-8 flex-column'
+		>
 			<div className='flex-1 gap-8 flex-column'>
 				<div className='h-40 cursor-default rounded border border-input bg-gray-200 px-8 text-gray-900 flex-justify-between'>
 					<span>{t('create_strategy.quantity_input')}</span>
@@ -94,14 +74,14 @@ const BuyForm = ({ symbolISIN, price, quantity, validityDate, marketUnit, onChan
 						/>
 					</label>
 					<button
-						onClick={() => setPriceInfoField('isLocked', !priceInfo.isLocked)}
+						onClick={() => setIsPriceLocked(!isPriceLocked)}
 						type='button'
 						className={clsx(
 							'size-40 rounded !border transition-colors flex-justify-center',
-							priceInfo.isLocked ? 'no-hover btn-select' : 'border-input text-gray-900',
+							isPriceLocked ? 'no-hover btn-select' : 'border-input text-gray-900',
 						)}
 					>
-						{priceInfo.isLocked ? (
+						{isPriceLocked ? (
 							<LockSVG width='2rem' height='2rem' />
 						) : (
 							<UnlockSVG width='2rem' height='2rem' />
@@ -138,7 +118,11 @@ const BuyForm = ({ symbolISIN, price, quantity, validityDate, marketUnit, onChan
 					</div>
 				</div>
 
-				<button type='button' className='h-40 rounded text-base font-medium flex-justify-center btn-success'>
+				<button
+					disabled={quantity === 0 || price === 0}
+					type='submit'
+					className='h-40 rounded text-base font-medium flex-justify-center btn-success'
+				>
 					{t('create_strategy.send_order') + ' ' + t('side.buy')}
 				</button>
 			</div>

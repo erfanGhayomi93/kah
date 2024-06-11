@@ -73,54 +73,22 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	const execute = (data: Strategy.CoveredCall) => {
 		try {
+			// ? baseSymbolEstimatedBudget = (contractSize * (baseBestSellLimitPrice - optionBestBuyLimitPrice)) * orderQuantity
 			dispatch(
 				setCreateStrategyModal({
+					contractSize: data.contractSize ?? 0,
+					inUseCapital: data.inUseCapital ?? 0,
+					strategy: 'CoveredCall',
 					baseSymbol: {
 						symbolISIN: data.baseSymbolISIN,
 						symbolTitle: data.baseSymbolTitle,
+						bestLimitPrice: data.baseBestSellLimitPrice,
 					},
-					strategy: 'CoveredCall',
-					steps: [
-						{
-							id: uuidv4(),
-							type: 'base',
-							quantity: 100,
-							estimatedBudget: 42e4,
-							buyAssetsBySymbol: false,
-							orderPrice: data.baseBestBuyLimitPrice,
-							symbolISIN: data.baseSymbolISIN,
-							symbolTitle: data.baseSymbolTitle,
-							orderQuantity: 90,
-							bestLimitPrice: data.baseBestSellLimitPrice ?? 0,
-							status: 'TODO',
-						},
-						{
-							id: uuidv4(),
-							type: 'freeze',
-							estimatedBudget: 42e4,
-							status: 'PENDING',
-							baseSymbol: {
-								symbolISIN: data.baseSymbolISIN,
-								symbolTitle: data.baseSymbolTitle,
-							},
-						},
-						{
-							id: uuidv4(),
-							type: 'option',
-							estimatedBudget: 42e4,
-							optionType: 'call',
-							side: 'sell',
-							status: 'PENDING',
-							bestBuyLimitPrice: data.optionBestBuyLimitPrice ?? 0,
-							bestSellLimitPrice: data.optionBestSellLimitPrice ?? 0,
-							symbolISIN: data.symbolISIN,
-							symbolTitle: data.symbolTitle,
-							baseSymbol: {
-								symbolISIN: data.baseSymbolISIN,
-								symbolTitle: data.baseSymbolTitle,
-							},
-						},
-					],
+					option: {
+						symbolISIN: data.symbolISIN,
+						symbolTitle: data.symbolTitle,
+						bestLimitPrice: data.optionBestBuyLimitPrice,
+					},
 				}),
 			);
 		} catch (e) {
