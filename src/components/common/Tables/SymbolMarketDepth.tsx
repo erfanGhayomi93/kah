@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
+import Loading from '../Loading';
 
 interface IRowData {
 	price: number;
@@ -45,13 +46,13 @@ const SymbolMarketDepth = ({
 	rowSpacing = 4,
 	lowThreshold,
 	highThreshold,
-	length,
+	length = 5,
 }: SymbolMarketDepthProps) => {
 	const queryClient = useQueryClient();
 
 	const { subscribe, unsubscribe } = useSubscription();
 
-	const { data } = useSymbolBestLimitQuery({
+	const { data, isLoading } = useSymbolBestLimitQuery({
 		queryKey: ['symbolBestLimitQuery', symbolISIN],
 	});
 
@@ -166,6 +167,14 @@ const SymbolMarketDepth = ({
 		subscribe(sub);
 	}, [symbolISIN]);
 
+	if (isLoading) {
+		return (
+			<div className='flex flex-1 gap-8'>
+				<Loading />
+			</div>
+		);
+	}
+
 	return (
 		<div className='flex flex-1 gap-8'>
 			<Grid
@@ -184,6 +193,46 @@ const SymbolMarketDepth = ({
 				lowThreshold={lowThreshold}
 				highThreshold={highThreshold}
 			/>
+		</div>
+	);
+};
+
+const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }: GridProps) => {
+	const t = useTranslations();
+
+	return (
+		<div style={{ flex: '0 0 calc(50% - 0.4rem)', gap: rowSpacing }} className='overflow-hidden flex-column'>
+			<div
+				className={cn(
+					'flex-justify-between *:text-base *:text-gray-900',
+					side === 'sell' && 'flex-row-reverse',
+				)}
+			>
+				<div style={{ flex: '0 0 30%', maxWidth: '7.2rem' }} className='text-center'>
+					{t('market_depth.count_column')}
+				</div>
+				<div style={{ flex: '0 0 40%' }} className='text-center'>
+					{t('market_depth.quantity_column')}
+				</div>
+				<div style={{ flex: '0 0 30%' }} className={cn(side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}>
+					{t('market_depth.price_column')}
+				</div>
+			</div>
+
+			<div style={{ gap: rowSpacing }} className='w-full flex-column'>
+				{data.map(({ percent, price, quantity, count }, i) => (
+					<Row
+						key={i}
+						side={side}
+						price={price}
+						quantity={quantity}
+						count={count}
+						percent={percent}
+						rowHeight={rowHeight}
+						disabled={!isBetween(lowThreshold, price, highThreshold)}
+					/>
+				))}
+			</div>
 		</div>
 	);
 };
@@ -230,45 +279,5 @@ const Row = ({ price = 0, count = 0, quantity = 0, side, percent, rowHeight, dis
 		)}
 	</div>
 );
-
-const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }: GridProps) => {
-	const t = useTranslations();
-
-	return (
-		<div style={{ flex: '0 0 calc(50% - 0.4rem)', gap: rowSpacing }} className='overflow-hidden flex-column'>
-			<div
-				className={cn(
-					'flex-justify-between *:text-base *:text-gray-900',
-					side === 'sell' && 'flex-row-reverse',
-				)}
-			>
-				<div style={{ flex: '0 0 30%', maxWidth: '7.2rem' }} className='text-center'>
-					{t('market_depth.count_column')}
-				</div>
-				<div style={{ flex: '0 0 40%' }} className='text-center'>
-					{t('market_depth.quantity_column')}
-				</div>
-				<div style={{ flex: '0 0 30%' }} className={cn(side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}>
-					{t('market_depth.price_column')}
-				</div>
-			</div>
-
-			<div style={{ gap: rowSpacing }} className='w-full flex-column'>
-				{data.map(({ percent, price, quantity, count }, i) => (
-					<Row
-						key={i}
-						side={side}
-						price={price}
-						quantity={quantity}
-						count={count}
-						percent={percent}
-						rowHeight={rowHeight}
-						disabled={!isBetween(lowThreshold, price, highThreshold)}
-					/>
-				))}
-			</div>
-		</div>
-	);
-};
 
 export default SymbolMarketDepth;
