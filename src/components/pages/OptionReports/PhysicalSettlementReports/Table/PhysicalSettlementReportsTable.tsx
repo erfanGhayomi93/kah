@@ -59,6 +59,13 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.IPhysicalSettlementReports>>>(
 		() => [
+			{
+				colId: 'id',
+				headerName: t('freeze_and_unfreeze_reports_page.id_column'),
+				width: 32,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+			},
 			/* نماد */
 			{
 				colId: 'symbolTitle',
