@@ -11,17 +11,15 @@ import { Body } from './Body';
 import HistoryFreeze from './HistoryFreeze';
 
 const Div = styled.div`
-	width : 420px;
-	min-height : 430px;
-	display : flex;
-	flex-direction : column;
+	width: 420px;
+	min-height: 430px;
+	display: flex;
+	flex-direction: column;
 `;
 
-
-interface FreezeProps extends IFreezeModal { }
+interface FreezeProps extends IFreezeModal {}
 
 const Freeze = forwardRef<HTMLDivElement, FreezeProps>((props, ref) => {
-
 	const t = useTranslations();
 
 	const [tabSelected, setTabSelected] = useState('freezeModalTab');
@@ -38,7 +36,6 @@ const Freeze = forwardRef<HTMLDivElement, FreezeProps>((props, ref) => {
 		dispatch(setFreezeModal(null));
 	};
 
-
 	return (
 		<Modal
 			top='50%'
@@ -47,39 +44,26 @@ const Freeze = forwardRef<HTMLDivElement, FreezeProps>((props, ref) => {
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Header
-				label={t('freeze_modal.title')}
-				onClose={onCloseModal}
-				onExpanded={onExpanded}
-			/>
+			<Header label={t('freeze_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} />
 			<div className='flex bg-white p-24'>
 				<Div
 					className={clsx('flex-column', {
 						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
 					})}
 				>
-					<Body
-						onCloseModal={onCloseModal}
-						setTabSelected={setTabSelected}
-					/>
+					<Body onCloseModal={onCloseModal} setTabSelected={setTabSelected} />
 				</Div>
 
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
 					{isShowExpanded && (
 						<Div className='bg-white'>
-							<HistoryFreeze
-								tabSelected={tabSelected}
-								onCloseModal={onCloseModal}
-							/>
+							<HistoryFreeze tabSelected={tabSelected} onCloseModal={onCloseModal} />
 						</Div>
 					)}
 				</AnimatePresence>
 			</div>
-
 		</Modal>
 	);
 });
-
-
 
 export default Freeze;

@@ -312,7 +312,7 @@ declare type IBrokerUrls = Record<
 	| 'getCustomerTurnOverCSVExport'
 	| 'getEPaymentExportFilteredCSV'
 	| 'getReceiptExportFilteredCSV'
-	| 'getPaymentExportFilteredCSV',
+	| 'getPaymentExportFilteredCSV'
 	| 'SetCustomerSettings'
 	| 'GetCustomerSettings'
 	| 'getPaymentExportFilteredCSV'
@@ -321,7 +321,7 @@ declare type IBrokerUrls = Record<
 	| 'getPaymentGetStatuses'
 	| 'getChangeBrokerExportFilteredCSV'
 	| 'getChangeBrokerChangeBrokersByFilter'
-	| 'GetAgreements',
+	| 'GetAgreements'
 	| 'changeBrokerSetCancel'
 	| 'getFreezeExportFreeze'
 	| 'getFreezerequests'

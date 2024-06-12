@@ -21,8 +21,14 @@ const SymbolMainDetails = (symbol: SymbolMainDetailsProps) => {
 		}
 	};
 
-	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
-		symbol;
+	const {
+		closingPriceVarReferencePrice,
+		closingPriceVarReferencePricePercent,
+		symbolTradeState,
+		symbolTitle,
+		lastTradedPrice,
+		companyName,
+	} = symbol;
 
 	return (
 		<div className='flex-column'>
@@ -35,16 +41,16 @@ const SymbolMainDetails = (symbol: SymbolMainDetailsProps) => {
 				<div className='flex-1 gap-8 flex-justify-end'>
 					<span
 						className={clsx(
-							'gap-4 flex-items-center',
-							getColorBasedOnPercent(closingPriceVarReferencePrice),
+							'gap-4 ltr flex-items-center',
+							getColorBasedOnPercent(closingPriceVarReferencePricePercent),
 						)}
 					>
-						<span className='flex items-center text-base ltr'>
-							({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
-							{closingPriceVarReferencePrice > 0 && <GrowUpSVG width='1rem' height='1rem' />}
-							{closingPriceVarReferencePrice < 0 && <GrowDownSVG width='1rem' height='1rem' />}
+						{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
+						<span className='flex items-center text-base'>
+							({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
+							{closingPriceVarReferencePricePercent > 0 && <GrowUpSVG width='1rem' height='1rem' />}
+							{closingPriceVarReferencePricePercent < 0 && <GrowDownSVG width='1rem' height='1rem' />}
 						</span>
-						{sepNumbers(String(closingPrice ?? 0))}
 					</span>
 
 					<span className='flex items-center gap-4 text-2xl font-bold'>
