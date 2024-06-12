@@ -90,7 +90,15 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 
 	if (!data?.length) return <NoData />;
 
-	return <LightweightTable rowHeight={40} headerHeight={40} rowData={data} columnDefs={columnDefs} />;
+	return (
+		<LightweightTable
+			headerClass='!text-tiny'
+			rowHeight={40}
+			headerHeight={40}
+			rowData={data}
+			columnDefs={columnDefs}
+		/>
+	);
 };
 
 export default NewAndOldTable;
