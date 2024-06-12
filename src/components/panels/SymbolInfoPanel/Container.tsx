@@ -154,8 +154,8 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 			)}
 
 			{symbolData && (
-				<div className='gap-8 flex-column'>
-					<div className='sticky left-0 top-0 z-20 rounded-b bg-gray-300 pb-8 flex-column'>
+				<div className='flex-column'>
+					<div className='sticky left-0 top-0 z-20 gap-16 border-b border-gray-500 bg-gray-300 pb-16 flex-column'>
 						<ErrorBoundary>
 							<SymbolInformation symbolData={symbolData} />
 						</ErrorBoundary>
@@ -167,10 +167,10 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 						)}
 					</div>
 
-					<div className='relative -mt-16'>
+					<div className='relative'>
 						<GridLayout
 							draggableHandle='.drag-handler'
-							useCSSTransforms
+							useCSSTransforms={false}
 							isResizable={false}
 							compactType='vertical'
 							width={368}
