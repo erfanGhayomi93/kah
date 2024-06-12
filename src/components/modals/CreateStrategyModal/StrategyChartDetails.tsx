@@ -64,7 +64,6 @@ const StrategyChartDetails = ({
 		maxPrice,
 		baseAssets: basePrice,
 	});
-	console.log(data);
 
 	return (
 		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-gray-500 py-16'>
