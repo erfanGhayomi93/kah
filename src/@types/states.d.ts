@@ -713,7 +713,6 @@ declare namespace TradesReports {
 		| 'symbolTitle'
 		| 'orderSide'
 		| 'tradeDate'
-		| 'tradeTime'
 		| 'tradedQuantity'
 		| 'tradePrice'
 		| 'totalQuota'
@@ -770,6 +769,7 @@ declare namespace CashSettlementReports {
 	}
 
 	export type TCashSettlementReportsColumns =
+		| 'id'
 		| 'symbolTitle'
 		| 'side'
 		| 'openPositionCount'
@@ -811,6 +811,7 @@ declare namespace PhysicalSettlementReports {
 	}
 
 	export type TPhysicalSettlementReportsColumns =
+		| 'id'
 		| 'symbolTitle'
 		| 'side'
 		| 'openPositionCount'

@@ -681,6 +681,12 @@ export const defaultCashSettlementReportsColumns: Array<
 	IManageColumn<CashSettlementReports.TCashSettlementReportsColumns>
 > = [
 	{
+		id: 'id',
+		title: 'ردیف',
+		hidden: false,
+		tag: 'CashSettlementReports',
+	},
+	{
 		id: 'symbolTitle',
 		title: 'نماد',
 		hidden: false,
@@ -706,7 +712,7 @@ export const defaultCashSettlementReportsColumns: Array<
 	},
 	{
 		id: 'pandLStatus',
-		title: 'وضعیت قرارداد (سود یا زیان)',
+		title: 'وضعیت قرارداد',
 		hidden: false,
 		tag: 'CashSettlementReports',
 	},
@@ -758,6 +764,12 @@ export const defaultPhysicalSettlementReportsColumns: Array<
 	IManageColumn<PhysicalSettlementReports.TPhysicalSettlementReportsColumns>
 > = [
 	{
+		id: 'id',
+		title: 'ردیف',
+		hidden: false,
+		tag: 'PhysicalSettlementReports',
+	},
+	{
 		id: 'symbolTitle',
 		title: 'نماد',
 		hidden: false,
@@ -783,7 +795,7 @@ export const defaultPhysicalSettlementReportsColumns: Array<
 	},
 	{
 		id: 'pandLStatus',
-		title: 'وضعیت قرارداد (سود یا زیان)',
+		title: 'وضعیت قرارداد',
 		hidden: false,
 		tag: 'PhysicalSettlementReports',
 	},
@@ -919,15 +931,10 @@ export const defaultTradesReportsColumns: Array<IManageColumn<TradesReports.TTra
 		hidden: false,
 		tag: 'TradesReports',
 	},
-	{
-		id: 'tradeDate',
-		title: 'زمان',
-		hidden: false,
-		tag: 'TradesReports',
-	},
+
 	{
 		id: 'tradedQuantity',
-		title: 'حجم کل',
+		title: 'تعداد انجام شده',
 		hidden: false,
 		tag: 'TradesReports',
 	},
@@ -946,6 +953,12 @@ export const defaultTradesReportsColumns: Array<IManageColumn<TradesReports.TTra
 	{
 		id: 'total',
 		title: 'ارزش معامله',
+		hidden: false,
+		tag: 'TradesReports',
+	},
+	{
+		id: 'tradeDate',
+		title: 'زمان',
 		hidden: false,
 		tag: 'TradesReports',
 	},

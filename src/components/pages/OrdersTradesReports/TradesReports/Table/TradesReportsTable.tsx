@@ -47,19 +47,11 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 				valueGetter: (row) => t('trades_reports_page.side_' + row.orderSide),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderSide')]?.hidden,
 			},
-			/* زمان */
-			{
-				colId: 'tradeDate',
-				headerName: t('orders_reports_page.date_column'),
-				cellClass: 'ltr',
-				valueGetter: (row) => dateFormatter(row.tradeDate ?? '-', 'datetime'),
-				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderDateTime')]
-					?.hidden,
-			},
-			/* حجم کل */
+
+			/* تعداد انجام شده */
 			{
 				colId: 'tradedQuantity',
-				headerName: t('trades_reports_page.overall_volume_column'),
+				headerName: t('trades_reports_page.done_volume_column'),
 				valueGetter: (row) => sepNumbers(String(row.tradedQuantity)),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'tradedQuantity')]
 					?.hidden,
@@ -84,6 +76,15 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 				headerName: t('trades_reports_page.value_column'),
 				valueGetter: (row) => sepNumbers(String(row.total)),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'total')]?.hidden,
+			},
+			/* زمان */
+			{
+				colId: 'tradeDate',
+				headerName: t('orders_reports_page.date_column'),
+				cellClass: 'ltr',
+				valueGetter: (row) => dateFormatter(row.tradeDate ?? '-', 'datetime'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderDateTime')]
+					?.hidden,
 			},
 		],
 		[columnsVisibility],

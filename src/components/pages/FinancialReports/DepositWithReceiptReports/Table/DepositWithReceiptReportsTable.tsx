@@ -5,8 +5,7 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setDepositModal } from '@/features/slices/modalSlice';
 import { type RootState } from '@/features/store';
 import { useBrokerQueryClient } from '@/hooks';
-import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
+import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
@@ -36,11 +35,6 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 	const gridRef = useRef<GridApi<Reports.IDepositWithReceipt>>(null);
 
 	const { urls } = useAppSelector(getStates);
-
-	const dateFormatter = (v: string | number) => {
-		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
-	};
 
 	const onEditRow = (data: Reports.IDepositWithReceipt | undefined) => {
 		if (!data) return;
@@ -87,14 +81,16 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 			{
 				colId: 'id',
 				headerName: t('deposit_with_receipt_reports_page.id_column'),
+				width: 32,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
-			/* تاریخ */
+			/* زمان */
 			{
 				colId: 'receiptDate',
 				headerName: t('deposit_with_receipt_reports_page.date_column'),
-				valueGetter: (row) => dateFormatter(row.receiptDate ?? ''),
+				cellClass: 'ltr',
+				valueGetter: (row) => dateFormatter(row.receiptDate ?? '', 'datetime'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'receiptDate')]?.hidden,
 			},
 			/* بانک کارگزاری */
