@@ -83,8 +83,7 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 				headerName: t('orders_reports_page.date_column'),
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row.tradeDate ?? '-', 'datetime'),
-				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderDateTime')]
-					?.hidden,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'tradeDate')]?.hidden,
 			},
 		],
 		[columnsVisibility],
