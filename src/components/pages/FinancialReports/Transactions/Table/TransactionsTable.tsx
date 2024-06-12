@@ -19,10 +19,10 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				colId: 'id',
 				headerName: t('transactions_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
-				width: 40,
+				width: 32,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
-			/* تاریخ */
+			/* زمان */
 			{
 				colId: 'date',
 				headerName: t('transactions_page.date_column'),

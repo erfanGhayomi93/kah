@@ -81,6 +81,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 			{
 				colId: 'id',
 				headerName: t('withdrawal_cash_reports_page.id_column'),
+				width: 32,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
