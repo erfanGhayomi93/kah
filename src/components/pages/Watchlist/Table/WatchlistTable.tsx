@@ -161,7 +161,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 				const symbol = visualData.current[symbolIndex];
 
 				if (value !== null && fieldName in symbol) {
-					//
+					// console.log(fieldName, value);
 				}
 			} catch (e) {
 				//

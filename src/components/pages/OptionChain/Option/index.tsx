@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 
 const OptionInfo = dynamic(() => import('./OptionInfo'), {
 	ssr: false,
-	loading: () => <div className='skeleton h-40 w-full rounded' />,
+	loading: () => <div className='h-40 w-full rounded skeleton' />,
 });
 
 const OptionTable = dynamic(() => import('./OptionTable'), {
@@ -22,7 +22,7 @@ const Option = ({ settlementDay, baseSymbol }: OptionProps) => {
 	const t = useTranslations();
 
 	return (
-		<div className='flex-1 gap-8 rounded flex-column'>
+		<div className='relative flex-1 gap-8 rounded flex-column'>
 			{settlementDay && baseSymbol ? (
 				<>
 					<OptionInfo settlementDay={settlementDay} />

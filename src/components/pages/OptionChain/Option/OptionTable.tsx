@@ -1,4 +1,6 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
+import Loading from '@/components/common/Loading';
+import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
@@ -35,7 +37,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const { data: watchlistData } = useWatchlistBySettlementDateQuery({
+	const { data: watchlistData, isLoading } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
 			{ baseSymbolISIN: baseSymbol.symbolISIN, settlementDate: settlementDay?.contractEndDate },
@@ -352,18 +354,32 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 	}, [activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])]);
 
 	return (
-		<AgTable<ITableData>
-			gridId='option-chain'
-			ref={gridRef}
-			className='flex-1 rounded-0'
-			rowData={modifiedData ?? []}
-			columnDefs={COLUMNS}
-			onCellMouseOver={(e) => setActiveRowId(e.node.rowIndex ?? -1)}
-			onCellMouseOut={() => setActiveRowId(-1)}
-			suppressRowVirtualisation
-			suppressColumnVirtualisation
-			defaultColDef={defaultColDef}
-		/>
+		<>
+			<AgTable<ITableData>
+				gridId='option-chain'
+				ref={gridRef}
+				className='flex-1 rounded-0'
+				rowData={modifiedData ?? []}
+				columnDefs={COLUMNS}
+				onCellMouseOver={(e) => setActiveRowId(e.node.rowIndex ?? -1)}
+				onCellMouseOut={() => setActiveRowId(-1)}
+				suppressRowVirtualisation
+				suppressColumnVirtualisation
+				defaultColDef={defaultColDef}
+			/>
+
+			{isLoading && (
+				<div className='absolute left-0 top-0 size-full bg-white'>
+					<Loading />
+				</div>
+			)}
+
+			{!isLoading && (!Array.isArray(watchlistData) || watchlistData.length === 0) && (
+				<div className='absolute left-0 top-0 size-full bg-white'>
+					<NoData />
+				</div>
+			)}
+		</>
 	);
 };
 
