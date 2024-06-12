@@ -864,13 +864,7 @@ export const defaultOrdersReportsColumns: Array<IManageColumn<OrdersReports.TOrd
 	},
 	{
 		id: 'orderDateTime',
-		title: 'تاریخ',
-		hidden: false,
-		tag: 'OrdersReports',
-	},
-	{
-		id: 'orderDateTime',
-		title: 'ساعت',
+		title: 'زمان',
 		hidden: false,
 		tag: 'OrdersReports',
 	},
@@ -927,13 +921,7 @@ export const defaultTradesReportsColumns: Array<IManageColumn<TradesReports.TTra
 	},
 	{
 		id: 'tradeDate',
-		title: 'تاریخ',
-		hidden: false,
-		tag: 'TradesReports',
-	},
-	{
-		id: 'tradeTime',
-		title: 'ساعت',
+		title: 'زمان',
 		hidden: false,
 		tag: 'TradesReports',
 	},
