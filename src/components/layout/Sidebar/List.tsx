@@ -1,13 +1,4 @@
-import {
-	AssetSVG,
-	DataAnalyticsSVG,
-	HomeSVG,
-	ReceptionSVG,
-	ReportSVG,
-	SettingSVG,
-	StrategySVG,
-	TvTradeSVG,
-} from '@/components/icons';
+import { HomeSVG, ReceptionSVG, ReportSVG, SettingSVG, StrategySVG, TvTradeSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import {
 	setChangeBrokerModal,
@@ -21,25 +12,25 @@ import { toggleSidebar } from '@/features/slices/uiSlice';
 import { usePathname } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import Item, { type TListItem } from './Item';
 import styles from './Sidebar.module.scss';
 
 interface ListProps {
-	isExpand: boolean;
+	sidebarIsExpand: boolean;
+	expandId: string | null;
+	setExpandId: (v: string | null) => void;
 }
 
-const List = ({ isExpand }: ListProps) => {
+const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 	const t = useTranslations();
 
 	const pathname = usePathname();
 
 	const dispatch = useAppDispatch();
 
-	const [expandId, setExpandId] = useState<null | string>(null);
-
 	const toggleItem = (id: string) => {
-		if (isExpand) {
+		if (sidebarIsExpand) {
 			setExpandId(expandId === id ? null : id);
 		} else {
 			toggle(true);
@@ -83,12 +74,12 @@ const List = ({ isExpand }: ListProps) => {
 					to: '/',
 					icon: <HomeSVG />,
 				},
-				{
-					id: 'my_assets',
-					label: t('sidebar.my_assets'),
-					to: '/a',
-					icon: <AssetSVG />,
-				},
+				// {
+				// 	id: 'my_assets',
+				// 	label: t('sidebar.my_assets'),
+				// 	to: '/a',
+				// 	icon: <AssetSVG />,
+				// },
 				{
 					id: 'market',
 					label: t('sidebar.market'),
@@ -128,12 +119,12 @@ const List = ({ isExpand }: ListProps) => {
 					to: '/strategy',
 					icon: <StrategySVG />,
 				},
-				{
-					id: 'technical',
-					label: t('sidebar.technical'),
-					to: '/technical',
-					icon: <DataAnalyticsSVG />,
-				},
+				// {
+				// 	id: 'technical',
+				// 	label: t('sidebar.technical'),
+				// 	to: '/technical',
+				// 	icon: <DataAnalyticsSVG />,
+				// },
 				{
 					id: 'requests',
 					label: t('sidebar.requests'),
@@ -216,26 +207,26 @@ const List = ({ isExpand }: ListProps) => {
 
 	return (
 		<nav className='h-full flex-1 justify-between gap-16 py-32 flex-column'>
-			<ul onMouseOver={() => toggle(true)} className={clsx(styles.list, isExpand && styles.expand)}>
+			<ul className={clsx(styles.list, sidebarIsExpand && styles.expand)}>
 				{topList.map((item) => (
 					<Item
 						key={item.id}
 						isExpand={item.id === expandId}
 						toggle={() => toggleItem(item.id)}
-						sidebarIsExpand={isExpand}
+						sidebarIsExpand={sidebarIsExpand}
 						onClick={onClickItem}
 						{...item}
 					/>
 				))}
 			</ul>
 
-			<ul onMouseOver={() => toggle(true)} className={clsx(styles.list, isExpand && styles.expand)}>
+			<ul className={clsx(styles.list, sidebarIsExpand && styles.expand)}>
 				{bottomList.map((item) => (
 					<Item
 						key={item.id}
 						isExpand={item.id === expandId}
 						toggle={() => toggleItem(item.id)}
-						sidebarIsExpand={isExpand}
+						sidebarIsExpand={sidebarIsExpand}
 						onClick={onClickItem}
 						{...item}
 					/>

@@ -4,6 +4,7 @@ import { ArrowDownSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
+import { toggleSidebar } from '@/features/slices/uiSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { Link, usePathname } from '@/navigation';
@@ -48,7 +49,7 @@ const getStates = createSelector(
 	}),
 );
 
-const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...props }: ItemProps) => {
+const Item = ({ id, label, icon, disabled, sidebarIsExpand, toggle, onClick, ...props }: ItemProps) => {
 	const pathname = usePathname();
 
 	const dispatch = useAppDispatch();
@@ -78,7 +79,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 
 		if (('to' in props && !props.isBroker) || ('to' in props && isAuthorize)) {
 			return (
-				<Link onClick={() => onClick?.('a')} href={props.to}>
+				<Link onMouseEnter={onMouseEnter} onClick={() => onClick?.('a')} href={props.to}>
 					{icon}
 					<span>{label}</span>
 				</Link>
@@ -86,7 +87,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 		}
 		if ('to' in props && props.isBroker) {
 			return (
-				<button onClick={onAuthorizing}>
+				<button type='button' onMouseEnter={onMouseEnter} onClick={onAuthorizing}>
 					{icon}
 					<span>{label}</span>
 				</button>
@@ -95,7 +96,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 
 		if ('isModal' in props) {
 			return (
-				<button type='button' onClick={() => onClick?.(props.id)}>
+				<button type='button' onMouseEnter={onMouseEnter} onClick={() => onClick?.(id)}>
 					{icon}
 					<span>{label}</span>
 				</button>
@@ -104,6 +105,7 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 
 		return (
 			<button
+				onMouseEnter={onMouseEnter}
 				onClick={() => {
 					toggle?.();
 					onClick?.('button');
@@ -114,6 +116,13 @@ const Item = ({ label, icon, disabled, sidebarIsExpand, toggle, onClick, ...prop
 				{hasDropdown && <ArrowDownSVG style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }} />}
 			</button>
 		);
+	};
+
+	const onMouseEnter = () => {
+		if (sidebarIsExpand) return;
+
+		dispatch(toggleSidebar(true));
+		toggle?.();
 	};
 
 	const hasDropdown = 'items' in props && props.items.length > 0;
