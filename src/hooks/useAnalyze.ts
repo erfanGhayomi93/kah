@@ -40,7 +40,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 	useEffect(() => {
 		if (config?.enabled === false) return;
 
-		const data = [...contracts];
+		const data = JSON.parse(JSON.stringify(contracts)) as typeof contracts;
 		const newInputs: IInput = {
 			...inputs,
 			data: [],
