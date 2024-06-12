@@ -676,7 +676,6 @@ declare namespace OrdersReports {
 		| 'symbolTitle'
 		| 'orderSide'
 		| 'orderDateTime'
-		| 'orderDateTime'
 		| 'quantity'
 		| 'price'
 		| 'sumExecuted'
