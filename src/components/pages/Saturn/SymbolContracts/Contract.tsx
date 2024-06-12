@@ -161,7 +161,7 @@ const Contract = ({
 					onClick={addNewContract}
 					className='absolute cursor-pointer items-center gap-24 text-center flex-column center'
 				>
-					<Image width='48' height='48' alt='add-symbol' src='/static/images/add-button.png' />
+					<Image width='60' height='60' alt='add-symbol' src='/static/images/add-button.png' />
 					<span className='text-base text-gray-1000'>
 						{t.rich('saturn_page.click_to_add_contract', {
 							add: (chunks) => (
