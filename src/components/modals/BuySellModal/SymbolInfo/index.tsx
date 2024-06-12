@@ -23,8 +23,8 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 		symbolISIN,
 		companyName,
 		lastTradedPrice,
-		closingPrice,
 		closingPriceVarReferencePrice,
+		closingPriceVarReferencePricePercent,
 		lowThreshold,
 		highThreshold,
 	} = symbolData;
@@ -43,9 +43,9 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 				<div className='h-fit gap-8 flex-items-center'>
 					<span className='gap-4 text-base text-gray-1000 flex-items-center'>
 						<span className='flex items-center ltr'>
-							({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
+							({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
 						</span>
-						{sepNumbers(String(closingPrice ?? 0))}
+						{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
 					</span>
 
 					<span className='flex items-center gap-4 text-2xl font-bold text-gray-1000'>

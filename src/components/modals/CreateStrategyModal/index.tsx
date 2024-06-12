@@ -1,4 +1,5 @@
 import lightStreamInstance from '@/classes/Lightstream';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { useAppDispatch } from '@/features/hooks';
 import { setCreateStrategyModal, updateCreateStrategyModal } from '@/features/slices/modalSlice';
 import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
@@ -184,12 +185,14 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 								<Steps baseSymbol={baseSymbol} option={option} step={step} />
 							</div>
 
-							<StrategyChartDetails
-								contractSize={contractSize}
-								baseSymbol={baseSymbol}
-								option={option}
-								{...inputs}
-							/>
+							<ErrorBoundary>
+								<StrategyChartDetails
+									contractSize={contractSize}
+									baseSymbol={baseSymbol}
+									option={option}
+									{...inputs}
+								/>
+							</ErrorBoundary>
 
 							<AddConditionalAlarm />
 						</div>

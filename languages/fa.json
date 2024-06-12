@@ -403,7 +403,7 @@
 	"symbol_context_menu": {
 		"add_note": "افزودن یادداشت",
 		"alarm": "هشدار شرطی",
-		"technical_chart": "نمودار نکنیکال"
+		"technical_chart": "نمودار تکنیکال"
 	},
 	"symbol_info_panel_setting": {
 		"title": "ابزارها",
@@ -553,6 +553,7 @@
 		"tab_market_depth": "عمق بازار",
 		"tab_chart": "نمودار",
 		"tab_my_asset": "دارایی من",
+		"liquid_outflow": "خروج پول حقیقی",
 		"close_position": "بستن موقعیت",
 		"new_position": "موقعیت جدید",
 		"tab_price_information": "اطلاعات قیمتی",

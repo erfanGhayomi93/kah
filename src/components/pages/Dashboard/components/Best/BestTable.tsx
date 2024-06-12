@@ -520,6 +520,7 @@ const BestTable = ({ symbolType, type, isModal = false }: TableProps) => {
 				<div className='flex h-full gap-12'>
 					<TableWrapper type='put' title={t('home.put_option')} isOption={symbolType === 'Option'}>
 						<LightweightTable
+							headerClass='!text-tiny'
 							rowHeight={40}
 							headerHeight={40}
 							rowData={data}
@@ -530,6 +531,7 @@ const BestTable = ({ symbolType, type, isModal = false }: TableProps) => {
 					{symbolType === 'Option' && (
 						<TableWrapper type='call' title={t('home.call_option')} isOption={symbolType === 'Option'}>
 							<LightweightTable
+								headerClass='!text-tiny'
 								rowHeight={40}
 								headerHeight={40}
 								rowData={data}

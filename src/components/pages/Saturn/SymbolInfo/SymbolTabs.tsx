@@ -5,8 +5,9 @@ import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
+import IndividualAndLegal from './IndividualAndLegal';
 
-const MarketDepth = dynamic(() => import('./Tabs/MarketDepth'), {
+const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/SymbolMarketDepth'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -16,12 +17,13 @@ const SymbolChart = dynamic(() => import('@/components/common/Symbol/SymbolChart
 	loading: () => <Loading />,
 });
 
+type TTab = ITabIem<Saturn.SymbolTab, { title: string }>;
+
 interface SymbolTabsProps {
 	symbol: Symbol.Info;
 	activeTab: Saturn.SymbolTab;
 	setActiveTab: (tabId: Saturn.SymbolTab) => void;
 }
-type TTab = ITabIem<Saturn.SymbolTab, { title: string }>;
 
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
@@ -35,13 +37,23 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 			{
 				id: 'tab_market_depth',
 				title: t('saturn_page.tab_market_depth'),
-				render: () => <MarketDepth symbol={symbol} />,
+				render: () => (
+					<div style={{ height: '23rem' }} className='relative flex-1 gap-40 flex-column'>
+						<SymbolMarketDepth
+							rowSpacing={8}
+							rowHeight={32}
+							symbolISIN={symbol.symbolISIN}
+							lowThreshold={symbol.lowThreshold}
+							highThreshold={symbol.highThreshold}
+						/>
+					</div>
+				),
 			},
 			{
 				id: 'tab_chart',
 				title: t('saturn_page.tab_chart'),
 				render: () => (
-					<div className='relative size-full pb-16'>
+					<div style={{ height: '23rem' }} className='relative size-full pb-16'>
 						<SymbolChart data={data ?? []} type='area' tab='symbol_chart' />
 					</div>
 				),
@@ -52,7 +64,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	);
 
 	return (
-		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='items-end gap-12 pl-16 flex-column'>
+		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='items-end gap-32 pl-16 flex-column'>
 			<div className='relative w-full flex-1 gap-16 flex-column'>
 				<Tabs<Saturn.SymbolTab, TTab>
 					onChange={(tab) => setActiveTab(tab)}
@@ -72,6 +84,8 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 					)}
 				/>
 			</div>
+
+			<IndividualAndLegal symbol={symbol} />
 		</div>
 	);
 };
