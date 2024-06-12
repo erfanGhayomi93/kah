@@ -50,6 +50,8 @@ interface RowCellProps<K> {
 
 interface LightweightTableProps<T extends unknown[], K extends unknown> {
 	rowData: T;
+	headerClass?: string;
+	cellClass?: string;
 	className?: ClassesValue;
 	columnDefs: Array<IColDef<K>>;
 	rowHeight?: number;
@@ -64,6 +66,8 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 	rowData,
 	className,
 	reverseColors,
+	headerClass,
+	cellClass,
 	rowHeight = 48,
 	headerHeight = 48,
 	onRowClick,
@@ -145,6 +149,7 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 							<HeaderCell
 								key={col.colId}
 								{...col}
+								headerClass={clsx(headerClass, col.headerClass)}
 								sorting={sorting}
 								onSortDetect={(sortType) => onSortDetect(sortType, col)}
 								onClick={(e) => onClickHeaderCell(col, e)}
@@ -164,7 +169,15 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 							key={i}
 						>
 							{columnDefs.map((col) => (
-								<RowCell key={col.colId} column={col} row={row} rowIndex={i} />
+								<RowCell
+									key={col.colId}
+									row={row}
+									rowIndex={i}
+									column={{
+										...col,
+										cellClass: clsx(col.cellClass, cellClass),
+									}}
+								/>
 							))}
 						</tr>
 					))}

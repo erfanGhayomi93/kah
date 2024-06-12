@@ -170,6 +170,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 	const {
 		closingPriceVarReferencePrice,
+		closingPriceVarReferencePricePercent,
 		symbolTradeState,
 		symbolTitle,
 		closingPrice,
@@ -184,7 +185,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 	return (
 		<div className='flex-column'>
-			<div className='gap-40 pb-24 flex-column'>
+			<div className='gap-24 pb-24 flex-column'>
 				<div className='flex-justify-between'>
 					<div onClick={openSymbolInfoPanel} className='cursor-pointer flex-column'>
 						<div style={{ gap: '1rem' }} className='flex-items-center'>
@@ -195,22 +196,22 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 						<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
 					</div>
 
-					<div className='h-fit gap-8 flex-items-center'>
+					<div className='h-fit gap-8 text-base flex-items-center'>
 						<span
 							className={cn(
-								'gap-4 flex-items-center',
-								getColorBasedOnPercent(closingPriceVarReferencePrice),
+								'gap-4 ltr flex-items-center',
+								getColorBasedOnPercent(closingPriceVarReferencePricePercent),
 							)}
 						>
-							<span className='flex items-center text-tiny ltr'>
-								({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
-								{closingPriceVarReferencePrice > 0 && <GrowUpSVG width='1rem' height='1rem' />}
-								{closingPriceVarReferencePrice < 0 && <GrowDownSVG width='1rem' height='1rem' />}
+							{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
+							<span className='flex items-center'>
+								({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
+								{closingPriceVarReferencePricePercent > 0 && <GrowUpSVG width='1rem' height='1rem' />}
+								{closingPriceVarReferencePricePercent < 0 && <GrowDownSVG width='1rem' height='1rem' />}
 							</span>
-							{sepNumbers(String(closingPrice ?? 0))}
 						</span>
 
-						<span className='flex items-center gap-4 text-4xl font-bold'>
+						<span className='flex items-center gap-4 text-2xl font-bold'>
 							{sepNumbers(String(lastTradedPrice ?? 0))}
 							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
 						</span>

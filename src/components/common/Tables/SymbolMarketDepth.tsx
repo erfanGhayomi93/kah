@@ -27,6 +27,7 @@ interface GridProps {
 	lowThreshold: number;
 	highThreshold: number;
 	rowHeight: number;
+	rowSpacing: number;
 }
 
 interface SymbolMarketDepthProps {
@@ -35,11 +36,13 @@ interface SymbolMarketDepthProps {
 	highThreshold: number;
 	length?: number;
 	rowHeight?: number;
+	rowSpacing?: number;
 }
 
 const SymbolMarketDepth = ({
 	symbolISIN,
 	rowHeight = 32,
+	rowSpacing = 4,
 	lowThreshold,
 	highThreshold,
 	length,
@@ -168,6 +171,7 @@ const SymbolMarketDepth = ({
 			<Grid
 				side='buy'
 				rowHeight={rowHeight}
+				rowSpacing={rowSpacing}
 				data={dataModify.buy}
 				lowThreshold={lowThreshold}
 				highThreshold={highThreshold}
@@ -175,6 +179,7 @@ const SymbolMarketDepth = ({
 			<Grid
 				side='sell'
 				rowHeight={rowHeight}
+				rowSpacing={rowSpacing}
 				data={dataModify.sell}
 				lowThreshold={lowThreshold}
 				highThreshold={highThreshold}
@@ -226,11 +231,11 @@ const Row = ({ price = 0, count = 0, quantity = 0, side, percent, rowHeight, dis
 	</div>
 );
 
-const Grid = ({ side, data, lowThreshold, highThreshold, rowHeight = 40 }: GridProps) => {
+const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }: GridProps) => {
 	const t = useTranslations();
 
 	return (
-		<div style={{ flex: '0 0 calc(50% - 0.4rem)' }} className='gap-8 overflow-hidden flex-column'>
+		<div style={{ flex: '0 0 calc(50% - 0.4rem)', gap: rowSpacing }} className='overflow-hidden flex-column'>
 			<div
 				className={cn(
 					'flex-justify-between *:text-base *:text-gray-900',
@@ -248,7 +253,7 @@ const Grid = ({ side, data, lowThreshold, highThreshold, rowHeight = 40 }: GridP
 				</div>
 			</div>
 
-			<div className='w-full gap-4 flex-column'>
+			<div style={{ gap: rowSpacing }} className='w-full flex-column'>
 				{data.map(({ percent, price, quantity, count }, i) => (
 					<Row
 						key={i}

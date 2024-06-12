@@ -1,11 +1,11 @@
-import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import dynamic from 'next/dynamic';
+import ContractSkeletonLoading from './ContractSkeletonLoading';
 
 const Contract = dynamic(() => import('./Contract'), {
 	ssr: false,
-	loading: () => <Loading />,
+	loading: () => <ContractSkeletonLoading />,
 });
 
 interface SymbolContractsProps {
@@ -62,23 +62,17 @@ const SymbolContracts = ({
 
 	const handleContracts = (contracts: Option.Root[]) => {
 		try {
-			let i = 0;
-			const newContracts = baseSymbolContracts.map<Saturn.ContentOption | null>((item) => {
-				if (item !== null) return item;
+			const modifiedContracts: Array<Saturn.ContentOption | null> = contracts.map<Saturn.ContentOption>((c) => ({
+				activeTab: 'price_information',
+				symbolISIN: c.symbolInfo.symbolISIN,
+				symbolTitle: c.symbolInfo.symbolTitle,
+			}));
 
-				const contract = contracts[i];
-				i++;
+			for (let i = modifiedContracts.length + 1; i <= 4; i++) {
+				modifiedContracts.push(null);
+			}
 
-				return contract
-					? {
-							activeTab: 'price_information',
-							symbolISIN: contract.symbolInfo.symbolISIN,
-							symbolTitle: contract.symbolInfo.symbolTitle,
-						}
-					: null;
-			});
-
-			setBaseSymbolContracts(newContracts);
+			setBaseSymbolContracts(modifiedContracts);
 		} catch (e) {
 			//
 		}

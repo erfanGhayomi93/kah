@@ -13,9 +13,7 @@ interface UnFreezeProps {
 	onCloseModal: () => void;
 }
 
-
 const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
-
 	const t = useTranslations();
 
 	const url = useAppSelector(getBrokerURLs);
@@ -25,7 +23,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 	const [value, setValue] = useState('');
 
 	const { data } = useCountFreezeQuery({
-		queryKey: ['CountFreezeList']
+		queryKey: ['CountFreezeList'],
 	});
 
 	const handleSubmitUnFreeze = async () => {
@@ -34,7 +32,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 		try {
 			const payload = {
 				symbolISIN: value,
-				type: 'UnFreeze'
+				type: 'UnFreeze',
 			};
 
 			const response = await brokerAxios.post(url?.newKaraFreeze, payload);
@@ -42,11 +40,11 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 
 			if (!data.succeeded) {
 				toast.error(t('alerts.unFreeze_request_failed'), {
-					toastId: 'alerts.unFreeze_request_failed'
+					toastId: 'alerts.unFreeze_request_failed',
 				});
 			} else {
 				toast.success(t('alerts.unFreeze_request_succeeded'), {
-					toastId: 'unFreeze_request_succeeded'
+					toastId: 'unFreeze_request_succeeded',
 				});
 
 				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
@@ -54,42 +52,34 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 				onCloseModal();
 			}
 		} catch (e) {
-			const { message } = (e as Error);
-			toast.error(t('alerts.unFسreeze_request_failed'), {
-				toastId: message
+			const { message } = e as Error;
+			toast.error(t('alerts.unFreeze_request_failed'), {
+				toastId: message,
 			});
 		}
 	};
 
-
 	return (
-
-		<div className='flex flex-col justify-between h-full'>
-			<div className="mt-24 mb-16 p-8 shadow-lg flex-1">
-				<div className="flex mb-24">
-					<span className="flex-1 text-center text-gray-900">{t('freeze_modal.symbol_title')}</span>
-					<span className="flex-1 text-center text-gray-900">{t('freeze_modal.guaranted_number')}</span>
+		<div className='flex h-full flex-col justify-between'>
+			<div className='mb-16 mt-24 flex-1 p-8 shadow-lg'>
+				<div className='mb-24 flex'>
+					<span className='flex-1 text-center text-gray-900'>{t('freeze_modal.symbol_title')}</span>
+					<span className='flex-1 text-center text-gray-900'>{t('freeze_modal.guaranted_number')}</span>
 				</div>
 
-
 				<div className='flex flex-col gap-y-16 overflow-auto' style={{ maxHeight: 300 }}>
-					{
-						data?.map((item, ind) => (
-							<div className='flex' key={ind}>
-								<Radiobox
-									checked={value === item.symbolISIN}
-									onChange={(checked) => checked && setValue(item.symbolISIN)}
-									label={item.symbolTitle}
-									classes={{ root: 'pr-16 flex-1' }}
-								/>
+					{data?.map((item, ind) => (
+						<div className='flex' key={ind}>
+							<Radiobox
+								checked={value === item.symbolISIN}
+								onChange={(checked) => checked && setValue(item.symbolISIN)}
+								label={item.symbolTitle}
+								classes={{ root: 'pr-16 flex-1' }}
+							/>
 
-								<span className='text-gray-1000 text-center flex-1'>
-									{sepNumbers(String(item.count))}
-								</span>
-							</div>
-						))
-					}
-
+							<span className='flex-1 text-center text-gray-1000'>{sepNumbers(String(item.count))}</span>
+						</div>
+					))}
 				</div>
 			</div>
 
@@ -106,7 +96,5 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 		</div>
 	);
 };
-
-
 
 export default UnFreezeTab;

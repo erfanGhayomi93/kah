@@ -1,4 +1,3 @@
-import RenderOnViewportEntry from '@/components/common/RenderOnViewportEntry ';
 import { ArrowUpSVG, DragSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
@@ -120,9 +119,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 				</div>
 			</div>
 
-			{isExpand && (
-				<RenderOnViewportEntry className='relative h-full overflow-hidden'>{children}</RenderOnViewportEntry>
-			)}
+			{isExpand && <div className='relative h-full overflow-hidden'>{children}</div>}
 		</div>
 	);
 };

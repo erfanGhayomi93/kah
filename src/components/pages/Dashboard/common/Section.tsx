@@ -4,7 +4,6 @@ import RenderOnViewportEntry from '@/components/common/RenderOnViewportEntry ';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import Tooltip from '@/components/common/Tooltip';
 import { ExpandSVG, InfoCircleSVG, XCircleSVG } from '@/components/icons';
-import { cn } from '@/utils/helpers';
 import clsx from 'clsx';
 
 export interface ITab<T> {
@@ -24,11 +23,11 @@ interface SectionProps<T, B> {
 		top: Array<ITab<T>> | React.ReactNode;
 		bottom: Array<ITab<B>> | React.ReactNode;
 	}>;
+	closeable?: boolean;
+	isModal?: boolean;
 	onExpand?: () => void;
 	onTopTabChange?: (v: T) => void;
 	onBottomTabChange?: (v: B) => void;
-	closeable?: boolean;
-	isModal?: boolean;
 }
 
 const Section = <T extends string = string, B extends string = string>({
@@ -40,11 +39,11 @@ const Section = <T extends string = string, B extends string = string>({
 	defaultBottomActiveTab,
 	expandable,
 	info,
+	closeable = true,
+	isModal = false,
 	onExpand,
 	onTopTabChange,
 	onBottomTabChange,
-	closeable = true,
-	isModal = false,
 }: SectionProps<T, B>) => {
 	const onClose = () => {
 		ipcMain.send('home.hide_section', { id, hidden: true });
@@ -55,7 +54,7 @@ const Section = <T extends string = string, B extends string = string>({
 			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div
-						className={cn(
+						className={clsx(
 							'h-full gap-8 rounded bg-gray-200 px-8 flex-items-center',
 							!closeable && !expandable && !info && 'bg-transparent',
 						)}
