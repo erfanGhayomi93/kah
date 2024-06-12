@@ -1,8 +1,9 @@
 import AnalyzeChart from '@/components/common/Analyze/AnalyzeChart';
 import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useAnalyze } from '@/hooks';
-import { divide, sepNumbers, uuidv4 } from '@/utils/helpers';
+import { divide, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
 interface StrategyChartDetailsProps
 	extends CreateStrategy.CoveredCallInput,
@@ -10,7 +11,6 @@ interface StrategyChartDetailsProps
 
 const StrategyChartDetails = ({
 	quantity,
-	useFreeStock,
 	basePrice,
 	optionPrice,
 	baseSymbol,
@@ -22,55 +22,52 @@ const StrategyChartDetails = ({
 	const minPrice = Math.floor(basePrice * 0.5);
 	const maxPrice = Math.ceil(basePrice * 1.5);
 
-	const getContracts = () => {
-		const result: TSymbolStrategy[] = [];
-
-		// Base Symbol
-		result.push({
-			id: uuidv4(),
-			type: 'base',
-			side: 'buy',
-			price: basePrice,
-			quantity,
-			marketUnit: baseSymbol.marketUnit,
-			symbol: {
-				symbolTitle: baseSymbol.symbolTitle,
-				symbolISIN: baseSymbol.symbolISIN,
-				baseSymbolPrice: basePrice,
+	const contracts = useMemo<TSymbolStrategy[]>(
+		() => [
+			{
+				id: 'base',
+				type: 'base',
+				side: 'buy',
+				price: basePrice,
+				quantity,
+				marketUnit: baseSymbol.marketUnit,
+				symbol: {
+					symbolTitle: baseSymbol.symbolTitle,
+					symbolISIN: baseSymbol.symbolISIN,
+					baseSymbolPrice: basePrice,
+				},
 			},
-		});
-
-		// Contract
-		result.push({
-			id: uuidv4(),
-			type: 'option',
-			price: optionPrice,
-			contractSize,
-			marketUnit: option.marketUnit,
-			quantity: Math.floor(divide(quantity, contractSize)),
-			settlementDay: option.settlementDay,
-			strikePrice: option.strikePrice,
-			side: 'sell',
-			symbol: {
-				symbolTitle: option.symbolTitle,
-				symbolISIN: option.symbolISIN,
-				optionType: 'call',
-				baseSymbolPrice: baseSymbol.bestLimitPrice,
-				historicalVolatility: option.historicalVolatility,
+			{
+				id: 'option',
+				type: 'option',
+				price: optionPrice,
+				contractSize,
+				marketUnit: option.marketUnit,
+				quantity: Math.floor(divide(quantity, contractSize)),
+				settlementDay: option.settlementDay,
+				strikePrice: option.strikePrice,
+				side: 'sell',
+				symbol: {
+					symbolTitle: option.symbolTitle,
+					symbolISIN: option.symbolISIN,
+					optionType: 'call',
+					baseSymbolPrice: baseSymbol.bestLimitPrice,
+					historicalVolatility: option.historicalVolatility,
+				},
 			},
-		});
+		],
+		[basePrice, optionPrice, quantity],
+	);
 
-		return result;
-	};
-
-	const { data } = useAnalyze(getContracts(), {
+	const { data } = useAnalyze(contracts, {
 		minPrice,
 		maxPrice,
 		baseAssets: basePrice,
 	});
+	console.log(data);
 
 	return (
-		<div style={{ flex: '0 0 18.4rem' }} className='flex gap-40 border-y border-gray-500 py-16'>
+		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-gray-500 py-16'>
 			<ul
 				style={{ flex: '0 0 22rem' }}
 				className='justify-between text-gray-900 ltr flex-column *:flex-justify-between'
@@ -93,7 +90,7 @@ const StrategyChartDetails = ({
 				</li>
 			</ul>
 
-			<div className='flex-1'>
+			<div className='relative flex-1'>
 				<AnalyzeChart
 					removeBorders
 					data={data}
