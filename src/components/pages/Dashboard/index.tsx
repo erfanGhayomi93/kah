@@ -16,70 +16,87 @@ import EditLayoutButton from './EditLayoutButton';
 
 const Best = dynamic(() => import('./components/Best'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const CompareTransactionValue = dynamic(() => import('./components/CompareTransactionValue'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const Custom = dynamic(() => import('./components/Custom'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const DueDates = dynamic(() => import('./components/DueDates'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const IndividualAndLegal = dynamic(() => import('./components/IndividualAndLegal'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const MarketState = dynamic(() => import('./components/MarketState'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const MarketView = dynamic(() => import('./components/MarketView'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const Meetings = dynamic(() => import('./components/Meetings'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const NewAndOld = dynamic(() => import('./components/NewAndOld'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const OpenPositionsProcess = dynamic(() => import('./components/OpenPositionsProcess'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const OptionContracts = dynamic(() => import('./components/OptionContracts'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const OptionMarketProcess = dynamic(() => import('./components/OptionMarketProcess'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const OptionTradesValue = dynamic(() => import('./components/OptionTradesValue'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const PriceChangesWatchlist = dynamic(() => import('./components/PriceChangesWatchlist'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const RecentActivities = dynamic(() => import('./components/RecentActivities'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const TopBaseAssets = dynamic(() => import('./components/TopBaseAssets'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const UserProgressBar = dynamic(() => import('./components/UserProgressBar'), {
 	loading: () => <Loading />,
+	ssr: true,
 });
 
 const SECTIONS_MARGIN: [number, number] = [16, 16];

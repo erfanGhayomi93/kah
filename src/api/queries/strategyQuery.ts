@@ -71,7 +71,7 @@ export const useCoveredCallStrategyQuery = createQuery<
 
 			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
 
-			if (filters?.maxProfit && filters.maxProfit) params.IOTM = filters.maxProfit;
+			if (filters?.maxProfit && filters.maxProfit) params.LeastMaxProfitPercent = filters.maxProfit;
 
 			if (filters?.nonExpiredProfit) params.LeastNonExpiredProfitPercent = filters.nonExpiredProfit;
 

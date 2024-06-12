@@ -191,8 +191,14 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			</span>
 		);
 
-	const { closingPriceVarReferencePrice, symbolTradeState, symbolTitle, closingPrice, lastTradedPrice, companyName } =
-		symbolData;
+	const {
+		closingPriceVarReferencePrice,
+		closingPriceVarReferencePricePercent,
+		symbolTradeState,
+		symbolTitle,
+		lastTradedPrice,
+		companyName,
+	} = symbolData;
 
 	return (
 		<>
@@ -207,18 +213,18 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						<span
 							className={cn(
 								'gap-4 flex-items-center',
-								closingPriceVarReferencePrice >= 0 ? 'text-success-100' : 'text-error-100',
+								closingPriceVarReferencePricePercent >= 0 ? 'text-success-100' : 'text-error-100',
 							)}
 						>
 							<span className='flex items-center text-tiny ltr'>
-								({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
-								{closingPriceVarReferencePrice >= 0 ? (
+								({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
+								{closingPriceVarReferencePricePercent >= 0 ? (
 									<GrowUpSVG width='1rem' height='1rem' />
 								) : (
 									<GrowDownSVG width='1rem' height='1rem' />
 								)}
 							</span>
-							{sepNumbers(String(closingPrice ?? 0))}
+							{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
 						</span>
 
 						<span

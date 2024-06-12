@@ -172,7 +172,7 @@ export const useWatchlistBySettlementDateQuery = createQuery<
 	Option.Root[],
 	['watchlistBySettlementDateQuery', null | Record<'settlementDate' | 'baseSymbolISIN', string>]
 >({
-	staleTime: 18e5,
+	staleTime: 0,
 	queryKey: ['watchlistBySettlementDateQuery', null],
 	queryFn: async ({ queryKey, signal }) => {
 		try {

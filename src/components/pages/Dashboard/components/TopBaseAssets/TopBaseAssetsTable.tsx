@@ -93,7 +93,15 @@ const TopBaseAssetsTable = () => {
 	)
 		return <NoData />;
 
-	return <LightweightTable rowHeight={40} headerHeight={40} rowData={dataMapper} columnDefs={columnDefs} />;
+	return (
+		<LightweightTable
+			headerClass='!text-tiny'
+			rowHeight={40}
+			headerHeight={40}
+			rowData={dataMapper}
+			columnDefs={columnDefs}
+		/>
+	);
 };
 
 export default TopBaseAssetsTable;

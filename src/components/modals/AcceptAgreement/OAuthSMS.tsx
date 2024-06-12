@@ -31,19 +31,25 @@ const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
 
 	const brokerURLs = useAppSelector(getBrokerURLs);
 
-	const [isSubmiting, setIsSubmiting] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const { data: otpData, mutate: getOtpData } = useMutation<Settings.IMobileOTP | null, AxiosError, string | null>({
-		mutationFn: async (retryToken) => {
-			const { data, status } = await brokerAxios.post<ServerResponse<Settings.IMobileOTP>>(
-				brokerURLs.mobileOtpRequest,
-			);
-			if (status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+		mutationFn: async () => {
+			try {
+				if (!brokerURLs) throw new Error();
 
-			return data?.result;
+				const { data, status } = await brokerAxios.post<ServerResponse<Settings.IMobileOTP>>(
+					brokerURLs.mobileOtpRequest,
+				);
+				if (status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+				return data?.result;
+			} catch (e) {
+				return null;
+			}
 		},
 		onSuccess: () => {
-			setIsSubmiting(true);
+			setIsSubmitting(true);
 		},
 	});
 
@@ -122,12 +128,12 @@ const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
 						<OTPInput id='5' value={otpValue[5]} />
 					</form>
 					<div className='gap-8 pb-24 flex-justify-center'>
-						{isSubmiting ? (
+						{isSubmitting ? (
 							<>
 								<p className='text-gray-700'>{t('resend_code_after')}:</p>
 								<span className='text-info'>
 									<Countdown
-										onFinished={() => setIsSubmiting(false)}
+										onFinished={() => setIsSubmitting(false)}
 										seconds={otpData?.expireDate || 120}
 										key={otpData?.expireDate}
 									/>

@@ -42,7 +42,7 @@ const List = ({ isExpand }: ListProps) => {
 		if (isExpand) {
 			setExpandId(expandId === id ? null : id);
 		} else {
-			dispatch(toggleSidebar(true));
+			toggle(true);
 			setExpandId(id);
 		}
 	};
@@ -50,7 +50,7 @@ const List = ({ isExpand }: ListProps) => {
 	const onClickItem = (tagName: string) => {
 		if (tagName === 'button') return false;
 
-		dispatch(toggleSidebar(false));
+		toggle(false);
 
 		if (tagName === 'a') {
 			dispatch(setSymbolInfoPanel(null));
@@ -68,6 +68,10 @@ const List = ({ isExpand }: ListProps) => {
 				dispatch(setOptionSettlementModal({}));
 			}
 		}
+	};
+
+	const toggle = (v: boolean) => {
+		dispatch(toggleSidebar(v));
 	};
 
 	const [topList, bottomList]: TListItem[][] = useMemo(
@@ -212,7 +216,7 @@ const List = ({ isExpand }: ListProps) => {
 
 	return (
 		<nav className='h-full flex-1 justify-between gap-16 py-32 flex-column'>
-			<ul className={clsx(styles.list, isExpand && styles.expand)}>
+			<ul onMouseOver={() => toggle(true)} className={clsx(styles.list, isExpand && styles.expand)}>
 				{topList.map((item) => (
 					<Item
 						key={item.id}
@@ -225,7 +229,7 @@ const List = ({ isExpand }: ListProps) => {
 				))}
 			</ul>
 
-			<ul className={clsx(styles.list, isExpand && styles.expand)}>
+			<ul onMouseOver={() => toggle(true)} className={clsx(styles.list, isExpand && styles.expand)}>
 				{bottomList.map((item) => (
 					<Item
 						key={item.id}

@@ -8,11 +8,12 @@ import { useSubscription, useTradingFeatures } from '@/hooks';
 import { cn, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import SymbolContextMenu from '../../../common/Symbol/SymbolContextMenu';
 
 const PriceInformation = dynamic(() => import('./Tabs/PriceInformation'), {
@@ -136,7 +137,7 @@ const Contract = ({
 		[contractInfo],
 	);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!option?.symbolISIN) {
 			unsubscribe();
 			return;
@@ -148,7 +149,7 @@ const Contract = ({
 		subscribe(sub);
 	}, [option?.symbolISIN]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!contractInfo) return;
 		onLoadContract(contractInfo);
 	}, [contractInfo]);
@@ -160,7 +161,7 @@ const Contract = ({
 					onClick={addNewContract}
 					className='absolute cursor-pointer items-center gap-24 text-center flex-column center'
 				>
-					<Image width='48' height='48' alt='add-symbol' src='/static/images/add-button.png' />
+					<Image width='60' height='60' alt='add-symbol' src='/static/images/add-button.png' />
 					<span className='text-base text-gray-1000'>
 						{t.rich('saturn_page.click_to_add_contract', {
 							add: (chunks) => (
@@ -183,6 +184,7 @@ const Contract = ({
 		);
 
 	const closingPriceVarReferencePrice = contractInfo?.closingPriceVarReferencePrice ?? 0;
+	const closingPriceVarReferencePricePercent = contractInfo?.closingPriceVarReferencePricePercent ?? 0;
 
 	return (
 		<Wrapper>
@@ -201,24 +203,28 @@ const Contract = ({
 							</h4>
 						</div>
 
-						<div className='h-fit gap-8 flex-items-center'>
+						<div className='h-fit gap-8 text-base flex-items-center'>
 							<span
 								className={cn(
-									'gap-4 flex-items-center',
-									getColorBasedOnPercent(closingPriceVarReferencePrice),
+									'gap-4 ltr flex-items-center',
+									getColorBasedOnPercent(closingPriceVarReferencePricePercent),
 								)}
 							>
-								<span className='flex items-center text-tiny ltr'>
-									({(closingPriceVarReferencePrice ?? 0).toFixed(2)} %)
-									{closingPriceVarReferencePrice > 0 && <GrowUpSVG width='1rem' height='1rem' />}
-									{closingPriceVarReferencePrice < 0 && <GrowDownSVG width='1rem' height='1rem' />}
+								{sepNumbers(String(closingPriceVarReferencePrice))}
+								<span className='flex items-center'>
+									({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
+									{closingPriceVarReferencePricePercent > 0 && (
+										<GrowUpSVG width='1rem' height='1rem' />
+									)}
+									{closingPriceVarReferencePricePercent < 0 && (
+										<GrowDownSVG width='1rem' height='1rem' />
+									)}
 								</span>
-								{sepNumbers(String(contractInfo?.closingPrice ?? 0))}
 							</span>
 
-							<span className={cn('flex items-center gap-4 text-4xl font-bold text-gray-1000')}>
-								{sepNumbers(String(contractInfo?.lastTradedPrice || 0))}
+							<span className={clsx('flex items-center gap-4 text-2xl font-bold text-gray-1000 ltr')}>
 								<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
+								{sepNumbers(String(contractInfo?.lastTradedPrice ?? 0))}
 							</span>
 						</div>
 					</div>

@@ -161,8 +161,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 				const symbol = visualData.current[symbolIndex];
 
 				if (value !== null && fieldName in symbol) {
-					// eslint-disable-next-line no-console
-					console.log(fieldName, value);
+					// console.log(fieldName, value);
 				}
 			} catch (e) {
 				//

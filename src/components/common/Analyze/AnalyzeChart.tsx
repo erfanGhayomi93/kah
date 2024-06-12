@@ -197,6 +197,10 @@ const AnalyzeChart = ({
 			});
 		}
 
+		if (options.colors.length === 0) {
+			options.colors.push(COLORS.GREEN);
+		}
+
 		setChartOptions(options);
 	}, [data, JSON.stringify({ maxPrice, minPrice, baseAssets })]);
 
