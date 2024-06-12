@@ -50,6 +50,7 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 			{
 				colId: 'id',
 				headerName: t('change_broker_reports_page.id_column'),
+				width: 32,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
@@ -57,7 +58,8 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 			{
 				colId: 'saveDate',
 				headerName: t('change_broker_reports_page.date_column'),
-				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'date'),
+				cellClass: 'ltr',
+				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'datetime'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'saveDate')]?.hidden,
 			},
 			/* نماد */
