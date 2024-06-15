@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ArrowDownSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -58,7 +56,7 @@ const MultiSelect = <T, _D = T>({
 	const onChangeValue = (v: T) => {
 		const optionIndex = values.findIndex((item) => {
 			if (typeof item === 'object' && item !== null) {
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have type id in array type
 				return item.id === v.id;
 			} else {
 				return item === v;
@@ -73,7 +71,7 @@ const MultiSelect = <T, _D = T>({
 				const spliceValue = prev.splice(optionIndex, 1);
 				return [...prev].filter((value) => {
 					if (typeof value === 'object' && value !== null) {
-						// @ts-expect-error
+						// @ts-expect-error: doesn't have type id in array type
 						return value.id !== spliceValue.id;
 					} else {
 						return value === spliceValue;
@@ -109,18 +107,15 @@ const MultiSelect = <T, _D = T>({
 						<ul className={clsx(styles.list, classes?.list)}>
 							{options?.map((option) => (
 								<li
-									onClick={(e) => {
-										onChangeValue(option);
-										// setOpen(false);
-									}}
+									onClick={() => onChangeValue(option)}
 									key={getOptionId(option)}
 									className={clsx(
 										styles.listItem,
 										classes?.listItem,
-										// @ts-expect-error
 										values.some((value) =>
 											typeof value === 'object' && value !== null
-												? value.id === getOptionId(option)
+												? // @ts-expect-error: doesn't have type id in array type
+													value.id === getOptionId(option)
 												: value === getOptionId(option),
 										) && [styles.active, classes?.active],
 									)}
@@ -153,7 +148,7 @@ const MultiSelect = <T, _D = T>({
 								<ul className='flex items-center gap-2 truncate'>
 									{values.map((value, index, array) => (
 										<li
-											className='bg-light-secondary-100 text-gray-00  rounded-md px-8 py-2'
+											className='text-gray-00 rounded-md  bg-light-secondary-100 px-8 py-2'
 											key={index}
 										>
 											{getOptionTitle(value)}
