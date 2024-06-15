@@ -148,9 +148,9 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						cellClass: ({ value }) => {
 							switch (value.toLowerCase()) {
 								case 'itm':
-									return 'text-success-100';
+									return 'text-light-success-100';
 								case 'otm':
-									return 'text-error-100';
+									return 'text-light-error-100';
 								case 'atm':
 									return 'text-secondary-300';
 								default:
@@ -164,7 +164,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-buy',
 						flex: 1,
-						cellClass: 'text-success-100',
+						cellClass: 'text-light-success-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
 					},
 
@@ -172,7 +172,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-buy',
 						flex: 1,
-						cellClass: 'text-error-100',
+						cellClass: 'text-light-error-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
 					},
 				],
@@ -215,7 +215,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-sell',
 						flex: 1,
-						cellClass: 'text-success-100',
+						cellClass: 'text-light-success-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestBuyPrice)),
 					},
 
@@ -223,7 +223,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-sell',
 						flex: 1,
-						cellClass: 'text-error-100',
+						cellClass: 'text-light-error-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestSellPrice)),
 					},
 
@@ -234,9 +234,9 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						cellClass: ({ value }) => {
 							switch (value.toLowerCase()) {
 								case 'itm':
-									return 'text-success-100';
+									return 'text-light-success-100';
 								case 'otm':
-									return 'text-error-100';
+									return 'text-light-error-100';
 								case 'atm':
 									return 'text-secondary-300';
 								default:

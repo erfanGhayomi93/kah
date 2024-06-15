@@ -20,7 +20,7 @@ const Custom = () => (
 		<button
 			type='button'
 			style={{ width: '12.4rem', height: '12.4rem' }}
-			className='rounded text-gray-800 flex-justify-center'
+			className='text-light-gray-700 rounded flex-justify-center'
 		>
 			<Plus />
 		</button>

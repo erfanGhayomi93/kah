@@ -27,7 +27,7 @@ const Sidebar = () => {
 				transition: 'width 300ms',
 				zIndex: 999,
 			}}
-			className='fixed right-0 top-0 h-full bg-sidebar'
+			className='bg-light-gray-800 fixed right-0 top-0 h-full'
 			onMouseLeave={closeSidebar}
 		>
 			<div className='relative h-full flex-column'>

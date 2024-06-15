@@ -12,7 +12,7 @@ interface ISettingCardField {
 const SettingCardField = ({ icon, title, value, prefixIcon, titleClass, valueClass }: ISettingCardField) => {
 	return (
 		<div className='flex-justify-between'>
-			<span className={clsx('gap-8 text-gray-900 flex-justify-center', titleClass)}>
+			<span className={clsx('text-light-gray-700 gap-8 flex-justify-center', titleClass)}>
 				{icon}
 				{title}
 				{prefixIcon && prefixIcon}

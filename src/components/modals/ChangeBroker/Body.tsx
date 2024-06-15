@@ -14,7 +14,6 @@ interface BodyProps {
 }
 
 export const Body: FC<BodyProps> = ({ onCloseModal }) => {
-
 	const t = useTranslations();
 
 	const url = useAppSelector(getBrokerURLs);
@@ -46,39 +45,36 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 
 			if (!data.succeeded) {
 				toast.error(t('alerts.change_broker_failure_' + data.errors[0]), {
-					toastId: data.errors[0]
+					toastId: data.errors[0],
 				});
 			} else {
 				toast.success(t('alerts.change_broker_request_successfully'), {
-					toastId: 'change_broker_successfully'
+					toastId: 'change_broker_successfully',
 				});
 
 				queryClient.invalidateQueries({ queryKey: ['changeBrokerReports'] });
 
 				onCloseModal();
 			}
-
 		} catch (e) {
-			const { message } = (e as Error);
+			const { message } = e as Error;
 			toast.error(t('alerts.change_broker_failure_' + message), {
-				toastId: message
+				toastId: message,
 			});
 		}
 	};
-
 
 	useEffect(() => {
 		!!symbol && isShowValidationSymbol && setIsShowValidationSymbol(false);
 	}, [symbol]);
 
-
 	return (
-		<div className='flex flex-col justify-between h-full'>
+		<div className='flex h-full flex-col justify-between'>
 			<div>
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 
 				<span
-					className={clsx('text-tiny text-error-200 opacity-0', {
+					className={clsx('text-tiny text-light-error-100 opacity-0', {
 						'opacity-100': isShowValidationSymbol,
 						'opacity-0': !isShowValidationSymbol,
 					})}
@@ -86,9 +82,9 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 					{t('change_broker_modal.symbol_validation')}
 				</span>
 
-				<div className='flex items-center mt-16 gap-4'>
-					<InfoCircleSVG className='text-info' width="2rem" height="2rem" />
-					<span className='text-tiny tracking-normal text-info'>
+				<div className='mt-16 flex items-center gap-4'>
+					<InfoCircleSVG className='text-light-info-100' width='2rem' height='2rem' />
+					<span className='text-tiny tracking-normal text-light-info-100'>
 						{t('change_broker_modal.notice_attention')}
 					</span>
 				</div>
@@ -103,8 +99,6 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 					{t('deposit_modal.state_Request')}
 				</button>
 			</div>
-
 		</div>
-
 	);
 };

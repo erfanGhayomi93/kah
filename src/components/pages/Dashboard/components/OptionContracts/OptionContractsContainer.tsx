@@ -16,11 +16,11 @@ interface OptionContractsContainerProps {
 }
 
 const COLORS: Record<NonNullable<Dashboard.GetOptionContractAdditionalInfo.DataPoint>, string> = {
-	atm: 'text-success-100',
-	otm: 'text-error-100',
-	itm: 'text-info',
-	call: 'text-success-100',
-	put: 'text-error-100',
+	atm: 'text-light-success-100',
+	otm: 'text-light-error-100',
+	itm: 'text-light-info-100',
+	call: 'text-light-success-100',
+	put: 'text-light-error-100',
 };
 
 const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsContainerProps) => {
@@ -109,8 +109,8 @@ const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsConta
 							item.id === dataPointHover ? 'font-medium' : 'font-normal',
 						)}
 					>
-						<span className='text-gray-900'>{item.title}:</span>
-						<div className='flex gap-8 text-gray-1000 ltr'>
+						<span className='text-light-gray-700'>{item.title}:</span>
+						<div className='flex gap-8 text-light-gray-800 ltr'>
 							{item.value}
 							<span className={item.id && item.id === dataPointHover ? COLORS[item.id] : ''}>
 								{item.percent}%

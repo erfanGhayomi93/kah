@@ -1,4 +1,3 @@
-import { useSymbolChartDataQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
 import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { cn } from '@/utils/helpers';
@@ -12,7 +11,7 @@ const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/Symbo
 	loading: () => <Loading />,
 });
 
-const SymbolChart = dynamic(() => import('@/components/common/Symbol/SymbolChart'), {
+const SymbolChartData = dynamic(() => import('./SymbolChartData'), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -28,17 +27,13 @@ interface SymbolTabsProps {
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	const t = useTranslations();
 
-	const { data } = useSymbolChartDataQuery({
-		queryKey: ['symbolChartDataQuery', symbol.symbolISIN, 'Today'],
-	});
-
 	const tabs = useMemo<TTab[]>(
 		() => [
 			{
 				id: 'tab_market_depth',
 				title: t('saturn_page.tab_market_depth'),
 				render: () => (
-					<div style={{ height: '23rem' }} className='relative flex-1 gap-40 flex-column'>
+					<div style={{ height: '23.2rem' }} className='relative flex-1 gap-40 flex-column'>
 						<SymbolMarketDepth
 							rowSpacing={8}
 							rowHeight={32}
@@ -53,14 +48,14 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 				id: 'tab_chart',
 				title: t('saturn_page.tab_chart'),
 				render: () => (
-					<div style={{ height: '23rem' }} className='relative size-full pb-16'>
-						<SymbolChart data={data ?? []} type='area' tab='symbol_chart' />
+					<div style={{ height: '23rem' }} className='relative size-full'>
+						<SymbolChartData symbolISIN={symbol.symbolISIN} />
 					</div>
 				),
 			},
 			{ id: 'tab_my_asset', title: t('saturn_page.tab_my_asset'), disabled: true, render: null },
 		],
-		[symbol, data],
+		[symbol],
 	);
 
 	return (
@@ -75,7 +70,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 						<button
 							className={cn(
 								'p-8 transition-colors',
-								item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+								item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
 							)}
 							type='button'
 						>

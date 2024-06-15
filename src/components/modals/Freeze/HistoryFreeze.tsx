@@ -67,7 +67,6 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 				});
 
 				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
-
 			}
 		} catch (e) {
 			const message = isFreeze ? 'alerts.freeze_request_delete_failed' : 'alerts.unFreeze_request_delete_failed';
@@ -125,7 +124,7 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info flex-justify-center'
+				className='text-light-info-100 h-48 w-full gap-8 rounded font-medium flex-justify-center'
 				href={'/option-reports/freeze-and-unfreeze'}
 				onClick={() => onCloseModal()}
 			>

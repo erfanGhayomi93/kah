@@ -24,7 +24,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 							target='_blank'
 							onClick={() => setOpen(false)}
 							href={getTSELink(symbol?.insCode)}
-							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
 						>
 							<Image width='18' height='18' src='/static/images/tsetmc.png' alt='' />
 							{t('common.tse')}
@@ -36,7 +36,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 								target='_blank'
 								onClick={() => setOpen(false)}
 								href={getCodalLink(symbol?.symbolTitle)}
-								className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+								className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
 							>
 								<Image width='18' height='18' src='/static/images/codal.png' alt='' />
 								{t('common.codal')}
@@ -47,7 +47,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					<li>
 						<button
 							onClick={() => setOpen(false)}
-							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
 						>
 							{t('symbol_context_menu.add_note')}
 						</button>
@@ -55,7 +55,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					<li>
 						<button
 							onClick={() => setOpen(false)}
-							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
 						>
 							{t('symbol_context_menu.alarm')}
 						</button>
@@ -63,7 +63,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					<li>
 						<button
 							onClick={() => setOpen(false)}
-							className='h-48 w-full gap-16 px-16 text-base text-gray-900 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
 						>
 							{t('symbol_context_menu.technical_chart')}
 						</button>

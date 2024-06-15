@@ -19,8 +19,8 @@ const Theme = () => {
 					className={clsx(
 						'h-40 flex-1 gap-8 rounded  text-base transition-colors flex-justify-center',
 						item.id === 'light'
-							? 'bg-primary-100 font-medium text-primary-400'
-							: 'text-gray-900 hover:btn-hover',
+							? 'bg-light-secondary-100 text-light-primary-100 font-medium'
+							: 'text-light-gray-700 hover:btn-hover',
 					)}
 				>
 					{item.icon}

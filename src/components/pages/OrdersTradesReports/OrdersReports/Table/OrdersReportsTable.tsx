@@ -38,8 +38,8 @@ const OrdersReportsTable = ({ reports, columnsVisibility }: OrdersReportsTablePr
 				cellClass: (row) => {
 					if (!row) return;
 					return clsx({
-						'text-success-200': row.orderSide.includes('Buy'),
-						'text-error-200': row.orderSide.includes('Sell'),
+						'text-light-success-100': row.orderSide.includes('Buy'),
+						'text-light-error-100': row.orderSide.includes('Sell'),
 					});
 				},
 				valueGetter: (row) => t('orders_reports_page.side_' + row.orderSide),

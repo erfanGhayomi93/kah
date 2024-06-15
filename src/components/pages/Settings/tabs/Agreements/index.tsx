@@ -39,8 +39,8 @@ const Agreements = () => {
 				cellClass: 'text-primary',
 				valueGetter: (row) => row.title,
 				valueFormatter: ({ value }) => (
-					<div className='gap-8 px-12 text-base text-gray-1000 flex-justify-start'>
-						<span className='text-gray-900'>
+					<div className='gap-8 px-12 text-base text-light-gray-800 flex-justify-start'>
+						<span className='text-light-gray-700'>
 							<DocSVG />
 						</span>
 						{value}
@@ -55,10 +55,10 @@ const Agreements = () => {
 				cellClass: ({ state }) =>
 					`${
 						state === 'Accepted'
-							? 'text-success-100'
+							? 'text-light-success-100'
 							: state === 'NotAccepted'
-								? 'text-error-200'
-								: 'text-warning-100'
+								? 'text-light-error-100'
+								: 'text-light-warning-100'
 					}`,
 			},
 			{

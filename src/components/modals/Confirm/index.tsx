@@ -70,10 +70,10 @@ const Confirm = forwardRef<HTMLDivElement, ConfirmProps>(
 				{...props}
 			>
 				<Div className='bg-white'>
-					<h2 className='text-center text-xl font-medium text-gray-1000'>{title}</h2>
+					<h2 className='text-light-gray-800 text-center text-xl font-medium'>{title}</h2>
 
 					<div className='pb-40 pt-32 text-center'>
-						<p className='text-base text-gray-1000'>{description}</p>
+						<p className='text-light-gray-800 text-base'>{description}</p>
 					</div>
 
 					<div className='flex w-full justify-between gap-8 px-16'>

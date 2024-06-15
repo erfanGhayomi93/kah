@@ -86,19 +86,14 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 				disabled={basis === 'base' && disabled}
 				loading={basis === 'base' ? isLoading : isLoadingOptionData}
 				blankPlaceholder={t('black_scholes_modal.no_contract_found')}
-				placeholder={t('black_scholes_modal.contract')}
+				placeholder={t('black_scholes_modal.strike_price')}
 				getOptionId={(option) => ('symbolInfo' in option ? option.symbolInfo!.symbolISIN : option.symbolISIN)}
 				getOptionTitle={(option) => {
 					if (!option) return null;
 
-					const { symbolTitle, strikePrice } = 'symbolInfo' in option ? option.symbolInfo : option;
+					const { strikePrice } = 'symbolInfo' in option ? option.symbolInfo : option;
 
-					return (
-						<div className='w-full flex-1 flex-justify-between'>
-							<span>{symbolTitle}</span>
-							<span>{sepNumbers(String(strikePrice))}</span>
-						</div>
-					);
+					return <div className='w-full flex-1 flex-justify-end'>{sepNumbers(String(strikePrice))}</div>;
 				}}
 				onChange={onSelect}
 				onChangeTerm={setTerm}

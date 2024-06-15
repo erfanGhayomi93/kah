@@ -145,7 +145,10 @@ const Body = ({ tab }: BodyProps) => {
 	}, [tab]);
 
 	return (
-		<div style={{ height: '36rem' }} className='relative flex-1 border-t border-t-gray-500 bg-white px-16 py-8'>
+		<div
+			style={{ height: '36rem' }}
+			className='relative flex-1 border-t border-t-light-gray-200 bg-white px-16 py-8'
+		>
 			{tab === 'option_orders' ? (
 				<OptionTable data={optionOrdersData ?? []} loading={isFetchingOptionOrders} />
 			) : tab === 'draft' ? (

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ArrowDownSVG } from '@/components/icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -109,10 +107,7 @@ const MultiSelect = <T, _D = T>({
 						<ul className={clsx(styles.list, classes?.list)}>
 							{options?.map((option) => (
 								<li
-									onClick={(e) => {
-										onChangeValue(option);
-										// setOpen(false);
-									}}
+									onClick={() => onChangeValue(option)}
 									key={getOptionId(option)}
 									className={clsx(
 										styles.listItem,
@@ -152,7 +147,10 @@ const MultiSelect = <T, _D = T>({
 							) : (
 								<ul className='flex items-center gap-2 truncate'>
 									{values.map((value, index, array) => (
-										<li className='text-gray-00 rounded-md  bg-primary-100 px-8 py-2' key={index}>
+										<li
+											className='text-gray-00 rounded-md  bg-light-secondary-100 px-8 py-2'
+											key={index}
+										>
 											{getOptionTitle(value)}
 										</li>
 									))}

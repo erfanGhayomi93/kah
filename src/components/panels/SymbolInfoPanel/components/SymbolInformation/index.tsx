@@ -73,22 +73,22 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 
 			<div className='h-40 gap-8 flex-justify-between'>
 				<div className='w-1/2 gap-8 flex-justify-start'>
-					<span className='whitespace-nowrap text-tiny text-gray-900'>
+					<span className='text-light-gray-700 whitespace-nowrap text-tiny'>
 						{t('symbol_info_panel.last_traded_price')}:
 					</span>
 
-					<div className='text-base font-medium text-gray-1000 ltr'>
+					<div className='text-light-gray-800 text-base font-medium ltr'>
 						<span> {sepNumbers(String(lastTradedPrice ?? 0))} </span>
 						<span>({sepNumbers(String(tradePriceVarPreviousTradePercent ?? 0))}%)</span>
 					</div>
 				</div>
 
 				<div className='w-1/2 gap-8 flex-justify-end'>
-					<span className='whitespace-nowrap text-tiny text-gray-900'>
+					<span className='text-light-gray-700 whitespace-nowrap text-tiny'>
 						{t('symbol_info_panel.closing_price')}:
 					</span>
 
-					<div className='text-tiny font-medium text-gray-1000 ltr'>
+					<div className='text-light-gray-800 text-tiny font-medium ltr'>
 						<span>{sepNumbers(String(closingPrice ?? 0))} </span>
 						<span>({sepNumbers(String(closingPriceVarReferencePricePercent ?? 0))}%)</span>
 					</div>

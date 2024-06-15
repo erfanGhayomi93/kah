@@ -115,9 +115,9 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				cellClass: ({ value }) => {
 					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-success-100';
+							return 'text-light-success-100';
 						case 'otm':
-							return 'text-error-100';
+							return 'text-light-error-100';
 						case 'atm':
 							return 'text-secondary-300';
 						default:
@@ -185,9 +185,9 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				cellClass: ({ value }) => {
 					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-success-100';
+							return 'text-light-success-100';
 						case 'otm':
-							return 'text-error-100';
+							return 'text-light-error-100';
 						case 'atm':
 							return 'text-secondary-300';
 						default:
@@ -241,11 +241,11 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 
 	return (
 		<div className='w-full flex-column'>
-			<div className='flex h-48 border-t border-t-gray-500'>
-				<div className='flex-1 text-lg text-success-100 flex-justify-center'>
+			<div className='flex h-48 border-t border-t-light-gray-200'>
+				<div className='flex-1 text-lg text-light-success-100 flex-justify-center'>
 					{t('old_option_chain.buy_contracts')}
 				</div>
-				<div className='flex-1 text-lg text-error-100 flex-justify-center'>
+				<div className='flex-1 text-lg text-light-error-100 flex-justify-center'>
 					{t('old_option_chain.sell_contracts')}
 				</div>
 			</div>

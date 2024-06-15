@@ -123,9 +123,9 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				cellClass: ({ data }) => {
 					switch (data!.side) {
 						case 'Buy':
-							return 'text-success-100';
+							return 'text-light-success-100';
 						case 'Sell':
-							return 'text-error-100';
+							return 'text-light-error-100';
 						default:
 							return '';
 					}

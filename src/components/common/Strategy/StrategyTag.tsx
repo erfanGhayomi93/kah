@@ -15,12 +15,13 @@ const StrategyTag = ({ id, title, i }: StrategyTagProps) => {
 				i === 0
 					? [
 							'font-medium',
-							id === 'HighRisk' && 'border-error-100 bg-error-100 text-white',
-							id === 'LowRisk' && 'border-success-300 bg-success-300 text-gray-1000',
-							id === 'ModerateRisk' && 'border-warning-100 bg-warning-100 text-gray-1000',
-							id === 'NoRisk' && 'border-success-100 bg-success-100 text-white',
+							id === 'HighRisk' && 'border-light-error-100 bg-light-error-100 text-white',
+							id === 'LowRisk' && 'border-light-success-200 bg-light-success-200 text-light-gray-800',
+							id === 'ModerateRisk' &&
+								'border-light-warning-100 bg-light-warning-100 text-light-gray-800',
+							id === 'NoRisk' && 'border-light-success-100 bg-light-success-100 text-white',
 						]
-					: 'border-gray-500 text-gray-800',
+					: 'border-light-gray-200 text-light-gray-700',
 			)}
 		>
 			{title}

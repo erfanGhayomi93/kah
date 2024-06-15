@@ -106,14 +106,14 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 						height: onlyShowTags ? '100%' : `calc(${(636 / window.innerHeight) * 100}vh - 16.5rem)`,
 					}}
 					className={cn(
-						'justify-between rounded-b border-x border-b border-primary-300 bg-white flex-column',
+						'justify-between rounded-b border-x border-b border-light-primary-100 bg-white flex-column',
 					)}
 				>
 					{values.length > 0 && (
 						<div
 							className={cn(
 								'w-full flex-wrap px-16 pb-12 flex-justify-between',
-								!onlyShowTags && 'border-b border-b-gray-500',
+								!onlyShowTags && 'border-b border-b-light-gray-200',
 							)}
 						>
 							<ul className={styles.tags}>
@@ -125,7 +125,11 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 									/>
 								))}
 							</ul>
-							<button className='text-base text-error-100' onClick={() => onChange([])} type='button'>
+							<button
+								className='text-base text-light-error-100'
+								onClick={() => onChange([])}
+								type='button'
+							>
 								{t('option_watchlist_filters_modal.delete_selected_symbols')}
 							</button>
 						</div>
@@ -133,7 +137,7 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 
 					{onlyShowTags && values.length === 0 && (
 						<div style={{ minHeight: '9.6rem' }} className='flex-justify-center'>
-							<span className='text-base text-gray-900'>
+							<span className='text-base text-light-gray-700'>
 								{t('option_watchlist_filters_modal.symbol_not_found')}
 							</span>
 						</div>
@@ -149,9 +153,9 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 								)}
 							>
 								{isLoading ? (
-									<span className='text-base text-gray-900'>{t('common.searching')}</span>
+									<span className='text-base text-light-gray-700'>{t('common.searching')}</span>
 								) : symbolsDataIsEmpty ? (
-									<span className='text-base text-gray-900'>
+									<span className='text-base text-light-gray-700'>
 										{t('option_watchlist_filters_modal.symbol_not_found')}
 									</span>
 								) : (
@@ -168,13 +172,13 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 												className={cn(
 													'min-h-40 text-right transition-colors flex-justify-start',
 													isSelected
-														? 'bg-primary-400 text-white hover:bg-primary-300'
+														? 'bg-light-primary-100 text-white hover:bg-light-primary-100'
 														: 'bg-transparent hover:btn-hover',
 												)}
 											>
 												<div className='w-32 flex-justify-center'>
 													{isSelected && (
-														<div className='size-16 rounded-sm bg-white text-primary-400 flex-justify-center'>
+														<div className='size-16 rounded-sm bg-white text-light-primary-100 flex-justify-center'>
 															<CheckSVG />
 														</div>
 													)}
@@ -186,13 +190,13 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 															isSelected
 																? 'text-white'
 																: term
-																	? 'text-gray-800'
-																	: 'text-gray-1000'
+																	? 'text-light-gray-700'
+																	: 'text-light-gray-800'
 														}
 													>
 														{title[0]}
 													</span>
-													<span className={isSelected ? 'text-white' : 'text-gray-1000'}>
+													<span className={isSelected ? 'text-white' : 'text-light-gray-800'}>
 														{title[1]}
 													</span>
 													<span
@@ -200,8 +204,8 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 															isSelected
 																? 'text-white'
 																: term
-																	? 'text-gray-800'
-																	: 'text-gray-1000'
+																	? 'text-light-gray-700'
+																	: 'text-light-gray-800'
 														}
 													>
 														{title[2]}
@@ -214,7 +218,7 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 							</div>
 
 							{!symbolsDataIsEmpty && (
-								<div className='border-t border-t-gray-500 p-16'>
+								<div className='border-t border-t-light-gray-200 p-16'>
 									<button
 										style={{ width: '14rem' }}
 										className='mr-auto h-40 rounded btn-primary'
@@ -234,10 +238,10 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 				<div
 					className={cn(
 						'h-40 flex-1 border flex-items-center input-group',
-						open ? 'rounded-t border-primary-300' : 'rounded border-gray-500',
+						open ? 'rounded-t border-light-primary-100' : 'rounded border-light-gray-200',
 					)}
 				>
-					<span className='px-8 text-gray-900'>
+					<span className='px-8 text-light-gray-700'>
 						<SearchSVG />
 					</span>
 					<input
@@ -245,7 +249,7 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 						type='text'
 						inputMode='numeric'
 						maxLength={32}
-						className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-1000'
+						className='h-40 flex-1 rounded bg-transparent pl-8 text-light-gray-800'
 						placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 						value={term}
 						onFocus={() => {
@@ -261,7 +265,7 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 							<button
 								onClick={onClearTerm}
 								type='button'
-								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-1000 text-white flex-justify-center'
+								className='ml-16 min-h-20 min-w-20 rounded-circle bg-light-gray-800 text-white flex-justify-center'
 							>
 								<XSVG width='1rem' height='1rem' />
 							</button>
@@ -271,11 +275,11 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 						<button
 							onClick={() => seeTags(() => setOpen(true))}
 							type='button'
-							className='h-24 w-40 border-r border-r-gray-500 text-tiny text-gray-200 flex-justify-center'
+							className='h-24 w-40 border-r border-r-light-gray-200 text-tiny text-light-gray-100 flex-justify-center'
 						>
 							<span
 								style={{ paddingTop: '2px' }}
-								className='size-24 rounded-circle bg-primary-400 text-white flex-justify-center'
+								className='size-24 rounded-circle bg-light-primary-100 text-white flex-justify-center'
 							>
 								{values.length}
 							</span>

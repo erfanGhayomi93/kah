@@ -10,15 +10,15 @@
 		height: 3.2rem;
 		font-size: 1.6rem;
 		font-weight: 400;
-		font-family: 'IRANSans';
+		font-family: "IRANSans";
 	}
 }
 
 .prev,
 .next {
-	color: theme('colors.gray.900');
+	color: theme("colors.light.gray.700");
 	border-radius: 0.8rem;
-	background-color: theme('colors.gray.200');
+	background-color: theme("colors.light.gray.100");
 	width: 3.2rem;
 	height: 3.2rem;
 	display: flex;
@@ -29,7 +29,7 @@
 		gap: 0.4rem;
 
 		&:disabled {
-			color: theme('colors.gray.800');
+			color: theme("colors.light.gray.700");
 		}
 	}
 }
@@ -40,7 +40,7 @@
 	align-items: center;
 	gap: 0.8rem;
 	border-radius: 0.8rem;
-	background-color: theme('colors.gray.200');
+	background-color: theme("colors.light.gray.100");
 }
 
 .page {
@@ -48,7 +48,7 @@
 		border-radius: 0.8rem;
 		width: 3.2rem;
 		background-color: transparent;
-		color: theme('colors.gray.900');
+		color: theme("colors.light.gray.700");
 		transition:
 			background-color 250ms,
 			color 250ms;
@@ -58,7 +58,7 @@
 	}
 
 	&.active button {
-		color: theme('colors.white');
-		background-color: theme('colors.primary.400');
+		color: theme("colors.white");
+		background-color: theme("colors.light.primary.100");
 	}
 }

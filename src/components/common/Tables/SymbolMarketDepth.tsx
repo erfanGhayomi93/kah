@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
+import Loading from '../Loading';
 
 interface IRowData {
 	price: number;
@@ -45,13 +46,13 @@ const SymbolMarketDepth = ({
 	rowSpacing = 4,
 	lowThreshold,
 	highThreshold,
-	length,
+	length = 5,
 }: SymbolMarketDepthProps) => {
 	const queryClient = useQueryClient();
 
 	const { subscribe, unsubscribe } = useSubscription();
 
-	const { data } = useSymbolBestLimitQuery({
+	const { data, isLoading } = useSymbolBestLimitQuery({
 		queryKey: ['symbolBestLimitQuery', symbolISIN],
 	});
 
@@ -166,6 +167,14 @@ const SymbolMarketDepth = ({
 		subscribe(sub);
 	}, [symbolISIN]);
 
+	if (isLoading) {
+		return (
+			<div className='flex flex-1 gap-8'>
+				<Loading />
+			</div>
+		);
+	}
+
 	return (
 		<div className='flex flex-1 gap-8'>
 			<Grid
@@ -188,49 +197,6 @@ const SymbolMarketDepth = ({
 	);
 };
 
-const Row = ({ price = 0, count = 0, quantity = 0, side, percent, rowHeight, disabled }: RowProps) => (
-	<div
-		style={{ height: `${rowHeight}px` }}
-		className={clsx(
-			'relative flex-justify-between *:text-base *:text-gray-900',
-			side === 'sell' && 'flex-row-reverse',
-			disabled && 'cursor-default opacity-50',
-		)}
-	>
-		<div
-			onCopy={(e) => copyNumberToClipboard(e, count)}
-			style={{ flex: '0 0 30%', maxWidth: '7.2rem' }}
-			className='relative z-10 text-center'
-		>
-			{sepNumbers(String(count))}
-		</div>
-		<div
-			onCopy={(e) => copyNumberToClipboard(e, quantity)}
-			style={{ flex: '0 0 40%' }}
-			className='relative z-10 text-center'
-		>
-			{sepNumbers(String(quantity))}
-		</div>
-		<div
-			onCopy={(e) => copyNumberToClipboard(e, price)}
-			style={{ flex: '0 0 30%' }}
-			className={clsx('relative z-10', side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}
-		>
-			{sepNumbers(String(price))}
-		</div>
-
-		{!disabled && (
-			<div
-				style={{ width: `${Math.min(percent, 100)}%`, height: `${rowHeight - 4}px` }}
-				className={clsx(
-					'pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-sm',
-					side === 'buy' ? 'left-0 bg-success-100/10' : 'right-0 bg-error-100/10',
-				)}
-			/>
-		)}
-	</div>
-);
-
 const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }: GridProps) => {
 	const t = useTranslations();
 
@@ -238,7 +204,7 @@ const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }
 		<div style={{ flex: '0 0 calc(50% - 0.4rem)', gap: rowSpacing }} className='overflow-hidden flex-column'>
 			<div
 				className={cn(
-					'flex-justify-between *:text-base *:text-gray-900',
+					'flex-justify-between *:text-base *:text-light-gray-700',
 					side === 'sell' && 'flex-row-reverse',
 				)}
 			>
@@ -270,5 +236,48 @@ const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }
 		</div>
 	);
 };
+
+const Row = ({ price = 0, count = 0, quantity = 0, side, percent, rowHeight, disabled }: RowProps) => (
+	<div
+		style={{ height: `${rowHeight}px` }}
+		className={clsx(
+			'relative flex-justify-between *:text-base *:text-light-gray-700',
+			side === 'sell' && 'flex-row-reverse',
+			disabled && 'cursor-default opacity-50',
+		)}
+	>
+		<div
+			onCopy={(e) => copyNumberToClipboard(e, count)}
+			style={{ flex: '0 0 30%', maxWidth: '7.2rem' }}
+			className='relative z-10 text-center'
+		>
+			{sepNumbers(String(count))}
+		</div>
+		<div
+			onCopy={(e) => copyNumberToClipboard(e, quantity)}
+			style={{ flex: '0 0 40%' }}
+			className='relative z-10 text-center'
+		>
+			{sepNumbers(String(quantity))}
+		</div>
+		<div
+			onCopy={(e) => copyNumberToClipboard(e, price)}
+			style={{ flex: '0 0 30%' }}
+			className={clsx('relative z-10', side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}
+		>
+			{sepNumbers(String(price))}
+		</div>
+
+		{!disabled && (
+			<div
+				style={{ width: `${Math.min(percent, 100)}%`, height: `${rowHeight - 4}px` }}
+				className={clsx(
+					'pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-sm',
+					side === 'buy' ? 'left-0 bg-light-success-100/10' : 'right-0 bg-light-error-100/10',
+				)}
+			/>
+		)}
+	</div>
+);
 
 export default SymbolMarketDepth;

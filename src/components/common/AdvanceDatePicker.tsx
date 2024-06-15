@@ -82,8 +82,6 @@ const AdvancedDatepicker = ({
 	const inputRef = useRef<HTMLInputElement>(null);
 	const datepickerRef = useRef<HTMLDivElement | undefined>(undefined);
 
-	// const { theme } = useTheme();
-
 	const [focusing, setFocusing] = useState(false);
 
 	const [visibleCalendar, setVisibleCalendar] = useState(false);
@@ -147,7 +145,7 @@ const AdvancedDatepicker = ({
 
 		value = value.replace(/\s/g, '');
 
-		// @ts-expect-error: jalali dosn't infer type
+		// @ts-expect-error: jalali doesn't infer type
 		const d = dayjs(value, { jalali: true }).calendar('jalali');
 		if (!d.isValid()) return;
 
@@ -392,7 +390,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 
 			if (isDisabledDate(dayjs(`${day.year}/${day.month}/${day.date}`).calendar('jalali').toDate())) return;
 
-			// @ts-expect-error: jalali dosn't infer type
+			// @ts-expect-error: jalali does't infer type
 			const d = dayjs(`${day.year}/${day.month}/${day.date}`, { jalali: true }).calendar('jalali').toDate();
 
 			onChange(d);

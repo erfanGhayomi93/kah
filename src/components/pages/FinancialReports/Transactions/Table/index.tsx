@@ -59,7 +59,7 @@ const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: Ta
 	return (
 		<>
 			<div
-				className='overflow-hidden rounded border border-b-gray-500 flex-column'
+				className='overflow-hidden rounded border border-b-light-gray-200 flex-column'
 				style={{
 					height: 'calc(100dvh - 23.2rem)',
 					transition: 'height 250ms ease',
@@ -71,18 +71,18 @@ const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: Ta
 			<div className='py-22 flex-justify-between'>
 				<div className='gap-40 text-base flex-justify-start'>
 					<div className='gap-8 flex-justify-start'>
-						<span className='font-medium text-gray-900'>{t('transactions_page.final_remain')}: </span>
+						<span className='font-medium text-light-gray-700'>{t('transactions_page.final_remain')}: </span>
 						<div className='gap-4 flex-justify-start'>
-							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(finalRemain))}`}</span>
-							<span className=' text-gray-700'>{t('common.rial')}</span>
+							<span className='font-medium text-light-gray-800'>{`\u200E ${sepNumbers(String(finalRemain))}`}</span>
+							<span className=' text-light-gray-500'>{t('common.rial')}</span>
 						</div>
 					</div>
-					<div style={{ minWidth: '1px', minHeight: '16px' }} className='bg-gray-700' />
+					<div style={{ minWidth: '1px', minHeight: '16px' }} className='bg-light-gray-500' />
 					<div className='gap-8 flex-justify-start'>
-						<span className='font-medium text-gray-900'>{t('transactions_page.last_remain')}: </span>
+						<span className='font-medium text-light-gray-700'>{t('transactions_page.last_remain')}: </span>
 						<div className='gap-4 flex-justify-start'>
-							<span className='font-medium text-gray-1000'>{`\u200E ${sepNumbers(String(lastTrades))}`}</span>
-							<span className=' text-gray-700'>{t('common.rial')}</span>
+							<span className='font-medium text-light-gray-800'>{`\u200E ${sepNumbers(String(lastTrades))}`}</span>
+							<span className=' text-light-gray-500'>{t('common.rial')}</span>
 						</div>
 					</div>
 				</div>
