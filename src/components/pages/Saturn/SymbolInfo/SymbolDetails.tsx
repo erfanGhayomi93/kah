@@ -190,10 +190,10 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					<div onClick={openSymbolInfoPanel} className='cursor-pointer flex-column'>
 						<div style={{ gap: '1rem' }} className='flex-items-center'>
 							<SymbolState state={symbolTradeState} />
-							<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
+							<h1 className='text-light-gray-800 text-3xl font-medium'>{symbolTitle}</h1>
 						</div>
 
-						<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
+						<h4 className='text-light-gray-800 whitespace-nowrap pr-20 text-tiny'>{companyName}</h4>
 					</div>
 
 					<div className='h-fit gap-8 text-base flex-items-center'>
@@ -213,7 +213,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 						<span className='flex items-center gap-4 text-2xl font-bold'>
 							{sepNumbers(String(lastTradedPrice ?? 0))}
-							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
+							<span className='text-light-gray-700 text-base font-normal'>{t('common.rial')}</span>
 						</span>
 
 						<SymbolContextMenu symbol={symbol ?? null} />

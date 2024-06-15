@@ -111,7 +111,7 @@ const BaseSymbolForm = ({
 						}}
 					/>
 
-					<div className='h-20 text-error-100 flex-items-center'>
+					<div className='h-20 text-light-error-100 flex-items-center'>
 						{isQuantityTouched && isQuantityInvalid && (
 							<>
 								<XCircleSVG width='2rem' height='2rem' />
@@ -123,10 +123,10 @@ const BaseSymbolForm = ({
 					</div>
 				</div>
 
-				<div className='text-tiny text-gray-900 flex-justify-between'>
+				<div className='text-tiny text-light-gray-700 flex-justify-between'>
 					<span>{t('create_strategy.free_stock_quantity')}:</span>
-					<span className='flex gap-4 text-gray-700'>
-						<span className='font-medium text-gray-1000'>10</span>
+					<span className='flex gap-4 text-light-gray-500'>
+						<span className='font-medium text-light-gray-800'>10</span>
 						{t('create_strategy.stock')}
 					</span>
 				</div>
@@ -139,10 +139,10 @@ const BaseSymbolForm = ({
 			</div>
 
 			<div className='w-full gap-8 flex-column'>
-				<div className='h-24 text-tiny text-gray-900 flex-justify-between'>
+				<div className='h-24 text-tiny text-light-gray-700 flex-justify-between'>
 					<span>{t('create_strategy.remain_quantities')}:</span>
-					<span className='flex gap-4 text-gray-700'>
-						<span className='font-medium text-gray-1000'>90</span>
+					<span className='flex gap-4 text-light-gray-500'>
+						<span className='font-medium text-light-gray-800'>90</span>
 						{t('create_strategy.stock')}
 					</span>
 				</div>

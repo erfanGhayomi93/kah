@@ -43,7 +43,7 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 	};
 
 	return (
-		<div className='flex gap-8 border-b border-b-gray-500 pb-24'>
+		<div className='flex gap-8 border-b border-b-light-gray-200 pb-24'>
 			{basis === 'base' && (
 				<>
 					<div className='flex-1'>
@@ -68,6 +68,7 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 							disabled={!inputs.baseSymbol}
 							classes={{
 								root: '!h-48',
+								value: 'text-left',
 							}}
 						/>
 					</div>

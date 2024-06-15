@@ -35,7 +35,7 @@ const SymbolMainDetails = (symbol: SymbolMainDetailsProps) => {
 			<div className='flex-justify-between'>
 				<div onClick={openSymbolInfoPanel} style={{ gap: '1rem' }} className='flex-items-center'>
 					<SymbolState state={symbolTradeState} />
-					<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
+					<h1 className='text-light-gray-800 text-3xl font-medium'>{symbolTitle}</h1>
 				</div>
 
 				<div className='flex-1 gap-8 flex-justify-end'>
@@ -55,13 +55,13 @@ const SymbolMainDetails = (symbol: SymbolMainDetailsProps) => {
 
 					<span className='flex items-center gap-4 text-2xl font-bold'>
 						{sepNumbers(String(lastTradedPrice ?? 0))}
-						<span className='text-tiny font-normal text-gray-900'>{t('rial')}</span>
+						<span className='text-light-gray-700 text-tiny font-normal'>{t('rial')}</span>
 					</span>
 				</div>
 			</div>
 
 			<div onClick={openSymbolInfoPanel} className='cursor-pointer flex-column'>
-				<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
+				<h4 className='text-light-gray-800 whitespace-nowrap pr-20 text-tiny'>{companyName}</h4>
 			</div>
 		</div>
 	);

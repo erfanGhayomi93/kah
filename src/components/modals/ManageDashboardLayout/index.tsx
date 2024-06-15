@@ -138,7 +138,7 @@ const List = ({ data, checked, onChange }: ListProps) => (
 	<ul className='flex-1 flex-column'>
 		{data.map((item) => (
 			<li key={item.id} className='h-40 flex-justify-between'>
-				<span className='text-gray-1000'>{item.title}</span>
+				<span className='text-light-gray-800'>{item.title}</span>
 				<Switch checked={checked(item.id)} onChange={(v) => onChange(item.id, v)} />
 			</li>
 		))}

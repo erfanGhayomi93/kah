@@ -50,9 +50,8 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 				});
 
 				queryClient.invalidateQueries({
-					queryKey: ['changeBrokerReports']
+					queryKey: ['changeBrokerReports'],
 				});
-
 			}
 		} catch (e) {
 			const { message } = e as Error;
@@ -99,13 +98,13 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 	);
 
 	return (
-		<div className='flex h-full pr-24 flex-column overflow-auto'>
+		<div className='flex h-full overflow-auto pr-24 flex-column'>
 			<div className='flex-1 rounded-sm p-8 shadow-card'>
 				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info flex-justify-center'
+				className='text-light-info-100 h-48 w-full gap-8 rounded font-medium flex-justify-center'
 				href={'/financial-reports/change-broker'}
 				onClick={() => onCloseModal()}
 			>

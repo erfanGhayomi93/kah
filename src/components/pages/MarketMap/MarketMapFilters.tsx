@@ -162,7 +162,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 										'h-40  rounded !border transition-colors',
 										id === filters.market.id
 											? 'no-hover font-medium btn-select'
-											: 'border-gray-500 text-gray-900 hover:btn-hover',
+											: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
 									)}
 								>
 									{label}
@@ -176,7 +176,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 							minWidth: '16px',
 							minHeight: '1px',
 						}}
-						className='rotate-90 bg-gray-500'
+						className='bg-light-gray-200 rotate-90'
 					/>
 
 					<Select
@@ -226,7 +226,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={takeScreenshot}
 									type='button'
-									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 flex size-full items-center justify-center text-gray-800 transition-colors'
+									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 text-light-gray-700 flex size-full items-center justify-center transition-colors'
 									data-testid='market_map_filters_takeAScreenshot'
 								>
 									<CameraSVG />
@@ -240,7 +240,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={refetch}
 									type='button'
-									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 flex size-full items-center justify-center text-gray-800 transition-colors'
+									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 text-light-gray-700 flex size-full items-center justify-center transition-colors'
 									data-testid='market_map_filters_refresh'
 								>
 									<ReloadSVG />
@@ -254,7 +254,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={goToFullscreen}
 									type='button'
-									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 flex size-full items-center justify-center text-gray-800 transition-colors'
+									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 text-light-gray-700 flex size-full items-center justify-center transition-colors'
 									data-testid='market_map_filter_goToFullScreen'
 								>
 									<LongshotSVG />

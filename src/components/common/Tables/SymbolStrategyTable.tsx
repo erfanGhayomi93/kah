@@ -382,7 +382,9 @@ const SymbolStrategy = ({
 					className={clsx(
 						'size-40 rounded font-normal transition-colors',
 						type === 'base' && 'cursor-not-allowed',
-						inputs.side === 'buy' ? 'bg-success-100/10 text-success-100' : 'bg-error-100/10 text-error-100',
+						inputs.side === 'buy'
+							? 'bg-light-success-100/10 text-light-success-100'
+							: 'bg-light-error-100/10 text-light-error-100',
 					)}
 				>
 					{t(`${inputs.side}`)}
@@ -390,17 +392,17 @@ const SymbolStrategy = ({
 			</td>
 
 			<td onClick={openSymbolInfo} className={clsx(styles.td, 'cursor-pointer')}>
-				<span className='text-gray-1000'>{symbol.symbolTitle}</span>
+				<span className='text-light-gray-800'>{symbol.symbolTitle}</span>
 			</td>
 
 			<td className={styles.td}>
 				<span
 					className={
 						type === 'base'
-							? 'text-gray-1000'
+							? 'text-light-gray-800'
 							: symbol.optionType === 'call'
-								? 'text-success-100'
-								: 'text-error-100'
+								? 'text-light-success-100'
+								: 'text-light-error-100'
 					}
 				>
 					{t(`${type === 'base' ? 'base_symbol' : symbol.optionType}`)}
@@ -408,7 +410,7 @@ const SymbolStrategy = ({
 			</td>
 
 			<td className={styles.td}>
-				<span className='text-gray-1000'>{type === 'base' ? '−' : dateFormatter()}</span>
+				<span className='text-light-gray-800'>{type === 'base' ? '−' : dateFormatter()}</span>
 			</td>
 
 			<td className={styles.td}>
@@ -418,7 +420,7 @@ const SymbolStrategy = ({
 					}}
 					className='w-full flex-1 flex-justify-center'
 				>
-					<span className='text-gray-1000'>
+					<span className='text-light-gray-800'>
 						{type === 'base' ? '−' : sepNumbers(String(strikePrice ?? 0))}
 					</span>
 				</div>
@@ -426,7 +428,7 @@ const SymbolStrategy = ({
 
 			{features?.contractSize && (
 				<td className={styles.td}>
-					<span className='text-gray-1000'>{sepNumbers(String(contractSize ?? 0))}</span>
+					<span className='text-light-gray-800'>{sepNumbers(String(contractSize ?? 0))}</span>
 				</td>
 			)}
 
@@ -437,7 +439,7 @@ const SymbolStrategy = ({
 					type='text'
 					name='price'
 					inputMode='numeric'
-					className='h-40 w-full rounded border border-input px-8 text-center ltr'
+					className='h-40 w-full rounded border border-light-gray-200 px-8 text-center ltr'
 					value={sepNumbers(String(inputs.price))}
 					onChange={(e) => setFieldValue('price', Number(convertStringToInteger(e.target.value)))}
 				/>
@@ -450,7 +452,7 @@ const SymbolStrategy = ({
 					type='text'
 					name='quantity'
 					inputMode='numeric'
-					className='h-40 w-full rounded border border-input px-8 text-center ltr'
+					className='h-40 w-full rounded border border-light-gray-200 px-8 text-center ltr'
 					value={sepNumbers(String(inputs.quantity))}
 					onChange={(e) => setFieldValue('quantity', Number(convertStringToInteger(e.target.value)))}
 				/>

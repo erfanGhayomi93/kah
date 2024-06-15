@@ -10,14 +10,14 @@
 
 	&.reverseColors {
 		--tb-header-bg: theme("colors.white");
-		--tb-row-bg: theme("colors.gray.200");
+		--tb-row-bg: theme("colors.light.gray.100");
 		--tb-row-odd-bg: theme("colors.white");
 	}
 
 	&:not(.reverseColors) {
-		--tb-header-bg: theme("colors.gray.200");
+		--tb-header-bg: theme("colors.light.gray.100");
 		--tb-row-bg: theme("colors.white");
-		--tb-row-odd-bg: theme("colors.gray.200");
+		--tb-row-odd-bg: theme("colors.light.gray.100");
 	}
 }
 
@@ -50,7 +50,7 @@
 		font-size: 1.4rem;
 		font-weight: 500;
 		user-select: none;
-		color: theme("colors.gray.900");
+		color: theme("colors.light.gray.700");
 
 		&.selectable {
 			cursor: pointer;

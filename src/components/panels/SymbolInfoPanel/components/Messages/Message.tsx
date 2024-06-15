@@ -23,7 +23,7 @@ const Message = ({ title, body, date, isRead, isExpand, onExpand }: MessageProps
 			onClick={onExpand}
 			className={clsx(
 				'cursor-pointer gap-8 px-8 transition-height flex-column',
-				isRead || isExpand ? 'bg-gray-200' : 'bg-white',
+				isRead || isExpand ? 'bg-light-gray-100' : 'bg-white',
 			)}
 			style={{
 				height: isExpand ? '28rem' : '4rem',
@@ -33,15 +33,15 @@ const Message = ({ title, body, date, isRead, isExpand, onExpand }: MessageProps
 				<div className='flex-1 gap-4 overflow-hidden flex-items-center'>
 					<ArrowDownSVG
 						style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }}
-						className='min-h-16 min-w-16 text-gray-900 transition-transform'
+						className='text-light-gray-700 min-h-16 min-w-16 transition-transform'
 					/>
 
-					<span className='truncate text-tiny font-medium text-gray-1000'>{title}</span>
+					<span className='text-light-gray-800 truncate text-tiny font-medium'>{title}</span>
 				</div>
 
-				<div className='gap-8 text-gray-900 flex-items-center'>
+				<div className='text-light-gray-700 gap-8 flex-items-center'>
 					<span className='text-tiny'>{dateFormatter}</span>
-					<span className={clsx((isRead || isExpand) && 'text-info')}>
+					<span className={clsx((isRead || isExpand) && 'text-light-info-100')}>
 						{isRead || isExpand ? (
 							<MessageDoubleCheckSVG width='1.6rem' height='1.6rem' />
 						) : (
@@ -53,7 +53,7 @@ const Message = ({ title, body, date, isRead, isExpand, onExpand }: MessageProps
 
 			{body && (
 				<div className='flex-1 overflow-auto'>
-					<p style={{ lineHeight: 2 }} className='text-justify text-gray-900'>
+					<p style={{ lineHeight: 2 }} className='text-light-gray-700 text-justify'>
 						{body}
 					</p>
 				</div>

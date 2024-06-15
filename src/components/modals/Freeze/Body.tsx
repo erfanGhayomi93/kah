@@ -7,12 +7,10 @@ import UnFreezeTab from './UnFreeze';
 
 interface BodyProps {
 	onCloseModal: () => void;
-	setTabSelected: (id: string) => void
+	setTabSelected: (id: string) => void;
 }
 
-
 export const Body: FC<BodyProps> = ({ onCloseModal, setTabSelected }) => {
-
 	const t = useTranslations();
 
 	const TABS = useMemo(
@@ -20,23 +18,19 @@ export const Body: FC<BodyProps> = ({ onCloseModal, setTabSelected }) => {
 			{
 				id: 'freezeModalTab',
 				title: t('freeze_modal.freeze_tab'),
-				render: () => <FreezeTab
-					onCloseModal={onCloseModal}
-				/>
+				render: () => <FreezeTab onCloseModal={onCloseModal} />,
 			},
 			{
 				id: 'unFreezeModalTab',
 				title: t('freeze_modal.un_freeze_tab'),
-				render: () => <UnFreezeTab
-					onCloseModal={onCloseModal}
-				/>
+				render: () => <UnFreezeTab onCloseModal={onCloseModal} />,
 			},
 		],
 		[],
 	);
 
 	return (
-		<div className='h-full flex flex-column'>
+		<div className='flex h-full flex-column'>
 			<Tabs
 				data={TABS}
 				defaultActiveTab='freezeModalTab'
@@ -44,8 +38,8 @@ export const Body: FC<BodyProps> = ({ onCloseModal, setTabSelected }) => {
 				renderTab={(item, activeTab) => (
 					<button
 						className={clsx(
-							'h-40 px-16 transition-colors flex-justify-center text-center flex-1',
-							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+							'h-40 flex-1 px-16 text-center transition-colors flex-justify-center',
+							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
 						)}
 						type='button'
 					>

@@ -126,7 +126,9 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 const ColumnSwitchField = ({ checked, onChange, title }: ISwitchColumnFieldProps) => (
 	<>
 		<Switch checked={checked} onChange={onChange} />
-		<span className={clsx('text-nowrap text-tiny', checked ? 'text-gray-1000' : 'text-gray-900')}>{title}</span>
+		<span className={clsx('text-nowrap text-tiny', checked ? 'text-light-gray-800' : 'text-light-gray-700')}>
+			{title}
+		</span>
 	</>
 );
 
@@ -138,7 +140,7 @@ const CategoryCard = ({ columnsArray, onColumnSwitch, onAllColumnSwitch, tag }: 
 
 	return (
 		<div className='w-full gap-16 rounded p-16 shadow-card flex-column'>
-			<div className='gap-8 border-b border-b-gray-400 pb-16 flex-justify-start'>
+			<div className='gap-8 border-b border-b-light-gray-200 pb-16 flex-justify-start'>
 				<ColumnSwitchField
 					checked={!hasHiddenColumn}
 					onChange={() => onAllColumnSwitch(hasHiddenColumn, tag)}

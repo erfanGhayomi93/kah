@@ -120,7 +120,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 	return (
 		<>
 			<div
-				className='overflow-hidden rounded border border-gray-500 flex-column'
+				className='overflow-hidden rounded border border-light-gray-200 flex-column'
 				style={{
 					height: 'calc(100dvh - 17.6rem)',
 					transition: 'height 250ms ease',
@@ -131,7 +131,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 				{!dataIsEmpty && !isLoading && watchlistId > -1 && (
 					<button
 						onClick={addSymbol}
-						className='min-h-48 gap-8 border-t border-t-gray-500 pr-24 font-medium text-primary-400 flex-items-center'
+						className='min-h-48 gap-8 border-t border-t-light-gray-200 pr-24 font-medium text-light-primary-100 flex-items-center'
 						type='button'
 					>
 						<span className='size-16 rounded-sm text-current flex-justify-center'>
@@ -153,7 +153,7 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					<NoData
 						text={t.rich('option_page.no_data_table', {
 							symbol: (chunk) => (
-								<button type='button' className='text-primary-400 underline' onClick={addSymbol}>
+								<button type='button' className='text-light-primary-100 underline' onClick={addSymbol}>
 									{chunk}
 								</button>
 							),

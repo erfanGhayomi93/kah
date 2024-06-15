@@ -1,15 +1,15 @@
 .datepicker {
-	--rg-dp-background-color: theme('colors.white');
-	--rg-dp-border-color: theme('colors.gray.400');
-	--rg-dp-active-color: theme('colors.gray.900');
-	--rg-dp-active-border-color: theme('colors.info.DEFAULT');
-	--rg-dp-icon-color: theme('colors.gray.700');
-	--rg-dp-to-color: theme('colors.gray.800');
-	--rg-db-disabled-color: theme('colors.gray.500');
+	--rg-dp-background-color: theme("colors.white");
+	--rg-dp-border-color: theme("colors.light.gray.400");
+	--rg-dp-active-color: theme("colors.light.gray.700");
+	--rg-dp-active-border-color: theme("colors.light.info.100");
+	--rg-dp-icon-color: theme("colors.light.gray.500");
+	--rg-dp-to-color: theme("colors.light.gray.700");
+	--rg-db-disabled-color: theme("colors.light.gray.200");
 	--rg-dp-height: 4.8rem;
 
 	background-color: var(--rg-dp-background-color);
-	border-radius: theme('borderRadius.DEFAULT');
+	border-radius: theme("borderRadius.DEFAULT");
 	border: 1px solid;
 	border-color: var(--rg-dp-border-color);
 	width: 100%;
@@ -29,7 +29,7 @@
 	justify-content: space-between;
 	width: 100%;
 	height: var(--rg-dp-height);
-	border-radius: theme('borderRadius.DEFAULT');
+	border-radius: theme("borderRadius.DEFAULT");
 }
 
 .icon {
@@ -76,18 +76,18 @@
 
 .dialogBox {
 	--rg-db-width: 28.4rem;
-	--rg-db-background-color: theme('colors.white');
-	--rg-db-week-color: theme('colors.gray.800');
-	--rg-db-arrow-color: theme('colors.gray.800');
-	--rg-db-date-color: theme('colors.primary.400');
+	--rg-db-background-color: theme("colors.white");
+	--rg-db-week-color: theme("colors.light.gray.700");
+	--rg-db-arrow-color: theme("colors.light.gray.700");
+	--rg-db-date-color: theme("colors.light.primary.100");
 	--rg-db-day-default-color: transparent;
-	--rg-db-active-color: theme('colors.white');
-	--rg-db-active-background-color: theme('colors.gray.100');
-	--rg-db-end-start-background-color: theme('colors.primary.400');
-	--rg-db-holiday-color: theme('colors.error.200');
-	--rg-db-disabled-color: theme('colors.gray.500');
+	--rg-db-active-color: theme("colors.white");
+	--rg-db-active-background-color: theme("colors.light.gray.50");
+	--rg-db-end-start-background-color: theme("colors.light.primary.100");
+	--rg-db-holiday-color: theme("colors.light.error.100");
+	--rg-db-disabled-color: theme("colors.light.gray.200");
 	--rg-db-shadow: 0px 0px 8px rgba(147, 156, 173, 0.25);
-	--rg-dp-font-family: 'IRANSans';
+	--rg-dp-font-family: "IRANSans";
 
 	position: relative;
 	display: flex;

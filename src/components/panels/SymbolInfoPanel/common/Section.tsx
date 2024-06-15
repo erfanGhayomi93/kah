@@ -59,7 +59,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 			<div
 				onClick={() => setIsExpand(true)}
 				style={{ flex: '0 0 4rem' }}
-				className='overflow-hidden rounded-t bg-gray-200 pl-12 flex-justify-between'
+				className='bg-light-gray-100 overflow-hidden rounded-t pl-12 flex-justify-between'
 			>
 				<ul className='flex-1 flex-items-center'>
 					{tabs.map((tab, index) => (
@@ -72,8 +72,8 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 									'relative h-40 w-full rounded-t text-base transition-colors flex-justify-center',
 									tabs.length <= 2 ? 'px-16' : 'px-8',
 									isExpand && tab.id === activeTab
-										? 'bg-white font-medium text-gray-900'
-										: 'text-gray-700',
+										? 'text-light-gray-700 bg-white font-medium'
+										: 'text-light-gray-500',
 								)}
 							>
 								{tab.title}
@@ -91,7 +91,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 				<div className='gap-8 flex-items-center'>
 					<button
 						type='button'
-						className='text-gray-800'
+						className='text-light-gray-700'
 						onClick={(e) => {
 							e.stopPropagation();
 							e.preventDefault();
@@ -108,7 +108,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 
 					<button
 						type='button'
-						className='drag-handler text-gray-800'
+						className='drag-handler text-light-gray-700'
 						onClick={(e) => {
 							e.stopPropagation();
 							e.preventDefault();

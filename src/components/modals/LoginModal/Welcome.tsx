@@ -39,12 +39,12 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword, onCloseModal }: Welcom
 					quality='1'
 					src='/static/images/welcome.svg'
 				/>
-				<h2 className='text-center text-4xl font-bold text-gray-1000'>{t('login_modal.welcome')}</h2>
+				<h2 className='text-light-gray-800 text-center text-4xl font-bold'>{t('login_modal.welcome')}</h2>
 			</div>
 
 			{isNeedsToSetPassword && (
 				<div className='w-full gap-56 px-64 flex-column'>
-					<p className='text-center text-base font-bold text-gray-1000'>
+					<p className='text-light-gray-800 text-center text-base font-bold'>
 						{t('login_modal.set_password_description')}
 					</p>
 
@@ -57,7 +57,11 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword, onCloseModal }: Welcom
 							{t('login_modal.set_password_btn')}
 						</button>
 
-						<button onClick={onCloseModal} type='button' className='h-40 font-medium text-primary-400'>
+						<button
+							onClick={onCloseModal}
+							type='button'
+							className='text-light-primary-100 h-40 font-medium'
+						>
 							{t('login_modal.skip_set_password')}
 						</button>
 					</div>

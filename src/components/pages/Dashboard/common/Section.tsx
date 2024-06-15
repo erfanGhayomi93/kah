@@ -50,12 +50,12 @@ const Section = <T extends string = string, B extends string = string>({
 	};
 
 	return (
-		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'>
+		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white px-8 py-16 pr-16 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div
 						className={clsx(
-							'h-full gap-8 rounded bg-gray-200 px-8 flex-items-center',
+							'h-full gap-8 rounded bg-light-gray-100 px-8 flex-items-center',
 							!closeable && !expandable && !info && 'bg-transparent',
 						)}
 					>
@@ -63,7 +63,7 @@ const Section = <T extends string = string, B extends string = string>({
 							<button
 								onClick={expandable ? onClose : onExpand}
 								type='button'
-								className='text-gray-700 transition-colors flex-justify-center hover:text-error-100'
+								className='text-light-gray-500 transition-colors flex-justify-center hover:text-light-error-100'
 							>
 								<XCircleSVG width='1.8rem' height='1.8rem' />
 							</button>
@@ -73,7 +73,7 @@ const Section = <T extends string = string, B extends string = string>({
 							<button
 								onClick={onExpand}
 								type='button'
-								className='size-18 rounded-circle bg-gray-700 text-white transition-colors flex-justify-center hover:bg-success-100'
+								className='size-18 rounded-circle bg-light-gray-500 text-white transition-colors flex-justify-center hover:bg-light-success-100'
 							>
 								<ExpandSVG width='1.4rem' height='1.4rem' />
 							</button>
@@ -81,7 +81,7 @@ const Section = <T extends string = string, B extends string = string>({
 
 						{info && (
 							<Tooltip className='text-tiny font-medium' content={info ?? ''}>
-								<div className='size-18 rounded-circle  text-gray-700 transition-colors flex-justify-center hover:text-info'>
+								<div className='size-18 rounded-circle  text-light-gray-500 transition-colors flex-justify-center hover:text-light-info-100'>
 									<InfoCircleSVG width='1.8rem' height='1.8rem' />
 								</div>
 							</Tooltip>
@@ -93,7 +93,7 @@ const Section = <T extends string = string, B extends string = string>({
 							data={tabs.top}
 							defaultActiveTab={defaultTopActiveTab ?? tabs.top[0].id}
 							classes={{
-								root: '!h-40 bg-gray-200 rtl !border-0 py-4 px-8',
+								root: '!h-40 bg-light-gray-100 rtl !border-0 py-4 px-8',
 								rect: 'bg-white !h-32 rounded',
 								tabs: 'gap-8',
 							}}
@@ -103,7 +103,9 @@ const Section = <T extends string = string, B extends string = string>({
 									type='button'
 									className={clsx(
 										'h-full flex-1 px-8 py-4 transition-colors',
-										item.id === activeTab ? 'font-medium text-gray-1000' : 'text-gray-700',
+										item.id === activeTab
+											? 'font-medium text-light-gray-800'
+											: 'text-light-gray-500',
 									)}
 								>
 									{item.title}
@@ -115,7 +117,7 @@ const Section = <T extends string = string, B extends string = string>({
 					)}
 				</div>
 
-				<h1 className='text-lg font-medium text-gray-900'>{title}</h1>
+				<h1 className='text-lg font-medium text-light-gray-700'>{title}</h1>
 			</div>
 
 			<RenderOnViewportEntry
@@ -133,8 +135,8 @@ const Section = <T extends string = string, B extends string = string>({
 						data={tabs.bottom}
 						defaultActiveTab={defaultBottomActiveTab ?? tabs.bottom[0].id}
 						classes={{
-							root: '!h-48 bg-gray-200 rtl !border-0 p-4',
-							rect: 'bg-primary-100 no-hover !h-40',
+							root: '!h-48 bg-light-gray-100 rtl !border-0 p-4',
+							rect: 'bg-light-secondary-100 no-hover !h-40',
 							tabs: 'gap-8',
 						}}
 						onChangeTab={(v) => onBottomTabChange?.(v as B)}
@@ -143,7 +145,9 @@ const Section = <T extends string = string, B extends string = string>({
 								type='button'
 								className={clsx(
 									'h-full flex-1 rounded transition-colors',
-									item.id === activeTab ? 'font-medium text-primary-400' : 'text-gray-700',
+									item.id === activeTab
+										? 'font-medium text-light-primary-100'
+										: 'text-light-gray-500',
 								)}
 							>
 								{item.title}

@@ -6,18 +6,17 @@ import { LiveDepositTab } from './LiveDepositTab';
 import { ReceiptDepositTab } from './ReceiptDepositTab';
 
 interface BodyDepositProps {
-	dataEdit?: Reports.IDepositWithReceipt | Reports.IInstantDeposit,
-	activeTab?: Payment.TDepositTab
+	dataEdit?: Reports.IDepositWithReceipt | Reports.IInstantDeposit;
+	activeTab?: Payment.TDepositTab;
 }
 
-
-function isReceiptDeposit(dataEdit?: Reports.IDepositWithReceipt | Reports.IInstantDeposit): dataEdit is Reports.IDepositWithReceipt {
+function isReceiptDeposit(
+	dataEdit?: Reports.IDepositWithReceipt | Reports.IInstantDeposit,
+): dataEdit is Reports.IDepositWithReceipt {
 	return (dataEdit as Reports.IDepositWithReceipt)?.receiptNumber !== undefined;
 }
 
-
 export const Body: FC<BodyDepositProps> = ({ dataEdit, activeTab }) => {
-
 	const t = useTranslations();
 
 	const TABS = useMemo(
@@ -25,7 +24,7 @@ export const Body: FC<BodyDepositProps> = ({ dataEdit, activeTab }) => {
 			{
 				id: 'liveDepositTab',
 				title: t('deposit_modal.liveDepositTab'),
-				render: () => <LiveDepositTab />
+				render: () => <LiveDepositTab />,
 			},
 			{
 				id: 'receiptDepositTab',
@@ -37,15 +36,15 @@ export const Body: FC<BodyDepositProps> = ({ dataEdit, activeTab }) => {
 	);
 
 	return (
-		<div className='h-full flex flex-column'>
+		<div className='flex h-full flex-column'>
 			<Tabs
 				data={TABS}
 				defaultActiveTab={activeTab || 'liveDepositTab'}
 				renderTab={(item, activeTab) => (
 					<button
 						className={clsx(
-							'h-40 px-16 transition-colors flex-justify-center text-center flex-1',
-							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+							'h-40 flex-1 px-16 text-center transition-colors flex-justify-center',
+							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
 						)}
 						type='button'
 					>

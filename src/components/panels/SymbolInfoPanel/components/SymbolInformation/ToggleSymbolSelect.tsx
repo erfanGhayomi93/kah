@@ -26,11 +26,11 @@ const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
 				<SymbolState state={symbolData.symbolTradeState} />
 
 				<div className='cursor-pointer gap-8 flex-items-center' onClick={() => setIsToggleActive(true)}>
-					<div className='text-gray-900'>
+					<div className='text-light-gray-700'>
 						<SearchSVG width='2rem' height='2rem' />
 					</div>
 
-					<h1 className='text-lg font-medium text-gray-1000'>{symbolData.symbolTitle}</h1>
+					<h1 className='text-light-gray-800 text-lg font-medium'>{symbolData.symbolTitle}</h1>
 
 					{isToggleActive && (
 						<Click onClickOutside={() => setIsToggleActive(false)}>
@@ -49,7 +49,7 @@ const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
 					)}
 				</div>
 			</div>
-			<h2 className='pr-16 text-tiny text-gray-900'>{symbolData.companyName}</h2>
+			<h2 className='text-light-gray-700 pr-16 text-tiny'>{symbolData.companyName}</h2>
 		</div>
 	);
 };

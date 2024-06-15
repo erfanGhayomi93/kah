@@ -392,8 +392,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 												className={clsx(
 													'h-48 px-16 transition-colors flex-justify-center',
 													item.id === activeTab
-														? 'font-medium text-gray-900'
-														: 'text-gray-700',
+														? 'font-medium text-light-gray-700'
+														: 'text-light-gray-500',
 												)}
 												type='button'
 											>
@@ -402,7 +402,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 										)}
 									/>
 
-									<div className='gap-16 border-t border-t-gray-500 pb-24 pt-16 flex-column'>
+									<div className='gap-16 border-t border-t-light-gray-200 pb-24 pt-16 flex-column'>
 										<ul className='flex-justify-between'>
 											<StrategyInfoItem
 												type='success'
@@ -443,7 +443,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 									<div className='absolute left-16 top-8 flex-justify-center'>
 										<div className='h-40 gap-8 flex-items-center'>
-											<span className='text-tiny font-medium text-gray-900'>
+											<span className='text-tiny font-medium text-light-gray-700'>
 												{t('analyze_modal.with_commission')}
 											</span>
 											<Switch checked={useCommission} onChange={(v) => setUseCommission(v)} />
@@ -480,13 +480,13 @@ const NoContractExists = ({ addNewStrategy }: NoContractExistsProps) => {
 const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => {
 	return (
 		<li style={{ flex: '0 0 13.6rem' }} className='items-start gap-4 flex-column'>
-			<span className='text-base text-gray-900'>{title}</span>
+			<span className='text-base text-light-gray-700'>{title}</span>
 			<div
 				style={{ width: '10.4rem' }}
 				className={clsx('h-40 rounded px-8 ltr flex-justify-end', {
-					'bg-gray-200 text-gray-900': !type,
-					'bg-success-100/10 text-success-100': type === 'success',
-					'bg-error-100/10 text-error-100': type === 'error',
+					'bg-light-gray-100 text-light-gray-700': !type,
+					'bg-light-success-100/10 text-light-success-100': type === 'success',
+					'bg-light-error-100/10 text-light-error-100': type === 'error',
 				})}
 			>
 				{value}

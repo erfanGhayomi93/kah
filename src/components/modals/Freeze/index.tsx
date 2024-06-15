@@ -48,7 +48,7 @@ const Freeze = forwardRef<HTMLDivElement, FreezeProps>((props, ref) => {
 			<div className='flex bg-white p-24'>
 				<Div
 					className={clsx('flex-column', {
-						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
+						'border-light-gray-200 border-l pl-24 pr-16': isShowExpanded,
 					})}
 				>
 					<Body onCloseModal={onCloseModal} setTabSelected={setTabSelected} />

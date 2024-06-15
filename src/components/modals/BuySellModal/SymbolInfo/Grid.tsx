@@ -49,7 +49,10 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 	);
 
 	return (
-		<div style={{ height: '30.8rem' }} className='relative rounded border border-gray-500 bg-white flex-column'>
+		<div
+			style={{ height: '30.8rem' }}
+			className='border-light-gray-200 relative rounded border bg-white flex-column'
+		>
 			<Tabs
 				data={tabs}
 				defaultActiveTab='market_map'
@@ -57,7 +60,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 					<button
 						className={clsx(
 							'flex-1 p-8 transition-colors',
-							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
 						)}
 						type='button'
 					>

@@ -89,7 +89,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 					<OAuthSMS {...{ sendRequest: sendAcceptRequest, ...data }} />
 				) : (
 					<div className='justify-between gap-24 py-24 flex-column' style={{ height: 600 }}>
-						<p className='overflow-auto whitespace-pre-line  px-24 text-justify text-base leading-10 text-gray-900'>
+						<p className='text-light-gray-700 overflow-auto  whitespace-pre-line px-24 text-justify text-base leading-10'>
 							{data?.description?.toString().replace(/\\n/g, '\n') ?? '-'}
 						</p>
 

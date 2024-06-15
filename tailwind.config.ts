@@ -2,6 +2,8 @@ import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
+	darkMode: 'class',
+
 	content: [
 		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -29,58 +31,160 @@ const config: Config = {
 
 			black: 'rgba(0, 0, 0, 1)',
 
-			input: 'rgba(224, 224, 226, 1)',
+			light: {
+				primary: {
+					100: 'rgba(0, 87, 255, 1)',
+				},
 
-			sidebar: 'rgba(15, 21, 39, 1)',
+				secondary: {
+					100: 'rgba(229, 238, 255, 1)',
+					200: 'rgba(219, 238, 255, 1)',
+					300: 'rgba(0, 182, 237, 1)',
+					400: 'rgba(28, 48, 85, 1)',
+					500: 'rgba(23, 32, 53, 1)',
+				},
 
-			info: {
-				DEFAULT: 'rgba(83, 168, 255, 1)',
+				gray: {
+					50: 'rgba(251, 251, 251, 1)',
+					100: 'rgba(248, 250, 253, 1)',
+					200: 'rgba(226, 231, 237, 1)',
+					300: 'rgba(245, 246, 250, 1)',
+					400: 'rgba(233, 236, 239, 1)',
+					500: 'rgba(166, 169, 173, 1)',
+					600: 'rgba(140, 142, 151, 1)',
+					700: 'rgba(93, 96, 109, 1)',
+					800: 'rgba(24, 28, 47, 1)',
+				},
+
+				error: {
+					50: 'rgba(255, 82, 109, 0.1)',
+					100: 'rgba(255, 82, 109, 1)',
+					200: 'rgba(221, 62, 63, 1)',
+					300: 'rgba(173, 67, 74, 1)',
+					400: 'rgba(137, 68, 80, 1)',
+				},
+
+				success: {
+					50: 'rgba(0, 194, 136, 0.1)',
+					100: 'rgba(0, 194, 136, 1)',
+					200: 'rgba(115, 222, 190, 1)',
+					300: 'rgba(17, 137, 122, 1)',
+					400: 'rgba(33, 110, 111, 1)',
+				},
+
+				warning: {
+					50: 'rgba(255, 177, 26, 0.1)',
+					100: 'rgba(255, 177, 26, 1)',
+				},
+
+				info: {
+					50: 'rgba(83, 168, 255, 0.1)',
+					100: 'rgba(83, 168, 255, 1)',
+				},
 			},
 
-			primary: {
-				100: 'rgba(229, 238, 255, 1)',
-				200: 'rgba(162, 174, 255, 1)',
-				300: 'rgba(51, 121, 255, 1)',
-				400: 'rgba(0, 87, 255, 1)',
-				500: 'rgba(0, 58, 178, 1)',
-				600: 'rgba(0, 31, 106, 1)',
+			darkBlue: {
+				primary: {
+					100: 'rgba(6, 118, 237, 1)',
+				},
+
+				secondary: {
+					100: 'rgba(37, 52, 79, 1)',
+					200: 'rgba(19, 38, 62, 1)',
+					300: 'rgba(0, 182, 237, 1)',
+					400: 'rgba(28, 48, 85, 1)',
+					500: 'rgba(23, 32, 53, 1)',
+				},
+
+				gray: {
+					50: 'rgba(21, 29, 43, 1)',
+					100: 'rgba(28, 38, 55, 1)',
+					200: 'rgba(55, 57, 69, 1)',
+					300: 'rgba(18, 23, 33, 1)',
+					400: 'rgba(34, 44, 63, 1)',
+					500: 'rgba(156, 156, 156, 1)',
+					600: 'rgba(104, 108, 119, 1)',
+					700: 'rgba(178, 181, 192, 1)',
+					800: 'rgba(248, 248, 248, 1)',
+				},
+
+				error: {
+					50: 'rgba(255, 82, 109, 0.1)',
+					100: 'rgba(255, 82, 109, 1)',
+					200: 'rgba(221, 62, 63, 1)',
+					300: 'rgba(173, 67, 74, 1)',
+					400: 'rgba(137, 68, 80, 1)',
+				},
+
+				success: {
+					50: 'rgba(0, 194, 136, 0.1)',
+					100: 'rgba(0, 194, 136, 1)',
+					200: 'rgba(115, 222, 190, 1)',
+					300: 'rgba(17, 137, 122, 1)',
+					400: 'rgba(33, 110, 111, 1)',
+				},
+
+				warning: {
+					50: 'rgba(255, 177, 26, 0.1)',
+					100: 'rgba(255, 177, 26, 1)',
+				},
+
+				info: {
+					50: 'rgba(83, 168, 255, 0.1)',
+					100: 'rgba(83, 168, 255, 1)',
+				},
 			},
 
-			secondary: {
-				100: 'rgba(219, 238, 255, 1)',
-				200: 'rgba(151, 217, 255, 1)',
-				300: 'rgba(0, 182, 237, 1)',
-				400: 'rgba(28, 48, 85, 1)',
-				500: 'rgba(23, 32, 53, 1)',
-			},
+			dark: {
+				primary: {
+					100: 'rgba(114, 142, 201, 1)',
+				},
 
-			gray: {
-				100: 'rgba(251, 251, 251, 1)',
-				200: 'rgba(248, 250, 253, 1)',
-				300: 'rgba(245, 246, 250, 1)',
-				400: 'rgba(233, 236, 239, 1)',
-				500: 'rgba(226, 231, 237, 1)',
-				600: 'rgba(219, 225, 232, 1)', // Deleted: Don't use this color
-				700: 'rgba(166, 169, 173, 1)',
-				800: 'rgba(154, 156, 164, 1)',
-				900: 'rgba(93, 96, 109, 1)',
-				1000: 'rgba(24, 28, 47, 1)',
-				1100: 'rgba(140, 142, 151, 1)',
-			},
+				secondary: {
+					100: 'rgba(45, 46, 55, 1)',
+					200: 'rgba(58, 59, 68, 1)',
+					300: 'rgba(0, 182, 237, 1)',
+					400: 'rgba(47, 48, 57, 1)',
+					500: 'rgba(28, 30, 38, 1)',
+				},
 
-			error: {
-				100: 'rgba(255, 82, 109, 1)',
-				200: 'rgba(254, 57, 87, 1)',
-			},
+				gray: {
+					50: 'rgba(28, 30, 38, 1)',
+					100: 'rgba(47, 48, 57, 1)',
+					200: 'rgba(55, 57, 69, 1)',
+					300: 'rgba(11, 14, 18, 1)',
+					400: 'rgba(55, 57, 69, 1)',
+					500: 'rgba(156, 156, 156, 1)',
+					600: 'rgba(104, 108, 119, 1)',
+					700: 'rgba(166, 169, 173, 1)',
+					800: 'rgba(248, 248, 248, 1)',
+				},
 
-			success: {
-				100: 'rgba(0, 194, 136, 1)',
-				200: 'rgba(12, 175, 130, 1)',
-				300: 'rgba(115, 222, 190, 1)',
-			},
+				error: {
+					50: 'rgba(255, 82, 109, 0.1)',
+					100: 'rgba(255, 82, 109, 1)',
+					200: 'rgba(221, 62, 63, 1)',
+					300: 'rgba(173, 67, 74, 1)',
+					400: 'rgba(137, 68, 80, 1)',
+				},
 
-			warning: {
-				100: 'rgba(255, 193, 7, 1)',
+				success: {
+					50: 'rgba(0, 194, 136, 0.1)',
+					100: 'rgba(0, 194, 136, 1)',
+					200: 'rgba(115, 222, 190, 1)',
+					300: 'rgba(17, 137, 122, 1)',
+					400: 'rgba(33, 110, 111, 1)',
+				},
+
+				warning: {
+					50: 'rgba(255, 177, 26, 0.1)',
+					100: 'rgba(255, 177, 26, 1)',
+				},
+
+				info: {
+					50: 'rgba(83, 168, 255, 0.1)',
+					100: 'rgba(83, 168, 255, 1)',
+				},
 			},
 		},
 
@@ -292,11 +396,11 @@ const config: Config = {
 					'align-items': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.primary.400'),
+					'background-color': theme('colors.light.primary.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.primary.300'),
+						'background-color': theme('colors.light.primary.100'),
 					},
 
 					'&:not(.justify-start,.justify-end)': {
@@ -306,8 +410,8 @@ const config: Config = {
 
 				'.btn-primary-hover': {
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.primary.400'),
-						'border-color': theme('colors.primary.400'),
+						'background-color': theme('colors.light.primary.100'),
+						'border-color': theme('colors.light.primary.100'),
 						color: theme('colors.white'),
 					},
 				},
@@ -316,17 +420,17 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.primary.400'),
+					color: theme('colors.light.primary.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.primary.400')}`,
+					border: `2px solid ${theme('colors.light.primary.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.primary.400'),
-						'border-color': theme('colors.primary.400'),
+						'background-color': theme('colors.light.primary.100'),
+						'border-color': theme('colors.light.primary.100'),
 					},
 				},
 
@@ -335,11 +439,11 @@ const config: Config = {
 					'align-items': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.gray.900'),
+					'background-color': theme('colors.light.gray.700'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.gray.800'),
+						'background-color': theme('colors.light.gray.700'),
 					},
 
 					'&:not(.justify-start,.justify-end)': {
@@ -351,17 +455,17 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.gray.900'),
+					color: theme('colors.light.gray.700'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.gray.900')}`,
+					border: `2px solid ${theme('colors.light.gray.700')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.gray.900'),
-						'border-color': theme('colors.gray.900'),
+						'background-color': theme('colors.light.gray.700'),
+						'border-color': theme('colors.light.gray.700'),
 					},
 				},
 
@@ -369,20 +473,20 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.primary.400'),
-					border: `2px solid ${theme('colors.primary.400')}`,
-					'background-color': theme('colors.primary.100'),
+					color: theme('colors.light.primary.100'),
+					border: `2px solid ${theme('colors.light.primary.100')}`,
+					'background-color': theme('colors.light.secondary.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled,.no-hover):hover': {
-						'background-color': theme('colors.primary.400'),
+						'background-color': theme('colors.light.primary.100'),
 						color: theme('colors.white'),
 					},
 				},
 
 				'.btn-hover': {
-					'border-color': `${theme('colors.primary.100')} !important`,
-					'background-color': theme('colors.primary.100'),
+					'border-color': `${theme('colors.light.secondary.100')} !important`,
+					'background-color': theme('colors.light.secondary.100'),
 				},
 
 				'.btn-success': {
@@ -391,11 +495,11 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.success.100'),
+					'background-color': theme('colors.light.success.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.success.200'),
+						'background-color': theme('colors.light.success.100'),
 					},
 				},
 
@@ -403,17 +507,17 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.success.200'),
+					color: theme('colors.light.success.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.success.100')}`,
+					border: `2px solid ${theme('colors.light.success.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.success.100'),
-						'border-color': theme('colors.success.100'),
+						'background-color': theme('colors.light.success.100'),
+						'border-color': theme('colors.light.success.100'),
 					},
 				},
 
@@ -423,11 +527,11 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.error.100'),
+					'background-color': theme('colors.light.error.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.error.200'),
+						'background-color': theme('colors.light.error.100'),
 					},
 				},
 
@@ -435,17 +539,17 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.error.200'),
+					color: theme('colors.light.error.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.error.100')}`,
+					border: `2px solid ${theme('colors.light.error.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.error.100'),
-						'border-color': theme('colors.error.100'),
+						'background-color': theme('colors.light.error.100'),
+						'border-color': theme('colors.light.error.100'),
 					},
 				},
 
@@ -485,13 +589,13 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.gray.1000'),
+					color: theme('colors.light.gray.800'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.warning.100'),
+					'background-color': theme('colors.light.warning.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.warning.100'),
+						'background-color': theme('colors.light.warning.100'),
 					},
 				},
 
@@ -499,17 +603,17 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.warning.100'),
+					color: theme('colors.light.warning.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.warning.100')}`,
+					border: `2px solid ${theme('colors.light.warning.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
-						color: theme('colors.gray.1000'),
-						'background-color': theme('colors.warning.100'),
-						'border-color': theme('colors.warning.100'),
+						color: theme('colors.light.gray.800'),
+						'background-color': theme('colors.light.warning.100'),
+						'border-color': theme('colors.light.warning.100'),
 					},
 				},
 
@@ -519,11 +623,11 @@ const config: Config = {
 					'justify-content': 'center',
 					color: theme('colors.white'),
 					border: '2px solid transparent',
-					'background-color': theme('colors.primary.300'),
+					'background-color': theme('colors.light.primary.100'),
 					transition: 'background-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.primary.400'),
+						'background-color': theme('colors.light.primary.100'),
 					},
 				},
 
@@ -531,17 +635,17 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.primary.300'),
+					color: theme('colors.light.primary.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.primary.300')}`,
+					border: `2px solid ${theme('colors.light.primary.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
 					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
-						'background-color': theme('colors.primary.300'),
-						'border-color': theme('colors.primary.300'),
+						'background-color': theme('colors.light.primary.100'),
+						'border-color': theme('colors.light.primary.100'),
 					},
 				},
 
@@ -549,7 +653,7 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.gray.700'),
+					color: theme('colors.light.gray.500'),
 					backgroundColor: 'rgba(140, 142, 151, 0.1)',
 					transition:
 						'color 250ms ease-in-out, background-color 250ms ease-in-out, border-color 250ms ease-in-out',
@@ -559,13 +663,13 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.gray.800'),
-					border: `1px solid ${theme('colors.gray.500')}`,
+					color: theme('colors.light.gray.700'),
+					border: `1px solid ${theme('colors.light.gray.200')}`,
 					transition: 'color 250ms ease-in-out, border-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'border-color': theme('colors.gray.900'),
-						color: theme('colors.gray.900'),
+						'border-color': theme('colors.light.gray.700'),
+						color: theme('colors.light.gray.700'),
 					},
 				},
 
@@ -573,20 +677,20 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
-					color: theme('colors.info.DEFAULT'),
-					border: `1px solid ${theme('colors.info.DEFAULT')}`,
+					color: theme('colors.light.info.100'),
+					border: `1px solid ${theme('colors.light.info.100')}`,
 					transition:
 						'color 250ms ease-in-out, background-color 250ms ease-in-out, border-color 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'border-color': theme('colors.info.DEFAULT'),
-						'background-color': theme('colors.info.DEFAULT'),
+						'border-color': theme('colors.light.info.100'),
+						'background-color': theme('colors.light.info.100'),
 						color: theme('colors.white'),
 					},
 				},
 
 				'.gray-box': {
-					border: `1px solid ${theme('colors.gray.500')}`,
+					border: `1px solid ${theme('colors.light.gray.200')}`,
 					'background-color': theme('colors.white'),
 
 					'&:not(.rounded-sm)': {
@@ -595,12 +699,12 @@ const config: Config = {
 				},
 
 				'.icon-hover': {
-					color: theme('colors.gray.900'),
+					color: theme('colors.light.gray.700'),
 					transition: 'color 250ms',
 					'-webkit-transition': 'color 250ms',
 
 					'&:hover': {
-						color: theme('colors.gray.800'),
+						color: theme('colors.light.gray.700'),
 					},
 				},
 
@@ -617,25 +721,25 @@ const config: Config = {
 					'.label': {
 						'font-size': '1.4rem',
 						'font-weight': '500',
-						color: theme('colors.gray.1000'),
+						color: theme('colors.light.gray.800'),
 					},
 
 					'.input': {
 						'border-radius': '0.8rem',
-						border: `1px solid ${theme('colors.gray.500')}`,
+						border: `1px solid ${theme('colors.light.gray.200')}`,
 						height: '4.8rem',
 						padding: '0 1.6rem',
 
 						'&:focus-within': {
-							'border-color': theme('colors.primary.300'),
+							'border-color': theme('colors.light.primary.100'),
 						},
 
 						'&:not(:focus-within):hover': {
-							'border-color': `${theme('colors.gray.700')} !important`,
+							'border-color': `${theme('colors.light.gray.500')} !important`,
 						},
 
 						'&.invalid': {
-							'border-color': theme('colors.error.100'),
+							'border-color': theme('colors.light.error.100'),
 						},
 					},
 
@@ -648,7 +752,7 @@ const config: Config = {
 						'justify-content': 'flex-end',
 
 						'&:not(.border-r-0)': {
-							'border-right': `1px solid ${theme('colors.gray.500')}`,
+							'border-right': `1px solid ${theme('colors.light.gray.200')}`,
 						},
 					},
 				},
@@ -672,18 +776,18 @@ const config: Config = {
 				},
 
 				'.i-null': {
-					color: theme('colors.gray.700'),
+					color: theme('colors.light.gray.500'),
 
 					'&::before': {
-						border: `1px solid ${theme('colors.gray.700')}`,
+						border: `1px solid ${theme('colors.light.gray.500')}`,
 					},
 				},
 
 				'.i-error': {
-					color: theme('colors.error.100'),
+					color: theme('colors.light.error.100'),
 
 					'&::before': {
-						border: `1px solid ${theme('colors.error.100')}`,
+						border: `1px solid ${theme('colors.light.error.100')}`,
 						'border-radius': '50%',
 						'background-position': 'center',
 						'background-image': `url(
@@ -693,10 +797,10 @@ const config: Config = {
 				},
 
 				'.i-success': {
-					color: theme('colors.success.200'),
+					color: theme('colors.light.success.100'),
 
 					'&::before': {
-						border: `1px solid ${theme('colors.success.200')}`,
+						border: `1px solid ${theme('colors.light.success.100')}`,
 						'border-radius': '50%',
 						'background-position': 'center',
 						'background-image': `url(
@@ -728,10 +832,10 @@ const config: Config = {
 
 					'&:not(.disabled)': {
 						'&:focus-within,input:focus,textarea:focus,&.focus': {
-							'border-color': theme('colors.primary.300'),
+							'border-color': theme('colors.light.primary.100'),
 
 							'.flexible-placeholder': {
-								color: theme('colors.primary.300'),
+								color: theme('colors.light.primary.100'),
 								top: '0',
 								right: '1.25rem !important',
 								'font-size': '1.2rem',
@@ -740,7 +844,7 @@ const config: Config = {
 							},
 
 							'.flexible-fieldset': {
-								'border-color': theme('colors.primary.300'),
+								'border-color': theme('colors.light.primary.100'),
 
 								legend: {
 									'font-size': '1.2rem',
@@ -753,10 +857,10 @@ const config: Config = {
 					},
 
 					'&:not(:focus-within,.disabled):hover': {
-						'border-color': theme('colors.gray.700'),
+						'border-color': theme('colors.light.gray.500'),
 
 						'.flexible-fieldset': {
-							'border-color': theme('colors.gray.700'),
+							'border-color': theme('colors.light.gray.500'),
 						},
 					},
 				},
@@ -768,14 +872,14 @@ const config: Config = {
 					top: '50%',
 					'font-weight': '400',
 					right: '0.8rem',
-					color: theme('colors.gray.700'),
+					color: theme('colors.light.gray.500'),
 					transform: 'translateY(-50%)',
 					'-webkit-transform': 'translateY(-50%)',
 					transition: 'font-size 200ms, right 200ms, top 200ms, color 200ms, transform 200ms',
 					'-webkit-transition': 'font-size 200ms, right 200ms, top 200ms, color 200ms, transform 200ms',
 
 					'&.active': {
-						color: theme('colors.gray.900'),
+						color: theme('colors.light.gray.700'),
 						top: '0',
 						'font-size': '1.2rem',
 						right: '1.25rem !important',
@@ -783,7 +887,7 @@ const config: Config = {
 						'-webkit-transform': 'translateY(calc(-100% + 0.9rem))',
 
 						'&.colorful': {
-							color: theme('colors.primary.300'),
+							color: theme('colors.light.primary.100'),
 						},
 					},
 				},
@@ -793,7 +897,7 @@ const config: Config = {
 					height: 'calc(100% + 5px)',
 					inset: '-5px 0 0',
 					'pointer-events': 'none',
-					border: `1px solid ${theme('colors.input')}`,
+					border: `1px solid ${theme('colors.light.gray.200')}`,
 					'border-radius': '8px',
 					'text-align': 'right',
 					overflow: 'hidden',
@@ -826,7 +930,7 @@ const config: Config = {
 					},
 
 					'&.colorful': {
-						'border-color': theme('colors.primary.300'),
+						'border-color': theme('colors.light.primary.100'),
 					},
 
 					'&.active': {

@@ -123,7 +123,6 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 				onClose();
 
 				queryClient.invalidateQueries({ queryKey: ['withdrawalCashReports'] });
-
 			}
 		} catch (err) {
 			toast.error(t('alerts.invalid_inputs'));
@@ -170,9 +169,9 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 
 				<div className='my-24 shadow-sm'>
 					<div className='p-8'>
-						<p className='mb-16 text-gray-700'>{t('withdrawal_modal.receive_date_placeholder')}</p>
+						<p className='text-light-gray-500 mb-16'>{t('withdrawal_modal.receive_date_placeholder')}</p>
 
-						<ul className='flex flex-col gap-8 text-gray-1000'>
+						<ul className='text-light-gray-800 flex flex-col gap-8'>
 							{remainsWithDate?.t1 && (
 								<WithdrawalItem
 									checked={getValues('withdrawalType') === 't1'}
@@ -191,8 +190,8 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 						</ul>
 
 						<div className='mt-16 flex items-center gap-4'>
-							<InfoCircleSVG className='text-info' width='2rem' height='2rem' />
-							<span className='text-tiny tracking-normal text-info'>
+							<InfoCircleSVG className='text-light-info-100' width='2rem' height='2rem' />
+							<span className='text-light-info-100 text-tiny tracking-normal'>
 								{t('withdrawal_modal.day_attention')}
 							</span>
 						</div>

@@ -12,7 +12,7 @@
 }
 
 .text {
-	color: theme("colors.gray.900");
+	color: theme("colors.light.gray.700");
 	font-size: 13px;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -28,24 +28,24 @@
 	width: 1.6rem;
 	height: 1.6rem;
 	border: 1px solid;
-	border-color: theme("colors.input");
+	border-color: theme("colors.light.gray.200");
 	border-radius: 5px;
 	background-color: transparent;
 
 	&.checked {
-		border-color: theme("colors.primary.400");
-		background-color: theme("colors.primary.400");
+		border-color: theme("colors.light.primary.100");
+		background-color: theme("colors.light.primary.100");
 		background-position: center;
 		background-repeat: no-repeat;
 	}
 
 	&.disabled {
 		cursor: default;
-		border-color: theme("colors.gray.1100");
+		border-color: theme("colors.light.gray.600");
 		opacity: 0.6;
 
 		&.checked {
-			background-color: theme("colors.gray.1100");
+			background-color: theme("colors.light.gray.600");
 		}
 	}
 }

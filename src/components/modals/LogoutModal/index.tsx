@@ -67,10 +67,12 @@ const LogoutModal = forwardRef<HTMLDivElement, LogoutModalProps>((props, ref) =>
 					<div className='size-32 spinner' />
 				) : (
 					<>
-						<h2 className='text-center text-xl font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
+						<h2 className='text-light-gray-800 text-center text-xl font-medium'>
+							{t('logout_modal.title')}
+						</h2>
 
 						<div className='pb-40 pt-32 text-center'>
-							<p className='text-base text-gray-1000'>{t('logout_modal.description')}</p>
+							<p className='text-light-gray-800 text-base'>{t('logout_modal.description')}</p>
 						</div>
 
 						<div className='flex w-full justify-between gap-8 px-16'>

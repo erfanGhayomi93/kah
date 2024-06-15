@@ -130,7 +130,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 	return (
 		<div
 			style={{ flex: '0.77', minHeight: '48.8rem' }}
-			className='relative overflow-hidden rounded-md border border-gray-500'
+			className='relative overflow-hidden rounded-md border border-light-gray-200'
 		>
 			<div className='h-full justify-between pb-16 flex-column'>
 				<div className='flex-1 gap-16 overflow-hidden pt-16 flex-column'>
@@ -155,7 +155,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 							<button
 								onClick={updatePrice}
 								type='button'
-								className='h-24 gap-4 text-base text-info flex-items-center'
+								className='h-24 gap-4 text-base text-light-info-100 flex-items-center'
 							>
 								{t('build_strategy.update_price')}
 								<RefreshSVG width='2rem' height='2rem' />
@@ -164,7 +164,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 							<button
 								onClick={() => dispatch(setBuiltStrategy([]))}
 								type='button'
-								className='size-24 text-gray-900 flex-justify-center'
+								className='size-24 text-light-gray-700 flex-justify-center'
 							>
 								<EraserSVG width='2rem' height='2rem' />
 							</button>
@@ -194,33 +194,33 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 				</div>
 
 				<div className='justify-between gap-16 bg-white px-16 pt-12 flex-column'>
-					<div className='relative h-24 border-t border-t-gray-500'>
+					<div className='relative h-24 border-t border-t-light-gray-200'>
 						<ul
 							style={{ top: '-1.2rem' }}
 							className='absolute left-8 bg-white px-16 flex-items-center *:gap-4 *:truncate *:flex-items-center'
 						>
-							<li className='justify-end pl-24 font-medium text-gray-900'>
+							<li className='justify-end pl-24 font-medium text-light-gray-700'>
 								{t('build_strategy.aggregate')}:
 							</li>
-							<li className='w-104 text-gray-1000'>
+							<li className='w-104 text-light-gray-800'>
 								{sepNumbers(String(requiredMargin))}
-								<span className='truncate text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
 							</li>
-							<li className='w-104 text-gray-1000'>
+							<li className='w-104 text-light-gray-800'>
 								{sepNumbers(String(tradeCommission))}
-								<span className='truncate text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
 							</li>
-							<li className='w-104 text-gray-1000'>
+							<li className='w-104 text-light-gray-800'>
 								{sepNumbers(String(strikeCommission))}
-								<span className='truncate text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
 							</li>
-							<li className='w-104 text-gray-1000'>
+							<li className='w-104 text-light-gray-800'>
 								{sepNumbers(String(tax))}
-								<span className='truncate text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
 							</li>
-							<li className='w-104 text-gray-1000'>
+							<li className='w-104 text-light-gray-800'>
 								{sepNumbers(String(vDefault))}
-								<span className='truncate text-gray-700'>{t('common.rial')}</span>
+								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
 							</li>
 						</ul>
 					</div>
@@ -247,7 +247,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 						<Button
 							onClick={storeBuiltStrategy}
 							type='button'
-							className='w-40 rounded border border-gray-500 text-primary-400 transition-colors flex-justify-center btn-primary-hover'
+							className='w-40 rounded border border-light-gray-200 text-light-primary-100 transition-colors flex-justify-center btn-primary-hover'
 						>
 							<BookmarkSVG />
 						</Button>

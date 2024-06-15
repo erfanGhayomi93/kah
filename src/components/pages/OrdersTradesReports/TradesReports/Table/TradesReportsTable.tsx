@@ -40,8 +40,8 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 				cellClass: (row) => {
 					if (!row) return;
 					return clsx({
-						'text-success-200': row.orderSide.includes('Buy'),
-						'text-error-200': row.orderSide.includes('Sell'),
+						'text-light-success-100': row.orderSide.includes('Buy'),
+						'text-light-error-100': row.orderSide.includes('Sell'),
 					});
 				},
 				valueGetter: (row) => t('trades_reports_page.side_' + row.orderSide),
@@ -83,8 +83,7 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 				headerName: t('orders_reports_page.date_column'),
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row.tradeDate ?? '-', 'datetime'),
-				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderDateTime')]
-					?.hidden,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'tradeDate')]?.hidden,
 			},
 		],
 		[columnsVisibility],
