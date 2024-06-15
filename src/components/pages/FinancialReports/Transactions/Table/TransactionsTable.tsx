@@ -41,9 +41,9 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				cellClass: (row) => {
 					switch (row?.transactionType) {
 						case 'Buy':
-							return 'text-success-100';
+							return 'text-light-success-100';
 						case 'Sell':
-							return 'text-error-100';
+							return 'text-light-error-100';
 						default:
 							return 'text-text-100';
 					}
@@ -77,7 +77,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				sortable: false,
 				cellClass: (row) =>
 					clsx(' ltr', {
-						'text-error-100': Number(row?.debit) < 0,
+						'text-light-error-100': Number(row?.debit) < 0,
 					}),
 				valueGetter: (row) => row.debit,
 				valueFormatter: ({ value }) =>
@@ -91,7 +91,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				sortable: false,
 				cellClass: (row) =>
 					clsx('ltr', {
-						'text-error-100': Number(row?.credit) < 0,
+						'text-light-error-100': Number(row?.credit) < 0,
 					}),
 				valueGetter: (row) =>
 					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
@@ -102,7 +102,8 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				colId: 'remaining',
 				headerName: t('transactions_page.remain_column'),
 				sortable: false,
-				cellClass: (row) => clsx('ltr', Number(row?.remaining) > 0 ? 'text-success-400' : 'text-error-300'),
+				cellClass: (row) =>
+					clsx('ltr', Number(row?.remaining) > 0 ? 'text-light-success-100' : 'text-light-error-100'),
 				valueGetter: (row) =>
 					Number(row?.remaining) >= 0
 						? sepNumbers(String(row?.remaining))

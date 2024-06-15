@@ -4,18 +4,18 @@
 	--scrollbar-track: transparent;
 	--skeleton-from-bg: rgb(243, 245, 247);
 	--skeleton-to-bg: rgb(224, 230, 235);
-	--skeleton-bg: theme("colors.gray.500");
+	--skeleton-bg: theme("colors.light.gray.200");
 }
 
-::selection {
-	background-color: theme("colors.secondary.200");
-	color: theme("colors.gray.1000") !important;
-}
+// ::selection {
+// 	background-color: theme("colors.light.secondary.200");
+// 	color: theme("colors.light.gray.800") !important;
+// }
 
-::-moz-selection {
-	background-color: theme("colors.secondary.200");
-	color: theme("colors.gray.1000") !important;
-}
+// ::-moz-selection {
+// 	background-color: theme("colors.light.secondary.200");
+// 	color: theme("colors.light.gray.800") !important;
+// }
 
 html {
 	font-size: 62.5%; // 16px => 10px
@@ -30,7 +30,7 @@ body {
 	max-width: 100dvw;
 	font-weight: 400;
 	overflow: hidden;
-	background-color: theme("colors.gray.300");
+	background-color: theme("colors.light.gray.300");
 
 	&.ew-resize {
 		cursor: ew-resize;
@@ -65,19 +65,19 @@ textarea {
 input,
 textarea {
 	font-weight: 400;
-	color: theme("colors.gray.1000");
-	caret-color: theme("colors.gray.900");
+	color: theme("colors.light.gray.800");
+	caret-color: theme("colors.light.gray.700");
 	transition: border-color 250ms ease-in-out;
 	-webkit-transition: border-color 250ms ease-in-out;
 	-moz-transition: border-color 250ms ease-in-out;
 
 	&::placeholder {
 		font-weight: 300;
-		color: theme("colors.gray.700");
+		color: theme("colors.light.gray.500");
 	}
 
 	&:focus {
-		border-color: theme("colors.primary.300");
+		border-color: theme("colors.light.primary.100");
 	}
 }
 

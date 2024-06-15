@@ -69,7 +69,7 @@ const Saturn = () => {
 					activeTemplate={activeTemplate!}
 				/>
 			) : (
-				<span className='absolute text-base font-bold text-gray-900 center'>
+				<span className='text-light-gray-700 absolute text-base font-bold center'>
 					{t('common.symbol_not_found')}
 				</span>
 			)}

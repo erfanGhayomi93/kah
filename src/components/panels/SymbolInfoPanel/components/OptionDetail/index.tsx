@@ -59,7 +59,7 @@ const OptionDetail = ({ symbolData, setHeight }: OptionDetailProps) => {
 			<button
 				type='button'
 				onClick={() => setIsExpand(!isExpand)}
-				className='size-24 w-full text-gray-900 flex-justify-center'
+				className='text-light-gray-700 size-24 w-full flex-justify-center'
 			>
 				<ArrowDownSVG
 					width='1.4rem'

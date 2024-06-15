@@ -34,8 +34,8 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 
 	const numFormatter = (v: number) => {
 		return (
-			<span className='text-tiny text-gray-900'>
-				<span className='pl-4 text-base font-medium text-gray-1000'>{sepNumbers(String(v))}</span>
+			<span className='text-tiny text-light-gray-700'>
+				<span className='pl-4 text-base font-medium text-light-gray-800'>{sepNumbers(String(v))}</span>
 				{t('common.rial')}
 			</span>
 		);
@@ -47,14 +47,14 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 		switch (data.orderStatus) {
 			case 'OrderDone':
 			case 'OnBoard':
-				return 'text-success-100 bg-success-100/10';
+				return 'text-light-success-100 bg-light-success-100/10';
 			case 'Error':
 			case 'Canceled':
-				return 'text-error-100 bg-error-100/10';
+				return 'text-light-error-100 bg-light-error-100/10';
 			case 'Modified':
 				return 'text-secondary-300 bg-secondary-300/10';
 			default:
-				return 'text-gray-900 bg-gray-900/10';
+				return 'text-light-gray-700 bg-light-gray-700/10';
 		}
 	};
 
@@ -86,7 +86,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{
 						name: t('order_details_modal.order_side'),
 						value: t(isBuy ? 'side.buy' : 'side.sell'),
-						className: isBuy ? 'text-success-100' : 'text-error-100',
+						className: isBuy ? 'text-light-success-100' : 'text-light-error-100',
 					},
 					{
 						name: t('order_details_modal.order_status'),
@@ -100,7 +100,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 						value: (
 							<>
 								<span className='pl-4 font-medium'>{`(${sepNumbers(String(data.sumExecuted))}) / ${sepNumbers(String(data.quantity))}`}</span>
-								<span className='text-tiny text-gray-900'>{t('order_details_modal.stock')}</span>
+								<span className='text-tiny text-light-gray-700'>{t('order_details_modal.stock')}</span>
 							</>
 						),
 					},
@@ -111,7 +111,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 								<span className='pl-4 font-medium'>
 									{sepNumbers(String(Math.max(0, data.quantity - data.sumExecuted) ?? 0))}
 								</span>
-								<span className='text-tiny text-gray-900'>{t('order_details_modal.stock')}</span>
+								<span className='text-tiny text-light-gray-700'>{t('order_details_modal.stock')}</span>
 							</>
 						),
 					},
@@ -140,7 +140,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{
 						name: t('order_details_modal.order_side'),
 						value: t(isBuy ? 'side.buy' : 'side.sell'),
-						className: isBuy ? 'text-success-100' : 'text-error-100',
+						className: isBuy ? 'text-light-success-100' : 'text-light-error-100',
 					},
 					{ name: t('order_details_modal.price'), value: numFormatter(data.price) },
 					{ name: t('order_details_modal.quantity'), value: numFormatter(data.quantity) },
@@ -152,7 +152,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 				{
 					name: t('order_details_modal.order_side'),
 					value: t(isBuy ? 'side.buy' : 'side.sell'),
-					className: isBuy ? 'text-success-100' : 'text-error-100',
+					className: isBuy ? 'text-light-success-100' : 'text-light-error-100',
 				},
 				{
 					name: t('order_details_modal.symbol'),
@@ -161,7 +161,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 				{
 					name: t('order_details_modal.type'),
 					value: t(`order_details_modal.${data.type}`),
-					className: data.type === 'call' ? 'text-success-100' : 'text-error-100',
+					className: data.type === 'call' ? 'text-light-success-100' : 'text-light-error-100',
 				},
 				{
 					name: t('order_details_modal.end_date'),
@@ -201,9 +201,9 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 			{...props}
 			ref={ref}
 		>
-			<Div className='gap-8 bg-gray-100 flex-column'>
+			<Div className='gap-8 bg-light-gray-50 flex-column'>
 				<div className='relative h-56 w-full flex-justify-center'>
-					<h2 className='text-xl font-medium text-gray-900'>
+					<h2 className='text-xl font-medium text-light-gray-700'>
 						{t('order_details_modal.title', { title: data.symbolTitle })}
 					</h2>
 					<button onClick={onCloseModal} type='button' className='absolute left-16 icon-hover'>
@@ -219,8 +219,8 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 						>
 							{items.map((item, j) => (
 								<li key={j}>
-									<span className='text-gray-900'>{item.name}:</span>
-									<span className={clsx('text-base font-medium text-gray-1000', item.className)}>
+									<span className='text-light-gray-700'>{item.name}:</span>
+									<span className={clsx('text-base font-medium text-light-gray-800', item.className)}>
 										{item.value}
 									</span>
 								</li>

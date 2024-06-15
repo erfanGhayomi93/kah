@@ -53,19 +53,19 @@ const OrderOption = ({
 			className='flex-1 justify-between gap-24 pt-8 flex-column'
 		>
 			<div className='flex-1 gap-8 flex-column'>
-				<div className='h-40 cursor-default rounded border border-input bg-gray-200 px-8 text-gray-900 flex-justify-between'>
+				<div className='border-light-gray-200 bg-light-gray-100 text-light-gray-700 h-40 cursor-default rounded border px-8 flex-justify-between'>
 					<span>{t('create_strategy.quantity_input')}</span>
 					<span>{sepNumbers(String(quantity))}</span>
 				</div>
 
 				<div className='flex h-40 gap-8'>
-					<label className='h-full flex-1 gap-8 rounded border border-input px-8 flex-justify-center'>
-						<span className='text-gray-900'>{t('create_strategy.price_input')}</span>
+					<label className='border-light-gray-200 h-full flex-1 gap-8 rounded border px-8 flex-justify-center'>
+						<span className='text-light-gray-700'>{t('create_strategy.price_input')}</span>
 						<input
 							value={sepNumbers(String(price))}
 							type='text'
 							inputMode='numeric'
-							className='flex-1 bg-transparent text-left text-gray-1000 ltr'
+							className='text-light-gray-800 flex-1 bg-transparent text-left ltr'
 							onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
 						/>
 					</label>
@@ -75,7 +75,7 @@ const OrderOption = ({
 						type='button'
 						className={clsx(
 							'size-40 rounded !border transition-colors flex-justify-center',
-							isPriceLocked ? 'no-hover btn-select' : 'border-input text-gray-900',
+							isPriceLocked ? 'no-hover btn-select' : 'border-light-gray-200 text-light-gray-700',
 						)}
 					>
 						{isPriceLocked ? (

@@ -32,12 +32,15 @@ const UserDropdown = ({
 				<div className='pr-16 flex-justify-between'>
 					<div className='gap-8 pt-16 flex-items-center fit-image'>
 						<div style={{ flex: '0 0 2.4rem' }} className='h-24 rounded-circle flex-justify-center'>
-							<UserCircleSVG className='text-gray-900' width='2.4rem' height='2.4rem' />
+							<UserCircleSVG className='text-light-gray-700' width='2.4rem' height='2.4rem' />
 						</div>
-						<h3 className='text-base font-medium text-gray-1000'>{customerTitle}</h3>
+						<h3 className='text-base font-medium text-light-gray-800'>{customerTitle}</h3>
 					</div>
 
-					<button className='p-12 text-gray-900 transition-colors hover:text-primary-300' type='button'>
+					<button
+						className='p-12 text-light-gray-700 transition-colors hover:text-light-primary-100'
+						type='button'
+					>
 						<Tooltip placement='bottom' content={t('tooltip.edit')}>
 							<div className='p-4'>
 								<EditSVG width='2rem' height='2rem' />
@@ -45,7 +48,7 @@ const UserDropdown = ({
 						</Tooltip>
 					</button>
 				</div>
-				<span className='pr-48 text-tiny text-gray-700'>{userData?.mobile ?? '−'}</span>
+				<span className='pr-48 text-tiny text-light-gray-500'>{userData?.mobile ?? '−'}</span>
 			</div>
 
 			<div className='flex-col gap-8 px-16 flex-items-center'>
@@ -53,7 +56,7 @@ const UserDropdown = ({
 					<button
 						type='button'
 						onClick={resetPassword}
-						className='h-36 w-full rounded border border-primary-400 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+						className='h-36 w-full rounded border border-light-primary-100 text-tiny font-medium text-light-primary-100 transition-colors flex-justify-center hover:bg-light-primary-100 hover:text-white'
 					>
 						{t('header.set_password')}
 					</button>
@@ -63,7 +66,7 @@ const UserDropdown = ({
 					<button
 						type='button'
 						onClick={() => logoutBroker(close)}
-						className='h-36 w-full rounded border border-error-100 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
+						className='h-36 w-full rounded border border-light-error-100 text-tiny font-medium text-light-error-100 transition-colors flex-justify-center hover:bg-light-error-100 hover:text-white'
 					>
 						{t('header.logout_broker')}
 					</button>
@@ -74,7 +77,7 @@ const UserDropdown = ({
 							loginBroker();
 							close();
 						}}
-						className='h-36 w-full rounded border border-primary-400 text-tiny font-medium text-primary-400 transition-colors flex-justify-center hover:bg-primary-400 hover:text-white'
+						className='h-36 w-full rounded border border-light-primary-100 text-tiny font-medium text-light-primary-100 transition-colors flex-justify-center hover:bg-light-primary-100 hover:text-white'
 					>
 						{t('header.login_broker')}
 					</button>
@@ -87,10 +90,10 @@ const UserDropdown = ({
 						<Link
 							onClick={() => close()}
 							href='/settings/general'
-							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='h-40 w-full gap-8 rounded px-12 text-light-gray-800 transition-colors flex-justify-start hover:bg-light-secondary-200'
 						>
 							<span className='size-24 flex-justify-center'>
-								<UserCircleSVG className='text-gray-900' width='1.8rem' height='1.8rem' />
+								<UserCircleSVG className='text-light-gray-700' width='1.8rem' height='1.8rem' />
 							</span>
 
 							<span>{t('header.user_account')}</span>
@@ -100,10 +103,10 @@ const UserDropdown = ({
 						<Link
 							onClick={() => close()}
 							href='/settings/history'
-							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='h-40 w-full gap-8 rounded px-12 text-light-gray-800 transition-colors flex-justify-start hover:bg-light-secondary-200'
 						>
 							<span className='size-24 flex-justify-center'>
-								<SessionHistorySVG className='text-gray-900' width='1.6rem' height='1.6rem' />
+								<SessionHistorySVG className='text-light-gray-700' width='1.6rem' height='1.6rem' />
 							</span>
 
 							<span>{t('header.session_history')}</span>
@@ -113,10 +116,10 @@ const UserDropdown = ({
 						<Link
 							onClick={() => close()}
 							href='/settings/general'
-							className='h-40 w-full gap-8 rounded px-12 text-gray-1000 transition-colors flex-justify-start hover:bg-secondary-100'
+							className='h-40 w-full gap-8 rounded px-12 text-light-gray-800 transition-colors flex-justify-start hover:bg-light-secondary-200'
 						>
 							<span className='size-24 flex-justify-center'>
-								<SettingSVG className='text-gray-900' width='2.2rem' height='2.2rem' />
+								<SettingSVG className='text-light-gray-700' width='2.2rem' height='2.2rem' />
 							</span>
 
 							<span>{t('header.setting')}</span>
@@ -132,7 +135,7 @@ const UserDropdown = ({
 								close();
 							}}
 							type='button'
-							className='h-40 w-full gap-8 rounded px-12 text-error-100 transition-colors flex-justify-start hover:bg-error-100 hover:text-white'
+							className='h-40 w-full gap-8 rounded px-12 text-light-error-100 transition-colors flex-justify-start hover:bg-light-error-100 hover:text-white'
 						>
 							<span className='size-24 flex-justify-center'>
 								<LogoutSVG width='1.6rem' height='1.6rem' />

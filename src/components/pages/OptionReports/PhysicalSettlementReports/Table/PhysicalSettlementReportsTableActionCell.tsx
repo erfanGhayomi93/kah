@@ -34,7 +34,7 @@ const PhysicalSettlementReportsTableActionCell = ({
 									isDisabled || physicalSettlementStatus !== 'Draft' || !data?.openPositionCount
 								}
 								type='button'
-								className='text-gray-900 disabled:text-gray-700'
+								className='text-light-gray-700 disabled:text-light-gray-500'
 								onClick={() => onRequest(data)}
 							>
 								<HandWriteSVG width='2rem' height='2rem' />
@@ -52,7 +52,7 @@ const PhysicalSettlementReportsTableActionCell = ({
 								}
 								type='button'
 								onClick={() => setConfirmDelete(true)}
-								className='text-gray-900 disabled:text-gray-700'
+								className='text-light-gray-700 disabled:text-light-gray-500'
 							>
 								<TrashSVG width='2rem' height='2rem' />
 							</button>
@@ -64,10 +64,10 @@ const PhysicalSettlementReportsTableActionCell = ({
 			{confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<div className='gap-16 flex-justify-start'>
-						<button className='text-gray-900' type='button' onClick={() => setConfirmDelete(false)}>
+						<button className='text-light-gray-700' type='button' onClick={() => setConfirmDelete(false)}>
 							{t('common.cancel')}
 						</button>
-						<button className='text-error-100' type='button' onClick={() => onDeleteRow(data)}>
+						<button className='text-light-error-100' type='button' onClick={() => onDeleteRow(data)}>
 							{t('common.delete')}
 						</button>
 					</div>

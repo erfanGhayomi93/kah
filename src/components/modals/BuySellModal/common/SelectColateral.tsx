@@ -18,8 +18,8 @@ const SelectCollateral = ({ value, onChange }: SelectCollateralProps) => {
 				className={cn(
 					'h-full flex-1 gap-8 transition-colors flex-justify-center',
 					value === 'stock'
-						? 'rounded border !border-primary-400 bg-secondary-100 text-primary-400'
-						: 'hover:btn-hover text-gray-900 gray-box',
+						? 'bg-light-secondary-200 !border-light-primary-100 text-light-primary-100 rounded border'
+						: 'text-light-gray-700 gray-box hover:btn-hover',
 				)}
 			>
 				<SnowFlakeSVG width='2rem' height='2rem' />
@@ -31,8 +31,8 @@ const SelectCollateral = ({ value, onChange }: SelectCollateralProps) => {
 				className={cn(
 					'h-full flex-1 gap-8 transition-colors flex-justify-center',
 					value === 'cash'
-						? 'rounded border !border-primary-400 bg-secondary-100 text-primary-400'
-						: 'hover:btn-hover text-gray-900 gray-box',
+						? 'bg-light-secondary-200 !border-light-primary-100 text-light-primary-100 rounded border'
+						: 'text-light-gray-700 gray-box hover:btn-hover',
 				)}
 			>
 				<PayMoneySVG width='2rem' height='2rem' />

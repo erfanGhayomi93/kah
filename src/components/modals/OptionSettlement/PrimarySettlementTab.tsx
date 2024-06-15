@@ -14,8 +14,12 @@ interface PrimarySettlementTabProps {
 	setTabSelected: React.Dispatch<React.SetStateAction<string>>;
 }
 
-
-export const PrimarySettlementTab: FC<PrimarySettlementTabProps> = ({ clickItemSettlement, modePage, tabSelected, setTabSelected }) => {
+export const PrimarySettlementTab: FC<PrimarySettlementTabProps> = ({
+	clickItemSettlement,
+	modePage,
+	tabSelected,
+	setTabSelected,
+}) => {
 	const t = useTranslations();
 
 	const TABS = useMemo(
@@ -23,16 +27,12 @@ export const PrimarySettlementTab: FC<PrimarySettlementTabProps> = ({ clickItemS
 			{
 				id: 'optionSettlementCashTab',
 				title: t('optionSettlementModal.cash_tab'),
-				render: () => (
-					<SettlementCashTab clickItemSettlement={clickItemSettlement} />
-				),
+				render: () => <SettlementCashTab clickItemSettlement={clickItemSettlement} />,
 			},
 			{
 				id: 'optionSettlementPhysicalTab',
 				title: t('optionSettlementModal.physical_tab'),
-				render: () => (
-					<SettlementPhysicalTab clickItemSettlement={clickItemSettlement} />
-				),
+				render: () => <SettlementPhysicalTab clickItemSettlement={clickItemSettlement} />,
 			},
 		],
 		[modePage],
@@ -48,7 +48,7 @@ export const PrimarySettlementTab: FC<PrimarySettlementTabProps> = ({ clickItemS
 					<button
 						className={clsx(
 							'h-40 flex-1 px-16 text-center transition-colors flex-justify-center',
-							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
 						)}
 						type='button'
 					>

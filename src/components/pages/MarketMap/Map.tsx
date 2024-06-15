@@ -296,9 +296,9 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 				const closingPricePercent = Number(data.cpp || 0);
 				const lastTradedPricePercent = Number(data.lpp || 0);
 
-				const title = `<div class="border-b border-b-gray-800 text-right text-base pb-8"><span>${data.st}</span></div>`;
-				const lastTradedPrice = `<div class="text-sm flex justify-between gap-16"><div class="flex gap-8"><span>${sepNumbers(String(data.l | 0))}</span><span class="text-left ${lastTradedPricePercent < 0 ? 'text-error-300' : 'text-success-300'}">${lastTradedPricePercent < 0 ? `(${Math.abs(lastTradedPricePercent).toFixed(2)}%)` : `${lastTradedPricePercent.toFixed(2)}%`}</span></div><span class="text-right">آخرین قیمت</span></div>`;
-				const closingPrice = `<div class="text-sm flex justify-between gap-16"><div class="flex gap-8"><span>${sepNumbers(String(data.c | 0))}</span><span class="text-left ${closingPricePercent < 0 ? 'text-error-300' : 'text-success-300'}">${closingPricePercent < 0 ? `(${Math.abs(closingPricePercent).toFixed(2)}%)` : `${closingPricePercent.toFixed(2)}%`}</span></div><span class="text-right">قیمت پایانی</span></div>`;
+				const title = `<div class="border-b border-b-light-gray-200 text-right text-base pb-8"><span>${data.st}</span></div>`;
+				const lastTradedPrice = `<div class="text-sm flex justify-between gap-16"><div class="flex gap-8"><span>${sepNumbers(String(data.l | 0))}</span><span class="text-left ${lastTradedPricePercent < 0 ? 'text-light-error-100' : 'text-light-success-200'}">${lastTradedPricePercent < 0 ? `(${Math.abs(lastTradedPricePercent).toFixed(2)}%)` : `${lastTradedPricePercent.toFixed(2)}%`}</span></div><span class="text-right">آخرین قیمت</span></div>`;
+				const closingPrice = `<div class="text-sm flex justify-between gap-16"><div class="flex gap-8"><span>${sepNumbers(String(data.c | 0))}</span><span class="text-left ${closingPricePercent < 0 ? 'text-light-error-100' : 'text-light-success-200'}">${closingPricePercent < 0 ? `(${Math.abs(closingPricePercent).toFixed(2)}%)` : `${closingPricePercent.toFixed(2)}%`}</span></div><span class="text-right">قیمت پایانی</span></div>`;
 				const volume = `<div class="text-sm flex justify-between gap-16"><span class="text-left">${numFormatter(data.sibv + data.slbv || 0)}</span><span class="text-right">حجم معاملات</span></div>`;
 				const value = `<div class="text-sm flex justify-between gap-16"><span class="text-left">${numFormatter(data.t || 0)}</span><span class="text-right">ارزش معاملات</span></div>`;
 

@@ -10,7 +10,7 @@
 	text-indent: -9999px;
 	width: 28px;
 	height: 20px;
-	background-color: theme("colors.secondary.100");
+	background-color: theme("colors.light.secondary.200");
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -21,7 +21,7 @@
 	svg {
 		position: relative;
 		z-index: 9;
-		color: theme("colors.primary.400");
+		color: theme("colors.light.primary.100");
 	}
 }
 
@@ -47,7 +47,7 @@
 	height: 3px;
 	border: 4px;
 	border-radius: 4px;
-	background-color: theme("colors.primary.400");
+	background-color: theme("colors.light.primary.100");
 	transform: translate(-50%, -50%) rotate(90deg);
 }
 
@@ -56,7 +56,7 @@
 	width: 1.5px;
 	height: 6px;
 	border: 4px;
-	background-color: theme("colors.primary.400");
+	background-color: theme("colors.light.primary.100");
 	transform: translate(-50%, -50%) rotate(90deg);
 }
 
@@ -91,7 +91,7 @@
 }
 
 .input:checked + .thumb {
-	background-color: theme("colors.primary.400");
+	background-color: theme("colors.light.primary.100");
 
 	.circle {
 		width: 14px;

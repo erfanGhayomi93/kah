@@ -28,7 +28,7 @@ const Container = () => {
 							bottom: '4.8rem',
 							zIndex: '9999',
 						}}
-						className='fixed left-0 w-full rounded bg-gray-300 py-8'
+						className='bg-light-gray-300 fixed left-0 w-full rounded py-8'
 					>
 						<div className='size-full flex-column'>
 							<div className='relative flex-1 overflow-hidden rounded bg-white shadow-tooltip flex-column'>

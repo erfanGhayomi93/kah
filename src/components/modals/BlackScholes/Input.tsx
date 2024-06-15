@@ -57,7 +57,7 @@ const Input = <T extends string | number>({ value, placeholder, prefix, onChange
 				<legend>{placeholder}</legend>
 			</fieldset>
 
-			<span className='h-24 w-36 border-r border-r-input text-tiny text-gray-700 flex-justify-center'>
+			<span className='text-light-gray-500 h-24 w-36 border-r border-r-input text-tiny flex-justify-center'>
 				{prefix}
 			</span>
 		</label>

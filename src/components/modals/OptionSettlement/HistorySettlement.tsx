@@ -10,31 +10,38 @@ import { useMemo, type FC } from 'react';
 
 interface HistorySettlementProps {
 	tabSelected: string;
-	onCloseModal: () => void
+	onCloseModal: () => void;
 }
 
-
 export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onCloseModal }) => {
-
 	const t = useTranslations();
 
 	const isCash = useMemo(() => tabSelected === 'optionSettlementCashTab', [tabSelected]);
 
-	const dateParams = useMemo(() => ({
-		fromDate: dayjs().subtract(1, 'month').toDate().getTime(),
-		toDate: dayjs().add(1, 'year').toDate().getTime()
-	}), []);
+	const dateParams = useMemo(
+		() => ({
+			fromDate: dayjs().subtract(1, 'month').toDate().getTime(),
+			toDate: dayjs().add(1, 'year').toDate().getTime(),
+		}),
+		[],
+	);
 
 	const { data: cashHistory } = useCashSettlementReportsQuery({
-		queryKey: ['cashSettlementReports', {
-			...dateParams
-		}],
+		queryKey: [
+			'cashSettlementReports',
+			{
+				...dateParams,
+			},
+		],
 	});
 
 	const { data: physicalHistory } = usePhysicalSettlementReportsQuery({
-		queryKey: ['physicalSettlementReports', {
-			...dateParams
-		}],
+		queryKey: [
+			'physicalSettlementReports',
+			{
+				...dateParams,
+			},
+		],
 	});
 
 	const columnDefs = useMemo<Array<IColDef<Reports.ICashSettlementReports>>>(
@@ -52,8 +59,8 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 				valueGetter: (row) => t(`common.${row?.side.toLowerCase()}`),
 				cellClass: (row) =>
 					clsx({
-						'text-success-200': row.side === 'Buy',
-						'text-error-200': row.side === 'Sell',
+						'text-light-success-100': row.side === 'Buy',
+						'text-light-error-100': row.side === 'Sell',
 					}),
 			},
 			/* تاریخ تسویه نقدی */
@@ -67,12 +74,11 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 				colId: 'status',
 				headerName: t('cash_settlement_reports_page.status_column'),
 				cellClass: 'text-right',
-				valueGetter: (row) => (row.status ? t('cash_settlement_reports_page.type_status_' + row.status) : '')
+				valueGetter: (row) => (row.status ? t('cash_settlement_reports_page.type_status_' + row.status) : ''),
 			},
 		],
 		[tabSelected],
 	);
-
 
 	return (
 		<div className='flex h-full pr-24 flex-column'>
@@ -85,7 +91,7 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info flex-justify-center'
+				className='h-48 w-full gap-8 rounded font-medium text-light-info-100 flex-justify-center'
 				href={isCash ? '/option-reports/cash-settlement' : '/option-reports/physical-settlement'}
 				onClick={() => onCloseModal()}
 			>

@@ -87,7 +87,7 @@ const Clock = () => {
 	const { timestamp } = useServerDatetime();
 
 	return (
-		<div style={{ flex: '0 0 6.8rem' }} className='h-full rounded bg-gray-200 flex-justify-center'>
+		<div style={{ flex: '0 0 6.8rem' }} className='bg-light-gray-100 h-full rounded flex-justify-center'>
 			{dayjs(timestamp).calendar('jalali').format('HH:mm:ss')}
 		</div>
 	);
@@ -95,8 +95,8 @@ const Clock = () => {
 
 const Item = ({ name, value }: ItemProps) => (
 	<li className='flex-justify-between'>
-		<span className='text-gray-900'>{name}:</span>
-		<span className='text-base text-gray-1000'>{value}</span>
+		<span className='text-light-gray-700'>{name}:</span>
+		<span className='text-light-gray-800 text-base'>{value}</span>
 	</li>
 );
 

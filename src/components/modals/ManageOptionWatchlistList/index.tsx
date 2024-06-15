@@ -113,19 +113,20 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 				{!Array.isArray(watchlistList) || watchlistList.length === 0 ? null : (
 					<div className='flex-1 overflow-hidden pt-40 flex-column'>
 						<div className='px-24'>
-							<div className='border-b border-b-gray-500 pb-12 flex-justify-between'>
+							<div className='border-b border-b-light-gray-200 pb-12 flex-justify-between'>
 								<div className='flex items-center gap-8'>
 									{isDeleting.hasStarted && (
 										<Checkbox
 											checked={isDeleting.selected.length === watchlistList.length}
 											onChange={toggleAllWatchlist}
 											classes={{
-												checkbox: '!size-20 focus:!border-error-100 hover:!border-error-100',
-												checked: '!bg-error-100 !border-error-100',
+												checkbox:
+													'!size-20 focus:!border-light-error-100 hover:!border-light-error-100',
+												checked: '!bg-light-error-100 !border-light-error-100',
 											}}
 										/>
 									)}
-									<span className='text-base font-medium text-gray-900'>
+									<span className='text-base font-medium text-light-gray-700'>
 										{t('manage_option_watchlist_modal.watchlist_count', {
 											count: watchlistList.length,
 										})}
@@ -134,7 +135,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 
 								<button
 									onClick={() => setIsDeleting({ type: 'hasStarted', payload: true })}
-									className='text-gray-1000'
+									className='text-light-gray-800'
 									type='button'
 								>
 									<TrashSVG width='2rem' height='2rem' />
@@ -150,7 +151,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 					</div>
 				)}
 
-				<div className='h-64 gap-8 border-t border-t-gray-500 pl-24 flex-items-center'>
+				<div className='h-64 gap-8 border-t border-t-light-gray-200 pl-24 flex-items-center'>
 					{isDeleting.hasStarted ? (
 						<div className='w-full gap-8 flex-justify-end'>
 							<button
@@ -173,7 +174,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 					) : (
 						<button
 							onClick={addNewWatchlist}
-							className='h-40 gap-8 pr-24 font-medium text-primary-400 flex-items-center'
+							className='h-40 gap-8 pr-24 font-medium text-light-primary-100 flex-items-center'
 							type='button'
 						>
 							<span className='size-16 rounded-sm text-current flex-justify-center'>

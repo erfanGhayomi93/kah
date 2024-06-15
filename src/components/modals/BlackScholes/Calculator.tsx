@@ -44,7 +44,7 @@ const Calculator = (props: CalculatorProps) => {
 			<div className='flex flex-1'>
 				<fieldset
 					className={cn(
-						'border border-success-100 bg-gray-100 text-success-100',
+						'border border-light-success-100 bg-light-gray-50 text-light-success-100',
 						styles.section,
 						styles.fieldset,
 					)}
@@ -60,7 +60,7 @@ const Calculator = (props: CalculatorProps) => {
 
 				<div
 					style={{ paddingTop: '2.1rem' }}
-					className='flex-1 text-base font-medium text-gray-900 flex-column'
+					className='flex-1 text-base font-medium text-light-gray-700 flex-column'
 				>
 					<div className={styles.part}>{t('black_scholes_modal.theoretical_price')}</div>
 					<div className={cn(styles.gray, styles.part)}>{t('black_scholes_modal.delta')}</div>
@@ -72,7 +72,7 @@ const Calculator = (props: CalculatorProps) => {
 
 				<fieldset
 					className={cn(
-						'border border-error-100 bg-gray-100 text-error-100',
+						'border border-light-error-100 bg-light-gray-50 text-light-error-100',
 						styles.section,
 						styles.fieldset,
 					)}
@@ -92,15 +92,17 @@ const Calculator = (props: CalculatorProps) => {
 				className='flex rounded bg-white text-base ltr'
 			>
 				<div className={cn('h-full ltr flex-justify-center', styles.section)}>
-					<span className='font-bold text-error-100 ltr'>−</span>
+					<span className='font-bold text-light-error-100 ltr'>−</span>
 				</div>
 
 				<div className='h-full flex-1 flex-justify-center'>
-					<span className='font-medium text-gray-900'>{t('black_scholes_modal.implied_volatility')}</span>
+					<span className='font-medium text-light-gray-700'>
+						{t('black_scholes_modal.implied_volatility')}
+					</span>
 				</div>
 
 				<div className={cn('h-full ltr flex-justify-center', styles.section)}>
-					<span className='font-bold text-success-100'>−</span>
+					<span className='font-bold text-light-success-100'>−</span>
 				</div>
 			</div>
 		</>

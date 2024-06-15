@@ -18,7 +18,7 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface WithdrawalProps extends IWithdrawalModal { }
+interface WithdrawalProps extends IWithdrawalModal {}
 
 const Withdrawal = forwardRef<HTMLDivElement, WithdrawalProps>((props, ref) => {
 	const t = useTranslations();
@@ -33,7 +33,7 @@ const Withdrawal = forwardRef<HTMLDivElement, WithdrawalProps>((props, ref) => {
 	};
 
 	const onExpanded = () => {
-		setIsShowExpanded(prev => !prev);
+		setIsShowExpanded((prev) => !prev);
 	};
 
 	return (
@@ -44,41 +44,25 @@ const Withdrawal = forwardRef<HTMLDivElement, WithdrawalProps>((props, ref) => {
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Header
-				label={t('withdrawal_modal.title')}
-				onClose={onCloseModal}
-				onExpanded={onExpanded}
-			/>
+			<Header label={t('withdrawal_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} />
 
-			<div className='bg-white flex p-24'>
-
-				<Div className={clsx('flex-column', {
-					'border-l border-gray-500 pr-16 pl-24': isShowExpanded
-				})}>
-					<Body
-						onClose={onCloseModal}
-						editData={data}
-					/>
+			<div className='flex bg-white p-24'>
+				<Div
+					className={clsx('flex-column', {
+						'border-light-gray-200 border-l pl-24 pr-16': isShowExpanded,
+					})}
+				>
+					<Body onClose={onCloseModal} editData={data} />
 				</Div>
 
-
-				<AnimatePresence
-					initial={{ animation: 'fadeInLeft' }}
-					exit={{ animation: 'fadeOutLeft' }}
-				>
-					{
-						isShowExpanded && (
-							<Div className='bg-white'>
-								<HistoryDrawal
-									onCloseModal={onCloseModal}
-								/>
-							</Div>
-						)
-					}
+				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
+					{isShowExpanded && (
+						<Div className='bg-white'>
+							<HistoryDrawal onCloseModal={onCloseModal} />
+						</Div>
+					)}
 				</AnimatePresence>
-
 			</div>
-
 		</Modal>
 	);
 });

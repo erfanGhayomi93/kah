@@ -90,9 +90,9 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				cellClass: ({ data }) => {
 					switch (data!.side) {
 						case 'Call':
-							return 'text-success-100';
+							return 'text-light-success-100';
 						case 'Put':
-							return 'text-error-100';
+							return 'text-light-error-100';
 						default:
 							return '';
 					}

@@ -12,19 +12,18 @@ import Body from './Body';
 import { HistorySettlement } from './HistorySettlement';
 
 const Div = styled.div`
-	width : 420px;
-	min-height : 430px;
-	max-height : 550px;
-	display : flex;
-	flex-direction : column;
+	width: 420px;
+	min-height: 430px;
+	max-height: 550px;
+	display: flex;
+	flex-direction: column;
 `;
 
 export type TModePage = 'primary' | 'secondary' | 'tertiary';
 
-interface OptionSettlementProps extends IOptionSettlementModal { }
+interface OptionSettlementProps extends IOptionSettlementModal {}
 
 const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((props, ref) => {
-
 	const t = useTranslations();
 
 	const { activeTab, data } = props;
@@ -69,11 +68,10 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 				status: data.status,
 				symbolISIN: data.symbolISIN,
 				symbolTitle: data.symbolTitle,
-				from: activeTab === 'optionSettlementCashTab' ? 'cash' : 'physical'
+				from: activeTab === 'optionSettlementCashTab' ? 'cash' : 'physical',
 			});
 		}
 	}, [props]);
-
 
 	return (
 		<Modal
@@ -83,46 +81,35 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 			onClose={onCloseModal}
 			{...props}
 		>
-			{
-				modePage === 'primary' ? (
-					<Header
-						label={t('optionSettlementModal.title')}
-						onClose={onCloseModal}
-						onExpanded={onExpanded}
-					/>
-				) : (
-					<Header>
-						<div className='pr-24 flex-justify-center relative w-full'>
-							<div
-								className='absolute right-24 cursor-pointer text-gray-900'
-								onClick={() => setModePage('primary')}
-							>
-								<ArrowRightSVG />
-							</div>
-
-							<h2 className='select-none text-xl font-medium text-gray-900'>
-								{
-									t('optionSettlementModal.title')
-								}
-								{
-									modePage === 'tertiary' && (
-										<>
-											<span className='mx-4'>-</span>
-											<span>{dataSecondaryDetails?.symbolTitle}</span>
-										</>
-									)
-								}
-							</h2>
-
+			{modePage === 'primary' ? (
+				<Header label={t('optionSettlementModal.title')} onClose={onCloseModal} onExpanded={onExpanded} />
+			) : (
+				<Header>
+					<div className='relative w-full pr-24 flex-justify-center'>
+						<div
+							className='text-light-gray-700 absolute right-24 cursor-pointer'
+							onClick={() => setModePage('primary')}
+						>
+							<ArrowRightSVG />
 						</div>
-					</Header>
-				)
-			}
+
+						<h2 className='text-light-gray-700 select-none text-xl font-medium'>
+							{t('optionSettlementModal.title')}
+							{modePage === 'tertiary' && (
+								<>
+									<span className='mx-4'>-</span>
+									<span>{dataSecondaryDetails?.symbolTitle}</span>
+								</>
+							)}
+						</h2>
+					</div>
+				</Header>
+			)}
 
 			<div className='flex bg-white p-24'>
 				<Div
 					className={clsx('flex-column', {
-						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
+						'border-light-gray-200 border-l pl-24 pr-16': isShowExpanded,
 					})}
 				>
 					<Body
@@ -138,18 +125,13 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
 					{isShowExpanded && (
 						<Div className='bg-white'>
-							<HistorySettlement
-								tabSelected={tabSelected}
-								onCloseModal={onCloseModal}
-							/>
+							<HistorySettlement tabSelected={tabSelected} onCloseModal={onCloseModal} />
 						</Div>
 					)}
 				</AnimatePresence>
 			</div>
-
 		</Modal>
 	);
 });
-
 
 export default OptionSettlement;

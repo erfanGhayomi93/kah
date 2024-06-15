@@ -12,7 +12,7 @@
 
 		button {
 			height: 2.4rem;
-			color: theme("colors.gray.900");
+			color: theme("colors.light.gray.700");
 			height: 2.4rem;
 
 			&:not(:disabled) {
@@ -20,7 +20,7 @@
 			}
 
 			&:disabled {
-				color: theme("colors.gray.700");
+				color: theme("colors.light.gray.500");
 			}
 		}
 
@@ -32,7 +32,7 @@
 			top: 50%;
 			transform: translateY(-50%);
 			right: 0;
-			background-color: theme("colors.gray.500");
+			background-color: theme("colors.light.gray.200");
 		}
 	}
 }
@@ -49,6 +49,6 @@
 	align-items: center;
 	justify-content: center;
 	border: 2px solid theme("colors.white");
-	background-color: theme("colors.primary.400");
+	background-color: theme("colors.light.primary.100");
 	color: theme("colors.white");
 }

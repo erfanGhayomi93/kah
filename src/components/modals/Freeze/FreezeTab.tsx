@@ -13,7 +13,6 @@ interface FreezeTabProps {
 }
 
 const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
-
 	const t = useTranslations();
 
 	const [symbol, setSymbol] = useState<Symbol.Search | null>(null);
@@ -36,7 +35,6 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 	];
 
 	const handleSubmitFreeze = async () => {
-
 		if (!url) return;
 
 		if (!symbol) {
@@ -55,10 +53,9 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 		}
 
 		try {
-
 			const payload = {
 				symbolISIN: symbol.symbolISIN,
-				type: 'freeze'
+				type: 'freeze',
 			};
 
 			const response = await brokerAxios.post(url?.newKaraFreeze, payload);
@@ -66,31 +63,28 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 
 			if (!data.succeeded) {
 				toast.error(t('alerts.freeze_request_failed'), {
-					toastId: 'alerts.freeze_request_failed'
+					toastId: 'alerts.freeze_request_failed',
 				});
 			} else {
 				toast.success(t('alerts.freeze_request_succeeded'), {
-					toastId: 'freeze_request_succeeded'
+					toastId: 'freeze_request_succeeded',
 				});
 
 				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
 
 				onCloseModal();
 			}
-
 		} catch (e) {
-			const { message } = (e as Error);
+			const { message } = e as Error;
 			toast.error(t('alerts.freeze_request_failed'), {
-				toastId: message
+				toastId: message,
 			});
 		}
-
 	};
 
 	useEffect(() => {
 		!!symbol && isShowValidationSymbol && setIsShowValidationSymbol(false);
 	}, [symbol]);
-
 
 	return (
 		<div>
@@ -98,7 +92,7 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 
 				<span
-					className={clsx('text-tiny text-error-200 opacity-0', {
+					className={clsx('text-tiny text-light-error-100 opacity-0', {
 						'opacity-100': isShowValidationSymbol,
 						'opacity-0': !isShowValidationSymbol,
 					})}
@@ -108,14 +102,12 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 			</div>
 
 			<div className='flex flex-col gap-y-16'>
-				{
-					contents.map((item, ind) => (
-						<div key={ind} className='grid grid-flow-col gap-x-8'>
-							<span className='size-8 bg-info rounded-circle mt-8'></span>
-							<p className='text-gray-900'>{item}</p>
-						</div>
-					))
-				}
+				{contents.map((item, ind) => (
+					<div key={ind} className='grid grid-flow-col gap-x-8'>
+						<span className='mt-8 size-8 rounded-circle bg-light-info-100'></span>
+						<p className='text-light-gray-700'>{item}</p>
+					</div>
+				))}
 			</div>
 
 			<div className='mt-24'>
@@ -127,11 +119,8 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 					{t('deposit_modal.state_Request')}
 				</button>
 			</div>
-
 		</div>
 	);
 };
-
-
 
 export default FreezeTab;
