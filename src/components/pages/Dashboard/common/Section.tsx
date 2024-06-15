@@ -50,7 +50,7 @@ const Section = <T extends string = string, B extends string = string>({
 	};
 
 	return (
-		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white px-8 pb-16 pt-8 flex-column'>
+		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white px-8 py-16 pr-16 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div

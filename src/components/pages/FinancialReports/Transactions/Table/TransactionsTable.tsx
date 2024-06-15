@@ -19,23 +19,24 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 				colId: 'id',
 				headerName: t('transactions_page.id_column'),
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
-				width: 32,
+				width: 40,
+				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			/* زمان */
 			{
 				colId: 'date',
 				headerName: t('transactions_page.date_column'),
-				width: 144,
 				cellClass: 'ltr',
 				valueGetter: (row) => dateFormatter(row?.date ?? '', 'datetime'),
+				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'date')]?.hidden,
 			},
 			/* عملیات */
 			{
 				colId: 'transactionType',
-				width: 128,
 				headerName: t('transactions_page.operator_column'),
+				sortable: false,
 				valueGetter: (row) => t('transactions_page.operator_type_' + row?.transactionType),
 				cellClass: (row) => {
 					switch (row?.transactionType) {
@@ -54,6 +55,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 			{
 				colId: 'description',
 				headerName: t('transactions_page.description_column'),
+				sortable: false,
 				width: 200,
 				valueGetter: (row) => row.description,
 				valueFormatter: ({ row }) =>
@@ -72,11 +74,11 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 			{
 				colId: 'debit',
 				headerName: t('transactions_page.debit_column'),
+				sortable: false,
 				cellClass: (row) =>
 					clsx(' ltr', {
 						'text-error-100': Number(row?.debit) < 0,
 					}),
-				width: 160,
 				valueGetter: (row) => row.debit,
 				valueFormatter: ({ value }) =>
 					Number(value) >= 0 ? sepNumbers(String(value)) : `(${sepNumbers(String(value))})`,
@@ -86,11 +88,11 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 			{
 				colId: 'credit',
 				headerName: t('transactions_page.credit_column'),
+				sortable: false,
 				cellClass: (row) =>
 					clsx('ltr', {
 						'text-error-100': Number(row?.credit) < 0,
 					}),
-				width: 160,
 				valueGetter: (row) =>
 					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'credit')]?.hidden,
@@ -99,19 +101,19 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 			{
 				colId: 'remaining',
 				headerName: t('transactions_page.remain_column'),
+				sortable: false,
 				cellClass: (row) => clsx('ltr', Number(row?.remaining) > 0 ? 'text-success-400' : 'text-error-300'),
 				valueGetter: (row) =>
 					Number(row?.remaining) >= 0
 						? sepNumbers(String(row?.remaining))
 						: `(${sepNumbers(String(row?.remaining))})`,
-				width: 160,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'remaining')]?.hidden,
 			},
 			/* ایستگاه معاملاتی */
 			{
 				colId: 'station',
 				headerName: t('transactions_page.station_column'),
-				maxWidth: 160,
+				sortable: false,
 				valueGetter: (row) => row?.station,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'station')]?.hidden,
 			},
