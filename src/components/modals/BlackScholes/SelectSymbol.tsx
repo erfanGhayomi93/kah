@@ -68,6 +68,7 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 							disabled={!inputs.baseSymbol}
 							classes={{
 								root: '!h-48',
+								value: 'text-left',
 							}}
 						/>
 					</div>

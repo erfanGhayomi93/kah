@@ -4,25 +4,14 @@ import {
 	useOpenPositionChartDataQuery,
 } from '@/api/queries/optionQueries';
 import { useSymbolChartDataQuery } from '@/api/queries/symbolQuery';
-import Radiobox from '@/components/common/Inputs/Radiobox';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
-import SymbolChart from '@/components/common/Symbol/SymbolChart';
-import Tooltip from '@/components/common/Tooltip';
-import { CandleChartSVG, LinearChartSVG } from '@/components/icons';
+import SymbolChart, { SymbolChartInterval, SymbolChartType } from '@/components/common/Symbol/SymbolChart';
 import { dateTypesAPI } from '@/constants';
 import { useInputs } from '@/hooks';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Section, { type ITabIem } from '../../common/Section';
-
-interface ChartIntervalProps {
-	interval: ISymbolChartStates['interval'];
-	label: string;
-	active: boolean;
-	onChange: () => void;
-}
 
 interface ChartProps {
 	isOption: boolean;
@@ -38,21 +27,23 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 		tab: 'symbol_chart',
 	});
 
-	const { data: symbolChartData, isLoading } = useSymbolChartDataQuery({
+	const { data: symbolChartData, isLoading: isSymbolChartLoading } = useSymbolChartDataQuery({
 		queryKey: ['symbolChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
 	});
 
-	const { data: optionOpenPositionData } = useOpenPositionChartDataQuery({
+	const { data: optionOpenPositionData, isLoading: isOpenPositionChartLoading } = useOpenPositionChartDataQuery({
 		queryKey: ['openPositionChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
 		enabled: inputs.tab === 'open_positions' && isOption,
 	});
 
-	const { data: baseOpenPositionData } = useBaseOpenPositionChartDataQuery({
-		queryKey: ['baseOpenPositionChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
-		enabled: inputs.tab === 'open_positions' && !isOption,
-	});
+	const { data: baseOpenPositionData, isLoading: isBaseOpenPositionChartLoading } = useBaseOpenPositionChartDataQuery(
+		{
+			queryKey: ['baseOpenPositionChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
+			enabled: inputs.tab === 'open_positions' && !isOption,
+		},
+	);
 
-	const { data: nationalValueData } = useNotionalValueChartDataQuery({
+	const { data: nationalValueData, isLoading: isNotionalValueChartLoading } = useNotionalValueChartDataQuery({
 		queryKey: ['notionalValueChartDataQuery', symbolISIN, dateTypesAPI[inputs.interval]],
 		enabled: inputs.tab === 'notional_value' && isOption,
 	});
@@ -96,76 +87,34 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 		<Section name='chart' defaultActiveTab={inputs.tab} tabs={tabs} onChange={onChangeTab}>
 			<div className='relative h-full pb-16 flex-column'>
 				{Array.isArray(chartData) && chartData.length > 0 ? (
-					<div className='pt-16'>
+					<div className='flex-1 pt-16'>
 						{/* @ts-expect-error: Typescript can not detect "chartData" type based on input.tab, It's working fine */}
-						<SymbolChart data={chartData ?? []} height='208px' {...inputs} />
+						<SymbolChart
+							data={chartData ?? []}
+							interval={inputs.interval}
+							type={inputs.tab !== 'symbol_chart' ? 'area' : inputs.type}
+							tab={inputs.tab}
+						/>
 					</div>
 				) : (
 					<NoData />
 				)}
 
 				<div style={{ flex: '0 0 2.4rem' }} className='px-8 flex-items-center'>
-					<ul className='flex-1 gap-16 flex-items-start'>
-						<ChartInterval
-							interval='daily'
-							label={t('dates.daily')}
-							active={inputs.interval === 'daily'}
-							onChange={() => setFieldValue('interval', 'daily')}
-						/>
-
-						<ChartInterval
-							interval='weekly'
-							label={t('dates.weekly')}
-							active={inputs.interval === 'weekly'}
-							onChange={() => setFieldValue('interval', 'weekly')}
-						/>
-
-						<ChartInterval
-							interval='monthly'
-							label={t('dates.monthly')}
-							active={inputs.interval === 'monthly'}
-							onChange={() => setFieldValue('interval', 'monthly')}
-						/>
-
-						<ChartInterval
-							interval='yearly'
-							label={t('dates.yearly')}
-							active={inputs.interval === 'yearly'}
-							onChange={() => setFieldValue('interval', 'yearly')}
-						/>
-					</ul>
+					<SymbolChartInterval
+						activeInterval={inputs.interval}
+						onChange={(v) => setFieldValue('interval', v)}
+					/>
 
 					{inputs.tab === 'symbol_chart' && (
-						<div className='gap-8 flex-justify-end'>
-							<Tooltip content={t('symbol_info_panel.linear')}>
-								<button
-									onClick={() => setFieldValue('type', 'area')}
-									type='button'
-									className={clsx(
-										'size-24 rounded-sm transition-colors flex-justify-center',
-										inputs.type === 'area' ? 'btn-primary' : 'bg-gray-500 text-gray-900',
-									)}
-								>
-									<LinearChartSVG width='2rem' height='2rem' />
-								</button>
-							</Tooltip>
-							<Tooltip content={t('symbol_info_panel.candle')}>
-								<button
-									onClick={() => setFieldValue('type', 'candlestick')}
-									type='button'
-									className={clsx(
-										'size-24 rounded-sm transition-colors flex-justify-center',
-										inputs.type === 'candlestick' ? 'btn-primary' : 'bg-gray-500 text-gray-900',
-									)}
-								>
-									<CandleChartSVG width='2rem' height='2rem' />
-								</button>
-							</Tooltip>
-						</div>
+						<SymbolChartType type={inputs.type} onChange={(v) => setFieldValue('type', v)} />
 					)}
 				</div>
 
-				{isLoading && (
+				{(isSymbolChartLoading ||
+					isOpenPositionChartLoading ||
+					isBaseOpenPositionChartLoading ||
+					isNotionalValueChartLoading) && (
 					<div className='absolute left-0 top-0 size-full bg-white'>
 						<Loading />
 					</div>
@@ -174,11 +123,5 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 		</Section>
 	);
 };
-
-const ChartInterval = ({ interval, active, label, onChange }: ChartIntervalProps) => (
-	<li className='gap-4 flex-items-center'>
-		<Radiobox label={label} name={interval} checked={active} onChange={onChange} />
-	</li>
-);
 
 export default Chart;
