@@ -58,7 +58,7 @@ const MultiSelect = <T, _D = T>({
 	const onChangeValue = (v: T) => {
 		const optionIndex = values.findIndex((item) => {
 			if (typeof item === 'object' && item !== null) {
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have type id in array type
 				return item.id === v.id;
 			} else {
 				return item === v;
@@ -73,7 +73,7 @@ const MultiSelect = <T, _D = T>({
 				const spliceValue = prev.splice(optionIndex, 1);
 				return [...prev].filter((value) => {
 					if (typeof value === 'object' && value !== null) {
-						// @ts-expect-error
+						// @ts-expect-error: doesn't have type id in array type
 						return value.id !== spliceValue.id;
 					} else {
 						return value === spliceValue;
@@ -117,18 +117,19 @@ const MultiSelect = <T, _D = T>({
 									className={clsx(
 										styles.listItem,
 										classes?.listItem,
-										// @ts-expect-error
-										values.some((value) => typeof value === 'object' && value !== null ? value.id === getOptionId(option) : value === getOptionId(option)) && [
-											styles.active,
-											classes?.active,
-										],
+										values.some((value) =>
+											typeof value === 'object' && value !== null
+												? // @ts-expect-error: doesn't have type id in array type
+													value.id === getOptionId(option)
+												: value === getOptionId(option),
+										) && [styles.active, classes?.active],
 									)}
 								>
 									{getOptionTitle(option)}
 								</li>
 							))}
 						</ul>
-					</div >
+					</div>
 				);
 			}}
 		>
@@ -151,7 +152,7 @@ const MultiSelect = <T, _D = T>({
 							) : (
 								<ul className='flex items-center gap-2 truncate'>
 									{values.map((value, index, array) => (
-										<li className='rounded-md bg-primary-100  px-8 py-2 text-gray-00' key={index}>
+										<li className='text-gray-00 rounded-md  bg-primary-100 px-8 py-2' key={index}>
 											{getOptionTitle(value)}
 										</li>
 									))}
@@ -193,7 +194,7 @@ const MultiSelect = <T, _D = T>({
 					)}
 				</div>
 			)}
-		</Popup >
+		</Popup>
 	);
 };
 

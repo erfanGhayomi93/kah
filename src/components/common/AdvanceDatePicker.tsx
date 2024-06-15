@@ -122,8 +122,7 @@ const AdvancedDatepicker = ({
 	};
 
 	const isValidYear = (value: Date) => {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-expect-error
+		// @ts-expect-error: jalali dosn't infer type
 		const d = dayjs(value, { jalali: true }).calendar('jalali');
 		if (!d.isValid()) return;
 
@@ -148,8 +147,7 @@ const AdvancedDatepicker = ({
 
 		value = value.replace(/\s/g, '');
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-expect-error
+		// @ts-expect-error: jalali dosn't infer type
 		const d = dayjs(value, { jalali: true }).calendar('jalali');
 		if (!d.isValid()) return;
 
@@ -394,8 +392,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 
 			if (isDisabledDate(dayjs(`${day.year}/${day.month}/${day.date}`).calendar('jalali').toDate())) return;
 
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-expect-error
+			// @ts-expect-error: jalali dosn't infer type
 			const d = dayjs(`${day.year}/${day.month}/${day.date}`, { jalali: true }).calendar('jalali').toDate();
 
 			onChange(d);

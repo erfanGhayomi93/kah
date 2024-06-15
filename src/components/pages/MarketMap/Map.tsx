@@ -143,8 +143,7 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 	const onEnter = (d: d3.Selection<d3.EnterElement, SymbolNode, SVGGElement, unknown>) => {
 		d.append('g')
 			.attr('class', (node) =>
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have sc type in data
 				node.depth === 1 ? `group sector i_${Number(node.data?.sc)}` : `group stock i_${Number(node.data.sc)}`,
 			)
 			.attr('transform', (node) => `translate(${Math.round(x(node.x0))},${Math.round(y(node.y0))})`)
@@ -175,8 +174,7 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 	const onUpdate = (d: d3.Selection<d3.BaseType, SymbolNode, SVGGElement, unknown>) => {
 		d.style('color', 'rgb(44,45,53)')
 			.attr('class', (node) =>
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have sc type in data
 				node.depth === 1 ? `group sector i_${Number(node.data.sc)}` : `group stock i_${Number(node.data.sc)}`,
 			)
 			.attr('transform', (node) => `translate(${Math.round(x(node.x0))},${Math.round(y(node.y0))})`);
@@ -211,11 +209,9 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 			.selectAll('g.sector')
 			.append('rect')
 			.attr('fill', 'currentColor')
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-expect-error
+			// @ts-expect-error: doesn't have x1 and x0 type in data
 			.attr('width', (node) => Math.max(x(node.x1) - x(node.x0), 0))
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-expect-error
+			// @ts-expect-error: doesn't have y1 and y0 type in data
 			.attr('height', (node) => Math.max(y(node.y1) - y(node.y0) - PADDING.bottom, 0))
 			.attr('rx', '4');
 
@@ -251,8 +247,7 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 			.style('text-overflow', 'ellipsis ')
 			.style('white-space', 'nowrap ')
 			.style('font-size', '11px')
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-expect-error
+			// @ts-expect-error: doesn't have sn and st type in data
 			.text(({ data }) => {
 				if ('sn' in data) return data.sn;
 				if ('st' in data) return data.st;
@@ -262,12 +257,10 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 		const stockInfo = eGroup
 			.selectAll('g.stock')
 			.select('div.root')
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-expect-error
+			// @ts-expect-error: doesn't have lpp type in data
 			.style('background-color', (node) => color(node.data.lpp))
 			.style('color', 'rgb(255,255,255)')
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-expect-error
+			// @ts-expect-error: doesn't have cpp type in data
 			.style('opacity', (node) => opacity(node.data.cpp))
 			.style('overflow', 'hidden')
 			.style('cursor', 'pointer')
@@ -277,8 +270,7 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 			.style('justify-content', 'center')
 			.style('align-items', 'center')
 			.style('font-size', (node) =>
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have x1 and x0 and y1 and y0 type in data
 				getFontSize(Math.max(x(node.x1) - x(node.x0), 0), Math.max(y(node.y1) - y(node.y0), 0)),
 			)
 			// ! Background & Tooltip
@@ -316,12 +308,10 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 				if (tooltip.current) tooltip.current.style('visibility', 'hidden');
 			});
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-expect-error
+		// @ts-expect-error: doesn't have st type in data
 		stockInfo.append('xhtml:span').text(({ data }) => data.st);
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-expect-error
+		// @ts-expect-error: doesn't have lpp type in data
 		stockInfo.append('xhtml:span').text(({ data }) => `${Number(data.lpp || 0).toFixed(2)}%`);
 	};
 
@@ -370,8 +360,7 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 						group.current?.attr('transform', e.transform);
 					});
 
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't pan.current type
 				svg.call(pan.current);
 
 				group.current = svg.append('g').attr('transform', `translate(0,-${PADDING.top})`);
@@ -462,25 +451,21 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 			// * Sectors
 			const sectors = group.current
 				?.selectAll('g.sector')
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have x0 and y0 type in data
 				.attr('transform', (node) => `translate(${x(node.x0)},${y(node.y0)})`)
 				.classed('transition-d', false);
 
 			sectors
 				?.select('rect')
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have x0 and x1 type in data
 				.attr('width', (node) => Math.max(x(node.x1) - x(node.x0), 0))
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have y1 and y0 type in data
 				.attr('height', (node) => Math.max(y(node.y1) - y(node.y0), 0));
 
 			sectors
 				?.select('.sector-inner')
 				.classed('transition-d', true)
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have x1 and x0 type in data
 				.attr('width', (node) => Math.max(x(node.x1) - x(node.x0) - 2, 0));
 
 			// * Stocks
@@ -489,23 +474,19 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 			const stockInfo = group.current
 				?.selectAll('g.stock')
 				.classed('transition-d', true)
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have x0 and y0 type in data
 				.attr('transform', (node) => `translate(${x(node.x0)},${y(node.y0)})`);
 
 			stockInfo
 				?.select('.stock-inner')
 				.classed('transition-d', true)
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have x1 and x0 type in data
 				.attr('width', (node) => Math.max(x(node.x1) - x(node.x0), 0))
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have y1 and y0 type in data
 				.attr('height', (d) => Math.max(y(d.y1) - y(d.y0), 0));
 
 			stockInfo?.select('.root')?.style('font-size', (d) =>
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
+				// @ts-expect-error: doesn't have x0 and x1 and y0 and y1 type in data
 				getFontSize(Math.max(x(d.x1) - x(d.x0), 0), Math.max(y(d.y1) - y(d.y0), 0)),
 			);
 		} catch (e) {
