@@ -33,7 +33,9 @@ const Progressbar = ({ title, sellVolume, sellCount, buyVolume, buyCount, totalV
 				percent={buyPercent}
 				topRight={<span className='text-light-gray-800'>{title}</span>}
 				bottomRight={numFormatter(buyVolume)}
-				topLeft={<span className='block rtl'>{`${buyCount} ${t('symbol_info_panel.person')}`}</span>}
+				topLeft={
+					<span className='block rtl'>{`${numFormatter(buyCount)} ${t('symbol_info_panel.person')}`}</span>
+				}
 				bottomLeft={<span className='text-light-success-100'>{buyPercent}%</span>}
 			/>
 
@@ -41,7 +43,9 @@ const Progressbar = ({ title, sellVolume, sellCount, buyVolume, buyCount, totalV
 				side='sell'
 				percent={sellPercent}
 				bottomRight={<span className='text-light-error-100'>{sellPercent}%</span>}
-				topLeft={<span className='block rtl'>{`${sellCount} ${t('symbol_info_panel.person')}`}</span>}
+				topLeft={
+					<span className='block rtl'>{`${numFormatter(sellCount)} ${t('symbol_info_panel.person')}`}</span>
+				}
 				bottomLeft={numFormatter(sellVolume)}
 			/>
 		</div>

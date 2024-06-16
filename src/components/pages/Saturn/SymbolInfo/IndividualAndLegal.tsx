@@ -7,7 +7,17 @@ interface IndividualAndLegalProps {
 }
 
 const IndividualAndLegal = ({
-	symbol: { legalBuyVolume, legalSellVolume, individualSellVolume, individualBuyVolume, closingPrice },
+	symbol: {
+		legalBuyVolume,
+		legalSellVolume,
+		individualSellVolume,
+		individualBuyVolume,
+		numberOfILegalsBuyers,
+		numberOfIndividualsBuyers,
+		numberOfIndividualsSellers,
+		numberOfLegalsSellers,
+		closingPrice,
+	},
 }: IndividualAndLegalProps) => {
 	const t = useTranslations('saturn_page');
 
@@ -18,18 +28,18 @@ const IndividualAndLegal = ({
 			<div className='flex-1 gap-24 border-l border-light-gray-200 pl-16 flex-column'>
 				<Progressbar
 					buyVolume={individualBuyVolume}
-					buyCount={0}
+					buyCount={numberOfIndividualsBuyers}
 					sellVolume={individualSellVolume}
-					sellCount={0}
+					sellCount={numberOfIndividualsSellers}
 					title={t('individual')}
 					totalVolume={legalBuyVolume + individualBuyVolume}
 				/>
 
 				<Progressbar
 					buyVolume={legalBuyVolume}
-					buyCount={0}
+					buyCount={numberOfILegalsBuyers}
 					sellVolume={legalSellVolume}
-					sellCount={0}
+					sellCount={numberOfLegalsSellers}
 					title={t('legal')}
 					totalVolume={legalSellVolume + individualSellVolume}
 				/>

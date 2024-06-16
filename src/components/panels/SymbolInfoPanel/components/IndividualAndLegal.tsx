@@ -15,7 +15,16 @@ interface IndividualAndLegalProps {
 }
 
 const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
-	const { legalBuyVolume, legalSellVolume, individualBuyVolume, individualSellVolume } = symbolData;
+	const {
+		legalBuyVolume,
+		legalSellVolume,
+		individualBuyVolume,
+		individualSellVolume,
+		numberOfILegalsBuyers,
+		numberOfIndividualsBuyers,
+		numberOfIndividualsSellers,
+		numberOfLegalsSellers,
+	} = symbolData;
 
 	const t = useTranslations('symbol_info_panel');
 
@@ -36,18 +45,18 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 			<div className='gap-24 px-8 py-16 flex-column'>
 				<Progressbar
 					buyVolume={individualBuyVolume}
-					buyCount={0}
+					buyCount={numberOfIndividualsBuyers}
 					sellVolume={individualSellVolume}
-					sellCount={0}
+					sellCount={numberOfIndividualsSellers}
 					title={t('individual')}
 					totalVolume={legalBuyVolume + individualBuyVolume}
 				/>
 
 				<Progressbar
 					buyVolume={legalBuyVolume}
-					buyCount={0}
+					buyCount={numberOfILegalsBuyers}
 					sellVolume={legalSellVolume}
-					sellCount={0}
+					sellCount={numberOfLegalsSellers}
 					title={t('legal')}
 					totalVolume={legalSellVolume + individualSellVolume}
 				/>

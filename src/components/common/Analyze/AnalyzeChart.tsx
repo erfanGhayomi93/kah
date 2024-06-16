@@ -1,31 +1,11 @@
-import AppChart from '@/components/common/AppChart';
-import { divide, sepNumbers, toFixed } from '@/utils/helpers';
+import { chartFontSetting } from '@/libs/highchart';
+import { sepNumbers } from '@/utils/helpers';
+import { type Chart, chart, type SeriesAreaOptions } from 'highcharts/highstock';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
 import NoData from '../NoData';
 import PriceRange from './PriceRange';
-
-interface IPoint {
-	x: number;
-	y: number;
-}
-
-interface IAxisChartSeries {
-	name?: string;
-	type?: string;
-	color?: string;
-	group?: string;
-	zIndex?: number;
-	data: IPoint[];
-}
-
-interface IChartOptions {
-	series: IAxisChartSeries[];
-	annotations: XAxisAnnotations[];
-	colors: string[];
-	offset: [number, number];
-}
 
 interface AnalyzeChartProps extends IAnalyzeInputs {
 	data: Array<Record<'x' | 'y', number>>;
@@ -35,11 +15,6 @@ interface AnalyzeChartProps extends IAnalyzeInputs {
 	removeBorders?: boolean;
 	onChange?: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
-
-const COLORS = {
-	GREEN: 'rgb(0, 194, 136)',
-	RED: 'rgb(255, 82, 109)',
-};
 
 const AnalyzeChart = ({
 	data,
@@ -52,237 +27,214 @@ const AnalyzeChart = ({
 }: AnalyzeChartProps) => {
 	const t = useTranslations('analyze_modal');
 
-	const [chartOptions, setChartOptions] = useState<IChartOptions>({
-		series: [
-			{
-				data: [{ x: 0, y: 0 }],
-			},
-		],
-		annotations: [],
-		colors: [COLORS.GREEN],
-		offset: [0, 0],
-	});
+	const chartRef = useRef<Chart | null>(null);
 
-	const getAnnotationStyle = (x: number | string, label: string, value: string, color: string, h = false) => ({
-		x,
-		strokeDashArray: 8,
-		borderWidth: 2,
-		borderColor: color,
-		fillColor: color,
-		label: {
-			borderRadius: 4,
-			borderWidth: 0,
-			orientation: 'horizontal',
-			text: `‎${sepNumbers(value)} :${label}`,
-			style: {
-				background: color,
-				color: 'rgb(255, 255, 255)',
-				fontFamily: 'IRANSans',
-				fontSize: '12px',
-				cssClass: 'apex-annotation',
-				padding: {
-					top: 4,
-					left: 8,
-					bottom: 8,
-					right: 8,
+	const COLORS = {
+		GREEN: 'rgb(0, 194, 136)',
+		RED: 'rgb(255, 82, 109)',
+	};
+
+	const series: SeriesAreaOptions = useMemo(() => {
+		const result: SeriesAreaOptions = {
+			threshold: 1,
+			type: 'area',
+			lineWidth: 1.5,
+			connectNulls: true,
+			showInNavigator: true,
+			data: [],
+			zones: [
+				{
+					value: 0,
+					color: COLORS.RED,
+					fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+						stops: [
+							[0, 'rgba(255, 82, 109, 0)'],
+							[1, 'rgba(255, 82, 109, 0.2)'],
+						],
+					},
 				},
-			},
-			offsetY: h ? 32 : 0,
-		},
-	});
-
-	const getBepByPoints = (point1: IPoint, point2: IPoint) => {
-		const xDiff = point2.x - point1.x;
-		const x = divide(point2.y - point1.y, xDiff) * xDiff + point1.x;
-
-		return {
-			x,
-			y: 0,
-		};
-	};
-
-	const getBepAnnotation = (target: IPoint) => {
-		return getAnnotationStyle(target.x, t('break_even_point'), String(target.x), 'rgba(127, 26, 255, 1)');
-	};
-
-	useEffect(() => {
-		if (maxPrice - minPrice <= 0) return;
-
-		const options: IChartOptions = {
-			annotations: [
-				getAnnotationStyle(baseAssets, t('base_assets'), String(baseAssets), 'rgba(0, 87, 255, 1)', true),
+				{
+					color: COLORS.GREEN,
+					fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+						stops: [
+							[0, 'rgba(0, 194, 136, 0.2)'],
+							[1, 'rgba(0, 194, 136, 0)'],
+						],
+					},
+				},
 			],
-			series: [],
-			colors: [],
-			offset: [0, 0],
 		};
 
 		const diff = Math.round((maxPrice - minPrice) / 100);
 		const l = data.length;
-		const bep: IPoint[] = [];
-		let j = 0;
-		let k = 0;
-
-		const addBep = (point: IPoint) => {
-			bep.push(point);
-			options.series[j].data.push(point);
-			options.annotations.push(getBepAnnotation(point));
-		};
 
 		for (let i = 0; i < l; i++) {
-			const previousItem = data[i - 1];
 			const item = data[i];
-			const pnl = item.y;
+			const pnl = Math.round(item.y);
 
-			// Create new series
-			if (options.series[j] === undefined) {
-				const bepPoint = bep[bep.length - 1];
-				k = 0;
-
-				options.series[j] = {
-					data: bepPoint ? [bepPoint] : [],
-					type: 'area',
-				};
-			}
-
-			// Add point
-			if (pnl !== 0 && (k === 0 || k === l - 1 || k % diff === 0)) {
-				options.series[j].data.push({
+			if (pnl === 0 || i % diff === 0) {
+				result.data!.push({
 					x: item.x,
-					y: Math.round(item.y),
+					y: pnl,
 				});
 			}
-
-			// Detect max/min
-			if (pnl < options.offset[0]) options.offset[0] = pnl;
-			else if (pnl > options.offset[1]) options.offset[1] = pnl;
-
-			// Add break even point / Increase j / Change chart color
-			if (pnl === 0) {
-				addBep(getBepByPoints(previousItem, item));
-				j++;
-			} else if (i > 0) {
-				if ((previousItem.y > 0 && pnl < 0) || (previousItem.y < 0 && pnl > 0)) {
-					addBep(getBepByPoints(previousItem, item));
-					j++;
-				}
-			}
-
-			k++;
 		}
 
-		options.colors = options.series.reduce<string[]>(
-			(total, { data }) => [...total, data[1].y < 0 ? COLORS.RED : COLORS.GREEN],
-			[],
-		);
+		return result;
+	}, [data]);
 
-		// Update Min/Max
-		if (options.offset[0] !== 0) {
-			options.offset[0] *= 1.25;
-			options.offset[0] =
-				(options.offset[0] < 0 ? Math.floor(options.offset[0] / 100) : Math.ceil(options.offset[0] / 100)) *
-				100;
-		}
+	const onLoad = useCallback((el: HTMLDivElement | null) => {
+		if (!el) return;
 
-		if (options.offset[1] !== 0) {
-			options.offset[1] *= 1.25;
-			options.offset[1] =
-				(options.offset[1] < 0 ? Math.floor(options.offset[1] / 100) : Math.ceil(options.offset[1] / 100)) *
-				100;
-		}
+		// TODO: محاسبه سر به سر
+		chartRef.current = chart(el, {
+			chart: {
+				height,
+			},
+			tooltip: {
+				useHTML: true,
+				formatter: function () {
+					const x = Number(this.x ?? 0);
+					const y = Number(this.y ?? 0);
 
-		if (options.series.length === 0) {
-			options.series.push({
-				data: [{ x: 0, y: 0 }],
-			});
-		}
+					const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
+					const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(x - baseAssets)))}</span></li>`;
+					const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
+					const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
 
-		if (options.colors.length === 0) {
-			options.colors.push(COLORS.GREEN);
-		}
+					return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1}${li2}${li3}${li4}</ul>`;
+				},
+			},
+			navigator: {
+				enabled: true,
+				outlineColor: 'rgb(226, 231, 237)',
+				outlineWidth: 0,
+				maskInside: true,
+				height: 26,
+				maskFill: 'rgba(24, 28, 47, 0.05)',
+				xAxis: {
+					type: 'datetime',
+					gridLineWidth: 0,
+				},
+				handles: {
+					backgroundColor: 'rgba(255, 255, 255, 1)',
+					borderRadius: 6,
+					height: 24,
+					width: 21,
+					lineWidth: 1,
+					borderColor: 'rgba(226, 231, 237, 1)',
+					symbols: ['url(/static/images/navigator.png)', 'url(/static/images/navigator.png)'],
+				},
+				series: {
+					type: 'areaspline',
+					xAxis: 0,
+					zones: [
+						{
+							value: 0,
+							color: 'rgba(226, 231, 237, 0.75)',
+							fillColor: {
+								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+								stops: [
+									[0, 'rgba(226, 231, 237, 0.75)'],
+									[1, 'rgba(226, 231, 237, 0.75)'],
+								],
+							},
+						},
+						{
+							color: 'rgba(226, 231, 237, 0.75)',
+							fillColor: {
+								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+								stops: [
+									[0, 'rgba(226, 231, 237, 0.75)'],
+									[1, 'rgba(226, 231, 237, 0.75)'],
+								],
+							},
+						},
+					],
+				},
+			},
+			xAxis: {
+				type: 'datetime',
+				crosshair: {
+					label: {
+						formatter: (value) => sepNumbers(String(value)),
+					},
+				},
+				labels: {
+					formatter: ({ value }) => sepNumbers(String(value)),
+				},
+			},
+			yAxis: {
+				type: 'linear',
+				labels: {
+					formatter: ({ value }) => {
+						return sepNumbers(String(value));
+					},
+				},
+			},
+			series: [series],
+		});
+	}, []);
 
-		setChartOptions(options);
-	}, [data, JSON.stringify({ maxPrice, minPrice, baseAssets })]);
+	useEffect(() => {
+		if (!chartRef.current) return;
 
-	const { series, annotations, colors } = chartOptions;
+		chartRef.current.update({
+			series: [series],
+		});
+	}, [series]);
+
+	useEffect(() => {
+		if (!chartRef.current) return;
+
+		chartRef.current.update({
+			// @ts-expect-error: borderRadius has bug, it should be string, but it's number
+			xAxis: {
+				plotLines: [
+					{
+						dashStyle: 'LongDash',
+						width: 1,
+						color: 'rgba(0, 87, 255, 1)',
+						value: baseAssets ?? 0,
+						className: '!rounded-md',
+						label: {
+							text: `${t('base_assets')}: ${sepNumbers(String(baseAssets ?? 0))}`,
+							align: 'center',
+							textAlign: 'center',
+							rotation: 0,
+							verticalAlign: 'top',
+							useHTML: true,
+							style: {
+								fontFamily: chartFontSetting.fontFamily,
+								fontSize: '12px',
+								fontWeight: 500,
+								backgroundColor: 'rgba(0, 87, 255, 1)',
+								borderRadius: '4px',
+								color: 'rgb(255, 255, 255)',
+								padding: '4px 8px',
+							},
+						},
+					},
+				],
+			},
+		});
+	}, [baseAssets]);
 
 	return (
 		<ErrorBoundary>
 			<div className='gap-8 flex-column'>
-				<AppChart
-					options={{
-						colors,
-						annotations: {
-							xaxis: annotations,
-						},
-						tooltip: {
-							custom: ({ seriesIndex, dataPointIndex, w }) => {
-								const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-
-								const li1 = `<li><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(data.x ?? 0))}</span></li>`;
-								const li2 = `<li><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(data.x - baseAssets)))}</span></li>`;
-								const li3 = `<li><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(data.y ?? 0))}</span></li>`;
-								const li4 = `<li><span>${t('ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
-
-								return `<ul class="flex-column gap-8 *:h-18 *:text-tiny *:flex-justify-between *:font-medium *:flex-items-center *:gap-16 *:rtl">${li1}${li2}${li3}${li4}</ul>`;
-							},
-						},
-						xaxis: {
-							min: minPrice,
-							max: maxPrice,
-							offsetX: 0,
-							offsetY: 0,
-							tickAmount: 5,
-							axisBorder: {
-								show: false,
-							},
-							axisTicks: {
-								show: false,
-							},
-							labels: {
-								show: !removeBorders,
-								formatter: (value) => toFixed(Number(value), 0),
-							},
-						},
-						yaxis: {
-							show: !removeBorders,
-							min: chartOptions.offset[0] || undefined,
-							max: chartOptions.offset[1] || undefined,
-							floating: false,
-							labels: {
-								formatter: (value) => toFixed(Number(value), 0),
-							},
-						},
-						stroke: {
-							// ! Don't change this: monotoneCubic
-							curve: 'monotoneCubic',
-						},
-						fill: {
-							type: 'gradient',
-							colors,
-							gradient: {
-								shadeIntensity: 0,
-								opacityFrom: 0.7,
-								opacityTo: 0.2,
-							},
-						},
-						grid: {
-							show: !removeBorders,
-						},
-					}}
-					series={series}
-					type='area'
-					width='100%'
-					height={height}
-				/>
+				<div ref={onLoad} />
 
 				{onChange && <PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />}
 
-				{chartOptions.series.length > 0 && chartOptions.series[0].data.length < 2 && (
-					<div className='absolute size-full bg-white center'>
-						<NoData text={t('no_active_contract_found')} />
-					</div>
-				)}
+				{!series.data ||
+					(series.data.length === 0 && (
+						<div className='absolute size-full bg-white center'>
+							<NoData text={t('no_active_contract_found')} />
+						</div>
+					))}
 			</div>
 		</ErrorBoundary>
 	);

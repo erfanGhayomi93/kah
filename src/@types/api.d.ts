@@ -355,15 +355,13 @@ declare namespace Symbol {
 
 	export interface Info {
 		symbolISIN: string;
-		symbolTitle: string;
 		companyISIN: string;
+		symbolTitle: string;
 		companyName: string;
 		insCode: string;
-		exchange: string;
 		lastTradedPrice: number;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
-		yesterdayClosingPrice: number;
 		closingPrice: number;
 		closingPriceVarReferencePrice: number;
 		closingPriceVarReferencePricePercent: number;
@@ -374,17 +372,17 @@ declare namespace Symbol {
 		tradeValue: number;
 		tradeVolume: number;
 		cancellationNAV: number;
-		oneMonthAvgVolume: null | number;
+		oneMonthAvgVolume: number;
 		hv: number;
 		avgIV: number;
 		lastTradeDate: string;
 		openPrice: number;
 		baseVolume: number;
 		tradeCount: number;
-		eps: null | number;
-		pe: null | number;
-		ps: null | number;
-		symbolTradeState: Symbol.TradeState;
+		eps: number;
+		pe: any;
+		ps: number;
+		symbolTradeState: TradeState;
 		individualBuyVolume: number;
 		numberOfIndividualsBuyers: number;
 		individualSellVolume: number;
@@ -393,8 +391,7 @@ declare namespace Symbol {
 		numberOfILegalsBuyers: number;
 		legalSellVolume: number;
 		numberOfLegalsSellers: number;
-		baseSymbolISIN: string;
-		baseSymbolTitle: string;
+		baseSymbolISIN: any;
 		marketUnit: string;
 		notionalValue: number;
 		contractEndDate: string;
@@ -404,6 +401,9 @@ declare namespace Symbol {
 		oneMonthEfficiency: number;
 		threeMonthEfficiency: number;
 		oneYearEfficiency: number;
+		exchange: string;
+		yesterdayClosingPrice: number;
+		baseSymbolTitle: string | null;
 	}
 
 	export interface Search {

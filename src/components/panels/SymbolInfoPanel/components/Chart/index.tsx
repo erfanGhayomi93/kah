@@ -94,6 +94,7 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 							interval={inputs.interval}
 							type={inputs.tab !== 'symbol_chart' ? 'area' : inputs.type}
 							tab={inputs.tab}
+							height={224}
 						/>
 					</div>
 				) : (
