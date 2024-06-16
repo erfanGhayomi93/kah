@@ -358,7 +358,10 @@ const SymbolStrategy = ({
 
 	const onSideChange = () => {
 		if (type === 'option') setFieldValue('side', inputs.side === 'buy' ? 'sell' : 'buy');
-		else toast.warning(t('can_not_change_base_symbol_side'));
+		else
+			toast.warning(t('can_not_change_base_symbol_side'), {
+				toastId: 'can_not_change_base_symbol_side',
+			});
 	};
 
 	useEffect(() => {

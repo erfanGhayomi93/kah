@@ -1,9 +1,9 @@
-import { dateFormatter, numFormatter } from '@/utils/helpers';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import {
 	type Chart,
 	chart,
 	type GradientColorStopObject,
-	type SeriesAreaOptions,
+	type SeriesAreasplineOptions,
 	type SeriesCandlestickOptions,
 } from 'highcharts/highstock';
 
@@ -14,7 +14,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import Radiobox from '../Inputs/Radiobox';
 import Tooltip from '../Tooltip';
 
-type TColors = Record<SymbolChartProps['tab'], { line: string; steps: GradientColorStopObject[] }>;
+type TColors = Record<SymbolChartProps['tab'], { line: string; crosshair: string; steps: GradientColorStopObject[] }>;
 
 type TInterval = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
@@ -64,6 +64,7 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 	const COLORS: TColors = {
 		symbol_chart: {
 			line: 'rgba(0, 87, 255, 1)',
+			crosshair: 'rgba(0, 87, 255, 0.5)',
 			steps: [
 				[0, 'rgba(0, 87, 255, 0.2)'],
 				[1, 'rgba(0, 87, 255, 0)'],
@@ -71,6 +72,7 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		},
 		open_positions: {
 			line: 'rgba(137, 118, 255, 1)',
+			crosshair: 'rgba(137, 118, 255, 0.5)',
 			steps: [
 				[0, 'rgba(137, 118, 255, 0.2)'],
 				[1, 'rgba(137, 118, 255, 0)'],
@@ -78,6 +80,7 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		},
 		notional_value: {
 			line: 'rgba(68, 34, 140, 1)',
+			crosshair: 'rgba(68, 34, 140, 0.5)',
 			steps: [
 				[0, 'rgba(68, 34, 140, 0.2)'],
 				[1, 'rgba(68, 34, 140, 0)'],
@@ -85,7 +88,11 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		},
 	};
 
-	const series: SeriesCandlestickOptions | SeriesAreaOptions = useMemo(() => {
+	const xAxisFormatter = (v: number) => {
+		return dateFormatter(v + 1e3, interval === 'daily' ? 'time' : 'date');
+	};
+
+	const series: SeriesCandlestickOptions | SeriesAreasplineOptions = useMemo(() => {
 		if (type === 'candlestick') {
 			const result: SeriesCandlestickOptions = {
 				lineWidth: 1.5,
@@ -102,15 +109,17 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 			return result;
 		}
 
-		const result: SeriesAreaOptions = {
+		const result: SeriesAreasplineOptions = {
 			color: COLORS[tab].line,
 			lineColor: COLORS[tab].line,
 			fillColor: {
 				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
 				stops: COLORS[tab].steps,
 			},
-			type: 'area',
+			threshold: null,
+			type: 'areaspline',
 			lineWidth: 1.5,
+			connectNulls: true,
 			data: [],
 		};
 
@@ -136,103 +145,30 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		if (!el) return;
 
 		chartRef.current = chart(el, {
-			accessibility: {
-				enabled: true,
-			},
 			chart: {
 				height,
-				zooming: {
-					resetButton: {
-						position: {
-							x: -999,
-							y: -999,
-						},
-					},
-					mouseWheel: {
-						enabled: true,
-						type: 'x',
-					},
-					singleTouch: false,
-				},
-				panning: {
-					enabled: true,
-					type: 'x',
-				},
-			},
-			subtitle: {
-				text: '',
-			},
-			title: {
-				text: '',
 			},
 			tooltip: {
-				followTouchMove: true,
-			},
-			legend: {
-				enabled: false,
-			},
-			credits: {
-				enabled: false,
-			},
-			connectors: {
-				enabled: false,
-			},
-			caption: {
-				text: '',
+				formatter: function () {
+					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
+				},
 			},
 			xAxis: {
 				type: 'datetime',
-				lineColor: 'rgb(226, 231, 237)',
-				endOnTick: false,
-				startOnTick: false,
-				showFirstLabel: true,
-				showLastLabel: true,
-				tickWidth: 0,
-				maxPadding: 0,
-				minPadding: 0,
-				title: {
-					text: '',
+				crosshair: {
+					label: {
+						formatter: (value) => xAxisFormatter(value),
+					},
 				},
 				labels: {
-					align: 'center',
-					rotation: 0,
-					style: {
-						fontFamily: 'IRANSans',
-						fontSize: '11',
-						fontWeight: '400',
-						color: 'rgba(93, 96, 109, 1)',
-					},
-					formatter: ({ value }) => {
-						return dateFormatter(Number(value) + 1e3, interval === 'daily' ? 'time' : 'date');
-					},
+					formatter: ({ value }) => xAxisFormatter(Number(value)),
 				},
 			},
 			yAxis: {
-				type: 'logarithmic',
-				tickAmount: 4,
-				tickWidth: 0,
-				showFirstLabel: true,
-				showLastLabel: true,
-				gridLineColor: 'rgb(226, 231, 237)',
-				title: {
-					text: '',
-				},
+				type: 'linear',
 				labels: {
-					style: {
-						fontFamily: 'IRANSans',
-						fontSize: '11',
-						fontWeight: '400',
-						color: 'rgba(93, 96, 109, 1)',
-					},
 					formatter: ({ value }) => {
 						return numFormatter(Number(value));
-					},
-				},
-			},
-			plotOptions: {
-				area: {
-					marker: {
-						enabled: false,
 					},
 				},
 			},
@@ -254,15 +190,18 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		chartRef.current.update({
 			xAxis: {
 				labels: {
-					formatter: ({ value }) => {
-						return dateFormatter(Number(value) + 1e3, interval === 'daily' ? 'time' : 'date');
+					formatter: ({ value }) => xAxisFormatter(Number(value)),
+				},
+				crosshair: {
+					label: {
+						formatter: (value) => xAxisFormatter(value),
 					},
 				},
 			},
 		});
 	}, [interval]);
 
-	return <div ref={onLoad} className='h-full' />;
+	return <div ref={onLoad} />;
 };
 
 export const SymbolChartInterval = ({ activeInterval, onChange }: SymbolChartIntervalProps) => {

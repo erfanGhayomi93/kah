@@ -101,9 +101,7 @@ const ButtonOrAnchor = ({
 
 	const onMouseEnter = () => {
 		if (sidebarIsExpand) return;
-
 		dispatch(toggleSidebar(true));
-		toggle?.();
 	};
 
 	if ('to' in props) {
