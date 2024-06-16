@@ -20,11 +20,11 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 
-const PerformanceChart = dynamic(() => import('./PerformanceChart'), {
+const AnalyzeChart = dynamic(() => import('@/components/common/Analyze/AnalyzeChart'), {
 	loading: () => <Loading />,
 });
 
-const GreeksTable = dynamic(() => import('./GreeksTable'), {
+const AnalyzeGreeksTable = dynamic(() => import('@/components/common/Analyze/AnalyzeGreeksTable'), {
 	loading: () => <Loading />,
 });
 
@@ -224,7 +224,14 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					render: () => (
 						<div style={{ height: '40rem' }} className='relative py-16'>
 							<ErrorBoundary>
-								<PerformanceChart inputs={inputs} onChange={setFieldsValue} />
+								<AnalyzeChart
+									minPrice={inputs.minPrice}
+									maxPrice={inputs.maxPrice}
+									data={inputs.chartData}
+									baseAssets={inputs.baseAssets}
+									onChange={setFieldsValue}
+									height={320}
+								/>
 							</ErrorBoundary>
 						</div>
 					),
@@ -235,7 +242,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 					render: () => (
 						<div style={{ height: '40rem' }} className='relative py-16'>
 							<ErrorBoundary>
-								<GreeksTable contracts={symbolContracts} />
+								<AnalyzeGreeksTable contracts={symbolContracts} />
 							</ErrorBoundary>
 						</div>
 					),
