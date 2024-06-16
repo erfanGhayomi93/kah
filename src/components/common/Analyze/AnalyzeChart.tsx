@@ -88,6 +88,7 @@ const AnalyzeChart = ({
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
 
+		// TODO: محاسبه سر به سر
 		chartRef.current = chart(el, {
 			chart: {
 				height,
