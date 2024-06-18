@@ -4,7 +4,7 @@ import { numFormatter, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Suspend from '../../common/Suspend';
 
 const OptionContractsChart = dynamic(() => import('./OptionContractsChart'));
@@ -25,8 +25,6 @@ const COLORS: Record<NonNullable<Dashboard.GetOptionContractAdditionalInfo.DataP
 
 const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsContainerProps) => {
 	const t = useTranslations();
-
-	const [dataPointHover, setDataPointHover] = useState<Dashboard.GetOptionContractAdditionalInfo.DataPoint>(null);
 
 	const { data, isLoading } = useGetOptionContractAdditionalInfoQuery({
 		queryKey: ['getOptionContractAdditionalInfoQuery', type],
@@ -93,28 +91,15 @@ const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsConta
 
 	return (
 		<div style={isModal ? { minHeight: '30rem' } : {}} className='relative flex size-full  px-8 ltr'>
-			<OptionContractsChart
-				type={type}
-				basis={basis}
-				data={data}
-				setDataPointHover={(v) => setDataPointHover(v)}
-			/>
+			<OptionContractsChart type={type} basis={basis} data={data} />
 
 			<ul className=' flex-1 justify-center gap-32 rtl flex-column'>
 				{dataMapper.map((item, i) => (
-					<li
-						key={i}
-						className={clsx(
-							'text-base flex-justify-between',
-							item.id === dataPointHover ? 'font-medium' : 'font-normal',
-						)}
-					>
+					<li key={i} className={clsx('text-base flex-justify-between')}>
 						<span className='text-light-gray-700'>{item.title}:</span>
 						<div className='flex gap-8 text-light-gray-800 ltr'>
 							{item.value}
-							<span className={item.id && item.id === dataPointHover ? COLORS[item.id] : ''}>
-								{item.percent}%
-							</span>
+							<span>{item.percent}%</span>
 						</div>
 					</li>
 				))}

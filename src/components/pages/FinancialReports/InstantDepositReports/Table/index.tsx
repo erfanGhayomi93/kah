@@ -46,7 +46,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 	return (
 		<>
 			<div
-				className='overflow-hidden rounded border border-b-light-gray-200 flex-column'
+				className='overflow-hidden rounded flex-column'
 				style={{
 					height: 'calc(100dvh - 23.2rem)',
 					transition: 'height 250ms ease',

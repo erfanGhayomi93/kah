@@ -14,7 +14,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import Radiobox from '../Inputs/Radiobox';
 import Tooltip from '../Tooltip';
 
-type TColors = Record<SymbolChartProps['tab'], { line: string; crosshair: string; steps: GradientColorStopObject[] }>;
+type TColors = Record<SymbolChartProps['tab'], { line: string; steps: GradientColorStopObject[] }>;
 
 type TInterval = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
@@ -64,7 +64,6 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 	const COLORS: TColors = {
 		symbol_chart: {
 			line: 'rgba(0, 87, 255, 1)',
-			crosshair: 'rgba(0, 87, 255, 0.5)',
 			steps: [
 				[0, 'rgba(0, 87, 255, 0.2)'],
 				[1, 'rgba(0, 87, 255, 0)'],
@@ -72,7 +71,6 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		},
 		open_positions: {
 			line: 'rgba(137, 118, 255, 1)',
-			crosshair: 'rgba(137, 118, 255, 0.5)',
 			steps: [
 				[0, 'rgba(137, 118, 255, 0.2)'],
 				[1, 'rgba(137, 118, 255, 0)'],
@@ -80,7 +78,6 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		},
 		notional_value: {
 			line: 'rgba(68, 34, 140, 1)',
-			crosshair: 'rgba(68, 34, 140, 0.5)',
 			steps: [
 				[0, 'rgba(68, 34, 140, 0.2)'],
 				[1, 'rgba(68, 34, 140, 0)'],
@@ -179,23 +176,19 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 	useEffect(() => {
 		if (!chartRef.current) return;
 
-		chartRef.current.update({
-			series: [series],
-		});
+		chartRef.current.series[0].update(series);
 	}, [series]);
 
 	useEffect(() => {
 		if (!chartRef.current) return;
 
-		chartRef.current.update({
-			xAxis: {
-				labels: {
-					formatter: ({ value }) => xAxisFormatter(Number(value)),
-				},
-				crosshair: {
-					label: {
-						formatter: (value) => xAxisFormatter(value),
-					},
+		chartRef.current.xAxis[0].update({
+			labels: {
+				formatter: ({ value }) => xAxisFormatter(Number(value)),
+			},
+			crosshair: {
+				label: {
+					formatter: (value) => xAxisFormatter(value),
 				},
 			},
 		});

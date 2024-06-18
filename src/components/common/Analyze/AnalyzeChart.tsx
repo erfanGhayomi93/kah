@@ -128,7 +128,6 @@ const AnalyzeChart = ({
 		const lastPoint = points[1];
 
 		// ? 𝑦 = 𝑚𝑥 + 𝑏
-
 		const m = (lastPoint.y - firstPoint.y) / (lastPoint.x - firstPoint.x);
 		const b = firstPoint.y - m * firstPoint.x;
 		const x = -b / m;

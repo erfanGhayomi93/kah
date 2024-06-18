@@ -87,6 +87,13 @@ export const setupChart = () => {
 					enabled: false,
 				},
 			},
+			pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: false,
+				},
+			},
 		},
 		xAxis: {
 			lineColor: 'rgb(226, 231, 237)',
