@@ -1,4 +1,5 @@
 import { store } from '@/api/inject-store';
+import ipcMain from '@/classes/IpcMain';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
@@ -60,6 +61,8 @@ const logoutUser = () => {
 		store.dispatch({ payload: false, type: 'user/setIsLoggedIn' });
 		store.dispatch({ payload: false, type: 'user/setBrokerIsSelected' });
 		store.dispatch({ payload: null, type: 'broker/setBrokerURLs' });
+
+		ipcMain.send('broker:logged_out', undefined);
 
 		const clientId = getClientId();
 		deleteBrokerClientId();
