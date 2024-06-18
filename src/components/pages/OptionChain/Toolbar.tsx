@@ -56,8 +56,8 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 				<div className='h-56 gap-8 overflow-hidden flex-items-center'>
 					{isFetching ? (
 						<>
-							<div className='skeleton h-40 w-88 rounded' />
-							<div className='skeleton h-40 w-88 rounded' />
+							<div className='h-40 w-88 rounded skeleton' />
+							<div className='h-40 w-88 rounded skeleton' />
 						</>
 					) : (
 						<ul className='flex gap-8 overflow-auto'>
@@ -76,10 +76,10 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 
 			{Boolean(inputs.baseSymbol) && (
 				<div className='gap-8 flex-items-center'>
-					<div className='h-40 rounded bg-gray-200 px-8 flex-items-center'>
-						<span className='gap-8 whitespace-nowrap text-base text-gray-900 flex-items-center'>
+					<div className='bg-light-gray-100 h-40 rounded px-8 flex-items-center'>
+						<span className='text-light-gray-700 gap-8 whitespace-nowrap text-base flex-items-center'>
 							{t('option_chain.total_open_contracts')}:
-							<span className='font-medium text-gray-1000'>
+							<span className='text-light-gray-800 font-medium'>
 								{sepNumbers(String(totalOpenPositionCount))}
 							</span>
 						</span>
@@ -111,7 +111,7 @@ export const SettlementItem = ({ activeSettlementDay, settlementDay, setSettleme
 					'h-40 w-88 rounded !border transition-colors',
 					settlementDay?.contractEndDate === activeSettlementDay?.contractEndDate
 						? 'no-hover font-medium btn-select'
-						: 'border-gray-500 text-gray-900 hover:btn-hover',
+						: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
 				)}
 			>
 				{dateFormatter(settlementDay.contractEndDate)}

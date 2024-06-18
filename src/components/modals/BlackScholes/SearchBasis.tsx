@@ -11,7 +11,7 @@ const SearchBasis = ({ value, onChange }: SearchBasisProps) => {
 
 	return (
 		<div className='flex gap-32 pt-20 text-base'>
-			<span className='text-gray-900'>{t('black_scholes_modal.search_basis')}:</span>
+			<span className='text-light-gray-700'>{t('black_scholes_modal.search_basis')}:</span>
 
 			<Radiobox
 				checked={value === 'base'}

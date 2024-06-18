@@ -18,7 +18,7 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 	init(params: OptionActionCellProps) {
 		this.params = params;
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center text-gray-900 gap-8');
+		this.eGui.setAttribute('class', 'flex-justify-center text-light-gray-700 gap-8');
 
 		this.eGui.appendChild(this.collateralBtn());
 		this.eGui.appendChild(this.closePositionBtn());
@@ -65,7 +65,7 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 		const isDisabled = this.isSwapDisabled;
 
 		if (isDisabled) {
-			this.eCollateral.classList.add('text-gray-700');
+			this.eCollateral.classList.add('text-light-gray-500');
 			this.eCollateral.disabled = true;
 		} else {
 			this.eCollateral.disabled = false;

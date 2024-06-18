@@ -40,8 +40,8 @@ const Columns = ({ close }: ColumnsProps) => {
 
 	return (
 		<>
-			<div className='sticky top-0 z-10 h-56 w-full bg-gray-200 px-24 flex-justify-between'>
-				<h1 className='text-xl font-medium text-gray-900'>{manageColumns?.title}</h1>
+			<div className='bg-light-gray-100 sticky top-0 z-10 h-56 w-full px-24 flex-justify-between'>
+				<h1 className='text-light-gray-700 text-xl font-medium'>{manageColumns?.title}</h1>
 
 				<div className='flex gap-24'>
 					{manageColumns?.onReset && (
@@ -65,8 +65,8 @@ const Columns = ({ close }: ColumnsProps) => {
 							className={clsx(
 								'h-40 rounded transition-colors flex-justify-center',
 								col.hidden
-									? 'bg-white text-gray-900 shadow-sm hover:shadow-none hover:btn-hover'
-									: 'bg-primary-400 text-white hover:bg-primary-300',
+									? 'text-light-gray-700 bg-white shadow-sm hover:shadow-none hover:btn-hover'
+									: 'hover:bg-light-primary-100 bg-light-primary-100 text-white',
 							)}
 						>
 							{col.title}

@@ -1,32 +1,24 @@
 import Tooltip from '@/components/common/Tooltip';
 import Collapse from '@/components/common/animation/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
+import { useAppDispatch } from '@/features/hooks';
 import { toggleSidebar } from '@/features/slices/uiSlice';
-import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
 import { Link, usePathname } from '@/navigation';
-import { cn } from '@/utils/helpers';
-import { createSelector } from '@reduxjs/toolkit';
+import clsx from 'clsx';
 import { memo, useMemo } from 'react';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
-	items: TListItem[];
+	items?: TListItem[];
 	isExpand?: boolean;
+	onClick?: () => void;
 }
 
 interface IListAnchor {
 	to: string;
 }
 
-interface IListModal {
-	isModal: boolean;
-}
-
-export type TListItem = (IListButton | IListAnchor | IListModal) & {
+export type TListItem = (IListButton | IListAnchor) & {
 	id: string;
 	label: string;
 	icon?: JSX.Element;
@@ -36,121 +28,106 @@ export type TListItem = (IListButton | IListAnchor | IListModal) & {
 
 type ItemProps = TListItem & {
 	sidebarIsExpand: boolean;
-	onClick?: (tagName: TListItem['id']) => void;
 	toggle?: () => void;
 };
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isLoggedIn: getIsLoggedIn(state),
-		brokerIsSelected: getBrokerIsSelected(state),
-		brokerURLs: getBrokerURLs(state),
-	}),
-);
+type ButtonOrAnchorProps = TListItem & {
+	isExpand: boolean;
+	sidebarIsExpand: boolean;
+	toggle?: () => void;
+};
 
-const Item = ({ id, label, icon, disabled, sidebarIsExpand, toggle, onClick, ...props }: ItemProps) => {
+const Item = ({ id, label, icon, disabled, sidebarIsExpand, toggle, ...props }: ItemProps) => {
 	const pathname = usePathname();
 
-	const dispatch = useAppDispatch();
-
-	const { isLoggedIn, brokerIsSelected } = useAppSelector(getStates);
-
-	const onAuthorizing = () => {
-		if (!isLoggedIn) {
-			dispatch(setLoginModal({ showForceLoginAlert: true }));
-		}
-
-		if (!brokerIsSelected && isLoggedIn) {
-			dispatch(setChoiceBrokerModal({}));
-		}
+	const compare = (p1: string, p2: string): boolean => {
+		return p1.replace(/^\/+|\/+$/g, '') === p2.replace(/^\/+|\/+$/g, '');
 	};
 
 	const isActive = useMemo(() => {
-		if ('to' in props) return props.to === pathname;
+		if ('to' in props) return compare(props.to, pathname);
 
 		if ('isModal' in props) return false;
 
-		return !sidebarIsExpand && props.items.findIndex((item) => 'to' in item && item.to === pathname) > -1;
-	}, [pathname, sidebarIsExpand]);
-
-	const conditionalsAnchor = () => {
-		const isAuthorize = isLoggedIn && brokerIsSelected;
-
-		if (('to' in props && !props.isBroker) || ('to' in props && isAuthorize)) {
-			return (
-				<Link onMouseEnter={onMouseEnter} onClick={() => onClick?.('a')} href={props.to}>
-					{icon}
-					<span>{label}</span>
-				</Link>
-			);
-		}
-		if ('to' in props && props.isBroker) {
-			return (
-				<button type='button' onMouseEnter={onMouseEnter} onClick={onAuthorizing}>
-					{icon}
-					<span>{label}</span>
-				</button>
-			);
-		}
-
-		if ('isModal' in props) {
-			return (
-				<button type='button' onMouseEnter={onMouseEnter} onClick={() => onClick?.(id)}>
-					{icon}
-					<span>{label}</span>
-				</button>
-			);
-		}
-
 		return (
-			<button
-				onMouseEnter={onMouseEnter}
-				onClick={() => {
-					toggle?.();
-					onClick?.('button');
-				}}
-			>
-				{icon}
-				<span>{label}</span>
-				{hasDropdown && <ArrowDownSVG style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }} />}
-			</button>
+			!sidebarIsExpand &&
+			Array.isArray(props.items) &&
+			props.items.findIndex((item) => 'to' in item && compare(item.to, pathname)) > -1
 		);
-	};
-
-	const onMouseEnter = () => {
-		if (sidebarIsExpand) return;
-
-		dispatch(toggleSidebar(true));
-		toggle?.();
-	};
-
-	const hasDropdown = 'items' in props && props.items.length > 0;
+	}, [pathname, sidebarIsExpand]);
 
 	const isExpand = Boolean('isExpand' in props && props.isExpand);
 
 	return (
 		<Tooltip disabled={sidebarIsExpand} placement='left' content={label} animation={false}>
-			<li className={cn(isExpand && styles.expand, isActive && styles.active)}>
-				{conditionalsAnchor()}
+			<li className={clsx(isExpand && styles.expand, isActive && styles.active)}>
+				<ButtonOrAnchor
+					id={id}
+					label={label}
+					icon={icon}
+					disabled={disabled}
+					isExpand={isExpand}
+					sidebarIsExpand={sidebarIsExpand}
+					toggle={toggle}
+					{...props}
+				/>
 
-				{hasDropdown && (
+				{'items' in props && Array.isArray(props.items) && props.items.length > 0 && (
 					<Collapse padding={16} enabled={sidebarIsExpand && isExpand}>
-						<ul className={cn(styles.list, isExpand && styles.expand)}>
+						<ul className={clsx(styles.list, isExpand && styles.expand)}>
 							{props.items.map((item, i) => (
-								<Item
-									sidebarIsExpand={sidebarIsExpand}
-									key={i}
-									toggle={toggle}
-									onClick={onClick}
-									{...item}
-								/>
+								<Item sidebarIsExpand={sidebarIsExpand} key={i} toggle={toggle} {...item} />
 							))}
 						</ul>
 					</Collapse>
 				)}
 			</li>
 		</Tooltip>
+	);
+};
+
+const ButtonOrAnchor = ({
+	id,
+	label,
+	icon,
+	disabled,
+	isBroker,
+	isExpand,
+	sidebarIsExpand,
+	toggle,
+	...props
+}: ButtonOrAnchorProps) => {
+	const dispatch = useAppDispatch();
+
+	const onMouseEnter = () => {
+		if (sidebarIsExpand) return;
+		dispatch(toggleSidebar(true));
+	};
+
+	if ('to' in props) {
+		return (
+			<Link href={props.to} onMouseEnter={onMouseEnter}>
+				{icon}
+				<span>{label}</span>
+			</Link>
+		);
+	}
+
+	return (
+		<button
+			type='button'
+			onMouseEnter={onMouseEnter}
+			onClick={() => {
+				if (typeof props?.onClick === 'function') props.onClick();
+				else toggle?.();
+			}}
+		>
+			{icon}
+			<span>{label}</span>
+			{Array.isArray(props.items) && props.items.length > 0 && (
+				<ArrowDownSVG style={{ transform: `rotate(${isExpand ? 180 : 0}deg)` }} />
+			)}
+		</button>
 	);
 };
 

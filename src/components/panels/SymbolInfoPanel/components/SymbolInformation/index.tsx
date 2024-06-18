@@ -7,7 +7,7 @@ import { useTradingFeatures } from '@/hooks';
 import { Link } from '@/navigation';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import ToggleSymbolSelect from './ToggleSymbolSelect';
+import SymbolSearchToggler from './SymbolSearchToggler';
 
 interface SymbolInformationProps {
 	symbolData: Symbol.Info;
@@ -55,7 +55,7 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 	return (
 		<div className='gap-8 overflow-hidden rounded bg-white px-8 py-16 flex-column'>
 			<div className='flex items-start justify-between'>
-				<ToggleSymbolSelect symbolData={symbolData} />
+				<SymbolSearchToggler symbolData={symbolData} />
 
 				<div className='gap-8 overflow-hidden flex-items-center'>
 					<Link
@@ -73,22 +73,22 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 
 			<div className='h-40 gap-8 flex-justify-between'>
 				<div className='w-1/2 gap-8 flex-justify-start'>
-					<span className='whitespace-nowrap text-tiny text-gray-900'>
+					<span className='whitespace-nowrap text-tiny text-light-gray-700'>
 						{t('symbol_info_panel.last_traded_price')}:
 					</span>
 
-					<div className='text-base font-medium text-gray-1000 ltr'>
+					<div className='text-base font-medium text-light-gray-800 ltr'>
 						<span> {sepNumbers(String(lastTradedPrice ?? 0))} </span>
 						<span>({sepNumbers(String(tradePriceVarPreviousTradePercent ?? 0))}%)</span>
 					</div>
 				</div>
 
 				<div className='w-1/2 gap-8 flex-justify-end'>
-					<span className='whitespace-nowrap text-tiny text-gray-900'>
+					<span className='whitespace-nowrap text-tiny text-light-gray-700'>
 						{t('symbol_info_panel.closing_price')}:
 					</span>
 
-					<div className='text-tiny font-medium text-gray-1000 ltr'>
+					<div className='text-tiny font-medium text-light-gray-800 ltr'>
 						<span>{sepNumbers(String(closingPrice ?? 0))} </span>
 						<span>({sepNumbers(String(closingPriceVarReferencePricePercent ?? 0))}%)</span>
 					</div>

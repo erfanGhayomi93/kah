@@ -27,8 +27,8 @@ interface SymbolInfoProps {
 
 const ListItem = ({ title, valueFormatter }: Item) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='whitespace-nowrap text-base text-gray-900'>{title}</span>
-		<span className='text-base font-medium text-gray-1000 ltr'>
+		<span className='whitespace-nowrap text-base text-light-gray-700'>{title}</span>
+		<span className='text-base font-medium text-light-gray-800 ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
 	</div>
@@ -112,7 +112,9 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 							<span
 								className={cn(
 									'gap-4 flex-items-center',
-									closingPriceVarReferencePricePercent >= 0 ? 'text-success-200' : 'text-error-200',
+									closingPriceVarReferencePricePercent >= 0
+										? 'text-light-success-100'
+										: 'text-light-error-100',
 								)}
 							>
 								{sepNumbers(String(closingPrice))}
@@ -186,7 +188,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
-			<span className='absolute text-base font-medium text-gray-900 center'>
+			<span className='absolute text-base font-medium text-light-gray-700 center'>
 				{t('old_option_chain.no_data_found')}
 			</span>
 		);
@@ -206,14 +208,16 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				<div className='justify-between pl-16 pr-24 flex-items-center'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
+						<h1 className='text-3xl font-medium text-light-gray-800'>{symbolTitle}</h1>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
 						<span
 							className={cn(
 								'gap-4 flex-items-center',
-								closingPriceVarReferencePricePercent >= 0 ? 'text-success-100' : 'text-error-100',
+								closingPriceVarReferencePricePercent >= 0
+									? 'text-light-success-100'
+									: 'text-light-error-100',
 							)}
 						>
 							<span className='flex items-center text-tiny ltr'>
@@ -230,20 +234,20 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 						<span
 							className={cn(
 								'flex items-center gap-4 text-4xl font-bold',
-								closingPriceVarReferencePrice >= 0 ? 'text-success-200' : 'text-error-200',
+								closingPriceVarReferencePrice >= 0 ? 'text-light-success-100' : 'text-light-error-100',
 							)}
 						>
 							{sepNumbers(String(lastTradedPrice ?? 0))}
-							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
+							<span className='text-base font-normal text-light-gray-700'>{t('common.rial')}</span>
 						</span>
 
-						<button type='button' className='size-24 text-gray-1000'>
+						<button type='button' className='size-24 text-light-gray-800'>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>
 					</div>
 				</div>
 
-				<h4 className='whitespace-nowrap pr-44 text-tiny text-gray-1000'>{companyName}</h4>
+				<h4 className='whitespace-nowrap pr-44 text-tiny text-light-gray-800'>{companyName}</h4>
 			</div>
 
 			<div className='gap-16 px-24 pb-48 pt-32 flex-justify-between'>
@@ -265,7 +269,10 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 			<ul className='flex px-24 flex-column'>
 				{symbolDetails.map(([firstItem, secondItem], i) => (
-					<li key={firstItem.id} className={cn('h-32 gap-16 flex-justify-between', i % 2 && 'bg-gray-200')}>
+					<li
+						key={firstItem.id}
+						className={cn('h-32 gap-16 flex-justify-between', i % 2 && 'bg-light-gray-100')}
+					>
 						<ListItem {...firstItem} />
 						<ListItem {...secondItem} />
 					</li>

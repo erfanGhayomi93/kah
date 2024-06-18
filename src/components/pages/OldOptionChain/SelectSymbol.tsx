@@ -80,7 +80,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 
 		if (!Array.isArray(symbolsData) || symbolsData.length === 0)
 			return (
-				<span className='absolute text-base font-medium text-gray-900 center'>
+				<span className='text-light-gray-700 absolute text-base font-medium center'>
 					{t('common.symbol_not_found')}
 				</span>
 			);
@@ -93,8 +93,8 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 							className={cn(
 								'border transition-colors',
 								symbol.symbolISIN === selectedSymbol
-									? 'border-primary-400 bg-primary-400 text-white hover:bg-primary-300'
-									: 'hover:btn-hover border-gray-500 text-gray-1000 shadow-sm hover:shadow-none',
+									? 'hover:bg-light-primary-100 border-light-primary-100 bg-light-primary-100 text-white'
+									: 'text-light-gray-800 border-light-gray-200 shadow-sm hover:shadow-none hover:btn-hover',
 							)}
 							onClick={() => setSelectedSymbol(symbol.symbolISIN)}
 							type='button'
@@ -116,7 +116,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 					style={{ maxWidth: '30rem' }}
 					className='relative h-40 flex-1 rounded flex-items-center input-group'
 				>
-					<div className='px-8 text-gray-900'>
+					<div className='text-light-gray-700 px-8'>
 						<SearchSVG width='2rem' height='2rem' />
 					</div>
 
@@ -139,7 +139,7 @@ const SelectSymbol = ({ selectedSymbol, setSelectedSymbol }: SelectSymbolProps) 
 				</label>
 
 				<div className='gap-8 flex-items-center'>
-					<span className='text-base text-gray-900'>{t('old_option_chain.sort_based_on')}:</span>
+					<span className='text-light-gray-700 text-base'>{t('old_option_chain.sort_based_on')}:</span>
 					<div style={{ width: '17.6rem' }} className='flex flex-1 justify-end'>
 						<Select<TSelectOptions>
 							defaultValue={sorting}

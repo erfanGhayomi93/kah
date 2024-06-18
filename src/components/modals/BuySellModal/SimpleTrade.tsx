@@ -32,7 +32,7 @@ const Percents = ({ side, onClick }: PercentsProps) => {
 					<button
 						key={p}
 						type='button'
-						className='h-28 flex-1 leading-8 text-gray-1000 flex-justify-center gray-box'
+						className='h-28 flex-1 leading-8 text-light-gray-800 flex-justify-center gray-box'
 						onClick={() => onClick(p / 100)}
 					>
 						{p}%
@@ -126,14 +126,14 @@ const SimpleTrade = ({
 					defaultActiveTab={side}
 					classes={{
 						root: 'bg-white',
-						rect: side === 'buy' ? 'bg-success-100' : 'bg-error-100',
+						rect: side === 'buy' ? 'bg-light-success-100' : 'bg-light-error-100',
 					}}
 					onChangeTab={(tabId) => setInputValue('side', tabId as TBsSides)}
 					renderTab={(item, activeTab) => (
 						<button
 							className={cn(
 								'h-full flex-1 transition-colors',
-								item.id === activeTab ? 'font-medium text-white' : 'text-gray-700',
+								item.id === activeTab ? 'font-medium text-white' : 'text-light-gray-500',
 							)}
 							type='button'
 							disabled={item.disabled}
@@ -182,8 +182,8 @@ const SimpleTrade = ({
 							className={cn(
 								'h-full rounded border transition-colors flex-justify-center',
 								priceLock
-									? 'border-primary-400 bg-secondary-100 text-primary-400'
-									: 'border-gray-500 bg-white text-gray-900 hover:btn-hover',
+									? 'border-light-primary-100 bg-light-secondary-200 text-light-primary-100'
+									: 'border-light-gray-200 bg-white text-light-gray-700 hover:btn-hover',
 							)}
 							type='button'
 							onClick={() => setInputValue('priceLock', !priceLock)}
@@ -199,12 +199,12 @@ const SimpleTrade = ({
 
 				<div className='gap-8 flex-column'>
 					<div className='h-40 gap-8 px-8 flex-justify-between gray-box'>
-						<span className='whitespace-nowrap text-base text-gray-900'>
+						<span className='whitespace-nowrap text-base text-light-gray-700'>
 							{t('bs_modal.trade_value_label')}
 						</span>
 
-						<span className='truncate whitespace-nowrap text-left text-tiny text-gray-900'>
-							<span className='pl-4 text-base font-medium text-gray-1000 ltr'>
+						<span className='truncate whitespace-nowrap text-left text-tiny text-light-gray-700'>
+							<span className='pl-4 text-base font-medium text-light-gray-800 ltr'>
 								{sepNumbers(String(value))}
 							</span>
 							{t('common.rial')}
@@ -229,13 +229,13 @@ const SimpleTrade = ({
 
 			<div className='gap-24 flex-column'>
 				<div className='flex-justify-between'>
-					<span className='gap-8 text-base text-gray-900 flex-items-center'>
+					<span className='gap-8 text-base text-light-gray-700 flex-items-center'>
 						{t('bs_modal.total_amount')}:
 						<InfoCircleSVG className='text-secondary-300' width='1.6rem' height='1.6rem' />
 					</span>
 
-					<span className='truncate whitespace-nowrap text-left text-tiny text-gray-900'>
-						<span className='pl-4 text-base font-medium text-gray-1000 ltr'>
+					<span className='truncate whitespace-nowrap text-left text-tiny text-light-gray-700'>
+						<span className='pl-4 text-base font-medium text-light-gray-800 ltr'>
 							{sepNumbers(String(rialToToman(price * quantity)))}
 						</span>
 						{t('common.toman')}
@@ -247,7 +247,7 @@ const SimpleTrade = ({
 						<button
 							onClick={createDraft}
 							type='button'
-							className='h-40 rounded border border-secondary-300 bg-white px-16 text-base text-secondary-300'
+							className='border-secondary-300 text-secondary-300 h-40 rounded border bg-white px-16 text-base'
 						>
 							{t('bs_modal.draft')}
 						</button>
@@ -256,7 +256,7 @@ const SimpleTrade = ({
 					<Button
 						type='submit'
 						className={cn(
-							'h-40 flex-1 rounded text-base font-medium not',
+							'not h-40 flex-1 rounded text-base font-medium',
 							side === 'buy' ? 'btn-success' : 'btn-error',
 						)}
 						loading={submitting}

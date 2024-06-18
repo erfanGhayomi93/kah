@@ -69,7 +69,7 @@ const Form = () => {
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
 				<div className='gap-8 flex-column'>
-					<span className='flex-1 font-medium text-gray-1000'>
+					<span className='flex-1 font-medium text-light-gray-800'>
 						{t('option_watchlist_filters_modal.base_symbol')}
 					</span>
 					<BaseSymbolAdvanceSearch
@@ -80,7 +80,7 @@ const Form = () => {
 
 				<ul className='gap-32 flex-column'>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 font-medium text-gray-1000'>
+						<span className='flex-1 font-medium text-light-gray-800'>
 							{t('option_watchlist_filters_modal.type')}:
 						</span>
 						<InputWrapper>
@@ -88,7 +88,7 @@ const Form = () => {
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-1000'>
+						<span className='flex-1 whitespace-nowrap font-medium text-light-gray-800'>
 							{t('option_watchlist_filters_modal.status')}:
 						</span>
 						<InputWrapper>
@@ -96,7 +96,7 @@ const Form = () => {
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-1000'>
+						<span className='flex-1 whitespace-nowrap font-medium text-light-gray-800'>
 							{t('option_watchlist_filters_modal.end_date')}:
 						</span>
 						<InputWrapper>
@@ -107,7 +107,7 @@ const Form = () => {
 						</InputWrapper>
 					</li>
 					<li className='h-40 flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-1000'>
+						<span className='flex-1 whitespace-nowrap font-medium text-light-gray-800'>
 							{t('option_watchlist_filters_modal.delta')}:
 						</span>
 						<InputWrapper>
@@ -115,7 +115,7 @@ const Form = () => {
 						</InputWrapper>
 					</li>
 					<li className='flex-justify-between'>
-						<span className='flex-1 whitespace-nowrap font-medium text-gray-1000'>
+						<span className='flex-1 whitespace-nowrap font-medium text-light-gray-800'>
 							{t('option_watchlist_filters_modal.minimum_trades_value')}:
 						</span>
 						<InputWrapper>
@@ -136,8 +136,8 @@ const Form = () => {
 					className={cn(
 						'h-40 rounded',
 						clearButtonIsDisabled
-							? 'text-gray-700'
-							: 'font-medium text-error-200 transition-colors hover:text-error-100/80',
+							? 'text-light-gray-500'
+							: 'font-medium text-light-error-100 transition-colors hover:text-light-error-100/80',
 					)}
 				>
 					{t('common.clear_all')}

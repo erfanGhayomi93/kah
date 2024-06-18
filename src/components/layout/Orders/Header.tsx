@@ -151,14 +151,16 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 							type='button'
 							className={cn(
 								'h-40 gap-10 rounded px-12 transition-colors flex-justify-center',
-								tab === order.id ? 'bg-secondary-100 text-gray-1000' : 'text-gray-700',
+								tab === order.id ? 'text-light-gray-800 bg-light-secondary-200' : 'text-light-gray-500',
 							)}
 						>
 							{order.title}
 							<span
 								className={clsx(
 									'h-22 min-w-22 rounded-oval text-tiny transition-colors flex-justify-center',
-									tab === order.id ? 'bg-primary-400 text-white' : 'bg-gray-400 text-gray-700',
+									tab === order.id
+										? 'bg-light-primary-100 text-white'
+										: 'bg-light-gray-400 text-light-gray-500',
 								)}
 							>
 								{order.count}

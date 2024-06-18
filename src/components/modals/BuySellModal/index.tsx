@@ -185,7 +185,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 						<div
 							className={cn(
 								'relative w-full flex-1 overflow-hidden',
-								inputs.expand && 'border-l border-l-gray-500',
+								inputs.expand && 'border-l border-l-light-gray-200',
 							)}
 						>
 							{inputs.expand && (

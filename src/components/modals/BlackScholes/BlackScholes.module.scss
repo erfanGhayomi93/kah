@@ -20,15 +20,15 @@
 	align-items: center;
 
 	&.green {
-		@apply bg-success-100/5;
+		@apply bg-light-success-100/5;
 	}
 
 	&.red {
-		@apply bg-error-100/5;
+		@apply bg-light-error-100/5;
 	}
 
 	&.gray {
-		@apply bg-gray-200;
+		@apply bg-light-gray-100;
 	}
 }
 

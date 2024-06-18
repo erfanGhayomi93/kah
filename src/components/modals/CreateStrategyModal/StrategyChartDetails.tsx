@@ -66,13 +66,13 @@ const StrategyChartDetails = ({
 	});
 
 	return (
-		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-gray-500 py-16'>
+		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-light-gray-200 py-16'>
 			<ul
 				style={{ flex: '0 0 22rem' }}
-				className='justify-between text-gray-900 ltr flex-column *:flex-justify-between'
+				className='justify-between text-light-gray-700 ltr flex-column *:flex-justify-between'
 			>
 				<li>
-					<span className='font-medium text-success-100'>{t('profit')}</span>
+					<span className='font-medium text-light-success-100'>{t('profit')}</span>
 					<span>:{t('current_status')}</span>
 				</li>
 				<li>
@@ -84,7 +84,7 @@ const StrategyChartDetails = ({
 					<span>:{t('most_loss')}</span>
 				</li>
 				<li>
-					<span className='font-medium text-success-100'>({sepNumbers('2075')})</span>
+					<span className='font-medium text-light-success-100'>({sepNumbers('2075')})</span>
 					<span>:{t('most_profit')}</span>
 				</li>
 			</ul>

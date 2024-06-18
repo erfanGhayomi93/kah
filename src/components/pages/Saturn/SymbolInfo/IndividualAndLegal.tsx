@@ -7,7 +7,17 @@ interface IndividualAndLegalProps {
 }
 
 const IndividualAndLegal = ({
-	symbol: { legalBuyVolume, legalSellVolume, individualSellVolume, individualBuyVolume, closingPrice },
+	symbol: {
+		legalBuyVolume,
+		legalSellVolume,
+		individualSellVolume,
+		individualBuyVolume,
+		numberOfILegalsBuyers,
+		numberOfIndividualsBuyers,
+		numberOfIndividualsSellers,
+		numberOfLegalsSellers,
+		closingPrice,
+	},
 }: IndividualAndLegalProps) => {
 	const t = useTranslations('saturn_page');
 
@@ -15,21 +25,21 @@ const IndividualAndLegal = ({
 
 	return (
 		<div className='flex w-full'>
-			<div className='flex-1 gap-24 border-l border-gray-500 pl-16 flex-column'>
+			<div className='flex-1 gap-24 border-l border-light-gray-200 pl-16 flex-column'>
 				<Progressbar
 					buyVolume={individualBuyVolume}
-					buyCount={0}
+					buyCount={numberOfIndividualsBuyers}
 					sellVolume={individualSellVolume}
-					sellCount={0}
+					sellCount={numberOfIndividualsSellers}
 					title={t('individual')}
 					totalVolume={legalBuyVolume + individualBuyVolume}
 				/>
 
 				<Progressbar
 					buyVolume={legalBuyVolume}
-					buyCount={0}
+					buyCount={numberOfILegalsBuyers}
 					sellVolume={legalSellVolume}
-					sellCount={0}
+					sellCount={numberOfLegalsSellers}
 					title={t('legal')}
 					totalVolume={legalSellVolume + individualSellVolume}
 				/>
@@ -37,10 +47,10 @@ const IndividualAndLegal = ({
 
 			<div className='flex-1 justify-between flex-column'>
 				<div className='pr-16 text-tiny flex-justify-between'>
-					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
 						{t(inflowAndOutflow < 0 ? 'liquid_inflow' : 'liquid_outflow')}
 					</span>
-					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
 						{numFormatter(Math.abs(inflowAndOutflow))}
 					</span>
 				</div>

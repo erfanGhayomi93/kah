@@ -15,7 +15,16 @@ interface IndividualAndLegalProps {
 }
 
 const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
-	const { legalBuyVolume, legalSellVolume, individualBuyVolume, individualSellVolume } = symbolData;
+	const {
+		legalBuyVolume,
+		legalSellVolume,
+		individualBuyVolume,
+		individualSellVolume,
+		numberOfILegalsBuyers,
+		numberOfIndividualsBuyers,
+		numberOfIndividualsSellers,
+		numberOfLegalsSellers,
+	} = symbolData;
 
 	const t = useTranslations('symbol_info_panel');
 
@@ -36,27 +45,27 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 			<div className='gap-24 px-8 py-16 flex-column'>
 				<Progressbar
 					buyVolume={individualBuyVolume}
-					buyCount={0}
+					buyCount={numberOfIndividualsBuyers}
 					sellVolume={individualSellVolume}
-					sellCount={0}
+					sellCount={numberOfIndividualsSellers}
 					title={t('individual')}
 					totalVolume={legalBuyVolume + individualBuyVolume}
 				/>
 
 				<Progressbar
 					buyVolume={legalBuyVolume}
-					buyCount={0}
+					buyCount={numberOfILegalsBuyers}
 					sellVolume={legalSellVolume}
-					sellCount={0}
+					sellCount={numberOfLegalsSellers}
 					title={t('legal')}
 					totalVolume={legalSellVolume + individualSellVolume}
 				/>
 
 				<div className='text-tiny flex-justify-between'>
-					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
 						{t(inflowAndOutflow < 0 ? 'liquid_inflow' : 'liquid_outflow')}
 					</span>
-					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
 						{numFormatter(Math.abs(inflowAndOutflow))}
 					</span>
 				</div>

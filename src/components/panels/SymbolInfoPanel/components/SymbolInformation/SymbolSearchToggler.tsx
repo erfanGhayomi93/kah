@@ -6,18 +6,18 @@ import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useState } from 'react';
 
-interface ToggleSymbolSelectProps {
+interface SymbolSearchTogglerProps {
 	symbolData: Symbol.Info;
 }
 
-const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
+const SymbolSearchToggler = ({ symbolData }: SymbolSearchTogglerProps) => {
 	const dispatch = useAppDispatch();
 
-	const [isToggleActive, setIsToggleActive] = useState(false);
+	const [isSearching, setIsSearching] = useState(false);
 
 	const onChangeSymbol = (value: Symbol.Search | null) => {
 		if (value?.symbolISIN) dispatch(setSymbolInfoPanel(value.symbolISIN));
-		setIsToggleActive(false);
+		setIsSearching(false);
 	};
 
 	return (
@@ -25,15 +25,15 @@ const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
 			<div className='gap-8 flex-items-center'>
 				<SymbolState state={symbolData.symbolTradeState} />
 
-				<div className='cursor-pointer gap-8 flex-items-center' onClick={() => setIsToggleActive(true)}>
-					<div className='text-gray-900'>
+				<div className='cursor-pointer gap-8 flex-items-center' onClick={() => setIsSearching(true)}>
+					<div className='text-light-gray-700'>
 						<SearchSVG width='2rem' height='2rem' />
 					</div>
 
-					<h1 className='text-lg font-medium text-gray-1000'>{symbolData.symbolTitle}</h1>
+					<h1 className='text-lg font-medium text-light-gray-800'>{symbolData.symbolTitle}</h1>
 
-					{isToggleActive && (
-						<Click onClickOutside={() => setIsToggleActive(false)}>
+					{isSearching && (
+						<Click onClickOutside={() => setIsSearching(false)}>
 							<div style={{ width: '18rem' }} className='absolute bg-white'>
 								<SymbolSearch
 									clearable
@@ -49,9 +49,9 @@ const ToggleSymbolSelect = ({ symbolData }: ToggleSymbolSelectProps) => {
 					)}
 				</div>
 			</div>
-			<h2 className='pr-16 text-tiny text-gray-900'>{symbolData.companyName}</h2>
+			<h2 className='pr-16 text-tiny text-light-gray-700'>{symbolData.companyName}</h2>
 		</div>
 	);
 };
 
-export default ToggleSymbolSelect;
+export default SymbolSearchToggler;

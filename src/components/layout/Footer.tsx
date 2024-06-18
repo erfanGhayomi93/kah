@@ -57,21 +57,21 @@ const Footer = () => {
 							type='button'
 							onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
 							className={clsx(
-								'h-full gap-8 px-16 text-base text-gray-1000 transition-colors flex-justify-center',
-								ordersIsExpand ? 'bg-secondary-100' : 'bg-gray-200',
+								'h-full gap-8 px-16 text-base text-light-gray-800 transition-colors flex-justify-center',
+								ordersIsExpand ? 'bg-light-secondary-200' : 'bg-light-gray-100',
 							)}
 						>
 							{t('orders')}
 							<ArrowDownSVG
 								style={{ transform: ordersIsExpand ? 'rotate(180deg)' : undefined }}
-								className='text-gray-900 transition-transform'
+								className='text-light-gray-700 transition-transform'
 							/>
 						</button>
 					) : (
 						<a
 							target='_blank'
 							href='https://ramandtech.com/'
-							className='pr-24 text-tiny font-normal text-gray-1000 transition-colors hover:text-secondary-300'
+							className='hover:text-secondary-300 pr-24 text-tiny font-normal text-light-gray-800 transition-colors'
 						>
 							{t('copyright')}
 						</a>
@@ -83,10 +83,10 @@ const Footer = () => {
 						className={cn(
 							'flex items-center gap-8 transition-colors',
 							lsStatus === 'CONNECTING'
-								? 'text-warning-100'
+								? 'text-light-warning-100'
 								: lsStatus === 'DISCONNECTED'
-									? 'text-error-200'
-									: 'text-success-200',
+									? 'text-light-error-100'
+									: 'text-light-success-100',
 						)}
 					>
 						<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />

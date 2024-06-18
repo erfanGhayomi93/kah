@@ -19,6 +19,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility }: OrdersReportsTablePr
 			{
 				colId: 'orderId',
 				headerName: t('orders_reports_page.id_column'),
+				width: 32,
 				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderId')]?.hidden,
 			},
@@ -37,14 +38,14 @@ const OrdersReportsTable = ({ reports, columnsVisibility }: OrdersReportsTablePr
 				cellClass: (row) => {
 					if (!row) return;
 					return clsx({
-						'text-success-200': row.orderSide.includes('Buy'),
-						'text-error-200': row.orderSide.includes('Sell'),
+						'text-light-success-100': row.orderSide.includes('Buy'),
+						'text-light-error-100': row.orderSide.includes('Sell'),
 					});
 				},
 				valueGetter: (row) => t('orders_reports_page.side_' + row.orderSide),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'orderSide')]?.hidden,
 			},
-			/* تاریخ */
+			/* زمان */
 			{
 				colId: 'orderDateTime',
 				headerName: t('orders_reports_page.date_column'),
@@ -79,7 +80,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility }: OrdersReportsTablePr
 				colId: 'lastErrorCode',
 				headerName: t('orders_reports_page.status_column'),
 				width: 180,
-				cellClass: 'text-right rtl truncate',
+				cellClass: 'text-right rtl truncate flex-1',
 				valueGetter: (row) => row.lastErrorCode ?? '',
 				valueFormatter: ({ row }) => {
 					if (!row) return '-';

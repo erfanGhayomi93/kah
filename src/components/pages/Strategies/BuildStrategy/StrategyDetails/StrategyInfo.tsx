@@ -12,7 +12,7 @@ const StrategyInfo = () => {
 	const t = useTranslations('build_strategy');
 
 	return (
-		<div className='gap-16 rounded-md bg-gray-200 px-24 py-16 flex-column'>
+		<div className='gap-16 rounded-md bg-light-gray-100 px-24 py-16 flex-column'>
 			<ul className='flex-justify-between'>
 				<StrategyInfoItem type='success' title={t('most_profit')} value='+2,075' />
 				<StrategyInfoItem title={t('break_even_point')} value={`${sepNumbers(String(0))} (0.1%)`} />
@@ -33,15 +33,15 @@ const StrategyInfo = () => {
 const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => {
 	return (
 		<li className='items-start gap-4 flex-items-center'>
-			<span style={{ width: '10.6rem' }} className='whitespace-nowrap text-tiny text-gray-900'>
+			<span style={{ width: '10.6rem' }} className='whitespace-nowrap text-tiny text-light-gray-700'>
 				{title}:
 			</span>
 			<div
 				style={{ width: '10.4rem' }}
 				className={clsx('h-40 rounded px-8 text-tiny ltr flex-justify-end', {
-					'bg-gray-300 text-gray-900': !type,
-					'bg-success-100/10 text-success-100': type === 'success',
-					'bg-error-100/10 text-error-100': type === 'error',
+					'bg-light-gray-300 text-light-gray-700': !type,
+					'bg-light-success-100/10 text-light-success-100': type === 'success',
+					'bg-light-error-100/10 text-light-error-100': type === 'error',
 				})}
 			>
 				{value}

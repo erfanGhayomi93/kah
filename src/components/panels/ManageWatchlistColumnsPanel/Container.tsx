@@ -61,8 +61,10 @@ const Container = ({ close }: ContainerProps) => {
 
 	return (
 		<>
-			<div className='sticky top-0 z-10 h-56 w-full bg-gray-200 px-24 flex-justify-between'>
-				<h1 className='text-xl font-medium text-gray-900'>{t('manage_option_watchlist_columns.title')}</h1>
+			<div className='sticky top-0 z-10 h-56 w-full bg-light-gray-100 px-24 flex-justify-between'>
+				<h1 className='text-xl font-medium text-light-gray-700'>
+					{t('manage_option_watchlist_columns.title')}
+				</h1>
 
 				<div className='flex gap-24'>
 					<button className='icon-hover' type='button' onClick={onRefresh}>
@@ -83,10 +85,10 @@ const Container = ({ close }: ContainerProps) => {
 						className={cn(
 							'gap-16 pb-16 flex-column',
 							resetting && 'pointer-events-none opacity-0',
-							categoryIndex < 2 && 'border-b border-b-gray-400',
+							categoryIndex < 2 && 'border-b border-b-light-gray-200',
 						)}
 					>
-						<h2 className='text-lg font-medium text-gray-1000'>
+						<h2 className='text-lg font-medium text-light-gray-800'>
 							{t(`manage_option_watchlist_columns.${category}`)}
 						</h2>
 
@@ -100,8 +102,8 @@ const Container = ({ close }: ContainerProps) => {
 									className={clsx(
 										'h-40 rounded transition-colors flex-justify-center',
 										column.isHidden
-											? 'bg-white text-gray-900 shadow-sm hover:shadow-none hover:btn-hover'
-											: 'bg-primary-400 text-white hover:bg-primary-300',
+											? 'bg-white text-light-gray-700 shadow-sm hover:shadow-none hover:btn-hover'
+											: 'bg-light-primary-100 text-white hover:bg-light-primary-100',
 									)}
 								>
 									{t(`manage_option_watchlist_columns.column_${column.title}`)}

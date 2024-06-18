@@ -13,12 +13,12 @@ import { HistoryChangeBroker } from './HistoryChangeBroker';
 const Div = styled.div`
 	width: 420px;
 	min-height: 312px;
-	max-height : 312px;
+	max-height: 312px;
 	display: flex;
 	flex-direction: column;
 `;
 
-interface ChangeBrokerProps extends IChangeBrokerModal { }
+interface ChangeBrokerProps extends IChangeBrokerModal {}
 
 const ChangeBroker = forwardRef<HTMLDivElement, ChangeBrokerProps>((props, ref) => {
 	const t = useTranslations();
@@ -47,7 +47,7 @@ const ChangeBroker = forwardRef<HTMLDivElement, ChangeBrokerProps>((props, ref) 
 			<div className='flex bg-white p-24'>
 				<Div
 					className={clsx('flex-column', {
-						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
+						'border-light-gray-200 border-l pl-24 pr-16': isShowExpanded,
 					})}
 				>
 					<Body onCloseModal={onCloseModal} />

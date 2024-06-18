@@ -35,11 +35,11 @@ const AuthenticationModalTemplate = forwardRef<HTMLDivElement, AuthenticationMod
 						</div>,
 
 						<div key='title' className='relative mt-24 gap-24 text-center flex-column'>
-							<h1 className='text-3xl font-bold text-gray-1000'>{title}</h1>
+							<h1 className='text-light-gray-800 text-3xl font-bold'>{title}</h1>
 							{description && (
 								<p
 									style={{ maxWidth: '39.2rem', top: '6rem', ...styles?.description }}
-									className='center-x absolute w-full text-center text-base font-bold text-gray-1000'
+									className='text-light-gray-800 absolute w-full text-center text-base font-bold center-x'
 								>
 									{description}
 								</p>

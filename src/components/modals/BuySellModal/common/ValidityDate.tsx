@@ -53,13 +53,15 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 					onClick={() => setShowValidityDates(!showValidityDates)}
 					className='h-40 cursor-pointer select-none gap-8 px-8 flex-justify-between gray-box'
 				>
-					<span className='whitespace-nowrap text-base text-gray-900'>{t('bs_modal.validity_date')}</span>
+					<span className='text-light-gray-700 whitespace-nowrap text-base'>
+						{t('bs_modal.validity_date')}
+					</span>
 
-					<span className='gap-8 text-tiny text-primary-400 flex-items-center'>
-						<span className='h-24 rounded border border-primary-400 bg-secondary-100 px-8 text-primary-400 flex-items-center'>
+					<span className='text-light-primary-100 gap-8 text-tiny flex-items-center'>
+						<span className='bg-light-secondary-200 border-light-primary-100 text-light-primary-100 h-24 rounded border px-8 flex-items-center'>
 							{validityDateTitle}
 						</span>
-						<span className='text-gray-900'>
+						<span className='text-light-gray-700'>
 							<ArrowUpSVG width='1.2rem' height='1.2rem' />
 						</span>
 					</span>
@@ -81,8 +83,8 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 									className={cn(
 										'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
 										item.id === value
-											? 'border-primary-400 bg-secondary-100 text-primary-400'
-											: 'border-gray-500 text-gray-1000 hover:btn-hover',
+											? 'bg-light-secondary-200 border-light-primary-100 text-light-primary-100'
+											: 'text-light-gray-800 border-light-gray-200 hover:btn-hover',
 									)}
 								>
 									{item.title}

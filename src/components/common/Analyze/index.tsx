@@ -87,7 +87,7 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 				<button
 					className={clsx(
 						'h-48 px-16 transition-colors flex-justify-center',
-						item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+						item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
 					)}
 					type='button'
 				>

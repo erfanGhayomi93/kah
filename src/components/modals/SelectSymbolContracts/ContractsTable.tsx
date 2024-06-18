@@ -117,7 +117,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-buy',
-						cellClass: 'text-success-100',
+						cellClass: 'text-light-success-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
@@ -127,7 +127,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-buy',
-						cellClass: 'text-error-100',
+						cellClass: 'text-light-error-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
@@ -161,7 +161,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-sell',
-						cellClass: 'text-success-100',
+						cellClass: 'text-light-success-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
@@ -171,7 +171,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-sell',
-						cellClass: 'text-error-100',
+						cellClass: 'text-light-error-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
