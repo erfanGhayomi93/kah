@@ -83,7 +83,7 @@ const AnalyzeChart = ({
 			rotation: 0,
 			verticalAlign: 'top',
 			useHTML: true,
-			y: y * 40,
+			y: 40 + y,
 			style: {
 				fontFamily: chartFontSetting.fontFamily,
 				fontSize: '12px',
@@ -273,7 +273,7 @@ const AnalyzeChart = ({
 				}
 			}
 
-			const bep = m.map<XAxisPlotLinesOptions>((points, i) => getBepPlotLine(addBepPoint(points), i + 1));
+			const bep = m.map<XAxisPlotLinesOptions>((points, i) => getBepPlotLine(addBepPoint(points), i * 30));
 
 			chartRef.current.update({
 				xAxis: {
