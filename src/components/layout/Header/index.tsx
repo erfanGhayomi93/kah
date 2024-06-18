@@ -272,7 +272,7 @@ const Header = () => {
 							y: 6,
 						}}
 						dependency='.modal__logout'
-						defaultPopupWidth={296}
+						defaultPopupWidth={400}
 						onOpen={() => setIsDropdownOpened(true)}
 						onClose={() => setIsDropdownOpened(false)}
 						renderer={() => <Notifications />}
