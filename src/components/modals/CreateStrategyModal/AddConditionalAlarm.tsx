@@ -6,7 +6,10 @@ const AddConditionalAlarm = () => {
 
 	return (
 		<div className='flex-justify-start'>
-			<button type='button' className='flex h-40 gap-8 font-medium text-gray-900 opacity-50 flex-justify-start'>
+			<button
+				type='button'
+				className='text-light-gray-700 flex h-40 gap-8 font-medium opacity-50 flex-justify-start'
+			>
 				<PlusSVG width='2rem' height='2rem' />
 				{t('add_conditional_alert')}
 			</button>

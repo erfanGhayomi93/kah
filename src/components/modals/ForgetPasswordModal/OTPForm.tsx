@@ -130,8 +130,8 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 									className={cn(
 										'prefix',
 										typeof seconds === 'number' && seconds <= 0
-											? 'text-error-100'
-											: 'text-gray-1000',
+											? 'text-light-error-100'
+											: 'text-light-gray-800',
 									)}
 								>
 									{seconds ? (
@@ -148,7 +148,11 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 								)}
 
 								{seconds === -1 && (
-									<button onClick={onResendOTP} type='button' className='text-base text-primary-400'>
+									<button
+										onClick={onResendOTP}
+										type='button'
+										className='text-base text-light-primary-100'
+									>
 										{t('login_modal.resend_otp')}
 									</button>
 								)}
@@ -156,7 +160,7 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 								<button
 									onClick={goToPhoneNumber}
 									type='button'
-									className='mr-auto text-base text-primary-400'
+									className='mr-auto text-base text-light-primary-100'
 								>
 									{t('login_modal.change_phone_number')}
 								</button>

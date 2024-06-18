@@ -10,7 +10,7 @@ const Contract = ({ workingDaysLeftCount, contractEndDate, dueDays }: ContractPr
 	const jalaliDate = dayjs(contractEndDate).calendar('jalali').format('YYYY/MM/DD');
 
 	return (
-		<li className='h-40 px-8 flex-justify-between *:text-base *:text-gray-900 even:bg-gray-200'>
+		<li className='even:bg-light-gray-100 *:text-light-gray-700 h-40 px-8 flex-justify-between *:text-base'>
 			<div className='gap-8 flex-items-center'>
 				<CalendarSVG width='2rem' height='2rem' />
 				<span>{jalaliDate}</span>

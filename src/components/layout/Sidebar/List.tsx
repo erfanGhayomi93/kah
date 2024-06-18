@@ -7,7 +7,6 @@ import {
 	setOptionSettlementModal,
 	setWithdrawalModal,
 } from '@/features/slices/modalSlice';
-import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import { usePathname } from '@/navigation';
 import clsx from 'clsx';
@@ -35,29 +34,6 @@ const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 		} else {
 			toggle(true);
 			setExpandId(id);
-		}
-	};
-
-	const onClickItem = (tagName: string) => {
-		if (tagName === 'button') return false;
-
-		toggle(false);
-
-		if (tagName === 'a') {
-			dispatch(setSymbolInfoPanel(null));
-		} else {
-			// for open of modal
-			if (tagName === 'deposit') {
-				dispatch(setDepositModal({}));
-			} else if (tagName === 'withdrawal') {
-				dispatch(setWithdrawalModal({}));
-			} else if (tagName === 'change_broker') {
-				dispatch(setChangeBrokerModal({}));
-			} else if (tagName === 'un_freezing') {
-				dispatch(setFreezeModal({}));
-			} else if (tagName === 'option_settlement') {
-				dispatch(setOptionSettlementModal({}));
-			}
 		}
 	};
 
@@ -133,27 +109,27 @@ const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 						{
 							id: 'deposit',
 							label: t('sidebar.deposit'),
-							isModal: true,
+							onClick: () => dispatch(setDepositModal({})),
 						},
 						{
 							id: 'withdrawal',
 							label: t('sidebar.withdrawal'),
-							isModal: true,
+							onClick: () => dispatch(setWithdrawalModal({})),
 						},
 						{
 							id: 'change_broker',
 							label: t('sidebar.change_broker'),
-							isModal: true,
+							onClick: () => dispatch(setChangeBrokerModal({})),
 						},
 						{
 							id: 'un_freezing',
 							label: t('sidebar.un_freezing'),
-							isModal: true,
+							onClick: () => dispatch(setFreezeModal({})),
 						},
 						{
 							id: 'option_settlement',
 							label: t('sidebar.option_settlement'),
-							isModal: true,
+							onClick: () => dispatch(setOptionSettlementModal({})),
 						},
 					],
 				},
@@ -214,7 +190,6 @@ const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 						isExpand={item.id === expandId}
 						toggle={() => toggleItem(item.id)}
 						sidebarIsExpand={sidebarIsExpand}
-						onClick={onClickItem}
 						{...item}
 					/>
 				))}
@@ -227,7 +202,6 @@ const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 						isExpand={item.id === expandId}
 						toggle={() => toggleItem(item.id)}
 						sidebarIsExpand={sidebarIsExpand}
-						onClick={onClickItem}
 						{...item}
 					/>
 				))}

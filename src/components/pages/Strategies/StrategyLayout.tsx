@@ -27,7 +27,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 								'h-40 rounded !border transition-colors flex-justify-center',
 								!isBuilding
 									? 'no-hover font-medium btn-select'
-									: 'border-gray-200 bg-gray-200 text-gray-900',
+									: 'border-light-gray-100 bg-light-gray-100 text-light-gray-700',
 							)}
 							href='/strategy'
 						>
@@ -41,7 +41,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 								'h-40 rounded !border transition-colors flex-justify-center',
 								isBuilding
 									? 'no-hover font-medium btn-select'
-									: 'border-gray-200 bg-gray-200 text-gray-900',
+									: 'border-light-gray-100 bg-light-gray-100 text-light-gray-700',
 							)}
 							href='/strategy/build'
 						>
@@ -52,7 +52,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 
 				{headerRenderer && (
 					<>
-						<span className='h-12 w-2 bg-gray-500' />
+						<span className='bg-light-gray-200 h-12 w-2' />
 						{headerRenderer}
 					</>
 				)}

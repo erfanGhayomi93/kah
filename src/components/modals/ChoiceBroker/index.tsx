@@ -19,7 +19,7 @@ const Div = styled.div`
 	border-radius: 1.6rem;
 `;
 
-interface ChoiceBrokerProps extends IBaseModalConfiguration { }
+interface ChoiceBrokerProps extends IBaseModalConfiguration {}
 
 const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) => {
 	const t = useTranslations();
@@ -58,10 +58,10 @@ const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) 
 				</div>
 
 				<div className='relative mt-24 gap-24 text-center flex-column'>
-					<h1 className='text-3xl font-bold text-gray-1000'>{t('choose_broker_modal.title')}</h1>
+					<h1 className='text-light-gray-800 text-3xl font-bold'>{t('choose_broker_modal.title')}</h1>
 					<p
 						style={{ maxWidth: '36rem' }}
-						className='mx-auto text-center text-base font-bold text-primary-400'
+						className='text-light-primary-100 mx-auto text-center text-base font-bold'
 					>
 						{t('choose_broker_modal.description')}
 					</p>

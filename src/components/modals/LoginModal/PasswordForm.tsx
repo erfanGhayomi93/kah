@@ -108,7 +108,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 								<button
 									onClick={() => setPasswordIsVisible(!passwordIsVisible)}
 									type='button'
-									className='border-r-0 text-gray-900 prefix'
+									className='text-light-gray-700 border-r-0 prefix'
 								>
 									{passwordIsVisible ? <EyeSlashSVG /> : <EyeSVG />}
 								</button>
@@ -119,7 +119,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 								<button
 									onClick={forgetPassword}
 									type='button'
-									className='mr-auto text-base text-primary-400'
+									className='text-light-primary-100 mr-auto text-base'
 								>
 									{t('login_modal.forget_password')}
 								</button>
@@ -139,7 +139,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 					{t('login_modal.login')}
 				</Button>
 
-				<button type='button' onClick={goToLoginWithOTP} className='h-40 font-medium text-primary-400'>
+				<button type='button' onClick={goToLoginWithOTP} className='text-light-primary-100 h-40 font-medium'>
 					{t('login_modal.login_with_otp')}
 				</button>
 			</div>

@@ -134,7 +134,7 @@ const Basket = () => {
 			className='fixed bottom-8'
 		>
 			<div className='overflow-hidden rounded bg-white shadow-card'>
-				<div className='relative h-56 w-full bg-gray-200 flex-justify-center'>
+				<div className='bg-light-gray-100 relative h-56 w-full flex-justify-center'>
 					<h2 className='select-none text-xl font-medium'>{t('order_basket.title')}</h2>
 
 					<div className='absolute left-24 gap-16 flex-items-center'>
@@ -155,7 +155,7 @@ const Basket = () => {
 				<div className='gap-8 overflow-hidden px-12 py-16 flex-column'>
 					<div className='px-4 flex-justify-between'>
 						<div onClick={onExpand} className='cursor-pointer gap-12 flex-items-center'>
-							<span className='select-none whitespace-nowrap rounded text-base text-gray-1000'>
+							<span className='text-light-gray-800 select-none whitespace-nowrap rounded text-base'>
 								<span className='font-medium'>{selectedContracts.length} </span>
 								{t('order_basket.selected_trade')}
 							</span>

@@ -111,7 +111,7 @@ const LongPut = (strategy: LongPutProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
+						{t(`${type}.title`)} <span className='text-light-gray-500'>({title})</span>
 					</>
 				),
 				description: () => <LongPutDescription />,
@@ -137,8 +137,6 @@ const LongPut = (strategy: LongPutProps) => {
 			}),
 		);
 	};
-
-	
 
 	const onFiltersChanged = (newFilters: Partial<ILongPutFiltersModalState>) => {
 		setFilters(newFilters);

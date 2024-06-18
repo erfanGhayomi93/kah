@@ -16,9 +16,7 @@ interface TertiarySettlementRequestProps {
 	onCloseModal: () => void;
 }
 
-
 const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onCloseModal, dataSecondaryDetails }) => {
-
 	const t = useTranslations();
 
 	const url = useAppSelector(getBrokerURLs);
@@ -42,69 +40,92 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 				requestCount: !isMaximumStrike ? desireNum : 0,
 				requestForMaximum: isMaximumStrike,
 				symbolISIN: dataSecondaryDetails?.symbolISIN,
-				requestForLostOrProfit: isPhysical ? isRequestForLostOrProfit : undefined
+				requestForLostOrProfit: isPhysical ? isRequestForLostOrProfit : undefined,
 			};
 
-			const response = await brokerAxios.post(isPhysical ? url?.newPhysicalSettlement : url?.newCashSettlement, payload);
+			const response = await brokerAxios.post(
+				isPhysical ? url?.newPhysicalSettlement : url?.newCashSettlement,
+				payload,
+			);
 
 			if (response.status !== 200 || !response.data.succeeded) {
-				toast.error(t((isPhysical ? 'alerts.option_physical_settlement_error_' : 'alerts.option_cash_settlement_error_') + response.data.errors[0]));
+				toast.error(
+					t(
+						(isPhysical
+							? 'alerts.option_physical_settlement_error_'
+							: 'alerts.option_cash_settlement_error_') + response.data.errors[0],
+					),
+				);
 				return;
 			}
 
-			toast.success(t(isPhysical ? 'alerts.option_request_settlement_physical_success' : 'alerts.option_request_settlement_cash_success'));
+			toast.success(
+				t(
+					isPhysical
+						? 'alerts.option_request_settlement_physical_success'
+						: 'alerts.option_request_settlement_cash_success',
+				),
+			);
 
-			queryClient.invalidateQueries({ queryKey: isPhysical ? ['physicalSettlementReports'] : ['cashSettlementReports'] });
+			queryClient.invalidateQueries({
+				queryKey: isPhysical ? ['physicalSettlementReports'] : ['cashSettlementReports'],
+			});
 
 			onCloseModal();
-		} catch (e) {
-		}
+		} catch (e) {}
 	};
 
 	return (
 		<div>
-			<div className='flex items-center p-16 shadow-sm rounded'>
-				<span className='tracking-normal text-info text-justify font-medium'>
-					{
-						isPhysical ? t('optionSettlementModal.notice_attention_request_physical') : t('optionSettlementModal.notice_attention_request_cash')
-					}
+			<div className='flex items-center rounded p-16 shadow-sm'>
+				<span className='text-light-info-100 text-justify font-medium tracking-normal'>
+					{isPhysical
+						? t('optionSettlementModal.notice_attention_request_physical')
+						: t('optionSettlementModal.notice_attention_request_cash')}
 				</span>
 			</div>
 
 			<div className='mt-24'>
-				<span className='text-gray-900 mb-16'>{t('optionSettlementModal.choose_type_of_action')}</span>
+				<span className='text-light-gray-700 mb-16'>{t('optionSettlementModal.choose_type_of_action')}</span>
 
-				<div className={clsx('mt-16 mb-8 px-12 py-8 rounded flex justify-between', {
-					'bg-primary-100': isMaximumStrike
-				})}>
+				<div
+					className={clsx('mb-8 mt-16 flex justify-between rounded px-12 py-8', {
+						'bg-light-secondary-100': isMaximumStrike,
+					})}
+				>
 					<Radiobox
 						label={t('cash_settlement_reports_page.type_request_settlement_MaximumStrike')}
 						checked={isMaximumStrike}
 						onChange={(checked) => setIsMaximumStrike(checked)}
-						classes={{ text: 'mr-8 !text-gray-1000', label: 'flex items-center', active: 'font-semibold' }}
+						classes={{
+							text: 'mr-8 !text-light-gray-800',
+							label: 'flex items-center',
+							active: 'font-semibold',
+						}}
 					/>
 
 					<span>{(dataSecondaryDetails?.openPositionCount ?? 0) + ' ' + t('home.tab_option_position')}</span>
 				</div>
 
-				<div className={'pt-8 border-t border-gray-300'}>
+				<div className={'border-light-gray-300 border-t pt-8'}>
 					<Radiobox
 						label={t('optionSettlementModal.desired_number_position')}
 						checked={!isMaximumStrike}
 						onChange={(checked) => setIsMaximumStrike(!checked)}
 						classes={{
-							text: 'mr-8 !text-gray-1000', label: 'flex items-center', active: 'font-semibold', root: clsx('px-12 py-8 rounded', {
-								'bg-primary-100': !isMaximumStrike
-							})
+							text: 'mr-8 !text-light-gray-800',
+							label: 'flex items-center',
+							active: 'font-semibold',
+							root: clsx('rounded px-12 py-8', {
+								'bg-light-secondary-100': !isMaximumStrike,
+							}),
 						}}
 					/>
 				</div>
 
-
-
 				<div
 					className={clsx('mt-24 ', {
-						'opacity-0': isMaximumStrike
+						'opacity-0': isMaximumStrike,
 					})}
 				>
 					<InputLegend
@@ -118,20 +139,17 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 
 				<div
 					className={clsx('mt-24 ', {
-						'opacity-0': !isPhysical
-					})}>
+						'opacity-0': !isPhysical,
+					})}
+				>
 					<Checkbox
 						checked={isRequestForLostOrProfit}
 						onChange={(checked) => setIsRequestForLostOrProfit(checked)}
 						label='با تسویه فیزیکی در حالت زیان موافقم.'
-
 					/>
 				</div>
 
-
-
 				<div className='mt-24 flex gap-x-8'>
-
 					<button
 						className={'h-48 w-full gap-8 rounded font-medium btn-info-outline'}
 						type='submit'
@@ -149,13 +167,10 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 					>
 						{t('deposit_modal.state_Request')}
 					</button>
-
-
 				</div>
 			</div>
 		</div>
 	);
 };
-
 
 export default TertiarySettlementRequest;

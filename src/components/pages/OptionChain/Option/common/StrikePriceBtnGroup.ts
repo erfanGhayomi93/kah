@@ -52,7 +52,7 @@ class StrikePriceBtnGroup {
 		const btn = document.createElement('button');
 		btn.setAttribute(
 			'class',
-			'bg-white select-none rounded text-base text-gray-900 flex-justify-center transition-colors',
+			'bg-white select-none rounded text-base text-light-gray-700 flex-justify-center transition-colors',
 		);
 
 		return btn;
@@ -61,7 +61,7 @@ class StrikePriceBtnGroup {
 	private _createBuyBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
-		btn.classList.add('hover:bg-success-100', 'hover:text-white', 'h-32', 'w-40');
+		btn.classList.add('hover:bg-light-success-100', 'hover:text-white', 'h-32', 'w-40');
 		btn.textContent = 'خرید';
 		btn.onclick = (e) => {
 			e.stopPropagation();
@@ -74,7 +74,7 @@ class StrikePriceBtnGroup {
 	private _createSellBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
-		btn.classList.add('hover:bg-error-100', 'hover:text-white', 'h-32', 'w-40');
+		btn.classList.add('hover:bg-light-error-100', 'hover:text-white', 'h-32', 'w-40');
 		btn.textContent = 'فروش';
 		btn.onclick = (e) => {
 			e.stopPropagation();
@@ -87,7 +87,7 @@ class StrikePriceBtnGroup {
 	private _createTechnicalChartBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
-		btn.classList.add('hover:bg-gray-200', 'size-32');
+		btn.classList.add('hover:bg-light-gray-100', 'size-32');
 		btn.innerHTML =
 			'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="path-1-inside-1_752_14024" fill="white"><path d="M19.9999 20H4V4H5.23079V17.352L8.21226 12.8799L10.6348 15.3026L13.1611 10.8814L15.1136 13.4848L18.9212 9.13303L19.8479 9.94377L15.0404 15.4379L13.3007 13.1183L10.9038 17.3123L8.40317 14.8121L5.76524 18.7692L20 18.769L19.9999 20Z"/></mask><path d="M19.9999 20V21.5H21.4997L21.4999 20.0001L19.9999 20ZM4 20H2.5V21.5H4V20ZM4 4V2.5H2.5V4H4ZM5.23079 4H6.73079V2.5H5.23079V4ZM5.23079 17.352H3.73079V22.3061L6.47886 18.1841L5.23079 17.352ZM8.21226 12.8799L9.27296 11.8193L7.97917 10.5254L6.96419 12.0478L8.21226 12.8799ZM10.6348 15.3026L9.57411 16.3632L10.9628 17.752L11.9372 16.0468L10.6348 15.3026ZM13.1611 10.8814L14.3612 9.98145L12.9914 8.15505L11.8588 10.1372L13.1611 10.8814ZM15.1136 13.4848L13.9136 14.3848L15.0239 15.8653L16.2425 14.4725L15.1136 13.4848ZM18.9212 9.13303L19.9088 8.00404L18.7799 7.01652L17.7923 8.14531L18.9212 9.13303ZM19.8479 9.94377L20.9768 10.9315L21.9647 9.80254L20.8356 8.81478L19.8479 9.94377ZM15.0404 15.4379L13.8404 16.3379L14.9506 17.8183L16.1692 16.4257L15.0404 15.4379ZM13.3007 13.1183L14.5007 12.2183L13.131 10.392L11.9983 12.374L13.3007 13.1183ZM10.9038 17.3123L9.84327 18.373L11.2319 19.7614L12.2062 18.0566L10.9038 17.3123ZM8.40317 14.8121L9.46373 13.7513L8.1699 12.4577L7.15507 13.98L8.40317 14.8121ZM5.76524 18.7692L4.51714 17.9372L2.96254 20.2692L5.76527 20.2692L5.76524 18.7692ZM20 18.769L21.5 18.7691L21.5001 17.269L20 17.269L20 18.769ZM19.9999 18.5H4V21.5H19.9999V18.5ZM5.5 20V4H2.5V20H5.5ZM4 5.5H5.23079V2.5H4V5.5ZM3.73079 4V17.352H6.73079V4H3.73079ZM6.47886 18.1841L9.46032 13.7119L6.96419 12.0478L3.98272 16.5199L6.47886 18.1841ZM7.15156 13.9405L9.57411 16.3632L11.6955 14.242L9.27296 11.8193L7.15156 13.9405ZM11.9372 16.0468L14.4635 11.6256L11.8588 10.1372L9.33244 14.5584L11.9372 16.0468ZM11.9611 11.7814L13.9136 14.3848L16.3136 12.5848L14.3612 9.98145L11.9611 11.7814ZM16.2425 14.4725L20.05 10.1208L17.7923 8.14531L13.9847 12.4971L16.2425 14.4725ZM17.9335 10.262L18.8603 11.0728L20.8356 8.81478L19.9088 8.00404L17.9335 10.262ZM18.7191 8.956L13.9115 14.4502L16.1692 16.4257L20.9768 10.9315L18.7191 8.956ZM16.2404 14.538L14.5007 12.2183L12.1007 14.0183L13.8404 16.3379L16.2404 14.538ZM11.9983 12.374L9.60151 16.568L12.2062 18.0566L14.603 13.8626L11.9983 12.374ZM11.9644 16.2515L9.46373 13.7513L7.3426 15.8728L9.84327 18.373L11.9644 16.2515ZM7.15507 13.98L4.51714 17.9372L7.01335 19.6012L9.65127 15.6441L7.15507 13.98ZM5.76527 20.2692L20 20.269L20 17.269L5.76522 17.2692L5.76527 20.2692ZM18.5 18.7688L18.4999 19.9999L21.4999 20.0001L21.5 18.7691L18.5 18.7688Z" fill="#5D606D" mask="url(#path-1-inside-1_752_14024)"/></svg>';
 		btn.onclick = (e) => {
@@ -101,7 +101,7 @@ class StrikePriceBtnGroup {
 	private _createDropdownBtn() {
 		this.eDropdownBtn = this.createBtn();
 		this.eDropdownBtn.type = 'button';
-		this.eDropdownBtn.classList.add('hover:bg-gray-200', 'size-32');
+		this.eDropdownBtn.classList.add('hover:bg-light-gray-100', 'size-32');
 		this.eDropdownBtn.innerHTML =
 			'<svg width="2.4rem" height="2.4rem" class="transition-transform" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 11L12 14L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 		this.eDropdownSvg = this.eDropdownBtn.querySelector('svg')!;
@@ -138,7 +138,7 @@ class StrikePriceBtnGroup {
 			const aBtn = document.createElement('button');
 			aBtn.setAttribute(
 				'class',
-				'w-full h-48 text-base px-16 gap-8 text-gray-900 flex-justify-end hover:btn-hover transition-colors',
+				'w-full h-48 text-base px-16 gap-8 text-light-gray-700 flex-justify-end hover:btn-hover transition-colors',
 			);
 			aBtn.type = 'button';
 			aBtn.innerHTML =
@@ -153,7 +153,7 @@ class StrikePriceBtnGroup {
 			const bBtn = document.createElement('button');
 			bBtn.setAttribute(
 				'class',
-				'w-full h-48 text-base px-16 gap-8 text-gray-900 flex-justify-end hover:btn-hover transition-colors',
+				'w-full h-48 text-base px-16 gap-8 text-light-gray-700 flex-justify-end hover:btn-hover transition-colors',
 			);
 			bBtn.type = 'button';
 			bBtn.innerHTML =

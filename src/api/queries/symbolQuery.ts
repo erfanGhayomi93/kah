@@ -114,7 +114,7 @@ export const useSymbolChartDataQuery = createQuery<
 	Symbol.ChartData[],
 	['symbolChartDataQuery', string, 'Today' | 'Weekly' | 'Monthly' | 'Yearly']
 >({
-	staleTime: 18e5,
+	staleTime: 0,
 	queryKey: ['symbolChartDataQuery', '', 'Today'],
 	queryFn: async ({ queryKey, signal }) => {
 		const [, SymbolISIN, Duration] = queryKey;

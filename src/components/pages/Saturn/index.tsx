@@ -6,6 +6,8 @@ import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultSymbolISIN } from '@/constants';
+import { useAppSelector } from '@/features/hooks';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
@@ -20,6 +22,8 @@ const Saturn = () => {
 	const t = useTranslations();
 
 	const searchParams = useSearchParams();
+
+	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
 	const [selectedSymbol, setSelectedSymbol] = useState<string>(
 		searchParams.get('symbolISIN') ?? LocalstorageInstance.get('selected_symbol', defaultSymbolISIN),
@@ -40,7 +44,7 @@ const Saturn = () => {
 
 	const { data: activeTemplate, isLoading: isLoadingActiveTemplate } = useActiveTemplateQuery({
 		queryKey: ['useActiveTemplate'],
-		enabled: Boolean(!searchParams.get('symbolISIN') && !searchParams.get('symbolISIN')),
+		enabled: isLoggedIn && Boolean(!searchParams.get('symbolISIN') && !searchParams.get('symbolISIN')),
 	});
 
 	if (isLoadingBaseSymbolInfo || isLoadingActiveTemplate) {
@@ -65,7 +69,7 @@ const Saturn = () => {
 					activeTemplate={activeTemplate!}
 				/>
 			) : (
-				<span className='absolute text-base font-bold text-gray-900 center'>
+				<span className='text-light-gray-700 absolute text-base font-bold center'>
 					{t('common.symbol_not_found')}
 				</span>
 			)}

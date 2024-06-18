@@ -1,9 +1,7 @@
-import axios from '@/api/axios';
+import axios, { logoutUser } from '@/api/axios';
 import routes from '@/api/routes';
 import { useAppDispatch } from '@/features/hooks';
 import { setLogoutModal } from '@/features/slices/modalSlice';
-import { setBrokerIsSelected, setIsLoggedIn } from '@/features/slices/userSlice';
-import { deleteBrokerClientId, deleteClientId } from '@/utils/cookie';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
 import styled from 'styled-components';
@@ -33,11 +31,7 @@ const LogoutModal = forwardRef<HTMLDivElement, LogoutModalProps>((props, ref) =>
 	};
 
 	const onLoggedOut = async () => {
-		deleteClientId();
-		deleteBrokerClientId();
-
-		dispatch(setIsLoggedIn(false));
-		dispatch(setBrokerIsSelected(false));
+		logoutUser();
 		onCloseModal();
 	};
 
@@ -67,10 +61,12 @@ const LogoutModal = forwardRef<HTMLDivElement, LogoutModalProps>((props, ref) =>
 					<div className='size-32 spinner' />
 				) : (
 					<>
-						<h2 className='text-center text-xl font-medium text-gray-1000'>{t('logout_modal.title')}</h2>
+						<h2 className='text-center text-xl font-medium text-light-gray-800'>
+							{t('logout_modal.title')}
+						</h2>
 
 						<div className='pb-40 pt-32 text-center'>
-							<p className='text-base text-gray-1000'>{t('logout_modal.description')}</p>
+							<p className='text-base text-light-gray-800'>{t('logout_modal.description')}</p>
 						</div>
 
 						<div className='flex w-full justify-between gap-8 px-16'>

@@ -7,6 +7,7 @@ import { useAppSelector } from '@/features/hooks';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useBrokerQueryClient } from '@/hooks';
+import { setupChart } from '@/libs/highchart';
 import { versionParser } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useEffect } from 'react';
@@ -43,6 +44,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 
 	useEffect(() => {
 		ipcMain.handle('broker:logged_out', resetQueryClient);
+		setupChart();
 	}, []);
 
 	useEffect(() => {

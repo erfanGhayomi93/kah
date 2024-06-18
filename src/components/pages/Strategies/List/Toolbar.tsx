@@ -53,7 +53,7 @@ const Toolbar = () => {
 
 	return (
 		<div className='gap-16 flex-items-center'>
-			<h4 className='text-gray-900'>{t('strategies.market_process')}:</h4>
+			<h4 className='text-light-gray-700'>{t('strategies.market_process')}:</h4>
 
 			<ul className='flex gap-8'>
 				{tags.map((item) => (
@@ -65,10 +65,10 @@ const Toolbar = () => {
 								'h-40 w-96 rounded !border text-base transition-colors flex-justify-center',
 								item.id === strategyTrend
 									? 'no-hover font-medium btn-select'
-									: 'border-gray-500 text-gray-900 hover:btn-hover',
+									: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
 							)}
 						>
-							<span className={item.id !== strategyTrend ? 'text-gray-1000' : ''}>{item.title}</span>
+							<span className={item.id !== strategyTrend ? 'text-light-gray-800' : ''}>{item.title}</span>
 							{item.icon}
 						</button>
 					</li>

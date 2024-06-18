@@ -1,10 +1,8 @@
 import { type ItemUpdate } from '@/classes/Subscribe';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
-import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
-import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
 import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
@@ -14,6 +12,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import SymbolContextMenu from '../../../common/Symbol/SymbolContextMenu';
+import SymbolSearchToggler from './SymbolSearchToggler';
 
 interface SymbolDetailsProps {
 	symbol: Symbol.Info;
@@ -62,15 +61,6 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 			symbolISIN,
 			symbolTitle,
 		});
-	};
-
-	const openSymbolInfoPanel = () => {
-		try {
-			const { symbolISIN } = symbol;
-			if (symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
-		} catch (e) {
-			//
-		}
 	};
 
 	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
@@ -169,13 +159,13 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	}, [symbol.symbolISIN]);
 
 	const {
-		closingPriceVarReferencePrice,
-		closingPriceVarReferencePricePercent,
 		symbolTradeState,
 		symbolTitle,
+		companyName,
+		closingPriceVarReferencePrice,
+		closingPriceVarReferencePricePercent,
 		closingPrice,
 		lastTradedPrice,
-		companyName,
 		yesterdayClosingPrice,
 		lowThreshold,
 		highThreshold,
@@ -187,14 +177,11 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 		<div className='flex-column'>
 			<div className='gap-24 pb-24 flex-column'>
 				<div className='flex-justify-between'>
-					<div onClick={openSymbolInfoPanel} className='cursor-pointer flex-column'>
-						<div style={{ gap: '1rem' }} className='flex-items-center'>
-							<SymbolState state={symbolTradeState} />
-							<h1 className='text-3xl font-medium text-gray-1000'>{symbolTitle}</h1>
-						</div>
-
-						<h4 className='whitespace-nowrap pr-20 text-tiny text-gray-1000'>{companyName}</h4>
-					</div>
+					<SymbolSearchToggler
+						symbolTradeState={symbolTradeState}
+						symbolTitle={symbolTitle}
+						companyName={companyName}
+					/>
 
 					<div className='h-fit gap-8 text-base flex-items-center'>
 						<span
@@ -213,7 +200,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 						<span className='flex items-center gap-4 text-2xl font-bold'>
 							{sepNumbers(String(lastTradedPrice ?? 0))}
-							<span className='text-base font-normal text-gray-900'>{t('common.rial')}</span>
+							<span className='text-base font-normal text-light-gray-700'>{t('common.rial')}</span>
 						</span>
 
 						<SymbolContextMenu symbol={symbol ?? null} />

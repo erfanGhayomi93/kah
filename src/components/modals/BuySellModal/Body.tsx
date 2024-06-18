@@ -306,7 +306,7 @@ const Body = (props: BodyProps) => {
 					<button
 						className={cn(
 							'flex-1 p-8 transition-colors',
-							item.id === activeTab ? 'font-medium text-gray-900' : 'text-gray-700',
+							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
 						)}
 						type='button'
 						disabled={item.disabled}

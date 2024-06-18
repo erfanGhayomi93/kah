@@ -22,6 +22,7 @@
 		"clsx": "^2.1.0",
 		"d3": "^7.9.0",
 		"dayjs": "^1.11.10",
+		"highcharts": "^11.4.3",
 		"jalaliday": "^2.3.0",
 		"lightstreamer-client-web": "^8.0.8",
 		"next": "^14.2.3",

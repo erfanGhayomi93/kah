@@ -135,7 +135,7 @@ const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 									setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)
 								}
 								type='button'
-								className='border-r-0 text-gray-900 prefix'
+								className='text-light-gray-700 border-r-0 prefix'
 							>
 								{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
 							</button>
@@ -218,7 +218,7 @@ const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 								setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
 							}
 							type='button'
-							className='border-r-0 text-gray-900 prefix'
+							className='text-light-gray-700 border-r-0 prefix'
 						>
 							{passwordVisibility.repeatNewPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
@@ -240,7 +240,7 @@ const SetPasswordForm = ({ phoneNumber }: SetPasswordFormProps) => {
 					{t('common.register')}
 				</Button>
 
-				<button type='button' onClick={onCloseModal} className='h-40 font-medium text-primary-400'>
+				<button type='button' onClick={onCloseModal} className='text-light-primary-100 h-40 font-medium'>
 					{t('common.cancel')}
 				</button>
 			</div>

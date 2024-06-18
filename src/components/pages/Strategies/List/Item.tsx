@@ -46,24 +46,24 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 			<div
 				onClick={onStrategyClick}
 				style={{ height: '32.8rem' }}
-				className='cursor-pointer gap-16 overflow-hidden rounded border border-gray-500 bg-white p-16 flex-column'
+				className='border-light-gray-200 cursor-pointer gap-16 overflow-hidden rounded border bg-white p-16 flex-column'
 			>
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
-						<h1 className='text-base font-medium text-gray-900'>
+						<h1 className='text-light-gray-700 text-base font-medium'>
 							{t(`${type}.title`)}
-							<span className='text-gray-700'> ({title})</span>
+							<span className='text-light-gray-500'> ({title})</span>
 						</h1>
 
-						<button type='button' className='size-32 text-gray-900 flex-justify-center'>
+						<button type='button' className='text-light-gray-700 size-32 flex-justify-center'>
 							<AngleLeftSVG width='2rem' height='2rem' />
 						</button>
 					</div>
 
-					<h3 className='gap-4 whitespace-nowrap text-tiny text-gray-900 flex-items-center'>
+					<h3 className='text-light-gray-700 gap-4 whitespace-nowrap text-tiny flex-items-center'>
 						{t.rich(`${type}.desc`, {
 							plus: () => (
-								<b className='text-gray-1000'>
+								<b className='text-light-gray-800'>
 									<PlusSVG width='1.4rem' height='1.4rem' />
 								</b>
 							),

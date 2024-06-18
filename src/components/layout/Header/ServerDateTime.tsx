@@ -11,10 +11,10 @@ const ServerDateTime = () => {
 
 	return (
 		<div className='h-full gap-12 ltr flex-justify-start'>
-			<span style={{ width: '6.6rem' }} className='text-left text-base text-gray-900'>
+			<span style={{ width: '6.6rem' }} className='text-light-gray-700 text-left text-base'>
 				{serverDate}
 			</span>
-			<span style={{ width: '5.2rem' }} className='text-left text-base text-gray-900'>
+			<span style={{ width: '5.2rem' }} className='text-light-gray-700 text-left text-base'>
 				{serverTime}
 			</span>
 		</div>

@@ -44,12 +44,12 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 
 	return (
 		<div className='flex h-full pr-24 flex-column'>
-			<div className='flex-1 rounded-sm p-8 shadow-card overflow-auto'>
+			<div className='flex-1 overflow-auto rounded-sm p-8 shadow-card'>
 				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info flex-justify-center'
+				className='text-light-info-100 h-48 w-full gap-8 rounded font-medium flex-justify-center'
 				href={'/financial-reports/instant-deposit'}
 				onClick={() => onCloseModal()}
 			>

@@ -138,7 +138,9 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 
 					<div className='flex-1 flex-column'>
 						<div className='flex-1 gap-16 p-24 flex-column'>
-							<h3 className='text-tiny text-gray-900'>{t('symbol_info_panel_setting.description')}</h3>
+							<h3 className='text-light-gray-700 text-tiny'>
+								{t('symbol_info_panel_setting.description')}
+							</h3>
 
 							<ul className='flex flex-wrap justify-start gap-28'>
 								{data.map((item, i) => (
@@ -152,7 +154,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 								))}
 							</ul>
 						</div>
-						<div className='h-64 gap-8 border-t border-gray-500 px-16 flex-justify-end'>
+						<div className='border-light-gray-200 h-64 gap-8 border-t px-16 flex-justify-end'>
 							<button
 								onClick={setToDefault}
 								style={{ width: '12rem' }}

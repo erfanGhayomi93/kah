@@ -156,7 +156,7 @@
 		}
 
 		&::before {
-			border: 1px solid theme("colors.gray.500");
+			border: 1px solid theme("colors.light.gray.200");
 			border-radius: 4px;
 			transition:
 				border-color 250ms,
@@ -165,8 +165,8 @@
 
 		&.ag-checked {
 			&::before {
-				border-color: theme("colors.primary.400");
-				background-color: theme("colors.primary.400");
+				border-color: theme("colors.light.primary.100");
+				background-color: theme("colors.light.primary.100");
 			}
 
 			&::after {
@@ -182,7 +182,7 @@
 
 .ag-header-cell {
 	&.strike-price {
-		border-bottom: 1px solid theme("colors.gray.500");
+		border-bottom: 1px solid theme("colors.light.gray.200");
 		&,
 		&:hover {
 			background-color: theme("colors.white") !important;
@@ -264,7 +264,7 @@
 
 	&:not(.border-0) {
 		.ag-root {
-			border: 1px solid theme("colors.gray.500");
+			border: 1px solid theme("colors.light.gray.200");
 		}
 	}
 

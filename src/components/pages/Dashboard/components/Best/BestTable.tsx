@@ -550,14 +550,16 @@ const BestTable = ({ symbolType, type, isModal = false }: TableProps) => {
 const TableWrapper = ({ children, title, isOption, type }: TableWrapperProps) => (
 	<div className='h-full text-center flex-column'>
 		{isOption && (
-			<span className={clsx('pb-8 text-base', type === 'call' ? 'text-success-100' : 'text-error-100')}>
+			<span
+				className={clsx('pb-8 text-base', type === 'call' ? 'text-light-success-100' : 'text-light-error-100')}
+			>
 				{title}
 			</span>
 		)}
 		<div
 			className={clsx(
 				'flex-1 overflow-hidden rounded',
-				isOption && ['border-t', type === 'call' ? 'border-t-success-100' : 'border-t-error-100'],
+				isOption && ['border-t', type === 'call' ? 'border-t-light-success-100' : 'border-t-light-error-100'],
 			)}
 		>
 			{children}

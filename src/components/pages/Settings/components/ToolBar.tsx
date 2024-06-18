@@ -57,7 +57,7 @@ const ToolBar = () => {
 						item.isActive ? 'whitespace-nowrap flex-justify-center' : 'hidden',
 						path === item.href
 							? 'no-hover btn-select'
-							: 'bg-gray-200 text-gray-900 hover:text-primary-400 hover:btn-hover',
+							: 'bg-light-gray-100 text-light-gray-700 hover:text-light-primary-100 hover:btn-hover',
 					)}
 				>
 					{item.title}

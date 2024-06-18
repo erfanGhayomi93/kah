@@ -59,6 +59,14 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.ICashSettlementReports>>>(
 		() => [
+			/* ردیف */
+			{
+				colId: 'id',
+				headerName: t('cash_settlement_reports_page.id_column'),
+				width: 32,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
+				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+			},
 			/* نماد */
 			{
 				colId: 'symbolTitle',
@@ -73,8 +81,8 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				valueGetter: (row) => t(`common.${row.side.toLowerCase()}`),
 				cellClass: (row) =>
 					clsx({
-						'text-success-200': row.side === 'Buy',
-						'text-error-200': row.side === 'Sell',
+						'text-light-success-100': row.side === 'Buy',
+						'text-light-error-100': row.side === 'Sell',
 					}),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'side')]?.hidden,
 			},
@@ -101,8 +109,8 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 				headerName: t('cash_settlement_reports_page.status_contract_column'),
 				cellClass: (row) =>
 					clsx({
-						'dark:text-dark-success-200 text-success-200 ': row.pandLStatus === 'Profit',
-						'dark:text-dark-error-200 text-error-200 ': row.pandLStatus === 'Loss',
+						'text-light-success-100 dark:text-dark-success-100 ': row.pandLStatus === 'Profit',
+						'text-light-error-100 dark:text-dark-error-100 ': row.pandLStatus === 'Loss',
 					}),
 				valueGetter: (row) =>
 					row.pandLStatus ? t('cash_settlement_reports_page.type_contract_status_' + row.pandLStatus) : '',

@@ -17,9 +17,9 @@ const SymbolSearch = () => {
 	return (
 		<div
 			style={{ maxWidth: '30rem' }}
-			className='h-40 flex-1 rounded border border-input flex-items-center input-group'
+			className='border-light-gray-200 h-40 flex-1 rounded border flex-items-center input-group'
 		>
-			<span className='px-8 text-gray-800'>
+			<span className='text-light-gray-700 px-8'>
 				<SearchSVG />
 			</span>
 			<input
@@ -27,7 +27,7 @@ const SymbolSearch = () => {
 				type='text'
 				inputMode='numeric'
 				maxLength={32}
-				className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-1000'
+				className='text-light-gray-800 h-40 flex-1 rounded bg-transparent pl-8'
 				placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 				value={term}
 				onChange={(e) => setTerm(e.target.value)}

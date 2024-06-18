@@ -22,8 +22,8 @@ const Broker = ({ name, description, logo, ssoUrl, onSelect }: BrokerProps) => {
 				</div>
 
 				<div className='gap-16 flex-column'>
-					<h2 className='text-base font-medium text-gray-900'>{name}</h2>
-					<span className='text-tiny text-gray-700'>{description}</span>
+					<h2 className='text-light-gray-700 text-base font-medium'>{name}</h2>
+					<span className='text-light-gray-500 text-tiny'>{description}</span>
 				</div>
 			</div>
 

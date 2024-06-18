@@ -18,7 +18,7 @@ const Div = styled.div`
 	flex-direction: column;
 `;
 
-interface DepositProps extends IDepositModal { }
+interface DepositProps extends IDepositModal {}
 
 const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 	const t = useTranslations();
@@ -44,22 +44,15 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Header
-				label={t('deposit_modal.title')}
-				onClose={onCloseModal}
-				onExpanded={onExpanded}
-			/>
+			<Header label={t('deposit_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} />
 
 			<div className='flex bg-white p-24'>
 				<Div
 					className={clsx('flex-column', {
-						'border-l border-gray-500 pl-24 pr-16': isShowExpanded,
+						'border-light-gray-200 border-l pl-24 pr-16': isShowExpanded,
 					})}
 				>
-					<Body
-						dataEdit={data}
-						activeTab={activeTab}
-					/>
+					<Body dataEdit={data} activeTab={activeTab} />
 				</Div>
 
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>

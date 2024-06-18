@@ -131,7 +131,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`${type}.title`)} <span className='text-gray-700'>({title})</span>
+						{t(`${type}.title`)} <span className='text-light-gray-500'>({title})</span>
 					</>
 				),
 				description: () => <LongStraddleDescription />,

@@ -21,12 +21,11 @@ export const SettlementPhysicalTab: FC<SettlementPhysicalTabProps> = ({ clickIte
 		<>
 			{data?.result.length === 0 && <NoData />}
 
-			<div className='flex flex-column overflow-auto'>
-
+			<div className='flex overflow-auto flex-column'>
 				{data?.result.length !== 0 && (
 					<div className='my-24 mt-16 flex items-center gap-4 '>
-						<InfoCircleSVG className='text-info' width='2rem' height='2rem' />
-						<span className='text-tiny tracking-normal text-info'>
+						<InfoCircleSVG className='text-light-info-100' width='2rem' height='2rem' />
+						<span className='text-tiny tracking-normal text-light-info-100'>
 							{t('optionSettlementModal.notice_attention')}
 						</span>
 					</div>
@@ -44,8 +43,8 @@ export const SettlementPhysicalTab: FC<SettlementPhysicalTabProps> = ({ clickIte
 									<div>
 										<span
 											className={clsx({
-												'text-success-100': item.side === 'Buy',
-												'text-error-100': item.side === 'Sell',
+												'text-light-success-100': item.side === 'Buy',
+												'text-light-error-100': item.side === 'Sell',
 											})}
 										>
 											{t('side.' + item.side?.toLowerCase())}
@@ -54,27 +53,27 @@ export const SettlementPhysicalTab: FC<SettlementPhysicalTabProps> = ({ clickIte
 									</div>
 									<div className='mt-16'>
 										<span className='pl-4 font-medium'>{item.openPositionCount}</span>
-										<span className='text-gray-900'>{t('home.tab_option_position')}</span>
+										<span className='text-light-gray-700'>{t('home.tab_option_position')}</span>
 									</div>
 								</div>
 
 								<div>
 									<div>
-										<span className='pl-4 text-gray-900'>
+										<span className='pl-4 text-light-gray-700'>
 											{t('optionSettlementModal.settlement_date')}:
 										</span>
-										<span className='text-gray-1000'>
+										<span className='text-light-gray-800'>
 											{dateFormatter(item.cashSettlementDate, 'date')}
 										</span>
 									</div>
 									<div className='mt-16'>
-										<span className='pl-4 text-gray-900'>
+										<span className='pl-4 text-light-gray-700'>
 											{t('optionSettlementModal.status_contract')}:
 										</span>
 										<span
 											className={clsx({
-												'text-success-100': item.pandLStatus === 'Profit',
-												'text-error-100': item.pandLStatus === 'Loss',
+												'text-light-success-100': item.pandLStatus === 'Profit',
+												'text-light-error-100': item.pandLStatus === 'Loss',
 											})}
 										>
 											{t('cash_settlement_reports_page.type_contract_status_' + item.pandLStatus)}
@@ -84,12 +83,11 @@ export const SettlementPhysicalTab: FC<SettlementPhysicalTabProps> = ({ clickIte
 							</div>
 
 							<div>
-								<HandWriteSVG className='text-primary-300' />
+								<HandWriteSVG className='text-light-primary-100' />
 							</div>
 						</div>
 					))}
 				</div>
-
 			</div>
 		</>
 	);
