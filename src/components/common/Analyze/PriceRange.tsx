@@ -32,8 +32,8 @@ const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {
 	}, [maxPrice]);
 
 	return (
-		<div style={{ flex: '0 0 4rem' }} className='gap-16 flex-items-center'>
-			<span className='text-light-gray-700 text-tiny'>{t('analyze_modal.base_symbol_price_range')}:</span>
+		<div style={{ flex: '0 0 4rem' }} className='relative z-10 gap-16 flex-items-center'>
+			<span className='text-tiny text-light-gray-700'>{t('analyze_modal.base_symbol_price_range')}:</span>
 
 			<div className='flex gap-8'>
 				<input
@@ -41,7 +41,7 @@ const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {
 					type='text'
 					name='min-price'
 					placeholder={t('analyze_modal.from_price')}
-					className='border-light-gray-200 h-40 w-96 rounded border px-8'
+					className='h-40 w-96 rounded border border-light-gray-200 px-8'
 					value={!inputs.minPrice ? '' : sepNumbers(String(inputs.minPrice))}
 					onCopy={(e) => copyNumberToClipboard(e, inputs.minPrice ?? 0)}
 					onChange={(e) => setFieldValue('minPrice', Number(convertStringToInteger(e.target.value)))}
@@ -51,7 +51,7 @@ const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {
 					type='text'
 					name='max-price'
 					placeholder={t('analyze_modal.to_price')}
-					className='border-light-gray-200 h-40 w-96 rounded border px-8'
+					className='h-40 w-96 rounded border border-light-gray-200 px-8'
 					value={!inputs.maxPrice ? '' : sepNumbers(String(inputs.maxPrice))}
 					onCopy={(e) => copyNumberToClipboard(e, inputs.maxPrice ?? 0)}
 					onChange={(e) => setFieldValue('maxPrice', Number(convertStringToInteger(e.target.value)))}

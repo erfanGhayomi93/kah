@@ -1,14 +1,18 @@
 import { chartFontSetting } from '@/libs/highchart';
-import { sepNumbers } from '@/utils/helpers';
-import { type Chart, chart, type SeriesAreaOptions } from 'highcharts/highstock';
+import { sepNumbers, toFixed } from '@/utils/helpers';
+import { type Chart, chart, type SeriesAreaOptions, type XAxisPlotLinesOptions } from 'highcharts/highstock';
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
-import NoData from '../NoData';
 import PriceRange from './PriceRange';
 
+interface IPoint {
+	x: number;
+	y: number;
+}
+
 interface AnalyzeChartProps extends IAnalyzeInputs {
-	data: Array<Record<'x' | 'y', number>>;
+	data: IPoint[];
 	minPrice: number;
 	maxPrice: number;
 	height?: number;
@@ -34,78 +38,129 @@ const AnalyzeChart = ({
 		RED: 'rgb(255, 82, 109)',
 	};
 
-	const series: SeriesAreaOptions = useMemo(() => {
-		const result: SeriesAreaOptions = {
-			threshold: 1,
-			type: 'area',
-			lineWidth: 1.5,
-			connectNulls: true,
-			showInNavigator: true,
-			data: [],
-			zones: [
-				{
-					value: 0,
-					color: COLORS.RED,
-					fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-						stops: [
-							[0, 'rgba(255, 82, 109, 0)'],
-							[1, 'rgba(255, 82, 109, 0.2)'],
-						],
-					},
+	const getAreaSeries = (): SeriesAreaOptions => ({
+		threshold: 1,
+		type: 'area',
+		lineWidth: 1.5,
+		connectNulls: true,
+		showInNavigator: true,
+		data: [],
+		zones: [
+			{
+				value: 0,
+				color: COLORS.RED,
+				fillColor: {
+					linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+					stops: [
+						[0, 'rgba(255, 82, 109, 0)'],
+						[1, 'rgba(255, 82, 109, 0.2)'],
+					],
 				},
-				{
-					color: COLORS.GREEN,
-					fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-						stops: [
-							[0, 'rgba(0, 194, 136, 0.2)'],
-							[1, 'rgba(0, 194, 136, 0)'],
-						],
-					},
+			},
+			{
+				color: COLORS.GREEN,
+				fillColor: {
+					linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+					stops: [
+						[0, 'rgba(0, 194, 136, 0.2)'],
+						[1, 'rgba(0, 194, 136, 0)'],
+					],
 				},
-			],
-		};
+			},
+		],
+	});
 
-		const diff = Math.round((maxPrice - minPrice) / 100);
-		const l = data.length;
+	const getBepPlotLine = (v: number, y: number): XAxisPlotLinesOptions => ({
+		dashStyle: 'LongDash',
+		width: 1,
+		color: 'rgb(140, 142, 151)',
+		value: v,
+		className: '!rounded-md',
+		label: {
+			text: `${t('break_even_point')}: ${sepNumbers(String(v))}`,
+			align: 'center',
+			textAlign: 'center',
+			rotation: 0,
+			verticalAlign: 'top',
+			useHTML: true,
+			y: 40 + y,
+			style: {
+				fontFamily: chartFontSetting.fontFamily,
+				fontSize: '12px',
+				fontWeight: '500',
+				backgroundColor: 'rgb(140, 142, 151)',
+				// @ts-expect-error: borderRadius has bug, it should be string, but it's number
+				borderRadius: '4px',
+				color: 'rgb(255, 255, 255)',
+				padding: '4px 8px',
+			},
+		},
+	});
 
-		for (let i = 0; i < l; i++) {
-			const item = data[i];
-			const pnl = Math.round(item.y);
+	const getBaseAssetsPlotLine = (): XAxisPlotLinesOptions => ({
+		dashStyle: 'LongDash',
+		width: 1,
+		color: 'rgba(0, 87, 255, 1)',
+		value: baseAssets ?? 0,
+		className: '!rounded-md',
+		label: {
+			text: `${t('base_assets')}: ${sepNumbers(String(baseAssets ?? 0))}`,
+			align: 'center',
+			textAlign: 'center',
+			rotation: 0,
+			verticalAlign: 'top',
+			useHTML: true,
+			style: {
+				fontFamily: chartFontSetting.fontFamily,
+				fontSize: '12px',
+				fontWeight: '500',
+				backgroundColor: 'rgba(0, 87, 255, 1)',
+				// @ts-expect-error: borderRadius has bug, it should be string, but it's number
+				borderRadius: '4px',
+				color: 'rgb(255, 255, 255)',
+				padding: '4px 8px',
+			},
+		},
+	});
 
-			if (pnl === 0 || i % diff === 0) {
-				result.data!.push({
-					x: item.x,
-					y: pnl,
-				});
-			}
+	const addBepPoint = (points: IPoint[]) => {
+		const firstPoint = points[0];
+		const lastPoint = points[1];
+
+		// ? 𝑦 = 𝑚𝑥 + 𝑏
+
+		const m = (lastPoint.y - firstPoint.y) / (lastPoint.x - firstPoint.x);
+		const b = firstPoint.y - m * firstPoint.x;
+		const x = -b / m;
+
+		return Math.round(x);
+	};
+
+	const getYtm = (profitPercent: number, dueDays: number) => {
+		try {
+			if (profitPercent == null) throw new Error();
+
+			dueDays = Math.max(dueDays, 1);
+
+			profitPercent /= 100;
+
+			const ytm = 100 * (Math.pow(1 + profitPercent, 365 / dueDays) - 1);
+
+			return toFixed(ytm, 2);
+		} catch (e) {
+			return null;
 		}
-
-		return result;
-	}, [data]);
+	};
 
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
 
-		// TODO: محاسبه سر به سر
 		chartRef.current = chart(el, {
 			chart: {
 				height,
 			},
 			tooltip: {
-				useHTML: true,
-				formatter: function () {
-					const x = Number(this.x ?? 0);
-					const y = Number(this.y ?? 0);
-
-					const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
-					const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(x - baseAssets)))}</span></li>`;
-					const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
-					const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${sepNumbers(String(0))} (0%)</span></li>`;
-
-					return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1}${li2}${li3}${li4}</ul>`;
-				},
+				enabled: false,
 			},
 			navigator: {
 				enabled: true,
@@ -174,67 +229,98 @@ const AnalyzeChart = ({
 					},
 				},
 			},
-			series: [series],
+			series: [getAreaSeries()],
 		});
 	}, []);
 
 	useEffect(() => {
 		if (!chartRef.current) return;
 
-		chartRef.current.update({
-			series: [series],
-		});
-	}, [series]);
+		try {
+			const series = getAreaSeries();
 
-	useEffect(() => {
-		if (!chartRef.current) return;
+			if (data.length <= 10) return;
 
-		chartRef.current.update({
-			// @ts-expect-error: borderRadius has bug, it should be string, but it's number
-			xAxis: {
-				plotLines: [
-					{
-						dashStyle: 'LongDash',
-						width: 1,
-						color: 'rgba(0, 87, 255, 1)',
-						value: baseAssets ?? 0,
-						className: '!rounded-md',
-						label: {
-							text: `${t('base_assets')}: ${sepNumbers(String(baseAssets ?? 0))}`,
-							align: 'center',
-							textAlign: 'center',
-							rotation: 0,
-							verticalAlign: 'top',
-							useHTML: true,
-							style: {
-								fontFamily: chartFontSetting.fontFamily,
-								fontSize: '12px',
-								fontWeight: 500,
-								backgroundColor: 'rgba(0, 87, 255, 1)',
-								borderRadius: '4px',
-								color: 'rgb(255, 255, 255)',
-								padding: '4px 8px',
-							},
-						},
+			const diff = Math.floor((maxPrice - minPrice) / 100);
+			const l = data.length;
+
+			let status: 'POSITIVE' | 'NEGATIVE' = data[1].y - data[0].y < 0 ? 'NEGATIVE' : 'POSITIVE';
+			const m: IPoint[][] = [[]];
+			let k = 0;
+
+			for (let i = 0; i < l; i++) {
+				const item = data[i];
+				const pnl = Math.round(item.y);
+				const previousItem = data[Math.max(0, i - 1)];
+
+				if (pnl === 0 || i % diff === 0) {
+					series.data!.push({
+						x: item.x,
+						y: pnl,
+					});
+				}
+
+				if (i > 0) {
+					const currentStatus: typeof status = pnl - previousItem.y < 0 ? 'NEGATIVE' : 'POSITIVE';
+					m[k].push(previousItem);
+
+					if (currentStatus !== status) {
+						k++;
+						m[k] = [];
+					}
+
+					status = currentStatus;
+				}
+			}
+
+			const bep = m.map<XAxisPlotLinesOptions>((points, i) => getBepPlotLine(addBepPoint(points), i * 30));
+
+			chartRef.current.update({
+				xAxis: {
+					plotLines: [getBaseAssetsPlotLine(), ...bep],
+				},
+				tooltip: {
+					enabled: true,
+					useHTML: true,
+					formatter: function () {
+						const x = Number(this.x ?? 0);
+						const y = Number(this.y ?? 0);
+
+						// ? ((pnl / price) - 1) * 100
+						const profitPercent = ((y + baseAssets) / baseAssets - 1) * 100;
+						const ytm =
+							isNaN(profitPercent) || Math.abs(profitPercent) === Infinity
+								? '−'
+								: getYtm(profitPercent, 20);
+
+						const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
+						const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
+						const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
+						const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm}</span></li>`;
+
+						return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1}${li2}${li3}${li4}</ul>`;
 					},
-				],
-			},
-		});
-	}, [baseAssets]);
+				},
+				series: [series],
+			});
+		} catch (e) {
+			//
+		}
+	}, [chartRef.current, data, baseAssets]);
 
 	return (
 		<ErrorBoundary>
 			<div className='gap-8 flex-column'>
 				<div ref={onLoad} />
 
-				{onChange && <PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />}
-
-				{!series.data ||
+				{/* {!series.data ||
 					(series.data.length === 0 && (
 						<div className='absolute size-full bg-white center'>
 							<NoData text={t('no_active_contract_found')} />
 						</div>
-					))}
+					))} */}
+
+				{onChange && <PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />}
 			</div>
 		</ErrorBoundary>
 	);
