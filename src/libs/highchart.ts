@@ -97,11 +97,13 @@ export const setupChart = () => {
 			tickWidth: 0,
 			maxPadding: 0,
 			minPadding: 0,
+			offset: 0,
 			title: {
 				text: '',
 			},
 			crosshair: chartCrosshairSetting,
 			labels: {
+				padding: '0',
 				align: 'center',
 				rotation: 0,
 				style: {
@@ -114,6 +116,7 @@ export const setupChart = () => {
 			tickWidth: 0,
 			minPadding: 0,
 			maxPadding: 0,
+			offset: 0,
 			startOnTick: true,
 			endOnTick: true,
 			showFirstLabel: true,
@@ -129,6 +132,7 @@ export const setupChart = () => {
 				},
 			},
 			labels: {
+				padding: '0',
 				style: {
 					...chartFontSetting,
 					color: 'rgba(93, 96, 109, 1)',
