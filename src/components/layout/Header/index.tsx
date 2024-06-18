@@ -67,12 +67,12 @@ const Header = () => {
 
 	const { data: userStatus } = useUserStatusQuery({
 		queryKey: ['userStatusQuery'],
-		enabled: Boolean(brokerURLs),
+		enabled: isLoggedIn && Boolean(brokerURLs),
 	});
 
 	const { data: userRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
-		enabled: Boolean(brokerURLs),
+		enabled: isLoggedIn && Boolean(brokerURLs),
 	});
 
 	const showAuthenticationModal = () => {
@@ -199,7 +199,7 @@ const Header = () => {
 					)}
 				</div>
 
-				{userRemain && (
+				{isLoggedIn && userRemain && (
 					<span className='gap-8 text-base flex-items-center'>
 						{t('header.purchase_power')}:
 						<span className='gap-4 flex-items-center'>
@@ -218,7 +218,7 @@ const Header = () => {
 					</span>
 				)}
 
-				{userStatus?.remainStatus && (
+				{isLoggedIn && userStatus?.remainStatus && (
 					<>
 						<span className='h-12 w-2 bg-light-gray-200' />
 
