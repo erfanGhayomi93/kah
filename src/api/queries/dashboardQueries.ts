@@ -29,7 +29,7 @@ export const useGetMarketStateQuery = createQuery<
 });
 
 export const useGetIndexQuery = createQuery<
-	Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall,
+	Dashboard.GetIndex.Overall[] | Dashboard.GetIndex.EqualWeightOverall[],
 	['getIndexQuery', Dashboard.TInterval, Dashboard.TIndex]
 >({
 	staleTime: CACHE_TIME,
@@ -38,7 +38,7 @@ export const useGetIndexQuery = createQuery<
 		const [, chartIntervalType, indexType] = queryKey;
 
 		const response = await axios.get<
-			ServerResponse<Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall>
+			ServerResponse<Dashboard.GetIndex.Overall[] | Dashboard.GetIndex.EqualWeightOverall[]>
 		>(routes.dashboard.GetIndex, {
 			params: { chartIntervalType, indexType },
 			signal,
@@ -294,7 +294,7 @@ export const useGetOptionWatchlistPriceChangeInfoQuery = createQuery<
 });
 
 export const useGetOpenPositionProcessQuery = createQuery<
-	Dashboard.GetOpenPositionProcess.Data,
+	Dashboard.GetOpenPositionProcess.Data[],
 	['getOpenPositionProcessQuery', Dashboard.TInterval]
 >({
 	staleTime: CACHE_TIME,
@@ -302,7 +302,7 @@ export const useGetOpenPositionProcessQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		const [, chartIntervalType] = queryKey;
 
-		const response = await axios.get<ServerResponse<Dashboard.GetOpenPositionProcess.Data>>(
+		const response = await axios.get<ServerResponse<Dashboard.GetOpenPositionProcess.Data[]>>(
 			routes.dashboard.GetOpenPositionProcess,
 			{
 				params: { chartIntervalType },

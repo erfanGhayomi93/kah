@@ -14,7 +14,10 @@ import Section, { type ITab } from '../../common/Section';
 import Suspend from '../../common/Suspend';
 import MarketViewChart from './MarketViewChart';
 
-type TIndexData = Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall | Dashboard.GetIndex.RetailTrades;
+type TIndexData =
+	| Dashboard.GetIndex.Overall[]
+	| Dashboard.GetIndex.EqualWeightOverall[]
+	| Dashboard.GetIndex.RetailTrades;
 
 type TTabs = Partial<{
 	top: Array<ITab<Dashboard.TInterval>> | React.ReactNode;
