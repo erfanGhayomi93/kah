@@ -1,135 +1,186 @@
 import { useGetOptionWatchlistPriceChangeInfoQuery } from '@/api/queries/dashboardQueries';
-import AppChart from '@/components/common/AppChart';
 import { sepNumbers } from '@/utils/helpers';
+import { chart, type Chart, type SeriesColumnOptions } from 'highcharts/highstock';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
 
-const COLORS = [
-	'rgba(255, 0, 40, 1)',
-	'rgba(255, 52, 84, 1)',
-	'rgba(255, 82, 109, 1)',
-	'rgba(226, 231, 237, 1)',
-	'rgba(66, 218, 173, 1)',
-	'rgba(0, 194, 136, 1)',
-	'rgba(0, 164, 115, 1)',
-];
-
-const BG_COLORS = [
-	'rgba(255, 0, 40, 0.05)',
-	'rgba(255, 52, 84, 0.05)',
-	'rgba(255, 82, 109, 0.05)',
-	'rgba(226, 231, 237, 0.1)',
-	'rgba(0, 194, 136, 0.05)',
-	'rgba(0, 164, 115, 0.05)',
-	'rgba(0, 164, 115, 0.05)',
-];
-
-const DEFAULT_RESULT = [...Array<IChartOutput[]>(7)].map((_, i) => ({
-	x: `${i}`,
-	y: 0,
-	fillColor: COLORS[i],
-	strokeColor: COLORS[i],
-}));
-
-interface IChartOutput {
-	x: string | number;
-	y: string | number;
-	fillColor: string;
-	strokeColor: string;
-}
-
 const PriceChangesWatchlistChart = () => {
-	const t = useTranslations();
+	const t = useTranslations('home');
+
+	const chartRef = useRef<Chart | null>(null);
 
 	const { data, isLoading } = useGetOptionWatchlistPriceChangeInfoQuery({
 		queryKey: ['getOptionWatchlistPriceChangeInfoQuery'],
 	});
 
-	const dataMapper = useMemo<IChartOutput[]>(() => {
-		if (!Array.isArray(data)) return DEFAULT_RESULT;
+	const onLoad = useCallback((el: HTMLDivElement | null) => {
+		if (!el) return;
 
-		return DEFAULT_RESULT.map((_, i) => ({
-			x: data[i]?.state ?? `${i}`,
-			y: Math.max(0, data[i]?.count ?? 0),
-			fillColor: COLORS[i],
-			strokeColor: COLORS[i],
-		}));
+		chartRef.current = chart(el, {
+			tooltip: {
+				outside: true,
+				shared: true,
+				followPointer: true,
+				formatter: function () {
+					return `‏${t('count')}: ${sepNumbers(String(this.y ?? 0))}`;
+				},
+			},
+			xAxis: {
+				type: 'category',
+				crosshair: false,
+			},
+			yAxis: {
+				min: 0,
+				crosshair: false,
+				gridLineWidth: 0,
+				lineWidth: 0,
+				labels: {
+					enabled: false,
+				},
+			},
+			plotOptions: {
+				column: {
+					pointWidth: 26,
+					stacking: 'normal',
+					borderRadius: 6,
+					pointPadding: 0,
+					borderWidth: 0,
+					groupPadding: 0,
+					grouping: false,
+					shadow: false,
+					dataLabels: {
+						enabled: true,
+						align: 'center',
+						verticalAlign: 'top',
+						y: -24,
+						inside: false,
+						style: {
+							fontSize: '12px',
+							fontWeight: '500',
+							color: 'rgb(93, 96, 109)',
+						},
+					},
+				},
+				series: {
+					stacking: 'percent',
+					color: 'red',
+				},
+			},
+			series: [
+				{ type: 'column', data: [] },
+				{ type: 'column', data: [] },
+			],
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!chartRef.current || !data?.length) return;
+
+		let maxValue = Math.max(...data.map((item) => item.count));
+		maxValue = Math.max(Math.ceil(maxValue / 100) * 100, 10);
+
+		const values = [
+			data[0]?.count ?? 0,
+			data[1]?.count ?? 0,
+			data[2]?.count ?? 0,
+			data[3]?.count ?? 0,
+			data[4]?.count ?? 0,
+			data[5]?.count ?? 0,
+			data[6]?.count ?? 0,
+		];
+
+		const series: SeriesColumnOptions[] = [
+			{
+				type: 'column',
+				dataLabels: {
+					enabled: false,
+				},
+				data: [
+					{
+						color: 'rgba(255, 82, 109, 0.1)',
+						y: maxValue - values[0],
+					},
+					{
+						color: 'rgba(255, 82, 109, 0.1)',
+						y: maxValue - values[1],
+					},
+					{
+						color: 'rgba(255, 82, 109, 0.1)',
+						y: maxValue - values[2],
+					},
+					{
+						color: 'rgba(226, 231, 237, 0.1)',
+						y: maxValue - values[3],
+					},
+					{
+						color: 'rgba(0, 194, 136, 0.1)',
+						y: maxValue - values[4],
+					},
+					{
+						color: 'rgba(0, 194, 136, 0.1)',
+						y: maxValue - values[5],
+					},
+					{
+						color: 'rgba(0, 194, 136, 0.1)',
+						y: maxValue - values[6],
+					},
+				],
+			},
+			{
+				type: 'column',
+				dataLabels: {
+					formatter: function () {
+						if (!this.y) return '0%';
+						return `${Math.round((this.y / maxValue) * 100)}%`;
+					},
+				},
+				data: [
+					{
+						name: '< ‎-4',
+						color: 'rgba(137, 68, 80, 1)',
+						y: values[0],
+					},
+					{
+						name: '‎-4 تا ‎-2',
+						color: 'rgba(173, 67, 74, 1)',
+						y: values[1],
+					},
+					{
+						name: '‎-2 تا ‎-0.5',
+						color: 'rgba(221, 62, 63, 1)',
+						y: values[2],
+					},
+					{
+						name: '‎+0.5 تا ‎-0.5',
+						color: 'rgba(93, 96, 109, 1)',
+						y: values[3],
+					},
+					{
+						name: '‎+2 تا ‎+0.5',
+						color: 'rgba(0, 194, 136, 1)',
+						y: values[4],
+					},
+					{
+						name: '‎+4 تا ‎+2',
+						color: 'rgba(17, 137, 122, 1)',
+						y: values[5],
+					},
+					{
+						name: '‎+4 <',
+						color: 'rgba(33, 110, 111, 1)',
+						y: values[6],
+					},
+				],
+			},
+		];
+
+		chartRef.current.update({ series });
 	}, [data]);
 
 	return (
 		<>
-			<AppChart
-				options={{
-					tooltip: {
-						intersect: false,
-						y: {
-							formatter: (val) => {
-								return `‏${t('home.count')}: ${sepNumbers(String(val ?? 0))}`;
-							},
-						},
-					},
-					states: {
-						active: {
-							filter: {
-								type: 'none',
-							},
-						},
-						hover: {
-							filter: {
-								type: 'none',
-							},
-						},
-					},
-					plotOptions: {
-						bar: {
-							columnWidth: '32%',
-							borderRadius: 6,
-
-							colors: {
-								backgroundBarColors: BG_COLORS,
-								backgroundBarRadius: 6,
-							},
-							dataLabels: {
-								position: 'top',
-							},
-						},
-					},
-					xaxis: {
-						tickAmount: 5,
-					},
-					yaxis: {
-						show: false,
-					},
-					dataLabels: {
-						textAnchor: 'middle',
-						offsetY: -24,
-						formatter: (value) => {
-							return `${value}%`;
-						},
-					},
-					grid: {
-						show: false,
-					},
-					labels: [
-						'< ‎-4',
-						'‎-4 تا ‎-2',
-						'‎-2 تا ‎-0.5',
-						'‎+0.5 تا ‎-0.5',
-						'‎+2 تا ‎+0.5',
-						'‎+4 تا ‎+2',
-						'‎+4 <',
-					],
-				}}
-				series={[
-					{
-						data: dataMapper,
-					},
-				]}
-				type='bar'
-				width='100%'
-				height='100%'
-			/>
+			<div ref={onLoad} className='h-full' />
 
 			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</>
