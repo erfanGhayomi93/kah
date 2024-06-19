@@ -294,7 +294,7 @@ export const useGetOptionWatchlistPriceChangeInfoQuery = createQuery<
 });
 
 export const useGetOpenPositionProcessQuery = createQuery<
-	Dashboard.GetOpenPositionProcess.Data,
+	Dashboard.GetOpenPositionProcess.Data[],
 	['getOpenPositionProcessQuery', Dashboard.TInterval]
 >({
 	staleTime: CACHE_TIME,
@@ -302,7 +302,7 @@ export const useGetOpenPositionProcessQuery = createQuery<
 	queryFn: async ({ signal, queryKey }) => {
 		const [, chartIntervalType] = queryKey;
 
-		const response = await axios.get<ServerResponse<Dashboard.GetOpenPositionProcess.Data>>(
+		const response = await axios.get<ServerResponse<Dashboard.GetOpenPositionProcess.Data[]>>(
 			routes.dashboard.GetOpenPositionProcess,
 			{
 				params: { chartIntervalType },

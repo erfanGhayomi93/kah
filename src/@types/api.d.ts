@@ -1250,7 +1250,10 @@ declare namespace Dashboard {
 	}
 
 	export namespace GetOpenPositionProcess {
-		export type Data = Record<string, number>;
+		export type Data = {
+			dateTime: string;
+			openPosition: number;
+		};
 	}
 
 	export namespace GetAnnualReport {
