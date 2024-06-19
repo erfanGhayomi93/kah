@@ -96,6 +96,7 @@ export const setupChart = () => {
 			},
 		},
 		xAxis: {
+			gridLineColor: 'rgb(226, 231, 237)',
 			lineColor: 'rgb(226, 231, 237)',
 			endOnTick: false,
 			startOnTick: false,
@@ -105,6 +106,8 @@ export const setupChart = () => {
 			maxPadding: 0,
 			minPadding: 0,
 			offset: 0,
+			lineWidth: 0,
+			gridLineWidth: 0,
 			title: {
 				text: '',
 			},
@@ -120,6 +123,7 @@ export const setupChart = () => {
 			},
 		},
 		yAxis: {
+			lineWidth: 0,
 			tickWidth: 0,
 			minPadding: 0,
 			maxPadding: 0,
@@ -129,6 +133,7 @@ export const setupChart = () => {
 			showFirstLabel: true,
 			showLastLabel: true,
 			gridLineColor: 'rgb(226, 231, 237)',
+			lineColor: 'rgb(226, 231, 237)',
 			title: {
 				text: '',
 			},
