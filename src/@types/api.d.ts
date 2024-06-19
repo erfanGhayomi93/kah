@@ -999,35 +999,21 @@ declare namespace Dashboard {
 
 	export namespace GetIndex {
 		export interface Overall {
-			symbolTitle: string;
+			symbolTitle: null;
 			date: string;
-			time:
-				| 'ticks'
-				| 'days'
-				| 'hours'
-				| 'milliseconds'
-				| 'minutes'
-				| 'seconds'
-				| 'totalDays'
-				| 'totalHours'
-				| 'totalMilliseconds'
-				| 'totalMinutes'
-				| 'totalSeconds';
+			time: string;
+			dateTime: string;
 			lastIndexValueInDay: number;
+			changePercentDuringDayComparedToPreviousDay: number;
 		}
 
-		export interface EqualWeightOverall extends Overall {
-			ticks: 0;
-			days: 0;
-			hours: 0;
-			milliseconds: 0;
-			minutes: 0;
-			seconds: 0;
-			totalDays: 0;
-			totalHours: 0;
-			totalMilliseconds: 0;
-			totalMinutes: 0;
-			totalSeconds: 0;
+		export interface EqualWeightOverall {
+			symbolTitle: null;
+			date: string;
+			time: string;
+			dateTime: string;
+			lastIndexValueInDay: number;
+			changePercentDuringDayComparedToPreviousDay: number;
 		}
 
 		export type RetailTrades = Record<string, number>;
