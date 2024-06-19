@@ -2,7 +2,7 @@ import { type AxisCrosshairOptions, setOptions } from 'highcharts/highstock';
 
 export const chartFontSetting = {
 	fontFamily: 'IRANSans',
-	fontSize: '11',
+	fontSize: '11px',
 	fontWeight: '400',
 };
 
@@ -15,7 +15,9 @@ export const chartCrosshairSetting: AxisCrosshairOptions = {
 		backgroundColor: 'rgba(24, 28, 47, 1)',
 		borderRadius: 4,
 		style: {
-			...chartFontSetting,
+			fontFamily: chartFontSetting.fontFamily,
+			fontSize: '12px',
+			fontWeight: '400',
 			height: 40,
 			borderRadius: 4,
 			borderWidth: 0,
@@ -71,8 +73,10 @@ export const setupChart = () => {
 			backgroundColor: 'rgba(24, 28, 47, 1)',
 			borderRadius: 4,
 			borderWidth: 0,
+			useHTML: true,
 			style: {
 				...chartFontSetting,
+				pointerEvents: 'none',
 				color: 'rgb(255, 255, 255)',
 			},
 		},
@@ -87,8 +91,26 @@ export const setupChart = () => {
 					enabled: false,
 				},
 			},
+			line: {
+				marker: {
+					enabled: false,
+				},
+			},
+			pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: false,
+				},
+			},
+			column: {
+				dataLabels: {
+					style: chartFontSetting,
+				},
+			},
 		},
 		xAxis: {
+			gridLineColor: 'rgb(226, 231, 237)',
 			lineColor: 'rgb(226, 231, 237)',
 			endOnTick: false,
 			startOnTick: false,
@@ -98,6 +120,8 @@ export const setupChart = () => {
 			maxPadding: 0,
 			minPadding: 0,
 			offset: 0,
+			lineWidth: 0,
+			gridLineWidth: 0,
 			title: {
 				text: '',
 			},
@@ -113,6 +137,7 @@ export const setupChart = () => {
 			},
 		},
 		yAxis: {
+			lineWidth: 0,
 			tickWidth: 0,
 			minPadding: 0,
 			maxPadding: 0,
@@ -122,6 +147,7 @@ export const setupChart = () => {
 			showFirstLabel: true,
 			showLastLabel: true,
 			gridLineColor: 'rgb(226, 231, 237)',
+			lineColor: 'rgb(226, 231, 237)',
 			title: {
 				text: '',
 			},

@@ -91,8 +91,9 @@ const StrategyChartDetails = ({
 
 			<div className='relative flex-1'>
 				<AnalyzeChart
-					removeBorders
+					compact
 					data={data}
+					height={150}
 					minPrice={minPrice}
 					maxPrice={maxPrice}
 					baseAssets={basePrice}

@@ -86,7 +86,7 @@ const InputLegend = ({
 					className={clsx(
 						'h-24 px-8 text-tiny text-light-gray-500 flex-justify-center',
 						classes?.prefix,
-						separator && 'border-r-input border-r',
+						separator && 'border-r border-r-light-gray-200',
 					)}
 				>
 					{prefix}

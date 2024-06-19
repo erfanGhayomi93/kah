@@ -131,6 +131,10 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 			if (initialBaseSymbolISIN) fetchSymbolInfo({ symbolISIN: initialBaseSymbolISIN, type: 'initial' });
 		}, []);
 
+		useEffect(() => {
+			setFieldValue('contracts', []);
+		}, [inputs.baseSymbol?.symbolISIN]);
+
 		return (
 			<Modal
 				top='50%'

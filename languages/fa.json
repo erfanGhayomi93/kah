@@ -82,6 +82,11 @@
 		"user_status_CallMargin": "اخطار وجه تضمین",
 		"logout": "خروج از حساب کاربری"
 	},
+	"header_notifications": {
+		"notifications": "اعلان‌ها",
+		"messages": "پیام‌ها",
+		"strategies": "استراتژی‌ها"
+	},
 	"symbol_strategy": {
 		"base_symbol": "نماد پایه",
 		"side": "سمت",
@@ -190,7 +195,8 @@
 		"passed_days": "روز گذشته",
 		"call_option": "اختیار خرید",
 		"put_option": "اختیار فروش",
-		"count": "تعداد"
+		"count": "تعداد",
+		"col_label": "{a} تا {b}"
 	},
 	"iotm": {
 		"atm": "در قیمت",
