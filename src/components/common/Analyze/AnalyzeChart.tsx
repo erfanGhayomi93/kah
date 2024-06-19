@@ -266,6 +266,7 @@ const AnalyzeChart = ({
 				tooltip: {
 					enabled: !compact,
 					useHTML: true,
+					split: true,
 					formatter: function () {
 						const x = Number(this.x ?? 0);
 						const y = Number(this.y ?? 0);

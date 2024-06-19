@@ -195,7 +195,8 @@
 		"passed_days": "روز گذشته",
 		"call_option": "اختیار خرید",
 		"put_option": "اختیار فروش",
-		"count": "تعداد"
+		"count": "تعداد",
+		"col_label": "{a} تا {b}"
 	},
 	"iotm": {
 		"atm": "در قیمت",
