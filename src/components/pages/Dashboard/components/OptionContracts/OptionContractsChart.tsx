@@ -37,6 +37,12 @@ const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) 
 		if (!el) return;
 
 		chartRef.current = chart(el, {
+			chart: {
+				zooming: {
+					mouseWheel: false,
+					singleTouch: false,
+				},
+			},
 			tooltip: {
 				formatter: function () {
 					return `<span class="text-white">\u200f${num2persian(String(this.y ?? 0))}</span>`;
@@ -77,6 +83,16 @@ const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) 
 
 		chartRef.current.update({ colors });
 	}, [type]);
+
+	useEffect(
+		() => () => {
+			if (chartRef.current) {
+				chartRef.current.destroy();
+				chartRef.current = null;
+			}
+		},
+		[],
+	);
 
 	return <div ref={onLoad} className='h-full flex-1' />;
 };

@@ -18,6 +18,12 @@ const PriceChangesWatchlistChart = () => {
 		if (!el) return;
 
 		chartRef.current = chart(el, {
+			chart: {
+				zooming: {
+					mouseWheel: false,
+					singleTouch: false,
+				},
+			},
 			tooltip: {
 				outside: true,
 				shared: true,
@@ -177,6 +183,16 @@ const PriceChangesWatchlistChart = () => {
 
 		chartRef.current.update({ series });
 	}, [data]);
+
+	useEffect(
+		() => () => {
+			if (chartRef.current) {
+				chartRef.current.destroy();
+				chartRef.current = null;
+			}
+		},
+		[],
+	);
 
 	return (
 		<>
