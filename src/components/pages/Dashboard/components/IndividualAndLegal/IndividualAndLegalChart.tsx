@@ -1,7 +1,7 @@
 import { useGetIndividualLegalInfoQuery } from '@/api/queries/dashboardQueries';
-import AppChart from '@/components/common/AppChart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { useMemo } from 'react';
+import { chart, type Chart, type SeriesAreasplineOptions } from 'highcharts/highstock';
+import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
 
 interface IndividualAndLegalChartProps {
@@ -10,92 +10,101 @@ interface IndividualAndLegalChartProps {
 }
 
 const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartProps) => {
+	const chartRef = useRef<Chart | null>(null);
+
 	const { data, isLoading } = useGetIndividualLegalInfoQuery({
 		queryKey: ['getIndividualLegalInfoQuery', symbolType, type],
 	});
 
-	const dataMapper: ApexAxisChartSeries = useMemo(() => {
-		if (!data?.length) return [];
+	const xAxisFormatter = (v: number | string): string => {
+		return dateFormatter(v, 'time');
+	};
 
-		const l = data.length;
-		const result: Array<{ data: Array<{ x: string; y: number }> }> = [
+	const onLoad = useCallback((el: HTMLDivElement | null) => {
+		if (!el) return;
+
+		chartRef.current = chart(el, {
+			tooltip: {
+				formatter: function () {
+					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
+				},
+			},
+			xAxis: {
+				type: 'datetime',
+				crosshair: {
+					label: {
+						formatter: (value) => xAxisFormatter(value),
+					},
+				},
+				labels: {
+					formatter: ({ value }) => xAxisFormatter(value),
+				},
+			},
+			yAxis: {
+				tickAmount: 4,
+				type: 'linear',
+				labels: {
+					formatter: ({ value }) => {
+						return numFormatter(Number(value));
+					},
+				},
+			},
+			series: [
+				{ type: 'areaspline', data: [] },
+				{ type: 'areaspline', data: [] },
+			],
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!chartRef.current || !data?.length) return;
+
+		const series: SeriesAreasplineOptions[] = [
 			{
+				color: 'rgba(0, 194, 136, 1)',
+				lineColor: 'rgb(0, 194, 136)',
+				fillColor: 'rgb(0, 0, 0, 0)',
+				threshold: null,
+				type: 'areaspline',
+				lineWidth: 1.5,
+				connectNulls: true,
 				data: [],
 			},
 			{
+				color: 'rgb(255, 82, 109)',
+				lineColor: 'rgb(255, 82, 109)',
+				fillColor: 'rgb(0, 0, 0, 0)',
+				threshold: null,
+				type: 'areaspline',
+				lineWidth: 1.5,
+				connectNulls: true,
 				data: [],
 			},
 		];
-		for (let i = 0; i < l; i++) {
+
+		for (let i = 0; i < data.length; i++) {
 			const item = data[i];
-			const dateTime = item.dateTime;
+			const dateTime = new Date(item.dateTime).getTime();
 			const call = 'individualBuyAverage' in item ? item.individualBuyAverage : item.sumOfLegalsBuyVolume;
 			const put = 'individualBuyAverage' in item ? item.individualSellAverage : item.sumOfLegalsSellVolume;
 
-			result[0].data.push({
+			series[0].data!.push({
 				x: dateTime,
 				y: call,
 			});
 
-			result[1].data.push({
+			series[1].data!.push({
 				x: dateTime,
 				y: put,
 			});
 		}
 
-		return result;
-	}, [type, symbolType, data]);
-
-	const colors = ['rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)'];
+		chartRef.current.update({ series });
+	}, [data, symbolType, type]);
 
 	return (
 		<>
-			<AppChart
-				options={{
-					colors,
-					tooltip: {
-						y: {
-							formatter: (val) => {
-								return sepNumbers(String(val ?? 0));
-							},
-						},
-					},
-					xaxis: {
-						tickAmount: 5,
-						labels: {
-							formatter: (v) => {
-								return dateFormatter(v, 'time');
-							},
-						},
-					},
-					yaxis: {
-						labels: {
-							formatter: (val) => {
-								return numFormatter(val);
-							},
-						},
-					},
-					grid: {
-						position: 'back',
-						strokeDashArray: 24,
-						show: true,
-						yaxis: {
-							lines: {
-								show: true,
-							},
-						},
-						xaxis: {
-							lines: {
-								show: true,
-							},
-						},
-					},
-				}}
-				series={dataMapper}
-				type='line'
-				width='100%'
-				height='100%'
-			/>
+			<div ref={onLoad} className='h-full' />
 
 			<Suspend isLoading={isLoading} isEmpty={!data?.length} />
 		</>
