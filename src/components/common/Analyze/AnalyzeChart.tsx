@@ -4,6 +4,7 @@ import { type Chart, chart, type SeriesAreaOptions, type XAxisPlotLinesOptions }
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
+import NoData from '../NoData';
 import PriceRange from './PriceRange';
 
 interface IPoint {
@@ -16,7 +17,7 @@ interface AnalyzeChartProps extends IAnalyzeInputs {
 	minPrice: number;
 	maxPrice: number;
 	height?: number;
-	removeBorders?: boolean;
+	compact?: boolean;
 	onChange?: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
@@ -26,7 +27,7 @@ const AnalyzeChart = ({
 	maxPrice,
 	minPrice,
 	height,
-	removeBorders = false,
+	compact = false,
 	onChange,
 }: AnalyzeChartProps) => {
 	const t = useTranslations('analyze_modal');
@@ -72,39 +73,40 @@ const AnalyzeChart = ({
 
 	const getBepPlotLine = (v: number, y: number): XAxisPlotLinesOptions => ({
 		dashStyle: 'LongDash',
-		width: 1,
+		width: 1.5,
 		color: 'rgb(140, 142, 151)',
 		value: v,
 		className: '!rounded-md',
 		label: {
-			text: `${t('break_even_point')}: ${sepNumbers(String(v))}`,
+			text: `${compact ? '' : `${t('break_even_point')}: `}${sepNumbers(String(v))}`,
 			align: 'center',
 			textAlign: 'center',
 			rotation: 0,
-			verticalAlign: 'top',
+			verticalAlign: compact ? 'bottom' : 'top',
 			useHTML: true,
-			y: 40 + y,
+			y: compact ? 0 : 40 + y,
 			style: {
 				fontFamily: chartFontSetting.fontFamily,
 				fontSize: '12px',
+				textAlign: 'center',
 				fontWeight: '500',
-				backgroundColor: 'rgb(140, 142, 151)',
+				backgroundColor: compact ? 'rgb(255, 255, 255)' : 'rgb(140, 142, 151)',
 				// @ts-expect-error: borderRadius has bug, it should be string, but it's number
 				borderRadius: '4px',
-				color: 'rgb(255, 255, 255)',
+				color: compact ? 'rgb(140, 142, 151)' : 'rgb(255, 255, 255)',
 				padding: '4px 8px',
 			},
 		},
 	});
 
 	const getBaseAssetsPlotLine = (): XAxisPlotLinesOptions => ({
-		dashStyle: 'LongDash',
-		width: 1,
+		dashStyle: compact ? 'Solid' : 'LongDash',
+		width: 1.5,
 		color: 'rgba(0, 87, 255, 1)',
 		value: baseAssets ?? 0,
 		className: '!rounded-md',
 		label: {
-			text: `${t('base_assets')}: ${sepNumbers(String(baseAssets ?? 0))}`,
+			text: `${compact ? '' : `${t('base_assets')}: `}${sepNumbers(String(baseAssets ?? 0))}`,
 			align: 'center',
 			textAlign: 'center',
 			rotation: 0,
@@ -114,26 +116,14 @@ const AnalyzeChart = ({
 				fontFamily: chartFontSetting.fontFamily,
 				fontSize: '12px',
 				fontWeight: '500',
-				backgroundColor: 'rgba(0, 87, 255, 1)',
+				backgroundColor: compact ? 'rgb(255, 255, 255)' : 'rgba(0, 87, 255, 1)',
 				// @ts-expect-error: borderRadius has bug, it should be string, but it's number
 				borderRadius: '4px',
-				color: 'rgb(255, 255, 255)',
+				color: compact ? 'rgba(0, 87, 255, 1)' : 'rgb(255, 255, 255)',
 				padding: '4px 8px',
 			},
 		},
 	});
-
-	const addBepPoint = (points: IPoint[]) => {
-		const firstPoint = points[0];
-		const lastPoint = points[1];
-
-		// ? 𝑦 = 𝑚𝑥 + 𝑏
-		const m = (lastPoint.y - firstPoint.y) / (lastPoint.x - firstPoint.x);
-		const b = firstPoint.y - m * firstPoint.x;
-		const x = -b / m;
-
-		return Math.round(x);
-	};
 
 	const getYtm = (profitPercent: number, dueDays: number) => {
 		try {
@@ -162,7 +152,7 @@ const AnalyzeChart = ({
 				enabled: false,
 			},
 			navigator: {
-				enabled: true,
+				enabled: !compact,
 				outlineColor: 'rgb(226, 231, 237)',
 				outlineWidth: 0,
 				maskInside: true,
@@ -211,22 +201,26 @@ const AnalyzeChart = ({
 			},
 			xAxis: {
 				type: 'datetime',
-				crosshair: {
-					label: {
-						formatter: (value) => sepNumbers(String(value)),
-					},
-				},
+				crosshair: compact
+					? false
+					: {
+							label: {
+								formatter: (value) => sepNumbers(String(value)),
+							},
+						},
 				labels: {
+					enabled: !compact,
 					formatter: ({ value }) => sepNumbers(String(value)),
 				},
 			},
 			yAxis: {
+				gridLineWidth: compact ? 0 : 1,
 				type: 'linear',
 				labels: {
-					formatter: ({ value }) => {
-						return sepNumbers(String(value));
-					},
+					enabled: !compact,
+					formatter: ({ value }) => sepNumbers(String(value)),
 				},
+				crosshair: compact ? false : {},
 			},
 			series: [getAreaSeries()],
 		});
@@ -240,17 +234,13 @@ const AnalyzeChart = ({
 
 			if (data.length <= 10) return;
 
+			const bep: XAxisPlotLinesOptions[] = [];
 			const diff = Math.floor((maxPrice - minPrice) / 100);
 			const l = data.length;
-
-			let status: 'POSITIVE' | 'NEGATIVE' = data[1].y - data[0].y < 0 ? 'NEGATIVE' : 'POSITIVE';
-			const m: IPoint[][] = [[]];
-			let k = 0;
 
 			for (let i = 0; i < l; i++) {
 				const item = data[i];
 				const pnl = Math.round(item.y);
-				const previousItem = data[Math.max(0, i - 1)];
 
 				if (pnl === 0 || i % diff === 0) {
 					series.data!.push({
@@ -259,27 +249,22 @@ const AnalyzeChart = ({
 					});
 				}
 
-				if (i > 0) {
-					const currentStatus: typeof status = pnl - previousItem.y < 0 ? 'NEGATIVE' : 'POSITIVE';
-					m[k].push(previousItem);
-
-					if (currentStatus !== status) {
-						k++;
-						m[k] = [];
+				if (pnl === 0) {
+					bep.push(getBepPlotLine(item.x, bep.length * 30));
+				} else if (i > 0) {
+					const previousPNL = Math.round(data[i - 1].y);
+					if ((previousPNL > 0 && pnl < 0) || (previousPNL < 0 && pnl > 0)) {
+						bep.push(getBepPlotLine(item.x, bep.length * 30));
 					}
-
-					status = currentStatus;
 				}
 			}
-
-			const bep = m.map<XAxisPlotLinesOptions>((points, i) => getBepPlotLine(addBepPoint(points), i * 30));
 
 			chartRef.current.update({
 				xAxis: {
 					plotLines: [getBaseAssetsPlotLine(), ...bep],
 				},
 				tooltip: {
-					enabled: true,
+					enabled: !compact,
 					useHTML: true,
 					formatter: function () {
 						const x = Number(this.x ?? 0);
@@ -307,17 +292,21 @@ const AnalyzeChart = ({
 		}
 	}, [chartRef.current, data, baseAssets]);
 
+	useEffect(() => {
+		if (!chartRef.current) return;
+		chartRef.current.xAxis[0].setExtremes(minPrice, maxPrice);
+	}, [minPrice, maxPrice]);
+
 	return (
 		<ErrorBoundary>
 			<div className='gap-8 flex-column'>
 				<div ref={onLoad} />
 
-				{/* {!series.data ||
-					(series.data.length === 0 && (
-						<div className='absolute size-full bg-white center'>
-							<NoData text={t('no_active_contract_found')} />
-						</div>
-					))} */}
+				{data.length <= 10 && (
+					<div className='absolute size-full bg-white center'>
+						<NoData text={t('no_active_contract_found')} />
+					</div>
+				)}
 
 				{onChange && <PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />}
 			</div>
