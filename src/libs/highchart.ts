@@ -87,6 +87,11 @@ export const setupChart = () => {
 					enabled: false,
 				},
 			},
+			line: {
+				marker: {
+					enabled: false,
+				},
+			},
 			pie: {
 				allowPointSelect: true,
 				cursor: 'pointer',

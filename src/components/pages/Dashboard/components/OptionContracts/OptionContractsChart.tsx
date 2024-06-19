@@ -1,4 +1,4 @@
-import { sepNumbers } from '@/utils/helpers';
+import num2persian from '@/utils/num2persian';
 import { type Chart, chart, type SeriesPieOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
@@ -28,13 +28,18 @@ const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) 
 		return result;
 	}, [basis, type, data]);
 
+	const colors =
+		type === 'ContractType'
+			? ['rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)']
+			: ['rgba(0, 182, 237, 1)', 'rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)'];
+
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
 
 		chartRef.current = chart(el, {
 			tooltip: {
 				formatter: function () {
-					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
+					return `<span class="text-white">\u200f${num2persian(String(this.y ?? 0))}</span>`;
 				},
 			},
 			plotOptions: {
@@ -56,7 +61,7 @@ const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) 
 					borderWidth: 0,
 				},
 			},
-			colors: ['rgba(0, 182, 237, 1)', 'rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)'],
+			colors,
 			series: [series],
 		});
 	}, []);
@@ -66,6 +71,12 @@ const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) 
 
 		chartRef.current.series[0].update(series);
 	}, [series]);
+
+	useEffect(() => {
+		if (!chartRef.current) return;
+
+		chartRef.current.update({ colors });
+	}, [type]);
 
 	return <div ref={onLoad} className='h-full flex-1' />;
 };

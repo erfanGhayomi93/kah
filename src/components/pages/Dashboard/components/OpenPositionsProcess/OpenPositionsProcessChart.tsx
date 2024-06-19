@@ -1,86 +1,119 @@
 import { useGetOpenPositionProcessQuery } from '@/api/queries/dashboardQueries';
-import AppChart from '@/components/common/AppChart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { useMemo } from 'react';
+import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import Suspend from '../../common/Suspend';
+
+interface IColors {
+	line: string;
+	steps: GradientColorStopObject[];
+}
 
 interface OpenPositionsProcessChartProps {
 	interval: Dashboard.TInterval;
 }
 
 const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps) => {
+	const chartRef = useRef<Chart | null>(null);
+
 	const { data, isLoading } = useGetOpenPositionProcessQuery({
 		queryKey: ['getOpenPositionProcessQuery', interval],
 	});
 
-	const dataMapper = useMemo<ApexAxisChartSeries>(() => {
-		if (!data) return [];
+	const COLORS: IColors = {
+		line: 'rgba(0, 87, 255, 1)',
+		steps: [
+			[0, 'rgba(0, 87, 255, 0.2)'],
+			[1, 'rgba(0, 87, 255, 0)'],
+		],
+	};
 
-		const keys = Object.keys(data);
-		if (keys.length === 0) return [];
+	const xAxisFormatter = (v: number | string): string => {
+		return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
+	};
 
-		const l = keys.length;
-		const result: Array<{ data: Array<{ x: string; y: number }> }> = [
-			{
-				data: [],
+	const series: SeriesAreasplineOptions = useMemo(() => {
+		const result: SeriesAreasplineOptions = {
+			color: COLORS.line,
+			lineColor: COLORS.line,
+			fillColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: COLORS.steps,
 			},
-			{
-				data: [],
-			},
-		];
+			threshold: null,
+			type: 'areaspline',
+			lineWidth: 1.5,
+			connectNulls: true,
+			data: [],
+		};
 
-		for (let i = 0; i < l; i++) {
-			const datetime = keys[i];
-			const value = data[datetime];
+		if (!data?.length) return result;
 
-			result[0].data.push({
-				x: datetime,
-				y: value,
-			});
-		}
+		result.data = data.map(({ dateTime, openPosition }) => ({
+			x: new Date(dateTime).getTime(),
+			y: openPosition,
+		}));
 
 		return result;
-	}, [data]);
+	}, [interval, data]);
 
-	const colors = ['rgba(0, 194, 136, 1)', 'rgba(255, 82, 109, 1)'];
+	const onLoad = useCallback((el: HTMLDivElement | null) => {
+		if (!el) return;
+
+		chartRef.current = chart(el, {
+			tooltip: {
+				formatter: function () {
+					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
+				},
+			},
+			xAxis: {
+				type: 'datetime',
+				crosshair: {
+					label: {
+						formatter: (value) => xAxisFormatter(value),
+					},
+				},
+				labels: {
+					formatter: ({ value }) => xAxisFormatter(value),
+				},
+			},
+			yAxis: {
+				tickAmount: 4,
+				type: 'linear',
+				labels: {
+					formatter: ({ value }) => {
+						return numFormatter(Number(value));
+					},
+				},
+			},
+			series: [series],
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!chartRef.current) return;
+
+		chartRef.current.series[0].update(series);
+	}, [series]);
+
+	useEffect(() => {
+		if (!chartRef.current) return;
+
+		chartRef.current.xAxis[0].update({
+			labels: {
+				formatter: ({ value }) => xAxisFormatter(Number(value)),
+			},
+			crosshair: {
+				label: {
+					formatter: (value) => xAxisFormatter(value),
+				},
+			},
+		});
+	}, [interval]);
 
 	return (
 		<>
-			<AppChart
-				options={{
-					colors,
-					tooltip: {
-						y: {
-							formatter: (val) => {
-								return sepNumbers(String(val ?? 0));
-							},
-						},
-					},
-					legend: {
-						show: false,
-					},
-					xaxis: {
-						tickAmount: 5,
-						labels: {
-							formatter: (v) => {
-								return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
-							},
-						},
-					},
-					yaxis: {
-						labels: {
-							formatter: (val) => {
-								return numFormatter(val);
-							},
-						},
-					},
-				}}
-				series={dataMapper}
-				type='line'
-				width='100%'
-				height='100%'
-			/>
-
+			<div ref={onLoad} className='h-full' />
 			<Suspend isLoading={isLoading} isEmpty={!data || Object.keys(data).length === 0} />
 		</>
 	);

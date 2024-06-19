@@ -7,7 +7,7 @@ type TColors = Record<Dashboard.TIndex, { line: string; steps: GradientColorStop
 interface MarketViewChartProps {
 	interval: Dashboard.TInterval;
 	type: Dashboard.TIndex;
-	data: Dashboard.GetIndex.Overall | Dashboard.GetIndex.EqualWeightOverall | Dashboard.GetIndex.RetailTrades;
+	data: Dashboard.GetIndex.Overall[] | Dashboard.GetIndex.EqualWeightOverall[] | Dashboard.GetIndex.RetailTrades;
 }
 
 const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
@@ -60,11 +60,9 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 
 		if (Array.isArray(data)) {
 			result.data = data.map((item) => ({
-				x: new Date(item.date).getTime(),
+				x: new Date(item.dateTime).getTime(),
 				y: item.lastIndexValueInDay ?? 0,
 			}));
-
-			if (interval === 'Today') result.data.reverse();
 		} else {
 			result.data = Object.keys(data).map((datetime) => ({
 				x: new Date(datetime).getTime(),
