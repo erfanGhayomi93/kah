@@ -1,8 +1,10 @@
 import { useGetMarketProcessChartQuery } from '@/api/queries/dashboardQueries';
-import AppChart from '@/components/common/AppChart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { useMemo } from 'react';
+import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import Suspend from '../../common/Suspend';
+
+type TColors = Record<Dashboard.GetMarketProcessChart.TChartType, { line: string; steps: GradientColorStopObject[] }>;
 
 interface OptionMarketProcessChartProps {
 	interval: Dashboard.TInterval;
@@ -10,68 +12,125 @@ interface OptionMarketProcessChartProps {
 }
 
 const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartProps) => {
+	const chartRef = useRef<Chart | null>(null);
+
 	const { data, isLoading } = useGetMarketProcessChartQuery({
 		queryKey: ['getMarketProcessChartQuery', interval, type],
 	});
 
-	const dataMapper: Array<{ x: number; y: number }> = useMemo(() => {
-		if (!data) return [];
+	const COLORS: TColors = {
+		Value: {
+			line: 'rgba(0, 87, 255, 1)',
+			steps: [
+				[0, 'rgba(0, 87, 255, 0.2)'],
+				[1, 'rgba(0, 87, 255, 0)'],
+			],
+		},
+		Volume: {
+			line: 'rgba(137, 118, 255, 1)',
+			steps: [
+				[0, 'rgba(137, 118, 255, 0.2)'],
+				[1, 'rgba(137, 118, 255, 0)'],
+			],
+		},
+		NotionalValue: {
+			line: 'rgba(68, 34, 140, 1)',
+			steps: [
+				[0, 'rgba(68, 34, 140, 0.2)'],
+				[1, 'rgba(68, 34, 140, 0)'],
+			],
+		},
+	};
+
+	const xAxisFormatter = (v: number | string): string => {
+		return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
+	};
+
+	const series: SeriesAreasplineOptions = useMemo(() => {
+		const result: SeriesAreasplineOptions = {
+			color: COLORS[type].line,
+			lineColor: COLORS[type].line,
+			fillColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: COLORS[type].steps,
+			},
+			threshold: null,
+			type: 'areaspline',
+			lineWidth: 1.5,
+			connectNulls: true,
+			data: [],
+		};
+
+		if (!data) return result;
 
 		const keys = Object.keys(data);
-		if (keys.length === 0) return [];
+		if (keys.length === 0) return result;
 
-		return keys
-			.map((d) => ({
-				x: new Date(d).getTime(),
-				y: data[d] ?? 0,
-			}))
-			.sort((a, b) => a.x - b.x);
-	}, [interval, data]);
+		result.data = keys.map((d) => ({
+			x: new Date(d).getTime(),
+			y: data[d],
+		}));
 
-	const COLORS: Record<Dashboard.GetMarketProcessChart.TChartType, string[]> = {
-		Volume: ['rgba(0, 87, 255, 1)'],
-		Value: ['rgba(137, 118, 255, 1)'],
-		NotionalValue: ['rgba(68, 34, 140, 1)'],
-	};
+		return result;
+	}, [interval, type, data]);
+
+	const onLoad = useCallback((el: HTMLDivElement | null) => {
+		if (!el) return;
+
+		chartRef.current = chart(el, {
+			tooltip: {
+				formatter: function () {
+					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
+				},
+			},
+			xAxis: {
+				type: 'datetime',
+				crosshair: {
+					label: {
+						formatter: (value) => xAxisFormatter(value),
+					},
+				},
+				labels: {
+					formatter: ({ value }) => xAxisFormatter(value),
+				},
+			},
+			yAxis: {
+				tickAmount: 4,
+				type: 'linear',
+				labels: {
+					formatter: ({ value }) => {
+						return numFormatter(Number(value));
+					},
+				},
+			},
+			series: [series],
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!chartRef.current) return;
+
+		chartRef.current.series[0].update(series);
+	}, [series]);
+
+	useEffect(() => {
+		if (!chartRef.current) return;
+
+		chartRef.current.xAxis[0].update({
+			labels: {
+				formatter: ({ value }) => xAxisFormatter(Number(value)),
+			},
+			crosshair: {
+				label: {
+					formatter: (value) => xAxisFormatter(value),
+				},
+			},
+		});
+	}, [interval]);
 
 	return (
 		<>
-			<AppChart
-				options={{
-					colors: COLORS[type],
-					tooltip: {
-						y: {
-							formatter: (val) => {
-								return sepNumbers(String(val ?? 0));
-							},
-						},
-					},
-					xaxis: {
-						tickAmount: 5,
-						labels: {
-							formatter: (v) => {
-								return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
-							},
-						},
-					},
-					yaxis: {
-						labels: {
-							formatter: (val) => {
-								return numFormatter(val);
-							},
-						},
-					},
-				}}
-				series={[
-					{
-						data: dataMapper,
-					},
-				]}
-				type='area'
-				width='100%'
-				height='100%'
-			/>
-
+			<div ref={onLoad} className='h-full' />
 			<Suspend isLoading={isLoading} isEmpty={!data || Object.keys(data).length === 0} />
 		</>
 	);
