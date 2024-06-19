@@ -73,6 +73,7 @@ export const setupChart = () => {
 			backgroundColor: 'rgba(24, 28, 47, 1)',
 			borderRadius: 4,
 			borderWidth: 0,
+			useHTML: true,
 			style: {
 				...chartFontSetting,
 				pointerEvents: 'none',
