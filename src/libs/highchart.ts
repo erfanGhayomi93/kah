@@ -2,7 +2,7 @@ import { type AxisCrosshairOptions, setOptions } from 'highcharts/highstock';
 
 export const chartFontSetting = {
 	fontFamily: 'IRANSans',
-	fontSize: '11',
+	fontSize: '11px',
 	fontWeight: '400',
 };
 
@@ -15,7 +15,9 @@ export const chartCrosshairSetting: AxisCrosshairOptions = {
 		backgroundColor: 'rgba(24, 28, 47, 1)',
 		borderRadius: 4,
 		style: {
-			...chartFontSetting,
+			fontFamily: chartFontSetting.fontFamily,
+			fontSize: '12px',
+			fontWeight: '400',
 			height: 40,
 			borderRadius: 4,
 			borderWidth: 0,
@@ -73,6 +75,7 @@ export const setupChart = () => {
 			borderWidth: 0,
 			style: {
 				...chartFontSetting,
+				pointerEvents: 'none',
 				color: 'rgb(255, 255, 255)',
 			},
 		},
@@ -97,6 +100,11 @@ export const setupChart = () => {
 				cursor: 'pointer',
 				dataLabels: {
 					enabled: false,
+				},
+			},
+			column: {
+				dataLabels: {
+					style: chartFontSetting,
 				},
 			},
 		},
