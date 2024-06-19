@@ -70,6 +70,7 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 							[1, 'rgb(66, 115, 237, 0)'],
 						],
 					},
+					fillOpacity: 1,
 					threshold: null,
 					type: 'areaspline',
 					lineWidth: 1.5,
@@ -88,13 +89,7 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 					{
 						color: 'rgba(0, 194, 136, 1)',
 						lineColor: 'rgb(0, 194, 136)',
-						fillColor: {
-							linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-							stops: [
-								[0, 'rgba(0, 194, 136, 0.2)'],
-								[1, 'rgba(0, 194, 136, 0)'],
-							],
-						},
+						fillColor: 'rgb(0, 0, 0, 0)',
 						threshold: null,
 						type: 'areaspline',
 						lineWidth: 1.5,
@@ -104,13 +99,7 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 					{
 						color: 'rgb(255, 82, 109)',
 						lineColor: 'rgb(255, 82, 109)',
-						fillColor: {
-							linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-							stops: [
-								[0, 'rgba(255, 82, 109, 0.2)'],
-								[1, 'rgba(255, 82, 109, 0)'],
-							],
-						},
+						fillColor: 'rgb(0, 0, 0, 0)',
 						threshold: null,
 						type: 'areaspline',
 						lineWidth: 1.5,
@@ -121,14 +110,15 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 
 				for (let i = 0; i < data.length; i++) {
 					const { intervalDateTime, callValue, putValue } = data[i];
+					const x = new Date(intervalDateTime).getTime();
 
 					series[0].data!.push({
-						x: new Date(intervalDateTime).getTime(),
+						x,
 						y: callValue,
 					});
 
 					series[1].data!.push({
-						x: new Date(intervalDateTime).getTime(),
+						x,
 						y: putValue,
 					});
 				}
