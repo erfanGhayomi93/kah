@@ -52,7 +52,7 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 			id: 'normal',
 			title: t('performance'),
 			render: () => (
-				<div style={{ height: '40rem' }} className='relative py-16'>
+				<div className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeChart
 							data={data}
@@ -70,7 +70,7 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 			id: 'strategy',
 			title: t('greeks'),
 			render: () => (
-				<div style={{ height: '40rem' }} className='relative py-16'>
+				<div className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeGreeksTable contracts={contracts} />
 					</ErrorBoundary>
@@ -87,7 +87,7 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 				<button
 					className={clsx(
 						'h-48 px-16 transition-colors flex-justify-center',
-						item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
+						item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
 					)}
 					type='button'
 				>
