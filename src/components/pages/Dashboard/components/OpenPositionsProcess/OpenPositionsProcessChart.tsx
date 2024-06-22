@@ -36,10 +36,7 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 		const result: SeriesAreasplineOptions = {
 			color: COLORS.line,
 			lineColor: COLORS.line,
-			fillColor: {
-				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-				stops: COLORS.steps,
-			},
+			fillOpacity: 0,
 			threshold: null,
 			type: 'areaspline',
 			lineWidth: 1.5,
@@ -61,6 +58,12 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 		if (!el) return;
 
 		chartRef.current = chart(el, {
+			chart: {
+				zooming: {
+					mouseWheel: false,
+					singleTouch: false,
+				},
+			},
 			tooltip: {
 				formatter: function () {
 					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
@@ -110,6 +113,16 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 			},
 		});
 	}, [interval]);
+
+	useEffect(
+		() => () => {
+			if (chartRef.current) {
+				chartRef.current.destroy();
+				chartRef.current = null;
+			}
+		},
+		[],
+	);
 
 	return (
 		<>
