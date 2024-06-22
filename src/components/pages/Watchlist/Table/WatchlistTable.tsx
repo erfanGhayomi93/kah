@@ -414,7 +414,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					colId: 'historicalVolatility',
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.historicalVolatility?.isHidden ?? true),
-					valueGetter: ({ data }) => data?.optionWatchlistData.impliedVolatility ?? 0,
+					valueGetter: ({ data }) => data?.optionWatchlistData.historicalVolatility ?? 0,
 					valueFormatter: ({ value }) => {
 						if (isNaN(value)) return '−';
 						return value.toFixed(2);

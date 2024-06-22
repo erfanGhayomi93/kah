@@ -1,5 +1,5 @@
 import { chartFontSetting } from '@/libs/highchart';
-import { sepNumbers, toFixed } from '@/utils/helpers';
+import { sepNumbers } from '@/utils/helpers';
 import { type Chart, chart, type SeriesAreaOptions, type XAxisPlotLinesOptions } from 'highcharts/highstock';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef } from 'react';
@@ -131,13 +131,11 @@ const AnalyzeChart = ({
 
 			dueDays = Math.max(dueDays, 1);
 
-			profitPercent /= 100;
-
 			const ytm = 100 * (Math.pow(1 + profitPercent, 365 / dueDays) - 1);
 
-			return toFixed(ytm, 2);
+			return Number(ytm.toFixed(2));
 		} catch (e) {
-			return null;
+			return 0;
 		}
 	};
 
@@ -271,17 +269,15 @@ const AnalyzeChart = ({
 						const x = Number(this.x ?? 0);
 						const y = Number(this.y ?? 0);
 
-						// ? ((pnl / price) - 1) * 100
-						const profitPercent = ((y + baseAssets) / baseAssets - 1) * 100;
-						const ytm =
-							isNaN(profitPercent) || Math.abs(profitPercent) === Infinity
-								? '−'
-								: getYtm(profitPercent, 20);
+						// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
+						const profit = (y + baseAssets) / baseAssets - 1;
+
+						const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit, 14);
 
 						const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
 						const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
-						const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
-						const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm}</span></li>`;
+						const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))} (${(profit * 100).toFixed(2)}%)</span></li>`;
+						const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
 
 						return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1}${li2}${li3}${li4}</ul>`;
 					},

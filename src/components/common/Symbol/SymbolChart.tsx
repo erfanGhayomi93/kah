@@ -194,6 +194,16 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 		});
 	}, [interval]);
 
+	useEffect(
+		() => () => {
+			if (chartRef.current) {
+				chartRef.current.destroy();
+				chartRef.current = null;
+			}
+		},
+		[],
+	);
+
 	return <div ref={onLoad} />;
 };
 
