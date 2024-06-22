@@ -18,10 +18,16 @@ const PriceChangesWatchlistChart = () => {
 		if (!el) return;
 
 		chartRef.current = chart(el, {
+			chart: {
+				zooming: {
+					mouseWheel: false,
+					singleTouch: false,
+				},
+			},
 			tooltip: {
 				outside: true,
 				shared: true,
-				followPointer: true,
+				followPointer: false,
 				formatter: function () {
 					return `‏${t('count')}: ${sepNumbers(String(this.y ?? 0))}`;
 				},
@@ -93,6 +99,7 @@ const PriceChangesWatchlistChart = () => {
 		const series: SeriesColumnOptions[] = [
 			{
 				type: 'column',
+				enableMouseTracking: false,
 				dataLabels: {
 					enabled: false,
 				},
@@ -177,6 +184,16 @@ const PriceChangesWatchlistChart = () => {
 
 		chartRef.current.update({ series });
 	}, [data]);
+
+	useEffect(
+		() => () => {
+			if (chartRef.current) {
+				chartRef.current.destroy();
+				chartRef.current = null;
+			}
+		},
+		[],
+	);
 
 	return (
 		<>

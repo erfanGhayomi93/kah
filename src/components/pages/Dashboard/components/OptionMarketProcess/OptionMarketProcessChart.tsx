@@ -78,6 +78,12 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 		if (!el) return;
 
 		chartRef.current = chart(el, {
+			chart: {
+				zooming: {
+					mouseWheel: false,
+					singleTouch: false,
+				},
+			},
 			tooltip: {
 				formatter: function () {
 					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
@@ -127,6 +133,16 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 			},
 		});
 	}, [interval]);
+
+	useEffect(
+		() => () => {
+			if (chartRef.current) {
+				chartRef.current.destroy();
+				chartRef.current = null;
+			}
+		},
+		[],
+	);
 
 	return (
 		<>
