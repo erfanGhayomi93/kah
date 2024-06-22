@@ -27,7 +27,7 @@ const PriceChangesWatchlistChart = () => {
 			tooltip: {
 				outside: true,
 				shared: true,
-				followPointer: true,
+				followPointer: false,
 				formatter: function () {
 					return `‏${t('count')}: ${sepNumbers(String(this.y ?? 0))}`;
 				},
@@ -99,6 +99,7 @@ const PriceChangesWatchlistChart = () => {
 		const series: SeriesColumnOptions[] = [
 			{
 				type: 'column',
+				enableMouseTracking: false,
 				dataLabels: {
 					enabled: false,
 				},
