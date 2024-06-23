@@ -2,6 +2,7 @@ import AnalyzeChart from '@/components/common/Analyze/AnalyzeChart';
 import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useAnalyze } from '@/hooks';
 import { divide, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -62,7 +63,7 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data, maxProfit, maxLoss, neededRequiredMargin, bep } = useAnalyze(contracts, {
+	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, bep } = useAnalyze(contracts, {
 		minPrice,
 		maxPrice,
 		baseAssets: basePrice,
@@ -75,7 +76,15 @@ const StrategyChartDetails = ({
 				className='justify-between text-light-gray-700 ltr flex-column *:flex-justify-between'
 			>
 				<li>
-					<span className='font-medium text-light-success-100'>{t('profit')}</span>
+					<span
+						className={clsx({
+							'font-medium text-light-success-100': baseSymbolStatus === 'itm',
+							'font-medium text-light-error-100': baseSymbolStatus === 'otm',
+							'text-light-gray-700': baseSymbolStatus === 'atm',
+						})}
+					>
+						{t(baseSymbolStatus)}
+					</span>
 					<span>:{t('current_status')}</span>
 				</li>
 				<li>

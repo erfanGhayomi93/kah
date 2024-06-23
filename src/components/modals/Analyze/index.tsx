@@ -1,20 +1,18 @@
-import AnalyzeGraph from '@/components/common/Analyze';
-import Switch from '@/components/common/Inputs/Switch';
 import NoData from '@/components/common/NoData';
 import SymbolStrategyTable from '@/components/common/Tables/SymbolStrategyTable';
 import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
-import { useBasketOrderingSystem, useLocalstorage } from '@/hooks';
+import { useBasketOrderingSystem } from '@/hooks';
 import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
 import { convertSymbolWatchlistToSymbolBasket, uuidv4 } from '@/utils/helpers';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import React, { forwardRef, useMemo, useState } from 'react';
+import { forwardRef, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
+import AnalyzeTabs from './AnalyzeTabs';
 
 const Div = styled.div`
 	width: 800px;
@@ -23,12 +21,6 @@ const Div = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
-
-interface StrategyInfoItemProps {
-	type?: 'success' | 'error';
-	title: string;
-	value: React.ReactNode;
-}
 
 interface NoContractExistsProps {
 	addNewStrategy: () => void;
@@ -47,8 +39,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				toast.success(t(getBasketAlertMessage(failedOrders.length, sentOrders.length)));
 			},
 		});
-
-		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
 		const [symbolContracts, setSymbolContracts] = useState([...contracts]);
 
@@ -221,50 +211,14 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 							</div>
 
 							<div className='h-full overflow-auto px-16 pb-16 pt-12'>
-								<div className='overflow- relative h-full rounded px-16 shadow-card flex-column'>
-									<AnalyzeGraph
-										baseAssets={
-											selectedContractsAsSymbol.length > 0
-												? selectedContractsAsSymbol[0]?.symbol.baseSymbolPrice
-												: 0
-										}
-										contracts={selectedContractsAsSymbol}
-										useCommission={useCommission}
-										height={400}
-									/>
-
-									<div className='gap-16 border-t border-t-light-gray-200 pb-24 pt-16 flex-column'>
-										<ul className='flex-justify-between'>
-											<StrategyInfoItem
-												type='success'
-												title={t('analyze_modal.most_profit')}
-												value='+2,075'
-											/>
-											<StrategyInfoItem
-												type='error'
-												title={t('analyze_modal.most_loss')}
-												value='-2,925'
-											/>
-											<StrategyInfoItem
-												title={t('analyze_modal.required_budget')}
-												value='132,000'
-											/>
-											<StrategyInfoItem
-												title={t('analyze_modal.required_margin')}
-												value='132,000'
-											/>
-										</ul>
-									</div>
-
-									<div className='absolute left-16 top-8 flex-justify-center'>
-										<div className='h-40 gap-8 flex-items-center'>
-											<span className='text-tiny font-medium text-light-gray-700'>
-												{t('analyze_modal.with_commission')}
-											</span>
-											<Switch checked={useCommission} onChange={(v) => setUseCommission(v)} />
-										</div>
-									</div>
-								</div>
+								<AnalyzeTabs
+									contracts={contracts}
+									baseSymbolPrice={
+										selectedContractsAsSymbol.length > 0
+											? selectedContractsAsSymbol[0]?.symbol.baseSymbolPrice
+											: 0
+									}
+								/>
 							</div>
 						</div>
 					) : (
@@ -289,24 +243,6 @@ const NoContractExists = ({ addNewStrategy }: NoContractExistsProps) => {
 				{t('analyze_modal.make_your_own_strategy')}
 			</button>
 		</div>
-	);
-};
-
-const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => {
-	return (
-		<li style={{ flex: '0 0 12.8rem' }} className='items-start gap-4 flex-column'>
-			<span className='text-base text-light-gray-700'>{title}</span>
-			<div
-				style={{ width: '10.4rem' }}
-				className={clsx('h-40 w-full rounded px-8 ltr flex-justify-end', {
-					'bg-light-gray-100 text-light-gray-700': !type,
-					'bg-light-success-100/10 text-light-success-100': type === 'success',
-					'bg-light-error-100/10 text-light-error-100': type === 'error',
-				})}
-			>
-				{value}
-			</div>
-		</li>
 	);
 };
 

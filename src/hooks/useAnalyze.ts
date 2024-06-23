@@ -1,4 +1,5 @@
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
+import { isBetween } from '@/utils/helpers';
 import { useEffect } from 'react';
 import useInputs from './useInputs';
 
@@ -15,6 +16,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		data: [],
 		maxPrice: config?.maxPrice ?? 0,
 		minPrice: config?.minPrice ?? 0,
+		baseSymbolStatus: 'atm',
 		maxProfit: 0,
 		maxLoss: 0,
 		neededBudget: 0,
@@ -53,6 +55,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			risk: 0,
 			profitProbability: 0,
 			timeValue: 0,
+			baseSymbolStatus: 'atm',
 			bep: [],
 			data: [],
 		};
@@ -69,9 +72,6 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			const { baseAssets, useCommission } = config;
 			const { maxPrice, minPrice } = newInputs;
 			const series: IAnalyzeInputs['data'] = [];
-
-			let maxProfit = 0;
-			let maxLoss = 0;
 
 			for (let i = 0; i < data.length; i++) {
 				const item = data[i];
@@ -130,13 +130,14 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 
 			const l = series.length;
 			const diff = Math.floor((maxPrice - minPrice) / 100);
+			const rangeData: [number[], number[]] = [[], []];
 
 			for (let i = 0; i < l; i++) {
 				const item = series[i];
 				const pnl = Math.round(item.y);
 
-				if (item.y > 0) maxProfit = Math.max(maxProfit, item.y);
-				else if (item.y < 0) maxLoss = Math.min(maxLoss, item.y);
+				if (item.y > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, item.y));
+				else if (item.y < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, item.y));
 
 				if (pnl === 0 || i % diff === 0) {
 					newInputs.data.push({
@@ -152,6 +153,43 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					if ((previousPNL > 0 && pnl < 0) || (previousPNL < 0 && pnl > 0)) {
 						newInputs.bep.push(item.x);
 					}
+				}
+
+				if (item.x === baseAssets) {
+					if (pnl === 0) newInputs.baseSymbolStatus = 'atm';
+					else if (pnl > 0) newInputs.baseSymbolStatus = 'itm';
+					else if (pnl < 0) newInputs.baseSymbolStatus = 'otm';
+				}
+
+				if (isBetween(0, i, 10)) rangeData[0].push(Math.round(item.y));
+				if (isBetween(l - 11, i, l - 1)) rangeData[1].push(Math.round(item.y));
+			}
+
+			const [startPNLs, endPNLs] = rangeData;
+			const lastValueOfStartPNLs = startPNLs[startPNLs.length - 1];
+			const lastValueOfEndPNLs = endPNLs[startPNLs.length - 1];
+
+			if (lastValueOfStartPNLs === startPNLs[0]) {
+				if (startPNLs[0] >= 0) newInputs.maxProfit = Math.max(startPNLs[0], newInputs.maxProfit);
+				else newInputs.maxLoss = Math.min(startPNLs[0], newInputs.maxLoss);
+			} else {
+				if (startPNLs[0] > lastValueOfStartPNLs) {
+					newInputs.maxProfit = Infinity;
+				}
+				if (startPNLs[0] < lastValueOfStartPNLs) {
+					newInputs.maxLoss = -Infinity;
+				}
+			}
+
+			if (endPNLs[0] === lastValueOfEndPNLs) {
+				if (lastValueOfEndPNLs >= 0) newInputs.maxProfit = Math.max(lastValueOfEndPNLs, newInputs.maxProfit);
+				else newInputs.maxLoss = Math.min(lastValueOfEndPNLs, newInputs.maxLoss);
+			} else {
+				if (lastValueOfEndPNLs > endPNLs[0]) {
+					newInputs.maxProfit = Infinity;
+				}
+				if (lastValueOfEndPNLs < endPNLs[0]) {
+					newInputs.maxLoss = -Infinity;
 				}
 			}
 		} catch (e) {

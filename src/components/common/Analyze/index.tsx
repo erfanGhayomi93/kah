@@ -1,8 +1,6 @@
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import Tabs from '@/components/common/Tabs/Tabs';
-import { useInputs } from '@/hooks';
-import useAnalyze from '@/hooks/useAnalyze';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -17,37 +15,17 @@ const AnalyzeGreeksTable = dynamic(() => import('./AnalyzeGreeksTable'), {
 
 interface AnalyzeProps {
 	contracts: TSymbolStrategy[];
-	useCommission: boolean;
-	minPrice?: number;
-	maxPrice?: number;
-	height?: number;
+	chartData: Array<Record<'x' | 'y', number>>;
+	bep: number[];
+	minPrice: number;
+	maxPrice: number;
 	baseAssets: number;
-	manually?: IAnalyzeInputs;
+	height?: number;
+	onChange: (values: Partial<Record<'minPrice' | 'maxPrice', number>>) => void;
 }
 
-const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, height, useCommission, manually }: AnalyzeProps) => {
+const Analyze = ({ chartData, contracts, minPrice, maxPrice, baseAssets, height, bep, onChange }: AnalyzeProps) => {
 	const t = useTranslations('analyze_modal');
-
-	const { inputs, setFieldsValue } = useInputs<Record<'minPrice' | 'maxPrice', number>>(
-		{
-			minPrice: minPrice ?? 0,
-			maxPrice: maxPrice ?? 0,
-		},
-		true,
-	);
-
-	const {
-		data,
-		maxPrice: newMaxPrice,
-		minPrice: newMinPrice,
-		bep,
-	} = useAnalyze(contracts, {
-		enabled: manually === undefined,
-		baseAssets,
-		maxPrice: inputs.maxPrice,
-		minPrice: inputs.minPrice,
-		useCommission,
-	});
 
 	const TABS = [
 		{
@@ -57,11 +35,11 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, height, useCommiss
 				<div style={{ height }} className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeChart
-							data={data}
+							data={chartData}
 							baseAssets={baseAssets}
-							maxPrice={newMaxPrice}
-							minPrice={newMinPrice}
-							onChange={setFieldsValue}
+							maxPrice={maxPrice}
+							minPrice={minPrice}
+							onChange={onChange}
 							height={!height ? undefined : height - 88}
 							bep={bep}
 						/>

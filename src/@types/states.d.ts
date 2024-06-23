@@ -380,6 +380,7 @@ declare interface IAnalyzeInputs {
 	minPrice: number;
 	maxProfit: number;
 	maxLoss: number;
+	baseSymbolStatus: 'atm' | 'itm' | 'otm';
 	// ? Σ(buyPremium * contractSize) - Σ(sellPremium * contractSize)
 	neededBudget: number;
 	bep: number[];
