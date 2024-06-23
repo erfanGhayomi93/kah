@@ -1,5 +1,6 @@
 import Analyze from '@/components/common/Analyze';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
+import { useAnalyze, useInputs } from '@/hooks';
 import StrategyInfo from './StrategyInfo';
 
 interface StrategyDetailsProps {
@@ -9,12 +10,44 @@ interface StrategyDetailsProps {
 const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 	const baseSymbolPrice = contracts.length === 0 ? 0 : contracts[0].symbol.baseSymbolPrice;
 
+	const { inputs, setFieldsValue } = useInputs<Record<'minPrice' | 'maxPrice', number>>(
+		{
+			minPrice: 0,
+			maxPrice: 0,
+		},
+		true,
+	);
+
+	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, neededBudget } = useAnalyze(
+		contracts,
+		{
+			baseAssets: baseSymbolPrice,
+			maxPrice: inputs.maxPrice,
+			minPrice: inputs.minPrice,
+			useCommission: true,
+		},
+	);
+
 	return (
 		<div style={{ minHeight: '61rem' }} className='flex-1 gap-16 flex-column'>
-			<StrategyInfo key='details' />
+			<StrategyInfo
+				maxLoss={maxLoss}
+				maxProfit={maxProfit}
+				neededRequiredMargin={neededRequiredMargin}
+				neededBudget={neededBudget}
+			/>
 
 			<ErrorBoundary>
-				<Analyze contracts={contracts} baseAssets={baseSymbolPrice} chartHeight={420} useCommission />
+				<Analyze
+					chartData={data}
+					contracts={contracts}
+					baseAssets={baseSymbolPrice}
+					bep={bep}
+					height={508}
+					maxPrice={maxPrice}
+					minPrice={minPrice}
+					onChange={setFieldsValue}
+				/>
 			</ErrorBoundary>
 		</div>
 	);

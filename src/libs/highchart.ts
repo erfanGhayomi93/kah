@@ -29,6 +29,7 @@ export const chartCrosshairSetting: AxisCrosshairOptions = {
 export const setupChart = () => {
 	setOptions({
 		chart: {
+			animation: true,
 			zooming: {
 				resetButton: {
 					position: {
