@@ -34,6 +34,7 @@ import DisadvantagesSVG from './disadvantages.svg';
 import DocSVG from './doc.svg';
 import DoubleArrowLeftSVG from './double-arrow-left.svg';
 import DoubleArrowRightSVG from './double-arrow-right.svg';
+import DownloadDdnSVG from './download-ddn.svg';
 import DragSVG from './drag.svg';
 import EditFillSVG from './edit-fill.svg';
 import EditSVG from './edit.svg';
@@ -121,12 +122,14 @@ import TrashSVG from './trash.svg';
 import TriangleWarningSVG from './triangle-warning.svg';
 import TvTradeSVG from './tv-trade.svg';
 import UnlockSVG from './unlock.svg';
+import UploadDdnSVG from './upload-ddn.svg';
 import UserBoldSVG from './user-bold.svg';
 import UserCircleSVG from './user-circle.svg';
 import WalletSVG from './wallet.svg';
 import WatchlistSVG from './watchlist.svg';
 import XCircleSVG from './x-circle.svg';
 import XSVG from './x.svg';
+import XiaomiSettingSVG from './xiaomi-setting.svg';
 
 export {
 	AdvantagesSVG,
@@ -165,6 +168,7 @@ export {
 	DocSVG,
 	DoubleArrowLeftSVG,
 	DoubleArrowRightSVG,
+	DownloadDdnSVG,
 	DragSVG,
 	EditFillSVG,
 	EditSVG,
@@ -252,10 +256,12 @@ export {
 	TriangleWarningSVG,
 	TvTradeSVG,
 	UnlockSVG,
+	UploadDdnSVG,
 	UserBoldSVG,
 	UserCircleSVG,
 	WalletSVG,
 	WatchlistSVG,
 	XCircleSVG,
 	XSVG,
+	XiaomiSettingSVG,
 };

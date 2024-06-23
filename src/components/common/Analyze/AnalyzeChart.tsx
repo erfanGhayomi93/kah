@@ -1,6 +1,6 @@
 import { chartFontSetting } from '@/libs/highchart';
 import { sepNumbers } from '@/utils/helpers';
-import { type Chart, chart, type SeriesAreaOptions, type XAxisPlotLinesOptions } from 'highcharts/highstock';
+import { type Chart, chart, type XAxisPlotLinesOptions } from 'highcharts/highstock';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
@@ -12,10 +12,12 @@ interface IPoint {
 	y: number;
 }
 
-interface AnalyzeChartProps extends IAnalyzeInputs {
+interface AnalyzeChartProps {
 	data: IPoint[];
 	minPrice: number;
 	maxPrice: number;
+	bep: number[];
+	baseAssets: number;
 	height?: number;
 	compact?: boolean;
 	onChange?: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
@@ -26,6 +28,7 @@ const AnalyzeChart = ({
 	baseAssets,
 	maxPrice,
 	minPrice,
+	bep,
 	height,
 	compact = false,
 	onChange,
@@ -38,38 +41,6 @@ const AnalyzeChart = ({
 		GREEN: 'rgb(0, 194, 136)',
 		RED: 'rgb(255, 82, 109)',
 	};
-
-	const getAreaSeries = (): SeriesAreaOptions => ({
-		threshold: 1,
-		type: 'area',
-		lineWidth: 1.5,
-		connectNulls: true,
-		showInNavigator: true,
-		data: [],
-		zones: [
-			{
-				value: 0,
-				color: COLORS.RED,
-				fillColor: {
-					linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-					stops: [
-						[0, 'rgba(255, 82, 109, 0)'],
-						[1, 'rgba(255, 82, 109, 0.2)'],
-					],
-				},
-			},
-			{
-				color: COLORS.GREEN,
-				fillColor: {
-					linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-					stops: [
-						[0, 'rgba(0, 194, 136, 0.2)'],
-						[1, 'rgba(0, 194, 136, 0)'],
-					],
-				},
-			},
-		],
-	});
 
 	const getBepPlotLine = (v: number, y: number): XAxisPlotLinesOptions => ({
 		dashStyle: 'LongDash',
@@ -145,6 +116,8 @@ const AnalyzeChart = ({
 		chartRef.current = chart(el, {
 			chart: {
 				height,
+				marginBottom: 16,
+				spacingBottom: 20,
 			},
 			tooltip: {
 				enabled: false,
@@ -157,8 +130,23 @@ const AnalyzeChart = ({
 				height: 26,
 				maskFill: 'rgba(24, 28, 47, 0.05)',
 				xAxis: {
-					type: 'datetime',
+					type: 'linear',
+					showFirstLabel: true,
+					showLastLabel: true,
 					gridLineWidth: 0,
+					labels: {
+						enabled: true,
+						padding: '0',
+						align: 'center',
+						rotation: 0,
+						y: 16,
+						formatter: ({ value }) => sepNumbers(String(value)),
+						style: {
+							...chartFontSetting,
+							opacity: 1,
+							color: 'rgba(93, 96, 109, 1)',
+						},
+					},
 				},
 				handles: {
 					backgroundColor: 'rgba(255, 255, 255, 1)',
@@ -171,7 +159,6 @@ const AnalyzeChart = ({
 				},
 				series: {
 					type: 'areaspline',
-					xAxis: 0,
 					zones: [
 						{
 							value: 0,
@@ -207,8 +194,7 @@ const AnalyzeChart = ({
 							},
 						},
 				labels: {
-					enabled: !compact,
-					formatter: ({ value }) => sepNumbers(String(value)),
+					enabled: false,
 				},
 			},
 			yAxis: {
@@ -220,83 +206,86 @@ const AnalyzeChart = ({
 				},
 				crosshair: compact ? false : {},
 			},
-			series: [getAreaSeries()],
+			series: [
+				{
+					threshold: 1,
+					type: 'area',
+					lineWidth: 1.5,
+					connectNulls: true,
+					showInNavigator: true,
+					data: [],
+					zones: [
+						{
+							value: 0,
+							color: COLORS.RED,
+							fillColor: {
+								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+								stops: [
+									[0, 'rgba(255, 82, 109, 0)'],
+									[1, 'rgba(255, 82, 109, 0.2)'],
+								],
+							},
+						},
+						{
+							color: COLORS.GREEN,
+							fillColor: {
+								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+								stops: [
+									[0, 'rgba(0, 194, 136, 0.2)'],
+									[1, 'rgba(0, 194, 136, 0)'],
+								],
+							},
+						},
+					],
+				},
+			],
 		});
 	}, []);
 
 	useEffect(() => {
 		if (!chartRef.current) return;
 
-		try {
-			const series = getAreaSeries();
-
-			if (data.length <= 10) return;
-
-			const bep: XAxisPlotLinesOptions[] = [];
-			const diff = Math.floor((maxPrice - minPrice) / 100);
-			const l = data.length;
-
-			for (let i = 0; i < l; i++) {
-				const item = data[i];
-				const pnl = Math.round(item.y);
-
-				if (pnl === 0 || i % diff === 0) {
-					series.data!.push({
-						x: item.x,
-						y: pnl,
-					});
-				}
-
-				if (pnl === 0) {
-					bep.push(getBepPlotLine(item.x, bep.length * 30));
-				} else if (i > 0) {
-					const previousPNL = Math.round(data[i - 1].y);
-					if ((previousPNL > 0 && pnl < 0) || (previousPNL < 0 && pnl > 0)) {
-						bep.push(getBepPlotLine(item.x, bep.length * 30));
-					}
-				}
-			}
-
-			chartRef.current.update({
-				xAxis: {
-					plotLines: [getBaseAssetsPlotLine(), ...bep],
-				},
-				tooltip: {
-					enabled: !compact,
-					useHTML: true,
-					split: true,
-					formatter: function () {
-						const x = Number(this.x ?? 0);
-						const y = Number(this.y ?? 0);
-
-						// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
-						const profit = (y + baseAssets) / baseAssets - 1;
-
-						const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit, 14);
-
-						const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
-						const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
-						const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))} (${(profit * 100).toFixed(2)}%)</span></li>`;
-						const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
-
-						return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1}${li2}${li3}${li4}</ul>`;
-					},
-				},
-				series: [series],
-			});
-		} catch (e) {
-			//
-		}
-	}, [chartRef.current, data, baseAssets]);
+		chartRef.current.zoomOut();
+	}, [minPrice, maxPrice]);
 
 	useEffect(() => {
 		if (!chartRef.current) return;
-		chartRef.current.xAxis[0].setExtremes(minPrice, maxPrice);
-	}, [minPrice, maxPrice]);
+
+		chartRef.current.series[0].setData(data);
+		chartRef.current.xAxis[0].update({
+			plotLines: [getBaseAssetsPlotLine(), ...bep.map((v, i) => getBepPlotLine(v, i * 30))],
+		});
+	}, [data]);
+
+	useEffect(() => {
+		if (!chartRef.current) return;
+
+		chartRef.current.tooltip.update({
+			enabled: !compact,
+			useHTML: true,
+			split: true,
+			formatter: function () {
+				const x = Number(this.x ?? 0);
+				const y = Number(this.y ?? 0);
+
+				// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
+				const profit = (y + baseAssets) / baseAssets - 1;
+
+				const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit, 14);
+
+				const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
+				const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
+				const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))} (${(profit * 100).toFixed(2)}%)</span></li>`;
+				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
+
+				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1}${li2}${li3}${li4}</ul>`;
+			},
+		});
+	}, [baseAssets]);
 
 	return (
 		<ErrorBoundary>
-			<div className='gap-8 flex-column'>
+			<div className='gap-16 flex-column'>
 				<div ref={onLoad} />
 
 				{data.length <= 10 && (

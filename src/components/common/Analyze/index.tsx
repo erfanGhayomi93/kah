@@ -1,8 +1,6 @@
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import Tabs from '@/components/common/Tabs/Tabs';
-import { useInputs } from '@/hooks';
-import useAnalyze from '@/hooks/useAnalyze';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -17,50 +15,33 @@ const AnalyzeGreeksTable = dynamic(() => import('./AnalyzeGreeksTable'), {
 
 interface AnalyzeProps {
 	contracts: TSymbolStrategy[];
-	useCommission: boolean;
-	minPrice?: number;
-	maxPrice?: number;
-	chartHeight?: number;
+	chartData: Array<Record<'x' | 'y', number>>;
+	bep: number[];
+	minPrice: number;
+	maxPrice: number;
 	baseAssets: number;
+	height?: number;
+	onChange: (values: Partial<Record<'minPrice' | 'maxPrice', number>>) => void;
 }
 
-const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCommission }: AnalyzeProps) => {
+const Analyze = ({ chartData, contracts, minPrice, maxPrice, baseAssets, height, bep, onChange }: AnalyzeProps) => {
 	const t = useTranslations('analyze_modal');
-
-	const { inputs, setFieldsValue } = useInputs<IAnalyzeInputs>(
-		{
-			minPrice: minPrice ?? 0,
-			maxPrice: maxPrice ?? 0,
-			baseAssets,
-		},
-		true,
-	);
-
-	const {
-		data,
-		maxPrice: newMaxPrice,
-		minPrice: newMinPrice,
-	} = useAnalyze(contracts, {
-		baseAssets: inputs.baseAssets,
-		maxPrice: inputs.maxPrice,
-		minPrice: inputs.minPrice,
-		useCommission,
-	});
 
 	const TABS = [
 		{
 			id: 'normal',
 			title: t('performance'),
 			render: () => (
-				<div className='relative py-16'>
+				<div style={{ height }} className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeChart
-							data={data}
-							baseAssets={inputs.baseAssets}
-							maxPrice={newMaxPrice}
-							minPrice={newMinPrice}
-							onChange={setFieldsValue}
-							height={chartHeight}
+							data={chartData}
+							baseAssets={baseAssets}
+							maxPrice={maxPrice}
+							minPrice={minPrice}
+							onChange={onChange}
+							height={!height ? undefined : height - 88}
+							bep={bep}
 						/>
 					</ErrorBoundary>
 				</div>
@@ -70,7 +51,7 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 			id: 'strategy',
 			title: t('greeks'),
 			render: () => (
-				<div className='relative py-16'>
+				<div style={{ height }} className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeGreeksTable contracts={contracts} />
 					</ErrorBoundary>
