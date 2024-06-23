@@ -1,9 +1,12 @@
 import Tooltip from '@/components/common/Tooltip';
 import Collapse from '@/components/common/animation/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { setChoiceBrokerModal } from '@/features/slices/modalSlice';
 import { toggleSidebar } from '@/features/slices/uiSlice';
 import { Link, usePathname } from '@/navigation';
+import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
 import { memo, useMemo } from 'react';
 import styles from './Sidebar.module.scss';
@@ -24,6 +27,7 @@ export type TListItem = (IListButton | IListAnchor) & {
 	icon?: JSX.Element;
 	disabled?: boolean;
 	isBroker?: boolean;
+	compare?: (p1: string, p2: string) => boolean;
 };
 
 type ItemProps = TListItem & {
@@ -37,22 +41,20 @@ type ButtonOrAnchorProps = TListItem & {
 	toggle?: () => void;
 };
 
-const Item = ({ id, label, icon, disabled, sidebarIsExpand, toggle, ...props }: ItemProps) => {
+const Item = ({ id, label, icon, compare, disabled, sidebarIsExpand, toggle, ...props }: ItemProps) => {
 	const pathname = usePathname();
 
-	const compare = (p1: string, p2: string): boolean => {
-		return p1.replace(/^\/+|\/+$/g, '') === p2.replace(/^\/+|\/+$/g, '');
-	};
-
 	const isActive = useMemo(() => {
-		if ('to' in props) return compare(props.to, pathname);
+		if (typeof compare === 'function') return compare('to' in props ? props.to : pathname, pathname);
+
+		if ('to' in props) return comparePathname(props.to, pathname);
 
 		if ('isModal' in props) return false;
 
 		return (
 			!sidebarIsExpand &&
 			Array.isArray(props.items) &&
-			props.items.findIndex((item) => 'to' in item && compare(item.to, pathname)) > -1
+			props.items.findIndex((item) => 'to' in item && comparePathname(item.to, pathname)) > -1
 		);
 	}, [pathname, sidebarIsExpand]);
 
@@ -99,14 +101,31 @@ const ButtonOrAnchor = ({
 }: ButtonOrAnchorProps) => {
 	const dispatch = useAppDispatch();
 
+	const brokerUrl = useAppSelector(getBrokerURLs);
+
 	const onMouseEnter = () => {
 		if (sidebarIsExpand) return;
 		dispatch(toggleSidebar(true));
 	};
 
+	const loginFirstBeforeUse = () => {
+		dispatch(setChoiceBrokerModal({}));
+	};
+
+	const shouldPrevent = !brokerUrl && isBroker;
+
 	if ('to' in props) {
 		return (
-			<Link href={props.to} onMouseEnter={onMouseEnter}>
+			<Link
+				onClick={(e) => {
+					if (!shouldPrevent) return;
+
+					e.preventDefault();
+					loginFirstBeforeUse();
+				}}
+				href={props.to}
+				onMouseEnter={onMouseEnter}
+			>
 				{icon}
 				<span>{label}</span>
 			</Link>
@@ -117,7 +136,13 @@ const ButtonOrAnchor = ({
 		<button
 			type='button'
 			onMouseEnter={onMouseEnter}
-			onClick={() => {
+			onClick={(e) => {
+				if (shouldPrevent) {
+					e.preventDefault();
+					loginFirstBeforeUse();
+					return;
+				}
+
 				if (typeof props?.onClick === 'function') props.onClick();
 				else toggle?.();
 			}}

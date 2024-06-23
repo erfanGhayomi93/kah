@@ -1,3 +1,4 @@
+import Separator from '@/components/common/Separator';
 import Main from '@/components/layout/Main';
 import { Link } from '@/navigation';
 import clsx from 'clsx';
@@ -17,7 +18,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 		<Main className='gap-8 !px-8'>
 			<div
 				style={{ flex: '0 0 5.6rem' }}
-				className='flex-1 gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start'
+				className='gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start'
 			>
 				<ul className='flex gap-8'>
 					<li>
@@ -52,7 +53,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 
 				{headerRenderer && (
 					<>
-						<span className='bg-light-gray-200 h-12 w-2' />
+						<Separator />
 						{headerRenderer}
 					</>
 				)}

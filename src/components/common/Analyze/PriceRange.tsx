@@ -3,8 +3,8 @@ import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/uti
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
-interface PriceRangeProps extends Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice'> {
-	onChange: (values: Partial<Pick<IAnalyzeModalInputs, 'minPrice' | 'maxPrice'>>) => void;
+interface PriceRangeProps extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'> {
+	onChange: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
 }
 
 const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {

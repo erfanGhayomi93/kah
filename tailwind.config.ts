@@ -708,6 +708,23 @@ const config: Config = {
 					},
 				},
 
+				'.btn-icon': {
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					color: theme('colors.light.gray.700'),
+					backgroundColor: 'transparent',
+					border: `1px solid ${theme('colors.light.gray.200')}`,
+					transition: 'color 250ms, border-color 250ms, background-color 250ms',
+					'-webkit-transition': 'color 250ms, border-color 250ms, background-color 250ms',
+
+					'&:hover': {
+						color: theme('colors.white'),
+						backgroundColor: theme('colors.light.primary.100'),
+						borderColor: theme('colors.light.primary.100'),
+					},
+				},
+
 				'.input-box': {
 					display: 'flex',
 					'flex-direction': 'column',
