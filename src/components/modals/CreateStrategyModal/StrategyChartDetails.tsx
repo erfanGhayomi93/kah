@@ -2,6 +2,7 @@ import AnalyzeChart from '@/components/common/Analyze/AnalyzeChart';
 import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useAnalyze } from '@/hooks';
 import { divide, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -47,6 +48,9 @@ const StrategyChartDetails = ({
 				settlementDay: option.settlementDay,
 				strikePrice: option.strikePrice,
 				side: 'sell',
+				requiredMargin: {
+					value: option.requiredMargin,
+				},
 				symbol: {
 					symbolTitle: option.symbolTitle,
 					symbolISIN: option.symbolISIN,
@@ -59,7 +63,7 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data } = useAnalyze(contracts, {
+	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, bep } = useAnalyze(contracts, {
 		minPrice,
 		maxPrice,
 		baseAssets: basePrice,
@@ -72,20 +76,32 @@ const StrategyChartDetails = ({
 				className='justify-between text-light-gray-700 ltr flex-column *:flex-justify-between'
 			>
 				<li>
-					<span className='font-medium text-light-success-100'>{t('profit')}</span>
+					<span
+						className={clsx({
+							'font-medium text-light-success-100': baseSymbolStatus === 'itm',
+							'font-medium text-light-error-100': baseSymbolStatus === 'otm',
+							'text-light-gray-700': baseSymbolStatus === 'atm',
+						})}
+					>
+						{t(baseSymbolStatus)}
+					</span>
 					<span>:{t('current_status')}</span>
 				</li>
 				<li>
-					<span className='font-medium'>{sepNumbers('22509')}</span>
-					<span>:{t('bep')}</span>
-				</li>
-				<li>
-					<span className='font-medium'>(-{sepNumbers('2925')})</span>
+					<span className='font-medium text-light-error-100'>
+						{maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
+					</span>
 					<span>:{t('most_loss')}</span>
 				</li>
 				<li>
-					<span className='font-medium text-light-success-100'>({sepNumbers('2075')})</span>
+					<span className='font-medium text-light-success-100'>
+						{maxProfit === Infinity ? t('infinity') : sepNumbers(String(maxProfit))}
+					</span>
 					<span>:{t('most_profit')}</span>
+				</li>
+				<li>
+					<span className='font-medium text-light-gray-700'>{sepNumbers(String(neededRequiredMargin))}</span>
+					<span>:{t('required_margin')}</span>
 				</li>
 			</ul>
 
@@ -97,6 +113,7 @@ const StrategyChartDetails = ({
 					minPrice={minPrice}
 					maxPrice={maxPrice}
 					baseAssets={basePrice}
+					bep={bep}
 				/>
 			</div>
 		</div>

@@ -375,21 +375,20 @@ declare interface IBsModalInputs {
 }
 
 declare interface IAnalyzeInputs {
-	minPrice: number;
+	data: Array<Record<'x' | 'y', number>>;
 	maxPrice: number;
-	baseAssets: number;
-}
-
-declare interface IAnalyzeModalInputs extends IAnalyzeInputs {
-	chartData: Array<Record<'x' | 'y', number>>;
-	mostProfit: number;
-	mostLoss: number;
-	bep: Record<'x' | 'y', number>;
-	budget: number;
+	minPrice: number;
+	maxProfit: number;
+	maxLoss: number;
+	baseSymbolStatus: 'atm' | 'itm' | 'otm';
+	// ? Σ(buyPremium * contractSize) - Σ(sellPremium * contractSize)
+	neededBudget: number;
+	bep: number[];
+	risk: number;
 	profitProbability: number;
 	timeValue: number;
-	risk: number;
-	requiredMargin: number;
+	// ? Σ(requiredMargin)
+	neededRequiredMargin: number;
 }
 
 declare type TSetBsModalInputs = <

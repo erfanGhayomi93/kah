@@ -386,11 +386,9 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 			e.stopPropagation();
 			if (!day.enable) return;
 
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-
 			if (isDisabledDate(dayjs(`${day.year}/${day.month}/${day.date}`).calendar('jalali').toDate())) return;
 
-			// @ts-expect-error: jalali does't infer type
+			// @ts-expect-error: jalali type doesn't exists
 			const d = dayjs(`${day.year}/${day.month}/${day.date}`, { jalali: true }).calendar('jalali').toDate();
 
 			onChange(d);
@@ -579,7 +577,6 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 											onClick={(e) => onClickDay(e, day)}
 											className={clsx(styles.day, classes?.day, {
 												[styles.holiday]: day.holiday,
-												// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 												[styles.disabled]: isDisabledDate(
 													dayjs(`${day.year}/${day.month}/${day.date}`)
 														.calendar('jalali')
