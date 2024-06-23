@@ -85,7 +85,7 @@ const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsConta
 		} catch (e) {
 			return [[], 0];
 		}
-	}, [data]);
+	}, [basis, data]);
 
 	if (sum === 0) return <NoData />;
 
