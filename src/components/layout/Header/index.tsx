@@ -1,6 +1,7 @@
 import { logoutBroker } from '@/api/brokerAxios';
 import { useUserRemainQuery, useUserStatusQuery } from '@/api/queries/brokerPrivateQueries';
 import { useUserInformationQuery } from '@/api/queries/userQueries';
+import Separator from '@/components/common/Separator';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import {
@@ -220,7 +221,7 @@ const Header = () => {
 
 				{isLoggedIn && userStatus?.remainStatus && (
 					<>
-						<span className='h-12 w-2 bg-light-gray-200' />
+						<Separator />
 
 						<span className='gap-8 flex-items-center'>
 							{t('header.required_margin')}:
@@ -294,7 +295,7 @@ const Header = () => {
 						)}
 					</Popup>
 
-					<span className='mr-8 h-12 w-2 bg-light-gray-200' />
+					<Separator />
 				</div>
 
 				<ServerDateTime />

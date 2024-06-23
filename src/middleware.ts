@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 const brokerIdMatcher = [
 	'^/?settings/(agreements|send_order)/?$',
 	'^/?market-map',
+	'^/?my-assets',
 	'^/?(orders-and-trades-reports|option-reports|financial-reports|change-broker-reports)',
 ];
 
@@ -28,7 +29,7 @@ const middleware = (request: NextRequest) => {
 };
 
 export const config = {
-	matcher: ['/', '/((?!api|_next|_vercel|connect|.*\\..*).*)', '/(fa)/:path*'],
+	matcher: ['/', '/((?!api|_next|_vercel|connect|.*\\..*).*)'],
 };
 
 export default middleware;

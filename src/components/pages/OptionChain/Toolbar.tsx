@@ -43,7 +43,7 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 	}, [settlementDays, inputs.baseSymbol]);
 
 	return (
-		<div style={{ flex: '0 0 5.6rem' }} className='flex-1 gap-36 rounded bg-white px-16 flex-justify-between'>
+		<div style={{ flex: '0 0 5.6rem' }} className='gap-36 rounded bg-white px-16 flex-justify-between'>
 			<div className='flex-1 gap-24 flex-items-center'>
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch
@@ -76,10 +76,10 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 
 			{Boolean(inputs.baseSymbol) && (
 				<div className='gap-8 flex-items-center'>
-					<div className='bg-light-gray-100 h-40 rounded px-8 flex-items-center'>
-						<span className='text-light-gray-700 gap-8 whitespace-nowrap text-base flex-items-center'>
+					<div className='h-40 rounded bg-light-gray-100 px-8 flex-items-center'>
+						<span className='gap-8 whitespace-nowrap text-base text-light-gray-700 flex-items-center'>
 							{t('option_chain.total_open_contracts')}:
-							<span className='text-light-gray-800 font-medium'>
+							<span className='font-medium text-light-gray-800'>
 								{sepNumbers(String(totalOpenPositionCount))}
 							</span>
 						</span>

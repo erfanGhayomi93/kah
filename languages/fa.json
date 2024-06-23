@@ -55,7 +55,11 @@
 		"agreement": "توافق‌نامه‌ها - کهکشان",
 		"general": "تنظیمات عمومی - کهکشان",
 		"sessions": "سابقه ورود و خروج - کهکشان",
-		"technical": "تکنیکال - کهکشان"
+		"technical": "تکنیکال - کهکشان",
+		"my_assets_stocks": "سهام | دارایی من  - کهکشان",
+		"my_assets_position": "موقعیت | دارایی من  - کهکشان",
+		"my_assets_strategy": "استراتژی | دارایی من  - کهکشان",
+		"my_assets_all": "کل دارایی | دارایی من  - کهکشان"
 	},
 	"side": {
 		"buy": "خرید",
@@ -202,6 +206,29 @@
 		"atm": "در قیمت",
 		"itm": "در سوئ",
 		"otm": "در زیان"
+	},
+	"my_assets": {
+		"title": "دارایی من",
+		"tab_stocks": "سهام",
+		"tab_position": "موقعیت",
+		"tab_strategy": "استراتژی",
+		"tab_all": "کل دارایی",
+		"price_basis": "قیمت بر اساس",
+		"price_LastTradePrice": "آخرین قیمت",
+		"price_ClosingPrice": "قیمت پایانی",
+		"price_BestLimitPrice": "سرخط هوشمند",
+		"upload_ddn_tooltip": "بارگذاری فایل DDN",
+		"download_ddn_tooltip": "دریافت گزارش از سامانه ddn",
+		"table_setting_tooltip": "تنظیمات جدول",
+		"export_excel_tooltip": "خروجی اکسل",
+		"manage_columns_tooltip": "مدیریت ستون‌ها",
+		"symbols_involved_in_strategy": "نمایش سهم های درگیر استراتژی",
+		"sold_symbols": "نمایش سهم های فروخته شده",
+		"calculate_commission": "با احتساب کارمزد",
+		"portfolio_total_value": "ارزش کل سهام",
+		"total_profit_and_loss": "سود و زیان کل",
+		"today_profit_and_los": "سود و زیان امروز",
+		"assembly_profit": "سود مجمع"
 	},
 	"select_symbol_contracts_modal": {
 		"title": "انتخاب قرارداد",

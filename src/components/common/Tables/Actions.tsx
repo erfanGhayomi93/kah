@@ -1,6 +1,7 @@
-import { ExcelSVG, FilterSVG } from '@/components/icons';
-import OptionWatchlistManagerSVG from '@/components/icons/OptionWatchlistManagerSVG';
+import OptionWatchlistManagerBtn from '@/components/common/Buttons/OptionWatchlistManagerBtn';
+import { FilterSVG } from '@/components/icons';
 import styled from 'styled-components';
+import ExportExcelBtn from '../Buttons/ExportExcelBtn';
 
 interface ITableActionsProps {
 	filtersCount?: number;
@@ -23,34 +24,6 @@ const Badge = styled.span`
 	right: -0.8rem;
 `;
 
-const ExcelBtn = styled.button`
-	svg {
-		path {
-			transition: fill 250ms;
-		}
-
-		path:nth-child(1),
-		path:nth-child(2) {
-			fill: rgb(0, 194, 136);
-		}
-
-		path:nth-child(3) {
-			fill: rgb(255, 255, 255);
-		}
-	}
-
-	&:hover svg {
-		path:nth-child(1),
-		path:nth-child(2) {
-			fill: rgb(255, 255, 255);
-		}
-
-		path:nth-child(3) {
-			fill: rgb(0, 142, 186);
-		}
-	}
-`;
-
 const Actions = ({
 	filtersCount,
 	onExportExcel,
@@ -62,20 +35,12 @@ const Actions = ({
 }: ITableActionsProps) => {
 	return (
 		<div className='flex gap-8'>
-			{showExcel && (
-				<ExcelBtn
-					onClick={onExportExcel}
-					className='border-light-gray-200 text-light-gray-700 hover:border-light-primary-100 hover:bg-light-primary-100 size-40 rounded border transition-colors flex-justify-center'
-					type='button'
-				>
-					<ExcelSVG />
-				</ExcelBtn>
-			)}
+			{showExcel && <ExportExcelBtn onClick={onExportExcel} />}
 
 			{showFilter && (
 				<button
 					onClick={onShowFilters}
-					className='border-light-gray-200 text-light-gray-700 hover:border-light-primary-100 hover:bg-light-primary-100 relative size-40 rounded border transition-colors flex-justify-center hover:text-white'
+					className='relative size-40 rounded border border-light-gray-200 text-light-gray-700 transition-colors flex-justify-center hover:border-light-primary-100 hover:bg-light-primary-100 hover:text-white'
 					type='button'
 				>
 					{(filtersCount ?? 0) > 0 && (
@@ -85,13 +50,7 @@ const Actions = ({
 				</button>
 			)}
 
-			{showColumns && (
-				<OptionWatchlistManagerSVG
-					onClick={onManageColumns}
-					className='border-light-gray-200 text-light-gray-700 hover:border-light-primary-100 hover:bg-light-primary-100 size-40 rounded border bg-transparent transition-colors flex-justify-center'
-					type='button'
-				/>
-			)}
+			{showColumns && <OptionWatchlistManagerBtn onClick={onManageColumns} />}
 		</div>
 	);
 };
