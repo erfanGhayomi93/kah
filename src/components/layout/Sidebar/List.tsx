@@ -1,4 +1,4 @@
-import { HomeSVG, ReceptionSVG, ReportSVG, SettingSVG, StrategySVG, TvTradeSVG } from '@/components/icons';
+import { AssetSVG, HomeSVG, ReceptionSVG, ReportSVG, SettingSVG, StrategySVG, TvTradeSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import {
 	setChangeBrokerModal,
@@ -50,12 +50,14 @@ const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 					to: '/',
 					icon: <HomeSVG />,
 				},
-				// {
-				// 	id: 'my_assets',
-				// 	label: t('sidebar.my_assets'),
-				// 	to: '/a',
-				// 	icon: <AssetSVG />,
-				// },
+				{
+					id: 'my_assets',
+					label: t('sidebar.my_assets'),
+					to: '/my-assets/stocks',
+					icon: <AssetSVG />,
+					isBroker: true,
+					compare: (_, p2) => p2.includes('my-assets'),
+				},
 				{
 					id: 'market',
 					label: t('sidebar.market'),
@@ -93,6 +95,7 @@ const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 					id: 'strategy',
 					label: t('sidebar.strategy'),
 					to: '/strategy',
+					compare: (_, p2) => p2.includes('strategy'),
 					icon: <StrategySVG />,
 				},
 				// {

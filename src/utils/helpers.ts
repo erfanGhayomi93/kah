@@ -729,3 +729,8 @@ export const sanitizeHTML = (html: string) => {
 
 	return doc.body.innerHTML;
 };
+
+export const comparePathname = (p1: string, p2: string): boolean => {
+	const pattern = /^\/?|\/?$/gi;
+	return p1.replace(pattern, '') === p2.replace(pattern, '');
+};

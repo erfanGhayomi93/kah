@@ -1,6 +1,6 @@
 import Strategies from '@/components/pages/Strategies/List';
-import StrategiesToolbar from '@/components/pages/Strategies/List/Toolbar';
 import StrategyLayout from '@/components/pages/Strategies/StrategyLayout';
+import StrategiesToolbar from '@/components/pages/Strategies/Toolbar';
 import { getMetadata } from '@/metadata';
 import type { NextPage } from 'next';
 import { getTranslations } from 'next-intl/server';
