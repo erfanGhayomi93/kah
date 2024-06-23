@@ -20,18 +20,18 @@ interface AnalyzeProps {
 	useCommission: boolean;
 	minPrice?: number;
 	maxPrice?: number;
-	chartHeight?: number;
+	height?: number;
 	baseAssets: number;
+	manually?: IAnalyzeInputs;
 }
 
-const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCommission }: AnalyzeProps) => {
+const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, height, useCommission, manually }: AnalyzeProps) => {
 	const t = useTranslations('analyze_modal');
 
-	const { inputs, setFieldsValue } = useInputs<IAnalyzeInputs>(
+	const { inputs, setFieldsValue } = useInputs<Record<'minPrice' | 'maxPrice', number>>(
 		{
 			minPrice: minPrice ?? 0,
 			maxPrice: maxPrice ?? 0,
-			baseAssets,
 		},
 		true,
 	);
@@ -40,8 +40,10 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 		data,
 		maxPrice: newMaxPrice,
 		minPrice: newMinPrice,
+		bep,
 	} = useAnalyze(contracts, {
-		baseAssets: inputs.baseAssets,
+		enabled: manually === undefined,
+		baseAssets,
 		maxPrice: inputs.maxPrice,
 		minPrice: inputs.minPrice,
 		useCommission,
@@ -52,15 +54,16 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 			id: 'normal',
 			title: t('performance'),
 			render: () => (
-				<div className='relative py-16'>
+				<div style={{ height }} className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeChart
 							data={data}
-							baseAssets={inputs.baseAssets}
+							baseAssets={baseAssets}
 							maxPrice={newMaxPrice}
 							minPrice={newMinPrice}
 							onChange={setFieldsValue}
-							height={chartHeight}
+							height={!height ? undefined : height - 88}
+							bep={bep}
 						/>
 					</ErrorBoundary>
 				</div>
@@ -70,7 +73,7 @@ const Analyze = ({ contracts, minPrice, maxPrice, baseAssets, chartHeight, useCo
 			id: 'strategy',
 			title: t('greeks'),
 			render: () => (
-				<div className='relative py-16'>
+				<div style={{ height }} className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeGreeksTable contracts={contracts} />
 					</ErrorBoundary>

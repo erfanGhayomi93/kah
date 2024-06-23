@@ -1,32 +1,20 @@
-import { useCommissionsQuery } from '@/api/queries/commonQueries';
-import ErrorBoundary from '@/components/common/ErrorBoundary';
+import AnalyzeGraph from '@/components/common/Analyze';
 import Switch from '@/components/common/Inputs/Switch';
-import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import SymbolStrategyTable from '@/components/common/Tables/SymbolStrategyTable';
-import Tabs from '@/components/common/Tabs/Tabs';
 import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
-import { useBasketOrderingSystem, useInputs, useLocalstorage } from '@/hooks';
+import { useBasketOrderingSystem, useLocalstorage } from '@/hooks';
 import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
-import { convertSymbolWatchlistToSymbolBasket, sepNumbers, uuidv4 } from '@/utils/helpers';
+import { convertSymbolWatchlistToSymbolBasket, uuidv4 } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import dynamic from 'next/dynamic';
-import React, { forwardRef, useEffect, useMemo, useState } from 'react';
+import React, { forwardRef, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
-
-const AnalyzeChart = dynamic(() => import('@/components/common/Analyze/AnalyzeChart'), {
-	loading: () => <Loading />,
-});
-
-const AnalyzeGreeksTable = dynamic(() => import('@/components/common/Analyze/AnalyzeGreeksTable'), {
-	loading: () => <Loading />,
-});
 
 const Div = styled.div`
 	width: 800px;
@@ -62,28 +50,9 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 		const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
-		const { inputs, setFieldsValue } = useInputs<IAnalyzeModalInputs>({
-			chartData: [],
-			minPrice: 0,
-			maxPrice: 0,
-			mostProfit: 0,
-			mostLoss: 0,
-			baseAssets: 0,
-			bep: { x: 0, y: 0 },
-			budget: 0,
-			profitProbability: 0,
-			timeValue: 0,
-			risk: 0,
-			requiredMargin: 0,
-		});
-
 		const [symbolContracts, setSymbolContracts] = useState([...contracts]);
 
 		const [selectedContracts, setSelectedContracts] = useState<string[]>(symbolContracts.map((item) => item.id));
-
-		const { data: commissionData } = useCommissionsQuery({
-			queryKey: ['commissionQuery'],
-		});
 
 		const onCloseModal = () => {
 			dispatch(setAnalyzeModal(null));
@@ -206,144 +175,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			return result;
 		}, [symbolContracts, selectedContracts]);
 
-		const intrinsicValue = (strikePrice: number, baseSymbolPrice: number, type: TOptionSides) => {
-			if (type === 'call') return Math.max(baseSymbolPrice - strikePrice, 0);
-			return Math.max(strikePrice - baseSymbolPrice, 0);
-		};
-
-		const pnl = (intrinsicValue: number, premium: number, type: TBsSides) => {
-			if (type === 'buy') return intrinsicValue - premium;
-			return premium - intrinsicValue;
-		};
-
-		const TABS = useMemo(() => {
-			return [
-				{
-					id: 'normal',
-					title: t('analyze_modal.performance'),
-					render: () => (
-						<div style={{ height: '40rem' }} className='relative py-16'>
-							<ErrorBoundary>
-								<AnalyzeChart
-									minPrice={inputs.minPrice}
-									maxPrice={inputs.maxPrice}
-									data={inputs.chartData}
-									baseAssets={inputs.baseAssets}
-									onChange={setFieldsValue}
-									height={320}
-								/>
-							</ErrorBoundary>
-						</div>
-					),
-				},
-				{
-					id: 'strategy',
-					title: t('analyze_modal.greeks'),
-					render: () => (
-						<div style={{ height: '40rem' }} className='relative py-16'>
-							<ErrorBoundary>
-								<AnalyzeGreeksTable contracts={symbolContracts} />
-							</ErrorBoundary>
-						</div>
-					),
-				},
-			];
-		}, [symbolContracts, inputs]);
-
-		useEffect(() => {
-			const data = selectedContractsAsSymbol;
-			const newStates: IAnalyzeModalInputs = {
-				...inputs,
-				chartData: [],
-			};
-
-			newStates.chartData = [];
-
-			if (data.length === 0) return;
-
-			try {
-				const l = data.length;
-				const { baseSymbolPrice } = data[0].symbol;
-				const minMaxIsInvalid = newStates.minPrice >= newStates.maxPrice;
-				newStates.baseAssets = baseSymbolPrice;
-
-				if (!newStates.minPrice || minMaxIsInvalid)
-					newStates.minPrice = Math.max(newStates.baseAssets * 0.5, 0);
-
-				if (!newStates.maxPrice || minMaxIsInvalid)
-					newStates.maxPrice = Math.max(newStates.baseAssets * 1.5, 0);
-
-				newStates.minPrice = Math.floor(newStates.minPrice);
-				newStates.maxPrice = Math.ceil(newStates.maxPrice);
-
-				const lowPrice = newStates.minPrice;
-				const highPrice = newStates.maxPrice;
-
-				for (let i = 0; i < l; i++) {
-					const item = data[i];
-					const contractType = item.symbol.optionType;
-					const { strikePrice, price } = item;
-
-					let commission = 0;
-					let index = 0;
-
-					if (Array.isArray(commissionData) && useCommission) {
-						const transactionCommission = commissionData.find(
-							({ marketUnitTitle }) => marketUnitTitle === item.marketUnit,
-						);
-
-						if (transactionCommission) {
-							commission =
-								transactionCommission[item.side === 'buy' ? 'buyCommission' : 'sellCommission'] ?? 0;
-
-							commission *= item.quantity * item.price;
-							if (item.side === 'sell') commission *= -1;
-						}
-					}
-
-					const transactionValue = Math.ceil(Math.abs(item.quantity * price + commission));
-
-					for (let j = lowPrice; j <= highPrice; j++) {
-						let y = 0;
-
-						if (item.type === 'base') {
-							y = j - baseSymbolPrice;
-						} else {
-							const strikeCommission =
-								useCommission && item.side === 'buy'
-									? (strikePrice ?? 0) * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
-									: 0;
-
-							const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, contractType ?? 'call');
-							y = pnl(iv, transactionValue, item.side);
-						}
-
-						y += newStates.chartData[index]?.y ?? 0;
-						if (y === 0) newStates.bep = { x: j, y: 0 };
-
-						newStates.chartData[index] = {
-							x: j,
-							y,
-						};
-
-						index++;
-					}
-				}
-			} catch (e) {
-				//
-			}
-
-			setFieldsValue(newStates);
-		}, [
-			JSON.stringify({
-				selectedContractsAsSymbol,
-				useCommission,
-				commissionData,
-				minPrice: inputs.minPrice,
-				maxPrice: inputs.maxPrice,
-			}),
-		]);
-
 		return (
 			<Modal
 				top='50%'
@@ -391,22 +222,15 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 							<div className='h-full overflow-auto px-16 pb-16 pt-12'>
 								<div className='overflow- relative h-full rounded px-16 shadow-card flex-column'>
-									<Tabs
-										data={TABS}
-										defaultActiveTab='normal'
-										renderTab={(item, activeTab) => (
-											<button
-												className={clsx(
-													'h-48 px-16 transition-colors flex-justify-center',
-													item.id === activeTab
-														? 'font-medium text-light-gray-700'
-														: 'text-light-gray-500',
-												)}
-												type='button'
-											>
-												{item.title}
-											</button>
-										)}
+									<AnalyzeGraph
+										baseAssets={
+											selectedContractsAsSymbol.length > 0
+												? selectedContractsAsSymbol[0]?.symbol.baseSymbolPrice
+												: 0
+										}
+										contracts={selectedContractsAsSymbol}
+										useCommission={useCommission}
+										height={400}
 									/>
 
 									<div className='gap-16 border-t border-t-light-gray-200 pb-24 pt-16 flex-column'>
@@ -417,28 +241,12 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 												value='+2,075'
 											/>
 											<StrategyInfoItem
-												title={t('analyze_modal.break_even_point')}
-												value={`${sepNumbers(String(inputs.bep.x))} (0.1%)`}
-											/>
-											<StrategyInfoItem title={t('analyze_modal.risk')} value='22,509 (0.1%)' />
-											<StrategyInfoItem
-												title={t('analyze_modal.time_value')}
-												value='22,509 (0.1%)'
-											/>
-										</ul>
-
-										<ul className='flex-justify-between'>
-											<StrategyInfoItem
 												type='error'
 												title={t('analyze_modal.most_loss')}
 												value='-2,925'
 											/>
 											<StrategyInfoItem
 												title={t('analyze_modal.required_budget')}
-												value='132,000'
-											/>
-											<StrategyInfoItem
-												title={t('analyze_modal.profit_probability')}
 												value='132,000'
 											/>
 											<StrategyInfoItem
@@ -486,11 +294,11 @@ const NoContractExists = ({ addNewStrategy }: NoContractExistsProps) => {
 
 const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => {
 	return (
-		<li style={{ flex: '0 0 13.6rem' }} className='items-start gap-4 flex-column'>
+		<li style={{ flex: '0 0 12.8rem' }} className='items-start gap-4 flex-column'>
 			<span className='text-base text-light-gray-700'>{title}</span>
 			<div
 				style={{ width: '10.4rem' }}
-				className={clsx('h-40 rounded px-8 ltr flex-justify-end', {
+				className={clsx('h-40 w-full rounded px-8 ltr flex-justify-end', {
 					'bg-light-gray-100 text-light-gray-700': !type,
 					'bg-light-success-100/10 text-light-success-100': type === 'success',
 					'bg-light-error-100/10 text-light-error-100': type === 'error',

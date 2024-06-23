@@ -47,6 +47,9 @@ const StrategyChartDetails = ({
 				settlementDay: option.settlementDay,
 				strikePrice: option.strikePrice,
 				side: 'sell',
+				requiredMargin: {
+					value: option.requiredMargin,
+				},
 				symbol: {
 					symbolTitle: option.symbolTitle,
 					symbolISIN: option.symbolISIN,
@@ -59,7 +62,7 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data } = useAnalyze(contracts, {
+	const { data, maxProfit, maxLoss, neededRequiredMargin, bep } = useAnalyze(contracts, {
 		minPrice,
 		maxPrice,
 		baseAssets: basePrice,
@@ -76,16 +79,20 @@ const StrategyChartDetails = ({
 					<span>:{t('current_status')}</span>
 				</li>
 				<li>
-					<span className='font-medium'>{sepNumbers('22509')}</span>
-					<span>:{t('bep')}</span>
-				</li>
-				<li>
-					<span className='font-medium'>(-{sepNumbers('2925')})</span>
+					<span className='font-medium text-light-error-100'>
+						{maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
+					</span>
 					<span>:{t('most_loss')}</span>
 				</li>
 				<li>
-					<span className='font-medium text-light-success-100'>({sepNumbers('2075')})</span>
+					<span className='font-medium text-light-success-100'>
+						{maxProfit === Infinity ? t('infinity') : sepNumbers(String(maxProfit))}
+					</span>
 					<span>:{t('most_profit')}</span>
+				</li>
+				<li>
+					<span className='font-medium text-light-gray-700'>{sepNumbers(String(neededRequiredMargin))}</span>
+					<span>:{t('required_margin')}</span>
 				</li>
 			</ul>
 
@@ -97,6 +104,7 @@ const StrategyChartDetails = ({
 					minPrice={minPrice}
 					maxPrice={maxPrice}
 					baseAssets={basePrice}
+					bep={bep}
 				/>
 			</div>
 		</div>

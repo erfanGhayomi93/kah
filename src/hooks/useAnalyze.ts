@@ -2,12 +2,6 @@ import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import { useEffect } from 'react';
 import useInputs from './useInputs';
 
-interface IInput {
-	data: Array<Record<'x' | 'y', number>>;
-	maxPrice: number;
-	minPrice: number;
-}
-
 interface IConfiguration {
 	baseAssets: number;
 	useCommission?: boolean;
@@ -17,10 +11,18 @@ interface IConfiguration {
 }
 
 const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
-	const { inputs, setInputs } = useInputs<IInput>({
+	const { inputs, setInputs } = useInputs<IAnalyzeInputs>({
 		data: [],
 		maxPrice: config?.maxPrice ?? 0,
 		minPrice: config?.minPrice ?? 0,
+		maxProfit: 0,
+		maxLoss: 0,
+		neededBudget: 0,
+		risk: 0,
+		profitProbability: 0,
+		timeValue: 0,
+		bep: [],
+		neededRequiredMargin: 0,
 	});
 
 	const { data: commissionData } = useCommissionsQuery({
@@ -41,26 +43,46 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		if (config?.enabled === false) return;
 
 		const data = JSON.parse(JSON.stringify(contracts)) as typeof contracts;
-		const newInputs: IInput = {
-			...inputs,
+		const newInputs: IAnalyzeInputs = {
+			maxPrice: 0,
+			minPrice: 0,
+			neededRequiredMargin: 0,
+			maxProfit: 0,
+			maxLoss: 0,
+			neededBudget: 0,
+			risk: 0,
+			profitProbability: 0,
+			timeValue: 0,
+			bep: [],
 			data: [],
 		};
 
-		newInputs.data = [];
 		if (data.length === 0) return;
 
 		newInputs.minPrice = config?.minPrice || Math.floor(config.baseAssets * 0.5);
 		newInputs.maxPrice = config?.maxPrice || Math.floor(config.baseAssets * 1.5);
 
+		newInputs.minPrice = Math.max(0, newInputs.minPrice);
+		newInputs.maxPrice = Math.min(1e5, newInputs.maxPrice);
+
 		try {
-			const l = data.length;
 			const { baseAssets, useCommission } = config;
 			const { maxPrice, minPrice } = newInputs;
+			const series: IAnalyzeInputs['data'] = [];
 
-			for (let i = 0; i < l; i++) {
+			let maxProfit = 0;
+			let maxLoss = 0;
+
+			for (let i = 0; i < data.length; i++) {
 				const item = data[i];
 				const contractType = item.symbol.optionType;
 				const { strikePrice, price } = item;
+
+				if (item.type === 'option') newInputs.neededRequiredMargin += item.requiredMargin?.value ?? 0;
+
+				if (item.type === 'option')
+					newInputs.neededBudget +=
+						item.side === 'buy' ? +(item.price * item.contractSize) : -(item.price * item.contractSize);
 
 				let commission = 0;
 				let index = 0;
@@ -96,14 +118,40 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 						y = pnl(iv, transactionValue, item.side);
 					}
 
-					y += newInputs.data[index]?.y ?? 0;
-
-					newInputs.data[index] = {
+					y += series[index]?.y ?? 0;
+					series[index] = {
 						x: j,
 						y,
 					};
 
 					index++;
+				}
+			}
+
+			const l = series.length;
+			const diff = Math.floor((maxPrice - minPrice) / 100);
+
+			for (let i = 0; i < l; i++) {
+				const item = series[i];
+				const pnl = Math.round(item.y);
+
+				if (item.y > 0) maxProfit = Math.max(maxProfit, item.y);
+				else if (item.y < 0) maxLoss = Math.min(maxLoss, item.y);
+
+				if (pnl === 0 || i % diff === 0) {
+					newInputs.data.push({
+						x: item.x,
+						y: pnl,
+					});
+				}
+
+				if (pnl === 0) {
+					newInputs.bep.push(item.x);
+				} else if (i > 0) {
+					const previousPNL = Math.round(series[i - 1].y);
+					if ((previousPNL > 0 && pnl < 0) || (previousPNL < 0 && pnl > 0)) {
+						newInputs.bep.push(item.x);
+					}
 				}
 			}
 		} catch (e) {

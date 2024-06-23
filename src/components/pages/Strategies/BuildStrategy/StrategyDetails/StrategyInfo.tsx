@@ -1,4 +1,3 @@
-import { sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
@@ -15,15 +14,8 @@ const StrategyInfo = () => {
 		<div className='gap-16 rounded-md bg-light-gray-100 px-24 py-16 flex-column'>
 			<ul className='flex-justify-between'>
 				<StrategyInfoItem type='success' title={t('most_profit')} value='+2,075' />
-				<StrategyInfoItem title={t('break_even_point')} value={`${sepNumbers(String(0))} (0.1%)`} />
-				<StrategyInfoItem title={t('risk')} value='22,509 (0.1%)' />
-				<StrategyInfoItem title={t('time_value')} value='22,509 (0.1%)' />
-			</ul>
-
-			<ul className='flex-justify-between'>
 				<StrategyInfoItem type='error' title={t('most_loss')} value='-2,925' />
 				<StrategyInfoItem title={t('required_budget')} value='132,000' />
-				<StrategyInfoItem title={t('profit_probability')} value='132,000' />
 				<StrategyInfoItem title={t('required_margin')} value='132,000' />
 			</ul>
 		</div>
@@ -38,7 +30,7 @@ const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => {
 			</span>
 			<div
 				style={{ width: '10.4rem' }}
-				className={clsx('h-40 rounded px-8 text-tiny ltr flex-justify-end', {
+				className={clsx('h-40 rounded px-8 text-tiny ltr flex-justify-center', {
 					'bg-light-gray-300 text-light-gray-700': !type,
 					'bg-light-success-100/10 text-light-success-100': type === 'success',
 					'bg-light-error-100/10 text-light-error-100': type === 'error',

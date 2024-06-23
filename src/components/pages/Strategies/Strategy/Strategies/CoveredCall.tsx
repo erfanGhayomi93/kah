@@ -86,6 +86,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 						marketUnit: data.baseMarketUnit,
 					},
 					option: {
+						requiredMargin: data.requiredMargin,
 						symbolISIN: data.symbolISIN,
 						symbolTitle: data.symbolTitle,
 						bestLimitPrice: data.optionBestBuyLimitPrice,

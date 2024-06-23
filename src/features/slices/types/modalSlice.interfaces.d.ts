@@ -262,6 +262,7 @@ export interface ICreateStrategyModal extends IBaseModalConfiguration {
 		historicalVolatility: number;
 		strikePrice: number;
 		bestLimitPrice: number;
+		requiredMargin: number;
 	};
 }
 
