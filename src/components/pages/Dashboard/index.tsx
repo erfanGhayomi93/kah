@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import { toast } from 'react-toastify';
+import Custom from './components/Custom';
 import Loading from './components/Loading';
 import EditLayoutButton from './EditLayoutButton';
 
@@ -20,11 +21,6 @@ const Best = dynamic(() => import('./components/Best'), {
 });
 
 const CompareTransactionValue = dynamic(() => import('./components/CompareTransactionValue'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
-const Custom = dynamic(() => import('./components/Custom'), {
 	loading: () => <Loading />,
 	ssr: true,
 });
@@ -45,11 +41,6 @@ const MarketState = dynamic(() => import('./components/MarketState'), {
 });
 
 const MarketView = dynamic(() => import('./components/MarketView'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
-const Meetings = dynamic(() => import('./components/Meetings'), {
 	loading: () => <Loading />,
 	ssr: true,
 });
@@ -84,17 +75,7 @@ const PriceChangesWatchlist = dynamic(() => import('./components/PriceChangesWat
 	ssr: true,
 });
 
-const RecentActivities = dynamic(() => import('./components/RecentActivities'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
 const TopBaseAssets = dynamic(() => import('./components/TopBaseAssets'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
-const UserProgressBar = dynamic(() => import('./components/UserProgressBar'), {
 	loading: () => <Loading />,
 	ssr: true,
 });
@@ -281,13 +262,13 @@ const Dashboard = () => {
 						</div>
 					)}
 
-					{!cells.user_progress_bar && (
+					{/* {!cells.user_progress_bar && (
 						<div key='user_progress_bar'>
 							<ErrorBoundary>
 								<UserProgressBar />
 							</ErrorBoundary>
 						</div>
-					)}
+					)} */}
 
 					{!cells.compare_transaction_value && (
 						<div key='compare_transaction_value'>
@@ -345,13 +326,13 @@ const Dashboard = () => {
 						</div>
 					)}
 
-					{!cells.meetings && (
+					{/* {!cells.meetings && (
 						<div key='meetings'>
 							<ErrorBoundary>
 								<Meetings />
 							</ErrorBoundary>
 						</div>
-					)}
+					)} */}
 
 					{!cells.new_and_old && (
 						<div key='new_and_old'>
@@ -369,13 +350,13 @@ const Dashboard = () => {
 						</div>
 					)}
 
-					{!cells.recent_activities && (
+					{/* {!cells.recent_activities && (
 						<div key='recent_activities'>
 							<ErrorBoundary>
 								<RecentActivities />
 							</ErrorBoundary>
 						</div>
-					)}
+					)} */}
 
 					{!cells.due_dates && (
 						<div key='due_dates'>
