@@ -132,7 +132,7 @@ const LongPut = (strategy: LongPutProps) => {
 				initialColumns: initialColumnsLongPut,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns as Array<IManageColumn<TLongPutColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsLongPut),
 			}),
 		);
