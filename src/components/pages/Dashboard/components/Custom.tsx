@@ -1,3 +1,6 @@
+import { useAppDispatch } from '@/features/hooks';
+import { setManageDashboardLayoutModal } from '@/features/slices/modalSlice';
+
 const Plus = () => (
 	<svg width='12.4rem' height='12.4rem' viewBox='0 0 124 124' fill='none' xmlns='http://www.w3.org/2000/svg'>
 		<rect
@@ -15,16 +18,25 @@ const Plus = () => (
 	</svg>
 );
 
-const Custom = () => (
-	<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center'>
-		<button
-			type='button'
-			style={{ width: '12.4rem', height: '12.4rem' }}
-			className='text-light-gray-700 rounded flex-justify-center'
-		>
-			<Plus />
-		</button>
-	</div>
-);
+const Custom = () => {
+	const dispatch = useAppDispatch();
+
+	const openDashboardLayoutManager = () => {
+		dispatch(setManageDashboardLayoutModal({}));
+	};
+
+	return (
+		<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center'>
+			<button
+				type='button'
+				onClick={openDashboardLayoutManager}
+				style={{ width: '12.4rem', height: '12.4rem' }}
+				className='rounded text-light-gray-700 flex-justify-center'
+			>
+				<Plus />
+			</button>
+		</div>
+	);
+};
 
 export default Custom;
