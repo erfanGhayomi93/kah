@@ -1,21 +1,21 @@
 :root {
 	--scrollbar-size: 8px;
-	--scrollbar-thumb: rgb(219, 225, 232);
-	--scrollbar-track: transparent;
+	--scrollbar-thumb: rgb(226, 231, 237);
+	--scrollbar-track: rgb(248, 250, 253);
 	--skeleton-from-bg: rgb(243, 245, 247);
 	--skeleton-to-bg: rgb(224, 230, 235);
 	--skeleton-bg: theme("colors.light.gray.200");
 }
 
-// ::selection {
-// 	background-color: theme("colors.light.secondary.200");
-// 	color: theme("colors.light.gray.800") !important;
-// }
+::selection {
+	background-color: theme("colors.light.secondary.200");
+	color: theme("colors.light.gray.800") !important;
+}
 
-// ::-moz-selection {
-// 	background-color: theme("colors.light.secondary.200");
-// 	color: theme("colors.light.gray.800") !important;
-// }
+::-moz-selection {
+	background-color: theme("colors.light.secondary.200");
+	color: theme("colors.light.gray.800") !important;
+}
 
 html {
 	font-size: 62.5%; // 16px => 10px
