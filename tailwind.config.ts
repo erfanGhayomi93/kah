@@ -238,6 +238,7 @@ const config: Config = {
 			'0': '0',
 			'2': '2px',
 			'4': '0.4rem',
+			'6': '0.6rem',
 			'8': '0.8rem',
 			'10': '1rem',
 			'12': '1.2rem',
@@ -397,10 +398,10 @@ const config: Config = {
 					color: theme('colors.white'),
 					border: '2px solid transparent',
 					'background-color': theme('colors.light.primary.100'),
-					transition: 'background-color 250ms ease-in-out',
+					transition: 'opacity 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.light.primary.100'),
+						opacity: '0.8',
 					},
 
 					'&:not(.justify-start,.justify-end)': {
@@ -440,10 +441,10 @@ const config: Config = {
 					color: theme('colors.white'),
 					border: '2px solid transparent',
 					'background-color': theme('colors.light.gray.700'),
-					transition: 'background-color 250ms ease-in-out',
+					transition: 'opacity 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.light.gray.700'),
+						opacity: '0.8',
 					},
 
 					'&:not(.justify-start,.justify-end)': {
@@ -496,10 +497,10 @@ const config: Config = {
 					color: theme('colors.white'),
 					border: '2px solid transparent',
 					'background-color': theme('colors.light.success.100'),
-					transition: 'background-color 250ms ease-in-out',
+					transition: 'opacity 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.light.success.100'),
+						opacity: '0.8',
 					},
 				},
 
@@ -528,10 +529,10 @@ const config: Config = {
 					color: theme('colors.white'),
 					border: '2px solid transparent',
 					'background-color': theme('colors.light.error.100'),
-					transition: 'background-color 250ms ease-in-out',
+					transition: 'opacity 250ms ease-in-out',
 
 					'&:not(:disabled):hover': {
-						'background-color': theme('colors.light.error.100'),
+						opacity: '0.8',
 					},
 				},
 

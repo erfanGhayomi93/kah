@@ -60,8 +60,6 @@ const OptionSettlement = lazy(() => import('./OptionSettlement'));
 
 const ChangeBroker = lazy(() => import('./ChangeBroker'));
 
-const ManageDashboardLayout = lazy(() => import('./ManageDashboardLayout'));
-
 const Description = lazy(() => import('./Description'));
 
 const AcceptAgreement = lazy(() => import('./AcceptAgreement'));
@@ -158,7 +156,6 @@ const Modals = () => {
 		deposit,
 		freeze,
 		optionSettlement,
-		manageDashboardLayout,
 		withdrawal,
 		analyze,
 		transactionsFilters,
@@ -328,14 +325,6 @@ const Modals = () => {
 						<AuthorizeMiddleware callback={() => dispatch(setOptionSettlementModal(null))} broker>
 							<OptionSettlement {...optionSettlement} />
 						</AuthorizeMiddleware>
-					</ModalSuspense>
-				)}
-			</ModalAnimatePresence>
-
-			<ModalAnimatePresence>
-				{manageDashboardLayout && (
-					<ModalSuspense>
-						<ManageDashboardLayout {...manageDashboardLayout} />
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>

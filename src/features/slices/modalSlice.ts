@@ -51,9 +51,6 @@ const initialState: ModalState = {
 	// قراردادهای نماد
 	selectSymbolContracts: null,
 
-	// چیدمان صفحه اصلی
-	manageDashboardLayout: null,
-
 	// تغییر کارگزار ناظر
 	changeBroker: null,
 
@@ -248,10 +245,6 @@ const modalSlice = createSlice({
 			state.manageOptionWatchlistList = payload;
 		},
 
-		setManageDashboardLayoutModal: (state, { payload }: PayloadAction<ModalState['manageDashboardLayout']>) => {
-			state.manageDashboardLayout = payload;
-		},
-
 		setChangeBrokerModal: (state, { payload }: PayloadAction<ModalState['changeBroker']>) => {
 			state.changeBroker = payload;
 		},
@@ -444,7 +437,6 @@ export const {
 	setChoiceCollateralModal,
 	setAddSymbolToWatchlistModal,
 	setManageOptionWatchlistListModal,
-	setManageDashboardLayoutModal,
 	setChangeBrokerModal,
 	setWithdrawalModal,
 	setDepositModal,

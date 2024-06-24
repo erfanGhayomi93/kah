@@ -10,7 +10,7 @@ interface PaginationProps {
 }
 
 interface TableProps<T> extends AgTableProps<T>, PaginationProps {
-	columnsVisibility: Array<IManageColumn<string>>;
+	columnsVisibility: IManageColumn[];
 	isFetching?: boolean;
 }
 

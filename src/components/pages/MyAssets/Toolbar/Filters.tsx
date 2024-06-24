@@ -7,11 +7,34 @@ import Separator from '@/components/common/Separator';
 import Tooltip from '@/components/common/Tooltip';
 import { ArrowDownSVG, DownloadDdnSVG, UploadDdnSVG, XiaomiSettingSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
+import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 const Filters = () => {
 	const t = useTranslations('my_assets');
+
+	const { inputs, setFieldValue } = useInputs<IMyAssetsFilters>({
+		involvedInStrategy: true,
+		soldSymbols: true,
+		calculateCommission: true,
+	});
+
+	const uploadDDN = () => {
+		//
+	};
+
+	const downloadDDN = () => {
+		//
+	};
+
+	const exportExcel = () => {
+		//
+	};
+
+	const manageColumns = () => {
+		//
+	};
 
 	return (
 		<div className='flex-1 gap-16 flex-justify-end'>
@@ -34,19 +57,28 @@ const Filters = () => {
 			<ul className='flex h-40 gap-8'>
 				<Popup
 					defaultPopupWidth={232}
-					renderer={({ setOpen }) => (
-						<ul className='gap-16 overflow-hidden rounded bg-white p-16 shadow-tooltip flex-column *:flex-justify-between'>
+					renderer={() => (
+						<ul className='gap-16 overflow-hidden rounded bg-white p-16 shadow-tooltip flex-column *:cursor-default *:flex-justify-between'>
 							<li>
 								<span className='text-tiny font-medium'>{t('symbols_involved_in_strategy')}</span>
-								<Switch checked onChange={console.log} />
+								<Switch
+									checked={inputs.involvedInStrategy}
+									onChange={(v) => setFieldValue('involvedInStrategy', v)}
+								/>
 							</li>
 							<li>
 								<span className='text-tiny font-medium'>{t('sold_symbols')}</span>
-								<Switch checked onChange={console.log} />
+								<Switch
+									checked={inputs.soldSymbols}
+									onChange={(v) => setFieldValue('soldSymbols', v)}
+								/>
 							</li>
 							<li>
 								<span className='text-tiny font-medium'>{t('calculate_commission')}</span>
-								<Switch checked onChange={console.log} />
+								<Switch
+									checked={inputs.calculateCommission}
+									onChange={(v) => setFieldValue('calculateCommission', v)}
+								/>
 							</li>
 						</ul>
 					)}
@@ -76,26 +108,26 @@ const Filters = () => {
 				</Popup>
 				<li>
 					<Tooltip placement='bottom' content={t('upload_ddn_tooltip')}>
-						<button type='button' className='btn-icon size-40 rounded'>
+						<button onClick={uploadDDN} type='button' className='btn-icon size-40 rounded'>
 							<UploadDdnSVG />
 						</button>
 					</Tooltip>
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('download_ddn_tooltip')}>
-						<button type='button' className='btn-icon size-40 rounded'>
+						<button onClick={downloadDDN} type='button' className='btn-icon size-40 rounded'>
 							<DownloadDdnSVG />
 						</button>
 					</Tooltip>
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('export_excel_tooltip')}>
-						<ExportExcelBtn />
+						<ExportExcelBtn onClick={exportExcel} />
 					</Tooltip>
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('manage_columns_tooltip')}>
-						<OptionWatchlistManagerBtn />
+						<OptionWatchlistManagerBtn onClick={manageColumns} />
 					</Tooltip>
 				</li>
 			</ul>
