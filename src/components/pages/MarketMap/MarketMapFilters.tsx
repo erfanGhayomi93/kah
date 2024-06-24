@@ -10,8 +10,8 @@ import { useMemo } from 'react';
 import { saveSvgAsPng } from 'save-svg-as-png';
 
 interface IMarketMapFiltersProps {
-	filters: TMarketMapFilters;
-	setFilters: React.Dispatch<React.SetStateAction<TMarketMapFilters>>;
+	filters: IMarketMapFilters;
+	setFilters: React.Dispatch<React.SetStateAction<IMarketMapFilters>>;
 	onReset: () => void;
 }
 
@@ -22,7 +22,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 	const queryClient = useBrokerQueryClient();
 
-	const setFieldValue = <T extends keyof TMarketMapFilters>(name: T, value: TMarketMapFilters[T]) => {
+	const setFieldValue = <T extends keyof IMarketMapFilters>(name: T, value: IMarketMapFilters[T]) => {
 		setFilters((filters) => ({
 			...filters,
 			[name]: value,
@@ -99,7 +99,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		[],
 	);
 
-	// const MapTypes = useMemo<Array<TMarketMapFilters['map']>>(() => {
+	// const MapTypes = useMemo<Array<IMarketMapFilters['map']>>(() => {
 	// 	return [
 	// 		{ id: 'all', label: t('market_map.map_type_all') },
 	// 		{ id: 'portfolio', label: t('market_map.map_type_portfolio') },
@@ -107,7 +107,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 	// 	];
 	// }, []);
 
-	const ListOfMarkets = useMemo<Array<TMarketMapFilters['market']>>(() => {
+	const ListOfMarkets = useMemo<Array<IMarketMapFilters['market']>>(() => {
 		return [
 			{ id: 'all', label: t('market_map.market_type_all') },
 			{ id: 'baseSymbolOption', label: t('market_map.market_type_base_symbol_option') },
@@ -123,7 +123,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		];
 	}, []);
 
-	const ListOfProperties = useMemo<Array<TMarketMapFilters['property']>>(() => {
+	const ListOfProperties = useMemo<Array<IMarketMapFilters['property']>>(() => {
 		return [
 			{ id: 'volume', label: t('market_map.volume') },
 			{ id: 'value', label: t('market_map.value') },
@@ -131,7 +131,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		];
 	}, []);
 
-	// const SymbolTypes = useMemo<Array<TMarketMapFilters['symbolType']>>(() => {
+	// const SymbolTypes = useMemo<Array<IMarketMapFilters['symbolType']>>(() => {
 	// 	return [
 	// 		{ id: 'all', label: t('market_map.symbol_type_all') },
 	// 		{ id: 'SharesInFarabourse', label: t('market_map.symbol_type_shares') },
@@ -176,7 +176,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 							minWidth: '16px',
 							minHeight: '1px',
 						}}
-						className='bg-light-gray-200 rotate-90'
+						className='rotate-90 bg-light-gray-200'
 					/>
 
 					<Select
@@ -226,7 +226,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={takeScreenshot}
 									type='button'
-									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 text-light-gray-700 flex size-full items-center justify-center transition-colors'
+									className='hover:text-primary flex size-full items-center justify-center text-light-gray-700 transition-colors dark:text-dark-gray-800 dark:hover:text-dark-primary-100'
 									data-testid='market_map_filters_takeAScreenshot'
 								>
 									<CameraSVG />
@@ -240,7 +240,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={refetch}
 									type='button'
-									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 text-light-gray-700 flex size-full items-center justify-center transition-colors'
+									className='hover:text-primary flex size-full items-center justify-center text-light-gray-700 transition-colors dark:text-dark-gray-800 dark:hover:text-dark-primary-100'
 									data-testid='market_map_filters_refresh'
 								>
 									<ReloadSVG />
@@ -254,7 +254,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={goToFullscreen}
 									type='button'
-									className='dark:text-dark-gray-800 hover:text-primary dark:hover:text-dark-primary-100 text-light-gray-700 flex size-full items-center justify-center transition-colors'
+									className='hover:text-primary flex size-full items-center justify-center text-light-gray-700 transition-colors dark:text-dark-gray-800 dark:hover:text-dark-primary-100'
 									data-testid='market_map_filter_goToFullScreen'
 								>
 									<LongshotSVG />

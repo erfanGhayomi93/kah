@@ -93,7 +93,10 @@ const CashSettlementReports = () => {
 				initialColumns: defaultCashSettlementReportsColumns,
 				columns: columnsVisibility,
 				title: t('cash_settlement_reports_page.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(
+						columns as Array<IManageColumn<CashSettlementReports.TCashSettlementReportsColumns>>,
+					),
 				onReset: () => setColumnsVisibility(defaultCashSettlementReportsColumns),
 			}),
 		);

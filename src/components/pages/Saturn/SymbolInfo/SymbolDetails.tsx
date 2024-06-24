@@ -2,7 +2,6 @@ import { type ItemUpdate } from '@/classes/Subscribe';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
 import { useTradingFeatures } from '@/hooks';
 import useSubscription from '@/hooks/useSubscription';
 import dayjs from '@/libs/dayjs';
@@ -20,8 +19,6 @@ interface SymbolDetailsProps {
 
 const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	const t = useTranslations();
-
-	const dispatch = useAppDispatch();
 
 	const queryClient = useQueryClient();
 

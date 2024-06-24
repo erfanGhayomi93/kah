@@ -14,7 +14,6 @@ interface Inputs {
 
 interface OTPFormProps {
 	loginResult: null | OAuthAPI.ILoginFirstStep;
-	hasDescription: boolean;
 	phoneNumber: string;
 	onLoggedIn: () => void;
 	clearToast: () => void;
@@ -26,7 +25,6 @@ interface OTPFormProps {
 const OTPForm = ({
 	loginResult,
 	phoneNumber,
-	hasDescription,
 	clearToast,
 	onLoggedIn,
 	setLoginResult,
@@ -136,7 +134,7 @@ const OTPForm = ({
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} method='get' className='flex-1 justify-between px-64 pb-64 flex-column'>
-			<div style={{ marginTop: hasDescription ? '5.6rem' : '12rem' }} className='gap-24 flex-column'>
+			<div style={{ marginTop: '12rem' }} className='gap-24 flex-column'>
 				<Controller
 					defaultValue=''
 					control={control}

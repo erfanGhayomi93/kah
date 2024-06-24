@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import { toast } from 'react-toastify';
+import Custom from './components/Custom';
 import Loading from './components/Loading';
 import EditLayoutButton from './EditLayoutButton';
 
@@ -20,11 +21,6 @@ const Best = dynamic(() => import('./components/Best'), {
 });
 
 const CompareTransactionValue = dynamic(() => import('./components/CompareTransactionValue'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
-const Custom = dynamic(() => import('./components/Custom'), {
 	loading: () => <Loading />,
 	ssr: true,
 });
@@ -45,11 +41,6 @@ const MarketState = dynamic(() => import('./components/MarketState'), {
 });
 
 const MarketView = dynamic(() => import('./components/MarketView'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
-const Meetings = dynamic(() => import('./components/Meetings'), {
 	loading: () => <Loading />,
 	ssr: true,
 });
@@ -84,17 +75,7 @@ const PriceChangesWatchlist = dynamic(() => import('./components/PriceChangesWat
 	ssr: true,
 });
 
-const RecentActivities = dynamic(() => import('./components/RecentActivities'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
 const TopBaseAssets = dynamic(() => import('./components/TopBaseAssets'), {
-	loading: () => <Loading />,
-	ssr: true,
-});
-
-const UserProgressBar = dynamic(() => import('./components/UserProgressBar'), {
 	loading: () => <Loading />,
 	ssr: true,
 });
@@ -112,61 +93,54 @@ const Dashboard = () => {
 	const getSectionHeight = (originalHeight: number) => (originalHeight + SECTIONS_MARGIN[1]) / 17;
 
 	const getDesktopLayout = (grid: IDashboardGrid[]) => {
-		const MAX_WIDTH = 3;
-
+		const sections = JSON.parse(JSON.stringify(grid)) as typeof grid;
 		const layout: Layout[] = [];
-		const l = grid.length;
+		const l = sections.length;
 
 		let y = 0;
-		let x = 0;
-		let c = MAX_WIDTH;
 
-		let pairs: typeof layout = [];
 		for (let i = 0; i < l; i++) {
-			const item = grid[i];
-			const iItem = {
-				i: item.id,
-				h: getSectionHeight(item.h),
-				w: item.w,
+			let x = 0;
+			let c = 3;
+
+			const section = sections[i];
+			if (!section) continue;
+
+			const item = {
+				i: section.id,
+				h: getSectionHeight(section.h),
+				w: section.w,
 				x,
 				y,
 			};
 
-			pairs.push(iItem);
+			const pairs: Layout[] = [item];
 
-			x += item.w;
-			c -= item.w;
+			x += section.w;
+			c -= section.w;
 
-			let availableWidth = c;
 			for (let j = i + 1; j < l; j++) {
-				const pairItem = grid[j];
-				const jItem = {
-					i: pairItem.id,
-					h: getSectionHeight(pairItem.h),
-					w: pairItem.w,
+				const nextSection = sections[j];
+				if (!nextSection || nextSection.w > c) continue;
+
+				delete sections[j];
+
+				const nextItem = {
+					i: nextSection.id,
+					h: getSectionHeight(nextSection.h),
+					w: nextSection.w,
 					x,
 					y,
 				};
+				pairs.push(nextItem);
 
-				x += item.w;
-				availableWidth -= pairItem.w;
+				x += section.w;
+				c -= section.w;
 
-				if (availableWidth === 0) {
-					pairs.push(jItem);
-					i = j;
-					break;
-				} else if (availableWidth < 0) {
-					availableWidth += pairItem.w;
-					continue;
-				} else {
-					pairs.push(jItem);
-				}
+				if (c === 0) break;
 			}
 
 			layout.push(...pairs);
-			pairs = [];
-			c = MAX_WIDTH;
-			x = 0;
 			y += 1;
 		}
 
@@ -281,13 +255,13 @@ const Dashboard = () => {
 						</div>
 					)}
 
-					{!cells.user_progress_bar && (
+					{/* {!cells.user_progress_bar && (
 						<div key='user_progress_bar'>
 							<ErrorBoundary>
 								<UserProgressBar />
 							</ErrorBoundary>
 						</div>
-					)}
+					)} */}
 
 					{!cells.compare_transaction_value && (
 						<div key='compare_transaction_value'>
@@ -345,13 +319,13 @@ const Dashboard = () => {
 						</div>
 					)}
 
-					{!cells.meetings && (
+					{/* {!cells.meetings && (
 						<div key='meetings'>
 							<ErrorBoundary>
 								<Meetings />
 							</ErrorBoundary>
 						</div>
-					)}
+					)} */}
 
 					{!cells.new_and_old && (
 						<div key='new_and_old'>
@@ -369,13 +343,13 @@ const Dashboard = () => {
 						</div>
 					)}
 
-					{!cells.recent_activities && (
+					{/* {!cells.recent_activities && (
 						<div key='recent_activities'>
 							<ErrorBoundary>
 								<RecentActivities />
 							</ErrorBoundary>
 						</div>
-					)}
+					)} */}
 
 					{!cells.due_dates && (
 						<div key='due_dates'>

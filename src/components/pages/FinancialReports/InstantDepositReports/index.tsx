@@ -118,7 +118,10 @@ const InstantDepositReports = () => {
 				initialColumns: defaultInstantDepositReportsColumn,
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(
+						columns as Array<IManageColumn<InstantDepositReports.TInstantDepositReportsColumns>>,
+					),
 				onReset: () => setColumnsVisibility(defaultInstantDepositReportsColumn),
 			}),
 		);

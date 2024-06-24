@@ -224,7 +224,6 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 												bestLimitPrice={option.bestLimitPrice}
 												quantity={inputs.quantity / contractSize}
 												price={inputs.optionPrice}
-												marketUnit={symbolData.marketUnit}
 												onSubmit={onSubmitOption}
 												onChangePrice={(v) => setFieldValue('optionPrice', v)}
 											/>

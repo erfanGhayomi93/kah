@@ -11,22 +11,22 @@ import Modal, { Header } from '../Modal';
 interface ManageColumnsModalProps extends IManageColumnsModal {}
 
 interface ISwitchColumnFieldProps {
+	disabled?: boolean;
 	title: string;
 	checked: boolean;
 	onChange: () => void;
 }
 
 interface ICategoryCardProps {
-	columnsArray: Array<IManageColumn<string>>;
-	onColumnSwitch: (updatedCol: IManageColumn<string>) => void;
-	onAllColumnSwitch: (headerState: boolean, tag: TManageColumnTag) => void;
-	tag: TManageColumnTag;
+	tag: string;
+	columns: IManageColumn[];
+	onColumnSwitch: (updatedCol: IManageColumn) => void;
+	onAllColumnSwitch: (headerState: boolean, tag: string) => void;
 }
 
-const Div = styled.div`
-	height: 550px;
+const Wrapper = styled.form`
 	display: flex;
-	min-width: 650px;
+	min-width: 568px;
 	flex-direction: column;
 `;
 
@@ -34,32 +34,31 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 	({
 		initialColumns,
 		title,
+		stream = true,
 		columns: listOfColumns,
-		applyChangesAfterClose,
-		onReset,
 		onColumnChanged: onColumnChangedCallBack,
+		onReset,
 		...props
 	}) => {
+		const t = useTranslations();
+
 		const dispatch = useAppDispatch();
 
 		const [columns, setColumns] = useState(listOfColumns ?? []);
 
 		const dataMapper = useMemo(() => {
-			const tags: Partial<Record<TManageColumnTag, Array<IManageColumn<string>>>> = {};
+			const tags: Record<string, IManageColumn[]> = {};
 
 			for (let i = 0; i < columns.length; i++) {
 				const column = columns[i];
-				if (!column.nonEditable) {
-					const tag = column.tag as TManageColumnTag;
-					if (!(tag in tags)) tags[tag] = [];
-					tags[tag]?.push(column);
-				}
+				const tag = column.tag ?? 'NULL';
+
+				if (!(tag in tags)) tags[tag] = [];
+				tags[tag]?.push(column);
 			}
 
-			return tags as Record<TManageColumnTag, Array<IManageColumn<string>>>;
+			return tags;
 		}, [columns]);
-
-		const t = useTranslations();
 
 		const onResetColumns = () => {
 			try {
@@ -70,7 +69,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 			}
 		};
 
-		const onColumnChanged = (updatedCol: IManageColumn<string>) => {
+		const onColumnChanged = (updatedCol: IManageColumn) => {
 			try {
 				const newColumns = columns.map((col) => ({
 					...col,
@@ -78,17 +77,20 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 				}));
 
 				setColumns(newColumns);
-				onColumnChangedCallBack(newColumns);
+				if (stream) onColumnChangedCallBack(newColumns);
 			} catch (e) {
 				//
 			}
 		};
 
-		const onAllColumnSwitch = (headerState: boolean, tag: TManageColumnTag) => {
-			const newColumns = columns.map((col) => ({
-				...col,
-				hidden: tag === col.tag && !col.nonEditable ? !headerState : col.hidden,
-			}));
+		const onAllColumnSwitch = (show: boolean, tag: string) => {
+			const newColumns = columns.map((col) => {
+				if (col.disabled || tag !== col.tag) return col;
+				return {
+					...col,
+					hidden: !show,
+				};
+			});
 
 			setColumns(newColumns);
 			onColumnChangedCallBack(newColumns);
@@ -98,68 +100,87 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 			dispatch(setManageColumnsModal(null));
 		};
 
+		const onSubmit = (e: React.FormEvent) => {
+			e.preventDefault();
+
+			onColumnChangedCallBack(columns);
+			onClose();
+		};
+
 		return (
 			<Modal top='50%' style={{ modal: { transform: 'translate(-50%, -50%)' } }} onClose={onClose} {...props}>
-				<Div className='bg-white'>
+				<Wrapper onSubmit={onSubmit} className='gap-24 bg-white pb-24'>
 					<Header
 						label={t('manage_option_watchlist_columns.title')}
 						onClose={onClose}
 						onReset={onResetColumns}
 					/>
-					<div className='flex flex-1 gap-16 p-24'>
+
+					<div className='flex flex-1 gap-16 px-24'>
 						{Object.keys(dataMapper).map((tag) => (
 							<CategoryCard
 								key={tag}
-								tag={tag as TManageColumnTag}
-								columnsArray={dataMapper[tag as TManageColumnTag]}
+								tag={tag}
+								columns={dataMapper[tag]}
 								onAllColumnSwitch={onAllColumnSwitch}
 								onColumnSwitch={onColumnChanged}
 							/>
 						))}
 					</div>
-				</Div>
+
+					{!stream && (
+						<div className='w-full px-24'>
+							<button type='submit' className='h-40 w-full rounded btn-primary'>
+								{t('common.confirm')}
+							</button>
+						</div>
+					)}
+				</Wrapper>
 			</Modal>
 		);
 	},
 );
 
-const ColumnSwitchField = ({ checked, onChange, title }: ISwitchColumnFieldProps) => (
-	<>
-		<Switch checked={checked} onChange={onChange} />
-		<span className={clsx('text-nowrap text-tiny', checked ? 'text-light-gray-800' : 'text-light-gray-700')}>
-			{title}
-		</span>
-	</>
-);
-
-const CategoryCard = ({ columnsArray, onColumnSwitch, onAllColumnSwitch, tag }: ICategoryCardProps) => {
+const CategoryCard = ({ columns, tag, onColumnSwitch, onAllColumnSwitch }: ICategoryCardProps) => {
 	const t = useTranslations('manage_column_categories');
 
-	const findHiddenColumn = columnsArray.findIndex((i) => i.hidden);
-	const hasHiddenColumn = findHiddenColumn !== -1;
+	const hasHiddenColumn = columns.findIndex((i) => i.hidden) !== -1;
+	const hasTag = tag !== 'NULL';
 
 	return (
-		<div className='w-full gap-16 rounded p-16 shadow-card flex-column'>
-			<div className='gap-8 border-b border-b-light-gray-200 pb-16 flex-justify-start'>
-				<ColumnSwitchField
-					checked={!hasHiddenColumn}
-					onChange={() => onAllColumnSwitch(hasHiddenColumn, tag)}
-					title={t(tag) ?? '-'}
-				/>
-			</div>
-			<div className='grid h-full grid-flow-col grid-rows-9 gap-x-24'>
-				{columnsArray.map((item) => (
-					<div key={item.id} className='gap-8 flex-justify-start'>
-						<ColumnSwitchField
-							checked={!item.hidden}
-							onChange={() => onColumnSwitch(item)}
-							title={item.title ?? '-'}
-						/>
-					</div>
+		<div className={clsx('w-full rounded px-16 shadow-card flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}>
+			{hasTag && (
+				<div className='py-6 gap-8 border-b border-b-light-gray-200 flex-justify-start'>
+					<ColumnSwitchField
+						checked={!hasHiddenColumn}
+						onChange={() => onAllColumnSwitch(hasHiddenColumn, tag)}
+						title={t(tag) ?? '-'}
+					/>
+				</div>
+			)}
+
+			<div className='grid flex-1 grid-flow-col grid-rows-9 gap-x-24'>
+				{columns.map((item) => (
+					<ColumnSwitchField
+						key={item.id}
+						checked={!item.hidden}
+						onChange={() => onColumnSwitch(item)}
+						title={item.title ?? '-'}
+						disabled={item.disabled ?? false}
+					/>
 				))}
 			</div>
 		</div>
 	);
 };
+
+const ColumnSwitchField = ({ checked, title, disabled, onChange }: ISwitchColumnFieldProps) => (
+	<div className='h-40 gap-8 flex-justify-start'>
+		<Switch disabled={disabled} checked={checked} onChange={onChange} />
+		<span className={clsx('text-nowrap text-tiny', checked ? 'text-light-gray-800' : 'text-light-gray-700')}>
+			{title}
+		</span>
+	</div>
+);
 
 export default ManageColumnsModal;
