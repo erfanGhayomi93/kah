@@ -24,7 +24,7 @@ const Columns = ({ close }: ColumnsProps) => {
 		}
 	};
 
-	const onColumnChanged = (updatedCol: IManageColumn<string>) => {
+	const onColumnChanged = (updatedCol: IManageColumn) => {
 		try {
 			const newColumns = columns.map((col) => ({
 				...col,
@@ -40,8 +40,8 @@ const Columns = ({ close }: ColumnsProps) => {
 
 	return (
 		<>
-			<div className='bg-light-gray-100 sticky top-0 z-10 h-56 w-full px-24 flex-justify-between'>
-				<h1 className='text-light-gray-700 text-xl font-medium'>{manageColumns?.title}</h1>
+			<div className='sticky top-0 z-10 h-56 w-full bg-light-gray-100 px-24 flex-justify-between'>
+				<h1 className='text-xl font-medium text-light-gray-700'>{manageColumns?.title}</h1>
 
 				<div className='flex gap-24'>
 					{manageColumns?.onReset && (
@@ -65,8 +65,8 @@ const Columns = ({ close }: ColumnsProps) => {
 							className={clsx(
 								'h-40 rounded transition-colors flex-justify-center',
 								col.hidden
-									? 'text-light-gray-700 bg-white shadow-sm hover:shadow-none hover:btn-hover'
-									: 'hover:bg-light-primary-100 bg-light-primary-100 text-white',
+									? 'bg-white text-light-gray-700 shadow-sm hover:shadow-none hover:btn-hover'
+									: 'bg-light-primary-100 text-white hover:bg-light-primary-100',
 							)}
 						>
 							{col.title}

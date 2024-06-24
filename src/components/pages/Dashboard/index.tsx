@@ -93,61 +93,54 @@ const Dashboard = () => {
 	const getSectionHeight = (originalHeight: number) => (originalHeight + SECTIONS_MARGIN[1]) / 17;
 
 	const getDesktopLayout = (grid: IDashboardGrid[]) => {
-		const MAX_WIDTH = 3;
-
+		const sections = JSON.parse(JSON.stringify(grid)) as typeof grid;
 		const layout: Layout[] = [];
-		const l = grid.length;
+		const l = sections.length;
 
 		let y = 0;
-		let x = 0;
-		let c = MAX_WIDTH;
 
-		let pairs: typeof layout = [];
 		for (let i = 0; i < l; i++) {
-			const item = grid[i];
-			const iItem = {
-				i: item.id,
-				h: getSectionHeight(item.h),
-				w: item.w,
+			let x = 0;
+			let c = 3;
+
+			const section = sections[i];
+			if (!section) continue;
+
+			const item = {
+				i: section.id,
+				h: getSectionHeight(section.h),
+				w: section.w,
 				x,
 				y,
 			};
 
-			pairs.push(iItem);
+			const pairs: Layout[] = [item];
 
-			x += item.w;
-			c -= item.w;
+			x += section.w;
+			c -= section.w;
 
-			let availableWidth = c;
 			for (let j = i + 1; j < l; j++) {
-				const pairItem = grid[j];
-				const jItem = {
-					i: pairItem.id,
-					h: getSectionHeight(pairItem.h),
-					w: pairItem.w,
+				const nextSection = sections[j];
+				if (!nextSection || nextSection.w > c) continue;
+
+				delete sections[j];
+
+				const nextItem = {
+					i: nextSection.id,
+					h: getSectionHeight(nextSection.h),
+					w: nextSection.w,
 					x,
 					y,
 				};
+				pairs.push(nextItem);
 
-				x += item.w;
-				availableWidth -= pairItem.w;
+				x += section.w;
+				c -= section.w;
 
-				if (availableWidth === 0) {
-					pairs.push(jItem);
-					i = j;
-					break;
-				} else if (availableWidth < 0) {
-					availableWidth += pairItem.w;
-					continue;
-				} else {
-					pairs.push(jItem);
-				}
+				if (c === 0) break;
 			}
 
 			layout.push(...pairs);
-			pairs = [];
-			c = MAX_WIDTH;
-			x = 0;
 			y += 1;
 		}
 

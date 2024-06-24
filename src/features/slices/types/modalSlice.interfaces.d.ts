@@ -280,7 +280,7 @@ export interface IManageColumnsModal extends IBaseModalConfiguration {
 	initialColumns?: IManageColumn[];
 	title: React.ReactNode;
 	columns: IManageColumn[];
-	applyChangesAfterClose?: boolean;
+	stream?: boolean;
 	onReset?: () => void;
 	onColumnChanged: (columns: IManageColumn[]) => void;
 }
@@ -411,7 +411,6 @@ export type ModalState = TBaseModalProps<{
 	addSaturnTemplate: IAddSaturnTemplate;
 	selectSymbolContracts: ISelectSymbolContractsModal;
 	optionFilters: IOptionFiltersModal;
-	manageDashboardLayout: IManageDashboardLayoutModal;
 	changeBroker: IChangeBrokerModal;
 	withdrawal: IWithdrawalModal;
 	deposit: IDepositModal;

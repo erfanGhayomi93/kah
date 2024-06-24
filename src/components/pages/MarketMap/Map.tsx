@@ -11,8 +11,8 @@ type SectorNode = d3.HierarchyRectangularNode<MarketMap.Sector>;
 type SymbolNode = d3.HierarchyRectangularNode<Node>;
 
 interface MapPropsType {
-	filters: TMarketMapFilters;
-	setFilters: React.Dispatch<React.SetStateAction<TMarketMapFilters>>;
+	filters: IMarketMapFilters;
+	setFilters: React.Dispatch<React.SetStateAction<IMarketMapFilters>>;
 }
 
 const PADDING = { top: 24, left: 1, bottom: 4, right: 1, inner: 4 };

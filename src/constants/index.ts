@@ -237,20 +237,20 @@ export const initialDashboardGrid: IDashboardGrid[] = [
 	{ id: 'market_view', w: 2, h: 384, hidden: false, i: 0 },
 	{ id: 'market_state', w: 1, h: 384, hidden: false, i: 1 },
 	{ id: 'best', w: 2, h: 384, hidden: false, i: 2 },
-	{ id: 'user_progress_bar', w: 1, h: 384, hidden: false, i: 3 },
-	{ id: 'compare_transaction_value', w: 2, h: 384, hidden: false, i: 4 },
-	{ id: 'option_contracts', w: 1, h: 384, hidden: false, i: 5 },
-	{ id: 'option_trades_value', w: 2, h: 384, hidden: false, i: 6 },
-	{ id: 'option_market_process', w: 1, h: 384, hidden: false, i: 7 },
-	{ id: 'individual_and_legal', w: 1, h: 384, hidden: false, i: 8 },
-	{ id: 'price_changes_watchlist', w: 1, h: 384, hidden: false, i: 9 },
-	{ id: 'open_positions_process', w: 1, h: 384, hidden: false, i: 10 },
-	{ id: 'meetings', w: 1, h: 384, hidden: false, i: 11 },
-	{ id: 'new_and_old', w: 1, h: 384, hidden: false, i: 12 },
+	// { id: 'user_progress_bar', w: 1, h: 384, hidden: false, i: 3 },
+	{ id: 'compare_transaction_value', w: 2, h: 384, hidden: false, i: 3 },
+	{ id: 'option_contracts', w: 1, h: 384, hidden: false, i: 4 },
+	{ id: 'option_trades_value', w: 2, h: 384, hidden: false, i: 5 },
+	{ id: 'option_market_process', w: 1, h: 384, hidden: false, i: 6 },
+	{ id: 'individual_and_legal', w: 1, h: 384, hidden: false, i: 7 },
+	{ id: 'price_changes_watchlist', w: 1, h: 384, hidden: false, i: 8 },
+	{ id: 'open_positions_process', w: 1, h: 384, hidden: false, i: 9 },
+	// { id: 'meetings', w: 1, h: 384, hidden: false, i: 11 },
+	{ id: 'new_and_old', w: 1, h: 384, hidden: false, i: 10 },
+	{ id: 'custom', w: 1, h: 384, hidden: false, i: 11 },
+	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 12 },
 	{ id: 'top_base_assets', w: 1, h: 384, hidden: false, i: 13 },
-	{ id: 'custom', w: 1, h: 384, hidden: false, i: 14 },
-	{ id: 'recent_activities', w: 1, h: 384, hidden: false, i: 15 },
-	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 16 },
+	// { id: 'recent_activities', w: 1, h: 384, hidden: false, i: 15 },
 ];
 
 export const initialDashboardGridState: Record<TDashboardSections, boolean> = {
@@ -458,6 +458,75 @@ export const defaultTransactionColumns: Array<IManageColumn<Transaction.TTransac
 		title: 'ایستگاه معاملاتی',
 		hidden: false,
 		tag: 'Transaction',
+	},
+];
+
+export const initialDashboardLayout: Array<IManageColumn<TDashboardSections>> = [
+	{
+		id: 'market_state',
+		title: 'وضعیت بازار',
+		hidden: false,
+	},
+	{
+		id: 'market_view',
+		title: 'نمای بازار',
+		hidden: false,
+	},
+
+	{
+		id: 'best',
+		title: 'برترین‌ها',
+		hidden: false,
+	},
+	{
+		id: 'option_contracts',
+		title: 'قراردادهای اختیار',
+		hidden: false,
+	},
+	{
+		id: 'compare_transaction_value',
+		title: 'مقایسه ارزش معاملات',
+		hidden: false,
+	},
+	{
+		id: 'option_market_process',
+		title: 'روند بازار آپشن',
+		hidden: false,
+	},
+	{
+		id: 'option_trades_value',
+		title: 'ارزش در معاملات اختیار',
+		hidden: false,
+	},
+	{
+		id: 'open_positions_process',
+		title: 'روند موقعیت‌های باز',
+		hidden: false,
+	},
+	{
+		id: 'individual_and_legal',
+		title: 'حقیقی و حقوقی',
+		hidden: false,
+	},
+	{
+		id: 'price_changes_watchlist',
+		title: 'دیده بان تغییر قیمت - سهام',
+		hidden: false,
+	},
+	{
+		id: 'new_and_old',
+		title: 'جدید و قدیم',
+		hidden: false,
+	},
+	{
+		id: 'top_base_assets',
+		title: 'برترین دارایی‌های پایه',
+		hidden: false,
+	},
+	{
+		id: 'due_dates',
+		title: 'سررسیدها',
+		hidden: false,
 	},
 ];
 
