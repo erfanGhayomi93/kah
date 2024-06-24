@@ -34,7 +34,7 @@ interface SelectProps<T> {
 	onChange: (option: T[]) => void;
 }
 
-const MultiSelect = <T, _D = T>({
+const MultiSelect = <T,>({
 	defaultValues,
 	options,
 	classes,

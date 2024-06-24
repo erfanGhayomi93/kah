@@ -109,7 +109,10 @@ const ChangeBrokerReports = () => {
 				initialColumns: defaultChangeBrokerReportsColumns,
 				columns: columnsVisibility,
 				title: t('change_broker_reports_page.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(
+						columns as Array<IManageColumn<ChangeBrokerReports.TChangeBrokerReportsColumns>>,
+					),
 				onReset: () => setColumnsVisibility(defaultChangeBrokerReportsColumns),
 			}),
 		);
@@ -126,7 +129,7 @@ const ChangeBrokerReports = () => {
 	return (
 		<Main className='gap-16 bg-white !pt-16'>
 			<div className='flex-justify-between'>
-				<span className='text-light-gray-500 text-xl font-medium'>
+				<span className='text-xl font-medium text-light-gray-500'>
 					{t('change_broker_reports_page.title_page')}
 				</span>
 				<Toolbar

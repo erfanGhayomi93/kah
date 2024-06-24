@@ -113,7 +113,8 @@ const Transactions = () => {
 				initialColumns: defaultTransactionColumns,
 				columns: columnsVisibility,
 				title: t('transactions_page.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(columns as Array<IManageColumn<Transaction.TTransactionColumns>>),
 				onReset: () => setColumnsVisibility(defaultTransactionColumns),
 			}),
 		);
