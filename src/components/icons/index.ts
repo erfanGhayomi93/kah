@@ -23,6 +23,7 @@ import ChangeBrokerSVG from './change-broker.svg';
 import ChangeNameSVG from './change-name.svg';
 import ChartDownSVG from './chart-down.svg';
 import ChartUpSVG from './chart-up.svg';
+import ChartWaterfallSVG from './chart-waterfall.svg';
 import CheckListSVG from './check-list.svg';
 import CheckSVG from './check.svg';
 import ClosePositionSVG from './close-position.svg';
@@ -75,6 +76,7 @@ import MessageCheckSVG from './message-check.svg';
 import MessageDoubleCheckSVG from './message-double-check.svg';
 import MinimizeSVG from './minimize.svg';
 import MobileSVG from './mobile.svg';
+import MoneyTickSVG from './money-tick.svg';
 import MoneySVG from './money.svg';
 import MonitorSVG from './monitor.svg';
 import MoonSVG from './moon.svg';
@@ -88,6 +90,7 @@ import PasswordSVG from './password.svg';
 import PayMoneySVG from './pay-money.svg';
 import PayOffSVG from './pay-off.svg';
 import PercentSVG from './percent.svg';
+import PieChartSVG from './pie-chart.svg';
 import PinSVG from './pin.svg';
 import PlaySVG from './play.svg';
 import PlusSquareSVG from './plus-square.svg';
@@ -98,6 +101,7 @@ import RefreshSVG from './refresh.svg';
 import ReloadSVG from './reload.svg';
 import ReportSVG from './report.svg';
 import RhombicCircleSVG from './rhombic-circle.svg';
+import RookSVG from './rook.svg';
 import SaturnSVG from './saturn.svg';
 import SearchSVG from './search.svg';
 import SendFillSVG from './send-fill.svg';
@@ -111,6 +115,7 @@ import ShieldInfoSVG from './shield-info.svg';
 import ShieldOutlineSVG from './shield-outline.svg';
 import ShieldXSVG from './shield-x.svg';
 import SnowFlakeSVG from './snow-flake.svg';
+import SortSVG from './sort.svg';
 import SquareXSVG from './square-x.svg';
 import StraightLineSVG from './straight-line.svg';
 import StrategySVG from './strategy.svg';
@@ -157,6 +162,7 @@ export {
 	ChangeNameSVG,
 	ChartDownSVG,
 	ChartUpSVG,
+	ChartWaterfallSVG,
 	CheckListSVG,
 	CheckSVG,
 	ClosePositionSVG,
@@ -210,6 +216,7 @@ export {
 	MinimizeSVG,
 	MobileSVG,
 	MoneySVG,
+	MoneyTickSVG,
 	MonitorSVG,
 	MoonSVG,
 	MoreOptionsSVG,
@@ -222,6 +229,7 @@ export {
 	PayMoneySVG,
 	PayOffSVG,
 	PercentSVG,
+	PieChartSVG,
 	PinSVG,
 	PlaySVG,
 	PlusSVG,
@@ -232,6 +240,7 @@ export {
 	ReloadSVG,
 	ReportSVG,
 	RhombicCircleSVG,
+	RookSVG,
 	SaturnSVG,
 	SearchSVG,
 	SendFillSVG,
@@ -245,6 +254,7 @@ export {
 	ShieldOutlineSVG,
 	ShieldXSVG,
 	SnowFlakeSVG,
+	SortSVG,
 	SquareXSVG,
 	StraightLineSVG,
 	StrategySVG,

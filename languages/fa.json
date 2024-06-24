@@ -250,7 +250,12 @@
 		"col_paid_value": "ارزش پرداختی",
 		"col_remains_quantity": "تعداد مانده",
 		"col_symbol": "نماد",
-		"col_index": "ردیف"
+		"col_index": "ردیف",
+		"card_stocks": "سهام",
+		"card_positions": "موقعیت ها",
+		"card_strategies": "استراتژی ها",
+		"card_remains": "مانده نقد",
+		"card_total_assets": "دارایی کل"
 	},
 	"select_symbol_contracts_modal": {
 		"title": "انتخاب قرارداد",
