@@ -112,7 +112,8 @@ const OrdersReports = () => {
 				initialColumns: defaultOrdersReportsColumns,
 				columns: columnsVisibility,
 				title: t('orders_reports_page.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(columns as Array<IManageColumn<OrdersReports.TOrdersReportsColumns>>),
 				onReset: () => setColumnsVisibility(defaultOrdersReportsColumns),
 			}),
 		);

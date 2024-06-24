@@ -132,7 +132,7 @@ const LongCall = (strategy: LongCallProps) => {
 				initialColumns: initialColumnsLongCall,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) => setColumnsVisibility(columns as Array<IManageColumn<TLongCallColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsLongCall),
 			}),
 		);

@@ -161,7 +161,8 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				initialColumns: initialColumnsCoveredCall,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(columns as Array<IManageColumn<TCoveredCallColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsCoveredCall),
 			}),
 		);
