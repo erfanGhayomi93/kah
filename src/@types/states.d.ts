@@ -877,6 +877,7 @@ declare interface IMarketMapFilters {
 }
 
 declare interface IMyAssetsFilters {
+	priceBasis: TPriceBasis;
 	involvedInStrategy: boolean;
 	soldSymbols: boolean;
 	calculateCommission: boolean;

@@ -153,7 +153,8 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				initialColumns: initialColumnsBullCallSpread,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(columns as Array<IManageColumn<TBullCallSpreadColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsBullCallSpread),
 			}),
 		);

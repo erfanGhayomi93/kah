@@ -92,7 +92,10 @@ const PhysicalSettlementReports = () => {
 				initialColumns: defaultPhysicalSettlementReportsColumns,
 				columns: columnsVisibility,
 				title: t('physical_settlement_reports_page.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns),
+				onColumnChanged: (columns) =>
+					setColumnsVisibility(
+						columns as Array<IManageColumn<PhysicalSettlementReports.TPhysicalSettlementReportsColumns>>,
+					),
 				onReset: () => setColumnsVisibility(defaultPhysicalSettlementReportsColumns),
 			}),
 		);
