@@ -461,6 +461,75 @@ export const defaultTransactionColumns: Array<IManageColumn<Transaction.TTransac
 	},
 ];
 
+export const initialDashboardLayout: Array<IManageColumn<TDashboardSections>> = [
+	{
+		id: 'market_state',
+		title: 'وضعیت بازار',
+		hidden: false,
+	},
+	{
+		id: 'market_view',
+		title: 'نمای بازار',
+		hidden: false,
+	},
+
+	{
+		id: 'best',
+		title: 'برترین‌ها',
+		hidden: false,
+	},
+	{
+		id: 'option_contracts',
+		title: 'قراردادهای اختیار',
+		hidden: false,
+	},
+	{
+		id: 'compare_transaction_value',
+		title: 'مقایسه ارزش معاملات',
+		hidden: false,
+	},
+	{
+		id: 'option_market_process',
+		title: 'روند بازار آپشن',
+		hidden: false,
+	},
+	{
+		id: 'option_trades_value',
+		title: 'ارزش در معاملات اختیار',
+		hidden: false,
+	},
+	{
+		id: 'open_positions_process',
+		title: 'روند موقعیت‌های باز',
+		hidden: false,
+	},
+	{
+		id: 'individual_and_legal',
+		title: 'حقیقی و حقوقی',
+		hidden: false,
+	},
+	{
+		id: 'price_changes_watchlist',
+		title: 'دیده بان تغییر قیمت - سهام',
+		hidden: false,
+	},
+	{
+		id: 'new_and_old',
+		title: 'جدید و قدیم',
+		hidden: false,
+	},
+	{
+		id: 'top_base_assets',
+		title: 'برترین دارایی‌های پایه',
+		hidden: false,
+	},
+	{
+		id: 'due_dates',
+		title: 'سررسیدها',
+		hidden: false,
+	},
+];
+
 export const defaultInstantDepositReportsColumn: Array<
 	IManageColumn<InstantDepositReports.TInstantDepositReportsColumns>
 > = [

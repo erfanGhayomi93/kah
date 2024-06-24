@@ -1,5 +1,7 @@
+import { initialDashboardLayout } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { setManageDashboardLayoutModal } from '@/features/slices/modalSlice';
+import { setManageColumnsModal } from '@/features/slices/modalSlice';
+import { useTranslations } from 'next-intl';
 
 const Plus = () => (
 	<svg width='12.4rem' height='12.4rem' viewBox='0 0 124 124' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -19,10 +21,20 @@ const Plus = () => (
 );
 
 const Custom = () => {
+	const t = useTranslations('home');
+
 	const dispatch = useAppDispatch();
 
 	const openDashboardLayoutManager = () => {
-		dispatch(setManageDashboardLayoutModal({}));
+		dispatch(
+			setManageColumnsModal({
+				columns: initialDashboardLayout,
+				title: t('manage_layout'),
+				initialColumns: initialDashboardLayout,
+				stream: false,
+				onColumnChanged: console.log,
+			}),
+		);
 	};
 
 	return (

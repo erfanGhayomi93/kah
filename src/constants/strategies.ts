@@ -35,7 +35,7 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsCoveredCall.baseSymbolTitle,
 		tag: 'PanelDetail',
-		nonEditable: true,
+		disabled: true,
 	},
 	{
 		id: 'baseLastTradedPrice',
@@ -228,7 +228,7 @@ export const initialColumnsBullCallSpread: Array<IManageColumn<TBullCallSpreadCo
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsBullCallSpread.baseSymbolTitle,
 		tag: 'PanelDetail',
-		nonEditable: true,
+		disabled: true,
 	},
 	{
 		id: 'baseTradePriceVarPreviousTradePercent',
@@ -464,7 +464,7 @@ export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsLongCall.baseSymbolTitle,
 		tag: 'PanelDetail',
-		nonEditable: true,
+		disabled: true,
 	},
 	{
 		id: 'baseTradePriceVarPreviousTradePercent',
@@ -633,7 +633,7 @@ export const initialColumnsLongPut: Array<IManageColumn<TLongPutColumns>> = [
 		id: 'baseSymbolTitle',
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsLongPut.baseSymbolTitle,
-		nonEditable: true,
+		disabled: true,
 		tag: 'PanelDetail',
 	},
 	{
@@ -809,7 +809,7 @@ export const initialColumnsConversion: Array<IManageColumn<TConversionColumns>> 
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsConversion.baseSymbolTitle,
 		tag: 'PanelDetail',
-		nonEditable: true,
+		disabled: true,
 	},
 	{
 		id: 'baseTradePriceVarPreviousTradePercent',
@@ -1018,7 +1018,7 @@ export const initialColumnsLongStraddle: Array<IManageColumn<TLongStraddleColumn
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsLongStraddle.baseSymbolTitle,
 		tag: 'PanelDetail',
-		nonEditable: true,
+		disabled: true,
 	},
 	{
 		id: 'baseTradePriceVarPreviousTradePercent',
@@ -1244,7 +1244,7 @@ export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColu
 		title: 'نماد پایه',
 		hidden: false,
 		tag: 'PanelDetail',
-		nonEditable: true,
+		disabled: true,
 	},
 	{
 		id: 'baseTradePriceVarPreviousTradePercent',
@@ -1437,7 +1437,7 @@ export const initialColumnsBearPutSpread: Array<IManageColumn<TBearPutSpreadColu
 		title: 'نماد پایه',
 		hidden: initialHiddenColumnsBearPutSpread.baseSymbolTitle,
 		tag: 'PanelDetail',
-		nonEditable: true,
+		disabled: true,
 	},
 	{
 		id: 'baseTradePriceVarPreviousTradePercent',
@@ -1642,6 +1642,6 @@ export const initialColumnsBearPutSpread: Array<IManageColumn<TBearPutSpreadColu
 		title: 'عملیات',
 		hidden: initialHiddenColumnsBearPutSpread.actions,
 		tag: 'None',
-		nonEditable: true,
+		disabled: true,
 	},
 ];
