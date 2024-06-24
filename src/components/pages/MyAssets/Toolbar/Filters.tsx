@@ -15,6 +15,7 @@ const Filters = () => {
 	const t = useTranslations('my_assets');
 
 	const { inputs, setFieldValue } = useInputs<IMyAssetsFilters>({
+		priceBasis: 'LastTradePrice',
 		involvedInStrategy: true,
 		soldSymbols: true,
 		calculateCommission: true,
@@ -40,10 +41,10 @@ const Filters = () => {
 		<div className='flex-1 gap-16 flex-justify-end'>
 			<div style={{ maxWidth: '16rem' }} className='w-full'>
 				<Select<TPriceBasis>
-					defaultValue={null}
+					defaultValue={inputs.priceBasis}
 					options={watchlistPriceBasis}
 					placeholder={t('price_basis')}
-					onChange={(v) => console.log(v)}
+					onChange={(v) => setFieldValue('priceBasis', v)}
 					getOptionId={(id) => id}
 					getOptionTitle={(id) => t(`price_${id}`)}
 					classes={{

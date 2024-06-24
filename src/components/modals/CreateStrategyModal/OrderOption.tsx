@@ -1,4 +1,3 @@
-import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import { LockSVG, UnlockSVG } from '@/components/icons';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -10,25 +9,12 @@ interface OrderOptionProps {
 	bestLimitPrice: number;
 	quantity: number;
 	price: number;
-	marketUnit: string;
 	onChangePrice: (v: number) => void;
 	onSubmit: () => void;
 }
 
-const OrderOption = ({
-	bestLimitPrice,
-	symbolTitle,
-	quantity,
-	price,
-	marketUnit,
-	onChangePrice,
-	onSubmit,
-}: OrderOptionProps) => {
+const OrderOption = ({ bestLimitPrice, symbolTitle, quantity, price, onChangePrice, onSubmit }: OrderOptionProps) => {
 	const t = useTranslations();
-
-	const { data: commission } = useCommissionsQuery({
-		queryKey: ['commissionQuery'],
-	});
 
 	const [isPriceLocked, setIsPriceLocked] = useState(false);
 
@@ -41,9 +27,6 @@ const OrderOption = ({
 		if (isPriceLocked) onChangePrice(bestLimitPrice);
 	}, [isPriceLocked]);
 
-	const symbolCommission = commission?.find((item) => item.marketUnitTitle === marketUnit)?.buyCommission ?? 0;
-	const transactionCommission = Math.ceil(price * quantity + price * quantity * symbolCommission);
-
 	return (
 		<form
 			onSubmit={(e) => {
@@ -53,19 +36,19 @@ const OrderOption = ({
 			className='flex-1 justify-between gap-24 pt-8 flex-column'
 		>
 			<div className='flex-1 gap-8 flex-column'>
-				<div className='border-light-gray-200 bg-light-gray-100 text-light-gray-700 h-40 cursor-default rounded border px-8 flex-justify-between'>
+				<div className='h-40 cursor-default rounded border border-light-gray-200 bg-light-gray-100 px-8 text-light-gray-700 flex-justify-between'>
 					<span>{t('create_strategy.quantity_input')}</span>
 					<span>{sepNumbers(String(quantity))}</span>
 				</div>
 
 				<div className='flex h-40 gap-8'>
-					<label className='border-light-gray-200 h-full flex-1 gap-8 rounded border px-8 flex-justify-center'>
+					<label className='h-full flex-1 gap-8 rounded border border-light-gray-200 px-8 flex-justify-center'>
 						<span className='text-light-gray-700'>{t('create_strategy.price_input')}</span>
 						<input
 							value={sepNumbers(String(price))}
 							type='text'
 							inputMode='numeric'
-							className='text-light-gray-800 flex-1 bg-transparent text-left ltr'
+							className='flex-1 bg-transparent text-left text-light-gray-800 ltr'
 							onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
 						/>
 					</label>
