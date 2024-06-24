@@ -233,12 +233,12 @@ declare type TManageColumnTag =
 	| 'PhysicalSettlementReports'
 	| 'None';
 
-declare interface IManageColumn<T extends string> {
+declare interface IManageColumn<T extends string = string> {
 	id: T;
-	tag: TManageColumnTag;
 	title: string;
 	hidden: boolean;
-	nonEditable?: boolean;
+	tag?: TManageColumnTag;
+	disabled?: boolean;
 }
 
 declare interface ISymbolInfoPanelGrid {
@@ -828,7 +828,7 @@ declare namespace PhysicalSettlementReports {
 		| 'action';
 }
 
-declare type TMarketMapFilters = {
+declare interface IMarketMapFilters {
 	map: {
 		id: 'all' | 'portfolio' | 'watchlist';
 		label: string;
@@ -874,4 +874,10 @@ declare type TMarketMapFilters = {
 	watchlist: MarketMap.TWatchlist | null;
 
 	palette: Record<'id' | 'label', string> | null;
-};
+}
+
+declare interface IMyAssetsFilters {
+	involvedInStrategy: boolean;
+	soldSymbols: boolean;
+	calculateCommission: boolean;
+}

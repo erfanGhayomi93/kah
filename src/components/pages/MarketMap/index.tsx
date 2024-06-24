@@ -27,7 +27,7 @@ const MarketMap = () => {
 
 	const { brokerIsSelected, isLoggedIn } = useAppSelector(getStates);
 
-	const [filters, setFilters] = useState<TMarketMapFilters>({
+	const [filters, setFilters] = useState<IMarketMapFilters>({
 		map: { id: 'all', label: t('market_map.map_type_all') },
 		display: { id: 'symbol', label: t('market_map.display_symbol') },
 		market: { id: 'all', label: t('market_map.market_type_all') },

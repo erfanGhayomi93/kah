@@ -116,6 +116,7 @@
 		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد."
 	},
 	"home": {
+		"manage_layout": "چیدمان صفحه اصلی",
 		"market_view": "نمای بازار",
 		"market_state": "وضعیت بازار",
 		"best": "برترین‌ها",
