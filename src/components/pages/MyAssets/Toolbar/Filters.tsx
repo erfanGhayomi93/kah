@@ -7,6 +7,7 @@ import Separator from '@/components/common/Separator';
 import Tooltip from '@/components/common/Tooltip';
 import { ArrowDownSVG, DownloadDdnSVG, UploadDdnSVG, XiaomiSettingSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 const Filters = () => {
@@ -56,7 +57,10 @@ const Filters = () => {
 								<button
 									type='button'
 									onClick={() => setOpen(!open)}
-									className='btn-icon h-40 gap-4 rounded px-8'
+									className={clsx(
+										'h-40 gap-4 rounded !border px-8',
+										open ? 'btn-primary' : 'btn-icon',
+									)}
 								>
 									<ArrowDownSVG
 										width='1.4rem'

@@ -117,15 +117,13 @@ const LoginModal = forwardRef<HTMLDivElement, LoginModalProps>(
 			return loginResult.state;
 		}, [loginResult]);
 
-		const hasDescription = typeof description === 'string';
-
 		const isNeedsToSetPassword = ['NewUser', 'OTP'].includes(userState);
 
 		return (
 			<AuthenticationModalTemplate
 				ref={ref}
 				hideTitle={stage === 'welcome'}
-				title={t(stage === 'set-password' ? 'login_modal.set_password_title' : 'login_modal.login_title')}
+				title={t('login_modal.login_title')}
 				onClose={onCloseModal}
 				description={description}
 				{...props}
@@ -137,7 +135,6 @@ const LoginModal = forwardRef<HTMLDivElement, LoginModalProps>(
 						setLoginResult={setLoginResult}
 						goToWelcome={() => setStage('welcome')}
 						goToPhoneNumber={goToPhoneNumber}
-						hasDescription={hasDescription}
 						clearToast={clearToast}
 						onLoggedIn={onLoggedIn}
 					/>
