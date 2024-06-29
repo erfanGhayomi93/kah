@@ -91,17 +91,15 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 						optionType: 'put',
 						baseSymbolPrice: data.baseLastTradedPrice,
 						historicalVolatility: data.historicalVolatility,
+						contractSize: data.contractSize,
+						settlementDay: data.contractEndDate,
+						strikePrice: data.strikePrice,
+						requiredMargin: data.requiredMargin,
 					},
-					contractSize: data.contractSize,
 					price: data.premium || 1,
 					quantity: 1,
-					settlementDay: data.contractEndDate,
-					strikePrice: data.strikePrice,
 					side: 'buy',
 					marketUnit: data.marketUnit,
-					requiredMargin: {
-						value: data.requiredMargin,
-					},
 				},
 			];
 

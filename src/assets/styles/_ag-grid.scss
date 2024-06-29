@@ -195,19 +195,17 @@
 		overflow: visible;
 		background-color: theme("colors.white");
 		box-shadow:
-			0 -12px white,
-			0 12px white,
-			-4px 0 12px 0px rgba(198, 203, 209, 0.2),
-			4px 0 12px 0px rgba(198, 203, 209, 0.2);
+			0 -6px white,
+			0 6px white,
+			0 0 6px 0 rgba(0, 0, 0, 0.075);
 	}
 
 	&:last-child {
 		.ag-cell.strike-price {
 			box-shadow:
 				0 -6px white,
-				0 6px 12px 0px rgba(198, 203, 209, 0.05),
-				-4px 0 12px 0px rgba(198, 203, 209, 0.2),
-				4px 0 12px 0px rgba(198, 203, 209, 0.2);
+				0 0 6px 0 rgba(0, 0, 0, 0.075),
+				0 0 6px 0 rgba(0, 0, 0, 0.075);
 		}
 	}
 }
@@ -265,6 +263,18 @@
 	&:not(.border-0) {
 		.ag-root {
 			border: 1px solid theme("colors.light.gray.200");
+		}
+	}
+
+	&.border-call {
+		.ag-root {
+			border-right: 3px solid theme("colors.light.success.100");
+		}
+	}
+
+	&.border-put {
+		.ag-root {
+			border-right: 3px solid theme("colors.light.error.100");
 		}
 	}
 

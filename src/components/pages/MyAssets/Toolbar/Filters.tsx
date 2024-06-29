@@ -8,10 +8,14 @@ import Tooltip from '@/components/common/Tooltip';
 import { ArrowDownSVG, DownloadDdnSVG, UploadDdnSVG, XiaomiSettingSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
 import { useInputs } from '@/hooks';
+import { usePathname } from '@/navigation';
+import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 const Filters = () => {
+	const pathname = usePathname();
+
 	const t = useTranslations('my_assets');
 
 	const { inputs, setFieldValue } = useInputs<IMyAssetsFilters>({
@@ -36,6 +40,8 @@ const Filters = () => {
 	const manageColumns = () => {
 		//
 	};
+
+	const isNotTable = comparePathname('my-assets/all', pathname);
 
 	return (
 		<div className='flex-1 gap-16 flex-justify-end'>
@@ -109,26 +115,26 @@ const Filters = () => {
 				</Popup>
 				<li>
 					<Tooltip placement='bottom' content={t('upload_ddn_tooltip')}>
-						<button onClick={uploadDDN} type='button' className='btn-icon size-40 rounded'>
+						<button onClick={uploadDDN} type='button' className='size-40 rounded btn-icon'>
 							<UploadDdnSVG />
 						</button>
 					</Tooltip>
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('download_ddn_tooltip')}>
-						<button onClick={downloadDDN} type='button' className='btn-icon size-40 rounded'>
+						<button onClick={downloadDDN} type='button' className='size-40 rounded btn-icon'>
 							<DownloadDdnSVG />
 						</button>
 					</Tooltip>
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('export_excel_tooltip')}>
-						<ExportExcelBtn onClick={exportExcel} />
+						<ExportExcelBtn disabled={isNotTable} onClick={exportExcel} />
 					</Tooltip>
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('manage_columns_tooltip')}>
-						<OptionWatchlistManagerBtn onClick={manageColumns} />
+						<OptionWatchlistManagerBtn disabled={isNotTable} onClick={manageColumns} />
 					</Tooltip>
 				</li>
 			</ul>

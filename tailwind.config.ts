@@ -387,7 +387,7 @@ const config: Config = {
 					border: `1.5px solid ${theme('colors.light.primary.100')}`,
 				},
 
-				'.btn-primary:disabled, .btn-gray:disabled, .btn-select:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
+				'.btn-primary:disabled, .btn-icon:disabled, .btn-gray:disabled, .btn-select:disabled, .btn-success:disabled, .btn-error:disabled, .btn-choose:disabled':
 					{
 						opacity: '0.5',
 					},
@@ -719,7 +719,7 @@ const config: Config = {
 					transition: 'color 250ms, border-color 250ms, background-color 250ms',
 					'-webkit-transition': 'color 250ms, border-color 250ms, background-color 250ms',
 
-					'&:hover': {
+					'&:not(:disabled):hover': {
 						color: theme('colors.white'),
 						backgroundColor: theme('colors.light.primary.100'),
 						borderColor: theme('colors.light.primary.100'),
