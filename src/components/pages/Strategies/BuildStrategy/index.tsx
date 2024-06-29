@@ -33,22 +33,11 @@ const BuildStrategy = () => {
 			for (let i = 0; i < l; i++) {
 				const contract: IOptionStrategy = {
 					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
-					tradeCommission: {
-						checked: true,
-						value: 0,
-					},
-					strikeCommission: {
-						checked: true,
-						value: 0,
-					},
-					tax: {
-						checked: true,
-						value: 0,
-					},
-					vDefault: {
-						checked: true,
-						value: 0,
-					},
+					tradeCommission: true,
+					strikeCommission: true,
+					requiredMargin: true,
+					tax: true,
+					vDefault: true,
 				};
 
 				result.push(contract);
