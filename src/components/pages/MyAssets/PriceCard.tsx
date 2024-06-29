@@ -1,17 +1,19 @@
 import { getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 interface PriceCardProps {
+	className?: ClassesValue;
 	percent?: number;
 	value: number;
 	title: string;
 }
 
-const PriceCard = ({ value, title, percent }: PriceCardProps) => {
+const PriceCard = ({ value, title, percent, className }: PriceCardProps) => {
 	const t = useTranslations('common');
 
 	return (
-		<div className='h-64 w-1/4 rounded px-8 shadow-card flex-justify-between'>
+		<div className={clsx('h-64 rounded px-8 shadow-card flex-justify-between', className)}>
 			<span className='text-base text-light-gray-700'>{title}:</span>
 			<div className='flex gap-8 text-base'>
 				{percent !== undefined && (

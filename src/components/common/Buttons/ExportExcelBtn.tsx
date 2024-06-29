@@ -18,7 +18,7 @@ const Button = styled.button`
 		}
 	}
 
-	&:hover svg {
+	&:not(:disabled):hover svg {
 		path:nth-child(1),
 		path:nth-child(2) {
 			fill: rgb(255, 255, 255);
@@ -33,7 +33,7 @@ const Button = styled.button`
 interface ExportExcelBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const ExportExcelBtn = forwardRef<HTMLButtonElement, ExportExcelBtnProps>((props, ref) => (
-	<Button ref={ref} className='btn-icon size-40 rounded' type='button' {...props}>
+	<Button ref={ref} className='size-40 rounded btn-icon' type='button' {...props}>
 		<ExcelSVG />
 	</Button>
 ));
