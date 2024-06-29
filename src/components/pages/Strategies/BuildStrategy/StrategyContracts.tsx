@@ -1,3 +1,4 @@
+import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import Button from '@/components/common/Button';
 import Select from '@/components/common/Inputs/Select';
 import SymbolStrategyTable, { type TCheckboxes } from '@/components/common/Tables/SymbolStrategyTable';
@@ -31,6 +32,10 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 	});
 
 	const [priceBasis, setPriceBasis] = useState<TPriceBasis>('LastTradePrice');
+
+	const { data: commissions } = useCommissionsQuery({
+		queryKey: ['commissionQuery'],
+	});
 
 	const setContractProperties = (
 		id: string,
@@ -68,10 +73,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 
 		data[orderIndex] = {
 			...data[orderIndex],
-			[n]: {
-				value: data[orderIndex][n]?.value ?? 0,
-				checked: v,
-			},
+			[n]: v,
 		};
 
 		dispatch(setBuiltStrategy(data));
@@ -80,10 +82,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 	const onToggleAll = (name: TCheckboxes, value: boolean) => {
 		const data = contracts.map((item) => ({
 			...item,
-			[name]: {
-				...item[name],
-				checked: value,
-			},
+			[name]: value,
 		}));
 
 		dispatch(setBuiltStrategy(data));
@@ -115,13 +114,22 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		};
 
 		for (let i = 0; i < contracts.length; i++) {
-			const contract = contracts[i];
+			const c = contracts[i];
+			const commission = Array.isArray(commissions)
+				? commissions.find((item) => item.marketUnitTitle === c.marketUnit)
+				: undefined;
 
-			if (contract.requiredMargin?.checked) result.requiredMargin += contract.requiredMargin?.value ?? 0;
-			if (contract.tradeCommission?.checked) result.tradeCommission += contract.tradeCommission?.value ?? 0;
-			if (contract.strikeCommission?.checked) result.strikeCommission += contract.strikeCommission?.value ?? 0;
-			if (contract.tax?.checked) result.tax += contract.tax?.value ?? 0;
-			if (contract.vDefault?.checked) result.vDefault += contract.vDefault?.value ?? 0;
+			if (c.requiredMargin) result.requiredMargin += c.symbol?.requiredMargin ?? 0;
+			if (commission && c.tradeCommission)
+				result.tradeCommission += Math.round(
+					c.price *
+						c.quantity *
+						(c.side === 'buy' ? commission.buyCommission : -commission.sellCommission) *
+						(c.symbol.contractSize ?? 0),
+				);
+			if (commission && c.strikeCommission) result.strikeCommission += 0;
+			if (commission && c.tax) result.tax += 0;
+			if (commission && c.vDefault) result.vDefault += 0;
 		}
 
 		return result;

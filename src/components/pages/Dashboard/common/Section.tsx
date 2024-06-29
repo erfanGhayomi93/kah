@@ -50,7 +50,7 @@ const Section = <T extends string = string, B extends string = string>({
 	};
 
 	return (
-		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white px-8 py-16 pr-16 flex-column'>
+		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white pb-16 pl-8 pr-16 pt-8 flex-column'>
 			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div
@@ -122,7 +122,7 @@ const Section = <T extends string = string, B extends string = string>({
 
 			<RenderOnViewportEntry
 				className={clsx(
-					'relative h-full flex-1 overflow-hidden p-8',
+					'relative h-full flex-1 overflow-hidden pl-8',
 					isModal && 'flex flex-col items-center justify-center',
 				)}
 			>

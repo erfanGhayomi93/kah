@@ -35,7 +35,7 @@ const OpenPositions = dynamic(() => import('./components/OpenPositions'), {
 });
 
 const OptionBaseSymbolInformation = dynamic(() => import('./components/OptionBaseSymbolInformation'), {
-	loading: () => <div className='h-full rounded skeleton' />,
+	loading: () => <div className='h-48 rounded skeleton' />,
 });
 
 const OptionDetail = dynamic(() => import('./components/OptionDetail'), {

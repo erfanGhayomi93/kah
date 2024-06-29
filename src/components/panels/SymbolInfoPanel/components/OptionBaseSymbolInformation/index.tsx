@@ -29,10 +29,10 @@ const OptionBaseSymbolInformation = ({ symbolData }: OptionBaseSymbolInformation
 			<div onClick={() => setIsExpand(!isExpand)} className='min-h-48 cursor-pointer flex-justify-between'>
 				<div
 					onClick={() => dispatch(setSymbolInfoPanel(baseSymbolISIN))}
-					className='text-light-gray-700 text-base'
+					className='text-base text-light-gray-700'
 				>
 					{t('symbol_info_panel.base_symbol_information') + ' '}
-					<span className='text-light-info-100 border-b border-b-info'>{baseSymbolTitle ?? symbolTitle}</span>
+					<span className='border-b-info border-b text-light-info-100'>{baseSymbolTitle ?? symbolTitle}</span>
 				</div>
 				<button type='button' className='text-light-gray-700'>
 					<ArrowUpSVG

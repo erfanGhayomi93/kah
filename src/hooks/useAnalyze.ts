@@ -76,18 +76,23 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			for (let i = 0; i < data.length; i++) {
 				const item = data[i];
 				const contractType = item.symbol.optionType;
-				const { strikePrice, price } = item;
+				const {
+					symbol: { strikePrice },
+					price,
+				} = item;
 
-				if (item.type === 'option') newInputs.neededRequiredMargin += item.requiredMargin?.value ?? 0;
+				if (item.type === 'option') newInputs.neededRequiredMargin += item.symbol.requiredMargin ?? 0;
 
 				if (item.type === 'option')
 					newInputs.neededBudget +=
-						item.side === 'buy' ? +(item.price * item.contractSize) : -(item.price * item.contractSize);
+						item.side === 'buy'
+							? +(item.price * item.symbol.contractSize)
+							: -(item.price * item.symbol.contractSize);
 
 				let commission = 0;
 				let index = 0;
 
-				if (Array.isArray(commissionData) && useCommission) {
+				if (Array.isArray(commissionData) && (useCommission || item.tradeCommission)) {
 					const transactionCommission = commissionData.find(
 						({ marketUnitTitle }) => marketUnitTitle === item.marketUnit,
 					);
