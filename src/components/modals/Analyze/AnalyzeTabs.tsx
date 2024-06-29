@@ -29,7 +29,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 			baseAssets: baseSymbolPrice,
 			maxPrice: inputs.maxPrice,
 			minPrice: inputs.minPrice,
-			useCommission: true,
+			useCommission,
 		},
 	);
 

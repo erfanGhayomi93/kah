@@ -37,6 +37,8 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		this.eGui.setAttribute('class', 'flex-justify-center w-full');
 
 		this.eGui.textContent = String(this.params.valueFormatted ?? '−');
+
+		this.renderBuySellBtn();
 	}
 
 	getGui() {
@@ -149,10 +151,13 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			this.eCall.textContent = callSide === 'buy' ? 'خرید' : 'فروش';
 			this.eCall.setAttribute(
 				'class',
-				`absolute w-40 h-32 rounded flex-justify-center bg-${color}-100/10 text-${color}-100`,
+				`absolute w-40 h-32 rounded flex-justify-center bg-light-${color}-100/10 text-light-${color}-100`,
 			);
 
 			this.eGui.appendChild(this.eCall);
+		} else if (this.eCall) {
+			this.eCall.remove();
+			this.eCall = null;
 		}
 
 		if (putSide !== null) {
@@ -164,10 +169,13 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			this.ePut.textContent = putSide === 'buy' ? 'خرید' : 'فروش';
 			this.ePut.setAttribute(
 				'class',
-				`absolute w-40 h-32 rounded flex-justify-center bg-${color}-100/10 text-${color}-100`,
+				`absolute w-40 h-32 rounded flex-justify-center bg-light-${color}-100/10 text-light-${color}-100`,
 			);
 
 			this.eGui.appendChild(this.ePut);
+		} else if (this.ePut) {
+			this.ePut.remove();
+			this.ePut = null;
 		}
 	}
 

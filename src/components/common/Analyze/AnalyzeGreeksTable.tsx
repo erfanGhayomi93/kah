@@ -31,9 +31,7 @@ const AnalyzeGreeksTable = ({ contracts }: AnalyzeGreeksTableProps) => {
 
 		return filteredContracts.map<ITableData>((item) => {
 			const {
-				strikePrice,
-				settlementDay,
-				symbol: { baseSymbolPrice, historicalVolatility },
+				symbol: { baseSymbolPrice, historicalVolatility, strikePrice, settlementDay },
 			} = item;
 
 			const dueDays = dayjs(settlementDay).diff(new Date(), 'day', false);

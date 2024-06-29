@@ -557,20 +557,17 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 			symbolTitle: symbolInfo.symbolTitle,
 			symbolISIN: symbolInfo.symbolISIN,
 			optionType,
+			requiredMargin: symbol.optionWatchlistData.requiredMargin,
+			contractSize: symbolInfo.contractSize,
+			settlementDay: symbolInfo.contractEndDate,
 			baseSymbolPrice: optionWatchlistData.baseSymbolPrice,
+			strikePrice: symbolInfo.strikePrice,
 			historicalVolatility: optionWatchlistData.historicalVolatility,
 		},
-		contractSize: symbolInfo.contractSize,
 		price: optionWatchlistData.premium || 1,
 		quantity: 1,
-		settlementDay: symbolInfo.contractEndDate,
-		strikePrice: symbolInfo.strikePrice,
 		side,
 		marketUnit: symbolInfo.marketUnit ?? '',
-		requiredMargin: {
-			value: symbol.optionWatchlistData.requiredMargin,
-			checked: true,
-		},
 	};
 };
 
