@@ -266,7 +266,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						colId: 'symbolTitle-sell',
 						cellClass: 'cursor-pointer',
 						width: 144,
-						onCellClicked: (api) => onSymbolTitleClicked(api, 'buy'),
+						onCellClicked: (api) => onSymbolTitleClicked(api, 'sell'),
 						valueGetter: ({ data }) => data!.sell?.symbolInfo.symbolTitle ?? '−',
 						comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 					},

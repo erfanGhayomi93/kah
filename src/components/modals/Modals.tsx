@@ -7,6 +7,7 @@ import {
 	setAddSymbolToWatchlistModal,
 	setBuySellModal,
 	setChangeBrokerModal,
+	setChoiceBrokerModal,
 	setChoiceCollateralModal,
 	setCreateStrategyModal,
 	setDepositModal,
@@ -274,7 +275,9 @@ const Modals = () => {
 			<ModalAnimatePresence>
 				{choiceBroker && (
 					<ModalSuspense>
-						<ChoiceBroker {...choiceBroker} />
+						<AuthorizeMiddleware callback={() => dispatch(setChoiceBrokerModal(null))}>
+							<ChoiceBroker {...choiceBroker} />
+						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
