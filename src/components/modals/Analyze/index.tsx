@@ -135,20 +135,8 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			}
 		};
 
-		const getSelectedContracts = () => {
-			const result: OrderBasket.Order[] = [];
-
-			for (let i = 0; i < selectedContracts.length; i++) {
-				const orderId = selectedContracts[i];
-				const order = contracts.find((order) => order.id === orderId);
-				if (order) result.push(order);
-			}
-
-			return result;
-		};
-
 		const onSubmit = () => {
-			submit(getSelectedContracts());
+			submit(selectedContractsAsSymbol);
 		};
 
 		const selectedContractsAsSymbol = useMemo<OrderBasket.Order[]>(() => {
@@ -212,7 +200,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 							<div className='h-full overflow-auto px-16 pb-16 pt-12'>
 								<AnalyzeTabs
-									contracts={contracts}
+									contracts={selectedContractsAsSymbol}
 									baseSymbolPrice={
 										selectedContractsAsSymbol.length > 0
 											? selectedContractsAsSymbol[0]?.symbol.baseSymbolPrice

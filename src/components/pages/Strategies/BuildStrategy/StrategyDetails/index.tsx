@@ -24,7 +24,6 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 			baseAssets: baseSymbolPrice,
 			maxPrice: inputs.maxPrice,
 			minPrice: inputs.minPrice,
-			useCommission: true,
 		},
 	);
 
