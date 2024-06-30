@@ -237,7 +237,7 @@ declare interface IManageColumn<T extends string = string> {
 	id: T;
 	title: string;
 	hidden: boolean;
-	tag?: TManageColumnTag;
+	tag?: TManageColumnTag | string;
 	disabled?: boolean;
 }
 

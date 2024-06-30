@@ -25,9 +25,9 @@ const Sidebar = () => {
 			style={{
 				width: sidebarIsExpand ? '18.4rem' : '6rem',
 				transition: 'width 300ms',
-				zIndex: 999,
+				zIndex: 99999,
 			}}
-			className='bg-light-gray-800 fixed right-0 top-0 h-full'
+			className='fixed right-0 top-0 h-full bg-light-gray-800'
 			onMouseLeave={closeSidebar}
 		>
 			<div className='relative h-full flex-column'>

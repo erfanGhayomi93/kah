@@ -5,8 +5,6 @@ import { type RootState } from '../store';
 export interface UserState {
 	loggedIn: boolean;
 
-	loggingIn: boolean;
-
 	brokerIsSelected: boolean;
 
 	orderBasket: null | OrderBasket.Root;
@@ -17,8 +15,6 @@ const initialState: UserState = {
 
 	brokerIsSelected: Boolean(cookies.getBrokerClientId()[0]),
 
-	loggingIn: true,
-
 	orderBasket: null,
 };
 
@@ -28,10 +24,6 @@ const userSlice = createSlice({
 	reducers: {
 		setIsLoggedIn: (state, { payload }: PayloadAction<UserState['loggedIn']>) => {
 			state.loggedIn = payload;
-		},
-
-		setIsLoggingIn: (state, { payload }: PayloadAction<UserState['loggingIn']>) => {
-			state.loggingIn = payload;
 		},
 
 		setBrokerIsSelected: (state, { payload }: PayloadAction<UserState['brokerIsSelected']>) => {
@@ -66,18 +58,11 @@ const userSlice = createSlice({
 	},
 });
 
-export const {
-	setIsLoggedIn,
-	setIsLoggingIn,
-	setOrderBasket,
-	setBrokerIsSelected,
-	setOrderBasketOrders,
-	removeOrderBasketOrder,
-} = userSlice.actions;
+export const { setIsLoggedIn, setOrderBasket, setBrokerIsSelected, setOrderBasketOrders, removeOrderBasketOrder } =
+	userSlice.actions;
 
 export const getIsLoggedIn = (state: RootState) => state.user.loggedIn;
 export const getBrokerIsSelected = (state: RootState) => state.user.brokerIsSelected;
-export const getIsLoggingIn = (state: RootState) => state.user.loggingIn;
 export const getOrderBasket = (state: RootState) => state.user.orderBasket;
 
 export default userSlice.reducer;

@@ -52,7 +52,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 			case 'Canceled':
 				return 'text-light-error-100 bg-light-error-100/10';
 			case 'Modified':
-				return 'text-secondary-300 bg-secondary-300/10';
+				return 'text-light-secondary-300 bg-light-secondary-300/10';
 			default:
 				return 'text-light-gray-700 bg-light-gray-700/10';
 		}

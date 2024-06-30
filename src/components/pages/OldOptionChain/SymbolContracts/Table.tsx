@@ -119,7 +119,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 						case 'otm':
 							return 'text-light-error-100';
 						case 'atm':
-							return 'text-secondary-300';
+							return 'text-light-secondary-300';
 						default:
 							return '';
 					}
@@ -189,7 +189,7 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 						case 'otm':
 							return 'text-light-error-100';
 						case 'atm':
-							return 'text-secondary-300';
+							return 'text-light-secondary-300';
 						default:
 							return '';
 					}

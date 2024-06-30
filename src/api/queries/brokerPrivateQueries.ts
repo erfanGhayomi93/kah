@@ -52,7 +52,7 @@ export const useUserStatusQuery = createBrokerQuery<Broker.Status | null, ['user
 });
 
 export const useBrokerOrdersCountQuery = createBrokerQuery<Broker.OrdersCount, ['brokerOrdersCountQuery']>({
-	staleTime: 18e5,
+	staleTime: 0,
 	queryKey: ['brokerOrdersCountQuery'],
 	queryFn: async ({ signal }) => {
 		try {
