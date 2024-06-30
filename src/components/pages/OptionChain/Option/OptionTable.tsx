@@ -152,7 +152,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 								case 'otm':
 									return 'text-light-error-100';
 								case 'atm':
-									return 'text-secondary-300';
+									return 'text-light-secondary-300';
 								default:
 									return '';
 							}
@@ -238,7 +238,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 								case 'otm':
 									return 'text-light-error-100';
 								case 'atm':
-									return 'text-secondary-300';
+									return 'text-light-secondary-300';
 								default:
 									return '';
 							}

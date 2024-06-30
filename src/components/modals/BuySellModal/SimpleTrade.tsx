@@ -231,7 +231,7 @@ const SimpleTrade = ({
 				<div className='flex-justify-between'>
 					<span className='gap-8 text-base text-light-gray-700 flex-items-center'>
 						{t('bs_modal.total_amount')}:
-						<InfoCircleSVG className='text-secondary-300' width='1.6rem' height='1.6rem' />
+						<InfoCircleSVG className='text-light-secondary-300' width='1.6rem' height='1.6rem' />
 					</span>
 
 					<span className='truncate whitespace-nowrap text-left text-tiny text-light-gray-700'>
@@ -247,7 +247,7 @@ const SimpleTrade = ({
 						<button
 							onClick={createDraft}
 							type='button'
-							className='border-secondary-300 text-secondary-300 h-40 rounded border bg-white px-16 text-base'
+							className='h-40 rounded border border-light-secondary-300 bg-white px-16 text-base text-light-secondary-300'
 						>
 							{t('bs_modal.draft')}
 						</button>

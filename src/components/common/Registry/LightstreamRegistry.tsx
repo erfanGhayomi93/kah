@@ -1,9 +1,8 @@
 'use client';
 
 import lightStreamInstance, { type Lightstream } from '@/classes/Lightstream';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { useAppDispatch } from '@/features/hooks';
 import { setLsStatus } from '@/features/slices/uiSlice';
-import { getIsLoggingIn } from '@/features/slices/userSlice';
 import { useUserInfo } from '@/hooks';
 import { useEffect, useRef } from 'react';
 
@@ -15,8 +14,6 @@ const LightstreamRegistry = ({ children }: LightstreamRegistryProps) => {
 	const lightstream = useRef<Lightstream | null>(null);
 
 	const dispatch = useAppDispatch();
-
-	const isLoggingIn = useAppSelector(getIsLoggingIn);
 
 	const { data: userInfo, isLoading } = useUserInfo();
 
@@ -35,11 +32,11 @@ const LightstreamRegistry = ({ children }: LightstreamRegistryProps) => {
 	};
 
 	useEffect(() => {
-		if (isLoggingIn || isLoading) return;
+		if (isLoading) return;
 
 		if (!lightstream.current) registerLightstream();
 		else updateLightstream();
-	}, [userInfo, isLoggingIn, isLoading]);
+	}, [userInfo, isLoading]);
 
 	return children;
 };
