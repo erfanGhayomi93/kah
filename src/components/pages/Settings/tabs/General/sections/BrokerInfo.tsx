@@ -81,7 +81,11 @@ const BrokerInfo = () => {
 						)
 					}
 				>
-					<InfoCircleSVG width={'2rem'} height={'2rem'} className={'cursor-pointer text-secondary-300'} />
+					<InfoCircleSVG
+						width={'2rem'}
+						height={'2rem'}
+						className={'cursor-pointer text-light-secondary-300'}
+					/>
 				</span>
 			),
 			title: `${t('settings_page.two_step_login')}:`,

@@ -8,6 +8,7 @@ declare interface IpcMainChannels {
 	set_transactions_filters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>;
 	refetch_active_order_tab: undefined;
 	set_selected_orders: Order.TOrder[];
+	set_option_watchlist_columns: Option.Column[];
 	set_instant_deposit_reports_filters: Omit<
 		InstantDepositReports.IInstantDepositReportsFilters,
 		'pageNumber' | 'pageSize'

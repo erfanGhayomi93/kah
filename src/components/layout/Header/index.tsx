@@ -13,7 +13,7 @@ import {
 	setLoginModal,
 	setLogoutModal,
 } from '@/features/slices/modalSlice';
-import { getBrokerIsSelected, getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
+import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useUserInfo } from '@/hooks';
 import { copyNumberToClipboard, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
@@ -44,7 +44,6 @@ const getStates = createSelector(
 	(state: RootState) => state,
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
-		isLoggingIn: getIsLoggingIn(state),
 		brokerURLs: getBrokerURLs(state),
 		brokerIsSelected: getBrokerIsSelected(state),
 	}),
@@ -55,13 +54,13 @@ const Header = () => {
 
 	const dispatch = useAppDispatch();
 
-	const { isLoggedIn, isLoggingIn, brokerURLs, brokerIsSelected } = useAppSelector(getStates);
+	const { isLoggedIn, brokerURLs, brokerIsSelected } = useAppSelector(getStates);
 
 	const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
 	const { data: userData, isFetching: isFetchingUserData } = useUserInformationQuery({
 		queryKey: ['userInformationQuery'],
-		enabled: !isLoggingIn && isLoggedIn,
+		enabled: isLoggedIn,
 	});
 
 	const { data: userInfo } = useUserInfo();
@@ -190,7 +189,7 @@ const Header = () => {
 						<button
 							onClick={showAuthenticationModal}
 							type='button'
-							disabled={isFetchingUserData || isLoggingIn}
+							disabled={isFetchingUserData}
 							className='h-32 gap-8 rounded px-16 font-medium btn-primary'
 						>
 							{t('header.login')}

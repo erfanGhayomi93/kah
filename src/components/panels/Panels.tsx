@@ -4,19 +4,14 @@ import { useAppSelector } from '@/features/hooks';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import AnimatePresence from '../common/animation/AnimatePresence';
 import ErrorBoundary from '../common/ErrorBoundary';
-import ManageColumns from './ManageColumns';
 import PanelLoading from './PanelLoading';
-
-const ManageWatchlistColumnsPanel = lazy(() => import('./ManageWatchlistColumnsPanel'));
 
 const SymbolInfoPanel = lazy(() => import('./SymbolInfoPanel'));
 
 const SavedTemplatesPanel = lazy(() => import('./SavedTemplatesPanel'));
 
 const Panels = () => {
-	const { symbolInfoPanel, savedTemplates, manageWatchlistColumns, manageColumns } = useAppSelector(
-		(state) => state.panel,
-	);
+	const { symbolInfoPanel, savedTemplates } = useAppSelector((state) => state.panel);
 
 	return (
 		<Fragment>
@@ -29,25 +24,9 @@ const Panels = () => {
 			</PanelAnimatePresence>
 
 			<PanelAnimatePresence>
-				{manageWatchlistColumns && (
-					<PanelSuspense>
-						<ManageWatchlistColumnsPanel />
-					</PanelSuspense>
-				)}
-			</PanelAnimatePresence>
-
-			<PanelAnimatePresence>
 				{savedTemplates && (
 					<PanelSuspense>
 						<SavedTemplatesPanel />
-					</PanelSuspense>
-				)}
-			</PanelAnimatePresence>
-
-			<PanelAnimatePresence>
-				{manageColumns && (
-					<PanelSuspense>
-						<ManageColumns {...manageColumns} />
 					</PanelSuspense>
 				)}
 			</PanelAnimatePresence>

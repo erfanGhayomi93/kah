@@ -84,7 +84,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<unknown> {
 			case 'otm':
 				return 'text-light-error-100';
 			case 'atm':
-				return 'text-secondary-300';
+				return 'text-light-secondary-300';
 			default:
 				return 'text-light-gray-700';
 		}

@@ -171,7 +171,7 @@ export const createMutation = <TData = unknown, TVariables = void, TError = Axio
 	initialOptions: UseMutationOptions<TData, TError, TVariables, TContext>,
 	queryClient?: QueryClient,
 ) => {
-	return (options: Partial<typeof initialOptions>) => useMutation({ ...initialOptions, ...options }, queryClient);
+	return (options?: Partial<typeof initialOptions>) => useMutation({ ...initialOptions, ...options }, queryClient);
 };
 
 export const URLIsValid = (url: string) => {

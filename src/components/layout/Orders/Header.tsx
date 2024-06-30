@@ -29,6 +29,7 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 
 	const { data: ordersCount } = useBrokerOrdersCountQuery({
 		queryKey: ['brokerOrdersCountQuery'],
+		refetchOnMount: true,
 	});
 
 	const tabs = useMemo<Array<{ id: TOrdersTab; title: string; count: number }>>(
@@ -151,7 +152,7 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 							type='button'
 							className={cn(
 								'h-40 gap-10 rounded px-12 transition-colors flex-justify-center',
-								tab === order.id ? 'text-light-gray-800 bg-light-secondary-200' : 'text-light-gray-500',
+								tab === order.id ? 'bg-light-secondary-200 text-light-gray-800' : 'text-light-gray-500',
 							)}
 						>
 							{order.title}
