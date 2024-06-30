@@ -49,26 +49,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 		);
 	};
 
-	const showDetails = (order: Order.OptionOrder) => {
-		// dispatch(
-		// 	setOrderDetailsModal({
-		// 		type: 'option',
-		// 		data: {
-		// 			price: order.pr
-		// 			contractSize,
-		// 			settlementDay,
-		// 			strikePrice,
-		// 			requiredMargin: requiredMargin.value,
-		// 			strikeCommission: 0.0005,
-		// 			tradeCommission: commission.value,
-		// 			side: order. == '',
-		// 			type,
-		// 			symbolTitle: symbol.symbolInfo.symbolTitle,
-		// 		},
-		// 	}),
-		// );
-	};
-
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(
 		() => [
 			{
@@ -145,7 +125,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				cellRendererParams: {
 					onClosePosition,
 					onChangeCollateral,
-					showDetails,
 				},
 			},
 		],

@@ -112,14 +112,16 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 				</button>
 			</div>
 
-			<div className='pt-8'>
-				<SymbolPriceSlider
-					yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
-					thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
-					exchangeData={[20000, 21000]}
-					boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
-				/>
-			</div>
+			{!isOption && (
+				<div className='pt-8'>
+					<SymbolPriceSlider
+						yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
+						thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
+						exchangeData={[20000, 21000]}
+						boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };

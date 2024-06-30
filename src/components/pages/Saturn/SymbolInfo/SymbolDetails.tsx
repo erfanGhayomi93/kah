@@ -171,8 +171,8 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 	} = symbol;
 
 	return (
-		<div className='flex-column'>
-			<div className='gap-24 pb-24 flex-column'>
+		<div className='gap-32 flex-column'>
+			<div className='gap-32 flex-column'>
 				<div className='flex-justify-between'>
 					<SymbolSearchToggler
 						symbolTradeState={symbolTradeState}
@@ -214,7 +214,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 				</div>
 			</div>
 
-			<div className='gap-24 flex-column'>
+			<div className='gap-32 flex-column'>
 				<SymbolPriceSlider
 					yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
 					thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
