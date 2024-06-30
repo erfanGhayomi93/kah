@@ -31,15 +31,18 @@ const Wrapper = styled.form`
 `;
 
 const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
-	({
-		initialColumns,
-		title,
-		stream = true,
-		columns: listOfColumns,
-		onColumnChanged: onColumnChangedCallBack,
-		onReset,
-		...props
-	}) => {
+	(
+		{
+			initialColumns,
+			title,
+			stream = true,
+			columns: listOfColumns,
+			onColumnChanged: onColumnChangedCallBack,
+			onReset,
+			...props
+		},
+		ref,
+	) => {
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
@@ -108,7 +111,13 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 		};
 
 		return (
-			<Modal top='50%' style={{ modal: { transform: 'translate(-50%, -50%)' } }} onClose={onClose} {...props}>
+			<Modal
+				top='50%'
+				style={{ modal: { transform: 'translate(-50%, -50%)' } }}
+				onClose={onClose}
+				ref={ref}
+				{...props}
+			>
 				<Wrapper onSubmit={onSubmit} className='gap-24 bg-white pb-24'>
 					<Header
 						label={t('manage_option_watchlist_columns.title')}
@@ -150,7 +159,7 @@ const CategoryCard = ({ columns, tag, onColumnSwitch, onAllColumnSwitch }: ICate
 	return (
 		<div className={clsx('w-full rounded px-16 shadow-card flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}>
 			{hasTag && (
-				<div className='py-6 gap-8 border-b border-b-light-gray-200 flex-justify-start'>
+				<div className='gap-8 border-b border-b-light-gray-200 py-6 flex-justify-start'>
 					<ColumnSwitchField
 						checked={!hasHiddenColumn}
 						onChange={() => onAllColumnSwitch(hasHiddenColumn, tag)}

@@ -138,7 +138,7 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 						case 'Canceled':
 							return 'rtl text-tiny text-light-error-100';
 						case 'Modified':
-							return 'rtl text-tiny text-secondary-300';
+							return 'rtl text-tiny text-light-secondary-300';
 						default:
 							return 'rtl text-tiny text-light-gray-700';
 					}

@@ -305,7 +305,7 @@ declare namespace Option {
 
 	export interface Column {
 		id: number;
-		title: string;
+		title: OptionWatchlistColumns;
 		category: string;
 		isHidden: boolean;
 		order: number;

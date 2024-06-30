@@ -396,7 +396,7 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					color: theme('colors.white'),
-					border: '2px solid transparent',
+					border: '1px solid transparent',
 					'background-color': theme('colors.light.primary.100'),
 					transition: 'opacity 250ms ease-in-out',
 
@@ -424,7 +424,7 @@ const config: Config = {
 					color: theme('colors.light.primary.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.light.primary.100')}`,
+					border: `1px solid ${theme('colors.light.primary.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
@@ -439,7 +439,7 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					color: theme('colors.white'),
-					border: '2px solid transparent',
+					border: '1px solid transparent',
 					'background-color': theme('colors.light.gray.700'),
 					transition: 'opacity 250ms ease-in-out',
 
@@ -459,7 +459,7 @@ const config: Config = {
 					color: theme('colors.light.gray.700'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.light.gray.700')}`,
+					border: `1px solid ${theme('colors.light.gray.700')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
@@ -475,7 +475,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.light.primary.100'),
-					border: `2px solid ${theme('colors.light.primary.100')}`,
+					border: `1px solid ${theme('colors.light.primary.100')}`,
 					'background-color': theme('colors.light.secondary.100'),
 					transition: 'background-color 250ms ease-in-out',
 
@@ -495,7 +495,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.white'),
-					border: '2px solid transparent',
+					border: '1px solid transparent',
 					'background-color': theme('colors.light.success.100'),
 					transition: 'opacity 250ms ease-in-out',
 
@@ -511,7 +511,7 @@ const config: Config = {
 					color: theme('colors.light.success.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.light.success.100')}`,
+					border: `1px solid ${theme('colors.light.success.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
@@ -527,7 +527,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.white'),
-					border: '2px solid transparent',
+					border: '1px solid transparent',
 					'background-color': theme('colors.light.error.100'),
 					transition: 'opacity 250ms ease-in-out',
 
@@ -543,7 +543,7 @@ const config: Config = {
 					color: theme('colors.light.error.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.light.error.100')}`,
+					border: `1px solid ${theme('colors.light.error.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
@@ -559,7 +559,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.white'),
-					border: '2px solid transparent',
+					border: '1px solid transparent',
 					'background-color': theme('colors.light.secondary.300'),
 					transition: 'opacity 250ms ease-in-out',
 
@@ -575,7 +575,7 @@ const config: Config = {
 					color: theme('colors.light.secondary.300'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.light.secondary.300')}`,
+					border: `1px solid ${theme('colors.light.secondary.300')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
@@ -591,7 +591,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.light.gray.800'),
-					border: '2px solid transparent',
+					border: '1px solid transparent',
 					'background-color': theme('colors.light.warning.100'),
 					transition: 'background-color 250ms ease-in-out',
 
@@ -607,7 +607,7 @@ const config: Config = {
 					color: theme('colors.light.warning.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.light.warning.100')}`,
+					border: `1px solid ${theme('colors.light.warning.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
@@ -623,7 +623,7 @@ const config: Config = {
 					'align-items': 'center',
 					'justify-content': 'center',
 					color: theme('colors.white'),
-					border: '2px solid transparent',
+					border: '1px solid transparent',
 					'background-color': theme('colors.light.primary.100'),
 					transition: 'background-color 250ms ease-in-out',
 
@@ -639,7 +639,7 @@ const config: Config = {
 					color: theme('colors.light.primary.100'),
 					'font-weight': '500',
 					'background-color': 'transparent',
-					border: `2px solid ${theme('colors.light.primary.100')}`,
+					border: `1px solid ${theme('colors.light.primary.100')}`,
 					transition: 'background-color 250ms, color 250ms, border-color 250ms',
 					'transition-timing-function': 'ease-in-out',
 
@@ -965,7 +965,7 @@ const config: Config = {
 					position: 'relative',
 					display: 'inline-block',
 					'vertical-align': 'middle',
-					border: `2px solid ${theme('colors.light.primary.100')}`,
+					border: `1px solid ${theme('colors.light.primary.100')}`,
 					'border-right-color': 'rgba(0, 0, 0, 0)',
 					'border-radius': '50%',
 					animation: '750ms linear infinite spinner-border',

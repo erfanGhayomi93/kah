@@ -7,11 +7,9 @@ import Main from '@/components/layout/Main';
 import { initialOptionWatchlistFilters } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
-import { getIsLoggedIn, getIsLoggingIn } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
-import { createSelector } from '@reduxjs/toolkit';
+import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dynamic from 'next/dynamic';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -19,18 +17,10 @@ const Table = dynamic(() => import('./Table'), {
 	loading: () => <Loading />,
 });
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isLoggedIn: getIsLoggedIn(state),
-		isLoggingIn: getIsLoggingIn(state),
-	}),
-);
-
 const Watchlist = () => {
 	const dispatch = useAppDispatch();
 
-	const { isLoggingIn, isLoggedIn } = useAppSelector(getStates);
+	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
 	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialOptionWatchlistFilters);
 
@@ -39,9 +29,7 @@ const Watchlist = () => {
 		enabled: false,
 	});
 
-	useLayoutEffect(() => {
-		if (isLoggingIn) return;
-
+	useEffect(() => {
 		try {
 			if (isLoggedIn) {
 				refetchUserCustomWatchlistList();
@@ -56,10 +44,10 @@ const Watchlist = () => {
 		} catch (e) {
 			//
 		}
-	}, [isLoggedIn, isLoggingIn]);
+	}, [isLoggedIn]);
 
 	useLayoutEffect(() => {
-		if (isLoggingIn || !isLoggedIn || !Array.isArray(userCustomWatchlistList)) return;
+		if (!isLoggedIn || !Array.isArray(userCustomWatchlistList)) return;
 
 		try {
 			const watchlistId = Number(LocalstorageInstance.get('awl', -1)) || -1;
@@ -78,7 +66,7 @@ const Watchlist = () => {
 		} catch (e) {
 			//
 		}
-	}, [isLoggedIn, isLoggingIn, userCustomWatchlistList]);
+	}, [isLoggedIn, userCustomWatchlistList]);
 
 	return (
 		<Main className='gap-16 bg-white !pt-16'>

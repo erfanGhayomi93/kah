@@ -1,5 +1,4 @@
 import LocalstorageInstance from '@/classes/Localstorage';
-import { defaultOptionWatchlistColumns } from '@/constants';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
@@ -8,10 +7,7 @@ export interface TableState {
 }
 
 const initialState: TableState = {
-	optionWatchlistColumns: LocalstorageInstance.get<TOptionWatchlistColumnsState>(
-		'owci',
-		defaultOptionWatchlistColumns,
-	),
+	optionWatchlistColumns: LocalstorageInstance.get<TOptionWatchlistColumnsState>('owci', []),
 };
 
 const tableSlice = createSlice({

@@ -3,13 +3,13 @@ import routes from '@/api/routes';
 import lightStreamInstance from '@/classes/Lightstream';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import { defaultOptionWatchlistColumns } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
-import { useSubscription, useWatchlistColumns } from '@/hooks';
+import { type RootState } from '@/features/store';
+import { useOptionWatchlistColumns, useSubscription } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import {
@@ -19,6 +19,7 @@ import {
 	type GridApi,
 	type ICellRendererParams,
 } from '@ag-grid-community/core';
+import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
@@ -32,6 +33,14 @@ interface WatchlistTableProps {
 	fetchNextPage: () => void;
 }
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		isLoggedIn: getIsLoggedIn(state),
+		watchlistColumnsIndex: getOptionWatchlistColumns(state),
+	}),
+);
+
 const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	const t = useTranslations();
 
@@ -39,7 +48,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 	const queryClient = useQueryClient();
 
-	const isLoggedIn = useAppSelector(getIsLoggedIn);
+	const { isLoggedIn, watchlistColumnsIndex } = useAppSelector(getStates);
 
 	const visualData = useRef<Option.Root[]>([]);
 
@@ -47,9 +56,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 	const dispatch = useAppDispatch();
 
-	const watchlistColumnsIndex = useAppSelector(getOptionWatchlistColumns);
-
-	const { data: watchlistColumns } = useWatchlistColumns();
+	const { watchlistColumns, defaultOptionWatchlistColumns } = useOptionWatchlistColumns();
 
 	const onColumnMoved = ({ finished, toIndex }: ColumnMovedEvent<Option.Root>) => {
 		try {
@@ -178,10 +185,9 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 	const modifiedWatchlistColumns = useMemo(() => {
 		const result: Record<string, Option.Column> = {};
+		if (watchlistColumns.length === 0) return result;
 
 		try {
-			if (!watchlistColumns) return result;
-
 			for (let i = 0; i < watchlistColumns.length; i++) {
 				const item = watchlistColumns[i];
 				result[item.title] = item;
@@ -191,14 +197,14 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		} catch (e) {
 			return result;
 		}
-	}, [JSON.stringify(watchlistColumns)]);
+	}, [watchlistColumns]);
 
 	const COLUMNS = useMemo(
 		() =>
 			[
 				{
-					headerName: t('option_page.symbol_title'),
 					colId: 'symbolTitle',
+					headerName: t('option_page.symbol_title'),
 					initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden ?? true),
 					minWidth: 96,
 					pinned: 'right',
@@ -210,8 +216,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				{
-					headerName: t('option_page.trade_value'),
 					colId: 'tradeValue',
+					headerName: t('option_page.trade_value'),
 					initialHide: Boolean(modifiedWatchlistColumns?.tradeValue?.isHidden ?? true),
 					minWidth: 120,
 					initialSort: 'desc',
@@ -220,8 +226,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.notional_value'),
 					colId: 'notionalValue',
+					headerName: t('option_page.notional_value'),
 					minWidth: 160,
 					initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.notionalValue ?? 0,
@@ -229,8 +235,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.intrinsic_value'),
 					colId: 'IntrinsicValue',
+					headerName: t('option_page.intrinsic_value'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.IntrinsicValue?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.intrinsicValue ?? 0,
@@ -238,8 +244,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.premium'),
 					colId: 'premium',
+					headerName: t('option_page.premium'),
 					initialHide: Boolean(modifiedWatchlistColumns?.premium?.isHidden ?? true),
 					minWidth: 128,
 					cellRenderer: CellPercentRenderer,
@@ -254,8 +260,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
-					headerName: t('option_page.delta'),
 					colId: 'delta',
+					headerName: t('option_page.delta'),
 					initialHide: Boolean(modifiedWatchlistColumns?.delta?.isHidden ?? true),
 					minWidth: 56,
 					valueGetter: ({ data }) => data?.optionWatchlistData.delta ?? 0,
@@ -263,8 +269,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.base_symbol_price'),
 					colId: 'baseSymbolPrice',
+					headerName: t('option_page.base_symbol_price'),
 					initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolPrice?.isHidden ?? true),
 					minWidth: 136,
 					cellRenderer: CellPercentRenderer,
@@ -279,8 +285,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
-					headerName: t('option_page.break_even_point'),
 					colId: 'breakEvenPoint',
+					headerName: t('option_page.break_even_point'),
 					initialHide: Boolean(modifiedWatchlistColumns?.breakEvenPoint?.isHidden ?? true),
 					minWidth: 96,
 					valueGetter: ({ data }) => data?.optionWatchlistData.breakEvenPoint ?? 0,
@@ -288,8 +294,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.leverage'),
 					colId: 'leverage',
+					headerName: t('option_page.leverage'),
 					initialHide: Boolean(modifiedWatchlistColumns?.leverage?.isHidden ?? true),
 					minWidth: 64,
 					valueGetter: ({ data }) => data?.optionWatchlistData.leverage ?? 0,
@@ -297,8 +303,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.open_position_count'),
 					colId: 'openPositionCount',
+					headerName: t('option_page.open_position_count'),
 					initialHide: Boolean(modifiedWatchlistColumns?.openPositionCount?.isHidden ?? true),
 					minWidth: 128,
 					valueGetter: ({ data }) => data?.optionWatchlistData.openPositionCount ?? 0,
@@ -306,8 +312,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.implied_volatility'),
 					colId: 'impliedVolatility',
+					headerName: t('option_page.implied_volatility'),
 					initialHide: Boolean(modifiedWatchlistColumns?.impliedVolatility?.isHidden ?? true),
 					minWidth: 96,
 					valueGetter: ({ data }) => data?.optionWatchlistData.impliedVolatility ?? 0,
@@ -318,8 +324,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.iotm'),
 					colId: 'iotm',
+					headerName: t('option_page.iotm'),
 					initialHide: Boolean(modifiedWatchlistColumns?.iotm?.isHidden ?? true),
 					minWidth: 96,
 					cellClass: ({ value }) => {
@@ -329,7 +335,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 							case 'OTM':
 								return 'text-light-error-100';
 							case 'ATM':
-								return 'text-secondary-300';
+								return 'text-light-secondary-300';
 							default:
 								return '';
 						}
@@ -338,8 +344,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				{
-					headerName: t('option_page.black_scholes'),
 					colId: 'blackScholes',
+					headerName: t('option_page.black_scholes'),
 					initialHide: Boolean(modifiedWatchlistColumns?.blackScholes?.isHidden ?? true),
 					minWidth: 144,
 					valueGetter: ({ data }) => data?.optionWatchlistData.blackScholes ?? 0,
@@ -347,8 +353,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.trade_volume'),
 					colId: 'tradeVolume',
+					headerName: t('option_page.trade_volume'),
 					initialHide: Boolean(modifiedWatchlistColumns?.tradeVolume?.isHidden ?? true),
 					minWidth: 104,
 					valueGetter: ({ data }) => data?.optionWatchlistData.tradeVolume ?? 0,
@@ -356,16 +362,16 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.due_days'),
 					colId: 'dueDays',
+					headerName: t('option_page.due_days'),
 					initialHide: Boolean(modifiedWatchlistColumns?.dueDays?.isHidden ?? true),
 					minWidth: 96,
 					valueGetter: ({ data }) => Math.max(0, data?.symbolInfo.dueDays ?? 0),
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.strike_price'),
 					colId: 'strikePrice',
+					headerName: t('option_page.strike_price'),
 					initialHide: Boolean(modifiedWatchlistColumns?.strikePrice?.isHidden ?? true),
 					minWidth: 112,
 					valueGetter: ({ data }) => data?.symbolInfo.strikePrice ?? 0,
@@ -373,8 +379,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.best_buy_price'),
 					colId: 'bestBuyPrice',
+					headerName: t('option_page.best_buy_price'),
 					initialHide: Boolean(modifiedWatchlistColumns?.bestBuyPrice?.isHidden ?? true),
 					minWidth: 112,
 					cellClass: 'buy',
@@ -383,8 +389,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.best_sell_price'),
 					colId: 'bestSellPrice',
+					headerName: t('option_page.best_sell_price'),
 					initialHide: Boolean(modifiedWatchlistColumns?.bestSellPrice?.isHidden ?? true),
 					minWidth: 120,
 					cellClass: 'sell',
@@ -393,16 +399,16 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.base_symbol_title'),
 					colId: 'baseSymbolTitle',
+					headerName: t('option_page.base_symbol_title'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolTitle?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.symbolInfo.baseSymbolTitle ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				{
-					headerName: t('option_page.closing_price'),
 					colId: 'closingPrice',
+					headerName: t('option_page.closing_price'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.closingPrice?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.closingPrice ?? 0,
@@ -410,8 +416,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.historical_volatility'),
 					colId: 'historicalVolatility',
+					headerName: t('option_page.historical_volatility'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.historicalVolatility?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.historicalVolatility ?? 0,
@@ -422,8 +428,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.contract_size'),
 					colId: 'contractSize',
+					headerName: t('option_page.contract_size'),
 					minWidth: 112,
 					initialHide: Boolean(modifiedWatchlistColumns?.contractSize?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.symbolInfo.contractSize ?? 0,
@@ -431,8 +437,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.time_value'),
 					colId: 'timeValue',
+					headerName: t('option_page.time_value'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.timeValue?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.timeValue ?? 0,
@@ -440,8 +446,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.theta'),
 					colId: 'theta',
+					headerName: t('option_page.theta'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.theta?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.theta ?? 0,
@@ -449,8 +455,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.trade_count'),
 					colId: 'tradeCount',
+					headerName: t('option_page.trade_count'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.tradeCount?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.tradeCount ?? 0,
@@ -458,8 +464,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.contract_end_date'),
 					colId: 'contractEndDate',
+					headerName: t('option_page.contract_end_date'),
 					minWidth: 120,
 					initialHide: Boolean(modifiedWatchlistColumns?.contractEndDate?.isHidden ?? true),
 					valueGetter: ({ data }) =>
@@ -470,8 +476,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.spread'),
 					colId: 'spread',
+					headerName: t('option_page.spread'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.spread?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.spread ?? 0,
@@ -479,8 +485,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.black_scholes_difference'),
 					colId: 'blackScholesDifference',
+					headerName: t('option_page.black_scholes_difference'),
 					minWidth: 144,
 					initialHide: Boolean(modifiedWatchlistColumns?.blackScholesDifference?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.blackScholesDifference ?? 0,
@@ -488,8 +494,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.base_closing_price'),
 					colId: 'baseClosingPrice',
+					headerName: t('option_page.base_closing_price'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.baseClosingPrice?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.baseClosingPrice ?? 0,
@@ -497,8 +503,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.gamma'),
 					colId: 'gamma',
+					headerName: t('option_page.gamma'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.gamma?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.gamma ?? 0,
@@ -506,8 +512,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.option_type'),
 					colId: 'optionType',
+					headerName: t('option_page.option_type'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.optionType?.isHidden ?? true),
 					cellClass: ({ value }) => {
@@ -534,8 +540,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				{
-					headerName: t('option_page.required_margin'),
 					colId: 'requiredMargin',
+					headerName: t('option_page.required_margin'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.requiredMargin?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.requiredMargin ?? 0,
@@ -543,8 +549,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.initial_margin'),
 					colId: 'initialMargin',
+					headerName: t('option_page.initial_margin'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.initialMargin?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.symbolInfo.initialMargin ?? 0,
@@ -552,8 +558,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.rho'),
 					colId: 'rho',
+					headerName: t('option_page.rho'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.rho?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.rho ?? 0,
@@ -561,8 +567,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.vega'),
 					colId: 'vega',
+					headerName: t('option_page.vega'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.vega?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.vega ?? 0,
@@ -570,8 +576,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.growth'),
 					colId: 'growth',
+					headerName: t('option_page.growth'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.growth?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.growth ?? 0,
@@ -579,16 +585,16 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.contract_value_type'),
 					colId: 'contractValueType',
+					headerName: t('option_page.contract_value_type'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.contractValueType?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.contractValueType ?? 'LIQ',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				{
-					headerName: t('option_page.high_open_position'),
 					colId: 'highOpenPosition',
+					headerName: t('option_page.high_open_position'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.highOpenPosition?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.highOpenPosition ?? 0,
@@ -596,8 +602,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.last_trade_date'),
 					colId: 'lastTradeDate',
+					headerName: t('option_page.last_trade_date'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.lastTradeDate?.isHidden ?? true),
 					valueGetter: ({ data }) =>
@@ -608,8 +614,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.legal_buy_volume'),
 					colId: 'legalBuyVolume',
+					headerName: t('option_page.legal_buy_volume'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.legalBuyVolume?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.legalBuyVolume ?? 0,
@@ -617,8 +623,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.individual_buy_volume'),
 					colId: 'individualBuyVolume',
+					headerName: t('option_page.individual_buy_volume'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.individualBuyVolume?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.individualBuyVolume ?? 0,
@@ -626,8 +632,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.legalSell_volume'),
 					colId: 'legalSellVolume',
+					headerName: t('option_page.legalSell_volume'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.legalSellVolume?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.legalSellVolume ?? 0,
@@ -635,8 +641,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.individual_sell_volume'),
 					colId: 'individualSellVolume',
+					headerName: t('option_page.individual_sell_volume'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.individualSellVolume?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.individualSellVolume ?? 0,
@@ -644,16 +650,16 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
-					headerName: t('option_page.sector_name'),
 					colId: 'sectorName',
+					headerName: t('option_page.sector_name'),
 					minWidth: 136,
 					initialHide: Boolean(modifiedWatchlistColumns?.sectorName?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.symbolInfo.sectorName ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
 				{
-					headerName: t('option_page.action'),
 					colId: 'action',
+					headerName: t('option_page.action'),
 					initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
 					minWidth: 80,
 					maxWidth: 80,
@@ -689,8 +695,8 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		if (!actionColumn) return;
 
 		const colDef: ColDef<Option.Root> = {
-			headerName: t('option_page.action'),
 			colId: 'action',
+			headerName: t('option_page.action'),
 			initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
 			minWidth: 80,
 			maxWidth: 80,
@@ -714,13 +720,13 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 
-		if (Array.isArray(watchlistColumnsIndex) && watchlistColumnsIndex.length > 0) {
-			if (typeof watchlistColumnsIndex[0] === 'object' && 'colId' in watchlistColumnsIndex[0]) {
-				gridApi.applyColumnState({ state: watchlistColumnsIndex, applyOrder: true });
-			} else {
-				dispatch(setOptionWatchlistColumns(defaultOptionWatchlistColumns));
-				gridApi.applyColumnState({ state: defaultOptionWatchlistColumns, applyOrder: true });
-			}
+		if (!Array.isArray(watchlistColumnsIndex) || watchlistColumnsIndex.length === 0) return;
+
+		if (typeof watchlistColumnsIndex[0] === 'object' && 'colId' in watchlistColumnsIndex[0]) {
+			gridApi.applyColumnState({ state: watchlistColumnsIndex, applyOrder: true });
+		} else {
+			dispatch(setOptionWatchlistColumns(defaultOptionWatchlistColumns));
+			gridApi.applyColumnState({ state: defaultOptionWatchlistColumns, applyOrder: true });
 		}
 	}, [watchlistColumnsIndex]);
 
@@ -774,7 +780,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
-		if (!eGrid || !watchlistColumns) return;
+		if (!eGrid || watchlistColumns.length === 0) return;
 
 		try {
 			for (let i = 0; i < watchlistColumns.length; i++) {
