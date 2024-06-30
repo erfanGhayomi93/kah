@@ -41,6 +41,12 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		return premium - intrinsicValue;
 	};
 
+	const numStatus = (v: number): 0 | 1 | -1 => {
+		if (v === 0) return 0;
+		if (v < 0) return -1;
+		return 1;
+	};
+
 	useEffect(() => {
 		if (config?.enabled === false) return;
 
@@ -134,40 +140,42 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			}
 
 			const l = series.length;
-			const diff = Math.floor((maxPrice - minPrice) / 100);
+			const diff = Math.floor((maxPrice - minPrice) / 200);
 			const rangeData: [number[], number[]] = [[], []];
 
 			for (let i = 0; i < l; i++) {
-				const item = series[i];
-				const pnl = Math.round(item.y);
+				try {
+					const item = series[i];
+					const previousItem = series[i - 1];
+					const pnl = Math.round(item.y);
+					const previousPNL = i === 0 ? pnl : Math.round(previousItem.y);
+					const isNotSameZone = previousPNL !== 0 && numStatus(previousPNL) !== numStatus(pnl);
 
-				if (item.y > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, item.y));
-				else if (item.y < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, item.y));
+					if (item.y > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, item.y));
+					else if (item.y < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, item.y));
 
-				if (pnl === 0 || i % diff === 0) {
-					newInputs.data.push({
-						x: item.x,
-						y: pnl,
-					});
-				}
+					if (isNotSameZone || i % diff === 0) {
+						newInputs.data.push({
+							x: item.x,
+							y: pnl,
+						});
+					}
 
-				if (pnl === 0) {
-					newInputs.bep.push(item.x);
-				} else if (i > 0) {
-					const previousPNL = Math.round(series[i - 1].y);
-					if ((previousPNL > 0 && pnl < 0) || (previousPNL < 0 && pnl > 0)) {
+					if (isNotSameZone) {
 						newInputs.bep.push(item.x);
 					}
-				}
 
-				if (item.x === baseAssets) {
-					if (pnl === 0) newInputs.baseSymbolStatus = 'atm';
-					else if (pnl > 0) newInputs.baseSymbolStatus = 'itm';
-					else if (pnl < 0) newInputs.baseSymbolStatus = 'otm';
-				}
+					if (item.x === baseAssets) {
+						if (pnl === 0) newInputs.baseSymbolStatus = 'atm';
+						else if (pnl > 0) newInputs.baseSymbolStatus = 'itm';
+						else if (pnl < 0) newInputs.baseSymbolStatus = 'otm';
+					}
 
-				if (isBetween(0, i, 10)) rangeData[0].push(Math.round(item.y));
-				if (isBetween(l - 11, i, l - 1)) rangeData[1].push(Math.round(item.y));
+					if (isBetween(0, i, 10)) rangeData[0].push(Math.round(item.y));
+					if (isBetween(l - 11, i, l - 1)) rangeData[1].push(Math.round(item.y));
+				} catch (e) {
+					//
+				}
 			}
 
 			const [startPNLs, endPNLs] = rangeData;

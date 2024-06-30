@@ -30,7 +30,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 
 	const { isLoggedIn, brokerHasSelected } = useAppSelector(getStates);
 
-	useGetBrokerUrlQuery({
+	const { refetch } = useGetBrokerUrlQuery({
 		queryKey: ['getBrokerUrlQuery'],
 		enabled: isLoggedIn && brokerHasSelected,
 	});
@@ -44,16 +44,7 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 		LocalstorageInstance.set('ls_version', lsVersion);
 	};
 
-	useEffect(() => {
-		if (!isLoggedIn) deleteBrokerClientId();
-	}, []);
-
-	useEffect(() => {
-		ipcMain.handle('broker:logged_out', resetQueryClient);
-		setupChart();
-	}, []);
-
-	useEffect(() => {
+	const checkLsVersion = () => {
 		const lsVersion = process.env.NEXT_PUBLIC_LOCAL_STORAGE_VERSION;
 		if (typeof lsVersion !== 'string') return;
 
@@ -68,7 +59,19 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 		} catch (e) {
 			setLsVersion(lsVersion);
 		}
+	};
+
+	useEffect(() => {
+		if (!isLoggedIn) deleteBrokerClientId();
+
+		ipcMain.handle('broker:logged_out', resetQueryClient);
+		checkLsVersion();
+		setupChart();
 	}, []);
+
+	useEffect(() => {
+		if (isLoggedIn && brokerHasSelected) refetch();
+	}, [isLoggedIn && brokerHasSelected]);
 
 	return children;
 };
