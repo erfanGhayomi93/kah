@@ -15,15 +15,15 @@ const DesigningPage = () => {
 				<img src='/static/images/designing-page.png' alt='designing-page' />
 			</div>
 			<div className=' gap-8 flex-column-justify-start'>
-				<span className='text-light-gray-800 text-4xl font-medium'>
+				<span className='text-4xl font-medium text-light-gray-800'>
 					{t('designing_page.page_on_designing')}
 				</span>
-				<span className='text-light-gray-700 text-3xl'>{t('designing_page.please_try_again_later')}</span>
+				<span className='text-3xl text-light-gray-700'>{t('designing_page.please_try_again_later')}</span>
 			</div>
 
 			<Button
 				onClick={() => router.push('/')}
-				className='hover:bg-light-secondary-100 border-light-primary-100 text-light-primary-100 rounded-3xl border-2 bg-transparent  px-56 py-4 text-2xl transition-colors'
+				className='rounded-3xl border border-light-primary-100 bg-transparent px-56 py-4  text-2xl text-light-primary-100 transition-colors hover:bg-light-secondary-100'
 			>
 				{t('designing_page.return')}
 			</Button>

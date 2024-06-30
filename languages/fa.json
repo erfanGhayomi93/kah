@@ -732,6 +732,7 @@
 		"open_position_count": "موقعیت‌های باز",
 		"implied_volatility": "IV",
 		"iotm": "وضعیت",
+		"manage_columns": "مدیریت ستون‌های جدول",
 		"black_scholes": "بلک شولز",
 		"trade_volume": "حجم",
 		"due_days": "روز مانده",
@@ -2042,6 +2043,9 @@
 		"TradesReports": "معاملات",
 		"FreezeUnFreezeReports": "فریز و رفع فریز",
 		"CashSettlementReports": "تسویه نقدی",
-		"PhysicalSettlementReports": "تسویه فیزیکی"
+		"PhysicalSettlementReports": "تسویه فیزیکی",
+		"symbol_info": "اطلاعات نماد",
+		"table_details": "جزئیات تابلو",
+		"formula": "یونانی و محاسباتی"
 	}
 }

@@ -1,3 +1,4 @@
+import LocalstorageInstance from '@/classes/Localstorage';
 import { createQuery } from '@/utils/helpers';
 import axios from '../axios';
 import routes from '../routes';
@@ -78,6 +79,7 @@ export const useOptionSymbolColumnsQuery = createQuery<Option.Column[], ['option
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
+			LocalstorageInstance.set('owc', data.result);
 			return data.result;
 		} catch (e) {
 			return [];

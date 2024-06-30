@@ -7,6 +7,7 @@ import useErrors from './useErrors';
 import useFirstViewportEntry from './useFirstViewportEntry';
 import useInputs from './useInputs';
 import useLocalstorage from './useLocalstorage';
+import useOptionWatchlistColumns from './useOptionWatchlistColumns';
 import usePagination from './usePagination';
 import usePrevious from './usePrevious';
 import useServerDatetime from './useServerDatetime';
@@ -14,7 +15,6 @@ import useStateRef from './useStateRef';
 import useSubscription from './useSubscription';
 import useTradingFeatures from './useTradingFeatures';
 import useUserInfo from './useUserInfo';
-import useWatchlistColumns from './useWatchlistColumns';
 
 export {
 	useAnalyze,
@@ -26,6 +26,7 @@ export {
 	useFirstViewportEntry,
 	useInputs,
 	useLocalstorage,
+	useOptionWatchlistColumns,
 	usePagination,
 	usePrevious,
 	useServerDatetime,
@@ -33,5 +34,4 @@ export {
 	useSubscription,
 	useTradingFeatures,
 	useUserInfo,
-	useWatchlistColumns,
 };

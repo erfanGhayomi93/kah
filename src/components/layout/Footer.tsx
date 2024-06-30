@@ -71,7 +71,7 @@ const Footer = () => {
 						<a
 							target='_blank'
 							href='https://ramandtech.com/'
-							className='hover:text-secondary-300 pr-24 text-tiny font-normal text-light-gray-800 transition-colors'
+							className='pr-24 text-tiny font-normal text-light-gray-800 transition-colors hover:text-light-secondary-300'
 						>
 							{t('copyright')}
 						</a>

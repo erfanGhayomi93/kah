@@ -5,7 +5,6 @@ import QueryClientRegistry from '@/components/common/Registry/QueryClientRegistr
 import StyledComponentsRegistry from '@/components/common/Registry/StyledComponentsRegistry';
 import ToastRegistry from '@/components/common/Registry/ToastRegistry';
 import ClockProvider from '@/contexts/ClockContext';
-import WatchlistColumnsProvider from '@/contexts/WatchlistColumnsContext';
 import dynamic from 'next/dynamic';
 import ReduxToolkitRegistry from './Registry/ReduxToolkitRegistry';
 
@@ -26,11 +25,9 @@ const Providers = ({ children }: ProvidersProps) => {
 						<AppMiddleware>
 							<OMSRegistry />
 							<BroadcastChannelRegistry>
-								<WatchlistColumnsProvider>
-									<ClockProvider>
-										<ToastRegistry>{children}</ToastRegistry>
-									</ClockProvider>
-								</WatchlistColumnsProvider>
+								<ClockProvider>
+									<ToastRegistry>{children}</ToastRegistry>
+								</ClockProvider>
 							</BroadcastChannelRegistry>
 						</AppMiddleware>
 					</LightstreamRegistry>
