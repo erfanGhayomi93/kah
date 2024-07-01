@@ -25,13 +25,13 @@ interface SymbolTabsProps {
 }
 
 const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
-	const t = useTranslations();
+	const t = useTranslations('saturn_page');
 
 	const tabs = useMemo<TTab[]>(
 		() => [
 			{
 				id: 'tab_market_depth',
-				title: t('saturn_page.tab_market_depth'),
+				title: t('tab_market_depth'),
 				render: () => (
 					<div style={{ height: '23.2rem' }} className='relative flex-1 gap-40 flex-column'>
 						<SymbolMarketDepth
@@ -46,14 +46,14 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 			},
 			{
 				id: 'tab_chart',
-				title: t('saturn_page.tab_chart'),
+				title: t('tab_chart'),
 				render: () => (
 					<div style={{ height: '23rem' }} className='relative size-full'>
 						<SymbolChartData symbolISIN={symbol.symbolISIN} />
 					</div>
 				),
 			},
-			{ id: 'tab_my_asset', title: t('saturn_page.tab_my_asset'), disabled: true, render: null },
+			{ id: 'tab_my_asset', title: t('tab_my_asset'), disabled: true, render: null },
 		],
 		[symbol],
 	);
@@ -70,7 +70,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 						<button
 							className={cn(
 								'p-8 transition-colors',
-								item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
+								item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
 							)}
 							type='button'
 						>

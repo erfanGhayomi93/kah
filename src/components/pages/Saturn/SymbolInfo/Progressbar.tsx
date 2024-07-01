@@ -54,7 +54,7 @@ const Progressbar = ({ title, sellVolume, sellCount, buyVolume, buyCount, totalV
 
 const Part = ({ percent, side, topRight, topLeft, bottomRight, bottomLeft }: PartProps) => (
 	<div className='flex-1 gap-4 flex-column'>
-		<div className='text-tiny text-light-gray-500 ltr flex-justify-between'>
+		<div className='ltr flex-justify-between *:text-tiny *:text-light-gray-500'>
 			<span>{topLeft}</span>
 			<span>{topRight}</span>
 		</div>
@@ -66,7 +66,7 @@ const Part = ({ percent, side, topRight, topLeft, bottomRight, bottomLeft }: Par
 			/>
 		</div>
 
-		<div className='text-tiny text-light-gray-500 ltr flex-justify-between'>
+		<div className='ltr flex-justify-between *:text-tiny *:text-light-gray-500'>
 			<span>{bottomLeft}</span>
 			<span>{bottomRight}</span>
 		</div>
