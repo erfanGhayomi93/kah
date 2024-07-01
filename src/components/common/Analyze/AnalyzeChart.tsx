@@ -20,7 +20,7 @@ interface AnalyzeChartProps {
 	baseAssets: number;
 	height?: number;
 	compact?: boolean;
-	onChange?: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
+	onChange?: (values: Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>) => void;
 }
 
 const AnalyzeChart = ({

@@ -428,7 +428,12 @@ const SymbolStrategy = ({
 			</td>
 
 			{features?.contractSize && (
-				<td className={styles.td}>
+				<td
+					className={styles.td}
+					onCopy={(e) => {
+						if (contract.type === 'option') copyNumberToClipboard(e, contract.symbol.contractSize);
+					}}
+				>
 					<span className='text-light-gray-800'>{sepNumbers(String(contract.symbol.contractSize ?? 0))}</span>
 				</td>
 			)}

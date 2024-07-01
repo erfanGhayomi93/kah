@@ -1397,6 +1397,12 @@
 		"execution_steps": "نحوه اجرا",
 		"execution_condition": "شرط اجرا"
 	},
+	"option_block_type": {
+		"All": "همه",
+		"Account": "وجه نقد",
+		"Portfolio": "سهم پایه",
+		"Position": "موقعیت"
+	},
 	"create_strategy": {
 		"strategy": "استراتژی {strategyName} {baseSymbolTitle}",
 		"add_conditional_alert": "افزودن هشدار شرطی",

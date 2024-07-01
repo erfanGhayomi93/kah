@@ -376,8 +376,8 @@ declare interface IBsModalInputs {
 
 declare interface IAnalyzeInputs {
 	data: Array<Record<'x' | 'y', number>>;
-	maxPrice: number;
-	minPrice: number;
+	maxPrice: number | null;
+	minPrice: number | null;
 	maxProfit: number;
 	maxLoss: number;
 	baseSymbolStatus: 'atm' | 'itm' | 'otm';

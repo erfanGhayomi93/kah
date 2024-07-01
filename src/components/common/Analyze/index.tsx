@@ -21,7 +21,7 @@ interface AnalyzeProps {
 	maxPrice: number;
 	baseAssets: number;
 	height?: number;
-	onChange: (values: Partial<Record<'minPrice' | 'maxPrice', number>>) => void;
+	onChange: (values: Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>) => void;
 }
 
 const Analyze = ({ chartData, contracts, minPrice, maxPrice, baseAssets, height, bep, onChange }: AnalyzeProps) => {

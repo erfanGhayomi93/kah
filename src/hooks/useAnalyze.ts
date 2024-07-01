@@ -6,8 +6,8 @@ import useInputs from './useInputs';
 interface IConfiguration {
 	baseAssets: number;
 	useCommission?: boolean;
-	maxPrice?: number;
-	minPrice?: number;
+	maxPrice?: number | null;
+	minPrice?: number | null;
 	enabled?: boolean;
 }
 
@@ -68,11 +68,11 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 
 		if (data.length === 0) return;
 
-		newInputs.minPrice = config?.minPrice || Math.floor(config.baseAssets * 0.5);
-		newInputs.maxPrice = config?.maxPrice || Math.floor(config.baseAssets * 1.5);
+		newInputs.minPrice = config?.minPrice || Math.floor(config.baseAssets * 0);
+		newInputs.maxPrice = config?.maxPrice || Math.floor(Math.round(config.baseAssets * 0.2) * 10);
 
-		newInputs.minPrice = Math.max(0, newInputs.minPrice);
-		newInputs.maxPrice = Math.min(1e5, newInputs.maxPrice);
+		newInputs.minPrice = Math.max(0, Math.min(newInputs.minPrice, newInputs.maxPrice));
+		newInputs.maxPrice = Math.min(1e5, Math.max(newInputs.minPrice, newInputs.maxPrice));
 
 		try {
 			const { baseAssets, useCommission } = config;
@@ -140,7 +140,8 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			}
 
 			const l = series.length;
-			const diff = Math.floor((maxPrice - minPrice) / 200);
+			const pointsLength = Math.min(Math.max(Math.ceil(Math.sqrt(maxPrice - minPrice)) * 2, 100), 600);
+			const diff = Math.floor((maxPrice - minPrice) / pointsLength);
 			const rangeData: [number[], number[]] = [[], []];
 
 			for (let i = 0; i < l; i++) {
@@ -154,7 +155,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					if (item.y > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, item.y));
 					else if (item.y < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, item.y));
 
-					if (isNotSameZone || i % diff === 0) {
+					if (isNotSameZone || i % diff === 0 || i === 0 || i === l - 1) {
 						newInputs.data.push({
 							x: item.x,
 							y: pnl,
