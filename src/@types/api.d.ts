@@ -771,6 +771,17 @@ declare namespace Order {
 
 	export type Side = 'Buy' | 'Sell';
 
+	type TDataTab<
+		T extends Extract<TOrdersTab, 'open_orders' | 'executed_orders' | 'today_orders'> =
+			| 'open_orders'
+			| 'executed_orders'
+			| 'today_orders',
+	> = T extends 'open_orders'
+		? Order.OpenOrder
+		: T extends 'executed_orders'
+			? Order.ExecutedOrder
+			: Order.TodayOrder;
+
 	export type TradeDetailsType =
 		| null
 		| {
@@ -781,6 +792,11 @@ declare namespace Order {
 				tradeNumber: string;
 				total: number;
 		  }[];
+
+	export interface Response {
+		clientKey: string;
+		response: string;
+	}
 
 	export interface OptionOrder {
 		orderId: number;
@@ -806,7 +822,7 @@ declare namespace Order {
 		isFreeze: boolean;
 		isSwapped: boolean;
 		blockCount: number;
-		blockType: string;
+		blockType: Order.OrderSourceType;
 		sumPayment: number;
 		sumReceived: number;
 		sumAmount: number;

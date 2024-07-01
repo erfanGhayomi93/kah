@@ -82,7 +82,7 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 	}
 
 	get isSwapDisabled() {
-		return Boolean(this.params.data?.side === 'Call' || !this.params.data?.isFreeze);
+		return Boolean(this.params.data?.side === 'Buy' || !this.params.data?.isFreeze);
 	}
 }
 

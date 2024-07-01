@@ -122,7 +122,12 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 	}
 
 	get editable() {
-		return editableOrdersStatus.includes(this.params.data!.orderStatus);
+		return editableOrdersStatus.includes(this.orderStatus);
+	}
+
+	get orderStatus() {
+		const data = this.params.data!;
+		return 'orderStatus' in data ? data.orderStatus : 'OrderDone';
 	}
 }
 

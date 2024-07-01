@@ -16,29 +16,21 @@ import OrderActionCell from '../common/OrderActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';
 
-type TTab = Extract<TOrdersTab, 'open_orders' | 'executed_orders' | 'today_orders'>;
-
 type TOrder = Order.OpenOrder[] | Order.TodayOrder[] | Order.ExecutedOrder[];
-
-type TDataTab<T extends TTab = TTab> = T extends 'open_orders'
-	? Order.OpenOrder
-	: T extends 'executed_orders'
-		? Order.ExecutedOrder
-		: Order.TodayOrder;
 
 export interface OpenOrderProps {
 	tab: 'open_orders';
-	data: Array<TDataTab<'open_orders'>>;
+	data: Array<Order.TDataTab<'open_orders'>>;
 }
 
 export interface ExecutedOrderProps {
 	tab: 'executed_orders';
-	data: Array<TDataTab<'executed_orders'>>;
+	data: Array<Order.TDataTab<'executed_orders'>>;
 }
 
 export interface TodayOrderProps {
 	tab: 'today_orders';
-	data: Array<TDataTab<'today_orders'>>;
+	data: Array<Order.TDataTab<'today_orders'>>;
 }
 
 type OrderTableProps = (OpenOrderProps | ExecutedOrderProps | TodayOrderProps) & {
@@ -51,25 +43,25 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<TDataTab>>(null);
+	const gridRef = useRef<GridApi<Order.TDataTab>>(null);
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const onCopy = (order: TDataTab) => {
+	const onCopy = (order: Order.TDataTab) => {
 		const price =
 			tab === 'executed_orders'
-				? (order as TDataTab<'executed_orders'>).totalPrice
-				: (order as TDataTab<'today_orders' | 'open_orders'>).price;
+				? (order as Order.TDataTab<'executed_orders'>).totalPrice
+				: (order as Order.TDataTab<'today_orders' | 'open_orders'>).price;
 		const quantity =
 			tab === 'executed_orders'
-				? (order as TDataTab<'executed_orders'>).tradeQuantity
-				: (order as TDataTab<'today_orders' | 'open_orders'>).quantity;
+				? (order as Order.TDataTab<'executed_orders'>).tradeQuantity
+				: (order as Order.TDataTab<'today_orders' | 'open_orders'>).quantity;
 		const validity =
-			tab === 'executed_orders' ? undefined : (order as TDataTab<'today_orders' | 'open_orders'>).validity;
+			tab === 'executed_orders' ? undefined : (order as Order.TDataTab<'today_orders' | 'open_orders'>).validity;
 		const validityDate =
 			tab === 'executed_orders'
 				? 0
-				: new Date((order as TDataTab<'today_orders' | 'open_orders'>).validityDate).getTime();
+				: new Date((order as Order.TDataTab<'today_orders' | 'open_orders'>).validityDate).getTime();
 
 		addBuySellModal({
 			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
@@ -84,13 +76,13 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 		});
 	};
 
-	const onDelete = (order: TDataTab) => {
+	const onDelete = (order: Order.TDataTab) => {
 		const orderId =
 			tab === 'executed_orders'
-				? (order as TDataTab<'executed_orders'>).id
+				? (order as Order.TDataTab<'executed_orders'>).id
 				: tab === 'today_orders'
-					? (order as TDataTab<'today_orders'>).orderId
-					: (order as TDataTab<'open_orders'>).orderId;
+					? (order as Order.TDataTab<'today_orders'>).orderId
+					: (order as Order.TDataTab<'open_orders'>).orderId;
 
 		dispatch(
 			setConfirmModal({
@@ -106,27 +98,27 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 		);
 	};
 
-	const onEdit = (order: TDataTab) => {
+	const onEdit = (order: Order.TDataTab) => {
 		const orderId =
 			tab === 'executed_orders'
-				? (order as TDataTab<'executed_orders'>).id
+				? (order as Order.TDataTab<'executed_orders'>).id
 				: tab === 'today_orders'
-					? (order as TDataTab<'today_orders'>).orderId
-					: (order as TDataTab<'open_orders'>).orderId;
+					? (order as Order.TDataTab<'today_orders'>).orderId
+					: (order as Order.TDataTab<'open_orders'>).orderId;
 		const price =
 			tab === 'executed_orders'
-				? (order as TDataTab<'executed_orders'>).totalPrice
-				: (order as TDataTab<'today_orders' | 'open_orders'>).price;
+				? (order as Order.TDataTab<'executed_orders'>).totalPrice
+				: (order as Order.TDataTab<'today_orders' | 'open_orders'>).price;
 		const quantity =
 			tab === 'executed_orders'
-				? (order as TDataTab<'executed_orders'>).tradeQuantity
-				: (order as TDataTab<'today_orders' | 'open_orders'>).quantity;
+				? (order as Order.TDataTab<'executed_orders'>).tradeQuantity
+				: (order as Order.TDataTab<'today_orders' | 'open_orders'>).quantity;
 		const validity =
-			tab === 'executed_orders' ? undefined : (order as TDataTab<'today_orders' | 'open_orders'>).validity;
+			tab === 'executed_orders' ? undefined : (order as Order.TDataTab<'today_orders' | 'open_orders'>).validity;
 		const validityDate =
 			tab === 'executed_orders'
 				? 0
-				: new Date((order as TDataTab<'today_orders' | 'open_orders'>).validityDate).getTime();
+				: new Date((order as Order.TDataTab<'today_orders' | 'open_orders'>).validityDate).getTime();
 
 		addBuySellModal({
 			id: Number(orderId),
@@ -143,7 +135,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 		});
 	};
 
-	const showDetails = (order: TDataTab) => {
+	const showDetails = (order: Order.TDataTab) => {
 		dispatch(
 			setOrderDetailsModal({
 				type: 'order',
@@ -152,7 +144,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<TDataTab>>>(
+	const columnDefs = useMemo<Array<ColDef<Order.TDataTab>>>(
 		() => [
 			// نام نماد
 			{
@@ -193,11 +185,11 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.order_status'),
 				minWidth: 200,
 				hide: tab === 'executed_orders',
-				valueGetter: ({ data }) => (data as TDataTab<'open_orders' | 'today_orders'>).orderStatus,
+				valueGetter: ({ data }) => (data as Order.TDataTab<'open_orders' | 'today_orders'>).orderStatus,
 				valueFormatter: ({ value, data }) => {
 					if (!data) return '-';
 
-					const { lastErrorCode, customErrorMsg } = data as TDataTab<'open_orders' | 'today_orders'>;
+					const { lastErrorCode, customErrorMsg } = data as Order.TDataTab<'open_orders' | 'today_orders'>;
 					const errorMessage = customErrorMsg || lastErrorCode;
 
 					if (errorMessage) return t(customErrorMsg ? errorMessage : 'order_errors.' + errorMessage);
@@ -225,8 +217,8 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.price'),
 				valueGetter: ({ data }) =>
 					tab === 'executed_orders'
-						? (data as TDataTab<'executed_orders'>).totalPrice
-						: (data as TDataTab<'today_orders' | 'open_orders'>).price,
+						? (data as Order.TDataTab<'executed_orders'>).totalPrice
+						: (data as Order.TDataTab<'today_orders' | 'open_orders'>).price,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 
@@ -236,8 +228,8 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.count'),
 				valueGetter: ({ data }) =>
 					tab === 'executed_orders'
-						? (data as TDataTab<'executed_orders'>).tradeQuantity
-						: (data as TDataTab<'today_orders' | 'open_orders'>).quantity,
+						? (data as Order.TDataTab<'executed_orders'>).tradeQuantity
+						: (data as Order.TDataTab<'today_orders' | 'open_orders'>).quantity,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 
@@ -247,7 +239,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.col_executed_orders'),
 				minWidth: 88,
 				hide: tab === 'executed_orders',
-				valueGetter: ({ data }) => (data as TDataTab<'today_orders' | 'open_orders'>).sumExecuted ?? 0,
+				valueGetter: ({ data }) => (data as Order.TDataTab<'today_orders' | 'open_orders'>).sumExecuted ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(value ?? 0),
 			},
 
@@ -259,8 +251,8 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				hide: tab === 'executed_orders',
 				valueGetter: ({ data }) =>
 					Math.max(
-						(data as TDataTab<'today_orders' | 'open_orders'>).quantity -
-							(data as TDataTab<'today_orders' | 'open_orders'>).sumExecuted,
+						(data as Order.TDataTab<'today_orders' | 'open_orders'>).quantity -
+							(data as Order.TDataTab<'today_orders' | 'open_orders'>).sumExecuted,
 						0,
 					) ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(value ?? 0),
@@ -272,7 +264,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.commission'),
 				hide: tab !== 'executed_orders',
 				headerComponent: RialTemplate,
-				valueGetter: ({ data }) => (data as TDataTab<'executed_orders'>).totalCommission,
+				valueGetter: ({ data }) => (data as Order.TDataTab<'executed_orders'>).totalCommission,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 
@@ -283,8 +275,8 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerComponent: RialTemplate,
 				valueGetter: ({ data }) =>
 					tab === 'executed_orders'
-						? (data as TDataTab<'executed_orders'>).totalPrice
-						: (data as TDataTab<'today_orders' | 'open_orders'>).orderVolume,
+						? (data as Order.TDataTab<'executed_orders'>).totalPrice
+						: (data as Order.TDataTab<'today_orders' | 'open_orders'>).orderVolume,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 
@@ -295,7 +287,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				hide: tab !== 'open_orders',
 				minWidth: 120,
 				flex: 1,
-				valueGetter: ({ data }) => (data as TDataTab<'open_orders'>).orderPlaceInPrice,
+				valueGetter: ({ data }) => (data as Order.TDataTab<'open_orders'>).orderPlaceInPrice,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 
@@ -305,7 +297,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.upcoming_quantity'),
 				hide: tab !== 'open_orders',
 				minWidth: 112,
-				valueGetter: ({ data }) => (data as TDataTab<'open_orders'>).orderVolumeInPrice,
+				valueGetter: ({ data }) => (data as Order.TDataTab<'open_orders'>).orderVolumeInPrice,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 
@@ -316,8 +308,8 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: tab === 'open_orders' ? t('orders.save_date') : t('orders.save_time'),
 				valueGetter: ({ data }) =>
 					tab === 'executed_orders'
-						? (data as TDataTab<'executed_orders'>).tradeDate
-						: (data as TDataTab<'today_orders' | 'open_orders'>).orderDateTime,
+						? (data as Order.TDataTab<'executed_orders'>).tradeDate
+						: (data as Order.TDataTab<'today_orders' | 'open_orders'>).orderDateTime,
 				valueFormatter: ({ value }) => dateFormatter(value, tab === 'today_orders' ? 'time' : 'datetime'),
 			},
 
@@ -329,7 +321,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				valueFormatter: ({ data }) => {
 					if (!data) return '-';
 
-					const { validity, validityDate } = data as TDataTab<'today_orders' | 'open_orders'>;
+					const { validity, validityDate } = data as Order.TDataTab<'today_orders' | 'open_orders'>;
 
 					if (validity === 'GoodTillDate') {
 						const tt = new Date(validityDate).getTime();
@@ -350,7 +342,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				colId: 'branchName',
 				hide: tab !== 'executed_orders',
 				headerName: t('orders.branch'),
-				valueGetter: ({ data }) => (data as TDataTab<'executed_orders'>).branchName ?? '-',
+				valueGetter: ({ data }) => (data as Order.TDataTab<'executed_orders'>).branchName ?? '-',
 			},
 
 			// عملیات
@@ -373,7 +365,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 		[JSON.stringify(data), tab],
 	);
 
-	const defaultColDef: ColDef<TDataTab> = useMemo(
+	const defaultColDef: ColDef<Order.TDataTab> = useMemo(
 		() => ({
 			suppressMovable: true,
 			sortable: true,
@@ -404,7 +396,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 
 	return (
 		<>
-			<AgTable<TDataTab>
+			<AgTable<Order.TDataTab>
 				suppressAnimationFrame={false}
 				suppressRowClickSelection
 				ref={gridRef}
