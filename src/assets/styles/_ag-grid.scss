@@ -10,7 +10,9 @@
 				// header
 				--ag-header-height: 48px,
 				--ag-header-background-color: rgba(248, 250, 253, 1),
-				--ag-header-column-separator-display: false,
+				--ag-header-column-separator-display: block,
+				--ag-header-column-separator-width: 1px,
+				--ag-header-column-separator-height: 100%,
 				--ag-header-column-separator-color: rgb(255, 255, 255),
 				// Main Colors
 				--ag-background-color: rgba(255, 255, 255, 1),
@@ -22,14 +24,14 @@
 				--ag-row-hover-color: rgba(229, 238, 255, 1),
 				--ag-odd-row-background-color: rgba(248, 250, 253, 1),
 				// Borders
-				--ag-borders: 0px solid,
+				--ag-borders: 0 solid,
 				--ag-border-color: rgb(94, 103, 129),
-				--ag-borders-secondary: 0px solid,
+				--ag-borders-secondary: 0 solid,
 				--ag-cell-horizontal-border: solid rgb(255, 255, 255),
-				--ag-borders-critical: 0px solid,
+				--ag-borders-critical: 0 solid,
 				--ag-row-border-style: solid,
 				--ag-row-border-color: transparent,
-				--ag-row-border-width: 0px,
+				--ag-row-border-width: 0,
 
 				// Rows
 				--ag-row-height: 48px,
@@ -46,6 +48,12 @@
 		)
 	)
 );
+
+.ag-theme-alpine .ag-row,
+.ag-theme-alpine-dark .ag-row,
+.ag-theme-alpine-auto-dark .ag-row {
+	font-size: var(--ag-font-size);
+}
 
 .ag-root-wrapper {
 	border-radius: 0;

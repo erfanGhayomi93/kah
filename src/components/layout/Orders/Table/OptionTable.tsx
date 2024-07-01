@@ -2,11 +2,13 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
+import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { useAppDispatch } from '@/features/hooks';
 import { setChoiceCollateralModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
-import { type ColDef, type GridApi } from '@ag-grid-community/core';
+import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import OptionActionCell from '../common/OptionActionCell';
@@ -29,7 +31,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 
 	const onClosePosition = (order: Order.OptionOrder) => {
 		addBuySellModal({
-			side: order.side === 'Call' ? 'sell' : 'buy',
+			side: order.side === 'Buy' ? 'sell' : 'buy',
 			symbolType: 'option',
 			type: 'order',
 			mode: 'create',
@@ -49,26 +51,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 		);
 	};
 
-	const showDetails = (order: Order.OptionOrder) => {
-		// dispatch(
-		// 	setOrderDetailsModal({
-		// 		type: 'option',
-		// 		data: {
-		// 			price: order.pr
-		// 			contractSize,
-		// 			settlementDay,
-		// 			strikePrice,
-		// 			requiredMargin: requiredMargin.value,
-		// 			strikeCommission: 0.0005,
-		// 			tradeCommission: commission.value,
-		// 			side: order. == '',
-		// 			type,
-		// 			symbolTitle: symbol.symbolInfo.symbolTitle,
-		// 		},
-		// 	}),
-		// );
-	};
-
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(
 		() => [
 			{
@@ -83,34 +65,37 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
 			{
-				colId: 'order_side',
-				headerName: t('orders.order_side'),
+				colId: 'position',
+				headerName: t('orders.position'),
+				minWidth: 96,
 				valueGetter: ({ data }) => data!.side,
-				valueFormatter: ({ value }) => (value === 'Call' ? t('side.buy') : t('side.sell')),
-				cellClass: ({ data }) => {
-					switch (data!.side) {
-						case 'Call':
-							return 'text-light-success-100';
-						case 'Put':
-							return 'text-light-error-100';
-						default:
-							return '';
-					}
-				},
+				valueFormatter: ({ value }) => (value === 'Buy' ? t('side.buy') : t('side.sell')),
+				cellClass: ({ value }) =>
+					clsx({
+						'text-light-success-100': value === 'Buy',
+						'text-light-error-100': value === 'Sell',
+					}),
 			},
 			{
 				colId: 'position_count',
 				headerName: t('orders.position_count'),
 				valueGetter: ({ data }) => Math.max(0, data!.positionCount),
 				valueFormatter: ({ value }) => sepNumbers(String(value ?? 0)),
+				cellClass: ({ value }) =>
+					clsx({
+						'text-light-success-100': value === 'Buy',
+						'text-light-error-100': value === 'Sell',
+					}),
 			},
 			{
-				colId: 'variation_margin',
-				headerName: t('orders.variation_margin'),
-				minWidth: 144,
-				flex: 1,
-				valueGetter: ({ data }) => data!.variationMargin,
-				valueFormatter: ({ value }) => sepNumbers(String(value ?? 0)),
+				colId: 'blockType',
+				headerName: t('orders.block_type'),
+				valueGetter: ({ data }) => data!.blockType,
+				valueFormatter: ({ value }) => {
+					if (value === 'Buy') return '-';
+					if (value) return t('option_blockType.' + value);
+					return '-';
+				},
 			},
 			{
 				colId: 'physical_settlement_date',
@@ -121,6 +106,13 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
 			{
+				colId: 'remain_days',
+				headerName: t('orders.remain_days'),
+				minWidth: 184,
+				flex: 1,
+				valueGetter: ({ data }) => Math.max(0, data!.remainDays),
+			},
+			{
 				colId: 'strike_price',
 				headerName: t('orders.strike_price'),
 				minWidth: 144,
@@ -129,11 +121,34 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value ?? 0)),
 			},
 			{
-				colId: 'remain_days',
-				headerName: t('orders.remain_days'),
-				minWidth: 160,
-				flex: 1,
-				valueGetter: ({ data }) => Math.max(0, data!.remainDays),
+				colId: 'bs_avg',
+				headerName: t('orders.buy_sell_average'),
+				valueGetter: ({ data }) => (data!.side === 'Buy' ? data!.avgBuyPrice : data!.avgSellPrice) ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(Math.round(value ?? 0))),
+			},
+			{
+				colId: 'lastTradedPrice',
+				headerName: t('orders.last_traded_price'),
+				minWidth: 128,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data!.lastTradedPrice ?? 0, data!.lastTradedPriceVarPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
+			},
+			{
+				colId: 'closingPrice',
+				headerName: t('orders.closing_price'),
+				minWidth: 128,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data!.closingPrice ?? 0, data!.closingPriceVarPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{
 				colId: 'action',
@@ -145,7 +160,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				cellRendererParams: {
 					onClosePosition,
 					onChangeCollateral,
-					showDetails,
 				},
 			},
 		],
