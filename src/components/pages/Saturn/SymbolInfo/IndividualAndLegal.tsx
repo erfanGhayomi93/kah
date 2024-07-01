@@ -1,6 +1,7 @@
 import { numFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import Progressbar from './Progressbar';
+import QueueValue from './QueueValue';
 
 interface IndividualAndLegalProps {
 	symbol: Symbol.Info;
@@ -25,7 +26,7 @@ const IndividualAndLegal = ({
 
 	return (
 		<div className='flex w-full'>
-			<div className='flex-1 gap-24 border-l border-light-gray-200 pl-16 flex-column'>
+			<div className='flex-1 gap-24 border-l border-light-gray-200 pl-8 flex-column'>
 				<Progressbar
 					buyVolume={individualBuyVolume}
 					buyCount={numberOfIndividualsBuyers}
@@ -45,8 +46,10 @@ const IndividualAndLegal = ({
 				/>
 			</div>
 
-			<div className='flex-1 justify-between flex-column'>
-				<div className='pr-16 text-tiny flex-justify-between'>
+			<div className='flex-1 justify-between gap-24 pr-8 flex-column'>
+				<QueueValue />
+
+				<div className='h-48 text-tiny flex-justify-between'>
 					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
 						{t(inflowAndOutflow < 0 ? 'liquid_inflow' : 'liquid_outflow')}
 					</span>

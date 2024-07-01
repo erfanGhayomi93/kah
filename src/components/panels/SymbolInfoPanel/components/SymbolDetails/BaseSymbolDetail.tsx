@@ -113,7 +113,7 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 					<li
 						key={row.id}
 						style={{ flex: '0 0 40px' }}
-						className='odd:bg-light-gray-100 rounded-sm px-8 text-base flex-justify-between'
+						className='rounded-sm px-8 text-base flex-justify-between odd:bg-light-gray-100'
 					>
 						<span className='text-light-gray-700'>{row.title}:</span>
 						<span className='text-light-gray-800 ltr'>{row.value}</span>
@@ -124,7 +124,7 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 			<button
 				type='button'
 				onClick={() => setIsExpand(!isExpand)}
-				className='text-light-gray-700 size-24 w-full flex-justify-center'
+				className='size-24 w-full text-light-gray-700 flex-justify-center'
 			>
 				<ArrowDownSVG
 					width='1.4rem'

@@ -767,133 +767,79 @@ declare namespace Order {
 
 	export type ActionType = 'CreateOrder' | 'ModifyOrder' | 'CancelOrder' | 'ExpireOrder';
 
-	export type OrderSourceType = 'Account' | 'Portfolio' | 'Position' | 'Found';
+	export type OrderSourceType = 'Account' | 'Portfolio' | 'Position';
 
 	export type Side = 'Buy' | 'Sell';
 
-	export type TOrder = OpenOrder | TodayOrder | ExecutedOrder | DraftOrder | OptionOrder;
+	type TDataTab<
+		T extends Extract<TOrdersTab, 'open_orders' | 'executed_orders' | 'today_orders'> =
+			| 'open_orders'
+			| 'executed_orders'
+			| 'today_orders',
+	> = T extends 'open_orders'
+		? Order.OpenOrder
+		: T extends 'executed_orders'
+			? Order.ExecutedOrder
+			: Order.TodayOrder;
+
+	export type TradeDetailsType =
+		| null
+		| {
+				tradedQuantity: number;
+				tradePrice: number;
+				remainingQuantityOrder: number;
+				tradeDate: string;
+				tradeNumber: string;
+				total: number;
+		  }[];
 
 	export interface Response {
 		clientKey: string;
 		response: string;
 	}
 
-	export interface OpenOrder {
+	export interface OptionOrder {
 		orderId: number;
-		userName: null | string;
+		side: 'Buy' | 'Sell';
+		contractType: 'Call' | 'Put';
 		customerISIN: string;
-		marketUnit: string;
 		symbolISIN: string;
-		price: number;
-		orderVolume: number;
-		triggerPrice: number;
-		orderPlaceInPrice?: null | number;
-		orderVolumeInPrice?: null | number;
-		quantity: number;
-		orderSide: Side;
-		orderOrigin: string;
-		parentOrderId: number;
-		orderType: Types;
-		validity: TBsValidityDates;
-		validityDate: string;
-		orderFrom: FormType;
-		orderAction: ActionType | 0;
-		orderMinimumQuantity: number;
-		orderDateTime: string;
-		hostOrderNumber: null | string;
-		expectedRemainingQuantity: number;
-		sumExecuted: number;
+		baseSymbolISIN: string;
+		positionCount: number;
+		blockedMargin: number;
+		blockedAsset: number;
+		physicalSettlementDate: string;
+		cashSettlementDate: string;
+		contractSize: number;
+		strikePrice: number;
+		remainDays: number;
 		symbolTitle: string;
-		position: number;
-		valuePosition: number;
-		lastTradePrice: number;
-		orderStatus: StatusType;
-		lastErrorCode: string | null;
-		customErrorMsg: string | null;
-		orderPlaceInPrice?: null | number;
-		orderVolumeInPrice?: null | number;
-		tradeDetails: TradeDetailsType;
-		isEditable: boolean;
-		blockType: OrderSourceType;
-	}
-
-	export interface TodayOrder {
-		clientKey: string;
-		orderId: number;
-		userName: null | string;
-		customerISIN: string;
-		marketUnit: string;
-		symbolISIN: string;
-		price: number;
-		orderVolume: number;
-		triggerPrice: number;
-		orderPlaceInPrice?: null | number;
-		orderVolumeInPrice?: null | number;
-		quantity: number;
-		orderSide: Side;
-		orderOrigin: string;
-		parentOrderId: number;
-		orderType: Types;
-		validity: TBsValidityDates;
-		validityDate: string;
-		orderFrom: FormType;
-		orderAction: ActionType | 0;
-		orderMinimumQuantity: number;
-		orderDateTime: string;
-		hostOrderNumber: null | string;
-		expectedRemainingQuantity: number;
-		sumExecuted: number;
-		symbolTitle: string;
-		position: number;
-		valuePosition: number;
-		lastTradePrice: number;
-		orderStatus: StatusType;
-		lastErrorCode: string | null;
-		customErrorMsg: string | null;
-		orderPlaceInPrice?: null | number;
-		orderVolumeInPrice?: null | number;
-		tradeDetails: TradeDetailsType;
-		isEditable: boolean;
-		blockType: OrderSourceType;
-	}
-
-	export interface ExecutedOrder {
-		orderId: number;
-		userName: null | string;
-		customerISIN: string;
-		marketUnit: string;
-		symbolISIN: string;
-		price: number;
-		orderVolume: number;
-		triggerPrice: number;
-		orderPlaceInPrice?: null | number;
-		orderVolumeInPrice?: null | number;
-		quantity: number;
-		orderSide: Side;
-		orderOrigin: string;
-		parentOrderId: number;
-		orderType: Types;
-		validity: TBsValidityDates;
-		validityDate: string;
-		orderFrom: FormType;
-		orderAction: ActionType | 0;
-		orderMinimumQuantity: number;
-		orderDateTime: string;
-		hostOrderNumber: null | string;
-		expectedRemainingQuantity: number;
-		sumExecuted: number;
-		symbolTitle: string;
-		position: number;
-		valuePosition: number;
-		lastTradePrice: number;
-		orderStatus: StatusType;
-		lastErrorCode: string | null;
-		customErrorMsg: string | null;
-		orderPlaceInPrice?: null | number;
-		orderVolumeInPrice?: null | number;
-		tradeDetails: TradeDetailsType;
-		isEditable: boolean;
-		blockType: OrderSourceType;
+		companyISIN: string;
+		canClosePosition: boolean;
+		availableClosePosition: number;
+		variationMargin: any;
+		requiredMargin: number;
+		isFreeze: boolean;
+		isSwapped: boolean;
+		blockCount: number;
+		blockType: Order.OrderSourceType;
+		sumPayment: number;
+		sumReceived: number;
+		sumAmount: number;
+		avgBuyPrice: number;
+		avgSellPrice: number;
+		buyCost: number;
+		sellCost: number;
+		actual_Profit_Loss: number;
+		total_Actual_Profit_Loss: number;
+		bestBuyLimitPrice_1: number;
+		bestSellLimitPrice_1: number;
+		closingPrice: number;
+		lastTradedPrice: number;
+		closingPriceVarPercent: number;
+		lastTradedPriceVarPercent: number;
+		lowThreshold: number;
+		highThreshold: number;
 	}
 
 	export interface DraftOrder {
@@ -902,41 +848,82 @@ declare namespace Order {
 		symbolTitle: string;
 		price: number;
 		quantity: number;
-		side: Side;
+		side: Order.Side;
 		validity: TBsValidityDates;
 		validityDate: string;
 		date: string;
+		isLoading?: boolean;
+		sent?: 'yes' | 'no';
 		blockType?: OrderSourceType;
 	}
 
-	export interface OptionOrder {
+	export type OpenOrder = {
 		orderId: number;
-		side: 'Call' | 'Put';
-		canClosePosition: boolean;
-		availableClosePosition: number;
+		userName: null | string;
+		customerISIN: string;
+		marketUnit: string;
+		symbolISIN: string;
+		price: number;
+		orderVolume: number;
+		triggerPrice: number;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		quantity: number;
+		orderSide: Order.Side;
+		orderOrigin: string;
+		parentOrderId: number;
+		orderType: Types;
+		validity: TBsValidityDates;
+		validityDate: string;
+		orderFrom: FormType;
+		orderAction: ActionType | 0;
+		orderMinimumQuantity: number;
+		orderDateTime: string;
+		hostOrderNumber: null | string;
+		expectedRemainingQuantity: number;
+		sumExecuted: number;
+		symbolTitle: string;
+		position: number;
+		valuePosition: number;
+		lastTradePrice: number;
+		orderStatus: StatusType;
+		lastErrorCode: string | null;
+		customErrorMsg: string | null;
+		orderPlaceInPrice?: null | number;
+		orderVolumeInPrice?: null | number;
+		tradeDetails: TradeDetailsType;
+		isEditable: boolean;
+		blockType: OrderSourceType;
+		blockedPositionISIN?: string;
+		blockedPositionTitle?: string;
+	};
+
+	export interface ExecutedOrder {
+		id: string;
 		customerISIN: string;
 		symbolISIN: string;
-		positionCount: number;
-		blockedMargin: number;
-		blockedAsset: number;
-		variationMargin: number;
-		physicalSettlementDate: string;
-		cashSettlementDate: string;
-		contractSize: number;
-		strikePrice: number;
-		finalPrice: number;
-		gainedPortfolioLoss: number;
-		profitLoss_ClosingPrice: number;
-		profitLoss_ClosingPricePercent: number;
-		profitLoss_LastPrice: number;
-		profitLoss_LastPricePercent: number;
-		remainDays: number;
 		symbolTitle: string;
-		companyISIN: string;
-		isFreeze: boolean;
-		isSwapped: boolean;
-		blockType: OrderSourceType;
+		orderSide: Order.Side;
+		tradeDate: string;
+		tradeQuantity: number;
+		tradePrice: number;
+		totalPrice: number;
+		totalCommission: number;
+		branchName: string;
+		traderId: string;
+		branchName: string;
 	}
+
+	export type TodayOrder = OpenOrder & {
+		clientKey: string;
+	};
+
+	export type TOrder =
+		| Order.OpenOrder
+		| Order.TodayOrder
+		| Order.ExecutedOrder
+		| Order.DraftOrder
+		| Order.OptionOrder;
 }
 
 declare namespace Message {
@@ -1922,7 +1909,7 @@ declare namespace Reports {
 	export interface TCashOrPhysicalSettlement {
 		symbolTitle: string;
 		cashSettlementDate: string;
-		side: Side;
+		side: 'Buy' | 'Sell';
 		openPositionCount: pandLStatus;
 		pandLStatus: string;
 		from: 'cash' | 'physical';

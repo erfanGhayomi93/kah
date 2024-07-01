@@ -42,15 +42,15 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 	};
 
 	const orderStatusColor = () => {
-		if (type !== 'order') return '';
+		if (!('orderStatus' in data)) return '';
 
 		switch (data.orderStatus) {
 			case 'OrderDone':
 			case 'OnBoard':
-				return 'text-light-success-100 bg-light-success-100/10';
+				return 'text-light-success-100 bg-light-success-50';
 			case 'Error':
 			case 'Canceled':
-				return 'text-light-error-100 bg-light-error-100/10';
+				return 'text-light-error-100 bg-light-error-50';
 			case 'Modified':
 				return 'text-light-secondary-300 bg-light-secondary-300/10';
 			default:
@@ -59,7 +59,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 	};
 
 	const validityDate = () => {
-		if (type !== 'order') return '';
+		if (!('validity' in data) || !('validityDate' in data)) return '';
 
 		const { validity, validityDate } = data;
 
@@ -77,6 +77,11 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 	};
 
 	const list = useMemo<IItem[][]>(() => {
+		const price = 'price' in data ? data.price : data.tradePrice;
+		const amount = 'orderVolume' in data ? data.orderVolume : 'totalPrice' in data ? data.totalPrice : 0;
+		const quantity = 'quantity' in data ? data.quantity : data.tradeQuantity;
+		const orderStatus = 'orderStatus' in data ? data.orderStatus : 'OrderDone';
+		const sumExecuted = 'sumExecuted' in data ? data.sumExecuted : quantity;
 		const side = (type === 'order' ? data.orderSide : data.side).toLowerCase();
 		const isBuy = side === 'buy';
 
@@ -90,7 +95,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					},
 					{
 						name: t('order_details_modal.order_status'),
-						value: t(`order_status.${data.orderStatus}`),
+						value: t(`order_status.${orderStatus}`),
 						className: ['truncate rounded px-8 py-4 text-right', orderStatusColor()],
 					},
 				],
@@ -99,7 +104,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 						name: t('order_details_modal.quantity_and_executed_orders'),
 						value: (
 							<>
-								<span className='pl-4 font-medium'>{`(${sepNumbers(String(data.sumExecuted))}) / ${sepNumbers(String(data.quantity))}`}</span>
+								<span className='pl-4 font-medium'>{`(${sepNumbers(String(sumExecuted))}) / ${sepNumbers(String(quantity))}`}</span>
 								<span className='text-tiny text-light-gray-700'>{t('order_details_modal.stock')}</span>
 							</>
 						),
@@ -109,7 +114,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 						value: (
 							<>
 								<span className='pl-4 font-medium'>
-									{sepNumbers(String(Math.max(0, data.quantity - data.sumExecuted) ?? 0))}
+									{sepNumbers(String(Math.max(0, quantity - sumExecuted)))}
 								</span>
 								<span className='text-tiny text-light-gray-700'>{t('order_details_modal.stock')}</span>
 							</>
@@ -117,11 +122,11 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					},
 				],
 				[
-					{ name: t('order_details_modal.price'), value: numFormatter(data.price) },
-					{ name: t('order_details_modal.amount'), value: numFormatter(data.orderVolume) },
+					{ name: t('order_details_modal.price'), value: numFormatter(price) },
+					{ name: t('order_details_modal.amount'), value: numFormatter(amount) },
 					{
 						name: t('order_details_modal.commission'),
-						value: numFormatter(data.orderVolume - data.price * data.quantity),
+						value: numFormatter(amount - price * quantity),
 					},
 					{
 						name: t('order_details_modal.validity'),
@@ -220,9 +225,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 							{items.map((item, j) => (
 								<li key={j}>
 									<span className='text-light-gray-700'>{item.name}:</span>
-									<span className={clsx('text-base font-medium text-light-gray-800', item.className)}>
-										{item.value}
-									</span>
+									<span className={clsx('text-base font-medium', item.className)}>{item.value}</span>
 								</li>
 							))}
 						</ul>

@@ -29,7 +29,7 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 	};
 
 	const onSubmit = () => {
-		const isDisabled = Boolean(order.side === 'Call' || order.isFreeze);
+		const isDisabled = Boolean(order.side === 'Buy' || order.isFreeze);
 		if (isDisabled) return;
 	};
 
@@ -40,7 +40,7 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 
 				<div className='flex-1 justify-between p-16 pt-40 flex-column'>
 					<div className='flex-1 items-center gap-24 text-center flex-column'>
-						<span className='text-light-gray-700 text-base transition-colors'>
+						<span className='text-base text-light-gray-700 transition-colors'>
 							{t('choice_collateral_modal.select_collateral')}
 						</span>
 
@@ -52,7 +52,7 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 								className={clsx(
 									'h-full flex-col gap-16 rounded border transition-colors flex-justify-center',
 									value === 'Account'
-										? 'bg-light-secondary-200 border-light-primary-100 text-light-primary-100'
+										? 'border-light-primary-100 bg-light-secondary-200 text-light-primary-100'
 										: 'border-light-gray-200 text-light-gray-700',
 								)}
 							>
@@ -73,7 +73,7 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 								className={clsx(
 									'h-full flex-col gap-16 rounded border transition-colors flex-justify-center',
 									value === 'Portfolio'
-										? 'bg-light-secondary-200 border-light-primary-100 text-light-primary-100'
+										? 'border-light-primary-100 bg-light-secondary-200 text-light-primary-100'
 										: 'border-light-gray-200 text-light-gray-700',
 								)}
 							>
@@ -89,12 +89,12 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 							</button>
 						</div>
 
-						<span className='text-light-gray-700 text-base transition-colors'>
+						<span className='text-base text-light-gray-700 transition-colors'>
 							{t.rich('choice_collateral_modal.collateral_details', {
 								price: sepNumbers(String(5000000)),
 								title: order.symbolTitle,
 								p: (chunk) => (
-									<span className='text-light-primary-100 text-lg font-medium'>{chunk}</span>
+									<span className='text-lg font-medium text-light-primary-100'>{chunk}</span>
 								),
 								t: (chunk) => <span className='font-medium'>{chunk}</span>,
 							})}

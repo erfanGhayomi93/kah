@@ -48,26 +48,28 @@ const OptionDetail = ({ symbolData, setHeight }: OptionDetailProps) => {
 
 	return (
 		<Section name='option_detail' defaultActiveTab={activeTab} tabs={tabs} onChange={onTabChanges}>
-			<div className='px-8 pb-8 pt-16 flex-column'>
-				{activeTab === 'price_information' ? (
-					<PriceInformation isExpand={isExpand} symbolData={symbolData} />
-				) : (
-					<ComputingInformation isExpand={isExpand} symbolISIN={symbolData.symbolISIN} />
-				)}
-			</div>
+			<div className='h-full flex-column'>
+				<div className='relative flex-1 px-8 pb-8 pt-16'>
+					{activeTab === 'price_information' ? (
+						<PriceInformation isExpand={isExpand} symbolData={symbolData} />
+					) : (
+						<ComputingInformation isExpand={isExpand} symbolISIN={symbolData.symbolISIN} />
+					)}
+				</div>
 
-			<button
-				type='button'
-				onClick={() => setIsExpand(!isExpand)}
-				className='text-light-gray-700 size-24 w-full flex-justify-center'
-			>
-				<ArrowDownSVG
-					width='1.4rem'
-					height='1.4rem'
-					className='transition-transform'
-					style={{ transform: `rotate(${isExpand ? 0 : 180}deg)` }}
-				/>
-			</button>
+				<button
+					type='button'
+					onClick={() => setIsExpand(!isExpand)}
+					className='size-24 w-full text-light-gray-700 flex-justify-center'
+				>
+					<ArrowDownSVG
+						width='1.4rem'
+						height='1.4rem'
+						className='transition-transform'
+						style={{ transform: `rotate(${isExpand ? 0 : 180}deg)` }}
+					/>
+				</button>
+			</div>
 		</Section>
 	);
 };
