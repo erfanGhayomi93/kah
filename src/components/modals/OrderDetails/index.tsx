@@ -47,10 +47,10 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 		switch (data.orderStatus) {
 			case 'OrderDone':
 			case 'OnBoard':
-				return 'text-light-success-100 bg-light-success-100/10';
+				return 'text-light-success-100 bg-light-success-50';
 			case 'Error':
 			case 'Canceled':
-				return 'text-light-error-100 bg-light-error-100/10';
+				return 'text-light-error-100 bg-light-error-50';
 			case 'Modified':
 				return 'text-light-secondary-300 bg-light-secondary-300/10';
 			default:
@@ -220,9 +220,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 							{items.map((item, j) => (
 								<li key={j}>
 									<span className='text-light-gray-700'>{item.name}:</span>
-									<span className={clsx('text-base font-medium text-light-gray-800', item.className)}>
-										{item.value}
-									</span>
+									<span className={clsx('text-base font-medium', item.className)}>{item.value}</span>
 								</li>
 							))}
 						</ul>

@@ -10,6 +10,7 @@ import Loading from '@/components/common/Loading';
 import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
+import { type ExecutedOrderProps, type OpenOrderProps, type TodayOrderProps } from './Table/OrderTable';
 
 const OrderTable = dynamic(() => import('./Table/OrderTable'), {
 	ssr: false,
@@ -36,7 +37,7 @@ const Body = ({ tab }: BodyProps) => {
 	const {
 		data: openOrdersData,
 		refetch: refetchOpenOrders,
-		isFetching: isFetchingOpenOrders,
+		isLoading: isFetchingOpenOrders,
 	} = useOpenOrdersQuery({
 		queryKey: ['openOrdersQuery'],
 		enabled: false,
@@ -45,7 +46,7 @@ const Body = ({ tab }: BodyProps) => {
 	const {
 		data: todayOrdersData,
 		refetch: refetchTodayOrders,
-		isFetching: isFetchingTodayOrders,
+		isLoading: isFetchingTodayOrders,
 	} = useTodayOrdersQuery({
 		queryKey: ['openOrdersQuery'],
 		enabled: false,
@@ -54,7 +55,7 @@ const Body = ({ tab }: BodyProps) => {
 	const {
 		data: executedOrdersData,
 		refetch: refetchExecutedOrders,
-		isFetching: isFetchingExecutedOrders,
+		isLoading: isFetchingExecutedOrders,
 	} = useExecutedOrdersQuery({
 		queryKey: ['executedOrdersQuery'],
 		enabled: false,
@@ -63,7 +64,7 @@ const Body = ({ tab }: BodyProps) => {
 	const {
 		data: draftOrdersData,
 		refetch: refetchDraftOrders,
-		isFetching: isFetchingDraftOrders,
+		isLoading: isFetchingDraftOrders,
 	} = useDraftOrdersQuery({
 		queryKey: ['draftOrdersQuery'],
 		enabled: false,
@@ -72,7 +73,7 @@ const Body = ({ tab }: BodyProps) => {
 	const {
 		data: optionOrdersData,
 		refetch: refetchOptionOrders,
-		isFetching: isFetchingOptionOrders,
+		isLoading: isFetchingOptionOrders,
 	} = useOptionOrdersQuery({
 		queryKey: ['optionOrdersQuery'],
 		enabled: false,
@@ -97,17 +98,11 @@ const Body = ({ tab }: BodyProps) => {
 		if (Array.isArray(orders)) ipcMain.send('set_selected_orders', orders);
 	};
 
-	const ordersData = useMemo<Order.OpenOrder[] | Order.ExecutedOrder[] | Order.TodayOrder[]>(() => {
-		switch (tab) {
-			case 'open_orders':
-				return openOrdersData ?? [];
-			case 'executed_orders':
-				return executedOrdersData ?? [];
-			case 'today_orders':
-				return todayOrdersData ?? [];
-			default:
-				return [];
-		}
+	const ordersTableProps = useMemo<OpenOrderProps | ExecutedOrderProps | TodayOrderProps>(() => {
+		if (tab === 'open_orders') return { tab: 'open_orders', data: openOrdersData ?? [] };
+		if (tab === 'executed_orders') return { tab: 'executed_orders', data: executedOrdersData ?? [] };
+
+		return { tab: 'today_orders', data: todayOrdersData ?? [] };
 	}, [tab, openOrdersData, draftOrdersData, executedOrdersData, todayOrdersData]);
 
 	useEffect(() => {
@@ -160,8 +155,7 @@ const Body = ({ tab }: BodyProps) => {
 			) : (
 				<OrderTable
 					setSelectedRows={setSelectedRows}
-					tab={tab}
-					data={ordersData}
+					{...ordersTableProps}
 					loading={
 						tab === 'executed_orders'
 							? isFetchingExecutedOrders

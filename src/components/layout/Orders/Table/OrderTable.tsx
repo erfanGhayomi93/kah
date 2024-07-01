@@ -11,49 +11,92 @@ import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { deleteOrder } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import OrderActionCell from '../common/OrderActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
 import SymbolTitleHeader from '../common/SymbolTitleHeader';
 
-type TOrders = Order.OpenOrder | Order.ExecutedOrder | Order.TodayOrder;
+type TTab = Extract<TOrdersTab, 'open_orders' | 'executed_orders' | 'today_orders'>;
 
-interface OrderTableProps {
-	setSelectedRows: (orders: Order.TOrder[]) => void;
-	tab: TOrdersTab;
-	data: TOrders[];
-	loading: boolean;
+type TOrder = Order.OpenOrder[] | Order.TodayOrder[] | Order.ExecutedOrder[];
+
+type TDataTab<T extends TTab = TTab> = T extends 'open_orders'
+	? Order.OpenOrder
+	: T extends 'executed_orders'
+		? Order.ExecutedOrder
+		: Order.TodayOrder;
+
+export interface OpenOrderProps {
+	tab: 'open_orders';
+	data: Array<TDataTab<'open_orders'>>;
 }
 
-const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
+export interface ExecutedOrderProps {
+	tab: 'executed_orders';
+	data: Array<TDataTab<'executed_orders'>>;
+}
+
+export interface TodayOrderProps {
+	tab: 'today_orders';
+	data: Array<TDataTab<'today_orders'>>;
+}
+
+type OrderTableProps = (OpenOrderProps | ExecutedOrderProps | TodayOrderProps) & {
+	setSelectedRows: (orders: TOrder) => void;
+	loading: boolean;
+};
+
+const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const gridRef = useRef<GridApi<TOrders>>(null);
+	const gridRef = useRef<GridApi<TDataTab>>(null);
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const onCopy = (order: TOrders) => {
+	const onCopy = (order: TDataTab) => {
+		const price =
+			tab === 'executed_orders'
+				? (order as TDataTab<'executed_orders'>).totalPrice
+				: (order as TDataTab<'today_orders' | 'open_orders'>).price;
+		const quantity =
+			tab === 'executed_orders'
+				? (order as TDataTab<'executed_orders'>).tradeQuantity
+				: (order as TDataTab<'today_orders' | 'open_orders'>).quantity;
+		const validity =
+			tab === 'executed_orders' ? undefined : (order as TDataTab<'today_orders' | 'open_orders'>).validity;
+		const validityDate =
+			tab === 'executed_orders'
+				? 0
+				: new Date((order as TDataTab<'today_orders' | 'open_orders'>).validityDate).getTime();
+
 		addBuySellModal({
 			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
 			symbolType: 'base',
 			mode: 'create',
 			symbolISIN: order.symbolISIN,
 			symbolTitle: order.symbolTitle,
-			initialPrice: order.price,
-			initialQuantity: order.quantity,
-			initialValidity: order.validity,
-			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+			initialPrice: price,
+			initialQuantity: quantity,
+			initialValidity: validity,
+			initialValidityDate: validityDate,
 		});
 	};
 
-	const onDelete = (order: TOrders) => {
+	const onDelete = (order: TDataTab) => {
+		const orderId =
+			tab === 'executed_orders'
+				? (order as TDataTab<'executed_orders'>).id
+				: tab === 'today_orders'
+					? (order as TDataTab<'today_orders'>).orderId
+					: (order as TDataTab<'open_orders'>).orderId;
+
 		dispatch(
 			setConfirmModal({
 				title: t('orders.delete_draft'),
 				description: t('orders.delete_draft_confirm', { title: order.symbolTitle }),
-				onSubmit: () => deleteOrder([order.orderId]),
+				onSubmit: () => deleteOrder([Number(orderId)]),
 				onCancel: () => dispatch(setConfirmModal(null)),
 				confirm: {
 					label: t('common.delete'),
@@ -63,23 +106,44 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 		);
 	};
 
-	const onEdit = (order: TOrders) => {
+	const onEdit = (order: TDataTab) => {
+		const orderId =
+			tab === 'executed_orders'
+				? (order as TDataTab<'executed_orders'>).id
+				: tab === 'today_orders'
+					? (order as TDataTab<'today_orders'>).orderId
+					: (order as TDataTab<'open_orders'>).orderId;
+		const price =
+			tab === 'executed_orders'
+				? (order as TDataTab<'executed_orders'>).totalPrice
+				: (order as TDataTab<'today_orders' | 'open_orders'>).price;
+		const quantity =
+			tab === 'executed_orders'
+				? (order as TDataTab<'executed_orders'>).tradeQuantity
+				: (order as TDataTab<'today_orders' | 'open_orders'>).quantity;
+		const validity =
+			tab === 'executed_orders' ? undefined : (order as TDataTab<'today_orders' | 'open_orders'>).validity;
+		const validityDate =
+			tab === 'executed_orders'
+				? 0
+				: new Date((order as TDataTab<'today_orders' | 'open_orders'>).validityDate).getTime();
+
 		addBuySellModal({
-			id: order.orderId,
+			id: Number(orderId),
 			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
 			symbolType: 'base',
 			type: 'order',
 			mode: 'edit',
 			symbolISIN: order.symbolISIN,
 			symbolTitle: order.symbolTitle,
-			initialPrice: order.price,
-			initialQuantity: order.quantity,
-			initialValidity: order.validity,
-			initialValidityDate: order.validity === 'GoodTillDate' ? new Date(order.validityDate).getTime() : 0,
+			initialPrice: price,
+			initialQuantity: quantity,
+			initialValidity: validity,
+			initialValidityDate: validityDate,
 		});
 	};
 
-	const showDetails = (order: TOrders) => {
+	const showDetails = (order: TDataTab) => {
 		dispatch(
 			setOrderDetailsModal({
 				type: 'order',
@@ -88,19 +152,24 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 		);
 	};
 
-	const columnDefs = useMemo<Array<ColDef<TOrders>>>(
+	const columnDefs = useMemo<Array<ColDef<TDataTab>>>(
 		() => [
+			// نام نماد
 			{
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
 				cellClass: 'justify-end text-right',
 				pinned: 'right',
+				maxWidth: 160,
 				headerComponent: SymbolTitleHeader,
 				cellRenderer: SymbolTitleCell,
-				checkboxSelection: ({ data }) => editableOrdersStatus.includes(data!.orderStatus),
+				checkboxSelection: ({ data }) =>
+					data && 'orderStatus' in data ? editableOrdersStatus.includes(data!.orderStatus) : false,
 				valueGetter: ({ data }) => data!.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},
+
+			// سمت
 			{
 				colId: 'order_side',
 				headerName: t('orders.order_side'),
@@ -117,20 +186,25 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 					}
 				},
 			},
+
+			// وضعیت سفارش
 			{
 				colId: 'order_status',
 				headerName: t('orders.order_status'),
 				minWidth: 200,
-				valueGetter: ({ data }) => data!.orderStatus,
-				valueFormatter: ({ data }) => {
-					const { orderStatus, lastErrorCode, customErrorMsg } = data!;
+				hide: tab === 'executed_orders',
+				valueGetter: ({ data }) => (data as TDataTab<'open_orders' | 'today_orders'>).orderStatus,
+				valueFormatter: ({ value, data }) => {
+					if (!data) return '-';
+
+					const { lastErrorCode, customErrorMsg } = data as TDataTab<'open_orders' | 'today_orders'>;
 					const errorMessage = customErrorMsg || lastErrorCode;
 
 					if (errorMessage) return t(customErrorMsg ? errorMessage : 'order_errors.' + errorMessage);
-					return t('order_status.' + orderStatus);
+					return t('order_status.' + value);
 				},
-				cellClass: ({ data }) => {
-					switch (data!.orderStatus) {
+				cellClass: ({ value }) => {
+					switch (value) {
 						case 'OrderDone':
 						case 'OnBoard':
 							return 'rtl text-tiny text-light-success-100';
@@ -144,55 +218,118 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 					}
 				},
 			},
-			{
-				colId: 'count',
-				headerName: t('orders.count'),
-				valueGetter: ({ data }) => data!.quantity ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
-			},
+
+			// قیمت
 			{
 				colId: 'price',
 				headerName: t('orders.price'),
-				valueGetter: ({ data }) => data!.price ?? 0,
+				valueGetter: ({ data }) =>
+					tab === 'executed_orders'
+						? (data as TDataTab<'executed_orders'>).totalPrice
+						: (data as TDataTab<'today_orders' | 'open_orders'>).price,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			{
-				colId: 'executed',
-				headerName: t('orders.executed_and_remain_orders'),
-				valueGetter: ({ data }) => data!.sumExecuted ?? 0,
-				minWidth: 160,
-				valueFormatter: ({ data }) => {
-					const executed = data!.sumExecuted;
-					const remain = Math.max(0, data!.quantity - executed) ?? 0;
 
-					return `(${sepNumbers(String(remain))}) ${sepNumbers(String(executed))}`;
-				},
-			},
+			// تعداد
 			{
-				colId: 'amount',
-				headerName: t('orders.amount'),
-				headerComponent: RialTemplate,
-				valueGetter: ({ data }) => data!.orderVolume ?? 0,
+				colId: 'count',
+				headerName: t('orders.count'),
+				valueGetter: ({ data }) =>
+					tab === 'executed_orders'
+						? (data as TDataTab<'executed_orders'>).tradeQuantity
+						: (data as TDataTab<'today_orders' | 'open_orders'>).quantity,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
+
+			// انجام شده
 			{
-				colId: 'save_date',
-				headerName: t('orders.save_date'),
-				valueGetter: ({ data }) => data!.orderDateTime,
-				valueFormatter: ({ value }) => dateFormatter(value, 'datetime'),
+				colId: 'column_executed',
+				headerName: t('orders.col_executed_orders'),
+				minWidth: 88,
+				hide: tab === 'executed_orders',
+				valueGetter: ({ data }) => (data as TDataTab<'today_orders' | 'open_orders'>).sumExecuted ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(value ?? 0),
 			},
+
+			// باقی مانده
+			{
+				colId: 'column_left',
+				headerName: t('orders.col_remain_orders'),
+				minWidth: 88,
+				hide: tab === 'executed_orders',
+				valueGetter: ({ data }) =>
+					Math.max(
+						(data as TDataTab<'today_orders' | 'open_orders'>).quantity -
+							(data as TDataTab<'today_orders' | 'open_orders'>).sumExecuted,
+						0,
+					) ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(value ?? 0),
+			},
+
+			// کارمزد
 			{
 				colId: 'commission',
 				headerName: t('orders.commission'),
+				hide: tab !== 'executed_orders',
 				headerComponent: RialTemplate,
-				valueGetter: ({ data }) => Math.abs(data!.price * data!.quantity - data!.orderVolume),
+				valueGetter: ({ data }) => (data as TDataTab<'executed_orders'>).totalCommission,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
+
+			// ارزش معامله / مبلغ
+			{
+				colId: 'amount',
+				headerName: tab === 'executed_orders' ? t('orders.trade_value') : t('orders.amount'),
+				headerComponent: RialTemplate,
+				valueGetter: ({ data }) =>
+					tab === 'executed_orders'
+						? (data as TDataTab<'executed_orders'>).totalPrice
+						: (data as TDataTab<'today_orders' | 'open_orders'>).orderVolume,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+
+			// جایگاه لحظه‌ای
+			{
+				colId: 'column_current_place',
+				headerName: t('orders.current_place'),
+				hide: tab !== 'open_orders',
+				minWidth: 120,
+				flex: 1,
+				valueGetter: ({ data }) => (data as TDataTab<'open_orders'>).orderPlaceInPrice,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+
+			// حجم پیش‌رو
+			{
+				colId: 'column_upcoming_quantity',
+				headerName: t('orders.upcoming_quantity'),
+				hide: tab !== 'open_orders',
+				minWidth: 112,
+				valueGetter: ({ data }) => (data as TDataTab<'open_orders'>).orderVolumeInPrice,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+
+			// تاریخ ثبت
+			{
+				colId: 'save_date',
+				hide: tab === 'executed_orders',
+				headerName: tab === 'open_orders' ? t('orders.save_date') : t('orders.save_time'),
+				valueGetter: ({ data }) =>
+					tab === 'executed_orders'
+						? (data as TDataTab<'executed_orders'>).tradeDate
+						: (data as TDataTab<'today_orders' | 'open_orders'>).orderDateTime,
+				valueFormatter: ({ value }) => dateFormatter(value, tab === 'today_orders' ? 'time' : 'datetime'),
+			},
+
+			// اعتبار سفارش
 			{
 				colId: 'validity',
 				headerName: t('orders.validity'),
+				hide: tab === 'executed_orders',
 				valueFormatter: ({ data }) => {
-					const { validity, validityDate } = data!;
+					if (!data) return '-';
+
+					const { validity, validityDate } = data as TDataTab<'today_orders' | 'open_orders'>;
 
 					if (validity === 'GoodTillDate') {
 						const tt = new Date(validityDate).getTime();
@@ -207,8 +344,19 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 					return t(`validity_date.${validity}`);
 				},
 			},
+
+			// شعبه
+			{
+				colId: 'branchName',
+				hide: tab !== 'executed_orders',
+				headerName: t('orders.branch'),
+				valueGetter: ({ data }) => (data as TDataTab<'executed_orders'>).branchName ?? '-',
+			},
+
+			// عملیات
 			{
 				colId: 'action',
+				hide: tab === 'executed_orders',
 				headerName: t('orders.action'),
 				minWidth: 160,
 				maxWidth: 160,
@@ -222,10 +370,10 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 				},
 			},
 		],
-		[JSON.stringify(data)],
+		[JSON.stringify(data), tab],
 	);
 
-	const defaultColDef: ColDef<TOrders> = useMemo(
+	const defaultColDef: ColDef<TDataTab> = useMemo(
 		() => ({
 			suppressMovable: true,
 			sortable: true,
@@ -242,14 +390,22 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 		eGrid.deselectAll();
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
 		return () => removeHandler();
 	}, []);
 
+	useEffect(() => {
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
+
+		gridApi.setGridOption('columnDefs', columnDefs);
+	}, [tab]);
+
 	return (
 		<>
-			<AgTable<TOrders>
+			<AgTable<TDataTab>
+				suppressAnimationFrame={false}
 				suppressRowClickSelection
 				ref={gridRef}
 				rowData={data}
@@ -257,7 +413,7 @@ const OrderTable = ({ setSelectedRows, loading, data }: OrderTableProps) => {
 				headerHeight={48}
 				columnDefs={columnDefs}
 				defaultColDef={defaultColDef}
-				onSelectionChanged={(e) => setSelectedRows(e.api.getSelectedRows() ?? [])}
+				onSelectionChanged={(e) => setSelectedRows((e.api.getSelectedRows() ?? []) as TOrder)}
 				className='h-full border-0'
 				rowSelection='multiple'
 			/>
