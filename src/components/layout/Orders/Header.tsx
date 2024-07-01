@@ -84,7 +84,7 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 	const onDeleteAll = () => {
 		if (selectedRows.length === 0) return;
 
-		const ids = selectedRows.map((item) => ('orderId' in item ? item.orderId : item.id));
+		const ids = selectedRows.map((item) => Number('orderId' in item ? item.orderId : item.id));
 
 		dispatch(
 			setConfirmModal({
@@ -126,7 +126,7 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 
 		createOrders(orders);
 
-		const ids = selectedRows.map((item) => ('orderId' in item ? item.orderId : item.id));
+		const ids = selectedRows.map((item) => Number('orderId' in item ? item.orderId : item.id));
 		deleteAll(ids);
 
 		ipcMain.send('deselect_orders', undefined);

@@ -122,7 +122,7 @@ const Section = <T extends string = string, B extends string = string>({
 
 			<RenderOnViewportEntry
 				className={clsx(
-					'relative h-full flex-1 overflow-hidden pl-8',
+					'relative h-full flex-1 overflow-hidden pl-8 pt-16',
 					isModal && 'flex flex-col items-center justify-center',
 				)}
 			>

@@ -132,20 +132,20 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				},
 			},
 			{
-				colId: 'count',
-				headerName: t('orders.count'),
-				valueGetter: ({ data }) => data!.quantity ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
-			},
-			{
 				colId: 'price',
 				headerName: t('orders.price'),
 				valueGetter: ({ data }) => data!.price ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'create_date',
-				headerName: t('orders.create_date'),
+				colId: 'count',
+				headerName: t('orders.count'),
+				valueGetter: ({ data }) => data!.quantity ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
+				colId: 'save_date',
+				headerName: t('orders.save_date'),
 				valueGetter: ({ data }) => data!.date,
 				valueFormatter: ({ value }) => dateFormatter(value, 'datetime'),
 			},
