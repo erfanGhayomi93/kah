@@ -19,11 +19,9 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		baseSymbolStatus: 'atm',
 		maxProfit: 0,
 		maxLoss: 0,
-		neededBudget: 0,
-		risk: 0,
-		profitProbability: 0,
-		timeValue: 0,
 		bep: [],
+		cost: 0,
+		neededBudget: 0,
 		neededRequiredMargin: 0,
 	});
 
@@ -52,18 +50,16 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 
 		const data = JSON.parse(JSON.stringify(contracts)) as typeof contracts;
 		const newInputs: IAnalyzeInputs = {
+			data: [],
 			maxPrice: 0,
 			minPrice: 0,
-			neededRequiredMargin: 0,
+			baseSymbolStatus: 'atm',
 			maxProfit: 0,
 			maxLoss: 0,
-			neededBudget: 0,
-			risk: 0,
-			profitProbability: 0,
-			timeValue: 0,
-			baseSymbolStatus: 'atm',
 			bep: [],
-			data: [],
+			cost: 0,
+			neededBudget: 0,
+			neededRequiredMargin: 0,
 		};
 
 		if (data.length === 0) return;
@@ -81,19 +77,23 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 
 			for (let i = 0; i < data.length; i++) {
 				const item = data[i];
-				const contractType = item.symbol.optionType;
 				const {
-					symbol: { strikePrice },
+					symbol: { strikePrice, optionType, contractSize },
+					side,
 					price,
+					quantity,
+					type,
 				} = item;
+				const amount = price * quantity;
+				const requiredMargin = side === 'buy' || item.type === 'base' ? 0 : item.symbol.requiredMargin ?? 0;
+				let contractCost = contractSize * amount;
+				contractCost *= side === 'sell' ? -1 : 1;
 
-				if (item.type === 'option') newInputs.neededRequiredMargin += item.symbol.requiredMargin ?? 0;
+				if (item.type === 'option') newInputs.neededBudget += requiredMargin;
 
-				if (item.type === 'option')
-					newInputs.neededBudget +=
-						item.side === 'buy'
-							? +(item.price * item.symbol.contractSize)
-							: -(item.price * item.symbol.contractSize);
+				newInputs.neededRequiredMargin += requiredMargin;
+				newInputs.neededBudget += contractCost;
+				newInputs.cost += contractCost;
 
 				let commission = 0;
 				let index = 0;
@@ -104,29 +104,28 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					);
 
 					if (transactionCommission) {
-						commission =
-							transactionCommission[item.side === 'buy' ? 'buyCommission' : 'sellCommission'] ?? 0;
+						commission = transactionCommission[side === 'buy' ? 'buyCommission' : 'sellCommission'] ?? 0;
 
-						commission *= item.quantity * item.price;
-						if (item.side === 'sell') commission *= -1;
+						commission *= quantity * price;
+						if (side === 'sell') commission *= -1;
 					}
 				}
 
-				const transactionValue = Math.ceil(Math.abs(item.quantity * price + commission));
+				const transactionValue = Math.ceil(Math.abs(quantity * price + commission));
 
 				for (let j = minPrice; j <= maxPrice; j++) {
 					let y = 0;
 
-					if (item.type === 'base') {
+					if (type === 'base') {
 						y = j - baseAssets;
 					} else {
 						const strikeCommission =
-							useCommission && item.side === 'buy'
-								? (strikePrice ?? 0) * 0.0005 * (item.symbol.optionType === 'call' ? 1 : -1)
+							useCommission && side === 'buy'
+								? (strikePrice ?? 0) * 0.0005 * (optionType === 'call' ? 1 : -1)
 								: 0;
 
-						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, contractType ?? 'call');
-						y = pnl(iv, transactionValue, item.side);
+						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call');
+						y = pnl(iv, transactionValue, side);
 					}
 
 					y += series[index]?.y ?? 0;
@@ -152,8 +151,8 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					const previousPNL = i === 0 ? pnl : Math.round(previousItem.y);
 					const isNotSameZone = previousPNL !== 0 && numStatus(previousPNL) !== numStatus(pnl);
 
-					if (item.y > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, item.y));
-					else if (item.y < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, item.y));
+					if (pnl > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, pnl));
+					else if (pnl < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, pnl));
 
 					if (isNotSameZone || i % diff === 0 || i === 0 || i === l - 1) {
 						newInputs.data.push({
@@ -172,8 +171,8 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 						else if (pnl < 0) newInputs.baseSymbolStatus = 'otm';
 					}
 
-					if (isBetween(0, i, 10)) rangeData[0].push(Math.round(item.y));
-					if (isBetween(l - 11, i, l - 1)) rangeData[1].push(Math.round(item.y));
+					if (isBetween(0, i, 10)) rangeData[0].push(Math.round(pnl));
+					if (isBetween(l - 11, i, l - 1)) rangeData[1].push(Math.round(pnl));
 				} catch (e) {
 					//
 				}

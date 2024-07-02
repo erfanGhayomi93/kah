@@ -10,10 +10,10 @@ interface StrategyDetailsProps {
 const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 	const baseSymbolPrice = contracts.length === 0 ? 0 : contracts[0].symbol.baseSymbolPrice;
 
-	const { inputs, setFieldsValue } = useInputs<Record<'minPrice' | 'maxPrice', number>>(
+	const { inputs, setFieldsValue } = useInputs<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>(
 		{
-			minPrice: 0,
-			maxPrice: 0,
+			minPrice: null,
+			maxPrice: null,
 		},
 		true,
 	);

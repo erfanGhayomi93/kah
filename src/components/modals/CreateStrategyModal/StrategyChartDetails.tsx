@@ -36,6 +36,7 @@ const StrategyChartDetails = ({
 					symbolTitle: baseSymbol.symbolTitle,
 					symbolISIN: baseSymbol.symbolISIN,
 					baseSymbolPrice: basePrice,
+					contractSize,
 				},
 			},
 			{

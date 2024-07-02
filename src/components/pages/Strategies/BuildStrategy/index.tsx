@@ -44,6 +44,7 @@ const BuildStrategy = () => {
 						symbolTitle: baseSymbol.symbolTitle,
 						symbolISIN: baseSymbol.symbolISIN,
 						baseSymbolPrice: baseSymbol.lastTradedPrice,
+						contractSize: baseSymbol.contractSize,
 					},
 				});
 				selectedResult.push(baseSymbolId);

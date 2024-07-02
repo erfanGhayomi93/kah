@@ -15,10 +15,10 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
 
-	const { inputs, setFieldsValue } = useInputs<Record<'minPrice' | 'maxPrice', number>>(
+	const { inputs, setFieldsValue } = useInputs<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>(
 		{
-			minPrice: 0,
-			maxPrice: 0,
+			minPrice: null,
+			maxPrice: null,
 		},
 		true,
 	);

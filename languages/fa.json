@@ -982,6 +982,7 @@
 		"base_symbol_price": "قیمت دارایی پایه",
 		"current_base_price_distance": "فاصله تا قیمت فعلی سهم پایه",
 		"rial_efficiency": "بازده ریالی",
+		"percent_efficiency": "بازده درصدی",
 		"ytm": "YTM بازده موثر سالانه",
 		"no_active_contract_found": "هیچ قرارداد فعالی وجود ندارد"
 	},

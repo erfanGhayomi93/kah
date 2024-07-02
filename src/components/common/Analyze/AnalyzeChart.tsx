@@ -12,10 +12,8 @@ interface IPoint {
 	y: number;
 }
 
-interface AnalyzeChartProps {
+interface AnalyzeChartProps extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'> {
 	data: IPoint[];
-	minPrice: number;
-	maxPrice: number;
 	bep: number[];
 	baseAssets: number;
 	height?: number;
@@ -268,9 +266,6 @@ const AnalyzeChart = ({
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
 
-				// ? cost = Σ (premium * quantity * contractSize)
-				// ? neededCost = (Σ (premium * quantity * contractSize)) / contractSize
-				// ? shortRequiredMargin = Σ requiredMargin
 				// ? efficiency = (pnl / cost) * 100
 
 				// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
@@ -280,10 +275,11 @@ const AnalyzeChart = ({
 
 				const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
 				const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
-				const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))} (${(profit * 100).toFixed(2)}%)</span></li>`;
-				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
+				const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
+				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${(profit * 100).toFixed(2)}%</span></li>`;
+				const li5 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
 
-				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1}${li2}${li3}${li4}</ul>`;
+				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1 + li2 + li3 + li4 + li5}</ul>`;
 			},
 		});
 	}, [baseAssets]);

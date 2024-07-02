@@ -68,6 +68,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 							symbolTitle: baseSymbol.symbolTitle,
 							symbolISIN: baseSymbol.symbolISIN,
 							baseSymbolPrice: baseSymbol.lastTradedPrice,
+							contractSize: baseSymbol.contractSize,
 						},
 					});
 					selectedResult.push(baseSymbolId);

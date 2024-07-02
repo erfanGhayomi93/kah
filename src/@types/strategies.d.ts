@@ -27,10 +27,10 @@ declare interface IBaseSymbolStrategy extends ISymbolStrategy {
 		symbolTitle: string;
 		symbolISIN: string;
 		baseSymbolPrice: number;
+		contractSize: number;
 		optionType?: undefined;
 		requiredMargin?: undefined;
 		strikePrice?: undefined;
-		contractSize?: undefined;
 		settlementDay?: undefined;
 		historicalVolatility?: undefined;
 	};

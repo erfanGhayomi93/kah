@@ -80,6 +80,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 						symbolTitle: data.baseSymbolTitle,
 						symbolISIN: data.baseSymbolISIN,
 						baseSymbolPrice: data.baseLastTradedPrice,
+						contractSize: data.contractSize,
 					},
 				},
 				{
