@@ -220,12 +220,12 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{list.map((items, i) => (
 						<ul
 							key={i}
-							className='gap-24 rounded bg-white px-8 py-16 text-base shadow-card flex-column *:flex-justify-between'
+							className='gap-24 rounded bg-white px-8 py-16 text-base shadow-card ltr flex-column *:flex-justify-between'
 						>
 							{items.map((item, j) => (
 								<li key={j}>
-									<span className='text-light-gray-700'>{item.name}:</span>
 									<span className={clsx('text-base font-medium', item.className)}>{item.value}</span>
+									<span className='text-light-gray-700'>:{item.name}</span>
 								</li>
 							))}
 						</ul>

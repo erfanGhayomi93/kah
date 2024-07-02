@@ -55,17 +55,11 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			const selectedResult: string[] = [];
 
 			try {
-				for (let i = 0; i < l; i++) {
-					const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
-
-					result.push(item);
-					selectedResult.push(item.id);
-				}
-
 				if (baseSymbol) {
+					const baseSymbolId = uuidv4();
 					result.push({
 						type: 'base',
-						id: uuidv4(),
+						id: baseSymbolId,
 						marketUnit: baseSymbol.marketUnit,
 						quantity: 1,
 						price: baseSymbol.lastTradedPrice,
@@ -76,7 +70,14 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 							baseSymbolPrice: baseSymbol.lastTradedPrice,
 						},
 					});
-					selectedResult.push(symbol.symbolISIN);
+					selectedResult.push(baseSymbolId);
+				}
+
+				for (let i = 0; i < l; i++) {
+					const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
+
+					result.push(item);
+					selectedResult.push(item.id);
 				}
 
 				setSymbolContracts(result);

@@ -21,7 +21,7 @@ const BuildStrategy = () => {
 
 	const builtStrategyContracts = useAppSelector(getBuiltStrategy);
 
-	const [selectedContracts, setSelectedContracts] = useState<string[]>([]);
+	const [selectedContracts, setSelectedContracts] = useState<string[]>(builtStrategyContracts.map(({ id }) => id));
 
 	const handleContracts = (contracts: Option.Root[], baseSymbol: Symbol.Info | null) => {
 		const l = contracts.length;
@@ -30,20 +30,6 @@ const BuildStrategy = () => {
 		const selectedResult: string[] = [];
 
 		try {
-			for (let i = 0; i < l; i++) {
-				const contract: IOptionStrategy = {
-					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
-					tradeCommission: true,
-					strikeCommission: true,
-					requiredMargin: true,
-					tax: true,
-					vDefault: true,
-				};
-
-				result.push(contract);
-				selectedResult.push(contract.id);
-			}
-
 			if (baseSymbol) {
 				const baseSymbolId = uuidv4();
 
@@ -61,6 +47,20 @@ const BuildStrategy = () => {
 					},
 				});
 				selectedResult.push(baseSymbolId);
+			}
+
+			for (let i = 0; i < l; i++) {
+				const contract: IOptionStrategy = {
+					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
+					tradeCommission: true,
+					strikeCommission: true,
+					requiredMargin: true,
+					tax: true,
+					vDefault: true,
+				};
+
+				result.push(contract);
+				selectedResult.push(contract.id);
 			}
 
 			dispatch(setBuiltStrategy(result));

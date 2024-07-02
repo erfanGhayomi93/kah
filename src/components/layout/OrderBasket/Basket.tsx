@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button';
+import Moveable from '@/components/common/Moveable';
 import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAnalyzeModal, setConfirmModal } from '@/features/slices/modalSlice';
@@ -125,84 +126,87 @@ const Basket = () => {
 	}, [basketOrders.length]);
 
 	return (
-		<div
-			style={{
-				right: '6.4rem',
-				width: isMaximized ? '80rem' : '41.6rem',
-				zIndex: 99,
-			}}
-			className='fixed bottom-8'
-		>
-			<div className='overflow-hidden rounded bg-white shadow-card'>
-				<div className='relative h-56 w-full bg-light-gray-100 flex-justify-center'>
-					<h2 className='select-none text-xl font-medium'>{t('order_basket.title')}</h2>
+		<Moveable paddingRight={64} paddingBottom={56}>
+			<div
+				style={{
+					width: isMaximized ? '80rem' : '41.6rem',
+					zIndex: 99,
+					bottom: 56,
+					right: 64,
+				}}
+				className='fixed'
+			>
+				<div className='overflow-hidden rounded bg-white shadow-card'>
+					<div className='relative h-56 w-full bg-light-gray-100 flex-justify-center'>
+						<h2 className='select-none text-xl font-medium'>{t('order_basket.title')}</h2>
 
-					<div className='absolute left-24 gap-16 flex-items-center'>
-						<button onClick={onExpand} type='button' className='icon-hover'>
-							{isMaximized ? (
-								<MinimizeSVG width='2rem' height='2rem' />
-							) : (
-								<MaximizeSVG width='1.5rem' height='1.5rem' />
-							)}
-						</button>
-
-						<button onClick={onClose} type='button' className='icon-hover'>
-							<XSVG width='2rem' height='2rem' />
-						</button>
-					</div>
-				</div>
-
-				<div className='gap-8 overflow-hidden px-12 py-16 flex-column'>
-					<div className='px-4 flex-justify-between'>
-						<div onClick={onExpand} className='cursor-pointer gap-12 flex-items-center'>
-							<span className='select-none whitespace-nowrap rounded text-base text-light-gray-800'>
-								<span className='font-medium'>{selectedContracts.length} </span>
-								{t('order_basket.selected_trade')}
-							</span>
-							<ArrowDownSVG
-								width='1.4rem'
-								height='1.4rem'
-								style={{ transform: `rotate(${isMaximized ? 180 : 0}deg)` }}
-								className='transition-transform'
-							/>
-						</div>
-
-						<div className='flex h-40 gap-8 font-medium'>
-							<button
-								disabled={selectedContracts.length === 0}
-								onClick={analyze}
-								className='rounded px-16 btn-primary-outline'
-								type='button'
-							>
-								{t('order_basket.analyze')}
+						<div className='absolute left-24 gap-16 flex-items-center'>
+							<button onClick={onExpand} type='button' className='icon-hover'>
+								{isMaximized ? (
+									<MinimizeSVG width='2rem' height='2rem' />
+								) : (
+									<MaximizeSVG width='1.5rem' height='1.5rem' />
+								)}
 							</button>
 
-							<Button
-								onClick={onSubmit}
-								type='button'
-								style={{ width: '9.6rem' }}
-								className={clsx('rounded btn-primary', submitting && 'not')}
-								disabled={selectedContracts.length === 0}
-								loading={submitting}
-							>
-								{t('order_basket.trade')}
-							</Button>
+							<button onClick={onClose} type='button' className='icon-hover'>
+								<XSVG width='2rem' height='2rem' />
+							</button>
 						</div>
 					</div>
 
-					{isMaximized && (
-						<SymbolStrategyTable
-							maxHeight='40rem'
-							selectedContracts={selectedContracts}
-							contracts={basketOrders}
-							onSelectionChanged={setSelectedContracts}
-							onChange={(id, v) => setOrderProperties(id, v)}
-							onDelete={removeOrder}
-						/>
-					)}
+					<div className='gap-8 overflow-hidden px-12 py-16 flex-column'>
+						<div className='px-4 flex-justify-between'>
+							<div onClick={onExpand} className='cursor-pointer gap-12 flex-items-center'>
+								<span className='select-none whitespace-nowrap rounded text-base text-light-gray-800'>
+									<span className='font-medium'>{selectedContracts.length} </span>
+									{t('order_basket.selected_trade')}
+								</span>
+								<ArrowDownSVG
+									width='1.4rem'
+									height='1.4rem'
+									style={{ transform: `rotate(${isMaximized ? 180 : 0}deg)` }}
+									className='transition-transform'
+								/>
+							</div>
+
+							<div className='flex h-40 gap-8 font-medium'>
+								<button
+									disabled={selectedContracts.length === 0}
+									onClick={analyze}
+									className='rounded px-16 btn-primary-outline'
+									type='button'
+								>
+									{t('order_basket.analyze')}
+								</button>
+
+								<Button
+									onClick={onSubmit}
+									type='button'
+									style={{ width: '9.6rem' }}
+									className={clsx('rounded btn-primary', submitting && 'not')}
+									disabled={selectedContracts.length === 0}
+									loading={submitting}
+								>
+									{t('order_basket.trade')}
+								</Button>
+							</div>
+						</div>
+
+						{isMaximized && (
+							<SymbolStrategyTable
+								maxHeight='40rem'
+								selectedContracts={selectedContracts}
+								contracts={basketOrders}
+								onSelectionChanged={setSelectedContracts}
+								onChange={(id, v) => setOrderProperties(id, v)}
+								onDelete={removeOrder}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
-		</div>
+		</Moveable>
 	);
 };
 

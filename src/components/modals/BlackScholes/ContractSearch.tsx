@@ -2,9 +2,9 @@ import axios from '@/api/axios';
 import { useOptionSymbolSearchQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
 import AsyncSelect from '@/components/common/Inputs/AsyncSelect';
-import { englishToPersian, sepNumbers } from '@/utils/helpers';
+import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface SymbolSearchProps {
 	basis: 'base' | 'contract';
@@ -70,10 +70,10 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 		if (basis === 'contract') return optionData ?? [];
 
 		if (!term) return options;
-		return options.filter((o) => o.symbolInfo.symbolTitle.includes(englishToPersian(term)));
+		return options.filter((o) => String(o.symbolInfo.strikePrice).includes(term));
 	}, [term, basis, optionData, options]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (value === null) setSymbol(null);
 	}, [value]);
 
@@ -91,7 +91,15 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 				getOptionTitle={(option) => {
 					if (!option) return null;
 
-					const { strikePrice } = 'symbolInfo' in option ? option.symbolInfo : option;
+					const { symbolTitle, strikePrice } = 'symbolInfo' in option ? option.symbolInfo : option;
+
+					if (basis === 'contract')
+						return (
+							<div className='w-full flex-1 flex-justify-between'>
+								<span>{symbolTitle}</span>
+								<span>{sepNumbers(String(strikePrice))}</span>
+							</div>
+						);
 
 					return <div className='w-full flex-1 flex-justify-end'>{sepNumbers(String(strikePrice))}</div>;
 				}}

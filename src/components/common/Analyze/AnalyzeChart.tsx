@@ -102,7 +102,7 @@ const AnalyzeChart = ({
 
 			dueDays = Math.max(dueDays, 1);
 
-			const ytm = 100 * (Math.pow(1 + profitPercent, 365 / dueDays) - 1);
+			const ytm = (Math.pow(1 + profitPercent, 365 / dueDays) - 1) * 100;
 
 			return Number(ytm.toFixed(2));
 		} catch (e) {
@@ -267,6 +267,11 @@ const AnalyzeChart = ({
 			formatter: function () {
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
+
+				// ? cost = Σ (premium * quantity * contractSize)
+				// ? neededCost = (Σ (premium * quantity * contractSize)) / contractSize
+				// ? shortRequiredMargin = Σ requiredMargin
+				// ? efficiency = (pnl / cost) * 100
 
 				// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
 				const profit = (y + baseAssets) / baseAssets - 1;

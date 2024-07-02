@@ -131,10 +131,6 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 			if (initialBaseSymbolISIN) fetchSymbolInfo({ symbolISIN: initialBaseSymbolISIN, type: 'initial' });
 		}, []);
 
-		useEffect(() => {
-			setFieldValue('contracts', []);
-		}, [inputs.baseSymbol?.symbolISIN]);
-
 		return (
 			<Modal
 				top='50%'
@@ -151,7 +147,12 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 							symbol={inputs.baseSymbol}
 							settlementDay={inputs.activeSettlement}
 							suppressBaseSymbolChange={suppressBaseSymbolChange}
-							onBaseSymbolChange={(v) => setFieldValue('baseSymbol', v)}
+							onBaseSymbolChange={(v) => {
+								setFieldsValue({
+									baseSymbol: v,
+									contracts: [],
+								});
+							}}
 							onSettlementDayChanged={(v) => setFieldValue('activeSettlement', v)}
 							isPending={isFetchingBaseSymbol}
 						/>
@@ -202,7 +203,9 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 								<Button
 									type='button'
 									onClick={onSubmit}
-									disabled={inputs.contracts.length === 0 || !inputs.baseSymbol}
+									disabled={
+										(inputs.contracts.length === 0 && !inputs.sendBaseSymbol) || !inputs.baseSymbol
+									}
 									className='h-40 w-full rounded btn-primary'
 									loading={isFetchingBaseSymbol}
 								>
