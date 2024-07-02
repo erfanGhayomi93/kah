@@ -5,7 +5,9 @@ import useInputs from './useInputs';
 
 interface IConfiguration {
 	baseAssets: number;
-	useCommission?: boolean;
+	useTradeCommission: boolean;
+	useStrikeCommission: boolean;
+	useRequiredMargin: boolean;
 	maxPrice?: number | null;
 	minPrice?: number | null;
 	enabled?: boolean;
@@ -45,6 +47,19 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		return 1;
 	};
 
+	const getCommission = (side: TBsSides, marketUnit: string) => {
+		if (!Array.isArray(commissionData)) return 0;
+
+		const transactionCommission = commissionData.find(({ marketUnitTitle }) => marketUnitTitle === marketUnit);
+
+		if (!transactionCommission) return 0;
+
+		const commissionValue = transactionCommission[side === 'buy' ? 'buyCommission' : 'sellCommission'];
+
+		if (side === 'sell') return -commissionValue;
+		return commissionValue;
+	};
+
 	useEffect(() => {
 		if (config?.enabled === false) return;
 
@@ -71,7 +86,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		newInputs.maxPrice = Math.min(1e5, Math.max(newInputs.minPrice, newInputs.maxPrice));
 
 		try {
-			const { baseAssets, useCommission } = config;
+			const { baseAssets, useTradeCommission, useStrikeCommission, useRequiredMargin } = config;
 			const { maxPrice, minPrice } = newInputs;
 			const series: IAnalyzeInputs['data'] = [];
 
@@ -85,44 +100,29 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					type,
 				} = item;
 				const amount = price * quantity;
-				const requiredMargin = side === 'buy' || item.type === 'base' ? 0 : item.symbol.requiredMargin ?? 0;
-				let contractCost = contractSize * amount;
-				contractCost *= side === 'sell' ? -1 : 1;
+				const requiredMargin = side === 'buy' || type === 'base' ? 0 : item.symbol.requiredMargin ?? 0;
+				const contractCost = contractSize * (side === 'sell' ? -amount : amount);
 
-				if (item.type === 'option') newInputs.neededBudget += requiredMargin;
-
-				newInputs.neededRequiredMargin += requiredMargin;
-				newInputs.neededBudget += contractCost;
-				newInputs.cost += contractCost;
+				if ((useRequiredMargin || item.requiredMargin) && type === 'option')
+					newInputs.neededBudget += requiredMargin;
 
 				let commission = 0;
+				if (useTradeCommission || item.tradeCommission)
+					commission = getCommission(item.side, item.marketUnit) * amount * contractSize;
+				const transactionValue = Math.ceil(Math.abs(amount + commission));
+
 				let index = 0;
-
-				if (Array.isArray(commissionData) && (useCommission || item.tradeCommission)) {
-					const transactionCommission = commissionData.find(
-						({ marketUnitTitle }) => marketUnitTitle === item.marketUnit,
-					);
-
-					if (transactionCommission) {
-						commission = transactionCommission[side === 'buy' ? 'buyCommission' : 'sellCommission'] ?? 0;
-
-						commission *= quantity * price;
-						if (side === 'sell') commission *= -1;
-					}
-				}
-
-				const transactionValue = Math.ceil(Math.abs(quantity * price + commission));
-
 				for (let j = minPrice; j <= maxPrice; j++) {
 					let y = 0;
 
 					if (type === 'base') {
 						y = j - baseAssets;
 					} else {
-						const strikeCommission =
-							useCommission && side === 'buy'
-								? (strikePrice ?? 0) * 0.0005 * (optionType === 'call' ? 1 : -1)
-								: 0;
+						let strikeCommission = 0;
+						if ((useStrikeCommission || item.strikeCommission) && side === 'buy') {
+							strikeCommission = (strikePrice ?? 0) * 0.0005;
+							if (optionType === 'call') strikeCommission *= -1;
+						}
 
 						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call');
 						y = pnl(iv, transactionValue, side);
@@ -136,6 +136,10 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 
 					index++;
 				}
+
+				if (useRequiredMargin || item.requiredMargin) newInputs.neededRequiredMargin += requiredMargin;
+				newInputs.neededBudget += contractCost;
+				newInputs.cost += contractCost / 1e3;
 			}
 
 			const l = series.length;

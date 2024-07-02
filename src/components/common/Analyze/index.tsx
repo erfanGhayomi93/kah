@@ -18,11 +18,22 @@ interface AnalyzeProps extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'> {
 	chartData: Array<Record<'x' | 'y', number>>;
 	bep: number[];
 	baseAssets: number;
+	cost: number;
 	height?: number;
 	onChange: (values: Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>) => void;
 }
 
-const Analyze = ({ chartData, contracts, minPrice, maxPrice, baseAssets, height, bep, onChange }: AnalyzeProps) => {
+const Analyze = ({
+	chartData,
+	contracts,
+	minPrice,
+	maxPrice,
+	cost,
+	baseAssets,
+	height,
+	bep,
+	onChange,
+}: AnalyzeProps) => {
 	const t = useTranslations('analyze_modal');
 
 	const TABS = [
@@ -33,6 +44,7 @@ const Analyze = ({ chartData, contracts, minPrice, maxPrice, baseAssets, height,
 				<div style={{ height }} className='relative py-16'>
 					<ErrorBoundary>
 						<AnalyzeChart
+							cost={cost}
 							data={chartData}
 							baseAssets={baseAssets}
 							maxPrice={maxPrice}

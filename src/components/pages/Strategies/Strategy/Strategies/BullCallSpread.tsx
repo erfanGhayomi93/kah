@@ -38,7 +38,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.BullCallSpread>>(null);
 
-	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'bull_call_spread_strategy_columns',
