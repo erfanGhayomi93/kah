@@ -4,7 +4,7 @@ import { type IBlackScholesModal } from '@/features/slices/types/modalSlice.inte
 import { useLocalstorage } from '@/hooks';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { forwardRef, useLayoutEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import Form from './Form';
@@ -58,11 +58,11 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 		setInputs(initialValues);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		setInputValue('contract', null);
 	}, [searchBasis]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		setInputs((prev) => ({
 			...prev,
 			contractEndDate: null,
@@ -70,14 +70,14 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 		}));
 	}, [JSON.stringify(inputs.baseSymbol)]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		setInputs((prev) => ({
 			...prev,
 			contract: null,
 		}));
 	}, [JSON.stringify(inputs.contractEndDate)]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!inputs.contract) return;
 
 		const { baseSymbolPrice, contractEndDate, historicalVolatility, premium, strikePrice } = inputs.contract;
@@ -114,7 +114,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 					<div className='flex flex-1 gap-16 pb-24'>
 						<Form setInputValue={setInputValue} inputs={inputs} />
 
-						<div className='bg-light-gray-50 h-full flex-1 justify-between gap-24 rounded-md px-24 py-16 flex-column'>
+						<div className='h-full flex-1 justify-between gap-24 rounded-md bg-light-gray-50 px-24 py-16 flex-column'>
 							<Calculator {...inputs} />
 						</div>
 					</div>

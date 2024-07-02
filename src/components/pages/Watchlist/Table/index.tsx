@@ -16,11 +16,12 @@ import { useEffect, useMemo } from 'react';
 import WatchlistTable from './WatchlistTable';
 
 interface TableProps {
+	watchlistCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
 	setFilters: React.Dispatch<React.SetStateAction<Partial<IOptionWatchlistFilters>>>;
 }
 
-const Table = ({ filters, setFilters }: TableProps) => {
+const Table = ({ filters, watchlistCount, setFilters }: TableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -126,7 +127,12 @@ const Table = ({ filters, setFilters }: TableProps) => {
 					transition: 'height 250ms ease',
 				}}
 			>
-				<WatchlistTable id={watchlistId} data={data} fetchNextPage={fetchNextPage} />
+				<WatchlistTable
+					id={watchlistId}
+					data={data}
+					fetchNextPage={fetchNextPage}
+					watchlistCount={watchlistCount}
+				/>
 
 				{!dataIsEmpty && !isLoading && watchlistId > -1 && (
 					<button

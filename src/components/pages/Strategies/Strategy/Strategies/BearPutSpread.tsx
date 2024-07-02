@@ -38,7 +38,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.BearPutSpread>>(null);
 
-	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'bear_put_spread_columns',

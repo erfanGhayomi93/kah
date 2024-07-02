@@ -93,7 +93,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				valueGetter: ({ data }) => data!.blockType,
 				valueFormatter: ({ value }) => {
 					if (value === 'Buy') return '-';
-					if (value) return t('option_blockType.' + value);
+					if (value) return t('option_block_type.' + value);
 					return '-';
 				},
 			},
