@@ -982,6 +982,7 @@
 		"base_symbol_price": "قیمت دارایی پایه",
 		"current_base_price_distance": "فاصله تا قیمت فعلی سهم پایه",
 		"rial_efficiency": "بازده ریالی",
+		"percent_efficiency": "بازده درصدی",
 		"ytm": "YTM بازده موثر سالانه",
 		"no_active_contract_found": "هیچ قرارداد فعالی وجود ندارد"
 	},
@@ -1396,6 +1397,12 @@
 		"symbol_BestLimit": "نمادهای دارای سرخط",
 		"execution_steps": "نحوه اجرا",
 		"execution_condition": "شرط اجرا"
+	},
+	"option_block_type": {
+		"All": "همه",
+		"Account": "وجه نقد",
+		"Portfolio": "سهم پایه",
+		"Position": "موقعیت"
 	},
 	"create_strategy": {
 		"strategy": "استراتژی {strategyName} {baseSymbolTitle}",

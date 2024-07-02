@@ -13,15 +13,13 @@ const AnalyzeGreeksTable = dynamic(() => import('./AnalyzeGreeksTable'), {
 	loading: () => <Loading />,
 });
 
-interface AnalyzeProps {
+interface AnalyzeProps extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'> {
 	contracts: TSymbolStrategy[];
 	chartData: Array<Record<'x' | 'y', number>>;
 	bep: number[];
-	minPrice: number;
-	maxPrice: number;
 	baseAssets: number;
 	height?: number;
-	onChange: (values: Partial<Record<'minPrice' | 'maxPrice', number>>) => void;
+	onChange: (values: Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>) => void;
 }
 
 const Analyze = ({ chartData, contracts, minPrice, maxPrice, baseAssets, height, bep, onChange }: AnalyzeProps) => {
