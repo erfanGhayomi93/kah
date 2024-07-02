@@ -34,7 +34,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 
 	const numFormatter = (v: number) => {
 		return (
-			<span className='text-tiny text-light-gray-700'>
+			<span className='flex flex-row-reverse text-tiny text-light-gray-700'>
 				<span className='pl-4 text-base font-medium text-light-gray-800'>{sepNumbers(String(v))}</span>
 				{t('common.rial')}
 			</span>

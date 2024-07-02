@@ -139,7 +139,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 
 				if (useRequiredMargin || item.requiredMargin) newInputs.neededRequiredMargin += requiredMargin;
 				newInputs.neededBudget += contractCost;
-				newInputs.cost += contractCost;
+				newInputs.cost += contractCost / 1e3;
 			}
 
 			const l = series.length;

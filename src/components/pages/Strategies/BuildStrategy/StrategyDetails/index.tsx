@@ -18,12 +18,15 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 		true,
 	);
 
-	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, neededBudget } = useAnalyze(
+	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, cost, neededBudget } = useAnalyze(
 		contracts,
 		{
 			baseAssets: baseSymbolPrice,
 			maxPrice: inputs.maxPrice,
 			minPrice: inputs.minPrice,
+			useRequiredMargin: false,
+			useStrikeCommission: false,
+			useTradeCommission: false,
 		},
 	);
 
@@ -41,6 +44,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 					chartData={data}
 					contracts={contracts}
 					baseAssets={baseSymbolPrice}
+					cost={cost}
 					bep={bep}
 					height={508}
 					maxPrice={maxPrice}

@@ -33,7 +33,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 		true,
 	);
 
-	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, neededBudget } = useAnalyze(
+	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, neededBudget, cost } = useAnalyze(
 		contracts,
 		{
 			baseAssets: baseSymbolPrice,
@@ -48,6 +48,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 	return (
 		<div className='relative h-full rounded px-16 shadow-card flex-column'>
 			<Analyze
+				cost={cost}
 				chartData={data}
 				contracts={contracts}
 				baseAssets={baseSymbolPrice}
