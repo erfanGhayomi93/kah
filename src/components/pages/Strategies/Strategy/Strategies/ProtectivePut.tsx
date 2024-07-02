@@ -40,7 +40,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<IProtectivePutFiltersModalState>>({});
 
-	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'protective_put_strategy_columns',

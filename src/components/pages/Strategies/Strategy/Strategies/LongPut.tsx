@@ -38,7 +38,7 @@ const LongPut = (strategy: LongPutProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.LongPut>>(null);
 
-	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ILongPutFiltersModalState>>({});
 
