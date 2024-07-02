@@ -38,7 +38,7 @@ const LongCall = (strategy: LongCallProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.LongCall>>(null);
 
-	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'long_call_strategy_columns',

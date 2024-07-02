@@ -30,5 +30,6 @@
 	"prettier.bracketSpacing": true,
 	"prettier.semi": true,
 	"prettier.tabWidth": 4,
-	"editor.useTabStops": true
+	"editor.useTabStops": true,
+	"markdown.math.enabled": true
 }

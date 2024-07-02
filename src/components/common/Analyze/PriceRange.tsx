@@ -3,8 +3,10 @@ import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/uti
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
-interface PriceRangeProps extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'> {
-	onChange: (values: Partial<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>) => void;
+type TPriceRange = Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>;
+
+interface PriceRangeProps extends TPriceRange {
+	onChange: (values: TPriceRange) => void;
 }
 
 const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {
@@ -42,7 +44,7 @@ const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {
 					name='min-price'
 					placeholder={t('analyze_modal.from_price')}
 					className='h-40 w-96 rounded border border-light-gray-200 px-8'
-					value={!inputs.minPrice ? '' : sepNumbers(String(inputs.minPrice))}
+					value={inputs.minPrice === null ? '' : sepNumbers(String(inputs.minPrice))}
 					onCopy={(e) => copyNumberToClipboard(e, inputs.minPrice ?? 0)}
 					onChange={(e) => setFieldValue('minPrice', Number(convertStringToInteger(e.target.value)))}
 				/>
@@ -52,7 +54,7 @@ const PriceRange = ({ maxPrice, minPrice, onChange }: PriceRangeProps) => {
 					name='max-price'
 					placeholder={t('analyze_modal.to_price')}
 					className='h-40 w-96 rounded border border-light-gray-200 px-8'
-					value={!inputs.maxPrice ? '' : sepNumbers(String(inputs.maxPrice))}
+					value={inputs.maxPrice === null ? '' : sepNumbers(String(inputs.maxPrice))}
 					onCopy={(e) => copyNumberToClipboard(e, inputs.maxPrice ?? 0)}
 					onChange={(e) => setFieldValue('maxPrice', Number(convertStringToInteger(e.target.value)))}
 				/>

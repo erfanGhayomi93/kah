@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dynamic from 'next/dynamic';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -46,7 +46,7 @@ const Watchlist = () => {
 		}
 	}, [isLoggedIn]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!isLoggedIn || !Array.isArray(userCustomWatchlistList)) return;
 
 		try {
@@ -73,7 +73,11 @@ const Watchlist = () => {
 			<Toolbar filters={filters} />
 
 			<div className='relative flex-1 overflow-hidden'>
-				<Table filters={filters} setFilters={setFilters} />
+				<Table
+					filters={filters}
+					setFilters={setFilters}
+					watchlistCount={userCustomWatchlistList?.length ?? 0}
+				/>
 			</div>
 		</Main>
 	);
