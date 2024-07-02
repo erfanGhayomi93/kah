@@ -10,20 +10,23 @@ interface StrategyDetailsProps {
 const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 	const baseSymbolPrice = contracts.length === 0 ? 0 : contracts[0].symbol.baseSymbolPrice;
 
-	const { inputs, setFieldsValue } = useInputs<Record<'minPrice' | 'maxPrice', number>>(
+	const { inputs, setFieldsValue } = useInputs<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>(
 		{
-			minPrice: 0,
-			maxPrice: 0,
+			minPrice: null,
+			maxPrice: null,
 		},
 		true,
 	);
 
-	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, neededBudget } = useAnalyze(
+	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, cost, neededBudget } = useAnalyze(
 		contracts,
 		{
 			baseAssets: baseSymbolPrice,
 			maxPrice: inputs.maxPrice,
 			minPrice: inputs.minPrice,
+			useRequiredMargin: false,
+			useStrikeCommission: false,
+			useTradeCommission: false,
 		},
 	);
 
@@ -41,6 +44,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 					chartData={data}
 					contracts={contracts}
 					baseAssets={baseSymbolPrice}
+					cost={cost}
 					bep={bep}
 					height={508}
 					maxPrice={maxPrice}

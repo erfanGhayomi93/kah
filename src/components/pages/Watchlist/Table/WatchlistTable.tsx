@@ -4,7 +4,7 @@ import lightStreamInstance from '@/classes/Lightstream';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
+import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
@@ -30,6 +30,7 @@ import ActionColumn from './ActionColumn';
 interface WatchlistTableProps {
 	id: number;
 	data: Option.Root[] | null;
+	watchlistCount: number;
 	fetchNextPage: () => void;
 }
 
@@ -41,7 +42,7 @@ const getStates = createSelector(
 	}),
 );
 
-const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
+const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const { subscribe } = useSubscription();
@@ -147,6 +148,12 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 	};
 
 	const onAdd = (symbol: Option.Root) => {
+		if (watchlistCount === 0) {
+			toast.info(t('alerts.add_watchlist'), { toastId: 'add_watchlist' });
+			dispatch(setAddNewOptionWatchlistModal({}));
+			return;
+		}
+
 		const { symbolISIN, symbolTitle } = symbol.symbolInfo;
 
 		dispatch(
@@ -263,7 +270,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					colId: 'delta',
 					headerName: t('option_page.delta'),
 					initialHide: Boolean(modifiedWatchlistColumns?.delta?.isHidden ?? true),
-					minWidth: 56,
+					minWidth: 72,
 					valueGetter: ({ data }) => data?.optionWatchlistData.delta ?? 0,
 					valueFormatter: ({ value }) => toFixed(value, 4),
 					comparator: (valueA, valueB) => valueA - valueB,
@@ -665,6 +672,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					maxWidth: 80,
 					pinned: 'left',
 					hide: false,
+					resizable: false,
 					sortable: false,
 					cellRenderer: ActionColumn,
 					cellRendererParams: {
@@ -675,7 +683,7 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 					},
 				},
 			] as Array<ColDef<Option.Root>>,
-		[],
+		[watchlistCount],
 	);
 
 	const defaultColDef: ColDef<Option.Root> = useMemo(
@@ -694,27 +702,10 @@ const WatchlistTable = ({ id, data, fetchNextPage }: WatchlistTableProps) => {
 		const actionColumn = gridApi.getColumn('action');
 		if (!actionColumn) return;
 
-		const colDef: ColDef<Option.Root> = {
-			colId: 'action',
-			headerName: t('option_page.action'),
-			initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
-			minWidth: 80,
-			maxWidth: 80,
-			pinned: 'left',
-			hide: false,
-			sortable: false,
-			resizable: false,
-			cellRenderer: ActionColumn,
-			cellRendererParams: {
-				onAdd,
-				onDelete,
-				addable: true,
-				deletable: id > -1,
-			},
-		};
+		const newColDef = COLUMNS[COLUMNS.length - 1];
 
-		actionColumn.setColDef(colDef, colDef, 'api');
-	}, [isLoggedIn, id]);
+		actionColumn.setColDef(newColDef, newColDef, 'api');
+	}, [isLoggedIn, watchlistCount, id]);
 
 	useEffect(() => {
 		const gridApi = gridRef.current;

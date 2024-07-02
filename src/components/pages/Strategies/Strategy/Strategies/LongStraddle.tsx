@@ -37,7 +37,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.LongStraddle>>(null);
 
-	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'Long_straddle_strategy_columns',

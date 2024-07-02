@@ -36,6 +36,7 @@ const StrategyChartDetails = ({
 					symbolTitle: baseSymbol.symbolTitle,
 					symbolISIN: baseSymbol.symbolISIN,
 					baseSymbolPrice: basePrice,
+					contractSize,
 				},
 			},
 			{
@@ -61,10 +62,13 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, bep } = useAnalyze(contracts, {
+	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, cost, bep } = useAnalyze(contracts, {
 		minPrice,
 		maxPrice,
 		baseAssets: basePrice,
+		useRequiredMargin: true,
+		useTradeCommission: true,
+		useStrikeCommission: true,
 	});
 
 	return (
@@ -107,6 +111,7 @@ const StrategyChartDetails = ({
 				<AnalyzeChart
 					compact
 					data={data}
+					cost={cost}
 					height={150}
 					minPrice={minPrice}
 					maxPrice={maxPrice}

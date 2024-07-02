@@ -38,7 +38,7 @@ const Conversion = (strategy: ConversionProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.Conversion>>(null);
 
-	const [useCommission, setUseCommission] = useLocalstorage('use_commission', true);
+	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
 	const [columnsVisibility, setColumnsVisibility] = useLocalstorage(
 		'conversion_strategy_columns',
@@ -80,6 +80,7 @@ const Conversion = (strategy: ConversionProps) => {
 						symbolTitle: data.baseSymbolTitle,
 						symbolISIN: data.baseSymbolISIN,
 						baseSymbolPrice: data.baseLastTradedPrice,
+						contractSize: data.contractSize,
 					},
 				},
 				{
