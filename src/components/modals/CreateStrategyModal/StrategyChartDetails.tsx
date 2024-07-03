@@ -51,7 +51,7 @@ const StrategyChartDetails = ({
 					symbolISIN: option.symbolISIN,
 					optionType: 'call',
 					contractSize,
-					settlementDay: option.settlementDay,
+					settlementDay: new Date(option.settlementDay),
 					strikePrice: option.strikePrice,
 					requiredMargin: option.requiredMargin,
 					baseSymbolPrice: baseSymbol.bestLimitPrice,
@@ -62,14 +62,17 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, cost, bep } = useAnalyze(contracts, {
-		minPrice,
-		maxPrice,
-		baseAssets: basePrice,
-		useRequiredMargin: true,
-		useTradeCommission: true,
-		useStrikeCommission: true,
-	});
+	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, dueDays, cost, bep } = useAnalyze(
+		contracts,
+		{
+			minPrice,
+			maxPrice,
+			baseAssets: basePrice,
+			useRequiredMargin: true,
+			useTradeCommission: true,
+			useStrikeCommission: true,
+		},
+	);
 
 	return (
 		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-light-gray-200 py-16'>
@@ -110,6 +113,7 @@ const StrategyChartDetails = ({
 			<div className='relative flex-1'>
 				<AnalyzeChart
 					compact
+					dueDays={dueDays}
 					data={data}
 					cost={cost}
 					height={150}
