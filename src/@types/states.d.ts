@@ -380,6 +380,7 @@ declare interface IAnalyzeInputs {
 	minPrice: number | null;
 	maxProfit: number;
 	maxLoss: number;
+	dueDays: number;
 	bep: number[];
 	baseSymbolStatus: 'atm' | 'itm' | 'otm';
 	cost: number;
