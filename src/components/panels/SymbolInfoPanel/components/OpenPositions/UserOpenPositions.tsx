@@ -2,7 +2,7 @@ import { useOptionOrdersQuery } from '@/api/queries/brokerPrivateQueries';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
 import Position from './Position';
@@ -21,7 +21,7 @@ const UserOpenPositions = () => {
 		enabled: false,
 	});
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!brokerURLs) return;
 		refetchOptionOrdersData();
 	}, [brokerURLs]);
@@ -34,7 +34,7 @@ const UserOpenPositions = () => {
 
 	return (
 		<div className='flex-1 flex-column'>
-			<div className='text-light-gray-700 flex text-tiny'>
+			<div className='flex text-tiny text-light-gray-700'>
 				<div className='h-48 flex-1 flex-justify-center'>{t('symbol_info_panel.symbol_title')}</div>
 				<div style={{ flex: '0 0 27.5%' }} className='h-48 flex-justify-center'>
 					{t('symbol_info_panel.quantity')}

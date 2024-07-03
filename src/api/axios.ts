@@ -2,7 +2,6 @@ import { store } from '@/api/inject-store';
 import ipcMain from '@/classes/IpcMain';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
-import { toast } from 'react-toastify';
 
 const axios = AXIOS.create();
 
@@ -64,16 +63,8 @@ const logoutUser = () => {
 
 		ipcMain.send('broker:logged_out', undefined);
 
-		const clientId = getClientId();
 		deleteBrokerClientId();
 		deleteClientId();
-
-		if (clientId) {
-			toast.warning('متاسفانه از حساب خود خارج شدید.', {
-				toastId: 'broker_unauthorize',
-				autoClose: 5000,
-			});
-		}
 	} catch (e) {
 		//
 	}

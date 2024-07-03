@@ -140,8 +140,8 @@ export const setupChart = () => {
 		yAxis: {
 			lineWidth: 0,
 			tickWidth: 0,
-			minPadding: 0,
-			maxPadding: 0,
+			minPadding: 0.025,
+			maxPadding: 0.025,
 			offset: 0,
 			startOnTick: true,
 			endOnTick: true,

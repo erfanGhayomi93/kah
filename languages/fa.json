@@ -951,6 +951,14 @@
 		"page_on_designing": "صفحه در دست طراحی است ...",
 		"please_try_again_later": "لطفا بعدا تلاش کنید."
 	},
+	"choose_guarantee_method_modal": {
+		"title": "انتخاب روش تضمین",
+		"block_type": "محل تضمین",
+		"total_count": "تعداد کل",
+		"base_symbol": "سهم پایه",
+		"collateral": "وجه نقد",
+		"position": "موقعیت"
+	},
 	"analyze_modal": {
 		"title": "آنالیز",
 		"with_calculation": "با احتساب",
@@ -1480,6 +1488,7 @@
 	},
 	"tooltip": {
 		"edit": "ویرایش",
+		"can_not_close_position": "در حال حاضر موقعیت باز بر روی این قرارداد ندارید.",
 		"notifications": "اعلان‌ها",
 		"symbol_search": "جستجوی نماد",
 		"asset_value": "{v} دارایی",

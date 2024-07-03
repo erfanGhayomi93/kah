@@ -164,6 +164,9 @@ const initialState: ModalState = {
 
 	// مدال فیلتر استراتژی‌ها
 	strategyFilters: null,
+
+	// انتخاب روش تضمین
+	chooseGuaranteeMethod: null,
 };
 
 const modalSlice = createSlice({
@@ -415,12 +418,17 @@ const modalSlice = createSlice({
 		setStrategyFiltersModal: (state, { payload }: PayloadAction<ModalState['strategyFilters']>) => {
 			state.strategyFilters = payload;
 		},
+
+		setChooseGuaranteeMethod: (state, { payload }: PayloadAction<ModalState['chooseGuaranteeMethod']>) => {
+			state.chooseGuaranteeMethod = payload;
+		},
 	},
 });
 
 export const {
 	setLoginModal,
 	setBuySellModal,
+	setChooseGuaranteeMethod,
 	setOrderDetailsModal,
 	setSymbolInfoPanelSettingModal,
 	setForgetPasswordModal,
@@ -527,5 +535,6 @@ export const getTopBaseAssetsModal = (state: RootState) => state.modal.topBaseAs
 export const getRecentActivitiesModal = (state: RootState) => state.modal.recentActivities;
 export const getDueDatesModal = (state: RootState) => state.modal.dueDates;
 export const getStrategyFiltersModal = (state: RootState) => state.modal.strategyFilters;
+export const getChooseGuaranteeMethod = (state: RootState) => state.modal.chooseGuaranteeMethod;
 
 export default modalSlice.reducer;

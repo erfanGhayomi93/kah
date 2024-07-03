@@ -9,6 +9,7 @@ import {
 	setChangeBrokerModal,
 	setChoiceBrokerModal,
 	setChoiceCollateralModal,
+	setChooseGuaranteeMethod,
 	setCreateStrategyModal,
 	setDepositModal,
 	setFreezeModal,
@@ -21,6 +22,7 @@ import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
+import ChooseGuaranteeMethod from './ChooseGuaranteeMethod';
 import ModalLoading from './ModalLoading';
 
 const LoginModal = lazy(() => import('./LoginModal'));
@@ -144,6 +146,7 @@ const Modals = () => {
 		addNewOptionWatchlist,
 		manageOptionWatchlistList,
 		buySell,
+		chooseGuaranteeMethod,
 		addSymbolToWatchlist,
 		choiceBroker,
 		confirm,
@@ -367,6 +370,16 @@ const Modals = () => {
 					<ModalSuspense>
 						<AuthorizeMiddleware callback={() => dispatch(setBuySellModal(null))} broker>
 							<BuySellModal {...buySell} />
+						</AuthorizeMiddleware>
+					</ModalSuspense>
+				)}
+			</ModalAnimatePresence>
+
+			<ModalAnimatePresence>
+				{buySell && (
+					<ModalSuspense>
+						<AuthorizeMiddleware callback={() => dispatch(setChooseGuaranteeMethod(null))} broker>
+							<ChooseGuaranteeMethod {...chooseGuaranteeMethod} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
