@@ -1480,6 +1480,7 @@
 	},
 	"tooltip": {
 		"edit": "ویرایش",
+		"can_not_close_position": "برای بستن این موقعیت، باید این موقعیت را داشته باشید.",
 		"notifications": "اعلان‌ها",
 		"symbol_search": "جستجوی نماد",
 		"asset_value": "{v} دارایی",
