@@ -9,7 +9,7 @@ import {
 	setChangeBrokerModal,
 	setChoiceBrokerModal,
 	setChoiceCollateralModal,
-	setChooseGuaranteeMethod,
+	setChooseGuaranteeMethodModal,
 	setCreateStrategyModal,
 	setDepositModal,
 	setFreezeModal,
@@ -376,9 +376,9 @@ const Modals = () => {
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
-				{buySell && (
+				{chooseGuaranteeMethod && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChooseGuaranteeMethod(null))} broker>
+						<AuthorizeMiddleware callback={() => dispatch(setChooseGuaranteeMethodModal(null))} broker>
 							<ChooseGuaranteeMethod {...chooseGuaranteeMethod} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>

@@ -419,7 +419,7 @@ const modalSlice = createSlice({
 			state.strategyFilters = payload;
 		},
 
-		setChooseGuaranteeMethod: (state, { payload }: PayloadAction<ModalState['chooseGuaranteeMethod']>) => {
+		setChooseGuaranteeMethodModal: (state, { payload }: PayloadAction<ModalState['chooseGuaranteeMethod']>) => {
 			state.chooseGuaranteeMethod = payload;
 		},
 	},
@@ -428,7 +428,7 @@ const modalSlice = createSlice({
 export const {
 	setLoginModal,
 	setBuySellModal,
-	setChooseGuaranteeMethod,
+	setChooseGuaranteeMethodModal,
 	setOrderDetailsModal,
 	setSymbolInfoPanelSettingModal,
 	setForgetPasswordModal,
@@ -535,6 +535,6 @@ export const getTopBaseAssetsModal = (state: RootState) => state.modal.topBaseAs
 export const getRecentActivitiesModal = (state: RootState) => state.modal.recentActivities;
 export const getDueDatesModal = (state: RootState) => state.modal.dueDates;
 export const getStrategyFiltersModal = (state: RootState) => state.modal.strategyFilters;
-export const getChooseGuaranteeMethod = (state: RootState) => state.modal.chooseGuaranteeMethod;
+export const getChooseGuaranteeMethodModal = (state: RootState) => state.modal.chooseGuaranteeMethod;
 
 export default modalSlice.reducer;
