@@ -52,7 +52,7 @@ declare interface IOptionStrategy extends ISymbolStrategy {
 		requiredMargin: number;
 		strikePrice: number;
 		contractSize: number;
-		settlementDay: Date | number | string;
+		settlementDay: Date | string;
 		historicalVolatility: number;
 	};
 	requiredMargin?: boolean;

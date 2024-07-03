@@ -124,11 +124,13 @@ const SymbolStrategyTable = ({
 			for (let i = 0; i < l; i++) {
 				const item = contracts[i];
 
-				if (item.requiredMargin) checkListLength.requiredMargin++;
-				if (item.tradeCommission) checkListLength.tradeCommission++;
-				if (item.strikeCommission) checkListLength.strikeCommission++;
-				if (item.tax) checkListLength.tax++;
-				if (item.vDefault) checkListLength.vDefault++;
+				if (item.type === 'option') {
+					if (item.requiredMargin) checkListLength.requiredMargin++;
+					if (item.tradeCommission) checkListLength.tradeCommission++;
+					if (item.strikeCommission) checkListLength.strikeCommission++;
+					if (item.tax) checkListLength.tax++;
+					if (item.vDefault) checkListLength.vDefault++;
+				}
 
 				symbols[item.symbol.symbolISIN] = {
 					requiredMargin: Boolean(item.requiredMargin),
@@ -147,6 +149,8 @@ const SymbolStrategyTable = ({
 	}, [contracts, selectedContracts]);
 
 	const isAllContractsSelected = contracts.length > 0 && selectedContracts.length === contracts.length;
+
+	const optionContractsLength = contracts.length > 0 && contracts.filter((item) => item.type === 'option').length;
 
 	return (
 		<div className={styles.wrapper} style={{ maxHeight }}>
@@ -189,11 +193,11 @@ const SymbolStrategyTable = ({
 						{features?.requiredMargin && (
 							<th className={`${styles.th} w-104 pr-8`}>
 								<Checkbox
-									checked={symbolsChecklistLength.requiredMargin === contracts.length}
+									checked={symbolsChecklistLength.requiredMargin === optionContractsLength}
 									onChange={() =>
 										onToggleAll?.(
 											'requiredMargin',
-											symbolsChecklistLength.requiredMargin !== contracts.length,
+											symbolsChecklistLength.requiredMargin !== optionContractsLength,
 										)
 									}
 									label={t('required_margin')}
@@ -205,11 +209,11 @@ const SymbolStrategyTable = ({
 						{features?.tradeCommission && (
 							<th className={`${styles.th} w-104 pr-8`}>
 								<Checkbox
-									checked={symbolsChecklistLength.tradeCommission === contracts.length}
+									checked={symbolsChecklistLength.tradeCommission === optionContractsLength}
 									onChange={() =>
 										onToggleAll?.(
 											'tradeCommission',
-											symbolsChecklistLength.tradeCommission !== contracts.length,
+											symbolsChecklistLength.tradeCommission !== optionContractsLength,
 										)
 									}
 									label={t('trade_commission')}
@@ -221,11 +225,11 @@ const SymbolStrategyTable = ({
 						{features?.strikeCommission && (
 							<th className={`${styles.th} w-104 pr-8`}>
 								<Checkbox
-									checked={symbolsChecklistLength.strikeCommission === contracts.length}
+									checked={symbolsChecklistLength.strikeCommission === optionContractsLength}
 									onChange={() =>
 										onToggleAll?.(
 											'strikeCommission',
-											symbolsChecklistLength.strikeCommission !== contracts.length,
+											symbolsChecklistLength.strikeCommission !== optionContractsLength,
 										)
 									}
 									label={t('strike_commission')}
@@ -237,9 +241,9 @@ const SymbolStrategyTable = ({
 						{features?.tax && (
 							<th className={`${styles.th} w-104 pr-8`}>
 								<Checkbox
-									checked={symbolsChecklistLength.tax === contracts.length}
+									checked={symbolsChecklistLength.tax === optionContractsLength}
 									onChange={() =>
-										onToggleAll?.('tax', symbolsChecklistLength.tax !== contracts.length)
+										onToggleAll?.('tax', symbolsChecklistLength.tax !== optionContractsLength)
 									}
 									label={t('tax')}
 									classes={{ text: '!text-tiny', label: '!gap-4' }}
@@ -250,9 +254,12 @@ const SymbolStrategyTable = ({
 						{features?.vDefault && (
 							<th className={`${styles.th} w-104 pr-8`}>
 								<Checkbox
-									checked={symbolsChecklistLength.vDefault === contracts.length}
+									checked={symbolsChecklistLength.vDefault === optionContractsLength}
 									onChange={() =>
-										onToggleAll?.('vDefault', symbolsChecklistLength.vDefault !== contracts.length)
+										onToggleAll?.(
+											'vDefault',
+											symbolsChecklistLength.vDefault !== optionContractsLength,
+										)
 									}
 									label={t('default')}
 									classes={{ text: '!text-tiny', label: '!gap-4' }}
@@ -465,7 +472,7 @@ const SymbolStrategy = ({
 			</td>
 
 			{features?.requiredMargin && (
-				<td className={`${styles.td} pr-8`}>
+				<td className={`${styles.td} ${styles.right} pr-8`}>
 					<OptionCheckbox
 						type={contract.type}
 						checked={Boolean(checkList?.requiredMargin)}
@@ -478,7 +485,7 @@ const SymbolStrategy = ({
 			)}
 
 			{features?.tradeCommission && (
-				<td className={`${styles.td} pr-8`}>
+				<td className={`${styles.td} ${styles.right} pr-8`}>
 					<OptionCheckbox
 						type={contract.type}
 						checked={Boolean(checkList?.tradeCommission)}
@@ -501,7 +508,7 @@ const SymbolStrategy = ({
 			)}
 
 			{features?.strikeCommission && (
-				<td className={`${styles.td} pr-8`}>
+				<td className={`${styles.td} ${styles.right} pr-8`}>
 					<OptionCheckbox
 						type={contract.type}
 						checked={Boolean(checkList?.strikeCommission)}
@@ -514,7 +521,7 @@ const SymbolStrategy = ({
 			)}
 
 			{features?.tax && (
-				<td className={`${styles.td} pr-8`}>
+				<td className={`${styles.td} ${styles.right} pr-8`}>
 					<OptionCheckbox
 						type={contract.type}
 						checked={Boolean(checkList?.tax)}
@@ -527,7 +534,7 @@ const SymbolStrategy = ({
 			)}
 
 			{features?.vDefault && (
-				<td className={`${styles.td} pr-8`}>
+				<td className={`${styles.td} ${styles.right} pr-8`}>
 					<OptionCheckbox
 						type={contract.type}
 						checked={Boolean(checkList?.vDefault)}
