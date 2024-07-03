@@ -317,6 +317,14 @@ export interface IRecentActivitiesModal extends IBaseModalConfiguration {}
 
 export interface IDueDatesModal extends IBaseModalConfiguration {}
 
+export interface IChooseGuaranteeMethodModal extends IBaseModalConfiguration {
+	baseSymbolTitle: string;
+	baseSymbolISIN: string;
+	symbolTitle: string;
+	symbolISIN: string;
+	callback: () => void;
+}
+
 export namespace NStrategyFilter {
 	export interface ShareProps {
 		id: string;
@@ -448,4 +456,5 @@ export type ModalState = TBaseModalProps<{
 	recentActivities: IRecentActivitiesModal;
 	dueDates: IDueDatesModal;
 	strategyFilters: NStrategyFilter.IFilters;
+	chooseGuaranteeMethod: IChooseGuaranteeMethodModal;
 }>;

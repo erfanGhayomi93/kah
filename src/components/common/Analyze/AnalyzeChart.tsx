@@ -190,8 +190,10 @@ const AnalyzeChart = ({
 				},
 			},
 			yAxis: {
-				gridLineWidth: compact ? 0 : 1,
 				type: 'linear',
+				gridLineWidth: compact ? 0 : 1,
+				minPadding: compact ? 0 : 0.025,
+				maxPadding: compact ? 0 : 0.025,
 				labels: {
 					enabled: !compact,
 					formatter: ({ value }) => sepNumbers(String(value)),
@@ -260,15 +262,16 @@ const AnalyzeChart = ({
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
 
+				const efficiency =
+					y === 0 ? '0%' : cost === 0 ? t('infinity') : `${(Math.max(y / cost, -100) * 100).toFixed(3)}%`;
 				// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
 				const profit = (y + baseAssets) / baseAssets - 1;
-
 				const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
 
 				const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
 				const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
 				const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
-				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${(Math.max(y / cost, -100) * 100).toFixed(3)}%</span></li>`;
+				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency}</span></li>`;
 				const li5 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
 
 				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1 + li2 + li3 + li4 + li5}</ul>`;

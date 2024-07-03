@@ -148,7 +148,7 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 					<SymbolPriceSlider
 						yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
 						thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
-						exchangeData={[20000, 21000]}
+						exchangeData={[closingPrice ?? 0, lastTradedPrice ?? 0]}
 						boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
 					/>
 				</div>
