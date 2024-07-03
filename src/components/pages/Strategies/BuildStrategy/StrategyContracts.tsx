@@ -20,6 +20,10 @@ interface StrategyContractsProps {
 	upsert: () => void;
 }
 
+interface SumValueProps {
+	value: number;
+}
+
 const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedContracts }: StrategyContractsProps) => {
 	const t = useTranslations();
 
@@ -205,31 +209,16 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 					<div className='relative h-24 border-t border-t-light-gray-200'>
 						<ul
 							style={{ top: '-1.2rem' }}
-							className='absolute left-8 bg-white px-16 flex-items-center *:gap-4 *:truncate *:flex-items-center'
+							className='absolute left-0 px-16 flex-items-center *:gap-4 *:truncate *:bg-white *:flex-items-center'
 						>
-							<li className='justify-end pl-24 font-medium text-light-gray-700'>
+							<li className='justify-end pl-24 pr-16 font-medium text-light-gray-700'>
 								{t('build_strategy.aggregate')}:
 							</li>
-							<li className='w-104 text-light-gray-800'>
-								{sepNumbers(String(requiredMargin))}
-								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
-							</li>
-							<li className='w-104 text-light-gray-800'>
-								{sepNumbers(String(tradeCommission))}
-								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
-							</li>
-							<li className='w-104 text-light-gray-800'>
-								{sepNumbers(String(strikeCommission))}
-								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
-							</li>
-							<li className='w-104 text-light-gray-800'>
-								{sepNumbers(String(tax))}
-								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
-							</li>
-							<li className='w-104 text-light-gray-800'>
-								{sepNumbers(String(vDefault))}
-								<span className='truncate text-light-gray-500'>{t('common.rial')}</span>
-							</li>
+							<SumValue value={requiredMargin} />
+							<SumValue value={tradeCommission} />
+							<SumValue value={strikeCommission} />
+							<SumValue value={tax} />
+							<SumValue value={vDefault} />
 						</ul>
 					</div>
 
@@ -263,6 +252,16 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 				</div>
 			</div>
 		</div>
+	);
+};
+
+const SumValue = ({ value }: SumValueProps) => {
+	const t = useTranslations('common');
+	return (
+		<li className='w-104 text-light-gray-500'>
+			<span className='text-light-gray-800 ltr'>{sepNumbers(String(value))}</span>
+			<span className='truncate'>{t('rial')}</span>
+		</li>
 	);
 };
 

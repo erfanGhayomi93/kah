@@ -559,7 +559,7 @@ export const convertSymbolWatchlistToSymbolBasket = (symbol: Option.Root, side: 
 			optionType,
 			requiredMargin: symbol.optionWatchlistData.requiredMargin,
 			contractSize: symbolInfo.contractSize,
-			settlementDay: symbolInfo.contractEndDate,
+			settlementDay: new Date(symbolInfo.contractEndDate),
 			baseSymbolPrice: optionWatchlistData.baseSymbolPrice,
 			strikePrice: symbolInfo.strikePrice,
 			historicalVolatility: optionWatchlistData.historicalVolatility,

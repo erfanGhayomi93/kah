@@ -79,7 +79,7 @@ const LongCall = (strategy: LongCallProps) => {
 						baseSymbolPrice: data.baseLastTradedPrice,
 						historicalVolatility: data.historicalVolatility,
 						contractSize: data.contractSize,
-						settlementDay: data.contractEndDate,
+						settlementDay: new Date(data.contractEndDate),
 						strikePrice: data.strikePrice,
 						requiredMargin: data.requiredMargin,
 					},
