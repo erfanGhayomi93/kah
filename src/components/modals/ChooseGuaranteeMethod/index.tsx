@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/features/hooks';
-import { setChooseGuaranteeMethod } from '@/features/slices/modalSlice';
+import { setChooseGuaranteeMethodModal } from '@/features/slices/modalSlice';
 import { type IChooseGuaranteeMethodModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
@@ -21,7 +21,7 @@ const ChooseGuaranteeMethod = forwardRef<HTMLDivElement, ChooseGuaranteeMethodPr
 		const dispatch = useAppDispatch();
 
 		const onCloseModal = () => {
-			dispatch(setChooseGuaranteeMethod(null));
+			dispatch(setChooseGuaranteeMethodModal(null));
 		};
 
 		return (
