@@ -7,16 +7,9 @@ import ErrorBoundary from '../ErrorBoundary';
 import NoData from '../NoData';
 import PriceRange from './PriceRange';
 
-interface IPoint {
-	x: number;
-	y: number;
-}
-
-interface AnalyzeChartProps extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'> {
-	data: IPoint[];
-	bep: number[];
+interface AnalyzeChartProps
+	extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'cost' | 'data' | 'bep'> {
 	baseAssets: number;
-	cost: number;
 	height?: number;
 	compact?: boolean;
 	onChange?: (values: Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>) => void;
@@ -26,6 +19,7 @@ const AnalyzeChart = ({
 	data,
 	baseAssets,
 	cost,
+	dueDays,
 	maxPrice,
 	minPrice,
 	bep,
@@ -96,13 +90,11 @@ const AnalyzeChart = ({
 		},
 	});
 
-	const getYtm = (profitPercent: number, dueDays: number) => {
+	const getYtm = (profitPercent: number) => {
 		try {
 			if (profitPercent == null) throw new Error();
 
-			dueDays = Math.max(dueDays, 1);
-
-			const ytm = (Math.pow(1 + profitPercent, 365 / dueDays) - 1) * 100;
+			const ytm = (Math.pow(1 + profitPercent, 365 / Math.max(dueDays, 1)) - 1) * 100;
 
 			return Number(ytm.toFixed(2));
 		} catch (e) {
@@ -271,18 +263,18 @@ const AnalyzeChart = ({
 				// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
 				const profit = (y + baseAssets) / baseAssets - 1;
 
-				const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit, 14);
+				const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
 
 				const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
 				const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
 				const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
-				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${((y / cost) * 100).toFixed(3)}%</span></li>`;
+				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${(Math.max(y / cost, -100) * 100).toFixed(3)}%</span></li>`;
 				const li5 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
 
 				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1 + li2 + li3 + li4 + li5}</ul>`;
 			},
 		});
-	}, [baseAssets, cost]);
+	}, [baseAssets, dueDays, cost]);
 
 	return (
 		<ErrorBoundary>
