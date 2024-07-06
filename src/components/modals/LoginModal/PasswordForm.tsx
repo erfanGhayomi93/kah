@@ -95,8 +95,8 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 							<span className='label'>{t('inputs.password')}</span>
 							<div className={cn('flex-items-center input')}>
 								<input
-									title={t('inputs.password')}
 									autoFocus
+									title={t('inputs.password')}
 									type={passwordIsVisible ? 'text' : 'password'}
 									inputMode='numeric'
 									maxLength={72}
@@ -108,7 +108,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 								<button
 									onClick={() => setPasswordIsVisible(!passwordIsVisible)}
 									type='button'
-									className='text-light-gray-700 border-r-0 prefix'
+									className='border-r-0 text-light-gray-700 prefix'
 								>
 									{passwordIsVisible ? <EyeSlashSVG /> : <EyeSVG />}
 								</button>
@@ -119,7 +119,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 								<button
 									onClick={forgetPassword}
 									type='button'
-									className='text-light-primary-100 mr-auto text-base'
+									className='mr-auto text-base text-light-primary-100'
 								>
 									{t('login_modal.forget_password')}
 								</button>
@@ -139,7 +139,7 @@ const PasswordForm = ({ loginResult, phoneNumber, onLoggedIn, goToWelcome, goToL
 					{t('login_modal.login')}
 				</Button>
 
-				<button type='button' onClick={goToLoginWithOTP} className='text-light-primary-100 h-40 font-medium'>
+				<button type='button' onClick={goToLoginWithOTP} className='h-40 font-medium text-light-primary-100'>
 					{t('login_modal.login_with_otp')}
 				</button>
 			</div>

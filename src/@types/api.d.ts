@@ -521,6 +521,47 @@ declare namespace Symbol {
 		x: number;
 		v: number;
 	}
+
+	export interface SymbolType {
+		insCode: string;
+		companyISIN: string;
+		symbolTitle: string;
+		companyName: string;
+		enCompanyName: string;
+		highestTradePriceOfTradingDay: number;
+		lowestTradePriceOfTradingDay: number;
+		closingPrice: number;
+		openPrice: number;
+		highThreshold: number;
+		lowThreshold: number;
+		totalNumberOfSharesTraded: number;
+		totalNumberOfTrades: number;
+		totalTradeValue: number;
+		lastTradedPrice: number;
+		lastTradedDate: string;
+		firstTradedPrice: number;
+		preClosingPrice: number;
+		lastTradedPriceVar: number;
+		lastTradedPriceVarPercent: number;
+		closingPriceVar: number;
+		closingPriceVarPercent: number;
+		symbolGroupCode: number | string;
+		bestBuyLimitQuantity_1: number;
+		bestSellLimitQuantity_1: number;
+		numberOfOrdersAtBestBuy_1: number;
+		numberOfOrdersAtBestSell_1: number;
+		bestBuyLimitPrice_1: number;
+		bestSellLimitPrice_1: number;
+		sectorCode: string;
+		unitCount: number;
+		marketUnit: MarketUnit;
+		orderPriceTickSize: number;
+		baseVolume: number;
+		symbolOrderState: string;
+		symbolTradeState: string;
+		groupState: string;
+		symbolState: string;
+	}
 }
 
 declare namespace OAuthAPI {
@@ -639,60 +680,61 @@ declare namespace Broker {
 		| 'GetListBrokerBankAccount'
 		| 'DepositOfflineHistory'
 		| 'CustomerTurnOverRemain'
-		| 'CreateChangeBrokers'
-		| 'LastChangeBrokers'
 		| 'GetWithFilterReceipt'
 		| 'GetFilteredEPaymentApi'
-		| 'RecentUnFreeze'
-		| 'DeleteFreeze'
-		| 'DeleteChangeBroker'
 		| 'GetFilteredPayment'
-		| 'GetListBankAccount'
+		| 'DepositOnlineHistory'
 		| 'GetRemainsWithDate'
+		| 'GetListBankAccount'
 		| 'LastListDrawal'
 		| 'RequestPayment'
+		| 'CreateChangeBrokers'
+		| 'LastChangeBrokers'
+		| 'EPaymentExportFilteredCSV'
+		| 'PaymentExportFilteredCSV'
+		| 'DeleteChangeBroker'
+		| 'EPaymentApiGetStatuses'
+		| 'EPaymentApiGetProviderTypes'
 		| 'newKaraFreeze'
 		| 'RecentFreeze'
 		| 'symbolCountFreeze'
-		| 'DepositOnlineHistory'
-		| 'CustomerTurnOverCSVExport'
-		| 'EPaymentExportFilteredCSV'
-		| 'ReceiptExportFilteredCSV'
-		| 'PaymentExportFilteredCSV'
-		| 'SetCustomerSettings'
-		| 'DepositOnlineHistory'
-		| 'ReceiptEditRequest'
-		| 'PaymentUpdateRequest'
 		| 'GetCustomerSettings'
-		| 'EPaymentApiGetStatuses'
-		| 'EPaymentApiGetProviderTypes'
+		| 'SetCustomerSettings'
 		| 'PaymentGetStatuses'
-		| 'ChangeBrokerExportFilteredCSV'
+		| 'RemainCustomerTurnOverCSVExport'
+		| 'CustomerTurnOverCSVExport'
 		| 'ChangeBrokerChangeBrokersByFilter'
-		| 'GetAgreements'
 		| 'ChangeBrokerSetCancel'
+		| 'GetAgreements'
 		| 'FreezeExportFreeze'
 		| 'Freezerequests'
+		| 'RecentUnFreeze'
+		| 'DeleteFreeze'
 		| 'Settlementcash'
+		| 'AcceptAgreement'
 		| 'Settlementphysical'
-		| 'newPhysicalSettlement'
-		| 'newCashSettlement'
-		| 'deletePhysicalSettlement'
-		| 'deleteCashSettlement'
 		| 'OrderExportOrders'
 		| 'OrderOrders'
 		| 'OrderExportTrades'
 		| 'OrderDetailedOrders'
-		| 'FreezeExportFreeze'
-		| 'Freezerequests'
 		| 'ReceiptSetCancel'
 		| 'PaymentDeleteRequest'
-		| 'AcceptAgreement'
 		| 'MobileOtpRequest'
+		| 'PaymentUpdateRequest'
+		| 'ReceiptEditRequest'
+		| 'listCashSettlement'
+		| 'listPhysicalSettlement'
 		| 'DataProviderv1MarketMap'
+		| 'newCashSettlement'
+		| 'newPhysicalSettlement'
+		| 'deleteCashSettlement'
+		| 'deletePhysicalSettlement'
 		| 'getSectorSectorsWithTrades'
 		| 'deleteFreezeUnFreeze'
-		| 'settlementdeleteCash';
+		| 'ReceiptExportFilteredCSV'
+		| 'ChangeBrokerExportFilteredCSV'
+		| 'settlementdeleteCash'
+		| 'settlementDeleteCash';
 
 	type URL = Record<UrlKey, string>;
 
@@ -728,6 +770,44 @@ declare namespace Broker {
 		isOffline: boolean;
 		customerTags: string;
 		ipLocation: string;
+	}
+
+	export interface Portfolio {
+		customerISIN: string | null;
+		symbolISIN: string;
+		side: 'Call' | 'Put' | null;
+		symbol: Symbol.SymbolType;
+		baseSymbolTitle: string | null;
+		takeProfit: number;
+		stopLoss: number;
+		breakEvenPrice: number;
+		assemblyProfit: number;
+		finalProfit: number;
+		remainValue: number;
+		profitValue: number;
+		averagePrice: number;
+		asset: number;
+		csdAsset: number;
+		totalPrice: number;
+		totalCount: number;
+		commentCount: number;
+		isHidden: boolean;
+		dailyNotificationSent: boolean;
+		saveDate: string;
+		remainProfitPercent: number;
+		symbolEfficiency: number;
+		buySum: number;
+		sellSum: number;
+		commissionPrice: number;
+		momentaryProfitLoss: number;
+		isAutomatic: boolean;
+		finalPrice: number;
+		profitLoss_ClosingPrice: number;
+		profitLoss_ClosingPricePercent: number;
+		ProfitLoss_LastPrice: number;
+		profitLoss_LastPricePercent: number;
+		isFreezed: boolean;
+		isOption: boolean;
 	}
 
 	export interface OrdersCount {

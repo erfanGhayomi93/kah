@@ -23,7 +23,9 @@ const Header = ({ symbolTitle, expand, onToggle, onClose }: HeaderProps) => {
 				</span>
 			</button>
 
-			<h2 className='text-lg font-medium text-light-gray-800'>{t('bs_modal.title', { symbolTitle })}</h2>
+			<h2 className='select-none text-lg font-medium text-light-gray-800'>
+				{t('bs_modal.title', { symbolTitle })}
+			</h2>
 
 			<button type='button' className='absolute left-16 top-1/2 -translate-y-1/2' onClick={onClose}>
 				<span className='size-24 text-light-gray-700 flex-justify-center'>
