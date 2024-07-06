@@ -132,7 +132,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					let y = 0;
 
 					if (type === 'base') {
-						y = j - baseAssets;
+						y = side === 'buy' ? j - baseAssets : baseAssets - j;
 					} else {
 						let strikeCommission = 0;
 						if ((useStrikeCommission || item.strikeCommission) && side === 'buy') {
@@ -175,13 +175,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					if (pnl > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, pnl));
 					else if (pnl < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, pnl));
 
-					if (
-						[12815, 14445, 22238, 17455].includes(item.x) ||
-						isNotSameZone ||
-						i % diff === 0 ||
-						i === 0 ||
-						i === l - 1
-					) {
+					if (isNotSameZone || i % diff === 0 || i === 0 || i === l - 1) {
 						newInputs.data.push({
 							x: item.x,
 							y: pnl,

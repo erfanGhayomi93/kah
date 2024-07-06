@@ -112,8 +112,7 @@
 		"sell": "فروش",
 		"price_hint": "محاسبه خودکار با سرخط",
 		"more_info": "اطلاعات بیشتر",
-		"remove": "حذف",
-		"can_not_change_base_symbol_side": "امکان تغییر سمت نماد پایه وجود ندارد."
+		"remove": "حذف"
 	},
 	"home": {
 		"manage_layout": "چیدمان صفحه اصلی",

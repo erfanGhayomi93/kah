@@ -10,7 +10,6 @@ import { convertStringToInteger, copyNumberToClipboard, sepNumbers, toFixed } fr
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
-import { toast } from 'react-toastify';
 import Checkbox, { type ICheckboxProps } from '../Inputs/Checkbox';
 import Tooltip from '../Tooltip';
 import styles from './SymbolStrategyTable.module.scss';
@@ -364,17 +363,11 @@ const SymbolStrategy = ({
 	};
 
 	const onSideChange = () => {
-		if (contract.type === 'option') setFieldValue('side', inputs.side === 'buy' ? 'sell' : 'buy');
-		else
-			toast.warning(t('can_not_change_base_symbol_side'), {
-				toastId: 'can_not_change_base_symbol_side',
-			});
+		setFieldValue('side', inputs.side === 'buy' ? 'sell' : 'buy');
 	};
 
 	useEffect(() => {
-		setDebounce(() => {
-			onChange(inputs);
-		}, 400);
+		setDebounce(() => onChange(inputs), 400);
 	}, [JSON.stringify(inputs)]);
 
 	return (
@@ -389,7 +382,6 @@ const SymbolStrategy = ({
 					type='button'
 					className={clsx(
 						'size-40 rounded font-normal transition-colors',
-						contract.type === 'base' && 'cursor-not-allowed',
 						inputs.side === 'buy'
 							? 'bg-light-success-100/10 text-light-success-100'
 							: 'bg-light-error-100/10 text-light-error-100',
