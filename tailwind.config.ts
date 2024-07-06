@@ -236,6 +236,7 @@ const config: Config = {
 
 		spacing: {
 			'0': '0',
+			'1': '1px',
 			'2': '2px',
 			'4': '0.4rem',
 			'6': '0.6rem',

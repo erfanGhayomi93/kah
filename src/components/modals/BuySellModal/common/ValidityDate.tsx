@@ -51,14 +51,14 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 			<div className='relative'>
 				<div
 					onClick={() => setShowValidityDates(!showValidityDates)}
-					className='h-40 cursor-pointer select-none gap-8 px-8 flex-justify-between gray-box'
+					className='h-48 cursor-pointer select-none gap-8 px-8 flex-justify-between gray-box'
 				>
-					<span className='text-light-gray-700 whitespace-nowrap text-base'>
+					<span className='whitespace-nowrap text-base text-light-gray-700'>
 						{t('bs_modal.validity_date')}
 					</span>
 
-					<span className='text-light-primary-100 gap-8 text-tiny flex-items-center'>
-						<span className='bg-light-secondary-200 border-light-primary-100 text-light-primary-100 h-24 rounded border px-8 flex-items-center'>
+					<span className='gap-8 text-tiny text-light-primary-100 flex-items-center'>
+						<span className='h-24 rounded border border-light-primary-100 bg-light-secondary-200 px-8 text-light-primary-100 flex-items-center'>
 							{validityDateTitle}
 						</span>
 						<span className='text-light-gray-700'>
@@ -83,8 +83,8 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 									className={cn(
 										'h-32 w-full flex-1 rounded border transition-colors flex-justify-center',
 										item.id === value
-											? 'bg-light-secondary-200 border-light-primary-100 text-light-primary-100'
-											: 'text-light-gray-800 border-light-gray-200 hover:btn-hover',
+											? 'border-light-primary-100 bg-light-secondary-200 text-light-primary-100'
+											: 'border-light-gray-200 text-light-gray-800 hover:btn-hover',
 									)}
 								>
 									{item.title}

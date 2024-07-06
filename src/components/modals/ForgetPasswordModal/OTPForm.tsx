@@ -115,6 +115,7 @@ const OTPForm = ({ result, phoneNumber, sendOTP, setResult, goToChangePassword, 
 
 							<div className={cn('flex-items-center input', isTouched && invalid && 'invalid')}>
 								<input
+									autoFocus
 									title={t('inputs.otp_placeholder')}
 									type='text'
 									inputMode='numeric'

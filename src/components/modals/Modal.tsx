@@ -1,5 +1,6 @@
 import { usePathname } from '@/navigation';
 import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
@@ -7,6 +8,7 @@ import { EraserSVG, RefreshSVG, SessionHistorySVG, XSVG } from '../icons';
 import styles from './Modal.module.scss';
 
 interface ModalProps extends IBaseModalConfiguration {
+	suppressClickOutside?: boolean;
 	portalElement?: HTMLElement;
 	style?: Partial<Record<'root' | 'container' | 'modal', React.CSSProperties>>;
 	size?: 'lg' | 'md' | 'sm' | 'xs' | 'xxs';
@@ -32,7 +34,21 @@ interface ModalHeaderCustomProps {
 type ModalHeaderProps = ModalHeaderChildrenProps | ModalHeaderCustomProps;
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
-	({ portalElement, moveable = false, transparent = false, children, style, classes, size, top, onClose }, ref) => {
+	(
+		{
+			portalElement,
+			moveable = false,
+			transparent = false,
+			suppressClickOutside = false,
+			children,
+			style,
+			classes,
+			size,
+			top,
+			onClose,
+		},
+		ref,
+	) => {
 		const pathname = usePathname();
 
 		const rootRef = useRef<HTMLDivElement>(null);
@@ -72,9 +88,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 		useEffect(() => {
 			const controller = new AbortController();
 
-			window.addEventListener('mousedown', (e) => onWindowClick(e, () => controller.abort()), {
-				signal: controller.signal,
-			});
+			if (!suppressClickOutside) {
+				window.addEventListener('mousedown', (e) => onWindowClick(e, () => controller.abort()), {
+					signal: controller.signal,
+				});
+			}
 
 			window.addEventListener('keydown', (e) => onWindowKeyDown(e, () => controller.abort()), {
 				signal: controller.signal,
@@ -103,7 +121,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 			<div
 				ref={rootRef}
 				style={style?.root}
-				className={cn(
+				className={clsx(
 					'presence',
 					styles.root,
 					classes?.root,
@@ -128,14 +146,14 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
 const Header = (props: ModalHeaderProps) => {
 	if ('children' in props) {
-		return <div className='bg-light-gray-100 relative h-56 w-full flex-justify-center'>{props.children}</div>;
+		return <div className='relative h-56 w-full bg-light-gray-100 flex-justify-center'>{props.children}</div>;
 	}
 
 	const { label, onClose, onExpanded, onClear, onReset } = props;
 
 	return (
-		<div className='bg-light-gray-100 relative h-56 w-full flex-justify-center'>
-			<h2 className='text-light-gray-700 select-none text-xl font-medium'>{label}</h2>
+		<div className='relative h-56 w-full bg-light-gray-100 flex-justify-center'>
+			<h2 className='select-none text-xl font-medium text-light-gray-700'>{label}</h2>
 
 			<div className='absolute left-24 z-10 gap-8 ltr flex-items-end *:size-24 *:flex-justify-center *:icon-hover'>
 				<button onClick={onClose} type='button'>

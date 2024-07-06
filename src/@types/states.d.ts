@@ -367,7 +367,7 @@ declare interface IBsModalInputs {
 	validityDate: number;
 	price: number;
 	quantity: number;
-	value: BigInt | number;
+	value: number;
 	side: TBsSides;
 	priceLock: boolean;
 	expand: boolean;

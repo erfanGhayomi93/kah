@@ -1,21 +1,41 @@
-import { cn, convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
+import { ArrowDownSVG, ArrowUpSVG } from '@/components/icons';
+import { convertStringToInteger, copyNumberToClipboard, isBetween, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
+interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'prefix'> {
 	value: number;
 	label: string;
-	prepend?: React.ReactElement;
+	tickSize: number;
+	min?: number;
+	max?: number;
+	low: number;
+	high: number;
+	prefix?: React.ReactElement;
 	onChange: (value: number) => void;
 }
 
-const Input = ({ value, label, prepend, onChange, ...inputProps }: InputProps) => {
+const Input = ({
+	value,
+	label,
+	prefix,
+	low,
+	high,
+	tickSize,
+	min = 0,
+	max = 1e12,
+	onChange,
+	...inputProps
+}: InputProps) => {
+	const setInputValue = (v: number) => {
+		if (isBetween(min, v, Math.min(max, Number.MAX_SAFE_INTEGER))) onChange(v);
+	};
+
 	const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const element = e.target;
 		const value = element.value;
-		const valueAsNumber = Number(convertStringToInteger(value));
 
-		if (valueAsNumber >= Number.MAX_SAFE_INTEGER) return;
-		onChange(valueAsNumber);
+		setInputValue(Number(convertStringToInteger(value)));
 
 		try {
 			const caret = element.selectionStart;
@@ -38,27 +58,63 @@ const Input = ({ value, label, prepend, onChange, ...inputProps }: InputProps) =
 	}, [value]);
 
 	return (
-		<div className='flex h-40 items-center gap-8'>
-			<label className='relative size-full rounded bg-white flex-items-center input-group'>
+		<div className='flex h-48 items-center rounded bg-white input-group'>
+			<label className='relative size-full flex-1 flex-items-center'>
 				<input
 					{...inputProps}
 					onCopy={(e) => copyNumberToClipboard(e, value)}
 					type='text'
-					maxLength={19}
 					inputMode='numeric'
 					value={valueFormatter}
 					onChange={onChangeValue}
 					className='h-full flex-1 border-0 bg-transparent px-8 text-left ltr'
 				/>
 
-				<span className={cn('flexible-placeholder', valueFormatter && 'active')}>{label}</span>
+				<span className={clsx('flexible-placeholder', valueFormatter && 'active')}>{label}</span>
 
-				<fieldset className={cn('flexible-fieldset', valueFormatter && 'active')}>
+				<fieldset className={clsx('flexible-fieldset', valueFormatter && 'active')}>
 					<legend>{label}</legend>
 				</fieldset>
-			</label>
 
-			{prepend}
+				<div
+					style={{ flex: '0 0 12rem' }}
+					className={clsx(
+						'h-full bg-light-gray-100 py-4 pr-8 flex-justify-between',
+						prefix ? 'pl-8' : 'pl-16',
+					)}
+				>
+					<div className='flex-column flex-justify-between'>
+						<button
+							type='button'
+							className='size-16 text-light-gray-700 flex-justify-center'
+							onClick={() => setInputValue(value + tickSize)}
+						>
+							<ArrowUpSVG width='1.4rem' height='1.4rem' />
+						</button>
+						<button
+							type='button'
+							className='size-16 text-light-gray-700 flex-justify-center'
+							onClick={() => setInputValue(value + tickSize)}
+						>
+							<ArrowDownSVG width='1.4rem' height='1.4rem' />
+						</button>
+					</div>
+
+					<div className='gap-8 flex-items-center'>
+						<div className='flex-1 flex-column flex-justify-between *:flex *:h-16 *:w-56 *:justify-end *:text-left *:text-tiny *:text-light-gray-700'>
+							<button type='button' className='items-end' onClick={() => setInputValue(high)}>
+								{sepNumbers(String(high))}
+							</button>
+
+							<button type='button' className='items-start' onClick={() => setInputValue(low)}>
+								{sepNumbers(String(low))}
+							</button>
+						</div>
+
+						{prefix}
+					</div>
+				</div>
+			</label>
 		</div>
 	);
 };

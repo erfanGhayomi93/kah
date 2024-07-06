@@ -5,7 +5,8 @@ import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuySellModal } from '@/features/slices/modalSlice';
 import { type IBuySellModal } from '@/features/slices/types/modalSlice.interfaces';
-import { cn, divide } from '@/utils/helpers';
+import { divide } from '@/utils/helpers';
+import clsx from 'clsx';
 import dynamic from 'next/dynamic';
 import { forwardRef, useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -20,10 +21,10 @@ const SymbolInfo = dynamic(() => import('./SymbolInfo'), {
 });
 
 const Div = styled.div`
+	height: 62rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	background-color: rgba(251, 251, 251, 1);
 	transition: width 200ms ease-in-out;
 	-webkit-transition: width 200ms ease-in-out;
 `;
@@ -47,7 +48,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			initialValidityDate,
 			initialPrice,
 			initialQuantity,
-			expand,
+			expand = true,
 			holdAfterOrder,
 			...props
 		},
@@ -173,17 +174,18 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		}, [JSON.stringify(commissions), side, symbolData?.marketUnit]);
 
 		return (
-			<Modal moveable top='16%' onClose={onCloseModal} {...props} ref={ref}>
-				<Div style={{ width: inputs.expand ? '732px' : '336px' }}>
+			<Modal suppressClickOutside moveable transparent top='16%' onClose={onCloseModal} {...props} ref={ref}>
+				<Div style={{ width: inputs.expand ? '732px' : '336px' }} className='bg-light-gray-50'>
 					<Header
 						symbolTitle={symbolTitle}
 						expand={inputs.expand}
 						onToggle={() => setInputValue('expand', !inputs.expand)}
 						onClose={onCloseModal}
 					/>
+
 					<div className='flex h-full flex-1'>
 						<div
-							className={cn(
+							className={clsx(
 								'relative w-full flex-1 overflow-hidden',
 								inputs.expand && 'border-l border-l-light-gray-200',
 							)}
@@ -194,8 +196,10 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 								</ErrorBoundary>
 							)}
 						</div>
+
 						<Body
 							{...inputs}
+							symbolTitle={symbolTitle}
 							commission={commission}
 							switchable={switchable}
 							id={id}
@@ -207,9 +211,10 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 							setInputValue={setInputValue}
 						/>
 					</div>
+
 					<Footer
-						validityDays={symbolType === 'option' ? 1 : null}
 						hold={inputs.holdAfterOrder}
+						validityDays={symbolType === 'option' ? 1 : null}
 						onHold={(checked) => setInputValue('holdAfterOrder', checked)}
 					/>
 				</Div>

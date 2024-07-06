@@ -1,17 +1,17 @@
 import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
-import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
-import { cn, dateConverter } from '@/utils/helpers';
+import { dateConverter } from '@/utils/helpers';
 import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import SimpleTrade from './SimpleTrade';
 
@@ -21,7 +21,7 @@ interface WrapperProps {
 }
 
 const Wrapper = ({ children, className }: WrapperProps) => (
-	<div style={{ flex: '0 0 336px' }} className={cn('gap-24 overflow-hidden px-16 pb-16 flex-column', className)}>
+	<div style={{ flex: '0 0 336px' }} className={clsx('gap-24 overflow-hidden p-16 flex-column', className)}>
 		{children}
 	</div>
 );
@@ -29,6 +29,7 @@ const Wrapper = ({ children, className }: WrapperProps) => (
 interface BodyProps extends IBsModalInputs {
 	id: number | undefined;
 	symbolISIN: string;
+	symbolTitle: string;
 	switchable: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
@@ -270,50 +271,14 @@ const Body = (props: BodyProps) => {
 		}
 	};
 
-	const TABS = useMemo(
-		() => [
-			{
-				id: 'normal',
-				title: t('bs_modal.normal_trade'),
-				render: () => (
-					<SimpleTrade
-						{...props}
-						submitting={submitting}
-						userRemain={userRemain ?? null}
-						createDraft={sendDraft}
-						onSubmit={validation(onSubmit)}
-					/>
-				),
-			},
-			{
-				id: 'strategy',
-				title: t('bs_modal.strategy'),
-				render: null,
-				disabled: true,
-			},
-		],
-		[JSON.stringify(props), JSON.stringify(userRemain), submitting, brokerUrls],
-	);
-
-	if (props.symbolType === 'base') return <Wrapper className='pt-24'>{TABS[0].render?.()}</Wrapper>;
-
 	return (
 		<Wrapper>
-			<Tabs
-				data={TABS}
-				defaultActiveTab='normal'
-				renderTab={(item, activeTab) => (
-					<button
-						className={cn(
-							'flex-1 p-8 transition-colors',
-							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
-						)}
-						type='button'
-						disabled={item.disabled}
-					>
-						{item.title}
-					</button>
-				)}
+			<SimpleTrade
+				{...props}
+				submitting={submitting}
+				userRemain={userRemain ?? null}
+				createDraft={sendDraft}
+				onSubmit={validation(onSubmit)}
 			/>
 		</Wrapper>
 	);
