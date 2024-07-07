@@ -13,7 +13,8 @@ const AnalyzeGreeksTable = dynamic(() => import('./AnalyzeGreeksTable'), {
 	loading: () => <Loading />,
 });
 
-interface AnalyzeProps extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'bep' | 'cost'> {
+interface AnalyzeProps
+	extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'bep' | 'cost' | 'contractSize'> {
 	chartData: IAnalyzeInputs['data'];
 	contracts: TSymbolStrategy[];
 	baseAssets: number;
@@ -27,6 +28,7 @@ const Analyze = ({
 	minPrice,
 	maxPrice,
 	cost,
+	contractSize,
 	dueDays,
 	baseAssets,
 	height,
@@ -44,6 +46,7 @@ const Analyze = ({
 					<ErrorBoundary>
 						<AnalyzeChart
 							cost={cost}
+							contractSize={contractSize}
 							dueDays={dueDays}
 							data={chartData}
 							baseAssets={baseAssets}

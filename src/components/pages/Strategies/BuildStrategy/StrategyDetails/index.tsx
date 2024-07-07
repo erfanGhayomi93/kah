@@ -18,15 +18,26 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 		true,
 	);
 
-	const { data, bep, maxLoss, maxProfit, maxPrice, minPrice, neededRequiredMargin, cost, dueDays, neededBudget } =
-		useAnalyze(contracts, {
-			baseAssets: baseSymbolPrice,
-			maxPrice: inputs.maxPrice,
-			minPrice: inputs.minPrice,
-			useRequiredMargin: false,
-			useStrikeCommission: false,
-			useTradeCommission: false,
-		});
+	const {
+		data,
+		bep,
+		maxLoss,
+		maxProfit,
+		maxPrice,
+		minPrice,
+		contractSize,
+		neededRequiredMargin,
+		cost,
+		dueDays,
+		neededBudget,
+	} = useAnalyze(contracts, {
+		baseAssets: baseSymbolPrice,
+		maxPrice: inputs.maxPrice,
+		minPrice: inputs.minPrice,
+		useRequiredMargin: false,
+		useStrikeCommission: false,
+		useTradeCommission: false,
+	});
 
 	return (
 		<div style={{ minHeight: '61rem' }} className='flex-1 gap-16 flex-column'>
@@ -44,6 +55,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 					contracts={contracts}
 					baseAssets={baseSymbolPrice}
 					cost={cost}
+					contractSize={contractSize}
 					bep={bep}
 					height={508}
 					maxPrice={maxPrice}

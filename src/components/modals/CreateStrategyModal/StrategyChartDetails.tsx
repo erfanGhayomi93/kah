@@ -116,6 +116,7 @@ const StrategyChartDetails = ({
 					dueDays={dueDays}
 					data={data}
 					cost={cost}
+					contractSize={contractSize}
 					height={150}
 					minPrice={minPrice}
 					maxPrice={maxPrice}
