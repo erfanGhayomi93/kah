@@ -40,14 +40,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 	});
 
 	return (
-		<div style={{ minHeight: '61rem' }} className='flex-1 gap-16 flex-column'>
-			<StrategyInfo
-				maxLoss={maxLoss}
-				maxProfit={maxProfit}
-				neededRequiredMargin={neededRequiredMargin}
-				neededBudget={neededBudget}
-			/>
-
+		<div className='flex-1 gap-16 flex-column'>
 			<ErrorBoundary>
 				<Analyze
 					chartData={data}
@@ -61,6 +54,13 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 					maxPrice={maxPrice}
 					minPrice={minPrice}
 					onChange={setFieldsValue}
+				/>
+
+				<StrategyInfo
+					maxLoss={maxLoss}
+					maxProfit={maxProfit}
+					neededRequiredMargin={neededRequiredMargin}
+					neededBudget={neededBudget}
 				/>
 			</ErrorBoundary>
 		</div>

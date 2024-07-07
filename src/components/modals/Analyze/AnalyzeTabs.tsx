@@ -55,7 +55,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 	});
 
 	return (
-		<div className='relative h-full rounded px-16 shadow-card flex-column'>
+		<div className='relative h-full gap-16 rounded px-16 shadow-card flex-column'>
 			<Analyze
 				contractSize={contractSize}
 				cost={cost}

@@ -42,7 +42,7 @@ const Analyze = ({
 			id: 'normal',
 			title: t('performance'),
 			render: () => (
-				<div style={{ height }} className='relative py-16'>
+				<div style={{ minHeight: height, maxHeight: height }} className='relative'>
 					<ErrorBoundary>
 						<AnalyzeChart
 							cost={cost}
@@ -52,8 +52,8 @@ const Analyze = ({
 							baseAssets={baseAssets}
 							maxPrice={maxPrice}
 							minPrice={minPrice}
+							height={height ? height - 56 : undefined}
 							onChange={onChange}
-							height={!height ? undefined : height - 88}
 							bep={bep}
 						/>
 					</ErrorBoundary>
@@ -64,7 +64,7 @@ const Analyze = ({
 			id: 'strategy',
 			title: t('greeks'),
 			render: () => (
-				<div style={{ height }} className='relative py-16'>
+				<div style={{ minHeight: height, maxHeight: height }} className='relative'>
 					<ErrorBoundary>
 						<AnalyzeGreeksTable contracts={contracts} />
 					</ErrorBoundary>
