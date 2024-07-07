@@ -25,6 +25,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		maxLoss: 0,
 		bep: [],
 		cost: 0,
+		contractSize: 0,
 		neededBudget: 0,
 		neededRequiredMargin: 0,
 	});
@@ -70,6 +71,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			data: [],
 			dueDays: 30,
 			maxPrice: 0,
+			contractSize: 1e3,
 			minPrice: 0,
 			baseSymbolStatus: 'atm',
 			maxProfit: 0,
@@ -106,8 +108,18 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					type,
 				} = item;
 				const amount = price * quantity;
+				const sideInt = side === 'sell' ? -1 : 1;
+				const income = amount * contractSize * sideInt;
 				const requiredMargin = side === 'buy' || type === 'base' ? 0 : item.symbol.requiredMargin ?? 0;
-				const contractCost = contractSize * (side === 'sell' ? -amount : amount);
+				const tax = side === 'buy' || type === 'base' ? 0 : 0;
+				if (contractSize) newInputs.contractSize = contractSize;
+
+				let commission = 0;
+				if (useTradeCommission || item.tradeCommission) {
+					commission = getCommission(item.side, item.marketUnit) * amount * contractSize;
+				}
+				const tradeCommission = Math.ceil(Math.abs(amount + commission));
+				const cost = tax + tradeCommission + requiredMargin + income;
 
 				if (useRequiredMargin || item.requiredMargin) {
 					if (type === 'option') newInputs.neededBudget += requiredMargin;
@@ -121,18 +133,12 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					);
 				}
 
-				let commission = 0;
-				if (useTradeCommission || item.tradeCommission) {
-					commission = getCommission(item.side, item.marketUnit) * amount * contractSize;
-				}
-				const transactionValue = Math.ceil(Math.abs(amount + commission));
-
 				let index = 0;
 				for (let j = minPrice; j <= maxPrice; j++) {
 					let y = 0;
 
 					if (type === 'base') {
-						y = j - baseAssets;
+						y = side === 'buy' ? j - baseAssets : baseAssets - j;
 					} else {
 						let strikeCommission = 0;
 						if ((useStrikeCommission || item.strikeCommission) && side === 'buy') {
@@ -141,7 +147,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 						}
 
 						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call');
-						y = pnl(iv, transactionValue, side);
+						y = pnl(iv, tradeCommission, side);
 					}
 
 					y += series[index]?.y ?? 0;
@@ -153,8 +159,8 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					index++;
 				}
 
-				newInputs.neededBudget += contractCost;
-				newInputs.cost += contractCost / 1e3;
+				newInputs.neededBudget += contractSize * (side === 'sell' ? -amount : amount);
+				newInputs.cost += cost;
 			}
 
 			newInputs.dueDays = Math.ceil(newInputs.dueDays / dueDaysIndex);
@@ -175,13 +181,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					if (pnl > 0) newInputs.maxProfit = Math.round(Math.max(newInputs.maxProfit, pnl));
 					else if (pnl < 0) newInputs.maxLoss = Math.round(Math.min(newInputs.maxLoss, pnl));
 
-					if (
-						[12815, 14445, 22238, 17455].includes(item.x) ||
-						isNotSameZone ||
-						i % diff === 0 ||
-						i === 0 ||
-						i === l - 1
-					) {
+					if (isNotSameZone || i % diff === 0 || i === 0 || i === l - 1) {
 						newInputs.data.push({
 							x: item.x,
 							y: pnl,

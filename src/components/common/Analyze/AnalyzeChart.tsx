@@ -8,7 +8,7 @@ import NoData from '../NoData';
 import PriceRange from './PriceRange';
 
 interface AnalyzeChartProps
-	extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'cost' | 'data' | 'bep'> {
+	extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'cost' | 'contractSize' | 'data' | 'bep'> {
 	baseAssets: number;
 	height?: number;
 	compact?: boolean;
@@ -18,6 +18,7 @@ interface AnalyzeChartProps
 const AnalyzeChart = ({
 	data,
 	baseAssets,
+	contractSize,
 	cost,
 	dueDays,
 	maxPrice,
@@ -262,22 +263,20 @@ const AnalyzeChart = ({
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
 
-				const efficiency =
-					y === 0 ? '0%' : cost === 0 ? t('infinity') : `${(Math.max(y / cost, -100) * 100).toFixed(3)}%`;
-				// ? (((pnl + baseAssets) / baseAssets) - 1) * 100
+				const efficiency = Math.max(((y * contractSize) / cost) * 100, -100);
 				const profit = (y + baseAssets) / baseAssets - 1;
 				const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
 
 				const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
 				const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
 				const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
-				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency}</span></li>`;
+				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${efficiency.toFixed(2)}%`}</span></li>`;
 				const li5 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
 
 				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1 + li2 + li3 + li4 + li5}</ul>`;
 			},
 		});
-	}, [baseAssets, dueDays, cost]);
+	}, [baseAssets, contractSize, dueDays, cost]);
 
 	return (
 		<ErrorBoundary>
