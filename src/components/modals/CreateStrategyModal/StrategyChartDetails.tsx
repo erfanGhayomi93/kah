@@ -62,7 +62,7 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, dueDays, cost, bep } = useAnalyze(
+	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, dueDays, income, cost, bep } = useAnalyze(
 		contracts,
 		{
 			minPrice,
@@ -116,6 +116,7 @@ const StrategyChartDetails = ({
 					dueDays={dueDays}
 					data={data}
 					cost={cost}
+					income={income}
 					contractSize={contractSize}
 					height={150}
 					minPrice={minPrice}

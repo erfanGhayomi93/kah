@@ -45,6 +45,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 		neededBudget,
 		dueDays,
 		cost,
+		income,
 	} = useAnalyze(contracts, {
 		baseAssets: baseSymbolPrice,
 		maxPrice: inputs.maxPrice,
@@ -64,6 +65,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 				contracts={contracts}
 				baseAssets={baseSymbolPrice}
 				bep={bep}
+				income={income}
 				height={420}
 				maxPrice={maxPrice}
 				minPrice={minPrice}

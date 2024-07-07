@@ -381,6 +381,7 @@ declare interface IAnalyzeInputs {
 	maxProfit: number;
 	maxLoss: number;
 	dueDays: number;
+	income: number;
 	bep: number[];
 	contractSize: number;
 	baseSymbolStatus: 'atm' | 'itm' | 'otm';

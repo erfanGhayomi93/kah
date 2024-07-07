@@ -28,6 +28,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 		contractSize,
 		neededRequiredMargin,
 		cost,
+		income,
 		dueDays,
 		neededBudget,
 	} = useAnalyze(contracts, {
@@ -50,6 +51,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 					cost={cost}
 					contractSize={contractSize}
 					bep={bep}
+					income={income}
 					height={508}
 					maxPrice={maxPrice}
 					minPrice={minPrice}
