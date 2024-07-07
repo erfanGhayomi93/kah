@@ -70,6 +70,7 @@ export const setupChart = () => {
 			text: '',
 		},
 		tooltip: {
+			hideDelay: 0,
 			followTouchMove: true,
 			backgroundColor: 'rgba(24, 28, 47, 1)',
 			borderRadius: 4,

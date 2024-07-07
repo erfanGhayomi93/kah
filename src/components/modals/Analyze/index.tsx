@@ -90,17 +90,20 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 		};
 
 		const addNewContracts = () => {
+			const initialBaseSymbolISIN =
+				symbolContracts.find((item) => item.type === 'base')?.symbol.symbolISIN ?? undefined;
+
 			const initialSelectedContracts = symbolContracts
-				.filter((item) => item !== null)
-				.map(({ symbol }) => symbol.symbolISIN);
+				.filter((item) => item.type === 'option')
+				.map((item) => item.symbol.symbolISIN);
 
 			dispatch(
 				setSelectSymbolContractsModal({
-					initialBaseSymbolISIN: symbol.symbolISIN,
 					initialSelectedContracts,
 					suppressBaseSymbolChange: true,
 					suppressSendBaseSymbol: false,
-					initialSelectedBaseSymbol: symbolContracts.findIndex((c) => c.type === 'base') > -1,
+					initialBaseSymbolISIN,
+					initialSelectedBaseSymbol: Boolean(initialBaseSymbolISIN),
 					callback: handleContracts,
 				}),
 			);

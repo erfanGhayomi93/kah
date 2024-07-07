@@ -2,7 +2,6 @@ import StrategyTag from '@/components/common/Strategy/StrategyTag';
 import { AngleLeftSVG, PlusSVG } from '@/components/icons';
 import { useRouter } from '@/navigation';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { useMemo } from 'react';
 
 interface StrategyItemProps extends Strategy.GetAll {}
@@ -46,21 +45,21 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 			<div
 				onClick={onStrategyClick}
 				style={{ height: '32.8rem' }}
-				className='border-light-gray-200 cursor-pointer gap-16 overflow-hidden rounded border bg-white p-16 flex-column'
+				className='cursor-pointer gap-16 overflow-hidden rounded border border-light-gray-200 bg-white p-16 flex-column'
 			>
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
-						<h1 className='text-light-gray-700 text-base font-medium'>
+						<h1 className='text-base font-medium text-light-gray-700'>
 							{t(`${type}.title`)}
 							<span className='text-light-gray-500'> ({title})</span>
 						</h1>
 
-						<button type='button' className='text-light-gray-700 size-32 flex-justify-center'>
+						<button type='button' className='size-32 text-light-gray-700 flex-justify-center'>
 							<AngleLeftSVG width='2rem' height='2rem' />
 						</button>
 					</div>
 
-					<h3 className='text-light-gray-700 gap-4 whitespace-nowrap text-tiny flex-items-center'>
+					<h3 className='gap-4 whitespace-nowrap text-tiny text-light-gray-700 flex-items-center'>
 						{t.rich(`${type}.desc`, {
 							plus: () => (
 								<b className='text-light-gray-800'>
@@ -72,7 +71,7 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 				</div>
 
 				<div className='flex-1 overflow-hidden flex-justify-center'>
-					<Image
+					<img
 						width='395'
 						height='170'
 						alt={title}

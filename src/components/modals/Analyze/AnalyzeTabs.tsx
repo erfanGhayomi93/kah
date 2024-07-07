@@ -45,6 +45,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 		neededBudget,
 		dueDays,
 		cost,
+		income,
 	} = useAnalyze(contracts, {
 		baseAssets: baseSymbolPrice,
 		maxPrice: inputs.maxPrice,
@@ -55,7 +56,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 	});
 
 	return (
-		<div className='relative h-full rounded px-16 shadow-card flex-column'>
+		<div className='relative h-full gap-16 rounded px-16 shadow-card flex-column'>
 			<Analyze
 				contractSize={contractSize}
 				cost={cost}
@@ -64,6 +65,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 				contracts={contracts}
 				baseAssets={baseSymbolPrice}
 				bep={bep}
+				income={income}
 				height={420}
 				maxPrice={maxPrice}
 				minPrice={minPrice}

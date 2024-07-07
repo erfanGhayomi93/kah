@@ -14,7 +14,7 @@ const AnalyzeGreeksTable = dynamic(() => import('./AnalyzeGreeksTable'), {
 });
 
 interface AnalyzeProps
-	extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'bep' | 'cost' | 'contractSize'> {
+	extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'bep' | 'income' | 'cost' | 'contractSize'> {
 	chartData: IAnalyzeInputs['data'];
 	contracts: TSymbolStrategy[];
 	baseAssets: number;
@@ -28,6 +28,7 @@ const Analyze = ({
 	minPrice,
 	maxPrice,
 	cost,
+	income,
 	contractSize,
 	dueDays,
 	baseAssets,
@@ -42,18 +43,19 @@ const Analyze = ({
 			id: 'normal',
 			title: t('performance'),
 			render: () => (
-				<div style={{ height }} className='relative py-16'>
+				<div style={{ minHeight: height, maxHeight: height }} className='relative'>
 					<ErrorBoundary>
 						<AnalyzeChart
 							cost={cost}
+							income={income}
 							contractSize={contractSize}
 							dueDays={dueDays}
 							data={chartData}
 							baseAssets={baseAssets}
 							maxPrice={maxPrice}
 							minPrice={minPrice}
+							height={height ? height - 56 : undefined}
 							onChange={onChange}
-							height={!height ? undefined : height - 88}
 							bep={bep}
 						/>
 					</ErrorBoundary>
@@ -64,7 +66,7 @@ const Analyze = ({
 			id: 'strategy',
 			title: t('greeks'),
 			render: () => (
-				<div style={{ height }} className='relative py-16'>
+				<div style={{ minHeight: height, maxHeight: height }} className='relative'>
 					<ErrorBoundary>
 						<AnalyzeGreeksTable contracts={contracts} />
 					</ErrorBoundary>

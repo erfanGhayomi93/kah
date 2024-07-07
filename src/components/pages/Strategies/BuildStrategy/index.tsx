@@ -53,11 +53,11 @@ const BuildStrategy = () => {
 			for (let i = 0; i < l; i++) {
 				const contract: IOptionStrategy = {
 					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
-					tradeCommission: true,
-					strikeCommission: true,
-					requiredMargin: true,
-					tax: true,
-					vDefault: true,
+					tradeCommission: false,
+					strikeCommission: false,
+					requiredMargin: false,
+					tax: false,
+					vDefault: false,
 				};
 
 				result.push(contract);
@@ -72,11 +72,20 @@ const BuildStrategy = () => {
 	};
 
 	const upsert = () => {
+		const initialBaseSymbolISIN =
+			builtStrategyContracts.find((item) => item.type === 'base')?.symbol.symbolISIN ?? undefined;
+
+		const initialSelectedContracts = builtStrategyContracts
+			.filter((item) => item.type === 'option')
+			.map((item) => item.symbol.symbolISIN);
+
 		dispatch(
 			setSelectSymbolContractsModal({
-				initialSelectedContracts: builtStrategyContracts.map((item) => item.symbol.symbolISIN),
+				initialSelectedContracts,
 				suppressBaseSymbolChange: false,
 				suppressSendBaseSymbol: false,
+				initialBaseSymbolISIN,
+				initialSelectedBaseSymbol: Boolean(initialBaseSymbolISIN),
 				callback: handleContracts,
 			}),
 		);

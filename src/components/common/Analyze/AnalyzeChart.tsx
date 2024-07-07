@@ -8,7 +8,10 @@ import NoData from '../NoData';
 import PriceRange from './PriceRange';
 
 interface AnalyzeChartProps
-	extends Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice' | 'dueDays' | 'cost' | 'contractSize' | 'data' | 'bep'> {
+	extends Pick<
+		IAnalyzeInputs,
+		'minPrice' | 'maxPrice' | 'dueDays' | 'income' | 'cost' | 'contractSize' | 'data' | 'bep'
+	> {
 	baseAssets: number;
 	height?: number;
 	compact?: boolean;
@@ -20,6 +23,7 @@ const AnalyzeChart = ({
 	baseAssets,
 	contractSize,
 	cost,
+	income,
 	dueDays,
 	maxPrice,
 	minPrice,
@@ -91,11 +95,11 @@ const AnalyzeChart = ({
 		},
 	});
 
-	const getYtm = (profitPercent: number) => {
+	const getYtm = (profit: number) => {
 		try {
-			if (profitPercent == null) throw new Error();
+			if (profit == null) throw new Error();
 
-			const ytm = (Math.pow(1 + profitPercent, 365 / Math.max(dueDays, 1)) - 1) * 100;
+			const ytm = Math.pow(1 + profit, 365 / Math.max(dueDays, 1)) * 100;
 
 			return Number(ytm.toFixed(2));
 		} catch (e) {
@@ -263,20 +267,24 @@ const AnalyzeChart = ({
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
 
-				const efficiency = Math.max(((y * contractSize) / cost) * 100, -100);
-				const profit = (y + baseAssets) / baseAssets - 1;
-				const ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
+				const profit = y > 0 ? (y * contractSize) / cost : (y * contractSize) / income;
+				const efficiency = Math.max(profit * 100, -100);
+				let ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
+				ytm = Math.floor(Math.max(Math.min(ytm, 1e9), -1e2));
 
-				const li1 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`;
-				const li2 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`;
-				const li3 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`;
-				const li4 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${efficiency.toFixed(2)}%`}</span></li>`;
-				const li5 = `<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${Math.max(ytm, -100).toFixed(2)}%</span></li>`;
+				const items = [
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${efficiency.toFixed(2)}%`}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('cost')}:</span><span class="ltr">${sepNumbers(String(cost))}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm === 1e9 ? '+1,000,000,000' : sepNumbers(String(ytm))}%</span></li>`,
+				];
 
-				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${li1 + li2 + li3 + li4 + li5}</ul>`;
+				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${items.join('')}</ul>`;
 			},
 		});
-	}, [baseAssets, contractSize, dueDays, cost]);
+	}, [baseAssets, contractSize, income, dueDays, cost]);
 
 	return (
 		<ErrorBoundary>

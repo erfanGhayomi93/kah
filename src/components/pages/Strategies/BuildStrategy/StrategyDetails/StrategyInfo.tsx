@@ -19,21 +19,23 @@ const StrategyInfo = ({ maxLoss, maxProfit, neededRequiredMargin, neededBudget }
 	const t = useTranslations('build_strategy');
 
 	return (
-		<div className='gap-16 rounded-md bg-light-gray-100 px-24 py-16 flex-column'>
-			<ul className='flex-justify-between'>
-				<StrategyInfoItem
-					type='success'
-					title={t('most_profit')}
-					value={maxProfit === Infinity ? t('infinity') : sepNumbers(String(maxProfit))}
-				/>
-				<StrategyInfoItem
-					type='error'
-					title={t('most_loss')}
-					value={maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
-				/>
-				<StrategyInfoItem title={t('required_budget')} value={sepNumbers(String(neededBudget))} />
-				<StrategyInfoItem title={t('required_margin')} value={sepNumbers(String(neededRequiredMargin))} />
-			</ul>
+		<div className='border-t border-light-gray-200 pt-16'>
+			<div className='gap-16 rounded-md bg-light-gray-100 px-24 py-16 flex-column'>
+				<ul className='flex-justify-between'>
+					<StrategyInfoItem
+						type='success'
+						title={t('most_profit')}
+						value={maxProfit === Infinity ? t('infinity') : sepNumbers(String(maxProfit))}
+					/>
+					<StrategyInfoItem
+						type='error'
+						title={t('most_loss')}
+						value={maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
+					/>
+					<StrategyInfoItem title={t('required_budget')} value={sepNumbers(String(neededBudget))} />
+					<StrategyInfoItem title={t('required_margin')} value={sepNumbers(String(neededRequiredMargin))} />
+				</ul>
+			</div>
 		</div>
 	);
 };
