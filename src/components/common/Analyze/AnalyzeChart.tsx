@@ -99,7 +99,7 @@ const AnalyzeChart = ({
 		try {
 			if (profit == null) throw new Error();
 
-			const ytm = Math.pow(1 + profit, 365 / Math.max(dueDays, 1)) * 100;
+			const ytm = (Math.pow(1 + profit, 365 / Math.max(dueDays, 1)) - 1) * 100;
 
 			return Number(ytm.toFixed(2));
 		} catch (e) {
@@ -269,6 +269,7 @@ const AnalyzeChart = ({
 
 				const profit = y > 0 ? (y * contractSize) / cost : (y * contractSize) / income;
 				const efficiency = Math.max(profit * 100, -100);
+
 				let ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
 				ytm = Math.floor(Math.max(Math.min(ytm, 1e9), -1e2));
 
@@ -277,7 +278,7 @@ const AnalyzeChart = ({
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${efficiency.toFixed(2)}%`}</span></li>`,
-					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('cost')}:</span><span class="ltr">${sepNumbers(String(cost))}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('cost')}:</span><span class="ltr">${sepNumbers(String(cost / contractSize))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm === 1e9 ? '+1,000,000,000' : sepNumbers(String(ytm))}%</span></li>`,
 				];
 

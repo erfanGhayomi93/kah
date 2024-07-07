@@ -112,7 +112,10 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				const amount = price * quantity;
 				const sideInt = side === 'sell' ? -1 : 1;
 				const income = amount * contractSize * sideInt;
-				const requiredMargin = side === 'buy' || type === 'base' ? 0 : item.symbol.requiredMargin ?? 0;
+				let requiredMargin = 0;
+				if ((useRequiredMargin || item.requiredMargin) && side === 'sell' && type === 'option') {
+					requiredMargin = item.symbol.requiredMargin;
+				}
 				const tax = side === 'buy' || type === 'base' ? 0 : 0;
 				if (contractSize) newInputs.contractSize = contractSize;
 
@@ -121,8 +124,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					commission = getCommission(item.side, item.marketUnit) * amount * contractSize;
 				}
 				const tradeCommission = Math.ceil(Math.abs(amount + commission));
-				let cost = tax + commission + requiredMargin + income;
-				if (side === 'sell') cost *= -1;
+				const cost = tax + commission + requiredMargin + income;
 
 				if (useRequiredMargin || item.requiredMargin) {
 					if (type === 'option') newInputs.neededBudget += requiredMargin;
@@ -130,7 +132,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				}
 
 				if (!config?.dueDays && type === 'option' && item.symbol.settlementDay) {
-					newInputs.dueDays += Math.max(
+					newInputs.dueDays = Math.max(
 						Math.ceil(
 							Math.abs(new Date(item.symbol.settlementDay).getTime() - now) / getDateMilliseconds.Day,
 						),
