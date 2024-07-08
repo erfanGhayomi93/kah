@@ -30,9 +30,25 @@ const BuildStrategy = () => {
 		const selectedResult: string[] = [];
 
 		try {
+			let contractSize = 0;
+
+			for (let i = 0; i < l; i++) {
+				const contract: IOptionStrategy = {
+					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
+					tradeCommission: false,
+					strikeCommission: false,
+					requiredMargin: false,
+					tax: false,
+					vDefault: false,
+				};
+				contractSize = Math.max(contractSize, contract.symbol.contractSize);
+
+				result.push(contract);
+				selectedResult.push(contract.id);
+			}
+
 			if (baseSymbol) {
 				const baseSymbolId = uuidv4();
-
 				result.push({
 					type: 'base',
 					id: baseSymbolId,
@@ -44,24 +60,10 @@ const BuildStrategy = () => {
 						symbolTitle: baseSymbol.symbolTitle,
 						symbolISIN: baseSymbol.symbolISIN,
 						baseSymbolPrice: baseSymbol.lastTradedPrice,
-						contractSize: baseSymbol.contractSize,
+						contractSize,
 					},
 				});
 				selectedResult.push(baseSymbolId);
-			}
-
-			for (let i = 0; i < l; i++) {
-				const contract: IOptionStrategy = {
-					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
-					tradeCommission: false,
-					strikeCommission: false,
-					requiredMargin: false,
-					tax: false,
-					vDefault: false,
-				};
-
-				result.push(contract);
-				selectedResult.push(contract.id);
 			}
 
 			dispatch(setBuiltStrategy(result));

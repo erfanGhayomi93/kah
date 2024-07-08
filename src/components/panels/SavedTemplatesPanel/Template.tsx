@@ -1,4 +1,4 @@
-import { PinSVG } from '@/components/icons';
+import { DragSVG, PinSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useMemo } from 'react';
@@ -28,7 +28,11 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 	}, [content]);
 
 	return (
-		<li className='w-full gap-16 overflow-hidden flex-justify-between'>
+		<li className='w-full gap-12 overflow-hidden flex-justify-between'>
+			<button className='text-light-gray-200'>
+				<DragSVG width='2.4rem' height='2.4rem' />
+			</button>
+
 			<div
 				onClick={onSelect}
 				className={cn(

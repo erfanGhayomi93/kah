@@ -55,6 +55,16 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			const selectedResult: string[] = [];
 
 			try {
+				let contractSize = 0;
+
+				for (let i = 0; i < l; i++) {
+					const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
+
+					contractSize = Math.max(contractSize, item.symbol.contractSize);
+					result.push(item);
+					selectedResult.push(item.id);
+				}
+
 				if (baseSymbol) {
 					const baseSymbolId = uuidv4();
 					result.push({
@@ -68,17 +78,10 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 							symbolTitle: baseSymbol.symbolTitle,
 							symbolISIN: baseSymbol.symbolISIN,
 							baseSymbolPrice: baseSymbol.lastTradedPrice,
-							contractSize: baseSymbol.contractSize,
+							contractSize,
 						},
 					});
 					selectedResult.push(baseSymbolId);
-				}
-
-				for (let i = 0; i < l; i++) {
-					const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
-
-					result.push(item);
-					selectedResult.push(item.id);
 				}
 
 				setSymbolContracts(result);
