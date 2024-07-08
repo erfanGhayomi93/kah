@@ -6,7 +6,6 @@ import { useAppDispatch } from '@/features/hooks';
 import { setBuySellModal } from '@/features/slices/modalSlice';
 import { type IBuySellModal } from '@/features/slices/types/modalSlice.interfaces';
 import { divide } from '@/utils/helpers';
-import clsx from 'clsx';
 import dynamic from 'next/dynamic';
 import { forwardRef, useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -184,12 +183,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 					/>
 
 					<div className='flex h-full flex-1'>
-						<div
-							className={clsx(
-								'relative w-full flex-1 overflow-hidden',
-								inputs.expand && 'border-l border-l-light-gray-200',
-							)}
-						>
+						<div className='relative w-full flex-1 overflow-hidden'>
 							{inputs.expand && (
 								<ErrorBoundary>
 									<SymbolInfo symbolData={symbolData ?? null} isLoading={isLoading} />
@@ -213,8 +207,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 					</div>
 
 					<Footer
-						hold={inputs.holdAfterOrder}
-						validityDays={symbolType === 'option' ? 1 : null}
+						isHolding={inputs.holdAfterOrder}
 						onHold={(checked) => setInputValue('holdAfterOrder', checked)}
 					/>
 				</Div>

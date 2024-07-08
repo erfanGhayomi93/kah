@@ -360,6 +360,7 @@
 		"title": "سفارش {symbolTitle}",
 		"validity_date": "اعتبار سفارش",
 		"day": "روز",
+		"closing_price": "قیمت پایانی",
 		"fair_price_tooltip": "این قیمت منصفانه است",
 		"assets": "دارایی",
 		"exists_positions": "موقعیت {n}",

@@ -19,7 +19,7 @@ const Chart = ({ symbolISIN }: ChartProps) => {
 			) : !Array.isArray(data) || data.length === 0 ? (
 				<NoData />
 			) : (
-				<SymbolChart data={data ?? []} tab='symbol_chart' type='area' height='256px' />
+				<SymbolChart data={data ?? []} tab='symbol_chart' type='area' height={232} />
 			)}
 		</div>
 	);

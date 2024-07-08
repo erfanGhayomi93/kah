@@ -26,6 +26,7 @@ import ChartUpSVG from './chart-up.svg';
 import ChartWaterfallSVG from './chart-waterfall.svg';
 import CheckListSVG from './check-list.svg';
 import CheckSVG from './check.svg';
+import ClockOutlineSVG from './clock-outline.svg';
 import ClosePositionSVG from './close-position.svg';
 import CogsSVG from './cogs.svg';
 import ColumnsSVG from './columns.svg';
@@ -165,6 +166,7 @@ export {
 	ChartWaterfallSVG,
 	CheckListSVG,
 	CheckSVG,
+	ClockOutlineSVG,
 	ClosePositionSVG,
 	CogsSVG,
 	ColumnsSVG,
