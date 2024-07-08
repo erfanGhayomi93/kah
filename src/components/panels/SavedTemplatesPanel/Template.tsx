@@ -1,5 +1,6 @@
 import { PinSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useMemo } from 'react';
 
 interface TemplateProps extends Saturn.Template {
@@ -28,46 +29,51 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 
 	return (
 		<li className='w-full gap-16 overflow-hidden flex-justify-between'>
-			<button
-				onClick={onPin}
-				type='button'
-				style={{
-					transform: isPinned ? '' : 'rotate(-45deg)',
-					transition: 'border-color 250ms, background-color 250ms, color 250ms, transform 250ms',
-				}}
-				className={cn(
-					'size-20 rounded-circle border transition-colors flex-justify-center',
-					isPinned
-						? 'border-light-primary-100 bg-light-primary-100 text-white'
-						: 'border-light-gray-700 text-light-gray-700 hover:border-light-primary-100 hover:text-light-primary-100 bg-white',
-				)}
-			>
-				<PinSVG width='2rem' height='2rem' />
-			</button>
-
 			<div
 				onClick={onSelect}
 				className={cn(
-					'h-72 flex-1 cursor-pointer items-start justify-center gap-12 overflow-hidden rounded border px-16 py-8 transition-colors flex-column',
+					'h-72 flex-1 cursor-pointer overflow-hidden rounded border px-16 transition-colors flex-justify-between',
 					isActive
-						? 'hover:bg-light-primary-100 border-light-primary-100 bg-light-primary-100'
-						: 'bg-light-gray-100 border-light-gray-200 hover:btn-hover',
+						? 'border-light-primary-100 bg-light-primary-100 hover:bg-light-primary-100'
+						: 'border-light-gray-200 bg-light-gray-100 hover:btn-hover',
 				)}
 			>
-				<h3 className={cn('text-lg font-medium', isActive ? 'text-white' : 'text-light-gray-700')}>{name}</h3>
+				<div className='gap-10 flex-column'>
+					<h3 className={clsx('text-lg font-medium', isActive ? 'text-white' : 'text-light-gray-700')}>
+						{name}
+					</h3>
 
-				{symbols.length > 0 && (
-					<div
-						className={cn(
-							'flex select-none gap-8 text-tiny',
-							isActive ? 'text-white' : 'text-light-gray-700',
-						)}
-					>
-						{symbols.map((symbolTitle, i) => (
-							<span key={i}>{symbolTitle}</span>
-						))}
-					</div>
-				)}
+					{symbols.length > 0 && (
+						<div
+							className={clsx('flex select-none gap-4', isActive ? 'text-white' : 'text-light-gray-700')}
+						>
+							{symbols.map((symbolTitle, i) => (
+								<span key={i}>
+									<span className={i === 0 ? 'text-base' : 'text-tiny'}>{symbolTitle}</span>
+									{i === symbols.length - 1 ? '' : '،'}
+								</span>
+							))}
+						</div>
+					)}
+				</div>
+
+				<button
+					onClick={(e) => {
+						e.stopPropagation();
+						onPin();
+					}}
+					type='button'
+					style={{
+						transform: isPinned ? 'rotate(45deg)' : 'rotate(0deg)',
+						transition: 'border-color 250ms, background-color 250ms, color 250ms, transform 250ms',
+					}}
+					className={clsx(
+						'size-20 rounded-circle border border-current transition-colors flex-justify-center',
+						isActive ? 'text-white ' : 'text-light-gray-700',
+					)}
+				>
+					<PinSVG width='1rem' height='1rem' />
+				</button>
 			</div>
 		</li>
 	);

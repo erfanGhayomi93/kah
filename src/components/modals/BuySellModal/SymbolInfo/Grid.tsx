@@ -32,6 +32,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 				render: () => (
 					<div className='relative flex-1 px-8 pb-8 pt-16'>
 						<SymbolMarketDepth
+							rowSpacing={8}
 							symbolISIN={symbolISIN}
 							lowThreshold={lowThreshold}
 							highThreshold={highThreshold}
@@ -49,10 +50,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 	);
 
 	return (
-		<div
-			style={{ height: '30.8rem' }}
-			className='border-light-gray-200 relative rounded border bg-white flex-column'
-		>
+		<div style={{ height: '28.8rem' }} className='relative rounded bg-white shadow-card flex-column'>
 			<Tabs
 				data={tabs}
 				defaultActiveTab='market_map'
@@ -60,7 +58,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 					<button
 						className={clsx(
 							'flex-1 p-8 transition-colors',
-							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
+							item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
 						)}
 						type='button'
 					>

@@ -177,7 +177,7 @@ const SimpleTrade = ({
 					<div className='gap-12 flex-column'>
 						{symbolType === 'option' && side === 'sell' && (
 							<SummaryItem
-								title={t('bs_modal.validity_date')}
+								title={t('bs_modal.validity_date') + ':'}
 								value={
 									<span className='text-light-gray-800'>
 										1<span className='text-light-gray-700'>{' ' + t('bs_modal.day')}</span>
@@ -186,7 +186,7 @@ const SimpleTrade = ({
 							/>
 						)}
 						<SummaryItem
-							title={t('bs_modal.total_amount')}
+							title={t('bs_modal.total_amount') + ':'}
 							value={
 								<span className='text-light-gray-800'>
 									{sepNumbers(String(price * quantity))}
@@ -201,7 +201,7 @@ const SimpleTrade = ({
 							<button
 								type='button'
 								onClick={createDraft}
-								className='h-40 rounded border border-light-secondary-300 bg-white px-16 text-base text-light-secondary-300'
+								className='h-40 rounded px-16 text-base btn-secondary-outline'
 							>
 								{t('bs_modal.draft')}
 							</button>

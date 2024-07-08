@@ -27,32 +27,41 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 		closingPriceVarReferencePricePercent,
 		lowThreshold,
 		highThreshold,
+		closingPrice,
 	} = symbolData;
 
 	return (
-		<div className='h-full justify-between px-16 pb-16 pt-24 flex-column'>
+		<div className='h-full gap-16 bg-white px-16 pb-16 pt-8 flex-column'>
 			<div className='flex items-start justify-between'>
 				<div className='flex-1 gap-4 flex-column'>
 					<div className='gap-8 flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-light-gray-800 text-lg font-medium'>{symbolTitle}</h1>
+						<h1 className='text-lg font-medium text-light-gray-800'>{symbolTitle}</h1>
 					</div>
-					<h2 className='text-light-gray-700 pr-16 text-tiny'>{companyName}</h2>
+					<h2 className='pr-16 text-tiny text-light-gray-700'>{companyName}</h2>
 				</div>
 
 				<div className='h-fit gap-8 flex-items-center'>
-					<span className='text-light-gray-800 gap-4 text-base flex-items-center'>
+					<span className='gap-4 text-base text-light-gray-800 flex-items-center'>
 						<span className='flex items-center ltr'>
 							({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
 						</span>
 						{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
 					</span>
 
-					<span className='text-light-gray-800 flex items-center gap-4 text-2xl font-bold'>
+					<span className='flex items-center gap-4 text-2xl font-bold text-light-gray-800'>
 						{sepNumbers(String(lastTradedPrice ?? 0))}
-						<span className='text-light-gray-700 text-tiny font-normal'>{t('common.rial')}</span>
+						<span className='text-tiny font-normal text-light-gray-700'>{t('common.rial')}</span>
 					</span>
 				</div>
+			</div>
+
+			<div className='h-40 rounded bg-white px-8 shadow-card flex-justify-between'>
+				<span className='text-light-gray-700'>{t('bs_modal.closing_price')}:</span>
+				<span className='text-tiny text-light-gray-700'>
+					{sepNumbers(String(closingPrice))}
+					<span className='text-light-gray-500'> {t('common.rial')}</span>
+				</span>
 			</div>
 
 			<Grid symbolISIN={symbolISIN} lowThreshold={lowThreshold} highThreshold={highThreshold} />

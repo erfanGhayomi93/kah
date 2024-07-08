@@ -7,6 +7,7 @@ import { getSaturnActiveTemplate, setSaturnActiveTemplate } from '@/features/sli
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce } from '@/hooks';
+import { usePathname, useRouter } from '@/navigation';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -26,6 +27,10 @@ const Templates = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
+
+	const pathname = usePathname();
+
+	const router = useRouter();
 
 	const queryClient = useQueryClient();
 
@@ -71,6 +76,7 @@ const Templates = () => {
 
 	const onSelect = async (item: Saturn.Template) => {
 		dispatch(setSaturnActiveTemplate(item));
+		router.replace(pathname);
 
 		try {
 			await axios.post<ServerResponse<Symbol.Info>>(routes.saturn.SetActive, {
@@ -112,7 +118,7 @@ const Templates = () => {
 			<div className='relative flex-1'>
 				<div className='absolute flex-col gap-16 flex-justify-center center'>
 					<Image priority width='120' height='120' alt='profile' src='/static/images/no-template-found.png' />
-					<span className='text-light-gray-700 whitespace-nowrap text-base font-medium'>
+					<span className='whitespace-nowrap text-base font-medium text-light-gray-700'>
 						{t('saved_saturn_templates.no_data')}
 					</span>
 				</div>
