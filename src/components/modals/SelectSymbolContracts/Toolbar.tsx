@@ -1,7 +1,7 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
 import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
 import { SettlementItem } from '@/components/pages/OptionChain/Toolbar';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 
 interface SettlementDaysProps {
 	data: Option.BaseSettlementDays[];
@@ -26,11 +26,9 @@ const Toolbar = ({
 	onBaseSymbolChange,
 	onSettlementDayChanged,
 }: ToolbarProps) => {
-	const [baseSymbol, setBaseSymbol] = useState<Option.BaseSearch | null>(symbol);
-
 	const { data: settlementDays, isFetching } = useBaseSettlementDaysQuery({
-		queryKey: ['baseSettlementDaysQuery', baseSymbol ? baseSymbol.symbolISIN : ''],
-		enabled: baseSymbol !== null,
+		queryKey: ['baseSettlementDaysQuery', symbol ? symbol.symbolISIN : ''],
+		enabled: symbol !== null,
 	});
 
 	useEffect(() => {
@@ -38,22 +36,15 @@ const Toolbar = ({
 		onSettlementDayChanged(settlementDays[0]);
 	}, [JSON.stringify(settlementDays)]);
 
-	useEffect(() => {
-		setBaseSymbol(symbol);
-	}, [symbol]);
-
 	return (
 		<div className='gap-24 flex-items-center'>
 			{!suppressBaseSymbolChange && (
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch
-						value={baseSymbol}
+						value={symbol}
 						disabled={isPending}
 						nullable={false}
-						onChange={(symbol) => {
-							setBaseSymbol(symbol);
-							onBaseSymbolChange(symbol);
-						}}
+						onChange={onBaseSymbolChange}
 					/>
 				</div>
 			)}
@@ -61,8 +52,8 @@ const Toolbar = ({
 			<div className='h-56 gap-8 overflow-hidden flex-items-center'>
 				{isFetching ? (
 					<>
-						<div className='skeleton h-40 w-88 rounded' />
-						<div className='skeleton h-40 w-88 rounded' />
+						<div className='h-40 w-88 rounded skeleton' />
+						<div className='h-40 w-88 rounded skeleton' />
 					</>
 				) : (
 					<SettlementDays

@@ -1,4 +1,6 @@
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
+import lightStreamInstance from '@/classes/Lightstream';
+import type Subscribe from '@/classes/Subscribe';
 import Button from '@/components/common/Button';
 import Select from '@/components/common/Inputs/Select';
 import SymbolStrategyTable, { type TCheckboxes } from '@/components/common/Tables/SymbolStrategyTable';
@@ -9,8 +11,9 @@ import { setBuiltStrategy } from '@/features/slices/uiSlice';
 import { useBasketOrderingSystem } from '@/hooks';
 import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
 import { sepNumbers } from '@/utils/helpers';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface StrategyContractsProps {
@@ -24,10 +27,21 @@ interface SumValueProps {
 	value: number;
 }
 
+interface IUpdatedSymbolPriceInfo {
+	bestSellLimitPrice: null | number;
+	bestBuyLimitPrice: null | number;
+	closingPrice: null | number;
+	lastTradedPrice: null | number;
+}
+
 const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedContracts }: StrategyContractsProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
+
+	const contractsPriceRef = useRef<Record<string, IUpdatedSymbolPriceInfo>>({});
+
+	const subscriptionRef = useRef<Subscribe | null>(null);
 
 	const { submit, submitting } = useBasketOrderingSystem({
 		onSent: ({ failedOrders, sentOrders }) => {
@@ -92,6 +106,32 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		dispatch(setBuiltStrategy(data));
 	};
 
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const symbolISIN: string = updateInfo.getItemName();
+		if (!(symbolISIN in contractsPriceRef.current)) {
+			contractsPriceRef.current[symbolISIN] = {
+				bestSellLimitPrice: null,
+				bestBuyLimitPrice: null,
+				closingPrice: null,
+				lastTradedPrice: null,
+			};
+		}
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				if (value !== null) {
+					const valueAsNumber = Number(value);
+					if (!isNaN(valueAsNumber)) {
+						contractsPriceRef.current[symbolISIN][fieldName as keyof IUpdatedSymbolPriceInfo] =
+							valueAsNumber;
+					}
+				}
+			} catch (e) {
+				//
+			}
+		});
+	};
+
 	const storeBuiltStrategy = () => {
 		//
 	};
@@ -105,8 +145,52 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 	};
 
 	const updatePrice = () => {
-		//
+		dispatch(
+			setBuiltStrategy(
+				contracts.map((item) => {
+					const fieldName: keyof IUpdatedSymbolPriceInfo =
+						priceBasis === 'ClosingPrice'
+							? 'closingPrice'
+							: priceBasis === 'LastTradePrice'
+								? 'lastTradedPrice'
+								: item.side === 'buy'
+									? 'bestSellLimitPrice'
+									: 'bestBuyLimitPrice';
+					return {
+						...item,
+						price: contractsPriceRef.current[item.symbol.symbolISIN][fieldName] || item.price,
+					};
+				}),
+			),
+		);
 	};
+
+	const unsubscribe = () => {
+		if (!subscriptionRef.current) return;
+
+		subscriptionRef.current.unsubscribe();
+		subscriptionRef.current = null;
+	};
+
+	const subscribe = () => {
+		const fields = ['bestSellLimitPrice_1', 'bestBuyLimitPrice_1', 'closingPrice', 'lastTradedPrice'];
+		const symbolISINs = contracts.map((item) => item.symbol.symbolISIN);
+
+		unsubscribe();
+
+		subscriptionRef.current = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: symbolISINs,
+			fields,
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+		subscriptionRef.current.addEventListener('onItemUpdate', onSymbolUpdate);
+
+		subscriptionRef.current.start();
+	};
+
+	const symbolISINs = useMemo(() => contracts.map((item) => item.symbol.symbolISIN), [contracts]);
 
 	const { requiredMargin, tradeCommission, strikeCommission, tax, vDefault } = useMemo(() => {
 		const result: Record<'requiredMargin' | 'tradeCommission' | 'strikeCommission' | 'tax' | 'vDefault', number> = {
@@ -138,6 +222,13 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 
 		return result;
 	}, [contracts]);
+
+	useEffect(() => {
+		subscribe();
+		return () => {
+			unsubscribe();
+		};
+	}, [symbolISINs.join(',')]);
 
 	return (
 		<div
