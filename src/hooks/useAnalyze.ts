@@ -242,6 +242,9 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			//
 		}
 
+		newInputs.cost = Math.ceil(newInputs.cost);
+		newInputs.income = Math.ceil(newInputs.income);
+
 		setInputs(newInputs);
 	}, [contracts, JSON.stringify(config)]);
 
