@@ -311,7 +311,7 @@ const SymbolStrategy = ({
 
 	const dispatch = useAppDispatch();
 
-	const { inputs, setFieldValue } = useInputs<IInput>({
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<IInput>({
 		price: contract.price,
 		quantity: contract.quantity,
 		side: contract.side,
@@ -368,6 +368,14 @@ const SymbolStrategy = ({
 	const onSideChange = () => {
 		setFieldValue('side', inputs.side === 'buy' ? 'sell' : 'buy');
 	};
+
+	useEffect(() => {
+		setFieldsValue({
+			price: contract.price,
+			quantity: contract.quantity,
+			side: contract.side,
+		});
+	}, [contract.price, contract.quantity, contract.side]);
 
 	useEffect(() => {
 		onChange(inputs);
