@@ -267,7 +267,7 @@ const AnalyzeChart = ({
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
 
-				const profit = y > 0 ? (y * contractSize) / cost : (y * contractSize) / income;
+				const profit = y > 0 ? Math.abs((y * contractSize) / cost) : Math.abs((y * contractSize) / income) * -1;
 				const efficiency = Math.max(profit * 100, -100);
 
 				let ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);

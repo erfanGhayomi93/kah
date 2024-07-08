@@ -4,7 +4,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { type IBaseSymbolDetails, type IOptionDetails } from '@/features/slices/types/modalSlice.interfaces';
-import { useDebounce, useInputs } from '@/hooks';
+import { useInputs } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { convertStringToInteger, copyNumberToClipboard, sepNumbers, toFixed } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -147,6 +147,11 @@ const SymbolStrategyTable = ({
 		return [symbols, checkListLength];
 	}, [contracts, selectedContracts]);
 
+	const sortedContracts = useMemo(
+		() => [...contracts].sort((a, b) => a.symbol.symbolTitle.localeCompare(b.symbol.symbolTitle)),
+		[contracts],
+	);
+
 	const isAllContractsSelected = contracts.length > 0 && selectedContracts.length === contracts.length;
 
 	const optionContractsLength = contracts.length > 0 && contracts.filter((item) => item.type === 'option').length;
@@ -271,7 +276,7 @@ const SymbolStrategyTable = ({
 				</thead>
 
 				<tbody className={styles.tbody}>
-					{contracts.map((c) => (
+					{sortedContracts.map((c) => (
 						<SymbolStrategy
 							key={c.id}
 							contract={c}
@@ -305,8 +310,6 @@ const SymbolStrategy = ({
 	const t = useTranslations('symbol_strategy');
 
 	const dispatch = useAppDispatch();
-
-	const { setDebounce } = useDebounce();
 
 	const { inputs, setFieldValue } = useInputs<IInput>({
 		price: contract.price,
@@ -367,7 +370,7 @@ const SymbolStrategy = ({
 	};
 
 	useEffect(() => {
-		setDebounce(() => onChange(inputs), 400);
+		onChange(inputs);
 	}, [JSON.stringify(inputs)]);
 
 	return (
