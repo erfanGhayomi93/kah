@@ -44,7 +44,7 @@ const Saturn = () => {
 
 	const { data: activeTemplate, isLoading: isLoadingActiveTemplate } = useActiveTemplateQuery({
 		queryKey: ['useActiveTemplate'],
-		enabled: isLoggedIn && Boolean(!searchParams.get('symbolISIN') && !searchParams.get('symbolISIN')),
+		enabled: isLoggedIn && Boolean(!searchParams.get('symbolISIN') && !searchParams.get('baseSymbolISIN')),
 	});
 
 	if (isLoadingBaseSymbolInfo || isLoadingActiveTemplate) {
@@ -69,7 +69,7 @@ const Saturn = () => {
 					activeTemplate={activeTemplate!}
 				/>
 			) : (
-				<span className='text-light-gray-700 absolute text-base font-bold center'>
+				<span className='absolute text-base font-bold text-light-gray-700 center'>
 					{t('common.symbol_not_found')}
 				</span>
 			)}
