@@ -481,7 +481,7 @@ const SymbolStrategy = ({
 						checked={Boolean(checkList?.requiredMargin)}
 						disabled={!checkList.symbol}
 						onChange={(v) => onChecked('requiredMargin', v)}
-						label={sepNumbers(String(contract.symbol.requiredMargin ?? 0))}
+						label={contract.side === 'buy' ? '0' : sepNumbers(String(contract.symbol.requiredMargin ?? 0))}
 						classes={{ text: '!text-tiny' }}
 					/>
 				</td>
