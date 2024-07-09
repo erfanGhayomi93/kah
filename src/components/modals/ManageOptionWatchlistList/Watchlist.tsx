@@ -4,7 +4,7 @@ import KeyDown from '@/components/common/KeyDown';
 import { DragSVG, EditSVG, EyeSVG, EyeSlashSVG, TrashSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useState, type LiHTMLAttributes } from 'react';
+import { useEffect, useState, type LiHTMLAttributes } from 'react';
 
 interface WatchlistProps extends LiHTMLAttributes<HTMLLIElement> {
 	watchlist: Option.WatchlistList;
@@ -65,11 +65,11 @@ const Watchlist = ({
 		setIsDeleting(false);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		setName('');
 	}, [isEditing]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		setIsDeleting(false);
 		onEditCancel();
 	}, [checked === undefined]);
@@ -108,7 +108,10 @@ const Watchlist = ({
 								className='h-full flex-1 bg-transparent'
 								placeholder={t('manage_option_watchlist_modal.new_watchlist_name')}
 								value={name}
-								onChange={(e) => setName(e.target.value)}
+								onChange={(e) => {
+									const { value } = e.target;
+									if (value.length <= 36) setName(value);
+								}}
 							/>
 						</div>
 					) : (
@@ -117,7 +120,7 @@ const Watchlist = ({
 								e.stopPropagation();
 								onVisibilityChange();
 							}}
-							className='h-48 flex-1 cursor-pointer gap-8 rounded border border-light-gray-200 bg-light-gray-100 px-16 transition-colors flex-justify-start hover:btn-hover'
+							className='h-48 flex-1 cursor-pointer gap-8 overflow-hidden rounded border border-light-gray-200 bg-light-gray-100 px-16 transition-colors flex-justify-start hover:btn-hover'
 						>
 							<button type='button' className={isActive ? 'text-light-gray-800' : 'text-light-gray-500'}>
 								{watchlist.isHidden ? (
@@ -158,8 +161,9 @@ const Watchlist = ({
 									<button
 										key='edit'
 										onClick={() => onEditEnd(name)}
+										disabled={name.length === 0}
 										type='button'
-										className='font-medium text-light-primary-100 flex-justify-center'
+										className='font-medium text-light-primary-100 flex-justify-center disabled:opacity-50'
 									>
 										{t('common.register')}
 									</button>,
