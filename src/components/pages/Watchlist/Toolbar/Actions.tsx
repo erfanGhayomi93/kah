@@ -1,3 +1,4 @@
+import PauseAndPlayBtn from '@/components/common/Buttons/PauseAndPlayBtn';
 import TableActions from '@/components/common/Toolbar/TableActions';
 import { useAppDispatch } from '@/features/hooks';
 import { setManageColumnsModal } from '@/features/slices/modalSlice';
@@ -45,7 +46,9 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 			onManageColumns={manageWatchlistColumns}
 			onShowFilters={onShowFilters}
 			onExportExcel={onExportExcel}
-		/>
+		>
+			<PauseAndPlayBtn />
+		</TableActions>
 	);
 };
 
