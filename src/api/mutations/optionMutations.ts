@@ -21,7 +21,7 @@ export const useOptionInfoMutation = createMutation<Option.Root[], string[]>({
 
 export const useResetOptionWatchlistMutation = createMutation({
 	mutationFn: async () => {
-		const response = await axios.get(routes.optionWatchlist.ResetOptionSymbolColumns);
+		const response = await axios.post(routes.optionWatchlist.ResetOptionSymbolColumns);
 		const { data } = response;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
