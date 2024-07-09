@@ -1,3 +1,4 @@
+import { getTSELink } from '@/utils/helpers';
 import clsx from 'clsx';
 import { type StrikePriceCellRendererProps } from './StrikePriceCellRenderer';
 
@@ -164,10 +165,28 @@ class StrikePriceBtnGroup {
 				this.removeDropdown();
 			};
 
+			const c = document.createElement('li');
+			const cBtn = document.createElement('a');
+			cBtn.setAttribute(
+				'class',
+				'w-full h-48 text-base px-16 gap-8 text-light-gray-700 flex-justify-end hover:btn-hover transition-colors',
+			);
+			cBtn.target = '_blank';
+			cBtn.href = getTSELink(this.params.data![this.side]!.symbolInfo.insCode);
+			cBtn.innerHTML =
+				'TSE <svg width="2.4rem" height="2.4rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 4C12 4 13.0025 7.23814 14.4 8.8C16.0795 10.6771 20 12 20 12C20 12 16.0795 13.3229 14.4 15.2C13.0025 16.7619 12 20 12 20C12 20 10.9975 16.7619 9.6 15.2C7.92047 13.3229 4 12 4 12C4 12 7.92047 10.6771 9.6 8.8C10.9975 7.23814 12 4 12 4Z" fill="currentColor"></path></svg>';
+			cBtn.onclick = (e) => {
+				e.stopPropagation();
+				this.removeDropdown();
+			};
+
 			a.appendChild(aBtn);
 			b.appendChild(bBtn);
+			c.appendChild(cBtn);
+
 			this.eDropdown.appendChild(a);
 			this.eDropdown.appendChild(b);
+			this.eDropdown.appendChild(c);
 
 			this.eGroup.appendChild(this.eDropdown);
 		} catch (e) {

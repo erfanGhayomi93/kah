@@ -38,6 +38,7 @@ declare namespace Option {
 		 * روز‌های باقی مانده
 		 */
 		dueDays: number;
+		insCode: string;
 		/**
 		 * قیمت اعمال
 		 */
@@ -1303,10 +1304,20 @@ declare namespace Dashboard {
 	}
 
 	export namespace GetOpenPositionProcess {
-		export type Data = {
+		export type TChartType = 'Aggregated' | 'Separated';
+
+		export interface Aggregated {
 			dateTime: string;
 			openPosition: number;
-		};
+		}
+
+		export interface Separated {
+			dateTime: string;
+			callOpenPosition: number;
+			putOpenPosition: number;
+		}
+
+		export type Data = Dashboard.GetOpenPositionProcess.Aggregated[] | Dashboard.GetOpenPositionProcess.Separated[];
 	}
 
 	export namespace GetAnnualReport {

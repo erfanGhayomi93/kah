@@ -120,6 +120,8 @@
 		"market_state": "وضعیت بازار",
 		"best": "برترین‌ها",
 		"user_progress_bar": "کهکشان",
+		"tab_aggregated": "همه",
+		"tab_separated": "به تفکیک",
 		"compare_transaction_value": "مقایسه ارزش معاملات",
 		"option_contracts": "قراردادهای اختیار",
 		"option_trades_value": "ارزش در معاملات اختیار",

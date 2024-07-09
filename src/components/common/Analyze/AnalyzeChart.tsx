@@ -10,9 +10,8 @@ import PriceRange from './PriceRange';
 interface AnalyzeChartProps
 	extends Pick<
 		IAnalyzeInputs,
-		'minPrice' | 'maxPrice' | 'dueDays' | 'income' | 'cost' | 'contractSize' | 'data' | 'bep'
+		'minPrice' | 'baseAssets' | 'maxPrice' | 'dueDays' | 'income' | 'cost' | 'contractSize' | 'data' | 'bep'
 	> {
-	baseAssets: number;
 	height?: number;
 	compact?: boolean;
 	onChange?: (values: Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>) => void;

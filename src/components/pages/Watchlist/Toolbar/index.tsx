@@ -97,19 +97,17 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	}, [JSON.stringify(filters ?? {})]);
 
 	return (
-		<div className='gap-16 flex-column'>
-			<div className='h-40 w-full flex-justify-between'>
-				<div className='gap-8 flex-items-center'>
-					<WatchlistList />
-					<SearchSymbol />
-				</div>
-
-				<Actions
-					filtersCount={filtersCount}
-					onShowFilters={onShowFilters}
-					onExportExcel={() => setDebounce(onExportExcel, 500)}
-				/>
+		<div className='h-72 flex-justify-between'>
+			<div className='gap-8 flex-items-center'>
+				<WatchlistList />
+				<SearchSymbol />
 			</div>
+
+			<Actions
+				filtersCount={filtersCount}
+				onShowFilters={onShowFilters}
+				onExportExcel={() => setDebounce(onExportExcel, 500)}
+			/>
 		</div>
 	);
 };

@@ -59,7 +59,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 			<div
 				onClick={() => setIsExpand(true)}
 				style={{ flex: '0 0 4rem' }}
-				className='bg-light-gray-100 overflow-hidden rounded-t pl-12 flex-justify-between'
+				className='overflow-hidden rounded-t bg-light-gray-100 pl-8 flex-justify-between'
 			>
 				<ul className='flex-1 flex-items-center'>
 					{tabs.map((tab, index) => (
@@ -72,7 +72,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 									'relative h-40 w-full rounded-t text-base transition-colors flex-justify-center',
 									tabs.length <= 2 ? 'px-16' : 'px-8',
 									isExpand && tab.id === activeTab
-										? 'text-light-gray-700 bg-white font-medium'
+										? 'bg-white font-medium text-light-gray-700'
 										: 'text-light-gray-500',
 								)}
 							>
@@ -88,10 +88,9 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 					))}
 				</ul>
 
-				<div className='gap-8 flex-items-center'>
+				<div className='flex-items-center *:size-32 *:text-light-gray-600 *:flex-justify-center'>
 					<button
 						type='button'
-						className='text-light-gray-700'
 						onClick={(e) => {
 							e.stopPropagation();
 							e.preventDefault();
@@ -108,7 +107,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 
 					<button
 						type='button'
-						className='drag-handler text-light-gray-700'
+						className='drag-handler'
 						onClick={(e) => {
 							e.stopPropagation();
 							e.preventDefault();

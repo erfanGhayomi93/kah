@@ -127,7 +127,7 @@ const ChangeBrokerReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white !pt-16'>
+		<Main className='gap-16 bg-white'>
 			<div className='flex-justify-between'>
 				<span className='text-xl font-medium text-light-gray-500'>
 					{t('change_broker_reports_page.title_page')}

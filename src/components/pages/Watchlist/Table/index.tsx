@@ -121,9 +121,9 @@ const Table = ({ filters, watchlistCount, setFilters }: TableProps) => {
 	return (
 		<>
 			<div
-				className='overflow-hidden rounded border border-light-gray-200 flex-column'
+				className='overflow-hidden flex-column'
 				style={{
-					height: 'calc(100dvh - 17.6rem)',
+					height: 'calc(100dvh - 20rem)',
 					transition: 'height 250ms ease',
 				}}
 			>

@@ -378,6 +378,7 @@ declare interface IAnalyzeInputs {
 	data: Array<Record<'x' | 'y', number>>;
 	maxPrice: number | null;
 	minPrice: number | null;
+	baseAssets: number;
 	maxProfit: number;
 	maxLoss: number;
 	dueDays: number;

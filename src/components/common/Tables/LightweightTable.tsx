@@ -43,15 +43,15 @@ type HeaderCellProps<K> = IColDef<K> & {
 };
 
 interface RowCellProps<K> {
-	column: IColDef<K>;
+	column: Omit<IColDef<K>, 'cellClass'> & { cellClass?: string };
 	row: K;
 	rowIndex: number;
 }
 
 interface LightweightTableProps<T extends unknown[], K extends unknown> {
 	rowData: T;
-	headerClass?: string;
-	cellClass?: string;
+	headerClass?: ClassesValue;
+	cellClass?: ClassesValue;
 	className?: ClassesValue;
 	columnDefs: Array<IColDef<K>>;
 	rowHeight?: number;
@@ -175,7 +175,10 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 									rowIndex={i}
 									column={{
 										...col,
-										cellClass: clsx(col.cellClass, cellClass),
+										cellClass: clsx(
+											typeof col.cellClass === 'function' ? col.cellClass(row) : col.cellClass,
+											cellClass,
+										),
 									}}
 								/>
 							))}
@@ -282,10 +285,7 @@ const RowCell = <K,>({ column, row, rowIndex }: RowCellProps<K>) => {
 		<td
 			key={column.colId}
 			onClick={(e) => column.onCellClick?.(row, e)}
-			className={clsx(
-				styles.td,
-				typeof column.cellClass === 'function' ? column.cellClass(row) : column.cellClass,
-			)}
+			className={clsx(styles.td, column.cellClass)}
 		>
 			{getFormattedValue()}
 		</td>

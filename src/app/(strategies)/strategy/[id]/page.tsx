@@ -30,7 +30,7 @@ const Page: NextPage<INextStrategyProps> = async ({ params: { id } }) => {
 	}
 
 	return (
-		<Main className='!px-8'>
+		<Main>
 			<Strategy {...strategy} />
 		</Main>
 	);

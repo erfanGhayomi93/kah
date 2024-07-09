@@ -214,7 +214,7 @@ const Dashboard = () => {
 	}, [grid]);
 
 	return (
-		<Main className='gap-8 !p-0 !pr-8'>
+		<Main className='gap-8 !py-0 !pl-0 !pr-8'>
 			<div className='size-full'>
 				<ResponsiveGridLayout
 					className='w-full ltr'

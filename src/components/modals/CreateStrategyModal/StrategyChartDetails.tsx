@@ -62,17 +62,15 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, dueDays, income, cost, bep } = useAnalyze(
-		contracts,
-		{
+	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, baseAssets, dueDays, income, cost, bep } =
+		useAnalyze(contracts, {
 			minPrice,
 			maxPrice,
 			baseAssets: basePrice,
 			useRequiredMargin: true,
 			useTradeCommission: true,
 			useStrikeCommission: true,
-		},
-	);
+		});
 
 	return (
 		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-light-gray-200 py-16'>
@@ -121,7 +119,7 @@ const StrategyChartDetails = ({
 					height={150}
 					minPrice={minPrice}
 					maxPrice={maxPrice}
-					baseAssets={basePrice}
+					baseAssets={baseAssets}
 					bep={bep}
 				/>
 			</div>

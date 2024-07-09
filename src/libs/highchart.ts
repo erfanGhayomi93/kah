@@ -98,6 +98,11 @@ export const setupChart = () => {
 					enabled: false,
 				},
 			},
+			spline: {
+				marker: {
+					enabled: false,
+				},
+			},
 			pie: {
 				allowPointSelect: true,
 				cursor: 'pointer',

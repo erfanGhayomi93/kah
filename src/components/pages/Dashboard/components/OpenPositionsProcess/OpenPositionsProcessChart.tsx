@@ -1,58 +1,24 @@
 import { useGetOpenPositionProcessQuery } from '@/api/queries/dashboardQueries';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { chart, type Chart, type SeriesSplineOptions } from 'highcharts/highstock';
+import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
-
-interface IColors {
-	line: string;
-	steps: GradientColorStopObject[];
-}
 
 interface OpenPositionsProcessChartProps {
 	interval: Dashboard.TInterval;
+	type: Dashboard.GetOpenPositionProcess.TChartType;
 }
 
-const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps) => {
+const OpenPositionsProcessChart = ({ interval, type }: OpenPositionsProcessChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
 
 	const { data, isLoading } = useGetOpenPositionProcessQuery({
-		queryKey: ['getOpenPositionProcessQuery', interval],
+		queryKey: ['getOpenPositionProcessQuery', interval, type],
 	});
-
-	const COLORS: IColors = {
-		line: 'rgba(0, 87, 255, 1)',
-		steps: [
-			[0, 'rgba(0, 87, 255, 0.2)'],
-			[1, 'rgba(0, 87, 255, 0)'],
-		],
-	};
 
 	const xAxisFormatter = (v: number | string): string => {
 		return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
 	};
-
-	const series: SeriesAreasplineOptions = useMemo(() => {
-		const result: SeriesAreasplineOptions = {
-			color: COLORS.line,
-			lineColor: COLORS.line,
-			fillOpacity: 0,
-			threshold: null,
-			type: 'areaspline',
-			lineWidth: 1.5,
-			connectNulls: true,
-			data: [],
-		};
-
-		if (!data?.length) return result;
-
-		result.data = data.map(({ dateTime, openPosition }) => ({
-			x: new Date(dateTime).getTime(),
-			y: openPosition,
-		}));
-
-		return result;
-	}, [interval, data]);
 
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
@@ -89,15 +55,65 @@ const OpenPositionsProcessChart = ({ interval }: OpenPositionsProcessChartProps)
 					},
 				},
 			},
-			series: [series],
+			series: [
+				{ type: 'spline', data: [] },
+				{ type: 'spline', data: [] },
+			],
 		});
 	}, []);
 
 	useEffect(() => {
-		if (!chartRef.current) return;
+		if (!chartRef.current || !data?.length) return;
 
-		chartRef.current.series[0].update(series);
-	}, [series]);
+		const series: SeriesSplineOptions[] = [
+			{
+				color: type === 'Aggregated' ? 'rgb(0, 87, 255)' : 'rgb(0, 194, 136)',
+				threshold: null,
+				type: 'spline',
+				lineWidth: 1.5,
+				connectNulls: true,
+				data: [],
+			},
+			{
+				color: 'rgb(255, 82, 109)',
+				threshold: null,
+				type: 'spline',
+				lineWidth: 1.5,
+				connectNulls: true,
+				data: [],
+			},
+		];
+
+		try {
+			if (type === 'Aggregated') {
+				series[0].data = (data as Dashboard.GetOpenPositionProcess.Aggregated[]).map(
+					({ dateTime, openPosition }) => ({
+						x: new Date(dateTime).getTime(),
+						y: openPosition,
+					}),
+				);
+			} else {
+				for (let i = 0; i < data.length; i++) {
+					try {
+						const { dateTime, callOpenPosition, putOpenPosition } = data[
+							i
+						] as Dashboard.GetOpenPositionProcess.Separated;
+						const x = new Date(dateTime).getTime();
+
+						series[0].data!.push({ x, y: callOpenPosition });
+						series[1].data!.push({ x, y: putOpenPosition });
+					} catch (e) {
+						//
+					}
+				}
+			}
+		} catch (e) {
+			//
+		}
+
+		chartRef.current.series[0].update(series[0]);
+		chartRef.current.series[1].update(series[1]);
+	}, [data, type]);
 
 	useEffect(() => {
 		if (!chartRef.current) return;
