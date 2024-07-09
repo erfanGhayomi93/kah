@@ -5,9 +5,9 @@ import Checkbox from '@/components/common/Inputs/Checkbox';
 import { PlusSquareSVG, TrashSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setManageOptionWatchlistListModal } from '@/features/slices/modalSlice';
-import { useBrokerQueryClient } from '@/hooks';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useLayoutEffect, useReducer } from 'react';
+import { forwardRef, useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import WatchlistList from './WatchlistList';
@@ -27,7 +27,7 @@ interface ManageOptionWatchlistListProps extends IBaseModalConfiguration {}
 const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchlistListProps>((props, ref) => {
 	const t = useTranslations();
 
-	const queryClient = useBrokerQueryClient();
+	const queryClient = useQueryClient();
 
 	const dispatch = useAppDispatch();
 
@@ -57,14 +57,12 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 	};
 
 	const deleteAll = () => {
-		if (isDeleting.selected.length === 0) return;
+		if (isDeleting.selected.length === 0 || !Array.isArray(watchlistList)) return;
 
 		try {
-			const data = JSON.parse(JSON.stringify(watchlistList) ?? []) as Option.WatchlistList[];
-
 			queryClient.setQueryData(
 				['getAllCustomWatchlistQuery'],
-				data.filter((item) => !isDeleting.selected.includes(item.id)),
+				watchlistList.filter((item) => !isDeleting.selected.includes(item.id)),
 			);
 
 			setIsDeleting({ type: 'hasStarted', payload: false });
@@ -94,7 +92,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 		dispatch(setAddNewOptionWatchlistModal({ moveable: true }));
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (Array.isArray(watchlistList) && watchlistList.length === 0) onCloseModal();
 	}, [watchlistList]);
 

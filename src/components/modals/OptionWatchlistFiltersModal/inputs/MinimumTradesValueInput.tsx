@@ -15,13 +15,13 @@ const MinimumTradesValueInput = ({ value, onChange }: MinimumTradesValueInputPro
 	};
 
 	return (
-		<div className='relative flex flex-col gap-4'>
+		<div className='relative flex w-full flex-col gap-4'>
 			<div className='h-full flex-1 rounded border border-light-gray-200 flex-items-center input-group'>
 				<input
 					type='text'
 					inputMode='numeric'
 					maxLength={25}
-					className='h-40 flex-1 rounded px-8 text-left ltr'
+					className='h-full flex-1 rounded bg-transparent px-8 text-left ltr'
 					value={valueFormatter(value)}
 					onChange={(e) => onChange(convertStringToInteger(e.target.value))}
 				/>

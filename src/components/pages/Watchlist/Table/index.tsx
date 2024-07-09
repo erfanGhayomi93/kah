@@ -54,14 +54,14 @@ const Table = ({ filters, watchlistCount, setFilters }: TableProps) => {
 
 			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
 
-			if (props.dueDays && props.dueDays[1] >= props.dueDays[0]) {
-				if (props.dueDays[0] > 0) params.FromDueDays = String(props.dueDays[0]);
-				if (props.dueDays[1] < 365) params.ToDueDays = String(props.dueDays[1]);
+			if (props.dueDays && (props.dueDays[0] || props.dueDays[1])) {
+				params.FromDueDays = String(Math.min(props.dueDays[0], props.dueDays[1]));
+				params.ToDueDays = String(Math.max(props.dueDays[0], props.dueDays[1]));
 			}
 
 			if (props.delta && props.delta[1] >= props.delta[0]) {
-				if (props.delta[0] > -1) params.FromDelta = String(props.delta[0]);
-				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
+				params.FromDelta = String(Math.min(props.delta[0], props.delta[1]));
+				params.ToDelta = String(Math.max(props.delta[0], props.delta[1]));
 			}
 
 			if (props.watchlistId > -1) params.Id = String(props.watchlistId);

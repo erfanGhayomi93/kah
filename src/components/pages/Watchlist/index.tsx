@@ -24,26 +24,21 @@ const Watchlist = () => {
 
 	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialOptionWatchlistFilters);
 
-	const { data: userCustomWatchlistList, refetch: refetchUserCustomWatchlistList } = useGetAllCustomWatchlistQuery({
+	const { data: userCustomWatchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
-		enabled: false,
+		enabled: isLoggedIn,
 	});
+	console.log(userCustomWatchlistList);
 
 	useEffect(() => {
-		try {
-			if (isLoggedIn) {
-				refetchUserCustomWatchlistList();
-			} else {
-				dispatch(
-					setOptionWatchlistTabId({
-						id: -1,
-						updateLS: false,
-					}),
-				);
-			}
-		} catch (e) {
-			//
-		}
+		if (isLoggedIn) return;
+
+		dispatch(
+			setOptionWatchlistTabId({
+				id: -1,
+				updateLS: false,
+			}),
+		);
 	}, [isLoggedIn]);
 
 	useEffect(() => {

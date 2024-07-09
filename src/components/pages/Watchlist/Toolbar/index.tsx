@@ -97,8 +97,8 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	}, [JSON.stringify(filters ?? {})]);
 
 	return (
-		<div className='h-72 flex-justify-between'>
-			<div className='gap-8 flex-items-center'>
+		<div className='h-72 gap-48 overflow-hidden flex-justify-between'>
+			<div className='gap-8 overflow-hidden flex-items-center'>
 				<WatchlistList />
 				<SearchSymbol />
 			</div>

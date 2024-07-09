@@ -1,4 +1,6 @@
-import PriceSlider from '@/components/common/PriceSlider';
+import InputLegend from '@/components/common/Inputs/InputLegend';
+import { convertStringToInteger } from '@/utils/helpers';
+import { useTranslations } from 'next-intl';
 
 interface EndDateInputProps {
 	value: IOptionWatchlistFilters['dueDays'];
@@ -6,30 +8,32 @@ interface EndDateInputProps {
 }
 
 const EndDateInput = ({ value: [fromEndDate, toEndDate], onChange }: EndDateInputProps) => {
-	const onChangeSlider = (value: number, type: 'start' | 'end') => {
-		const formattedValue = Math.round(Number(value.toFixed(3)));
-
-		onChange(
-			type === 'start'
-				? formattedValue > toEndDate
-					? [toEndDate, formattedValue]
-					: [formattedValue, toEndDate]
-				: formattedValue < fromEndDate
-					? [formattedValue, fromEndDate]
-					: [fromEndDate, formattedValue],
-		);
-	};
-
-	const valueFormatter = (value: number) => String(Math.round(Number(value.toFixed(3))));
+	const t = useTranslations('option_watchlist_filters_modal');
 
 	return (
-		<PriceSlider
-			min={0}
-			max={365}
-			onChange={onChangeSlider}
-			value={[fromEndDate, toEndDate]}
-			valueFormatter={valueFormatter}
-		/>
+		<>
+			<InputLegend
+				value={fromEndDate}
+				onChange={(v) => {
+					const valueAsNumber = Number(convertStringToInteger(v));
+					onChange([valueAsNumber, toEndDate]);
+				}}
+				placeholder={t('from')}
+				className='size-full bg-transparent px-8 text-center ltr placeholder:text-center'
+				autoTranslateLegend
+			/>
+
+			<InputLegend
+				value={toEndDate}
+				onChange={(v) => {
+					const valueAsNumber = Number(convertStringToInteger(v));
+					onChange([fromEndDate, valueAsNumber]);
+				}}
+				placeholder={t('to')}
+				className='size-full bg-transparent px-8 text-center ltr placeholder:text-center'
+				autoTranslateLegend
+			/>
+		</>
 	);
 };
 
