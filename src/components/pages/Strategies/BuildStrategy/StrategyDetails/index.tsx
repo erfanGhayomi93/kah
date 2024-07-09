@@ -30,6 +30,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 		cost,
 		income,
 		dueDays,
+		baseAssets,
 		neededBudget,
 	} = useAnalyze(contracts, {
 		baseAssets: baseSymbolPrice,
@@ -47,7 +48,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 					chartData={data}
 					dueDays={dueDays}
 					contracts={contracts}
-					baseAssets={baseSymbolPrice}
+					baseAssets={baseAssets}
 					cost={cost}
 					contractSize={contractSize}
 					bep={bep}

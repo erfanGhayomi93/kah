@@ -15,7 +15,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 	const t = useTranslations('strategies');
 
 	return (
-		<Main className='gap-8 !px-8'>
+		<Main className='gap-8'>
 			<div
 				style={{ flex: '0 0 5.6rem' }}
 				className='gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start'

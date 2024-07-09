@@ -45,6 +45,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 		neededBudget,
 		dueDays,
 		cost,
+		baseAssets,
 		income,
 	} = useAnalyze(contracts, {
 		baseAssets: baseSymbolPrice,
@@ -63,7 +64,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 				dueDays={dueDays}
 				chartData={data}
 				contracts={contracts}
-				baseAssets={baseSymbolPrice}
+				baseAssets={baseAssets}
 				bep={bep}
 				income={income}
 				height={420}

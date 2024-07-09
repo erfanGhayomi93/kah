@@ -1,6 +1,6 @@
 import { useGetIndividualLegalInfoQuery } from '@/api/queries/dashboardQueries';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
-import { chart, type Chart, type SeriesAreasplineOptions } from 'highcharts/highstock';
+import { chart, type Chart, type SeriesSplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
 
@@ -56,8 +56,8 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 				},
 			},
 			series: [
-				{ type: 'areaspline', data: [] },
-				{ type: 'areaspline', data: [] },
+				{ type: 'spline', data: [] },
+				{ type: 'spline', data: [] },
 			],
 		});
 	}, []);
@@ -65,23 +65,19 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 	useEffect(() => {
 		if (!chartRef.current || !data?.length) return;
 
-		const series: SeriesAreasplineOptions[] = [
+		const series: SeriesSplineOptions[] = [
 			{
-				color: 'rgba(0, 194, 136, 1)',
-				lineColor: 'rgb(0, 194, 136)',
-				fillColor: 'rgb(0, 0, 0, 0)',
+				color: 'rgb(0, 194, 136)',
 				threshold: null,
-				type: 'areaspline',
+				type: 'spline',
 				lineWidth: 1.5,
 				connectNulls: true,
 				data: [],
 			},
 			{
 				color: 'rgb(255, 82, 109)',
-				lineColor: 'rgb(255, 82, 109)',
-				fillColor: 'rgb(0, 0, 0, 0)',
 				threshold: null,
-				type: 'areaspline',
+				type: 'spline',
 				lineWidth: 1.5,
 				connectNulls: true,
 				data: [],

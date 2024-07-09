@@ -69,15 +69,17 @@ const Watchlist = () => {
 	}, [isLoggedIn, userCustomWatchlistList]);
 
 	return (
-		<Main className='gap-16 bg-white !pt-16'>
-			<Toolbar filters={filters} />
+		<Main>
+			<div className='h-full rounded bg-white px-16 flex-column'>
+				<Toolbar filters={filters} />
 
-			<div className='relative flex-1 overflow-hidden'>
-				<Table
-					filters={filters}
-					setFilters={setFilters}
-					watchlistCount={userCustomWatchlistList?.length ?? 0}
-				/>
+				<div className='relative flex-1 overflow-hidden'>
+					<Table
+						filters={filters}
+						setFilters={setFilters}
+						watchlistCount={userCustomWatchlistList?.length ?? 0}
+					/>
+				</div>
 			</div>
 		</Main>
 	);

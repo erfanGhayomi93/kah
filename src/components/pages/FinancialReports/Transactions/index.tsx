@@ -129,7 +129,7 @@ const Transactions = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white !pt-16'>
+		<Main className='gap-16 bg-white'>
 			<div className='flex-justify-between'>
 				<Tabs />
 				<Toolbar

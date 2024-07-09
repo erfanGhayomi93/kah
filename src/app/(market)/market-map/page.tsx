@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server';
 
 const Page: NextPage<INextProps> = () => {
 	return (
-		<Main className='rounded-md !px-8'>
+		<Main className='rounded-md'>
 			<MarketMap />
 		</Main>
 	);

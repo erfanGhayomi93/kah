@@ -24,6 +24,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		baseSymbolStatus: 'atm',
 		maxProfit: 0,
 		maxLoss: 0,
+		baseAssets: config?.baseAssets,
 		bep: [],
 		cost: 0,
 		income: 0,
@@ -79,6 +80,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			maxProfit: 0,
 			maxLoss: 0,
 			income: 0,
+			baseAssets: config?.baseAssets ?? 0,
 			bep: [],
 			cost: 0,
 			neededBudget: 0,
@@ -125,6 +127,8 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				}
 				const tradeCommission = Math.ceil(Math.abs(amount + commission));
 				const cost = tax + commission + requiredMargin + income;
+
+				if (type === 'base') newInputs.baseAssets = item.price;
 
 				if (useRequiredMargin || item.requiredMargin) {
 					if (type === 'option') newInputs.neededBudget += requiredMargin;
