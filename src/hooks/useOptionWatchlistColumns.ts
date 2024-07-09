@@ -38,9 +38,12 @@ const useOptionWatchlistColumns = () => {
 	const resetColumnsToDefault = () => {
 		if (isLoggedIn) resetColumns();
 
+		if (!Array.isArray(defaultColumnsData)) return;
+
 		LocalstorageInstance.set('owc', defaultColumnsData);
 
 		setColumns(defaultColumnsData ?? []);
+		ipcMain.send('set_option_watchlist_columns', defaultColumnsData);
 	};
 
 	const hideSingleColumn = (id: number, isHidden: boolean) => {

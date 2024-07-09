@@ -17,7 +17,7 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 
 	const { watchlistColumns, defaultColumns, resetColumnsToDefault, hideGroupColumns } = useOptionWatchlistColumns();
 
-	const covertItemTpManageColumnModel = (item: Option.Column) => ({
+	const covertItemToManageColumnModel = (item: Option.Column) => ({
 		hidden: item.isHidden,
 		id: String(item.title),
 		title: t(`manage_option_watchlist_columns.column_${item.title}`),
@@ -25,8 +25,8 @@ const Actions = ({ filtersCount, onShowFilters, onExportExcel }: ActionsProps) =
 	});
 
 	const manageWatchlistColumns = () => {
-		const columns = watchlistColumns.map<IManageColumn>(covertItemTpManageColumnModel);
-		const initialColumns = defaultColumns.map<IManageColumn>(covertItemTpManageColumnModel);
+		const columns = watchlistColumns.map<IManageColumn>(covertItemToManageColumnModel);
+		const initialColumns = defaultColumns.map<IManageColumn>(covertItemToManageColumnModel);
 
 		dispatch(
 			setManageColumnsModal({

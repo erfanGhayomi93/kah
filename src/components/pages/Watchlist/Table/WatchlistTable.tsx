@@ -3,6 +3,7 @@ import routes from '@/api/routes';
 import lightStreamInstance from '@/classes/Lightstream';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
+import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -355,6 +356,10 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					headerName: t('option_page.black_scholes'),
 					initialHide: Boolean(modifiedWatchlistColumns?.blackScholes?.isHidden ?? true),
 					minWidth: 144,
+					headerComponent: HeaderHint,
+					headerComponentParams: {
+						tooltip: t('option_page.black_scholes_tooltip'),
+					},
 					valueGetter: ({ data }) => data?.optionWatchlistData.blackScholes ?? 0,
 					valueFormatter: ({ value }) => sepNumbers(String(value)),
 					comparator: (valueA, valueB) => valueA - valueB,
