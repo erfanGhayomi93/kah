@@ -1,6 +1,7 @@
 import OptionWatchlistManagerBtn from '@/components/common/Buttons/OptionWatchlistManagerBtn';
 import { FilterSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
+import React from 'react';
 import styled from 'styled-components';
 import ExportExcelBtn from '../Buttons/ExportExcelBtn';
 import Tooltip from '../Tooltip';
@@ -10,6 +11,7 @@ interface TableActionsProps {
 	showExcel?: boolean;
 	showFilter?: boolean;
 	showColumns?: boolean;
+	children?: React.ReactNode;
 	onExportExcel?: () => void;
 	onShowFilters?: () => void;
 	onManageColumns?: () => void;
@@ -31,6 +33,7 @@ const TableActions = ({
 	showColumns = true,
 	showExcel = true,
 	showFilter = true,
+	children,
 	onExportExcel,
 	onShowFilters,
 	onManageColumns,
@@ -39,6 +42,8 @@ const TableActions = ({
 
 	return (
 		<div className='flex gap-8'>
+			{children}
+
 			{showExcel && (
 				<Tooltip placement='bottom' content={t('export_excel')}>
 					<ExportExcelBtn onClick={onExportExcel} />

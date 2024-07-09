@@ -111,8 +111,12 @@ const OptionWatchlistFiltersModal = forwardRef<HTMLDivElement, OptionWatchlistFi
 						</ul>
 					</div>
 
-					<div className='flex-justify-between'>
-						<button type='submit' className='h-40 rounded px-56 font-medium btn-primary'>
+					<div className='flex-justify-end'>
+						<button
+							style={{ width: '32.8rem' }}
+							type='submit'
+							className='h-40 rounded px-56 font-medium btn-primary'
+						>
 							{t('apply_filter')}
 						</button>
 					</div>
