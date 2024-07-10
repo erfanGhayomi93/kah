@@ -1,3 +1,7 @@
+$pp-transition:
+	border-style 200ms,
+	border-width 200ms;
+
 .pp {
 	position: relative;
 	width: 1.6rem;
@@ -8,9 +12,9 @@
 	border-width: 8.5px 0 8.5px 14px;
 	margin-left: 2px;
 	border-color: transparent transparent transparent currentColor;
-	transition: 250ms all;
-	-webkit-transition: 250ms all;
-	-moz-transition: 250ms all;
+	transition: $pp-transition;
+	-webkit-transition: $pp-transition;
+	-moz-transition: $pp-transition;
 	cursor: pointer;
 
 	&.paused {

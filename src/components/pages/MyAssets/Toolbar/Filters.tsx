@@ -113,6 +113,7 @@ const Filters = () => {
 						</li>
 					)}
 				</Popup>
+
 				<li>
 					<Tooltip placement='bottom' content={t('upload_ddn_tooltip')}>
 						<button onClick={uploadDDN} type='button' className='size-40 rounded btn-icon'>
@@ -129,12 +130,16 @@ const Filters = () => {
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('export_excel_tooltip')}>
-						<ExportExcelBtn disabled={isNotTable} onClick={exportExcel} />
+						<div>
+							<ExportExcelBtn disabled={isNotTable} onClick={exportExcel} />
+						</div>
 					</Tooltip>
 				</li>
 				<li>
 					<Tooltip placement='bottom' content={t('manage_columns_tooltip')}>
-						<OptionWatchlistManagerBtn disabled={isNotTable} onClick={manageColumns} />
+						<div>
+							<OptionWatchlistManagerBtn disabled={isNotTable} onClick={manageColumns} />
+						</div>
 					</Tooltip>
 				</li>
 			</ul>

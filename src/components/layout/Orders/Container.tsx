@@ -5,6 +5,7 @@ import { useAppSelector } from '@/features/hooks';
 import { getOrdersIsExpand } from '@/features/slices/uiSlice';
 import { useLocalstorage } from '@/hooks';
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
 import Header from './Header';
 
 const Body = dynamic(() => import('./Body'), {
@@ -17,6 +18,8 @@ const Container = () => {
 
 	const [activeTab, setActiveTab] = useLocalstorage<TOrdersTab>('ot', 'open_orders');
 
+	const [selectedOrders, setSelectedOrders] = useState<Order.TOrder[]>([]);
+
 	return (
 		<ErrorBoundary>
 			<AnimatePresence initial={{ animation: 'expandOrders' }} exit={{ animation: 'collapseOrders' }}>
@@ -28,12 +31,18 @@ const Container = () => {
 							bottom: '4.8rem',
 							zIndex: '9999',
 						}}
-						className='bg-light-gray-300 fixed left-0 w-full rounded py-8'
+						className='fixed left-0 w-full rounded bg-light-gray-300 py-8'
 					>
 						<div className='size-full flex-column'>
 							<div className='relative flex-1 overflow-hidden rounded bg-white shadow-tooltip flex-column'>
-								<Header isExpand={ordersIsExpand} tab={activeTab} setTab={setActiveTab} />
-								{ordersIsExpand && <Body tab={activeTab} />}
+								<Header
+									selectedOrders={selectedOrders}
+									setSelectedOrders={setSelectedOrders}
+									isExpand={ordersIsExpand}
+									tab={activeTab}
+									setTab={setActiveTab}
+								/>
+								{ordersIsExpand && <Body setSelectedOrders={setSelectedOrders} tab={activeTab} />}
 							</div>
 						</div>
 					</div>

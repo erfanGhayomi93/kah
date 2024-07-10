@@ -1,4 +1,3 @@
-import Tooltip from '@/components/common/Tooltip';
 import Collapse from '@/components/common/animation/Collapse';
 import { ArrowDownSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -61,30 +60,28 @@ const Item = ({ id, label, icon, compare, disabled, sidebarIsExpand, toggle, ...
 	const isExpand = Boolean('isExpand' in props && props.isExpand);
 
 	return (
-		<Tooltip disabled={sidebarIsExpand} placement='left' content={label} animation={false}>
-			<li className={clsx(isExpand && styles.expand, isActive && styles.active)}>
-				<ButtonOrAnchor
-					id={id}
-					label={label}
-					icon={icon}
-					disabled={disabled}
-					isExpand={isExpand}
-					sidebarIsExpand={sidebarIsExpand}
-					toggle={toggle}
-					{...props}
-				/>
+		<li className={clsx(isExpand && styles.expand, isActive && styles.active)}>
+			<ButtonOrAnchor
+				id={id}
+				label={label}
+				icon={icon}
+				disabled={disabled}
+				isExpand={isExpand}
+				sidebarIsExpand={sidebarIsExpand}
+				toggle={toggle}
+				{...props}
+			/>
 
-				{'items' in props && Array.isArray(props.items) && props.items.length > 0 && (
-					<Collapse padding={16} enabled={sidebarIsExpand && isExpand}>
-						<ul className={clsx(styles.list, isExpand && styles.expand)}>
-							{props.items.map((item, i) => (
-								<Item sidebarIsExpand={sidebarIsExpand} key={i} toggle={toggle} {...item} />
-							))}
-						</ul>
-					</Collapse>
-				)}
-			</li>
-		</Tooltip>
+			{'items' in props && Array.isArray(props.items) && props.items.length > 0 && (
+				<Collapse padding={16} enabled={sidebarIsExpand && isExpand}>
+					<ul className={clsx(styles.list, isExpand && styles.expand)}>
+						{props.items.map((item, i) => (
+							<Item sidebarIsExpand={sidebarIsExpand} key={i} toggle={toggle} {...item} />
+						))}
+					</ul>
+				</Collapse>
+			)}
+		</li>
 	);
 };
 

@@ -9,7 +9,7 @@ import { dateConverter, dateFormatter, days, sepNumbers } from '@/utils/helpers'
 import { createOrder, deleteDraft } from '@/utils/orders';
 import { type ColDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 import DraftActionCell from '../common/DraftActionCell';
 import SymbolTitleCell from '../common/SymbolTitleCell';
@@ -203,7 +203,7 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 		eGrid.deselectAll();
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const removeHandler = ipcMain.handle('deselect_orders', unselectAll);
 		return () => removeHandler();
 	}, []);

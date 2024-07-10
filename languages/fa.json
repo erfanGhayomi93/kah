@@ -1502,6 +1502,8 @@
 	},
 	"tooltip": {
 		"edit": "ویرایش",
+		"stop_lightstream": "توقف بروزرسانی خودکار",
+		"start_lightstream": "ادامه بروزرسانی خودکار",
 		"can_not_close_position": "در حال حاضر موقعیت باز بر روی این قرارداد ندارید.",
 		"notifications": "اعلان‌ها",
 		"symbol_search": "جستجوی نماد",

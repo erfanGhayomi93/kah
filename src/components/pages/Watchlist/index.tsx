@@ -28,7 +28,6 @@ const Watchlist = () => {
 		queryKey: ['getAllCustomWatchlistQuery'],
 		enabled: isLoggedIn,
 	});
-	console.log(userCustomWatchlistList);
 
 	useEffect(() => {
 		if (isLoggedIn) return;

@@ -9,23 +9,23 @@ import { cn, dateConverter } from '@/utils/helpers';
 import { createOrders, deleteDraft, deleteOrder } from '@/utils/orders';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import styles from './Orders.module.scss';
 
 interface HeaderProps {
 	isExpand: boolean;
 	tab: TOrdersTab;
+	selectedOrders: Order.TOrder[];
+	setSelectedOrders: (orders: Order.TOrder[]) => void;
 	setTab: (tav: TOrdersTab) => void;
 }
 
-const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
+const Header = ({ isExpand, tab, selectedOrders, setSelectedOrders, setTab }: HeaderProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
 	const ordersIsExpand = useAppSelector(getOrdersIsExpand);
-
-	const [selectedRows, setSelectedRows] = useState<Order.TOrder[]>([]);
 
 	const { data: ordersCount } = useBrokerOrdersCountQuery({
 		queryKey: ['brokerOrdersCountQuery'],
@@ -72,19 +72,15 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 		if (!ordersIsExpand) toggle();
 	};
 
-	const onSelectRows = (orders: Order.TOrder[]) => {
-		setSelectedRows(orders);
-	};
-
 	const deleteAll = (ids: number[]) => {
 		if (tab === 'draft') deleteDraft(ids);
 		else deleteOrder(ids);
 	};
 
 	const onDeleteAll = () => {
-		if (selectedRows.length === 0) return;
+		if (selectedOrders.length === 0) return;
 
-		const ids = selectedRows.map((item) => Number('orderId' in item ? item.orderId : item.id));
+		const ids = selectedOrders.map((item) => Number('orderId' in item ? item.orderId : item.id));
 
 		dispatch(
 			setConfirmModal({
@@ -101,12 +97,12 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 	};
 
 	const onSendAll = () => {
-		if (tab !== 'draft' || selectedRows.length === 0) return;
+		if (tab !== 'draft' || selectedOrders.length === 0) return;
 
 		const orders: IpcMainChannels['send_orders'] = [];
 
-		for (let i = 0; i < selectedRows.length; i++) {
-			const draftOrder = selectedRows[i] as Order.DraftOrder;
+		for (let i = 0; i < selectedOrders.length; i++) {
+			const draftOrder = selectedOrders[i] as Order.DraftOrder;
 
 			const params: IpcMainChannels['send_order'] = {
 				symbolISIN: draftOrder.symbolISIN,
@@ -126,20 +122,15 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 
 		createOrders(orders);
 
-		const ids = selectedRows.map((item) => Number('orderId' in item ? item.orderId : item.id));
+		const ids = selectedOrders.map((item) => Number('orderId' in item ? item.orderId : item.id));
 		deleteAll(ids);
 
 		ipcMain.send('deselect_orders', undefined);
-		setSelectedRows([]);
+		setSelectedOrders([]);
 	};
 
 	useEffect(() => {
-		const removeHandler = ipcMain.handle('set_selected_orders', onSelectRows);
-		return () => removeHandler();
-	}, []);
-
-	useEffect(() => {
-		setSelectedRows([]);
+		setSelectedOrders([]);
 	}, [tab]);
 
 	return (
@@ -176,23 +167,37 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 					<>
 						<li>
 							<Tooltip content={t('tooltip.remove_all_selected_orders')}>
-								<button onClick={onDeleteAll} disabled={selectedRows.length === 0} type='button'>
-									<TrashFillSVG width='2rem' height='2rem' />
-									{selectedRows.length > 0 && (
-										<span className={styles.badge}>{selectedRows.length}</span>
-									)}
-								</button>
+								<div>
+									<button
+										type='button'
+										className='size-24 flex-justify-center'
+										onClick={onDeleteAll}
+										disabled={selectedOrders.length === 0}
+									>
+										<TrashFillSVG width='2rem' height='2rem' />
+										{selectedOrders.length > 0 && (
+											<span className={styles.badge}>{selectedOrders.length}</span>
+										)}
+									</button>
+								</div>
 							</Tooltip>
 						</li>
 						{tab === 'draft' && (
 							<li>
 								<Tooltip content={t('tooltip.send_all_selected_orders')}>
-									<button onClick={onSendAll} disabled={selectedRows.length === 0} type='button'>
-										<SendFillSVG width='2rem' height='2rem' />
-										{selectedRows.length > 0 && (
-											<span className={styles.badge}>{selectedRows.length}</span>
-										)}
-									</button>
+									<div>
+										<button
+											type='button'
+											className='size-24 flex-justify-center'
+											onClick={onSendAll}
+											disabled={selectedOrders.length === 0}
+										>
+											<SendFillSVG width='2rem' height='2rem' />
+											{selectedOrders.length > 0 && (
+												<span className={styles.badge}>{selectedOrders.length}</span>
+											)}
+										</button>
+									</div>
 								</Tooltip>
 							</li>
 						)}
@@ -201,6 +206,7 @@ const Header = ({ isExpand, tab, setTab }: HeaderProps) => {
 
 				<li>
 					<button
+						className='size-24 flex-justify-center'
 						style={{ transform: `rotate(${ordersIsExpand ? 180 : 0}deg)` }}
 						onClick={toggle}
 						type='button'

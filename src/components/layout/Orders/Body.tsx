@@ -29,9 +29,10 @@ const OptionTable = dynamic(() => import('./Table/OptionTable'), {
 
 interface BodyProps {
 	tab: TOrdersTab;
+	setSelectedOrders: (orders: Order.TOrder[]) => void;
 }
 
-const Body = ({ tab }: BodyProps) => {
+const Body = ({ tab, setSelectedOrders }: BodyProps) => {
 	const queryClient = useQueryClient();
 
 	const {
@@ -94,10 +95,6 @@ const Body = ({ tab }: BodyProps) => {
 		if (cache) queryClient.setQueryData(['brokerOrdersCountQuery'], { ...cache, ...data });
 	};
 
-	const setSelectedRows = (orders: Order.TOrder[]) => {
-		if (Array.isArray(orders)) ipcMain.send('set_selected_orders', orders);
-	};
-
 	const ordersTableProps = useMemo<OpenOrderProps | ExecutedOrderProps | TodayOrderProps>(() => {
 		if (tab === 'open_orders') return { tab: 'open_orders', data: openOrdersData ?? [] };
 		if (tab === 'executed_orders') return { tab: 'executed_orders', data: executedOrdersData ?? [] };
@@ -148,13 +145,13 @@ const Body = ({ tab }: BodyProps) => {
 				<OptionTable data={optionOrdersData ?? []} loading={isFetchingOptionOrders} />
 			) : tab === 'draft' ? (
 				<DraftTable
-					setSelectedRows={setSelectedRows}
+					setSelectedRows={setSelectedOrders}
 					data={draftOrdersData ?? []}
 					loading={isFetchingDraftOrders}
 				/>
 			) : (
 				<OrderTable
-					setSelectedRows={setSelectedRows}
+					setSelectedRows={setSelectedOrders}
 					{...ordersTableProps}
 					loading={
 						tab === 'executed_orders'

@@ -1,13 +1,14 @@
 import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
+import TableActions from '@/components/common/Toolbar/TableActions';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setOptionFiltersModal } from '@/features/slices/modalSlice';
+import { setManageColumnsModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { type IOptionFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
-import { useDebounce } from '@/hooks';
+import { useDebounce, useOptionWatchlistColumns } from '@/hooks';
 import { downloadFile } from '@/utils/helpers';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
-import Actions from './Actions';
 import SearchSymbol from './SearchSymbol';
 import WatchlistList from './WatchlistList';
 
@@ -16,9 +17,13 @@ interface ToolbarProps {
 }
 
 const Toolbar = ({ filters }: ToolbarProps) => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
+
+	const { watchlistColumns, defaultColumns, resetColumnsToDefault, hideGroupColumns } = useOptionWatchlistColumns();
 
 	const { setDebounce } = useDebounce();
 
@@ -72,6 +77,36 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		}
 	};
 
+	const onPlayed = () => {
+		//
+	};
+
+	const onPaused = () => {
+		//
+	};
+
+	const covertItemToManageColumnModel = (item: Option.Column) => ({
+		hidden: item.isHidden,
+		id: String(item.title),
+		title: t(`manage_option_watchlist_columns.column_${item.title}`),
+		tag: item.category,
+	});
+
+	const manageWatchlistColumns = () => {
+		const columns = watchlistColumns.map<IManageColumn>(covertItemToManageColumnModel);
+		const initialColumns = defaultColumns.map<IManageColumn>(covertItemToManageColumnModel);
+
+		dispatch(
+			setManageColumnsModal({
+				initialColumns,
+				columns,
+				title: t('option_page.manage_columns'),
+				onColumnChanged: hideGroupColumns, // TODO: Talk to BackEnd - group hidden action
+				onReset: () => resetColumnsToDefault(),
+			}),
+		);
+	};
+
 	const filtersCount = useMemo(() => {
 		let badgeCount = 0;
 
@@ -103,10 +138,11 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 				<SearchSymbol />
 			</div>
 
-			<Actions
+			<TableActions
 				filtersCount={filtersCount}
+				onManageColumns={manageWatchlistColumns}
 				onShowFilters={onShowFilters}
-				onExportExcel={() => setDebounce(onExportExcel, 500)}
+				onExportExcel={onExportExcel}
 			/>
 		</div>
 	);
