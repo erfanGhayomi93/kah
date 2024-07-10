@@ -1,6 +1,6 @@
 'use client';
 
-import Tippy, { TippyProps } from '@tippyjs/react';
+import Tippy, { type TippyProps } from '@tippyjs/react';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 export interface ITooltipProps extends TippyProps {}

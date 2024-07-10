@@ -1,4 +1,3 @@
-import { useMarketMapSectorsQuery } from '@/api/queries/marketQueries';
 import Select from '@/components/common/Inputs/Select';
 import Tooltip from '@/components/common/Tooltip';
 import { CameraSVG, LongshotSVG, ReloadSVG } from '@/components/icons';
@@ -29,7 +28,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 		}));
 	};
 
-	const { data: sectorData } = useMarketMapSectorsQuery({ queryKey: ['marketMapSectorsQuery'] });
+	// const { data: sectorData } = useMarketMapSectorsQuery({ queryKey: ['marketMapSectorsQuery'] });
 
 	const goToFullscreen = () => {
 		try {

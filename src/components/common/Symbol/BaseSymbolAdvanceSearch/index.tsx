@@ -12,11 +12,6 @@ interface BaseSymbolAdvanceSearchProps {
 	onChange: (values: IOptionWatchlistFilters['symbols']) => void;
 }
 
-interface SelectedSymbolProps {
-	title: string;
-	onRemoveSymbol: () => void;
-}
-
 const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchProps) => {
 	const t = useTranslations();
 

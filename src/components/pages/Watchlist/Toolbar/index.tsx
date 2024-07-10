@@ -113,6 +113,8 @@ const Toolbar = ({ filters, filtersCount }: ToolbarProps) => {
 			</div>
 
 			<TableActions
+				onPlayed={onPlayed}
+				onPaused={onPaused}
 				filtersCount={filtersCount}
 				onManageColumns={manageWatchlistColumns}
 				onShowFilters={onShowFilters}
