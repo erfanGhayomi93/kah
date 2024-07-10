@@ -39,16 +39,17 @@
 
 .badge {
 	position: absolute;
-	width: 2rem;
+	min-width: 2rem;
 	height: 2rem;
 	bottom: calc(100% - 0.6rem);
 	right: 0.6rem;
-	border-radius: 50%;
+	padding: 0 4px;
+	border-radius: 1rem;
 	font-size: 1.2rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 2px solid theme("colors.white");
+	outline: 1px solid theme("colors.white");
 	background-color: theme("colors.light.primary.100");
 	color: theme("colors.white");
 }

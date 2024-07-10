@@ -1,9 +1,10 @@
 import OptionWatchlistManagerBtn from '@/components/common/Buttons/OptionWatchlistManagerBtn';
 import { FilterSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ExportExcelBtn from '../Buttons/ExportExcelBtn';
+import PauseAndPlayBtn from '../Buttons/PauseAndPlayBtn';
 import Tooltip from '../Tooltip';
 
 interface TableActionsProps {
@@ -11,7 +12,10 @@ interface TableActionsProps {
 	showExcel?: boolean;
 	showFilter?: boolean;
 	showColumns?: boolean;
+	showPlayAndPause?: boolean;
 	children?: React.ReactNode;
+	onPlayed?: () => void;
+	onPaused?: () => void;
 	onExportExcel?: () => void;
 	onShowFilters?: () => void;
 	onManageColumns?: () => void;
@@ -33,16 +37,38 @@ const TableActions = ({
 	showColumns = true,
 	showExcel = true,
 	showFilter = true,
+	showPlayAndPause = true,
 	children,
+	onPlayed,
+	onPaused,
 	onExportExcel,
 	onShowFilters,
 	onManageColumns,
 }: TableActionsProps) => {
 	const t = useTranslations('tooltip');
 
+	const [isPaused, setIsPaused] = useState(false);
+
+	const toggle = () => {
+		setIsPaused(!isPaused);
+
+		try {
+			if (isPaused && onPlayed) onPlayed();
+			else if (!isPaused && onPaused) onPaused();
+		} catch (e) {
+			//
+		}
+	};
+
 	return (
 		<div className='flex gap-8'>
 			{children}
+
+			{showPlayAndPause && (
+				<Tooltip placement='bottom' content={t(isPaused ? 'stop_lightstream' : 'start_lightstream')}>
+					<PauseAndPlayBtn isPaused={isPaused} onClick={toggle} />
+				</Tooltip>
+			)}
 
 			{showExcel && (
 				<Tooltip placement='bottom' content={t('export_excel')}>

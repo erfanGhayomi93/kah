@@ -131,15 +131,17 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 				</button>
 
 				<Tooltip disabled={!isSellDisabled} content={t('tooltip.can_not_close_position')} placement='bottom'>
-					<Button
-						type='button'
-						loading={isLoading}
-						disabled={isSellDisabled}
-						onClick={() => openBsModal('sell')}
-						className='h-40 flex-1 rounded text-base font-medium btn-error'
-					>
-						{t(isOption ? 'symbol_info_panel.close_position' : 'side.sell')}
-					</Button>
+					<div className='flex-1'>
+						<Button
+							type='button'
+							loading={isLoading}
+							disabled={isSellDisabled}
+							onClick={() => openBsModal('sell')}
+							className='h-40 w-full rounded text-base font-medium btn-error'
+						>
+							{t(isOption ? 'symbol_info_panel.close_position' : 'side.sell')}
+						</Button>
+					</div>
 				</Tooltip>
 			</div>
 

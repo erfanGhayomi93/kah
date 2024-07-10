@@ -16,13 +16,14 @@ import { useEffect, useMemo } from 'react';
 import WatchlistTable from './WatchlistTable';
 
 interface TableProps {
+	filtersCount: number;
 	watchlistCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
 	setFilters: React.Dispatch<React.SetStateAction<Partial<IOptionWatchlistFilters>>>;
 }
 
-const Table = ({ filters, watchlistCount, setFilters }: TableProps) => {
-	const t = useTranslations();
+const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps) => {
+	const t = useTranslations('option_page');
 
 	const dispatch = useAppDispatch();
 
@@ -143,7 +144,7 @@ const Table = ({ filters, watchlistCount, setFilters }: TableProps) => {
 						<span className='size-16 rounded-sm text-current flex-justify-center'>
 							<PlusSquareSVG width='1.6rem' height='1.6rem' />
 						</span>
-						{t('option_page.add_symbol')}
+						{t('add_symbol')}
 					</button>
 				)}
 			</div>
@@ -157,13 +158,21 @@ const Table = ({ filters, watchlistCount, setFilters }: TableProps) => {
 			{dataIsEmpty && !isLoading && (
 				<div className='absolute left-0 top-0 size-full flex-justify-center'>
 					<NoData
-						text={t.rich('option_page.no_data_table', {
-							symbol: (chunk) => (
-								<button type='button' className='text-light-primary-100 underline' onClick={addSymbol}>
-									{chunk}
-								</button>
-							),
-						})}
+						text={
+							filtersCount > 0
+								? t('no_data_table')
+								: t.rich('add_symbol_to_table', {
+										symbol: (chunk) => (
+											<button
+												type='button'
+												className='text-light-primary-100 underline'
+												onClick={addSymbol}
+											>
+												{chunk}
+											</button>
+										),
+									})
+						}
 					/>
 				</div>
 			)}

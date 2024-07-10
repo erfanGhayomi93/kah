@@ -349,8 +349,9 @@
 		"status_atm": "ATM",
 		"from": "از",
 		"to": "تا",
+		"loading": "در حال دریافت اطلاعات ...",
 		"minimum_trades_value": "حداقل ارزش معاملات",
-		"symbol_not_found": "نماد مورد نظر یافت نشد",
+		"symbol_not_found": "نمادی یافت نشد",
 		"delete_selected_symbols": "حذف همه"
 	},
 	"choose_broker_modal": {
@@ -733,7 +734,8 @@
 		"filter": "فیلتر کنید",
 		"market_overview": "نمای بازار",
 		"add_symbol": "افزودن نماد",
-		"no_data_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید.",
+		"add_symbol_to_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید.",
+		"no_data_table": "موردی برای نمایش یافت نشد.",
 		"symbol_title": "نماد",
 		"trade_value": "ارزش معاملات",
 		"premium": "آخرین قیمت",
@@ -1502,6 +1504,8 @@
 	},
 	"tooltip": {
 		"edit": "ویرایش",
+		"stop_lightstream": "توقف بروزرسانی خودکار",
+		"start_lightstream": "ادامه بروزرسانی خودکار",
 		"can_not_close_position": "در حال حاضر موقعیت باز بر روی این قرارداد ندارید.",
 		"notifications": "اعلان‌ها",
 		"symbol_search": "جستجوی نماد",

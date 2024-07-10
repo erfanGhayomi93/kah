@@ -22,9 +22,7 @@ const Filter = ({ title, titleHint, children, className }: FilterProps) => (
 			)}
 		</div>
 
-		<div style={{ flex: '0 0 32.8rem' }} className='flex h-full gap-8'>
-			{children}
-		</div>
+		<div className='flex-328 flex h-full gap-8'>{children}</div>
 	</li>
 );
 

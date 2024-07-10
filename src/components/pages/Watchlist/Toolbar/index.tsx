@@ -1,26 +1,29 @@
 import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
+import TableActions from '@/components/common/Toolbar/TableActions';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setOptionFiltersModal } from '@/features/slices/modalSlice';
+import { setManageColumnsModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { type IOptionFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
-import { useDebounce } from '@/hooks';
+import { useOptionWatchlistColumns } from '@/hooks';
 import { downloadFile } from '@/utils/helpers';
-import { useMemo } from 'react';
-import Actions from './Actions';
+import { useTranslations } from 'next-intl';
 import SearchSymbol from './SearchSymbol';
 import WatchlistList from './WatchlistList';
 
 interface ToolbarProps {
+	filtersCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
 }
 
-const Toolbar = ({ filters }: ToolbarProps) => {
+const Toolbar = ({ filters, filtersCount }: ToolbarProps) => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
-	const { setDebounce } = useDebounce();
+	const { watchlistColumns, defaultColumns, resetColumnsToDefault, hideGroupColumns } = useOptionWatchlistColumns();
 
 	const onShowFilters = () => {
 		const params: Partial<IOptionFiltersModal> = {};
@@ -72,29 +75,35 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 		}
 	};
 
-	const filtersCount = useMemo(() => {
-		let badgeCount = 0;
+	const onPlayed = () => {
+		//
+	};
 
-		if (filters.minimumTradesValue && Number(filters.minimumTradesValue) >= 0) badgeCount++;
+	const onPaused = () => {
+		//
+	};
 
-		if (Array.isArray(filters.symbols) && filters.symbols.length > 0) badgeCount++;
+	const covertItemToManageColumnModel = (item: Option.Column) => ({
+		hidden: item.isHidden,
+		id: String(item.title),
+		title: t(`manage_option_watchlist_columns.column_${item.title}`),
+		tag: item.category,
+	});
 
-		if (Array.isArray(filters.type) && filters.type.length > 0) badgeCount++;
+	const manageWatchlistColumns = () => {
+		const columns = watchlistColumns.map<IManageColumn>(covertItemToManageColumnModel);
+		const initialColumns = defaultColumns.map<IManageColumn>(covertItemToManageColumnModel);
 
-		if (Array.isArray(filters.status) && filters.status.length > 0) badgeCount++;
-
-		if (filters.dueDays) {
-			if (filters.dueDays[0] > 0) badgeCount++;
-			if (filters.dueDays[1] < 365) badgeCount++;
-		}
-
-		if (filters.delta) {
-			if (filters.delta[0] > -1) badgeCount++;
-			if (filters.delta[1] < 1) badgeCount++;
-		}
-
-		return badgeCount;
-	}, [JSON.stringify(filters ?? {})]);
+		dispatch(
+			setManageColumnsModal({
+				initialColumns,
+				columns,
+				title: t('option_page.manage_columns'),
+				onColumnChanged: hideGroupColumns, // TODO: Talk to BackEnd - group hidden action
+				onReset: () => resetColumnsToDefault(),
+			}),
+		);
+	};
 
 	return (
 		<div className='h-72 gap-48 overflow-hidden flex-justify-between'>
@@ -103,10 +112,13 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 				<SearchSymbol />
 			</div>
 
-			<Actions
+			<TableActions
+				onPlayed={onPlayed}
+				onPaused={onPaused}
 				filtersCount={filtersCount}
+				onManageColumns={manageWatchlistColumns}
 				onShowFilters={onShowFilters}
-				onExportExcel={() => setDebounce(onExportExcel, 500)}
+				onExportExcel={onExportExcel}
 			/>
 		</div>
 	);

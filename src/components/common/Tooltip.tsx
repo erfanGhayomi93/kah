@@ -1,82 +1,20 @@
 'use client';
 
-import { TooltipElement } from '@/classes/Tooltip';
-import clsx from 'clsx';
-import { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import Tippy, { type TippyProps } from '@tippyjs/react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-export interface ITooltipProps {
-	placement?: AppTooltip.Placement;
-	interactive?: AppTooltip.Interactive;
-	delay?: AppTooltip.Delay;
-	trigger?: AppTooltip.Trigger;
-	followCursor?: AppTooltip.FollowCursor;
-	animation?: AppTooltip.Animation;
-	offset?: AppTooltip.Offset;
-	disabled?: AppTooltip.Disabled;
-	element?: AppTooltip.Element;
-	children: React.ReactElement;
-	content: string;
-	className?: ClassesValue;
-	onShow?: () => void;
-	onHide?: () => void;
-}
+export interface ITooltipProps extends TippyProps {}
 
-const Tooltip = forwardRef<HTMLElement, ITooltipProps>(
-	({ children, animation = true, disabled, placement, content, offset, className }, ref) => {
-		const childRef = useRef<HTMLElement | null>(null);
+const Tooltip = forwardRef<HTMLElement, ITooltipProps>(({ children, ...props }, ref) => {
+	const childRef = useRef<HTMLElement>();
 
-		const tooltipRef = useRef<TooltipElement | null>(null);
+	useImperativeHandle(ref, () => childRef.current!);
 
-		useImperativeHandle(ref, () => childRef.current!);
-
-		useEffect(
-			() => () => {
-				if (tooltipRef.current) tooltipRef.current.destroy();
-			},
-			[],
-		);
-
-		useEffect(() => {
-			const eChild = childRef.current;
-			if (!eChild || tooltipRef.current) return;
-
-			tooltipRef.current = new TooltipElement(eChild);
-			tooltipRef.current.setContent(content);
-			tooltipRef.current.disabled = Boolean(disabled);
-			tooltipRef.current.animation = Boolean(animation);
-			if (className) tooltipRef.current.setCustomClass(clsx(className));
-			if (offset) tooltipRef.current.setOffset(offset);
-			if (placement) tooltipRef.current.placement = placement;
-
-			tooltipRef.current.add();
-		}, [childRef.current]);
-
-		useEffect(() => {
-			if (tooltipRef.current) tooltipRef.current.setContent(content);
-		}, [content]);
-
-		useEffect(() => {
-			if (tooltipRef.current) tooltipRef.current.disabled = Boolean(disabled);
-		}, [disabled]);
-
-		useEffect(() => {
-			if (tooltipRef.current && placement) tooltipRef.current.placement = placement;
-		}, [placement]);
-
-		useEffect(() => {
-			if (tooltipRef.current && offset) tooltipRef.current.setOffset(offset);
-		}, [offset]);
-
-		useEffect(() => {
-			if (tooltipRef.current) tooltipRef.current.animation = Boolean(animation);
-		}, [animation]);
-
-		useEffect(() => {
-			if (tooltipRef.current) tooltipRef.current.setCustomClass(clsx(className));
-		}, [className]);
-
-		return cloneElement(children, { ref: childRef });
-	},
-);
+	return (
+		<Tippy {...props} ref={ref}>
+			{children}
+		</Tippy>
+	);
+});
 
 export default Tooltip;
