@@ -5,18 +5,18 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setManageColumnsModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { type IOptionFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
-import { useDebounce, useOptionWatchlistColumns } from '@/hooks';
+import { useOptionWatchlistColumns } from '@/hooks';
 import { downloadFile } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
 import SearchSymbol from './SearchSymbol';
 import WatchlistList from './WatchlistList';
 
 interface ToolbarProps {
+	filtersCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
 }
 
-const Toolbar = ({ filters }: ToolbarProps) => {
+const Toolbar = ({ filters, filtersCount }: ToolbarProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -24,8 +24,6 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
 	const { watchlistColumns, defaultColumns, resetColumnsToDefault, hideGroupColumns } = useOptionWatchlistColumns();
-
-	const { setDebounce } = useDebounce();
 
 	const onShowFilters = () => {
 		const params: Partial<IOptionFiltersModal> = {};
@@ -106,30 +104,6 @@ const Toolbar = ({ filters }: ToolbarProps) => {
 			}),
 		);
 	};
-
-	const filtersCount = useMemo(() => {
-		let badgeCount = 0;
-
-		if (filters.minimumTradesValue && Number(filters.minimumTradesValue) >= 0) badgeCount++;
-
-		if (Array.isArray(filters.symbols) && filters.symbols.length > 0) badgeCount++;
-
-		if (Array.isArray(filters.type) && filters.type.length > 0) badgeCount++;
-
-		if (Array.isArray(filters.status) && filters.status.length > 0) badgeCount++;
-
-		if (filters.dueDays) {
-			if (filters.dueDays[0] > 0) badgeCount++;
-			if (filters.dueDays[1] < 365) badgeCount++;
-		}
-
-		if (filters.delta) {
-			if (filters.delta[0] > -1) badgeCount++;
-			if (filters.delta[1] < 1) badgeCount++;
-		}
-
-		return badgeCount;
-	}, [JSON.stringify(filters ?? {})]);
 
 	return (
 		<div className='h-72 gap-48 overflow-hidden flex-justify-between'>

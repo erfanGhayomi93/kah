@@ -261,6 +261,7 @@ const config: Config = {
 			'88': '8.8rem',
 			'96': '9.6rem',
 			'104': '10.4rem',
+			'328': '32.8rem',
 		},
 
 		transitionProperty: {
@@ -289,6 +290,9 @@ const config: Config = {
 		flex: {
 			'1': ' 1 1 0%',
 			'1/2': '0 0 50%',
+			'24': '0 0 2.4rem',
+			'48': '0 0 4.8rem',
+			'328': '0 0 32.8rem',
 		},
 	},
 

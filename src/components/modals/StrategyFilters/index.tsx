@@ -189,7 +189,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 									className={clsx(
 										'h-40 flex-1 transition-colors',
 										item.id === activeTab
-											? 'text-light-gray-700 font-medium'
+											? 'font-medium text-light-gray-700'
 											: 'text-light-gray-500',
 									)}
 									type='button'

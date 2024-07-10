@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -28,6 +28,30 @@ const Watchlist = () => {
 		queryKey: ['getAllCustomWatchlistQuery'],
 		enabled: isLoggedIn,
 	});
+
+	const filtersCount = useMemo(() => {
+		let badgeCount = 0;
+
+		if (filters.minimumTradesValue && Number(filters.minimumTradesValue) >= 0) badgeCount++;
+
+		if (Array.isArray(filters.symbols) && filters.symbols.length > 0) badgeCount++;
+
+		if (Array.isArray(filters.type) && filters.type.length > 0) badgeCount++;
+
+		if (Array.isArray(filters.status) && filters.status.length > 0) badgeCount++;
+
+		if (filters.dueDays) {
+			if (filters.dueDays[0] > 0) badgeCount++;
+			if (filters.dueDays[1] < 365) badgeCount++;
+		}
+
+		if (filters.delta) {
+			if (filters.delta[0] > -1) badgeCount++;
+			if (filters.delta[1] < 1) badgeCount++;
+		}
+
+		return badgeCount;
+	}, [JSON.stringify(filters ?? {})]);
 
 	useEffect(() => {
 		if (isLoggedIn) return;
@@ -65,11 +89,12 @@ const Watchlist = () => {
 	return (
 		<Main>
 			<div className='h-full rounded bg-white px-16 flex-column'>
-				<Toolbar filters={filters} />
+				<Toolbar filters={filters} filtersCount={filtersCount} />
 
 				<div className='relative flex-1 overflow-hidden'>
 					<Table
 						filters={filters}
+						filtersCount={filtersCount}
 						setFilters={setFilters}
 						watchlistCount={userCustomWatchlistList?.length ?? 0}
 					/>

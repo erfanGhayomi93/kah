@@ -44,8 +44,7 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 		<div className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12'>
 			<div
 				onClick={onStrategyClick}
-				style={{ height: '32.8rem' }}
-				className='cursor-pointer gap-16 overflow-hidden rounded border border-light-gray-200 bg-white p-16 flex-column'
+				className='h-328 cursor-pointer gap-16 overflow-hidden rounded border border-light-gray-200 bg-white p-16 flex-column'
 			>
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
