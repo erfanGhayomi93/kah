@@ -2,11 +2,11 @@ import clsx from 'clsx';
 import React, { forwardRef } from 'react';
 import styles from './Buttons.module.scss';
 
-interface PauseAndPlayBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface PlayAndPauseBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	isPaused: boolean;
 }
 
-const PauseAndPlayBtn = forwardRef<HTMLButtonElement, PauseAndPlayBtnProps>(
+const PlayAndPauseBtn = forwardRef<HTMLButtonElement, PlayAndPauseBtnProps>(
 	({ className, isPaused, ...props }, ref) => (
 		<button
 			type='button'
@@ -22,4 +22,4 @@ const PauseAndPlayBtn = forwardRef<HTMLButtonElement, PauseAndPlayBtnProps>(
 	),
 );
 
-export default PauseAndPlayBtn;
+export default PlayAndPauseBtn;

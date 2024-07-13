@@ -1,7 +1,7 @@
 'use client';
 
 import brokerAxios from '@/api/brokerAxios';
-import { useGetCustomerSettings } from '@/api/queries/brokerPrivateQueries';
+import { useGetCustomerSettingsQuery } from '@/api/queries/brokerPrivateQueries';
 import ipcMain from '@/classes/IpcMain';
 import Input from '@/components/common/Inputs/Input';
 import Switch from '@/components/common/Inputs/Switch';
@@ -38,7 +38,7 @@ const Orders = () => {
 
 	const router = useRouter();
 
-	const { data: customerSettings, isFetching: customerSettingsLoading } = useGetCustomerSettings({
+	const { data: customerSettings, isFetching: customerSettingsLoading } = useGetCustomerSettingsQuery({
 		queryKey: ['GetCustomerSettings'],
 		enabled: Boolean(brokerURLs),
 	});

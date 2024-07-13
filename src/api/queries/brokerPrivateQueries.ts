@@ -157,7 +157,7 @@ export const useOptionOrdersQuery = createBrokerQuery<Order.OptionOrder[] | null
 	},
 });
 
-export const useGetCustomerSettings = createBrokerQuery<
+export const useGetCustomerSettingsQuery = createBrokerQuery<
 	Settings.IFormattedBrokerCustomerSettings | null,
 	['GetCustomerSettings']
 >({
@@ -185,7 +185,7 @@ export const useGetCustomerSettings = createBrokerQuery<
 	},
 });
 
-export const useGetAgreements = createBrokerQuery<Settings.IAgreements[] | null, ['getAgreements']>({
+export const useGetAgreementsQuery = createBrokerQuery<Settings.IAgreements[] | null, ['getAgreements']>({
 	staleTime: 6e4,
 	queryKey: ['getAgreements'],
 	queryFn: async ({ signal }) => {
@@ -193,6 +193,38 @@ export const useGetAgreements = createBrokerQuery<Settings.IAgreements[] | null,
 		if (!url) return null;
 
 		const response = await axios.get<ServerResponse<Settings.IAgreements[]>>(url.GetAgreements, { signal });
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useGlPortfolioQuery = createBrokerQuery<Portfolio.GlPortfolio[], ['glPortfolioQuery', TPriceBasis]>({
+	staleTime: 0,
+	queryKey: ['glPortfolioQuery', 'LastTradePrice'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return [];
+
+		const response = await axios.get<ServerResponse<Portfolio.GlPortfolio[]>>(url.GLPortfolio, { signal });
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useGlOptionOrdersQuery = createBrokerQuery<GLOptionOrder.Root | null, ['glOptionOrdersQuery']>({
+	staleTime: 0,
+	queryKey: ['glOptionOrdersQuery'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+
+		const response = await axios.get<ServerResponse<GLOptionOrder.Root>>(url.GLOptionOrders, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

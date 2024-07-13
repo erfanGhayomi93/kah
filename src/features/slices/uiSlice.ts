@@ -20,6 +20,8 @@ export interface UIState {
 	toastPosition: ToastPosition;
 
 	builtStrategy: TSymbolStrategy[];
+
+	myAssetsFilters: IMyAssetsFilters;
 }
 
 const initialState: UIState = {
@@ -38,6 +40,13 @@ const initialState: UIState = {
 	dashboardGridLayout: LocalstorageInstance.get('dg', initialDashboardGrid, (v) => Array.isArray(v)),
 
 	toastPosition: LocalstorageInstance.get<ToastPosition>('tp', 'bottom-left'),
+
+	myAssetsFilters: {
+		priceBasis: 'LastTradePrice',
+		involvedInStrategy: true,
+		soldSymbols: true,
+		calculateCommission: true,
+	},
 };
 
 const uiSlice = createSlice({
@@ -82,6 +91,10 @@ const uiSlice = createSlice({
 		setBuiltStrategy: (state, { payload }: PayloadAction<UIState['builtStrategy']>) => {
 			state.builtStrategy = payload;
 		},
+
+		setMyAssetsFilters: (state, { payload }: PayloadAction<UIState['myAssetsFilters']>) => {
+			state.myAssetsFilters = payload;
+		},
 	},
 });
 
@@ -95,6 +108,7 @@ export const {
 	setDashboardGridLayout,
 	setToastPosition,
 	setBuiltStrategy,
+	setMyAssetsFilters,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
@@ -105,5 +119,6 @@ export const getSymbolInfoPanelGridLayout = (state: RootState) => state.ui.symbo
 export const getDashboardGridLayout = (state: RootState) => state.ui.dashboardGridLayout;
 export const getToastPosition = (state: RootState) => state.ui.toastPosition;
 export const getBuiltStrategy = (state: RootState) => state.ui.builtStrategy;
+export const getMyAssetsFilters = (state: RootState) => state.ui.myAssetsFilters;
 
 export default uiSlice.reducer;

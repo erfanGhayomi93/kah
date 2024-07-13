@@ -1,5 +1,5 @@
-import { TooltipElement } from '@/classes/Tooltip';
 import { editableOrdersStatus } from '@/constants';
+import { addTooltip } from '@/utils/helpers';
 import { type ICellRendererComp, type ICellRendererParams } from 'ag-grid-community';
 import ActionCell from './ActionCell';
 
@@ -40,7 +40,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 			this.params.showDetails(this.params.data!);
 		};
 
-		this.addTooltip('جزئیات سفارش', btn);
+		addTooltip('جزئیات سفارش', btn);
 
 		return btn;
 	}
@@ -49,7 +49,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 		this.eEdit = this.createEdit();
 		this.updateEditBtn();
 
-		this.addTooltip('ویرایش سفارش', this.eEdit);
+		addTooltip('ویرایش سفارش', this.eEdit);
 
 		return this.eEdit;
 	}
@@ -61,7 +61,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 			this.params.onCopy(this.params.data!);
 		};
 
-		this.addTooltip('کپی سفارش', btn);
+		addTooltip('کپی سفارش', btn);
 
 		return btn;
 	}
@@ -70,7 +70,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 		this.eDelete = this.createTrash();
 		this.updateDeleteBtn();
 
-		this.addTooltip('حذف سفارش', this.eDelete);
+		addTooltip('حذف سفارش', this.eDelete);
 
 		return this.eDelete;
 	}
@@ -113,12 +113,6 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 			e.stopPropagation();
 			if (isEnable) this.params.onDelete(this.params.data!);
 		};
-	}
-
-	addTooltip(content: string, children: HTMLElement) {
-		const tooltip = new TooltipElement(children);
-		tooltip.animation = false;
-		tooltip.setContent(content).add();
 	}
 
 	get editable() {

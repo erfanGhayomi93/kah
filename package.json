@@ -9,6 +9,7 @@
 		"build:stage": "env-cmd -f ./environments/.env.stage next build",
 		"build:preprd": "env-cmd -f ./environments/.env.preprd next build",
 		"build:production": "env-cmd -f ./environments/.env.production next build",
+		"broker:add-url": "node ./add-external-api.js",
 		"lint": "next lint",
 		"type-check": "tsc --noEmit"
 	},
@@ -37,8 +38,7 @@
 		"save-svg-as-png": "^1.4.17",
 		"sharp": "^0.33.4",
 		"styled-components": "^6.1.8",
-		"tailwind-merge": "^2.2.1",
-		"tippy.js": "^6.3.7"
+		"tailwind-merge": "^2.2.1"
 	},
 	"devDependencies": {
 		"@next/bundle-analyzer": "^14.1.3",

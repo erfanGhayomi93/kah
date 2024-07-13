@@ -19,22 +19,31 @@ export const useTimeQuery = createQuery<Common.Time, ['useTimeQuery']>({
 	},
 });
 
-export const useCommissionsQuery = createQuery<Common.Commission[], ['commissionQuery']>({
+export const useCommissionsQuery = createQuery<Commission.Data, ['commissionQuery']>({
 	staleTime: 36e5,
 	queryKey: ['commissionQuery'],
 	queryFn: async ({ signal }) => {
+		const commission: Commission.Data = {};
+
 		try {
-			const response = await axios.get<ServerResponse<Common.Commission[]>>(
-				routes.common.GetBuyAndSellCommission,
-				{ signal },
-			);
+			const response = await axios.get<ServerResponse<Commission.Root[]>>(routes.common.GetBuyAndSellCommission, {
+				signal,
+			});
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			return data.result;
+			data.result.forEach((item) => {
+				try {
+					commission[item.marketUnitTitle] = item;
+				} catch (e) {
+					//
+				}
+			});
 		} catch (e) {
-			return [];
+			//
 		}
+
+		return commission;
 	},
 });

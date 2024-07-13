@@ -158,7 +158,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 				return result;
 			}
 
-			const comm = commissions.find((item) => item.marketUnitTitle === symbolData.marketUnit);
+			const comm = commissions[symbolData.marketUnit];
 			if (!comm) {
 				// eslint-disable-next-line no-console
 				console.error(`MarketUnit not found: ${symbolData.marketUnit}`);

@@ -54,10 +54,9 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 	};
 
 	const getCommission = (side: TBsSides, marketUnit: string) => {
-		if (!Array.isArray(commissionData)) return 0;
+		if (!commissionData) return 0;
 
-		const transactionCommission = commissionData.find(({ marketUnitTitle }) => marketUnitTitle === marketUnit);
-
+		const transactionCommission = commissionData[marketUnit];
 		if (!transactionCommission) return 0;
 
 		const commissionValue = transactionCommission[side === 'buy' ? 'buyCommission' : 'sellCommission'];

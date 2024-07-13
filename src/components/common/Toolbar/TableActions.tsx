@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ExportExcelBtn from '../Buttons/ExportExcelBtn';
-import PauseAndPlayBtn from '../Buttons/PauseAndPlayBtn';
+import PlayAndPauseBtn from '../Buttons/PlayAndPauseBtn';
 import Tooltip from '../Tooltip';
 
 interface TableActionsProps {
@@ -66,7 +66,7 @@ const TableActions = ({
 
 			{showPlayAndPause && (
 				<Tooltip placement='bottom' content={t(isPaused ? 'stop_lightstream' : 'start_lightstream')}>
-					<PauseAndPlayBtn isPaused={isPaused} onClick={toggle} />
+					<PlayAndPauseBtn isPaused={isPaused} onClick={toggle} />
 				</Tooltip>
 			)}
 

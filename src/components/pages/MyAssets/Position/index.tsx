@@ -1,11 +1,16 @@
 'use client';
 
+import { useGlOptionOrdersQuery } from '@/api/queries/brokerPrivateQueries';
 import { useTranslations } from 'next-intl';
 import PriceCard from '../PriceCard';
 import Table from './Table';
 
 const Position = () => {
 	const t = useTranslations('my_assets');
+
+	useGlOptionOrdersQuery({
+		queryKey: ['glOptionOrdersQuery'],
+	});
 
 	return (
 		<div className='flex-1 gap-16 rounded bg-white p-16 flex-column'>

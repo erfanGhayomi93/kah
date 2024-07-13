@@ -1,5 +1,5 @@
 'use client';
-import { useGetAgreements } from '@/api/queries/brokerPrivateQueries';
+import { useGetAgreementsQuery } from '@/api/queries/brokerPrivateQueries';
 import ipcMain from '@/classes/IpcMain';
 import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
@@ -26,7 +26,7 @@ const Agreements = () => {
 		data: agreements,
 		refetch: getAgreements,
 		isFetching: agreementsLoading,
-	} = useGetAgreements({
+	} = useGetAgreementsQuery({
 		queryKey: ['getAgreements'],
 		enabled: !!brokerURLs,
 	});

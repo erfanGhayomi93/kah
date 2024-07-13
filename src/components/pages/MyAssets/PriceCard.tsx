@@ -7,10 +7,13 @@ interface PriceCardProps {
 	percent?: number;
 	value: number;
 	title: string;
+	loading?: boolean;
 }
 
-const PriceCard = ({ value, title, percent, className }: PriceCardProps) => {
+const PriceCard = ({ value, title, percent, className, loading }: PriceCardProps) => {
 	const t = useTranslations('common');
+
+	if (loading) return <div className={clsx('h-64 rounded skeleton', className)} />;
 
 	return (
 		<div className={clsx('h-64 rounded px-8 shadow-card flex-justify-between', className)}>
