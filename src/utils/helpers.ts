@@ -11,6 +11,7 @@ import {
 	type UndefinedInitialDataOptions,
 	type UseMutationOptions,
 } from '@tanstack/react-query';
+import { tippy } from '@tippyjs/react';
 import { type AxiosError } from 'axios';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -371,6 +372,8 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
 		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
 		settlementdeleteCash: data.settlementdeleteCash,
+		GLPortfolio: data.GLPortfolio,
+		GLOptionOrders: data.GLOptionOrders,
 	};
 
 	return urls;
@@ -730,4 +733,11 @@ export const sanitizeHTML = (html: string) => {
 export const comparePathname = (p1: string, p2: string): boolean => {
 	const pattern = /^\/?|\/?$/gi;
 	return p1.replace(pattern, '') === p2.replace(pattern, '');
+};
+
+export const addTooltip = (content: string, children: HTMLElement) => {
+	const tooltip = tippy(children);
+	tooltip.setContent(String(content));
+
+	return tooltip;
 };

@@ -203,9 +203,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 
 		for (let i = 0; i < contracts.length; i++) {
 			const c = contracts[i];
-			const commission = Array.isArray(commissions)
-				? commissions.find((item) => item.marketUnitTitle === c.marketUnit)
-				: undefined;
+			const commission = commissions?.[c.marketUnit];
 
 			if (c.requiredMargin) result.requiredMargin += c.symbol?.requiredMargin ?? 0;
 			if (commission && c.tradeCommission)

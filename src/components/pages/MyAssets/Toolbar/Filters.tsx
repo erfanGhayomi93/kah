@@ -7,23 +7,30 @@ import Separator from '@/components/common/Separator';
 import Tooltip from '@/components/common/Tooltip';
 import { ArrowDownSVG, DownloadDdnSVG, UploadDdnSVG, XiaomiSettingSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
-import { useInputs } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getMyAssetsFilters, setMyAssetsFilters } from '@/features/slices/uiSlice';
 import { usePathname } from '@/navigation';
 import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 const Filters = () => {
-	const pathname = usePathname();
-
 	const t = useTranslations('my_assets');
 
-	const { inputs, setFieldValue } = useInputs<IMyAssetsFilters>({
-		priceBasis: 'LastTradePrice',
-		involvedInStrategy: true,
-		soldSymbols: true,
-		calculateCommission: true,
-	});
+	const pathname = usePathname();
+
+	const dispatch = useAppDispatch();
+
+	const filters = useAppSelector(getMyAssetsFilters);
+
+	const setFieldValue = <T extends keyof IMyAssetsFilters>(name: T, value: IMyAssetsFilters[T]) => {
+		dispatch(
+			setMyAssetsFilters({
+				...filters,
+				[name]: value,
+			}),
+		);
+	};
 
 	const uploadDDN = () => {
 		//
@@ -47,7 +54,7 @@ const Filters = () => {
 		<div className='flex-1 gap-16 flex-justify-end'>
 			<div style={{ maxWidth: '16rem' }} className='w-full'>
 				<Select<TPriceBasis>
-					defaultValue={inputs.priceBasis}
+					defaultValue={filters.priceBasis}
 					options={watchlistPriceBasis}
 					placeholder={t('price_basis')}
 					onChange={(v) => setFieldValue('priceBasis', v)}
@@ -69,21 +76,21 @@ const Filters = () => {
 							<li>
 								<span className='text-tiny font-medium'>{t('symbols_involved_in_strategy')}</span>
 								<Switch
-									checked={inputs.involvedInStrategy}
+									checked={filters.involvedInStrategy}
 									onChange={(v) => setFieldValue('involvedInStrategy', v)}
 								/>
 							</li>
 							<li>
 								<span className='text-tiny font-medium'>{t('sold_symbols')}</span>
 								<Switch
-									checked={inputs.soldSymbols}
+									checked={filters.soldSymbols}
 									onChange={(v) => setFieldValue('soldSymbols', v)}
 								/>
 							</li>
 							<li>
 								<span className='text-tiny font-medium'>{t('calculate_commission')}</span>
 								<Switch
-									checked={inputs.calculateCommission}
+									checked={filters.calculateCommission}
 									onChange={(v) => setFieldValue('calculateCommission', v)}
 								/>
 							</li>

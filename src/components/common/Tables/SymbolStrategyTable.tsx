@@ -53,7 +53,7 @@ interface ISharedProps {
 type SymbolStrategyProps = ISharedProps & {
 	contract: TSymbolStrategy;
 	checkList: IContractCheckList;
-	commission?: Common.Commission;
+	commission?: Commission.Root;
 	onChange: (v: IInput) => void;
 	onChecked: (name: TCheckboxes, value: boolean) => void;
 	onSelect: (checked: boolean) => void;
@@ -286,7 +286,7 @@ const SymbolStrategyTable = ({
 							onSelect={(v) => onSelect(c, v)}
 							features={features}
 							showDetails={showDetails}
-							commission={commissions?.find((item) => item.marketUnitTitle === c.marketUnit) ?? undefined}
+							commission={commissions?.[c.marketUnit]}
 							checkList={symbolsChecklist[c.symbol.symbolISIN]}
 						/>
 					))}

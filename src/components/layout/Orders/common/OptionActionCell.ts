@@ -1,4 +1,4 @@
-import { TooltipElement } from '@/classes/Tooltip';
+import { addTooltip } from '@/utils/helpers';
 import { type ICellRendererComp, type ICellRendererParams } from 'ag-grid-community';
 import ActionCell from './ActionCell';
 
@@ -30,7 +30,7 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 			this.params.onClosePosition(this.params.data!);
 		};
 
-		this.addTooltip('بستن موقعیت', btn);
+		addTooltip('بستن موقعیت', btn);
 
 		return btn;
 	}
@@ -61,7 +61,7 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 			if (!isDisabled) this.params.onChangeCollateral(this.params.data!);
 		};
 
-		this.addTooltip('تغییر روش تضمین', this.eCollateral);
+		addTooltip('تغییر روش تضمین', this.eCollateral);
 	}
 
 	refresh(params: OptionActionCellProps) {
@@ -69,12 +69,6 @@ class OptionActionCell extends ActionCell implements ICellRendererComp<Order.Opt
 		this.updateCollateral();
 
 		return true;
-	}
-
-	addTooltip(content: string, children: HTMLElement) {
-		const tooltip = new TooltipElement(children);
-		tooltip.animation = false;
-		tooltip.setContent(content).add();
 	}
 
 	get blockType() {

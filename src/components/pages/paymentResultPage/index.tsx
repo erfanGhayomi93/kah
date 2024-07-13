@@ -1,7 +1,5 @@
 'use client';
 
-import paymentFailLight from '@/assets/images/payment_fail_light.png';
-import paymentSuccessLight from '@/assets/images/payment_success_light.png';
 import { useRouter } from '@/navigation';
 import { sepNumbers } from '@/utils/helpers';
 import { clsx } from 'clsx';
@@ -68,9 +66,9 @@ const PaymentResultPage = () => {
 				<div className='flex flex-col items-center gap-16'>
 					<div className='pb-24'>
 						{IsSuccessful === 'True' ? (
-							<Image src={paymentSuccessLight} alt='' />
+							<Image src='/static/images/payment_success_light.png' alt='' />
 						) : (
-							<Image src={paymentFailLight} alt='' />
+							<Image src='/static/images/payment_fail_light.png' alt='' />
 						)}
 					</div>
 					<span
@@ -98,7 +96,7 @@ const PaymentResultPage = () => {
 							)}
 						>
 							<span className='text-light-gray-700'>{content.title}</span>
-							<div className='gap-6 flex items-center text-base'>
+							<div className='flex items-center gap-6 text-base'>
 								<span className='text-light-gray-700'>
 									{index === 0 ? sepNumbers(String(content.amount)) : content.amount}
 								</span>

@@ -199,13 +199,17 @@
 }
 
 .ag-row {
-	.ag-cell.strike-price {
-		overflow: visible;
-		background-color: theme("colors.white");
-		box-shadow:
-			0 -6px white,
-			0 6px white,
-			0 0 6px 0 rgba(0, 0, 0, 0.075);
+	.ag-cell {
+		overflow: hidden;
+
+		&.strike-price {
+			overflow: visible;
+			background-color: theme("colors.white");
+			box-shadow:
+				0 -6px white,
+				0 6px white,
+				0 0 6px 0 rgba(0, 0, 0, 0.075);
+		}
 	}
 
 	&:last-child {

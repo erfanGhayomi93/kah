@@ -1,13 +1,5 @@
 declare namespace Common {
 	type Time = string;
-
-	interface Commission {
-		marketTitle: string;
-		marketUnitTitle: string;
-		commissionType: string;
-		buyCommission: number;
-		sellCommission: number;
-	}
 }
 
 declare namespace Option {
@@ -657,6 +649,7 @@ declare namespace Broker {
 	export type TRemainStatus = 'Normal' | 'AtRisk' | 'CallMargin';
 
 	export type UrlKey =
+		| 'GLPortfolio'
 		| 'TodayOrders'
 		| 'ExecutedOrders'
 		| 'Drafts'
@@ -735,6 +728,7 @@ declare namespace Broker {
 		| 'ReceiptExportFilteredCSV'
 		| 'ChangeBrokerExportFilteredCSV'
 		| 'settlementdeleteCash'
+		| 'GLOptionOrders'
 		| 'settlementDeleteCash';
 
 	type URL = Record<UrlKey, string>;
@@ -771,44 +765,6 @@ declare namespace Broker {
 		isOffline: boolean;
 		customerTags: string;
 		ipLocation: string;
-	}
-
-	export interface Portfolio {
-		customerISIN: string | null;
-		symbolISIN: string;
-		side: 'Call' | 'Put' | null;
-		symbol: Symbol.SymbolType;
-		baseSymbolTitle: string | null;
-		takeProfit: number;
-		stopLoss: number;
-		breakEvenPrice: number;
-		assemblyProfit: number;
-		finalProfit: number;
-		remainValue: number;
-		profitValue: number;
-		averagePrice: number;
-		asset: number;
-		csdAsset: number;
-		totalPrice: number;
-		totalCount: number;
-		commentCount: number;
-		isHidden: boolean;
-		dailyNotificationSent: boolean;
-		saveDate: string;
-		remainProfitPercent: number;
-		symbolEfficiency: number;
-		buySum: number;
-		sellSum: number;
-		commissionPrice: number;
-		momentaryProfitLoss: number;
-		isAutomatic: boolean;
-		finalPrice: number;
-		profitLoss_ClosingPrice: number;
-		profitLoss_ClosingPricePercent: number;
-		ProfitLoss_LastPrice: number;
-		profitLoss_LastPricePercent: number;
-		isFreezed: boolean;
-		isOption: boolean;
 	}
 
 	export interface OrdersCount {
@@ -2330,3 +2286,122 @@ declare type LimitSymbol = {
 	stopLoss: number;
 	closingPrice: number;
 };
+
+declare namespace Portfolio {
+	export interface GlPortfolio {
+		customerISIN: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		marketUnit: string;
+		requiredMargin: number;
+		contractSize: number;
+		asset: number;
+		paidValue: number;
+		avgBuyPrice: number;
+		price: number;
+		priceChangePercent: number;
+		sellNetValueWithoutCommission: number;
+		sellNetValue: number;
+		buyPriceBEP: number;
+		todayPNL: number;
+		todayPNLPercent: number;
+		previousPNL: number;
+		remainingPNL: number;
+		remainingPNLPercent: number;
+		totalPNL: number;
+		totalPNLPercent: number;
+		percentageOfTotalPortfo: number;
+		buyQuantity: number;
+		sellQuantity: number;
+		buyValue: number;
+		sellValue: number;
+		dps: number;
+		dpsPercent: number;
+		lastDPS: number;
+	}
+}
+
+declare namespace GLOptionOrder {
+	export interface Root {
+		buyPositions: BuyPosition[];
+		sellPositions: SellPosition[];
+	}
+
+	export interface BuyPosition {
+		customerISIN: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		positionCount: number;
+		paidValue: number;
+		avgBuyPrice: number;
+		price: number;
+		priceChangePercent: number;
+		sellNetValueWithoutCommission: number;
+		sellNetValue: number;
+		sellBEP: number;
+		todayPNL: number;
+		todayPNLPercent: number;
+		previousPNL: number;
+		remainingPNL: number;
+		remainingPNLPercent: number;
+		totalPNL: number;
+		totalPNLPercent: number;
+		percentageOfTotalPortfo: number;
+		buyQuantity: number;
+		sellQuantity: number;
+		buyValue: number;
+		sellValue: number;
+		dueDays: number;
+		contractSize: number;
+		physicalSettlementDate: string;
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseSymbolPrice: number;
+		baseSymbolPriceChangePercent: number;
+	}
+
+	export interface SellPosition {
+		customerISIN: string;
+		symbolISIN: string;
+		symbolTitle: string;
+		positionCount: number;
+		paidValue: number;
+		avgSellPrice: number;
+		price: number;
+		priceChangePercent: number;
+		buyNetValueWithoutCommission: number;
+		buyNetValue: number;
+		buyBEP: number;
+		todayPNL: number;
+		todayPNLPercent: number;
+		previousPNL: number;
+		remainingPNL: number;
+		remainingPNLPercent: number;
+		totalPNL: number;
+		totalPNLPercent: number;
+		percentageOfTotalPortfo: number;
+		buyQuantity: number;
+		sellQuantity: number;
+		buyValue: number;
+		sellValue: number;
+		dueDays: number;
+		contractSize: number;
+		physicalSettlementDate: string;
+		baseSymbolISIN: string;
+		baseSymbolTitle: string;
+		baseSymbolPrice: number;
+		baseSymbolPriceChangePercent: number;
+	}
+}
+
+declare namespace Commission {
+	interface Root {
+		marketTitle: string;
+		marketUnitTitle: string;
+		commissionType: string;
+		buyCommission: number;
+		sellCommission: number;
+	}
+
+	type Data = Record<string, Root>;
+}
