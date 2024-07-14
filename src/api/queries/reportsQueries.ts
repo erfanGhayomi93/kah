@@ -10,7 +10,7 @@ import {
 	initialTradesReportsFilters,
 	initialTransactionsFilters,
 	initialWithdrawalCashReportsFilters,
-} from '@/constants';
+} from '@/constants/filters';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import dayjs from '@/libs/dayjs';
 import { createBrokerQuery, setHours, toISOStringWithoutChangeTime } from '@/utils/helpers';

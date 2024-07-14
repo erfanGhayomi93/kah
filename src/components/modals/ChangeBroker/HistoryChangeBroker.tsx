@@ -2,13 +2,13 @@ import brokerAxios from '@/api/brokerAxios';
 import { useHistoryChangeBrokerQuery } from '@/api/queries/requests';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { SessionHistorySVG, TrashSVG } from '@/components/icons';
+import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useBrokerQueryClient } from '@/hooks';
 import { Link } from '@/navigation';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { type FC, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface HistoryChangeBrokerType {
@@ -18,7 +18,7 @@ interface HistoryChangeBrokerType {
 export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal }) => {
 	const t = useTranslations();
 
-	const url = useSelector(getBrokerURLs);
+	const url = useAppSelector(getBrokerURLs);
 
 	const queryClient = useBrokerQueryClient();
 
@@ -104,7 +104,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 			</div>
 
 			<Link
-				className='text-light-info-100 h-48 w-full gap-8 rounded font-medium flex-justify-center'
+				className='h-48 w-full gap-8 rounded font-medium text-light-info-100 flex-justify-center'
 				href={'/financial-reports/change-broker'}
 				onClick={() => onCloseModal()}
 			>

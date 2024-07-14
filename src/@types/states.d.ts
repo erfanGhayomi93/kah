@@ -878,10 +878,3 @@ declare interface IMarketMapFilters {
 
 	palette: Record<'id' | 'label', string> | null;
 }
-
-declare interface IMyAssetsFilters {
-	priceBasis: TPriceBasis;
-	involvedInStrategy: boolean;
-	soldSymbols: boolean;
-	calculateCommission: boolean;
-}

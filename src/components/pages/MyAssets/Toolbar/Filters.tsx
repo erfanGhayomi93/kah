@@ -7,29 +7,33 @@ import Separator from '@/components/common/Separator';
 import Tooltip from '@/components/common/Tooltip';
 import { ArrowDownSVG, DownloadDdnSVG, UploadDdnSVG, XiaomiSettingSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getMyAssetsFilters, setMyAssetsFilters } from '@/features/slices/uiSlice';
-import { usePathname } from '@/navigation';
+import { usePathname, useRouter } from '@/navigation';
 import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 
 const Filters = () => {
 	const t = useTranslations('my_assets');
 
+	const router = useRouter();
+
 	const pathname = usePathname();
 
-	const dispatch = useAppDispatch();
+	const searchParams = useSearchParams();
 
-	const filters = useAppSelector(getMyAssetsFilters);
+	const onChangePriceBasis = (v: TPriceBasis) => {
+		const params = new URLSearchParams(searchParams.toString());
+		params.set('pb', v);
 
-	const setFieldValue = <T extends keyof IMyAssetsFilters>(name: T, value: IMyAssetsFilters[T]) => {
-		dispatch(
-			setMyAssetsFilters({
-				...filters,
-				[name]: value,
-			}),
-		);
+		router.replace(`${pathname}?${params.toString()}`);
+	};
+
+	const onChangeSetting = (name: string, v: boolean) => {
+		const params = new URLSearchParams(searchParams.toString());
+		params.set(name, v ? 'true' : 'false');
+
+		router.replace(`${pathname}?${params.toString()}`);
 	};
 
 	const uploadDDN = () => {
@@ -49,15 +53,19 @@ const Filters = () => {
 	};
 
 	const isNotTable = comparePathname('my-assets/all', pathname);
+	const priceBasis = (searchParams.get('pb') as TPriceBasis) ?? 'LastTradePrice';
+	const showInvolvedInStrategy = (searchParams.get('str') ?? 'true') === 'true';
+	const showSoldSymbols = (searchParams.get('ss') ?? 'true') === 'true';
+	const useCommissions = (searchParams.get('com') ?? 'true') === 'true';
 
 	return (
 		<div className='flex-1 gap-16 flex-justify-end'>
 			<div style={{ maxWidth: '16rem' }} className='w-full'>
 				<Select<TPriceBasis>
-					defaultValue={filters.priceBasis}
+					defaultValue={priceBasis}
 					options={watchlistPriceBasis}
 					placeholder={t('price_basis')}
-					onChange={(v) => setFieldValue('priceBasis', v)}
+					onChange={onChangePriceBasis}
 					getOptionId={(id) => id}
 					getOptionTitle={(id) => t(`price_${id}`)}
 					classes={{
@@ -75,24 +83,15 @@ const Filters = () => {
 						<ul className='gap-16 overflow-hidden rounded bg-white p-16 shadow-tooltip flex-column *:cursor-default *:flex-justify-between'>
 							<li>
 								<span className='text-tiny font-medium'>{t('symbols_involved_in_strategy')}</span>
-								<Switch
-									checked={filters.involvedInStrategy}
-									onChange={(v) => setFieldValue('involvedInStrategy', v)}
-								/>
+								<Switch checked={showInvolvedInStrategy} onChange={(v) => onChangeSetting('str', v)} />
 							</li>
 							<li>
 								<span className='text-tiny font-medium'>{t('sold_symbols')}</span>
-								<Switch
-									checked={filters.soldSymbols}
-									onChange={(v) => setFieldValue('soldSymbols', v)}
-								/>
+								<Switch checked={showSoldSymbols} onChange={(v) => onChangeSetting('ss', v)} />
 							</li>
 							<li>
 								<span className='text-tiny font-medium'>{t('calculate_commission')}</span>
-								<Switch
-									checked={filters.calculateCommission}
-									onChange={(v) => setFieldValue('calculateCommission', v)}
-								/>
+								<Switch checked={useCommissions} onChange={(v) => onChangeSetting('com', v)} />
 							</li>
 						</ul>
 					)}

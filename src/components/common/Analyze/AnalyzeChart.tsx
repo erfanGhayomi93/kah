@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
 import NoData from '../NoData';
-import PriceRange from './PriceRange';
+import AnalyzeInputs from './AnalyzeInputs';
 
 interface AnalyzeChartProps
 	extends Pick<
@@ -14,7 +14,7 @@ interface AnalyzeChartProps
 	> {
 	height?: number;
 	compact?: boolean;
-	onChange?: (values: Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>) => void;
+	onChange?: (values: Record<'dueDays' | 'minPrice' | 'maxPrice', number | null>) => void;
 }
 
 const AnalyzeChart = ({
@@ -267,10 +267,12 @@ const AnalyzeChart = ({
 				const y = Number(this.y ?? 0);
 
 				const profit = y > 0 ? Math.abs((y * contractSize) / cost) : Math.abs((y * contractSize) / income) * -1;
-				const efficiency = Math.max(profit * 100, -100);
+				let efficiency = Math.max(profit * 100, -100);
+				if (isNaN(efficiency)) efficiency = 0;
 
 				let ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
 				ytm = Math.floor(Math.max(Math.min(ytm, 1e9), -1e2));
+				if (isNaN(ytm)) efficiency = 0;
 
 				const items = [
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`,
@@ -278,7 +280,7 @@ const AnalyzeChart = ({
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y * contractSize))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${efficiency.toFixed(2)}%`}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('cost')}:</span><span class="ltr">${sepNumbers(String(cost))}</span></li>`,
-					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm === 1e9 ? '+1,000,000,000' : sepNumbers(String(ytm))}%</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm === 1e9 || efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${sepNumbers(String(ytm))}%`}</span></li>`,
 				];
 
 				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${items.join('')}</ul>`;
@@ -297,7 +299,9 @@ const AnalyzeChart = ({
 					</div>
 				)}
 
-				{onChange && <PriceRange maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />}
+				{onChange && (
+					<AnalyzeInputs maxPrice={maxPrice} minPrice={minPrice} dueDays={dueDays} onChange={onChange} />
+				)}
 			</div>
 		</ErrorBoundary>
 	);

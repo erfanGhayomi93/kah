@@ -1,5 +1,6 @@
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
+import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import SymbolState from '@/components/common/SymbolState';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
@@ -28,6 +29,9 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 		lowThreshold,
 		highThreshold,
 		closingPrice,
+		yesterdayClosingPrice,
+		highPrice,
+		lowPrice,
 	} = symbolData;
 
 	return (
@@ -42,11 +46,11 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 				</div>
 
 				<div className='h-fit gap-8 flex-items-center'>
-					<span className='gap-4 text-base text-light-gray-800 flex-items-center'>
+					<span className='gap-4 text-base text-light-gray-800 ltr flex-items-center'>
+						{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
 						<span className='flex items-center ltr'>
 							({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
 						</span>
-						{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
 					</span>
 
 					<span className='flex items-center gap-4 text-2xl font-bold text-light-gray-800'>
@@ -62,6 +66,15 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 					{sepNumbers(String(closingPrice))}
 					<span className='text-light-gray-500'> {t('common.rial')}</span>
 				</span>
+			</div>
+
+			<div className='rounded bg-white px-8 py-16 shadow-card'>
+				<SymbolPriceSlider
+					yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
+					thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
+					exchangeData={[closingPrice ?? 0, lastTradedPrice ?? 0]}
+					boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
+				/>
 			</div>
 
 			<Grid symbolISIN={symbolISIN} lowThreshold={lowThreshold} highThreshold={highThreshold} />

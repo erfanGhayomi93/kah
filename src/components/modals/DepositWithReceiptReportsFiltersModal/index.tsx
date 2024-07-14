@@ -1,4 +1,4 @@
-import { initialDepositWithReceiptReportsFilters } from '@/constants';
+import { initialDepositWithReceiptReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
 	getDepositWithReceiptReportsFiltersModal,
@@ -15,7 +15,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface DepositWithReceiptFiltersModalProps extends IBaseModalConfiguration { }
+interface DepositWithReceiptFiltersModalProps extends IBaseModalConfiguration {}
 
 const DepositWithReceiptFiltersModal = forwardRef<HTMLDivElement, DepositWithReceiptFiltersModalProps>((props, ref) => {
 	const t = useTranslations();

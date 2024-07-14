@@ -193,6 +193,9 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 						<Body
 							{...inputs}
+							isOption={Boolean(symbolData?.isOption)}
+							highThreshold={symbolData?.highThreshold ?? 0}
+							lowThreshold={symbolData?.lowThreshold ?? 0}
 							symbolTitle={symbolTitle}
 							commission={commission}
 							switchable={switchable}
@@ -202,6 +205,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 							close={onCloseModal}
 							symbolISIN={symbolISIN}
 							symbolType={symbolType}
+							priceTickSize={symbolData?.orderPriceTickSize ?? 0}
+							quantityTickSize={symbolData?.orderQuantityTickSize ?? 0}
 							setInputValue={setInputValue}
 						/>
 					</div>

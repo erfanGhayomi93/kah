@@ -1,4 +1,4 @@
-import { initialTradesReportsFilters } from '@/constants';
+import { initialTradesReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getTradesReportsFiltersModal, setTradesReportsFiltersModal } from '@/features/slices/modalSlice';
 import { type ITradesReportsFilters } from '@/features/slices/types/modalSlice.interfaces';
@@ -12,7 +12,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface TradeReportsFiltersModalProps extends IBaseModalConfiguration { }
+interface TradeReportsFiltersModalProps extends IBaseModalConfiguration {}
 
 const TradeReportsFiltersModal = forwardRef<HTMLDivElement, TradeReportsFiltersModalProps>((props, ref) => {
 	const t = useTranslations();
@@ -40,11 +40,7 @@ const TradeReportsFiltersModal = forwardRef<HTMLDivElement, TradeReportsFiltersM
 	return (
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
 			<Div className='gap-40 bg-white flex-column'>
-				<Header
-					label={t('trades_reports_page.filter_title_modal')}
-					onClose={onCloseModal}
-					onClear={onClear}
-				/>
+				<Header label={t('trades_reports_page.filter_title_modal')} onClose={onCloseModal} onClear={onClear} />
 				<Form filters={filters} setFilters={setFilters} />
 			</Div>
 		</Modal>

@@ -18,10 +18,15 @@ interface SimpleTradeProps extends IBsModalInputs {
 	id: number | undefined;
 	symbolTitle: string;
 	submitting: boolean;
+	highThreshold: number;
+	lowThreshold: number;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
+	priceTickSize: number;
+	quantityTickSize: number;
 	switchable: boolean;
+	isOption: boolean;
 	commission: Record<'buy' | 'sell' | 'default', number>;
 	userRemain: Broker.Remain | null;
 	setInputValue: TSetBsModalInputs;
@@ -33,12 +38,17 @@ const SimpleTrade = ({
 	id,
 	price,
 	quantity,
+	isOption,
+	priceTickSize,
+	quantityTickSize,
 	symbolType,
 	symbolTitle,
 	validity,
 	switchable,
 	value,
 	submitting,
+	highThreshold,
+	lowThreshold,
 	validityDate,
 	commission,
 	userRemain,
@@ -108,7 +118,7 @@ const SimpleTrade = ({
 							label={t('bs_modal.quantity_label')}
 							value={quantity}
 							onChange={(value) => setInputValue('quantity', value)}
-							tickSize={100}
+							tickSize={quantityTickSize}
 							low={1}
 							high={1e5}
 						/>
@@ -118,7 +128,7 @@ const SimpleTrade = ({
 								<span className='text-light-gray-700'>{t('bs_modal.assets')}:</span>
 								<span className='text-sm text-light-gray-800'>
 									<span className='text-tiny'>280 </span>
-									{t('bs_modal.exists_positions', { n: symbolTitle })}
+									{t(isOption ? 'bs_modal.exists_positions' : 'exists_stocks', { n: symbolTitle })}
 								</span>
 							</div>
 						)}
@@ -130,9 +140,9 @@ const SimpleTrade = ({
 							label={t('bs_modal.price_label')}
 							value={price}
 							onChange={(value) => setInputValue('price', value)}
-							tickSize={100}
-							low={43360}
-							high={45570}
+							tickSize={priceTickSize}
+							high={highThreshold}
+							low={lowThreshold}
 							prefix={
 								<button
 									type='button'

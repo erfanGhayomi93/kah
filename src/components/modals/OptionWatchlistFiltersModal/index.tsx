@@ -1,6 +1,6 @@
 import ipcMain from '@/classes/IpcMain';
 import BaseSymbolAdvanceSearch from '@/components/common/Symbol/BaseSymbolAdvanceSearch';
-import { initialOptionWatchlistFilters } from '@/constants';
+import { initialOptionWatchlistFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOptionFiltersModal, setOptionFiltersModal } from '@/features/slices/modalSlice';
 import { type IOptionFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
@@ -112,7 +112,7 @@ const OptionWatchlistFiltersModal = forwardRef<HTMLDivElement, OptionWatchlistFi
 					</div>
 
 					<div className='flex-justify-end'>
-						<button type='submit' className='w-328 h-40 rounded px-56 font-medium btn-primary'>
+						<button type='submit' className='h-40 w-328 rounded px-56 font-medium btn-primary'>
 							{t('apply_filter')}
 						</button>
 					</div>

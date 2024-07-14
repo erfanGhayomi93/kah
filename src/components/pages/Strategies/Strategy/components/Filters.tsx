@@ -48,7 +48,7 @@ const Filters = ({
 					<Switch checked={useCommission} onChange={(v) => onCommissionChanged?.(v)} />
 				</div>
 
-				<div style={{ flex: '0 0 48.4rem' }} className='flex-1 gap-8 flex-justify-end'>
+				<div style={{ flex: '0 0 52.8rem' }} className='flex-1 gap-8 flex-justify-end'>
 					<Select<TStrategySymbolBasis>
 						defaultValue={symbolBasis}
 						options={watchlistSymbolBasis}

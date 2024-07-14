@@ -30,10 +30,15 @@ interface BodyProps extends IBsModalInputs {
 	id: number | undefined;
 	symbolISIN: string;
 	symbolTitle: string;
+	highThreshold: number;
+	lowThreshold: number;
 	switchable: boolean;
+	isOption: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
+	priceTickSize: number;
+	quantityTickSize: number;
 	commission: Record<'buy' | 'sell' | 'default', number>;
 	close: () => void;
 	setInputValue: TSetBsModalInputs;

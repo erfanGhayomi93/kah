@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import Footer from './Footer';
@@ -12,6 +13,8 @@ interface IWrapper {
 }
 
 const Wrapper = ({ children }: IWrapper) => {
+	const t = useTranslations('common');
+
 	const [mount, setMounted] = useState(false);
 
 	useEffect(() => {
@@ -22,7 +25,11 @@ const Wrapper = ({ children }: IWrapper) => {
 
 	return (
 		<ErrorBoundary>
-			<div className='flex h-screen'>
+			<div className='fixed left-0 top-0 flex size-full items-center justify-center bg-white text-center md:hidden'>
+				<h2 className='text-lg font-medium'>{t('does_not_support_mobile')}</h2>
+			</div>
+
+			<div className='hidden h-screen md:flex'>
 				<ErrorBoundary>
 					<Sidebar />
 				</ErrorBoundary>

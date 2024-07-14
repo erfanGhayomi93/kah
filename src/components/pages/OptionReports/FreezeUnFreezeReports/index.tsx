@@ -3,7 +3,8 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultFreezeUnFreezeReportsColumns, initialFreezeUnFreezeReportsFilters } from '@/constants';
+import { defaultFreezeUnFreezeReportsColumns } from '@/constants/columns';
+import { initialFreezeUnFreezeReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setFreezeUnFreezeReportsFiltersModal, setManageColumnsModal } from '@/features/slices/modalSlice';

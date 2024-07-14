@@ -3,7 +3,8 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultTransactionColumns, initialTransactionsFilters } from '@/constants';
+import { defaultTransactionColumns } from '@/constants/columns';
+import { initialTransactionsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setManageColumnsModal, setTransactionsFiltersModal } from '@/features/slices/modalSlice';

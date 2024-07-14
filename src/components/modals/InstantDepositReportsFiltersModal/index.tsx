@@ -1,4 +1,4 @@
-import { initialInstantDepositReportsFilters } from '@/constants';
+import { initialInstantDepositReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
 	getInstantDepositReportsFiltersModal,

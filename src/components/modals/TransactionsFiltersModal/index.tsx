@@ -1,4 +1,4 @@
-import { initialTransactionsFilters } from '@/constants';
+import { initialTransactionsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getTransactionsFiltersModal, setTransactionsFiltersModal } from '@/features/slices/modalSlice';
 import { type ITransactionsFiltersModal } from '@/features/slices/types/modalSlice.interfaces';
@@ -12,7 +12,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface TransactionsFiltersModalProps extends IBaseModalConfiguration { }
+interface TransactionsFiltersModalProps extends IBaseModalConfiguration {}
 
 const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersModalProps>((props, ref) => {
 	const t = useTranslations();
@@ -43,11 +43,7 @@ const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersM
 	return (
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
 			<Div className='gap-40 bg-white flex-column'>
-				<Header
-					label={t('transactions_page.filter_title_modal')}
-					onClose={onCloseModal}
-					onClear={onClear}
-				/>
+				<Header label={t('transactions_page.filter_title_modal')} onClose={onCloseModal} onClear={onClear} />
 				<Form filters={filters} setFilters={setFilters} />
 			</Div>
 		</Modal>

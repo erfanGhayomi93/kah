@@ -1,4 +1,4 @@
-import { initialSymbolInfoPanelGrid } from '@/constants';
+import { initialSymbolInfoPanelGrid } from '@/constants/grid';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSymbolInfoPanelSettingModal } from '@/features/slices/modalSlice';
 import { type ISymbolInfoPanelSetting } from '@/features/slices/types/modalSlice.interfaces';
@@ -138,7 +138,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 
 					<div className='flex-1 flex-column'>
 						<div className='flex-1 gap-16 p-24 flex-column'>
-							<h3 className='text-light-gray-700 text-tiny'>
+							<h3 className='text-tiny text-light-gray-700'>
 								{t('symbol_info_panel_setting.description')}
 							</h3>
 
@@ -154,7 +154,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 								))}
 							</ul>
 						</div>
-						<div className='border-light-gray-200 h-64 gap-8 border-t px-16 flex-justify-end'>
+						<div className='h-64 gap-8 border-t border-light-gray-200 px-16 flex-justify-end'>
 							<button
 								onClick={setToDefault}
 								style={{ width: '12rem' }}

@@ -1,3 +1,5 @@
+'use client';
+
 import Main from '@/components/layout/Main';
 import Toolbar from '@/components/pages/MyAssets/Toolbar';
 

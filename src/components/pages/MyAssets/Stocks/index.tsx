@@ -4,29 +4,21 @@ import { useGlPortfolioQuery } from '@/api/queries/brokerPrivateQueries';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { getMyAssetsFilters } from '@/features/slices/uiSlice';
-import { type RootState } from '@/features/store';
-import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import PriceCard from '../PriceCard';
 import Table from './Table';
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		brokerUrls: getBrokerURLs(state),
-		filters: getMyAssetsFilters(state),
-	}),
-);
-
 const Stocks = () => {
 	const t = useTranslations('my_assets');
 
-	const { brokerUrls, filters } = useAppSelector(getStates);
+	const searchParams = useSearchParams();
+
+	const brokerUrls = useAppSelector(getBrokerURLs);
 
 	const { data, isLoading } = useGlPortfolioQuery({
-		queryKey: ['glPortfolioQuery', filters.priceBasis],
+		queryKey: ['glPortfolioQuery', (searchParams.get('pb') ?? 'LastTradePrice') as TPriceBasis],
 		enabled: Boolean(brokerUrls),
 	});
 

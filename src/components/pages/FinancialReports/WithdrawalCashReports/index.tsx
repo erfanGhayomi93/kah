@@ -3,7 +3,8 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultWithdrawalCashReportsColumn, initialWithdrawalCashReportsFilters } from '@/constants';
+import { defaultWithdrawalCashReportsColumn } from '@/constants/columns';
+import { initialWithdrawalCashReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setManageColumnsModal, setWithdrawalCashReportsFiltersModal } from '@/features/slices/modalSlice';
