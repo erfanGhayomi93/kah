@@ -30,6 +30,8 @@ interface BodyProps extends IBsModalInputs {
 	id: number | undefined;
 	symbolISIN: string;
 	symbolTitle: string;
+	highThreshold: number;
+	lowThreshold: number;
 	switchable: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;

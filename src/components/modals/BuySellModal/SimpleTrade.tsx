@@ -18,6 +18,8 @@ interface SimpleTradeProps extends IBsModalInputs {
 	id: number | undefined;
 	symbolTitle: string;
 	submitting: boolean;
+	highThreshold: number;
+	lowThreshold: number;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
@@ -43,6 +45,8 @@ const SimpleTrade = ({
 	switchable,
 	value,
 	submitting,
+	highThreshold,
+	lowThreshold,
 	validityDate,
 	commission,
 	userRemain,
@@ -135,8 +139,8 @@ const SimpleTrade = ({
 							value={price}
 							onChange={(value) => setInputValue('price', value)}
 							tickSize={priceTickSize}
-							low={43360}
-							high={45570}
+							high={highThreshold}
+							low={lowThreshold}
 							prefix={
 								<button
 									type='button'

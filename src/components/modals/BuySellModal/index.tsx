@@ -193,6 +193,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 						<Body
 							{...inputs}
+							highThreshold={symbolData?.highThreshold ?? 0}
+							lowThreshold={symbolData?.lowThreshold ?? 0}
 							symbolTitle={symbolTitle}
 							commission={commission}
 							switchable={switchable}
