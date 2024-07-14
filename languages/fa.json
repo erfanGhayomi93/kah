@@ -1046,6 +1046,7 @@
 	},
 	"order_errors": {
 		"undefined": "نامشخص",
+		"Contract_SellOrder_Allowed_Only_In_Day_Validation": "نامشخص",
 		"HasOngoingRequest": "یک درخواست فریز در حال بررسی وجود دارد",
 		"hasIncreasingSellAccess": "به دلیل داشتن دسترسی فروش فزاینده امکان رفع فریز سهام وجود ندارد",
 		"SelftTrading_Is_Not_Allowed": "این سفارش طبق دستورالعمل معاملات بر خط، مشکوک به معامله با خود است و امکان ثبت آن وجود ندارد",
