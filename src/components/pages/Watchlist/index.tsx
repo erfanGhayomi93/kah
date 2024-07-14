@@ -4,7 +4,7 @@ import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import LocalstorageInstance from '@/classes/Localstorage';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { initialOptionWatchlistFilters } from '@/constants';
+import { initialOptionWatchlistFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';

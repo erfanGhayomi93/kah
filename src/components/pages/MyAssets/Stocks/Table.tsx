@@ -3,6 +3,8 @@ import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
@@ -17,7 +19,13 @@ interface TableProps {
 const Table = ({ data, loading }: TableProps) => {
 	const t = useTranslations('my_assets');
 
+	const dispatch = useAppDispatch();
+
 	const gridRef = useRef<GridApi<Portfolio.GlPortfolio>>(null);
+
+	const onSymbolTitleClicked = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
 
 	const columnDefs = useMemo<Array<ColDef<Portfolio.GlPortfolio>>>(
 		() => [
@@ -33,8 +41,9 @@ const Table = ({ data, loading }: TableProps) => {
 				colId: 'symbol',
 				headerName: t('col_symbol'),
 				pinned: 'right',
-				cellClass: 'font-medium',
+				cellClass: 'font-medium cursor-pointer',
 				minWidth: 120,
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				valueGetter: ({ data }) => data!.symbolTitle,
 			},
 			{

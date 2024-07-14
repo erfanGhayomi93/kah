@@ -1,10 +1,10 @@
 'use client';
 
 import { BearishMarketSVG, BullishMarketSVG, DirectionalMarketSVG, NeutralMarketSVG } from '@/components/icons';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getStrategyTrend, setStrategyTrend } from '@/features/slices/tabSlice';
+import { Link, usePathname } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 
 interface ITabItem {
@@ -16,9 +16,9 @@ interface ITabItem {
 const Toolbar = () => {
 	const t = useTranslations();
 
-	const dispatch = useAppDispatch();
+	const pathname = usePathname();
 
-	const strategyTrend = useAppSelector(getStrategyTrend);
+	const search = useSearchParams();
 
 	const tags = useMemo<ITabItem[]>(
 		() => [
@@ -51,6 +51,8 @@ const Toolbar = () => {
 		[],
 	);
 
+	const strategyTrend = search.get('type') ?? 'All';
+
 	return (
 		<div className='gap-16 flex-items-center'>
 			<h4 className='text-light-gray-700'>{t('strategies.market_process')}:</h4>
@@ -58,9 +60,8 @@ const Toolbar = () => {
 			<ul className='flex gap-8'>
 				{tags.map((item) => (
 					<li key={item.id}>
-						<button
-							onClick={() => dispatch(setStrategyTrend(item.id))}
-							type='button'
+						<Link
+							href={`${pathname}?type=${item.id}`}
 							className={clsx(
 								'h-40 w-96 rounded !border text-base transition-colors flex-justify-center',
 								item.id === strategyTrend
@@ -70,7 +71,7 @@ const Toolbar = () => {
 						>
 							<span className={item.id !== strategyTrend ? 'text-light-gray-800' : ''}>{item.title}</span>
 							{item.icon}
-						</button>
+						</Link>
 					</li>
 				))}
 			</ul>

@@ -26,6 +26,7 @@ interface SimpleTradeProps extends IBsModalInputs {
 	priceTickSize: number;
 	quantityTickSize: number;
 	switchable: boolean;
+	isOption: boolean;
 	commission: Record<'buy' | 'sell' | 'default', number>;
 	userRemain: Broker.Remain | null;
 	setInputValue: TSetBsModalInputs;
@@ -37,6 +38,7 @@ const SimpleTrade = ({
 	id,
 	price,
 	quantity,
+	isOption,
 	priceTickSize,
 	quantityTickSize,
 	symbolType,
@@ -126,7 +128,7 @@ const SimpleTrade = ({
 								<span className='text-light-gray-700'>{t('bs_modal.assets')}:</span>
 								<span className='text-sm text-light-gray-800'>
 									<span className='text-tiny'>280 </span>
-									{t('bs_modal.exists_positions', { n: symbolTitle })}
+									{t(isOption ? 'bs_modal.exists_positions' : 'exists_stocks', { n: symbolTitle })}
 								</span>
 							</div>
 						)}

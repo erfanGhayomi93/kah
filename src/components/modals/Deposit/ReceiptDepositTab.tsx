@@ -4,7 +4,7 @@ import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
 import Input from '@/components/common/Inputs/Input';
 import Select from '@/components/common/Inputs/Select';
 import { FileTextSVG, XSVG } from '@/components/icons';
-import { useAppDispatch } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setDepositModal } from '@/features/slices/modalSlice';
 import { useBrokerQueryClient } from '@/hooks';
@@ -14,7 +14,6 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { type FC, type MouseEvent, useEffect, useMemo, useRef } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface ReceiptDepositTabProps {
@@ -35,7 +34,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	const url = useSelector(getBrokerURLs);
+	const url = useAppSelector(getBrokerURLs);
 
 	const queryClient = useBrokerQueryClient();
 
@@ -222,7 +221,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 				</div>
 
 				<div
-					className='border-light-gray-200  my-24 border border-dashed'
+					className='my-24  border border-dashed border-light-gray-200'
 					onClick={() => inputRef.current?.click()}
 				>
 					<input
@@ -240,11 +239,11 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 						>
 							<FileTextSVG />
 
-							<p className='text-light-gray-700 text-tiny'>
+							<p className='text-tiny text-light-gray-700'>
 								تصویر فیش بانکی خود را اینجا رها کنید یا بارگذاری کنید(اختیاری)
 							</p>
 
-							<p className='text-light-gray-500 text-tiny'>{t('deposit_modal.receipt_upload_size')}</p>
+							<p className='text-tiny text-light-gray-500'>{t('deposit_modal.receipt_upload_size')}</p>
 						</div>
 					) : (
 						<div className='relative flex justify-center'>

@@ -1,11 +1,11 @@
 import brokerAxios from '@/api/brokerAxios';
 import Input from '@/components/common/Inputs/Input';
+import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import num2persian from '@/utils/num2persian';
 import { useTranslations } from 'next-intl';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 export const LiveDepositTab = () => {
@@ -18,7 +18,7 @@ export const LiveDepositTab = () => {
 		mode: 'onChange',
 	});
 
-	const url = useSelector(getBrokerURLs);
+	const url = useAppSelector(getBrokerURLs);
 
 	const onSubmitForm: SubmitHandler<{ value: string }> = async ({ value }) => {
 		if (!url) return;

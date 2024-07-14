@@ -3,13 +3,14 @@
 import { useGetAllStrategyQuery } from '@/api/queries/strategyQuery';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
-import { useAppSelector } from '@/features/hooks';
-import { getStrategyTrend } from '@/features/slices/tabSlice';
+import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import StrategyItem from './Item';
 
 const List = () => {
-	const strategyTrend = useAppSelector(getStrategyTrend);
+	const search = useSearchParams();
+
+	const strategyTrend = search.get('type') ?? 'All';
 
 	const { data, isLoading } = useGetAllStrategyQuery({
 		queryKey: ['getAllStrategyQuery'],
@@ -20,17 +21,18 @@ const List = () => {
 
 		if (strategyTrend === 'All') return data;
 
-		return data.filter((item) => item.tags.includes(strategyTrend));
+		return data.filter((item) => item.tags.includes(strategyTrend as Strategy.Cheap));
 	}, [strategyTrend, data]);
 
 	if (isLoading) return <Loading />;
 
-	if (!filteredStrategies?.length)
+	if (!filteredStrategies?.length) {
 		return (
 			<div className='absolute center'>
 				<NoData />
 			</div>
 		);
+	}
 
 	return filteredStrategies.map((item) => <StrategyItem key={item.id} {...item} />);
 };

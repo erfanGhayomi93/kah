@@ -3,7 +3,7 @@
 import ipcMain from '@/classes/IpcMain';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Main from '@/components/layout/Main';
-import { type initialDashboardGrid } from '@/constants';
+import { type initialDashboardGrid } from '@/constants/grid';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';

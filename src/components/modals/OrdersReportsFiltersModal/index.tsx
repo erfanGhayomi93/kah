@@ -1,4 +1,4 @@
-import { initialOrdersReportsFilters } from '@/constants';
+import { initialOrdersReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOrdersReportsFiltersModal, setOrdersReportsFiltersModal } from '@/features/slices/modalSlice';
 import { type IOrdersReportsFilters } from '@/features/slices/types/modalSlice.interfaces';
@@ -12,7 +12,7 @@ const Div = styled.div`
 	width: 560px;
 `;
 
-interface OrdersFiltersModalProps extends IBaseModalConfiguration { }
+interface OrdersFiltersModalProps extends IBaseModalConfiguration {}
 
 const OrdersReportsFiltersModal = forwardRef<HTMLDivElement, OrdersFiltersModalProps>((props, ref) => {
 	const t = useTranslations();
@@ -27,7 +27,7 @@ const OrdersReportsFiltersModal = forwardRef<HTMLDivElement, OrdersFiltersModalP
 		fromDate: initialModalFilters?.fromDate ?? initialOrdersReportsFilters.fromDate,
 		toDate: initialModalFilters?.toDate ?? initialOrdersReportsFilters.toDate,
 		side: initialModalFilters?.side ?? initialOrdersReportsFilters.side,
-		status: initialModalFilters?.status ?? initialOrdersReportsFilters.status
+		status: initialModalFilters?.status ?? initialOrdersReportsFilters.status,
 	});
 
 	const onCloseModal = () => {
@@ -41,11 +41,7 @@ const OrdersReportsFiltersModal = forwardRef<HTMLDivElement, OrdersFiltersModalP
 	return (
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
 			<Div className='gap-40 bg-white flex-column'>
-				<Header
-					label={t('orders_reports_page.filter_title_modal')}
-					onClose={onCloseModal}
-					onClear={onClear}
-				/>
+				<Header label={t('orders_reports_page.filter_title_modal')} onClose={onCloseModal} onClear={onClear} />
 				<Form filters={filters} setFilters={setFilters} />
 			</Div>
 		</Modal>

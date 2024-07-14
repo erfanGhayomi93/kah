@@ -33,6 +33,7 @@ interface BodyProps extends IBsModalInputs {
 	highThreshold: number;
 	lowThreshold: number;
 	switchable: boolean;
+	isOption: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;

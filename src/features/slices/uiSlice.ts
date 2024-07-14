@@ -1,5 +1,5 @@
 import LocalstorageInstance from '@/classes/Localstorage';
-import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants';
+import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants/grid';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type ToastPosition } from 'react-toastify';
 import { type RootState } from '../store';

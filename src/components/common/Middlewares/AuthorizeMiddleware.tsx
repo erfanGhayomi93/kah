@@ -4,7 +4,7 @@ import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlic
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { createSelector } from '@reduxjs/toolkit';
-import { cloneElement, forwardRef, useLayoutEffect, useState } from 'react';
+import { cloneElement, forwardRef, useEffect, useState } from 'react';
 
 interface AuthorizeMiddlewareProps {
 	broker?: boolean;
@@ -43,7 +43,7 @@ const AuthorizeMiddleware = forwardRef<HTMLElement, AuthorizeMiddlewareProps>(({
 		dispatch(setChoiceBrokerModal({}));
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!isLoggedIn) {
 			showUserLoginModal();
 			callback?.();

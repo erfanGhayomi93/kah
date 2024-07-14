@@ -1,4 +1,4 @@
-import { initialChangeBrokerReportsFilters } from '@/constants';
+import { initialChangeBrokerReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getChangeBrokerReportsFiltersModal, setChangeBrokerReportsFiltersModal } from '@/features/slices/modalSlice';
 import { type IChangeBrokerReportsFiltersModal } from '@/features/slices/types/modalSlice.interfaces';

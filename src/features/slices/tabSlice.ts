@@ -4,18 +4,15 @@ import { type RootState } from '../store';
 
 interface IOptionWatchlistTabIdPayload {
 	id: TabState['optionWatchlistTabId'];
-
 	updateLS: boolean;
 }
 
 export interface TabState {
 	optionWatchlistTabId: number;
-	strategyTrend: TStrategyMarketTrend;
 }
 
 const initialState: TabState = {
 	optionWatchlistTabId: Number(LocalstorageInstance.get('awl', -1)) || -1,
-	strategyTrend: 'All',
 };
 
 const portfolioSlice = createSlice({
@@ -34,16 +31,11 @@ const portfolioSlice = createSlice({
 				state.optionWatchlistTabId = payload.id;
 			}
 		},
-
-		setStrategyTrend: (state, { payload }: PayloadAction<TabState['strategyTrend']>) => {
-			state.strategyTrend = payload;
-		},
 	},
 });
 
-export const { setOptionWatchlistTabId, setStrategyTrend } = portfolioSlice.actions;
+export const { setOptionWatchlistTabId } = portfolioSlice.actions;
 
 export const getOptionWatchlistTabId = (state: RootState) => state.tab.optionWatchlistTabId;
-export const getStrategyTrend = (state: RootState) => state.tab.strategyTrend;
 
 export default portfolioSlice.reducer;

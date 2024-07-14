@@ -117,7 +117,7 @@ const SymbolPriceSlider = ({
 			let left = e.clientX - rootOffset.left - tooltipOffset.width / 2;
 			if (left < 0) left = 0;
 			else if (left > rootOffset.width - tooltipOffset.width) left = rootOffset.width - tooltipOffset.width;
-			eTooltip.style.transform = `translate(${Math.abs(left)}px, -12px)`;
+			eTooltip.style.transform = `translate(${left}px, -16px)`;
 
 			/* Value */
 			const percentage = (e.clientX - rootOffset.left) / rootOffset.width;
@@ -292,7 +292,6 @@ const SymbolPriceSlider = ({
 				<div className={styles.tradedValues}>
 					<div className={styles.inner}>
 						<Tooltip
-							animation={false}
 							className={
 								config.firstTradedPriceAsPercent >= 0
 									? 'text-light-success-100'
@@ -330,7 +329,6 @@ const SymbolPriceSlider = ({
 						</Tooltip>
 
 						<Tooltip
-							animation={false}
 							className={
 								config.lastTradedPriceAsPercent >= 0 ? 'text-light-success-100' : 'text-light-error-100'
 							}
@@ -368,17 +366,6 @@ const SymbolPriceSlider = ({
 					</div>
 				</div>
 
-				<div
-					ref={tooltipRef}
-					style={{ opacity: '0' }}
-					className={clsx(styles.tooltip, 'common-tooltip-container common-tooltip-top')}
-				>
-					<div className='text-tiny font-medium ltr'>
-						<span ref={tooltipValueRef} />
-						<span ref={tooltipPercentRef} className='pl-4' />
-					</div>
-				</div>
-
 				<div className={styles.sliders}>
 					<div className={styles.sliderInner}>
 						<div className={clsx(styles.section, styles.sell)}>
@@ -391,7 +378,6 @@ const SymbolPriceSlider = ({
 							/>
 
 							<Tooltip
-								animation={false}
 								content={`${t('high')}: ‎${sepNumbers(String(boundaryData[0] ?? 0))} (${config.lowestTradePriceOfTradingDayAsPercent}%)`}
 							>
 								<div
@@ -417,7 +403,6 @@ const SymbolPriceSlider = ({
 							/>
 
 							<Tooltip
-								animation={false}
 								content={`${t('low')}: ‎${sepNumbers(String(boundaryData[1] ?? 0))} (${config.highestTradePriceOfTradingDayAsPercent}%)`}
 							>
 								<div
@@ -487,6 +472,19 @@ const SymbolPriceSlider = ({
 							>
 								{sepNumbers(String(averageNumbers[6]))}
 							</span>
+						</div>
+					</div>
+				</div>
+
+				<div
+					ref={tooltipRef}
+					style={{ opacity: '0' }}
+					className='pointer-events-none absolute left-0 top-0 z-10'
+				>
+					<div data-placement='top' className='tippy-box'>
+						<div className='tippy-content text-tiny font-medium ltr'>
+							<span ref={tooltipValueRef} />
+							<span ref={tooltipPercentRef} className='pl-4' />
 						</div>
 					</div>
 				</div>

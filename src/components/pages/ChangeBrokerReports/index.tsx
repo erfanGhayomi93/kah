@@ -3,7 +3,8 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultChangeBrokerReportsColumns, initialChangeBrokerReportsFilters } from '@/constants';
+import { defaultChangeBrokerReportsColumns } from '@/constants/columns';
+import { initialChangeBrokerReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setChangeBrokerReportsFiltersModal, setManageColumnsModal } from '@/features/slices/modalSlice';

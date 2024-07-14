@@ -3,7 +3,8 @@
 import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
-import { defaultDepositWithReceiptReportsColumn, initialDepositWithReceiptReportsFilters } from '@/constants';
+import { defaultDepositWithReceiptReportsColumn } from '@/constants/columns';
+import { initialDepositWithReceiptReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setDepositWithReceiptReportsFiltersModal, setManageColumnsModal } from '@/features/slices/modalSlice';

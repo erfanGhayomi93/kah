@@ -1,4 +1,4 @@
-import { initialCashSettlementReportsFilters } from '@/constants';
+import { initialCashSettlementReportsFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
 	getCashSettlementReportsFiltersModal,
