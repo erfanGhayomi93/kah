@@ -202,6 +202,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 							close={onCloseModal}
 							symbolISIN={symbolISIN}
 							symbolType={symbolType}
+							priceTickSize={symbolData?.orderPriceTickSize ?? 0}
+							quantityTickSize={symbolData?.orderQuantityTickSize ?? 0}
 							setInputValue={setInputValue}
 						/>
 					</div>

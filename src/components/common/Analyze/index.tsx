@@ -55,8 +55,8 @@ const Analyze = ({
 							maxPrice={maxPrice}
 							minPrice={minPrice}
 							height={height ? height - 56 : undefined}
-							onChange={onChange}
 							bep={bep}
+							onChange={onChange}
 						/>
 					</ErrorBoundary>
 				</div>

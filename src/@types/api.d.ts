@@ -375,6 +375,8 @@ declare namespace Symbol {
 		eps: number;
 		pe: any;
 		ps: number;
+		orderPriceTickSize: number;
+		orderQuantityTickSize: number;
 		symbolTradeState: TradeState;
 		individualBuyVolume: number;
 		numberOfIndividualsBuyers: number;
@@ -2293,8 +2295,6 @@ declare namespace Portfolio {
 		symbolISIN: string;
 		symbolTitle: string;
 		marketUnit: string;
-		requiredMargin: number;
-		contractSize: number;
 		asset: number;
 		paidValue: number;
 		avgBuyPrice: number;

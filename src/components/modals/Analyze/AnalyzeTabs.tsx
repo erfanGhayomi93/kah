@@ -25,10 +25,11 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 
 	const [useRequiredMargin, setUseRequiredMargin] = useLocalstorage('use_required_margin', true);
 
-	const { inputs, setFieldsValue } = useInputs<Pick<IAnalyzeInputs, 'minPrice' | 'maxPrice'>>(
+	const { inputs, setFieldsValue } = useInputs<Record<'dueDays' | 'minPrice' | 'maxPrice', number | null>>(
 		{
 			minPrice: null,
 			maxPrice: null,
+			dueDays: null,
 		},
 		true,
 	);
@@ -51,6 +52,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 		baseAssets: baseSymbolPrice,
 		maxPrice: inputs.maxPrice,
 		minPrice: inputs.minPrice,
+		dueDays: inputs.dueDays,
 		useTradeCommission,
 		useStrikeCommission,
 		useRequiredMargin,
