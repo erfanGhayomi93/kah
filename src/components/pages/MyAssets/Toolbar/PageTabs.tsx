@@ -2,6 +2,7 @@ import { Link, usePathname } from '@/navigation';
 import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 
 type TItem = Record<'id' | 'title' | 'to', string>;
@@ -14,6 +15,8 @@ const PageTabs = () => {
 	const t = useTranslations('my_assets');
 
 	const pathname = usePathname();
+
+	const searchParams = useSearchParams().toString();
 
 	const pages = useMemo<TItem[]>(
 		() => [
@@ -47,7 +50,12 @@ const PageTabs = () => {
 
 			<ul className='gap-8 flex-items-center'>
 				{pages.map((item) => (
-					<Item key={item.id} {...item} isActive={comparePathname(pathname, item.to)} />
+					<Item
+						key={item.id}
+						{...item}
+						to={`${item.to}?${searchParams}`}
+						isActive={comparePathname(pathname, item.to)}
+					/>
 				))}
 			</ul>
 		</div>

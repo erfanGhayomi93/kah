@@ -204,11 +204,16 @@ export const useGetAgreementsQuery = createBrokerQuery<Settings.IAgreements[] | 
 export const useGlPortfolioQuery = createBrokerQuery<Portfolio.GlPortfolio[], ['glPortfolioQuery', TPriceBasis]>({
 	staleTime: 0,
 	queryKey: ['glPortfolioQuery', 'LastTradePrice'],
-	queryFn: async ({ signal }) => {
+	queryFn: async ({ signal, queryKey }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return [];
 
-		const response = await axios.get<ServerResponse<Portfolio.GlPortfolio[]>>(url.GLPortfolio, { signal });
+		const [, priceType] = queryKey;
+
+		const response = await axios.get<ServerResponse<Portfolio.GlPortfolio[]>>(url.GLPortfolio, {
+			signal,
+			params: { priceType },
+		});
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
