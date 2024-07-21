@@ -244,7 +244,7 @@ export interface IOptionSettlementModal extends IBaseModalConfiguration {
 	activeTab?: 'optionSettlementCashTab' | 'optionSettlementPhysicalTab';
 }
 
-export interface ICreateStrategyModal extends IBaseModalConfiguration {
+export interface IExecuteCoveredCallStrategyModal extends IBaseModalConfiguration {
 	strategy: Strategy.Type;
 	contractSize: number;
 	inUseCapital: number;
@@ -436,7 +436,7 @@ export type ModalState = TBaseModalProps<{
 	physicalSettlementReportsFilters: IPhysicalSettlementReportsFilters;
 	ordersReportsFilters: IOrdersReportsFilters;
 	tradesReportsFilters: ITradesReportsFilters;
-	createStrategy: ICreateStrategyModal;
+	executeCoveredCallStrategyModal: IExecuteCoveredCallStrategyModal;
 	symbolInfoPanelSetting: ISymbolInfoPanelSetting;
 	manageColumns: IManageColumnsModal;
 	marketState: IMarketStateModal;

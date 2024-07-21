@@ -1,15 +1,21 @@
 'use client';
 
 import { useGlOptionOrdersQuery } from '@/api/queries/brokerPrivateQueries';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useTranslations } from 'next-intl';
 import PriceCard from '../PriceCard';
-import Table from './Table';
+import CallTable from './CallTable';
+import PutTable from './PutTable';
 
 const Position = () => {
 	const t = useTranslations('my_assets');
 
-	useGlOptionOrdersQuery({
+	const brokerUrls = useAppSelector(getBrokerURLs);
+
+	const { data } = useGlOptionOrdersQuery({
 		queryKey: ['glOptionOrdersQuery'],
+		enabled: Boolean(brokerUrls),
 	});
 
 	return (
@@ -21,8 +27,8 @@ const Position = () => {
 			</div>
 
 			<div className='flex-1 gap-40 flex-column'>
-				<Table type='call' />
-				<Table type='put' />
+				<CallTable data={data?.buyPositions ?? []} />
+				<PutTable data={data?.sellPositions ?? []} />
 			</div>
 		</div>
 	);

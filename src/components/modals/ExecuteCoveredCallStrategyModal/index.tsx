@@ -1,8 +1,13 @@
+import { useFreezeSymbolMutation } from '@/api/mutations/symbolMutations';
+import { useGlPositionExtraInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import lightStreamInstance from '@/classes/Lightstream';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { useAppDispatch } from '@/features/hooks';
-import { setCreateStrategyModal, updateCreateStrategyModal } from '@/features/slices/modalSlice';
-import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
+import {
+	setExecuteCoveredCallStrategyModal,
+	updateExecuteCoveredCallStrategyModal,
+} from '@/features/slices/modalSlice';
+import { type IExecuteCoveredCallStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useInputs, useSubscription } from '@/hooks';
 import { createOrder } from '@/utils/orders';
 import { type ItemUpdate } from 'lightstreamer-client-web';
@@ -17,15 +22,21 @@ import OrderOption from './OrderOption';
 import StrategyChartDetails from './StrategyChartDetails';
 import SymbolInfo from './SymbolInfo';
 
-interface CreateStrategyModalProps extends ICreateStrategyModal {}
+interface ExecuteCoveredCallStrategyModalProps extends IExecuteCoveredCallStrategyModal {}
 
-const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>(
+const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCoveredCallStrategyModalProps>(
 	({ strategy, baseSymbol, contractSize, inUseCapital, option, ...props }, ref) => {
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
 
 		const { subscribe } = useSubscription();
+
+		const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
+			queryKey: ['glPositionExtraInfoQuery'],
+		});
+
+		const { mutate: createFreezeRequest } = useFreezeSymbolMutation();
 
 		const [step, setStep] = useState<CreateStrategy.TCoveredCallSteps>('base');
 
@@ -40,7 +51,7 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 		});
 
 		const onCloseModal = () => {
-			dispatch(setCreateStrategyModal(null));
+			dispatch(setExecuteCoveredCallStrategyModal(null));
 		};
 
 		const onSymbolUpdate = (updateInfo: ItemUpdate) => {
@@ -54,7 +65,7 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 
 						if (symbolISIN === baseSymbol.symbolISIN) {
 							dispatch(
-								updateCreateStrategyModal({
+								updateExecuteCoveredCallStrategyModal({
 									baseSymbol: {
 										...baseSymbol,
 										bestLimitPrice: valueAsNumber,
@@ -65,7 +76,7 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 
 						if (symbolISIN === option.symbolISIN) {
 							dispatch(
-								updateCreateStrategyModal({
+								updateExecuteCoveredCallStrategyModal({
 									option: {
 										...option,
 										bestLimitPrice: valueAsNumber,
@@ -114,18 +125,23 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 		};
 
 		const goToNextStep = () => {
-			switch (step) {
-				case 'base':
-					setIsExpand(true);
-					break;
-				case 'freeze':
-					setStep('option');
-					break;
-				case 'option':
-					setIsExpand(true);
-					break;
-				default:
-					break;
+			if (step === 'base') {
+				if (remainsQuantity === 0) setStep('freeze');
+				else setIsExpand(true);
+
+				return;
+			}
+
+			if (step === 'freeze') {
+				createFreezeRequest({ symbolISIN: baseSymbol.symbolISIN });
+				setStep('option');
+
+				return;
+			}
+
+			if (step === 'option') {
+				setIsExpand(true);
+				return;
 			}
 		};
 
@@ -144,6 +160,10 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 
 			subscribe(sub);
 		}, []);
+
+		const remainsQuantity = inputs.useFreeStock
+			? Math.max(0, inputs.quantity - (symbolExtraInfo?.asset ?? 0))
+			: inputs.quantity;
 
 		return (
 			<Modal
@@ -169,6 +189,8 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 						<div className='w-full justify-between gap-16 flex-column'>
 							<div className='flex flex-row-reverse gap-24'>
 								<StepForm
+									asset={symbolExtraInfo?.asset ?? 0}
+									isFreeze={Boolean(symbolExtraInfo?.isFreeze)}
 									baseBestLimitPrice={baseSymbol.bestLimitPrice}
 									optionBestLimitPrice={option.bestLimitPrice}
 									step={step}
@@ -176,11 +198,9 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 									setFieldsValue={setFieldsValue}
 									nextStep={goToNextStep}
 									pending={isExpand}
-									budget={inputs.budget}
-									quantity={inputs.quantity}
 									contractSize={contractSize}
-									inUseCapital={inUseCapital}
 									optionQUantity={Math.floor(inputs.quantity / contractSize)}
+									{...inputs}
 								/>
 								<Steps baseSymbol={baseSymbol} option={option} step={step} />
 							</div>
@@ -205,7 +225,7 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 											<BuyBaseSymbol
 												symbolTitle={symbolData.symbolTitle}
 												bestLimitPrice={baseSymbol.bestLimitPrice}
-												quantity={inputs.quantity}
+												quantity={remainsQuantity}
 												price={inputs.basePrice}
 												marketUnit={symbolData.marketUnit}
 												validityDate='Day'
@@ -239,4 +259,4 @@ const CreateStrategyModal = forwardRef<HTMLDivElement, CreateStrategyModalProps>
 	},
 );
 
-export default CreateStrategyModal;
+export default ExecuteCoveredCallStrategyModal;

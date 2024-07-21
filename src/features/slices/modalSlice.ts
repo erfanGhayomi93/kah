@@ -106,7 +106,7 @@ const initialState: ModalState = {
 	tradesReportsFilters: null,
 
 	// ساخت استراتژی
-	createStrategy: null,
+	executeCoveredCallStrategyModal: null,
 
 	// تایید توافق‌نامه
 	acceptAgreement: null,
@@ -337,13 +337,19 @@ const modalSlice = createSlice({
 			state.tradesReportsFilters = payload;
 		},
 
-		setCreateStrategyModal: (state, { payload }: PayloadAction<ModalState['createStrategy']>) => {
-			state.createStrategy = payload;
+		setExecuteCoveredCallStrategyModal: (
+			state,
+			{ payload }: PayloadAction<ModalState['executeCoveredCallStrategyModal']>,
+		) => {
+			state.executeCoveredCallStrategyModal = payload;
 		},
 
-		updateCreateStrategyModal: (state, { payload }: PayloadAction<Partial<ModalState['createStrategy']>>) => {
-			if (state.createStrategy !== null) {
-				state.createStrategy = { ...state.createStrategy, ...payload };
+		updateExecuteCoveredCallStrategyModal: (
+			state,
+			{ payload }: PayloadAction<Partial<ModalState['executeCoveredCallStrategyModal']>>,
+		) => {
+			if (state.executeCoveredCallStrategyModal !== null) {
+				state.executeCoveredCallStrategyModal = { ...state.executeCoveredCallStrategyModal, ...payload };
 			}
 		},
 
@@ -432,7 +438,8 @@ export const {
 	setOrderDetailsModal,
 	setSymbolInfoPanelSettingModal,
 	setForgetPasswordModal,
-	updateCreateStrategyModal,
+	setExecuteCoveredCallStrategyModal,
+	updateExecuteCoveredCallStrategyModal,
 	setOptionFiltersModal,
 	setLogoutModal,
 	setBlackScholesModal,
@@ -462,7 +469,6 @@ export const {
 	setPhysicalSettlementReportsFiltersModal,
 	setOrdersReportsFiltersModal,
 	setTradesReportsFiltersModal,
-	setCreateStrategyModal,
 	setAcceptAgreementModal,
 	setManageColumnsModal,
 	setMarketStateModal,
@@ -516,7 +522,7 @@ export const getPhysicalSettlementReportsFiltersModal = (state: RootState) =>
 	state.modal.physicalSettlementReportsFilters;
 export const getOrdersReportsFiltersModal = (state: RootState) => state.modal.ordersReportsFilters;
 export const getTradesReportsFiltersModal = (state: RootState) => state.modal.tradesReportsFilters;
-export const getCreateStrategyModal = (state: RootState) => state.modal.createStrategy;
+export const getExecuteCoveredCallStrategyModal = (state: RootState) => state.modal.executeCoveredCallStrategyModal;
 export const getSymbolInfoPanelSettingModal = (state: RootState) => state.modal.symbolInfoPanelSetting;
 export const getMarketStateModal = (state: RootState) => state.modal.marketState;
 export const getMarketViewModal = (state: RootState) => state.modal.marketView;

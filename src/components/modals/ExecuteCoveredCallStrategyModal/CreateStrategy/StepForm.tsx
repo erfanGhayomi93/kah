@@ -5,11 +5,13 @@ import OptionForm from './Forms/OptionForm';
 interface StepFormProps extends Pick<CreateStrategy.CoveredCallInput, 'budget' | 'quantity'> {
 	step: CreateStrategy.TCoveredCallSteps;
 	pending: boolean;
+	isFreeze: boolean;
+	asset: number;
 	contractSize: number;
-	inUseCapital: number;
 	optionQUantity: number;
 	baseBestLimitPrice: number;
 	optionBestLimitPrice: number;
+	useFreeStock: boolean;
 	nextStep: () => void;
 	setFieldsValue: (values: Partial<CreateStrategy.CoveredCallInput>) => void;
 	setFieldValue: <K extends keyof CreateStrategy.CoveredCallInput>(
@@ -19,40 +21,46 @@ interface StepFormProps extends Pick<CreateStrategy.CoveredCallInput, 'budget' |
 }
 
 const StepForm = ({
+	asset,
+	isFreeze,
 	baseBestLimitPrice,
 	optionBestLimitPrice,
 	optionQUantity,
 	step,
 	pending,
 	contractSize,
-	inUseCapital,
 	budget,
 	quantity,
+	useFreeStock,
 	setFieldValue,
 	setFieldsValue,
 	nextStep,
 }: StepFormProps) => {
-	if (step === 'base')
+	if (step === 'base') {
 		return (
 			<BaseSymbolForm
+				asset={asset}
 				baseBestLimitPrice={baseBestLimitPrice}
 				optionBestLimitPrice={optionBestLimitPrice}
 				budget={budget}
 				quantity={quantity}
-				useFreeStock={false}
+				useFreeStock={useFreeStock}
 				contractSize={contractSize}
-				inUseCapital={inUseCapital}
 				setFieldValue={setFieldValue}
 				setFieldsValue={setFieldsValue}
 				nextStep={nextStep}
 				pending={pending}
 			/>
 		);
+	}
 
-	if (step === 'freeze') return <FreezeForm budget={budget} nextStep={nextStep} />;
+	if (step === 'freeze') {
+		return <FreezeForm isFreeze={isFreeze} budget={budget} nextStep={nextStep} />;
+	}
 
-	if (step === 'option')
+	if (step === 'option') {
 		return <OptionForm quantity={optionQUantity} contractSize={contractSize} budget={budget} nextStep={nextStep} />;
+	}
 
 	return null;
 };
