@@ -1,6 +1,6 @@
 import { useGlPositionExtraInfoQuery, useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import Button from '@/components/common/Button';
-import RangeSlider from '@/components/common/slider/RangeSlider';
+import RangeSlider from '@/components/common/Slider/RangeSlider';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import { LockSVG, UnlockSVG } from '@/components/icons';
 import { cn, sepNumbers } from '@/utils/helpers';
