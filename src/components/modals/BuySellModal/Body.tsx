@@ -34,14 +34,15 @@ interface BodyProps extends IBsModalInputs {
 	lowThreshold: number;
 	switchable: boolean;
 	isOption: boolean;
+	isLoadingBestLimit: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
 	priceTickSize: number;
 	quantityTickSize: number;
-	commission: Record<'buy' | 'sell' | 'default', number>;
 	close: () => void;
 	setInputValue: TSetBsModalInputs;
+	setMinimumValue: () => void;
 }
 
 const Body = (props: BodyProps) => {

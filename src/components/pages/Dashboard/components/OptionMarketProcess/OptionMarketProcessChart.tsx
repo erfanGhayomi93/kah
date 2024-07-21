@@ -1,7 +1,7 @@
 import { useGetMarketProcessChartQuery } from '@/api/queries/dashboardQueries';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
 
 type TColors = Record<Dashboard.GetMarketProcessChart.TChartType, { line: string; steps: GradientColorStopObject[] }>;
@@ -46,34 +46,6 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 		return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
 	};
 
-	const series: SeriesAreasplineOptions = useMemo(() => {
-		const result: SeriesAreasplineOptions = {
-			color: COLORS[type].line,
-			lineColor: COLORS[type].line,
-			fillColor: {
-				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-				stops: COLORS[type].steps,
-			},
-			threshold: null,
-			type: 'areaspline',
-			lineWidth: 1.5,
-			connectNulls: true,
-			data: [],
-		};
-
-		if (!data) return result;
-
-		const keys = Object.keys(data);
-		if (keys.length === 0) return result;
-
-		result.data = keys.map((d) => ({
-			x: new Date(d).getTime(),
-			y: data[d],
-		}));
-
-		return result;
-	}, [interval, type, data]);
-
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
 
@@ -109,15 +81,50 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 					},
 				},
 			},
-			series: [series],
+			series: [
+				{
+					color: COLORS[type].line,
+					lineColor: COLORS[type].line,
+					fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+						stops: COLORS[type].steps,
+					},
+					threshold: null,
+					type: 'areaspline',
+					lineWidth: 1.5,
+					connectNulls: true,
+					data: [],
+				},
+			],
 		});
 	}, []);
 
 	useEffect(() => {
-		if (!chartRef.current) return;
+		if (!chartRef.current || !data) return;
 
-		chartRef.current.series[0].update(series);
-	}, [series]);
+		const result: SeriesAreasplineOptions = {
+			color: COLORS[type].line,
+			lineColor: COLORS[type].line,
+			fillColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: COLORS[type].steps,
+			},
+			threshold: null,
+			type: 'areaspline',
+			lineWidth: 1.5,
+			connectNulls: true,
+			data: [],
+		};
+
+		const keys = Object.keys(data);
+
+		result.data = keys.map((d) => ({
+			x: new Date(d).getTime(),
+			y: data[d],
+		}));
+
+		chartRef.current.series[0].update(result);
+	}, [data, type]);
 
 	useEffect(() => {
 		if (!chartRef.current) return;

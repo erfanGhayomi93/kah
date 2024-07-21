@@ -12,6 +12,7 @@ const ContractMarketDepth = ({ symbol }: ContractMarketDepthProps) => {
 			symbolISIN={symbol.symbolISIN}
 			lowThreshold={symbol.lowThreshold}
 			highThreshold={symbol.highThreshold}
+			yesterdayClosingPrice={symbol.yesterdayClosingPrice}
 		/>
 	);
 };

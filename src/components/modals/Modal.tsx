@@ -1,5 +1,4 @@
 import { usePathname } from '@/navigation';
-import { cn } from '@/utils/helpers';
 import clsx from 'clsx';
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
@@ -29,6 +28,13 @@ interface ModalHeaderCustomProps {
 	onExpanded?: () => void;
 	onClear?: () => void;
 	onReset?: () => void;
+}
+
+interface WrapperProps {
+	children: React.ReactNode;
+	suppress: boolean;
+	style: Partial<Record<'root' | 'container', React.CSSProperties>>;
+	classes: RecordClasses<'root' | 'container'>;
 }
 
 type ModalHeaderProps = ModalHeaderChildrenProps | ModalHeaderCustomProps;
@@ -118,27 +124,37 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 		useEffect(() => () => onClose(), [pathname]);
 
 		return createPortal(
-			<div
+			<Wrapper
 				ref={rootRef}
-				style={style?.root}
-				className={clsx(
-					'presence',
-					styles.root,
-					classes?.root,
-					transparent && [styles.transparent, classes?.transparent],
-				)}
+				suppress={suppressClickOutside}
+				style={{
+					container: style?.container,
+					root: style?.root,
+				}}
+				classes={{
+					container: [styles.container, classes?.container],
+					root: [
+						'presence',
+						styles.root,
+						classes?.root,
+						transparent && [styles.transparent, classes?.transparent],
+					],
+				}}
 			>
-				<div style={style?.container} className={cn(styles.container, classes?.container)}>
-					<Moveable ref={modalRef} enabled={moveable}>
-						<div
-							style={{ top, ...style?.modal }}
-							className={cn(styles.modal, size && styles[size], classes?.modal)}
-						>
-							{children}
-						</div>
-					</Moveable>
-				</div>
-			</div>,
+				<Moveable ref={modalRef} enabled={moveable}>
+					<div
+						style={{ top, ...style?.modal }}
+						className={clsx(
+							styles.modal,
+							size && styles[size],
+							classes?.modal,
+							(suppressClickOutside || transparent) && [styles.shadow],
+						)}
+					>
+						{children}
+					</div>
+				</Moveable>
+			</Wrapper>,
 			portalElement ?? document.body,
 		);
 	},
@@ -181,6 +197,18 @@ const Header = (props: ModalHeaderProps) => {
 		</div>
 	);
 };
+
+const Wrapper = forwardRef<HTMLDivElement, WrapperProps>(({ children, classes, style, suppress }, ref) => {
+	if (suppress) return children;
+
+	return (
+		<div ref={ref} style={style?.root} className={clsx(classes?.root)}>
+			<div style={style?.container} className={clsx(classes?.container)}>
+				{children}
+			</div>
+		</div>
+	);
+});
 
 export { Header };
 export default Modal;

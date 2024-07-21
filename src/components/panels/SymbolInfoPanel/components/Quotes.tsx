@@ -7,9 +7,10 @@ interface QuotesProps {
 	symbolISIN: string;
 	lowThreshold: number;
 	highThreshold: number;
+	yesterdayClosingPrice: number;
 }
 
-const Quotes = ({ symbolISIN, lowThreshold, highThreshold }: QuotesProps) => {
+const Quotes = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice }: QuotesProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -25,7 +26,12 @@ const Quotes = ({ symbolISIN, lowThreshold, highThreshold }: QuotesProps) => {
 	return (
 		<Section name='quotes' defaultActiveTab='5_quotes' tabs={tabs}>
 			<div className='px-8 py-16'>
-				<SymbolMarketDepth symbolISIN={symbolISIN} lowThreshold={lowThreshold} highThreshold={highThreshold} />
+				<SymbolMarketDepth
+					yesterdayClosingPrice={yesterdayClosingPrice}
+					symbolISIN={symbolISIN}
+					lowThreshold={lowThreshold}
+					highThreshold={highThreshold}
+				/>
 			</div>
 		</Section>
 	);

@@ -374,6 +374,7 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		settlementdeleteCash: data.settlementdeleteCash,
 		GLPortfolio: data.GLPortfolio,
 		GLOptionOrders: data.GLOptionOrders,
+		GLPositionExtraInfo: data.GLPositionExtraInfo,
 	};
 
 	return urls;

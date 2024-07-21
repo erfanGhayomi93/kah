@@ -1,3 +1,4 @@
+import RangeSlider from '@/components/common/Slider/RangeSlider';
 import { convertStringToInteger, copyNumberToClipboard, isBetween, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -5,11 +6,12 @@ import React, { useMemo } from 'react';
 
 interface TotalTradeValueInputProps {
 	value: number;
-	setToMinimum: () => void;
+	purchasePower: null | number;
+	setToMinimum: undefined | (() => void);
 	onChange: (value: number) => void;
 }
 
-const TotalTradeValueInput = ({ value, setToMinimum, onChange }: TotalTradeValueInputProps) => {
+const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: TotalTradeValueInputProps) => {
 	const t = useTranslations('bs_modal');
 
 	const setInputValue = (v: number) => {
@@ -43,8 +45,8 @@ const TotalTradeValueInput = ({ value, setToMinimum, onChange }: TotalTradeValue
 	}, [value]);
 
 	return (
-		<div className='flex h-64 items-start'>
-			<label className='relative h-48 w-full flex-1 rounded bg-white flex-items-center input-group'>
+		<div className='gap-4 pb-16 flex-column'>
+			<label className='relative w-full flex-48 rounded bg-white flex-items-center input-group'>
 				<input
 					onCopy={(e) => copyNumberToClipboard(e, Number(value))}
 					type='text'
@@ -60,13 +62,35 @@ const TotalTradeValueInput = ({ value, setToMinimum, onChange }: TotalTradeValue
 					<legend>{t('trade_value_label')}</legend>
 				</fieldset>
 
-				<div className='flex-items-center'>
-					<span className='w-1 h-16 bg-light-gray-200' />
-					<button onClick={setToMinimum} type='button' className='h-full px-8 text-tiny text-light-gray-500'>
-						{t('minimum_amount')}
-					</button>
-				</div>
+				{setToMinimum && (
+					<div className='flex-items-center'>
+						<span className='h-16 w-1 bg-light-gray-200' />
+						<button
+							onClick={setToMinimum}
+							type='button'
+							className='h-full px-8 text-tiny text-light-gray-500'
+						>
+							{t('minimum_amount')}
+						</button>
+					</div>
+				)}
 			</label>
+
+			{purchasePower !== null && (
+				<div className='gap-4 flex-column'>
+					<div className='text-tiny flex-justify-between'>
+						<span className='text-light-gray-700'>{t('purchase_power')}:</span>
+						<span className='text-light-gray-800'>{sepNumbers(String(purchasePower))}</span>
+					</div>
+
+					<RangeSlider
+						disabled={purchasePower === 0}
+						max={purchasePower}
+						value={value}
+						onChange={(value) => onChange(value)}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };

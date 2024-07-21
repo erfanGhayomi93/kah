@@ -7,9 +7,10 @@ interface MarketDepthProps {
 	symbolISIN: string;
 	lowThreshold: number;
 	highThreshold: number;
+	yesterdayClosingPrice: number;
 }
 
-const MarketDepth = ({ symbolISIN, lowThreshold, highThreshold }: MarketDepthProps) => {
+const MarketDepth = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice }: MarketDepthProps) => {
 	const t = useTranslations();
 
 	const tabs: ITabIem[] = useMemo(
@@ -30,6 +31,7 @@ const MarketDepth = ({ symbolISIN, lowThreshold, highThreshold }: MarketDepthPro
 					symbolISIN={symbolISIN}
 					lowThreshold={lowThreshold}
 					highThreshold={highThreshold}
+					yesterdayClosingPrice={yesterdayClosingPrice}
 				/>
 			</div>
 		</Section>

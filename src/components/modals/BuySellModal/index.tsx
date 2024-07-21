@@ -1,13 +1,13 @@
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
-import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import { useSymbolBestLimitQuery, useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import OFormula from '@/classes/Math/OFormula';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuySellModal } from '@/features/slices/modalSlice';
 import { type IBuySellModal } from '@/features/slices/types/modalSlice.interfaces';
-import { divide } from '@/utils/helpers';
 import dynamic from 'next/dynamic';
-import { forwardRef, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 import Body from './Body';
@@ -59,7 +59,11 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			queryKey: ['symbolInfoQuery', symbolISIN],
 		});
 
-		const { data: commissions } = useCommissionsQuery({
+		const { data: bestLimitData, isLoading: isLoadingBestLimit } = useSymbolBestLimitQuery({
+			queryKey: ['symbolBestLimitQuery', symbolISIN],
+		});
+
+		const { data: commissionData } = useCommissionsQuery({
 			queryKey: ['commissionQuery'],
 		});
 
@@ -76,9 +80,17 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			holdAfterOrder: holdAfterOrder ?? false,
 		});
 
+		const formula = () => {
+			return OFormula.setType(symbolData?.isOption ? 'option' : 'base')
+				.setSide(inputs.side)
+				.setCommission(commission)
+				.setContractSize(symbolData?.contractSize ?? 0)
+				.setRequiredMargin(symbolData?.initialMargin ?? 0);
+		};
+
 		const setInputValue: TSetBsModalInputs = (arg1, arg2) => {
 			if (typeof arg1 === 'string') {
-				if (arg1 === 'price') return onChangePrice(arg2 as number);
+				if (arg1 === 'price') return onChangePrice(arg2 as number, true);
 				if (arg1 === 'quantity') return onChangeQuantity(arg2 as number);
 				if (arg1 === 'value') return onChangeValue(arg2 as number);
 
@@ -99,24 +111,35 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			}
 		};
 
+		const setMinimumValue = () => {
+			let value = 5e6;
+			const quantity = formula().quantity(inputs.price, value);
+			value = formula().value(inputs.price, quantity);
+
+			setInputs((values) => ({
+				...values,
+				value,
+				quantity,
+			}));
+		};
+
 		const onCloseModal = () => {
 			dispatch(setBuySellModal(null));
 		};
 
-		const onChangePrice = (price: number): void => {
-			let value = price * inputs.quantity;
-			value += Math.round(value * commission.default);
+		const onChangePrice = (price: number, checkIsLock: boolean): void => {
+			const value = formula().value(price, inputs.quantity);
 
 			setInputs((values) => ({
 				...values,
+				priceLock: checkIsLock ? false : values.priceLock,
 				price,
 				value,
 			}));
 		};
 
 		const onChangeQuantity = (quantity: number): void => {
-			let value = inputs.price * quantity;
-			value += Math.round(value * commission.default);
+			const value = formula().value(inputs.price, quantity);
 
 			setInputs((values) => ({
 				...values,
@@ -126,51 +149,40 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		};
 
 		const onChangeValue = (value: number): void => {
-			const { price } = inputs;
-			const estimatedQuantity = Math.max(divide(value, price), 0);
+			const quantity = formula().quantity(inputs.price, value);
 
-			const valuePerQuantity = price + price * commission.default;
-
-			let defaultValue = estimatedQuantity * price;
-			defaultValue += commission.default * defaultValue;
-
-			const remainValue = Math.floor(divide(defaultValue - value, valuePerQuantity));
-			const realQuantity = Math.floor(Math.max(estimatedQuantity - remainValue, 0));
-
-			defaultValue = realQuantity * price;
-			defaultValue += Math.round(commission.default * defaultValue);
-
-			setInputs((prev) => ({
-				...prev,
-				quantity: realQuantity,
-				value: defaultValue,
+			setInputs((values) => ({
+				...values,
+				quantity,
+				value,
 			}));
 		};
 
-		const commission = useMemo<Record<'default' | 'buy' | 'sell', number>>(() => {
-			const result: Record<'default' | 'buy' | 'sell', number> = { default: 0, buy: 0, sell: 0 };
+		const commission = useMemo<Record<TBsSides, number>>(() => {
+			const result: Record<TBsSides, number> = { buy: 0, sell: 0 };
 
-			if (!commissions || !symbolData) return result;
+			if (!commissionData || !symbolData) return result;
 
-			if (!symbolData.marketUnit) {
-				// eslint-disable-next-line no-console
-				console.error(`MarketUnit not defined: ${symbolData.marketUnit}`);
-				return result;
+			const c = commissionData[symbolData.marketUnit];
+			if (c && typeof c === 'object') {
+				result.buy = Math.abs(c.buyCommission);
+				result.sell = Math.abs(c.sellCommission);
 			}
-
-			const comm = commissions[symbolData.marketUnit];
-			if (!comm) {
-				// eslint-disable-next-line no-console
-				console.error(`MarketUnit not found: ${symbolData.marketUnit}`);
-				return result;
-			}
-
-			result.sell = comm.sellCommission;
-			result.buy = comm.buyCommission;
-			result.default = side === 'buy' ? result.buy : result.sell;
 
 			return result;
-		}, [JSON.stringify(commissions), side, symbolData?.marketUnit]);
+		}, [JSON.stringify(commissionData), inputs.side, symbolData?.marketUnit]);
+
+		useEffect(() => {
+			onChangeValue(formula().value(inputs.price, inputs.quantity));
+		}, [inputs.side]);
+
+		useEffect(() => {
+			if (!inputs.priceLock || !Array.isArray(bestLimitData)) return;
+			const bestLimitPrice =
+				inputs.side === 'buy' ? bestLimitData[0].bestSellLimitPrice : bestLimitData[0].bestBuyLimitPrice;
+
+			onChangePrice(bestLimitPrice, false);
+		}, [inputs.priceLock, inputs.side, bestLimitData]);
 
 		return (
 			<Modal suppressClickOutside moveable transparent top='16%' onClose={onCloseModal} {...props} ref={ref}>
@@ -186,28 +198,33 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 						<div className='relative w-full flex-1 overflow-hidden'>
 							{inputs.expand && (
 								<ErrorBoundary>
-									<SymbolInfo symbolData={symbolData ?? null} isLoading={isLoading} />
+									<SymbolInfo
+										symbolData={symbolData ?? null}
+										isLoading={isLoading}
+										setInputValue={setInputValue}
+									/>
 								</ErrorBoundary>
 							)}
 						</div>
 
 						<Body
 							{...inputs}
+							isLoadingBestLimit={isLoadingBestLimit}
 							isOption={Boolean(symbolData?.isOption)}
 							highThreshold={symbolData?.highThreshold ?? 0}
 							lowThreshold={symbolData?.lowThreshold ?? 0}
 							symbolTitle={symbolTitle}
-							commission={commission}
 							switchable={switchable}
 							id={id}
 							mode={mode}
 							type={type}
-							close={onCloseModal}
 							symbolISIN={symbolISIN}
 							symbolType={symbolType}
 							priceTickSize={symbolData?.orderPriceTickSize ?? 0}
 							quantityTickSize={symbolData?.orderQuantityTickSize ?? 0}
+							close={onCloseModal}
 							setInputValue={setInputValue}
+							setMinimumValue={setMinimumValue}
 						/>
 					</div>
 

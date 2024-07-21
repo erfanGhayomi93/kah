@@ -133,9 +133,9 @@ const Header = () => {
 	}, [isLoggedIn]);
 
 	const COLORS: Record<Broker.TRemainStatus, string> = {
-		Normal: 'gray-1000',
-		AtRisk: 'warning-100',
-		CallMargin: 'error-100',
+		Normal: 'light-gray-600',
+		AtRisk: 'light-warning-100',
+		CallMargin: 'light-error-100',
 	};
 
 	const customerTitle = userInfo?.customerTitle ?? t('common.app_user');
