@@ -1,4 +1,4 @@
-import RangeSlider from '@/components/common/Slider/RangeSlider';
+import RangeSlider from '@/components/common/slider/RangeSlider';
 import { convertStringToInteger, copyNumberToClipboard, isBetween, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
