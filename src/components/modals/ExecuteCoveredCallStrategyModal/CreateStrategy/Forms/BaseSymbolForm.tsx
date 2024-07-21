@@ -161,9 +161,12 @@ const BaseSymbolForm = ({
 					afterArrow
 					disabled={pending || quantity === 0 || budget === 0 || isQuantityInvalid}
 					type='submit'
-					className='h-48 rounded text-lg shadow btn-success'
+					className={clsx(
+						'h-48 rounded text-lg shadow',
+						remainsQuantity === 0 ? 'btn-primary' : 'btn-success',
+					)}
 				>
-					{t('side.buy')}
+					{t(remainsQuantity === 0 ? 'common.continue' : 'side.buy')}
 				</Button>
 			</div>
 		</form>

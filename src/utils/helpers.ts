@@ -372,6 +372,7 @@ export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
 		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
 		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
 		settlementdeleteCash: data.settlementdeleteCash,
+		FreezeRequest: data.FreezeRequest,
 		GLPortfolio: data.GLPortfolio,
 		GLOptionOrders: data.GLOptionOrders,
 		GLPositionExtraInfo: data.GLPositionExtraInfo,

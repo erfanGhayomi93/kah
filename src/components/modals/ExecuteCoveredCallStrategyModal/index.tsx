@@ -1,3 +1,4 @@
+import { useFreezeSymbolMutation } from '@/api/mutations/symbolMutations';
 import { useGlPositionExtraInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import lightStreamInstance from '@/classes/Lightstream';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
@@ -34,6 +35,8 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 		const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
 			queryKey: ['glPositionExtraInfoQuery'],
 		});
+
+		const { mutate: createFreezeRequest } = useFreezeSymbolMutation();
 
 		const [step, setStep] = useState<CreateStrategy.TCoveredCallSteps>('base');
 
@@ -122,18 +125,23 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 		};
 
 		const goToNextStep = () => {
-			switch (step) {
-				case 'base':
-					setIsExpand(true);
-					break;
-				case 'freeze':
-					setStep('option');
-					break;
-				case 'option':
-					setIsExpand(true);
-					break;
-				default:
-					break;
+			if (step === 'base') {
+				if (remainsQuantity === 0) setStep('freeze');
+				else setIsExpand(true);
+
+				return;
+			}
+
+			if (step === 'freeze') {
+				createFreezeRequest({ symbolISIN: baseSymbol.symbolISIN });
+				setStep('option');
+
+				return;
+			}
+
+			if (step === 'option') {
+				setIsExpand(true);
+				return;
 			}
 		};
 
@@ -152,6 +160,10 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 
 			subscribe(sub);
 		}, []);
+
+		const remainsQuantity = inputs.useFreeStock
+			? Math.max(0, inputs.quantity - (symbolExtraInfo?.asset ?? 0))
+			: inputs.quantity;
 
 		return (
 			<Modal
@@ -178,6 +190,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 							<div className='flex flex-row-reverse gap-24'>
 								<StepForm
 									asset={symbolExtraInfo?.asset ?? 0}
+									isFreeze={Boolean(symbolExtraInfo?.isFreeze)}
 									baseBestLimitPrice={baseSymbol.bestLimitPrice}
 									optionBestLimitPrice={option.bestLimitPrice}
 									step={step}
@@ -212,7 +225,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 											<BuyBaseSymbol
 												symbolTitle={symbolData.symbolTitle}
 												bestLimitPrice={baseSymbol.bestLimitPrice}
-												quantity={inputs.quantity}
+												quantity={remainsQuantity}
 												price={inputs.basePrice}
 												marketUnit={symbolData.marketUnit}
 												validityDate='Day'

@@ -658,6 +658,7 @@ declare namespace Broker {
 		| 'GLPortfolio'
 		| 'TodayOrders'
 		| 'ExecutedOrders'
+		| 'FreezeRequest'
 		| 'Drafts'
 		| 'CreateOrder'
 		| 'OrdersCount'

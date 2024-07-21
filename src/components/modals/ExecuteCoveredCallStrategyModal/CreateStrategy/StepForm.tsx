@@ -5,6 +5,7 @@ import OptionForm from './Forms/OptionForm';
 interface StepFormProps extends Pick<CreateStrategy.CoveredCallInput, 'budget' | 'quantity'> {
 	step: CreateStrategy.TCoveredCallSteps;
 	pending: boolean;
+	isFreeze: boolean;
 	asset: number;
 	contractSize: number;
 	optionQUantity: number;
@@ -21,6 +22,7 @@ interface StepFormProps extends Pick<CreateStrategy.CoveredCallInput, 'budget' |
 
 const StepForm = ({
 	asset,
+	isFreeze,
 	baseBestLimitPrice,
 	optionBestLimitPrice,
 	optionQUantity,
@@ -52,10 +54,13 @@ const StepForm = ({
 		);
 	}
 
-	if (step === 'freeze') return <FreezeForm budget={budget} nextStep={nextStep} />;
+	if (step === 'freeze') {
+		return <FreezeForm isFreeze={isFreeze} budget={budget} nextStep={nextStep} />;
+	}
 
-	if (step === 'option')
+	if (step === 'option') {
 		return <OptionForm quantity={optionQUantity} contractSize={contractSize} budget={budget} nextStep={nextStep} />;
+	}
 
 	return null;
 };

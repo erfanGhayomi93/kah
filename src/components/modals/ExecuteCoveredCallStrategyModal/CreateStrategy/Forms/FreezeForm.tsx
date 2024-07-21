@@ -11,10 +11,11 @@ interface StepProps {
 
 interface FreezeFormProps {
 	budget: number;
+	isFreeze: boolean;
 	nextStep: () => void;
 }
 
-const FreezeForm = ({ budget, nextStep }: FreezeFormProps) => {
+const FreezeForm = ({ budget, isFreeze, nextStep }: FreezeFormProps) => {
 	const t = useTranslations();
 
 	return (
@@ -48,12 +49,12 @@ const FreezeForm = ({ budget, nextStep }: FreezeFormProps) => {
 					}}
 				/>
 
-				<span className='text-light-gray-800 text-base font-medium'>
+				<span className='text-base font-medium text-light-gray-800'>
 					{t('create_strategy.freeze_being_confident')}
 				</span>
 
-				<Button type='submit' className='h-48 rounded text-lg shadow btn-primary'>
-					{t('create_strategy.freeze')}
+				<Button afterArrow={isFreeze} type='submit' className='h-48 rounded text-lg shadow btn-primary'>
+					{t(isFreeze ? 'common.continue' : 'create_strategy.freeze')}
 				</Button>
 			</div>
 
@@ -68,10 +69,10 @@ const FreezeForm = ({ budget, nextStep }: FreezeFormProps) => {
 
 const Step = ({ id, children }: StepProps) => (
 	<li>
-		<span className='border-light-gray-200 text-light-gray-700 mt-4 size-16 select-none rounded-circle border pt-2 align-middle text-sm flex-justify-center'>
+		<span className='mt-4 size-16 select-none rounded-circle border border-light-gray-200 pt-2 align-middle text-sm text-light-gray-700 flex-justify-center'>
 			{id}
 		</span>
-		<p className='text-light-gray-800 flex-1 text-justify text-tiny leading-10'>{children}</p>
+		<p className='flex-1 text-justify text-tiny leading-10 text-light-gray-800'>{children}</p>
 	</li>
 );
 

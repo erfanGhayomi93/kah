@@ -268,6 +268,7 @@ declare interface SymbolContractModalStates {
 
 declare type IBrokerUrls = Record<
 	| 'todayOrders'
+	| 'FreezeRequest'
 	| 'GLPortfolio'
 	| 'GLPositionExtraInfo'
 	| 'GLOptionOrders'
