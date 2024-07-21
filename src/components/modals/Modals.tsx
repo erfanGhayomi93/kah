@@ -10,8 +10,8 @@ import {
 	setChoiceBrokerModal,
 	setChoiceCollateralModal,
 	setChooseGuaranteeMethodModal,
-	setCreateStrategyModal,
 	setDepositModal,
+	setExecuteCoveredCallStrategyModal,
 	setFreezeModal,
 	setManageOptionWatchlistListModal,
 	setMoveSymbolToWatchlistModal,
@@ -77,7 +77,7 @@ const ChoiceCollateral = lazy(() => import('./ChoiceCollateral'));
 
 const Confirm = lazy(() => import('./Confirm'));
 
-const CreateStrategyModal = lazy(() => import('./CreateStrategyModal'));
+const ExecuteCoveredCallStrategyModal = lazy(() => import('./ExecuteCoveredCallStrategyModal'));
 
 const DepositWithReceiptFiltersModal = lazy(() => import('./DepositWithReceiptReportsFiltersModal'));
 
@@ -172,7 +172,7 @@ const Modals = () => {
 		cashSettlementReportsFilters,
 		physicalSettlementReportsFilters,
 		ordersReportsFilters,
-		createStrategy,
+		executeCoveredCallStrategyModal,
 		tradesReportsFilters,
 		manageColumns,
 		marketState,
@@ -510,10 +510,10 @@ const Modals = () => {
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
-				{createStrategy && (
+				{executeCoveredCallStrategyModal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setCreateStrategyModal(null))} broker>
-							<CreateStrategyModal {...createStrategy} />
+						<AuthorizeMiddleware callback={() => dispatch(setExecuteCoveredCallStrategyModal(null))} broker>
+							<ExecuteCoveredCallStrategyModal {...executeCoveredCallStrategyModal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}

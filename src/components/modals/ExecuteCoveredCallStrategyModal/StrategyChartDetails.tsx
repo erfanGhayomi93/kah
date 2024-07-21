@@ -1,5 +1,5 @@
 import AnalyzeChart from '@/components/common/Analyze/AnalyzeChart';
-import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
+import { type IExecuteCoveredCallStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
 import { useAnalyze } from '@/hooks';
 import { divide, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 
 interface StrategyChartDetailsProps
 	extends CreateStrategy.CoveredCallInput,
-		Pick<ICreateStrategyModal, 'baseSymbol' | 'option' | 'contractSize'> {}
+		Pick<IExecuteCoveredCallStrategyModal, 'baseSymbol' | 'option' | 'contractSize'> {}
 
 const StrategyChartDetails = ({
 	quantity,

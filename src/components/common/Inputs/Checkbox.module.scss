@@ -38,14 +38,19 @@
 		background-position: center;
 		background-repeat: no-repeat;
 	}
+}
 
-	&.disabled {
+.disabled {
+	user-select: none;
+	cursor: default;
+	border-color: theme("colors.light.gray.600");
+	opacity: 0.6;
+
+	&.checked {
+		background-color: theme("colors.light.gray.600");
+	}
+
+	.label {
 		cursor: default;
-		border-color: theme("colors.light.gray.600");
-		opacity: 0.6;
-
-		&.checked {
-			background-color: theme("colors.light.gray.600");
-		}
 	}
 }

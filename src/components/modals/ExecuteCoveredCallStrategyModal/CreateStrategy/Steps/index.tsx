@@ -1,4 +1,4 @@
-import { type ICreateStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
+import { type IExecuteCoveredCallStrategyModal } from '@/features/slices/types/modalSlice.interfaces';
 import clsx from 'clsx';
 import styles from '../../CreateStrategyModal.module.scss';
 import BaseSymbolStep from './BaseSymbolStep';
@@ -6,14 +6,14 @@ import FreezeStep from './FreezeStep';
 import OptionStep from './OptionStep';
 
 interface StepsProps {
-	baseSymbol: ICreateStrategyModal['baseSymbol'];
-	option: ICreateStrategyModal['option'];
+	baseSymbol: IExecuteCoveredCallStrategyModal['baseSymbol'];
+	option: IExecuteCoveredCallStrategyModal['option'];
 	step: CreateStrategy.TCoveredCallSteps;
 }
 
 const Steps = ({ step, baseSymbol, option }: StepsProps) => {
 	return (
-		<div style={{ flex: '0 0 23.6rem', minHeight: '9.6rem' }} className='bg-light-gray-100 rounded p-16'>
+		<div style={{ flex: '0 0 23.6rem', minHeight: '9.6rem' }} className='rounded bg-light-gray-100 p-16'>
 			<ul className={styles.list}>
 				<BaseSymbolStep
 					symbolTitle={baseSymbol.symbolTitle}

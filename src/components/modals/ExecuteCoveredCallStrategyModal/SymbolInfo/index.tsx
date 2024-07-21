@@ -2,8 +2,8 @@ import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import NoData from '@/components/common/NoData';
 import clsx from 'clsx';
 import React from 'react';
-import BaseSymbolTabs from '../SymbolInfo/BaseSymbolTabs';
-import SymbolMainDetails from '../SymbolInfo/SymbolMainDetails';
+import BaseSymbolTabs from './BaseSymbolTabs';
+import SymbolMainDetails from './SymbolMainDetails';
 
 interface SymbolInfoProps {
 	symbolISIN: string;

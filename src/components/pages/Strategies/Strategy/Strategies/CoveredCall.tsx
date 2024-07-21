@@ -7,8 +7,8 @@ import { initialColumnsCoveredCall, initialHiddenColumnsCoveredCall } from '@/co
 import { useAppDispatch } from '@/features/hooks';
 import {
 	setAnalyzeModal,
-	setCreateStrategyModal,
 	setDescriptionModal,
+	setExecuteCoveredCallStrategyModal,
 	setManageColumnsModal,
 	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
@@ -75,7 +75,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		try {
 			// ? baseSymbolEstimatedBudget = (contractSize * (baseBestSellLimitPrice - optionBestBuyLimitPrice)) * orderQuantity
 			dispatch(
-				setCreateStrategyModal({
+				setExecuteCoveredCallStrategyModal({
 					contractSize: data.contractSize ?? 0,
 					inUseCapital: data.inUseCapital ?? 0,
 					strategy: 'CoveredCall',

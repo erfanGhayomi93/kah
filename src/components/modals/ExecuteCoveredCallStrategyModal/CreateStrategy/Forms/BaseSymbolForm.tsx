@@ -3,13 +3,14 @@ import Checkbox from '@/components/common/Inputs/Checkbox';
 import InputLegend from '@/components/common/Inputs/InputLegend';
 import Tooltip from '@/components/common/Tooltip';
 import { QuestionCircleOutlineSVG, XCircleSVG } from '@/components/icons';
-import { convertStringToInteger, divide } from '@/utils/helpers';
+import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 interface BaseSymbolFormProps extends Pick<CreateStrategy.CoveredCallInput, 'useFreeStock' | 'budget' | 'quantity'> {
+	asset: number;
 	contractSize: number;
-	inUseCapital: number;
 	pending: boolean;
 	baseBestLimitPrice: number;
 	optionBestLimitPrice: number;
@@ -22,10 +23,10 @@ interface BaseSymbolFormProps extends Pick<CreateStrategy.CoveredCallInput, 'use
 }
 
 const BaseSymbolForm = ({
+	asset,
 	baseBestLimitPrice,
 	optionBestLimitPrice,
 	contractSize,
-	inUseCapital,
 	quantity,
 	budget,
 	useFreeStock,
@@ -50,24 +51,31 @@ const BaseSymbolForm = ({
 	};
 
 	const onChangeBudget = (v: number) => {
-		// ? orderQuantity = budget / inUseCapital
-		const quantity = Math.floor(divide(v, inUseCapital)) * contractSize;
+		// ? quantity = budget / (contractSize * (baseBestLimitPrice - optionBestLimitPrice));
 
+		const q = v / (contractSize * (baseBestLimitPrice - optionBestLimitPrice));
 		setFieldsValue({
 			budget: v,
-			quantity,
+			quantity: Math.floor(q),
 		});
 	};
 
 	const onChangeQuantity = (v: number) => {
-		// ? budget = orderQuantity * (contractSize * (baseBestSellLimitPrice - optionBestBuyLimitPrice))
-		const budget = v * (contractSize * (baseBestLimitPrice - optionBestLimitPrice));
+		// ? budget = quantity * contractSize * (baseBestLimitPrice - optionBestLimitPrice);
 
+		const b = v * contractSize * (baseBestLimitPrice - optionBestLimitPrice);
 		setFieldsValue({
 			quantity: v,
-			budget,
+			budget: Math.ceil(b),
 		});
 	};
+
+	const validateQuantity = () => {
+		const b = quantity * contractSize * (baseBestLimitPrice - optionBestLimitPrice);
+		setFieldValue('budget', Math.ceil(b));
+	};
+
+	const remainsQuantity = useFreeStock ? Math.max(0, quantity - asset) : quantity;
 
 	const isQuantityInvalid = quantity % contractSize !== 0;
 
@@ -93,46 +101,48 @@ const BaseSymbolForm = ({
 					classes={{
 						prefix: 'w-40',
 					}}
+					onBlur={validateQuantity}
 				/>
 
-				<div className='gap-8 flex-column'>
-					<InputLegend
-						type='text'
-						value={quantity}
-						onChange={(v) => onChangeQuantity(Number(convertStringToInteger(v)))}
-						placeholder={t('create_strategy.required_quantity')}
-						prefix={t('create_strategy.stock')}
-						maxLength={10}
-						autoTranslateLegend
-						onBlur={() => setIsQuantityTouched(true)}
-						hasError={isQuantityTouched && isQuantityInvalid}
-						classes={{
-							prefix: 'w-40',
-						}}
-					/>
+				<div className={clsx('flex-column', isQuantityTouched && isQuantityInvalid ? 'gap-8' : 'gap-16')}>
+					<div className='gap-4 flex-column'>
+						<InputLegend
+							type='text'
+							value={quantity}
+							onChange={(v) => onChangeQuantity(Number(convertStringToInteger(v)))}
+							placeholder={t('create_strategy.required_quantity')}
+							prefix={t('create_strategy.stock')}
+							maxLength={10}
+							autoTranslateLegend
+							onBlur={() => setIsQuantityTouched(true)}
+							hasError={isQuantityTouched && isQuantityInvalid}
+							classes={{
+								prefix: 'w-40',
+							}}
+						/>
 
-					<div className='h-20 text-light-error-100 flex-items-center'>
 						{isQuantityTouched && isQuantityInvalid && (
-							<>
-								<XCircleSVG width='2rem' height='2rem' />
+							<div className='gap-6 text-light-error-100 flex-items-center'>
+								<XCircleSVG width='1.6rem' height='1.6rem' />
 								<span className='text-tiny'>
 									{t('create_strategy.strategy_quantity_invalid', { n: contractSize })}
 								</span>
-							</>
+							</div>
 						)}
+					</div>
+
+					<div className='text-tiny text-light-gray-700 flex-justify-between'>
+						<span>{t('create_strategy.free_stock_quantity')}:</span>
+						<span className='flex gap-4 text-light-gray-500'>
+							<span className='font-medium text-light-gray-800'>{sepNumbers(String(asset))}</span>
+							{t('create_strategy.stock')}
+						</span>
 					</div>
 				</div>
 
-				<div className='text-tiny text-light-gray-700 flex-justify-between'>
-					<span>{t('create_strategy.free_stock_quantity')}:</span>
-					<span className='flex gap-4 text-light-gray-500'>
-						<span className='font-medium text-light-gray-800'>10</span>
-						{t('create_strategy.stock')}
-					</span>
-				</div>
-
 				<Checkbox
-					checked={useFreeStock}
+					disabled={asset === 0}
+					checked={asset === 0 ? false : useFreeStock}
 					label={t('create_strategy.buy_assets_by_free_stock')}
 					onChange={(v) => setFieldValue('useFreeStock', v)}
 				/>
@@ -142,7 +152,7 @@ const BaseSymbolForm = ({
 				<div className='h-24 text-tiny text-light-gray-700 flex-justify-between'>
 					<span>{t('create_strategy.remain_quantities')}:</span>
 					<span className='flex gap-4 text-light-gray-500'>
-						<span className='font-medium text-light-gray-800'>90</span>
+						<span className='font-medium text-light-gray-800'>{sepNumbers(String(remainsQuantity))}</span>
 						{t('create_strategy.stock')}
 					</span>
 				</div>

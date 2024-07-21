@@ -17,7 +17,7 @@ const Checkbox = ({ classes, disabled, checked, label, onChange, ...props }: ICh
 	};
 
 	return (
-		<div className={cn(styles.root, classes?.root, disabled && styles.disabled)}>
+		<div className={cn(styles.root, classes?.root, disabled && [styles.disabled, classes?.disabled])}>
 			<label className={cn(styles.label, classes?.label)}>
 				<input
 					type='checkbox'
@@ -26,7 +26,7 @@ const Checkbox = ({ classes, disabled, checked, label, onChange, ...props }: ICh
 					className={cn(
 						styles.checkbox,
 						classes?.checkbox,
-						disabled && [styles.disabled, classes?.disabled],
+						disabled && styles.disabled,
 						checked && ['i-checked', styles.checked, classes?.checked],
 					)}
 					{...props}
