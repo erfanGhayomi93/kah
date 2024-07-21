@@ -26,6 +26,9 @@ const Moveable = forwardRef<HTMLElement, MoveableProps>(
 
 					const tagClosestName = target.closest('LABEL');
 					if (tagClosestName) return;
+
+					const isNotMoveable = target.closest('.no-moveable');
+					if (isNotMoveable) return;
 				} catch (e) {
 					//
 				}

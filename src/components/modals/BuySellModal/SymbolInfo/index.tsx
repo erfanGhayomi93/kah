@@ -9,9 +9,10 @@ import Grid from './Grid';
 interface SymbolInfoProps {
 	symbolData: Symbol.Info | null;
 	isLoading: boolean;
+	setInputValue: TSetBsModalInputs;
 }
 
-const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
+const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) => {
 	const t = useTranslations();
 
 	if (isLoading) return <Loading />;
@@ -40,9 +41,9 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 				<div className='flex-1 gap-4 flex-column'>
 					<div className='gap-8 flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-lg font-medium text-light-gray-800'>{symbolTitle}</h1>
+						<h1 className='whitespace-nowrap text-lg font-medium text-light-gray-800'>{symbolTitle}</h1>
 					</div>
-					<h2 className='pr-16 text-tiny text-light-gray-700'>{companyName}</h2>
+					<h2 className='whitespace-nowrap pr-16 text-tiny text-light-gray-700'>{companyName}</h2>
 				</div>
 
 				<div className='h-fit gap-8 flex-items-center'>
@@ -53,16 +54,24 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 						</span>
 					</span>
 
-					<span className='flex items-center gap-4 text-2xl font-bold text-light-gray-800'>
+					<span
+						onClick={() => setInputValue('price', lastTradedPrice)}
+						className='flex cursor-pointer items-center gap-4 text-2xl font-bold text-light-gray-800'
+					>
 						{sepNumbers(String(lastTradedPrice ?? 0))}
-						<span className='text-tiny font-normal text-light-gray-700'>{t('common.rial')}</span>
+						<span className='whitespace-nowrap text-tiny font-normal text-light-gray-700'>
+							{t('common.rial')}
+						</span>
 					</span>
 				</div>
 			</div>
 
 			<div className='h-40 rounded bg-white px-8 shadow-card flex-justify-between'>
 				<span className='text-light-gray-700'>{t('bs_modal.closing_price')}:</span>
-				<span className='text-tiny text-light-gray-700'>
+				<span
+					onClick={() => setInputValue('price', closingPrice)}
+					className='cursor-pointer text-tiny text-light-gray-700'
+				>
 					{sepNumbers(String(closingPrice))}
 					<span className='text-light-gray-500'> {t('common.rial')}</span>
 				</span>
@@ -74,10 +83,17 @@ const SymbolInfo = ({ symbolData, isLoading }: SymbolInfoProps) => {
 					thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
 					exchangeData={[closingPrice ?? 0, lastTradedPrice ?? 0]}
 					boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
+					onClick={(price) => setInputValue('price', price)}
 				/>
 			</div>
 
-			<Grid symbolISIN={symbolISIN} lowThreshold={lowThreshold} highThreshold={highThreshold} />
+			<Grid
+				yesterdayClosingPrice={yesterdayClosingPrice}
+				symbolISIN={symbolISIN}
+				lowThreshold={lowThreshold}
+				highThreshold={highThreshold}
+				setInputValue={setInputValue}
+			/>
 		</div>
 	);
 };

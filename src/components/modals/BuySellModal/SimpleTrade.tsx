@@ -1,4 +1,6 @@
+import { useGlPositionExtraInfoQuery, useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import Button from '@/components/common/Button';
+import RangeSlider from '@/components/common/Slider/RangeSlider';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import { LockSVG, UnlockSVG } from '@/components/icons';
 import { cn, sepNumbers } from '@/utils/helpers';
@@ -18,6 +20,7 @@ interface SimpleTradeProps extends IBsModalInputs {
 	id: number | undefined;
 	symbolTitle: string;
 	submitting: boolean;
+	isLoadingBestLimit: boolean;
 	highThreshold: number;
 	lowThreshold: number;
 	symbolType: TBsSymbolTypes;
@@ -27,15 +30,14 @@ interface SimpleTradeProps extends IBsModalInputs {
 	quantityTickSize: number;
 	switchable: boolean;
 	isOption: boolean;
-	commission: Record<'buy' | 'sell' | 'default', number>;
 	userRemain: Broker.Remain | null;
 	setInputValue: TSetBsModalInputs;
+	setMinimumValue: () => void;
 	createDraft: () => void;
 	onSubmit: () => void;
 }
 
 const SimpleTrade = ({
-	id,
 	price,
 	quantity,
 	isOption,
@@ -45,25 +47,29 @@ const SimpleTrade = ({
 	symbolTitle,
 	validity,
 	switchable,
+	isLoadingBestLimit,
 	value,
 	submitting,
 	highThreshold,
 	lowThreshold,
-	validityDate,
-	commission,
-	userRemain,
 	side,
 	priceLock,
 	type,
 	mode,
-	expand,
-	holdAfterOrder,
-	collateral,
-	createDraft,
 	setInputValue,
+	setMinimumValue,
+	createDraft,
 	onSubmit,
 }: SimpleTradeProps) => {
 	const t = useTranslations();
+
+	const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
+		queryKey: ['glPositionExtraInfoQuery'],
+	});
+
+	const { data: userRemain } = useUserRemainQuery({
+		queryKey: ['userRemainQuery'],
+	});
 
 	const onSubmitForm = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -85,6 +91,8 @@ const SimpleTrade = ({
 		],
 		[],
 	);
+
+	const assets = symbolExtraInfo?.asset ?? 0;
 
 	return (
 		<form method='get' onSubmit={onSubmitForm} className='w-full flex-1 gap-24 flex-column'>
@@ -124,13 +132,30 @@ const SimpleTrade = ({
 						/>
 
 						{side === 'sell' && (
-							<div className='text-tiny flex-justify-between'>
-								<span className='text-light-gray-700'>{t('bs_modal.assets')}:</span>
-								<span className='text-sm text-light-gray-800'>
-									<span className='text-tiny'>280 </span>
-									{t(isOption ? 'bs_modal.exists_positions' : 'exists_stocks', { n: symbolTitle })}
-								</span>
-							</div>
+							<>
+								<div className='text-tiny flex-justify-between'>
+									<span className='text-light-gray-700'>{t('bs_modal.assets')}:</span>
+									<span className='text-light-gray-800'>
+										{assets > 0 && (
+											<span className='text-tiny'>{sepNumbers(String(assets)) + ' '}</span>
+										)}
+										{assets === 0
+											? isOption
+												? t('bs_modal.no_positions')
+												: t('bs_modal.no_stocks')
+											: isOption
+												? t('bs_modal.exists_positions', { n: symbolTitle })
+												: t('bs_modal.exists_stocks', { n: symbolTitle })}
+									</span>
+								</div>
+
+								<RangeSlider
+									disabled={assets === 0}
+									max={assets}
+									value={assets === 0 ? 0 : quantity}
+									onChange={(value) => setInputValue('quantity', value)}
+								/>
+							</>
 						)}
 					</div>
 
@@ -144,24 +169,34 @@ const SimpleTrade = ({
 							high={highThreshold}
 							low={lowThreshold}
 							prefix={
-								<button
-									type='button'
-									className='size-24 text-light-gray-700'
-									onClick={() => setInputValue('priceLock', !priceLock)}
-								>
-									{priceLock ? (
-										<LockSVG width='2.4rem' height='2.4rem' />
+								<>
+									{isLoadingBestLimit ? (
+										<div className='size-24 spinner' />
 									) : (
-										<UnlockSVG width='2.4rem' height='2.4rem' />
+										<button
+											type='button'
+											className={clsx(
+												'size-24 transition-colors',
+												priceLock ? 'text-light-primary-100' : 'text-light-gray-700',
+											)}
+											onClick={() => setInputValue('priceLock', !priceLock)}
+										>
+											{priceLock ? (
+												<LockSVG width='2.4rem' height='2.4rem' />
+											) : (
+												<UnlockSVG width='2.4rem' height='2.4rem' />
+											)}
+										</button>
 									)}
-								</button>
+								</>
 							}
 						/>
 					</div>
 
 					<TotalTradeValueInput
+						purchasePower={side === 'buy' ? Math.max(userRemain?.purchasePower ?? 0, 0) : null}
 						value={value}
-						setToMinimum={() => setInputValue('value', 1000)}
+						setToMinimum={isOption ? undefined : setMinimumValue}
 						onChange={(v) => setInputValue('value', v)}
 					/>
 
@@ -195,11 +230,12 @@ const SimpleTrade = ({
 								}
 							/>
 						)}
+
 						<SummaryItem
 							title={t('bs_modal.total_amount') + ':'}
 							value={
 								<span className='text-light-gray-800'>
-									{sepNumbers(String(price * quantity))}
+									{sepNumbers(String(value))}
 									<span className='text-light-gray-700'>{' ' + t('common.toman')}</span>
 								</span>
 							}

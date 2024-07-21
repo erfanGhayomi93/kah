@@ -237,3 +237,19 @@ export const useGlOptionOrdersQuery = createBrokerQuery<GLOptionOrder.Root | nul
 		return data.result;
 	},
 });
+
+export const useGlPositionExtraInfoQuery = createBrokerQuery<GlPositionExtraInfo | null, ['glPositionExtraInfoQuery']>({
+	staleTime: 0,
+	queryKey: ['glPositionExtraInfoQuery'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return null;
+
+		const response = await axios.get<ServerResponse<GlPositionExtraInfo>>(url.GLPositionExtraInfo, { signal });
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});

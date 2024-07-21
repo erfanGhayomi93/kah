@@ -4,7 +4,6 @@ import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
-import IndividualAndLegal from './IndividualAndLegal';
 
 const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/SymbolMarketDepth'), {
 	ssr: false,
@@ -40,6 +39,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 							symbolISIN={symbol.symbolISIN}
 							lowThreshold={symbol.lowThreshold}
 							highThreshold={symbol.highThreshold}
+							yesterdayClosingPrice={symbol.yesterdayClosingPrice}
 						/>
 					</div>
 				),
@@ -59,28 +59,24 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 	);
 
 	return (
-		<div style={{ flex: '0 0 calc(50% - 1.8rem)' }} className='items-end gap-32 pl-16 flex-column'>
-			<div className='relative w-full flex-1 gap-16 flex-column'>
-				<Tabs<Saturn.SymbolTab, TTab>
-					onChange={(tab) => setActiveTab(tab)}
-					defaultActiveTab={activeTab}
-					data={tabs}
-					wrapper={({ children }) => <div className='relative flex-1'>{children}</div>}
-					renderTab={(item, activeTab) => (
-						<button
-							className={cn(
-								'p-8 transition-colors',
-								item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
-							)}
-							type='button'
-						>
-							{item.title}
-						</button>
-					)}
-				/>
-			</div>
-
-			<IndividualAndLegal symbol={symbol} />
+		<div className='relative w-full flex-1 gap-16 flex-column'>
+			<Tabs<Saturn.SymbolTab, TTab>
+				onChange={(tab) => setActiveTab(tab)}
+				defaultActiveTab={activeTab}
+				data={tabs}
+				wrapper={({ children }) => <div className='relative flex-1'>{children}</div>}
+				renderTab={(item, activeTab) => (
+					<button
+						className={cn(
+							'p-8 transition-colors',
+							item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
+						)}
+						type='button'
+					>
+						{item.title}
+					</button>
+				)}
+			/>
 		</div>
 	);
 };

@@ -353,6 +353,8 @@ declare namespace Symbol {
 		companyName: string;
 		insCode: string;
 		lastTradedPrice: number;
+		buyQueueValue: number;
+		sellQueueValue: number;
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
 		closingPrice: number;
@@ -366,6 +368,8 @@ declare namespace Symbol {
 		tradeVolume: number;
 		cancellationNAV: number;
 		oneMonthAvgVolume: number;
+		initialMargin: number;
+		requiredMargin: number;
 		hv: number;
 		avgIV: number;
 		lastTradeDate: string;
@@ -731,6 +735,7 @@ declare namespace Broker {
 		| 'ChangeBrokerExportFilteredCSV'
 		| 'settlementdeleteCash'
 		| 'GLOptionOrders'
+		| 'GLPositionExtraInfo'
 		| 'settlementDeleteCash';
 
 	type URL = Record<UrlKey, string>;
@@ -2404,4 +2409,11 @@ declare namespace Commission {
 	}
 
 	type Data = Record<string, Root>;
+}
+
+declare interface GlPositionExtraInfo {
+	symbolISIN: string;
+	asset: number;
+	isFreeze: boolean;
+	blockVolume: number;
 }

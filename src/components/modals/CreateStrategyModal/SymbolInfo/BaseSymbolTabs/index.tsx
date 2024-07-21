@@ -14,7 +14,14 @@ const BaseSymbolTabs = ({ symbolData, isLoading }: BaseSymbolTabsProps) => {
 
 	const { symbolISIN, lowThreshold, highThreshold } = symbolData;
 
-	return <Grid symbolISIN={symbolISIN} lowThreshold={lowThreshold} highThreshold={highThreshold} />;
+	return (
+		<Grid
+			symbolISIN={symbolISIN}
+			lowThreshold={lowThreshold}
+			highThreshold={highThreshold}
+			yesterdayClosingPrice={symbolData.yesterdayClosingPrice}
+		/>
+	);
 };
 
 export default BaseSymbolTabs;

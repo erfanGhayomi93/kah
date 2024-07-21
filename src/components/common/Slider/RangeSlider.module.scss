@@ -1,0 +1,73 @@
+.root {
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	overflow: visible;
+	direction: ltr;
+	width: 100%;
+}
+
+.disabled {
+	opacity: 0.5;
+
+	&,
+	.border,
+	.thumb {
+		cursor: default;
+	}
+}
+
+.border {
+	fill: currentColor;
+	cursor: pointer;
+	@apply text-light-gray-200/50;
+}
+
+.fillBorder {
+	fill: currentColor;
+	@apply text-light-primary-100;
+}
+
+.text {
+	user-select: none;
+	fill: currentColor;
+	font-size: 1.2rem;
+	font-weight: 400;
+	color: theme("colors.light.gray.500");
+
+	&.activeText {
+		color: theme("colors.light.gray.800");
+	}
+}
+
+.circle {
+	fill: currentColor;
+	pointer-events: none;
+	color: theme("colors.white");
+
+	&.activeCircle {
+		color: theme("colors.light.primary.100");
+	}
+}
+
+.thumb {
+	pointer-events: fill;
+	cursor: pointer;
+}
+
+.tooltip {
+	pointer-events: none;
+}
+
+.tooltipText {
+	fill: currentColor;
+	font-size: 1.2rem;
+	font-weight: 500;
+	text-anchor: middle;
+	color: theme("colors.white");
+}
+
+.tooltipBox {
+	fill: currentColor;
+}

@@ -9,6 +9,8 @@ interface GridProps {
 	symbolISIN: string;
 	lowThreshold: number;
 	highThreshold: number;
+	yesterdayClosingPrice: number;
+	setInputValue: TSetBsModalInputs;
 }
 
 const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/SymbolMarketDepth'), {
@@ -21,7 +23,7 @@ const Chart = dynamic(() => import('./Chart'), {
 	loading: () => <Loading />,
 });
 
-const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
+const Grid = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice, setInputValue }: GridProps) => {
 	const t = useTranslations();
 
 	const tabs = useMemo(
@@ -36,6 +38,12 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 							symbolISIN={symbolISIN}
 							lowThreshold={lowThreshold}
 							highThreshold={highThreshold}
+							yesterdayClosingPrice={yesterdayClosingPrice}
+							onPriceClick={(v, s) => {
+								setInputValue('price', v);
+								setInputValue('side', s === 'buy' ? 'sell' : 'buy');
+							}}
+							onQuantityClick={(v) => setInputValue('quantity', v)}
 						/>
 					</div>
 				),

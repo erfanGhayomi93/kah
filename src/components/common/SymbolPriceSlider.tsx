@@ -19,7 +19,7 @@ interface ISymbolPriceSliderConfig {
 }
 
 interface SymbolPriceSliderProps {
-	onClick?: (price: number, percentage: number) => void;
+	onClick?: (price: number) => void;
 
 	// lowThreshold | highThreshold
 	thresholdData: [number, number];
@@ -93,10 +93,8 @@ const SymbolPriceSlider = ({
 			);
 			if (price > thresholdData[1]) price = thresholdData[1];
 			else if (price < thresholdData[0]) price = thresholdData[0];
-			const priceAsPercent =
-				Number((((price - yesterdayClosingPrice) / yesterdayClosingPrice) * 100).toFixed(2)) * 1;
 
-			onClick?.(price, priceAsPercent);
+			onClick?.(price);
 		} catch (e) {
 			//
 		}
@@ -302,6 +300,7 @@ const SymbolPriceSlider = ({
 							<div
 								style={{ transform: `translateX(${config.firstTradedPrice}px)` }}
 								className={clsx('transition duration-300', styles.value)}
+								onClick={() => onClick?.(exchangeData[0])}
 							>
 								<svg
 									width='12px'
@@ -335,6 +334,7 @@ const SymbolPriceSlider = ({
 							content={`${t('last')}: ‎${sepNumbers(String(exchangeData[1] ?? 0))} (${config.lastTradedPriceAsPercent}%)`}
 						>
 							<div
+								onClick={() => onClick?.(exchangeData[1])}
 								style={{ transform: `translateX(${config.lastTradedPrice}px)` }}
 								className={clsx('transition duration-300', styles.value)}
 							>
@@ -381,6 +381,7 @@ const SymbolPriceSlider = ({
 								content={`${t('high')}: ‎${sepNumbers(String(boundaryData[0] ?? 0))} (${config.lowestTradePriceOfTradingDayAsPercent}%)`}
 							>
 								<div
+									onClick={() => onClick?.(boundaryData[0])}
 									style={{
 										transform: `translateX(${boundaryData[0] > yesterdayClosingPrice ? config.offsetLeft : -(config.sellSliderWidth + Math.abs(config.offsetRight))}px)`,
 									}}
@@ -406,6 +407,7 @@ const SymbolPriceSlider = ({
 								content={`${t('low')}: ‎${sepNumbers(String(boundaryData[1] ?? 0))} (${config.highestTradePriceOfTradingDayAsPercent}%)`}
 							>
 								<div
+									onClick={() => onClick?.(boundaryData[1])}
 									style={{
 										transform: `translateX(${boundaryData[1] < yesterdayClosingPrice ? -config.offsetRight : config.buySliderWidth + Math.abs(config.offsetLeft)}px)`,
 									}}

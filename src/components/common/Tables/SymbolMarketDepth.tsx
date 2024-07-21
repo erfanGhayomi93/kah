@@ -8,6 +8,7 @@ import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import Loading from '../Loading';
+import Tooltip from '../Tooltip';
 
 interface IRowData {
 	price: number;
@@ -20,6 +21,9 @@ interface RowProps extends IRowData {
 	side: 'buy' | 'sell';
 	disabled: boolean;
 	rowHeight: number;
+	yesterdayClosingPrice: number;
+	onPriceClick?: (v: number) => void;
+	onQuantityClick?: (v: number) => void;
 }
 
 interface GridProps {
@@ -27,17 +31,23 @@ interface GridProps {
 	data: IRowData[];
 	lowThreshold: number;
 	highThreshold: number;
+	yesterdayClosingPrice: number;
 	rowHeight: number;
 	rowSpacing: number;
+	onPriceClick?: (v: number) => void;
+	onQuantityClick?: (v: number) => void;
 }
 
 interface SymbolMarketDepthProps {
 	symbolISIN: string;
 	lowThreshold: number;
 	highThreshold: number;
+	yesterdayClosingPrice: number;
 	length?: number;
 	rowHeight?: number;
 	rowSpacing?: number;
+	onPriceClick?: (v: number, s: TBsSides) => void;
+	onQuantityClick?: (v: number, s: TBsSides) => void;
 }
 
 const SymbolMarketDepth = ({
@@ -46,7 +56,10 @@ const SymbolMarketDepth = ({
 	rowSpacing = 4,
 	lowThreshold,
 	highThreshold,
+	yesterdayClosingPrice,
 	length = 5,
+	onPriceClick,
+	onQuantityClick,
 }: SymbolMarketDepthProps) => {
 	const queryClient = useQueryClient();
 
@@ -184,6 +197,9 @@ const SymbolMarketDepth = ({
 				data={dataModify.buy}
 				lowThreshold={lowThreshold}
 				highThreshold={highThreshold}
+				yesterdayClosingPrice={yesterdayClosingPrice}
+				onPriceClick={(v) => onPriceClick?.(v, 'buy')}
+				onQuantityClick={(v) => onQuantityClick?.(v, 'buy')}
 			/>
 			<Grid
 				side='sell'
@@ -192,12 +208,25 @@ const SymbolMarketDepth = ({
 				data={dataModify.sell}
 				lowThreshold={lowThreshold}
 				highThreshold={highThreshold}
+				yesterdayClosingPrice={yesterdayClosingPrice}
+				onPriceClick={(v) => onPriceClick?.(v, 'sell')}
+				onQuantityClick={(v) => onQuantityClick?.(v, 'sell')}
 			/>
 		</div>
 	);
 };
 
-const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }: GridProps) => {
+const Grid = ({
+	side,
+	data,
+	lowThreshold,
+	highThreshold,
+	rowSpacing,
+	rowHeight,
+	yesterdayClosingPrice,
+	onPriceClick,
+	onQuantityClick,
+}: GridProps) => {
 	const t = useTranslations();
 
 	return (
@@ -229,7 +258,10 @@ const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }
 						count={count}
 						percent={percent}
 						rowHeight={rowHeight}
+						yesterdayClosingPrice={yesterdayClosingPrice}
 						disabled={!isBetween(lowThreshold, price, highThreshold)}
+						onPriceClick={onPriceClick}
+						onQuantityClick={onQuantityClick}
 					/>
 				))}
 			</div>
@@ -237,47 +269,79 @@ const Grid = ({ side, data, lowThreshold, highThreshold, rowSpacing, rowHeight }
 	);
 };
 
-const Row = ({ price = 0, count = 0, quantity = 0, side, percent, rowHeight, disabled }: RowProps) => (
-	<div
-		style={{ height: `${rowHeight}px` }}
-		className={clsx(
-			'relative flex-justify-between *:text-base *:text-light-gray-700',
-			side === 'sell' && 'flex-row-reverse',
-			disabled && 'cursor-default opacity-50',
-		)}
-	>
-		<div
-			onCopy={(e) => copyNumberToClipboard(e, count)}
-			style={{ flex: '0 0 30%', maxWidth: '7.2rem' }}
-			className='relative z-10 text-center'
-		>
-			{sepNumbers(String(count))}
-		</div>
-		<div
-			onCopy={(e) => copyNumberToClipboard(e, quantity)}
-			style={{ flex: '0 0 40%' }}
-			className='relative z-10 text-center'
-		>
-			{sepNumbers(String(quantity))}
-		</div>
-		<div
-			onCopy={(e) => copyNumberToClipboard(e, price)}
-			style={{ flex: '0 0 30%' }}
-			className={clsx('relative z-10', side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left')}
-		>
-			{sepNumbers(String(price))}
-		</div>
+const Row = ({
+	price = 0,
+	count = 0,
+	quantity = 0,
+	side,
+	percent,
+	rowHeight,
+	disabled,
+	yesterdayClosingPrice,
+	onPriceClick,
+	onQuantityClick,
+}: RowProps) => {
+	const pricePercent = useMemo(() => {
+		if (!yesterdayClosingPrice || !price) return 0;
 
-		{!disabled && (
+		const res = ((price - yesterdayClosingPrice) / yesterdayClosingPrice) * 100;
+
+		return Number(res || 0).toFixed(2);
+	}, [yesterdayClosingPrice, price]);
+
+	return (
+		<div
+			style={{ height: `${rowHeight}px` }}
+			className={clsx(
+				'relative flex-justify-between *:text-base *:text-light-gray-700',
+				side === 'sell' && 'flex-row-reverse',
+				disabled && 'cursor-default opacity-50',
+			)}
+		>
 			<div
-				style={{ width: `${Math.min(percent, 100)}%`, height: `${rowHeight - 4}px` }}
+				onCopy={(e) => copyNumberToClipboard(e, count)}
+				style={{ flex: '0 0 30%', maxWidth: '7.2rem' }}
+				className='relative z-10 whitespace-nowrap text-center'
+			>
+				{sepNumbers(String(count))}
+			</div>
+			<div
+				style={{ flex: '0 0 40%' }}
+				onClick={() => onQuantityClick?.(quantity)}
+				onCopy={(e) => copyNumberToClipboard(e, quantity)}
 				className={clsx(
-					'pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-sm',
-					side === 'buy' ? 'left-0 bg-light-success-100/10' : 'right-0 bg-light-error-100/10',
+					'relative z-10 whitespace-nowrap text-center',
+					typeof onQuantityClick === 'function' && 'cursor-pointer',
 				)}
-			/>
-		)}
-	</div>
-);
+			>
+				{sepNumbers(String(quantity))}
+			</div>
+			<Tooltip className='ltr' placement={side === 'buy' ? 'right' : 'left'} content={`${pricePercent}%`}>
+				<div
+					style={{ flex: '0 0 30%' }}
+					onClick={() => onPriceClick?.(price)}
+					onCopy={(e) => copyNumberToClipboard(e, price)}
+					className={clsx(
+						'relative z-10 whitespace-nowrap',
+						side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left',
+						typeof onPriceClick === 'function' && 'cursor-pointer',
+					)}
+				>
+					{sepNumbers(String(price))}
+				</div>
+			</Tooltip>
+
+			{!disabled && (
+				<div
+					style={{ width: `${Math.min(percent, 100)}%`, height: `${rowHeight - 4}px` }}
+					className={clsx(
+						'pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-sm',
+						side === 'buy' ? 'left-0 bg-light-success-100/10' : 'right-0 bg-light-error-100/10',
+					)}
+				/>
+			)}
+		</div>
+	);
+};
 
 export default SymbolMarketDepth;

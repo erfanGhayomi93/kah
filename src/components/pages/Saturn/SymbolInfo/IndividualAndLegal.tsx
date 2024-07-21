@@ -17,6 +17,8 @@ const IndividualAndLegal = ({
 		numberOfIndividualsBuyers,
 		numberOfIndividualsSellers,
 		numberOfLegalsSellers,
+		buyQueueValue,
+		sellQueueValue,
 		closingPrice,
 	},
 }: IndividualAndLegalProps) => {
@@ -47,7 +49,11 @@ const IndividualAndLegal = ({
 			</div>
 
 			<div className='flex-1 justify-between gap-24 pr-8 flex-column'>
-				<QueueValue />
+				<QueueValue
+					buyQueueValue={buyQueueValue}
+					sellQueueValue={sellQueueValue}
+					sum={buyQueueValue + sellQueueValue}
+				/>
 
 				<div className='h-48 text-tiny flex-justify-between'>
 					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>

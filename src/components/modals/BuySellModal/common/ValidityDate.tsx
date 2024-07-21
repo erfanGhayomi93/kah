@@ -48,7 +48,7 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 
 	return (
 		<Click enabled onClickOutside={() => setShowValidityDates(false)}>
-			<div className='relative'>
+			<div className='no-moveable relative'>
 				<div
 					onClick={() => setShowValidityDates(!showValidityDates)}
 					className='h-48 cursor-pointer select-none gap-8 px-8 flex-justify-between gray-box'

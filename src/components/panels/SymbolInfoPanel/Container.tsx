@@ -201,6 +201,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 														symbolISIN={symbolISIN}
 														lowThreshold={symbolData.lowThreshold}
 														highThreshold={symbolData.highThreshold}
+														yesterdayClosingPrice={symbolData.yesterdayClosingPrice}
 													/>
 												</ErrorBoundary>
 											</div>
@@ -241,6 +242,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 														symbolISIN={symbolISIN}
 														lowThreshold={symbolData.lowThreshold}
 														highThreshold={symbolData.highThreshold}
+														yesterdayClosingPrice={symbolData.yesterdayClosingPrice}
 													/>
 												</ErrorBoundary>
 											</div>

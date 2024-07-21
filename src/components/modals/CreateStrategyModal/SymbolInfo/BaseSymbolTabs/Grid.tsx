@@ -9,6 +9,7 @@ interface GridProps {
 	symbolISIN: string;
 	lowThreshold: number;
 	highThreshold: number;
+	yesterdayClosingPrice: number;
 }
 
 const SymbolMarketDepth = dynamic(() => import('@/components/common/Tables/SymbolMarketDepth'), {
@@ -21,7 +22,7 @@ const Chart = dynamic(() => import('./Chart'), {
 	loading: () => <Loading />,
 });
 
-const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
+const Grid = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice }: GridProps) => {
 	const t = useTranslations();
 
 	const tabs = useMemo(
@@ -36,6 +37,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 							symbolISIN={symbolISIN}
 							lowThreshold={lowThreshold}
 							highThreshold={highThreshold}
+							yesterdayClosingPrice={yesterdayClosingPrice}
 						/>
 					</div>
 				),
@@ -58,7 +60,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold }: GridProps) => {
 					<button
 						className={clsx(
 							'h-44 w-88 transition-colors',
-							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
+							item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
 						)}
 						type='button'
 					>
