@@ -6,10 +6,10 @@ import {
 	setAddSaturnTemplateModal,
 	setAddSymbolToWatchlistModal,
 	setBuySellModal,
+	setChangeBlockTypeModal,
 	setChangeBrokerModal,
 	setChoiceBrokerModal,
 	setChoiceCollateralModal,
-	setChooseGuaranteeMethodModal,
 	setDepositModal,
 	setExecuteCoveredCallStrategyModal,
 	setFreezeModal,
@@ -22,7 +22,6 @@ import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
 import ErrorBoundary from '../common/ErrorBoundary';
 import AuthorizeMiddleware from '../common/Middlewares/AuthorizeMiddleware';
 import AnimatePresence from '../common/animation/AnimatePresence';
-import ChooseGuaranteeMethod from './ChooseGuaranteeMethod';
 import ModalLoading from './ModalLoading';
 
 const LoginModal = lazy(() => import('./LoginModal'));
@@ -40,6 +39,8 @@ const BuySellModal = lazy(() => import('./BuySellModal'));
 const ChoiceBroker = lazy(() => import('./ChoiceBroker'));
 
 const ForgetPasswordModal = lazy(() => import('./ForgetPasswordModal'));
+
+const ChangeBlockTypeModal = lazy(() => import('./ChangeBlockTypeModal'));
 
 const LogoutModal = lazy(() => import('./LogoutModal'));
 
@@ -146,7 +147,7 @@ const Modals = () => {
 		addNewOptionWatchlist,
 		manageOptionWatchlistList,
 		buySell,
-		chooseGuaranteeMethod,
+		changeBlockTypeModal,
 		addSymbolToWatchlist,
 		choiceBroker,
 		confirm,
@@ -376,10 +377,10 @@ const Modals = () => {
 			</ModalAnimatePresence>
 
 			<ModalAnimatePresence>
-				{chooseGuaranteeMethod && (
+				{changeBlockTypeModal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChooseGuaranteeMethodModal(null))} broker>
-							<ChooseGuaranteeMethod {...chooseGuaranteeMethod} />
+						<AuthorizeMiddleware callback={() => dispatch(setChangeBlockTypeModal(null))} broker>
+							<ChangeBlockTypeModal {...changeBlockTypeModal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}

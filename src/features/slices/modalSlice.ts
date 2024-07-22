@@ -165,8 +165,8 @@ const initialState: ModalState = {
 	// مدال فیلتر استراتژی‌ها
 	strategyFilters: null,
 
-	// انتخاب روش تضمین
-	chooseGuaranteeMethod: null,
+	// تغییر روش تضمین
+	changeBlockTypeModal: null,
 };
 
 const modalSlice = createSlice({
@@ -425,8 +425,8 @@ const modalSlice = createSlice({
 			state.strategyFilters = payload;
 		},
 
-		setChooseGuaranteeMethodModal: (state, { payload }: PayloadAction<ModalState['chooseGuaranteeMethod']>) => {
-			state.chooseGuaranteeMethod = payload;
+		setChangeBlockTypeModal: (state, { payload }: PayloadAction<ModalState['changeBlockTypeModal']>) => {
+			state.changeBlockTypeModal = payload;
 		},
 	},
 });
@@ -434,7 +434,7 @@ const modalSlice = createSlice({
 export const {
 	setLoginModal,
 	setBuySellModal,
-	setChooseGuaranteeMethodModal,
+	setChangeBlockTypeModal,
 	setOrderDetailsModal,
 	setSymbolInfoPanelSettingModal,
 	setForgetPasswordModal,
@@ -541,6 +541,6 @@ export const getTopBaseAssetsModal = (state: RootState) => state.modal.topBaseAs
 export const getRecentActivitiesModal = (state: RootState) => state.modal.recentActivities;
 export const getDueDatesModal = (state: RootState) => state.modal.dueDates;
 export const getStrategyFiltersModal = (state: RootState) => state.modal.strategyFilters;
-export const getChooseGuaranteeMethodModal = (state: RootState) => state.modal.chooseGuaranteeMethod;
+export const getChangeBlockTypeModal = (state: RootState) => state.modal.changeBlockTypeModal;
 
 export default modalSlice.reducer;

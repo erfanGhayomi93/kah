@@ -132,7 +132,6 @@ const Contract = ({
 				title: t('saturn_page.tab_market_depth'),
 				render: () => <ContractMarketDepth symbol={contractInfo ?? null} />,
 			},
-			{ id: 'open_position', title: t('saturn_page.tab_open_position'), disabled: true, render: null },
 		],
 		[contractInfo],
 	);
@@ -162,7 +161,7 @@ const Contract = ({
 					className='absolute cursor-pointer items-center gap-24 text-center flex-column center'
 				>
 					<Image width='60' height='60' alt='add-symbol' src='/static/images/add-button.png' />
-					<span className='text-light-gray-800 text-base'>
+					<span className='text-base text-light-gray-800'>
 						{t.rich('saturn_page.click_to_add_contract', {
 							add: (chunks) => (
 								<button type='button' className='text-light-primary-100'>
@@ -194,11 +193,11 @@ const Contract = ({
 						<div className='cursor-pointer flex-column flex-items-start'>
 							<div className='flex items-center gap-8'>
 								<SymbolContextMenu symbol={contractInfo ?? null} />
-								<h1 onClick={openSymbolInfoPanel} className='text-light-gray-800 text-3xl font-medium'>
+								<h1 onClick={openSymbolInfoPanel} className='text-3xl font-medium text-light-gray-800'>
 									{contractInfo?.symbolTitle ?? '−'}
 								</h1>
 							</div>
-							<h4 className='text-light-gray-800 whitespace-nowrap pr-32 text-tiny'>
+							<h4 className='whitespace-nowrap pr-32 text-tiny text-light-gray-800'>
 								{contractInfo?.companyName ?? '−'}
 							</h4>
 						</div>
@@ -223,9 +222,9 @@ const Contract = ({
 							</span>
 
 							<span
-								className={clsx('text-light-gray-800 flex items-center gap-4 text-2xl font-bold ltr')}
+								className={clsx('flex items-center gap-4 text-2xl font-bold text-light-gray-800 ltr')}
 							>
-								<span className='text-light-gray-700 text-base font-normal'>{t('common.rial')}</span>
+								<span className='text-base font-normal text-light-gray-700'>{t('common.rial')}</span>
 								{sepNumbers(String(contractInfo?.lastTradedPrice ?? 0))}
 							</span>
 						</div>
@@ -269,7 +268,7 @@ const Contract = ({
 						<button
 							className={cn(
 								'p-8 transition-colors',
-								item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
+								item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
 							)}
 							type='button'
 						>
@@ -291,7 +290,7 @@ const Wrapper = ({ children }: WrapperProps) => (
 		style={{
 			flex: '1 0 39.2rem',
 		}}
-		className='border-light-gray-200 relative gap-16 rounded border bg-white px-16 py-12 flex-column'
+		className='relative gap-16 rounded border border-light-gray-200 bg-white px-16 py-12 flex-column'
 	>
 		{children}
 	</div>

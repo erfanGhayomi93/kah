@@ -102,10 +102,6 @@ const StrategyChartDetails = ({
 					</span>
 					<span>:{t('most_profit')}</span>
 				</li>
-				<li>
-					<span className='font-medium text-light-gray-700'>{sepNumbers(String(neededRequiredMargin))}</span>
-					<span>:{t('required_margin')}</span>
-				</li>
 			</ul>
 
 			<div className='relative flex-1'>

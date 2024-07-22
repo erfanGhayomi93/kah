@@ -66,7 +66,7 @@ declare type TTradeDetails =
 			total: number;
 	  }[];
 
-declare type TOrderSource = 'Account' | 'Portfolio';
+declare type TBlockType = 'Account' | 'Portfolio' | 'Position';
 
 declare interface INextStrategyProps extends INextProps<{ id: Strategy.Type }> {}
 
@@ -269,6 +269,7 @@ declare interface SymbolContractModalStates {
 declare type IBrokerUrls = Record<
 	| 'todayOrders'
 	| 'FreezeRequest'
+	| 'AvailableContractInfo'
 	| 'GLPortfolio'
 	| 'GLPositionExtraInfo'
 	| 'GLOptionOrders'

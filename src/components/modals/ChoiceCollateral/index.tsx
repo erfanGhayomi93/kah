@@ -22,7 +22,7 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 
 	const dispatch = useAppDispatch();
 
-	const [value, setValue] = useState<Order.OrderSourceType>(order.blockType);
+	const [value, setValue] = useState<TBlockType>(order.blockType);
 
 	const onCloseModal = () => {
 		dispatch(setChoiceCollateralModal(null));

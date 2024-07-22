@@ -393,7 +393,7 @@
 		"minimum_amount": "حداقل مبلغ",
 		"fair_price": "قیمت شما <chunk>منصفانه</chunk> است.",
 		"cash_guarantee": "تضمین <chunk></chunk> ریال وجه نقد",
-		"change_guarantee_method": "تغییر روش تضمین",
+		"change_block_type": "تغییر روش تضمین",
 		"create_order_buy": "خرید",
 		"create_draft_buy": "پیش‌نویس خرید",
 		"create_order_sell": "فروش",
@@ -986,12 +986,16 @@
 		"page_on_designing": "صفحه در دست طراحی است ...",
 		"please_try_again_later": "لطفا بعدا تلاش کنید."
 	},
-	"choose_guarantee_method_modal": {
+	"change_block_type_modal": {
 		"title": "انتخاب روش تضمین",
-		"block_type": "محل تضمین",
-		"total_count": "تعداد کل",
-		"base_symbol": "سهم پایه",
-		"collateral": "وجه نقد",
+		"no_position_exists": "موقعیتی برای تضمین وجود ندارد.",
+		"block_type_portfolio": "سهم پایه",
+		"block_type_portfolio_description": "تعداد <chunk></chunk> سهم جهت تضمین برای اخذ موقعیت فروش لازم است.",
+		"block_type_account": "وجه نقد",
+		"block_type_portfolio_account": "مبلغ <chunk></chunk> ریال جهت تضمین برای اخذ موقعیت فروش لازم است.",
+		"block_type_position": "موقعیت",
+		"block_type_portfolio_position": "تعداد <chunk></chunk> موقعیت جهت تضمین برای اخذ موقعیت فروش لازم است.",
+		"stock": "سهم",
 		"position": "موقعیت"
 	},
 	"analyze_modal": {
