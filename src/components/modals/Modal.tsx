@@ -1,6 +1,6 @@
 import { usePathname } from '@/navigation';
 import clsx from 'clsx';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Moveable from '../common/Moveable';
 import { EraserSVG, RefreshSVG, SessionHistorySVG, XSVG } from '../icons';
@@ -31,7 +31,7 @@ interface ModalHeaderCustomProps {
 }
 
 interface WrapperProps {
-	children: React.ReactNode;
+	children: React.ReactElement;
 	suppress: boolean;
 	style: Partial<Record<'root' | 'container', React.CSSProperties>>;
 	classes: RecordClasses<'root' | 'container'>;
@@ -199,7 +199,7 @@ const Header = (props: ModalHeaderProps) => {
 };
 
 const Wrapper = forwardRef<HTMLDivElement, WrapperProps>(({ children, classes, style, suppress }, ref) => {
-	if (suppress) return children;
+	if (suppress) return cloneElement(children, { ref });
 
 	return (
 		<div ref={ref} style={style?.root} className={clsx(classes?.root)}>

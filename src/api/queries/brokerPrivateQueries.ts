@@ -238,14 +238,46 @@ export const useGlOptionOrdersQuery = createBrokerQuery<GLOptionOrder.Root | nul
 	},
 });
 
-export const useGlPositionExtraInfoQuery = createBrokerQuery<GlPositionExtraInfo | null, ['glPositionExtraInfoQuery']>({
+export const useGlPositionExtraInfoQuery = createBrokerQuery<
+	GlPositionExtraInfo | null,
+	['glPositionExtraInfoQuery', string]
+>({
 	staleTime: 0,
-	queryKey: ['glPositionExtraInfoQuery'],
-	queryFn: async ({ signal }) => {
+	queryKey: ['glPositionExtraInfoQuery', ''],
+	queryFn: async ({ signal, queryKey }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<GlPositionExtraInfo>>(url.GLPositionExtraInfo, { signal });
+		const [, symbolISIN] = queryKey;
+
+		const response = await axios.get<ServerResponse<GlPositionExtraInfo>>(url.GLPositionExtraInfo, {
+			params: { symbolISIN },
+			signal,
+		});
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
+export const useAvailableContractInfoQuery = createBrokerQuery<
+	IAvailableContractInfo[],
+	['availableContractInfoQuery', string]
+>({
+	staleTime: 0,
+	queryKey: ['availableContractInfoQuery', ''],
+	queryFn: async ({ signal, queryKey }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url || !queryKey[1]) return [];
+
+		const [, symbolISIN] = queryKey;
+
+		const response = await axios.get<ServerResponse<IAvailableContractInfo[]>>(url.AvailableContractInfo, {
+			signal,
+			params: { symbolISIN },
+		});
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

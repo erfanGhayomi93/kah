@@ -3,7 +3,10 @@ import Button from '@/components/common/Button';
 import RangeSlider from '@/components/common/Slider/RangeSlider';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import { LockSVG, UnlockSVG } from '@/components/icons';
+import { useAppDispatch } from '@/features/hooks';
+import { setChangeBlockTypeModal } from '@/features/slices/modalSlice';
 import { cn, sepNumbers } from '@/utils/helpers';
+import { getAccountBlockTypeValue } from '@/utils/Math/order';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import React, { useMemo } from 'react';
@@ -18,18 +21,13 @@ interface SummaryItemProps {
 
 interface SimpleTradeProps extends IBsModalInputs {
 	id: number | undefined;
-	symbolTitle: string;
+	symbolData: Symbol.Info | null;
 	submitting: boolean;
-	isLoadingBestLimit: boolean;
-	highThreshold: number;
-	lowThreshold: number;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
-	priceTickSize: number;
-	quantityTickSize: number;
 	switchable: boolean;
-	isOption: boolean;
+	isLoadingBestLimit: boolean;
 	userRemain: Broker.Remain | null;
 	setInputValue: TSetBsModalInputs;
 	setMinimumValue: () => void;
@@ -38,20 +36,15 @@ interface SimpleTradeProps extends IBsModalInputs {
 }
 
 const SimpleTrade = ({
+	symbolData,
 	price,
 	quantity,
-	isOption,
-	priceTickSize,
-	quantityTickSize,
 	symbolType,
-	symbolTitle,
 	validity,
 	switchable,
 	isLoadingBestLimit,
 	value,
 	submitting,
-	highThreshold,
-	lowThreshold,
 	side,
 	priceLock,
 	type,
@@ -63,8 +56,11 @@ const SimpleTrade = ({
 }: SimpleTradeProps) => {
 	const t = useTranslations();
 
+	const dispatch = useAppDispatch();
+
 	const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
-		queryKey: ['glPositionExtraInfoQuery'],
+		queryKey: ['glPositionExtraInfoQuery', symbolData?.symbolISIN ?? ''],
+		enabled: Boolean(symbolData),
 	});
 
 	const { data: userRemain } = useUserRemainQuery({
@@ -74,6 +70,21 @@ const SimpleTrade = ({
 	const onSubmitForm = (e: React.FormEvent) => {
 		e.preventDefault();
 		onSubmit();
+	};
+
+	const changeBlockType = () => {
+		if (!symbolData || !symbolData.isOption) return;
+
+		dispatch(
+			setChangeBlockTypeModal({
+				price,
+				quantity,
+				symbolData,
+				callback: () => {
+					//
+				},
+			}),
+		);
 	};
 
 	const TABS = useMemo(
@@ -92,7 +103,18 @@ const SimpleTrade = ({
 		[],
 	);
 
+	const symbolTitle = symbolData?.symbolTitle ?? '';
+
+	const isOption = Boolean(symbolData?.isOption);
+
 	const assets = symbolExtraInfo?.asset ?? 0;
+
+	const blockTypeAccountValue = getAccountBlockTypeValue({
+		initialRequiredMargin: symbolData?.initialMargin ?? 0,
+		contractSize: symbolData?.contractSize ?? 0,
+		price,
+		quantity,
+	});
 
 	return (
 		<form method='get' onSubmit={onSubmitForm} className='w-full flex-1 gap-24 flex-column'>
@@ -126,7 +148,7 @@ const SimpleTrade = ({
 							label={t('bs_modal.quantity_label')}
 							value={quantity}
 							onChange={(value) => setInputValue('quantity', value)}
-							tickSize={quantityTickSize}
+							tickSize={symbolData?.orderQuantityTickSize ?? 0}
 							low={1}
 							high={1e5}
 						/>
@@ -165,9 +187,9 @@ const SimpleTrade = ({
 							label={t('bs_modal.price_label')}
 							value={price}
 							onChange={(value) => setInputValue('price', value)}
-							tickSize={priceTickSize}
-							high={highThreshold}
-							low={lowThreshold}
+							tickSize={symbolData?.orderPriceTickSize ?? 0}
+							high={symbolData?.highThreshold ?? 0}
+							low={symbolData?.lowThreshold ?? 0}
 							prefix={
 								<>
 									{isLoadingBestLimit ? (
@@ -203,11 +225,15 @@ const SimpleTrade = ({
 					{side === 'sell' && symbolType === 'option' && (
 						<SummaryItem
 							title={t.rich('bs_modal.cash_guarantee', {
-								chunk: () => <span className='text-light-gray-800'>{sepNumbers(String(4e6))}</span>,
+								chunk: () => (
+									<span className='text-light-gray-800'>
+										{sepNumbers(String(blockTypeAccountValue))}
+									</span>
+								),
 							})}
 							value={
-								<button type='button' className='text-light-info-100'>
-									{t('bs_modal.change_guarantee_method')}
+								<button onClick={changeBlockType} type='button' className='text-light-info-100'>
+									{t('bs_modal.change_block_type')}
 								</button>
 							}
 						/>
@@ -225,7 +251,8 @@ const SimpleTrade = ({
 								title={t('bs_modal.validity_date') + ':'}
 								value={
 									<span className='text-light-gray-800'>
-										1<span className='text-light-gray-700'>{' ' + t('bs_modal.day')}</span>
+										<span className='font-medium'>1</span>
+										<span className='text-light-gray-700'>{' ' + t('bs_modal.day')}</span>
 									</span>
 								}
 							/>
@@ -235,8 +262,8 @@ const SimpleTrade = ({
 							title={t('bs_modal.total_amount') + ':'}
 							value={
 								<span className='text-light-gray-800'>
-									{sepNumbers(String(value))}
-									<span className='text-light-gray-700'>{' ' + t('common.toman')}</span>
+									<span className='font-medium'>{sepNumbers(String(value))}</span>
+									<span className='text-light-gray-700'>{' ' + t('common.rial')}</span>
 								</span>
 							}
 						/>

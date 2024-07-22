@@ -13,6 +13,7 @@ import AuthenticationSVG from './authentication.svg';
 import BearishMarketSVG from './bearish-market.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
+import BoxSVG from './box.svg';
 import BullishMarketSVG from './bullish-market.svg';
 import CalculatorSVG from './calculator.svg';
 import CalendarSVG from './calendar.svg';
@@ -153,6 +154,7 @@ export {
 	BearishMarketSVG,
 	BellSVG,
 	BookmarkSVG,
+	BoxSVG,
 	BullishMarketSVG,
 	CalculatorSVG,
 	CalendarSVG,

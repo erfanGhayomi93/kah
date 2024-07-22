@@ -12,7 +12,7 @@ interface TotalTradeValueInputProps {
 }
 
 const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: TotalTradeValueInputProps) => {
-	const t = useTranslations('bs_modal');
+	const t = useTranslations();
 
 	const setInputValue = (v: number) => {
 		if (isBetween(0, v, Number.MAX_SAFE_INTEGER)) onChange(v);
@@ -56,10 +56,12 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 					className='h-full flex-1 border-0 bg-transparent px-8 text-left ltr'
 				/>
 
-				<span className={clsx('flexible-placeholder', value && 'active')}>{t('trade_value_label')}</span>
+				<span className={clsx('flexible-placeholder', value && 'active')}>
+					{t('bs_modal.trade_value_label')}
+				</span>
 
 				<fieldset className={clsx('flexible-fieldset', value && 'active')}>
-					<legend>{t('trade_value_label')}</legend>
+					<legend>{t('bs_modal.trade_value_label')}</legend>
 				</fieldset>
 
 				{setToMinimum && (
@@ -70,7 +72,7 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 							type='button'
 							className='h-full px-8 text-tiny text-light-gray-500'
 						>
-							{t('minimum_amount')}
+							{t('bs_modal.minimum_amount')}
 						</button>
 					</div>
 				)}
@@ -78,10 +80,14 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 
 			{purchasePower !== null && (
 				<div className='gap-4 flex-column'>
-					<div className='text-tiny flex-justify-between'>
-						<span className='text-light-gray-700'>{t('purchase_power')}:</span>
-						<span className='text-light-gray-800'>{sepNumbers(String(purchasePower))}</span>
-					</div>
+					<span className='text-tiny flex-justify-between'>
+						<span className='text-light-gray-700'>{t('bs_modal.purchase_power')}:</span>
+
+						<span>
+							<span className='font-medium text-light-gray-800'>{sepNumbers(String(purchasePower))}</span>
+							<span className='text-light-gray-700'>{' ' + t('common.rial')}</span>
+						</span>
+					</span>
 
 					<RangeSlider
 						disabled={purchasePower === 0}

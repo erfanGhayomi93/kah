@@ -377,7 +377,7 @@ declare namespace Symbol {
 		baseVolume: number;
 		tradeCount: number;
 		eps: number;
-		pe: any;
+		pe: number;
 		ps: number;
 		orderPriceTickSize: number;
 		orderQuantityTickSize: number;
@@ -390,7 +390,7 @@ declare namespace Symbol {
 		numberOfILegalsBuyers: number;
 		legalSellVolume: number;
 		numberOfLegalsSellers: number;
-		baseSymbolISIN: any;
+		baseSymbolISIN: string;
 		marketUnit: string;
 		notionalValue: number;
 		contractEndDate: string;
@@ -401,6 +401,7 @@ declare namespace Symbol {
 		threeMonthEfficiency: number;
 		oneYearEfficiency: number;
 		exchange: string;
+		yesterdayClosingPrice: number;
 		yesterdayClosingPrice: number;
 		baseSymbolTitle: string | null;
 	}
@@ -737,6 +738,7 @@ declare namespace Broker {
 		| 'settlementdeleteCash'
 		| 'GLOptionOrders'
 		| 'GLPositionExtraInfo'
+		| 'AvailableContractInfo'
 		| 'settlementDeleteCash';
 
 	type URL = Record<UrlKey, string>;
@@ -812,8 +814,6 @@ declare namespace Order {
 
 	export type ActionType = 'CreateOrder' | 'ModifyOrder' | 'CancelOrder' | 'ExpireOrder';
 
-	export type OrderSourceType = 'Account' | 'Portfolio' | 'Position';
-
 	export type Side = 'Buy' | 'Sell';
 
 	type TDataTab<
@@ -862,12 +862,12 @@ declare namespace Order {
 		companyISIN: string;
 		canClosePosition: boolean;
 		availableClosePosition: number;
-		variationMargin: any;
+		variationMargin: string;
 		requiredMargin: number;
 		isFreeze: boolean;
 		isSwapped: boolean;
 		blockCount: number;
-		blockType: Order.OrderSourceType;
+		blockType: TBlockType;
 		sumPayment: number;
 		sumReceived: number;
 		sumAmount: number;
@@ -899,7 +899,7 @@ declare namespace Order {
 		date: string;
 		isLoading?: boolean;
 		sent?: 'yes' | 'no';
-		blockType?: OrderSourceType;
+		blockType?: TBlockType;
 	}
 
 	export type OpenOrder = {
@@ -938,7 +938,7 @@ declare namespace Order {
 		orderVolumeInPrice?: null | number;
 		tradeDetails: TradeDetailsType;
 		isEditable: boolean;
-		blockType: OrderSourceType;
+		blockType: TBlockType;
 		blockedPositionISIN?: string;
 		blockedPositionTitle?: string;
 	};
@@ -2143,7 +2143,7 @@ declare namespace Reports {
 		orderVolumeInPrice?: null | number;
 		tradeDetails: TTradeDetails;
 		isEditable: boolean;
-		blockType: TOrderSource;
+		blockType: TBlockType;
 	}
 
 	export interface ITradesReports {
@@ -2417,4 +2417,17 @@ declare interface GlPositionExtraInfo {
 	asset: number;
 	isFreeze: boolean;
 	blockVolume: number;
+}
+
+declare interface IAvailableContractInfo {
+	companyISIN: string;
+	symbolISIN: string;
+	symbolTitle: string;
+	baseCompanyISIN: string | null;
+	baseSymbolISIN: string | null;
+	baseSymbolTitle: string | null;
+	contractType: 'Call' | 'Put';
+	strikePrice: number;
+	openPosition: number;
+	customersOpenPositions: number;
 }

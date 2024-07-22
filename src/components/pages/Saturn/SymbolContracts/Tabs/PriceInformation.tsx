@@ -1,6 +1,5 @@
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
-import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -11,10 +10,6 @@ interface PriceInformationProps {
 
 const PriceInformation = ({ symbol }: PriceInformationProps) => {
 	const t = useTranslations();
-
-	const dateFormatter = (v: string | null) => {
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss');
-	};
 
 	const symbolDetails = useMemo<Array<[ListItemProps, ListItemProps]>>(() => {
 		try {
@@ -94,7 +89,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'contractEndDate',
 						title: t('old_option_chain.contract_end_date'),
-						valueFormatter: dateFormatter(contractEndDate),
+						valueFormatter: dateFormatter(contractEndDate, 'date'),
 					},
 					{
 						id: 'contractSize',
@@ -112,7 +107,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'lastTradeDate',
 						title: t('old_option_chain.last_trade_date'),
-						valueFormatter: dateFormatter(lastTradeDate),
+						valueFormatter: dateFormatter(lastTradeDate, 'datetime'),
 					},
 				],
 			];

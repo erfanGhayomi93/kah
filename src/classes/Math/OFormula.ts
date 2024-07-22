@@ -5,6 +5,8 @@ class OFormula {
 
 	private static _requiredMargin = 0;
 
+	private static _initialRequiredMargin = 0;
+
 	private static _commission: TCommission = { buy: 0, sell: 0 };
 
 	private static _side: TBsSides = 'buy';
@@ -22,7 +24,7 @@ class OFormula {
 		const v = (value - this.requiredMargin) / (quantity * (1 + this.commission * this.contractSize));
 		if (v === Infinity || isNaN(v)) return 0;
 
-		return Math.ceil(v);
+		return Math.abs(Math.ceil(v));
 	}
 
 	/**
@@ -36,7 +38,7 @@ class OFormula {
 		const v = (value - this.requiredMargin) / (price * (1 + this.commission * this.contractSize));
 		if (v === Infinity || isNaN(v)) return 0;
 
-		return Math.floor(v);
+		return Math.abs(Math.floor(v));
 	}
 
 	/**
@@ -48,7 +50,7 @@ class OFormula {
 	 */
 	public static value(price: number, quantity: number): number {
 		const v = price * quantity + price * quantity * this.commission * this.contractSize + this.requiredMargin;
-		return Math.ceil(v);
+		return Math.abs(Math.ceil(v));
 	}
 
 	public static setType(t: TBsSymbolTypes) {
@@ -73,6 +75,11 @@ class OFormula {
 
 	public static setRequiredMargin(v: number) {
 		this._requiredMargin = v;
+		return this;
+	}
+
+	public static setInitialRequiredMargin(v: number) {
+		this._initialRequiredMargin = v;
 		return this;
 	}
 

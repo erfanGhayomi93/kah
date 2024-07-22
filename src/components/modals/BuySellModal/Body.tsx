@@ -28,18 +28,14 @@ const Wrapper = ({ children, className }: WrapperProps) => (
 
 interface BodyProps extends IBsModalInputs {
 	id: number | undefined;
+	symbolData: Symbol.Info | null;
 	symbolISIN: string;
 	symbolTitle: string;
-	highThreshold: number;
-	lowThreshold: number;
 	switchable: boolean;
-	isOption: boolean;
 	isLoadingBestLimit: boolean;
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
-	priceTickSize: number;
-	quantityTickSize: number;
 	close: () => void;
 	setInputValue: TSetBsModalInputs;
 	setMinimumValue: () => void;

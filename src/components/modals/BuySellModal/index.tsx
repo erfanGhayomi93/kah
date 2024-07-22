@@ -85,7 +85,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 				.setSide(inputs.side)
 				.setCommission(commission)
 				.setContractSize(symbolData?.contractSize ?? 0)
-				.setRequiredMargin(symbolData?.initialMargin ?? 0);
+				.setInitialRequiredMargin(symbolData?.initialMargin ?? 0)
+				.setRequiredMargin(symbolData?.requiredMargin ?? 0);
 		};
 
 		const setInputValue: TSetBsModalInputs = (arg1, arg2) => {
@@ -185,7 +186,18 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		}, [inputs.priceLock, inputs.side, bestLimitData]);
 
 		return (
-			<Modal suppressClickOutside moveable transparent top='16%' onClose={onCloseModal} {...props} ref={ref}>
+			<Modal
+				suppressClickOutside
+				moveable
+				transparent
+				top='16%'
+				onClose={onCloseModal}
+				{...props}
+				ref={ref}
+				classes={{
+					modal: 'border border-light-info-100',
+				}}
+			>
 				<Div style={{ width: inputs.expand ? '732px' : '336px' }} className='bg-light-gray-50'>
 					<Header
 						symbolTitle={symbolTitle}
@@ -209,10 +221,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 						<Body
 							{...inputs}
+							symbolData={symbolData ?? null}
 							isLoadingBestLimit={isLoadingBestLimit}
-							isOption={Boolean(symbolData?.isOption)}
-							highThreshold={symbolData?.highThreshold ?? 0}
-							lowThreshold={symbolData?.lowThreshold ?? 0}
 							symbolTitle={symbolTitle}
 							switchable={switchable}
 							id={id}
@@ -220,8 +230,6 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 							type={type}
 							symbolISIN={symbolISIN}
 							symbolType={symbolType}
-							priceTickSize={symbolData?.orderPriceTickSize ?? 0}
-							quantityTickSize={symbolData?.orderQuantityTickSize ?? 0}
 							close={onCloseModal}
 							setInputValue={setInputValue}
 							setMinimumValue={setMinimumValue}

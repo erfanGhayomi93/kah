@@ -33,7 +33,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 		const { subscribe } = useSubscription();
 
 		const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
-			queryKey: ['glPositionExtraInfoQuery'],
+			queryKey: ['glPositionExtraInfoQuery', baseSymbol.symbolISIN],
 		});
 
 		const { mutate: createFreezeRequest } = useFreezeSymbolMutation();
