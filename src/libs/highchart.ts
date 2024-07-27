@@ -174,3 +174,7 @@ export const setupChart = () => {
 		},
 	});
 };
+
+export const setupChartColor = (theme: TTheme) => {
+	//
+};

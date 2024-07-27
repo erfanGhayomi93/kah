@@ -73,7 +73,7 @@ const Section = <T extends string = string, B extends string = string>({
 							<button
 								onClick={onExpand}
 								type='button'
-								className='size-18 rounded-circle bg-gray-500 text-white transition-colors flex-justify-center hover:bg-success-100'
+								className='darkBlue:text-gray-50 size-18 rounded-circle bg-gray-500 text-white transition-colors flex-justify-center hover:bg-success-100 dark:text-gray-50'
 							>
 								<ExpandSVG width='1.4rem' height='1.4rem' />
 							</button>

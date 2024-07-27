@@ -12,7 +12,7 @@ const Plus = () => (
 			width='123'
 			height='123'
 			rx='15.5'
-			fill='white'
+			className='darkBlue:fill-gray-50 fill-white dark:fill-gray-50'
 			stroke='currentColor'
 			strokeDasharray='17 17'
 		/>
