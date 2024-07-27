@@ -1,3 +1,4 @@
+import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
@@ -11,10 +12,11 @@ import { useMemo, useRef } from 'react';
 import CallActionCell from './CallActionCell';
 
 interface CallTableProps {
+	isLoading: boolean;
 	data: GLOptionOrder.BuyPosition[];
 }
 
-const CallTable = ({ data }: CallTableProps) => {
+const CallTable = ({ data, isLoading }: CallTableProps) => {
 	const t = useTranslations('my_assets');
 
 	const dispatch = useAppDispatch();
@@ -46,7 +48,7 @@ const CallTable = ({ data }: CallTableProps) => {
 			{
 				colId: 'quantity',
 				headerName: t('col_quantity'),
-				valueGetter: ({ data }) => data!.sellQuantity,
+				valueGetter: ({ data }) => data!.positionCount,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -248,9 +250,17 @@ const CallTable = ({ data }: CallTableProps) => {
 					className='border-call h-full border-0'
 				/>
 
-				<div className='absolute center'>
-					<NoData />
-				</div>
+				{isLoading && (
+					<div className='absolute center'>
+						<Loading />
+					</div>
+				)}
+
+				{!isLoading && data.length === 0 && (
+					<div className='absolute center'>
+						<NoData />
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -73,7 +73,7 @@ const Item = ({ title, href, isActive }: ItemProps) => {
 				href={href}
 				className={clsx(
 					'h-40 w-104 rounded text-base transition-colors flex-justify-center',
-					isActive ? 'no-hover !border btn-select' : 'bg-light-gray-100 text-light-gray-700',
+					isActive ? 'no-hover btn-select' : 'bg-light-gray-100 text-light-gray-700',
 				)}
 			>
 				{title}

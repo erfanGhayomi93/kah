@@ -1,3 +1,4 @@
+import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
@@ -11,10 +12,11 @@ import { useMemo, useRef } from 'react';
 import PutActionCell from './PutActionCell';
 
 interface PutTableProps {
+	isLoading: boolean;
 	data: GLOptionOrder.SellPosition[];
 }
 
-const PutTable = ({ data }: PutTableProps) => {
+const PutTable = ({ data, isLoading }: PutTableProps) => {
 	const t = useTranslations('my_assets');
 
 	const dispatch = useAppDispatch();
@@ -46,7 +48,7 @@ const PutTable = ({ data }: PutTableProps) => {
 			{
 				colId: 'quantity',
 				headerName: t('col_quantity'),
-				valueGetter: ({ data }) => data!.sellQuantity,
+				valueGetter: ({ data }) => data!.positionCount,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -254,9 +256,17 @@ const PutTable = ({ data }: PutTableProps) => {
 					className='border-put h-full border-0'
 				/>
 
-				<div className='absolute center'>
-					<NoData />
-				</div>
+				{isLoading && (
+					<div className='absolute center'>
+						<Loading />
+					</div>
+				)}
+
+				{!isLoading && data.length === 0 && (
+					<div className='absolute center'>
+						<NoData />
+					</div>
+				)}
 			</div>
 		</div>
 	);

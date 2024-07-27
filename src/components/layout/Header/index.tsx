@@ -16,7 +16,7 @@ import {
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useUserInfo } from '@/hooks';
-import { copyNumberToClipboard, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
+import { copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -211,10 +211,7 @@ const Header = () => {
 							</span>
 							<span className='text-tiny text-light-gray-500'>{t('common.rial')}</span>
 						</span>
-						<WalletSVG
-							className={getColorBasedOnPercent(userRemain.purchasePower ?? 0)}
-							onClick={handleShowDepositModal}
-						/>
+						<WalletSVG className='text-light-success-100' onClick={handleShowDepositModal} />
 					</span>
 				)}
 

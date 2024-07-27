@@ -25,10 +25,10 @@ const Agreements = () => {
 	const {
 		data: agreements,
 		refetch: getAgreements,
-		isFetching: agreementsLoading,
+		isLoading,
 	} = useGetAgreementsQuery({
 		queryKey: ['getAgreements'],
-		enabled: !!brokerURLs,
+		enabled: Boolean(brokerURLs),
 	});
 
 	const columnDef = useMemo<Array<IColDef<Settings.IAgreements>>>(
@@ -95,11 +95,13 @@ const Agreements = () => {
 
 	return (
 		<SettingCard title={t('agreements_settings')} className='h-3/5'>
-			<div className='bg-white' style={{ height: (agreements?.length || 0) * 40 + 40 }}>
+			<div className='overflow-hidden bg-white' style={{ height: (agreements?.length || 0) * 40 + 40 }}>
 				<LightweightTable<Settings.IAgreements[]> columnDefs={columnDef} rowData={agreements ?? []} />
 			</div>
-			{!agreements?.length && <NoData />}
-			{agreementsLoading && <Loading />}
+
+			{!isLoading && !agreements?.length && <NoData />}
+
+			{isLoading && <Loading />}
 		</SettingCard>
 	);
 };

@@ -20,7 +20,7 @@ const ToolBar = () => {
 
 	const path = usePathname();
 
-	const tags = useMemo<ITabItem[]>(
+	const tabs = useMemo<ITabItem[]>(
 		() => [
 			{
 				title: t('general_settings'),
@@ -30,12 +30,12 @@ const ToolBar = () => {
 			{
 				title: t('orders_settings'),
 				href: '/settings/orders/',
-				isActive: !!brokerURLs,
+				isActive: Boolean(brokerURLs),
 			},
 			{
 				title: t('agreements_settings'),
 				href: '/settings/agreements/',
-				isActive: !!brokerURLs,
+				isActive: Boolean(brokerURLs),
 			},
 			{
 				title: t('sessions_settings'),
@@ -48,22 +48,25 @@ const ToolBar = () => {
 
 	return (
 		<div className='flex w-3/5 gap-10 py-24'>
-			{tags.map((item) => (
-				<Link
-					href={item.href}
-					key={item.href}
-					type='button'
-					className={clsx(
-						'h-36 w-1/4 gap-4 rounded !border px-16 text-base  transition-colors',
-						item.isActive ? 'whitespace-nowrap flex-justify-center' : 'hidden',
-						path === item.href
-							? 'no-hover btn-select'
-							: 'bg-light-gray-100 text-light-gray-700 hover:text-light-primary-100 hover:btn-hover',
-					)}
-				>
-					{item.title}
-				</Link>
-			))}
+			{tabs
+				.filter((item) => item.isActive)
+				.map((item) => (
+					<Link
+						href={item.href}
+						key={item.href}
+						style={{
+							width: '13.6rem',
+						}}
+						className={clsx(
+							'no-hover h-40 whitespace-nowrap rounded text-center text-base transition-colors flex-justify-center',
+							path === item.href
+								? 'btn-select'
+								: 'bg-light-gray-100 text-light-gray-700 hover:btn-select',
+						)}
+					>
+						{item.title}
+					</Link>
+				))}
 		</div>
 	);
 };

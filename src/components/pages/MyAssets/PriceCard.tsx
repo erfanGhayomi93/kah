@@ -22,10 +22,11 @@ const PriceCard = ({ value, title, percent, className, loading }: PriceCardProps
 				{percent !== undefined && (
 					<span className={getColorBasedOnPercent(percent)}>({percent.toFixed(2)}%)</span>
 				)}
-				<span className='text-light-gray-700'>
-					<span className='font-medium text-light-gray-800'>{sepNumbers(String(value))} </span>
+
+				<div className='gap-4 text-light-gray-700 flex-items-center'>
+					<span className='font-medium text-light-gray-800 ltr'>{sepNumbers(String(value))}</span>
 					{t('rial')}
-				</span>
+				</div>
 			</div>
 		</div>
 	);

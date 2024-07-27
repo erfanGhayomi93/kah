@@ -482,8 +482,8 @@ const config: Config = {
 					display: 'flex',
 					'align-items': 'center',
 					'justify-content': 'center',
+					'font-weight': '500',
 					color: theme('colors.light.primary.100'),
-					border: `1px solid ${theme('colors.light.primary.100')}`,
 					'background-color': theme('colors.light.secondary.100'),
 					transition: 'background-color 250ms ease-in-out',
 

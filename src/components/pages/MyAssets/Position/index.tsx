@@ -13,7 +13,7 @@ const Position = () => {
 
 	const brokerUrls = useAppSelector(getBrokerURLs);
 
-	const { data } = useGlOptionOrdersQuery({
+	const { data, isLoading } = useGlOptionOrdersQuery({
 		queryKey: ['glOptionOrdersQuery'],
 		enabled: Boolean(brokerUrls),
 	});
@@ -27,8 +27,8 @@ const Position = () => {
 			</div>
 
 			<div className='flex-1 gap-40 flex-column'>
-				<CallTable data={data?.buyPositions ?? []} />
-				<PutTable data={data?.sellPositions ?? []} />
+				<CallTable isLoading={isLoading} data={data?.buyPositions ?? []} />
+				<PutTable isLoading={isLoading} data={data?.sellPositions ?? []} />
 			</div>
 		</div>
 	);
