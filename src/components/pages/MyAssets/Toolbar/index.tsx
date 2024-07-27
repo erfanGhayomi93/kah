@@ -6,7 +6,7 @@ import PageTabs from './PageTabs';
 const Toolbar = () => (
 	<div
 		style={{ flex: '0 0 5.6rem' }}
-		className='flex-1 gap-24 overflow-hidden rounded bg-white px-16 flex-justify-between'
+		className='darkBlue:bg-gray-50 flex-1 gap-24 overflow-hidden rounded bg-white px-16 flex-justify-between dark:bg-gray-50'
 	>
 		<PageTabs />
 		<Filters />

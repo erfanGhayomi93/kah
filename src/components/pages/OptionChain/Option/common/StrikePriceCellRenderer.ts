@@ -73,7 +73,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		const btn = document.createElement('button');
 		btn.setAttribute(
 			'class',
-			'size-32 bg-white rounded hover:bg-light-gray-100 text-base text-light-gray-700 flex-justify-center transition-colors',
+			'size-32 bg-white dark:bg-gray-50 darkBlue:bg-gray-50 rounded hover:bg-gray-100 text-base text-gray-700 flex-justify-center transition-colors',
 		);
 
 		return btn;
@@ -151,7 +151,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			this.eCall.textContent = callSide === 'buy' ? 'خرید' : 'فروش';
 			this.eCall.setAttribute(
 				'class',
-				`absolute w-40 h-32 rounded flex-justify-center bg-light-${color}-100/10 text-light-${color}-100`,
+				`absolute w-40 h-32 rounded flex-justify-center bg-${color}-100/10 text-${color}-100`,
 			);
 
 			this.eGui.appendChild(this.eCall);
@@ -169,7 +169,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 			this.ePut.textContent = putSide === 'buy' ? 'خرید' : 'فروش';
 			this.ePut.setAttribute(
 				'class',
-				`absolute w-40 h-32 rounded flex-justify-center bg-light-${color}-100/10 text-light-${color}-100`,
+				`absolute w-40 h-32 rounded flex-justify-center bg-${color}-100/10 text-${color}-100`,
 			);
 
 			this.eGui.appendChild(this.ePut);

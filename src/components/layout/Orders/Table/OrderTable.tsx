@@ -170,9 +170,9 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				cellClass: ({ data }) => {
 					switch (data!.orderSide) {
 						case 'Buy':
-							return 'text-light-success-100';
+							return 'text-success-100';
 						case 'Sell':
-							return 'text-light-error-100';
+							return 'text-error-100';
 						default:
 							return '';
 					}
@@ -199,14 +199,14 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 					switch (value) {
 						case 'OrderDone':
 						case 'OnBoard':
-							return 'rtl text-tiny text-light-success-100';
+							return 'rtl text-tiny text-success-100';
 						case 'Error':
 						case 'Canceled':
-							return 'rtl text-tiny text-light-error-100';
+							return 'rtl text-tiny text-error-100';
 						case 'Modified':
-							return 'rtl text-tiny text-light-secondary-300';
+							return 'rtl text-tiny text-secondary-300';
 						default:
-							return 'rtl text-tiny text-light-gray-700';
+							return 'rtl text-tiny text-gray-700';
 					}
 				},
 			},

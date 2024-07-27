@@ -23,19 +23,19 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 				colId: 'saveDate',
 				headerName: t('deposit_modal.time_history'),
 				valueGetter: (row) => dateFormatter(row.saveDate),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'amount',
 				headerName: t('deposit_modal.price_history'),
 				valueGetter: (row) => sepNumbers(String(row.amount)),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'state',
 				headerName: t('deposit_modal.status_history'),
 				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 				cellClass: '!text-sm',
 			},
 		],
@@ -45,11 +45,15 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 	return (
 		<div className='flex h-full pr-24 flex-column'>
 			<div className='flex-1 overflow-auto rounded-sm p-8 shadow-card'>
-				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
+				<LightweightTable
+					rowData={data || []}
+					columnDefs={columnDefs}
+					className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'
+				/>
 			</div>
 
 			<Link
-				className='text-light-info-100 h-48 w-full gap-8 rounded font-medium flex-justify-center'
+				className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
 				href={'/financial-reports/instant-deposit'}
 				onClick={() => onCloseModal()}
 			>

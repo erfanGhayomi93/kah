@@ -59,8 +59,8 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 				valueGetter: (row) => t(`common.${row?.side.toLowerCase()}`),
 				cellClass: (row) =>
 					clsx({
-						'text-light-success-100': row.side === 'Buy',
-						'text-light-error-100': row.side === 'Sell',
+						'text-success-100': row.side === 'Buy',
+						'text-error-100': row.side === 'Sell',
 					}),
 			},
 			/* تاریخ تسویه نقدی */
@@ -86,12 +86,12 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 				<LightweightTable
 					rowData={(isCash ? cashHistory?.result : physicalHistory?.result) || []}
 					columnDefs={columnDefs}
-					className='bg-white'
+					className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'
 				/>
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-light-info-100 flex-justify-center'
+				className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
 				href={isCash ? '/option-reports/cash-settlement' : '/option-reports/physical-settlement'}
 				onClick={() => onCloseModal()}
 			>

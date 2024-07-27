@@ -18,13 +18,16 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 			defaultPopupWidth={160}
 			className='symbol-menu'
 			renderer={({ setOpen }) => (
-				<ul style={{ width: '16rem' }} className='overflow-hidden rounded bg-white shadow-tooltip flex-column'>
+				<ul
+					style={{ width: '16rem' }}
+					className='darkBlue:bg-gray-50 overflow-hidden rounded bg-white shadow-tooltip flex-column dark:bg-gray-50'
+				>
 					<li>
 						<a
 							target='_blank'
 							onClick={() => setOpen(false)}
 							href={getTSELink(symbol?.insCode)}
-							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
+							className='h-48 w-full gap-16 px-16 text-base text-gray-700 transition-colors flex-justify-start hover:bg-secondary-200'
 						>
 							<Image width='18' height='18' src='/static/images/tsetmc.png' alt='' />
 							{t('common.tse')}
@@ -36,7 +39,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 								target='_blank'
 								onClick={() => setOpen(false)}
 								href={getCodalLink(symbol?.symbolTitle)}
-								className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
+								className='h-48 w-full gap-16 px-16 text-base text-gray-700 transition-colors flex-justify-start hover:bg-secondary-200'
 							>
 								<Image width='18' height='18' src='/static/images/codal.png' alt='' />
 								{t('common.codal')}
@@ -47,7 +50,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					<li>
 						<button
 							onClick={() => setOpen(false)}
-							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
+							className='h-48 w-full gap-16 px-16 text-base text-gray-700 transition-colors flex-justify-start hover:bg-secondary-200'
 						>
 							{t('symbol_context_menu.add_note')}
 						</button>
@@ -55,7 +58,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					<li>
 						<button
 							onClick={() => setOpen(false)}
-							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
+							className='h-48 w-full gap-16 px-16 text-base text-gray-700 transition-colors flex-justify-start hover:bg-secondary-200'
 						>
 							{t('symbol_context_menu.alarm')}
 						</button>
@@ -63,7 +66,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 					<li>
 						<button
 							onClick={() => setOpen(false)}
-							className='text-light-gray-700 hover:bg-light-secondary-200 h-48 w-full gap-16 px-16 text-base transition-colors flex-justify-start'
+							className='h-48 w-full gap-16 px-16 text-base text-gray-700 transition-colors flex-justify-start hover:bg-secondary-200'
 						>
 							{t('symbol_context_menu.technical_chart')}
 						</button>

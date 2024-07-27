@@ -26,7 +26,7 @@ const Tabs = () => {
 
 	return (
 		<div className='gap-24 flex-justify-start'>
-			<span className='text-light-gray-500 text-xl font-medium'>
+			<span className='text-gray-500 text-xl font-medium'>
 				{t('orders_and_trades_reports_page.orders_and_trades_reports')}
 			</span>
 			<ul className='gap-8 flex-justify-start'>
@@ -39,7 +39,7 @@ const Tabs = () => {
 									'h-40 w-104 rounded !border transition-colors',
 									type.route + '/' === pathName
 										? 'no-hover font-medium btn-select'
-										: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
+										: 'border-gray-200 text-gray-700 hover:btn-hover',
 								)}
 							>
 								{t('orders_and_trades_reports_page.' + type.id + '_tab')}

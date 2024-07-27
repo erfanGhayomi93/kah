@@ -30,7 +30,7 @@ const Description = forwardRef<HTMLDivElement, DescriptionProps>(({ title, descr
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<Header label={title} onClose={onCloseModal} />
 
 				<div className='justify-between gap-24 p-24 flex-column'>

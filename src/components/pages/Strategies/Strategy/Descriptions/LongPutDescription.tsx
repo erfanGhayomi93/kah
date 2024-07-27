@@ -5,7 +5,7 @@ const LongPutDescription = () => {
 	const t = useTranslations('LongPut');
 
 	return (
-		<div className='text-light-gray-700 gap-32 text-base leading-loose flex-column'>
+		<div className='text-gray-700 gap-32 text-base leading-loose flex-column'>
 			<DetailPart title={t('modal_description_1')} />
 		</div>
 	);

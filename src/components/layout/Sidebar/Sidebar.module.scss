@@ -27,14 +27,14 @@ $nav-color: rgb(28, 48, 85);
 				white-space: nowrap;
 				font-size: 1.4rem;
 				font-weight: 400;
-				color: theme("colors.light.gray.600");
+				color: theme("colors.gray.600");
 				transition: color 250ms ease;
 				-webkit-transition: color 250ms ease;
 				-moz-transition: color 250ms ease;
 			}
 
 			& > svg {
-				color: theme("colors.light.gray.600");
+				color: theme("colors.gray.600");
 				min-width: 1.4rem;
 				max-width: 1.4rem;
 				min-height: 1.4rem;
@@ -158,11 +158,11 @@ $nav-color: rgb(28, 48, 85);
 		& > button {
 			span,
 			svg {
-				color: theme("colors.light.info.100") !important;
+				color: theme("colors.info.100") !important;
 			}
 
 			&::before {
-				background-color: theme("colors.light.info.100") !important;
+				background-color: theme("colors.info.100") !important;
 			}
 		}
 	}
@@ -179,7 +179,7 @@ $nav-color: rgb(28, 48, 85);
 	height: 3.2rem;
 	z-index: 999;
 	border-radius: 0.8rem;
-	background-color: theme("colors.light.gray.800");
+	background-color: theme("colors.gray.800");
 
 	svg {
 		color: theme("colors.white");

@@ -25,7 +25,7 @@ const Wrapper = ({ children }: IWrapper) => {
 
 	return (
 		<ErrorBoundary>
-			<div className='fixed left-0 top-0 flex size-full items-center justify-center bg-white text-center md:hidden'>
+			<div className='darkBlue:bg-gray-50 fixed left-0 top-0 flex size-full items-center justify-center bg-white text-center md:hidden dark:bg-gray-50'>
 				<h2 className='text-lg font-medium'>{t('does_not_support_mobile')}</h2>
 			</div>
 

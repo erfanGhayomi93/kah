@@ -1,3 +1,3 @@
-const Separator = () => <span className='h-12 w-2 bg-light-gray-200' />;
+const Separator = () => <span className='bg-gray-200 h-12 w-2' />;
 
 export default Separator;

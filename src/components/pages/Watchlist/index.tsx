@@ -88,7 +88,7 @@ const Watchlist = () => {
 
 	return (
 		<Main>
-			<div className='h-full rounded bg-white px-16 flex-column'>
+			<div className='darkBlue:bg-gray-50 h-full rounded bg-white px-16 flex-column dark:bg-gray-50'>
 				<Toolbar filters={filters} filtersCount={filtersCount} />
 
 				<div className='relative flex-1 overflow-hidden'>

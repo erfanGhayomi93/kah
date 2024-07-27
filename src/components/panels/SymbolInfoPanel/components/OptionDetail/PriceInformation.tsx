@@ -82,9 +82,7 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 					<span
 						className={clsx(
 							'gap-4 flex-items-center',
-							closingPriceVarReferencePricePercent >= 0
-								? 'text-light-success-100'
-								: 'text-light-error-100',
+							closingPriceVarReferencePricePercent >= 0 ? 'text-success-100' : 'text-error-100',
 						)}
 					>
 						{sepNumbers(String(closingPrice ?? 0))}
@@ -132,10 +130,10 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 				<li
 					key={row.id}
 					style={{ flex: '0 0 40px' }}
-					className='rounded-sm px-8 text-base flex-justify-between odd:bg-light-gray-100'
+					className='odd:bg-gray-100 rounded-sm px-8 text-base flex-justify-between'
 				>
-					<span className='text-light-gray-700'>{row.title}:</span>
-					<span className='text-light-gray-800 ltr'>{row.value}</span>
+					<span className='text-gray-700'>{row.title}:</span>
+					<span className='text-gray-800 ltr'>{row.value}</span>
 				</li>
 			))}
 		</ul>

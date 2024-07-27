@@ -643,9 +643,9 @@ export const dojiAnalyzer = <T>(data: T[], callback: (item: T) => number): TDoji
 };
 
 export const getColorBasedOnPercent = (v: number) => {
-	if (v === 0) return 'text-light-gray-700';
-	if (v > 0) return 'text-light-success-100';
-	return 'text-light-error-100';
+	if (v === 0) return 'text-gray-700';
+	if (v > 0) return 'text-success-100';
+	return 'text-error-100';
 };
 
 export const versionParser = (value: string) => {
@@ -743,4 +743,13 @@ export const addTooltip = (content: string, children: HTMLElement) => {
 	tooltip.setContent(String(content));
 
 	return tooltip;
+};
+
+export const getDeviceColorSchema = (): 'dark' | 'light' => {
+	try {
+		const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		return isDark ? 'dark' : 'light';
+	} catch (e) {
+		return 'light';
+	}
 };

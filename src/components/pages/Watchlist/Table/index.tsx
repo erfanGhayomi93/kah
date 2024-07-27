@@ -138,7 +138,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				{!dataIsEmpty && !isLoading && watchlistId > -1 && (
 					<button
 						onClick={addSymbol}
-						className='min-h-48 gap-8 border-t border-t-light-gray-200 pr-24 font-medium text-light-primary-100 flex-items-center'
+						className='border-t-gray-200 text-primary-100 min-h-48 gap-8 border-t pr-24 font-medium flex-items-center'
 						type='button'
 					>
 						<span className='size-16 rounded-sm text-current flex-justify-center'>
@@ -165,7 +165,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 										symbol: (chunk) => (
 											<button
 												type='button'
-												className='text-light-primary-100 underline'
+												className='text-primary-100 underline'
 												onClick={addSymbol}
 											>
 												{chunk}

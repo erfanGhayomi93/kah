@@ -88,7 +88,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
 
 	createTitle() {
 		this.eTitle = document.createElement('span');
-		this.eTitle.classList.add('text-light-gray-800');
+		this.eTitle.classList.add('text-gray-800');
 		this.updateTitle();
 	}
 
@@ -100,13 +100,13 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
 		const iotm = this.params.value?.optionWatchlistData?.iotm ?? '';
 		switch (iotm.toLocaleLowerCase()) {
 			case 'itm':
-				return 'text-light-success-100';
+				return 'text-success-100';
 			case 'otm':
-				return 'text-light-error-100';
+				return 'text-error-100';
 			case 'atm':
-				return 'text-light-secondary-300';
+				return 'text-secondary-300';
 			default:
-				return 'text-light-gray-700';
+				return 'text-gray-700';
 		}
 	}
 

@@ -74,7 +74,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<Header
 					label={
 						submitting
@@ -89,7 +89,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 					<OAuthSMS {...{ sendRequest: sendAcceptRequest, ...data }} />
 				) : (
 					<div className='justify-between gap-24 py-24 flex-column' style={{ height: 600 }}>
-						<p className='text-light-gray-700 overflow-auto  whitespace-pre-line px-24 text-justify text-base leading-10'>
+						<p className='overflow-auto whitespace-pre-line  px-24 text-justify text-base leading-10 text-gray-700'>
 							{data?.description?.toString().replace(/\\n/g, '\n') ?? '-'}
 						</p>
 

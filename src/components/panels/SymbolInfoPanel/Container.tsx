@@ -148,14 +148,14 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 			</div>
 
 			{isLoading && (
-				<div className='absolute left-0 top-0 size-full rounded bg-light-gray-300'>
+				<div className='bg-gray-300 absolute left-0 top-0 size-full rounded'>
 					<Loading />
 				</div>
 			)}
 
 			{symbolData && (
 				<div className='flex-column'>
-					<div className='sticky left-0 top-0 z-20 gap-16 border-b border-light-gray-200 bg-light-gray-300 pb-16 pt-8 flex-column'>
+					<div className='border-gray-200 bg-gray-300 sticky left-0 top-0 z-20 gap-16 border-b pb-16 pt-8 flex-column'>
 						<ErrorBoundary>
 							<SymbolInformation symbolData={symbolData} />
 						</ErrorBoundary>

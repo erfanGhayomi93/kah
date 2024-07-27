@@ -87,13 +87,13 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 				<Header>
 					<div className='relative w-full pr-24 flex-justify-center'>
 						<div
-							className='text-light-gray-700 absolute right-24 cursor-pointer'
+							className='absolute right-24 cursor-pointer text-gray-700'
 							onClick={() => setModePage('primary')}
 						>
 							<ArrowRightSVG />
 						</div>
 
-						<h2 className='text-light-gray-700 select-none text-xl font-medium'>
+						<h2 className='select-none text-xl font-medium text-gray-700'>
 							{t('optionSettlementModal.title')}
 							{modePage === 'tertiary' && (
 								<>
@@ -106,10 +106,10 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 				</Header>
 			)}
 
-			<div className='flex bg-white p-24'>
+			<div className='darkBlue:bg-gray-50 flex bg-white p-24 dark:bg-gray-50'>
 				<Div
 					className={clsx('flex-column', {
-						'border-light-gray-200 border-l pl-24 pr-16': isShowExpanded,
+						'border-l border-gray-200 pl-24 pr-16': isShowExpanded,
 					})}
 				>
 					<Body
@@ -124,7 +124,7 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
 					{isShowExpanded && (
-						<Div className='bg-white'>
+						<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 							<HistorySettlement tabSelected={tabSelected} onCloseModal={onCloseModal} />
 						</Div>
 					)}

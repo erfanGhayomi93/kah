@@ -14,6 +14,8 @@ declare interface IOptionHistory {
 	description: string | null;
 }
 
+declare type TTheme = 'light' | 'dark' | 'darkBlue' | 'system';
+
 declare type TOrdersSide = 'Buy' | 'Sell';
 
 declare type TTradeSide = 'Buy' | 'Sell';

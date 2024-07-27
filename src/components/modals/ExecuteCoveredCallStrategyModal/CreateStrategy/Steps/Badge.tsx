@@ -12,7 +12,7 @@ const Badge = ({ type }: BadgeProps) => {
 			className={clsx('h-28 cursor-default select-none rounded px-12 text-tiny', {
 				'no-hover !border-0 font-medium btn-select': type === 'TODO',
 				'btn-disabled': type === 'PENDING',
-				'bg-light-success-100/10 text-light-success-100 flex-justify-center': type === 'DONE',
+				'bg-success-100/10 text-success-100 flex-justify-center': type === 'DONE',
 			})}
 		>
 			{t(`status_${type}`)}

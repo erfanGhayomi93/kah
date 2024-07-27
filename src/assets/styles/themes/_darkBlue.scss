@@ -1,0 +1,45 @@
+html[data-theme="darkBlue"] {
+	--c-primary-100: 6 118 237;
+
+	--c-secondary-100: 37 52 79;
+	--c-secondary-200: 19 38 62;
+	--c-secondary-300: 0 182 237;
+	--c-secondary-400: 28 48 85;
+	--c-secondary-500: 23 32 53;
+
+	--c-gray-50: 21 29 43;
+	--c-gray-100: 28 38 55;
+	--c-gray-200: 55 57 69;
+	--c-gray-300: 18 23 33;
+	--c-gray-400: 34 44 63;
+	--c-gray-500: 156 156 156;
+	--c-gray-600: 104 108 119;
+	--c-gray-700: 178 181 192;
+	--c-gray-800: 248 248 248;
+
+	--c-error-50: 255 82 109 / 0.1;
+	--c-error-100: 255 82 109;
+	--c-error-200: 221 62 63;
+	--c-error-300: 173 67 74;
+	--c-error-400: 137 68 80;
+
+	--c-success-50: 0 194 136 / 0.1;
+	--c-success-100: 0 194 136;
+	--c-success-200: 115 222 190;
+	--c-success-300: 17 137 122;
+	--c-success-400: 33 110 111;
+
+	--c-warning-50: 255 177 26 / 0.1;
+	--c-warning-100: 255 177 26;
+
+	--c-info-50: 83 168 255 / 0.1;
+	--c-info-100: 83 168 255;
+
+	// AgGrid
+	.lightweight-table,
+	.ag-theme-alpine {
+		--ag-header-column-separator-color: rgb(var(--c-gray-50));
+		--ag-background-color: rgb(var(--c-gray-50));
+		--ag-cell-horizontal-border: rgb(var(--c-gray-50));
+	}
+}

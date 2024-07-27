@@ -12,7 +12,7 @@ const FreezeStep = ({ status, className }: FreezeStepProps) => {
 
 	return (
 		<li className={className}>
-			<h2 className={clsx(status === 'TODO' ? 'text-light-gray-800 font-medium' : 'text-light-gray-700')}>
+			<h2 className={clsx(status === 'TODO' ? 'text-gray-800 font-medium' : 'text-gray-700')}>
 				{t('create_strategy.freeze')}
 			</h2>
 

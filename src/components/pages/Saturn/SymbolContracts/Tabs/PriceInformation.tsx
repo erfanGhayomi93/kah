@@ -44,9 +44,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 							<span
 								className={clsx(
 									'gap-4 flex-items-center',
-									closingPriceVarReferencePricePercent >= 0
-										? 'text-light-success-100'
-										: 'text-light-error-100',
+									closingPriceVarReferencePricePercent >= 0 ? 'text-success-100' : 'text-error-100',
 								)}
 							>
 								{sepNumbers(String(closingPrice))}

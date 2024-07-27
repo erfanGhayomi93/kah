@@ -65,7 +65,7 @@ const Stocks = () => {
 	}, [data, commissions]);
 
 	return (
-		<div className='flex-1 gap-16 rounded bg-white p-16 flex-column'>
+		<div className='darkBlue:bg-gray-50 flex-1 gap-16 rounded bg-white p-16 flex-column dark:bg-gray-50'>
 			<div className='flex gap-8'>
 				<PriceCard
 					loading={isLoading}

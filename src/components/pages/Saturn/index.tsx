@@ -56,7 +56,7 @@ const Saturn = () => {
 	}
 
 	return (
-		<Main className='gap-8'>
+		<Main className='gap-8 !pb-0'>
 			{baseSymbolInfo ? (
 				<Layout
 					selectedSymbol={selectedSymbol}
@@ -69,7 +69,7 @@ const Saturn = () => {
 					activeTemplate={activeTemplate!}
 				/>
 			) : (
-				<span className='absolute text-base font-bold text-light-gray-700 center'>
+				<span className='text-gray-700 absolute text-base font-bold center'>
 					{t('common.symbol_not_found')}
 				</span>
 			)}

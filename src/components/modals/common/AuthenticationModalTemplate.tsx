@@ -26,7 +26,7 @@ const AuthenticationModalTemplate = forwardRef<HTMLDivElement, AuthenticationMod
 	({ title, children, hideTitle, description, styles, onClose, ...props }, ref) => {
 		return (
 			<Modal onClose={onClose} {...props} ref={ref}>
-				<Div className='bg-white'>
+				<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 					{!hideTitle && [
 						<div key='close' className='absolute left-24 z-10'>
 							<button onClick={onClose} type='button' className='icon-hover'>
@@ -35,11 +35,11 @@ const AuthenticationModalTemplate = forwardRef<HTMLDivElement, AuthenticationMod
 						</div>,
 
 						<div key='title' className='relative mt-24 gap-24 text-center flex-column'>
-							<h1 className='text-3xl font-bold text-light-gray-800'>{title}</h1>
+							<h1 className='text-3xl font-bold text-gray-800'>{title}</h1>
 							{description && (
 								<p
 									style={{ maxWidth: '39.2rem', top: '6rem', ...styles?.description }}
-									className='absolute w-full text-center text-base font-bold text-light-gray-800 center-x'
+									className='absolute w-full text-center text-base font-bold text-gray-800 center-x'
 								>
 									{description}
 								</p>

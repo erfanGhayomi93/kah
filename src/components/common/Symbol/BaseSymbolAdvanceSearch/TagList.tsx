@@ -23,7 +23,7 @@ const TagList = ({ data, tagOnly, clear, removeSymbol }: TagListProps) => {
 			<div
 				className={clsx(
 					'w-full border-b py-16 flex-justify-between',
-					tagOnly ? 'border-b-transparent' : 'border-light-gray-200',
+					tagOnly ? 'border-b-transparent' : 'border-gray-200',
 				)}
 			>
 				<ul className='flex-1 flex-wrap gap-8 flex-justify-start'>
@@ -31,7 +31,7 @@ const TagList = ({ data, tagOnly, clear, removeSymbol }: TagListProps) => {
 						<Tag key={item.symbolISIN} {...item} removeSymbol={() => removeSymbol(item.symbolISIN)} />
 					))}
 					{remainsDataLength > 0 && (
-						<div className='w-24 text-center font-medium text-light-gray-700'>{remainsDataLength}+</div>
+						<div className='text-gray-700 w-24 text-center font-medium'>{remainsDataLength}+</div>
 					)}
 				</ul>
 
@@ -44,7 +44,7 @@ const TagList = ({ data, tagOnly, clear, removeSymbol }: TagListProps) => {
 };
 
 const Tag = ({ symbolTitle, removeSymbol }: TagProps) => (
-	<li className='h-32 gap-8 rounded bg-light-secondary-100 pr-8 flex-items-center *:text-light-gray-700'>
+	<li className='bg-secondary-100 *:text-gray-700 h-32 gap-8 rounded pr-8 flex-items-center'>
 		<span className='text-tiny'>{symbolTitle}</span>
 		<button onClick={removeSymbol} type='button' className='size-24 flex-justify-center'>
 			<XSVG width='1.4rem' height='1.4rem' />

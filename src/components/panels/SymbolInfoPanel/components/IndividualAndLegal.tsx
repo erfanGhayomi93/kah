@@ -62,10 +62,10 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 				/>
 
 				<div className='text-tiny flex-justify-between'>
-					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
 						{t(inflowAndOutflow < 0 ? 'liquid_inflow' : 'liquid_outflow')}
 					</span>
-					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
 						{numFormatter(Math.abs(inflowAndOutflow))}
 					</span>
 				</div>

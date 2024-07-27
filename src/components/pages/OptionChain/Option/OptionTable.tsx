@@ -148,11 +148,11 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						cellClass: ({ value }) => {
 							switch (value.toLowerCase()) {
 								case 'itm':
-									return 'text-light-success-100';
+									return 'text-success-100';
 								case 'otm':
-									return 'text-light-error-100';
+									return 'text-error-100';
 								case 'atm':
-									return 'text-light-secondary-300';
+									return 'text-secondary-300';
 								default:
 									return '';
 							}
@@ -164,7 +164,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-buy',
 						flex: 1,
-						cellClass: 'text-light-success-100',
+						cellClass: 'text-success-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
 					},
 
@@ -172,7 +172,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-buy',
 						flex: 1,
-						cellClass: 'text-light-error-100',
+						cellClass: 'text-error-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
 					},
 				],
@@ -181,7 +181,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			{
 				groupId: 'strike',
 				headerName: '',
-				headerClass: '!bg-white !border-b-0',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50 !border-b-0',
 				children: [
 					{
 						headerName: 'اعمال',
@@ -215,7 +215,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-sell',
 						flex: 1,
-						cellClass: 'text-light-success-100',
+						cellClass: 'text-success-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestBuyPrice)),
 					},
 
@@ -223,7 +223,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-sell',
 						flex: 1,
-						cellClass: 'text-light-error-100',
+						cellClass: 'text-error-100',
 						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestSellPrice)),
 					},
 
@@ -234,11 +234,11 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						cellClass: ({ value }) => {
 							switch (value.toLowerCase()) {
 								case 'itm':
-									return 'text-light-success-100';
+									return 'text-success-100';
 								case 'otm':
-									return 'text-light-error-100';
+									return 'text-error-100';
 								case 'atm':
-									return 'text-light-secondary-300';
+									return 'text-secondary-300';
 								default:
 									return '';
 							}
@@ -369,13 +369,13 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			/>
 
 			{isLoading && (
-				<div className='absolute left-0 top-0 size-full bg-white'>
+				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
 					<Loading />
 				</div>
 			)}
 
 			{!isLoading && (!Array.isArray(watchlistData) || watchlistData.length === 0) && (
-				<div className='absolute left-0 top-0 size-full bg-white'>
+				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
 					<NoData />
 				</div>
 			)}

@@ -83,13 +83,13 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 				colId: 'saveDate',
 				headerName: t('deposit_modal.time_history'),
 				valueGetter: (row) => dateFormatter(row.saveDate),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: t('change_broker_modal.symbol_column'),
 				valueGetter: (row) => (row.symbolTitle ? row.symbolTitle : '-'),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'requestState',
@@ -106,7 +106,7 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 						)}
 					</div>
 				),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 				cellClass: '!text-sm',
 			},
 		],
@@ -119,12 +119,12 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 				<LightweightTable
 					rowData={(isFreeze ? dataFreeze : dataUnFreeze) || []}
 					columnDefs={columnDefs}
-					className='bg-white'
+					className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'
 				/>
 			</div>
 
 			<Link
-				className='text-light-info-100 h-48 w-full gap-8 rounded font-medium flex-justify-center'
+				className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
 				href={'/option-reports/freeze-and-unfreeze'}
 				onClick={() => onCloseModal()}
 			>

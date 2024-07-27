@@ -1,53 +1,10 @@
 @use "ag-grid-community/styles" as ag;
 
-@include ag.grid-styles(
-	(
-		themes: (
-			alpine: (
-				// font
-				--ag-font-family: "IRANSans",
-				--ag-font-size: 14px,
-				// header
-				--ag-header-height: 48px,
-				--ag-header-background-color: rgba(248, 250, 253, 1),
-				--ag-header-column-separator-display: block,
-				--ag-header-column-separator-width: 1px,
-				--ag-header-column-separator-height: 100%,
-				--ag-header-column-separator-color: rgb(255, 255, 255),
-				// Main Colors
-				--ag-background-color: rgba(255, 255, 255, 1),
-				--ag-foreground-color: rgba(93, 96, 109, 1),
-				--ag-alpine-active-color: rgba(219, 238, 255, 1),
-				--ag-selected-row-background-color: rgba(219, 238, 255, 1),
-				--ag-header-foreground-color: rgba(112, 112, 112, 1),
-				--ag-data-color: rgba(24, 28, 47, 1),
-				--ag-row-hover-color: rgba(229, 238, 255, 1),
-				--ag-odd-row-background-color: rgba(248, 250, 253, 1),
-				// Borders
-				--ag-borders: 0 solid,
-				--ag-border-color: rgb(94, 103, 129),
-				--ag-borders-secondary: 0 solid,
-				--ag-cell-horizontal-border: solid rgb(255, 255, 255),
-				--ag-borders-critical: 0 solid,
-				--ag-row-border-style: solid,
-				--ag-row-border-color: transparent,
-				--ag-row-border-width: 0,
+@include ag.grid-styles();
 
-				// Rows
-				--ag-row-height: 48px,
-				--ag-value-change-value-highlight-background-color: rgb(83, 168, 255, 0.1),
-				// Spacing
-				--ag-grid-size: 3px,
-				--ag-icon-size: 14px,
-				--ag-cell-horizontal-padding: 13px,
-
-				// Input
-				--ag-input-focus-box-shadow: none,
-				--ag-input-focus-border-color: transparent
-			)
-		)
-	)
-);
+.ag-header {
+	border-bottom-width: 0 !important;
+}
 
 .ag-theme-alpine .ag-row,
 .ag-theme-alpine-dark .ag-row,
@@ -164,7 +121,7 @@
 		}
 
 		&::before {
-			border: 1px solid theme("colors.light.gray.200");
+			border: 1px solid theme("colors.gray.200");
 			border-radius: 4px;
 			transition:
 				border-color 250ms,
@@ -173,8 +130,8 @@
 
 		&.ag-checked {
 			&::before {
-				border-color: theme("colors.light.primary.100");
-				background-color: theme("colors.light.primary.100");
+				border-color: theme("colors.primary.100");
+				background-color: theme("colors.primary.100");
 			}
 
 			&::after {
@@ -190,7 +147,7 @@
 
 .ag-header-cell {
 	&.strike-price {
-		border-bottom: 1px solid theme("colors.light.gray.200");
+		border-bottom: 1px solid theme("colors.gray.200");
 		&,
 		&:hover {
 			background-color: theme("colors.white") !important;
@@ -274,19 +231,19 @@
 
 	&:not(.border-0) {
 		.ag-root {
-			border: 1px solid theme("colors.light.gray.200");
+			border: 1px solid theme("colors.gray.200");
 		}
 	}
 
 	&.border-call {
 		.ag-root {
-			border-right: 3px solid theme("colors.light.success.100");
+			border-right: 3px solid theme("colors.success.100");
 		}
 	}
 
 	&.border-put {
 		.ag-root {
-			border-right: 3px solid theme("colors.light.error.100");
+			border-right: 3px solid theme("colors.error.100");
 		}
 	}
 

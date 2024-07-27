@@ -128,11 +128,9 @@ const ChangeBrokerReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white'>
+		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
 			<div className='flex-justify-between'>
-				<span className='text-xl font-medium text-light-gray-500'>
-					{t('change_broker_reports_page.title_page')}
-				</span>
+				<span className='text-xl font-medium text-gray-500'>{t('change_broker_reports_page.title_page')}</span>
 				<Toolbar
 					filtersCount={filtersCount}
 					onShowFilters={onShowFilters}

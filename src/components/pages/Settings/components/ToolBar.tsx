@@ -59,9 +59,7 @@ const ToolBar = () => {
 						}}
 						className={clsx(
 							'no-hover h-40 whitespace-nowrap rounded text-center text-base transition-colors flex-justify-center',
-							path === item.href
-								? 'btn-select'
-								: 'bg-light-gray-100 text-light-gray-700 hover:btn-select',
+							path === item.href ? 'btn-select' : 'bg-gray-100 text-gray-700 hover:btn-select',
 						)}
 					>
 						{item.title}

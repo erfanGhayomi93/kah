@@ -103,7 +103,7 @@ const WatchlistList = () => {
 					<Tooltip placement='top' content={t('tooltip.add_new_watchlist')}>
 						<button
 							type='button'
-							className='size-40 rounded border border-light-gray-200 text-light-gray-800 transition-colors flex-justify-center hover:border-light-primary-100 hover:bg-light-primary-100 hover:text-white'
+							className='border-gray-200 text-gray-800 hover:border-primary-100 hover:bg-primary-100 size-40 rounded border transition-colors flex-justify-center hover:text-white'
 							onClick={addNewWatchlist}
 						>
 							<PlusSVG width='1.8rem' height='1.8rem' />
@@ -116,7 +116,7 @@ const WatchlistList = () => {
 						<button
 							type='button'
 							onClick={manageWatchlistList}
-							className='size-40 rounded border border-light-gray-200 text-light-gray-800 transition-colors flex-justify-center hover:border-light-primary-100 hover:bg-light-primary-100 hover:text-white'
+							className='border-gray-200 text-gray-800 hover:border-primary-100 hover:bg-primary-100 size-40 rounded border transition-colors flex-justify-center hover:text-white'
 						>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>

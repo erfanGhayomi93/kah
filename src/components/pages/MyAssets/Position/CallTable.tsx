@@ -237,8 +237,8 @@ const CallTable = ({ data, isLoading }: CallTableProps) => {
 
 	return (
 		<div className='flex-1 gap-16 flex-column'>
-			<h2 className='text-base font-medium text-light-gray-700'>
-				{t('positions_title')} <span className='text-light-success-100'>{t('call')}</span>
+			<h2 className='text-gray-700 text-base font-medium'>
+				{t('positions_title')} <span className='text-success-100'>{t('call')}</span>
 			</h2>
 
 			<div className='relative w-full flex-328'>

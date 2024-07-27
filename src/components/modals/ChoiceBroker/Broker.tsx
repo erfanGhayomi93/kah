@@ -10,7 +10,7 @@ const Broker = ({ name, description, logo, ssoUrl, onSelect }: BrokerProps) => {
 	return (
 		<div
 			style={{ flex: '0 0 21.2rem' }}
-			className='items-center gap-48 rounded-md bg-white px-16 py-24 text-center shadow-card flex-column'
+			className='darkBlue:bg-gray-50 items-center gap-48 rounded-md bg-white px-16 py-24 text-center shadow-card flex-column dark:bg-gray-50'
 		>
 			<div className='items-center gap-4 flex-column'>
 				<div style={{ maxWidth: '4rem', maxHeight: '4rem' }} className='h-40'>
@@ -22,8 +22,8 @@ const Broker = ({ name, description, logo, ssoUrl, onSelect }: BrokerProps) => {
 				</div>
 
 				<div className='gap-16 flex-column'>
-					<h2 className='text-light-gray-700 text-base font-medium'>{name}</h2>
-					<span className='text-light-gray-500 text-tiny'>{description}</span>
+					<h2 className='text-base font-medium text-gray-700'>{name}</h2>
+					<span className='text-tiny text-gray-500'>{description}</span>
 				</div>
 			</div>
 

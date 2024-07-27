@@ -56,19 +56,19 @@ const BuyBaseSymbol = ({
 			className='flex-1 justify-between gap-24 pt-8 flex-column'
 		>
 			<div className='flex-1 gap-8 flex-column'>
-				<div className='h-40 cursor-default rounded border border-light-gray-200 bg-light-gray-100 px-8 text-light-gray-700 flex-justify-between'>
+				<div className='border-gray-200 bg-gray-100 text-gray-700 h-40 cursor-default rounded border px-8 flex-justify-between'>
 					<span>{t('create_strategy.quantity_input')}</span>
 					<span>{sepNumbers(String(quantity))}</span>
 				</div>
 
 				<div className='flex h-40 gap-8'>
-					<label className='h-full flex-1 gap-8 rounded border border-light-gray-200 px-8 flex-justify-center'>
-						<span className='text-light-gray-700'>{t('create_strategy.price_input')}</span>
+					<label className='border-gray-200 h-full flex-1 gap-8 rounded border px-8 flex-justify-center'>
+						<span className='text-gray-700'>{t('create_strategy.price_input')}</span>
 						<input
 							value={sepNumbers(String(price))}
 							type='text'
 							inputMode='numeric'
-							className='flex-1 bg-transparent text-left text-light-gray-800 ltr'
+							className='text-gray-800 flex-1 bg-transparent text-left ltr'
 							onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
 						/>
 					</label>
@@ -77,7 +77,7 @@ const BuyBaseSymbol = ({
 						type='button'
 						className={clsx(
 							'size-40 rounded !border transition-colors flex-justify-center',
-							isPriceLocked ? 'no-hover btn-select' : 'border-light-gray-200 text-light-gray-700',
+							isPriceLocked ? 'no-hover btn-select' : 'border-gray-200 text-gray-700',
 						)}
 					>
 						{isPriceLocked ? (
@@ -88,7 +88,7 @@ const BuyBaseSymbol = ({
 					</button>
 				</div>
 
-				<div className='h-40 cursor-default rounded border border-light-gray-200 px-8 text-light-gray-700 flex-justify-between'>
+				<div className='border-gray-200 text-gray-700 h-40 cursor-default rounded border px-8 flex-justify-between'>
 					<span>{t('create_strategy.validity_input')}</span>
 					<span className='no-hover h-24 w-40 rounded !border flex-justify-center btn-select'>
 						{t(`validity_date.${validityDate}`)}
@@ -98,7 +98,7 @@ const BuyBaseSymbol = ({
 
 			<div className='gap-16 flex-column'>
 				<div className='h-24 flex-justify-between'>
-					<div className='gap-4 text-light-gray-700 flex-items-center'>
+					<div className='text-gray-700 gap-4 flex-items-center'>
 						{t('create_strategy.order_value') + ':'}
 						<Tooltip content='ارزش سفارش' placement='top'>
 							<QuestionCircleOutlineSVG width='1.6rem' height='1.6rem' />
@@ -111,7 +111,7 @@ const BuyBaseSymbol = ({
 						) : (
 							<>
 								{sepNumbers(String(transactionCommission))}
-								<span className='text-light-gray-500'>{t('common.rial')}</span>
+								<span className='text-gray-500'>{t('common.rial')}</span>
 							</>
 						)}
 					</div>

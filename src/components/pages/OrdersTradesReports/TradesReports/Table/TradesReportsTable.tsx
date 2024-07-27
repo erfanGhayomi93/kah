@@ -40,8 +40,8 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 				cellClass: (row) => {
 					if (!row) return;
 					return clsx({
-						'text-light-success-100': row.orderSide.includes('Buy'),
-						'text-light-error-100': row.orderSide.includes('Sell'),
+						'text-success-100': row.orderSide.includes('Buy'),
+						'text-error-100': row.orderSide.includes('Sell'),
 					});
 				},
 				valueGetter: (row) => t('trades_reports_page.side_' + row.orderSide),

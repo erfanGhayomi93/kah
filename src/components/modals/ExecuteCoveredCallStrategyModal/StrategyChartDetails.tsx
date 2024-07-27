@@ -73,17 +73,17 @@ const StrategyChartDetails = ({
 		});
 
 	return (
-		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-light-gray-200 py-16'>
+		<div style={{ flex: '0 0 18.4rem' }} className='border-gray-200 relative flex gap-40 border-y py-16'>
 			<ul
 				style={{ flex: '0 0 22rem' }}
-				className='justify-between text-light-gray-700 ltr flex-column *:flex-justify-between'
+				className='text-gray-700 justify-between ltr flex-column *:flex-justify-between'
 			>
 				<li>
 					<span
 						className={clsx({
-							'font-medium text-light-success-100': baseSymbolStatus === 'itm',
-							'font-medium text-light-error-100': baseSymbolStatus === 'otm',
-							'text-light-gray-700': baseSymbolStatus === 'atm',
+							'text-success-100 font-medium': baseSymbolStatus === 'itm',
+							'text-error-100 font-medium': baseSymbolStatus === 'otm',
+							'text-gray-700': baseSymbolStatus === 'atm',
 						})}
 					>
 						{t(baseSymbolStatus)}
@@ -91,13 +91,13 @@ const StrategyChartDetails = ({
 					<span>:{t('current_status')}</span>
 				</li>
 				<li>
-					<span className='font-medium text-light-error-100'>
+					<span className='text-error-100 font-medium'>
 						{maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
 					</span>
 					<span>:{t('most_loss')}</span>
 				</li>
 				<li>
-					<span className='font-medium text-light-success-100'>
+					<span className='text-success-100 font-medium'>
 						{maxProfit === Infinity ? t('infinity') : sepNumbers(String(maxProfit))}
 					</span>
 					<span>:{t('most_profit')}</span>

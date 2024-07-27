@@ -24,7 +24,7 @@ const NoData = ({ text, imgName = 'search-file.png', width = 118, height = 118, 
 					alt='no data'
 					src={`/static/images/${imgName}`}
 				/>
-				{text !== null && <span className='text-light-gray-700 text-base'>{text ?? t('no_data')}</span>}
+				{text !== null && <span className='text-gray-700 text-base'>{text ?? t('no_data')}</span>}
 			</div>
 		</div>
 	);

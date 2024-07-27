@@ -177,7 +177,10 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 				ref={ref}
 				{...props}
 			>
-				<div style={{ width: '70rem' }} className='max-w-full bg-white flex-column'>
+				<div
+					style={{ width: '70rem' }}
+					className='darkBlue:bg-gray-50 max-w-full bg-white flex-column dark:bg-gray-50'
+				>
 					<Header label={t('title')} onClose={onCloseModal} />
 
 					<div className='gap-32 p-24 flex-column'>
@@ -188,9 +191,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 								<button
 									className={clsx(
 										'h-40 flex-1 transition-colors',
-										item.id === activeTab
-											? 'font-medium text-light-gray-700'
-											: 'text-light-gray-500',
+										item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
 									)}
 									type='button'
 									disabled={item?.disabled}
@@ -200,7 +201,10 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 							)}
 						/>
 
-						<form onSubmit={submit} className='gap-24 bg-white flex-column'>
+						<form
+							onSubmit={submit}
+							className='darkBlue:bg-gray-50 gap-24 bg-white flex-column dark:bg-gray-50'
+						>
 							<ul className='gap-32 flex-column'>
 								{!loading && (
 									<>

@@ -107,7 +107,7 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged, onCancel }
 									setFieldPasswordVisibility('newPassword', !passwordVisibility.newPassword)
 								}
 								type='button'
-								className='text-light-gray-700 border-r-0 prefix'
+								className='text-gray-700 border-r-0 prefix'
 							>
 								{passwordVisibility.newPassword ? <EyeSlashSVG /> : <EyeSVG />}
 							</button>
@@ -190,7 +190,7 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged, onCancel }
 								setFieldPasswordVisibility('repeatNewPassword', !passwordVisibility.repeatNewPassword)
 							}
 							type='button'
-							className='text-light-gray-700 border-r-0 prefix'
+							className='text-gray-700 border-r-0 prefix'
 						>
 							{passwordVisibility.repeatNewPassword ? <EyeSlashSVG /> : <EyeSVG />}
 						</button>
@@ -212,7 +212,7 @@ const ChangePasswordForm = ({ phoneNumber, result, onPasswordChanged, onCancel }
 					{t('common.register')}
 				</Button>
 
-				<button type='button' onClick={onCancel} className='text-light-primary-100 h-40 font-medium'>
+				<button type='button' onClick={onCancel} className='text-primary-100 h-40 font-medium'>
 					{t('common.cancel')}
 				</button>
 			</div>

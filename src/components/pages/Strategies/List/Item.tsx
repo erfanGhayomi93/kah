@@ -44,24 +44,24 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 		<div className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12'>
 			<div
 				onClick={onStrategyClick}
-				className='h-328 cursor-pointer gap-16 overflow-hidden rounded border border-light-gray-200 bg-white p-16 flex-column'
+				className='darkBlue:bg-gray-50 h-328 cursor-pointer gap-16 overflow-hidden rounded border border-gray-200 bg-white p-16 flex-column dark:bg-gray-50'
 			>
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
-						<h1 className='text-base font-medium text-light-gray-700'>
+						<h1 className='text-base font-medium text-gray-700'>
 							{t(`${type}.title`)}
-							<span className='text-light-gray-500'> ({title})</span>
+							<span className='text-gray-500'> ({title})</span>
 						</h1>
 
-						<button type='button' className='size-32 text-light-gray-700 flex-justify-center'>
+						<button type='button' className='size-32 text-gray-700 flex-justify-center'>
 							<AngleLeftSVG width='2rem' height='2rem' />
 						</button>
 					</div>
 
-					<h3 className='gap-4 whitespace-nowrap text-tiny text-light-gray-700 flex-items-center'>
+					<h3 className='gap-4 whitespace-nowrap text-tiny text-gray-700 flex-items-center'>
 						{t.rich(`${type}.desc`, {
 							plus: () => (
-								<b className='text-light-gray-800'>
+								<b className='text-gray-800'>
 									<PlusSVG width='1.4rem' height='1.4rem' />
 								</b>
 							),

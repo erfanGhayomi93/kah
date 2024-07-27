@@ -50,7 +50,7 @@ const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) 
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<div key='close' className='absolute left-24 z-10'>
 					<button onClick={onCloseModal} type='button' className='icon-hover'>
 						<XSVG width='2rem' height='2rem' />
@@ -58,10 +58,10 @@ const ChoiceBroker = forwardRef<HTMLDivElement, ChoiceBrokerProps>((props, ref) 
 				</div>
 
 				<div className='relative mt-24 gap-24 text-center flex-column'>
-					<h1 className='text-light-gray-800 text-3xl font-bold'>{t('choose_broker_modal.title')}</h1>
+					<h1 className='text-3xl font-bold text-gray-800'>{t('choose_broker_modal.title')}</h1>
 					<p
 						style={{ maxWidth: '36rem' }}
-						className='text-light-primary-100 mx-auto text-center text-base font-bold'
+						className='mx-auto text-center text-base font-bold text-primary-100'
 					>
 						{t('choose_broker_modal.description')}
 					</p>

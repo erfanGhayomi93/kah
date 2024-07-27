@@ -197,7 +197,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 
 						<span className='flex items-center gap-4 text-2xl font-bold'>
 							{sepNumbers(String(lastTradedPrice ?? 0))}
-							<span className='text-base font-normal text-light-gray-700'>{t('common.rial')}</span>
+							<span className='text-gray-700 text-base font-normal'>{t('common.rial')}</span>
 						</span>
 
 						<SymbolContextMenu symbol={symbol ?? null} />

@@ -133,7 +133,7 @@ const WithdrawalCashReports = () => {
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 	return (
-		<Main className='gap-16 bg-white'>
+		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
 			<div className='flex-justify-between'>
 				<Tabs />
 				<Toolbar

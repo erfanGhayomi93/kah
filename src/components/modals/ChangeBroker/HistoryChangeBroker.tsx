@@ -67,13 +67,13 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 				colId: 'saveDate',
 				headerName: t('deposit_modal.time_history'),
 				valueGetter: (row) => dateFormatter(row.saveDate),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: t('change_broker_modal.symbol_column'),
 				valueGetter: (row) => (row.symbolTitle ? row.symbolTitle : '-'),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'action',
@@ -90,7 +90,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 						)}
 					</div>
 				),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 				cellClass: '!text-sm',
 			},
 		],
@@ -100,11 +100,15 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 	return (
 		<div className='flex h-full overflow-auto pr-24 flex-column'>
 			<div className='flex-1 rounded-sm p-8 shadow-card'>
-				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
+				<LightweightTable
+					rowData={data || []}
+					columnDefs={columnDefs}
+					className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'
+				/>
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-light-info-100 flex-justify-center'
+				className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
 				href={'/financial-reports/change-broker'}
 				onClick={() => onCloseModal()}
 			>

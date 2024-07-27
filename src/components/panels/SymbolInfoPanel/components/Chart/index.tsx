@@ -116,7 +116,7 @@ const Chart = ({ isOption, symbolISIN }: ChartProps) => {
 					isOpenPositionChartLoading ||
 					isBaseOpenPositionChartLoading ||
 					isNotionalValueChartLoading) && (
-					<div className='absolute left-0 top-0 size-full bg-white'>
+					<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
 						<Loading />
 					</div>
 				)}

@@ -72,7 +72,7 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 				sortable: false,
 				valueGetter: (row) => row.symbolISIN,
 				valueFormatter: () => (
-					<button type='button' className='text-light-gray-700 mx-auto flex-justify-center'>
+					<button type='button' className='text-gray-700 mx-auto flex-justify-center'>
 						<ChainSVG width='2.4rem' height='2.4rem' />
 					</button>
 				),

@@ -38,12 +38,12 @@ const ChangeBlockTypeModal = forwardRef<HTMLDivElement, ChangeBlockTypeModalProp
 				top='50%'
 				ref={ref}
 			>
-				<Div className='justify-between bg-white flex-column'>
+				<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
 					<Header
 						label={
 							<>
 								{t('title') + ' - '}
-								<span className='text-light-info-100'>{symbolData.symbolTitle}</span>
+								<span className='text-info-100'>{symbolData.symbolTitle}</span>
 							</>
 						}
 						onClose={onCloseModal}

@@ -18,7 +18,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 		<Main className='gap-8'>
 			<div
 				style={{ flex: '0 0 5.6rem' }}
-				className='gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start'
+				className='darkBlue:bg-gray-50 gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start dark:bg-gray-50'
 			>
 				<ul className='flex gap-8'>
 					<li>
@@ -28,7 +28,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 								'h-40 rounded !border transition-colors flex-justify-center',
 								!isBuilding
 									? 'no-hover font-medium btn-select'
-									: 'border-light-gray-100 bg-light-gray-100 text-light-gray-700',
+									: 'border-gray-100 bg-gray-100 text-gray-700',
 							)}
 							href='/strategy'
 						>
@@ -42,7 +42,7 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 								'h-40 rounded !border transition-colors flex-justify-center',
 								isBuilding
 									? 'no-hover font-medium btn-select'
-									: 'border-light-gray-100 bg-light-gray-100 text-light-gray-700',
+									: 'border-gray-100 bg-gray-100 text-gray-700',
 							)}
 							href='/strategy/build'
 						>

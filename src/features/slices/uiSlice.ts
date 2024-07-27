@@ -1,5 +1,7 @@
 import LocalstorageInstance from '@/classes/Localstorage';
 import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants/grid';
+import { setCookieTheme } from '@/utils/cookie';
+import { getDeviceColorSchema } from '@/utils/helpers';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type ToastPosition } from 'react-toastify';
 import { type RootState } from '../store';
@@ -20,6 +22,8 @@ export interface UIState {
 	toastPosition: ToastPosition;
 
 	builtStrategy: TSymbolStrategy[];
+
+	theme: TTheme;
 }
 
 const initialState: UIState = {
@@ -38,6 +42,8 @@ const initialState: UIState = {
 	dashboardGridLayout: LocalstorageInstance.get('dg', initialDashboardGrid, (v) => Array.isArray(v)),
 
 	toastPosition: LocalstorageInstance.get<ToastPosition>('tp', 'bottom-left'),
+
+	theme: getDeviceColorSchema(),
 };
 
 const uiSlice = createSlice({
@@ -82,6 +88,20 @@ const uiSlice = createSlice({
 		setBuiltStrategy: (state, { payload }: PayloadAction<UIState['builtStrategy']>) => {
 			state.builtStrategy = payload;
 		},
+
+		setTheme: (state, { payload }: PayloadAction<UIState['theme']>) => {
+			try {
+				document.documentElement.setAttribute(
+					'data-theme',
+					payload === 'system' ? getDeviceColorSchema() : payload,
+				);
+			} catch (e) {
+				//
+			}
+
+			setCookieTheme(payload);
+			state.theme = payload;
+		},
 	},
 });
 
@@ -95,6 +115,7 @@ export const {
 	setDashboardGridLayout,
 	setToastPosition,
 	setBuiltStrategy,
+	setTheme,
 } = uiSlice.actions;
 
 export const getSidebarIsExpand = (state: RootState) => state.ui.sidebarIsExpand;
@@ -105,5 +126,6 @@ export const getSymbolInfoPanelGridLayout = (state: RootState) => state.ui.symbo
 export const getDashboardGridLayout = (state: RootState) => state.ui.dashboardGridLayout;
 export const getToastPosition = (state: RootState) => state.ui.toastPosition;
 export const getBuiltStrategy = (state: RootState) => state.ui.builtStrategy;
+export const getTheme = (state: RootState) => state.ui.theme;
 
 export default uiSlice.reducer;

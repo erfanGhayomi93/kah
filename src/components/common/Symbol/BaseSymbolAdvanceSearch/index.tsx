@@ -103,10 +103,10 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 				<div
 					className={cn(
 						'h-40 flex-1 rounded border transition-colors flex-items-center',
-						open ? 'border-light-info-100' : 'border-light-gray-200',
+						open ? 'border-info-100' : 'border-gray-200',
 					)}
 				>
-					<span className='px-8 text-light-gray-700'>
+					<span className='text-gray-700 px-8'>
 						<SearchSVG />
 					</span>
 					<input
@@ -114,7 +114,7 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 						type='text'
 						inputMode='numeric'
 						maxLength={32}
-						className='h-40 flex-1 rounded bg-transparent pl-8 text-light-gray-800'
+						className='text-gray-800 h-40 flex-1 rounded bg-transparent pl-8'
 						placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 						value={term}
 						onFocus={() => {
@@ -128,7 +128,7 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 						<div className='ml-16 min-h-20 min-w-20 spinner' />
 					) : (
 						term.length > 1 && (
-							<button onClick={onClearTerm} type='button' className='ml-8 text-light-gray-700'>
+							<button onClick={onClearTerm} type='button' className='text-gray-700 ml-8'>
 								<XCircleSVG width='1.6rem' height='1.6rem' />
 							</button>
 						)
@@ -140,9 +140,9 @@ const BaseSymbolAdvanceSearch = ({ values, onChange }: BaseSymbolAdvanceSearchPr
 								if (!open) seeTags(() => setOpen(true));
 							}}
 							type='button'
-							className='h-24 w-40 border-r border-r-light-gray-200 text-tiny text-light-gray-100 flex-justify-center'
+							className='border-r-gray-200 text-gray-100 h-24 w-40 border-r text-tiny flex-justify-center'
 						>
-							<span className='size-24 rounded-circle bg-light-primary-100 pt-2 text-white flex-justify-center'>
+							<span className='bg-primary-100 size-24 rounded-circle pt-2 text-white flex-justify-center'>
 								{values.length}
 							</span>
 						</button>

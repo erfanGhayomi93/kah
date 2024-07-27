@@ -58,7 +58,7 @@ const Input = ({
 	}, [value]);
 
 	return (
-		<div className='flex h-48 items-center rounded bg-white input-group'>
+		<div className='darkBlue:bg-gray-50 flex h-48 items-center rounded bg-white input-group dark:bg-gray-50'>
 			<label className='relative size-full flex-1 flex-items-center'>
 				<input
 					{...inputProps}
@@ -78,22 +78,19 @@ const Input = ({
 
 				<div
 					style={{ flex: '0 0 12rem' }}
-					className={clsx(
-						'h-full bg-light-gray-100 py-4 pr-8 flex-justify-between',
-						prefix ? 'pl-8' : 'pl-16',
-					)}
+					className={clsx('h-full bg-gray-100 py-4 pr-8 flex-justify-between', prefix ? 'pl-8' : 'pl-16')}
 				>
 					<div className='flex-column flex-justify-between'>
 						<button
 							type='button'
-							className='size-16 text-light-gray-700 flex-justify-center'
+							className='size-16 text-gray-700 flex-justify-center'
 							onClick={() => setInputValue(value + tickSize)}
 						>
 							<ArrowUpSVG width='1.4rem' height='1.4rem' />
 						</button>
 						<button
 							type='button'
-							className='size-16 text-light-gray-700 flex-justify-center'
+							className='size-16 text-gray-700 flex-justify-center'
 							onClick={() => setInputValue(value + tickSize)}
 						>
 							<ArrowDownSVG width='1.4rem' height='1.4rem' />
@@ -101,7 +98,7 @@ const Input = ({
 					</div>
 
 					<div className='gap-8 flex-items-center'>
-						<div className='flex-1 flex-column flex-justify-between *:flex *:h-16 *:w-56 *:justify-end *:text-left *:text-tiny *:text-light-gray-700'>
+						<div className='flex-1 flex-column flex-justify-between *:flex *:h-16 *:w-56 *:justify-end *:text-left *:text-tiny *:text-gray-700'>
 							<button type='button' className='items-end' onClick={() => setInputValue(high)}>
 								{sepNumbers(String(high))}
 							</button>

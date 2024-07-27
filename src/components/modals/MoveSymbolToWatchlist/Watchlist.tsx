@@ -11,9 +11,9 @@ const Watchlist = ({ top, watchlist, onSelect }: WatchlistProps) => {
 		<li
 			style={{ top: `${top}rem`, width: 'calc(100% - 4.8rem)' }}
 			onClick={onSelect}
-			className='bg-light-gray-100 border-light-gray-200 absolute h-48 cursor-pointer gap-4 rounded border px-8 transition-colors flex-justify-start hover:btn-hover'
+			className='bg-gray-100 border-gray-200 absolute h-48 cursor-pointer gap-4 rounded border px-8 transition-colors flex-justify-start hover:btn-hover'
 		>
-			<span className={watchlist.isHidden ? 'text-light-gray-500' : 'text-light-gray-800'}>
+			<span className={watchlist.isHidden ? 'text-gray-500' : 'text-gray-800'}>
 				{watchlist.isHidden ? (
 					<EyeSlashSVG width='2rem' height='2rem' />
 				) : (
@@ -21,7 +21,7 @@ const Watchlist = ({ top, watchlist, onSelect }: WatchlistProps) => {
 				)}
 			</span>
 
-			<span className={watchlist.isHidden ? 'text-light-gray-500' : 'text-light-gray-800'}>{watchlist.name}</span>
+			<span className={watchlist.isHidden ? 'text-gray-500' : 'text-gray-800'}>{watchlist.name}</span>
 		</li>
 	);
 };

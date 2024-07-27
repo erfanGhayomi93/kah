@@ -24,14 +24,14 @@ const SymbolInfo = ({ symbolISIN, children }: SymbolInfoProps) => {
 
 	if (!symbolData) {
 		return (
-			<Wrapper className='bg-white'>
+			<Wrapper className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<NoData />
 			</Wrapper>
 		);
 	}
 
 	return (
-		<Wrapper className='gap-8 bg-white px-16 py-20 flex-column'>
+		<Wrapper className='darkBlue:bg-gray-50 gap-8 bg-white px-16 py-20 flex-column dark:bg-gray-50'>
 			<SymbolMainDetails {...symbolData} />
 			<BaseSymbolTabs symbolData={symbolData} isLoading={isLoadingSymbolData} />
 			{children(symbolData)}

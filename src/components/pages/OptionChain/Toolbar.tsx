@@ -43,7 +43,10 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 	}, [settlementDays, inputs.baseSymbol]);
 
 	return (
-		<div style={{ flex: '0 0 5.6rem' }} className='gap-36 rounded bg-white px-16 flex-justify-between'>
+		<div
+			style={{ flex: '0 0 5.6rem' }}
+			className='darkBlue:bg-gray-50 gap-36 rounded bg-white px-16 flex-justify-between dark:bg-gray-50'
+		>
 			<div className='flex-1 gap-24 flex-items-center'>
 				<div style={{ flex: '0 0 25.6rem' }}>
 					<BaseSymbolSearch
@@ -76,10 +79,10 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 
 			{Boolean(inputs.baseSymbol) && (
 				<div className='gap-8 flex-items-center'>
-					<div className='h-40 rounded bg-light-gray-100 px-8 flex-items-center'>
-						<span className='gap-8 whitespace-nowrap text-base text-light-gray-700 flex-items-center'>
+					<div className='h-40 rounded bg-gray-100 px-8 flex-items-center'>
+						<span className='gap-8 whitespace-nowrap text-base text-gray-700 flex-items-center'>
 							{t('option_chain.total_open_contracts')}:
-							<span className='font-medium text-light-gray-800'>
+							<span className='font-medium text-gray-800'>
 								{sepNumbers(String(totalOpenPositionCount))}
 							</span>
 						</span>
@@ -111,7 +114,7 @@ export const SettlementItem = ({ activeSettlementDay, settlementDay, setSettleme
 					'h-40 w-88 rounded !border transition-colors',
 					settlementDay?.contractEndDate === activeSettlementDay?.contractEndDate
 						? 'no-hover font-medium btn-select'
-						: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
+						: 'border-gray-200 text-gray-700 hover:btn-hover',
 				)}
 			>
 				{dateFormatter(settlementDay.contractEndDate)}

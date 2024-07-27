@@ -149,7 +149,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 	return (
 		<div className=' p-8 '>
-			<div className=' flex w-full items-center justify-between  overflow-hidden rounded bg-white p-8'>
+			<div className=' darkBlue:bg-gray-50 flex w-full items-center justify-between  overflow-hidden rounded bg-white p-8 dark:bg-gray-50'>
 				<div className='flex items-center gap-10'>
 					<ul className='flex items-center gap-10'>
 						{ListOfMarkets.map(({ id, label }) => (
@@ -161,7 +161,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 										'h-40  rounded !border transition-colors',
 										id === filters.market.id
 											? 'no-hover font-medium btn-select'
-											: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
+											: 'border-gray-200 text-gray-700 hover:btn-hover',
 									)}
 								>
 									{label}
@@ -175,7 +175,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 							minWidth: '16px',
 							minHeight: '1px',
 						}}
-						className='rotate-90 bg-light-gray-200'
+						className='rotate-90 bg-gray-200'
 					/>
 
 					<Select
@@ -225,7 +225,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={takeScreenshot}
 									type='button'
-									className='hover:text-primary flex size-full items-center justify-center text-light-gray-700 transition-colors dark:text-dark-gray-800 dark:hover:text-dark-primary-100'
+									className='hover:text-primary dark:text-dark-gray-800 dark:hover:text-dark-primary-100 flex size-full items-center justify-center text-gray-700 transition-colors'
 									data-testid='market_map_filters_takeAScreenshot'
 								>
 									<CameraSVG />
@@ -239,7 +239,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={refetch}
 									type='button'
-									className='hover:text-primary flex size-full items-center justify-center text-light-gray-700 transition-colors dark:text-dark-gray-800 dark:hover:text-dark-primary-100'
+									className='hover:text-primary dark:text-dark-gray-800 dark:hover:text-dark-primary-100 flex size-full items-center justify-center text-gray-700 transition-colors'
 									data-testid='market_map_filters_refresh'
 								>
 									<ReloadSVG />
@@ -253,7 +253,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 									role='button'
 									onClick={goToFullscreen}
 									type='button'
-									className='hover:text-primary flex size-full items-center justify-center text-light-gray-700 transition-colors dark:text-dark-gray-800 dark:hover:text-dark-primary-100'
+									className='hover:text-primary dark:text-dark-gray-800 dark:hover:text-dark-primary-100 flex size-full items-center justify-center text-gray-700 transition-colors'
 									data-testid='market_map_filter_goToFullScreen'
 								>
 									<LongshotSVG />

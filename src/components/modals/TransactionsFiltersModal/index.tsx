@@ -42,7 +42,7 @@ const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersM
 
 	return (
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
-			<Div className='gap-40 bg-white flex-column'>
+			<Div className='darkBlue:bg-gray-50 gap-40 bg-white flex-column dark:bg-gray-50'>
 				<Header label={t('transactions_page.filter_title_modal')} onClose={onCloseModal} onClear={onClear} />
 				<Form filters={filters} setFilters={setFilters} />
 			</Div>

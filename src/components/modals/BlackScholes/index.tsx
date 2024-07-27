@@ -104,7 +104,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Div className='bg-white flex-column'>
+			<Div className='darkBlue:bg-gray-50 bg-white flex-column dark:bg-gray-50'>
 				<Header label={t('black_scholes_modal.title')} onClose={onCloseModal} onClear={onClear} />
 
 				<div className='flex-1 gap-24 px-24 flex-column'>
@@ -114,7 +114,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 					<div className='flex flex-1 gap-16 pb-24'>
 						<Form setInputValue={setInputValue} inputs={inputs} />
 
-						<div className='h-full flex-1 justify-between gap-24 rounded-md bg-light-gray-50 px-24 py-16 flex-column'>
+						<div className='h-full flex-1 justify-between gap-24 rounded-md bg-gray-50 px-24 py-16 flex-column'>
 							<Calculator {...inputs} />
 						</div>
 					</div>

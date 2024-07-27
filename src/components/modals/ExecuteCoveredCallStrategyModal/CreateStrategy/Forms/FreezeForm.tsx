@@ -49,7 +49,7 @@ const FreezeForm = ({ budget, isFreeze, nextStep }: FreezeFormProps) => {
 					}}
 				/>
 
-				<span className='text-base font-medium text-light-gray-800'>
+				<span className='text-gray-800 text-base font-medium'>
 					{t('create_strategy.freeze_being_confident')}
 				</span>
 
@@ -69,10 +69,10 @@ const FreezeForm = ({ budget, isFreeze, nextStep }: FreezeFormProps) => {
 
 const Step = ({ id, children }: StepProps) => (
 	<li>
-		<span className='mt-4 size-16 select-none rounded-circle border border-light-gray-200 pt-2 align-middle text-sm text-light-gray-700 flex-justify-center'>
+		<span className='border-gray-200 text-gray-700 mt-4 size-16 select-none rounded-circle border pt-2 align-middle text-sm flex-justify-center'>
 			{id}
 		</span>
-		<p className='flex-1 text-justify text-tiny leading-10 text-light-gray-800'>{children}</p>
+		<p className='text-gray-800 flex-1 text-justify text-tiny leading-10'>{children}</p>
 	</li>
 );
 

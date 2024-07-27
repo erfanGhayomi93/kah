@@ -1,0 +1,85 @@
+html {
+	--c-primary-100: 0 87 255;
+
+	--c-secondary-100: 229 238 255;
+	--c-secondary-200: 219 238 255;
+	--c-secondary-300: 0 182 237;
+	--c-secondary-400: 28 48 85;
+	--c-secondary-500: 23 32 53;
+
+	--c-gray-50: 251 251 251;
+	--c-gray-100: 248 250 253;
+	--c-gray-200: 226 231 237;
+	--c-gray-300: 245 246 250;
+	--c-gray-400: 233 236 239;
+	--c-gray-500: 166 169 173;
+	--c-gray-600: 140 142 151;
+	--c-gray-700: 93 96 109;
+	--c-gray-800: 24 28 47;
+
+	--c-error-50: 255 82 109 / 0.1;
+	--c-error-100: 255 82 109;
+	--c-error-200: 221 62 63;
+	--c-error-300: 173 67 74;
+	--c-error-400: 137 68 80;
+
+	--c-success-50: 0 194 136 / 0.1;
+	--c-success-100: 0 194 136;
+	--c-success-200: 115 222 190;
+	--c-success-300: 17 137 122;
+	--c-success-400: 33 110 111;
+
+	--c-warning-50: 255 177 26 / 0.1;
+	--c-warning-100: 255 177 26;
+
+	--c-info-50: 83 168 255 / 0.1;
+	--c-info-100: 83 168 255;
+
+	// AgGrid
+	.lightweight-table,
+	.ag-theme-alpine {
+		--ag-font-family: "IRANSans";
+		--ag-font-size: 14px;
+
+		// header
+		--ag-header-height: 48px;
+		--ag-header-background-color: rgb(var(--c-gray-100));
+		--ag-header-column-separator-display: block;
+		--ag-header-column-separator-width: 1px;
+		--ag-header-column-separator-height: 100%;
+		--ag-header-column-separator-color: rgb(255, 255, 255);
+
+		// Main Colors
+		--ag-background-color: rgb(255, 255, 255);
+		--ag-foreground-color: rgb(var(--c-gray-700));
+		--ag-alpine-active-color: rgb(var(--c-secondary-200));
+		--ag-selected-row-background-color: rgb(var(--c-secondary-200));
+		--ag-header-foreground-color: rgb(var(--c-gray-700));
+		--ag-data-color: rgb(var(--c-gray-800));
+		--ag-row-hover-color: rgb(var(--c-secondary-100));
+		--ag-odd-row-background-color: rgb(var(--c-gray-100));
+
+		// Borders
+		--ag-borders: 0 solid;
+		--ag-border-color: rgb(94, 103, 129);
+		--ag-borders-secondary: 0 solid;
+		--ag-cell-horizontal-border: solid rgb(255, 255, 255);
+		--ag-borders-critical: 0 solid;
+		--ag-row-border-style: solid;
+		--ag-row-border-color: transparent;
+		--ag-row-border-width: 0;
+
+		// Rows
+		--ag-row-height: 48px;
+		--ag-value-change-value-highlight-background-color: rgb(83, 168, 255, 0.1);
+
+		// Spacing
+		--ag-grid-size: 3px;
+		--ag-icon-size: 14px;
+		--ag-cell-horizontal-padding: 13px;
+
+		// Input
+		--ag-input-focus-box-shadow: none;
+		--ag-input-focus-border-color: transparent;
+	}
+}

@@ -12,7 +12,7 @@
 	user-select: none;
 
 	&:not(.disabled).focus {
-		border-color: theme("colors.light.primary.100");
+		border-color: theme("colors.primary.100");
 	}
 
 	&:not(.disabled).clickable {
@@ -24,7 +24,7 @@
 	}
 
 	&.border {
-		border: 1px solid theme("colors.light.gray.200");
+		border: 1px solid theme("colors.gray.200");
 	}
 }
 
@@ -34,25 +34,25 @@
 	z-index: 10;
 	font-size: 1.3rem;
 	font-weight: 400;
-	color: theme("colors.light.gray.800");
+	color: theme("colors.gray.800");
 	pointer-events: none;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 
 	&.placeholder {
-		color: theme("colors.light.gray.500");
+		color: theme("colors.gray.500");
 	}
 
 	&.focus {
-		color: theme("colors.light.gray.500");
+		color: theme("colors.gray.500");
 	}
 }
 
 .icon {
 	cursor: pointer;
 	position: absolute;
-	color: theme("colors.light.gray.500");
+	color: theme("colors.gray.500");
 	transition: transform 250ms;
 	left: 0.8rem;
 	z-index: 99;
@@ -94,17 +94,17 @@
 	font-weight: 400;
 	text-align: right;
 	background-color: transparent;
-	color: theme("colors.light.gray.800");
+	color: theme("colors.gray.800");
 	transition: background-color 250ms;
 	-webkit-transition: background-color 250ms;
 	-moz-transition: background-color 250ms;
 
 	&:hover {
-		background-color: theme("colors.light.secondary.100");
+		background-color: theme("colors.secondary.100");
 	}
 
 	&.active {
-		background-color: theme("colors.light.secondary.200");
+		background-color: theme("colors.secondary.200");
 	}
 }
 
@@ -126,6 +126,6 @@
 	font-size: 1.2rem;
 	font-weight: 500;
 	justify-content: center;
-	color: theme("colors.light.gray.700");
+	color: theme("colors.gray.700");
 	align-items: center;
 }

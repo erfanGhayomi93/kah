@@ -220,10 +220,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 					</div>
 				</div>
 
-				<div
-					className='my-24  border border-dashed border-light-gray-200'
-					onClick={() => inputRef.current?.click()}
-				>
+				<div className='border-gray-200  my-24 border border-dashed' onClick={() => inputRef.current?.click()}>
 					<input
 						ref={inputRef}
 						onChange={onUploadFile}
@@ -239,11 +236,11 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 						>
 							<FileTextSVG />
 
-							<p className='text-tiny text-light-gray-700'>
+							<p className='text-gray-700 text-tiny'>
 								تصویر فیش بانکی خود را اینجا رها کنید یا بارگذاری کنید(اختیاری)
 							</p>
 
-							<p className='text-tiny text-light-gray-500'>{t('deposit_modal.receipt_upload_size')}</p>
+							<p className='text-gray-500 text-tiny'>{t('deposit_modal.receipt_upload_size')}</p>
 						</div>
 					) : (
 						<div className='relative flex justify-center'>

@@ -29,7 +29,7 @@
 			cursor: pointer;
 			flex-direction: column;
 			align-items: center;
-			color: theme("colors.light.gray.700");
+			color: theme("colors.gray.700");
 		}
 	}
 }
@@ -40,7 +40,7 @@
 	height: 0.4rem;
 	cursor: pointer;
 	border-radius: 1px;
-	background-color: theme("colors.light.gray.200");
+	background-color: theme("colors.gray.200");
 }
 
 .container {
@@ -74,37 +74,37 @@
 			width: 0.2rem;
 			height: 0.6rem;
 			top: 1rem;
-			background-color: theme("colors.light.gray.200");
+			background-color: theme("colors.gray.200");
 		}
 
 		.number {
 			font-size: 1rem;
-			color: theme("colors.light.gray.700");
+			color: theme("colors.gray.700");
 		}
 
 		&:not(:nth-child(4)) {
 			.rhombus {
-				background-color: theme("colors.light.gray.100");
-				border-color: theme("colors.light.gray.200");
+				background-color: theme("colors.gray.100");
+				border-color: theme("colors.gray.200");
 			}
 		}
 
 		&:nth-child(4) {
 			.rhombus {
-				background-color: theme("colors.light.gray.200");
-				border-color: theme("colors.light.gray.100");
+				background-color: theme("colors.gray.200");
+				border-color: theme("colors.gray.100");
 			}
 		}
 
 		&:nth-child(-n + 3).active {
 			.rhombus {
-				background-color: theme("colors.light.error.100");
+				background-color: theme("colors.error.100");
 			}
 		}
 
 		&:nth-last-child(-n + 3).active {
 			.rhombus {
-				background-color: theme("colors.light.success.100");
+				background-color: theme("colors.success.100");
 			}
 		}
 
@@ -140,7 +140,7 @@
 
 			&.buy {
 				justify-content: flex-start;
-				color: theme("colors.light.success.100");
+				color: theme("colors.success.100");
 
 				.slider {
 					left: 0.4rem;
@@ -153,7 +153,7 @@
 
 			&.sell {
 				justify-content: flex-end;
-				color: theme("colors.light.error.100");
+				color: theme("colors.error.100");
 
 				.slider {
 					right: 0.4rem;
@@ -179,11 +179,11 @@
 				cursor: pointer;
 
 				&.buy {
-					color: theme("colors.light.success.100");
+					color: theme("colors.success.100");
 				}
 
 				&.sell {
-					color: theme("colors.light.error.100");
+					color: theme("colors.error.100");
 				}
 
 				&::after {

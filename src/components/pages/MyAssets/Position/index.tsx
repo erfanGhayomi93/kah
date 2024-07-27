@@ -19,7 +19,7 @@ const Position = () => {
 	});
 
 	return (
-		<div className='flex-1 gap-16 rounded bg-white p-16 flex-column'>
+		<div className='darkBlue:bg-gray-50 flex-1 gap-16 rounded bg-white p-16 flex-column dark:bg-gray-50'>
 			<div className='flex gap-8'>
 				<PriceCard className='w-1/3' title={t('portfolio_total_value')} value={263e3} />
 				<PriceCard className='w-1/3' title={t('total_profit_and_loss')} percent={22} value={263e3} />

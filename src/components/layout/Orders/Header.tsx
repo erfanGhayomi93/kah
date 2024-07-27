@@ -134,7 +134,7 @@ const Header = ({ isExpand, tab, selectedOrders, setSelectedOrders, setTab }: He
 	}, [tab]);
 
 	return (
-		<div className='h-56 bg-white px-8 flex-justify-between'>
+		<div className='darkBlue:bg-gray-50 h-56 bg-white px-8 flex-justify-between dark:bg-gray-50'>
 			<ul className='flex-1 flex-justify-start'>
 				{tabs.map((order, index) => (
 					<li key={index}>
@@ -143,16 +143,14 @@ const Header = ({ isExpand, tab, selectedOrders, setSelectedOrders, setTab }: He
 							type='button'
 							className={cn(
 								'h-40 gap-10 rounded px-12 transition-colors flex-justify-center',
-								tab === order.id ? 'bg-light-secondary-200 text-light-gray-800' : 'text-light-gray-500',
+								tab === order.id ? 'bg-secondary-200 text-gray-800' : 'text-gray-500',
 							)}
 						>
 							{order.title}
 							<span
 								className={clsx(
 									'h-22 min-w-22 rounded-oval text-tiny transition-colors flex-justify-center',
-									tab === order.id
-										? 'bg-light-primary-100 text-white'
-										: 'bg-light-gray-400 text-light-gray-500',
+									tab === order.id ? 'bg-primary-100 text-white' : 'bg-gray-400 text-gray-500',
 								)}
 							>
 								{order.count}

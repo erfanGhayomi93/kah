@@ -123,7 +123,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			setDescriptionModal({
 				title: (
 					<>
-						{t(`${type}.title`)} <span className='text-light-gray-500'>({title})</span>
+						{t(`${type}.title`)} <span className='text-gray-500'>({title})</span>
 					</>
 				),
 				description: () => <ProtectivePutDescription />,
@@ -492,7 +492,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

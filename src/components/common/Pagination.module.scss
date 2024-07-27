@@ -16,9 +16,9 @@
 
 .prev,
 .next {
-	color: theme("colors.light.gray.700");
+	color: theme("colors.gray.700");
 	border-radius: 0.8rem;
-	background-color: theme("colors.light.gray.100");
+	background-color: theme("colors.gray.100");
 	width: 3.2rem;
 	height: 3.2rem;
 	display: flex;
@@ -29,7 +29,7 @@
 		gap: 0.4rem;
 
 		&:disabled {
-			color: theme("colors.light.gray.700");
+			color: theme("colors.gray.700");
 		}
 	}
 }
@@ -40,7 +40,7 @@
 	align-items: center;
 	gap: 0.8rem;
 	border-radius: 0.8rem;
-	background-color: theme("colors.light.gray.100");
+	background-color: theme("colors.gray.100");
 }
 
 .page {
@@ -48,7 +48,7 @@
 		border-radius: 0.8rem;
 		width: 3.2rem;
 		background-color: transparent;
-		color: theme("colors.light.gray.700");
+		color: theme("colors.gray.700");
 		transition:
 			background-color 250ms,
 			color 250ms;
@@ -59,6 +59,6 @@
 
 	&.active button {
 		color: theme("colors.white");
-		background-color: theme("colors.light.primary.100");
+		background-color: theme("colors.primary.100");
 	}
 }

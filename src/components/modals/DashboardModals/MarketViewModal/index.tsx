@@ -29,7 +29,7 @@ const MarketViewModal = forwardRef<HTMLDivElement, IMarketViewModalProps>((props
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<MarketView isModal />
 			</Div>
 		</Modal>

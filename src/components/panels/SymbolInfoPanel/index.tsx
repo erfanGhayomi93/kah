@@ -29,7 +29,7 @@ const SymbolInfoPanel = forwardRef<HTMLDivElement, SymbolInfoPanelProps>(({ symb
 			render={() => <Container symbolISIN={symbolISIN} close={onClose} />}
 			width='400px'
 			classes={{
-				wrapper: '!bg-light-gray-300 !overflow-y-scroll',
+				wrapper: '!bg-gray-300 !overflow-y-scroll',
 			}}
 		/>
 	);

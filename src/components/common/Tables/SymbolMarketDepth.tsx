@@ -233,7 +233,7 @@ const Grid = ({
 		<div style={{ flex: '0 0 calc(50% - 0.4rem)', gap: rowSpacing }} className='overflow-hidden flex-column'>
 			<div
 				className={cn(
-					'flex-justify-between *:text-base *:text-light-gray-700',
+					'*:text-gray-700 flex-justify-between *:text-base',
 					side === 'sell' && 'flex-row-reverse',
 				)}
 			>
@@ -293,7 +293,7 @@ const Row = ({
 		<div
 			style={{ height: `${rowHeight}px` }}
 			className={clsx(
-				'relative flex-justify-between *:text-base *:text-light-gray-700',
+				'*:text-gray-700 relative flex-justify-between *:text-base',
 				side === 'sell' && 'flex-row-reverse',
 				disabled && 'cursor-default opacity-50',
 			)}
@@ -336,7 +336,7 @@ const Row = ({
 					style={{ width: `${Math.min(percent, 100)}%`, height: `${rowHeight - 4}px` }}
 					className={clsx(
 						'pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-sm',
-						side === 'buy' ? 'left-0 bg-light-success-100/10' : 'right-0 bg-light-error-100/10',
+						side === 'buy' ? 'bg-success-100/10 left-0' : 'bg-error-100/10 right-0',
 					)}
 				/>
 			)}

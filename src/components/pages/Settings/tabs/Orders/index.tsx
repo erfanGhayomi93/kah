@@ -87,7 +87,7 @@ const Orders = () => {
 				title: t('settings_page.default_buy_volume'),
 				value: (
 					<Input
-						classInput='text-right'
+						classInput='text-right bg-transparent'
 						value={
 							fieldValues?.defaultBuyVolume === '0'
 								? ''
@@ -106,7 +106,7 @@ const Orders = () => {
 				title: t('settings_page.default_sell_volume'),
 				value: (
 					<Input
-						classInput='text-right'
+						classInput='text-right bg-transparent'
 						value={
 							fieldValues?.defaultSellVolume === '0'
 								? ''

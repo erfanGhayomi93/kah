@@ -139,7 +139,7 @@ const Body = ({ tab, setSelectedOrders }: BodyProps) => {
 	return (
 		<div
 			style={{ height: '36rem' }}
-			className='relative flex-1 border-t border-t-light-gray-200 bg-white px-16 py-8'
+			className='darkBlue:bg-gray-50 relative flex-1 border-t border-t-gray-200 bg-white px-16 py-8 dark:bg-gray-50'
 		>
 			{tab === 'option_orders' ? (
 				<OptionTable data={optionOrdersData ?? []} loading={isFetchingOptionOrders} />

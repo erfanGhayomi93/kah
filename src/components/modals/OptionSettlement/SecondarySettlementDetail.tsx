@@ -45,9 +45,9 @@ export const SecondarySettlementDetail: FC<SecondarySettlementDetailProps> = ({
 				formatterValue: (value) => (dataSecondaryDetails?.side ? t('side.' + value.toLowerCase()) : '-'),
 				classes:
 					dataSecondaryDetails?.side === 'Buy'
-						? 'text-light-success-100'
+						? 'text-success-100'
 						: dataSecondaryDetails?.side === 'Sell'
-							? 'text-light-error-100'
+							? 'text-error-100'
 							: '',
 			},
 			{
@@ -61,9 +61,9 @@ export const SecondarySettlementDetail: FC<SecondarySettlementDetailProps> = ({
 					: '-',
 				classes:
 					dataSecondaryDetails?.pandLStatus === 'Profit'
-						? 'text-light-success-100'
+						? 'text-success-100'
 						: dataSecondaryDetails?.pandLStatus === 'Loss'
-							? 'text-light-error-100'
+							? 'text-error-100'
 							: '',
 			},
 		],
@@ -75,7 +75,7 @@ export const SecondarySettlementDetail: FC<SecondarySettlementDetailProps> = ({
 			<div className='flex flex-col gap-y-16 rounded px-8 py-16 shadow-sm'>
 				{data.map((item, ind) => (
 					<div key={ind} className='flex justify-between'>
-						<span className='text-light-gray-700'>{item.label}</span>
+						<span className='text-gray-700'>{item.label}</span>
 						<span
 							className={clsx({
 								[item.classes ? item.classes : '']: !!item.classes,

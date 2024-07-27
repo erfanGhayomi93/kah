@@ -74,7 +74,7 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 
 				<span
-					className={clsx('text-tiny text-light-error-100 opacity-0', {
+					className={clsx('text-error-100 text-tiny opacity-0', {
 						'opacity-100': isShowValidationSymbol,
 						'opacity-0': !isShowValidationSymbol,
 					})}
@@ -83,8 +83,8 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 				</span>
 
 				<div className='mt-16 flex items-center gap-4'>
-					<InfoCircleSVG className='text-light-info-100' width='2rem' height='2rem' />
-					<span className='text-tiny tracking-normal text-light-info-100'>
+					<InfoCircleSVG className='text-info-100' width='2rem' height='2rem' />
+					<span className='text-info-100 text-tiny tracking-normal'>
 						{t('change_broker_modal.notice_attention')}
 					</span>
 				</div>

@@ -58,7 +58,10 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice, 
 	);
 
 	return (
-		<div style={{ height: '28.8rem' }} className='relative rounded bg-white shadow-card flex-column'>
+		<div
+			style={{ height: '28.8rem' }}
+			className='darkBlue:bg-gray-50 relative rounded bg-white shadow-card flex-column dark:bg-gray-50'
+		>
 			<Tabs
 				data={tabs}
 				defaultActiveTab='market_map'
@@ -66,7 +69,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice, 
 					<button
 						className={clsx(
 							'flex-1 p-8 transition-colors',
-							item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
+							item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
 						)}
 						type='button'
 					>

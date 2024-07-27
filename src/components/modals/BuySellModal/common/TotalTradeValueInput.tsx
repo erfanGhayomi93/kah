@@ -46,7 +46,7 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 
 	return (
 		<div className='gap-4 pb-16 flex-column'>
-			<label className='relative w-full flex-48 rounded bg-white flex-items-center input-group'>
+			<label className='darkBlue:bg-gray-50 relative w-full flex-48 rounded bg-white flex-items-center input-group dark:bg-gray-50'>
 				<input
 					onCopy={(e) => copyNumberToClipboard(e, Number(value))}
 					type='text'
@@ -66,12 +66,8 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 
 				{setToMinimum && (
 					<div className='flex-items-center'>
-						<span className='h-16 w-1 bg-light-gray-200' />
-						<button
-							onClick={setToMinimum}
-							type='button'
-							className='h-full px-8 text-tiny text-light-gray-500'
-						>
+						<span className='h-16 w-1 bg-gray-200' />
+						<button onClick={setToMinimum} type='button' className='h-full px-8 text-tiny text-gray-500'>
 							{t('bs_modal.minimum_amount')}
 						</button>
 					</div>
@@ -81,11 +77,11 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 			{purchasePower !== null && (
 				<div className='gap-4 flex-column'>
 					<span className='text-tiny flex-justify-between'>
-						<span className='text-light-gray-700'>{t('bs_modal.purchase_power')}:</span>
+						<span className='text-gray-700'>{t('bs_modal.purchase_power')}:</span>
 
 						<span>
-							<span className='font-medium text-light-gray-800'>{sepNumbers(String(purchasePower))}</span>
-							<span className='text-light-gray-700'>{' ' + t('common.rial')}</span>
+							<span className='font-medium text-gray-800'>{sepNumbers(String(purchasePower))}</span>
+							<span className='text-gray-700'>{' ' + t('common.rial')}</span>
 						</span>
 					</span>
 

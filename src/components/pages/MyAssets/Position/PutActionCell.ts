@@ -11,7 +11,7 @@ class PutActionCell implements ICellRendererComp<GLOptionOrder.SellPosition> {
 	init(params: PutActionCellProps) {
 		this.params = params;
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center text-light-gray-700 gap-16');
+		this.eGui.setAttribute('class', 'flex-justify-center text-gray-700 gap-16');
 
 		this.more();
 		this.changeBlockType();

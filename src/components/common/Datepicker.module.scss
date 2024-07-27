@@ -1,7 +1,7 @@
 .root {
-	--dp-border-color: theme("colors.light.gray.200");
-	--dp-icon-color: theme("colors.light.gray.700");
-	--dp-input-color: theme("colors.light.gray.800");
+	--dp-border-color: theme("colors.gray.200");
+	--dp-icon-color: theme("colors.gray.700");
+	--dp-input-color: theme("colors.gray.800");
 }
 
 .root {
@@ -16,7 +16,7 @@
 	-webkit-transition: border-color 250ms;
 
 	&:focus-within {
-		--dp-border-color: theme("colors.light.primary.100");
+		--dp-border-color: theme("colors.primary.100");
 	}
 }
 

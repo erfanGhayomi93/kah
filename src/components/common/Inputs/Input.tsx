@@ -17,26 +17,26 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 			<div
 				className={clsx(
 					'h-full flex-1 rounded border flex-items-center input-group',
-					error ? 'border-light-error-100' : 'border-light-gray-200',
+					error ? 'border-error-100' : 'border-gray-200',
 				)}
 			>
 				<input ref={ref} className={clsx('h-48 flex-1 rounded px-8 text-left ltr', classInput)} {...resProps} />
 
 				{!!prefix && (
-					<span className='h-24 w-36 border-r border-r-light-gray-200 text-tiny text-light-gray-500 flex-justify-center'>
+					<span className='border-r-gray-200 text-gray-500 h-24 w-36 border-r text-tiny flex-justify-center'>
 						{prefix}
 					</span>
 				)}
 			</div>
 
 			{!!num2persianValue && !error && (
-				<span style={{ top: '5.2rem' }} className='absolute h-16 text-right text-tiny text-light-gray-800'>
-					{num2persianValue?.split('تومان')[0] + ' '} <span className='text-light-gray-500'>{'تومان'}</span>
+				<span style={{ top: '5.2rem' }} className='text-gray-800 absolute h-16 text-right text-tiny'>
+					{num2persianValue?.split('تومان')[0] + ' '} <span className='text-gray-500'>{'تومان'}</span>
 				</span>
 			)}
 
 			{error && (
-				<span style={{ top: '5.2rem' }} className='absolute flex gap-4 text-tiny text-light-error-100'>
+				<span style={{ top: '5.2rem' }} className='text-error-100 absolute flex gap-4 text-tiny'>
 					<XCircleSVG width='1.6rem' height='1.6rem' />
 					{error}
 				</span>

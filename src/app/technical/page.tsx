@@ -7,7 +7,7 @@ import { getTranslations } from 'next-intl/server';
 const Page: NextPage<INextProps> = () => {
 	return (
 		<Main className='flex-column-justify-center rounded-md'>
-			<div className='flex-1 bg-white flex-justify-center'>
+			<div className='darkBlue:bg-gray-50 flex-1 bg-white flex-justify-center dark:bg-gray-50'>
 				<DesigningPage />
 			</div>
 		</Main>

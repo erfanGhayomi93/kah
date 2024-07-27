@@ -28,7 +28,7 @@ export const WithdrawalItem = ({ date, valid, amount, checked, onChecked }: With
 	return (
 		<li
 			className={clsx('flex items-center justify-between rounded-sm p-8 text-base', {
-				'text-light-gray-800 bg-light-secondary-200': checked,
+				'text-gray-800 bg-secondary-200': checked,
 				'opacity-50': !valid,
 			})}
 		>
@@ -37,14 +37,14 @@ export const WithdrawalItem = ({ date, valid, amount, checked, onChecked }: With
 				label={getPersianDate(date)}
 				checked={checked}
 				classes={{
-					label: clsx('text-light-gray-800 text-base', checked && 'font-medium'),
-					text: '!text-light-gray-800',
+					label: clsx('text-gray-800 text-base', checked && 'font-medium'),
+					text: '!text-gray-800',
 				}}
 			/>
 			<span
 				tabIndex={-1}
 				role='button'
-				className={clsx('text-light-gray-800 flex-1 text-left text-base', checked && 'font-medium')}
+				className={clsx('text-gray-800 flex-1 text-left text-base', checked && 'font-medium')}
 				onClick={onChecked}
 			>
 				{t('withdrawal_modal.up_to', { n: Number(amount) < 0 ? '0' : sepNumbers(String(amount)) })}

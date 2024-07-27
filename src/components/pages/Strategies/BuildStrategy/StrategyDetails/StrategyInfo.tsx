@@ -19,8 +19,8 @@ const StrategyInfo = ({ maxLoss, maxProfit, neededRequiredMargin, neededBudget }
 	const t = useTranslations('build_strategy');
 
 	return (
-		<div className='border-t border-light-gray-200 pt-16'>
-			<div className='gap-16 rounded-md bg-light-gray-100 px-24 py-16 flex-column'>
+		<div className='border-gray-200 border-t pt-16'>
+			<div className='bg-gray-100 gap-16 rounded-md px-24 py-16 flex-column'>
 				<ul className='flex-justify-between'>
 					<StrategyInfoItem
 						type='success'
@@ -42,15 +42,15 @@ const StrategyInfo = ({ maxLoss, maxProfit, neededRequiredMargin, neededBudget }
 
 const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => (
 	<li className='items-start gap-4 flex-items-center'>
-		<span style={{ width: '10.6rem' }} className='whitespace-nowrap text-tiny text-light-gray-700'>
+		<span style={{ width: '10.6rem' }} className='text-gray-700 whitespace-nowrap text-tiny'>
 			{title}:
 		</span>
 		<div
 			style={{ width: '10.4rem' }}
 			className={clsx('h-40 rounded px-8 text-tiny ltr flex-justify-center', {
-				'bg-light-gray-300 text-light-gray-700': !type,
-				'bg-light-success-100/10 text-light-success-100': type === 'success',
-				'bg-light-error-100/10 text-light-error-100': type === 'error',
+				'bg-gray-300 text-gray-700': !type,
+				'bg-success-100/10 text-success-100': type === 'success',
+				'bg-error-100/10 text-error-100': type === 'error',
 			})}
 		>
 			{value}

@@ -28,8 +28,8 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				onClick={() => onChangeValue('ATM')}
 				className={cn(
 					isATM
-						? 'border-light-secondary-300 bg-light-secondary-300 text-white hover:border-light-secondary-300/10 hover:bg-light-secondary-300/80'
-						: 'border-light-secondary-300 text-light-secondary-300 hover:bg-light-secondary-300 hover:text-white',
+						? 'border-secondary-300 bg-secondary-300 hover:border-secondary-300/10 hover:bg-secondary-300/80 text-white'
+						: 'border-secondary-300 text-secondary-300 hover:bg-secondary-300 hover:text-white',
 				)}
 			>
 				<span style={{ height: '2px' }} className='w-24 rounded bg-current' />
@@ -40,8 +40,8 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				onClick={() => onChangeValue('OTM')}
 				className={cn(
 					isOTM
-						? 'border-light-error-100 bg-light-error-100 text-white hover:border-light-error-100/10 hover:bg-light-error-100/80'
-						: 'border-light-error-100 text-light-error-100 hover:bg-light-error-100 hover:text-white',
+						? 'border-error-100 bg-error-100 hover:border-error-100/10 hover:bg-error-100/80 text-white'
+						: 'border-error-100 text-error-100 hover:bg-error-100 hover:text-white',
 				)}
 			>
 				<ChartDownSVG />
@@ -52,8 +52,8 @@ const StatusInput = ({ value, onChange }: StatusInputProps) => {
 				onClick={() => onChangeValue('ITM')}
 				className={cn(
 					isITM
-						? 'border-light-success-100 bg-light-success-100 text-white hover:border-light-success-100/10 hover:bg-light-success-100/80'
-						: 'border-light-success-100 text-light-success-100 hover:bg-light-success-100 hover:text-white',
+						? 'border-success-100 bg-success-100 hover:border-success-100/10 hover:bg-success-100/80 text-white'
+						: 'border-success-100 text-success-100 hover:bg-success-100 hover:text-white',
 				)}
 			>
 				<ChartUpSVG />

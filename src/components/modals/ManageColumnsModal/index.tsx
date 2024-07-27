@@ -118,7 +118,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 				ref={ref}
 				{...props}
 			>
-				<Wrapper onSubmit={onSubmit} className='gap-24 bg-white pb-24'>
+				<Wrapper onSubmit={onSubmit} className='darkBlue:bg-gray-50 gap-24 bg-white pb-24 dark:bg-gray-50'>
 					<Header
 						label={t('manage_option_watchlist_columns.title')}
 						onClose={onClose}
@@ -159,7 +159,7 @@ const CategoryCard = ({ columns, tag, onColumnSwitch, onAllColumnSwitch }: ICate
 	return (
 		<div className={clsx('w-full rounded px-16 shadow-card flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}>
 			{hasTag && (
-				<div className='gap-8 border-b border-b-light-gray-200 py-6 flex-justify-start'>
+				<div className='gap-8 border-b border-b-gray-200 py-6 flex-justify-start'>
 					<ColumnSwitchField
 						checked={!hasHiddenColumn}
 						onChange={() => onAllColumnSwitch(hasHiddenColumn, tag)}
@@ -186,9 +186,7 @@ const CategoryCard = ({ columns, tag, onColumnSwitch, onAllColumnSwitch }: ICate
 const ColumnSwitchField = ({ checked, title, disabled, onChange }: ISwitchColumnFieldProps) => (
 	<div className='h-40 gap-8 flex-justify-start'>
 		<Switch disabled={disabled} checked={checked} onChange={onChange} />
-		<span className={clsx('text-nowrap text-tiny', checked ? 'text-light-gray-800' : 'text-light-gray-700')}>
-			{title}
-		</span>
+		<span className={clsx('text-nowrap text-tiny', checked ? 'text-gray-800' : 'text-gray-700')}>{title}</span>
 	</div>
 );
 

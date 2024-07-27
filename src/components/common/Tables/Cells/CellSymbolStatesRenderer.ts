@@ -67,7 +67,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<unknown> {
 
 	createTitle() {
 		this.eTitle = document.createElement('span');
-		this.eTitle.setAttribute('class', 'text-light-gray-800 text-right');
+		this.eTitle.setAttribute('class', 'text-gray-800 text-right');
 		this.eTitle.style.width = '8rem';
 		this.updateTitle();
 	}
@@ -80,13 +80,13 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<unknown> {
 		const iotm = this.params.getIOTM(this.params.data) ?? '';
 		switch (iotm.toLocaleLowerCase()) {
 			case 'itm':
-				return 'text-light-success-100';
+				return 'text-success-100';
 			case 'otm':
-				return 'text-light-error-100';
+				return 'text-error-100';
 			case 'atm':
-				return 'text-light-secondary-300';
+				return 'text-secondary-300';
 			default:
-				return 'text-light-gray-700';
+				return 'text-gray-700';
 		}
 	}
 }

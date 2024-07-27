@@ -24,17 +24,14 @@ const OptionBaseSymbolInformation = ({ symbolData }: OptionBaseSymbolInformation
 				height: isExpand ? '35.6rem' : '4.8rem',
 				transition: 'height 250ms ease-in',
 			}}
-			className='select-none overflow-hidden rounded bg-white px-8 flex-column'
+			className='darkBlue:bg-gray-50 select-none overflow-hidden rounded bg-white px-8 flex-column dark:bg-gray-50'
 		>
 			<div onClick={() => setIsExpand(!isExpand)} className='min-h-48 cursor-pointer flex-justify-between'>
-				<div
-					onClick={() => dispatch(setSymbolInfoPanel(baseSymbolISIN))}
-					className='text-base text-light-gray-700'
-				>
+				<div onClick={() => dispatch(setSymbolInfoPanel(baseSymbolISIN))} className='text-base text-gray-700'>
 					{t('symbol_info_panel.base_symbol_information') + ' '}
-					<span className='border-b-info border-b text-light-info-100'>{baseSymbolTitle ?? symbolTitle}</span>
+					<span className='border-b-info border-b text-info-100'>{baseSymbolTitle ?? symbolTitle}</span>
 				</div>
-				<button type='button' className='text-light-gray-700'>
+				<button type='button' className='text-gray-700'>
 					<ArrowUpSVG
 						width='1.6rem'
 						height='1.6rem'
