@@ -23,6 +23,16 @@ html[data-theme="darkBlue"] {
 	--skeleton-bg: rgb(55, 57, 69);
 }
 
+html[data-theme="dark"],
+html[data-theme="darkBlue"] {
+	button,
+	a,
+	input,
+	textarea {
+		color-scheme: dark;
+	}
+}
+
 ::selection {
 	background-color: theme("colors.secondary.200");
 	color: theme("colors.gray.800") !important;

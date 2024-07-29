@@ -3,7 +3,6 @@
 import { useAppDispatch } from '@/features/hooks';
 import { setTheme } from '@/features/slices/uiSlice';
 import { getTheme, setCookieTheme } from '@/utils/cookie';
-import { getDeviceColorSchema } from '@/utils/helpers';
 import { useEffect } from 'react';
 
 interface ThemeMiddlewareProps {
@@ -16,7 +15,6 @@ const ThemeMiddleware = ({ children }: ThemeMiddlewareProps) => {
 	useEffect(() => {
 		try {
 			let cookieTheme = getTheme();
-			const deviceTheme = getDeviceColorSchema();
 
 			if (
 				!cookieTheme ||

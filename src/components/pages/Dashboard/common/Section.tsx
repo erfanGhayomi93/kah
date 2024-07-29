@@ -134,7 +134,7 @@ const Section = <T extends string = string, B extends string = string>({
 						defaultActiveTab={defaultBottomActiveTab ?? tabs.bottom[0].id}
 						classes={{
 							root: '!h-48 bg-gray-100 rtl !border-0 p-4',
-							rect: 'bg-secondary-100 no-hover !h-40',
+							rect: 'bg-secondary-100 dark:bg-secondary-200 no-hover !h-40',
 							tabs: 'gap-8',
 						}}
 						onChangeTab={(v) => onBottomTabChange?.(v as B)}

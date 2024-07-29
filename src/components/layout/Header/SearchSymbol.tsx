@@ -88,7 +88,7 @@ const SearchSymbol = () => {
 				>
 					<div
 						style={{ width: isExpand ? '256px' : '3.2rem' }}
-						className='bg-gray-100 h-32 overflow-hidden rounded-oval px-8 transition-width flex-justify-between'
+						className='h-32 overflow-hidden rounded-oval bg-gray-100 px-8 transition-width flex-justify-between'
 					>
 						<Tooltip disabled={isExpand} placement='bottom' content={t('tooltip.symbol_search')}>
 							<button
@@ -117,7 +117,7 @@ const SearchSymbol = () => {
 										setIsExpand(false);
 									}}
 									type='button'
-									className='text-gray-700 size-24 rounded-circle flex-justify-center'
+									className='size-24 rounded-circle text-gray-700 flex-justify-center'
 								>
 									<XCircleSVG width='1.6rem' height='1.6rem' />
 								</button>
