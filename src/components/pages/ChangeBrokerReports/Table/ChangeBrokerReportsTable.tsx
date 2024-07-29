@@ -26,7 +26,7 @@ const ChangeBrokerReportsTable = ({ reports, columnsVisibility }: IChangeBrokerR
 
 			try {
 				const response = await axios.post<ServerResponse<boolean>>(
-					`${url.changeBrokerSetCancel}?RequestID=${data?.id}`,
+					`${url.AccountChangeBrokerDelete}?RequestID=${data?.id}`,
 				);
 
 				if (response.status !== 200 || !response.data.succeeded)

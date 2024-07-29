@@ -38,7 +38,7 @@ const AcceptAgreement = forwardRef<HTMLDivElement, AcceptAgreementProps>(({ data
 			const urls = getBrokerURLs(store.getState());
 			if (!urls) return null;
 
-			const { data, status } = await brokerAxios.post<ServerResponse<unknown>>(urls.acceptAgreement, body);
+			const { data, status } = await brokerAxios.post<ServerResponse<unknown>>(urls.AgreementsAccept, body);
 			if (status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			return data?.result;

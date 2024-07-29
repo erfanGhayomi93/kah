@@ -109,7 +109,7 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 			};
 
 			const response = await brokerAxios.post(
-				!editData ? url?.RequestPayment : url?.PaymentUpdateRequest,
+				!editData ? url?.WithdrawalRequestAdd : url?.WithdrawalRequestEdit,
 				payload,
 			);
 			const data = response.data;
@@ -169,9 +169,9 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 
 				<div className='my-24 shadow-sm'>
 					<div className='p-8'>
-						<p className='text-gray-500 mb-16'>{t('withdrawal_modal.receive_date_placeholder')}</p>
+						<p className='mb-16 text-gray-500'>{t('withdrawal_modal.receive_date_placeholder')}</p>
 
-						<ul className='text-gray-800 flex flex-col gap-8'>
+						<ul className='flex flex-col gap-8 text-gray-800'>
 							{remainsWithDate?.t1 && (
 								<WithdrawalItem
 									checked={getValues('withdrawalType') === 't1'}
@@ -191,7 +191,7 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 
 						<div className='mt-16 flex items-center gap-4'>
 							<InfoCircleSVG className='text-info-100' width='2rem' height='2rem' />
-							<span className='text-info-100 text-tiny tracking-normal'>
+							<span className='text-tiny tracking-normal text-info-100'>
 								{t('withdrawal_modal.day_attention')}
 							</span>
 						</div>

@@ -98,7 +98,7 @@ const OrdersReports = () => {
 			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
-				urls.getOrderExportOrders,
+				urls.OrderExport,
 				`orders-history-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);

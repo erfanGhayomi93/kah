@@ -95,7 +95,7 @@ const FreezeUnFreezeReports = () => {
 			if (inputs.requestState) params.append('RequestState', inputs.requestState);
 
 			downloadFileQueryParams(
-				urls.getFreezeExportFreeze,
+				urls.FreezeExportExcel,
 				`freezeUnfreeze-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);

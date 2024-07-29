@@ -22,7 +22,7 @@ export const createDraft = (order: IOFields) =>
 		}
 
 		try {
-			const response = await brokerAxios.post<ServerResponse<number>>(urls.createDraft, {
+			const response = await brokerAxios.post<ServerResponse<number>>(urls.OrderDraftCreate, {
 				price: order.price,
 				quantity: order.quantity,
 				side: order.orderSide,
@@ -50,7 +50,7 @@ export const updateDraft = (order: IOFieldsWithID) =>
 		}
 
 		try {
-			const response = await brokerAxios.post<ServerResponse<number>>(urls.updateDraft, {
+			const response = await brokerAxios.post<ServerResponse<number>>(urls.OrderDraftUpdate, {
 				id: order.id,
 				price: order.price,
 				quantity: order.quantity,
@@ -78,7 +78,7 @@ export const updateOrder = (order: IOFieldsWithID) =>
 		}
 
 		try {
-			const response = await brokerAxios.post<ServerResponse<number>>(urls.updateOrder, {
+			const response = await brokerAxios.post<ServerResponse<number>>(urls.OrderUpdate, {
 				parentOrderId: order.id,
 				price: order.price,
 				quantity: order.quantity,
@@ -107,7 +107,7 @@ export const deleteOrder = (ids: number[]) =>
 
 		try {
 			const isSingle = ids.length === 1;
-			const url = isSingle ? urls.deleteOrder : urls.groupDeleteOrder;
+			const url = isSingle ? urls.OrderDelete : urls.OrderGroupDelete;
 
 			const response = await brokerAxios.post<ServerResponse<boolean>>(url, {
 				orderId: isSingle ? ids[0] : ids,
@@ -133,7 +133,7 @@ export const deleteDraft = (ids: number[]) =>
 
 		try {
 			const isSingle = ids.length === 1;
-			const url = isSingle ? urls.deleteDraft : urls.groupDeleteDraft;
+			const url = isSingle ? urls.OrderDraftDelete : urls.OrderDraftGroupDelete;
 
 			const response = await brokerAxios.post<ServerResponse<boolean>>(url, {
 				ordersDraftId: isSingle ? ids[0] : ids,

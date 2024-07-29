@@ -46,7 +46,7 @@ const Orders = () => {
 	const { mutate: updateCustomerSettings } = useMutation({
 		mutationFn: async (settingsData: IUpdateSettingsBody[]) => {
 			if (!brokerURLs) return;
-			const { data } = await brokerAxios.post(brokerURLs.SetCustomerSettings, settingsData);
+			const { data } = await brokerAxios.post(brokerURLs.AccountSettingSet, settingsData);
 			return data;
 		},
 		onSuccess: () => {

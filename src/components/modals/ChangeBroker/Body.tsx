@@ -40,7 +40,7 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 			const fd = new FormData();
 			fd.append('SymbolISIN', symbol?.symbolISIN ?? '');
 
-			const response = await brokerAxios.post(url?.CreateChangeBrokers, fd);
+			const response = await brokerAxios.post(url?.ChangeBrokerCreate, fd);
 			const data = response.data;
 
 			if (!data.succeeded) {
@@ -74,7 +74,7 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
 
 				<span
-					className={clsx('text-error-100 text-tiny opacity-0', {
+					className={clsx('text-tiny text-error-100 opacity-0', {
 						'opacity-100': isShowValidationSymbol,
 						'opacity-0': !isShowValidationSymbol,
 					})}
@@ -84,7 +84,7 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 
 				<div className='mt-16 flex items-center gap-4'>
 					<InfoCircleSVG className='text-info-100' width='2rem' height='2rem' />
-					<span className='text-info-100 text-tiny tracking-normal'>
+					<span className='text-tiny tracking-normal text-info-100'>
 						{t('change_broker_modal.notice_attention')}
 					</span>
 				</div>

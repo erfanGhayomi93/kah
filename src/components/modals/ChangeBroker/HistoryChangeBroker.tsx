@@ -29,7 +29,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 	const deleteChangeBroker = async (id: number) => {
 		if (!url) return;
 		try {
-			const response = await brokerAxios.post(url.DeleteChangeBroker, null, {
+			const response = await brokerAxios.post(url.AccountChangeBrokerDelete, null, {
 				params: {
 					RequestID: id,
 				},

@@ -51,7 +51,7 @@ export const useTransactionsReportsQuery = createBrokerQuery<
 				});
 			}
 
-			const response = await brokerAxios.get(url.customerTurnOverRemain, {
+			const response = await brokerAxios.get(url.AccountTransactionsExcel, {
 				params,
 				signal,
 			});
@@ -104,7 +104,7 @@ export const useInstantDepositReports = createBrokerQuery<
 			}
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.IInstantDeposit[]>>(
-				url.getFilteredEPaymentApi,
+				url.AccountOnlineDepositGet,
 				{
 					params,
 					signal,
@@ -157,7 +157,7 @@ export const useDepositWithReceiptReports = createBrokerQuery<
 			}
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.IDepositWithReceipt[]>>(
-				url.getDepositOfflineHistory,
+				url.DepositOfflineHistory,
 				{
 					params,
 					signal,
@@ -220,10 +220,13 @@ export const useWithdrawalCashReports = createBrokerQuery<
 				});
 			}
 
-			const response = await brokerAxios.get<PaginationResponse<Reports.IWithdrawal[]>>(url.getFilteredPayment, {
-				params,
-				signal,
-			});
+			const response = await brokerAxios.get<PaginationResponse<Reports.IWithdrawal[]>>(
+				url.AccountWithdrawalHistory,
+				{
+					params,
+					signal,
+				},
+			);
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -241,7 +244,7 @@ export const userOnlineDepositStatusesQuery = createBrokerQuery<string[] | null,
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await brokerAxios.get<ServerResponse<string[]>>(url.getEPaymentApiGetStatuses, {
+		const response = await brokerAxios.get<ServerResponse<string[]>>(url.AccountOnlineDepositStatus, {
 			signal,
 		});
 		const data = response.data;
@@ -300,7 +303,7 @@ export const useChangeBrokerReportsQuery = createBrokerQuery<
 			}
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.IChangeBrokerReports[]>>(
-				url.getChangeBrokerChangeBrokersByFilter,
+				url.AccountChangeBrokerHistory,
 				{
 					params,
 					signal,
@@ -323,7 +326,7 @@ export const userOnlineDepositProvidersQuery = createBrokerQuery<string[] | null
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await brokerAxios.get<ServerResponse<string[]>>(url.getEPaymentApiGetProviderTypes, {
+		const response = await brokerAxios.get<ServerResponse<string[]>>(url.AccountOnlineDepositProviders, {
 			signal,
 		});
 		const data = response.data;
@@ -340,7 +343,7 @@ export const userCashWithdrawalStatusesQuery = createBrokerQuery<string[] | null
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await brokerAxios.get<ServerResponse<string[]>>(url.getPaymentGetStatuses, {
+		const response = await brokerAxios.get<ServerResponse<string[]>>(url.AccountWithdrawalGetStatus, {
 			signal,
 		});
 		const data = response.data;
@@ -370,7 +373,6 @@ export const useFreezeUnFreezeReportsQuery = createBrokerQuery<
 				'QueryOption.PageSize': String(pageSize),
 				'DateOption.FromDate': toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
 				'DateOption.ToDate': toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
-				// 'RequestType': '0'
 			};
 
 			if (symbol) params.SymbolISIN = symbol.symbolISIN;
@@ -378,7 +380,7 @@ export const useFreezeUnFreezeReportsQuery = createBrokerQuery<
 			if (requestState) params.RequestState = requestState;
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.IFreezeUnfreezeReports[]>>(
-				url.getFreezerequests,
+				url.FreezeHistory,
 				{
 					params,
 					signal,
@@ -445,7 +447,7 @@ export const useCashSettlementReportsQuery = createBrokerQuery<
 			}
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.ICashSettlementReports[]>>(
-				url.Settlementcash,
+				url.OptionGetCashSettlementHistory,
 				{
 					params,
 					signal,
@@ -514,7 +516,7 @@ export const usePhysicalSettlementReportsQuery = createBrokerQuery<
 			}
 
 			const response = await brokerAxios.get<PaginationResponse<Reports.IPhysicalSettlementReports[]>>(
-				url.Settlementphysical,
+				url.OptionGetPhysicalSettlementHistory,
 				{
 					params,
 					signal,
@@ -563,7 +565,7 @@ export const useOrdersReportsQuery = createBrokerQuery<
 				});
 			}
 
-			const response = await brokerAxios.get<PaginationResponse<Reports.IOrdersReports[]>>(url.getOrderOrders, {
+			const response = await brokerAxios.get<PaginationResponse<Reports.IOrdersReports[]>>(url.OrderHistory, {
 				params,
 				signal,
 			});
@@ -603,13 +605,10 @@ export const useTradesReportsQuery = createBrokerQuery<
 
 			if (symbol) params.SymbolISIN = symbol.symbolISIN;
 
-			const response = await brokerAxios.get<PaginationResponse<Reports.ITradesReports[]>>(
-				url.getOrderDetailedOrders,
-				{
-					params,
-					signal,
-				},
-			);
+			const response = await brokerAxios.get<PaginationResponse<Reports.ITradesReports[]>>(url.TradeHistory, {
+				params,
+				signal,
+			});
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

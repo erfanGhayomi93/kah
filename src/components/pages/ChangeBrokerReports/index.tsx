@@ -95,7 +95,7 @@ const ChangeBrokerReports = () => {
 			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
-				urls.getChangeBrokerExportFilteredCSV,
+				urls.AccountChangeBrokerExcel,
 				`change-broker-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);

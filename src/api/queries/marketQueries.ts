@@ -13,7 +13,7 @@ export const useMarketMapQuery = createBrokerQuery<MarketMap.Root | null, ['mark
 
 			if (!urls) return null;
 
-			const response = await brokerAxios.get<ServerResponse<MarketMap.Root>>(urls.getDataProviderv1MarketMap, {
+			const response = await brokerAxios.get<ServerResponse<MarketMap.Root>>(urls.MarketMapGet, {
 				signal,
 			});
 			const data = response.data;
@@ -35,12 +35,9 @@ export const useMarketMapSectorsQuery = createBrokerQuery<MarketMap.SectorAPI[] 
 
 			if (!urls) return null;
 
-			const response = await brokerAxios.get<ServerResponse<MarketMap.SectorAPI[]>>(
-				urls.getSectorSectorsWithTrades,
-				{
-					signal,
-				},
-			);
+			const response = await brokerAxios.get<ServerResponse<MarketMap.SectorAPI[]>>(urls.MarketMapSectors, {
+				signal,
+			});
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');

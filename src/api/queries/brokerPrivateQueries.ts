@@ -10,7 +10,7 @@ export const useUserInfoQuery = createBrokerQuery<Broker.User | null, ['userInfo
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Broker.User>>(url.userInformation, { signal });
+		const response = await axios.get<ServerResponse<Broker.User>>(url.AccountInformation, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -26,7 +26,7 @@ export const useUserRemainQuery = createBrokerQuery<Broker.Remain | null, ['user
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Broker.Remain>>(url.userRemain, { signal });
+		const response = await axios.get<ServerResponse<Broker.Remain>>(url.AccountRemain, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -42,7 +42,7 @@ export const useUserStatusQuery = createBrokerQuery<Broker.Status | null, ['user
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Broker.Status>>(url.userStatus, { signal });
+		const response = await axios.get<ServerResponse<Broker.Status>>(url.OptionGetRemain, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -59,7 +59,7 @@ export const useBrokerOrdersCountQuery = createBrokerQuery<Broker.OrdersCount, [
 			const url = getBrokerURLs(store.getState());
 			if (!url) throw new Error();
 
-			const response = await axios.get<ServerResponse<Broker.OrdersCount>>(url.ordersCount, { signal });
+			const response = await axios.get<ServerResponse<Broker.OrdersCount>>(url.OrderCount, { signal });
 			const data = response.data;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -84,7 +84,7 @@ export const useOpenOrdersQuery = createBrokerQuery<Order.OpenOrder[] | null, ['
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Order.OpenOrder[]>>(url.openOrders, { signal });
+		const response = await axios.get<ServerResponse<Order.OpenOrder[]>>(url.OrderGetOpen, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -100,7 +100,7 @@ export const useTodayOrdersQuery = createBrokerQuery<Order.TodayOrder[] | null, 
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Order.TodayOrder[]>>(url.todayOrders, { signal });
+		const response = await axios.get<ServerResponse<Order.TodayOrder[]>>(url.OrderGetToday, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -116,7 +116,7 @@ export const useExecutedOrdersQuery = createBrokerQuery<Order.ExecutedOrder[] | 
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Order.ExecutedOrder[]>>(url.executedOrders, { signal });
+		const response = await axios.get<ServerResponse<Order.ExecutedOrder[]>>(url.OrderGetDone, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -132,7 +132,7 @@ export const useDraftOrdersQuery = createBrokerQuery<Order.DraftOrder[] | null, 
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Order.DraftOrder[]>>(url.drafts, { signal });
+		const response = await axios.get<ServerResponse<Order.DraftOrder[]>>(url.OrderDraftGet, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -148,7 +148,7 @@ export const useOptionOrdersQuery = createBrokerQuery<Order.OptionOrder[] | null
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Order.OptionOrder[]>>(url.optionOrders, { signal });
+		const response = await axios.get<ServerResponse<Order.OptionOrder[]>>(url.OrderGetOption, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -167,7 +167,7 @@ export const useGetCustomerSettingsQuery = createBrokerQuery<
 		const url = getBrokerURLs(store.getState());
 
 		if (!url) return null;
-		const response = await axios.get<ServerResponse<Settings.IBrokerCustomerSettings[]>>(url.GetCustomerSettings, {
+		const response = await axios.get<ServerResponse<Settings.IBrokerCustomerSettings[]>>(url.AccountSettingGet, {
 			signal,
 		});
 		const data = response.data;
@@ -192,7 +192,7 @@ export const useGetAgreementsQuery = createBrokerQuery<Settings.IAgreements[] | 
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await axios.get<ServerResponse<Settings.IAgreements[]>>(url.GetAgreements, { signal });
+		const response = await axios.get<ServerResponse<Settings.IAgreements[]>>(url.AgreementsGet, { signal });
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -274,7 +274,7 @@ export const useAvailableContractInfoQuery = createBrokerQuery<
 
 		const [, symbolISIN] = queryKey;
 
-		const response = await axios.get<ServerResponse<IAvailableContractInfo[]>>(url.AvailableContractInfo, {
+		const response = await axios.get<ServerResponse<IAvailableContractInfo[]>>(url.OrderAvailableContractInfo, {
 			signal,
 			params: { symbolISIN },
 		});

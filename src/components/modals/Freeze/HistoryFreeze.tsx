@@ -39,7 +39,7 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 		if (!url) return;
 
 		try {
-			const response = await brokerAxios.post(url.DeleteFreeze, null, {
+			const response = await brokerAxios.post(url.FreezeDelete, null, {
 				params: {
 					symbolISIN,
 					type: isFreeze ? 'freeze' : 'unFreeze',

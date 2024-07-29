@@ -51,7 +51,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 			if (!urls || !data) return;
 
 			try {
-				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.receiptSetCancel, {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.AccountOfflineDepositCancel, {
 					ids: [data?.id],
 				});
 

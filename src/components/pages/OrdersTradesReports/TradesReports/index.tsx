@@ -92,7 +92,7 @@ const TradesReports = () => {
 			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
-				urls.OrderExportTrades,
+				urls.TradeExport,
 				`trades-history-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);
