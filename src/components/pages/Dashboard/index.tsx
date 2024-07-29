@@ -10,7 +10,6 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
-import { toast } from 'react-toastify';
 import Custom from './components/Custom';
 import Loading from './components/Loading';
 import EditLayoutButton from './EditLayoutButton';
@@ -184,13 +183,6 @@ const Dashboard = () => {
 
 	const onHideSection = ({ id, hidden }: IpcMainChannels['home.hide_section']) => {
 		const newGrid = grid.map((item) => (item.id === id ? { ...item, hidden } : item));
-		const visibleSectionsLength = newGrid.filter((item) => !item.hidden).length;
-
-		if (visibleSectionsLength <= 1) {
-			toast.error(t('alerts.can_not_hide_every_sections'));
-			return;
-		}
-
 		dispatch(setDashboardGridLayout(newGrid));
 	};
 

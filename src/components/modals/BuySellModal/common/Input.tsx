@@ -58,7 +58,7 @@ const Input = ({
 	}, [value]);
 
 	return (
-		<div className='darkBlue:bg-gray-50 flex h-48 items-center rounded bg-white input-group dark:bg-gray-50'>
+		<div className='flex h-48 items-center rounded bg-white input-group darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<label className='relative size-full flex-1 flex-items-center'>
 				<input
 					{...inputProps}
@@ -91,7 +91,7 @@ const Input = ({
 						<button
 							type='button'
 							className='size-16 text-gray-700 flex-justify-center'
-							onClick={() => setInputValue(value + tickSize)}
+							onClick={() => setInputValue(value - tickSize)}
 						>
 							<ArrowDownSVG width='1.4rem' height='1.4rem' />
 						</button>

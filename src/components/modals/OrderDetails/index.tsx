@@ -85,7 +85,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 		const side = (type === 'order' ? data.orderSide : data.side).toLowerCase();
 		const isBuy = side === 'buy';
 
-		if (type === 'order')
+		if (type === 'order') {
 			return [
 				[
 					{
@@ -125,17 +125,14 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{ name: t('order_details_modal.price'), value: numFormatter(price) },
 					{ name: t('order_details_modal.amount'), value: numFormatter(amount) },
 					{
-						name: t('order_details_modal.commission'),
-						value: numFormatter(amount - price * quantity),
-					},
-					{
 						name: t('order_details_modal.validity'),
 						value: <span className='pl-4 font-medium'>{validityDate()}</span>,
 					},
 				],
 			];
+		}
 
-		if (type === 'base')
+		if (type === 'base') {
 			return [
 				[
 					{
@@ -151,6 +148,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{ name: t('order_details_modal.quantity'), value: numFormatter(data.quantity) },
 				],
 			];
+		}
 
 		return [
 			[
@@ -220,7 +218,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{list.map((items, i) => (
 						<ul
 							key={i}
-							className='darkBlue:bg-gray-50 gap-24 rounded bg-white px-8 py-16 text-base shadow-card ltr flex-column *:flex-justify-between dark:bg-gray-50'
+							className='gap-24 rounded bg-white px-8 py-16 text-base shadow-card ltr flex-column *:flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
 						>
 							{items.map((item, j) => (
 								<li key={j}>

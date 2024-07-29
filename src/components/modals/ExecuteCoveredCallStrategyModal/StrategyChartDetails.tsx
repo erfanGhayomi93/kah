@@ -62,27 +62,29 @@ const StrategyChartDetails = ({
 		[basePrice, optionPrice, quantity],
 	);
 
-	const { data, maxProfit, maxLoss, baseSymbolStatus, neededRequiredMargin, baseAssets, dueDays, income, cost, bep } =
-		useAnalyze(contracts, {
+	const { data, maxProfit, maxLoss, baseSymbolStatus, baseAssets, dueDays, income, cost, bep } = useAnalyze(
+		contracts,
+		{
 			minPrice,
 			maxPrice,
 			baseAssets: basePrice,
 			useRequiredMargin: true,
 			useTradeCommission: true,
 			useStrikeCommission: true,
-		});
+		},
+	);
 
 	return (
-		<div style={{ flex: '0 0 18.4rem' }} className='border-gray-200 relative flex gap-40 border-y py-16'>
+		<div style={{ flex: '0 0 18.4rem' }} className='relative flex gap-40 border-y border-gray-200 py-16'>
 			<ul
 				style={{ flex: '0 0 22rem' }}
-				className='text-gray-700 justify-between ltr flex-column *:flex-justify-between'
+				className='justify-between text-gray-700 ltr flex-column *:flex-justify-between'
 			>
 				<li>
 					<span
 						className={clsx({
-							'text-success-100 font-medium': baseSymbolStatus === 'itm',
-							'text-error-100 font-medium': baseSymbolStatus === 'otm',
+							'font-medium text-success-100': baseSymbolStatus === 'itm',
+							'font-medium text-error-100': baseSymbolStatus === 'otm',
 							'text-gray-700': baseSymbolStatus === 'atm',
 						})}
 					>
@@ -91,13 +93,13 @@ const StrategyChartDetails = ({
 					<span>:{t('current_status')}</span>
 				</li>
 				<li>
-					<span className='text-error-100 font-medium'>
+					<span className='font-medium text-error-100'>
 						{maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
 					</span>
 					<span>:{t('most_loss')}</span>
 				</li>
 				<li>
-					<span className='text-success-100 font-medium'>
+					<span className='font-medium text-success-100'>
 						{maxProfit === Infinity ? t('infinity') : sepNumbers(String(maxProfit))}
 					</span>
 					<span>:{t('most_profit')}</span>

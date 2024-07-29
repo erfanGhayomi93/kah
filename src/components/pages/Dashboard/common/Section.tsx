@@ -50,7 +50,7 @@ const Section = <T extends string = string, B extends string = string>({
 	};
 
 	return (
-		<div className='darkBlue:bg-gray-50 size-full flex-1 justify-between overflow-hidden rounded bg-white pb-16 pl-8 pr-16 pt-8 flex-column dark:bg-gray-50'>
+		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white pb-16 pl-8 pr-16 pt-8 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div
@@ -63,7 +63,7 @@ const Section = <T extends string = string, B extends string = string>({
 							<button
 								onClick={expandable ? onClose : onExpand}
 								type='button'
-								className='text-gray-500 transition-colors flex-justify-center hover:text-error-100'
+								className='text-gray-500 transition-colors flex-justify-center hover:text-error-100 darkBlue:text-gray-500/40 dark:text-gray-500/40'
 							>
 								<XCircleSVG width='1.8rem' height='1.8rem' />
 							</button>
@@ -73,7 +73,7 @@ const Section = <T extends string = string, B extends string = string>({
 							<button
 								onClick={onExpand}
 								type='button'
-								className='darkBlue:text-gray-50 size-18 rounded-circle bg-gray-500 text-white transition-colors flex-justify-center hover:bg-success-100 dark:text-gray-50'
+								className='size-18 rounded-circle bg-gray-500 text-white transition-colors flex-justify-center hover:bg-success-100 darkBlue:bg-gray-500/40 darkBlue:text-gray-50 dark:bg-gray-500/40 dark:text-gray-50'
 							>
 								<ExpandSVG width='1.4rem' height='1.4rem' />
 							</button>
@@ -81,7 +81,7 @@ const Section = <T extends string = string, B extends string = string>({
 
 						{info && (
 							<Tooltip className='text-tiny font-medium' content={info ?? ''}>
-								<div className='size-18 rounded-circle  text-gray-500 transition-colors flex-justify-center hover:text-info-100'>
+								<div className='size-18 rounded-circle text-gray-500 transition-colors flex-justify-center hover:text-info-100 darkBlue:text-gray-500/40 dark:text-gray-500/40'>
 									<InfoCircleSVG width='1.8rem' height='1.8rem' />
 								</div>
 							</Tooltip>
