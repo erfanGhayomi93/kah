@@ -30,7 +30,7 @@ const Tabs = () => {
 
 	return (
 		<div className='gap-24 flex-justify-start'>
-			<span className='text-light-gray-500 text-xl font-medium'>{t('option_reports_page.option_reports')}</span>
+			<span className='text-gray-500 text-xl font-medium'>{t('option_reports_page.option_reports')}</span>
 			<div className='gap-8 flex-justify-start'>
 				<div>
 					<Link href='/option-reports/freeze-and-unfreeze'>
@@ -40,7 +40,7 @@ const Tabs = () => {
 								'h-40 w-104 rounded !border transition-colors',
 								'/option-reports/freeze-and-unfreeze' + '/' === pathName
 									? 'no-hover font-medium btn-select'
-									: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
+									: 'border-gray-200 text-gray-700 hover:btn-hover',
 							)}
 						>
 							{t('option_reports_page.' + 'freeze_and_unfreeze' + '_tab')}
@@ -52,7 +52,7 @@ const Tabs = () => {
 						minWidth: '16px',
 						minHeight: '1px',
 					}}
-					className='bg-light-gray-200 rotate-90'
+					className='bg-gray-200 rotate-90'
 				/>
 				<ul className='gap-8 flex-justify-start'>
 					{FINANCIAL_TYPE.map((type) => {
@@ -66,7 +66,7 @@ const Tabs = () => {
 											'h-40 w-104 rounded !border transition-colors',
 											type.route + '/' === pathName
 												? 'no-hover font-medium btn-select'
-												: 'border-light-gray-200 text-light-gray-700 hover:btn-hover',
+												: 'border-gray-200 text-gray-700 hover:btn-hover',
 										)}
 									>
 										{t('option_reports_page.' + type.id + '_tab')}

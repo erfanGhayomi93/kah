@@ -13,7 +13,7 @@ interface StepsProps {
 
 const Steps = ({ step, baseSymbol, option }: StepsProps) => {
 	return (
-		<div style={{ flex: '0 0 23.6rem', minHeight: '9.6rem' }} className='rounded bg-light-gray-100 p-16'>
+		<div style={{ flex: '0 0 23.6rem', minHeight: '9.6rem' }} className='bg-gray-100 rounded p-16'>
 			<ul className={styles.list}>
 				<BaseSymbolStep
 					symbolTitle={baseSymbol.symbolTitle}

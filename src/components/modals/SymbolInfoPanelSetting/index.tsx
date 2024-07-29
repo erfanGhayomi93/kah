@@ -133,14 +133,12 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 
 		return (
 			<Modal top='7%' transparent onClose={onCloseModal} {...props} ref={ref}>
-				<Div className='justify-between bg-white flex-column'>
+				<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
 					<Header label={t('symbol_info_panel_setting.title')} onClose={onCloseModal} />
 
 					<div className='flex-1 flex-column'>
 						<div className='flex-1 gap-16 p-24 flex-column'>
-							<h3 className='text-tiny text-light-gray-700'>
-								{t('symbol_info_panel_setting.description')}
-							</h3>
+							<h3 className='text-tiny text-gray-700'>{t('symbol_info_panel_setting.description')}</h3>
 
 							<ul className='flex flex-wrap justify-start gap-28'>
 								{data.map((item, i) => (
@@ -154,7 +152,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 								))}
 							</ul>
 						</div>
-						<div className='h-64 gap-8 border-t border-light-gray-200 px-16 flex-justify-end'>
+						<div className='h-64 gap-8 border-t border-gray-200 px-16 flex-justify-end'>
 							<button
 								onClick={setToDefault}
 								style={{ width: '12rem' }}

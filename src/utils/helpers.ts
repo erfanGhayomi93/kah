@@ -296,90 +296,7 @@ export const paramsSerializer = (params: Record<string, unknown>) => {
 };
 
 export const decodeBrokerUrls = (data: Broker.URL): IBrokerUrls => {
-	const urls: IBrokerUrls = {
-		todayOrders: data.TodayOrders,
-		executedOrders: data.ExecutedOrders,
-		drafts: data.Drafts,
-		createOrder: data.CreateOrder,
-		ordersCount: data.OrdersCount,
-		openOrders: data.OpenOrders,
-		commission: data.Commission,
-		userInformation: data.UserInformation,
-		userRemain: data.UserRemain,
-		userStatus: data.UserStatus,
-		optionOrders: data.OptionOrders,
-		createDraft: data.CreateDraft,
-		deleteDraft: data.DeleteDraft,
-		deleteOrder: data.DeleteOrder,
-		groupDeleteDraft: data.GroupDeleteDraft,
-		groupDeleteOrder: data.GroupDeleteOrder,
-		updateDraft: data.UpdateDraft,
-		updateOrder: data.UpdateOrder,
-		createRequestEPaymentApi: data.CreateRequestEPaymentApi,
-		getRemain: data.GetRemain,
-		completeRequestReceipt: data.CompleteRequestReceipt,
-		getListBrokerBankAccount: data.GetListBrokerBankAccount,
-		getDepositOfflineHistory: data.DepositOfflineHistory,
-		customerTurnOverRemain: data.CustomerTurnOverRemain,
-		CreateChangeBrokers: data.CreateChangeBrokers,
-		LastChangeBrokers: data.LastChangeBrokers,
-		getWithFilterReceipt: data.GetWithFilterReceipt,
-		newKaraFreeze: data.newKaraFreeze,
-		RecentFreeze: data.RecentFreeze,
-		symbolCountFreeze: data.symbolCountFreeze,
-		DeleteFreeze: data.DeleteFreeze,
-		getFilteredEPaymentApi: data.GetFilteredEPaymentApi,
-		DeleteChangeBroker: data.DeleteChangeBroker,
-		getFilteredPayment: data.GetFilteredPayment,
-		RecentUnFreeze: data.RecentUnFreeze,
-		GetListBankAccount: data.GetListBankAccount,
-		GetRemainsWithDate: data.GetRemainsWithDate,
-		LastListDrawal: data.LastListDrawal,
-		RequestPayment: data.RequestPayment,
-		ReceiptEditRequest: data.ReceiptEditRequest,
-		PaymentUpdateRequest: data.PaymentUpdateRequest,
-		getDepositOnlineHistory: data.DepositOnlineHistory,
-		getCustomerTurnOverCSVExport: data.CustomerTurnOverCSVExport,
-		getEPaymentExportFilteredCSV: data.EPaymentExportFilteredCSV,
-		getReceiptExportFilteredCSV: data.ReceiptExportFilteredCSV,
-		getPaymentExportFilteredCSV: data.PaymentExportFilteredCSV,
-		SetCustomerSettings: data.SetCustomerSettings,
-		GetCustomerSettings: data.GetCustomerSettings,
-		getEPaymentApiGetStatuses: data.EPaymentApiGetStatuses,
-		getEPaymentApiGetProviderTypes: data.EPaymentApiGetProviderTypes,
-		getPaymentGetStatuses: data.PaymentGetStatuses,
-		getChangeBrokerExportFilteredCSV: data.ChangeBrokerExportFilteredCSV,
-		getChangeBrokerChangeBrokersByFilter: data.ChangeBrokerChangeBrokersByFilter,
-		GetAgreements: data.GetAgreements,
-		changeBrokerSetCancel: data.ChangeBrokerSetCancel,
-		getFreezeExportFreeze: data.FreezeExportFreeze,
-		getFreezerequests: data.Freezerequests,
-		Settlementcash: data.Settlementcash,
-		Settlementphysical: data.Settlementphysical,
-		newPhysicalSettlement: data.newPhysicalSettlement,
-		newCashSettlement: data.newCashSettlement,
-		deletePhysicalSettlement: data.deletePhysicalSettlement,
-		deleteCashSettlement: data.deleteCashSettlement,
-		getOrderExportOrders: data.OrderExportOrders,
-		getOrderOrders: data.OrderOrders,
-		OrderExportTrades: data.OrderExportTrades,
-		getOrderDetailedOrders: data.OrderDetailedOrders,
-		receiptSetCancel: data.ReceiptSetCancel,
-		paymentDeleteRequest: data.PaymentDeleteRequest,
-		acceptAgreement: data.AcceptAgreement,
-		mobileOtpRequest: data.MobileOtpRequest,
-		getDataProviderv1MarketMap: data.DataProviderv1MarketMap,
-		getSectorSectorsWithTrades: data.getSectorSectorsWithTrades,
-		deleteFreezeUnFreeze: data.deleteFreezeUnFreeze,
-		settlementdeleteCash: data.settlementdeleteCash,
-		FreezeRequest: data.FreezeRequest,
-		GLPortfolio: data.GLPortfolio,
-		GLOptionOrders: data.GLOptionOrders,
-		GLPositionExtraInfo: data.GLPositionExtraInfo,
-		AvailableContractInfo: data.AvailableContractInfo,
-	};
-
-	return urls;
+	return data;
 };
 
 export const divide = (arg1: number, arg2: number) => {
@@ -643,9 +560,9 @@ export const dojiAnalyzer = <T>(data: T[], callback: (item: T) => number): TDoji
 };
 
 export const getColorBasedOnPercent = (v: number) => {
-	if (v === 0) return 'text-light-gray-700';
-	if (v > 0) return 'text-light-success-100';
-	return 'text-light-error-100';
+	if (v === 0) return 'text-gray-700';
+	if (v > 0) return 'text-success-100';
+	return 'text-error-100';
 };
 
 export const versionParser = (value: string) => {
@@ -743,4 +660,13 @@ export const addTooltip = (content: string, children: HTMLElement) => {
 	tooltip.setContent(String(content));
 
 	return tooltip;
+};
+
+export const getDeviceColorSchema = (): 'dark' | 'light' => {
+	try {
+		const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+		return isDark ? 'dark' : 'light';
+	} catch (e) {
+		return 'light';
+	}
 };

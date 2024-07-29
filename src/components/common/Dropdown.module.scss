@@ -29,18 +29,18 @@ li.item {
 	-moz-transition: background-color 150ms linear;
 
 	&:not(.active):hover {
-		background-color: theme("colors.light.gray.200");
+		background-color: theme("colors.gray.200");
 	}
 
 	& > span {
 		font-size: 13px;
-		color: theme("colors.light.gray.50");
+		color: theme("colors.gray.50");
 	}
 
 	& > svg {
 		max-width: 16px;
 		max-height: 16px;
-		color: theme("colors.light.gray.100");
+		color: theme("colors.gray.100");
 	}
 }
 
@@ -49,5 +49,5 @@ li.active {
 }
 
 li.underline {
-	border-bottom: 1px solid theme("colors.light.gray.300");
+	border-bottom: 1px solid theme("colors.gray.300");
 }

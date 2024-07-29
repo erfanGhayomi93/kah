@@ -32,6 +32,7 @@ const General = () => {
 			<SettingCard title={t('settings_page.background_color')}>
 				<Theme />
 			</SettingCard>
+
 			<SettingCard title={t('settings_page.notification_placement')}>
 				<ToastPositionSettings />
 			</SettingCard>

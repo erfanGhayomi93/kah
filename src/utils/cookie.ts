@@ -1,3 +1,4 @@
+import { DateAsMillisecond } from '@/constants/enums';
 import { base64decode, base64encode } from './helpers';
 
 interface ICookieOptions {
@@ -44,10 +45,17 @@ export const deleteCookie = (name: string) => {
 	document.cookie = `${name}=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 };
 
+// Theme
+export const getTheme = () => getCookie('kahkeshan_theme');
+
+export const setCookieTheme = (value: TTheme) =>
+	setCookie('kahkeshan_theme', value, { maxAgeInSeconds: DateAsMillisecond.Year });
+
 // Client ID
 export const getClientId = () => getCookie('kahkeshan_client_id');
 
-export const setClientId = (value: string) => setCookie('kahkeshan_client_id', value, { maxAgeInSeconds: 86400 });
+export const setClientId = (value: string) =>
+	setCookie('kahkeshan_client_id', value, { maxAgeInSeconds: DateAsMillisecond.Month });
 
 export const deleteClientId = () => deleteCookie('kahkeshan_client_id');
 
@@ -73,6 +81,6 @@ export const getBrokerClientId = (): [string | null, number | null] => {
 };
 
 export const setBrokerClientId = (value: string) =>
-	setCookie('br_client_id', base64encode(value), { maxAgeInSeconds: 86400 });
+	setCookie('br_client_id', base64encode(value), { maxAgeInSeconds: DateAsMillisecond.Week });
 
 export const deleteBrokerClientId = () => deleteCookie('br_client_id');

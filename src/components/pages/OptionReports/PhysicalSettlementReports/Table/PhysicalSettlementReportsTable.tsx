@@ -30,9 +30,12 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 			if (!urls || !data) return null;
 
 			try {
-				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.settlementdeleteCash, {
-					symbolISIN: data?.symbolISIN,
-				});
+				const response = await brokerAxios.post<ServerResponse<boolean>>(
+					urls.OptionDeleteRequestCashSettlement,
+					{
+						symbolISIN: data?.symbolISIN,
+					},
+				);
 
 				if (response.status !== 200 || !response.data) {
 					toast.error('خطای ناشناخته رخ داده است.');
@@ -81,8 +84,8 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 				valueGetter: (row) => t(`common.${row.side.toLowerCase()}`),
 				cellClass: (row) =>
 					clsx({
-						'text-light-success-100': row.side === 'Buy',
-						'text-light-error-100': row.side === 'Sell',
+						'text-success-100': row.side === 'Buy',
+						'text-error-100': row.side === 'Sell',
 					}),
 			},
 			/* تعداد موقعیت باز */
@@ -107,8 +110,8 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 				headerName: t('physical_settlement_reports_page.status_contract_column'),
 				cellClass: (row) =>
 					clsx({
-						'text-light-success-100 dark:text-dark-success-100 ': row.pandLStatus === 'Profit',
-						'text-light-error-100 dark:text-dark-error-100 ': row.pandLStatus === 'Loss',
+						'dark:text-dark-success-100 text-success-100 ': row.pandLStatus === 'Profit',
+						'dark:text-dark-error-100 text-error-100 ': row.pandLStatus === 'Loss',
 					}),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'pandLStatus')]?.hidden,
 				valueGetter: (row) =>

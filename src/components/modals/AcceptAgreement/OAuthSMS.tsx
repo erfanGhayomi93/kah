@@ -39,7 +39,7 @@ const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
 				if (!brokerURLs) throw new Error();
 
 				const { data, status } = await brokerAxios.post<ServerResponse<Settings.IMobileOTP>>(
-					brokerURLs.mobileOtpRequest,
+					brokerURLs.AgreementsOtp,
 				);
 				if (status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
@@ -110,7 +110,7 @@ const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
 			<Image width={70} height={70} className='size-auto' src='/static/images/passcode.png' alt='' />
 			{otpData ? (
 				<>
-					<h6 className='font-medium text-light-info-100 rtl'>
+					<h6 className='font-medium text-info-100 rtl'>
 						{t('code_has_been_sent', { phoneNumber: otpData?.starredMessage, count: 6 })}
 					</h6>
 
@@ -130,8 +130,8 @@ const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
 					<div className='gap-8 pb-24 flex-justify-center'>
 						{isSubmitting ? (
 							<>
-								<p className='text-light-gray-500'>{t('resend_code_after')}:</p>
-								<span className='text-light-info-100'>
+								<p className='text-gray-500'>{t('resend_code_after')}:</p>
+								<span className='text-info-100'>
 									<Countdown
 										onFinished={() => setIsSubmitting(false)}
 										seconds={otpData?.expireDate || 120}
@@ -140,14 +140,14 @@ const OAuthSMS = ({ sendRequest, ...props }: OAuthSMSProps) => {
 								</span>
 							</>
 						) : (
-							<button className='text-light-info-100' onClick={() => brokerURLs && getOtpData(null)}>
+							<button className='text-info-100' onClick={() => brokerURLs && getOtpData(null)}>
 								{t('resend_code')}
 							</button>
 						)}
 					</div>
 				</>
 			) : (
-				<button className='h-full text-light-error-100' onClick={() => brokerURLs && getOtpData(null)}>
+				<button className='h-full text-error-100' onClick={() => brokerURLs && getOtpData(null)}>
 					{t('error_occured')}
 				</button>
 			)}
@@ -168,7 +168,7 @@ const OTPInput = (props: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>
 				//
 			}
 		}}
-		className='size-64 rounded border border-light-gray-200 bg-light-gray-100 p-8 text-center  text-3xl ltr focus:border-light-info-100 focus:bg-transparent focus:text-light-info-100'
+		className='size-64 rounded border border-gray-200 bg-gray-100 p-8 text-center  text-3xl ltr focus:border-info-100 focus:bg-transparent focus:text-info-100'
 		{...props}
 	/>
 );

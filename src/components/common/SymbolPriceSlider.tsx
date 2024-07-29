@@ -132,11 +132,11 @@ const SymbolPriceSlider = ({
 			eTooltipPercent.textContent = `(${priceAsPercent}%)`;
 
 			if (priceAsPercent < 0) {
-				eTooltipPercent.classList.remove('text-light-success-100');
-				eTooltipPercent.classList.add('text-light-error-100');
+				eTooltipPercent.classList.remove('text-success-100');
+				eTooltipPercent.classList.add('text-error-100');
 			} else {
-				eTooltipPercent.classList.remove('text-light-error-100');
-				eTooltipPercent.classList.add('text-light-success-100');
+				eTooltipPercent.classList.remove('text-error-100');
+				eTooltipPercent.classList.add('text-success-100');
 			}
 		} catch (e) {
 			//
@@ -290,11 +290,7 @@ const SymbolPriceSlider = ({
 				<div className={styles.tradedValues}>
 					<div className={styles.inner}>
 						<Tooltip
-							className={
-								config.firstTradedPriceAsPercent >= 0
-									? 'text-light-success-100'
-									: 'text-light-error-100'
-							}
+							className={config.firstTradedPriceAsPercent >= 0 ? 'text-success-100' : 'text-error-100'}
 							content={`${t('closing')}: ‎${sepNumbers(String(exchangeData[0] ?? 0))} (${config.firstTradedPriceAsPercent}%)`}
 						>
 							<div
@@ -328,9 +324,7 @@ const SymbolPriceSlider = ({
 						</Tooltip>
 
 						<Tooltip
-							className={
-								config.lastTradedPriceAsPercent >= 0 ? 'text-light-success-100' : 'text-light-error-100'
-							}
+							className={config.lastTradedPriceAsPercent >= 0 ? 'text-success-100' : 'text-error-100'}
 							content={`${t('last')}: ‎${sepNumbers(String(exchangeData[1] ?? 0))} (${config.lastTradedPriceAsPercent}%)`}
 						>
 							<div

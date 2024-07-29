@@ -45,7 +45,7 @@ const ChangeBrokerReportsFiltersModal = forwardRef<HTMLDivElement, ChangeBrokerR
 
 		return (
 			<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
-				<Div className='gap-40 bg-white flex-column'>
+				<Div className='darkBlue:bg-gray-50 gap-40 bg-white flex-column dark:bg-gray-50'>
 					<Header
 						label={t('change_broker_reports_page.filter_title_modal')}
 						onClose={onCloseModal}

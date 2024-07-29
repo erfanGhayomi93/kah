@@ -96,12 +96,12 @@ const SearchSymbol = () => {
 					>
 						<div
 							style={{ width: isExpand ? '30rem' : '4rem' }}
-							className='border-light-gray-200 h-40 rounded border bg-white pl-8 transition-width flex-justify-between'
+							className='darkBlue:bg-gray-50 h-40 rounded border border-gray-200 bg-white pl-8 transition-width flex-justify-between dark:bg-gray-50'
 						>
 							<button
 								onClick={() => setIsExpand(!isExpand)}
 								type='button'
-								className='text-light-gray-700 h-40 min-w-40 flex-justify-center'
+								className='h-40 min-w-40 text-gray-700 flex-justify-center'
 							>
 								<SearchSVG width='2.4rem' height='2.4rem' strokeWidth='4rem' />
 							</button>
@@ -123,7 +123,7 @@ const SearchSymbol = () => {
 											setIsExpand(false);
 										}}
 										type='button'
-										className='text-light-gray-700 size-24 rounded-circle flex-justify-center'
+										className='size-24 rounded-circle text-gray-700 flex-justify-center'
 									>
 										<XCircleSVG width='1.6rem' height='1.6rem' />
 									</button>

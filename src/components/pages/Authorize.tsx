@@ -37,7 +37,7 @@ const Authorize = () => {
 
 	return (
 		<div className='p-8'>
-			<div className='size-full rounded bg-white flex-justify-center'>
+			<div className='darkBlue:bg-gray-50 size-full rounded bg-white flex-justify-center dark:bg-gray-50'>
 				<Loading />
 			</div>
 		</div>

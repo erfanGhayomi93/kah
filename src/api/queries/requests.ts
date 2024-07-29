@@ -10,7 +10,7 @@ export const useDepositHistoryQuery = createBrokerQuery<Payment.IDepositHistoryL
 			const url = getBrokerURLs(store.getState());
 			if (!url) return null;
 			const response = await brokerAxios.get<ServerResponse<Payment.IDepositHistoryList[]>>(
-				url.getDepositOnlineHistory,
+				url.DepositOnlineHistory,
 				{
 					signal,
 				},
@@ -30,7 +30,7 @@ export const useListBrokerBankAccountQuery = createBrokerQuery<Payment.IBrokerAc
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await brokerAxios.get<ServerResponse<Payment.IBrokerAccount[]>>(url.getListBrokerBankAccount, {
+		const response = await brokerAxios.get<ServerResponse<Payment.IBrokerAccount[]>>(url.BankBrokerAccounts, {
 			signal,
 		});
 		const data = response.data;
@@ -47,7 +47,7 @@ export const useListUserBankAccountQuery = createBrokerQuery<Payment.IUserBankAc
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await brokerAxios.get<ServerResponse<Payment.IUserBankAccount[]>>(url.GetListBankAccount, {
+		const response = await brokerAxios.get<ServerResponse<Payment.IUserBankAccount[]>>(url.BankGet, {
 			signal,
 		});
 		const data = response.data;
@@ -64,7 +64,7 @@ export const useRemainsWithDateQuery = createBrokerQuery<Payment.TRemainsWithDay
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
 
-		const response = await brokerAxios.get<ServerResponse<Payment.TRemainsWithDay>>(url.GetRemainsWithDate, {
+		const response = await brokerAxios.get<ServerResponse<Payment.TRemainsWithDay>>(url.WithdrawalLimitDates, {
 			signal,
 		});
 		const data = response.data;
@@ -80,10 +80,13 @@ export const useDrawalHistoryQuery = createBrokerQuery<Payment.IDrawalHistoryLis
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
-		const response = await brokerAxios.get<ServerResponse<Payment.IDrawalHistoryList[]>>(url.LastListDrawal, {
-			signal,
-			params: { count: 20 },
-		});
+		const response = await brokerAxios.get<ServerResponse<Payment.IDrawalHistoryList[]>>(
+			url.AccountWithdrawalRecentHistory,
+			{
+				signal,
+				params: { count: 20 },
+			},
+		);
 		const data = response.data;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -100,7 +103,7 @@ export const useHistoryChangeBrokerQuery = createBrokerQuery<
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
-		const response = await brokerAxios.get<ServerResponse<Payment.IChangeBrokerList[]>>(url.LastChangeBrokers, {
+		const response = await brokerAxios.get<ServerResponse<Payment.IChangeBrokerList[]>>(url.ChangeBrokerGet, {
 			signal,
 		});
 		const data = response.data;
@@ -116,7 +119,7 @@ export const useRecentFreezeQuery = createBrokerQuery<Payment.IRecentFreezeList[
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
-		const response = await brokerAxios.get<Payment.IRecentFreezeList[]>(url.RecentFreeze, {
+		const response = await brokerAxios.get<Payment.IRecentFreezeList[]>(url.FreezeRecentFreezeRequest, {
 			signal,
 		});
 		const data = response.data;
@@ -132,7 +135,7 @@ export const useRecentUnFreezeQuery = createBrokerQuery<Payment.IRecentFreezeLis
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
-		const response = await brokerAxios.get<Payment.IRecentFreezeList[]>(url.RecentUnFreeze, {
+		const response = await brokerAxios.get<Payment.IRecentFreezeList[]>(url.FreezeRecentUnFreezeRequest, {
 			signal,
 		});
 		const data = response.data;
@@ -148,7 +151,7 @@ export const useCountFreezeQuery = createBrokerQuery<Payment.ICountFreeze[] | nu
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
-		const response = await brokerAxios.get<Payment.ICountFreeze[]>(url.symbolCountFreeze, {
+		const response = await brokerAxios.get<Payment.ICountFreeze[]>(url.FreezeFreezedSymbols, {
 			signal,
 		});
 		const data = response.data;

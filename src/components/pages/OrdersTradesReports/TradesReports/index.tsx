@@ -92,7 +92,7 @@ const TradesReports = () => {
 			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
-				urls.OrderExportTrades,
+				urls.TradeExport,
 				`trades-history-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);
@@ -123,7 +123,7 @@ const TradesReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white'>
+		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
 			<div className='flex-justify-between'>
 				<Tabs />
 				<Toolbar

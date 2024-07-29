@@ -29,7 +29,7 @@ const OptionMarketProcessModal = forwardRef<HTMLDivElement, IOptionMarketProcess
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<OptionMarketProcess isModal />
 			</Div>
 		</Modal>

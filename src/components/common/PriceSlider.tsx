@@ -204,7 +204,7 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 					/>
 				</Group>
 
-				<g className='text-light-gray-800'>
+				<g className='text-gray-800'>
 					<Text x={`${x1Text}%`} y='5' textAnchor='middle'>
 						{x1Value}
 					</Text>

@@ -24,21 +24,21 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 				colId: 'requestDate',
 				headerName: t('withdrawal_modal.withdrawal_date_column'),
 				valueGetter: (row) => dateFormatter(row.requestDate),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			/* مبلغ */
 			{
 				colId: 'requestAmount',
 				headerName: t('withdrawal_modal.amount_column'),
 				valueGetter: (row) => sepNumbers(String(row.requestAmount)),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			/* وضعیت */
 			{
 				colId: 'state',
 				headerName: t('withdrawal_modal.status_column'),
 				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
-				headerClass: '!bg-white',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 		],
 		[],
@@ -47,12 +47,16 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 	return (
 		<div className='flex h-full overflow-auto pr-24 flex-column'>
 			<div className='flex-1 overflow-auto rounded-sm p-8 shadow-card'>
-				<LightweightTable rowData={data || []} columnDefs={columnDefs} className='bg-white' />
+				<LightweightTable
+					rowData={data || []}
+					columnDefs={columnDefs}
+					className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'
+				/>
 			</div>
 
 			<div>
 				<Link
-					className='text-light-info-100 h-48 w-full gap-8 rounded font-medium flex-justify-center'
+					className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
 					href={'/financial-reports/withdrawal-cash'}
 					onClick={() => onCloseModal()}
 				>

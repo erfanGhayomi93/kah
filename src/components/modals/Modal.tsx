@@ -162,14 +162,14 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
 const Header = (props: ModalHeaderProps) => {
 	if ('children' in props) {
-		return <div className='relative h-56 w-full bg-light-gray-100 flex-justify-center'>{props.children}</div>;
+		return <div className='bg-gray-100 relative h-56 w-full flex-justify-center'>{props.children}</div>;
 	}
 
 	const { label, onClose, onExpanded, onClear, onReset } = props;
 
 	return (
-		<div className='relative h-56 w-full bg-light-gray-100 flex-justify-center'>
-			<h2 className='select-none text-xl font-medium text-light-gray-700'>{label}</h2>
+		<div className='bg-gray-100 relative h-56 w-full flex-justify-center'>
+			<h2 className='text-gray-700 select-none text-xl font-medium'>{label}</h2>
 
 			<div className='absolute left-24 z-10 gap-8 ltr flex-items-end *:size-24 *:flex-justify-center *:icon-hover'>
 				<button onClick={onClose} type='button'>

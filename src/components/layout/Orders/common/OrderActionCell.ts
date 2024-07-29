@@ -24,7 +24,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 	init(params: OrderActionCellProps) {
 		this.params = params;
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center text-light-gray-700 gap-8');
+		this.eGui.setAttribute('class', 'flex-justify-center text-gray-700 gap-8');
 
 		this.eGui.appendChild(this.deleteBtn());
 		this.eGui.appendChild(this.editBtn());
@@ -92,7 +92,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 
 		if (!isEnable) {
 			this.eEdit.disabled = true;
-			this.eEdit.classList.add('text-light-gray-500');
+			this.eEdit.classList.add('text-gray-500');
 		}
 
 		this.eEdit.onclick = (e) => {
@@ -106,7 +106,7 @@ class OrderActionCell extends ActionCell implements ICellRendererComp<TOrder> {
 
 		if (!isEnable) {
 			this.eDelete.disabled = true;
-			this.eDelete.classList.add('text-light-gray-500');
+			this.eDelete.classList.add('text-gray-500');
 		}
 
 		this.eDelete.onclick = (e) => {

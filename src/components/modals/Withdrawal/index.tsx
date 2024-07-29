@@ -46,10 +46,10 @@ const Withdrawal = forwardRef<HTMLDivElement, WithdrawalProps>((props, ref) => {
 		>
 			<Header label={t('withdrawal_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} />
 
-			<div className='flex bg-white p-24'>
+			<div className='darkBlue:bg-gray-50 flex bg-white p-24 dark:bg-gray-50'>
 				<Div
 					className={clsx('flex-column', {
-						'border-light-gray-200 border-l pl-24 pr-16': isShowExpanded,
+						'border-l border-gray-200 pl-24 pr-16': isShowExpanded,
 					})}
 				>
 					<Body onClose={onCloseModal} editData={data} />
@@ -57,7 +57,7 @@ const Withdrawal = forwardRef<HTMLDivElement, WithdrawalProps>((props, ref) => {
 
 				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
 					{isShowExpanded && (
-						<Div className='bg-white'>
+						<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 							<HistoryDrawal onCloseModal={onCloseModal} />
 						</Div>
 					)}

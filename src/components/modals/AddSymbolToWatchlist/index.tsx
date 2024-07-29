@@ -82,12 +82,12 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<Header label={t('add_symbol_to_watchlist.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 gap-24 overflow-hidden rounded p-24 flex-column'>
 					<div className='relative h-40 rounded flex-items-center input-group'>
-						<span className='text-light-gray-700 px-8'>
+						<span className='px-8 text-gray-700'>
 							<SearchSVG />
 						</span>
 						<input
@@ -95,7 +95,7 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 							type='text'
 							inputMode='numeric'
 							maxLength={32}
-							className='text-light-gray-800 h-40 flex-1 pl-8'
+							className='h-40 flex-1 pl-8 text-gray-800'
 							value={term}
 							onChange={(e) => setTerm(e.target.value)}
 						/>
@@ -118,17 +118,17 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 									opacity: term.length > 1 ? 1 : 0,
 									pointerEvents: term.length > 1 ? 'auto' : 'none',
 								}}
-								className='bg-light-gray-800 ml-16 min-h-20 min-w-20 rounded-circle text-white transition-opacity flex-justify-center'
+								className='ml-16 min-h-20 min-w-20 rounded-circle bg-gray-800 text-white transition-opacity flex-justify-center'
 							>
 								<XSVG width='1rem' height='1rem' />
 							</button>
 						)}
 					</div>
 
-					<div className='border-light-gray-200 relative flex-1 overflow-hidden rounded border'>
+					<div className='relative flex-1 overflow-hidden rounded border border-gray-200'>
 						{term.length < 2 ? (
 							<div className='absolute center'>
-								<span className='text-light-gray-700 font-medium'>
+								<span className='font-medium text-gray-700'>
 									{t('common.needs_more_than_n_chars', { n: 2 })}
 								</span>
 							</div>
@@ -136,7 +136,7 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 							<div className='absolute size-48 center spinner' />
 						) : !Array.isArray(symbolsData) || symbolsData.length === 0 ? (
 							<div className='absolute center'>
-								<span className='text-light-gray-700 font-medium'>{t('common.symbol_not_found')}</span>
+								<span className='font-medium text-gray-700'>{t('common.symbol_not_found')}</span>
 							</div>
 						) : (
 							<ul className='h-full gap-4 overflow-auto flex-column'>
@@ -147,10 +147,10 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 											type='button'
 											className='h-48 w-full px-16 transition-colors flex-justify-between hover:btn-hover'
 										>
-											<span className='text-light-gray-800 text-base font-medium'>
+											<span className='text-base font-medium text-gray-800'>
 												{item.symbolTitle}
 											</span>
-											<span className='text-light-gray-700 text-base font-medium'>
+											<span className='text-base font-medium text-gray-700'>
 												{item.isInWatchlist ? (
 													hasChanged(item.symbolISIN) ? (
 														<EyeSVG width='2.4rem' height='2.4rem' />

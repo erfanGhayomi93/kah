@@ -25,7 +25,7 @@ export const useFreezeSymbolMutation = createMutation<
 		const url = getBrokerURLs(store.getState());
 		if (!url) return false;
 
-		const response = await axios.get<ServerResponse<Symbol.Info>>(url.FreezeRequest, {
+		const response = await axios.get<ServerResponse<Symbol.Info>>(url.FreezeCreateFreeze, {
 			params: { symbolISIN: typeof symbolISIN === 'string' ? [symbolISIN] : symbolISIN, type },
 		});
 		const { data } = response;

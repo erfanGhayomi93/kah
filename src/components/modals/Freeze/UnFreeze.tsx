@@ -35,7 +35,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 				type: 'UnFreeze',
 			};
 
-			const response = await brokerAxios.post(url?.newKaraFreeze, payload);
+			const response = await brokerAxios.post(url?.FreezeCreateFreeze, payload);
 			const data = response.data;
 
 			if (!data.succeeded) {
@@ -63,8 +63,8 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 		<div className='flex h-full flex-col justify-between'>
 			<div className='mb-16 mt-24 flex-1 p-8 shadow-lg'>
 				<div className='mb-24 flex'>
-					<span className='text-light-gray-700 flex-1 text-center'>{t('freeze_modal.symbol_title')}</span>
-					<span className='text-light-gray-700 flex-1 text-center'>{t('freeze_modal.guaranted_number')}</span>
+					<span className='flex-1 text-center text-gray-700'>{t('freeze_modal.symbol_title')}</span>
+					<span className='flex-1 text-center text-gray-700'>{t('freeze_modal.guaranted_number')}</span>
 				</div>
 
 				<div className='flex flex-col gap-y-16 overflow-auto' style={{ maxHeight: 300 }}>
@@ -77,9 +77,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 								classes={{ root: 'pr-16 flex-1' }}
 							/>
 
-							<span className='text-light-gray-800 flex-1 text-center'>
-								{sepNumbers(String(item.count))}
-							</span>
+							<span className='flex-1 text-center text-gray-800'>{sepNumbers(String(item.count))}</span>
 						</div>
 					))}
 				</div>

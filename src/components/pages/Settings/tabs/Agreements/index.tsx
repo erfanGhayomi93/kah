@@ -25,10 +25,10 @@ const Agreements = () => {
 	const {
 		data: agreements,
 		refetch: getAgreements,
-		isFetching: agreementsLoading,
+		isLoading,
 	} = useGetAgreementsQuery({
 		queryKey: ['getAgreements'],
-		enabled: !!brokerURLs,
+		enabled: Boolean(brokerURLs),
 	});
 
 	const columnDef = useMemo<Array<IColDef<Settings.IAgreements>>>(
@@ -39,8 +39,8 @@ const Agreements = () => {
 				cellClass: 'text-primary',
 				valueGetter: (row) => row.title,
 				valueFormatter: ({ value }) => (
-					<div className='gap-8 px-12 text-base text-light-gray-800 flex-justify-start'>
-						<span className='text-light-gray-700'>
+					<div className='gap-8 px-12 text-base text-gray-800 flex-justify-start'>
+						<span className='text-gray-700'>
 							<DocSVG />
 						</span>
 						{value}
@@ -55,10 +55,10 @@ const Agreements = () => {
 				cellClass: ({ state }) =>
 					`${
 						state === 'Accepted'
-							? 'text-light-success-100'
+							? 'text-success-100'
 							: state === 'NotAccepted'
-								? 'text-light-error-100'
-								: 'text-light-warning-100'
+								? 'text-error-100'
+								: 'text-warning-100'
 					}`,
 			},
 			{
@@ -95,11 +95,16 @@ const Agreements = () => {
 
 	return (
 		<SettingCard title={t('agreements_settings')} className='h-3/5'>
-			<div className='bg-white' style={{ height: (agreements?.length || 0) * 40 + 40 }}>
+			<div
+				className='darkBlue:bg-gray-50 overflow-hidden bg-white dark:bg-gray-50'
+				style={{ height: (agreements?.length || 0) * 40 + 40 }}
+			>
 				<LightweightTable<Settings.IAgreements[]> columnDefs={columnDef} rowData={agreements ?? []} />
 			</div>
-			{!agreements?.length && <NoData />}
-			{agreementsLoading && <Loading />}
+
+			{!isLoading && !agreements?.length && <NoData />}
+
+			{isLoading && <Loading />}
 		</SettingCard>
 	);
 };

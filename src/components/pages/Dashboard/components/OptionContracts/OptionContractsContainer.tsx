@@ -88,8 +88,8 @@ const OptionContractsContainer = ({ basis, type, isModal }: OptionContractsConta
 			<ul className=' flex-1 justify-center gap-32 rtl flex-column'>
 				{dataMapper.map((item, i) => (
 					<li key={i} className={clsx('text-base flex-justify-between')}>
-						<span className='text-light-gray-700'>{item.title}:</span>
-						<div className='flex gap-8 text-light-gray-800 ltr'>
+						<span className='text-gray-700'>{item.title}:</span>
+						<div className='text-gray-800 flex gap-8 ltr'>
 							{item.value}
 							<span>{item.percent}%</span>
 						</div>

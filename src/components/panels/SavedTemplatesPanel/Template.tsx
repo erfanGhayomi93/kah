@@ -29,7 +29,7 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 
 	return (
 		<li className='w-full gap-12 overflow-hidden flex-justify-between'>
-			<button className='text-light-gray-200'>
+			<button className='text-gray-200'>
 				<DragSVG width='2.4rem' height='2.4rem' />
 			</button>
 
@@ -38,19 +38,15 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 				className={cn(
 					'h-72 flex-1 cursor-pointer overflow-hidden rounded border px-16 transition-colors flex-justify-between',
 					isActive
-						? 'border-light-primary-100 bg-light-primary-100 hover:bg-light-primary-100'
-						: 'border-light-gray-200 bg-light-gray-100 hover:btn-hover',
+						? 'border-primary-100 bg-primary-100 hover:bg-primary-100'
+						: 'border-gray-200 bg-gray-100 hover:btn-hover',
 				)}
 			>
 				<div className='gap-10 flex-column'>
-					<h3 className={clsx('text-lg font-medium', isActive ? 'text-white' : 'text-light-gray-700')}>
-						{name}
-					</h3>
+					<h3 className={clsx('text-lg font-medium', isActive ? 'text-white' : 'text-gray-700')}>{name}</h3>
 
 					{symbols.length > 0 && (
-						<div
-							className={clsx('flex select-none gap-4', isActive ? 'text-white' : 'text-light-gray-700')}
-						>
+						<div className={clsx('flex select-none gap-4', isActive ? 'text-white' : 'text-gray-700')}>
 							{symbols.map((symbolTitle, i) => (
 								<span key={i}>
 									<span className={i === 0 ? 'text-base' : 'text-tiny'}>{symbolTitle}</span>
@@ -73,7 +69,7 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 					}}
 					className={clsx(
 						'size-20 rounded-circle border border-current transition-colors flex-justify-center',
-						isActive ? 'text-white ' : 'text-light-gray-700',
+						isActive ? 'text-white ' : 'text-gray-700',
 					)}
 				>
 					<PinSVG width='1rem' height='1rem' />

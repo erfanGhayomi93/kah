@@ -8,7 +8,7 @@ interface SmallCardProps extends React.HTMLAttributes<HTMLDivElement> {
 const SmallCard = ({ title, value, icon, style, ...props }: SmallCardProps) => (
 	<div style={{ flex: '1 1 19.5%', minWidth: '20rem', height: '20.8rem', ...style }} {...props}>
 		<div className='h-full flex-col gap-28 rounded py-8 text-center shadow-card flex-justify-center'>
-			<div className='gap-8 text-lg text-light-gray-700 flex-items-center'>
+			<div className='text-gray-700 gap-8 text-lg flex-items-center'>
 				{icon}
 				{title}
 			</div>

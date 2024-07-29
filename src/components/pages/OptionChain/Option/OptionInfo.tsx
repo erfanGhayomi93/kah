@@ -29,13 +29,16 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 	}, []);
 
 	return (
-		<div style={{ flex: '0 0 4rem' }} className='rounded bg-white px-16 flex-justify-between'>
+		<div
+			style={{ flex: '0 0 4rem' }}
+			className='darkBlue:bg-gray-50 rounded bg-white px-16 flex-justify-between dark:bg-gray-50'
+		>
 			<div className='flex-1 gap-16 text-right flex-justify-start'>
-				<span className='text-light-gray-700 gap-8 text-lg flex-items-center'>
+				<span className='gap-8 text-lg text-gray-700 flex-items-center'>
 					<CalendarSVG />
 					{calendar}
 				</span>
-				<span className='text-light-gray-700 text-base'>
+				<span className='text-base text-gray-700'>
 					{t('option_chain.contract_due_days', {
 						dueDays: settlementDay.dueDays ?? 0,
 						workingDaysLeftCount: settlementDay.workingDaysLeftCount ?? 0,
@@ -45,19 +48,17 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 
 			<div className='flex-1 gap-32 flex-justify-end'>
 				<div className='flex items-center gap-8'>
-					<span className='text-light-gray-700 text-base'>{t('option_chain.open_contracts_count')}:</span>
-					<span className='text-light-gray-800 font-medium'>
+					<span className='text-base text-gray-700'>{t('option_chain.open_contracts_count')}:</span>
+					<span className='font-medium text-gray-800'>
 						{sepNumbers(String(settlementDay.openPosition ?? 0))}
 					</span>
 				</div>
 
 				<div className='flex items-center gap-8'>
-					<span className='text-light-gray-700 text-base'>
-						{t('old_option_chain.one_month_trade_volume')}:
-					</span>
+					<span className='text-base text-gray-700'>{t('old_option_chain.one_month_trade_volume')}:</span>
 					<span>
-						<span className='text-light-gray-800 text-lg font-bold'>{volume}</span>
-						<span className='text-light-gray-700 text-tiny'>{volumeAsLetter}</span>
+						<span className='text-lg font-bold text-gray-800'>{volume}</span>
+						<span className='text-tiny text-gray-700'>{volumeAsLetter}</span>
 					</span>
 				</div>
 			</div>

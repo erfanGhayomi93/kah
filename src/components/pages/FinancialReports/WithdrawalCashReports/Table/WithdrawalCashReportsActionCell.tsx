@@ -22,7 +22,7 @@ const WithdrawalCashReportsActionCell = ({ onDeleteRow, onEditRow, data }: IWith
 					<>
 						<Tooltip content={t('tooltip.edit')}>
 							<button
-								className='text-light-gray-700 disabled:text-light-gray-500'
+								className='text-gray-700 disabled:text-gray-500'
 								disabled={data.state !== 'Registeration'}
 								type='button'
 								onClick={() => onEditRow(data)}
@@ -33,7 +33,7 @@ const WithdrawalCashReportsActionCell = ({ onDeleteRow, onEditRow, data }: IWith
 						<Tooltip content={t('tooltip.remove')}>
 							<button
 								disabled={data.state !== 'Registeration'}
-								className='text-light-gray-700 disabled:text-light-gray-500'
+								className='text-gray-700 disabled:text-gray-500'
 								type='button'
 								onClick={() => setConfirmDelete(true)}
 							>
@@ -47,10 +47,10 @@ const WithdrawalCashReportsActionCell = ({ onDeleteRow, onEditRow, data }: IWith
 			{confirmDelete && (
 				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
 					<div className='gap-16 flex-justify-start'>
-						<button className='text-light-gray-700' type='button' onClick={() => setConfirmDelete(false)}>
+						<button className='text-gray-700' type='button' onClick={() => setConfirmDelete(false)}>
 							{t('common.cancel')}
 						</button>
-						<button className='text-light-error-100' type='button' onClick={() => onDeleteRow(data)}>
+						<button className='text-error-100' type='button' onClick={() => onDeleteRow(data)}>
 							{t('common.delete')}
 						</button>
 					</div>

@@ -84,7 +84,7 @@ const Watchlist = ({
 				<div className='flex items-center'>
 					<div className='w-28'>
 						{hasNotCheckbox ? (
-							<button type='button' className='h-16 grow-0 text-light-gray-200 flex-justify-start'>
+							<button type='button' className='text-gray-200 h-16 grow-0 flex-justify-start'>
 								<DragSVG width='2.4rem' height='2.4rem' />
 							</button>
 						) : (
@@ -92,15 +92,15 @@ const Watchlist = ({
 								checked={Boolean(checked)}
 								onChange={onChecked}
 								classes={{
-									checkbox: '!size-20 focus:!border-light-error-100 hover:!border-light-error-100',
-									checked: '!bg-light-error-100 !border-light-error-100',
+									checkbox: '!size-20 focus:!border-error-100 hover:!border-error-100',
+									checked: '!bg-error-100 !border-error-100',
 								}}
 							/>
 						)}
 					</div>
 
 					{hasNotCheckbox && isEditing ? (
-						<div className='h-48 flex-1 gap-8 rounded border border-light-primary-100 px-16 transition-colors flex-justify-start'>
+						<div className='border-primary-100 h-48 flex-1 gap-8 rounded border px-16 transition-colors flex-justify-start'>
 							<input
 								autoFocus
 								type='text'
@@ -120,21 +120,16 @@ const Watchlist = ({
 								e.stopPropagation();
 								onVisibilityChange();
 							}}
-							className='h-48 flex-1 cursor-pointer gap-8 overflow-hidden rounded border border-light-gray-200 bg-light-gray-100 px-16 transition-colors flex-justify-start hover:btn-hover'
+							className='border-gray-200 bg-gray-100 h-48 flex-1 cursor-pointer gap-8 overflow-hidden rounded border px-16 transition-colors flex-justify-start hover:btn-hover'
 						>
-							<button type='button' className={isActive ? 'text-light-gray-800' : 'text-light-gray-500'}>
+							<button type='button' className={isActive ? 'text-gray-800' : 'text-gray-500'}>
 								{watchlist.isHidden ? (
 									<EyeSlashSVG width='2rem' height='2rem' />
 								) : (
 									<EyeSVG width='2rem' height='2rem' />
 								)}
 							</button>
-							<h3
-								className={cn(
-									'truncate text-base',
-									isActive ? 'text-light-gray-800' : 'text-light-gray-500',
-								)}
-							>
+							<h3 className={cn('truncate text-base', isActive ? 'text-gray-800' : 'text-gray-500')}>
 								{watchlist.name}
 							</h3>
 						</div>
@@ -154,7 +149,7 @@ const Watchlist = ({
 										key='cancel-edit'
 										onClick={onEditCancel}
 										type='button'
-										className='text-light-gray-700 flex-justify-center'
+										className='text-gray-700 flex-justify-center'
 									>
 										{t('common.cancel')}
 									</button>,
@@ -163,7 +158,7 @@ const Watchlist = ({
 										onClick={() => onEditEnd(name)}
 										disabled={name.length === 0}
 										type='button'
-										className='font-medium text-light-primary-100 flex-justify-center disabled:opacity-50'
+										className='text-primary-100 font-medium flex-justify-center disabled:opacity-50'
 									>
 										{t('common.register')}
 									</button>,
@@ -176,7 +171,7 @@ const Watchlist = ({
 										key='cancel-delete'
 										onClick={() => setIsDeleting(false)}
 										type='button'
-										className='text-light-gray-700 flex-justify-center'
+										className='text-gray-700 flex-justify-center'
 									>
 										{t('common.cancel')}
 									</button>,
@@ -185,7 +180,7 @@ const Watchlist = ({
 										key='delete'
 										onClick={onDeleteWatchlist}
 										type='button'
-										className='font-medium text-light-error-100 flex-justify-center'
+										className='text-error-100 font-medium flex-justify-center'
 									>
 										{t('common.delete')}
 									</button>,
@@ -198,7 +193,7 @@ const Watchlist = ({
 										key='edit-req'
 										onClick={onEditStart}
 										type='button'
-										className='text-light-gray-800 flex-justify-center'
+										className='text-gray-800 flex-justify-center'
 									>
 										<EditSVG width='2rem' height='2rem' />
 									</button>,
@@ -207,7 +202,7 @@ const Watchlist = ({
 										key='delete-req'
 										onClick={() => setIsDeleting(true)}
 										type='button'
-										className='text-light-gray-800 flex-justify-center'
+										className='text-gray-800 flex-justify-center'
 									>
 										<TrashSVG width='2rem' height='2rem' />
 									</button>,

@@ -29,7 +29,7 @@ const RecentActivitiesModal = forwardRef<HTMLDivElement, IRecentActivitiesModalP
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<RecentActivities isModal />
 			</Div>
 		</Modal>

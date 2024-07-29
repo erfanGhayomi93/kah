@@ -128,10 +128,10 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 				),
 				valueFormatter: ({ row }) => (
 					<div className='flex size-full flex-col items-center justify-center gap-4 overflow-hidden'>
-						<span className='text-tiny leading-normal text-light-success-100 ltr'>
+						<span className='text-success-100 text-tiny leading-normal ltr'>
 							{sepNumbers(String(row?.bestBuyLimitPrice_1 ?? 0))}
 						</span>
-						<span className='text-tiny leading-normal text-light-error-100 ltr'>
+						<span className='text-error-100 text-tiny leading-normal ltr'>
 							{sepNumbers(String(row?.bestSellLimitPrice_1 ?? 0))}
 						</span>
 					</div>

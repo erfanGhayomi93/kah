@@ -195,10 +195,10 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 				{...props}
 				ref={ref}
 				classes={{
-					modal: 'border border-light-info-100',
+					modal: 'border border-info-100',
 				}}
 			>
-				<Div style={{ width: inputs.expand ? '732px' : '336px' }} className='bg-light-gray-50'>
+				<Div style={{ width: inputs.expand ? '732px' : '336px' }} className='bg-gray-50'>
 					<Header
 						symbolTitle={symbolTitle}
 						expand={inputs.expand}

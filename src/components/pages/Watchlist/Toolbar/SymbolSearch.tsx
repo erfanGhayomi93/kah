@@ -17,9 +17,9 @@ const SymbolSearch = () => {
 	return (
 		<div
 			style={{ maxWidth: '30rem' }}
-			className='border-light-gray-200 h-40 flex-1 rounded border flex-items-center input-group'
+			className='h-40 flex-1 rounded border border-gray-200 flex-items-center input-group'
 		>
-			<span className='text-light-gray-700 px-8'>
+			<span className='px-8 text-gray-700'>
 				<SearchSVG />
 			</span>
 			<input
@@ -27,7 +27,7 @@ const SymbolSearch = () => {
 				type='text'
 				inputMode='numeric'
 				maxLength={32}
-				className='text-light-gray-800 h-40 flex-1 rounded bg-transparent pl-8'
+				className='h-40 flex-1 rounded bg-transparent pl-8 text-gray-800'
 				placeholder={t('option_watchlist_filters_modal.base_symbol_placeholder')}
 				value={term}
 				onChange={(e) => setTerm(e.target.value)}
@@ -37,7 +37,7 @@ const SymbolSearch = () => {
 				<button
 					onClick={onClearTerm}
 					type='button'
-					className='ml-16 min-h-20 min-w-20 rounded-circle bg-white text-white flex-justify-center'
+					className='darkBlue:bg-gray-50 ml-16 min-h-20 min-w-20 rounded-circle bg-white text-white flex-justify-center dark:bg-gray-50'
 				>
 					<XSVG width='1rem' height='1rem' />
 				</button>

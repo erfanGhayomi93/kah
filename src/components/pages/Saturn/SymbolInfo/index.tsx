@@ -14,7 +14,7 @@ const SymbolInfo = ({ symbol, activeTab, setActiveTab }: SymbolInfoProps) => {
 			style={{
 				flex: '5',
 			}}
-			className='relative size-full flex-1 gap-24 overflow-y-auto overflow-x-hidden rounded bg-white px-16 pb-32 pt-16 flex-column'
+			className='darkBlue:bg-gray-50 relative size-full flex-1 gap-24 overflow-y-auto overflow-x-hidden rounded bg-white px-16 pb-32 pt-16 flex-column dark:bg-gray-50'
 		>
 			<SymbolDetails symbol={symbol} />
 

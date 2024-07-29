@@ -69,7 +69,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 					<button
 						className={cn(
 							'p-8 transition-colors',
-							item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
+							item.id === activeTab ? 'text-gray-700 font-medium' : 'text-gray-500',
 						)}
 						type='button'
 					>

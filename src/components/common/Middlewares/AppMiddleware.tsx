@@ -4,10 +4,11 @@ import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import { useAppSelector } from '@/features/hooks';
+import { getTheme } from '@/features/slices/uiSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useBrokerQueryClient } from '@/hooks';
-import { setupChart } from '@/libs/highchart';
+import { setupChart, setupChartColor } from '@/libs/highchart';
 import { deleteBrokerClientId } from '@/utils/cookie';
 import { versionParser } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
@@ -22,13 +23,14 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		brokerHasSelected: getBrokerIsSelected(state),
+		theme: getTheme(state),
 	}),
 );
 
 const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 	const bQueryClient = useBrokerQueryClient();
 
-	const { isLoggedIn, brokerHasSelected } = useAppSelector(getStates);
+	const { isLoggedIn, brokerHasSelected, theme } = useAppSelector(getStates);
 
 	const { refetch } = useGetBrokerUrlQuery({
 		queryKey: ['getBrokerUrlQuery'],
@@ -68,6 +70,10 @@ const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 		checkLsVersion();
 		setupChart();
 	}, []);
+
+	useEffect(() => {
+		setupChartColor(theme);
+	}, [theme]);
 
 	useEffect(() => {
 		if (isLoggedIn && brokerHasSelected) refetch();

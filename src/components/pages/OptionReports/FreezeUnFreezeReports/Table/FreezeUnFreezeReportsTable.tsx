@@ -29,7 +29,7 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 			if (!url || !data) return null;
 
 			try {
-				const response = await brokerAxios.post<number>(url.deleteFreezeUnFreeze, null, {
+				const response = await brokerAxios.post<number>(url.FreezeDelete, null, {
 					params: {
 						symbolISIN: data.symbolISIN,
 						type: data.requestType,

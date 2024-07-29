@@ -74,7 +74,7 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 				{...props}
 				ref={ref}
 			>
-				<Div className='justify-between bg-white flex-column'>
+				<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
 					<Header label={t('move_symbol_to_watchlist.title', { symbolTitle })} onClose={onCloseModal} />
 
 					<div className='relative flex-1 overflow-hidden flex-column'>
@@ -98,10 +98,10 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 						)}
 					</div>
 
-					<div className='h-64 gap-8 border-t border-t-light-gray-200 pl-24 flex-items-center'>
+					<div className='h-64 gap-8 border-t border-t-gray-200 pl-24 flex-items-center'>
 						<button
 							onClick={addNewWatchlist}
-							className='h-40 gap-8 pr-24 font-medium text-light-primary-100 flex-items-center'
+							className='h-40 gap-8 pr-24 font-medium text-primary-100 flex-items-center'
 							type='button'
 						>
 							<span className='size-16 rounded-sm text-current flex-justify-center'>

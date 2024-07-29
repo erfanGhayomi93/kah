@@ -18,13 +18,13 @@ const Toolbar = ({ saveTemplate }: ToolbarProps) => {
 
 	return (
 		<div className='pl-8'>
-			<div className='border-light-gray-200 h-56 w-full gap-8 overflow-hidden rounded border bg-white px-16 flex-justify-end'>
+			<div className='darkBlue:bg-gray-50 h-56 w-full gap-8 overflow-hidden rounded border border-gray-200 bg-white px-16 flex-justify-end dark:bg-gray-50'>
 				<button onClick={saveTemplate} type='button' className='h-40 rounded px-32 btn-primary'>
 					{t('common.save')}
 				</button>
 				<button
 					type='button'
-					className='border-light-gray-200 text-light-primary-100 size-40 rounded border bg-white transition-colors flex-justify-center btn-primary-hover'
+					className='darkBlue:bg-gray-50 size-40 rounded border border-gray-200 bg-white text-primary-100 transition-colors flex-justify-center btn-primary-hover dark:bg-gray-50'
 					onClick={openSavedTemplates}
 				>
 					<BookmarkSVG />

@@ -48,7 +48,7 @@ export const PrimarySettlementTab: FC<PrimarySettlementTabProps> = ({
 					<button
 						className={clsx(
 							'h-40 flex-1 px-16 text-center transition-colors flex-justify-center',
-							item.id === activeTab ? 'text-light-gray-700 font-medium' : 'text-light-gray-500',
+							item.id === activeTab ? 'text-gray-700 font-medium' : 'text-gray-500',
 						)}
 						type='button'
 					>

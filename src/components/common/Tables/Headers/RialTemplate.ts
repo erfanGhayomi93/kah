@@ -23,7 +23,7 @@ class RialTemplate implements IHeaderComp {
 	rial() {
 		const span = document.createElement('span');
 		span.textContent = '(ریال)';
-		span.setAttribute('class', 'text-light-gray-500 font-normal text-tiny');
+		span.setAttribute('class', 'text-gray-500 font-normal text-tiny');
 
 		return span;
 	}

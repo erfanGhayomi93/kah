@@ -46,16 +46,16 @@ const OptionForm = ({ budget, contractSize, quantity, nextStep }: OptionFormProp
 					}}
 				/>
 
-				<div className='text-light-gray-700 text-tiny flex-justify-between'>
+				<div className='text-gray-700 text-tiny flex-justify-between'>
 					<span>{t('create_strategy.sellable_contracts')}:</span>
-					<span className='text-light-gray-800 flex gap-4'>
+					<span className='text-gray-800 flex gap-4'>
 						{sepNumbers(String(quantity)) + ' ' + t('create_strategy.contract')}
 					</span>
 				</div>
 
-				<div className='text-light-info-100 justify-center gap-4 flex-items-start'>
+				<div className='text-info-100 justify-center gap-4 flex-items-start'>
 					<InfoCircleSVG width='1.6rem' height='1.6rem' className='mt-4' />
-					<p className='text-light-gray-700 flex-1 text-center text-tiny leading-8'>
+					<p className='text-gray-700 flex-1 text-center text-tiny leading-8'>
 						{t('create_strategy.option_quantity_description', {
 							n: sepNumbers(String(quantity * contractSize)),
 						})}

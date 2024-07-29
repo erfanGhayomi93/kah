@@ -30,7 +30,7 @@ const MarketStateModal = forwardRef<HTMLDivElement, IMarketStateModalProps>((pro
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<MarketState isModal />
 			</Div>
 		</Modal>

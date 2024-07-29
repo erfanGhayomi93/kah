@@ -339,11 +339,11 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					cellClass: ({ value }) => {
 						switch (value) {
 							case 'ITM':
-								return 'text-light-success-100';
+								return 'text-success-100';
 							case 'OTM':
-								return 'text-light-error-100';
+								return 'text-error-100';
 							case 'ATM':
-								return 'text-light-secondary-300';
+								return 'text-secondary-300';
 							default:
 								return '';
 						}
@@ -531,11 +531,11 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					cellClass: ({ value }) => {
 						switch (value) {
 							case 'Call':
-								return 'text-light-success-100';
+								return 'text-success-100';
 							case 'Put':
-								return 'text-light-error-100';
+								return 'text-error-100';
 							default:
-								return 'text-light-gray-700';
+								return 'text-gray-700';
 						}
 					},
 					valueGetter: ({ data }) => data?.symbolInfo.optionType ?? 'Call',

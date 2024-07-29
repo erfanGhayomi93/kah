@@ -6,6 +6,7 @@ import StyledComponentsRegistry from '@/components/common/Registry/StyledCompone
 import ToastRegistry from '@/components/common/Registry/ToastRegistry';
 import ClockProvider from '@/contexts/ClockContext';
 import dynamic from 'next/dynamic';
+import ThemeMiddleware from './Middlewares/ThemeMiddleware';
 import ReduxToolkitRegistry from './Registry/ReduxToolkitRegistry';
 
 const LightstreamRegistry = dynamic(() => import('@/components/common/Registry/LightstreamRegistry'), {
@@ -21,16 +22,18 @@ const Providers = ({ children }: ProvidersProps) => {
 		<StyledComponentsRegistry>
 			<QueryClientRegistry>
 				<ReduxToolkitRegistry>
-					<LightstreamRegistry>
-						<AppMiddleware>
-							<OMSRegistry />
-							<BroadcastChannelRegistry>
-								<ClockProvider>
-									<ToastRegistry>{children}</ToastRegistry>
-								</ClockProvider>
-							</BroadcastChannelRegistry>
-						</AppMiddleware>
-					</LightstreamRegistry>
+					<ThemeMiddleware>
+						<LightstreamRegistry>
+							<AppMiddleware>
+								<OMSRegistry />
+								<BroadcastChannelRegistry>
+									<ClockProvider>
+										<ToastRegistry>{children}</ToastRegistry>
+									</ClockProvider>
+								</BroadcastChannelRegistry>
+							</AppMiddleware>
+						</LightstreamRegistry>
+					</ThemeMiddleware>
 				</ReduxToolkitRegistry>
 			</QueryClientRegistry>
 		</StyledComponentsRegistry>

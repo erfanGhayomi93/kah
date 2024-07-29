@@ -27,13 +27,13 @@ const OptionChain = () => {
 	return (
 		<Main style={{ overflowY: 'scroll' }} className='gap-8'>
 			<div style={{ flex: '0 0 46.4rem' }} className='flex gap-8'>
-				<div className='relative flex-1 gap-24 rounded bg-white p-16 flex-column'>
+				<div className='darkBlue:bg-gray-50 relative flex-1 gap-24 rounded bg-white p-16 flex-column dark:bg-gray-50'>
 					<SelectSymbol selectedSymbol={selectedSymbol} setSelectedSymbol={setSelectedSymbol} />
 				</div>
 
 				<Section
 					style={{ width: '41%', minWidth: '56rem', maxWidth: '64rem' }}
-					className='relative rounded bg-white py-12 flex-column'
+					className='darkBlue:bg-gray-50 relative rounded bg-white py-12 flex-column dark:bg-gray-50'
 				>
 					<SymbolInfo selectedSymbol={selectedSymbol} />
 				</Section>

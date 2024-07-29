@@ -41,7 +41,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 			if (!urls || !data) return;
 
 			try {
-				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.paymentDeleteRequest, {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.AccountWithdrawalCancel, {
 					ids: [data?.id],
 				});
 

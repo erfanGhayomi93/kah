@@ -15,8 +15,8 @@ interface SymbolSummaryProps {
 
 const ListItem = ({ title, valueFormatter }: ListItemProps) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-light-gray-700 whitespace-nowrap text-base'>{title}</span>
-		<span className='text-light-gray-800 text-base font-medium ltr'>
+		<span className='text-gray-700 whitespace-nowrap text-base'>{title}</span>
+		<span className='text-gray-800 text-base font-medium ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
 	</div>
@@ -26,7 +26,7 @@ const SymbolSummary = ({ data }: SymbolSummaryProps) => {
 	return (
 		<ul className='flex flex-column'>
 			{data.map(([firstItem, secondItem]) => (
-				<li key={firstItem.id} className={cn('odd:bg-light-gray-100 h-32 gap-16 flex-justify-between')}>
+				<li key={firstItem.id} className={cn('odd:bg-gray-100 h-32 gap-16 flex-justify-between')}>
 					<ListItem {...firstItem} />
 					<ListItem {...secondItem} />
 				</li>

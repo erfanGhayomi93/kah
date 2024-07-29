@@ -64,7 +64,6 @@ const PriceChangesWatchlistChart = () => {
 						style: {
 							fontSize: '12px',
 							fontWeight: '500',
-							color: 'rgb(93, 96, 109)',
 						},
 					},
 				},

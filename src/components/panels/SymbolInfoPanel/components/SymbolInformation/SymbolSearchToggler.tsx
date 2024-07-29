@@ -26,15 +26,18 @@ const SymbolSearchToggler = ({ symbolData }: SymbolSearchTogglerProps) => {
 				<SymbolState state={symbolData.symbolTradeState} />
 
 				<div className='cursor-pointer gap-8 flex-items-center' onClick={() => setIsSearching(true)}>
-					<div className='text-light-gray-700'>
+					<div className='text-gray-700'>
 						<SearchSVG width='2rem' height='2rem' />
 					</div>
 
-					<h1 className='text-lg font-medium text-light-gray-800'>{symbolData.symbolTitle}</h1>
+					<h1 className='text-lg font-medium text-gray-800'>{symbolData.symbolTitle}</h1>
 
 					{isSearching && (
 						<Click onClickOutside={() => setIsSearching(false)}>
-							<div style={{ width: '18rem' }} className='absolute bg-white'>
+							<div
+								style={{ width: '18rem' }}
+								className='darkBlue:bg-gray-50 absolute bg-white dark:bg-gray-50'
+							>
 								<SymbolSearch
 									clearable
 									autoFocus
@@ -49,7 +52,7 @@ const SymbolSearchToggler = ({ symbolData }: SymbolSearchTogglerProps) => {
 					)}
 				</div>
 			</div>
-			<h2 className='pr-16 text-tiny text-light-gray-700'>{symbolData.companyName}</h2>
+			<h2 className='pr-16 text-tiny text-gray-700'>{symbolData.companyName}</h2>
 		</div>
 	);
 };

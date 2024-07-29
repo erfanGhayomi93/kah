@@ -29,7 +29,7 @@ const CompareTransactionValueModal = forwardRef<HTMLDivElement, ICompareTransact
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white'>
+			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 				<CompareTransactionValue isModal />
 			</Div>
 		</Modal>

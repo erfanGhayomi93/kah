@@ -26,12 +26,12 @@ const Option = ({ settlementDay, baseSymbol }: OptionProps) => {
 			{settlementDay && baseSymbol ? (
 				<>
 					<OptionInfo settlementDay={settlementDay} />
-					<div className='relative flex-1 overflow-hidden rounded bg-white flex-column'>
+					<div className='darkBlue:bg-gray-50 relative flex-1 overflow-hidden rounded bg-white flex-column dark:bg-gray-50'>
 						<OptionTable settlementDay={settlementDay} baseSymbol={baseSymbol} />
 					</div>
 				</>
 			) : (
-				<div className='flex-1 rounded bg-white'>
+				<div className='darkBlue:bg-gray-50 flex-1 rounded bg-white dark:bg-gray-50'>
 					<div style={{ marginTop: '9.6rem' }}>
 						<NoData text={t('option_chain.select_symbol_first')} />
 					</div>

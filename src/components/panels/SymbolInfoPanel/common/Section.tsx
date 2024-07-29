@@ -54,12 +54,12 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 	return (
 		<div
 			style={{ height: isExpand ? '100%' : '4rem' }}
-			className='size-full overflow-hidden rounded bg-white transition-height flex-column'
+			className='darkBlue:bg-gray-50 size-full overflow-hidden rounded bg-white transition-height flex-column dark:bg-gray-50'
 		>
 			<div
 				onClick={() => setIsExpand(true)}
 				style={{ flex: '0 0 4rem' }}
-				className='overflow-hidden rounded-t bg-light-gray-100 pl-8 flex-justify-between'
+				className='overflow-hidden rounded-t bg-gray-100 pl-8 flex-justify-between'
 			>
 				<ul className='flex-1 flex-items-center'>
 					{tabs.map((tab, index) => (
@@ -72,8 +72,8 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 									'relative h-40 w-full rounded-t text-base transition-colors flex-justify-center',
 									tabs.length <= 2 ? 'px-16' : 'px-8',
 									isExpand && tab.id === activeTab
-										? 'bg-white font-medium text-light-gray-700'
-										: 'text-light-gray-500',
+										? 'darkBlue:bg-gray-50 bg-white font-medium text-gray-700 dark:bg-gray-50'
+										: 'text-gray-500',
 								)}
 							>
 								{tab.title}
@@ -88,7 +88,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 					))}
 				</ul>
 
-				<div className='flex-items-center *:size-32 *:text-light-gray-600 *:flex-justify-center'>
+				<div className='flex-items-center *:size-32 *:text-gray-600 *:flex-justify-center'>
 					<button
 						type='button'
 						onClick={(e) => {

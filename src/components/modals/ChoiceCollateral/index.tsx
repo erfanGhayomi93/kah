@@ -35,12 +35,12 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 
 	return (
 		<Modal moveable transparent onClose={onCloseModal} {...props} ref={ref}>
-			<Div className='justify-between bg-white flex-column'>
+			<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
 				<Header label={t('choice_collateral_modal.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 justify-between p-16 pt-40 flex-column'>
 					<div className='flex-1 items-center gap-24 text-center flex-column'>
-						<span className='text-base text-light-gray-700 transition-colors'>
+						<span className='text-base text-gray-700 transition-colors'>
 							{t('choice_collateral_modal.select_collateral')}
 						</span>
 
@@ -52,15 +52,15 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 								className={clsx(
 									'h-full flex-col gap-16 rounded border transition-colors flex-justify-center',
 									value === 'Account'
-										? 'border-light-primary-100 bg-light-secondary-200 text-light-primary-100'
-										: 'border-light-gray-200 text-light-gray-700',
+										? 'border-primary-100 bg-secondary-200 text-primary-100'
+										: 'border-gray-200 text-gray-700',
 								)}
 							>
 								<PayMoneySVG width='4rem' height='4rem' />
 								<span
 									className={clsx(
 										'text-lg',
-										value === 'Account' ? 'text-light-primary-100' : 'text-light-gray-700',
+										value === 'Account' ? 'text-primary-100' : 'text-gray-700',
 									)}
 								>
 									{t('choice_collateral_modal.cash_collateral')}
@@ -73,15 +73,15 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 								className={clsx(
 									'h-full flex-col gap-16 rounded border transition-colors flex-justify-center',
 									value === 'Portfolio'
-										? 'border-light-primary-100 bg-light-secondary-200 text-light-primary-100'
-										: 'border-light-gray-200 text-light-gray-700',
+										? 'border-primary-100 bg-secondary-200 text-primary-100'
+										: 'border-gray-200 text-gray-700',
 								)}
 							>
 								<SnowFlakeSVG width='4rem' height='4rem' />
 								<span
 									className={clsx(
 										'text-lg',
-										value === 'Portfolio' ? 'text-light-primary-100' : 'text-light-gray-700',
+										value === 'Portfolio' ? 'text-primary-100' : 'text-gray-700',
 									)}
 								>
 									{t('choice_collateral_modal.stock_collateral')}
@@ -89,13 +89,11 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 							</button>
 						</div>
 
-						<span className='text-base text-light-gray-700 transition-colors'>
+						<span className='text-base text-gray-700 transition-colors'>
 							{t.rich('choice_collateral_modal.collateral_details', {
 								price: sepNumbers(String(5000000)),
 								title: order.symbolTitle,
-								p: (chunk) => (
-									<span className='text-lg font-medium text-light-primary-100'>{chunk}</span>
-								),
+								p: (chunk) => <span className='text-lg font-medium text-primary-100'>{chunk}</span>,
 								t: (chunk) => <span className='font-medium'>{chunk}</span>,
 							})}
 						</span>

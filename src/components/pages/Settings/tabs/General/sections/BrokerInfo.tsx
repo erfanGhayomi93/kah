@@ -32,7 +32,7 @@ const BrokerInfo = () => {
 		},
 		{
 			icon: <IdentityCardSVG />,
-			title: `${t('settings_page.natinal_code')}:`,
+			title: `${t('settings_page.national_code')}:`,
 			value: <SettingCardFieldValue value={userInfo?.nationalCode || '-'} />,
 		},
 		{
@@ -61,7 +61,7 @@ const BrokerInfo = () => {
 			value: (
 				<span className='gap-8 flex-justify-center'>
 					<SettingCardFieldValue value='***************' />
-					<button className='text-light-gray-700' onClick={() => {}}>
+					<button className='text-gray-700' onClick={() => {}}>
 						<EditFillSVG width={'1.8rem'} height={'1.8rem'} />
 					</button>
 				</span>
@@ -81,11 +81,7 @@ const BrokerInfo = () => {
 						)
 					}
 				>
-					<InfoCircleSVG
-						width={'2rem'}
-						height={'2rem'}
-						className={'cursor-pointer text-light-secondary-300'}
-					/>
+					<InfoCircleSVG width={'2rem'} height={'2rem'} className={'text-secondary-300 cursor-pointer'} />
 				</span>
 			),
 			title: `${t('settings_page.two_step_login')}:`,

@@ -12,10 +12,11 @@ const Plus = () => (
 			width='123'
 			height='123'
 			rx='15.5'
-			fill='white'
+			className='darkBlue:fill-gray-50 fill-white dark:fill-gray-50'
 			stroke='currentColor'
 			strokeDasharray='17 17'
 		/>
+
 		<path d='M62 50L62 74' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
 		<path d='M74 62L50 62' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
 	</svg>
@@ -84,12 +85,12 @@ const Custom = () => {
 	};
 
 	return (
-		<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center'>
+		<div className='darkBlue:bg-gray-50 size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center dark:bg-gray-50'>
 			<button
 				type='button'
 				onClick={openDashboardLayoutManager}
 				style={{ width: '12.4rem', height: '12.4rem' }}
-				className='rounded text-light-gray-700 flex-justify-center'
+				className='rounded text-gray-700 flex-justify-center'
 			>
 				<Plus />
 			</button>

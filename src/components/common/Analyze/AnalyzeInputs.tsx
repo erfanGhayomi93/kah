@@ -35,14 +35,14 @@ const AnalyzeInputs = ({ maxPrice, minPrice, dueDays, onChange }: AnalyzeInputsP
 	return (
 		<div style={{ flex: '0 0 4rem' }} className='relative z-10 gap-24 flex-justify-between'>
 			<div className='flex gap-16 flex-items-center'>
-				<span className='text-tiny text-light-gray-700'>{t('input_due_days')}:</span>
+				<span className='text-gray-700 text-tiny'>{t('input_due_days')}:</span>
 
 				<input
 					maxLength={4}
 					type='text'
 					name='due-days'
 					placeholder={t('to_price')}
-					className='h-40 w-96 rounded border border-light-gray-200 px-8'
+					className='border-gray-200 h-40 w-96 rounded border px-8'
 					value={inputs.dueDays === null ? '' : sepNumbers(String(inputs.dueDays))}
 					onCopy={(e) => copyNumberToClipboard(e, inputs.dueDays ?? 0)}
 					onChange={(e) => setFieldValue('dueDays', Number(convertStringToInteger(e.target.value)))}
@@ -50,7 +50,7 @@ const AnalyzeInputs = ({ maxPrice, minPrice, dueDays, onChange }: AnalyzeInputsP
 			</div>
 
 			<div className='flex gap-16 flex-items-center'>
-				<span className='text-tiny text-light-gray-700'>{t('input_price_range')}:</span>
+				<span className='text-gray-700 text-tiny'>{t('input_price_range')}:</span>
 
 				<div className='flex gap-8'>
 					<input
@@ -58,7 +58,7 @@ const AnalyzeInputs = ({ maxPrice, minPrice, dueDays, onChange }: AnalyzeInputsP
 						type='text'
 						name='min-price'
 						placeholder={t('from_price')}
-						className='h-40 w-96 rounded border border-light-gray-200 px-8'
+						className='border-gray-200 h-40 w-96 rounded border px-8'
 						value={inputs.minPrice === null ? '' : sepNumbers(String(inputs.minPrice))}
 						onCopy={(e) => copyNumberToClipboard(e, inputs.minPrice ?? 0)}
 						onChange={(e) => setFieldValue('minPrice', Number(convertStringToInteger(e.target.value)))}
@@ -68,7 +68,7 @@ const AnalyzeInputs = ({ maxPrice, minPrice, dueDays, onChange }: AnalyzeInputsP
 						type='text'
 						name='max-price'
 						placeholder={t('to_price')}
-						className='h-40 w-96 rounded border border-light-gray-200 px-8'
+						className='border-gray-200 h-40 w-96 rounded border px-8'
 						value={inputs.maxPrice === null ? '' : sepNumbers(String(inputs.maxPrice))}
 						onCopy={(e) => copyNumberToClipboard(e, inputs.maxPrice ?? 0)}
 						onChange={(e) => setFieldValue('maxPrice', Number(convertStringToInteger(e.target.value)))}

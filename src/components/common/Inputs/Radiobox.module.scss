@@ -12,14 +12,14 @@
 }
 
 .text {
-	color: theme("colors.light.gray.500");
+	color: theme("colors.gray.500");
 	font-size: 13px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 
 	&.active {
-		color: theme("colors.light.gray.800");
+		color: theme("colors.gray.800");
 	}
 }
 
@@ -30,13 +30,13 @@
 	cursor: pointer;
 	width: 1.6rem;
 	height: 1.6rem;
-	border: 1px solid theme("colors.light.gray.200");
+	border: 1px solid theme("colors.gray.200");
 	border-radius: 50%;
 	background-color: transparent;
 	padding: 3px;
 
 	&.checked {
-		border: 1px solid theme("colors.light.primary.100");
+		border: 1px solid theme("colors.primary.100");
 		position: relative;
 
 		&::after {
@@ -47,7 +47,7 @@
 			border-radius: 50%;
 			width: 100%;
 			height: 100%;
-			border: 4px solid theme("colors.light.primary.100");
+			border: 4px solid theme("colors.primary.100");
 			transform: translate(-50%, -50%);
 		}
 	}

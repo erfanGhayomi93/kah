@@ -24,7 +24,7 @@ export const LiveDepositTab = () => {
 		if (!url) return;
 
 		const { data } = await brokerAxios.post<ServerResponse<Payment.IDepositResponse>>(
-			url.createRequestEPaymentApi + `?amount=${convertStringToInteger(value)}`,
+			url.DepositOnlineCreate + `?amount=${convertStringToInteger(value)}`,
 		);
 
 		if (data.succeeded) {

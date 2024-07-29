@@ -8,7 +8,7 @@ import { getTranslations } from 'next-intl/server';
 const Page: NextPage<INextProps> = () => {
 	return (
 		<StrategyLayout headerRenderer={<StrategiesToolbar />}>
-			<div className='relative flex flex-1 flex-wrap content-start gap-y-8 rounded bg-white px-8 py-24'>
+			<div className='darkBlue:bg-gray-50 relative flex flex-1 flex-wrap content-start gap-y-8 rounded bg-white px-8 py-24 dark:bg-gray-50'>
 				<Strategies />
 			</div>
 		</StrategyLayout>

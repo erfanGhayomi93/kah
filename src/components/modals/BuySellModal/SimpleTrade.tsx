@@ -122,15 +122,15 @@ const SimpleTrade = ({
 				data={TABS}
 				defaultActiveTab={side}
 				classes={{
-					root: '!border-light-gray-400',
-					rect: side === 'buy' ? 'bg-light-success-100' : 'bg-light-error-100',
+					root: '!border-gray-400',
+					rect: side === 'buy' ? 'bg-success-100' : 'bg-error-100',
 				}}
 				onChangeTab={(tabId) => setInputValue('side', tabId as TBsSides)}
 				renderTab={(item, activeTab) => (
 					<button
 						className={clsx(
 							'h-full flex-1 font-medium transition-colors',
-							item.id === activeTab ? 'text-white' : 'text-light-gray-700',
+							item.id === activeTab ? 'text-white' : 'text-gray-700',
 						)}
 						type='button'
 						disabled={item.disabled}
@@ -156,8 +156,8 @@ const SimpleTrade = ({
 						{side === 'sell' && (
 							<>
 								<div className='text-tiny flex-justify-between'>
-									<span className='text-light-gray-700'>{t('bs_modal.assets')}:</span>
-									<span className='text-light-gray-800'>
+									<span className='text-gray-700'>{t('bs_modal.assets')}:</span>
+									<span className='text-gray-800'>
 										{assets > 0 && (
 											<span className='text-tiny'>{sepNumbers(String(assets)) + ' '}</span>
 										)}
@@ -199,7 +199,7 @@ const SimpleTrade = ({
 											type='button'
 											className={clsx(
 												'size-24 transition-colors',
-												priceLock ? 'text-light-primary-100' : 'text-light-gray-700',
+												priceLock ? 'text-primary-100' : 'text-gray-700',
 											)}
 											onClick={() => setInputValue('priceLock', !priceLock)}
 										>
@@ -226,13 +226,11 @@ const SimpleTrade = ({
 						<SummaryItem
 							title={t.rich('bs_modal.cash_guarantee', {
 								chunk: () => (
-									<span className='text-light-gray-800'>
-										{sepNumbers(String(blockTypeAccountValue))}
-									</span>
+									<span className='text-gray-800'>{sepNumbers(String(blockTypeAccountValue))}</span>
 								),
 							})}
 							value={
-								<button onClick={changeBlockType} type='button' className='text-light-info-100'>
+								<button onClick={changeBlockType} type='button' className='text-info-100'>
 									{t('bs_modal.change_block_type')}
 								</button>
 							}
@@ -244,15 +242,15 @@ const SimpleTrade = ({
 					)}
 				</div>
 
-				<div className='w-full gap-16 border-t border-light-gray-200 pt-16 flex-column'>
+				<div className='border-gray-200 w-full gap-16 border-t pt-16 flex-column'>
 					<div className='gap-12 flex-column'>
 						{symbolType === 'option' && side === 'sell' && (
 							<SummaryItem
 								title={t('bs_modal.validity_date') + ':'}
 								value={
-									<span className='text-light-gray-800'>
+									<span className='text-gray-800'>
 										<span className='font-medium'>1</span>
-										<span className='text-light-gray-700'>{' ' + t('bs_modal.day')}</span>
+										<span className='text-gray-700'>{' ' + t('bs_modal.day')}</span>
 									</span>
 								}
 							/>
@@ -261,9 +259,9 @@ const SimpleTrade = ({
 						<SummaryItem
 							title={t('bs_modal.total_amount') + ':'}
 							value={
-								<span className='text-light-gray-800'>
+								<span className='text-gray-800'>
 									<span className='font-medium'>{sepNumbers(String(value))}</span>
-									<span className='text-light-gray-700'>{' ' + t('common.rial')}</span>
+									<span className='text-gray-700'>{' ' + t('common.rial')}</span>
 								</span>
 							}
 						/>
@@ -299,7 +297,7 @@ const SimpleTrade = ({
 
 const SummaryItem = ({ title, value }: SummaryItemProps) => (
 	<div className='h-20 flex-justify-between *:text-tiny'>
-		<span className='text-light-gray-700'>{title}</span>
+		<span className='text-gray-700'>{title}</span>
 
 		{value}
 	</div>

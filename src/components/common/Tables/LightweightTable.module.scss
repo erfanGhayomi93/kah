@@ -9,15 +9,15 @@
 	direction: rtl;
 
 	&.reverseColors {
-		--tb-header-bg: theme("colors.white");
-		--tb-row-bg: theme("colors.light.gray.100");
-		--tb-row-odd-bg: theme("colors.white");
+		--tb-header-bg: var(--ag-header-background-color);
+		--tb-row-bg: var(--ag-odd-row-background-color);
+		--tb-row-odd-bg: var(--ag-background-color);
 	}
 
 	&:not(.reverseColors) {
-		--tb-header-bg: theme("colors.light.gray.100");
-		--tb-row-bg: theme("colors.white");
-		--tb-row-odd-bg: theme("colors.light.gray.100");
+		--tb-header-bg: var(--ag-header-background-color);
+		--tb-row-bg: var(--ag-background-color);
+		--tb-row-odd-bg: var(--ag-odd-row-background-color);
 	}
 }
 
@@ -50,7 +50,7 @@
 		font-size: 1.4rem;
 		font-weight: 500;
 		user-select: none;
-		color: theme("colors.light.gray.700");
+		color: theme("colors.gray.700");
 
 		&.selectable {
 			cursor: pointer;

@@ -12,7 +12,7 @@ class CallActionCell implements ICellRendererComp<GLOptionOrder.BuyPosition> {
 		this.params = params;
 
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center text-light-gray-700 gap-16');
+		this.eGui.setAttribute('class', 'flex-justify-center text-gray-700 gap-16');
 
 		this.more();
 		this.history();

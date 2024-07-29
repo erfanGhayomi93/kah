@@ -31,18 +31,18 @@ const Progressbar = ({ title, sellVolume, sellCount, buyVolume, buyCount, totalV
 			<Part
 				side='buy'
 				percent={buyPercent}
-				topRight={<span className='text-light-gray-800'>{title}</span>}
+				topRight={<span className='text-gray-800'>{title}</span>}
 				bottomRight={numFormatter(buyVolume)}
 				topLeft={
 					<span className='block rtl'>{`${numFormatter(buyCount)} ${t('symbol_info_panel.person')}`}</span>
 				}
-				bottomLeft={<span className='text-light-success-100'>{buyPercent}%</span>}
+				bottomLeft={<span className='text-success-100'>{buyPercent}%</span>}
 			/>
 
 			<Part
 				side='sell'
 				percent={sellPercent}
-				bottomRight={<span className='text-light-error-100'>{sellPercent}%</span>}
+				bottomRight={<span className='text-error-100'>{sellPercent}%</span>}
 				topLeft={
 					<span className='block rtl'>{`${numFormatter(sellCount)} ${t('symbol_info_panel.person')}`}</span>
 				}
@@ -54,19 +54,19 @@ const Progressbar = ({ title, sellVolume, sellCount, buyVolume, buyCount, totalV
 
 const Part = ({ percent, side, topRight, topLeft, bottomRight, bottomLeft }: PartProps) => (
 	<div className='flex-1 gap-4 flex-column'>
-		<div className='text-tiny text-light-gray-500 ltr flex-justify-between'>
+		<div className='text-gray-500 text-tiny ltr flex-justify-between'>
 			<span>{topLeft}</span>
 			<span>{topRight}</span>
 		</div>
 
-		<div className='rounded-sm bg-light-gray-200'>
+		<div className='bg-gray-200 rounded-sm'>
 			<div
-				className={clsx('h-4 rounded-sm', side === 'buy' ? 'bg-light-success-100' : 'bg-light-error-100')}
+				className={clsx('h-4 rounded-sm', side === 'buy' ? 'bg-success-100' : 'bg-error-100')}
 				style={{ width: `${Math.min(percent, 100)}%` }}
 			/>
 		</div>
 
-		<div className='text-tiny text-light-gray-500 ltr flex-justify-between'>
+		<div className='text-gray-500 text-tiny ltr flex-justify-between'>
 			<span>{bottomLeft}</span>
 			<span>{bottomRight}</span>
 		</div>

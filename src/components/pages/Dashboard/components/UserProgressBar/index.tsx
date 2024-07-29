@@ -79,11 +79,11 @@ const UserProgressBar = ({ isModal = false }: IUserProgressBarProps) => {
 		>
 			<div className='h-full gap-24 pt-8 flex-column'>
 				<div style={{ flex: '0 0 1.6rem' }} className='gap-8 flex-items-center'>
-					<span className='text-lg font-medium text-light-success-100'>32%</span>
-					<div className='flex-1 overflow-hidden rounded-oval bg-light-gray-100'>
+					<span className='text-success-100 text-lg font-medium'>32%</span>
+					<div className='bg-gray-100 flex-1 overflow-hidden rounded-oval'>
 						<div
 							style={{ width: `${Math.min(100, 32)}%` }}
-							className='h-16 bg-light-success-100 transition-width'
+							className='bg-success-100 h-16 transition-width'
 						/>
 					</div>
 				</div>
@@ -94,21 +94,13 @@ const UserProgressBar = ({ isModal = false }: IUserProgressBarProps) => {
 					})}
 				>
 					{data.map(({ id, passed, title }) => (
-						<li
-							key={id}
-							className={clsx('flex gap-10', passed ? 'text-light-success-100' : 'text-light-gray-700')}
-						>
+						<li key={id} className={clsx('flex gap-10', passed ? 'text-success-100' : 'text-gray-700')}>
 							{passed ? (
 								<ShieldFillSVG width='2.4rem' height='2.4rem' />
 							) : (
 								<ShieldOutlineSVG width='2.4rem' height='2.4rem' />
 							)}
-							<span
-								className={clsx(
-									'text-base',
-									passed ? 'font-medium text-light-gray-800' : 'text-light-gray-700',
-								)}
-							>
+							<span className={clsx('text-base', passed ? 'text-gray-800 font-medium' : 'text-gray-700')}>
 								{title}
 							</span>
 						</li>

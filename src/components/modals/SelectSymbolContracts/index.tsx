@@ -139,7 +139,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 				ref={ref}
 				{...props}
 			>
-				<Div className='bg-white'>
+				<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 					<Header label={t('select_symbol_contracts_modal.title')} onClose={onCloseModal} />
 
 					<div className='relative flex-1 gap-16 p-24 flex-column'>
@@ -179,7 +179,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 						<div
 							style={{ minHeight: '8.8rem' }}
-							className='flex h-auto gap-24 rounded border border-dashed border-light-gray-200 bg-light-gray-50 p-24'
+							className='flex h-auto gap-24 rounded border border-dashed border-gray-200 bg-gray-50 p-24'
 						>
 							<ul className='flex flex-1 flex-wrap gap-16'>
 								{inputs.baseSymbol && inputs.sendBaseSymbol && (
@@ -226,15 +226,11 @@ const Contract = ({ onRemove, symbolTitle, optionType }: ContractProps) => {
 			style={{ flex: '0 0 10.4rem' }}
 			className={clsx(
 				'h-32 gap-8 rounded px-8 flex-justify-between',
-				optionType
-					? optionType === 'call'
-						? 'bg-light-success-100/10'
-						: 'bg-light-error-100/10'
-					: 'bg-light-gray-300',
+				optionType ? (optionType === 'call' ? 'bg-success-100/10' : 'bg-error-100/10') : 'bg-gray-300',
 			)}
 		>
-			<span className='text-base text-light-gray-800'>{symbolTitle}</span>
-			<button onClick={onRemove} type='button' className='text-light-gray-700'>
+			<span className='text-base text-gray-800'>{symbolTitle}</span>
+			<button onClick={onRemove} type='button' className='text-gray-700'>
 				<XSVG width='1.4rem' height='1.4rem' />
 			</button>
 		</li>
@@ -243,7 +239,10 @@ const Contract = ({ onRemove, symbolTitle, optionType }: ContractProps) => {
 
 const BaseSymbolCheckbox = memo(
 	({ title, symbolTitle, checked, disabled, onChange }: BaseSymbolCheckboxProps) => (
-		<div style={{ flex: '0 0 4rem' }} className='rounded bg-white px-8 shadow-card flex-items-center'>
+		<div
+			style={{ flex: '0 0 4rem' }}
+			className='darkBlue:bg-gray-50 rounded bg-white px-8 shadow-card flex-items-center dark:bg-gray-50'
+		>
 			<Checkbox
 				label={
 					<>

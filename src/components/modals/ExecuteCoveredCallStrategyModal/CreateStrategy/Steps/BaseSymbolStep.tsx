@@ -15,17 +15,15 @@ const BaseSymbolStep = ({ symbolTitle, bestLimitPrice, className, status }: Base
 
 	return (
 		<li className={className}>
-			<h2 className={clsx(status === 'TODO' ? 'text-light-gray-800 font-medium' : 'text-light-gray-700')}>
+			<h2 className={clsx(status === 'TODO' ? 'text-gray-800 font-medium' : 'text-gray-700')}>
 				{t('create_strategy.base_step_title', { symbolTitle })}
 			</h2>
 
 			<div className='text-tiny flex-justify-between'>
-				<span className='text-light-gray-700'>{t('create_strategy.best_limit_price')}:</span>
-				<div className='text-light-gray-500 gap-4 ltr flex-items-end'>
+				<span className='text-gray-700'>{t('create_strategy.best_limit_price')}:</span>
+				<div className='text-gray-500 gap-4 ltr flex-items-end'>
 					{t('common.rial')}
-					<span className='text-light-gray-800 text-base font-medium'>
-						{sepNumbers(String(bestLimitPrice))}
-					</span>
+					<span className='text-gray-800 text-base font-medium'>{sepNumbers(String(bestLimitPrice))}</span>
 				</div>
 			</div>
 

@@ -17,7 +17,7 @@ class DraftActionCell extends ActionCell implements ICellRendererComp<Order.Draf
 	init(params: DraftActionCellProps) {
 		this.params = params;
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center text-light-gray-700 gap-8');
+		this.eGui.setAttribute('class', 'flex-justify-center text-gray-700 gap-8');
 
 		this.eGui.appendChild(this.deleteBtn());
 		this.eGui.appendChild(this.editBtn());

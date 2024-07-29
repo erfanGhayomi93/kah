@@ -117,7 +117,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-buy',
-						cellClass: 'text-light-success-100',
+						cellClass: 'text-success-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
@@ -127,7 +127,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-buy',
-						cellClass: 'text-light-error-100',
+						cellClass: 'text-error-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
@@ -139,7 +139,7 @@ const ContractsTable = ({
 			{
 				groupId: 'strike',
 				headerName: '',
-				headerClass: '!bg-white !border-b-0',
+				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50 !border-b-0',
 				children: [
 					{
 						headerName: 'اعمال',
@@ -161,7 +161,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین خرید',
 						colId: 'bestBuyPrice-sell',
-						cellClass: 'text-light-success-100',
+						cellClass: 'text-success-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
@@ -171,7 +171,7 @@ const ContractsTable = ({
 					{
 						headerName: 'بهترین فروش',
 						colId: 'bestSellPrice-sell',
-						cellClass: 'text-light-error-100',
+						cellClass: 'text-error-100',
 						headerClass: '!p-0',
 						maxWidth: 88,
 						minWidth: 88,
@@ -280,13 +280,13 @@ const ContractsTable = ({
 			/>
 
 			{!isFetching && (!settlementDay || modifiedData.length === 0) && (
-				<div className='absolute left-0 top-0 size-full bg-white'>
+				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
 					<NoData />
 				</div>
 			)}
 
 			{(isFetching || isFetchingInitialContracts) && (
-				<div className='absolute left-0 top-0 size-full bg-white'>
+				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
 					<Loading />
 				</div>
 			)}

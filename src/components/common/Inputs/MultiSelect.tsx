@@ -147,10 +147,7 @@ const MultiSelect = <T,>({
 							) : (
 								<ul className='flex items-center gap-2 truncate'>
 									{values.map((value, index, array) => (
-										<li
-											className='text-gray-00 rounded-md  bg-light-secondary-100 px-8 py-2'
-											key={index}
-										>
+										<li className='text-gray-00 bg-secondary-100  rounded-md px-8 py-2' key={index}>
 											{getOptionTitle(value)}
 										</li>
 									))}

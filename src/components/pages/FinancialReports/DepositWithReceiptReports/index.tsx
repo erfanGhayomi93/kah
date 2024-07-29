@@ -103,7 +103,7 @@ const DepositWithReceiptReports = () => {
 			if (!urls) throw new Error('broker_error');
 
 			downloadFileQueryParams(
-				urls.getReceiptExportFilteredCSV,
+				urls.AccountOfflineDepositExcel,
 				`deposit_with_receipt-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);
@@ -136,7 +136,7 @@ const DepositWithReceiptReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white'>
+		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
 			<div className='flex-justify-between'>
 				<Tabs />
 				<Toolbar

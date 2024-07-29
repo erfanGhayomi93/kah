@@ -118,7 +118,7 @@ const Templates = () => {
 			<div className='relative flex-1'>
 				<div className='absolute flex-col gap-16 flex-justify-center center'>
 					<Image priority width='120' height='120' alt='profile' src='/static/images/no-template-found.png' />
-					<span className='whitespace-nowrap text-base font-medium text-light-gray-700'>
+					<span className='text-gray-700 whitespace-nowrap text-base font-medium'>
 						{t('saved_saturn_templates.no_data')}
 					</span>
 				</div>

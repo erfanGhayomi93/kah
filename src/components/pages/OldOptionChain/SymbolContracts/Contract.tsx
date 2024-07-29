@@ -69,26 +69,27 @@ const Contract = ({
 	return (
 		<div
 			ref={wrapperRef}
-			className={cn('overflow-hidden rounded bg-white flex-column', expand && 'border-light-primary-100 border')}
+			className={cn(
+				'darkBlue:bg-gray-50 overflow-hidden rounded bg-white flex-column dark:bg-gray-50',
+				expand && 'border border-primary-100',
+			)}
 		>
 			<div onClick={toggleContract} className='h-40 w-full cursor-pointer select-none px-16 flex-justify-between'>
 				<div className='flex-1 gap-32 text-right flex-justify-start'>
-					<span style={{ width: '8rem' }} className='text-light-gray-800 text-lg'>
+					<span style={{ width: '8rem' }} className='text-lg text-gray-800'>
 						{calendar}
 					</span>
-					<span className='text-light-gray-700 text-base'>
+					<span className='text-base text-gray-700'>
 						{t('old_option_chain.contract_due_days', { dueDays, workingDaysLeftCount })}
 					</span>
 				</div>
 
 				<div className='flex-1 gap-32 flex-justify-end'>
 					<div className='flex items-center gap-8'>
-						<span className='text-light-gray-700 text-base'>
-							{t('old_option_chain.one_month_trade_volume')}:
-						</span>
+						<span className='text-base text-gray-700'>{t('old_option_chain.one_month_trade_volume')}:</span>
 						<span>
-							<span className='text-light-gray-800 text-lg font-bold'>{volume}</span>
-							<span className='text-light-gray-700 text-tiny'>{volumeAsLetter}</span>
+							<span className='text-lg font-bold text-gray-800'>{volume}</span>
+							<span className='text-tiny text-gray-700'>{volumeAsLetter}</span>
 						</span>
 					</div>
 
@@ -96,7 +97,7 @@ const Contract = ({
 						width='1.2rem'
 						height='1.2rem'
 						style={{ transform: expand ? 'rotate(180deg)' : undefined }}
-						className='text-light-gray-800 transition-transform'
+						className='text-gray-800 transition-transform'
 					/>
 				</div>
 			</div>

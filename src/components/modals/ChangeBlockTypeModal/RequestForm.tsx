@@ -61,9 +61,7 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 					value={portfolioValue}
 					description={t.rich('change_block_type_modal.block_type_portfolio_description', {
 						chunk: () => (
-							<span className='font-medium text-light-gray-800'>
-								{sepNumbers(String(portfolioValue))}
-							</span>
+							<span className='font-medium text-gray-800'>{sepNumbers(String(portfolioValue))}</span>
 						),
 					})}
 					onClick={() => setBlockType('Portfolio')}
@@ -77,7 +75,7 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 					value={accountValue}
 					description={t.rich('change_block_type_modal.block_type_portfolio_account', {
 						chunk: () => (
-							<span className='font-medium text-light-gray-800'>{sepNumbers(String(accountValue))}</span>
+							<span className='font-medium text-gray-800'>{sepNumbers(String(accountValue))}</span>
 						),
 					})}
 					onClick={() => setBlockType('Account')}
@@ -90,9 +88,7 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 					icon={<BoxSVG width='1.6rem' height='1.6rem' />}
 					value={quantity}
 					description={t.rich('change_block_type_modal.block_type_portfolio_position', {
-						chunk: () => (
-							<span className='font-medium text-light-gray-800'>{sepNumbers(String(quantity))}</span>
-						),
+						chunk: () => <span className='font-medium text-gray-800'>{sepNumbers(String(quantity))}</span>,
 					})}
 					onClick={() => {
 						if (data.length === 0) {
@@ -106,14 +102,14 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 					}}
 				>
 					<div className='relative overflow-auto p-16'>
-						<ul className='bg-white shadow-card flex-column'>
+						<ul className='darkBlue:bg-gray-50 bg-white shadow-card flex-column dark:bg-gray-50'>
 							{data.map((item) => (
 								<li key={item.symbolISIN} className='flex-48 gap-4 flex-items-center'>
 									<Radiobox
 										checked={selectedPosition?.symbolISIN === item.symbolISIN}
 										onChange={() => setSelectedPosition(item)}
 									/>
-									<span className='text-light-gray-700'>{item.symbolTitle}</span>
+									<span className='text-gray-700'>{item.symbolTitle}</span>
 								</li>
 							))}
 						</ul>
@@ -136,16 +132,16 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 const Card = ({ isActive, description, icon, value, title, prefix, children, onClick }: CardProps) => (
 	<div
 		className={clsx(
-			'transition-bg pt-16 flex-column',
-			isActive ? 'bg-white' : 'bg-light-gray-100',
+			'pt-16 transition-bg flex-column',
+			isActive ? 'darkBlue:bg-gray-50 bg-white dark:bg-gray-50' : 'bg-gray-100',
 			!children && 'pb-16',
 		)}
 	>
 		<div onClick={onClick} className='flex-48 cursor-pointer px-16 flex-justify-between'>
 			<div
 				className={clsx(
-					'transition-color flex-1 gap-8 text-base flex-justify-start',
-					isActive ? 'text-light-primary-100' : 'text-light-gray-700',
+					'flex-1 gap-8 text-base transition-color flex-justify-start',
+					isActive ? 'text-primary-100' : 'text-gray-700',
 				)}
 			>
 				<Radiobox checked={isActive} onChange={onClick} />
@@ -156,21 +152,16 @@ const Card = ({ isActive, description, icon, value, title, prefix, children, onC
 			</div>
 
 			<div className='flex-1 gap-8 flex-justify-end'>
-				<span
-					className={clsx(
-						'transition-color',
-						isActive ? 'font-medium text-light-gray-800' : 'text-light-gray-700',
-					)}
-				>
+				<span className={clsx('transition-color', isActive ? 'font-medium text-gray-800' : 'text-gray-700')}>
 					{sepNumbers(String(value))}
 				</span>
-				<span className='text-tiny text-light-gray-700'>{prefix}</span>
+				<span className='text-tiny text-gray-700'>{prefix}</span>
 			</div>
 		</div>
 
 		<div
 			className={clsx(
-				'flex-1 overflow-hidden px-16 text-tiny text-light-gray-700 transition-all',
+				'flex-1 overflow-hidden px-16 text-tiny text-gray-700 transition-all',
 				isActive ? 'pt-8 opacity-100' : 'p-0 opacity-0',
 			)}
 			style={{
@@ -190,7 +181,7 @@ const Card = ({ isActive, description, icon, value, title, prefix, children, onC
 					maxHeight: isActive ? '28.4rem' : '0',
 				}}
 			>
-				<div className='flex-1 overflow-hidden border-t border-t-light-gray-200'>{children}</div>
+				<div className='flex-1 overflow-hidden border-t border-t-gray-200'>{children}</div>
 			</div>
 		)}
 	</div>

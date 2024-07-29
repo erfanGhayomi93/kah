@@ -34,7 +34,7 @@ const UserOpenPositions = () => {
 
 	return (
 		<div className='flex-1 flex-column'>
-			<div className='flex text-tiny text-light-gray-700'>
+			<div className='text-gray-700 flex text-tiny'>
 				<div className='h-48 flex-1 flex-justify-center'>{t('symbol_info_panel.symbol_title')}</div>
 				<div style={{ flex: '0 0 27.5%' }} className='h-48 flex-justify-center'>
 					{t('symbol_info_panel.quantity')}

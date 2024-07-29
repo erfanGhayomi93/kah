@@ -46,10 +46,8 @@ const ToastPositionSettings = () => {
 				<button
 					key={item.id}
 					className={clsx(
-						'relative w-full  rounded-md !border py-48 transition-colors flex-justify-center',
-						item.id === toastPosition
-							? 'bg-light-secondary-100 border-transparent'
-							: 'border-light-gray-200 hover:btn-hover',
+						'no-hover relative w-full rounded-md !border py-48 transition-colors flex-justify-center',
+						item.id === toastPosition ? 'btn-select' : 'border-gray-200 hover:btn-hover',
 					)}
 					onClick={() => {
 						dispatch(setToastPosition(item.id));
@@ -59,10 +57,10 @@ const ToastPositionSettings = () => {
 					<span
 						className={clsx(
 							'absolute ' + item.className,
-							item.id === toastPosition ? 'text-light-primary-100' : 'text-light-gray-200',
+							item.id === toastPosition ? 'text-primary-100' : 'text-gray-200',
 						)}
 					>
-						{<NotificationSVG width={'3.9rem'} height={'3.9rem'} />}
+						{<NotificationSVG width='3.9rem' height='3.9rem' />}
 					</span>
 					{item.title}
 				</button>

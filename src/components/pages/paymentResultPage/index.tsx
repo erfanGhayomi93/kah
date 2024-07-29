@@ -61,8 +61,8 @@ const PaymentResultPage = () => {
 	}, [countdown]);
 
 	return (
-		<div className=' flex h-screen items-center justify-center bg-light-gray-100'>
-			<div className='flex h-4/5 w-3/12 flex-col items-center  justify-start gap-32 rounded-md bg-white p-24 shadow-sm'>
+		<div className=' flex h-screen items-center justify-center bg-gray-100'>
+			<div className='darkBlue:bg-gray-50 flex h-4/5 w-3/12 flex-col items-center  justify-start gap-32 rounded-md bg-white p-24 shadow-sm dark:bg-gray-50'>
 				<div className='flex flex-col items-center gap-16'>
 					<div className='pb-24'>
 						{IsSuccessful === 'True' ? (
@@ -73,13 +73,13 @@ const PaymentResultPage = () => {
 					</div>
 					<span
 						className={clsx('text-2xl font-bold', {
-							'text-light-success-100': IsSuccessful === 'True',
-							'text-light-error-100': IsSuccessful === 'False',
+							'text-success-100': IsSuccessful === 'True',
+							'text-error-100': IsSuccessful === 'False',
 						})}
 					>
 						{t(`payment_result.payment_${IsSuccessful === 'True' ? 'success' : 'error'}_title`)}
 					</span>
-					<span className='text-base text-light-gray-700'>
+					<span className='text-base text-gray-700'>
 						{t(`payment_result.payment_${IsSuccessful === 'True' ? 'success' : 'error'}_desc`)}
 					</span>
 				</div>
@@ -89,24 +89,24 @@ const PaymentResultPage = () => {
 						<li
 							key={index}
 							className={clsx(
-								'flex flex-1 items-center justify-between border-b border-light-gray-300 p-16 text-base',
+								'flex flex-1 items-center justify-between border-b border-gray-300 p-16 text-base',
 								{
 									'border-none': index === 3,
 								},
 							)}
 						>
-							<span className='text-light-gray-700'>{content.title}</span>
+							<span className='text-gray-700'>{content.title}</span>
 							<div className='flex items-center gap-6 text-base'>
-								<span className='text-light-gray-700'>
+								<span className='text-gray-700'>
 									{index === 0 ? sepNumbers(String(content.amount)) : content.amount}
 								</span>
-								<span className='pr-4 text-light-gray-700'>{index === 0 && t('common.rial')}</span>
+								<span className='pr-4 text-gray-700'>{index === 0 && t('common.rial')}</span>
 							</div>
 						</li>
 					))}
 				</ul>
 
-				<div className='text-3xl text-light-info-100'>{`00:0${Math.max(0, countdown)}`}</div>
+				<div className='text-3xl text-info-100'>{`00:0${Math.max(0, countdown)}`}</div>
 
 				<div className='flex w-full flex-col items-center gap-20'>
 					<button

@@ -22,7 +22,7 @@ const CompareAssets = () => {
 	const total = data.reduce((total, v) => total + v, 0);
 
 	const getSubtitle = (): string => {
-		return `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px" class="text-light-gray-700 text-base"><span>${t('my_assets.card_total_assets')}:</span><span class="text-light-gray-800 text-lg font-medium">${sepNumbers(String(total))}</span><span>${t('common.rial')}</span></div>`;
+		return `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px" class="text-gray-700 text-base"><span>${t('my_assets.card_total_assets')}:</span><span class="text-gray-800 text-lg font-medium">${sepNumbers(String(total))}</span><span>${t('common.rial')}</span></div>`;
 	};
 
 	const series: SeriesPieOptions = useMemo(() => {
@@ -141,9 +141,9 @@ const Legend = ({ title, percent, color }: LegendProps) => (
 	<div style={{ flex: '1 1 40%' }} className='flex-justify-between'>
 		<div className='gap-8 flex-items-center'>
 			<span style={{ backgroundColor: color }} className='size-8 rounded-circle' />
-			<span className='text-lg text-light-gray-700'>{title}:</span>
+			<span className='text-gray-700 text-lg'>{title}:</span>
 		</div>
-		<span className='text-base text-light-gray-800'>({percent.toFixed(2)}%)</span>
+		<span className='text-gray-800 text-base'>({percent.toFixed(2)}%)</span>
 	</div>
 );
 

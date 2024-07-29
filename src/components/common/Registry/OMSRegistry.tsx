@@ -25,7 +25,7 @@ const OMSRegistry = () => {
 					.toQueue()
 					.setUUID(uuid)
 					.setFields(fields)
-					.setURL(brokerURLs.createOrder);
+					.setURL(brokerURLs.OrderCreate);
 
 				OMSGateway.publish().addAndStart([order]);
 
@@ -40,7 +40,7 @@ const OMSRegistry = () => {
 
 		const orders: Order[] = [];
 		for (let i = 0; i < fields.length; i++) {
-			orders.push(OMSGateway.createOrder().toQueue().setFields(fields[i]).setURL(brokerURLs.createOrder));
+			orders.push(OMSGateway.createOrder().toQueue().setFields(fields[i]).setURL(brokerURLs.OrderCreate));
 		}
 
 		OMSGateway.publish().addAndStart(orders);

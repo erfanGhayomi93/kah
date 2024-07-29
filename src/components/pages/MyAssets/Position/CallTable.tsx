@@ -1,3 +1,4 @@
+import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
@@ -11,10 +12,11 @@ import { useMemo, useRef } from 'react';
 import CallActionCell from './CallActionCell';
 
 interface CallTableProps {
+	isLoading: boolean;
 	data: GLOptionOrder.BuyPosition[];
 }
 
-const CallTable = ({ data }: CallTableProps) => {
+const CallTable = ({ data, isLoading }: CallTableProps) => {
 	const t = useTranslations('my_assets');
 
 	const dispatch = useAppDispatch();
@@ -46,7 +48,7 @@ const CallTable = ({ data }: CallTableProps) => {
 			{
 				colId: 'quantity',
 				headerName: t('col_quantity'),
-				valueGetter: ({ data }) => data!.sellQuantity,
+				valueGetter: ({ data }) => data!.positionCount,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
@@ -235,8 +237,8 @@ const CallTable = ({ data }: CallTableProps) => {
 
 	return (
 		<div className='flex-1 gap-16 flex-column'>
-			<h2 className='text-base font-medium text-light-gray-700'>
-				{t('positions_title')} <span className='text-light-success-100'>{t('call')}</span>
+			<h2 className='text-gray-700 text-base font-medium'>
+				{t('positions_title')} <span className='text-success-100'>{t('call')}</span>
 			</h2>
 
 			<div className='relative w-full flex-328'>
@@ -248,9 +250,17 @@ const CallTable = ({ data }: CallTableProps) => {
 					className='border-call h-full border-0'
 				/>
 
-				<div className='absolute center'>
-					<NoData />
-				</div>
+				{isLoading && (
+					<div className='absolute center'>
+						<Loading />
+					</div>
+				)}
+
+				{!isLoading && data.length === 0 && (
+					<div className='absolute center'>
+						<NoData />
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -141,10 +141,10 @@ const ComputingInformation = ({ isExpand, symbolISIN }: ComputingInformationProp
 				<li
 					key={row.id}
 					style={{ flex: '0 0 40px' }}
-					className='odd:bg-light-gray-100 rounded-sm px-8 text-base flex-justify-between'
+					className='odd:bg-gray-100 rounded-sm px-8 text-base flex-justify-between'
 				>
-					<span className='text-light-gray-700'>{row.title}:</span>
-					<span className='text-light-gray-800 ltr'>{row.value}</span>
+					<span className='text-gray-700'>{row.title}:</span>
+					<span className='text-gray-800 ltr'>{row.value}</span>
 				</li>
 			))}
 		</ul>

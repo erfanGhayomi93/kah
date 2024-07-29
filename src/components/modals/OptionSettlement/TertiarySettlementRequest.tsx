@@ -44,7 +44,7 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 			};
 
 			const response = await brokerAxios.post(
-				isPhysical ? url?.newPhysicalSettlement : url?.newCashSettlement,
+				isPhysical ? url?.OptionCreateRequestPhysicalSettlement : url?.OptionCreateRequestCashSettlement,
 				payload,
 			);
 
@@ -78,7 +78,7 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 	return (
 		<div>
 			<div className='flex items-center rounded p-16 shadow-sm'>
-				<span className='text-justify font-medium tracking-normal text-light-info-100'>
+				<span className='text-justify font-medium tracking-normal text-info-100'>
 					{isPhysical
 						? t('optionSettlementModal.notice_attention_request_physical')
 						: t('optionSettlementModal.notice_attention_request_cash')}
@@ -86,11 +86,11 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 			</div>
 
 			<div className='mt-24'>
-				<span className='mb-16 text-light-gray-700'>{t('optionSettlementModal.choose_type_of_action')}</span>
+				<span className='mb-16 text-gray-700'>{t('optionSettlementModal.choose_type_of_action')}</span>
 
 				<div
 					className={clsx('mb-8 mt-16 flex justify-between rounded px-12 py-8', {
-						'bg-light-secondary-100': isMaximumStrike,
+						'bg-secondary-100': isMaximumStrike,
 					})}
 				>
 					<Radiobox
@@ -98,7 +98,7 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 						checked={isMaximumStrike}
 						onChange={(checked) => setIsMaximumStrike(checked)}
 						classes={{
-							text: 'mr-8 !text-light-gray-800',
+							text: 'mr-8 !text-gray-800',
 							label: 'flex items-center',
 							active: 'font-semibold',
 						}}
@@ -107,17 +107,17 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 					<span>{(dataSecondaryDetails?.openPositionCount ?? 0) + ' ' + t('home.tab_option_position')}</span>
 				</div>
 
-				<div className={'border-t border-light-gray-300 pt-8'}>
+				<div className={'border-t border-gray-300 pt-8'}>
 					<Radiobox
 						label={t('optionSettlementModal.desired_number_position')}
 						checked={!isMaximumStrike}
 						onChange={(checked) => setIsMaximumStrike(!checked)}
 						classes={{
-							text: 'mr-8 !text-light-gray-800',
+							text: 'mr-8 !text-gray-800',
 							label: 'flex items-center',
 							active: 'font-semibold',
 							root: clsx('rounded px-12 py-8', {
-								'bg-light-secondary-100': !isMaximumStrike,
+								'bg-secondary-100': !isMaximumStrike,
 							}),
 						}}
 					/>

@@ -21,12 +21,12 @@
 .border {
 	fill: currentColor;
 	cursor: pointer;
-	@apply text-light-gray-200/50;
+	@apply text-gray-200/50;
 }
 
 .fillBorder {
 	fill: currentColor;
-	@apply text-light-primary-100;
+	@apply text-primary-100;
 }
 
 .text {
@@ -34,10 +34,10 @@
 	fill: currentColor;
 	font-size: 1.2rem;
 	font-weight: 400;
-	color: theme("colors.light.gray.500");
+	color: theme("colors.gray.500");
 
 	&.activeText {
-		color: theme("colors.light.gray.800");
+		color: theme("colors.gray.800");
 	}
 }
 
@@ -47,7 +47,7 @@
 	color: theme("colors.white");
 
 	&.activeCircle {
-		color: theme("colors.light.primary.100");
+		color: theme("colors.primary.100");
 	}
 }
 

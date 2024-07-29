@@ -34,8 +34,8 @@ export const SettlementCashTab: FC<SettlementCashTabProps> = ({ clickItemSettlem
 								<div>
 									<span
 										className={clsx({
-											'text-light-success-100': item.side === 'Buy',
-											'text-light-error-100': item.side === 'Sell',
+											'text-success-100': item.side === 'Buy',
+											'text-error-100': item.side === 'Sell',
 										})}
 									>
 										{t('side.' + item.side?.toLowerCase())}
@@ -44,27 +44,27 @@ export const SettlementCashTab: FC<SettlementCashTabProps> = ({ clickItemSettlem
 								</div>
 								<div className='mt-16'>
 									<span className='pl-4 font-medium'>{item.openPositionCount}</span>
-									<span className='text-light-gray-700'>{t('home.tab_option_position')}</span>
+									<span className='text-gray-700'>{t('home.tab_option_position')}</span>
 								</div>
 							</div>
 
 							<div>
 								<div>
-									<span className='pl-4 text-light-gray-700'>
+									<span className='text-gray-700 pl-4'>
 										{t('optionSettlementModal.settlement_date')}:
 									</span>
-									<span className='text-light-gray-800'>
+									<span className='text-gray-800'>
 										{dateFormatter(item.cashSettlementDate, 'date')}
 									</span>
 								</div>
 								<div className='mt-16'>
-									<span className='pl-4 text-light-gray-700'>
+									<span className='text-gray-700 pl-4'>
 										{t('optionSettlementModal.status_contract')}:
 									</span>
 									<span
 										className={clsx({
-											'text-light-success-100': item.pandLStatus === 'Profit',
-											'text-light-error-100': item.pandLStatus === 'Loss',
+											'text-success-100': item.pandLStatus === 'Profit',
+											'text-error-100': item.pandLStatus === 'Loss',
 										})}
 									>
 										{t('cash_settlement_reports_page.type_contract_status_' + item.pandLStatus)}
@@ -74,7 +74,7 @@ export const SettlementCashTab: FC<SettlementCashTabProps> = ({ clickItemSettlem
 						</div>
 
 						<div>
-							<HandWriteSVG className='text-light-primary-100' />
+							<HandWriteSVG className='text-primary-100' />
 						</div>
 					</div>
 				))}

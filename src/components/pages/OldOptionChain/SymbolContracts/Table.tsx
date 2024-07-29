@@ -115,11 +115,11 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				cellClass: ({ value }) => {
 					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-light-success-100';
+							return 'text-success-100';
 						case 'otm':
-							return 'text-light-error-100';
+							return 'text-error-100';
 						case 'atm':
-							return 'text-light-secondary-300';
+							return 'text-secondary-300';
 						default:
 							return '';
 					}
@@ -151,8 +151,9 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				headerName: 'اعمال',
 				colId: 'strikePrice',
 				minWidth: 96,
-				headerClass: 'bg-white hover:!bg-white shadow',
-				cellClass: 'bg-white shadow',
+				headerClass:
+					'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 hover:!bg-white dark:bg-gray-50 darkBlue:bg-gray-50 shadow',
+				cellClass: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 shadow',
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.symbolInfo.strikePrice)),
 			},
 
@@ -185,11 +186,11 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				cellClass: ({ value }) => {
 					switch (value.toLowerCase()) {
 						case 'itm':
-							return 'text-light-success-100';
+							return 'text-success-100';
 						case 'otm':
-							return 'text-light-error-100';
+							return 'text-error-100';
 						case 'atm':
-							return 'text-light-secondary-300';
+							return 'text-secondary-300';
 						default:
 							return '';
 					}
@@ -241,11 +242,11 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 
 	return (
 		<div className='w-full flex-column'>
-			<div className='flex h-48 border-t border-t-light-gray-200'>
-				<div className='flex-1 text-lg text-light-success-100 flex-justify-center'>
+			<div className='flex h-48 border-t border-t-gray-200'>
+				<div className='flex-1 text-lg text-success-100 flex-justify-center'>
 					{t('old_option_chain.buy_contracts')}
 				</div>
-				<div className='flex-1 text-lg text-light-error-100 flex-justify-center'>
+				<div className='flex-1 text-lg text-error-100 flex-justify-center'>
 					{t('old_option_chain.sell_contracts')}
 				</div>
 			</div>

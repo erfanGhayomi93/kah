@@ -30,7 +30,7 @@ const UserInfo = ({ isLoggedIn }: UserInfoProps) => {
 			value: (
 				<span className='gap-8 flex-justify-center'>
 					<SettingCardFieldValue value='***************' />
-					<button className='text-light-gray-700' onClick={() => {}}>
+					<button className='text-gray-700' onClick={() => {}}>
 						<EditFillSVG width={'1.8rem'} height={'1.8rem'} />
 					</button>
 				</span>

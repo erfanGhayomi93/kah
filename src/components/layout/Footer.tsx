@@ -50,28 +50,28 @@ const Footer = () => {
 		<div className='h-48 flex-column'>
 			<Orders />
 
-			<footer className='h-48 bg-white pl-24 flex-justify-between'>
+			<footer className='darkBlue:bg-gray-50 h-48 bg-white pl-24 flex-justify-between dark:bg-gray-50'>
 				<div className='h-full flex-justify-start'>
 					{isLoggedIn ? (
 						<button
 							type='button'
 							onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
 							className={clsx(
-								'h-full gap-8 px-16 text-base text-light-gray-800 transition-colors flex-justify-center',
-								ordersIsExpand ? 'bg-light-secondary-200' : 'bg-light-gray-100',
+								'h-full gap-8 px-16 text-base text-gray-800 transition-colors flex-justify-center',
+								ordersIsExpand ? 'bg-secondary-200' : 'bg-gray-100',
 							)}
 						>
 							{t('orders')}
 							<ArrowDownSVG
 								style={{ transform: ordersIsExpand ? 'rotate(180deg)' : undefined }}
-								className='text-light-gray-700 transition-transform'
+								className='text-gray-700 transition-transform'
 							/>
 						</button>
 					) : (
 						<a
 							target='_blank'
 							href='https://ramandtech.com/'
-							className='pr-24 text-tiny font-normal text-light-gray-800 transition-colors hover:text-light-secondary-300'
+							className='pr-24 text-tiny font-normal text-gray-800 transition-colors hover:text-secondary-300'
 						>
 							{t('copyright')}
 						</a>
@@ -83,10 +83,10 @@ const Footer = () => {
 						className={cn(
 							'flex items-center gap-8 transition-colors',
 							lsStatus === 'CONNECTING'
-								? 'text-light-warning-100'
+								? 'text-warning-100'
 								: lsStatus === 'DISCONNECTED'
-									? 'text-light-error-100'
-									: 'text-light-success-100',
+									? 'text-error-100'
+									: 'text-success-100',
 						)}
 					>
 						<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />

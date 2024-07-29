@@ -28,7 +28,7 @@ const IndividualAndLegal = ({
 
 	return (
 		<div className='flex w-full'>
-			<div className='flex-1 gap-24 border-l border-light-gray-200 pl-8 flex-column'>
+			<div className='border-gray-200 flex-1 gap-24 border-l pl-8 flex-column'>
 				<Progressbar
 					buyVolume={individualBuyVolume}
 					buyCount={numberOfIndividualsBuyers}
@@ -56,10 +56,10 @@ const IndividualAndLegal = ({
 				/>
 
 				<div className='h-48 text-tiny flex-justify-between'>
-					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
 						{t(inflowAndOutflow < 0 ? 'liquid_inflow' : 'liquid_outflow')}
 					</span>
-					<span className={inflowAndOutflow < 0 ? 'text-light-success-100' : 'text-light-error-100'}>
+					<span className={inflowAndOutflow < 0 ? 'text-success-100' : 'text-error-100'}>
 						{numFormatter(Math.abs(inflowAndOutflow))}
 					</span>
 				</div>

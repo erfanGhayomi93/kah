@@ -39,8 +39,8 @@ const InputLegend = ({
 		<label
 			className={clsx(
 				`relative h-${height} w-full rounded flex-items-center input-group`,
-				!placeholder && 'border border-light-gray-200',
-				disabled && 'bg-light-gray-100',
+				!placeholder && 'border-gray-200 border',
+				disabled && 'bg-gray-100',
 			)}
 		>
 			<input
@@ -49,7 +49,7 @@ const InputLegend = ({
 				inputMode='numeric'
 				className={clsx(
 					'h-full flex-1 bg-transparent px-8 text-left ltr',
-					hasError ? 'text-light-error-100' : 'text-light-gray-800',
+					hasError ? 'text-error-100' : 'text-gray-800',
 				)}
 				value={value === null ? '' : valueSeparator ? sepNumbers(String(value)) : value}
 				disabled={disabled}
@@ -64,7 +64,7 @@ const InputLegend = ({
 					<div
 						className={cn(
 							'gap-8 flex-items-center flexible-placeholder',
-							hasError && '!text-light-error-100',
+							hasError && '!text-error-100',
 							isActive && 'active',
 						)}
 					>
@@ -72,7 +72,7 @@ const InputLegend = ({
 					</div>
 
 					<fieldset
-						className={cn('flexible-fieldset', hasError && '!border-light-error-100', isActive && 'active')}
+						className={cn('flexible-fieldset', hasError && '!border-error-100', isActive && 'active')}
 					>
 						<legend style={{ width: legendWidth ? `${legendWidth / 10}rem` : undefined }}>
 							{placeholder}
@@ -84,9 +84,9 @@ const InputLegend = ({
 			{prefix && (
 				<span
 					className={clsx(
-						'h-24 px-8 text-tiny text-light-gray-500 flex-justify-center',
+						'text-gray-500 h-24 px-8 text-tiny flex-justify-center',
 						classes?.prefix,
-						separator && 'border-r border-r-light-gray-200',
+						separator && 'border-r-gray-200 border-r',
 					)}
 				>
 					{prefix}

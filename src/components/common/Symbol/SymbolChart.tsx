@@ -254,7 +254,7 @@ export const SymbolChartType = ({ type, onChange }: SymbolChartTypeProps) => {
 					type='button'
 					className={clsx(
 						'size-24 rounded-sm transition-colors flex-justify-center',
-						type === 'area' ? 'btn-primary' : 'bg-light-gray-200 text-light-gray-700',
+						type === 'area' ? 'btn-primary' : 'bg-gray-200 text-gray-700',
 					)}
 				>
 					<LinearChartSVG width='2rem' height='2rem' />
@@ -266,7 +266,7 @@ export const SymbolChartType = ({ type, onChange }: SymbolChartTypeProps) => {
 					type='button'
 					className={clsx(
 						'size-24 rounded-sm transition-colors flex-justify-center',
-						type === 'candlestick' ? 'btn-primary' : 'bg-light-gray-200 text-light-gray-700',
+						type === 'candlestick' ? 'btn-primary' : 'bg-gray-200 text-gray-700',
 					)}
 				>
 					<CandleChartSVG width='2rem' height='2rem' />

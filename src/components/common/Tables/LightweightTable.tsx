@@ -142,7 +142,9 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 
 	return (
 		<div className={styles.wrapper}>
-			<table className={clsx(styles.table, reverseColors && styles.reverseColors, className)}>
+			<table
+				className={clsx('lightweight-table', styles.table, reverseColors && styles.reverseColors, className)}
+			>
 				<thead className={styles.thead}>
 					<tr style={{ height: `${headerHeight}px` }} className={styles.tr}>
 						{columnDefs.map((col) => (

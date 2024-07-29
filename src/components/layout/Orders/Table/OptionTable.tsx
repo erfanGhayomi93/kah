@@ -72,8 +72,8 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				valueFormatter: ({ value }) => (value === 'Buy' ? t('side.buy') : t('side.sell')),
 				cellClass: ({ value }) =>
 					clsx({
-						'text-light-success-100': value === 'Buy',
-						'text-light-error-100': value === 'Sell',
+						'text-success-100': value === 'Buy',
+						'text-error-100': value === 'Sell',
 					}),
 			},
 			{
@@ -83,8 +83,8 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value ?? 0)),
 				cellClass: ({ value }) =>
 					clsx({
-						'text-light-success-100': value === 'Buy',
-						'text-light-error-100': value === 'Sell',
+						'text-success-100': value === 'Buy',
+						'text-error-100': value === 'Sell',
 					}),
 			},
 			{

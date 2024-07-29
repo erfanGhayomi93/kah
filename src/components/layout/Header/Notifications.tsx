@@ -34,11 +34,11 @@ const Notifications = () => {
 	return (
 		<div
 			style={{ height: '80dvh', boxShadow: '0px 0px 12rem 0px rgba(0, 0, 0, 0.15)' }}
-			className='rounded-md bg-white px-16 pb-16 shadow-tooltip flex-column'
+			className='darkBlue:bg-gray-50 rounded-md bg-white px-16 pb-16 shadow-tooltip flex-column dark:bg-gray-50'
 		>
 			<div className='h-56 flex-justify-end'>
 				{activeTab === 'messages' && (
-					<button type='button' className='text-light-gray-700'>
+					<button type='button' className='text-gray-700'>
 						<FilterSVG width='2.4rem' height='2.4rem' />
 					</button>
 				)}
@@ -52,7 +52,7 @@ const Notifications = () => {
 					<button
 						className={clsx(
 							'h-40 flex-1 transition-colors flex-justify-center',
-							item.id === activeTab ? 'font-medium text-light-gray-700' : 'text-light-gray-500',
+							item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
 						)}
 						type='button'
 						disabled={item.disabled}

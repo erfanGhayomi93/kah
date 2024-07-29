@@ -1,3 +1,4 @@
+import { getDeviceColorSchema } from '@/utils/helpers';
 import { type AxisCrosshairOptions, setOptions } from 'highcharts/highstock';
 
 export const chartFontSetting = {
@@ -30,6 +31,7 @@ export const setupChart = () => {
 	setOptions({
 		chart: {
 			animation: true,
+			backgroundColor: 'transparent',
 			zooming: {
 				resetButton: {
 					position: {
@@ -117,8 +119,6 @@ export const setupChart = () => {
 			},
 		},
 		xAxis: {
-			gridLineColor: 'rgb(226, 231, 237)',
-			lineColor: 'rgb(226, 231, 237)',
 			endOnTick: false,
 			startOnTick: false,
 			showFirstLabel: true,
@@ -139,7 +139,6 @@ export const setupChart = () => {
 				rotation: 0,
 				style: {
 					...chartFontSetting,
-					color: 'rgba(93, 96, 109, 1)',
 				},
 			},
 		},
@@ -153,8 +152,6 @@ export const setupChart = () => {
 			endOnTick: true,
 			showFirstLabel: true,
 			showLastLabel: true,
-			gridLineColor: 'rgb(226, 231, 237)',
-			lineColor: 'rgb(226, 231, 237)',
 			title: {
 				text: '',
 			},
@@ -168,7 +165,74 @@ export const setupChart = () => {
 				padding: '0',
 				style: {
 					...chartFontSetting,
-					color: 'rgba(93, 96, 109, 1)',
+				},
+			},
+		},
+	});
+};
+
+export const setupChartColor = (theme: TTheme) => {
+	const t: Exclude<TTheme, 'system'> = theme === 'system' ? getDeviceColorSchema() : theme;
+
+	const colors: Record<string, Record<Exclude<TTheme, 'system'>, string>> = {
+		axisGridLineColor: {
+			light: 'rgb(226, 231, 237)',
+			dark: 'rgba(55, 57, 69, 1)',
+			darkBlue: 'rgba(55, 57, 69, 1)',
+		},
+		axisLineColor: {
+			light: 'rgb(226, 231, 237)',
+			dark: 'rgba(55, 57, 69, 1)',
+			darkBlue: 'rgba(55, 57, 69, 1)',
+		},
+		axisLabelColor: {
+			light: 'rgba(93, 96, 109, 1)',
+			dark: 'rgb(166, 169, 173)',
+			darkBlue: 'rgb(166, 169, 173)',
+		},
+		pieBorderColor: {
+			light: 'rgba(255, 255, 255, 1)',
+			dark: 'rgba(28, 30, 38, 1)',
+			darkBlue: 'rgba(28, 30, 38, 1)',
+		},
+		columnLabelColor: {
+			light: 'rgb(93, 96, 109)',
+			dark: 'rgba(166, 169, 173, 1)',
+			darkBlue: 'rgba(166, 169, 173, 1)',
+		},
+	};
+
+	setOptions({
+		xAxis: {
+			gridLineColor: colors.axisGridLineColor[t],
+			lineColor: colors.axisLineColor[t],
+			labels: {
+				style: {
+					color: colors.axisLabelColor[t],
+				},
+			},
+		},
+		yAxis: {
+			gridLineColor: colors.axisGridLineColor[t],
+			lineColor: colors.axisLineColor[t],
+			labels: {
+				style: {
+					color: colors.axisLabelColor[t],
+				},
+			},
+		},
+		plotOptions: {
+			pie: {
+				borderColor: colors.pieBorderColor[t],
+				borderWidth: 8,
+			},
+			column: {
+				dataLabels: {
+					style: {
+						opacity: 1,
+						color: colors.columnLabelColor[t],
+						textOutline: `1px solid ${colors.columnLabelColor[t]}`,
+					},
 				},
 			},
 		},

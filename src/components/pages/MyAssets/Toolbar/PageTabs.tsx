@@ -50,7 +50,7 @@ const PageTabs = () => {
 
 	return (
 		<div className='flex-1 gap-24 flex-justify-start'>
-			<h1 className='text-xl font-medium text-light-gray-700'>{t('title')}</h1>
+			<h1 className='text-gray-700 text-xl font-medium'>{t('title')}</h1>
 
 			<ul className='gap-8 flex-items-center'>
 				{pages.map((item) => (
@@ -73,7 +73,7 @@ const Item = ({ title, href, isActive }: ItemProps) => {
 				href={href}
 				className={clsx(
 					'h-40 w-104 rounded text-base transition-colors flex-justify-center',
-					isActive ? 'no-hover !border btn-select' : 'bg-light-gray-100 text-light-gray-700',
+					isActive ? 'no-hover btn-select' : 'bg-gray-100 text-gray-700',
 				)}
 			>
 				{title}

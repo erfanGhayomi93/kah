@@ -71,7 +71,7 @@ const AddSaturnTemplate = forwardRef<HTMLDivElement, AddSaturnTemplateProps>(
 				onClose={onCloseModal}
 				ref={ref}
 			>
-				<Div className='bg-white'>
+				<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
 					<Header
 						onClose={onCloseModal}
 						label={t('save_saturn_template.save_template', { title: baseSymbolTitle })}

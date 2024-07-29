@@ -39,7 +39,7 @@ const Grid = ({ strategy }: GridProps) => {
 	const { type } = strategy;
 
 	return (
-		<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column'>
+		<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
 			{type === 'CoveredCall' && <CoveredCall {...strategy} />}
 
 			{type === 'LongCall' && <LongCall {...strategy} />}

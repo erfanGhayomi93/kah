@@ -16,7 +16,7 @@ import {
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useUserInfo } from '@/hooks';
-import { copyNumberToClipboard, getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
+import { copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -143,7 +143,7 @@ const Header = () => {
 	return (
 		<header
 			style={{ zIndex: 99 }}
-			className='sticky top-0 z-10 h-48 border-b border-b-light-gray-200 bg-white px-16 flex-justify-between'
+			className='darkBlue:bg-gray-50 sticky top-0 z-10 h-48 border-b border-b-gray-200 bg-white px-16 flex-justify-between dark:bg-gray-50'
 		>
 			<div className='flex-1 gap-32 flex-justify-start'>
 				<div className='gap-16 flex-items-center'>
@@ -172,10 +172,10 @@ const Header = () => {
 							{({ setOpen, open }) => (
 								<button
 									onClick={() => setOpen(!open)}
-									className='h-32 gap-8 rounded bg-light-gray-100 px-8 flex-items-center icon-hover'
+									className='h-32 gap-8 rounded bg-gray-100 px-8 flex-items-center icon-hover'
 								>
 									<UserBoldSVG width='2.4rem' height='2.4rem' />
-									<span className='text-base font-medium text-light-gray-800'>{customerTitle}</span>
+									<span className='text-base font-medium text-gray-800'>{customerTitle}</span>
 									<ArrowDownSVG
 										width='1.6rem'
 										height='1.6rem'
@@ -193,7 +193,7 @@ const Header = () => {
 							className='h-32 gap-8 rounded px-16 font-medium btn-primary'
 						>
 							{t('header.login')}
-							<span className='h-12 w-2 rounded bg-white' />
+							<span className='darkBlue:bg-gray-50 h-12 w-2 rounded bg-white dark:bg-gray-50' />
 							{t('header.register')}
 						</button>
 					)}
@@ -204,17 +204,14 @@ const Header = () => {
 						{t('header.purchase_power')}:
 						<span className='gap-4 flex-items-center'>
 							<span
-								className='select-all font-medium text-light-gray-800 ltr'
+								className='select-all font-medium text-gray-800 ltr'
 								onCopy={(e) => copyNumberToClipboard(e, userRemain.purchasePower ?? 0)}
 							>
 								{sepNumbers(String(userRemain.purchasePower ?? 0))}
 							</span>
-							<span className='text-tiny text-light-gray-500'>{t('common.rial')}</span>
+							<span className='text-tiny text-gray-500'>{t('common.rial')}</span>
 						</span>
-						<WalletSVG
-							className={getColorBasedOnPercent(userRemain.purchasePower ?? 0)}
-							onClick={handleShowDepositModal}
-						/>
+						<WalletSVG className='text-success-100' onClick={handleShowDepositModal} />
 					</span>
 				)}
 
@@ -226,12 +223,12 @@ const Header = () => {
 							{t('header.required_margin')}:
 							<span className='gap-4 flex-items-center'>
 								<span
-									className='select-all font-medium text-light-gray-800 ltr'
+									className='select-all font-medium text-gray-800 ltr'
 									onCopy={(e) => copyNumberToClipboard(e, userStatus?.marginValue ?? 0)}
 								>
 									{sepNumbers(String(userStatus?.marginValue ?? 0))}
 								</span>
-								<span className='text-tiny text-light-gray-500'>{t('common.rial')}</span>
+								<span className='text-tiny text-gray-500'>{t('common.rial')}</span>
 							</span>
 						</span>
 
@@ -243,7 +240,7 @@ const Header = () => {
 									`text-${COLORS[userStatus.remainStatus]}`,
 								)}
 							>
-								<span className='text-base text-light-gray-800'>
+								<span className='text-base text-gray-800'>
 									{t(`header.user_status_${userStatus.remainStatus}`)}
 								</span>
 								{userStatusIcon}
@@ -261,7 +258,7 @@ const Header = () => {
 						<button
 							onClick={openBlackScholesModal}
 							type='button'
-							className='size-32 rounded-circle bg-light-gray-100 flex-justify-center icon-hover'
+							className='size-32 rounded-circle bg-gray-100 flex-justify-center icon-hover'
 						>
 							<CalculatorSVG width='1.8rem' height='1.8rem' />
 						</button>
@@ -282,7 +279,7 @@ const Header = () => {
 								<button
 									onClick={() => setOpen(!open)}
 									type='button'
-									className='size-32 rounded-circle bg-light-gray-100 flex-justify-center icon-hover'
+									className='size-32 rounded-circle bg-gray-100 flex-justify-center icon-hover'
 								>
 									{open ? (
 										<XSVG width='1.8rem' height='1.8rem' />

@@ -46,7 +46,7 @@ const Orders = () => {
 	const { mutate: updateCustomerSettings } = useMutation({
 		mutationFn: async (settingsData: IUpdateSettingsBody[]) => {
 			if (!brokerURLs) return;
-			const { data } = await brokerAxios.post(brokerURLs.SetCustomerSettings, settingsData);
+			const { data } = await brokerAxios.post(brokerURLs.AccountSettingSet, settingsData);
 			return data;
 		},
 		onSuccess: () => {
@@ -87,7 +87,7 @@ const Orders = () => {
 				title: t('settings_page.default_buy_volume'),
 				value: (
 					<Input
-						classInput='text-right'
+						classInput='text-right bg-transparent'
 						value={
 							fieldValues?.defaultBuyVolume === '0'
 								? ''
@@ -106,7 +106,7 @@ const Orders = () => {
 				title: t('settings_page.default_sell_volume'),
 				value: (
 					<Input
-						classInput='text-right'
+						classInput='text-right bg-transparent'
 						value={
 							fieldValues?.defaultSellVolume === '0'
 								? ''

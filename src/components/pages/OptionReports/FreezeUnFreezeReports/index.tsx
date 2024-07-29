@@ -95,7 +95,7 @@ const FreezeUnFreezeReports = () => {
 			if (inputs.requestState) params.append('RequestState', inputs.requestState);
 
 			downloadFileQueryParams(
-				urls.getFreezeExportFreeze,
+				urls.FreezeExportExcel,
 				`freezeUnfreeze-${fromDate.getFullYear()}${fromDate.getMonth() + 1}${fromDate.getDate()}-${toDate.getFullYear()}${toDate.getMonth() + 1}${toDate.getDate()}.csv`,
 				params,
 			);
@@ -128,7 +128,7 @@ const FreezeUnFreezeReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white'>
+		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
 			<div className='flex-justify-between'>
 				<Tabs />
 				<Toolbar
