@@ -6,7 +6,6 @@ import Main from '@/components/layout/Main';
 import { type initialDashboardGrid } from '@/constants/grid';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
-import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
@@ -83,8 +82,6 @@ const SECTIONS_MARGIN: [number, number] = [16, 16];
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Dashboard = () => {
-	const t = useTranslations();
-
 	const dispatch = useAppDispatch();
 
 	const grid = useAppSelector(getDashboardGridLayout);

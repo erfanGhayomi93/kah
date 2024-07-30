@@ -13,13 +13,7 @@ import { type RootState } from '@/features/store';
 import { useOptionWatchlistColumns, useSubscription } from '@/hooks';
 import dayjs from '@/libs/dayjs';
 import { numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
-import {
-	type CellClickedEvent,
-	type ColDef,
-	type ColumnMovedEvent,
-	type GridApi,
-	type ICellRendererParams,
-} from '@ag-grid-community/core';
+import { type ColDef, type ColumnMovedEvent, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ItemUpdate } from 'lightstreamer-client-web';
@@ -69,16 +63,8 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 		}
 	};
 
-	const onSymbolTitleClicked = ({ data }: CellClickedEvent<Option.Root>) => {
-		try {
-			if (!data) return;
-
-			const { symbolISIN, baseSymbolISIN } = data.symbolInfo;
-
-			if (baseSymbolISIN && symbolISIN) dispatch(setSymbolInfoPanel(symbolISIN));
-		} catch (e) {
-			//
-		}
+	const onSymbolTitleClicked = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
 	const storeColumns = () => {
@@ -219,7 +205,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					lockPosition: true,
 					suppressMovable: true,
 					cellClass: 'cursor-pointer',
-					onCellClicked: onSymbolTitleClicked,
+					onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.symbolISIN),
 					valueGetter: ({ data }) => data?.symbolInfo.symbolTitle ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
@@ -413,8 +399,10 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 				{
 					colId: 'baseSymbolTitle',
 					headerName: t('option_page.base_symbol_title'),
+					cellClass: 'cursor-pointer',
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolTitle?.isHidden ?? true),
+					onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.baseSymbolISIN),
 					valueGetter: ({ data }) => data?.symbolInfo.baseSymbolTitle ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},

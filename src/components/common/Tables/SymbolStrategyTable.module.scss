@@ -70,3 +70,16 @@
 	width: 100%;
 	gap: 0.4rem;
 }
+
+html[data-theme="darkBlue"],
+html[data-theme="dark"] {
+	.thead {
+		background-color: theme("colors.gray.50");
+
+		.tr {
+			.th {
+				background-color: theme("colors.gray.50");
+			}
+		}
+	}
+}

@@ -294,11 +294,11 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 					</div>
 				</div>
 
-				<div className='darkBlue:bg-gray-50 justify-between gap-16 bg-white px-16 pt-12 flex-column dark:bg-gray-50'>
+				<div className='justify-between gap-16 bg-white px-16 pt-12 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<div className='relative h-24 border-t border-t-gray-200'>
 						<ul
 							style={{ top: '-1.2rem' }}
-							className='darkBlue:bg-gray-50 absolute left-0 px-16 flex-items-center *:gap-4 *:truncate *:bg-white *:flex-items-center dark:bg-gray-50'
+							className='absolute left-0 px-16 flex-items-center *:gap-4 *:truncate *:bg-white *:flex-items-center darkBlue:bg-gray-50 *:darkBlue:bg-gray-50 *:dark:bg-gray-50'
 						>
 							<li className='justify-end pl-24 pr-16 font-medium text-gray-700'>
 								{t('build_strategy.aggregate')}:

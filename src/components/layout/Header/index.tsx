@@ -159,7 +159,7 @@ const Header = () => {
 							renderer={({ setOpen }) => (
 								<UserDropdown
 									customerTitle={customerTitle}
-									hasBroker={brokerIsSelected}
+									hasBroker={Boolean(brokerURLs) && brokerIsSelected}
 									resetPassword={resetPassword}
 									loginBroker={loginBroker}
 									logoutBroker={logoutFromBroker}

@@ -83,7 +83,6 @@ const Contract = ({
 		addBuySellModal({
 			side,
 			mode: 'create',
-			symbolType: 'option',
 			symbolISIN,
 			symbolTitle,
 		});

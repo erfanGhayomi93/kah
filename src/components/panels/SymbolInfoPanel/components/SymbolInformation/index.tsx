@@ -59,7 +59,6 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 			type: 'order',
 			symbolISIN,
 			symbolTitle,
-			symbolType: isOption ? 'option' : 'base',
 			side,
 		});
 	};

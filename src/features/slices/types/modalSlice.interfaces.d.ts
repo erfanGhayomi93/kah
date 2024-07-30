@@ -124,7 +124,6 @@ export interface IBuySellModal extends IBaseModalConfiguration {
 	switchable?: boolean;
 	symbolTitle: string;
 	symbolISIN: string;
-	symbolType: TBsSymbolTypes;
 	side: TBsSides;
 	type?: TBsTypes;
 	collateral?: TBsCollaterals;

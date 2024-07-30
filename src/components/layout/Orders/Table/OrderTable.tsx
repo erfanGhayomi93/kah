@@ -65,7 +65,6 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 
 		addBuySellModal({
 			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
-			symbolType: 'base',
 			mode: 'create',
 			symbolISIN: order.symbolISIN,
 			symbolTitle: order.symbolTitle,
@@ -123,7 +122,6 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 		addBuySellModal({
 			id: Number(orderId),
 			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
-			symbolType: 'base',
 			type: 'order',
 			mode: 'edit',
 			symbolISIN: order.symbolISIN,

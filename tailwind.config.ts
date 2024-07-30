@@ -881,6 +881,10 @@ const config: Config = {
 					'.btn-hover': {
 						'background-color': theme('colors.secondary.200'),
 					},
+
+					'.gray-box': {
+						'background-color': theme('colors.secondary.500'),
+					},
 				},
 			});
 

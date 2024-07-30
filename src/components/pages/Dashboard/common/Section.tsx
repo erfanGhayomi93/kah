@@ -119,8 +119,9 @@ const Section = <T extends string = string, B extends string = string>({
 			</div>
 
 			<RenderOnViewportEntry
+				threshold={0.12}
 				className={clsx(
-					'relative h-full flex-1 overflow-hidden pl-8 pt-16',
+					'relative z-10 h-full flex-1 overflow-hidden pl-8 pt-16',
 					isModal && 'flex flex-col items-center justify-center',
 				)}
 			>

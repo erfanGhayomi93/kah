@@ -139,7 +139,7 @@ const ContractsTable = ({
 			{
 				groupId: 'strike',
 				headerName: '',
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50 !border-b-0',
+				headerClass: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 				children: [
 					{
 						headerName: 'اعمال',
@@ -280,13 +280,13 @@ const ContractsTable = ({
 			/>
 
 			{!isFetching && (!settlementDay || modifiedData.length === 0) && (
-				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
+				<div className='absolute left-0 top-0 size-full bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<NoData />
 				</div>
 			)}
 
 			{(isFetching || isFetchingInitialContracts) && (
-				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
+				<div className='absolute left-0 top-0 size-full bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<Loading />
 				</div>
 			)}

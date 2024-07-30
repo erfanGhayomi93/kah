@@ -1,4 +1,5 @@
 import brokerAxios from '@/api/brokerAxios';
+import { toISOStringWithoutChangeTime } from '@/utils/helpers';
 import ipcMain from '../IpcMain';
 
 type TOrderState = 'QUEUE' | 'SENDING' | 'SENT' | 'INITIAL';
@@ -51,9 +52,17 @@ class Order {
 				}
 
 				const params: Partial<IOFields> = { ...this._fields };
-				if (params.validityDate === undefined || params.validityDate <= 0) delete params.validityDate;
 
-				const response = await brokerAxios.post<ServerResponse<Order.Response>>(this._url, params);
+				if (params.validityDate === undefined || params.validityDate <= 0) {
+					delete params.validityDate;
+				}
+
+				const response = await brokerAxios.post<ServerResponse<Order.Response>>(this._url, {
+					...params,
+					validityDate: params?.validityDate
+						? toISOStringWithoutChangeTime(new Date(params.validityDate))
+						: undefined,
+				});
 				const { data } = response;
 
 				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
