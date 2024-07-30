@@ -205,7 +205,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 			const c = contracts[i];
 			const commission = commissions?.[c.marketUnit];
 
-			if (c.requiredMargin) result.requiredMargin += c.symbol?.requiredMargin ?? 0;
+			if (c.requiredMargin && c.side === 'sell') result.requiredMargin += c.symbol?.requiredMargin ?? 0;
 			if (commission && c.tradeCommission)
 				result.tradeCommission += Math.round(
 					c.price *
