@@ -55,7 +55,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 
 			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
 
-			if (props.dueDays && (props.dueDays[0] || props.dueDays[1])) {
+			if (props.dueDays) {
 				params.FromDueDays = String(Math.min(props.dueDays[0], props.dueDays[1]));
 				params.ToDueDays = String(Math.max(props.dueDays[0], props.dueDays[1]));
 			}
@@ -138,7 +138,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				{!dataIsEmpty && !isLoading && watchlistId > -1 && (
 					<button
 						onClick={addSymbol}
-						className='border-t-gray-200 text-primary-100 min-h-48 gap-8 border-t pr-24 font-medium flex-items-center'
+						className='min-h-48 gap-8 border-t border-t-gray-200 pr-24 font-medium text-primary-100 flex-items-center'
 						type='button'
 					>
 						<span className='size-16 rounded-sm text-current flex-justify-center'>

@@ -575,7 +575,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					valueFormatter: ({ value }) => toFixed(value, 4),
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
-				{
+				/* {
 					colId: 'growth',
 					headerName: t('option_page.growth'),
 					minWidth: 96,
@@ -583,16 +583,16 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					valueGetter: ({ data }) => data?.optionWatchlistData.growth ?? 0,
 					valueFormatter: ({ value }) => sepNumbers(String(value)),
 					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
+				}, */
+				/* {
 					colId: 'contractValueType',
 					headerName: t('option_page.contract_value_type'),
 					minWidth: 96,
 					initialHide: Boolean(modifiedWatchlistColumns?.contractValueType?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.contractValueType ?? 'LIQ',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
-				},
-				{
+				}, */
+				/* {
 					colId: 'highOpenPosition',
 					headerName: t('option_page.high_open_position'),
 					minWidth: 136,
@@ -600,7 +600,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					valueGetter: ({ data }) => data?.optionWatchlistData.highOpenPosition ?? 0,
 					valueFormatter: ({ value }) => sepNumbers(String(value)),
 					comparator: (valueA, valueB) => valueA - valueB,
-				},
+				}, */
 				{
 					colId: 'lastTradeDate',
 					headerName: t('option_page.last_trade_date'),

@@ -288,6 +288,11 @@ const RowCell = <K,>({ column, row, rowIndex }: RowCellProps<K>) => {
 			key={column.colId}
 			onClick={(e) => column.onCellClick?.(row, e)}
 			className={clsx(styles.td, column.cellClass)}
+			style={{
+				minWidth: column.minWidth ? `${column.minWidth}px` : undefined,
+				maxWidth: column.maxWidth ? `${column.maxWidth}px` : undefined,
+				width: column.width ? `${column.width}px` : '64px',
+			}}
 		>
 			{getFormattedValue()}
 		</td>
