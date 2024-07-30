@@ -53,10 +53,10 @@ const ValidityDate = ({ value, onChange }: ValidityDateProps) => {
 					onClick={() => setShowValidityDates(!showValidityDates)}
 					className='h-48 cursor-pointer select-none gap-8 px-8 flex-justify-between gray-box'
 				>
-					<span className='text-gray-700 whitespace-nowrap text-base'>{t('bs_modal.validity_date')}</span>
+					<span className='whitespace-nowrap text-base text-gray-700'>{t('bs_modal.validity_date')}</span>
 
-					<span className='text-primary-100 gap-8 text-tiny flex-items-center'>
-						<span className='border-primary-100 bg-secondary-200 text-primary-100 h-24 rounded border px-8 flex-items-center'>
+					<span className='gap-8 text-tiny text-primary-100 flex-items-center'>
+						<span className='h-24 rounded border border-primary-100 bg-secondary-200 px-8 text-primary-100 flex-items-center'>
 							{validityDateTitle}
 						</span>
 						<span className='text-gray-700'>

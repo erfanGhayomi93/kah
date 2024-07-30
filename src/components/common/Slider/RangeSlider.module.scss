@@ -69,5 +69,20 @@
 }
 
 .tooltipBox {
-	fill: currentColor;
+	fill: rgba(28, 30, 38, 1);
+}
+
+html[data-theme="darkBlue"],
+html[data-theme="dark"] {
+	.circle {
+		color: theme("colors.gray.50");
+
+		&.activeCircle {
+			color: theme("colors.primary.100");
+		}
+
+		.tooltipBox {
+			fill: theme("colors.secondary.400");
+		}
+	}
 }

@@ -233,7 +233,7 @@ const Grid = ({
 		<div style={{ flex: '0 0 calc(50% - 0.4rem)', gap: rowSpacing }} className='overflow-hidden flex-column'>
 			<div
 				className={cn(
-					'*:text-gray-700 flex-justify-between *:text-base',
+					'flex-justify-between *:text-base *:text-gray-700',
 					side === 'sell' && 'flex-row-reverse',
 				)}
 			>
@@ -293,7 +293,7 @@ const Row = ({
 		<div
 			style={{ height: `${rowHeight}px` }}
 			className={clsx(
-				'*:text-gray-700 relative flex-justify-between *:text-base',
+				'relative flex-justify-between *:text-base *:text-gray-700',
 				side === 'sell' && 'flex-row-reverse',
 				disabled && 'cursor-default opacity-50',
 			)}
@@ -301,7 +301,7 @@ const Row = ({
 			<div
 				onCopy={(e) => copyNumberToClipboard(e, count)}
 				style={{ flex: '0 0 30%', maxWidth: '7.2rem' }}
-				className='relative z-10 whitespace-nowrap text-center'
+				className='whitespace-nowrap text-center'
 			>
 				{sepNumbers(String(count))}
 			</div>
@@ -310,7 +310,7 @@ const Row = ({
 				onClick={() => onQuantityClick?.(quantity)}
 				onCopy={(e) => copyNumberToClipboard(e, quantity)}
 				className={clsx(
-					'relative z-10 whitespace-nowrap text-center',
+					'whitespace-nowrap text-center',
 					typeof onQuantityClick === 'function' && 'cursor-pointer',
 				)}
 			>
@@ -322,7 +322,7 @@ const Row = ({
 					onClick={() => onPriceClick?.(price)}
 					onCopy={(e) => copyNumberToClipboard(e, price)}
 					className={clsx(
-						'relative z-10 whitespace-nowrap',
+						'whitespace-nowrap',
 						side === 'sell' ? 'pr-8 text-right' : 'pl-8 text-left',
 						typeof onPriceClick === 'function' && 'cursor-pointer',
 					)}
@@ -336,7 +336,7 @@ const Row = ({
 					style={{ width: `${Math.min(percent, 100)}%`, height: `${rowHeight - 4}px` }}
 					className={clsx(
 						'pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-sm',
-						side === 'buy' ? 'bg-success-100/10 left-0' : 'bg-error-100/10 right-0',
+						side === 'buy' ? 'left-0 bg-success-100/10' : 'right-0 bg-error-100/10',
 					)}
 				/>
 			)}

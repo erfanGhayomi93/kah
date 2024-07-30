@@ -32,7 +32,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 	const onClosePosition = (order: Order.OptionOrder) => {
 		addBuySellModal({
 			side: order.side === 'Buy' ? 'sell' : 'buy',
-			symbolType: 'option',
 			type: 'order',
 			mode: 'create',
 			symbolISIN: order.symbolISIN,

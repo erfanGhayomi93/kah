@@ -9,7 +9,8 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
 import { Link } from '@/navigation';
-import { sepNumbers } from '@/utils/helpers';
+import { getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import SymbolSearchToggler from './SymbolSearchToggler';
@@ -58,7 +59,6 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 			type: 'order',
 			symbolISIN,
 			symbolTitle,
-			symbolType: isOption ? 'option' : 'base',
 			side,
 		});
 	};
@@ -79,7 +79,7 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 			: `/saturn?contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`;
 
 	return (
-		<div className='darkBlue:bg-gray-50 gap-8 overflow-hidden rounded bg-white px-8 py-16 flex-column dark:bg-gray-50'>
+		<div className='gap-8 overflow-hidden rounded bg-white px-8 py-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<div className='flex items-start justify-between'>
 				<SymbolSearchToggler symbolData={symbolData} />
 
@@ -103,7 +103,12 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 						{t('symbol_info_panel.last_traded_price')}:
 					</span>
 
-					<div className='text-base font-medium text-gray-800 ltr'>
+					<div
+						className={clsx(
+							'text-base font-medium ltr',
+							getColorBasedOnPercent(tradePriceVarPreviousTradePercent ?? 0),
+						)}
+					>
 						<span> {sepNumbers(String(lastTradedPrice ?? 0))} </span>
 						<span>({sepNumbers(String(tradePriceVarPreviousTradePercent ?? 0))}%)</span>
 					</div>
@@ -114,7 +119,12 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 						{t('symbol_info_panel.closing_price')}:
 					</span>
 
-					<div className='text-tiny font-medium text-gray-800 ltr'>
+					<div
+						className={clsx(
+							'text-tiny font-medium ltr',
+							getColorBasedOnPercent(closingPriceVarReferencePricePercent ?? 0),
+						)}
+					>
 						<span>{sepNumbers(String(closingPrice ?? 0))} </span>
 						<span>({sepNumbers(String(closingPriceVarReferencePricePercent ?? 0))}%)</span>
 					</div>

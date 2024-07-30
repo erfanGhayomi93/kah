@@ -4,13 +4,12 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useSubscription } from '@/hooks';
-import useStateWithRef from '@/hooks/useStateRef';
 import { getColorBasedOnPercent, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import NoData from '../../../../common/NoData';
 import Loading from '../../common/Loading';
 
@@ -27,27 +26,28 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 
 	const { subscribe } = useSubscription();
 
-	const { data, isLoading } = useSameSectorSymbolsQuery({
+	const { data = [], isLoading } = useSameSectorSymbolsQuery({
 		queryKey: ['sameSectorSymbolsQuery', symbolISIN],
 	});
 
-	const visualData = useStateWithRef(JSON.parse(JSON.stringify(data ?? [])) as Symbol.SameSector[]);
+	const dataRef = useRef<Symbol.SameSector[]>(data);
 
 	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
-		const symbolISIN: string = updateInfo.getItemName();
-		const symbolIndex = visualData.findIndex((item) => item.symbolISIN === symbolISIN);
+		const visualData = JSON.parse(JSON.stringify(dataRef.current)) as Symbol.SameSector[];
+		const isin: string = updateInfo.getItemName();
+		const symbolIndex = visualData.findIndex((item) => item.symbolISIN === isin);
 
 		if (symbolIndex === -1) return;
 
+		const symbol = visualData[symbolIndex];
+
 		updateInfo.forEachChangedField((fieldName, _b, value) => {
 			try {
-				const symbol = visualData[symbolIndex];
-
 				if (value !== null && fieldName in symbol) {
 					const valueAsNumber = Number(value);
 
 					// @ts-expect-error: Lightstream returns the wrong data type
-					visualData[symbolIndex] = isNaN(valueAsNumber) ? value : valueAsNumber;
+					visualData[symbolIndex][fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
 				}
 			} catch (e) {
 				//
@@ -128,10 +128,10 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 				),
 				valueFormatter: ({ row }) => (
 					<div className='flex size-full flex-col items-center justify-center gap-4 overflow-hidden'>
-						<span className='text-success-100 text-tiny leading-normal ltr'>
+						<span className='text-tiny leading-normal text-success-100 ltr'>
 							{sepNumbers(String(row?.bestBuyLimitPrice_1 ?? 0))}
 						</span>
-						<span className='text-error-100 text-tiny leading-normal ltr'>
+						<span className='text-tiny leading-normal text-error-100 ltr'>
 							{sepNumbers(String(row?.bestSellLimitPrice_1 ?? 0))}
 						</span>
 					</div>
@@ -141,14 +141,9 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 		[],
 	);
 
-	const symbolsISIN = useMemo(() => {
-		if (!data) return [];
-		return data.map((item) => item.symbolISIN);
-	}, [data]);
+	const symbolsISIN = useMemo(() => data.map((item) => item.symbolISIN), [data]);
 
 	useEffect(() => {
-		if (!data) return;
-
 		const sub = lightStreamInstance.subscribe({
 			mode: 'MERGE',
 			items: symbolsISIN,
@@ -164,16 +159,18 @@ const Symbols = ({ symbolISIN }: SymbolsProps) => {
 		});
 
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
-		sub.start();
-
 		subscribe(sub);
-	}, [symbolsISIN.join(',')]);
+	}, [symbolISIN, symbolsISIN.join(',')]);
+
+	useEffect(() => {
+		dataRef.current = data;
+	}, [data]);
 
 	if (isLoading) return <Loading />;
 
 	if (!Array.isArray(data) || data.length === 0) return <NoData />;
 
-	return <LightweightTable reverseColors columnDefs={COLUMNS} rowData={data ?? []} />;
+	return <LightweightTable columnDefs={COLUMNS} rowData={data} />;
 };
 
 export default Symbols;

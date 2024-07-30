@@ -128,7 +128,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 					},
 
 					{
-						headerName: 'ارزش',
+						headerName: 'ارزش روز',
 						colId: 'tradeValue-buy',
 						width: 120,
 						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.tradeValue)),
@@ -181,7 +181,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			{
 				groupId: 'strike',
 				headerName: '',
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50 !border-b-0',
+				headerClass: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 				children: [
 					{
 						headerName: 'اعمال',
@@ -255,7 +255,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 					},
 
 					{
-						headerName: 'ارزش',
+						headerName: 'ارزش روز',
 						colId: 'tradeValue-sell',
 						width: 120,
 						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.tradeValue)),
@@ -369,13 +369,13 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			/>
 
 			{isLoading && (
-				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
+				<div className='absolute left-0 top-0 size-full bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<Loading />
 				</div>
 			)}
 
 			{!isLoading && (!Array.isArray(watchlistData) || watchlistData.length === 0) && (
-				<div className='darkBlue:bg-gray-50 absolute left-0 top-0 size-full bg-white dark:bg-gray-50'>
+				<div className='absolute left-0 top-0 size-full bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<NoData />
 				</div>
 			)}

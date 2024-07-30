@@ -76,7 +76,6 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 		addBuySellModal({
 			id: order.id,
 			side: order.side === 'Buy' ? 'buy' : 'sell',
-			symbolType: 'base',
 			type: 'draft',
 			mode: 'edit',
 			symbolISIN: order.symbolISIN,
@@ -91,7 +90,6 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 	const onCopy = (order: Order.DraftOrder) => {
 		addBuySellModal({
 			side: order.side === 'Buy' ? 'buy' : 'sell',
-			symbolType: 'base',
 			mode: 'create',
 			symbolISIN: order.symbolISIN,
 			symbolTitle: order.symbolTitle,

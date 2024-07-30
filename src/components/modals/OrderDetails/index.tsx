@@ -85,7 +85,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 		const side = (type === 'order' ? data.orderSide : data.side).toLowerCase();
 		const isBuy = side === 'buy';
 
-		if (type === 'order')
+		if (type === 'order') {
 			return [
 				[
 					{
@@ -104,8 +104,8 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 						name: t('order_details_modal.quantity_and_executed_orders'),
 						value: (
 							<>
-								<span className='pl-4 font-medium'>{`(${sepNumbers(String(sumExecuted))}) / ${sepNumbers(String(quantity))}`}</span>
 								<span className='text-tiny text-gray-700'>{t('order_details_modal.stock')}</span>
+								<span className='font-medium'>{`(${sepNumbers(String(sumExecuted))}) / ${sepNumbers(String(quantity))}`}</span>
 							</>
 						),
 					},
@@ -113,10 +113,10 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 						name: t('order_details_modal.remain'),
 						value: (
 							<>
-								<span className='pl-4 font-medium'>
+								<span className='text-tiny text-gray-700'>{t('order_details_modal.stock')}</span>
+								<span className='font-medium'>
 									{sepNumbers(String(Math.max(0, quantity - sumExecuted)))}
 								</span>
-								<span className='text-tiny text-gray-700'>{t('order_details_modal.stock')}</span>
 							</>
 						),
 					},
@@ -125,17 +125,14 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{ name: t('order_details_modal.price'), value: numFormatter(price) },
 					{ name: t('order_details_modal.amount'), value: numFormatter(amount) },
 					{
-						name: t('order_details_modal.commission'),
-						value: numFormatter(amount - price * quantity),
-					},
-					{
 						name: t('order_details_modal.validity'),
 						value: <span className='pl-4 font-medium'>{validityDate()}</span>,
 					},
 				],
 			];
+		}
 
-		if (type === 'base')
+		if (type === 'base') {
 			return [
 				[
 					{
@@ -151,6 +148,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{ name: t('order_details_modal.quantity'), value: numFormatter(data.quantity) },
 				],
 			];
+		}
 
 		return [
 			[
@@ -220,11 +218,18 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{list.map((items, i) => (
 						<ul
 							key={i}
-							className='darkBlue:bg-gray-50 gap-24 rounded bg-white px-8 py-16 text-base shadow-card ltr flex-column *:flex-justify-between dark:bg-gray-50'
+							className='gap-24 rounded bg-white px-8 py-16 text-base shadow-card ltr flex-column *:flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
 						>
 							{items.map((item, j) => (
 								<li key={j}>
-									<span className={clsx('text-base font-medium', item.className)}>{item.value}</span>
+									<div
+										className={clsx(
+											'gap-4 text-base font-medium flex-items-center',
+											item.className,
+										)}
+									>
+										{item.value}
+									</div>
 									<span className='text-gray-700'>:{item.name}</span>
 								</li>
 							))}

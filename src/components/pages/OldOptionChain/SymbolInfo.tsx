@@ -27,8 +27,8 @@ interface SymbolInfoProps {
 
 const ListItem = ({ title, valueFormatter }: Item) => (
 	<div className='w-1/2 px-8 flex-justify-between'>
-		<span className='text-gray-700 whitespace-nowrap text-base'>{title}</span>
-		<span className='text-gray-800 text-base font-medium ltr'>
+		<span className='whitespace-nowrap text-base text-gray-700'>{title}</span>
+		<span className='text-base font-medium text-gray-800 ltr'>
 			{typeof valueFormatter === 'function' ? valueFormatter() : valueFormatter}
 		</span>
 	</div>
@@ -55,7 +55,6 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 		addBuySellModal({
 			side,
 			mode: 'create',
-			symbolType: 'base',
 			symbolISIN,
 			symbolTitle,
 		});
@@ -186,7 +185,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 
 	if (!symbolData || typeof symbolData !== 'object')
 		return (
-			<span className='text-gray-700 absolute text-base font-medium center'>
+			<span className='absolute text-base font-medium text-gray-700 center'>
 				{t('old_option_chain.no_data_found')}
 			</span>
 		);
@@ -206,7 +205,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 				<div className='justify-between pl-16 pr-24 flex-items-center'>
 					<div style={{ gap: '1rem' }} className='flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='text-gray-800 text-3xl font-medium'>{symbolTitle}</h1>
+						<h1 className='text-3xl font-medium text-gray-800'>{symbolTitle}</h1>
 					</div>
 
 					<div className='gap-8 flex-items-center'>
@@ -234,16 +233,16 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 							)}
 						>
 							{sepNumbers(String(lastTradedPrice ?? 0))}
-							<span className='text-gray-700 text-base font-normal'>{t('common.rial')}</span>
+							<span className='text-base font-normal text-gray-700'>{t('common.rial')}</span>
 						</span>
 
-						<button type='button' className='text-gray-800 size-24'>
+						<button type='button' className='size-24 text-gray-800'>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>
 					</div>
 				</div>
 
-				<h4 className='text-gray-800 whitespace-nowrap pr-44 text-tiny'>{companyName}</h4>
+				<h4 className='whitespace-nowrap pr-44 text-tiny text-gray-800'>{companyName}</h4>
 			</div>
 
 			<div className='gap-16 px-24 pb-48 pt-32 flex-justify-between'>

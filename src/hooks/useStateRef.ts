@@ -7,7 +7,7 @@ const useStateWithRef = <T>(state: T) => {
 		stateRef.current = state;
 	}, [state]);
 
-	return stateRef.current;
+	return stateRef;
 };
 
 export default useStateWithRef;

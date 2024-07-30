@@ -143,7 +143,7 @@ const Header = () => {
 	return (
 		<header
 			style={{ zIndex: 99 }}
-			className='darkBlue:bg-gray-50 sticky top-0 z-10 h-48 border-b border-b-gray-200 bg-white px-16 flex-justify-between dark:bg-gray-50'
+			className='sticky top-0 z-10 h-48 bg-white px-16 flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
 		>
 			<div className='flex-1 gap-32 flex-justify-start'>
 				<div className='gap-16 flex-items-center'>
@@ -159,7 +159,7 @@ const Header = () => {
 							renderer={({ setOpen }) => (
 								<UserDropdown
 									customerTitle={customerTitle}
-									hasBroker={brokerIsSelected}
+									hasBroker={Boolean(brokerURLs) && brokerIsSelected}
 									resetPassword={resetPassword}
 									loginBroker={loginBroker}
 									logoutBroker={logoutFromBroker}
@@ -193,7 +193,7 @@ const Header = () => {
 							className='h-32 gap-8 rounded px-16 font-medium btn-primary'
 						>
 							{t('header.login')}
-							<span className='darkBlue:bg-gray-50 h-12 w-2 rounded bg-white dark:bg-gray-50' />
+							<span className='h-12 w-2 rounded bg-white darkBlue:bg-gray-50 dark:bg-gray-50' />
 							{t('header.register')}
 						</button>
 					)}

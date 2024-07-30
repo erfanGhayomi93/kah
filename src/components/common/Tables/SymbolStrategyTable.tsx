@@ -453,7 +453,7 @@ const SymbolStrategy = ({
 					type='text'
 					name='price'
 					inputMode='numeric'
-					className='border-gray-200 h-40 w-full rounded border px-8 text-center ltr'
+					className='h-40 w-full rounded border border-gray-200 px-8 text-center ltr'
 					value={sepNumbers(String(inputs.price))}
 					onChange={(e) => setFieldValue('price', Number(convertStringToInteger(e.target.value)))}
 				/>
@@ -466,7 +466,7 @@ const SymbolStrategy = ({
 					type='text'
 					name='quantity'
 					inputMode='numeric'
-					className='border-gray-200 h-40 w-full rounded border px-8 text-center ltr'
+					className='h-40 w-full rounded border border-gray-200 px-8 text-center ltr'
 					value={sepNumbers(String(inputs.quantity))}
 					onChange={(e) => setFieldValue('quantity', Number(convertStringToInteger(e.target.value)))}
 				/>

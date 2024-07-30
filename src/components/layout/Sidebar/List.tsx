@@ -68,14 +68,14 @@ const List = ({ sidebarIsExpand, expandId, setExpandId }: ListProps) => {
 							label: t('sidebar.watchlist'),
 							to: '/watchlist',
 						},
-						{
+						/* {
 							id: 'option_chain',
 							label: t('sidebar.option_chain') + ' 1',
 							to: '/option-chain-old',
-						},
+						}, */
 						{
 							id: 'option_chain',
-							label: t('sidebar.option_chain') + ' 2',
+							label: t('sidebar.option_chain'),
 							to: '/option-chain',
 						},
 						{

@@ -18,17 +18,25 @@ const SymbolList = ({ data, isFetching, selectedSymbolsLength, isSymbolSelected,
 	const t = useTranslations('option_watchlist_filters_modal');
 
 	if (isFetching) {
-		return <span className='text-gray-700 absolute text-base font-medium center'>{t('loading')}</span>;
+		return (
+			<div className='flex-1 flex-justify-center'>
+				<span className='text-base font-medium text-gray-700'>{t('loading')}</span>
+			</div>
+		);
 	}
 
 	if (data.length === 0) {
-		return <span className='text-gray-700 absolute text-base font-medium center'>{t('symbol_not_found')}</span>;
+		return (
+			<div className='flex-1 flex-justify-center'>
+				<span className='text-base font-medium text-gray-700'>{t('symbol_not_found')}</span>
+			</div>
+		);
 	}
 
 	return (
 		<ul
 			className={clsx(
-				'w-full overflow-auto pt-16 flex-column *:flex-48 *:flex-justify-start',
+				'w-full flex-1 overflow-auto pt-16 flex-column *:flex-48 *:flex-justify-start',
 				!selectedSymbolsLength ? 'pt-8' : 'pt-16',
 			)}
 		>

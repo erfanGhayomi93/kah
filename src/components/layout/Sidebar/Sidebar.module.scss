@@ -1,4 +1,4 @@
-$nav-color: rgb(28, 48, 85);
+$nav-color: var(--c-secondary-400);
 
 .list {
 	display: flex;
@@ -87,7 +87,7 @@ $nav-color: rgb(28, 48, 85);
 					border-radius: 50%;
 					width: 1rem;
 					height: 1rem;
-					background-color: $nav-color;
+					background-color: rgb($nav-color / 1);
 				}
 
 				button,
@@ -105,7 +105,7 @@ $nav-color: rgb(28, 48, 85);
 				top: 0.8rem;
 				height: calc(100% - 1.6rem);
 				right: 2.2rem;
-				background-color: $nav-color;
+				background-color: rgb($nav-color / 1);
 				border-radius: 2px;
 			}
 		}
@@ -125,7 +125,7 @@ $nav-color: rgb(28, 48, 85);
 			background-color: rgba(22, 36, 61, 0.44);
 
 			& > button {
-				border-bottom: 1px solid rgba($nav-color, 0.35);
+				border-bottom: 1px solid rgb($nav-color / 0.35);
 
 				span,
 				svg {
@@ -163,6 +163,31 @@ $nav-color: rgb(28, 48, 85);
 
 			&::before {
 				background-color: theme("colors.info.100") !important;
+			}
+		}
+	}
+}
+
+html[data-theme="darkBlue"],
+html[data-theme="dark"] {
+	.list {
+		&.expand {
+			& > li.expand {
+				background-color: theme("colors.secondary.100");
+			}
+		}
+
+		li.active {
+			& > a,
+			& > button {
+				span,
+				svg {
+					color: theme("colors.white") !important;
+				}
+
+				&::before {
+					background-color: theme("colors.white") !important;
+				}
 			}
 		}
 	}

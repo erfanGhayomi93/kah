@@ -148,6 +148,7 @@
 .ag-header-cell {
 	&.strike-price {
 		border-bottom: 1px solid theme("colors.gray.200");
+
 		&,
 		&:hover {
 			background-color: theme("colors.white") !important;
@@ -257,4 +258,45 @@
 .ag-horizontal-left-spacer,
 .ag-horizontal-right-spacer {
 	--scrollbar-track: transparent;
+}
+
+.ag-header-group-cell {
+	border-bottom: 1px solid theme("colors.gray.200");
+}
+
+html[data-theme="darkBlue"],
+html[data-theme="dark"] {
+	.ag-header-cell {
+		&.strike-price {
+			&,
+			&:hover {
+				background-color: theme("colors.gray.50") !important;
+			}
+		}
+	}
+
+	.ag-row {
+		.ag-cell {
+			&.strike-price {
+				background-color: theme("colors.gray.50");
+				box-shadow:
+					0 -6px theme("colors.gray.50"),
+					0 6px theme("colors.gray.50"),
+					0 0 6px 0 rgba(0, 0, 0, 0.075);
+			}
+		}
+
+		&:last-child {
+			.ag-cell.strike-price {
+				box-shadow:
+					0 -6px theme("colors.gray.50"),
+					0 0 6px 0 rgba(0, 0, 0, 0.075),
+					0 0 6px 0 rgba(0, 0, 0, 0.075);
+			}
+		}
+	}
+
+	.ag-header-group-cell {
+		border-bottom-color: theme("colors.gray.200");
+	}
 }

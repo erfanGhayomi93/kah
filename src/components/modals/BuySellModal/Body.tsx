@@ -6,6 +6,7 @@ import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
+import { useBrokerQueryClient } from '@/hooks';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { dateConverter } from '@/utils/helpers';
 import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
@@ -49,6 +50,8 @@ const Body = (props: BodyProps) => {
 	const [submitting, setSubmitting] = useState(false);
 
 	const brokerUrls = useAppSelector(getBrokerURLs);
+
+	const queryClient = useBrokerQueryClient();
 
 	const dispatch = useAppDispatch();
 
@@ -115,6 +118,23 @@ const Body = (props: BodyProps) => {
 		if (props.mode === 'edit' && props.type === 'draft') editDraft();
 	};
 
+	const onOrderSentSuccessfully = () => {
+		setSubmitting(false);
+
+		if (!props.holdAfterOrder) {
+			props.close();
+			dispatch(setOrdersIsExpand(true));
+			LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'today_orders', true);
+		}
+	};
+
+	const refetchOrdersCount = () => {
+		queryClient.refetchQueries({
+			queryKey: ['brokerOrdersCountQuery'],
+			exact: true,
+		});
+	};
+
 	const sendOrder = async () => {
 		try {
 			if (!brokerUrls) return;
@@ -132,38 +152,17 @@ const Body = (props: BodyProps) => {
 			};
 
 			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
-			else if (params.validity === 'Month' || params.validity === 'Week')
+			else if (params.validity === 'Month' || params.validity === 'Week') {
 				params.validityDate = dateConverter(params.validity);
+			}
 
 			const uuid = await createOrder(params);
 
 			if (uuid) addNewHandler(uuid);
 			else onOrderSentSuccessfully();
 		} catch (e) {
-			onOrderSentFailed();
+			setSubmitting(false);
 		}
-	};
-
-	const onOrderSentSuccessfully = () => {
-		setSubmitting(false);
-
-		toast.success(t('alerts.order_successfully_created'), {
-			toastId: 'order_successfully_created',
-		});
-
-		if (!props.holdAfterOrder) {
-			props.close();
-			dispatch(setOrdersIsExpand(true));
-			LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'today_orders', true);
-		}
-	};
-
-	const onOrderSentFailed = () => {
-		setSubmitting(false);
-
-		toast.error(t('alerts.order_unsuccessfully_created'), {
-			toastId: 'order_unsuccessfully_created',
-		});
 	};
 
 	const sendDraft = async () => {
@@ -185,6 +184,8 @@ const Body = (props: BodyProps) => {
 				params.validityDate = dateConverter(params.validity);
 
 			await createDraft(params);
+
+			refetchOrdersCount();
 			toast.success(t('alerts.draft_successfully_created'), {
 				toastId: 'draft_successfully_created',
 			});
@@ -192,6 +193,7 @@ const Body = (props: BodyProps) => {
 			if (!holdAfterOrder) {
 				close();
 				dispatch(setOrdersIsExpand(true));
+
 				LocalstorageInstance.set('ot', 'draft', true);
 			}
 		} catch (e) {
@@ -264,6 +266,7 @@ const Body = (props: BodyProps) => {
 			if (!holdAfterOrder) {
 				close();
 				dispatch(setOrdersIsExpand(true));
+
 				LocalstorageInstance.set('ot', 'draft', true);
 			}
 		} catch (error) {

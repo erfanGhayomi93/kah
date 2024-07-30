@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
 import { refetchActiveOrderTab } from '@/utils/orders';
 import { subscribePrivateGateWay } from '@/utils/subscriptions';
 import { toast } from 'react-toastify';
@@ -10,6 +11,17 @@ class Subscription {
 	private _brokerCode: null | string = null;
 
 	private _customerISIN: null | string = null;
+
+	private _orderStatus: Record<string, string> = {};
+
+	private _orderErrors: Record<string, string> = {};
+
+	constructor() {
+		import('../../../languages/fa.json').then((m) => {
+			this._orderStatus = m.default.order_status;
+			this._orderErrors = m.default.order_errors;
+		});
+	}
 
 	setBrokerCode(v: string) {
 		this._brokerCode = v;
@@ -84,19 +96,28 @@ class Subscription {
 		const messageType: 'success' | 'error' = orderStatus === 'Error' ? 'error' : 'success';
 		let messageText = orderMessage ?? '';
 
-		if (!orderMessage) {
-			const orderStatusMessage = orderStatus;
-			const orderErrorMessage = orderMessageType ? `: ${orderMessageType}` : '';
+		const orderStatusMessage = this._orderStatus?.[orderStatus] ?? orderStatus;
+		const orderErrorMessage = this._orderErrors?.[orderMessageType] ?? orderMessageType;
 
+		if (!orderMessage) {
 			if (['OnBoard', 'Canceled'].includes(orderStatus)) messageText = orderStatusMessage;
-			else messageText = orderStatusMessage + orderErrorMessage;
+			else messageText = orderStatusMessage + `: ${orderErrorMessage}`;
 		}
 
 		refetchActiveOrderTab();
 
 		toast[messageType](messageText, {
 			autoClose: 3500,
+			toastId: orderStatus,
 		});
+
+		try {
+			brokerQueryClient!.refetchQueries({
+				queryKey: ['brokerOrdersCountQuery'],
+			});
+		} catch (e) {
+			//
+		}
 	}
 
 	private _AdminMessage(message: Record<number, string>) {

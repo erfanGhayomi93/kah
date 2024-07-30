@@ -83,7 +83,6 @@ const Contract = ({
 		addBuySellModal({
 			side,
 			mode: 'create',
-			symbolType: 'option',
 			symbolISIN,
 			symbolTitle,
 		});
@@ -288,7 +287,7 @@ const Wrapper = ({ children }: WrapperProps) => (
 		style={{
 			flex: '1 0 39.2rem',
 		}}
-		className='darkBlue:bg-gray-50 relative gap-16 rounded border border-gray-200 bg-white px-16 py-12 flex-column dark:bg-gray-50'
+		className='relative gap-16 rounded bg-white px-16 py-12 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 	>
 		{children}
 	</div>

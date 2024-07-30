@@ -54,7 +54,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 	return (
 		<div
 			style={{ height: isExpand ? '100%' : '4rem' }}
-			className='darkBlue:bg-gray-50 size-full overflow-hidden rounded bg-white transition-height flex-column dark:bg-gray-50'
+			className='size-full overflow-hidden rounded bg-white transition-height flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 		>
 			<div
 				onClick={() => setIsExpand(true)}
@@ -72,7 +72,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 									'relative h-40 w-full rounded-t text-base transition-colors flex-justify-center',
 									tabs.length <= 2 ? 'px-16' : 'px-8',
 									isExpand && tab.id === activeTab
-										? 'darkBlue:bg-gray-50 bg-white font-medium text-gray-700 dark:bg-gray-50'
+										? 'bg-white font-medium text-gray-700 darkBlue:bg-gray-50 dark:bg-gray-50'
 										: 'text-gray-500',
 								)}
 							>
@@ -130,7 +130,7 @@ const RoundLeftSVG = (props: React.SVGProps<SVGSVGElement>) => (
 		viewBox='0 0 12 9'
 		fill='none'
 		xmlns='http://www.w3.org/2000/svg'
-		className='absolute bottom-0 text-white'
+		className='absolute bottom-0 text-white darkBlue:text-gray-50 dark:text-gray-50'
 		{...props}
 	>
 		<path d='M0 9C10.8 9 12 3 12 0V9H0Z' fill='currentColor' />
@@ -144,10 +144,10 @@ const RoundRightSVG = (props: React.SVGProps<SVGSVGElement>) => (
 		viewBox='0 0 12 9'
 		fill='none'
 		xmlns='http://www.w3.org/2000/svg'
-		className='absolute bottom-0 text-white'
+		className='absolute bottom-0 text-white darkBlue:text-gray-50 dark:text-gray-50'
 		{...props}
 	>
-		<path d='M12 9C1.2 9 0 3 0 0V9H12Z' fill='white' />
+		<path d='M12 9C1.2 9 0 3 0 0V9H12Z' fill='currentColor' />
 	</svg>
 );
 

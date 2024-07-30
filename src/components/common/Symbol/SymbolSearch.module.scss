@@ -41,20 +41,6 @@
 	width: 100%;
 }
 
-html[data-theme="dark"] {
-	.list,
-	.blankList {
-		background-color: theme("colors.gray.50");
-	}
-}
-
-html[data-theme="darkBlue"] {
-	.list,
-	.blankList {
-		background-color: theme("colors.gray.50");
-	}
-}
-
 .blankList {
 	height: 9.6rem;
 
@@ -110,4 +96,12 @@ html[data-theme="darkBlue"] {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+html[data-theme="dark"],
+html[data-theme="darkBlue"] {
+	.list,
+	.blankList {
+		background-color: theme("colors.gray.50");
+	}
 }

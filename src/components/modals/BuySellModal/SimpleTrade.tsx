@@ -242,9 +242,9 @@ const SimpleTrade = ({
 					)}
 				</div>
 
-				<div className='border-gray-200 w-full gap-16 border-t pt-16 flex-column'>
+				<div className='w-full gap-16 border-t border-gray-200 pt-16 flex-column'>
 					<div className='gap-12 flex-column'>
-						{symbolType === 'option' && side === 'sell' && (
+						{symbolType === 'option' && (
 							<SummaryItem
 								title={t('bs_modal.validity_date') + ':'}
 								value={

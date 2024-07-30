@@ -66,7 +66,7 @@ const OMSRegistry = () => {
 
 		// Publish
 		OMSGateway.publish().start();
-	}, [JSON.stringify(brokerURLs)]);
+	}, [brokerURLs, userInfo]);
 
 	return null;
 };

@@ -36,7 +36,6 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			id,
 			symbolISIN,
 			symbolTitle,
-			symbolType,
 			priceLock,
 			collateral,
 			side,
@@ -184,6 +183,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 			onChangePrice(bestLimitPrice, false);
 		}, [inputs.priceLock, inputs.side, bestLimitData]);
+
+		const symbolType = symbolData?.isOption ? 'option' : 'base';
 
 		return (
 			<Modal

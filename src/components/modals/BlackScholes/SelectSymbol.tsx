@@ -18,12 +18,12 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 
 	const contractEndDateIsSelected = Boolean(inputs.contractEndDate?.contractEndDate);
 
-	const { data: settlementDays, isFetching: isFetchingSettlementDays } = useBaseSettlementDaysQuery({
+	const { data: settlementDays = [], isFetching: isFetchingSettlementDays } = useBaseSettlementDaysQuery({
 		queryKey: ['baseSettlementDaysQuery', inputs.baseSymbol?.symbolISIN ?? null],
 		enabled: basis === 'base' && baseSymbolISINIsSelected,
 	});
 
-	const { data: watchlistData, isLoading: isLoadingWatchlistData } = useWatchlistBySettlementDateQuery({
+	const { data: watchlistData = [], isLoading: isLoadingWatchlistData } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
 			inputs.baseSymbol?.symbolISIN && inputs.contractEndDate?.contractEndDate
@@ -43,7 +43,7 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 	};
 
 	return (
-		<div className='border-b-gray-200 flex gap-8 border-b pb-24'>
+		<div className='flex gap-8 border-b border-b-gray-200 pb-24'>
 			{basis === 'base' && (
 				<>
 					<div className='flex-1'>
@@ -58,7 +58,7 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 
 					<div className='flex-1'>
 						<Select<IBlackScholesModalStates['contractEndDate']>
-							options={settlementDays ?? []}
+							options={settlementDays}
 							defaultValue={inputs.contractEndDate}
 							loading={isFetchingSettlementDays}
 							placeholder={t('black_scholes_modal.contract_end_date')}
@@ -79,7 +79,7 @@ const SelectSymbol = ({ basis, inputs, setInputValue }: SelectSymbolProps) => {
 				basis={basis}
 				isLoading={isLoadingWatchlistData}
 				disabled={!inputs.baseSymbol || !inputs.contractEndDate}
-				options={watchlistData ?? []}
+				options={watchlistData}
 				value={inputs.contract}
 				onChange={(value) => setInputValue('contract', value)}
 			/>

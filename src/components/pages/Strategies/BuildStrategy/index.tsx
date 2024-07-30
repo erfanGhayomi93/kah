@@ -106,13 +106,13 @@ const BuildStrategy = () => {
 	}, [selectedContracts, builtStrategyContracts]);
 
 	return (
-		<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-auto rounded bg-white p-24 flex-column dark:bg-gray-50'>
+		<div className='relative flex-1 gap-16 overflow-auto rounded bg-white p-24 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 			{builtStrategyContracts.length === 0 ? (
 				<div
 					style={{ width: '30rem', maxWidth: '90%', top: '7.2rem' }}
 					className='absolute left-1/2 -translate-x-1/2 gap-24 flex-column'
 				>
-					<NoData imgName='search-empty.png' text={null} width={176} height={176} />
+					<NoData text={null} width={176} height={176} />
 					<button onClick={upsert} type='button' className='h-40 rounded font-medium btn-primary'>
 						{t('create_your_strategy')}
 					</button>
