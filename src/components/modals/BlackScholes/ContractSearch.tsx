@@ -69,8 +69,18 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 	const data = useMemo(() => {
 		if (basis === 'contract') return optionData ?? [];
 
-		if (!term) return options;
-		return options.filter((o) => String(o.symbolInfo.strikePrice).includes(term));
+		const strikePrices = new Set<number>();
+
+		const uniqueOptions = options.filter(({ symbolInfo }) => {
+			const exists = strikePrices.has(symbolInfo.strikePrice);
+			if (exists) return false;
+
+			strikePrices.add(symbolInfo.strikePrice);
+			return true;
+		});
+
+		if (!term) return uniqueOptions;
+		return uniqueOptions.filter((o) => String(o.symbolInfo.strikePrice).includes(term));
 	}, [term, basis, optionData, options]);
 
 	useEffect(() => {
@@ -86,7 +96,11 @@ const ContractSearch = ({ basis, value, disabled, isLoading, options, onChange }
 				disabled={basis === 'base' && disabled}
 				loading={basis === 'base' ? isLoading : isLoadingOptionData}
 				blankPlaceholder={t('black_scholes_modal.no_contract_found')}
-				placeholder={t('black_scholes_modal.strike_price')}
+				placeholder={t(
+					basis === 'base'
+						? 'black_scholes_modal.strike_price'
+						: 'black_scholes_modal.symbol_search_placeholder',
+				)}
 				getOptionId={(option) => ('symbolInfo' in option ? option.symbolInfo!.symbolISIN : option.symbolISIN)}
 				getOptionTitle={(option) => {
 					if (!option) return null;

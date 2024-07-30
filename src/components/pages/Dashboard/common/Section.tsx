@@ -3,7 +3,7 @@ import NoData from '@/components/common/NoData';
 import RenderOnViewportEntry from '@/components/common/RenderOnViewportEntry ';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import Tooltip from '@/components/common/Tooltip';
-import { ExpandSVG, InfoCircleSVG, XCircleSVG } from '@/components/icons';
+import { InfoCircleSVG, XCircleSVG } from '@/components/icons';
 import clsx from 'clsx';
 
 export interface ITab<T> {
@@ -69,7 +69,7 @@ const Section = <T extends string = string, B extends string = string>({
 							</button>
 						)}
 
-						{expandable && (
+						{/* {expandable && (
 							<button
 								onClick={onExpand}
 								type='button'
@@ -77,7 +77,7 @@ const Section = <T extends string = string, B extends string = string>({
 							>
 								<ExpandSVG width='1.4rem' height='1.4rem' />
 							</button>
-						)}
+						)} */}
 
 						{info && (
 							<Tooltip className='text-tiny font-medium' content={info ?? ''}>

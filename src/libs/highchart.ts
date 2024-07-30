@@ -13,7 +13,6 @@ export const chartCrosshairSetting: AxisCrosshairOptions = {
 	label: {
 		enabled: true,
 		align: 'center',
-		backgroundColor: 'rgba(24, 28, 47, 1)',
 		borderRadius: 4,
 		style: {
 			fontFamily: chartFontSetting.fontFamily,
@@ -74,7 +73,7 @@ export const setupChart = () => {
 		tooltip: {
 			hideDelay: 0,
 			followTouchMove: true,
-			backgroundColor: 'rgba(24, 28, 47, 1)',
+			backgroundColor: 'rgba(28, 30, 38, 1)',
 			borderRadius: 4,
 			borderWidth: 0,
 			useHTML: true,
@@ -200,12 +199,52 @@ export const setupChartColor = (theme: TTheme) => {
 			dark: 'rgba(166, 169, 173, 1)',
 			darkBlue: 'rgba(166, 169, 173, 1)',
 		},
+		axisCrosshairBorderColor: {
+			light: 'rgb(28, 30, 38)',
+			dark: 'rgb(68, 70, 83)',
+			darkBlue: 'rgb(28, 48, 85)',
+		},
+		axisCrosshairBackgroundColor: {
+			light: 'rgb(28, 30, 38)',
+			dark: 'rgb(68, 70, 83)',
+			darkBlue: 'rgba(28, 48, 85)',
+		},
+		navigatorLabelColor: {
+			light: 'rgba(93, 96, 109, 1)',
+			dark: 'rgb(166, 169, 173)',
+			darkBlue: 'rgb(166, 169, 173)',
+		},
+		navigatorBorderColor: {
+			light: 'rgb(226, 231, 237)',
+			dark: 'rgb(55, 57, 69)',
+			darkBlue: 'rgba(55, 57, 69)',
+		},
 	};
 
 	setOptions({
+		tooltip: {
+			borderColor: 'red',
+		},
+		navigator: {
+			outlineColor: colors.navigatorBorderColor[t],
+			xAxis: {
+				labels: {
+					style: {
+						textOutline: `1px solid ${colors.navigatorLabelColor[t]}`,
+						color: colors.navigatorLabelColor[t],
+					},
+				},
+			},
+		},
 		xAxis: {
 			gridLineColor: colors.axisGridLineColor[t],
 			lineColor: colors.axisLineColor[t],
+			crosshair: {
+				color: colors.axisCrosshairBorderColor[t],
+				label: {
+					backgroundColor: colors.axisCrosshairBackgroundColor[t],
+				},
+			},
 			labels: {
 				style: {
 					color: colors.axisLabelColor[t],
@@ -215,6 +254,12 @@ export const setupChartColor = (theme: TTheme) => {
 		yAxis: {
 			gridLineColor: colors.axisGridLineColor[t],
 			lineColor: colors.axisLineColor[t],
+			crosshair: {
+				color: colors.axisCrosshairBorderColor[t],
+				label: {
+					backgroundColor: colors.axisCrosshairBackgroundColor[t],
+				},
+			},
 			labels: {
 				style: {
 					color: colors.axisLabelColor[t],

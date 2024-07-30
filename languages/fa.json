@@ -438,6 +438,7 @@
 		"strike_price": "قیمت اعمال",
 		"search_basis": "جستجو بر اساس",
 		"symbol_contract": "نماد قرارداد",
+		"symbol_search_placeholder": "قرارداد مورد نظر خود را انتخاب کنید",
 		"share_price_placeholder": "قیمت دارایی پایه",
 		"strike_price_placeholder": "قیمت اعمال <chunk>(Strike)</chunk>",
 		"due_days_remaining": "مانده تا سررسید",

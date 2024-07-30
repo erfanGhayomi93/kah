@@ -1,5 +1,7 @@
+import { useAppSelector } from '@/features/hooks';
+import { getTheme } from '@/features/slices/uiSlice';
 import { chartFontSetting } from '@/libs/highchart';
-import { sepNumbers } from '@/utils/helpers';
+import { getDeviceColorSchema, sepNumbers } from '@/utils/helpers';
 import { type Chart, chart, type XAxisPlotLinesOptions } from 'highcharts/highstock';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef } from 'react';
@@ -32,6 +34,8 @@ const AnalyzeChart = ({
 	onChange,
 }: AnalyzeChartProps) => {
 	const t = useTranslations('analyze_modal');
+
+	const theme = useAppSelector(getTheme);
 
 	const chartRef = useRef<Chart | null>(null);
 
@@ -109,6 +113,9 @@ const AnalyzeChart = ({
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
 
+		const t = theme === 'system' ? getDeviceColorSchema() : theme;
+		const seriesColor = t === 'light' ? 'rgb(var(--c-gray-200) / 0.75)' : 'rgb(var(--c-gray-700) / 0.4)';
+
 		chartRef.current = chart(el, {
 			chart: {
 				height,
@@ -120,7 +127,6 @@ const AnalyzeChart = ({
 			},
 			navigator: {
 				enabled: !compact,
-				outlineColor: 'rgb(226, 231, 237)',
 				outlineWidth: 0,
 				maskInside: true,
 				height: 26,
@@ -140,17 +146,14 @@ const AnalyzeChart = ({
 						style: {
 							...chartFontSetting,
 							opacity: 1,
-							color: 'rgba(93, 96, 109, 1)',
 						},
 					},
 				},
 				handles: {
-					backgroundColor: 'rgba(255, 255, 255, 1)',
 					borderRadius: 6,
 					height: 24,
 					width: 21,
 					lineWidth: 1,
-					borderColor: 'rgba(226, 231, 237, 1)',
 					symbols: ['url(/static/images/navigator.png)', 'url(/static/images/navigator.png)'],
 				},
 				series: {
@@ -158,22 +161,22 @@ const AnalyzeChart = ({
 					zones: [
 						{
 							value: 0,
-							color: 'rgba(226, 231, 237, 0.75)',
+							color: seriesColor,
 							fillColor: {
 								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
 								stops: [
-									[0, 'rgba(226, 231, 237, 0.75)'],
-									[1, 'rgba(226, 231, 237, 0.75)'],
+									[0, seriesColor],
+									[1, seriesColor],
 								],
 							},
 						},
 						{
-							color: 'rgba(226, 231, 237, 0.75)',
+							color: seriesColor,
 							fillColor: {
 								linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
 								stops: [
-									[0, 'rgba(226, 231, 237, 0.75)'],
-									[1, 'rgba(226, 231, 237, 0.75)'],
+									[0, seriesColor],
+									[1, seriesColor],
 								],
 							},
 						},
@@ -294,7 +297,7 @@ const AnalyzeChart = ({
 				<div ref={onLoad} />
 
 				{data.length <= 10 && (
-					<div className='darkBlue:bg-gray-50 absolute size-full bg-white center dark:bg-gray-50'>
+					<div className='absolute size-full bg-white center darkBlue:bg-gray-50 dark:bg-gray-50'>
 						<NoData text={t('no_active_contract_found')} />
 					</div>
 				)}
