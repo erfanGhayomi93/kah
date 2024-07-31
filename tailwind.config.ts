@@ -72,8 +72,8 @@ const config: Config = {
 			},
 
 			warning: {
-				50: 'rgb(--c-warning-50)',
-				100: 'rgb(--c-warning-100)',
+				50: 'rgb(var(--c-warning-50))',
+				100: 'rgb(var(--c-warning-100))',
 			},
 
 			info: {

@@ -56,6 +56,8 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 				const column = columns[i];
 				const tag = column.tag ?? 'NULL';
 
+				if (column.disabled) continue;
+
 				if (!(tag in tags)) tags[tag] = [];
 				tags[tag]?.push(column);
 			}
@@ -118,7 +120,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 				ref={ref}
 				{...props}
 			>
-				<Wrapper onSubmit={onSubmit} className='darkBlue:bg-gray-50 gap-24 bg-white pb-24 dark:bg-gray-50'>
+				<Wrapper onSubmit={onSubmit} className='gap-24 bg-white pb-24 darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<Header
 						label={t('manage_option_watchlist_columns.title')}
 						onClose={onClose}
@@ -157,7 +159,10 @@ const CategoryCard = ({ columns, tag, onColumnSwitch, onAllColumnSwitch }: ICate
 	const hasTag = tag !== 'NULL';
 
 	return (
-		<div className={clsx('w-full rounded px-16 shadow-card flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}>
+		<div
+			style={{ minWidth: '17.6rem' }}
+			className={clsx('rounded px-16 shadow-card flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}
+		>
 			{hasTag && (
 				<div className='gap-8 border-b border-b-gray-200 py-6 flex-justify-start'>
 					<ColumnSwitchField
