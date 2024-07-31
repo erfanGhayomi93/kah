@@ -27,7 +27,7 @@ const UserDropdown = ({
 	const t = useTranslations();
 
 	return (
-		<div className='darkBlue:bg-gray-50 gap-24 rounded-md bg-white pb-16 shadow-tooltip flex-column dark:bg-gray-50'>
+		<div className='gap-24 rounded-md bg-white pb-16 shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<div className='gap-4 pb-8 flex-column'>
 				<div className='pr-16 flex-justify-between'>
 					<div className='gap-8 pt-16 flex-items-center fit-image'>

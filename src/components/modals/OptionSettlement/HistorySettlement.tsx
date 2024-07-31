@@ -82,11 +82,11 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 
 	return (
 		<div className='flex h-full pr-24 flex-column'>
-			<div className='flex-1 rounded-sm p-8 shadow-card'>
+			<div className='flex-1 rounded-sm p-8 shadow-sm'>
 				<LightweightTable
 					rowData={(isCash ? cashHistory?.result : physicalHistory?.result) || []}
 					columnDefs={columnDefs}
-					className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'
+					className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
 				/>
 			</div>
 

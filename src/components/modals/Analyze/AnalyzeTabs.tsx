@@ -59,7 +59,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 	});
 
 	return (
-		<div className='relative h-full gap-16 rounded px-16 shadow-card flex-column'>
+		<div className='relative h-full gap-16 rounded px-16 shadow-sm flex-column'>
 			<Analyze
 				contractSize={contractSize}
 				cost={cost}
@@ -75,7 +75,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 				onChange={setFieldsValue}
 			/>
 
-			<div className='border-t-gray-200 gap-16 border-t pb-24 pt-16 flex-column'>
+			<div className='gap-16 border-t border-t-gray-200 pb-24 pt-16 flex-column'>
 				<ul className='flex-justify-between'>
 					<StrategyInfoItem
 						type='success'
@@ -93,7 +93,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 			</div>
 
 			<div className='absolute left-16 top-8 gap-16 flex-justify-end'>
-				<span className='text-gray-700 text-tiny'>{t('with_calculation')}:</span>
+				<span className='text-tiny text-gray-700'>{t('with_calculation')}:</span>
 
 				<div className='gap-24 flex-items-center'>
 					<UseSwitch
@@ -119,7 +119,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 
 const UseSwitch = ({ title, checked, onChange }: UseSwitchProps) => (
 	<div className='h-40 gap-8 flex-items-center'>
-		<span className='text-gray-700 text-tiny font-medium'>{title}</span>
+		<span className='text-tiny font-medium text-gray-700'>{title}</span>
 		<Switch checked={checked} onChange={onChange} />
 	</div>
 );

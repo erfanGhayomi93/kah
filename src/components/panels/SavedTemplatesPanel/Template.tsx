@@ -42,13 +42,13 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 						: 'border-gray-200 bg-gray-100 hover:btn-hover',
 				)}
 			>
-				<div className='gap-10 flex-column'>
+				<div className='flex-1 gap-10 overflow-hidden flex-column'>
 					<h3 className={clsx('text-lg font-medium', isActive ? 'text-white' : 'text-gray-700')}>{name}</h3>
 
 					{symbols.length > 0 && (
 						<div className={clsx('flex select-none gap-4', isActive ? 'text-white' : 'text-gray-700')}>
 							{symbols.map((symbolTitle, i) => (
-								<span key={i}>
+								<span key={i} className={clsx(i === symbols.length - 1 && 'truncate')}>
 									<span className={i === 0 ? 'text-base' : 'text-tiny'}>{symbolTitle}</span>
 									{i === symbols.length - 1 ? '' : '،'}
 								</span>

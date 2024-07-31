@@ -24,14 +24,14 @@ const SymbolInfo = ({ symbolISIN, children }: SymbolInfoProps) => {
 
 	if (!symbolData) {
 		return (
-			<Wrapper className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
+			<Wrapper className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<NoData />
 			</Wrapper>
 		);
 	}
 
 	return (
-		<Wrapper className='darkBlue:bg-gray-50 gap-8 bg-white px-16 py-20 flex-column dark:bg-gray-50'>
+		<Wrapper className='gap-8 bg-white px-16 py-20 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<SymbolMainDetails {...symbolData} />
 			<BaseSymbolTabs symbolData={symbolData} isLoading={isLoadingSymbolData} />
 			{children(symbolData)}
@@ -40,7 +40,7 @@ const SymbolInfo = ({ symbolISIN, children }: SymbolInfoProps) => {
 };
 
 const Wrapper = ({ children, className }: WrapperProps) => (
-	<div style={{ flex: '0 0 39.6rem' }} className={clsx('relative rounded shadow-card', className)}>
+	<div style={{ flex: '0 0 39.6rem' }} className={clsx('relative rounded shadow-sm', className)}>
 		{children}
 	</div>
 );

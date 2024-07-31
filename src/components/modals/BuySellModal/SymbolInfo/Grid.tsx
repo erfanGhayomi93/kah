@@ -60,7 +60,7 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice, 
 	return (
 		<div
 			style={{ height: '28.8rem' }}
-			className='darkBlue:bg-gray-50 relative rounded bg-white shadow-card flex-column dark:bg-gray-50'
+			className='relative rounded bg-white shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 		>
 			<Tabs
 				data={tabs}

@@ -2,21 +2,38 @@ import { useGlPositionExtraInfoQuery, useUserRemainQuery } from '@/api/queries/b
 import Button from '@/components/common/Button';
 import RangeSlider from '@/components/common/Slider/RangeSlider';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
-import { LockSVG, UnlockSVG } from '@/components/icons';
+import { LockSVG, UnlockSVG, XCircleSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setChangeBlockTypeModal } from '@/features/slices/modalSlice';
 import { cn, sepNumbers } from '@/utils/helpers';
-import { getAccountBlockTypeValue } from '@/utils/Math/order';
+import { getAccountBlockTypeValue, getPortfolioBlockTypeValue } from '@/utils/Math/order';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import Input from './common/Input';
 import TotalTradeValueInput from './common/TotalTradeValueInput';
 import ValidityDate from './common/ValidityDate';
 
+interface IPortfolioBlockType {
+	type: 'Portfolio';
+}
+
+interface IAccountBlockType {
+	type: 'Account';
+}
+
+interface IPositionBlockType {
+	type: 'Position';
+	value: IAvailableContractInfo;
+}
+
 interface SummaryItemProps {
 	title: React.ReactNode;
 	value: React.ReactNode;
+}
+
+interface ErrorMessageProps {
+	children: React.ReactNode;
 }
 
 interface SimpleTradeProps extends IBsModalInputs {
@@ -56,6 +73,16 @@ const SimpleTrade = ({
 }: SimpleTradeProps) => {
 	const t = useTranslations();
 
+	const priceRef = useRef<HTMLInputElement>(null);
+
+	const quantityRef = useRef<HTMLInputElement>(null);
+
+	const [error, setError] = useState<'price' | 'quantity' | null>(null);
+
+	const [blockType, setBlockType] = useState<IPortfolioBlockType | IAccountBlockType | IPositionBlockType | null>(
+		null,
+	);
+
 	const dispatch = useAppDispatch();
 
 	const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
@@ -67,24 +94,57 @@ const SimpleTrade = ({
 		queryKey: ['userRemainQuery'],
 	});
 
+	const { data: baseSymbolExtraInfo = null } = useGlPositionExtraInfoQuery({
+		queryKey: ['glPositionExtraInfoQuery', symbolData?.baseSymbolISIN ?? ''],
+		enabled: Boolean(symbolData) && blockType?.type === 'Portfolio',
+	});
+
 	const onSubmitForm = (e: React.FormEvent) => {
 		e.preventDefault();
 		onSubmit();
 	};
 
-	const changeBlockType = () => {
-		if (!symbolData || !symbolData.isOption) return;
+	const onBlockTypeChanged = (type: TBlockType, selectedPosition: IAvailableContractInfo | null) => {
+		if (type === 'Position') {
+			setBlockType({ type, value: selectedPosition! });
+		} else {
+			setBlockType({ type });
+		}
+	};
 
-		dispatch(
-			setChangeBlockTypeModal({
-				price,
-				quantity,
-				symbolData,
-				callback: () => {
-					//
-				},
-			}),
-		);
+	const validation = () => {
+		if (!quantity) {
+			quantityRef.current?.focus();
+			setError('quantity');
+
+			throw new Error();
+		}
+
+		if (!price) {
+			priceRef.current?.focus();
+			setError('price');
+
+			throw new Error();
+		}
+	};
+
+	const changeBlockType = () => {
+		try {
+			if (!symbolData || !symbolData.isOption) return;
+
+			validation();
+
+			dispatch(
+				setChangeBlockTypeModal({
+					price,
+					quantity,
+					symbolData,
+					callback: onBlockTypeChanged,
+				}),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const TABS = useMemo(
@@ -109,10 +169,52 @@ const SimpleTrade = ({
 
 	const assets = symbolExtraInfo?.asset ?? 0;
 
+	const blockTypeTitle = () => {
+		if (!blockType) {
+			return t('bs_modal.select_block_type');
+		}
+
+		if (blockType.type === 'Account') {
+			return t.rich('bs_modal.account_block_type', {
+				v: () => <span className='text-gray-800'>{sepNumbers(String(blockTypeAccountValue))}</span>,
+			});
+		}
+
+		if (blockType.type === 'Portfolio') {
+			return t.rich('bs_modal.portfolio_block_type', {
+				v: () => <span className='text-gray-800'>{sepNumbers(String(blockTypePortfolioValue))}</span>,
+			});
+		}
+
+		return t.rich('bs_modal.position_block_type', {
+			n: () => <span className='text-gray-800'>{blockType.value.symbolTitle}</span>,
+			v: () => <span className='text-gray-800'>{sepNumbers(String(blockTypePortfolioValue))}</span>,
+		});
+	};
+
+	const blockTypeErrorMessage = () => {
+		if (!blockType || blockType.type === 'Position') return null;
+
+		if (blockType.type === 'Account' && blockTypeAccountValue > Number(userRemain?.purchasePower ?? 0)) {
+			return <ErrorMessage>{t('bs_modal.account_block_type_error')}</ErrorMessage>;
+		}
+
+		if (blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0)) {
+			return <ErrorMessage>{t('bs_modal.portfolio_block_type_error')}</ErrorMessage>;
+		}
+
+		return null;
+	};
+
 	const blockTypeAccountValue = getAccountBlockTypeValue({
 		initialRequiredMargin: symbolData?.initialMargin ?? 0,
 		contractSize: symbolData?.contractSize ?? 0,
 		price,
+		quantity,
+	});
+
+	const blockTypePortfolioValue = getPortfolioBlockTypeValue({
+		contractSize: symbolData?.contractSize ?? 0,
 		quantity,
 	});
 
@@ -145,12 +247,17 @@ const SimpleTrade = ({
 					<div className='gap-4 pb-16 flex-column'>
 						<Input
 							autoFocus
+							ref={quantityRef}
 							label={t('bs_modal.quantity_label')}
 							value={quantity}
-							onChange={(value) => setInputValue('quantity', value)}
+							onChange={(value) => {
+								setInputValue('quantity', value);
+								if (error === 'quantity') setError(null);
+							}}
 							tickSize={symbolData?.orderQuantityTickSize ?? 0}
 							low={1}
 							high={1e5}
+							hasError={error === 'quantity'}
 						/>
 
 						{side === 'sell' && (
@@ -183,13 +290,17 @@ const SimpleTrade = ({
 
 					<div className='gap-4 pb-16 flex-column'>
 						<Input
-							autoFocus
+							ref={priceRef}
 							label={t('bs_modal.price_label')}
 							value={price}
-							onChange={(value) => setInputValue('price', value)}
+							onChange={(value) => {
+								setInputValue('price', value);
+								if (error === 'price') setError(null);
+							}}
 							tickSize={symbolData?.orderPriceTickSize ?? 0}
 							high={symbolData?.highThreshold ?? 0}
 							low={symbolData?.lowThreshold ?? 0}
+							hasError={error === 'price'}
 							prefix={
 								<>
 									{isLoadingBestLimit ? (
@@ -224,11 +335,7 @@ const SimpleTrade = ({
 
 					{side === 'sell' && symbolType === 'option' && (
 						<SummaryItem
-							title={t.rich('bs_modal.cash_guarantee', {
-								chunk: () => (
-									<span className='text-gray-800'>{sepNumbers(String(blockTypeAccountValue))}</span>
-								),
-							})}
+							title={blockTypeTitle()}
 							value={
 								<button onClick={changeBlockType} type='button' className='text-info-100'>
 									{t('bs_modal.change_block_type')}
@@ -236,6 +343,8 @@ const SimpleTrade = ({
 							}
 						/>
 					)}
+
+					{blockTypeErrorMessage()}
 
 					{symbolType === 'base' && (
 						<ValidityDate value={validity} onChange={(v) => setInputValue('validity', v)} />
@@ -279,6 +388,7 @@ const SimpleTrade = ({
 						)}
 
 						<Button
+							disabled={!blockType}
 							type='submit'
 							className={cn(
 								'not h-40 flex-1 rounded text-base font-medium',
@@ -300,6 +410,13 @@ const SummaryItem = ({ title, value }: SummaryItemProps) => (
 		<span className='text-gray-700'>{title}</span>
 
 		{value}
+	</div>
+);
+
+const ErrorMessage = ({ children }: ErrorMessageProps) => (
+	<div className='h-28 gap-8 pt-8 text-error-100 flex-items-center'>
+		<XCircleSVG width='1.6rem' height='1.6rem' />
+		<span className='text-tiny'>{children}</span>
 	</div>
 );
 

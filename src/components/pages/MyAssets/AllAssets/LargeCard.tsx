@@ -16,7 +16,7 @@ interface LargeCardProps<T> extends React.HTMLAttributes<HTMLDivElement> {
 
 const LargeCard = <T extends string>({ title, tabs, children, style, onTabChange, ...props }: LargeCardProps<T>) => (
 	<div {...props} style={{ height: '42.8rem', ...style }}>
-		<div className='h-full gap-16 rounded pb-16 pl-8 pr-16 pt-8 shadow-card flex-column'>
+		<div className='h-full gap-16 rounded pb-16 pl-8 pr-16 pt-8 shadow-sm flex-column'>
 			<div className='h-40 flex-justify-between'>
 				<h2 className='text-lg font-medium text-gray-700'>{title}</h2>
 

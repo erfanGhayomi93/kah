@@ -44,11 +44,11 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 
 	return (
 		<div className='flex h-full pr-24 flex-column'>
-			<div className='flex-1 overflow-auto rounded-sm p-8 shadow-card'>
+			<div className='flex-1 overflow-auto rounded-sm p-8 shadow-sm'>
 				<LightweightTable
 					rowData={data || []}
 					columnDefs={columnDefs}
-					className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'
+					className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
 				/>
 			</div>
 
