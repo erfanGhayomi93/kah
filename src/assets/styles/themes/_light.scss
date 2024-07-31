@@ -35,7 +35,10 @@ html {
 	--c-info-50: 83 168 255 / 0.1;
 	--c-info-100: 83 168 255;
 
-	--shadow-card: 0px 2px 11px 0px rgba(0, 0, 0, 0.05);
+	--shadow-sm: 0px 2px 11px 0px rgba(0, 0, 0, 0.05);
+	--shadow-md: 0px 2px 11px 0px rgba(0, 0, 0, 0.1);
+	--shadow-lg: 0px 2px 11px 0px rgba(0, 0, 0, 0.15);
+	--shadow-xl: 0px 2px 11px 0px rgba(0, 0, 0, 0.2);
 
 	// AgGrid
 	.lightweight-table,

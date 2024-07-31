@@ -62,7 +62,7 @@ const PaymentResultPage = () => {
 
 	return (
 		<div className=' flex h-screen items-center justify-center bg-gray-100'>
-			<div className='darkBlue:bg-gray-50 flex h-4/5 w-3/12 flex-col items-center  justify-start gap-32 rounded-md bg-white p-24 shadow-sm dark:bg-gray-50'>
+			<div className='flex h-4/5 w-3/12 flex-col items-center justify-start  gap-32 rounded-md bg-white p-24 shadow-sm darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<div className='flex flex-col items-center gap-16'>
 					<div className='pb-24'>
 						{IsSuccessful === 'True' ? (

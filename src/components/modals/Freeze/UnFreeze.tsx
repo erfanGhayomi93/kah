@@ -61,7 +61,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 
 	return (
 		<div className='flex h-full flex-col justify-between'>
-			<div className='mb-16 mt-24 flex-1 p-8 shadow-lg'>
+			<div className='mb-16 mt-24 flex-1 p-8 shadow-sm'>
 				<div className='mb-24 flex'>
 					<span className='flex-1 text-center text-gray-700'>{t('freeze_modal.symbol_title')}</span>
 					<span className='flex-1 text-center text-gray-700'>{t('freeze_modal.guaranted_number')}</span>

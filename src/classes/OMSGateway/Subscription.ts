@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { store } from '@/api/inject-store';
 import { brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
 import { refetchActiveOrderTab } from '@/utils/orders';
 import { subscribePrivateGateWay } from '@/utils/subscriptions';
@@ -96,15 +97,16 @@ class Subscription {
 		const messageType: 'success' | 'error' = orderStatus === 'Error' ? 'error' : 'success';
 		let messageText = orderMessage ?? '';
 
-		const orderStatusMessage = this._orderStatus?.[orderStatus] ?? orderStatus;
-		const orderErrorMessage = this._orderErrors?.[orderMessageType] ?? orderMessageType;
+		if (!messageText) {
+			const orderStatusMessage = this._orderStatus?.[orderStatus] ?? orderStatus;
+			const orderErrorMessage = this._orderErrors?.[orderMessageType] ?? orderMessageType;
 
-		if (!orderMessage) {
 			if (['OnBoard', 'Canceled'].includes(orderStatus)) messageText = orderStatusMessage;
 			else messageText = orderStatusMessage + `: ${orderErrorMessage}`;
 		}
 
 		refetchActiveOrderTab();
+		store.dispatch({ payload: 'today_orders', type: 'tab/setOrdersActiveTab' });
 
 		toast[messageType](messageText, {
 			autoClose: 3500,

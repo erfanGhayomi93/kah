@@ -1,12 +1,16 @@
-import { useAvailableContractInfoQuery } from '@/api/queries/brokerPrivateQueries';
-import Radiobox from '@/components/common/Inputs/Radiobox';
+import {
+	useAvailableContractInfoQuery,
+	useGlPositionExtraInfoQuery,
+	useUserRemainQuery,
+} from '@/api/queries/brokerPrivateQueries';
 import { BoxSVG, PayMoneySVG, SnowFlakeSVG } from '@/components/icons';
 import { sepNumbers } from '@/utils/helpers';
 import { getAccountBlockTypeValue } from '@/utils/Math/order';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
+import Card from './Card';
+import Positions from './Positions';
 
 interface RequestFormProps {
 	price: number;
@@ -15,23 +19,22 @@ interface RequestFormProps {
 	onSubmit: (blockType: TBlockType, selectedPosition: IAvailableContractInfo | null) => void;
 }
 
-interface CardProps {
-	isActive: boolean;
-	description: React.ReactNode;
-	icon: React.ReactNode;
-	value: number;
-	title: string;
-	prefix: string;
-	children?: React.ReactNode;
-	onClick: () => void;
-}
-
 const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps) => {
 	const t = useTranslations();
 
 	const [blockType, setBlockType] = useState<TBlockType>('Portfolio');
 
 	const [selectedPosition, setSelectedPosition] = useState<IAvailableContractInfo | null>(null);
+
+	const { data: userRemain = null } = useUserRemainQuery({
+		queryKey: ['userRemainQuery'],
+		enabled: blockType === 'Account',
+	});
+
+	const { data: baseSymbolExtraInfo = null } = useGlPositionExtraInfoQuery({
+		queryKey: ['glPositionExtraInfoQuery', symbolData.baseSymbolISIN],
+		enabled: blockType === 'Portfolio',
+	});
 
 	const { data = [] } = useAvailableContractInfoQuery({
 		queryKey: ['availableContractInfoQuery', symbolData.symbolISIN],
@@ -50,9 +53,28 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 		quantity,
 	});
 
+	const onPositionClicked = () => {
+		if (data.length === 0) {
+			toast.warning(t('change_block_type_modal.no_position_exists'), {
+				toastId: 'no_position_exists',
+			});
+			return;
+		}
+
+		setBlockType('Position');
+	};
+
+	const isDisabled = useMemo<boolean>(() => {
+		if (blockType === 'Portfolio') return Number(baseSymbolExtraInfo?.asset ?? 0) < portfolioValue;
+
+		if (blockType === 'Account') return Number(userRemain?.purchasePower ?? 0) < accountValue;
+
+		return selectedPosition === null || selectedPosition.customersOpenPositions === 0;
+	}, [blockType, userRemain, baseSymbolExtraInfo, selectedPosition]);
+
 	return (
 		<form method='get' className='h-full justify-between gap-48 p-24 flex-column'>
-			<div className='flex-1 gap-16 flex-column *:select-none *:rounded *:shadow-card *:flex-column'>
+			<div className='flex-1 gap-16 flex-column *:select-none *:rounded *:shadow-sm *:flex-column'>
 				<Card
 					isActive={blockType === 'Portfolio'}
 					title={t('change_block_type_modal.block_type_portfolio')}
@@ -64,6 +86,14 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 							<span className='font-medium text-gray-800'>{sepNumbers(String(portfolioValue))}</span>
 						),
 					})}
+					error={
+						Number(baseSymbolExtraInfo?.asset ?? 0) < portfolioValue
+							? t('change_block_type_modal.block_type_portfolio_error', {
+									baseSymbolTitle: symbolData.baseSymbolTitle,
+									symbolTitle: symbolData.symbolTitle,
+								})
+							: undefined
+					}
 					onClick={() => setBlockType('Portfolio')}
 				/>
 
@@ -73,11 +103,18 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 					prefix={t('common.rial')}
 					icon={<PayMoneySVG width='1.6rem' height='1.6rem' />}
 					value={accountValue}
-					description={t.rich('change_block_type_modal.block_type_portfolio_account', {
+					description={t.rich('change_block_type_modal.block_type_account_description', {
 						chunk: () => (
 							<span className='font-medium text-gray-800'>{sepNumbers(String(accountValue))}</span>
 						),
 					})}
+					error={
+						Number(userRemain?.purchasePower ?? 0) < accountValue
+							? t('change_block_type_modal.block_type_account_error', {
+									symbolTitle: symbolData.symbolTitle,
+								})
+							: undefined
+					}
 					onClick={() => setBlockType('Account')}
 				/>
 
@@ -87,38 +124,30 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 					prefix={t('change_block_type_modal.position')}
 					icon={<BoxSVG width='1.6rem' height='1.6rem' />}
 					value={quantity}
-					description={t.rich('change_block_type_modal.block_type_portfolio_position', {
+					description={t.rich('change_block_type_modal.block_type_position_description', {
 						chunk: () => <span className='font-medium text-gray-800'>{sepNumbers(String(quantity))}</span>,
 					})}
-					onClick={() => {
-						if (data.length === 0) {
-							toast.warning(t('change_block_type_modal.no_position_exists'), {
-								toastId: 'no_position_exists',
-							});
-							return;
-						}
-
-						setBlockType('Position');
-					}}
+					error={
+						(selectedPosition &&
+							selectedPosition.customersOpenPositions === 0 &&
+							t('change_block_type_modal.block_type_position_error', {
+								position: selectedPosition.symbolTitle,
+								symbolTitle: symbolData.symbolTitle,
+							})) ||
+						undefined
+					}
+					onClick={onPositionClicked}
 				>
-					<div className='relative overflow-auto p-16'>
-						<ul className='darkBlue:bg-gray-50 bg-white shadow-card flex-column dark:bg-gray-50'>
-							{data.map((item) => (
-								<li key={item.symbolISIN} className='flex-48 gap-4 flex-items-center'>
-									<Radiobox
-										checked={selectedPosition?.symbolISIN === item.symbolISIN}
-										onChange={() => setSelectedPosition(item)}
-									/>
-									<span className='text-gray-700'>{item.symbolTitle}</span>
-								</li>
-							))}
-						</ul>
-					</div>
+					<Positions
+						data={data}
+						selectedPosition={selectedPosition}
+						setSelectedPosition={setSelectedPosition}
+					/>
 				</Card>
 			</div>
 
 			<button
-				disabled
+				disabled={isDisabled}
 				className='h-40 rounded btn-primary'
 				type='button'
 				onClick={() => onSubmit(blockType, selectedPosition)}
@@ -128,63 +157,5 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 		</form>
 	);
 };
-
-const Card = ({ isActive, description, icon, value, title, prefix, children, onClick }: CardProps) => (
-	<div
-		className={clsx(
-			'pt-16 transition-bg flex-column',
-			isActive ? 'darkBlue:bg-gray-50 bg-white dark:bg-gray-50' : 'bg-gray-100',
-			!children && 'pb-16',
-		)}
-	>
-		<div onClick={onClick} className='flex-48 cursor-pointer px-16 flex-justify-between'>
-			<div
-				className={clsx(
-					'flex-1 gap-8 text-base transition-color flex-justify-start',
-					isActive ? 'text-primary-100' : 'text-gray-700',
-				)}
-			>
-				<Radiobox checked={isActive} onChange={onClick} />
-
-				{icon}
-
-				<span>{title}</span>
-			</div>
-
-			<div className='flex-1 gap-8 flex-justify-end'>
-				<span className={clsx('transition-color', isActive ? 'font-medium text-gray-800' : 'text-gray-700')}>
-					{sepNumbers(String(value))}
-				</span>
-				<span className='text-tiny text-gray-700'>{prefix}</span>
-			</div>
-		</div>
-
-		<div
-			className={clsx(
-				'flex-1 overflow-hidden px-16 text-tiny text-gray-700 transition-all',
-				isActive ? 'pt-8 opacity-100' : 'p-0 opacity-0',
-			)}
-			style={{
-				flexBasis: isActive ? '2.8rem' : '0',
-			}}
-		>
-			{description}
-		</div>
-
-		{Boolean(children) && (
-			<div
-				className={clsx(
-					'flex-1 overflow-hidden px-16 pt-16 transition-all flex-column',
-					isActive ? 'opacity-100' : 'opacity-0',
-				)}
-				style={{
-					maxHeight: isActive ? '28.4rem' : '0',
-				}}
-			>
-				<div className='flex-1 overflow-hidden border-t border-t-gray-200'>{children}</div>
-			</div>
-		)}
-	</div>
-);
 
 export default RequestForm;

@@ -20,7 +20,7 @@ export const useUserInfoQuery = createBrokerQuery<Broker.User | null, ['userInfo
 });
 
 export const useUserRemainQuery = createBrokerQuery<Broker.Remain | null, ['userRemainQuery']>({
-	staleTime: 18e5,
+	staleTime: 6e5,
 	queryKey: ['userRemainQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -242,7 +242,7 @@ export const useGlPositionExtraInfoQuery = createBrokerQuery<
 	GlPositionExtraInfo | null,
 	['glPositionExtraInfoQuery', string]
 >({
-	staleTime: 0,
+	staleTime: 1e5,
 	queryKey: ['glPositionExtraInfoQuery', ''],
 	queryFn: async ({ signal, queryKey }) => {
 		const url = getBrokerURLs(store.getState());

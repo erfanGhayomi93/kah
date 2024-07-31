@@ -18,7 +18,7 @@ const PriceCard = ({ value, title, percent, className, loading }: PriceCardProps
 	return (
 		<div
 			className={clsx(
-				'darkBlue:bg-gray-50 h-64 rounded bg-white px-8 shadow-card flex-justify-between dark:bg-gray-50',
+				'h-64 rounded bg-white px-8 shadow-sm flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50',
 				className,
 			)}
 		>

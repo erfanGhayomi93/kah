@@ -36,7 +36,7 @@
 	position: relative;
 	border: 1px solid theme("colors.gray.200");
 	background-color: theme("colors.white");
-	box-shadow: theme("boxShadow.tooltip");
+	box-shadow: theme("boxShadow.sm");
 	z-index: 99;
 	width: 100%;
 }

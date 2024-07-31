@@ -1,9 +1,8 @@
 import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
-import ipcMain from '@/classes/IpcMain';
-import LocalstorageInstance from '@/classes/Localstorage';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
+import { setOrdersActiveTab } from '@/features/slices/tabSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
 import { useBrokerQueryClient } from '@/hooks';
@@ -12,7 +11,7 @@ import { dateConverter } from '@/utils/helpers';
 import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import SimpleTrade from './SimpleTrade';
 
@@ -45,7 +44,7 @@ interface BodyProps extends IBsModalInputs {
 const Body = (props: BodyProps) => {
 	const t = useTranslations();
 
-	const sendingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const dispatch = useAppDispatch();
 
 	const [submitting, setSubmitting] = useState(false);
 
@@ -53,28 +52,9 @@ const Body = (props: BodyProps) => {
 
 	const queryClient = useBrokerQueryClient();
 
-	const dispatch = useAppDispatch();
-
 	const { data: userRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
 	});
-
-	const onOrderMessageReceived = (id: string) => (result: IpcMainChannels['order_sent']) => {
-		if (id !== result.id) return;
-
-		if (sendingTimeoutRef.current) clearTimeout(sendingTimeoutRef.current);
-
-		onOrderSentSuccessfully();
-	};
-
-	const addNewHandler = (id: string) => {
-		const removeHandler = ipcMain.handle('order_sent', onOrderMessageReceived(id), { once: true });
-
-		sendingTimeoutRef.current = setTimeout(() => {
-			onOrderSentSuccessfully();
-			removeHandler();
-		}, 2000);
-	};
 
 	const validation = (cb: () => void) => () => {
 		try {
@@ -118,16 +98,6 @@ const Body = (props: BodyProps) => {
 		if (props.mode === 'edit' && props.type === 'draft') editDraft();
 	};
 
-	const onOrderSentSuccessfully = () => {
-		setSubmitting(false);
-
-		if (!props.holdAfterOrder) {
-			props.close();
-			dispatch(setOrdersIsExpand(true));
-			LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'today_orders', true);
-		}
-	};
-
 	const refetchOrdersCount = () => {
 		queryClient.refetchQueries({
 			queryKey: ['brokerOrdersCountQuery'],
@@ -156,10 +126,11 @@ const Body = (props: BodyProps) => {
 				params.validityDate = dateConverter(params.validity);
 			}
 
-			const uuid = await createOrder(params);
+			await createOrder(params);
 
-			if (uuid) addNewHandler(uuid);
-			else onOrderSentSuccessfully();
+			setSubmitting(false);
+			dispatch(setOrdersIsExpand(true));
+			dispatch(setOrdersActiveTab(props.symbolType === 'option' ? 'option_orders' : 'today_orders'));
 		} catch (e) {
 			setSubmitting(false);
 		}
@@ -193,8 +164,7 @@ const Body = (props: BodyProps) => {
 			if (!holdAfterOrder) {
 				close();
 				dispatch(setOrdersIsExpand(true));
-
-				LocalstorageInstance.set('ot', 'draft', true);
+				dispatch(setOrdersActiveTab('draft'));
 			}
 		} catch (e) {
 			toast.error(t('alerts.draft_unsuccessfully_created'), {
@@ -230,7 +200,7 @@ const Body = (props: BodyProps) => {
 			if (!holdAfterOrder) {
 				close();
 				dispatch(setOrdersIsExpand(true));
-				LocalstorageInstance.set('ot', props.symbolType === 'option' ? 'option_orders' : 'open_orders', true);
+				dispatch(setOrdersActiveTab(props.symbolType === 'option' ? 'option_orders' : 'open_orders'));
 			}
 		} catch (e) {
 			toast.error(t('alerts.order_unsuccessfully_edited'), {
@@ -266,8 +236,7 @@ const Body = (props: BodyProps) => {
 			if (!holdAfterOrder) {
 				close();
 				dispatch(setOrdersIsExpand(true));
-
-				LocalstorageInstance.set('ot', 'draft', true);
+				dispatch(setOrdersActiveTab('draft'));
 			}
 		} catch (error) {
 			toast.error(t('alerts.draft_unsuccessfully_edited'), {

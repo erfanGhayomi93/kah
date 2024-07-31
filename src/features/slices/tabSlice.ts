@@ -9,10 +9,13 @@ interface IOptionWatchlistTabIdPayload {
 
 export interface TabState {
 	optionWatchlistTabId: number;
+	ordersActiveTab: TOrdersTab;
 }
 
 const initialState: TabState = {
 	optionWatchlistTabId: Number(LocalstorageInstance.get('awl', -1)) || -1,
+
+	ordersActiveTab: LocalstorageInstance.get<TOrdersTab>('ot', 'open_orders'),
 };
 
 const portfolioSlice = createSlice({
@@ -31,11 +34,17 @@ const portfolioSlice = createSlice({
 				state.optionWatchlistTabId = payload.id;
 			}
 		},
+
+		setOrdersActiveTab: (state, { payload }: PayloadAction<TabState['ordersActiveTab']>) => {
+			LocalstorageInstance.get<TOrdersTab>('ot', payload);
+			state.ordersActiveTab = payload;
+		},
 	},
 });
 
-export const { setOptionWatchlistTabId } = portfolioSlice.actions;
+export const { setOptionWatchlistTabId, setOrdersActiveTab } = portfolioSlice.actions;
 
 export const getOptionWatchlistTabId = (state: RootState) => state.tab.optionWatchlistTabId;
+export const getOrdersActiveTab = (state: RootState) => state.tab.ordersActiveTab;
 
 export default portfolioSlice.reducer;

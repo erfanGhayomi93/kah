@@ -20,7 +20,7 @@ const SymbolContextMenu = ({ symbol, svgSize = 24 }: SymbolContextMenuProps) => 
 			renderer={({ setOpen }) => (
 				<ul
 					style={{ width: '16rem' }}
-					className='darkBlue:bg-gray-50 overflow-hidden rounded bg-white shadow-tooltip flex-column dark:bg-gray-50'
+					className='overflow-hidden rounded bg-white shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 				>
 					<li>
 						<a

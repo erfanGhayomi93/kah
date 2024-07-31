@@ -2578,4 +2578,6 @@ declare interface IAvailableContractInfo {
 	strikePrice: number;
 	openPosition: number;
 	customersOpenPositions: number;
+	allPositionCount: number;
+	usedPositions: number;
 }

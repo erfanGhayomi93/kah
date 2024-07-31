@@ -98,13 +98,11 @@ const config: Config = {
 
 		boxShadow: {
 			none: 'none',
-			tooltip: '0px 0px 2px 0px rgba(0, 0, 0, 0.16)',
-			sm: '0px 1px 2px 0px rgba(0, 0, 0, 0.1)',
-			DEFAULT: '0px 4px 4px -1px rgba(0, 0, 0, 0.1)',
-			md: '0px 8px 8px -1 rgba(0, 0, 0, 0.1)',
-			lg: '0px 12px 12px 0px rgba(0, 0, 0, 0.1)',
-			card: 'var(--shadow-card)',
-			section: 'rgba(0, 0, 0, 0.1) 0px 2px 9px 2px',
+			sm: 'var(--shadow-sm)',
+			DEFAULT: 'var(--shadow-sm)',
+			md: 'var(--shadow-md)',
+			lg: 'var(--shadow-lg)',
+			xl: 'var(--shadow-xl)',
 		},
 
 		borderRadius: {
@@ -750,7 +748,7 @@ const config: Config = {
 					'-webkit-transition': 'border-color 200ms ease-in-out',
 					'-moz-transition': 'border-color 200ms ease-in-out',
 
-					'&:not(.disabled)': {
+					'&:not(.disabled,.error)': {
 						'&:focus-within,input:focus,textarea:focus,&.focus': {
 							'border-color': theme('colors.primary.100'),
 
@@ -776,7 +774,15 @@ const config: Config = {
 						},
 					},
 
-					'&:not(:focus-within,.disabled):hover': {
+					'&.error': {
+						'border-color': theme('colors.error.100'),
+
+						'.flexible-fieldset': {
+							'border-color': theme('colors.error.100'),
+						},
+					},
+
+					'&:not(:focus-within,.disabled,.error):hover': {
 						'border-color': theme('colors.gray.500'),
 
 						'.flexible-fieldset': {
