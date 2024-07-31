@@ -1,6 +1,6 @@
 import { ArrowDownSVG } from '@/components/icons';
 import { useLocalstorage } from '@/hooks';
-import { numFormatter as bigNumFormatter, sepNumbers } from '@/utils/helpers';
+import { numFormatter as bigNumFormatter, dateFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 
@@ -57,8 +57,8 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 			{ id: 'stock_price_estimate', title: t('symbol_info_panel.stock_price_estimate'), value: '−' },
 			{
 				id: 'last_trade',
-				title: t('symbol_info_panel.last_trade'),
-				value: numFormatter(symbolData.lastTradedPrice),
+				title: t('symbol_info_panel.last_trade_date'),
+				value: dateFormatter(symbolData.lastTradedPrice, 'datetime'),
 			},
 			{
 				id: 'opening_rice',
@@ -113,7 +113,7 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 					<li
 						key={row.id}
 						style={{ flex: '0 0 40px' }}
-						className='odd:bg-gray-100 rounded-sm px-8 text-base flex-justify-between'
+						className='rounded-sm px-8 text-base flex-justify-between odd:bg-gray-100'
 					>
 						<span className='text-gray-700'>{row.title}:</span>
 						<span className='text-gray-800 ltr'>{row.value}</span>
@@ -124,7 +124,7 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 			<button
 				type='button'
 				onClick={() => setIsExpand(!isExpand)}
-				className='text-gray-700 size-24 w-full flex-justify-center'
+				className='size-24 w-full text-gray-700 flex-justify-center'
 			>
 				<ArrowDownSVG
 					width='1.4rem'
