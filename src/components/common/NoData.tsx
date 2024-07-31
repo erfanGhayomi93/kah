@@ -1,5 +1,4 @@
-import { useAppSelector } from '@/features/hooks';
-import { getTheme } from '@/features/slices/uiSlice';
+import { useTheme } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -16,7 +15,7 @@ interface NoDataProps {
 const NoData = ({ text, imgName = 'no-data', imgExt = 'svg', width = 118, height = 118, className }: NoDataProps) => {
 	const t = useTranslations('common');
 
-	const theme = useAppSelector(getTheme);
+	const theme = useTheme();
 
 	const pathname = '/static/images';
 
