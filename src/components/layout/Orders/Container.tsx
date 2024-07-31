@@ -1,9 +1,9 @@
 import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
-import { useAppSelector } from '@/features/hooks';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getOrdersActiveTab, setOrdersActiveTab } from '@/features/slices/tabSlice';
 import { getOrdersIsExpand } from '@/features/slices/uiSlice';
-import { useLocalstorage } from '@/hooks';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Header from './Header';
@@ -16,7 +16,9 @@ const Body = dynamic(() => import('./Body'), {
 const Container = () => {
 	const ordersIsExpand = useAppSelector(getOrdersIsExpand);
 
-	const [activeTab, setActiveTab] = useLocalstorage<TOrdersTab>('ot', 'open_orders');
+	const activeTab = useAppSelector(getOrdersActiveTab);
+
+	const dispatch = useAppDispatch();
 
 	const [selectedOrders, setSelectedOrders] = useState<Order.TOrder[]>([]);
 
@@ -40,7 +42,7 @@ const Container = () => {
 									setSelectedOrders={setSelectedOrders}
 									isExpand={ordersIsExpand}
 									tab={activeTab}
-									setTab={setActiveTab}
+									setTab={(v) => dispatch(setOrdersActiveTab(v))}
 								/>
 								{ordersIsExpand && <Body setSelectedOrders={setSelectedOrders} tab={activeTab} />}
 							</div>
