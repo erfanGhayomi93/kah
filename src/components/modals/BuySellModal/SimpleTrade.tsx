@@ -193,7 +193,7 @@ const SimpleTrade = ({
 	};
 
 	const blockTypeErrorMessage = () => {
-		if (!blockType || blockType.type === 'Position') return null;
+		if (side === 'buy' || !blockType || blockType.type === 'Position') return null;
 
 		if (blockType.type === 'Account' && blockTypeAccountValue > Number(userRemain?.purchasePower ?? 0)) {
 			return <ErrorMessage>{t('bs_modal.account_block_type_error')}</ErrorMessage>;
@@ -217,6 +217,12 @@ const SimpleTrade = ({
 		contractSize: symbolData?.contractSize ?? 0,
 		quantity,
 	});
+
+	const isDisabled =
+		side === 'sell' &&
+		(!blockType ||
+			(blockType.type === 'Account' && blockTypeAccountValue > Number(userRemain?.purchasePower ?? 0)) ||
+			(blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0)));
 
 	return (
 		<form method='get' onSubmit={onSubmitForm} className='w-full flex-1 gap-24 flex-column'>
@@ -388,7 +394,7 @@ const SimpleTrade = ({
 						)}
 
 						<Button
-							disabled={!blockType}
+							disabled={isDisabled}
 							type='submit'
 							className={cn(
 								'not h-40 flex-1 rounded text-base font-medium',
