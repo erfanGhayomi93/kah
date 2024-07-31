@@ -64,15 +64,25 @@ brokerAxios.interceptors.response.use(
 
 export const logoutBroker = () => {
 	try {
+		/* Logout from broker */
+		/* try {
+			const brokerUrls = getBrokerURLs(store.getState());
+		} catch (e) {
+			//
+		} */
+
+		/* Clear redux cache */
 		store.dispatch({ payload: false, type: 'user/setBrokerIsSelected' });
 		store.dispatch({ payload: null, type: 'broker/setBrokerURLs' });
 
+		/* Delete cookie */
 		const [token] = getBrokerClientId();
 		deleteBrokerClientId();
 
+		/* Notification */
 		if (token) {
 			ipcMain.send('broker:logged_out', undefined);
-			toast.warning('از حساب کارگزاری خود خارج شدید.', {
+			toast.warning('از حساب کارگزاری خارج شدید.', {
 				toastId: 'broker_unauthorize',
 				autoClose: 5000,
 			});
