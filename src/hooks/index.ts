@@ -13,6 +13,7 @@ import usePrevious from './usePrevious';
 import useServerDatetime from './useServerDatetime';
 import useStateRef from './useStateRef';
 import useSubscription from './useSubscription';
+import useTheme from './useTheme';
 import useTradingFeatures from './useTradingFeatures';
 import useUserInfo from './useUserInfo';
 
@@ -32,6 +33,7 @@ export {
 	useServerDatetime,
 	useStateRef,
 	useSubscription,
+	useTheme,
 	useTradingFeatures,
 	useUserInfo,
 };
