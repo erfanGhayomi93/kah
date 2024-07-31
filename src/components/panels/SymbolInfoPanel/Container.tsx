@@ -5,8 +5,12 @@ import { SettingSliderSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSymbolInfoPanelSettingModal } from '@/features/slices/modalSlice';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
+import { useSubscription } from '@/hooks';
+import { subscribeSymbolInfo } from '@/utils/subscriptions';
+import { useQueryClient } from '@tanstack/react-query';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import GridLayout, { type Layout } from 'react-grid-layout';
 import SymbolInformation from './components/SymbolInformation';
 
@@ -63,6 +67,10 @@ const MARGIN_BETWEEN_SECTIONS = 16;
 
 const Container = ({ symbolISIN, close }: ContainerProps) => {
 	const dispatch = useAppDispatch();
+
+	const queryClient = useQueryClient();
+
+	const { subscribe } = useSubscription();
 
 	const { data: symbolData, isLoading } = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', symbolISIN],
@@ -122,6 +130,55 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 		dispatch(setSymbolInfoPanelGridLayout(layout));
 	};
 
+	const getFieldName = (n: string): keyof Symbol.Info | null => {
+		const keys: Record<string, keyof Symbol.Info> = {
+			totalTradeValue: 'tradeValue',
+			totalNumberOfSharesTraded: 'tradeVolume',
+			closingPriceVarReferencePrice: 'closingPriceVarReferencePrice',
+			baseVolume: 'baseVolume',
+			lastTradedPrice: 'lastTradedPrice',
+			totalNumberOfTrades: 'tradeCount',
+			lastTradedPriceVar: 'lastTradedPrice',
+			lastTradedPriceVarPercent: 'tradePriceVarPreviousTradePercent',
+			closingPrice: 'closingPrice',
+			closingPriceVarPercent: 'closingPriceVarReferencePricePercent',
+			lastTradeDateTime: 'lastTradeDate',
+			lowestTradePriceOfTradingDay: 'lowPrice',
+			highestTradePriceOfTradingDay: 'highPrice',
+			symbolState: 'symbolTradeState',
+		};
+
+		return keys?.[n] ?? null;
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const queryKey = ['symbolInfoQuery', symbolISIN];
+			const visualData = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey))) as Symbol.Info;
+
+			if (!visualData) return;
+
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				try {
+					const f = getFieldName(fieldName);
+
+					if (value && f && f in visualData) {
+						const valueAsNumber = Number(value);
+
+						// @ts-expect-error: Lightstream returns the wrong data type
+						visualData[f as keyof Symbol.Info] = isNaN(valueAsNumber) ? value : valueAsNumber;
+					}
+				} catch (e) {
+					//
+				}
+			});
+
+			queryClient.setQueryData(queryKey, visualData);
+		} catch (e) {
+			//
+		}
+	};
+
 	const cells = useMemo(() => {
 		const result: Partial<Record<TSymbolInfoPanelSections, boolean>> = {};
 
@@ -132,6 +189,13 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 		return result;
 	}, [symbolInfoPanelGridLayout]);
+
+	useEffect(() => {
+		const sub = subscribeSymbolInfo(symbolISIN, 'symbolData');
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+
+		subscribe(sub);
+	}, [symbolISIN]);
 
 	const isOption = Boolean(symbolData?.isOption);
 
@@ -148,14 +212,14 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 			</div>
 
 			{isLoading && (
-				<div className='bg-gray-300 absolute left-0 top-0 size-full rounded'>
+				<div className='absolute left-0 top-0 size-full rounded bg-gray-300'>
 					<Loading />
 				</div>
 			)}
 
 			{symbolData && (
 				<div className='flex-column'>
-					<div className='border-gray-200 bg-gray-300 sticky left-0 top-0 z-20 gap-16 border-b pb-16 pt-8 flex-column'>
+					<div className='sticky left-0 top-0 z-20 gap-16 border-b border-gray-200 bg-gray-300 pb-16 pt-8 flex-column'>
 						<ErrorBoundary>
 							<SymbolInformation symbolData={symbolData} />
 						</ErrorBoundary>
