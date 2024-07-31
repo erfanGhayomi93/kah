@@ -1,5 +1,4 @@
-import dayjs from '@/libs/dayjs';
-import { numFormatter as bigNumFormatter, sepNumbers } from '@/utils/helpers';
+import { numFormatter as bigNumFormatter, dateFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -21,11 +20,6 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 	const numFormatter = (v: string | number | null) => {
 		if (v === null) return '−';
 		return sepNumbers(String(v ?? 0));
-	};
-
-	const dateFormatter = (v: string | number | null) => {
-		if (!v) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD − HH:mm:ss');
 	};
 
 	const items = useMemo<IOptionItem[]>(() => {
@@ -66,7 +60,7 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 			{
 				id: 'contractEndDate',
 				title: t('symbol_info_panel.contract_end_date'),
-				value: dateFormatter(contractEndDate),
+				value: dateFormatter(contractEndDate, 'date'),
 			},
 
 			{
@@ -114,7 +108,7 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 			{
 				id: 'lastTradeDate',
 				title: t('symbol_info_panel.last_trade_date'),
-				value: dateFormatter(lastTradeDate),
+				value: dateFormatter(lastTradeDate, 'datetime'),
 			},
 		];
 	}, [symbolData]);
@@ -130,7 +124,7 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 				<li
 					key={row.id}
 					style={{ flex: '0 0 40px' }}
-					className='odd:bg-gray-100 rounded-sm px-8 text-base flex-justify-between'
+					className='rounded-sm px-8 text-base flex-justify-between odd:bg-gray-100'
 				>
 					<span className='text-gray-700'>{row.title}:</span>
 					<span className='text-gray-800 ltr'>{row.value}</span>

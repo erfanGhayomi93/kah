@@ -5,8 +5,7 @@ import SymbolState from '@/components/common/SymbolState';
 import { GrowDownSVG, GrowUpSVG, MoreOptionsSVG } from '@/components/icons';
 import { useTradingFeatures } from '@/hooks';
 import useSubscription from '@/hooks/useSubscription';
-import dayjs from '@/libs/dayjs';
-import { cn, numFormatter, sepNumbers } from '@/utils/helpers';
+import { cn, dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -144,7 +143,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 					{
 						id: 'lastTradeDate',
 						title: t('old_option_chain.last_trade_date'),
-						valueFormatter: dayjs(lastTradeDate).calendar('jalali').format('HH:mm:ss'),
+						valueFormatter: dateFormatter(lastTradeDate, 'datetime'),
 					},
 				],
 				[

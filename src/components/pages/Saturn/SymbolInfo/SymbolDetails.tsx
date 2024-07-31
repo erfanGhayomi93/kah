@@ -4,8 +4,7 @@ import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import { GrowDownSVG, GrowUpSVG } from '@/components/icons';
 import { useTradingFeatures } from '@/hooks';
 import useSubscription from '@/hooks/useSubscription';
-import dayjs from '@/libs/dayjs';
-import { cn, getColorBasedOnPercent, numFormatter, sepNumbers } from '@/utils/helpers';
+import { cn, dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers } from '@/utils/helpers';
 import { subscribeSymbolInfo } from '@/utils/subscriptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -121,7 +120,7 @@ const SymbolDetails = ({ symbol }: SymbolDetailsProps) => {
 					{
 						id: 'lastTradeDate',
 						title: t('old_option_chain.last_trade_date'),
-						valueFormatter: dayjs(lastTradeDate).calendar('jalali').format('HH:mm:ss'),
+						valueFormatter: dateFormatter(lastTradeDate, 'datetime'),
 					},
 				],
 				[

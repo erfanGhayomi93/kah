@@ -11,8 +11,7 @@ import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useOptionWatchlistColumns, useSubscription } from '@/hooks';
-import dayjs from '@/libs/dayjs';
-import { numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type ColumnMovedEvent, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
@@ -82,11 +81,6 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 		} catch (e) {
 			//
 		}
-	};
-
-	const dateFormatter = (v: string | number) => {
-		if (v === undefined || v === null) return '−';
-		return dayjs(v).calendar('jalali').format('YYYY/MM/DD');
 	};
 
 	const onDelete = async (symbol: Option.Root) => {
@@ -472,7 +466,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 						data?.symbolInfo.contractEndDate
 							? new Date(data?.symbolInfo.contractEndDate).getTime()
 							: new Date().getTime(),
-					valueFormatter: ({ value }) => dateFormatter(value),
+					valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
@@ -610,7 +604,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 						data?.optionWatchlistData.lastTradeDate
 							? new Date(data?.optionWatchlistData.lastTradeDate).getTime()
 							: new Date().getTime(),
-					valueFormatter: ({ value }) => dateFormatter(value),
+					valueFormatter: ({ value }) => dateFormatter(value, 'datetime'),
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
