@@ -24,21 +24,18 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 				colId: 'requestDate',
 				headerName: t('withdrawal_modal.withdrawal_date_column'),
 				valueGetter: (row) => dateFormatter(row.requestDate),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			/* مبلغ */
 			{
 				colId: 'requestAmount',
 				headerName: t('withdrawal_modal.amount_column'),
 				valueGetter: (row) => sepNumbers(String(row.requestAmount)),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			/* وضعیت */
 			{
 				colId: 'state',
 				headerName: t('withdrawal_modal.status_column'),
 				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 		],
 		[],

@@ -2553,11 +2553,23 @@ declare namespace Commission {
 		marketTitle: string;
 		marketUnitTitle: string;
 		commissionType: string;
-		buyCommission: number;
-		sellCommission: number;
+		totalBuyCommission: number;
+		totalSellCommission: number;
+		buyTax: number;
+		sellTax: number;
 	}
 
-	type Data = Record<string, Root>;
+	interface Row {
+		marketTitle: string;
+		marketUnitTitle: string;
+		commissionType: string;
+		buyCommission: number;
+		sellCommission: number;
+		buyTax: number;
+		sellTax: number;
+	}
+
+	type Data = Record<string, Row>;
 }
 
 declare interface GlPositionExtraInfo {

@@ -148,6 +148,7 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 				colId: 'requestCount',
 				headerName: t('physical_settlement_reports_page.request_for_settlement_column'),
 				cellClass: 'ltr',
+				width: 104,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestCount')]
 					?.hidden,
 				valueGetter: (row) => (row.requestCount >= 0 ? sepNumbers(String(row.requestCount)) : ''),

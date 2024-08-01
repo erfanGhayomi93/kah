@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setManageColumnsModal } from '@/features/slices/modalSlice';
 import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
+import { toast } from 'react-toastify';
 
 const Plus = () => (
 	<svg width='12.4rem' height='12.4rem' viewBox='0 0 124 124' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -12,7 +13,7 @@ const Plus = () => (
 			width='123'
 			height='123'
 			rx='15.5'
-			className='darkBlue:fill-gray-50 fill-white dark:fill-gray-50'
+			className='fill-white darkBlue:fill-gray-50 dark:fill-gray-50'
 			stroke='currentColor'
 			strokeDasharray='17 17'
 		/>
@@ -23,7 +24,7 @@ const Plus = () => (
 );
 
 const Custom = () => {
-	const t = useTranslations('home');
+	const t = useTranslations();
 
 	const gridLayout = useAppSelector(getDashboardGridLayout);
 
@@ -45,6 +46,16 @@ const Custom = () => {
 	};
 
 	const onColumnChanged = (cols: Array<IManageColumn<TDashboardSections>>) => {
+		const requestHiddenColumnsCount = cols.reduce((total, c) => total + Number(c.hidden), 0);
+		const validHiddenSectionsCount = gridLayout.length - 2;
+
+		if (requestHiddenColumnsCount > validHiddenSectionsCount) {
+			toast.error(t('alerts.can_not_remove_all_sections'), {
+				toastId: 'can_not_remove_all_sections',
+			});
+			return;
+		}
+
 		try {
 			const result: Partial<Record<TDashboardSections, boolean>> = {};
 
@@ -76,7 +87,7 @@ const Custom = () => {
 		dispatch(
 			setManageColumnsModal({
 				columns,
-				title: t('manage_layout'),
+				title: t('home.manage_layout'),
 				initialColumns: initialDashboardLayout,
 				stream: false,
 				onColumnChanged: (cols) => onColumnChanged(cols as Array<IManageColumn<TDashboardSections>>),
@@ -85,7 +96,7 @@ const Custom = () => {
 	};
 
 	return (
-		<div className='darkBlue:bg-gray-50 size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center dark:bg-gray-50'>
+		<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<button
 				type='button'
 				onClick={openDashboardLayoutManager}
