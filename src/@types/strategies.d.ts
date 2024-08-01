@@ -358,7 +358,7 @@ interface ILongCallFiltersModalState {
 	iotm: Option.IOTM[];
 	dueDays: [null | number, null | number];
 	openPosition: null | number;
-	bepDifference: null | number;
+	bepDifference: [null | number, null | number];
 }
 
 interface ILongPutFiltersModalState {
@@ -366,7 +366,7 @@ interface ILongPutFiltersModalState {
 	iotm: Option.IOTM[];
 	dueDays: [null | number, null | number];
 	openPosition: null | number;
-	bepDifference: null | number;
+	bepDifference: [null | number, null | number];
 }
 
 interface IProtectivePutFiltersModalState {
@@ -375,7 +375,7 @@ interface IProtectivePutFiltersModalState {
 	dueDays: [null | number, null | number];
 	openPosition: null | number;
 	maxLoss: null | number;
-	bepDifference: null | number;
+	bepDifference: [null | number, null | number];
 }
 
 interface IBullCallSpreadFiltersModalState {

@@ -562,9 +562,11 @@ export const dojiAnalyzer = <T>(data: T[], callback: (item: T) => number): TDoji
 	return 'Neutral';
 };
 
-export const getColorBasedOnPercent = (v: number) => {
+export const getColorBasedOnPercent = (v: number, reverse = false) => {
 	if (v === 0) return 'text-gray-700';
-	if (v > 0) return 'text-success-100';
+
+	if ((v < 0 && reverse) || (v > 0 && !reverse)) return 'text-success-100';
+
 	return 'text-error-100';
 };
 

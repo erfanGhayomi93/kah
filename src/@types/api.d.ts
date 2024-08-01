@@ -1831,8 +1831,8 @@ declare namespace Strategy {
 		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		optionBestLimitPrice: number;
-		optionBestLimitVolume: number;
+		optionBestBuyLimitPrice: number;
+		optionBestBuyLimitQuantity: number;
 		tradeValue: number;
 		baseTradeValue: number;
 		baseTradeCount: number;
@@ -1845,6 +1845,7 @@ declare namespace Strategy {
 		requiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
+		withCommission: boolean;
 	}
 
 	export interface LongStraddle {

@@ -306,6 +306,7 @@ const Conversion = (strategy: ConversionProps) => {
 				headerName: 'نماد پایه',
 				initialHide: initialHiddenColumnsConversion.baseSymbolTitle,
 				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
@@ -590,7 +591,7 @@ const Conversion = (strategy: ConversionProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

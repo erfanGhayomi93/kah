@@ -220,16 +220,17 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 						title: t('strategy_filters.max_loss'),
 						mode: 'single',
 						type: 'percent',
+						label: t('strategy_filters.to'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.maxLoss ?? null,
 					},
 					{
 						id: 'bepDifference',
 						title: t('strategy_filters.bep_difference'),
-						mode: 'single',
+						mode: 'range',
 						type: 'percent',
-						placeholder: t('strategy_filters.value'),
-						initialValue: filters?.bepDifference ?? null,
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: filters?.bepDifference ?? [null, null],
 					},
 				],
 			}),
@@ -243,6 +244,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				headerName: 'نماد پایه',
 				initialHide: initialHiddenColumnsProtectivePut.baseSymbolTitle,
 				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
@@ -273,7 +275,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			},
 			{
 				colId: 'symbolTitle',
-				headerName: 'کال خرید',
+				headerName: 'پوت خرید',
 				initialHide: initialHiddenColumnsProtectivePut.symbolTitle,
 				width: 128,
 				cellClass: 'cursor-pointer',
@@ -425,8 +427,10 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				headerName: 'اختلاف تا سر به سر',
 				initialHide: initialHiddenColumnsProtectivePut.bepDifference,
 				minWidth: 136,
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
+				valueFormatter: ({ value }) =>
+					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
 			},
 			{
 				colId: 'tradeValue',
@@ -492,7 +496,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

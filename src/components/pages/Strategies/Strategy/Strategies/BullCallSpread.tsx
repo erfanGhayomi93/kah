@@ -270,6 +270,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						title: t('strategy_filters.max_profit'),
 						mode: 'single',
 						type: 'percent',
+						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.leastMaxProfitPercent ?? null,
 						titleHint: t('strategy_filters.max_profit_tooltip'),
@@ -278,7 +279,8 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						id: 'leastYTM',
 						title: t('strategy_filters.least_YTM'),
 						mode: 'single',
-						type: 'percent',
+						type: 'integer',
+						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.leastYTM ?? null,
 					},
@@ -294,6 +296,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				headerName: 'نماد پایه',
 				initialHide: initialHiddenColumnsBullCallSpread.baseSymbolTitle,
 				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
@@ -403,6 +406,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestBuyLimitPrice',
 				headerName: 'بهترین خریدار کال فروش',
+				cellClass: 'buy',
 				initialHide: initialHiddenColumnsBullCallSpread.hspBestBuyLimitPrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.hspBestBuyLimitPrice ?? 0,
@@ -411,6 +415,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestBuyLimitQuantity',
 				headerName: 'حجم خریدار کال فروش',
+				cellClass: 'buy',
 				initialHide: initialHiddenColumnsBullCallSpread.hspBestBuyLimitQuantity,
 				width: 176,
 				valueGetter: ({ data }) => data?.hspBestBuyLimitQuantity ?? 0,
@@ -419,6 +424,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			{
 				colId: 'hspBestSellLimitPrice',
 				headerName: 'بهترین فروشنده کال فروش',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsBullCallSpread.hspBestSellLimitPrice,
 				width: 204,
 				valueGetter: ({ data }) => data?.hspBestSellLimitPrice ?? 0,
@@ -426,7 +432,8 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			},
 			{
 				colId: 'hspBestSellLimitQuantity',
-				headerName: 'حجم سرخط فروش کال فروش',
+				headerName: 'حجم فروشنده کال فروش',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsBullCallSpread.hspBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.hspBestSellLimitQuantity ?? 0,
@@ -505,6 +512,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				headerName: 'حداکثر زیان',
 				initialHide: initialHiddenColumnsBullCallSpread.maxLoss,
 				width: 152,
+				cellClass: ({ value }) => getColorBasedOnPercent(value, true),
 				valueGetter: ({ data }) => data?.maxLoss ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -638,7 +646,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

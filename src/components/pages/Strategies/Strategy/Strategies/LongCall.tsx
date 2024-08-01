@@ -202,11 +202,11 @@ const LongCall = (strategy: LongCallProps) => {
 					{
 						id: 'bepDifference',
 						title: t('strategy_filters.bep_difference'),
-						mode: 'single',
-						type: 'percent',
-						label: t('strategy_filters.from'),
-						placeholder: t('strategy_filters.value'),
-						initialValue: filters?.bepDifference ?? null,
+						mode: 'range',
+						type: 'integer',
+						label: [t('strategy_filters.from'), t('strategy_filters.to')],
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
 					},
 				],
 			}),
@@ -219,8 +219,8 @@ const LongCall = (strategy: LongCallProps) => {
 				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				initialHide: initialHiddenColumnsLongCall.baseSymbolTitle,
-				minWidth: 104,
-				flex: 1,
+				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
@@ -388,8 +388,10 @@ const LongCall = (strategy: LongCallProps) => {
 				headerName: 'اختلاف تا سر به سر',
 				initialHide: initialHiddenColumnsLongCall.bepDifference,
 				minWidth: 136,
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
+				valueFormatter: ({ value }) =>
+					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
 			},
 			{
 				colId: 'tradeValue',
@@ -451,7 +453,7 @@ const LongCall = (strategy: LongCallProps) => {
 		<>
 			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

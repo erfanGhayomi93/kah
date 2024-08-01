@@ -203,10 +203,11 @@ const LongPut = (strategy: LongPutProps) => {
 					{
 						id: 'bepDifference',
 						title: t('strategy_filters.bep_difference'),
-						mode: 'single',
-						type: 'percent',
-						placeholder: t('strategy_filters.value'),
-						initialValue: filters?.bepDifference ?? null,
+						mode: 'range',
+						type: 'integer',
+						label: [t('strategy_filters.from'), t('strategy_filters.to')],
+						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
+						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
 					},
 				],
 			}),
@@ -218,9 +219,8 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
-				baseSymbolTitle: initialHiddenColumnsLongPut.baseSymbolTitle,
-				minWidth: 104,
-				flex: 1,
+				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
@@ -229,8 +229,6 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradePriceVarPreviousTradePercent',
 				headerName: 'قیمت پایه',
-				baseTradePriceVarPreviousTradePercent:
-					initialHiddenColumnsLongPut.baseTradePriceVarPreviousTradePercent,
 				minWidth: 108,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongPut>) => ({
@@ -245,14 +243,12 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'dueDays',
 				headerName: 'مانده تا سررسید',
-				dueDays: initialHiddenColumnsLongPut.dueDays,
 				minWidth: 120,
 				valueGetter: ({ data }) => data?.dueDays ?? 0,
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: 'کال',
-				symbolTitle: initialHiddenColumnsLongPut.symbolTitle,
 				minWidth: 128,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
@@ -265,7 +261,6 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'strikePrice',
 				headerName: 'قیمت اعمال',
-				strikePrice: initialHiddenColumnsLongPut.strikePrice,
 				minWidth: 96,
 				cellClass: 'gray',
 				valueGetter: ({ data }) => data?.strikePrice ?? 0,
@@ -274,7 +269,6 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'openPositionCount',
 				headerName: 'موقعیت باز',
-				openPositionCount: initialHiddenColumnsLongPut.openPositionCount,
 				minWidth: 112,
 				valueGetter: ({ data }) => data?.openPositionCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -282,7 +276,6 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'tradePriceVarPreviousTradePercent',
 				headerName: 'قیمت نماد آپشن',
-				tradePriceVarPreviousTradePercent: initialHiddenColumnsLongPut.tradePriceVarPreviousTradePercent,
 				minWidth: 152,
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ value }: ICellRendererParams<Strategy.LongPut>) => ({
@@ -294,7 +287,6 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'optionBestSellLimitPrice',
 				headerName: 'بهترین فروشنده',
-				optionBestSellLimitPrice: initialHiddenColumnsLongPut.optionBestSellLimitPrice,
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitPrice ?? 0,
@@ -303,7 +295,6 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'optionBestSellLimitQuantity',
 				headerName: 'حجم سرخط فروش',
-				optionBestSellLimitQuantity: initialHiddenColumnsLongPut.optionBestSellLimitQuantity,
 				minWidth: 152,
 				cellClass: 'sell',
 				valueGetter: ({ data }) => data?.optionBestSellLimitQuantity ?? 0,
@@ -312,25 +303,22 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'optionBestLimitPrice',
 				headerName: 'بهترین خریدار',
-				optionBestLimitPrice: initialHiddenColumnsLongPut.optionBestLimitPrice,
 				minWidth: 152,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => data?.optionBestLimitPrice ?? 0,
+				valueGetter: ({ data }) => data?.optionBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'optionBestLimitVolume',
 				headerName: 'حجم سرخط خرید',
-				optionBestLimitVolume: initialHiddenColumnsLongPut.optionBestLimitVolume,
 				minWidth: 120,
 				cellClass: 'buy',
-				valueGetter: ({ data }) => data?.optionBestLimitVolume ?? 0,
+				valueGetter: ({ data }) => data?.optionBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'longPutBEP',
 				headerName: 'سر به سر',
-				longPutBEP: initialHiddenColumnsLongPut.longPutBEP,
 				minWidth: 128,
 				cellClass: ({ data }) =>
 					getColorBasedOnPercent((data?.baseLastTradedPrice ?? 0) - (data?.longPutBEP ?? 0)),
@@ -340,7 +328,6 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'profitPercent',
 				headerName: 'حداکثر بازده',
-				profitPercent: initialHiddenColumnsLongPut.profitPercent,
 				minWidth: 160,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
@@ -389,8 +376,10 @@ const LongPut = (strategy: LongPutProps) => {
 				headerName: 'اختلاف تا سر به سر',
 				bepDifference: initialHiddenColumnsLongPut.bepDifference,
 				minWidth: 136,
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
+				valueFormatter: ({ value }) =>
+					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
 			},
 			{
 				colId: 'tradeValue',
@@ -452,7 +441,7 @@ const LongPut = (strategy: LongPutProps) => {
 		<>
 			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

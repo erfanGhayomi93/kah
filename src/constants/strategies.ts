@@ -426,7 +426,7 @@ export const initialColumnsBullCallSpread: Array<IManageColumn<TBullCallSpreadCo
 		id: 'ytm',
 		title: 'YTM',
 		hidden: initialHiddenColumnsBullCallSpread.ytm,
-		tag: 'PanelDetail',
+		tag: 'Computational',
 	},
 ];
 
@@ -1519,7 +1519,7 @@ export const initialColumnsBearPutSpread: Array<IManageColumn<TBearPutSpreadColu
 	},
 	{
 		id: 'lspBestSellLimitQuantity',
-		title: 'حجم سرخط فروش پوت فروش',
+		title: 'حجم فروشنده پوت فروش',
 		hidden: initialHiddenColumnsBearPutSpread.lspBestSellLimitQuantity,
 		tag: 'PanelDetail',
 	},

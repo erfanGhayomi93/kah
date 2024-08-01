@@ -194,7 +194,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					filters: [
 						{
 							id: 'callIOTM',
-							title: t('strategy_filters.iotm'),
+							title: t('strategy_filters.call_IOTM'),
 							mode: 'array',
 							type: 'string',
 							data: iotm,
@@ -202,7 +202,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 						},
 						{
 							id: 'putIOTM',
-							title: t('strategy_filters.iotm'),
+							title: t('strategy_filters.put_IOTM'),
 							mode: 'array',
 							type: 'string',
 							data: iotm,
@@ -248,6 +248,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				headerName: 'نماد پایه',
 				initialHide: initialHiddenColumnsLongStraddle.baseSymbolTitle,
 				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
@@ -555,7 +556,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}
