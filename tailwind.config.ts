@@ -186,6 +186,7 @@ const config: Config = {
 			'1': ' 1 1 0%',
 			'1/2': '0 0 50%',
 			'24': '0 0 2.4rem',
+			'40': '0 0 4rem',
 			'48': '0 0 4.8rem',
 			'328': '0 0 32.8rem',
 		},
@@ -371,9 +372,6 @@ const config: Config = {
 				},
 
 				'.btn-select': {
-					display: 'flex',
-					'align-items': 'center',
-					'justify-content': 'center',
 					'font-weight': '500',
 					color: theme('colors.primary.100'),
 					'background-color': theme('colors.secondary.100'),
@@ -894,8 +892,9 @@ const config: Config = {
 				},
 			});
 
-			addVariant('darkBlue', 'html[data-theme="darkBlue"] &');
-			addVariant('dark', 'html[data-theme="dark"] &');
+			addVariant('darkBlue', ':root:is([data-theme="darkBlue"]) &');
+			addVariant('dark', ':root:is([data-theme="dark"]) &');
+			addVariant('darkness', ':root:is([data-theme="dark"], [data-theme="darkBlue"]) &');
 		}),
 	],
 };

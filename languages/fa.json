@@ -66,17 +66,23 @@
 		"buy": "خرید",
 		"sell": "فروش"
 	},
+	"themes": {
+		"light": "روشن",
+		"dark": "شب",
+		"darkBlue": "تیره",
+		"system": "سیستم"
+	},
 	"header": {
 		"login": "ورود",
 		"search_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
 		"register": "ثبت‌نام",
 		"exit": "خروج",
+		"active_broker": "کارگزاری فعال",
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
 		"logout_broker": "خروج از حساب کارگزاری",
 		"login_broker": "ورود به کارگزاری",
 		"logout_broker_description": "پس از خروج از حساب، عملیات معاملاتی مرتبط با کارگزاری امکان پذیر نخواهد بود.",
-		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
 		"setting": "تنظیمات",
@@ -85,7 +91,8 @@
 		"user_status_Normal": "عادی",
 		"user_status_AtRisk": "در خطر",
 		"user_status_CallMargin": "اخطار وجه تضمین",
-		"logout": "خروج از حساب کاربری"
+		"logout": "خروج از حساب کاربری کهکشان",
+		"theme": "رنگ زمینه"
 	},
 	"header_notifications": {
 		"notifications": "اعلان‌ها",

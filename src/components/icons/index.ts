@@ -14,6 +14,7 @@ import BearishMarketSVG from './bearish-market.svg';
 import BellSVG from './bell.svg';
 import BookmarkSVG from './bookmark.svg';
 import BoxSVG from './box.svg';
+import BuildingSVG from './building.svg';
 import BullishMarketSVG from './bullish-market.svg';
 import CalculatorSVG from './calculator.svg';
 import CalendarSVG from './calendar.svg';
@@ -155,6 +156,7 @@ export {
 	BellSVG,
 	BookmarkSVG,
 	BoxSVG,
+	BuildingSVG,
 	BullishMarketSVG,
 	CalculatorSVG,
 	CalendarSVG,
