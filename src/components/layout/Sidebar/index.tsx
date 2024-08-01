@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getSidebarIsExpand, toggleSidebar } from '@/features/slices/uiSlice';
+import { Link } from '@/navigation';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -26,13 +27,15 @@ const Sidebar = () => {
 				width: sidebarIsExpand ? '18.4rem' : '6rem',
 				transition: 'width 300ms',
 				zIndex: 99999,
+				boxShadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
 			}}
-			className='darkBlue:bg-gray-50 fixed right-0 top-0 h-full bg-gray-800 dark:bg-gray-50'
+			className='fixed right-0 top-0 h-full bg-gray-800 darkBlue:bg-gray-50 dark:bg-gray-50'
 			onMouseLeave={closeSidebar}
 		>
 			<div className='relative h-full flex-column'>
 				<div className='z-10 flex-1 select-none overflow-hidden flex-column'>
-					<div
+					<Link
+						href='/'
 						style={{ minWidth: '5.4rem', height: '5.4rem' }}
 						className={clsx('pr-16 flex-justify-start', sidebarIsExpand && 'gap-8')}
 					>
@@ -40,7 +43,7 @@ const Sidebar = () => {
 						<h2 className={clsx('text-base text-white', !sidebarIsExpand && 'hidden')}>
 							{t('sidebar.app_name')}
 						</h2>
-					</div>
+					</Link>
 
 					<List sidebarIsExpand={sidebarIsExpand} expandId={expandId} setExpandId={setExpandId} />
 				</div>

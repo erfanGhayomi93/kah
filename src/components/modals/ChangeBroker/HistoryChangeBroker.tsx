@@ -67,13 +67,11 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 				colId: 'saveDate',
 				headerName: t('deposit_modal.time_history'),
 				valueGetter: (row) => dateFormatter(row.saveDate),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: t('change_broker_modal.symbol_column'),
 				valueGetter: (row) => (row.symbolTitle ? row.symbolTitle : '-'),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'action',
@@ -90,7 +88,6 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 						)}
 					</div>
 				),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 				cellClass: '!text-sm',
 			},
 		],

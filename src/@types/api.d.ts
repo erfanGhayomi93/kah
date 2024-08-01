@@ -620,6 +620,7 @@ declare namespace User {
 		id: number;
 		brokerCode: string | number;
 		name: string;
+		shortName: string;
 		description: string;
 		logo: null | string;
 		ssoUrl: string;
@@ -1831,8 +1832,8 @@ declare namespace Strategy {
 		bepDifference: number;
 		timeValue: number;
 		intrinsicValue: number;
-		optionBestLimitPrice: number;
-		optionBestLimitVolume: number;
+		optionBestBuyLimitPrice: number;
+		optionBestBuyLimitQuantity: number;
 		tradeValue: number;
 		baseTradeValue: number;
 		baseTradeCount: number;
@@ -1845,6 +1846,7 @@ declare namespace Strategy {
 		requiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
+		withCommission: boolean;
 	}
 
 	export interface LongStraddle {
@@ -2553,11 +2555,23 @@ declare namespace Commission {
 		marketTitle: string;
 		marketUnitTitle: string;
 		commissionType: string;
-		buyCommission: number;
-		sellCommission: number;
+		totalBuyCommission: number;
+		totalSellCommission: number;
+		buyTax: number;
+		sellTax: number;
 	}
 
-	type Data = Record<string, Root>;
+	interface Row {
+		marketTitle: string;
+		marketUnitTitle: string;
+		commissionType: string;
+		buyCommission: number;
+		sellCommission: number;
+		buyTax: number;
+		sellTax: number;
+	}
+
+	type Data = Record<string, Row>;
 }
 
 declare interface GlPositionExtraInfo {

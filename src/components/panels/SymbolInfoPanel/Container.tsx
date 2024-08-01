@@ -270,6 +270,14 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 												</ErrorBoundary>
 											</div>
 										),
+
+										!cells.option_individual_and_legal && (
+											<div key='option_individual_and_legal'>
+												<ErrorBoundary>
+													<IndividualAndLegal symbolData={symbolData} />
+												</ErrorBoundary>
+											</div>
+										),
 									]
 								: [
 										!cells.symbol_detail && (
@@ -311,15 +319,15 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 												</ErrorBoundary>
 											</div>
 										),
-									]}
 
-							{!cells.individual_and_legal && (
-								<div key='individual_and_legal'>
-									<ErrorBoundary>
-										<IndividualAndLegal symbolData={symbolData} />
-									</ErrorBoundary>
-								</div>
-							)}
+										!cells.individual_and_legal && (
+											<div key='individual_and_legal'>
+												<ErrorBoundary>
+													<IndividualAndLegal symbolData={symbolData} />
+												</ErrorBoundary>
+											</div>
+										),
+									]}
 
 							{!cells.chart && (
 								<div key='chart'>

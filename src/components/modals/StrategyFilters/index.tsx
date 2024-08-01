@@ -44,6 +44,33 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 			dispatch(setStrategyFiltersModal(null));
 		};
 
+		const onClear = () => {
+			const newFilters: TInput = {
+				baseSymbols: [],
+			};
+
+			for (let i = 0; i < filters.length; i++) {
+				const filter = filters[i];
+
+				if (filter.mode === 'array') {
+					if (filter.type === 'string') newFilters[filter.id] = [];
+					continue;
+				}
+
+				if (filter.mode === 'range') {
+					newFilters[filter.id] = [null, null];
+					continue;
+				}
+
+				if (filter.mode === 'single') {
+					newFilters[filter.id] = null;
+					continue;
+				}
+			}
+
+			setInputs(newFilters);
+		};
+
 		const submit = (e: React.FormEvent) => {
 			e.preventDefault();
 
@@ -179,9 +206,9 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 			>
 				<div
 					style={{ width: '70rem' }}
-					className='darkBlue:bg-gray-50 max-w-full bg-white flex-column dark:bg-gray-50'
+					className='max-w-full bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 				>
-					<Header label={t('title')} onClose={onCloseModal} />
+					<Header label={t('title')} onClose={onCloseModal} onClear={onClear} />
 
 					<div className='gap-32 p-24 flex-column'>
 						<Tabs
@@ -203,7 +230,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 
 						<form
 							onSubmit={submit}
-							className='darkBlue:bg-gray-50 gap-24 bg-white flex-column dark:bg-gray-50'
+							className='gap-24 bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 						>
 							<ul className='gap-32 flex-column'>
 								{!loading && (

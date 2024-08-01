@@ -372,7 +372,7 @@ const SymbolPriceSlider = ({
 							/>
 
 							<Tooltip
-								content={`${t('high')}: ‎${sepNumbers(String(boundaryData[0] ?? 0))} (${config.lowestTradePriceOfTradingDayAsPercent}%)`}
+								content={`${t('low')}: ‎${sepNumbers(String(boundaryData[0] ?? 0))} (${config.lowestTradePriceOfTradingDayAsPercent}%)`}
 							>
 								<div
 									onClick={() => onClick?.(boundaryData[0])}
@@ -398,7 +398,7 @@ const SymbolPriceSlider = ({
 							/>
 
 							<Tooltip
-								content={`${t('low')}: ‎${sepNumbers(String(boundaryData[1] ?? 0))} (${config.highestTradePriceOfTradingDayAsPercent}%)`}
+								content={`${t('high')}: ‎${sepNumbers(String(boundaryData[1] ?? 0))} (${config.highestTradePriceOfTradingDayAsPercent}%)`}
 							>
 								<div
 									onClick={() => onClick?.(boundaryData[1])}

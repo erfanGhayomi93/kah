@@ -1,7 +1,23 @@
-import Tooltip from '@/components/common/Tooltip';
-import { EditSVG, LogoutSVG, SessionHistorySVG, SettingSVG, UserCircleSVG } from '@/components/icons';
+import { useGetBrokersQuery } from '@/api/queries/brokerQueries';
+import {
+	AngleLeftSVG,
+	BuildingSVG,
+	LogoutSVG,
+	OffSVG,
+	SessionHistorySVG,
+	SettingSVG,
+	SunSVG,
+	UserCircleSVG,
+} from '@/components/icons';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getTheme, setTheme } from '@/features/slices/uiSlice';
+import { useDebounce } from '@/hooks';
 import { Link } from '@/navigation';
+import { getBrokerClientId } from '@/utils/cookie';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useMemo, useState } from 'react';
+import styles from './index.module.scss';
 
 interface UserDropdownProps {
 	customerTitle: string;
@@ -26,76 +42,157 @@ const UserDropdown = ({
 }: UserDropdownProps) => {
 	const t = useTranslations();
 
+	const theme = useAppSelector(getTheme);
+
+	const dispatch = useAppDispatch();
+
+	const { setDebounce, clearDebounce } = useDebounce();
+
+	const [themeIsOpen, setThemeIsOpen] = useState(false);
+
+	const { data: brokersData, isFetching } = useGetBrokersQuery({
+		queryKey: ['getBrokersQuery'],
+		enabled: hasBroker,
+	});
+
+	const onChangeTheme = (th: TTheme) => {
+		dispatch(setTheme(th));
+		close();
+	};
+
+	const currentBrokerData = useMemo(() => {
+		const [, brokerCode] = getBrokerClientId();
+
+		if (!hasBroker || !brokersData || !brokerCode) return null;
+
+		return brokersData.find((item) => Number(item.brokerCode) === brokerCode) ?? null;
+	}, [brokersData, hasBroker]);
+
+	const themes: TTheme[] = ['light', 'dark', 'darkBlue', 'system'];
+
+	const hasNotPassword = userData?.hasPassword === false;
+
 	return (
-		<div className='gap-24 rounded-md bg-white pb-16 shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
-			<div className='gap-4 pb-8 flex-column'>
-				<div className='pr-16 flex-justify-between'>
-					<div className='gap-8 pt-16 flex-items-center fit-image'>
-						<div style={{ flex: '0 0 2.4rem' }} className='h-24 rounded-circle flex-justify-center'>
-							<UserCircleSVG className='text-gray-700' width='2.4rem' height='2.4rem' />
-						</div>
-						<h3 className='text-base font-medium text-gray-800'>{customerTitle}</h3>
+		<div className='gap-16 rounded-md bg-white pb-16 shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<Link target='_blank' href='/settings/general' className='px-16 pt-16 flex-justify-between'>
+				<div className='flex gap-12'>
+					<div className='size-40 flex-justify-center'>
+						<UserCircleSVG width='4rem' height='4rem' />
 					</div>
 
-					<button className='p-12 text-gray-700 transition-colors hover:text-primary-100' type='button'>
-						<Tooltip placement='bottom' content={t('tooltip.edit')}>
-							<div className='p-4'>
-								<EditSVG width='2rem' height='2rem' />
-							</div>
-						</Tooltip>
-					</button>
+					<div className='gap-8 flex-column'>
+						<h2 className='font-medium text-gray-800'>{customerTitle}</h2>
+						<h6 className='text-tiny text-gray-700'>{userData?.mobile}</h6>
+					</div>
 				</div>
-				<span className='pr-48 text-tiny text-gray-500'>{userData?.mobile ?? '−'}</span>
-			</div>
 
-			<div className='flex-col gap-8 px-16 flex-items-center'>
-				{userData?.hasPassword === false && (
-					<button
-						type='button'
-						onClick={resetPassword}
-						className='h-36 w-full rounded border border-primary-100 text-tiny font-medium text-primary-100 transition-colors flex-justify-center hover:bg-primary-100 hover:text-white'
-					>
-						{t('header.set_password')}
-					</button>
-				)}
+				<button className='flex-40 h-40 text-gray-700 flex-justify-center'>
+					<AngleLeftSVG width='2rem' height='2rem' />
+				</button>
+			</Link>
 
-				{hasBroker ? (
-					<button
-						type='button'
-						onClick={() => logoutBroker(close)}
-						className='h-36 w-full rounded border border-error-100 text-tiny font-medium text-error-100 transition-colors flex-justify-center hover:bg-error-100 hover:text-white'
-					>
-						{t('header.logout_broker')}
-					</button>
-				) : (
-					<button
-						type='button'
-						onClick={() => {
-							loginBroker();
-							close();
-						}}
-						className='h-36 w-full rounded border border-primary-100 text-tiny font-medium text-primary-100 transition-colors flex-justify-center hover:bg-primary-100 hover:text-white'
-					>
-						{t('header.login_broker')}
-					</button>
-				)}
-			</div>
-
-			<nav className='gap-16 px-8 flex-column'>
-				<ul className='flex-column'>
-					<li>
-						<Link
-							onClick={() => close()}
-							href='/settings/general'
-							className='h-40 w-full gap-8 rounded px-12 text-gray-800 transition-colors flex-justify-start hover:bg-secondary-200'
+			{(hasNotPassword || !hasBroker) && (
+				<div className='flex-col gap-8 px-16 flex-items-center'>
+					{hasNotPassword && (
+						<button
+							type='button'
+							onClick={resetPassword}
+							className='h-40 w-full rounded border border-primary-100 text-tiny font-medium text-primary-100 transition-colors flex-justify-center hover:bg-primary-100 hover:text-white'
 						>
-							<span className='size-24 flex-justify-center'>
-								<UserCircleSVG className='text-gray-700' width='1.8rem' height='1.8rem' />
-							</span>
+							{t('header.set_password')}
+						</button>
+					)}
 
-							<span>{t('header.user_account')}</span>
-						</Link>
+					{!hasBroker && (
+						<button
+							type='button'
+							onClick={() => {
+								loginBroker();
+								close();
+							}}
+							className='h-40 w-full rounded border border-primary-100 text-tiny font-medium text-primary-100 transition-colors flex-justify-center hover:bg-primary-100 hover:text-white'
+						>
+							{t('header.login_broker')}
+						</button>
+					)}
+				</div>
+			)}
+
+			<nav className='gap-32 px-8 flex-column'>
+				<ul className='gap-16 flex-column'>
+					{isFetching && (
+						<li className='px-12'>
+							<div className='h-40 w-full rounded skeleton' />
+						</li>
+					)}
+
+					{currentBrokerData && (
+						<li>
+							<button
+								type='button'
+								onClick={() => logoutBroker(close)}
+								className='h-40 w-full rounded px-12 text-gray-800 transition-colors flex-justify-between hover:bg-secondary-200'
+							>
+								<div className='gap-8 flex-items-center'>
+									<span className='size-24 text-gray-700 flex-justify-center'>
+										<BuildingSVG />
+									</span>
+
+									<div className='flex gap-8'>
+										<span>{t('header.active_broker') + ': '}</span>
+										<span>{currentBrokerData.shortName}</span>
+									</div>
+								</div>
+
+								<OffSVG width='2.4rem' height='2.4rem' className='text-error-100' />
+							</button>
+						</li>
+					)}
+
+					<li
+						className={styles.theme}
+						onMouseOver={() => {
+							setThemeIsOpen(true);
+							clearDebounce();
+						}}
+						onMouseLeave={() => setDebounce(() => setThemeIsOpen(false), 500)}
+					>
+						<button
+							type='button'
+							className='h-40 w-full rounded px-12 text-gray-800 transition-colors flex-justify-between hover:bg-secondary-200'
+						>
+							<div className='gap-8 flex-items-center'>
+								<span className='size-24 text-gray-700 flex-justify-center'>
+									<SunSVG />
+								</span>
+
+								<div className='flex gap-8'>
+									<span>{t('header.theme') + ': '}</span>
+									<span>{t(`themes.${theme}`)}</span>
+								</div>
+							</div>
+
+							<AngleLeftSVG width='2rem' height='2rem' className='text-gray-700' />
+						</button>
+
+						<ul className={clsx(styles.list, themeIsOpen && styles.active, 'darkness:bg-gray-50 bg-white')}>
+							{themes.map((th) => (
+								<li key={th}>
+									<button
+										type='button'
+										onClick={() => onChangeTheme(th)}
+										className={clsx(
+											'no-hover h-40 w-full rounded px-16 text-right flex-justify-start hover:btn-select',
+											th === theme && 'btn-select',
+										)}
+									>
+										<span>{t('themes.' + th)}</span>
+									</button>
+								</li>
+							))}
+						</ul>
 					</li>
+
 					<li>
 						<Link
 							onClick={() => close()}
@@ -109,6 +206,7 @@ const UserDropdown = ({
 							<span>{t('header.session_history')}</span>
 						</Link>
 					</li>
+
 					<li>
 						<Link
 							onClick={() => close()}

@@ -25,7 +25,7 @@ const PriceCard = ({ value, title, percent, className, loading }: PriceCardProps
 			<span className='text-base text-gray-700'>{title}:</span>
 			<div className='flex gap-8 text-base'>
 				{percent !== undefined && (
-					<span className={getColorBasedOnPercent(percent)}>({percent.toFixed(2)}%)</span>
+					<span className={getColorBasedOnPercent(percent)}>({Math.abs(percent).toFixed(2)}%)</span>
 				)}
 
 				<div className='gap-4 text-gray-700 flex-items-center'>

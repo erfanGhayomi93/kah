@@ -6,9 +6,11 @@ import Main from '@/components/layout/Main';
 import { type initialDashboardGrid } from '@/constants/grid';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo } from 'react';
 import { type Layout, type Layouts, Responsive, WidthProvider } from 'react-grid-layout';
+import { toast } from 'react-toastify';
 import Custom from './components/Custom';
 import Loading from './components/Loading';
 import EditLayoutButton from './EditLayoutButton';
@@ -82,6 +84,8 @@ const SECTIONS_MARGIN: [number, number] = [16, 16];
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Dashboard = () => {
+	const t = useTranslations();
+
 	const dispatch = useAppDispatch();
 
 	const grid = useAppSelector(getDashboardGridLayout);
@@ -179,6 +183,15 @@ const Dashboard = () => {
 	};
 
 	const onHideSection = ({ id, hidden }: IpcMainChannels['home.hide_section']) => {
+		const hiddenSectionsCount = grid.reduce((total, c) => total + Number(c.hidden), 0) + 1;
+
+		if (hiddenSectionsCount > grid.length - 2) {
+			toast.error(t('alerts.can_not_remove_all_sections'), {
+				toastId: 'can_not_remove_all_sections',
+			});
+			return;
+		}
+
 		const newGrid = grid.map((item) => (item.id === id ? { ...item, hidden } : item));
 		dispatch(setDashboardGridLayout(newGrid));
 	};

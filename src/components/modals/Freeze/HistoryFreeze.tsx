@@ -83,13 +83,11 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 				colId: 'saveDate',
 				headerName: t('deposit_modal.time_history'),
 				valueGetter: (row) => dateFormatter(row.saveDate),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'symbolTitle',
 				headerName: t('change_broker_modal.symbol_column'),
 				valueGetter: (row) => (row.symbolTitle ? row.symbolTitle : '-'),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 			},
 			{
 				colId: 'requestState',
@@ -106,7 +104,6 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 						)}
 					</div>
 				),
-				headerClass: '!bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
 				cellClass: '!text-sm',
 			},
 		],

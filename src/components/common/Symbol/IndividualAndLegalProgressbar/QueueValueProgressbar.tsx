@@ -1,17 +1,17 @@
-import { numFormatter } from '@/utils/helpers';
+import { divide, numFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 
-interface QueueValueProps {
+interface QueueValueProgressbarProps {
 	sum: number;
 	buyQueueValue: number;
 	sellQueueValue: number;
 }
 
-const QueueValue = ({ sum, buyQueueValue, sellQueueValue }: QueueValueProps) => {
+const QueueValueProgressbar = ({ sum, buyQueueValue, sellQueueValue }: QueueValueProgressbarProps) => {
 	const t = useTranslations('saturn_page');
 
-	const buyQueuePercent = ((buyQueueValue / sum) * 100).toFixed(2) || 0;
-	const sellQueuePercent = ((sellQueueValue / sum) * 100).toFixed(2) || 0;
+	const buyQueuePercent = (divide(buyQueueValue, sum) * 100).toFixed(2) || 0;
+	const sellQueuePercent = (divide(sellQueueValue, sum) * 100).toFixed(2) || 0;
 
 	return (
 		<div className='flex-1 gap-4 flex-column'>
@@ -23,8 +23,8 @@ const QueueValue = ({ sum, buyQueueValue, sellQueueValue }: QueueValueProps) => 
 			<div className='relative flex *:h-4'>
 				<div className='bg-success-100' style={{ width: `${buyQueuePercent}%` }} />
 				<div
-					className='darkBlue:bg-gray-50 absolute top-0 h-4 w-6 bg-white dark:bg-gray-50'
-					style={{ transform: 'skew(45deg)', left: `calc(${sellQueuePercent}% - 3px)` }}
+					className='absolute top-0 w-6 bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
+					style={{ transform: 'skew(45deg)', left: `calc(${sum === 0 ? 50 : sellQueuePercent}% - 3px)` }}
 				/>
 				<div className='bg-error-100' style={{ width: `${sellQueuePercent}%` }} />
 			</div>
@@ -37,4 +37,4 @@ const QueueValue = ({ sum, buyQueueValue, sellQueueValue }: QueueValueProps) => 
 	);
 };
 
-export default QueueValue;
+export default QueueValueProgressbar;

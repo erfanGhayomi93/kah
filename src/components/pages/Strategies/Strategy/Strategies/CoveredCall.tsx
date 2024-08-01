@@ -293,6 +293,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: t('CoveredCall.baseSymbolTitle'),
 				initialHide: initialHiddenColumnsCoveredCall.baseSymbolTitle,
 				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
@@ -510,8 +511,10 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: t('CoveredCall.bepDifference'),
 				initialHide: initialHiddenColumnsCoveredCall.bepDifference,
 				width: 136,
+				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ data }) => sepNumbers(String(data?.bepDifference ?? 0)),
+				valueFormatter: ({ value }) =>
+					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
 			},
 			{
 				colId: 'riskCoverage',
@@ -592,7 +595,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

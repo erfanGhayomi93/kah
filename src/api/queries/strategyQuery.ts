@@ -118,7 +118,8 @@ export const useLongCallStrategyQuery = createQuery<
 			}
 
 			if (filters?.bepDifference) {
-				if (typeof filters.bepDifference === 'number') params.LeastBEPDifference = filters.bepDifference;
+				if (typeof filters.bepDifference[0] === 'number') params.FromBEPDifference = filters.bepDifference[0];
+				if (typeof filters.bepDifference[1] === 'number') params.ToBEPDifference = filters.bepDifference[1];
 			}
 
 			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
@@ -166,7 +167,8 @@ export const useLongPutStrategyQuery = createQuery<
 			}
 
 			if (filters?.bepDifference) {
-				if (typeof filters.bepDifference === 'number') params.LeastBEPDifference = filters.bepDifference;
+				if (typeof filters.bepDifference[0] === 'number') params.FromEPDifference = filters.bepDifference[0];
+				if (typeof filters.bepDifference[1] === 'number') params.ToBEPDifference = filters.bepDifference[1];
 			}
 
 			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
@@ -419,7 +421,10 @@ export const useProtectivePutStrategyQuery = createQuery<
 
 			if (filters?.maxLoss) params.MostMaxLossPercent = filters.maxLoss;
 
-			if (filters?.bepDifference) params.LeastBEPDifference = filters.bepDifference;
+			if (filters?.bepDifference) {
+				if (typeof filters.bepDifference[0] === 'number') params.FromBEPDifference = filters.bepDifference[0];
+				if (typeof filters.bepDifference[1] === 'number') params.ToBEPDifference = filters.bepDifference[1];
+			}
 
 			const response = await axios.get<ServerResponse<Strategy.ProtectivePut[]>>(routes.strategy.ProtectivePut, {
 				signal,

@@ -66,17 +66,23 @@
 		"buy": "خرید",
 		"sell": "فروش"
 	},
+	"themes": {
+		"light": "روشن",
+		"dark": "شب",
+		"darkBlue": "تیره",
+		"system": "سیستم"
+	},
 	"header": {
 		"login": "ورود",
 		"search_symbol_placeholder": "نماد مورد نظر خود را جستجو کنید",
 		"register": "ثبت‌نام",
 		"exit": "خروج",
+		"active_broker": "کارگزاری فعال",
 		"purchase_power": "قدرت خرید",
 		"set_password": "تعیین رمز",
 		"logout_broker": "خروج از حساب کارگزاری",
 		"login_broker": "ورود به کارگزاری",
 		"logout_broker_description": "پس از خروج از حساب، عملیات معاملاتی مرتبط با کارگزاری امکان پذیر نخواهد بود.",
-		"user_account": "حساب کاربری",
 		"password": "رمز عبور",
 		"session_history": "تاریخچه ورود و خروج",
 		"setting": "تنظیمات",
@@ -85,7 +91,8 @@
 		"user_status_Normal": "عادی",
 		"user_status_AtRisk": "در خطر",
 		"user_status_CallMargin": "اخطار وجه تضمین",
-		"logout": "خروج از حساب کاربری"
+		"logout": "خروج از حساب کاربری کهکشان",
+		"theme": "رنگ زمینه"
 	},
 	"header_notifications": {
 		"notifications": "اعلان‌ها",
@@ -1586,6 +1593,7 @@
 		"is_pending": "در حال دریافت اطلاعات",
 		"fetch_symbol_failed": "خطا در دریافت اطلاعات نماد",
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
+		"can_not_remove_all_sections": "امکان حذف تمامی بخش‌ها وجود ندارد.",
 		"most_orders_sent_successfully": "بیشتر سفارش‌ها با موفقیت ارسال شدند.",
 		"some_orders_sent_successfully": "برخی سفارش‌ها با موفقیت ارسال شدند.",
 		"orders_sent_successfully": "تمام سفارش‌ها با موفقیت ارسال شدند.",
@@ -1662,7 +1670,7 @@
 		"option_cash_settlement_error_DeletePhysicalSettlementTimeNotValid": "زمان حذف درخواست تسویه فیزیکی به پایان رسیده است.",
 		"option_cash_settlement_error_DeleteCashSettlementTimeNotValid": "زمان حذف درخواست تسویه نقدی به پایان رسیده است.",
 		"option_cash_settlement_error_InputIsNotValid": "اطلاعات وارد شده معتبر نیست.",
-		"option_cash_settlement_error_CashSettlementTimeNotValid": "زمان تسویه نقدی به پایان رسیده است.",
+		"option_cash_settlement_error_CashSettlementTimeNotValid": "ثبت درخواست صرفا در روز تسویه از ساعت 12:30 الی 15 امکان پذیر است.",
 		"option_cash_settlement_error_ContractNotValid": "قرارداد اختیار معتبر نیست.",
 		"option_cash_settlement_error_SettlementDateNotValid": "تاریخ درخواست تسویه معتبر نیست.",
 		"option_cash_settlement_error_FailToGetBaseSymbolData": "خطایی در سیستم رخ داده است.",
@@ -1679,7 +1687,7 @@
 		"option_physical_settlement_error_DeletePhysicalSettlementTimeNotValid": "زمان حذف درخواست تسویه فیزیکی به پایان رسیده است.",
 		"option_physical_settlement_error_DeletephysicalSettlementTimeNotValid": "زمان حذف درخواست تسویه نقدی به پایان رسیده است.",
 		"option_physical_settlement_error_InputIsNotValid": "اطلاعات وارد شده معتبر نیست.",
-		"option_physical_settlement_error_physicalSettlementTimeNotValid": "زمان تسویه نقدی به پایان رسیده است.",
+		"option_physical_settlement_error_physicalSettlementTimeNotValid": "ثبت درخواست صرفا در روز تسویه از ساعت 12:30 الی 15 امکان پذیر است.",
 		"option_physical_settlement_error_ContractNotValid": "قرارداد اختیار معتبر نیست.",
 		"option_physical_settlement_error_SettlementDateNotValid": "تاریخ درخواست تسویه معتبر نیست.",
 		"option_physical_settlement_error_FailToGetBaseSymbolData": "خطایی در سیستم رخ داده است.",

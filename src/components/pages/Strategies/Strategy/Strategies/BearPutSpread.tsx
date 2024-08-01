@@ -270,6 +270,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 						title: t('strategy_filters.max_profit'),
 						mode: 'single',
 						type: 'percent',
+						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.leastMaxProfitPercent ?? null,
 						titleHint: t('strategy_filters.max_profit_tooltip'),
@@ -279,6 +280,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 						title: t('strategy_filters.least_YTM'),
 						mode: 'single',
 						type: 'percent',
+						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.leastYTM ?? null,
 					},
@@ -293,6 +295,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'baseSymbolTitle',
 				headerName: 'نماد پایه',
 				width: 104,
+				maxWidth: 104,
 				pinned: 'right',
 				cellClass: 'cursor-pointer justify-end',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
@@ -392,6 +395,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			{
 				colId: 'lspBestBuyLimitPrice',
 				headerName: 'قیمت خریدار پوت فروش',
+				cellClass: 'buy',
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -399,6 +403,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			{
 				colId: 'lspBestBuyLimitQuantity',
 				headerName: 'حجم خریدار پوت فروش',
+				cellClass: 'buy',
 				width: 176,
 				valueGetter: ({ data }) => data?.lspBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -406,13 +411,15 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			{
 				colId: 'lspBestSellLimitPrice',
 				headerName: 'بهترین فروشنده پوت فروش',
+				cellClass: 'sell',
 				width: 204,
 				valueGetter: ({ data }) => data?.lspBestSellLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
 				colId: 'lspBestSellLimitQuantity',
-				headerName: 'حجم سرخط فروش پوت فروش',
+				headerName: 'حجم فروشنده پوت فروش',
+				cellClass: 'sell',
 				width: 192,
 				valueGetter: ({ data }) => data?.lspBestSellLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -603,7 +610,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='darkBlue:bg-gray-50 relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

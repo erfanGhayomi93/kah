@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setManageColumnsModal } from '@/features/slices/modalSlice';
 import { getDashboardGridLayout, setDashboardGridLayout } from '@/features/slices/uiSlice';
 import { useTranslations } from 'next-intl';
+import { toast } from 'react-toastify';
 
 const EditLayoutButton = () => {
 	const t = useTranslations('home');
@@ -28,6 +29,16 @@ const EditLayoutButton = () => {
 	};
 
 	const onColumnChanged = (cols: Array<IManageColumn<TDashboardSections>>) => {
+		const requestHiddenColumnsCount = cols.reduce((total, c) => total + Number(c.hidden), 0);
+		const validHiddenSectionsCount = gridLayout.length - 2;
+
+		if (requestHiddenColumnsCount > validHiddenSectionsCount) {
+			toast.error(t('alerts.can_not_remove_all_sections'), {
+				toastId: 'can_not_remove_all_sections',
+			});
+			return;
+		}
+
 		try {
 			const result: Partial<Record<TDashboardSections, boolean>> = {};
 
@@ -68,7 +79,7 @@ const EditLayoutButton = () => {
 	};
 
 	return (
-		<div style={{ left: '0.8rem', bottom: '4.8rem' }} className='fixed left-8'>
+		<div style={{ left: '0.8rem', bottom: '5.6rem' }} className='fixed left-8'>
 			<button onClick={openDashboardLayoutManager} type='button' className='z-10 size-40 rounded btn-primary'>
 				<EditFillSVG width='2rem' height='2rem' />
 			</button>

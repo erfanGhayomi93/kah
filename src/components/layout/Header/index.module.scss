@@ -1,0 +1,25 @@
+.list {
+	right: calc(100% + 2.4rem);
+	width: 200px;
+	border-radius: 16px;
+	position: absolute;
+	top: 0;
+	gap: 8px;
+	display: flex;
+	flex-direction: column;
+	opacity: 0;
+	pointer-events: none;
+	padding: 8px;
+	transition: opacity 250ms;
+	-webkit-transition: opacity 250ms;
+	-moz-transition: opacity 250ms;
+
+	&.active {
+		opacity: 1;
+		pointer-events: fill;
+	}
+}
+
+.theme {
+	position: relative;
+}

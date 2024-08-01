@@ -175,7 +175,9 @@ const Header = () => {
 									className='h-32 gap-8 rounded bg-gray-100 px-8 flex-items-center icon-hover'
 								>
 									<UserBoldSVG width='2.4rem' height='2.4rem' />
-									<span className='text-base font-medium text-gray-800'>{customerTitle}</span>
+									<span className='whitespace-nowrap text-base font-medium text-gray-800'>
+										{customerTitle}
+									</span>
 									<ArrowDownSVG
 										width='1.6rem'
 										height='1.6rem'
@@ -200,7 +202,7 @@ const Header = () => {
 				</div>
 
 				{isLoggedIn && userRemain && (
-					<span className='gap-8 text-base flex-items-center'>
+					<span className='gap-8 whitespace-nowrap text-base flex-items-center'>
 						{t('header.purchase_power')}:
 						<span className='gap-4 flex-items-center'>
 							<span
@@ -219,7 +221,7 @@ const Header = () => {
 					<>
 						<Separator />
 
-						<span className='gap-8 flex-items-center'>
+						<span className='gap-8 whitespace-nowrap flex-items-center'>
 							{t('header.required_margin')}:
 							<span className='gap-4 flex-items-center'>
 								<span

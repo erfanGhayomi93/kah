@@ -53,7 +53,7 @@ interface ISharedProps {
 type SymbolStrategyProps = ISharedProps & {
 	contract: TSymbolStrategy;
 	checkList: IContractCheckList;
-	commission?: Commission.Root;
+	commission?: Commission.Row;
 	onChange: (v: IInput) => void;
 	onChecked: (name: TCheckboxes, value: boolean) => void;
 	onSelect: (checked: boolean) => void;
@@ -500,7 +500,7 @@ const SymbolStrategy = ({
 										contract.quantity *
 										(contract.side === 'buy'
 											? commission.buyCommission
-											: -commission.sellCommission)) * (contract.symbol.contractSize ?? 0),
+											: commission.sellCommission)) * (contract.symbol.contractSize ?? 0),
 							),
 						)}
 						classes={{ text: '!text-tiny' }}

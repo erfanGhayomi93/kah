@@ -35,7 +35,15 @@ export const useCommissionsQuery = createQuery<Commission.Data, ['commissionQuer
 
 			data.result.forEach((item) => {
 				try {
-					commission[item.marketUnitTitle] = item;
+					commission[item.marketUnitTitle] = {
+						marketTitle: item.marketTitle,
+						marketUnitTitle: item.marketUnitTitle,
+						commissionType: item.commissionType,
+						buyCommission: item.totalBuyCommission,
+						sellCommission: item.totalSellCommission,
+						buyTax: item.buyTax,
+						sellTax: item.sellTax,
+					};
 				} catch (e) {
 					//
 				}

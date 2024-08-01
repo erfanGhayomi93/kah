@@ -243,38 +243,41 @@ export const downloadFileQueryParams = (
 	params: string | string[][] | Record<string, string> | URLSearchParams | undefined = undefined,
 ) =>
 	new Promise<void>((resolve, reject) => {
-		const headers = new Headers();
-		headers.append('Accept', 'application/json, text/plain, */*');
-		headers.append('Accept-Language', 'en-US,en;q=0.9,fa;q=0.8');
+		try {
+			const headers = new Headers();
+			headers.append('Accept', 'application/json, text/plain, */*');
+			headers.append('Accept-Language', 'en-US,en;q=0.9,fa;q=0.8');
 
-		const clientId = getBrokerClientId()[0];
-		if (clientId) headers.append('Authorization', 'Bearer ' + clientId);
+			const clientId = getBrokerClientId()[0];
+			if (clientId) headers.append('Authorization', 'Bearer ' + clientId);
 
-		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-		fetch(url + '?' + new URLSearchParams(params), {
-			method: 'GET',
-			headers,
-			redirect: 'follow',
-		})
-			.then((response) => {
-				try {
-					const statusCode = Number(response.status);
-					if (statusCode === 401) logoutUser();
-				} catch (e) {
-					//
-				}
-
-				return response.blob();
+			fetch(url + '?' + new URLSearchParams(params).toString(), {
+				method: 'GET',
+				headers,
+				redirect: 'follow',
 			})
-			.then((blobResponse) => {
-				const a = document.createElement('a');
-				a.download = name;
-				a.href = URL.createObjectURL(blobResponse);
+				.then((response) => {
+					try {
+						const statusCode = Number(response.status);
+						if (statusCode === 401) logoutUser();
+					} catch (e) {
+						//
+					}
 
-				a.click();
-				resolve();
-			})
-			.catch(reject);
+					return response.blob();
+				})
+				.then((blobResponse) => {
+					const a = document.createElement('a');
+					a.download = name;
+					a.href = URL.createObjectURL(blobResponse);
+
+					a.click();
+					resolve();
+				})
+				.catch(reject);
+		} catch (e) {
+			//
+		}
 	});
 
 export const paramsSerializer = (params: Record<string, unknown>) => {
@@ -559,9 +562,11 @@ export const dojiAnalyzer = <T>(data: T[], callback: (item: T) => number): TDoji
 	return 'Neutral';
 };
 
-export const getColorBasedOnPercent = (v: number) => {
+export const getColorBasedOnPercent = (v: number, reverse = false) => {
 	if (v === 0) return 'text-gray-700';
-	if (v > 0) return 'text-success-100';
+
+	if ((v < 0 && reverse) || (v > 0 && !reverse)) return 'text-success-100';
+
 	return 'text-error-100';
 };
 

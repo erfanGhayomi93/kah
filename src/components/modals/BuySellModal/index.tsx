@@ -113,7 +113,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 		const setMinimumValue = () => {
 			let value = 5e6;
-			const quantity = formula().quantity(inputs.price, value);
+			const quantity = formula().quantity(inputs.price, value) + 1;
 			value = formula().value(inputs.price, quantity);
 
 			setInputs((values) => ({
