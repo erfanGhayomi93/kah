@@ -620,6 +620,7 @@ declare namespace User {
 		id: number;
 		brokerCode: string | number;
 		name: string;
+		shortName: string;
 		description: string;
 		logo: null | string;
 		ssoUrl: string;

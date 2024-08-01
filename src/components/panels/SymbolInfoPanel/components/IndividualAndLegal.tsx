@@ -37,11 +37,13 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 	return (
 		<Section name='individual_and_legal' defaultActiveTab='individual_and_legal' tabs={tabs}>
 			<div className='gap-24 px-8 py-16 flex-column'>
-				<QueueValueProgressbar
-					buyQueueValue={buyQueueValue}
-					sellQueueValue={sellQueueValue}
-					sum={buyQueueValue + sellQueueValue}
-				/>
+				{!symbolData?.isOption && (
+					<QueueValueProgressbar
+						buyQueueValue={buyQueueValue}
+						sellQueueValue={sellQueueValue}
+						sum={buyQueueValue + sellQueueValue}
+					/>
+				)}
 
 				<Progressbar
 					buyVolume={individualBuyVolume}

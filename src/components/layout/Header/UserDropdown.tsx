@@ -140,7 +140,7 @@ const UserDropdown = ({
 
 									<div className='flex gap-8'>
 										<span>{t('header.active_broker') + ': '}</span>
-										<span>{currentBrokerData.name}</span>
+										<span>{currentBrokerData.shortName}</span>
 									</div>
 								</div>
 

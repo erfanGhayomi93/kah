@@ -134,6 +134,7 @@ declare type TSymbolInfoPanelSections =
 	| 'base_symbol_contracts'
 	| 'user_open_positions'
 	| 'quotes'
+	| 'option_individual_and_legal'
 	| 'individual_and_legal'
 	| 'chart'
 	| 'same_sector_symbols'
