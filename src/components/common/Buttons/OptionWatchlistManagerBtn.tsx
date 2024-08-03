@@ -9,24 +9,24 @@ const Button = styled.button`
 
 		path:nth-child(1),
 		path:nth-child(3) {
-			fill: rgba(0, 87, 255, 1);
+			fill: rgb(var(--c-primary-100) / 1);
 		}
 
 		path:nth-child(2),
 		path:nth-child(4) {
-			fill: rgb(93, 96, 109);
+			fill: rgb(var(--c-gray-700) / 1);
 		}
 	}
 
 	&:not(:disabled):hover svg {
 		path:nth-child(1),
 		path:nth-child(3) {
-			fill: rgba(0, 182, 237, 1);
+			fill: rgb(var(--c-secondary-300) / 1);
 		}
 
 		path:nth-child(2),
 		path:nth-child(4) {
-			fill: rgb(255, 255, 255);
+			fill: rgb(var(--c-gray-700) / 1);
 		}
 	}
 `;

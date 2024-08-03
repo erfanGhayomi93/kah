@@ -138,7 +138,6 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 			baseVolume: 'baseVolume',
 			lastTradedPrice: 'lastTradedPrice',
 			totalNumberOfTrades: 'tradeCount',
-			lastTradedPriceVar: 'lastTradedPrice',
 			lastTradedPriceVarPercent: 'tradePriceVarPreviousTradePercent',
 			closingPrice: 'closingPrice',
 			closingPriceVarPercent: 'closingPriceVarReferencePricePercent',

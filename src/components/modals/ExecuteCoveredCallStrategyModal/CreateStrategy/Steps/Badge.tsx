@@ -9,7 +9,7 @@ const Badge = ({ type }: BadgeProps) => {
 	const t = useTranslations('create_strategy');
 	return (
 		<span
-			className={clsx('h-28 cursor-default select-none rounded px-12 text-tiny', {
+			className={clsx('h-28 cursor-default select-none rounded px-12 text-tiny flex-justify-center', {
 				'no-hover !border-0 font-medium btn-select': type === 'TODO',
 				'btn-disabled': type === 'PENDING',
 				'bg-success-100/10 text-success-100 flex-justify-center': type === 'DONE',

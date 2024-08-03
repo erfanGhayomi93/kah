@@ -8,8 +8,6 @@ class AgSort {
 	create() {
 		try {
 			this.eSort = document.createElement('span');
-			this.eSort.setAttribute('unselectable', 'on');
-			this.eSort.setAttribute('role', 'presentation');
 			this.update();
 		} catch (e) {
 			//
@@ -22,7 +20,9 @@ class AgSort {
 
 			const sorting = this.sorting;
 
-			this.eSort.setAttribute('class', 'ag-icon ag-icon-asc transform');
+			this.eSort.setAttribute('class', 'ag-sort-indicator-icon ag-sort-ascending-icon');
+			this.eSort.innerHTML =
+				'<svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="36" d="M112 244l144-144 144 144M256 120v292" /></svg>';
 
 			if (!sorting) this.eSort.classList.add('hidden');
 			else if (sorting === 'desc') this.eSort.classList.add('rotate-180');
@@ -37,10 +37,12 @@ class AgSort {
 		if (sorting === 'desc') {
 			this.params.api.applyColumnState({
 				defaultState: { sort: null },
+				state: [{ colId, sort: null }],
 			});
 		} else {
 			const sort: 'asc' | 'desc' = sorting === 'asc' ? 'desc' : 'asc';
 			this.params.api.applyColumnState({
+				defaultState: { sort: null },
 				state: [{ colId, sort }],
 			});
 		}

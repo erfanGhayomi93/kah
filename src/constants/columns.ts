@@ -550,3 +550,49 @@ export const defaultTradesReportsColumns: Array<IManageColumn<TradesReports.TTra
 		tag: 'TradesReports',
 	},
 ];
+
+export const initialColumnsOptionChain: Array<IManageColumn<string>> = [
+	{
+		id: 'symbolTitle',
+		title: 'نماد',
+		hidden: false,
+		tag: 'PanelDetail',
+		disabled: true,
+	},
+	{
+		id: 'tradeValue',
+		title: 'ارزش روز',
+		hidden: false,
+		tag: 'PanelDetail',
+	},
+	{
+		id: 'openPositionCount',
+		title: 'موقعیت‌های باز',
+		hidden: false,
+		tag: 'PanelDetail',
+	},
+	{
+		id: 'iotm',
+		title: 'وضعیت',
+		hidden: false,
+		tag: 'PanelDetail',
+	},
+	{
+		id: 'bestBuyPrice',
+		title: 'بهترین خرید',
+		hidden: false,
+		tag: 'PanelDetail',
+	},
+	{
+		id: 'bestSellPrice',
+		title: 'بهترین فروش',
+		hidden: false,
+		tag: 'PanelDetail',
+	},
+	{
+		id: 'strikePrice',
+		title: 'اعمال',
+		hidden: false,
+		tag: 'PanelDetail',
+	},
+];

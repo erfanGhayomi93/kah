@@ -1,6 +1,11 @@
 import { useBaseSettlementDaysQuery } from '@/api/queries/optionQueries';
+import OptionWatchlistManagerBtn from '@/components/common/Buttons/OptionWatchlistManagerBtn';
 import BaseSymbolSearch from '@/components/common/Symbol/BaseSymbolSearch';
-import { useAppDispatch } from '@/features/hooks';
+import Tooltip from '@/components/common/Tooltip';
+import { initialColumnsOptionChain } from '@/constants/columns';
+import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getOptionChainColumns, setOptionChainColumns } from '@/features/slices/columnSlice';
+import { setManageColumnsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
@@ -24,6 +29,8 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 
 	const dispatch = useAppDispatch();
 
+	const optionChainColumns = useAppSelector(getOptionChainColumns);
+
 	const { data: settlementDays, isFetching } = useBaseSettlementDaysQuery({
 		queryKey: ['baseSettlementDaysQuery', inputs.baseSymbol?.symbolISIN ?? null],
 		enabled: Boolean(inputs.baseSymbol),
@@ -38,6 +45,18 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 		return settlementDays.reduce((total, current) => total + current.openPosition, 0);
 	}, [settlementDays]);
 
+	const manageColumns = () => {
+		dispatch(
+			setManageColumnsModal({
+				initialColumns: initialColumnsOptionChain,
+				columns: optionChainColumns,
+				title: t('option_chain.manage_columns'),
+				onColumnChanged: (columns) => dispatch(setOptionChainColumns(columns)),
+				onReset: () => dispatch(setOptionChainColumns(initialColumnsOptionChain)),
+			}),
+		);
+	};
+
 	useEffect(() => {
 		if (Array.isArray(settlementDays)) setFieldValue('settlementDay', settlementDays[0]);
 	}, [settlementDays, inputs.baseSymbol]);
@@ -45,7 +64,7 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 	return (
 		<div
 			style={{ flex: '0 0 5.6rem' }}
-			className='darkBlue:bg-gray-50 gap-36 rounded bg-white px-16 flex-justify-between dark:bg-gray-50'
+			className='gap-36 rounded bg-white px-16 flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
 		>
 			<div className='flex-1 gap-24 flex-items-center'>
 				<div style={{ flex: '0 0 25.6rem' }}>
@@ -77,22 +96,27 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 				</div>
 			</div>
 
-			{Boolean(inputs.baseSymbol) && (
-				<div className='gap-8 flex-items-center'>
-					<div className='h-40 rounded bg-gray-100 px-8 flex-items-center'>
-						<span className='gap-8 whitespace-nowrap text-base text-gray-700 flex-items-center'>
-							{t('option_chain.total_open_contracts')}:
-							<span className='font-medium text-gray-800'>
-								{sepNumbers(String(totalOpenPositionCount))}
+			<div className='gap-8 flex-items-center'>
+				{Boolean(inputs.baseSymbol) && (
+					<>
+						<div className='h-40 rounded bg-gray-100 px-8 flex-items-center'>
+							<span className='gap-8 whitespace-nowrap text-base text-gray-700 flex-items-center'>
+								{t('option_chain.total_open_contracts')}:
+								<span className='font-medium text-gray-800'>
+									{sepNumbers(String(totalOpenPositionCount))}
+								</span>
 							</span>
-						</span>
-					</div>
+						</div>
 
-					<button type='button' onClick={openSymbolInfo} className='h-40 rounded px-16 btn-info-outline'>
-						{t('option_chain.base_symbol_info')}
-					</button>
-				</div>
-			)}
+						<button type='button' onClick={openSymbolInfo} className='h-40 rounded px-16 btn-info-outline'>
+							{t('option_chain.base_symbol_info')}
+						</button>
+					</>
+				)}
+				<Tooltip placement='bottom' content={t('option_chain.manage_columns_tooltip')}>
+					<OptionWatchlistManagerBtn onClick={manageColumns} />
+				</Tooltip>
+			</div>
 		</div>
 	);
 };

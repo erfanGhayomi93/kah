@@ -29,6 +29,10 @@ class HeaderHint implements IHeaderComp {
 
 		this.createHint();
 
+		this.params.column.addEventListener('sortChanged', () => {
+			this.agSort.update();
+		});
+
 		this.eGui.addEventListener('click', () => this.agSort.sort());
 		this.eGui.appendChild(this.eHint);
 		this.eGui.appendChild(this.agSort.eSort!);
