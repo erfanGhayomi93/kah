@@ -26,6 +26,7 @@ interface ICategoryCardProps {
 
 const Wrapper = styled.form`
 	display: flex;
+	min-width: 400px;
 	flex-direction: column;
 `;
 
@@ -160,7 +161,7 @@ const CategoryCard = ({ columns, tag, onColumnSwitch, onAllColumnSwitch }: ICate
 	return (
 		<div
 			style={{ minWidth: '17.6rem' }}
-			className={clsx('rounded px-16 shadow-sm flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}
+			className={clsx('w-full rounded px-16 shadow-sm flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}
 		>
 			{hasTag && (
 				<div className='gap-8 border-b border-b-gray-200 py-6 flex-justify-start'>

@@ -644,6 +644,8 @@
 		"w_implied_volatility": "بلک شولز W-IV"
 	},
 	"option_chain": {
+		"manage_columns_tooltip": "مدیریت ستون‌ها",
+		"manage_columns": "مدیریت ستون‌های جدول",
 		"select_symbol_first": "برای شروع، نماد پایه مورد نظر خود را جستجو کنید!",
 		"base_symbol": "نماد پایه",
 		"base_symbol_info": "جزئیات نماد پایه",
@@ -1293,8 +1295,8 @@
 		"max_loss": "حداکثر زیان",
 		"HSPIOTM": "وضعیت اختیار خرید اعمال بالا",
 		"LSPIOTM": "وضعیت اختیار خرید اعمال پایین",
-		"HSP_least_open_positions": "موقعیت باز کال خرید",
-		"LSP_least_open_positions": "موقعیت باز کال فروش",
+		"HSP_least_open_positions": "موقعیت باز کال فروش",
+		"LSP_least_open_positions": "موقعیت باز کال خرید",
 		"least_YTM": "YTM بازده موثر تا سررسید",
 		"call_IOTM": "وضعیت اختیار خرید",
 		"put_IOTM": "وضعیت اختیار فروش",

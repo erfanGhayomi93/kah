@@ -3,12 +3,15 @@ import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
+import { getOptionChainColumns } from '@/features/slices/columnSlice';
 import { setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
+import { type RootState } from '@/features/store';
 import { useTradingFeatures } from '@/hooks';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
@@ -24,12 +27,20 @@ interface OptionTableProps {
 	baseSymbol: Option.BaseSearch;
 }
 
+const getStates = createSelector(
+	(state: RootState) => state,
+	(state) => ({
+		basket: getOrderBasket(state),
+		optionChainColumns: getOptionChainColumns(state),
+	}),
+);
+
 const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
 
-	const basket = useAppSelector(getOrderBasket);
+	const { basket, optionChainColumns } = useAppSelector(getStates);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
@@ -352,6 +363,20 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 
 		column.setColDef(colDef, colDef, 'api');
 	}, [activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])]);
+
+	useEffect(() => {
+		const eGrid = gridRef.current;
+		if (!eGrid || !Array.isArray(optionChainColumns)) return;
+
+		try {
+			for (let i = 0; i < optionChainColumns.length; i++) {
+				const { hidden, id } = optionChainColumns[i];
+				eGrid.setColumnsVisible([id, `${id}-buy`, `${id}-sell`], !hidden);
+			}
+		} catch (e) {
+			//
+		}
+	}, [optionChainColumns]);
 
 	return (
 		<>

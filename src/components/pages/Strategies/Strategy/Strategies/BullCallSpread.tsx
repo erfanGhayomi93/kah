@@ -248,15 +248,6 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
 					},
 					{
-						id: 'HSPLeastOpenPositions',
-						title: t('strategy_filters.HSP_least_open_positions'),
-						mode: 'single',
-						type: 'integer',
-						label: t('strategy_filters.from'),
-						placeholder: t('strategy_filters.value'),
-						initialValue: filters?.HSPLeastOpenPositions ?? null,
-					},
-					{
 						id: 'LSPLeastOpenPositions',
 						title: t('strategy_filters.LSP_least_open_positions'),
 						mode: 'single',
@@ -264,6 +255,15 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.LSPLeastOpenPositions ?? null,
+					},
+					{
+						id: 'HSPLeastOpenPositions',
+						title: t('strategy_filters.HSP_least_open_positions'),
+						mode: 'single',
+						type: 'integer',
+						label: t('strategy_filters.from'),
+						placeholder: t('strategy_filters.value'),
+						initialValue: filters?.HSPLeastOpenPositions ?? null,
 					},
 					{
 						id: 'leastMaxProfitPercent',
