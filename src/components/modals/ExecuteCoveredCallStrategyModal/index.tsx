@@ -1,5 +1,6 @@
 import { useFreezeSymbolMutation } from '@/api/mutations/symbolMutations';
 import { useGlPositionExtraInfoQuery } from '@/api/queries/brokerPrivateQueries';
+import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import lightStreamInstance from '@/classes/Lightstream';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { useAppDispatch } from '@/features/hooks';
@@ -36,6 +37,10 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 			queryKey: ['glPositionExtraInfoQuery', baseSymbol.symbolISIN],
 		});
 
+		const { data: commissions } = useCommissionsQuery({
+			queryKey: ['commissionQuery'],
+		});
+
 		const { mutate: createFreezeRequest } = useFreezeSymbolMutation();
 
 		const [step, setStep] = useState<CreateStrategy.TCoveredCallSteps>('base');
@@ -57,6 +62,8 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 		const onSymbolUpdate = (updateInfo: ItemUpdate) => {
 			const symbolISIN: string = updateInfo.getItemName();
 
+			const updates: Partial<IExecuteCoveredCallStrategyModal> = {};
+
 			updateInfo.forEachChangedField((_a, _b, value) => {
 				try {
 					if (value !== null) {
@@ -64,31 +71,25 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 						if (isNaN(valueAsNumber)) return;
 
 						if (symbolISIN === baseSymbol.symbolISIN) {
-							dispatch(
-								updateExecuteCoveredCallStrategyModal({
-									baseSymbol: {
-										...baseSymbol,
-										bestLimitPrice: valueAsNumber,
-									},
-								}),
-							);
+							updates.baseSymbol = {
+								...baseSymbol,
+								bestLimitPrice: valueAsNumber,
+							};
 						}
 
 						if (symbolISIN === option.symbolISIN) {
-							dispatch(
-								updateExecuteCoveredCallStrategyModal({
-									option: {
-										...option,
-										bestLimitPrice: valueAsNumber,
-									},
-								}),
-							);
+							updates.option = {
+								...option,
+								bestLimitPrice: valueAsNumber,
+							};
 						}
 					}
 				} catch (e) {
 					//
 				}
 			});
+
+			dispatch(updateExecuteCoveredCallStrategyModal(updates));
 		};
 
 		const onSubmitBaseSymbol = () => {
@@ -161,9 +162,19 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 			subscribe(sub);
 		}, []);
 
+		useEffect(() => {
+			if (inputs.useFreeStock && remainsQuantity === 0) {
+				setIsExpand(false);
+			}
+		}, [inputs.useFreeStock]);
+
 		const remainsQuantity = inputs.useFreeStock
 			? Math.max(0, inputs.quantity - (symbolExtraInfo?.asset ?? 0))
 			: inputs.quantity;
+
+		const baseSymbolCommission = commissions?.[baseSymbol.marketUnit] ?? null;
+
+		const optionCommission = commissions?.[option.marketUnit] ?? null;
 
 		return (
 			<Modal
@@ -175,7 +186,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 			>
 				<div
 					style={{ width: isExpand ? '102.4rem' : '60rem' }}
-					className='darkBlue:bg-gray-50 overflow-hidden bg-white transition-width flex-column dark:bg-gray-50'
+					className='overflow-hidden bg-white transition-width flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 				>
 					<Header
 						label={t('create_strategy.strategy', {
@@ -194,14 +205,17 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 									baseBestLimitPrice={baseSymbol.bestLimitPrice}
 									optionBestLimitPrice={option.bestLimitPrice}
 									step={step}
+									baseSymbolCommission={baseSymbolCommission?.buyCommission ?? 0}
+									optionCommission={optionCommission?.sellCommission ?? 0}
 									setFieldValue={setFieldValue}
 									setFieldsValue={setFieldsValue}
 									nextStep={goToNextStep}
 									pending={isExpand}
 									contractSize={contractSize}
-									optionQUantity={Math.floor(inputs.quantity / contractSize)}
+									optionQuantity={Math.floor(inputs.quantity / contractSize)}
 									{...inputs}
 								/>
+
 								<Steps baseSymbol={baseSymbol} option={option} step={step} />
 							</div>
 
@@ -242,7 +256,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 											<OrderOption
 												symbolTitle={symbolData.symbolTitle}
 												bestLimitPrice={option.bestLimitPrice}
-												quantity={inputs.quantity / contractSize}
+												quantity={inputs.quantity * contractSize}
 												price={inputs.optionPrice}
 												onSubmit={onSubmitOption}
 												onChangePrice={(v) => setFieldValue('optionPrice', v)}

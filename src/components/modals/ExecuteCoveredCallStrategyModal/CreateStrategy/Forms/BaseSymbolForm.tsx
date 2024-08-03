@@ -1,12 +1,12 @@
+import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import InputLegend from '@/components/common/Inputs/InputLegend';
 import Tooltip from '@/components/common/Tooltip';
-import { QuestionCircleOutlineSVG, XCircleSVG } from '@/components/icons';
-import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
+import { InfoCircleSVG, QuestionCircleOutlineSVG, XCircleSVG } from '@/components/icons';
+import { convertStringToInteger, copyNumberToClipboard, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
 
 interface BaseSymbolFormProps extends Pick<CreateStrategy.CoveredCallInput, 'useFreeStock' | 'budget' | 'quantity'> {
 	asset: number;
@@ -14,6 +14,8 @@ interface BaseSymbolFormProps extends Pick<CreateStrategy.CoveredCallInput, 'use
 	pending: boolean;
 	baseBestLimitPrice: number;
 	optionBestLimitPrice: number;
+	baseSymbolCommission: number;
+	optionCommission: number;
 	nextStep: () => void;
 	setFieldsValue: (values: Partial<CreateStrategy.CoveredCallInput>) => void;
 	setFieldValue: <K extends keyof CreateStrategy.CoveredCallInput>(
@@ -29,6 +31,8 @@ const BaseSymbolForm = ({
 	contractSize,
 	quantity,
 	budget,
+	baseSymbolCommission,
+	optionCommission,
 	useFreeStock,
 	pending,
 	nextStep,
@@ -37,7 +41,9 @@ const BaseSymbolForm = ({
 }: BaseSymbolFormProps) => {
 	const t = useTranslations();
 
-	const [isQuantityTouched, setIsQuantityTouched] = useState(false);
+	const { data: commissions } = useCommissionsQuery({
+		queryKey: ['commissionQuery'],
+	});
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -51,28 +57,37 @@ const BaseSymbolForm = ({
 	};
 
 	const onChangeBudget = (v: number) => {
-		// ? quantity = budget / (contractSize * (baseBestLimitPrice - optionBestLimitPrice));
+		// ? quantity = budget / ((baseBestLimitPrice + (baseBestLimitPrice * commission)) - (optionBestLimitPrice + (optionBestLimitPrice * commission)));
+		// ? quantity = budget / (baseBestLimitPrice + (baseBestLimitPrice * commission));
 
-		const q = v / (contractSize * (baseBestLimitPrice - optionBestLimitPrice));
+		const quantity = Math.floor(v / (baseBestLimitPrice + baseBestLimitPrice * baseSymbolCommission));
 		setFieldsValue({
 			budget: v,
-			quantity: Math.floor(q),
+			quantity,
 		});
 	};
 
 	const onChangeQuantity = (v: number) => {
-		// ? budget = quantity * contractSize * (baseBestLimitPrice - optionBestLimitPrice);
+		// ? budget = quantity * ((baseBestLimitPrice + (baseBestLimitPrice * commission)) - (optionBestLimitPrice + (optionBestLimitPrice * commission)));
+		// ? budget = baseBestLimitPrice * quantity + (baseBestLimitPrice * quantity * commission);
 
-		const b = v * contractSize * (baseBestLimitPrice - optionBestLimitPrice);
+		const budget = Math.ceil(baseBestLimitPrice * v * (1 + baseSymbolCommission));
 		setFieldsValue({
 			quantity: v,
-			budget: Math.ceil(b),
+			budget,
 		});
 	};
 
 	const validateQuantity = () => {
-		const b = quantity * contractSize * (baseBestLimitPrice - optionBestLimitPrice);
-		setFieldValue('budget', Math.ceil(b));
+		// ? budget = baseBestLimitPrice * quantity * (1 + commission);
+
+		const newQuantity = Math.max(contractSize, Math.round(quantity / contractSize) * contractSize);
+		const newBudget = baseBestLimitPrice * newQuantity * (1 + baseSymbolCommission);
+
+		setFieldsValue({
+			quantity: newQuantity,
+			budget: Math.ceil(newBudget),
+		});
 	};
 
 	const remainsQuantity = useFreeStock ? Math.max(0, quantity - asset) : quantity;
@@ -82,47 +97,74 @@ const BaseSymbolForm = ({
 	return (
 		<form onSubmit={onSubmit} className='flex-1 flex-column flex-justify-between' method='get'>
 			<div className='w-full flex-1 gap-16 flex-column'>
-				<InputLegend
-					type='text'
-					value={budget}
-					onChange={(v) => onChangeBudget(Number(convertStringToInteger(v)))}
-					placeholder={
-						<>
-							{t('create_strategy.estimated_budget')}
-							<Tooltip placement='top' content='Tooltip'>
-								<QuestionCircleOutlineSVG width='1.6rem' height='1.6rem' />
-							</Tooltip>
-						</>
-					}
-					prefix={t('common.rial')}
-					maxLength={16}
-					legendWidth={96}
-					autoTranslateLegend
-					classes={{
-						prefix: 'w-40',
-					}}
-					onBlur={validateQuantity}
-				/>
+				<div className='gap-8 flex-column'>
+					<InputLegend
+						type='text'
+						value={budget}
+						onCopy={(e) => copyNumberToClipboard(e, budget)}
+						onChange={(v) => onChangeBudget(Number(convertStringToInteger(v)))}
+						placeholder={
+							<>
+								{t('create_strategy.overall_budget')}
+								<Tooltip placement='top' content='Tooltip'>
+									<QuestionCircleOutlineSVG width='1.6rem' height='1.6rem' />
+								</Tooltip>
+							</>
+						}
+						prefix={t('common.rial')}
+						maxLength={16}
+						legendWidth={120}
+						autoTranslateLegend
+						classes={{
+							prefix: 'w-40',
+						}}
+						onBlur={validateQuantity}
+					/>
 
-				<div className={clsx('flex-column', isQuantityTouched && isQuantityInvalid ? 'gap-8' : 'gap-16')}>
+					{Boolean(budget) && (
+						<div className='h-32 gap-8 rounded bg-info-50 pr-16 text-info-100 flex-justify-start'>
+							<InfoCircleSVG width='1.6rem' height='1.6rem' />
+							{t.rich('create_strategy.overall_amount', {
+								chunk: () => (
+									<span className='text-gray-800'>
+										{sepNumbers(
+											String(
+												Math.ceil(
+													quantity *
+														(baseBestLimitPrice +
+															baseBestLimitPrice * baseSymbolCommission -
+															(optionBestLimitPrice +
+																optionBestLimitPrice * optionCommission)),
+												),
+											),
+										)}
+									</span>
+								),
+							})}
+						</div>
+					)}
+				</div>
+
+				<div className={clsx('flex-column', isQuantityInvalid ? 'gap-8' : 'gap-16')}>
 					<div className='gap-4 flex-column'>
 						<InputLegend
 							type='text'
 							value={quantity}
+							onCopy={(e) => copyNumberToClipboard(e, quantity)}
 							onChange={(v) => onChangeQuantity(Number(convertStringToInteger(v)))}
 							placeholder={t('create_strategy.required_quantity')}
 							prefix={t('create_strategy.stock')}
 							maxLength={10}
 							autoTranslateLegend
-							onBlur={() => setIsQuantityTouched(true)}
-							hasError={isQuantityTouched && isQuantityInvalid}
+							hasError={isQuantityInvalid}
+							onBlur={validateQuantity}
 							classes={{
 								prefix: 'w-40',
 							}}
 						/>
 
-						{isQuantityTouched && isQuantityInvalid && (
-							<div className='text-error-100 gap-6 flex-items-center'>
+						{isQuantityInvalid && (
+							<div className='gap-6 text-error-100 flex-items-center'>
 								<XCircleSVG width='1.6rem' height='1.6rem' />
 								<span className='text-tiny'>
 									{t('create_strategy.strategy_quantity_invalid', { n: contractSize })}
@@ -131,10 +173,10 @@ const BaseSymbolForm = ({
 						)}
 					</div>
 
-					<div className='text-gray-700 text-tiny flex-justify-between'>
+					<div className='text-tiny text-gray-700 flex-justify-between'>
 						<span>{t('create_strategy.free_stock_quantity')}:</span>
-						<span className='text-gray-500 flex gap-4'>
-							<span className='text-gray-800 font-medium'>{sepNumbers(String(asset))}</span>
+						<span className='flex gap-4 text-gray-500'>
+							<span className='font-medium text-gray-800'>{sepNumbers(String(asset))}</span>
 							{t('create_strategy.stock')}
 						</span>
 					</div>
@@ -149,10 +191,10 @@ const BaseSymbolForm = ({
 			</div>
 
 			<div className='w-full gap-8 flex-column'>
-				<div className='text-gray-700 h-24 text-tiny flex-justify-between'>
+				<div className='h-24 text-tiny text-gray-700 flex-justify-between'>
 					<span>{t('create_strategy.remain_quantities')}:</span>
-					<span className='text-gray-500 flex gap-4'>
-						<span className='text-gray-800 font-medium'>{sepNumbers(String(remainsQuantity))}</span>
+					<span className='flex gap-4 text-gray-500'>
+						<span className='font-medium text-gray-800'>{sepNumbers(String(remainsQuantity))}</span>
 						{t('create_strategy.stock')}
 					</span>
 				</div>
