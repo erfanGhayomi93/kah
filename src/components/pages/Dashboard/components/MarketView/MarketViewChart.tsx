@@ -101,7 +101,10 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 			},
 			yAxis: {
 				tickAmount: 4,
-				type: 'linear',
+				type:
+					interval === 'Month' || interval === 'ThreeMonths' || interval === 'Year'
+						? 'logarithmic'
+						: 'linear',
 				labels: {
 					formatter: ({ value }) => {
 						return numFormatter(Number(value));
@@ -130,6 +133,10 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 					formatter: (value) => xAxisFormatter(value),
 				},
 			},
+		});
+
+		chartRef.current.yAxis[0].update({
+			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
 

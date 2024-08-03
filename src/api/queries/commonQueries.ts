@@ -33,6 +33,8 @@ export const useCommissionsQuery = createQuery<Commission.Data, ['commissionQuer
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
+			const strikeObject = data.result.find((item) => item.marketUnitTitle === 'Strike');
+
 			data.result.forEach((item) => {
 				try {
 					commission[item.marketUnitTitle] = {
@@ -41,6 +43,8 @@ export const useCommissionsQuery = createQuery<Commission.Data, ['commissionQuer
 						commissionType: item.commissionType,
 						buyCommission: item.totalBuyCommission,
 						sellCommission: item.totalSellCommission,
+						strikeBuyCommission: strikeObject?.totalBuyCommission ?? 0.0005,
+						strikeSellCommission: strikeObject?.totalBuyCommission ?? 0.0005,
 						buyTax: item.buyTax,
 						sellTax: item.sellTax,
 					};

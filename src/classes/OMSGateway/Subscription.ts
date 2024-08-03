@@ -92,6 +92,8 @@ class Subscription {
 		const orderMessageType = message[200];
 		const orderMessage = message[208];
 
+		console.log(orderStatus, orderMessageType, orderMessage);
+
 		if (['OnCanceling', 'OnSending', 'InOMSQueue'].includes(orderStatus)) return;
 
 		const messageType: 'success' | 'error' = orderStatus === 'Error' ? 'error' : 'success';
@@ -101,8 +103,8 @@ class Subscription {
 			const orderStatusMessage = this._orderStatus?.[orderStatus] ?? orderStatus;
 			const orderErrorMessage = this._orderErrors?.[orderMessageType] ?? orderMessageType;
 
-			if (['OnBoard', 'Canceled'].includes(orderStatus)) messageText = orderStatusMessage;
-			else messageText = orderStatusMessage + `: ${orderErrorMessage}`;
+			if (orderMessageType) messageText = orderStatusMessage + `: ${orderErrorMessage}`;
+			else messageText = orderStatusMessage;
 		}
 
 		refetchActiveOrderTab();

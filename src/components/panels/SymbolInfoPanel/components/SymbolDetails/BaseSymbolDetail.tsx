@@ -58,7 +58,7 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 			{
 				id: 'last_trade',
 				title: t('symbol_info_panel.last_trade_date'),
-				value: dateFormatter(symbolData.lastTradedPrice, 'datetime'),
+				value: dateFormatter(symbolData.lastTradeDate, 'datetime'),
 			},
 			{
 				id: 'opening_rice',

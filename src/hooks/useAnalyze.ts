@@ -148,7 +148,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					let y = 0;
 
 					if (type === 'base') {
-						y = side === 'buy' ? j - baseAssets : baseAssets - j;
+						y = (side === 'buy' ? j - baseAssets : baseAssets - j) * item.quantity;
 					} else {
 						let strikeCommission = 0;
 						if ((useStrikeCommission || item.strikeCommission) && side === 'buy') {
@@ -157,7 +157,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 						}
 
 						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call');
-						y = pnl(iv, tradeCommission, side);
+						y = pnl(iv, tradeCommission, side) * item.quantity;
 					}
 
 					y += series[index]?.y ?? 0;

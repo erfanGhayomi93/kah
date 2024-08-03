@@ -2567,6 +2567,8 @@ declare namespace Commission {
 		commissionType: string;
 		buyCommission: number;
 		sellCommission: number;
+		strikeBuyCommission: number;
+		strikeSellCommission: number;
 		buyTax: number;
 		sellTax: number;
 	}
