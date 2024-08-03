@@ -276,18 +276,18 @@ const SymbolStrategyTable = ({
 				</thead>
 
 				<tbody className={styles.tbody}>
-					{sortedContracts.map((c) => (
+					{sortedContracts.map((contract) => (
 						<SymbolStrategy
-							key={c.id}
-							contract={c}
+							key={contract.id}
+							contract={contract}
 							onDelete={onDelete}
-							onChecked={(n, v) => onChecked?.(c.id, n, v)}
-							onChange={(v) => onChange(c.id, v)}
-							onSelect={(v) => onSelect(c, v)}
+							onChecked={(n, v) => onChecked?.(contract.id, n, v)}
+							onChange={(v) => onChange(contract.id, v)}
+							onSelect={(v) => onSelect(contract, v)}
 							features={features}
 							showDetails={showDetails}
-							commission={commissions?.[c.marketUnit]}
-							checkList={symbolsChecklist[c.symbol.symbolISIN]}
+							commission={commissions?.[contract.marketUnit]}
+							checkList={symbolsChecklist[contract.symbol.symbolISIN]}
 						/>
 					))}
 				</tbody>
@@ -380,6 +380,14 @@ const SymbolStrategy = ({
 	useEffect(() => {
 		onChange(inputs);
 	}, [JSON.stringify(inputs)]);
+
+	const amount = contract.price * contract.quantity;
+	const contractSize = contract.symbol.contractSize ?? 0;
+	const tax = contract.side === 'buy' ? commission?.buyTax ?? 0 : commission?.sellTax ?? 0;
+	const tradeCommission =
+		(contract.side === 'buy' ? commission?.buyCommission ?? 0 : commission?.sellCommission ?? 0) - tax;
+	const strikeCommission =
+		contract.side === 'buy' ? commission?.strikeBuyCommission ?? 0 : commission?.strikeSellCommission ?? 0;
 
 	return (
 		<tr className={styles.tr}>
@@ -474,14 +482,20 @@ const SymbolStrategy = ({
 
 			{features?.requiredMargin && (
 				<td className={`${styles.td} ${styles.right} pr-8`}>
-					<OptionCheckbox
-						type={contract.type}
-						checked={Boolean(checkList?.requiredMargin)}
-						disabled={!checkList.symbol}
-						onChange={(v) => onChecked('requiredMargin', v)}
-						label={contract.side === 'buy' ? '0' : sepNumbers(String(contract.symbol.requiredMargin ?? 0))}
-						classes={{ text: '!text-tiny' }}
-					/>
+					{contract.type === 'base' ? (
+						'−'
+					) : (
+						<OptionCheckbox
+							type={contract.type}
+							checked={Boolean(checkList?.requiredMargin)}
+							disabled={!checkList.symbol}
+							onChange={(v) => onChecked('requiredMargin', v)}
+							label={
+								contract.side === 'buy' ? '0' : sepNumbers(String(contract.symbol.requiredMargin ?? 0))
+							}
+							classes={{ text: '!text-tiny' }}
+						/>
+					)}
 				</td>
 			)}
 
@@ -492,17 +506,7 @@ const SymbolStrategy = ({
 						checked={Boolean(checkList?.tradeCommission)}
 						disabled={!checkList.symbol}
 						onChange={(v) => onChecked('tradeCommission', v)}
-						label={toFixed(
-							Math.round(
-								(!commission
-									? 0
-									: contract.price *
-										contract.quantity *
-										(contract.side === 'buy'
-											? commission.buyCommission
-											: commission.sellCommission)) * (contract.symbol.contractSize ?? 0),
-							),
-						)}
+						label={toFixed(Math.round(amount * tradeCommission * contractSize))}
 						classes={{ text: '!text-tiny' }}
 					/>
 				</td>
@@ -515,7 +519,7 @@ const SymbolStrategy = ({
 						checked={Boolean(checkList?.strikeCommission)}
 						disabled={!checkList.symbol}
 						onChange={(v) => onChecked('strikeCommission', v)}
-						label={String(0)}
+						label={Math.round(amount * strikeCommission * contractSize)}
 						classes={{ text: '!text-tiny' }}
 					/>
 				</td>
@@ -528,7 +532,7 @@ const SymbolStrategy = ({
 						checked={Boolean(checkList?.tax)}
 						disabled={!checkList.symbol}
 						onChange={(v) => onChecked('tax', v)}
-						label={String(0)}
+						label={tax}
 						classes={{ text: '!text-tiny' }}
 					/>
 				</td>
@@ -573,7 +577,6 @@ const SymbolStrategy = ({
 };
 
 const OptionCheckbox = ({ type, ...props }: OptionRendererProps) => {
-	if (type === 'base') return '−';
 	return <Checkbox {...props} classes={{ text: 'ltr !text-tiny', root: 'mx-auto' }} />;
 };
 

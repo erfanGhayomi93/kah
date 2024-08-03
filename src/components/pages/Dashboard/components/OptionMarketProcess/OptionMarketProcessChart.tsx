@@ -74,7 +74,7 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 			},
 			yAxis: {
 				tickAmount: 4,
-				type: 'linear',
+				type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
 				labels: {
 					formatter: ({ value }) => {
 						return numFormatter(Number(value));
@@ -138,6 +138,10 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 					formatter: (value) => xAxisFormatter(value),
 				},
 			},
+		});
+
+		chartRef.current.yAxis[0].update({
+			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
 

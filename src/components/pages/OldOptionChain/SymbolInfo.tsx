@@ -76,7 +76,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 			}
 		});
 
-		queryClient.setQueryData(queryKey, visualData);
+		// queryClient.setQueryData(queryKey, visualData);
 	};
 
 	const symbolDetails = useMemo<Array<[Item, Item]>>(() => {
@@ -143,7 +143,7 @@ const SymbolInfo = ({ selectedSymbol }: SymbolInfoProps) => {
 					{
 						id: 'lastTradeDate',
 						title: t('old_option_chain.last_trade_date'),
-						valueFormatter: dateFormatter(lastTradeDate, 'datetime'),
+						valueFormatter: () => dateFormatter(lastTradeDate, 'datetime'),
 					},
 				],
 				[

@@ -89,7 +89,7 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 			},
 			tooltip: {
 				formatter: function () {
-					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}</span>`;
+					return `<span class="text-white">${sepNumbers(String(this.y ?? 0))}%</span>`;
 				},
 			},
 			xAxis: {
@@ -105,7 +105,7 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 			},
 			yAxis: {
 				tickAmount: 4,
-				type: 'linear',
+				type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
 				labels: {
 					formatter: ({ value }) => {
 						return String(Number((Number(value) * 100).toFixed(6)) * 1);
@@ -134,6 +134,10 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 					formatter: (value) => xAxisFormatter(value),
 				},
 			},
+		});
+
+		chartRef.current.yAxis[0].update({
+			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
 

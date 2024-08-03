@@ -70,6 +70,9 @@ const PriceChangesWatchlistChart = () => {
 				series: {
 					stacking: 'percent',
 					color: 'red',
+					dataLabels: {
+						enabled: false,
+					},
 				},
 			},
 			series: [

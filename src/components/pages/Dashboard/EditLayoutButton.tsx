@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 
 const EditLayoutButton = () => {
-	const t = useTranslations('home');
+	const t = useTranslations();
 
 	const gridLayout = useAppSelector(getDashboardGridLayout);
 
@@ -70,7 +70,7 @@ const EditLayoutButton = () => {
 		dispatch(
 			setManageColumnsModal({
 				columns,
-				title: t('manage_layout'),
+				title: t('home.manage_layout'),
 				initialColumns: initialDashboardLayout,
 				stream: false,
 				onColumnChanged: (cols) => onColumnChanged(cols as Array<IManageColumn<TDashboardSections>>),

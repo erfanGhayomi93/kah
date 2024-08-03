@@ -204,17 +204,25 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		for (let i = 0; i < contracts.length; i++) {
 			const c = contracts[i];
 			const commission = commissions?.[c.marketUnit];
+			if (!commission) continue;
 
-			if (c.requiredMargin && c.side === 'sell') result.requiredMargin += c.symbol?.requiredMargin ?? 0;
-			if (commission && c.tradeCommission)
-				result.tradeCommission += Math.round(
-					c.price *
-						c.quantity *
-						(c.side === 'buy' ? commission.buyCommission : commission.sellCommission) *
-						(c.symbol.contractSize ?? 0),
-				);
-			if (commission && c.strikeCommission) result.strikeCommission += 0;
-			if (commission && c.tax) result.tax += 0;
+			const amount = c.price * c.quantity;
+			const contractSize = c.symbol.contractSize ?? 0;
+			const tax = c.side === 'buy' ? commission.buyTax : commission.sellTax;
+			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : commission.sellCommission) - tax;
+			const strikeCommission =
+				c.side === 'buy' ? commission.strikeBuyCommission : commission.strikeSellCommission;
+
+			if (commission && c.tradeCommission) {
+				result.tradeCommission += Math.round(amount * tradeCommission * contractSize);
+			}
+			if (commission && c.strikeCommission) {
+				result.strikeCommission += Math.round(amount * strikeCommission * contractSize);
+			}
+			if (c.requiredMargin && c.type === 'option' && c.side === 'sell') {
+				result.requiredMargin += c.symbol?.requiredMargin ?? 0;
+			}
+			if (commission && c.tax) result.tax += amount * tax * contractSize;
 			if (commission && c.vDefault) result.vDefault += 0;
 		}
 
