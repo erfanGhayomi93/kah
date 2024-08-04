@@ -1,4 +1,4 @@
-import { PlusSquareSVG } from '@/components/icons';
+import { PlusSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
@@ -8,15 +8,13 @@ const AddNewWatchlist = (props: AddNewWatchlistProps) => {
 	const t = useTranslations('manage_option_watchlist_modal');
 
 	return (
-		<div className='h-64 gap-8 border-t border-t-gray-200 pl-24 flex-items-center'>
+		<div className='p-24 flex-items-center'>
 			<button
 				type='button'
-				className='h-40 gap-8 pr-24 font-medium text-primary-100 flex-items-center'
+				className='h-48 flex-1 gap-8 font-medium text-primary-100 flex-justify-center'
 				{...props}
 			>
-				<span className='size-16 rounded-sm text-current flex-justify-center'>
-					<PlusSquareSVG width='1.6rem' height='1.6rem' />
-				</span>
+				<PlusSVG width='1.8rem' height='1.8rem' />
 				{t('create_new_watchlist')}
 			</button>
 		</div>

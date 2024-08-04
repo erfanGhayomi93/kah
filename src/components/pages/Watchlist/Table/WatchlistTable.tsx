@@ -219,7 +219,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					minWidth: 160,
 					initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.notionalValue ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
+					valueFormatter: ({ value }) => numFormatter(value),
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
