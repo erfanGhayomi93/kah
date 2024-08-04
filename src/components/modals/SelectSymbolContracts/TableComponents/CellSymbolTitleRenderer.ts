@@ -4,6 +4,7 @@ import { type ICellRendererComp, type ICellRendererParams } from '@ag-grid-commu
 type CellSymbolTitleRendererRendererProps = ICellRendererParams<ITableData, Option.Root> & {
 	reverse: boolean;
 	disabled: boolean;
+	checkbox: boolean;
 	isSelected: (symbolISIN: string) => boolean;
 };
 
@@ -34,7 +35,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
 
 			this.eGui.appendChild(this.eIOTM);
 			this.eGui.appendChild(this.eTitle);
-			this.eGui.appendChild(this.eCheckbox);
+			if (this.params.checkbox) this.eGui.appendChild(this.eCheckbox);
 		} catch (e) {
 			//
 		}

@@ -141,13 +141,14 @@ export interface IForgetPasswordModal extends IBaseModalConfiguration {
 }
 
 export interface ISelectSymbolContractsModal extends IBaseModalConfiguration {
-	initialBaseSymbolISIN?: string;
+	suppressRowActions?: boolean;
+	initialBaseSymbol?: [string, TBsSides];
 	suppressBaseSymbolChange?: boolean;
 	suppressSendBaseSymbol?: boolean;
 	initialSelectedBaseSymbol?: boolean;
-	initialSelectedContracts?: string[];
+	initialSelectedContracts?: Array<[string, TBsSides]>;
 	maxContractsLength?: number;
-	callback: (result: Option.Root[], baseSymbol: Symbol.Info | null) => void;
+	callback: (result: ISelectedContract[], baseSymbol: Symbol.Info | null) => void;
 }
 
 export interface IAddSaturnTemplate extends Saturn.Content, IBaseModalConfiguration {}

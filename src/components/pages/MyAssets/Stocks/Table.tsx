@@ -9,6 +9,7 @@ import { getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useMemo, useRef } from 'react';
+import SymbolTitleHeader from '../SymbolTitleHeader';
 import ActionCell from './ActionCell';
 
 interface TableProps {
@@ -27,21 +28,29 @@ const Table = ({ data, loading }: TableProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
+	const indexColumn = useMemo<ColDef<Portfolio.GlPortfolio>>(
+		() => ({
+			colId: 'index',
+			headerName: t('col_index'),
+			pinned: 'right',
+			minWidth: 72,
+			maxWidth: 72,
+			sortable: false,
+			valueGetter: ({ node }) => (node?.rowIndex ?? 0) + 1,
+		}),
+		[],
+	);
+
 	const columnDefs = useMemo<Array<ColDef<Portfolio.GlPortfolio>>>(
 		() => [
-			{
-				colId: 'index',
-				headerName: t('col_index'),
-				pinned: 'right',
-				minWidth: 72,
-				maxWidth: 72,
-				valueGetter: ({ node }) => (node?.rowIndex ?? 0) + 1,
-			},
+			indexColumn,
 			{
 				colId: 'symbol',
 				headerName: t('col_symbol'),
 				pinned: 'right',
 				cellClass: 'font-medium cursor-pointer',
+				maxWidth: 120,
+				headerComponent: SymbolTitleHeader,
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				valueGetter: ({ data }) => data!.symbolTitle,
 			},
@@ -213,6 +222,12 @@ const Table = ({ data, loading }: TableProps) => {
 				columnDefs={columnDefs}
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
+				onSortChanged={({ api }) => {
+					const column = api.getColumn('index');
+					if (!column) return;
+
+					column.setColDef(indexColumn, indexColumn, 'api');
+				}}
 			/>
 
 			{loading && <Loading />}

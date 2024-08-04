@@ -60,7 +60,7 @@ const SymbolContracts = ({
 		}
 	};
 
-	const handleContracts = (contracts: Option.Root[]) => {
+	const handleContracts = (contracts: ISelectedContract[]) => {
 		try {
 			const modifiedContracts: Array<Saturn.ContentOption | null> = contracts.map<Saturn.ContentOption>((c) => ({
 				activeTab: 'price_information',
@@ -87,17 +87,18 @@ const SymbolContracts = ({
 	};
 
 	const addNewContract = () => {
-		const initialSelectedContracts = baseSymbolContracts
+		const initialSelectedContracts: Array<[string, TBsSides]> = baseSymbolContracts
 			.filter((item) => item !== null)
-			.map((symbol) => symbol!.symbolISIN);
+			.map((symbol) => [symbol!.symbolISIN, 'buy']);
 
 		dispatch(
 			setSelectSymbolContractsModal({
-				initialBaseSymbolISIN: baseSymbol.symbolISIN,
+				initialBaseSymbol: [baseSymbol.symbolISIN, 'buy'],
 				initialSelectedContracts,
 				suppressBaseSymbolChange: true,
 				suppressSendBaseSymbol: true,
 				maxContractsLength: 4,
+				suppressRowActions: true,
 				callback: handleContracts,
 			}),
 		);

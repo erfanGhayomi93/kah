@@ -23,7 +23,7 @@ const BuildStrategy = () => {
 
 	const [selectedContracts, setSelectedContracts] = useState<string[]>(builtStrategyContracts.map(({ id }) => id));
 
-	const handleContracts = (contracts: Option.Root[], baseSymbol: Symbol.Info | null) => {
+	const handleContracts = (contracts: ISelectedContract[], baseSymbol: Symbol.Info | null) => {
 		const l = contracts.length;
 
 		const result: TSymbolStrategy[] = [];
@@ -33,8 +33,12 @@ const BuildStrategy = () => {
 			let contractSize = 0;
 
 			for (let i = 0; i < l; i++) {
+				const c = contracts[i];
 				const contract: IOptionStrategy = {
-					...convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy'),
+					...convertSymbolWatchlistToSymbolBasket(
+						{ optionWatchlistData: c.optionWatchlistData, symbolInfo: c.symbolInfo },
+						c.side,
+					),
 					tradeCommission: false,
 					strikeCommission: false,
 					requiredMargin: false,
@@ -74,20 +78,21 @@ const BuildStrategy = () => {
 	};
 
 	const upsert = () => {
-		const initialBaseSymbolISIN =
-			builtStrategyContracts.find((item) => item.type === 'base')?.symbol.symbolISIN ?? undefined;
+		const initialBaseSymbol = builtStrategyContracts.find((item) => item.type === 'base') ?? null;
 
-		const initialSelectedContracts = builtStrategyContracts
+		const initialSelectedContracts: Array<[string, TBsSides]> = builtStrategyContracts
 			.filter((item) => item.type === 'option')
-			.map((item) => item.symbol.symbolISIN);
+			.map((item) => [item.symbol.symbolISIN, item.side]);
 
 		dispatch(
 			setSelectSymbolContractsModal({
 				initialSelectedContracts,
 				suppressBaseSymbolChange: false,
 				suppressSendBaseSymbol: false,
-				initialBaseSymbolISIN,
-				initialSelectedBaseSymbol: Boolean(initialBaseSymbolISIN),
+				initialBaseSymbol: initialBaseSymbol
+					? [initialBaseSymbol.symbol.symbolISIN, initialBaseSymbol.side]
+					: undefined,
+				initialSelectedBaseSymbol: Boolean(initialBaseSymbol),
 				callback: handleContracts,
 			}),
 		);

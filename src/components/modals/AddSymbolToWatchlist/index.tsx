@@ -82,7 +82,7 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 			{...props}
 			ref={ref}
 		>
-			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
+			<Div className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Header label={t('add_symbol_to_watchlist.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 gap-24 overflow-hidden rounded p-24 flex-column'>

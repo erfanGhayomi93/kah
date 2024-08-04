@@ -87,6 +87,7 @@ const routes = {
 		CustomWatchlistOptionSearch: `${BASE_URL}/OptionWatchlist/v1/CustomWatchlistOptionSearch`,
 		AddSymbolCustomWatchlist: `${BASE_URL}/OptionWatchlist/v1/AddSymbolCustomWatchlist`,
 		RemoveSymbolCustomWatchlist: `${BASE_URL}/OptionWatchlist/v1/RemoveSymbolCustomWatchlist`,
+		GetCustomWatchlistsBySymbolISIN: `${BASE_URL}/OptionWatchlist/v1/GetCustomWatchlistsBySymbolISIN`,
 	},
 
 	symbol: {

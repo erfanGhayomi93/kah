@@ -48,7 +48,7 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 			},
 			yAxis: {
 				tickAmount: 4,
-				type: 'linear',
+				type: type === 'PutToCall' && (interval === 'Month' || interval === 'Year') ? 'logarithmic' : 'linear',
 				labels: {
 					formatter: ({ value }) => {
 						return numFormatter(Number(value));
@@ -150,6 +150,10 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 					formatter: (value) => xAxisFormatter(value),
 				},
 			},
+		});
+
+		chartRef.current.yAxis[0].update({
+			type: type === 'PutToCall' && (interval === 'Month' || interval === 'Year') ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
 

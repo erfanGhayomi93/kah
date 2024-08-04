@@ -115,7 +115,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 				createOrder({
 					price: inputs.optionPrice,
 					quantity: inputs.quantity / contractSize,
-					orderSide: 'buy',
+					orderSide: 'sell',
 					symbolISIN: option.symbolISIN,
 					validity: 'Day',
 					validityDate: 0,

@@ -28,7 +28,7 @@ class SymbolTitleHeader implements IHeaderComp {
 		this.eGui.setAttribute('class', 'flex-items-center ltr relative w-full');
 
 		this.eWrapper = document.createElement('div');
-		this.eWrapper.setAttribute('class', 'flex-justify-end w-full');
+		this.eWrapper.setAttribute('class', 'flex-justify-center w-full');
 		this.eWrapper.addEventListener('click', () => this.agSort.sort());
 
 		const btn = document.createElement('button');

@@ -1,8 +1,8 @@
 import axios from '@/api/axios';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
+import { useSymbolWatchlistListQuery } from '@/api/queries/symbolQuery';
 import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
-import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { type IMoveSymbolToWatchlistModal } from '@/features/slices/types/modalSlice.interfaces';
@@ -12,6 +12,7 @@ import { forwardRef } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
+import AddNewWatchlist from './AddNewWatchlist';
 import Watchlist from './Watchlist';
 
 const Div = styled.div`
@@ -29,9 +30,15 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 
 		const dispatch = useAppDispatch();
 
-		const { data: watchlistList, isLoading } = useGetAllCustomWatchlistQuery({
+		const { data: watchlistList = [], isLoading: isLoadingWatchlistList } = useGetAllCustomWatchlistQuery({
 			queryKey: ['getAllCustomWatchlistQuery'],
 		});
+
+		const { data: symbolWatchlistList = [], isLoading: isLoadingSymbolWatchlistList } = useSymbolWatchlistListQuery(
+			{
+				queryKey: ['symbolWatchlistListQuery', symbolISIN],
+			},
+		);
 
 		const onCloseModal = () => {
 			dispatch(setMoveSymbolToWatchlistModal(null));
@@ -74,11 +81,11 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 				{...props}
 				ref={ref}
 			>
-				<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
+				<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<Header label={t('move_symbol_to_watchlist.title', { symbolTitle })} onClose={onCloseModal} />
 
 					<div className='relative flex-1 overflow-hidden flex-column'>
-						{isLoading && <Loading />}
+						{(isLoadingWatchlistList || isLoadingSymbolWatchlistList) && <Loading />}
 
 						{Array.isArray(watchlistList) && (
 							<ul className='relative flex-1 select-none gap-16 overflow-auto px-24 flex-column'>
@@ -98,18 +105,7 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 						)}
 					</div>
 
-					<div className='h-64 gap-8 border-t border-t-gray-200 pl-24 flex-items-center'>
-						<button
-							onClick={addNewWatchlist}
-							className='h-40 gap-8 pr-24 font-medium text-primary-100 flex-items-center'
-							type='button'
-						>
-							<span className='size-16 rounded-sm text-current flex-justify-center'>
-								<PlusSquareSVG width='1.6rem' height='1.6rem' />
-							</span>
-							{t('manage_option_watchlist_modal.create_new_watchlist')}
-						</button>
-					</div>
+					<AddNewWatchlist onClick={addNewWatchlist} />
 				</Div>
 			</Modal>
 		);

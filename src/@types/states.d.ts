@@ -265,7 +265,7 @@ declare interface SymbolContractModalStates {
 	term: string;
 	baseSymbol: Option.BaseSearch | null;
 	sendBaseSymbol: boolean;
-	contracts: Option.Root[];
+	contracts: ISelectedContract[];
 	activeSettlement: Option.BaseSettlementDays | null;
 }
 
@@ -351,6 +351,8 @@ declare interface IOptionWatchlistFilters {
 	status: Array<'ITM' | 'OTM' | 'ATM'>;
 	dueDays: [number, number];
 	delta: [number, number];
+	term: string;
+	priceBasis: TPriceBasis;
 	minimumTradesValue: string;
 }
 
@@ -800,4 +802,8 @@ declare interface IMarketMapFilters {
 	watchlist: MarketMap.TWatchlist | null;
 
 	palette: Record<'id' | 'label', string> | null;
+}
+
+declare interface ISelectedContract extends Option.Root {
+	side: TBsSides;
 }

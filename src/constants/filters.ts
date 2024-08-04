@@ -6,8 +6,11 @@ export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
 	status: [],
 	dueDays: [0, 365],
 	delta: [-1, 1],
+	term: '',
+	priceBasis: 'LastTradePrice',
 	minimumTradesValue: '',
 };
+
 export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	pageNumber: 1,
 	pageSize: 25,

@@ -132,11 +132,11 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 
 	const x1Value = valueFormatter(Math.min(value[0], value[1]));
 
-	const x1Text = Math.min(positionX.x1, positionX.x2 - x1Value.length * 2.5);
+	const x1Offset = Math.max(0, Math.min(positionX.x1, positionX.x2 - x1Value.length * 2.5));
 
 	const x2Value = valueFormatter(Math.max(value[0], value[1]));
 
-	const x2Text = positionX.x2;
+	const x2Offset = Math.max(positionX.x2, x1Offset + x1Value.length * 2.5);
 
 	return (
 		<div className='px-8'>
@@ -205,7 +205,7 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 				</Group>
 
 				<g className='text-gray-800'>
-					<Text x={`${x1Text}%`} y='5' textAnchor='middle'>
+					<Text x={`${x1Offset}%`} y='5' textAnchor='middle'>
 						{x1Value}
 					</Text>
 
@@ -216,7 +216,7 @@ const PriceSlider = ({ min, max, step = 1, value, labels, valueFormatter, onChan
 							</Text>
 						))}
 
-					<Text x={`${x2Text}%`} y='5' textAnchor='middle'>
+					<Text x={`${x2Offset}%`} y='5' textAnchor='middle'>
 						{x2Value}
 					</Text>
 				</g>

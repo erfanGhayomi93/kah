@@ -136,7 +136,7 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 		});
 
 		chartRef.current.yAxis[0].update({
-			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
+			type: interval === 'Month' || interval === 'ThreeMonths' || interval === 'Year' ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
 

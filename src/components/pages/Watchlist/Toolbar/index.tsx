@@ -14,9 +14,11 @@ import WatchlistList from './WatchlistList';
 interface ToolbarProps {
 	filtersCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
+	setTerm: (v: string) => void;
+	setPriceBasis: (v: TPriceBasis) => void;
 }
 
-const Toolbar = ({ filters, filtersCount }: ToolbarProps) => {
+const Toolbar = ({ setTerm, setPriceBasis, filters, filtersCount }: ToolbarProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -109,17 +111,32 @@ const Toolbar = ({ filters, filtersCount }: ToolbarProps) => {
 		<div className='h-72 gap-48 overflow-hidden flex-justify-between'>
 			<div className='gap-8 overflow-hidden flex-items-center'>
 				<WatchlistList />
-				<SearchSymbol />
+				<SearchSymbol setTerm={setTerm} />
 			</div>
 
 			<TableActions
+				className='flex-1 justify-end'
 				onPlayed={onPlayed}
 				onPaused={onPaused}
 				filtersCount={filtersCount}
 				onManageColumns={manageWatchlistColumns}
 				onShowFilters={onShowFilters}
 				onExportExcel={onExportExcel}
-			/>
+			>
+				<div style={{ flex: '0 0 15.2rem' }}>
+					{/* <Select<TPriceBasis>
+						defaultValue={filters.priceBasis}
+						options={watchlistPriceBasis}
+						placeholder={t('strategy.price_basis')}
+						onChange={(v) => setPriceBasis(v)}
+						getOptionId={(id) => id}
+						getOptionTitle={(id) => t(`strategy.price_${id}`)}
+						classes={{
+							root: '!h-40',
+						}}
+					/> */}
+				</div>
+			</TableActions>
 		</div>
 	);
 };

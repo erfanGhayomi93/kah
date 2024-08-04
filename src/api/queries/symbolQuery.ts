@@ -130,3 +130,23 @@ export const useSymbolChartDataQuery = createQuery<
 		return data.result;
 	},
 });
+
+export const useSymbolWatchlistListQuery = createQuery<Option.WatchlistList[], ['symbolWatchlistListQuery', string]>({
+	queryKey: ['symbolWatchlistListQuery', ''],
+	queryFn: async ({ queryKey, signal }) => {
+		const [, symbolISIN] = queryKey;
+
+		const response = await axios.get<ServerResponse<Option.WatchlistList[]>>(
+			routes.optionWatchlist.GetCustomWatchlistsBySymbolISIN,
+			{
+				params: { symbolISIN },
+				signal,
+			},
+		);
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});

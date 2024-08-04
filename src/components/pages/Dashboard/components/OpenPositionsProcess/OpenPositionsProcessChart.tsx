@@ -48,7 +48,7 @@ const OpenPositionsProcessChart = ({ interval, type }: OpenPositionsProcessChart
 			},
 			yAxis: {
 				tickAmount: 4,
-				type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
+				type: type === 'Aggregated' && (interval === 'Month' || interval === 'Year') ? 'logarithmic' : 'linear',
 				labels: {
 					formatter: ({ value }) => {
 						return numFormatter(Number(value));
@@ -130,7 +130,7 @@ const OpenPositionsProcessChart = ({ interval, type }: OpenPositionsProcessChart
 		});
 
 		chartRef.current.yAxis[0].update({
-			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
+			type: type === 'Aggregated' && (interval === 'Month' || interval === 'Year') ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
 

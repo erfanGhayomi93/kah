@@ -159,10 +159,7 @@ const CategoryCard = ({ columns, tag, onColumnSwitch, onAllColumnSwitch }: ICate
 	const hasTag = tag !== 'NULL';
 
 	return (
-		<div
-			style={{ minWidth: '17.6rem' }}
-			className={clsx('w-full rounded px-16 shadow-sm flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}
-		>
+		<div className={clsx('flex-1 rounded px-16 shadow-sm flex-column', hasTag ? 'gap-16 pb-16' : 'py-8')}>
 			{hasTag && (
 				<div className='gap-8 border-b border-b-gray-200 py-6 flex-justify-start'>
 					<ColumnSwitchField

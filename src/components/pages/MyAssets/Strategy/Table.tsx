@@ -10,15 +10,22 @@ const Table = () => {
 
 	const gridRef = useRef<GridApi<unknown>>(null);
 
+	const indexColumn = useMemo<ColDef<unknown>>(
+		() => ({
+			colId: 'index',
+			headerName: t('col_index'),
+			pinned: 'right',
+			minWidth: 72,
+			maxWidth: 72,
+			sortable: false,
+			valueGetter: ({ node }) => (node?.rowIndex ?? 0) + 1,
+		}),
+		[],
+	);
+
 	const columnDefs = useMemo<Array<ColDef<unknown>>>(
 		() => [
-			{
-				colId: 'index',
-				headerName: t('col_index'),
-				pinned: 'right',
-				minWidth: 72,
-				maxWidth: 72,
-			},
+			indexColumn,
 			{
 				colId: 'strategy_name',
 				headerName: t('col_strategy_name'),
@@ -89,6 +96,12 @@ const Table = () => {
 				columnDefs={columnDefs}
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
+				onSortChanged={({ api }) => {
+					const column = api.getColumn('index');
+					if (!column) return;
+
+					column.setColDef(indexColumn, indexColumn, 'api');
+				}}
 			/>
 
 			<div className='absolute center'>
