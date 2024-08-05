@@ -1017,7 +1017,7 @@ declare namespace Order {
 		isFreeze: boolean;
 		isSwapped: boolean;
 		blockCount: number;
-		blockType: string;
+		blockType: strTBlockTypeing;
 		sumPayment: number;
 		sumReceived: number;
 		sumAmount: number;

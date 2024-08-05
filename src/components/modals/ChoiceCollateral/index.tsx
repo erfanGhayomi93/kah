@@ -35,7 +35,7 @@ const ChoiceCollateral = forwardRef<HTMLDivElement, ChoiceCollateralProps>(({ or
 
 	return (
 		<Modal moveable transparent onClose={onCloseModal} {...props} ref={ref}>
-			<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
+			<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Header label={t('choice_collateral_modal.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 justify-between p-16 pt-40 flex-column'>
