@@ -5,7 +5,7 @@ import React from 'react';
 interface AddNewWatchlistProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const AddNewWatchlist = (props: AddNewWatchlistProps) => {
-	const t = useTranslations('move_symbol_to_watchlist');
+	const t = useTranslations('manage_option_watchlist_modal');
 
 	return (
 		<div className='p-24 flex-items-center'>
@@ -15,7 +15,7 @@ const AddNewWatchlist = (props: AddNewWatchlistProps) => {
 				{...props}
 			>
 				<PlusSVG width='1.8rem' height='1.8rem' />
-				{t('add_to_new_watchlist')}
+				{t('create_new_watchlist')}
 			</button>
 		</div>
 	);

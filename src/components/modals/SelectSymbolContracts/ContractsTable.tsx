@@ -108,6 +108,7 @@ const ContractsTable = ({
 			flex: 1,
 			cellClass: 'strike-price',
 			headerClass: 'strike-price',
+			resizable: false,
 			valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
 			valueFormatter: ({ value }) => sepNumbers(String(value)),
 			cellRenderer: suppressRowActions ? undefined : StrikePriceCellRenderer,
@@ -247,7 +248,7 @@ const ContractsTable = ({
 	);
 
 	const modifiedData: ITableData[] = useMemo(() => {
-		if (!watchlistData) return [];
+		if (!Array.isArray(watchlistData)) return [];
 
 		const dataAsArray: ITableData[] = [];
 
@@ -278,7 +279,7 @@ const ContractsTable = ({
 			//
 		}
 
-		return dataAsArray;
+		return dataAsArray.filter((row) => row.buy !== undefined && row.sell !== undefined);
 	}, [watchlistData]);
 
 	useEffect(() => {

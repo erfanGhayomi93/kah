@@ -2,6 +2,7 @@
 import { Component } from 'react';
 
 interface ErrorBoundaryProps {
+	fallback?: () => void;
 	hasError?: boolean;
 	children?: React.ReactNode;
 }
@@ -19,7 +20,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
 	}
 
 	componentDidCatch(error: unknown, errorInfo: unknown) {
-		console.log({ error, errorInfo });
+		try {
+			this.props.fallback?.();
+			console.log({ error, errorInfo });
+		} catch (e) {
+			//
+		}
 	}
 
 	render() {

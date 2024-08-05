@@ -53,7 +53,7 @@ class StrikePriceBtnGroup {
 		const btn = document.createElement('button');
 		btn.setAttribute(
 			'class',
-			'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 select-none rounded text-base text-gray-700 flex-justify-center transition-colors',
+			'bg-white darkness:bg-gray-50 select-none rounded text-base text-gray-700 flex-justify-center transition-colors',
 		);
 
 		return btn;
@@ -62,7 +62,7 @@ class StrikePriceBtnGroup {
 	private _createBuyBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
-		btn.classList.add('hover:bg-success-100', 'hover:text-white', 'h-32', 'w-40');
+		btn.classList.add('hover:!bg-success-100', 'hover:text-white', 'h-32', 'w-40');
 		btn.textContent = 'خرید';
 		btn.onclick = (e) => {
 			e.stopPropagation();
@@ -75,7 +75,7 @@ class StrikePriceBtnGroup {
 	private _createSellBtn() {
 		const btn = this.createBtn();
 		btn.type = 'button';
-		btn.classList.add('hover:bg-error-100', 'hover:text-white', 'h-32', 'w-40');
+		btn.classList.add('hover:!bg-error-100', 'hover:text-white', 'h-32', 'w-40');
 		btn.textContent = 'فروش';
 		btn.onclick = (e) => {
 			e.stopPropagation();
@@ -129,7 +129,7 @@ class StrikePriceBtnGroup {
 			this.eDropdown = document.createElement('ul');
 			this.eDropdown.setAttribute(
 				'class',
-				'absolute select-none overflow-hidden bg-white dark:bg-gray-50 darkBlue:bg-gray-50 rounded',
+				'absolute select-none overflow-hidden bg-white darkness:bg-gray-50 rounded',
 			);
 			this.eDropdown.setAttribute('data-side', this.side);
 			this.eDropdown.style.boxShadow = '0px 2px 22px 0px rgba(0, 0, 0, 0.07)';

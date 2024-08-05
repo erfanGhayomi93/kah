@@ -19,7 +19,7 @@ import ReactGridLayout, { type Layout } from 'react-grid-layout';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
-import AddNewWatchlist from '../MoveSymbolToWatchlist/AddNewWatchlist';
+import AddNewWatchlist from './AddNewWatchlist';
 import DeleteWatchlistBtnGroup from './DeleteWatchlistBtnGroup';
 import Watchlist from './Watchlist';
 
@@ -27,11 +27,6 @@ const Div = styled.div`
 	width: 500px;
 	height: 552px;
 `;
-
-interface IDeleting {
-	hasStarted: boolean;
-	selected: number[];
-}
 
 interface ManageOptionWatchlistListProps extends IBaseModalConfiguration {}
 
@@ -105,7 +100,17 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 		},
 	});
 
-	const { mutate: updateWatchlistVisibility } = useUpdateCustomWatchlistHiddenMutation();
+	const { mutate: updateWatchlistVisibility } = useUpdateCustomWatchlistHiddenMutation({
+		onSuccess: (_s, { id, isHidden }) => {
+			queryClient.setQueryData(
+				['getAllCustomWatchlistQuery'],
+				data.map((wl) => {
+					if (!id.includes(wl.id)) return wl;
+					return { ...wl, isHidden };
+				}),
+			);
+		},
+	});
 
 	const onCloseModal = () => {
 		dispatch(setManageOptionWatchlistListModal(null));

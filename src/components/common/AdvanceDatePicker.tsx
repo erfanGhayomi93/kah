@@ -274,6 +274,7 @@ const AdvancedDatepicker = ({
 			className={clsx(
 				styles.datepicker,
 				classes?.datepicker,
+				'bg-white darkness:bg-gray-50',
 				visibleCalendar && [styles.opened, classes?.opened],
 				// theme === 'dark' && [styles.dark, classes?.dark],
 				nonBorder && styles.nonBorder,
@@ -492,7 +493,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 				onClick={(e) => e.stopPropagation()}
 				tabIndex={-1}
 				role='button'
-				className={clsx(styles.dialogBox, classes?.dialogBox)}
+				className={clsx(styles.dialogBox, classes?.dialogBox, 'bg-white darkness:bg-gray-50')}
 				data-testid={dataTestId}
 			>
 				<div className={clsx(styles.switch, classes?.switch)}>
@@ -638,7 +639,7 @@ interface MonthsProps {
 	dataTestId: string;
 }
 const Months = ({ onChange, onClose, value, classes, months = yearMonthsName, dataTestId }: MonthsProps) => (
-	<div className={clsx(styles.selection, classes?.selection)}>
+	<div className={clsx(styles.selection, classes?.selection, 'bg-white darkness:bg-gray-50')}>
 		<div className={clsx(styles.back, classes?.back)}>
 			<button role='button' type='button' onClick={onClose} data-testid={`${dataTestId}_close`}>
 				<XSVG width='2rem' height='2rem' />

@@ -135,7 +135,7 @@
 		"option_trades_value": "ارزش در معاملات اختیار",
 		"option_market_process": "روند بازار آپشن",
 		"individual_and_legal": "حقیقی و حقوقی",
-		"price_changes_watchlist": "دیده بان تغییر قیمت - سهام",
+		"price_changes_watchlist": "دیده‌بان تغییر قیمت - سهام",
 		"open_positions_process": "روند موقعیت‌های باز",
 		"meetings": "مجامع",
 		"new_and_old": "جدید و قدیم",
@@ -318,13 +318,14 @@
 		"title": "مدیریت دیده‌بان",
 		"total_count": "تعداد کل",
 		"watchlist_count": "{n} دیده‌بان",
-		"create_new_watchlist": "افزودن به دیده بان جدید",
-		"delete_selected_watchlists": "حذف {n} دیده بان انتخاب شده",
+		"create_new_watchlist": "ایجاد دیده‌بان جدید",
+		"delete_selected_watchlists": "حذف {n} دیده‌بان انتخاب شده",
 		"delete_single_watchlist": "آیا از حذف دیده‌بان \"{n}\" مطمئن هستید؟",
 		"delete_multiple_question": "آیا از حذف دیده‌بان‌های انتخاب شده مطمئن هستید؟"
 	},
 	"move_symbol_to_watchlist": {
-		"title": "افزودن نماد {symbolTitle}"
+		"title": "افزودن نماد {symbolTitle}",
+		"add_to_new_watchlist": "افزودن به دیده‌بان جدید"
 	},
 	"login_modal": {
 		"login_title": "ورود به کهکشان",
@@ -770,7 +771,7 @@
 		"filter": "فیلتر کنید",
 		"market_overview": "نمای بازار",
 		"add_symbol": "افزودن نماد",
-		"add_symbol_to_table": "نمادی در این دیده بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید.",
+		"add_symbol_to_table": "نمادی در این دیده‌بان وجود ندارد، برای <symbol>افزودن نماد</symbol> کلیک کنید.",
 		"no_data_table": "موردی برای نمایش یافت نشد.",
 		"symbol_title": "نماد",
 		"trade_value": "ارزش معاملات",
