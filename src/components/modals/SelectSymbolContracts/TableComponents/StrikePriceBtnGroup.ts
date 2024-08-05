@@ -47,7 +47,7 @@ class StrikePriceBtnGroup {
 		const btn = document.createElement('button');
 		btn.setAttribute(
 			'class',
-			'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 select-none rounded text-base text-gray-700 flex-justify-center transition-colors',
+			'bg-white darkness:bg-gray-50 select-none rounded text-base text-gray-700 flex-justify-center transition-colors',
 		);
 
 		return btn;
@@ -56,7 +56,7 @@ class StrikePriceBtnGroup {
 	private _createBuyBtn() {
 		this.eBuyBtn = this.createBtn();
 		this.eBuyBtn.type = 'button';
-		this.eBuyBtn.classList.add('hover:bg-success-100', 'hover:text-white', 'h-32', 'w-40');
+		this.eBuyBtn.classList.add('hover:!bg-success-100', 'hover:text-white', 'h-32', 'w-40');
 		this.eBuyBtn.textContent = 'خرید';
 		this.eBuyBtn.onclick = (e) => {
 			e.stopPropagation();
@@ -69,7 +69,7 @@ class StrikePriceBtnGroup {
 	private _createSellBtn() {
 		this.eSellBtn = this.createBtn();
 		this.eSellBtn.type = 'button';
-		this.eSellBtn.classList.add('hover:bg-error-100', 'hover:text-white', 'h-32', 'w-40');
+		this.eSellBtn.classList.add('hover:!bg-error-100', 'hover:text-white', 'h-32', 'w-40');
 		this.eSellBtn.textContent = 'فروش';
 		this.eSellBtn.onclick = (e) => {
 			e.stopPropagation();

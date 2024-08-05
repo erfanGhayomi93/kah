@@ -1,5 +1,4 @@
 .datepicker {
-	--rg-dp-background-color: theme("colors.white");
 	--rg-dp-border-color: theme("colors.gray.400");
 	--rg-dp-active-color: theme("colors.gray.700");
 	--rg-dp-active-border-color: theme("colors.info.100");
@@ -8,7 +7,6 @@
 	--rg-db-disabled-color: theme("colors.gray.200");
 	--rg-dp-height: 4.8rem;
 
-	background-color: var(--rg-dp-background-color);
 	border-radius: theme("borderRadius.DEFAULT");
 	border: 1px solid;
 	border-color: var(--rg-dp-border-color);
@@ -76,12 +74,10 @@
 
 .dialogBox {
 	--rg-db-width: 28.4rem;
-	--rg-db-background-color: theme("colors.white");
 	--rg-db-week-color: theme("colors.gray.700");
 	--rg-db-arrow-color: theme("colors.gray.700");
 	--rg-db-date-color: theme("colors.primary.100");
 	--rg-db-day-default-color: transparent;
-	--rg-db-active-color: theme("colors.white");
 	--rg-db-active-background-color: theme("colors.gray.50");
 	--rg-db-end-start-background-color: theme("colors.primary.100");
 	--rg-db-holiday-color: theme("colors.error.100");
@@ -157,7 +153,7 @@ ul.days {
 
 	&.active {
 		border-radius: 50%;
-		color: var(--rg-db-active-color);
+		color: theme("colors.white");
 		background-color: var(--rg-db-end-start-background-color);
 	}
 

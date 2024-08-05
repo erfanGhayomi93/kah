@@ -44,6 +44,23 @@ export const useUpdateOptionWatchlistMutation = createMutation<
 	},
 });
 
+export const useDeleteCustomWatchlistSymbolMutation = createMutation<
+	boolean,
+	{ watchlistId: number; symbolISIN: string; symbolTitle: string }
+>({
+	mutationFn: async ({ watchlistId, symbolISIN }) => {
+		const response = await axios.post<ServerResponse<boolean>>(routes.optionWatchlist.RemoveSymbolCustomWatchlist, {
+			id: watchlistId,
+			symbolISIN,
+		});
+		const { data } = response;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
 export const useDeleteCustomWatchlistMutation = createMutation<boolean, number[]>({
 	mutationFn: async (watchlistsId) => {
 		const response = await axios.post<ServerResponse<boolean>>(routes.optionWatchlist.DeleteCustomWatchlist, {

@@ -1,5 +1,4 @@
-import axios from '@/api/axios';
-import routes from '@/api/routes';
+import { useDeleteCustomWatchlistSymbolMutation } from '@/api/mutations/optionMutations';
 import lightStreamInstance from '@/classes/Lightstream';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
@@ -51,6 +50,26 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 
 	const dispatch = useAppDispatch();
 
+	const { mutate: deleteCustomWatchlistSymbol } = useDeleteCustomWatchlistSymbolMutation({
+		onSuccess: (_d, { symbolTitle }) => {
+			refetchWatchlist();
+
+			const toastId = 'watchlist_symbol_removed_successfully';
+
+			if (toast.isActive(toastId)) {
+				toast.update(toastId, {
+					render: t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }),
+					autoClose: 2500,
+				});
+			} else {
+				toast.success(t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }), {
+					toastId: 'watchlist_symbol_removed_successfully',
+					autoClose: 2500,
+				});
+			}
+		},
+	});
+
 	const { watchlistColumns, defaultOptionWatchlistColumns } = useOptionWatchlistColumns();
 
 	const onColumnMoved = ({ finished, toIndex }: ColumnMovedEvent<Option.Root>) => {
@@ -83,46 +102,12 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 		}
 	};
 
-	const onDelete = async (symbol: Option.Root) => {
+	const refetchWatchlist = () => {
 		try {
-			const { symbolISIN, symbolTitle } = symbol.symbolInfo;
-
-			try {
-				const gridApi = gridRef.current;
-				if (gridApi) {
-					const queryKey = ['optionWatchlistQuery', { watchlistId: id ?? -1 }];
-
-					queryClient.setQueriesData(
-						{
-							exact: false,
-							queryKey,
-						},
-						(c) => {
-							return (c as Option.Root[]).filter((item) => item.symbolInfo.symbolISIN !== symbolISIN);
-						},
-					);
-				}
-			} catch (e) {
-				//
-			}
-
-			await axios.post(routes.optionWatchlist.RemoveSymbolCustomWatchlist, {
-				id,
-				symbolISIN,
+			queryClient.refetchQueries({
+				queryKey: ['optionWatchlistQuery', { watchlistId: id ?? -1 }],
+				exact: false,
 			});
-
-			const toastId = 'watchlist_symbol_removed_successfully';
-			if (toast.isActive(toastId)) {
-				toast.update(toastId, {
-					render: t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }),
-					autoClose: 2500,
-				});
-			} else {
-				toast.success(t('alerts.watchlist_symbol_removed_successfully', { symbolTitle }), {
-					toastId: 'watchlist_symbol_removed_successfully',
-					autoClose: 2500,
-				});
-			}
 		} catch (e) {
 			//
 		}
@@ -675,7 +660,12 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					cellRenderer: ActionColumn,
 					cellRendererParams: {
 						onAdd,
-						onDelete,
+						onDelete: (symbol: Option.Root) =>
+							deleteCustomWatchlistSymbol({
+								watchlistId: id,
+								symbolISIN: symbol.symbolInfo.symbolISIN,
+								symbolTitle: symbol.symbolInfo.symbolTitle,
+							}),
 						addable: true,
 						deletable: id > -1,
 					},
@@ -782,6 +772,18 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 	}, [watchlistColumns]);
 
 	useEffect(() => {
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
+
+		gridApi.setGridOption('onBodyScrollEnd', ({ api }) => {
+			if (data.length <= 20) return;
+
+			const lastRowIndex = api.getLastDisplayedRowIndex();
+			if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
+		});
+	}, [data.length]);
+
+	useEffect(() => {
 		const sub = lightStreamInstance.subscribe({
 			mode: 'MERGE',
 			items: symbolsISIN,
@@ -850,10 +852,6 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 			onColumnMoved={onColumnMoved}
 			onSortChanged={storeColumns}
 			getRowId={({ data }) => data!.symbolInfo.symbolISIN}
-			onBodyScrollEnd={({ api }) => {
-				const lastRowIndex = api.getLastDisplayedRowIndex();
-				if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
-			}}
 		/>
 	);
 };

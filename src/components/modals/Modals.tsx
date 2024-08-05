@@ -2,20 +2,59 @@
 
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import {
+	setAcceptAgreementModal,
 	setAddNewOptionWatchlistModal,
 	setAddSaturnTemplateModal,
 	setAddSymbolToWatchlistModal,
+	setAnalyzeModal,
+	setBestModal,
+	setBlackScholesModal,
 	setBuySellModal,
+	setCashSettlementReportsFiltersModal,
 	setChangeBlockTypeModal,
 	setChangeBrokerModal,
+	setChangeBrokerReportsFiltersModal,
 	setChoiceBrokerModal,
 	setChoiceCollateralModal,
+	setCompareTransactionValueModal,
+	setConfirmModal,
 	setDepositModal,
+	setDepositWithReceiptReportsFiltersModal,
+	setDescriptionModal,
+	setDueDatesModal,
 	setExecuteCoveredCallStrategyModal,
+	setForgetPasswordModal,
 	setFreezeModal,
+	setFreezeUnFreezeReportsFiltersModal,
+	setIndividualAndLegalModal,
+	setInstantDepositReportsFiltersModal,
+	setLoginModal,
+	setLogoutModal,
+	setManageColumnsModal,
 	setManageOptionWatchlistListModal,
+	setMarketStateModal,
+	setMarketViewModal,
+	setMeetingsModal,
 	setMoveSymbolToWatchlistModal,
+	setNewAndOldModal,
+	setOpenPositionProcessModal,
+	setOptionContractModal,
+	setOptionFiltersModal,
+	setOptionMarketProcessModal,
 	setOptionSettlementModal,
+	setOptionTradeValueModal,
+	setOrderDetailsModal,
+	setOrdersReportsFiltersModal,
+	setPhysicalSettlementReportsFiltersModal,
+	setPriceChangeWatchlistModal,
+	setRecentActivitiesModal,
+	setSelectSymbolContractsModal,
+	setStrategyFiltersModal,
+	setSymbolInfoPanelSettingModal,
+	setTopBaseAssetsModal,
+	setTradesReportsFiltersModal,
+	setTransactionsFiltersModal,
+	setWithdrawalCashReportsFiltersModal,
 	setWithdrawalModal,
 } from '@/features/slices/modalSlice';
 import { cloneElement, forwardRef, Fragment, lazy, Suspense } from 'react';
@@ -194,9 +233,225 @@ const Modals = () => {
 		strategyFilters,
 	} = useAppSelector((state) => state.modal);
 
+	const closeLoginModalModal = () => {
+		dispatch(setLoginModal(null));
+	};
+
+	const closeLogoutModal = () => {
+		dispatch(setLogoutModal(null));
+	};
+
+	const closeOptionFiltersModal = () => {
+		dispatch(setOptionFiltersModal(null));
+	};
+
+	const closeForgetPasswordModal = () => {
+		dispatch(setForgetPasswordModal(null));
+	};
+
+	const closeSelectSymbolContractsModal = () => {
+		dispatch(setSelectSymbolContractsModal(null));
+	};
+
+	const closeAddSaturnTemplateModal = () => {
+		dispatch(setAddSaturnTemplateModal(null));
+	};
+
+	const closeAddNewOptionWatchlistModal = () => {
+		dispatch(setAddNewOptionWatchlistModal(null));
+	};
+
+	const closeManageOptionWatchlistListModal = () => {
+		dispatch(setManageOptionWatchlistListModal(null));
+	};
+
+	const closeBuySellModal = () => {
+		dispatch(setBuySellModal(null));
+	};
+
+	const closeChangeBlockTypeModalModal = () => {
+		dispatch(setChangeBlockTypeModal(null));
+	};
+
+	const closeAddSymbolToWatchlistModal = () => {
+		dispatch(setAddSymbolToWatchlistModal(null));
+	};
+
+	const closeChoiceBrokerModal = () => {
+		dispatch(setChoiceBrokerModal(null));
+	};
+
+	const closeConfirmModal = () => {
+		dispatch(setConfirmModal(null));
+	};
+
+	const closeAcceptAgreementModal = () => {
+		dispatch(setAcceptAgreementModal(null));
+	};
+
+	const closeSymbolInfoPanelSettingModal = () => {
+		dispatch(setSymbolInfoPanelSettingModal(null));
+	};
+
+	const closeChoiceCollateralModal = () => {
+		dispatch(setChoiceCollateralModal(null));
+	};
+
+	const closeBlackScholesModal = () => {
+		dispatch(setBlackScholesModal(null));
+	};
+
+	const closeMoveSymbolToWatchlistModal = () => {
+		dispatch(setMoveSymbolToWatchlistModal(null));
+	};
+
+	const closeOrderDetailsModal = () => {
+		dispatch(setOrderDetailsModal(null));
+	};
+
+	const closeChangeBrokerModal = () => {
+		dispatch(setChangeBrokerModal(null));
+	};
+
+	const closeDepositModal = () => {
+		dispatch(setDepositModal(null));
+	};
+
+	const closeFreezeModal = () => {
+		dispatch(setFreezeModal(null));
+	};
+
+	const closeOptionSettlementModal = () => {
+		dispatch(setOptionSettlementModal(null));
+	};
+
+	const closeWithdrawalModal = () => {
+		dispatch(setWithdrawalModal(null));
+	};
+
+	const closeAnalyzeModal = () => {
+		dispatch(setAnalyzeModal(null));
+	};
+
+	const closeTransactionsFiltersModal = () => {
+		dispatch(setTransactionsFiltersModal(null));
+	};
+
+	const closeInstantDepositReportsFiltersModal = () => {
+		dispatch(setInstantDepositReportsFiltersModal(null));
+	};
+
+	const closeDepositWithReceiptReportsFiltersModal = () => {
+		dispatch(setDepositWithReceiptReportsFiltersModal(null));
+	};
+
+	const closeWithdrawalCashReportsFiltersModal = () => {
+		dispatch(setWithdrawalCashReportsFiltersModal(null));
+	};
+
+	const closeChangeBrokerReportsFiltersModal = () => {
+		dispatch(setChangeBrokerReportsFiltersModal(null));
+	};
+
+	const closeFreezeUnfreezeReportsFiltersModal = () => {
+		dispatch(setFreezeUnFreezeReportsFiltersModal(null));
+	};
+
+	const closeDescriptionModal = () => {
+		dispatch(setDescriptionModal(null));
+	};
+
+	const closeCashSettlementReportsFiltersModal = () => {
+		dispatch(setCashSettlementReportsFiltersModal(null));
+	};
+
+	const closePhysicalSettlementReportsFiltersModal = () => {
+		dispatch(setPhysicalSettlementReportsFiltersModal(null));
+	};
+
+	const closeOrdersReportsFiltersModal = () => {
+		dispatch(setOrdersReportsFiltersModal(null));
+	};
+
+	const closeExecuteCoveredCallStrategyModalModal = () => {
+		dispatch(setExecuteCoveredCallStrategyModal(null));
+	};
+
+	const closeTradesReportsFiltersModal = () => {
+		dispatch(setTradesReportsFiltersModal(null));
+	};
+
+	const closeManageColumnsModal = () => {
+		dispatch(setManageColumnsModal(null));
+	};
+
+	const closeMarketStateModal = () => {
+		dispatch(setMarketStateModal(null));
+	};
+
+	const closeMarketViewModal = () => {
+		dispatch(setMarketViewModal(null));
+	};
+
+	const closeBestModal = () => {
+		dispatch(setBestModal(null));
+	};
+
+	const closeCompareTransactionValueModal = () => {
+		dispatch(setCompareTransactionValueModal(null));
+	};
+
+	const closeOptionContractModal = () => {
+		dispatch(setOptionContractModal(null));
+	};
+
+	const closeOptionTradeValueModal = () => {
+		dispatch(setOptionTradeValueModal(null));
+	};
+
+	const closeOptionMarketProcessModal = () => {
+		dispatch(setOptionMarketProcessModal(null));
+	};
+
+	const closeIndividualAndLegalModal = () => {
+		dispatch(setIndividualAndLegalModal(null));
+	};
+
+	const closePriceChangeWatchlistModal = () => {
+		dispatch(setPriceChangeWatchlistModal(null));
+	};
+
+	const closeOpenPositionProcessModal = () => {
+		dispatch(setOpenPositionProcessModal(null));
+	};
+
+	const closeMeetingsModal = () => {
+		dispatch(setMeetingsModal(null));
+	};
+
+	const closeNewAndOldModal = () => {
+		dispatch(setNewAndOldModal(null));
+	};
+
+	const closeTopBaseAssetsModal = () => {
+		dispatch(setTopBaseAssetsModal(null));
+	};
+
+	const closeRecentActivitiesModal = () => {
+		dispatch(setRecentActivitiesModal(null));
+	};
+
+	const closeDueDatesModal = () => {
+		dispatch(setDueDatesModal(null));
+	};
+
+	const closeStrategyFiltersModal = () => {
+		dispatch(setStrategyFiltersModal(null));
+	};
+
 	return (
 		<Fragment>
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeLoginModalModal}>
 				{loginModal && (
 					<ModalSuspense>
 						<LoginModal {...loginModal} />
@@ -204,7 +459,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeLogoutModal}>
 				{logout && (
 					<ModalSuspense>
 						<LogoutModal {...logout} />
@@ -212,7 +467,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOptionFiltersModal}>
 				{analyze && (
 					<ModalSuspense>
 						<Analyze {...analyze} />
@@ -220,7 +475,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeForgetPasswordModal}>
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
@@ -228,7 +483,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeSelectSymbolContractsModal}>
 				{acceptAgreement && (
 					<ModalSuspense>
 						<AcceptAgreement {...acceptAgreement} />
@@ -236,7 +491,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeAddSaturnTemplateModal}>
 				{description && (
 					<ModalSuspense>
 						<Description {...description} />
@@ -244,7 +499,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeAddNewOptionWatchlistModal}>
 				{symbolInfoPanelSetting && (
 					<ModalSuspense>
 						<SymbolInfoPanelSetting {...symbolInfoPanelSetting} />
@@ -252,7 +507,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeManageOptionWatchlistListModal}>
 				{blackScholes && (
 					<ModalSuspense>
 						<BlackScholes {...blackScholes} />
@@ -260,7 +515,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeBuySellModal}>
 				{optionFilters && (
 					<ModalSuspense>
 						<OptionWatchlistFiltersModal {...optionFilters} />
@@ -268,7 +523,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeChangeBlockTypeModalModal}>
 				{selectSymbolContracts && (
 					<ModalSuspense>
 						<SymbolContracts {...selectSymbolContracts} />
@@ -276,137 +531,137 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeAddSymbolToWatchlistModal}>
 				{choiceBroker && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChoiceBrokerModal(null))}>
+						<AuthorizeMiddleware callback={closeAddSymbolToWatchlistModal}>
 							<ChoiceBroker {...choiceBroker} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeChoiceBrokerModal}>
 				{changeBroker && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChangeBrokerModal(null))} broker>
+						<AuthorizeMiddleware callback={closeChoiceBrokerModal} broker>
 							<ChangeBroker {...changeBroker} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeConfirmModal}>
 				{withdrawal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setWithdrawalModal(null))} broker>
+						<AuthorizeMiddleware callback={closeConfirmModal} broker>
 							<Withdrawal {...withdrawal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeAcceptAgreementModal}>
 				{deposit && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setDepositModal(null))} broker>
+						<AuthorizeMiddleware callback={closeAcceptAgreementModal} broker>
 							<Deposit {...deposit} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeSymbolInfoPanelSettingModal}>
 				{freeze && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setFreezeModal(null))} broker>
+						<AuthorizeMiddleware callback={closeSymbolInfoPanelSettingModal} broker>
 							<Freeze {...freeze} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeChoiceCollateralModal}>
 				{optionSettlement && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setOptionSettlementModal(null))} broker>
+						<AuthorizeMiddleware callback={closeChoiceCollateralModal} broker>
 							<OptionSettlement {...optionSettlement} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeBlackScholesModal}>
 				{addSaturnTemplate && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setAddSaturnTemplateModal(null))}>
+						<AuthorizeMiddleware callback={closeBlackScholesModal}>
 							<AddSaturnTemplate {...addSaturnTemplate} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeMoveSymbolToWatchlistModal}>
 				{addNewOptionWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setAddNewOptionWatchlistModal(null))}>
+						<AuthorizeMiddleware callback={closeMoveSymbolToWatchlistModal}>
 							<AddNewOptionWatchlist {...addNewOptionWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOrderDetailsModal}>
 				{manageOptionWatchlistList && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setManageOptionWatchlistListModal(null))}>
+						<AuthorizeMiddleware callback={closeOrderDetailsModal}>
 							<ManageOptionWatchlistList {...manageOptionWatchlistList} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeChangeBrokerModal}>
 				{buySell && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setBuySellModal(null))} broker>
+						<AuthorizeMiddleware callback={closeChangeBrokerModal} broker>
 							<BuySellModal {...buySell} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeDepositModal}>
 				{changeBlockTypeModal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChangeBlockTypeModal(null))} broker>
+						<AuthorizeMiddleware callback={closeDepositModal} broker>
 							<ChangeBlockTypeModal {...changeBlockTypeModal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeFreezeModal}>
 				{addSymbolToWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setAddSymbolToWatchlistModal(null))}>
+						<AuthorizeMiddleware callback={closeFreezeModal}>
 							<AddSymbolToWatchlist {...addSymbolToWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOptionSettlementModal}>
 				{choiceCollateral && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setChoiceCollateralModal(null))}>
+						<AuthorizeMiddleware callback={closeOptionSettlementModal}>
 							<ChoiceCollateral {...choiceCollateral} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeWithdrawalModal}>
 				{orderDetails && (
 					<ModalSuspense>
 						<OrderDetails {...orderDetails} />
@@ -414,17 +669,17 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeAnalyzeModal}>
 				{moveSymbolToWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setMoveSymbolToWatchlistModal(null))}>
+						<AuthorizeMiddleware callback={closeAnalyzeModal}>
 							<MoveSymbolToWatchlist {...moveSymbolToWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeTransactionsFiltersModal}>
 				{forgetPassword && (
 					<ModalSuspense>
 						<ForgetPasswordModal
@@ -438,7 +693,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeInstantDepositReportsFiltersModal}>
 				{transactionsFilters && (
 					<ModalSuspense>
 						<TransactionsFiltersModal />
@@ -446,7 +701,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeDepositWithReceiptReportsFiltersModal}>
 				{instantDepositReportsFilters && (
 					<ModalSuspense>
 						<InstantDepositReportsFiltersModal />
@@ -454,7 +709,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeWithdrawalCashReportsFiltersModal}>
 				{depositWithReceiptReportsFilters && (
 					<ModalSuspense>
 						<DepositWithReceiptFiltersModal />
@@ -462,7 +717,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeChangeBrokerReportsFiltersModal}>
 				{withdrawalCashReportsFilters && (
 					<ModalSuspense>
 						<WithdrawalCashReportsFiltersModal />
@@ -470,7 +725,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeFreezeUnfreezeReportsFiltersModal}>
 				{changeBrokerReportsFilters && (
 					<ModalSuspense>
 						<ChangeBrokerReportsFiltersModal />
@@ -478,7 +733,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeDescriptionModal}>
 				{freezeUnfreezeReportsFilters && (
 					<ModalSuspense>
 						<FreezeUnFreezeReportsModal />
@@ -486,7 +741,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeCashSettlementReportsFiltersModal}>
 				{cashSettlementReportsFilters && (
 					<ModalSuspense>
 						<CashSettlementReportsFiltersModal />
@@ -494,7 +749,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closePhysicalSettlementReportsFiltersModal}>
 				{physicalSettlementReportsFilters && (
 					<ModalSuspense>
 						<PhysicalSettlementReportsFiltersModal />
@@ -502,7 +757,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOrdersReportsFiltersModal}>
 				{ordersReportsFilters && (
 					<ModalSuspense>
 						<OrdersReportsFiltersModal />
@@ -510,17 +765,17 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeExecuteCoveredCallStrategyModalModal}>
 				{executeCoveredCallStrategyModal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={() => dispatch(setExecuteCoveredCallStrategyModal(null))} broker>
+						<AuthorizeMiddleware callback={closeExecuteCoveredCallStrategyModalModal} broker>
 							<ExecuteCoveredCallStrategyModal {...executeCoveredCallStrategyModal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeTradesReportsFiltersModal}>
 				{tradesReportsFilters && (
 					<ModalSuspense>
 						<TradesReportsFiltersModal {...tradesReportsFilters} />
@@ -528,7 +783,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeManageColumnsModal}>
 				{manageColumns && (
 					<ModalSuspense>
 						<ManageColumnsModal {...manageColumns} />
@@ -536,7 +791,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeMarketStateModal}>
 				{marketState && (
 					<ModalSuspense>
 						<MarketStateModal />
@@ -544,7 +799,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeMarketViewModal}>
 				{marketView && (
 					<ModalSuspense>
 						<MarketViewModal />
@@ -552,7 +807,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeBestModal}>
 				{best && (
 					<ModalSuspense>
 						<BestModal />
@@ -560,15 +815,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			{/* <ModalAnimatePresence>
-				{userProgressBar && (
-					<ModalSuspense>
-						<UserInprogressBarModal />
-					</ModalSuspense>
-				)}
-			</ModalAnimatePresence> */}
-
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeCompareTransactionValueModal}>
 				{compareTransactionValue && (
 					<ModalSuspense>
 						<CompareTransactionValueModal />
@@ -576,7 +823,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOptionContractModal}>
 				{optionContract && (
 					<ModalSuspense>
 						<OptionContractModal />
@@ -584,7 +831,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOptionTradeValueModal}>
 				{optionTradeValue && (
 					<ModalSuspense>
 						<OptionTradeValueModal />
@@ -592,7 +839,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOptionMarketProcessModal}>
 				{optionMarketProcess && (
 					<ModalSuspense>
 						<OptionMarketProcessModal />
@@ -600,7 +847,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeIndividualAndLegalModal}>
 				{individualAndLegal && (
 					<ModalSuspense>
 						<IndividualAndLegalModal />
@@ -608,7 +855,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closePriceChangeWatchlistModal}>
 				{priceChangeWatchlist && (
 					<ModalSuspense>
 						<PriceChangeWatchlistModal />
@@ -616,7 +863,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeOpenPositionProcessModal}>
 				{openPositionProcess && (
 					<ModalSuspense>
 						<OpenPositionProcessModal />
@@ -624,7 +871,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeMeetingsModal}>
 				{meetings && (
 					<ModalSuspense>
 						<MeetingsModal />
@@ -632,7 +879,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeNewAndOldModal}>
 				{newAndOld && (
 					<ModalSuspense>
 						<NewAndOldModal />
@@ -640,7 +887,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeTopBaseAssetsModal}>
 				{topBaseAssets && (
 					<ModalSuspense>
 						<TopBaseAssetsModal />
@@ -648,7 +895,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeRecentActivitiesModal}>
 				{recentActivities && (
 					<ModalSuspense>
 						<RecentActivitiesModal />
@@ -656,7 +903,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeDueDatesModal}>
 				{dueDates && (
 					<ModalSuspense>
 						<DueDatesModal />
@@ -664,7 +911,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence>
+			<ModalAnimatePresence fallback={closeStrategyFiltersModal}>
 				{strategyFilters && (
 					<ModalSuspense>
 						<StrategyFilters {...strategyFilters} />
@@ -679,8 +926,8 @@ const ModalSuspense = forwardRef<HTMLDivElement, { children: ReactNode }>(({ chi
 	<Suspense fallback={<ModalLoading ref={ref} />}>{children ? cloneElement(children, { ref }) : null}</Suspense>
 ));
 
-const ModalAnimatePresence = ({ children }: { children: ReactNode }) => (
-	<ErrorBoundary>
+const ModalAnimatePresence = ({ children, fallback }: { children: ReactNode; fallback: () => void }) => (
+	<ErrorBoundary fallback={fallback}>
 		<AnimatePresence initial={{ animation: 'fadeIn' }} exit={{ animation: 'fadeOut' }}>
 			{children}
 		</AnimatePresence>

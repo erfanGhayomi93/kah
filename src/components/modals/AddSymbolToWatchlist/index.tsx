@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { cn } from '@/utils/helpers';
+import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useRef, useState } from 'react';
@@ -30,6 +31,8 @@ interface AddSymbolToWatchlistProps extends IBaseModalConfiguration {}
 
 const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProps>((props, ref) => {
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	const queryClient = useQueryClient();
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
@@ -70,6 +73,11 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 				...prev,
 				[symbolISIN]: action === 'add',
 			}));
+
+			queryClient.refetchQueries({
+				queryKey: ['optionWatchlistQuery', { watchlistId }],
+				exact: false,
+			});
 		} catch (e) {
 			//
 		}
