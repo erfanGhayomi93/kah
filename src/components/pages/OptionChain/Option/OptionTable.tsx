@@ -395,7 +395,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			//
 		}
 	}, [optionChainColumns]);
-	console.log(modifiedData);
+
 	return (
 		<>
 			<AgTable<ITableData>

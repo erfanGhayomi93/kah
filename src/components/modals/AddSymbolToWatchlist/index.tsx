@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { cn } from '@/utils/helpers';
-import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useRef, useState } from 'react';
@@ -33,8 +32,6 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
-
-	const queryClient = useQueryClient();
 
 	const dispatch = useAppDispatch();
 

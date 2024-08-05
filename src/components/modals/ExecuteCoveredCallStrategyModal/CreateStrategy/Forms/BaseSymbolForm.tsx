@@ -1,4 +1,3 @@
-import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import Button from '@/components/common/Button';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import InputLegend from '@/components/common/Inputs/InputLegend';
@@ -40,10 +39,6 @@ const BaseSymbolForm = ({
 	setFieldsValue,
 }: BaseSymbolFormProps) => {
 	const t = useTranslations();
-
-	const { data: commissions } = useCommissionsQuery({
-		queryKey: ['commissionQuery'],
-	});
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();

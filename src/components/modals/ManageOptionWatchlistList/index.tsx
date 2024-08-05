@@ -15,7 +15,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useEffect, useState } from 'react';
-import ReactGridLayout, { Layout } from 'react-grid-layout';
+import ReactGridLayout, { type Layout } from 'react-grid-layout';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
