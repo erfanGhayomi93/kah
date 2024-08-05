@@ -1,4 +1,3 @@
-import { getDeviceColorSchema } from '@/utils/helpers';
 import { type AxisCrosshairOptions, setOptions } from 'highcharts/highstock';
 
 export const chartFontSetting = {
@@ -170,10 +169,12 @@ export const setupChart = () => {
 	});
 };
 
-export const setupChartColor = (theme: TTheme) => {
-	const t: Exclude<TTheme, 'system'> = theme === 'system' ? getDeviceColorSchema() : theme;
+export const setupChartColor = (theme: Exclude<TTheme, 'system'>) => {
+	setOptions(getChartTheme(theme));
+};
 
-	const colors: Record<string, Record<Exclude<TTheme, 'system'>, string>> = {
+export const getChartTheme = (theme: Exclude<TTheme, 'system'>) => {
+	const colors: Record<string, Record<typeof theme, string>> = {
 		axisGridLineColor: {
 			light: 'rgb(226, 231, 237)',
 			dark: 'rgba(55, 57, 69, 1)',
@@ -221,65 +222,62 @@ export const setupChartColor = (theme: TTheme) => {
 		},
 	};
 
-	setOptions({
-		tooltip: {
-			borderColor: 'red',
-		},
+	return {
 		navigator: {
-			outlineColor: colors.navigatorBorderColor[t],
+			outlineColor: colors.navigatorBorderColor[theme],
 			xAxis: {
 				labels: {
 					style: {
-						textOutline: `1px solid ${colors.navigatorLabelColor[t]}`,
-						color: colors.navigatorLabelColor[t],
+						textOutline: `1px solid ${colors.navigatorLabelColor[theme]}`,
+						color: colors.navigatorLabelColor[theme],
 					},
 				},
 			},
 		},
 		xAxis: {
-			gridLineColor: colors.axisGridLineColor[t],
-			lineColor: colors.axisLineColor[t],
+			gridLineColor: colors.axisGridLineColor[theme],
+			lineColor: colors.axisLineColor[theme],
 			crosshair: {
-				color: colors.axisCrosshairBorderColor[t],
+				color: colors.axisCrosshairBorderColor[theme],
 				label: {
-					backgroundColor: colors.axisCrosshairBackgroundColor[t],
+					backgroundColor: colors.axisCrosshairBackgroundColor[theme],
 				},
 			},
 			labels: {
 				style: {
-					color: colors.axisLabelColor[t],
+					color: colors.axisLabelColor[theme],
 				},
 			},
 		},
 		yAxis: {
-			gridLineColor: colors.axisGridLineColor[t],
-			lineColor: colors.axisLineColor[t],
+			gridLineColor: colors.axisGridLineColor[theme],
+			lineColor: colors.axisLineColor[theme],
 			crosshair: {
-				color: colors.axisCrosshairBorderColor[t],
+				color: colors.axisCrosshairBorderColor[theme],
 				label: {
-					backgroundColor: colors.axisCrosshairBackgroundColor[t],
+					backgroundColor: colors.axisCrosshairBackgroundColor[theme],
 				},
 			},
 			labels: {
 				style: {
-					color: colors.axisLabelColor[t],
+					color: colors.axisLabelColor[theme],
 				},
 			},
 		},
 		plotOptions: {
 			pie: {
-				borderColor: colors.pieBorderColor[t],
+				borderColor: colors.pieBorderColor[theme],
 				borderWidth: 8,
 			},
 			column: {
 				dataLabels: {
 					style: {
 						opacity: 1,
-						color: colors.columnLabelColor[t],
-						textOutline: `1px solid ${colors.columnLabelColor[t]}`,
+						color: colors.columnLabelColor[theme],
+						textOutline: `1px solid ${colors.columnLabelColor[theme]}`,
 					},
 				},
 			},
 		},
-	});
+	};
 };

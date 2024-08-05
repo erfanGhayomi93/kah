@@ -1,3 +1,5 @@
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import num2persian from '@/utils/num2persian';
 import { type Chart, chart, type SeriesPieOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -10,6 +12,8 @@ interface OptionContractsChartProps {
 
 const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const series: SeriesPieOptions = useMemo(() => {
 		const result: SeriesPieOptions = {
@@ -83,6 +87,10 @@ const OptionContractsChart = ({ type, basis, data }: OptionContractsChartProps) 
 
 		chartRef.current.update({ colors });
 	}, [type]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

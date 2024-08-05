@@ -8,6 +8,8 @@ import {
 } from 'highcharts/highstock';
 
 import { CandleChartSVG, LinearChartSVG } from '@/components/icons';
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -60,6 +62,8 @@ export type SymbolChartProps = (IChartData | IOpenPositionChart | INotionalValue
 
 const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const COLORS: TColors = {
 		symbol_chart: {
@@ -193,6 +197,10 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 			},
 		});
 	}, [interval]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

@@ -1,4 +1,6 @@
 import { useGetOpenPositionProcessQuery } from '@/api/queries/dashboardQueries';
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type SeriesSplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
@@ -11,6 +13,8 @@ interface OpenPositionsProcessChartProps {
 
 const OpenPositionsProcessChart = ({ interval, type }: OpenPositionsProcessChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const { data, isLoading } = useGetOpenPositionProcessQuery({
 		queryKey: ['getOpenPositionProcessQuery', interval, type],
@@ -133,6 +137,10 @@ const OpenPositionsProcessChart = ({ interval, type }: OpenPositionsProcessChart
 			type: type === 'Aggregated' && (interval === 'Month' || interval === 'Year') ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

@@ -1,4 +1,6 @@
 import { useGetOptionMarketComparisonQuery } from '@/api/queries/dashboardQueries';
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -16,6 +18,8 @@ interface CompareTransactionValueChartProps {
 
 const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValueChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const { data, isLoading } = useGetOptionMarketComparisonQuery({
 		queryKey: ['getOptionMarketComparisonQuery', interval, type],
@@ -140,6 +144,10 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

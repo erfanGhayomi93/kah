@@ -1,4 +1,6 @@
 import { useGetOptionWatchlistPriceChangeInfoQuery } from '@/api/queries/dashboardQueries';
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import { sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type SeriesColumnOptions } from 'highcharts/highstock';
 import { useTranslations } from 'next-intl';
@@ -9,6 +11,8 @@ const PriceChangesWatchlistChart = () => {
 	const t = useTranslations('home');
 
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const { data, isLoading } = useGetOptionWatchlistPriceChangeInfoQuery({
 		queryKey: ['getOptionWatchlistPriceChangeInfoQuery'],
@@ -186,6 +190,10 @@ const PriceChangesWatchlistChart = () => {
 
 		chartRef.current.update({ series });
 	}, [data]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {
