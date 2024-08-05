@@ -17,22 +17,26 @@ export const useSymbolInfoMutation = createMutation<Symbol.Info, { symbolISIN: s
 	},
 });
 
-export const useAddSymbolCustomWatchlistMutation = createMutation<boolean, { symbolISIN: string; watchlistId: number }>(
-	{
-		mutationFn: async ({ watchlistId, symbolISIN }) => {
-			try {
-				await axios.post<ServerResponse<boolean>>(routes.optionWatchlist.AddSymbolCustomWatchlist, {
+export const useToggleCustomWatchlistSymbolMutation = createMutation<
+	boolean,
+	{ symbolISIN: string; watchlistId: number; watchlist?: Option.WatchlistList; action: 'add' | 'remove' }
+>({
+	mutationFn: async ({ watchlistId, symbolISIN, action }) => {
+		try {
+			await axios.post<ServerResponse<string>>(
+				routes.optionWatchlist[action === 'add' ? 'AddSymbolCustomWatchlist' : 'RemoveSymbolCustomWatchlist'],
+				{
 					id: watchlistId,
-					symbolISINs: [symbolISIN],
-				});
+					[action === 'add' ? 'symbolISINs' : 'symbolISIN']: action === 'add' ? [symbolISIN] : symbolISIN,
+				},
+			);
 
-				return true;
-			} catch (e) {
-				return false;
-			}
-		},
+			return true;
+		} catch (e) {
+			return false;
+		}
 	},
-);
+});
 
 export const useFreezeSymbolMutation = createMutation<
 	boolean,

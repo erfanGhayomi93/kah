@@ -1,9 +1,8 @@
-import ipcMain from '@/classes/IpcMain';
-import Loading from '@/components/common/Loading';
-
 import axios from '@/api/axios';
 import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
+import ipcMain from '@/classes/IpcMain';
+import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import { PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';

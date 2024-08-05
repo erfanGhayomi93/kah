@@ -198,7 +198,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					pinned: 'right',
 					lockPosition: true,
 					suppressMovable: true,
-					cellClass: 'cursor-pointer',
+					cellClass: 'cursor-pointer font-medium',
 					onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.symbolISIN),
 					valueGetter: ({ data }) => data?.symbolInfo.symbolTitle ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
@@ -412,7 +412,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 				{
 					colId: 'historicalVolatility',
 					headerName: t('option_page.historical_volatility'),
-					minWidth: 96,
+					minWidth: 144,
 					initialHide: Boolean(modifiedWatchlistColumns?.historicalVolatility?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.historicalVolatility ?? 0,
 					valueFormatter: ({ value }) => {

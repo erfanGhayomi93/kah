@@ -1009,14 +1009,15 @@ declare namespace Order {
 		remainDays: number;
 		symbolTitle: string;
 		companyISIN: string;
+		positionBlockISIN: string;
 		canClosePosition: boolean;
 		availableClosePosition: number;
-		variationMargin: string;
+		variationMargin: any;
 		requiredMargin: number;
 		isFreeze: boolean;
 		isSwapped: boolean;
 		blockCount: number;
-		blockType: TBlockType;
+		blockType: string;
 		sumPayment: number;
 		sumReceived: number;
 		sumAmount: number;

@@ -1,7 +1,6 @@
-import axios from '@/api/axios';
+import { useToggleCustomWatchlistSymbolMutation } from '@/api/mutations/symbolMutations';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import { useSymbolWatchlistListQuery } from '@/api/queries/symbolQuery';
-import routes from '@/api/routes';
 import Loading from '@/components/common/Loading';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
@@ -40,25 +39,8 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 			},
 		);
 
-		const onCloseModal = () => {
-			dispatch(setMoveSymbolToWatchlistModal(null));
-		};
-
-		const onSelect = async (wl: Option.WatchlistList, action: 'add' | 'remove') => {
-			try {
-				const response = await axios.post<ServerResponse<string>>(
-					routes.optionWatchlist[
-						action === 'add' ? 'AddSymbolCustomWatchlist' : 'RemoveSymbolCustomWatchlist'
-					],
-					{
-						id: wl.id,
-						symbolISINs: action === 'add' ? [symbolISIN] : symbolISIN,
-					},
-				);
-				const data = response.data;
-
-				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
+		const { mutate } = useToggleCustomWatchlistSymbolMutation({
+			onSuccess: (_d, { watchlist, action }) => {
 				toast.success(
 					t(action === 'add' ? 'alerts.symbol_added_successfully' : 'alerts.symbol_removed_successfully'),
 					{
@@ -66,24 +48,34 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 					},
 				);
 
-				try {
-					queryClient.refetchQueries({
-						queryKey: ['optionCustomWatchlistQuery', { watchlistId: wl.id }],
-					});
-
-					let list = JSON.parse(JSON.stringify(symbolWatchlistList)) as typeof symbolWatchlistList;
-
-					if (action === 'add') list.push(wl);
-					else list = list.filter((item) => item.id !== wl.id);
-
-					queryClient.setQueryData(['symbolWatchlistListQuery', symbolISIN], list);
-				} catch (e) {
-					//
-				}
-			} catch (e) {
+				if (watchlist) updateCache(watchlist, action);
+			},
+			onError: (_e, { action }) => {
 				toast.error(t(action === 'add' ? 'alerts.symbol_added_failed' : 'alerts.symbol_removed_failed'), {
 					toastId: action === 'add' ? 'symbol_added_failed' : 'symbol_removed_failed',
 				});
+			},
+		});
+
+		const onCloseModal = () => {
+			dispatch(setMoveSymbolToWatchlistModal(null));
+		};
+
+		const updateCache = (wl: Option.WatchlistList, action: 'add' | 'remove') => {
+			try {
+				queryClient.refetchQueries({
+					queryKey: ['optionWatchlistQuery', { watchlistId: wl.id }],
+					exact: false,
+				});
+
+				let list = JSON.parse(JSON.stringify(symbolWatchlistList)) as typeof symbolWatchlistList;
+
+				if (action === 'add') list.push(wl);
+				else list = list.filter((item) => item.id !== wl.id);
+
+				queryClient.setQueryData(['symbolWatchlistListQuery', symbolISIN], list);
+			} catch (e) {
+				//
 			}
 		};
 
@@ -120,7 +112,14 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 											top={i * 6.4}
 											watchlist={wl}
 											isActive={exists}
-											onSelect={() => onSelect(wl, exists ? 'remove' : 'add')}
+											onSelect={() =>
+												mutate({
+													watchlist: wl,
+													watchlistId: wl.id,
+													symbolISIN,
+													action: exists ? 'remove' : 'add',
+												})
+											}
 										/>
 									);
 								})}

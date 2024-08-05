@@ -48,7 +48,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const { data: watchlistData, isLoading } = useWatchlistBySettlementDateQuery({
+	const { data: watchlistData = [], isLoading } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
 			{ baseSymbolISIN: baseSymbol.symbolISIN, settlementDate: settlementDay?.contractEndDate },
@@ -316,7 +316,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 	);
 
 	const modifiedData: ITableData[] = useMemo(() => {
-		if (!watchlistData) return [];
+		if (!Array.isArray(watchlistData)) return [];
 
 		const dataAsArray: ITableData[] = [];
 
@@ -343,11 +343,11 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 					sell: item?.sell,
 				});
 			}
-
-			return dataAsArray;
 		} catch (e) {
-			return dataAsArray;
+			//
 		}
+
+		return dataAsArray.filter((row) => row.buy !== undefined && row.sell !== undefined);
 	}, [watchlistData]);
 
 	useEffect(() => {
@@ -395,14 +395,14 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			//
 		}
 	}, [optionChainColumns]);
-
+	console.log(modifiedData);
 	return (
 		<>
 			<AgTable<ITableData>
 				gridId='option-chain'
 				ref={gridRef}
 				className='flex-1 rounded-0'
-				rowData={modifiedData ?? []}
+				rowData={modifiedData}
 				columnDefs={COLUMNS}
 				onCellMouseOver={(e) => setActiveRowId(e.node.rowIndex ?? -1)}
 				onCellMouseOut={() => setActiveRowId(-1)}

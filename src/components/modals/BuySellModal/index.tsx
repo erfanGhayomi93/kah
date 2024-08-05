@@ -1,3 +1,4 @@
+import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import { useSymbolBestLimitQuery, useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import OFormula from '@/classes/Math/OFormula';
@@ -64,6 +65,10 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 		const { data: commissionData } = useCommissionsQuery({
 			queryKey: ['commissionQuery'],
+		});
+
+		const { data: userRemain } = useUserRemainQuery({
+			queryKey: ['userRemainQuery'],
 		});
 
 		const [inputs, setInputs] = useState<IBsModalInputs>({
@@ -172,6 +177,16 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			return result;
 		}, [JSON.stringify(commissionData), inputs.side, symbolData?.marketUnit]);
 
+		const purchasePower = useMemo(() => {
+			let purchasePower = userRemain?.purchasePower ?? 0;
+			if (!inputs.price || !inputs.quantity) return purchasePower;
+
+			const quantity = formula().quantity(inputs.price, purchasePower);
+			purchasePower = formula().value(inputs.price, quantity);
+
+			return Math.max(Math.floor(purchasePower), 0);
+		}, [inputs.price, inputs.quantity, userRemain?.purchasePower ?? 0]);
+
 		useEffect(() => {
 			onChangeValue(formula().value(inputs.price, inputs.quantity));
 		}, [inputs.side]);
@@ -222,6 +237,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 						<Body
 							{...inputs}
+							orderingPurchasePower={purchasePower}
+							purchasePower={userRemain?.purchasePower ?? 0}
 							symbolData={symbolData ?? null}
 							isLoadingBestLimit={isLoadingBestLimit}
 							symbolTitle={symbolTitle}

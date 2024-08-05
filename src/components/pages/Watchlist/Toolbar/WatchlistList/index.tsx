@@ -88,10 +88,11 @@ const WatchlistList = () => {
 	return (
 		<div className='select-none gap-8 overflow-hidden flex-justify-start'>
 			<ul className='flex grow-0 gap-8 overflow-y-auto overflow-x-visible'>
-				{watchlistList.map((item) => (
+				{watchlistList.map((item, i) => (
 					<Watchlist
 						key={item.id}
 						{...item}
+						star={item.id === -1}
 						isActive={optionWatchlistTabId === item.id}
 						onSelect={() => onSelectWatchlist(item)}
 					/>
@@ -103,7 +104,7 @@ const WatchlistList = () => {
 					<Tooltip placement='top' content={t('tooltip.add_new_watchlist')}>
 						<button
 							type='button'
-							className='border-gray-200 text-gray-800 hover:border-primary-100 hover:bg-primary-100 size-40 rounded border transition-colors flex-justify-center hover:text-white'
+							className='size-40 rounded border border-gray-200 text-gray-800 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
 							onClick={addNewWatchlist}
 						>
 							<PlusSVG width='1.8rem' height='1.8rem' />
@@ -116,7 +117,7 @@ const WatchlistList = () => {
 						<button
 							type='button'
 							onClick={manageWatchlistList}
-							className='border-gray-200 text-gray-800 hover:border-primary-100 hover:bg-primary-100 size-40 rounded border transition-colors flex-justify-center hover:text-white'
+							className='size-40 rounded border border-gray-200 text-gray-800 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
 						>
 							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
 						</button>

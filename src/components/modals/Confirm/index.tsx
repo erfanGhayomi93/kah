@@ -9,7 +9,6 @@ import Modal from '../Modal';
 
 const Div = styled.div`
 	width: 360px;
-	padding: 1.6rem 1.6rem 2.4rem 1.6rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -69,8 +68,13 @@ const Confirm = forwardRef<HTMLDivElement, ConfirmProps>(
 				onClose={onCloseModal}
 				{...props}
 			>
-				<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
-					<h2 className='text-center text-xl font-medium text-gray-800'>{title}</h2>
+				<Div
+					className={clsx(
+						'bg-white darkBlue:bg-gray-50 dark:bg-gray-50',
+						!title ? 'p-24' : 'px-24 pb-24 pt-16',
+					)}
+				>
+					{title && <h2 className='text-center text-xl font-medium text-gray-800'>{title}</h2>}
 
 					<div className='pb-40 pt-32 text-center'>
 						<p className='text-base text-gray-800'>{description}</p>

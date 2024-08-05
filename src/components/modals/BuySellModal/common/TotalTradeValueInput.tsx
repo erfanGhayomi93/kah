@@ -6,12 +6,12 @@ import React, { useMemo } from 'react';
 
 interface TotalTradeValueInputProps {
 	value: number;
-	purchasePower: null | number;
+	max: null | number;
 	setToMinimum: undefined | (() => void);
 	onChange: (value: number) => void;
 }
 
-const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: TotalTradeValueInputProps) => {
+const TotalTradeValueInput = ({ value, max, setToMinimum, onChange }: TotalTradeValueInputProps) => {
 	const t = useTranslations();
 
 	const setInputValue = (v: number) => {
@@ -46,7 +46,7 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 
 	return (
 		<div className='gap-4 pb-16 flex-column'>
-			<label className='darkBlue:bg-gray-50 relative w-full flex-48 rounded bg-white flex-items-center input-group dark:bg-gray-50'>
+			<label className='relative w-full flex-48 rounded bg-white flex-items-center input-group darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<input
 					onCopy={(e) => copyNumberToClipboard(e, Number(value))}
 					type='text'
@@ -74,23 +74,18 @@ const TotalTradeValueInput = ({ value, purchasePower, setToMinimum, onChange }: 
 				)}
 			</label>
 
-			{purchasePower !== null && (
+			{max !== null && (
 				<div className='gap-4 flex-column'>
 					<span className='text-tiny flex-justify-between'>
 						<span className='text-gray-700'>{t('bs_modal.purchase_power')}:</span>
 
 						<span>
-							<span className='font-medium text-gray-800'>{sepNumbers(String(purchasePower))}</span>
+							<span className='font-medium text-gray-800'>{sepNumbers(String(max))}</span>
 							<span className='text-gray-700'>{' ' + t('common.rial')}</span>
 						</span>
 					</span>
 
-					<RangeSlider
-						disabled={purchasePower === 0}
-						max={purchasePower}
-						value={value}
-						onChange={(value) => onChange(value)}
-					/>
+					<RangeSlider disabled={max === 0} max={max} value={value} onChange={(value) => onChange(value)} />
 				</div>
 			)}
 		</div>

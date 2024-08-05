@@ -295,7 +295,7 @@ const SymbolPriceSlider = ({
 						>
 							<div
 								style={{ transform: `translate(${config.firstTradedPrice}px, 32px)` }}
-								className={clsx('transition duration-300', styles.value)}
+								className={clsx('transition z-99 duration-300', styles.value)}
 								onClick={() => onClick?.(exchangeData[0])}
 							>
 								<svg
@@ -308,16 +308,16 @@ const SymbolPriceSlider = ({
 									<path
 										d='M6.88362 9.71571L2.78906 5.6469L6.88362 1.57812L10.9781 5.6469L6.88362 9.71571Z'
 										stroke='#5D606D'
-										stroke-width='2.4'
-										stroke-linecap='round'
-										stroke-linejoin='round'
+										strokeWidth='2.4'
+										strokeLinecap='round'
+										strokeLinejoin='round'
 									/>
 									<path
 										d='M10.9781 9.92188L6.88361 13.9907L2.78906 9.92188'
 										stroke='#5D606D'
-										stroke-width='2'
-										stroke-linecap='round'
-										stroke-linejoin='round'
+										strokeWidth='2'
+										strokeLinecap='round'
+										strokeLinejoin='round'
 									/>
 								</svg>
 							</div>
@@ -343,16 +343,16 @@ const SymbolPriceSlider = ({
 										d='M6.30549 9.71571L2.21094 5.6469L6.30549 1.57812L10.4 5.6469L6.30549 9.71571Z'
 										fill='#5D606D'
 										stroke='#5D606D'
-										stroke-width='2.4'
-										stroke-linecap='round'
-										stroke-linejoin='round'
+										strokeWidth='2.4'
+										strokeLinecap='round'
+										strokeLinejoin='round'
 									/>
 									<path
 										d='M10.4 9.92188L6.30548 13.9907L2.21094 9.92188'
 										stroke='#5D606D'
-										stroke-width='2'
-										stroke-linecap='round'
-										stroke-linejoin='round'
+										strokeWidth='2'
+										strokeLinecap='round'
+										strokeLinejoin='round'
 									/>
 								</svg>
 							</div>

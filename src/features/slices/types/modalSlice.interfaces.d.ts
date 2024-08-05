@@ -197,7 +197,7 @@ export interface IChoiceCollateral extends IBaseModalConfiguration {
 }
 
 export interface IConfirmModal extends IBaseModalConfiguration {
-	title: React.ReactNode;
+	title?: React.ReactNode;
 	description: React.ReactNode;
 	onSubmit?: () => void;
 	onCancel?: () => void;
