@@ -26,7 +26,28 @@ const Button = styled.button`
 
 		path:nth-child(2),
 		path:nth-child(4) {
+			fill: rgb(255, 255, 255);
+		}
+	}
+
+	:root:is([data-theme='dark'], [data-theme='darkBlue']) {
+		path:nth-child(2),
+		path:nth-child(4) {
 			fill: rgb(var(--c-gray-700) / 1);
+		}
+
+		svg {
+			path:nth-child(2),
+			path:nth-child(4) {
+				fill: rgb(var(--c-gray-700) / 1);
+			}
+		}
+
+		&:not(:disabled):hover svg {
+			path:nth-child(2),
+			path:nth-child(4) {
+				fill: rgb(var(--c-gray-700) / 1);
+			}
 		}
 	}
 `;

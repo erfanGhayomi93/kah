@@ -159,26 +159,20 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 	},
 	{
 		id: 'bestBuyYTM',
-		title: 'YTM سرخط خرید',
+		title: 'YTM (بازده موثر)',
 		hidden: initialHiddenColumnsCoveredCall.bestBuyYTM,
 		tag: 'Computational',
 	},
 	{
-		id: 'bestSellYTM',
-		title: 'YTM سرخط فروش',
-		hidden: initialHiddenColumnsCoveredCall.bestSellYTM,
+		id: 'nonExpiredYTM',
+		title: 'YTM (بازده موثر) عدم اعمال',
+		hidden: initialHiddenColumnsCoveredCall.nonExpiredYTM,
 		tag: 'Computational',
 	},
 	{
 		id: 'riskCoverage',
 		title: 'پوشش ریسک',
 		hidden: initialHiddenColumnsCoveredCall.riskCoverage,
-		tag: 'Computational',
-	},
-	{
-		id: 'nonExpiredYTM',
-		title: 'YTM عدم اعمال',
-		hidden: initialHiddenColumnsCoveredCall.nonExpiredYTM,
 		tag: 'Computational',
 	},
 ];

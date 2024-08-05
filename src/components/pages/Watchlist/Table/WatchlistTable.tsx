@@ -23,7 +23,7 @@ import ActionColumn from './ActionColumn';
 
 interface WatchlistTableProps {
 	id: number;
-	data: Option.Root[] | null;
+	data: Option.Root[];
 	watchlistCount: number;
 	fetchNextPage: () => void;
 }
@@ -198,7 +198,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					pinned: 'right',
 					lockPosition: true,
 					suppressMovable: true,
-					cellClass: 'cursor-pointer',
+					cellClass: 'cursor-pointer font-medium',
 					onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.symbolISIN),
 					valueGetter: ({ data }) => data?.symbolInfo.symbolTitle ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
@@ -219,7 +219,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					minWidth: 160,
 					initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.notionalValue ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
+					valueFormatter: ({ value }) => numFormatter(value),
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
@@ -412,7 +412,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 				{
 					colId: 'historicalVolatility',
 					headerName: t('option_page.historical_volatility'),
-					minWidth: 96,
+					minWidth: 144,
 					initialHide: Boolean(modifiedWatchlistColumns?.historicalVolatility?.isHidden ?? true),
 					valueGetter: ({ data }) => data?.optionWatchlistData.historicalVolatility ?? 0,
 					valueFormatter: ({ value }) => {
@@ -481,11 +481,22 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 				{
 					colId: 'blackScholesDifference',
 					headerName: t('option_page.black_scholes_difference'),
-					minWidth: 144,
+					minWidth: 200,
 					initialHide: Boolean(modifiedWatchlistColumns?.blackScholesDifference?.isHidden ?? true),
-					valueGetter: ({ data }) => data?.optionWatchlistData.blackScholesDifference ?? 0,
-					valueFormatter: ({ value }) => toFixed(value, 2),
-					comparator: (valueA, valueB) => valueA - valueB,
+					headerComponent: HeaderHint,
+					headerComponentParams: {
+						tooltip: t('option_page.black_scholes_hint'),
+					},
+					cellRenderer: CellPercentRenderer,
+					cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+						percent: value[1] ?? 0,
+					}),
+					valueGetter: ({ data }) => [
+						data?.optionWatchlistData.blackScholes ?? 0,
+						data?.optionWatchlistData.blackScholesDifference ?? 0,
+					],
+					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+					comparator: (valueA, valueB) => valueA[1] - valueB[1],
 				},
 				{
 					colId: 'baseClosingPrice',
@@ -833,6 +844,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 			ref={gridRef}
 			useTransaction
 			className='h-full border-0'
+			style={{ height: `${(data.length + 1) * 5}rem` }}
 			columnDefs={COLUMNS}
 			defaultColDef={defaultColDef}
 			onColumnMoved={onColumnMoved}

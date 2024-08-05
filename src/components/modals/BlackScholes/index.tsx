@@ -83,7 +83,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 		const { baseSymbolPrice, contractEndDate, historicalVolatility, premium, strikePrice } = inputs.contract;
 
 		const now = Date.now();
-		const dueDays = Math.floor(Math.abs(now - new Date(contractEndDate).getTime()) / 1e3 / 24 / 60 / 60);
+		const dueDays = Math.ceil(Math.abs(now - new Date(contractEndDate).getTime()) / 1e3 / 24 / 60 / 60);
 
 		setInputs((prev) => ({
 			...prev,
@@ -104,7 +104,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Div className='darkBlue:bg-gray-50 bg-white flex-column dark:bg-gray-50'>
+			<Div className='bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Header label={t('black_scholes_modal.title')} onClose={onCloseModal} onClear={onClear} />
 
 				<div className='flex-1 gap-24 px-24 flex-column'>

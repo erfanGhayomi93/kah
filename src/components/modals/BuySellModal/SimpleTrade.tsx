@@ -1,4 +1,4 @@
-import { useGlPositionExtraInfoQuery, useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
+import { useGlPositionExtraInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import Button from '@/components/common/Button';
 import RangeSlider from '@/components/common/Slider/RangeSlider';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
@@ -38,6 +38,8 @@ interface ErrorMessageProps {
 
 interface SimpleTradeProps extends IBsModalInputs {
 	id: number | undefined;
+	orderingPurchasePower: number;
+	purchasePower: number;
 	symbolData: Symbol.Info | null;
 	submitting: boolean;
 	symbolType: TBsSymbolTypes;
@@ -61,6 +63,8 @@ const SimpleTrade = ({
 	switchable,
 	isLoadingBestLimit,
 	value,
+	orderingPurchasePower,
+	purchasePower,
 	submitting,
 	side,
 	priceLock,
@@ -88,10 +92,6 @@ const SimpleTrade = ({
 	const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
 		queryKey: ['glPositionExtraInfoQuery', symbolData?.symbolISIN ?? ''],
 		enabled: Boolean(symbolData),
-	});
-
-	const { data: userRemain } = useUserRemainQuery({
-		queryKey: ['userRemainQuery'],
 	});
 
 	const { data: baseSymbolExtraInfo = null } = useGlPositionExtraInfoQuery({
@@ -163,12 +163,6 @@ const SimpleTrade = ({
 		[],
 	);
 
-	const symbolTitle = symbolData?.symbolTitle ?? '';
-
-	const isOption = Boolean(symbolData?.isOption);
-
-	const assets = symbolExtraInfo?.asset ?? 0;
-
 	const blockTypeTitle = () => {
 		if (!blockType) {
 			return t('bs_modal.select_block_type');
@@ -195,7 +189,7 @@ const SimpleTrade = ({
 	const blockTypeErrorMessage = () => {
 		if (side === 'buy' || !blockType || blockType.type === 'Position') return null;
 
-		if (blockType.type === 'Account' && blockTypeAccountValue > Number(userRemain?.purchasePower ?? 0)) {
+		if (blockType.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0)) {
 			return <ErrorMessage>{t('bs_modal.account_block_type_error')}</ErrorMessage>;
 		}
 
@@ -205,6 +199,12 @@ const SimpleTrade = ({
 
 		return null;
 	};
+
+	const symbolTitle = symbolData?.symbolTitle ?? '';
+
+	const isOption = Boolean(symbolData?.isOption);
+
+	const assets = symbolExtraInfo?.asset ?? 0;
 
 	const blockTypeAccountValue = getAccountBlockTypeValue({
 		initialRequiredMargin: symbolData?.initialMargin ?? 0,
@@ -221,7 +221,7 @@ const SimpleTrade = ({
 	const isDisabled =
 		side === 'sell' &&
 		(!blockType ||
-			(blockType.type === 'Account' && blockTypeAccountValue > Number(userRemain?.purchasePower ?? 0)) ||
+			(blockType.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0)) ||
 			(blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0)));
 
 	return (
@@ -333,7 +333,7 @@ const SimpleTrade = ({
 					</div>
 
 					<TotalTradeValueInput
-						purchasePower={side === 'buy' ? Math.max(userRemain?.purchasePower ?? 0, 0) : null}
+						max={side === 'buy' ? orderingPurchasePower : null}
 						value={value}
 						setToMinimum={isOption ? undefined : setMinimumValue}
 						onChange={(v) => setInputValue('value', v)}

@@ -156,8 +156,10 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 							if (optionType === 'call') strikeCommission *= -1;
 						}
 
-						const iv = intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call');
-						y = pnl(iv, tradeCommission, side) * item.quantity;
+						const iv =
+							intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call') *
+							item.quantity;
+						y = pnl(iv, tradeCommission, side);
 					}
 
 					y += series[index]?.y ?? 0;

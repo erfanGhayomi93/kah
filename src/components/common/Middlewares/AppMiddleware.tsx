@@ -4,10 +4,9 @@ import { useGetBrokerUrlQuery } from '@/api/queries/brokerQueries';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
 import { useAppSelector } from '@/features/hooks';
-import { getTheme } from '@/features/slices/uiSlice';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
-import { useBrokerQueryClient } from '@/hooks';
+import { useBrokerQueryClient, useTheme } from '@/hooks';
 import { setupChart, setupChartColor } from '@/libs/highchart';
 import { deleteBrokerClientId } from '@/utils/cookie';
 import { versionParser } from '@/utils/helpers';
@@ -23,14 +22,15 @@ const getStates = createSelector(
 	(state) => ({
 		isLoggedIn: getIsLoggedIn(state),
 		brokerHasSelected: getBrokerIsSelected(state),
-		theme: getTheme(state),
 	}),
 );
 
 const AppMiddleware = ({ children }: AppMiddlewareProps) => {
 	const bQueryClient = useBrokerQueryClient();
 
-	const { isLoggedIn, brokerHasSelected, theme } = useAppSelector(getStates);
+	const { isLoggedIn, brokerHasSelected } = useAppSelector(getStates);
+
+	const theme = useTheme();
 
 	const { refetch } = useGetBrokerUrlQuery({
 		queryKey: ['getBrokerUrlQuery'],

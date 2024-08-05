@@ -7,6 +7,7 @@ export interface IOptionWatchlistQuery {
 	SymbolISINs: string[];
 	BaseSymbolISINs: string[];
 	Id: string;
+	Term: string;
 	FromDueDays: string;
 	ToDueDays: string;
 	MinimumTradeValue: string;

@@ -86,7 +86,7 @@ const UserDropdown = ({
 					</div>
 				</div>
 
-				<button className='flex-40 h-40 text-gray-700 flex-justify-center'>
+				<button className='h-40 flex-40 text-gray-700 flex-justify-center'>
 					<AngleLeftSVG width='2rem' height='2rem' />
 				</button>
 			</Link>
@@ -175,7 +175,7 @@ const UserDropdown = ({
 							<AngleLeftSVG width='2rem' height='2rem' className='text-gray-700' />
 						</button>
 
-						<ul className={clsx(styles.list, themeIsOpen && styles.active, 'darkness:bg-gray-50 bg-white')}>
+						<ul className={clsx(styles.list, themeIsOpen && styles.active, 'bg-white darkness:bg-gray-50')}>
 							{themes.map((th) => (
 								<li key={th}>
 									<button
@@ -196,7 +196,7 @@ const UserDropdown = ({
 					<li>
 						<Link
 							onClick={() => close()}
-							href='/settings/history'
+							href='/settings/sessions'
 							className='h-40 w-full gap-8 rounded px-12 text-gray-800 transition-colors flex-justify-start hover:bg-secondary-200'
 						>
 							<span className='size-24 flex-justify-center'>

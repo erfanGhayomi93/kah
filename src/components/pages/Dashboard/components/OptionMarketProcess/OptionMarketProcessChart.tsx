@@ -1,4 +1,6 @@
 import { useGetMarketProcessChartQuery } from '@/api/queries/dashboardQueries';
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
@@ -13,6 +15,8 @@ interface OptionMarketProcessChartProps {
 
 const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const { data, isLoading } = useGetMarketProcessChartQuery({
 		queryKey: ['getMarketProcessChartQuery', interval, type],
@@ -144,6 +148,10 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

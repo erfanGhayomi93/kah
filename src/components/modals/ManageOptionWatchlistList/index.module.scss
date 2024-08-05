@@ -1,0 +1,53 @@
+.watchlist {
+	height: 64px;
+	padding: 0 8px;
+	background-color: transparent;
+	border-radius: 8px;
+	transition: background-color 200ms;
+	-webkit-transition: background-color 200ms;
+	-moz-transition: background-color 200ms;
+
+	.visibility {
+		opacity: 0;
+		transition: opacity 200ms;
+		-webkit-transition: opacity 200ms;
+		-moz-transition: opacity 200ms;
+
+		&.active {
+			opacity: 100;
+		}
+
+		&.hidden {
+			pointer-events: none;
+			opacity: 0;
+		}
+	}
+
+	.drag {
+		color: theme("colors.gray.200");
+		transition: color 200ms;
+		-webkit-transition: color 200ms;
+		-moz-transition: color 200ms;
+	}
+
+	.btn {
+		width: 24px;
+		height: 24px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: theme("colors.gray.700");
+	}
+
+	&:hover {
+		background-color: theme("colors.gray.100");
+
+		.drag {
+			color: theme("colors.gray.700");
+		}
+
+		.visibility:not(.hidden) {
+			opacity: 100;
+		}
+	}
+}

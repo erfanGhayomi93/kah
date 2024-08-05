@@ -3,7 +3,7 @@ import { useAppDispatch } from '@/features/hooks';
 import { setOrderDetailsModal } from '@/features/slices/modalSlice';
 import { type TOrderDetailsModal } from '@/features/slices/types/modalSlice.interfaces';
 import dayjs from '@/libs/dayjs';
-import { dateFormatter, days, sepNumbers, toFixed } from '@/utils/helpers';
+import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useMemo } from 'react';
@@ -181,14 +181,6 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 				{
 					name: t('order_details_modal.required_margin'),
 					value: sepNumbers(String(data.requiredMargin)),
-				},
-				{
-					name: t('order_details_modal.trade_commission'),
-					value: toFixed(data.tradeCommission, 4),
-				},
-				{
-					name: t('order_details_modal.strike_commission'),
-					value: toFixed(data.strikeCommission, 4),
 				},
 			],
 		];

@@ -1,3 +1,5 @@
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -36,6 +38,8 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 			],
 		},
 	};
+
+	const theme = useTheme();
 
 	const xAxisFormatter = (v: number | string): string => {
 		return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
@@ -136,9 +140,13 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 		});
 
 		chartRef.current.yAxis[0].update({
-			type: interval === 'Month' || interval === 'Year' ? 'logarithmic' : 'linear',
+			type: interval === 'Month' || interval === 'ThreeMonths' || interval === 'Year' ? 'logarithmic' : 'linear',
 		});
 	}, [interval]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

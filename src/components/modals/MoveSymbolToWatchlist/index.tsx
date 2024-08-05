@@ -1,8 +1,7 @@
-import axios from '@/api/axios';
+import { useToggleCustomWatchlistSymbolMutation } from '@/api/mutations/symbolMutations';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
-import routes from '@/api/routes';
+import { useSymbolWatchlistListQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
-import { PlusSquareSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { type IMoveSymbolToWatchlistModal } from '@/features/slices/types/modalSlice.interfaces';
@@ -12,6 +11,7 @@ import { forwardRef } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
+import AddNewWatchlist from './AddNewWatchlist';
 import Watchlist from './Watchlist';
 
 const Div = styled.div`
@@ -29,34 +29,51 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 
 		const dispatch = useAppDispatch();
 
-		const { data: watchlistList, isLoading } = useGetAllCustomWatchlistQuery({
+		const { data: watchlistList = [], isLoading: isLoadingWatchlistList } = useGetAllCustomWatchlistQuery({
 			queryKey: ['getAllCustomWatchlistQuery'],
+		});
+
+		const { data: symbolWatchlistList = [], isLoading: isLoadingSymbolWatchlistList } = useSymbolWatchlistListQuery(
+			{
+				queryKey: ['symbolWatchlistListQuery', symbolISIN],
+			},
+		);
+
+		const { mutate } = useToggleCustomWatchlistSymbolMutation({
+			onSuccess: (_d, { watchlist, action }) => {
+				toast.success(
+					t(action === 'add' ? 'alerts.symbol_added_successfully' : 'alerts.symbol_removed_successfully'),
+					{
+						toastId: action === 'add' ? 'symbol_added_successfully' : 'symbol_removed_successfully',
+					},
+				);
+
+				if (watchlist) updateCache(watchlist, action);
+			},
+			onError: (_e, { action }) => {
+				toast.error(t(action === 'add' ? 'alerts.symbol_added_failed' : 'alerts.symbol_removed_failed'), {
+					toastId: action === 'add' ? 'symbol_added_failed' : 'symbol_removed_failed',
+				});
+			},
 		});
 
 		const onCloseModal = () => {
 			dispatch(setMoveSymbolToWatchlistModal(null));
 		};
 
-		const onSelectWatchlist = async (wl: Option.WatchlistList) => {
+		const updateCache = (wl: Option.WatchlistList, action: 'add' | 'remove') => {
 			try {
-				const response = await axios.post<ServerResponse<string>>(
-					routes.optionWatchlist.AddSymbolCustomWatchlist,
-					{
-						id: wl.id,
-						symbolISINs: [symbolISIN],
-					},
-				);
-				const data = response.data;
-
-				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-				toast.success(t('alerts.symbol_added_successfully'), {
-					toastId: 'symbol_added_successfully',
-				});
-
 				queryClient.refetchQueries({
 					queryKey: ['optionWatchlistQuery', { watchlistId: wl.id }],
+					exact: false,
 				});
+
+				let list = JSON.parse(JSON.stringify(symbolWatchlistList)) as typeof symbolWatchlistList;
+
+				if (action === 'add') list.push(wl);
+				else list = list.filter((item) => item.id !== wl.id);
+
+				queryClient.setQueryData(['symbolWatchlistListQuery', symbolISIN], list);
 			} catch (e) {
 				//
 			}
@@ -64,6 +81,10 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 
 		const addNewWatchlist = () => {
 			dispatch(setAddNewOptionWatchlistModal({ moveable: true }));
+		};
+
+		const isExistsInWatchlist = (watchlistId: number) => {
+			return symbolWatchlistList.findIndex((item) => item.id === watchlistId) > -1;
 		};
 
 		return (
@@ -74,42 +95,44 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 				{...props}
 				ref={ref}
 			>
-				<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
+				<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<Header label={t('move_symbol_to_watchlist.title', { symbolTitle })} onClose={onCloseModal} />
 
-					<div className='relative flex-1 overflow-hidden flex-column'>
-						{isLoading && <Loading />}
+					<div className='relative flex-1 overflow-hidden p-24 flex-column'>
+						{(isLoadingWatchlistList || isLoadingSymbolWatchlistList) && <Loading />}
 
 						{Array.isArray(watchlistList) && (
-							<ul className='relative flex-1 select-none gap-16 overflow-auto px-24 flex-column'>
-								{watchlistList.map((wl, i) => (
-									<Watchlist
-										key={wl.id}
-										top={i * 6.4 + 3.2}
-										watchlist={wl}
-										onSelect={() => onSelectWatchlist(wl)}
-									/>
-								))}
+							<ul className='relative w-full flex-1 select-none gap-16 overflow-y-auto overflow-x-hidden flex-column'>
+								{watchlistList.map((wl, i) => {
+									const exists = isExistsInWatchlist(wl.id);
+
+									return (
+										<Watchlist
+											key={wl.id}
+											top={i * 6.4}
+											watchlist={wl}
+											isActive={exists}
+											onSelect={() =>
+												mutate({
+													watchlist: wl,
+													watchlistId: wl.id,
+													symbolISIN,
+													action: exists ? 'remove' : 'add',
+												})
+											}
+										/>
+									);
+								})}
+
 								<li
-									style={{ top: `${watchlistList.length * 6.4 + 4}rem` }}
+									style={{ top: `${watchlistList.length * 6.4}rem` }}
 									className='absolute left-0 h-4 w-full'
 								/>
 							</ul>
 						)}
 					</div>
 
-					<div className='h-64 gap-8 border-t border-t-gray-200 pl-24 flex-items-center'>
-						<button
-							onClick={addNewWatchlist}
-							className='h-40 gap-8 pr-24 font-medium text-primary-100 flex-items-center'
-							type='button'
-						>
-							<span className='size-16 rounded-sm text-current flex-justify-center'>
-								<PlusSquareSVG width='1.6rem' height='1.6rem' />
-							</span>
-							{t('manage_option_watchlist_modal.create_new_watchlist')}
-						</button>
-					</div>
+					<AddNewWatchlist onClick={addNewWatchlist} />
 				</Div>
 			</Modal>
 		);

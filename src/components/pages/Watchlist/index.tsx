@@ -8,8 +8,9 @@ import { initialOptionWatchlistFilters } from '@/constants/filters';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
+import { useInputs } from '@/hooks';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -22,7 +23,11 @@ const Watchlist = () => {
 
 	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
-	const [filters, setFilters] = useState<Partial<IOptionWatchlistFilters>>(initialOptionWatchlistFilters);
+	const {
+		inputs: filters,
+		setFieldValue,
+		setInputs,
+	} = useInputs<Partial<IOptionWatchlistFilters>>(initialOptionWatchlistFilters);
 
 	const { data: userCustomWatchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
@@ -88,14 +93,19 @@ const Watchlist = () => {
 
 	return (
 		<Main>
-			<div className='darkBlue:bg-gray-50 h-full rounded bg-white px-16 flex-column dark:bg-gray-50'>
-				<Toolbar filters={filters} filtersCount={filtersCount} />
+			<div className='h-full rounded bg-white px-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<Toolbar
+					setTerm={(v) => setFieldValue('term', v)}
+					setPriceBasis={(v) => setFieldValue('priceBasis', v)}
+					filters={filters}
+					filtersCount={filtersCount}
+				/>
 
 				<div className='relative flex-1 overflow-hidden'>
 					<Table
 						filters={filters}
 						filtersCount={filtersCount}
-						setFilters={setFilters}
+						setFilters={setInputs}
 						watchlistCount={userCustomWatchlistList?.length ?? 0}
 					/>
 				</div>

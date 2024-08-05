@@ -48,7 +48,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const { data: watchlistData, isLoading } = useWatchlistBySettlementDateQuery({
+	const { data: watchlistData = [], isLoading } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
 			{ baseSymbolISIN: baseSymbol.symbolISIN, settlementDate: settlementDay?.contractEndDate },
@@ -142,14 +142,18 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerName: 'ارزش روز',
 						colId: 'tradeValue-buy',
 						width: 120,
-						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.tradeValue)),
+						valueGetter: ({ data }) => data!.buy?.optionWatchlistData.tradeValue ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 
 					{
 						headerName: 'موقعیت‌های باز',
 						colId: 'openPositionCount-buy',
 						width: 144,
-						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.openPositionCount)),
+						valueGetter: ({ data }) => data!.buy?.optionWatchlistData.openPositionCount ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 
 					{
@@ -169,6 +173,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 							}
 						},
 						valueGetter: ({ data }) => data!.buy?.optionWatchlistData.iotm,
+						comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 					},
 
 					{
@@ -176,7 +181,9 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						colId: 'bestBuyPrice-buy',
 						flex: 1,
 						cellClass: 'text-success-100',
-						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestBuyPrice)),
+						valueGetter: ({ data }) => data!.buy?.optionWatchlistData.bestBuyPrice ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 
 					{
@@ -184,7 +191,9 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						colId: 'bestSellPrice-buy',
 						flex: 1,
 						cellClass: 'text-error-100',
-						valueGetter: ({ data }) => sepNumbers(String(data!.buy?.optionWatchlistData.bestSellPrice)),
+						valueGetter: ({ data }) => data!.buy?.optionWatchlistData.bestSellPrice ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 				],
 			},
@@ -204,6 +213,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						headerClass: 'strike-price',
 						valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
 						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 						cellRenderer: StrikePriceCellRenderer,
 						cellRendererParams: {
 							activeRowId,
@@ -227,7 +237,9 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						colId: 'bestBuyPrice-sell',
 						flex: 1,
 						cellClass: 'text-success-100',
-						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestBuyPrice)),
+						valueGetter: ({ data }) => data!.sell?.optionWatchlistData.bestBuyPrice ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 
 					{
@@ -235,7 +247,9 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 						colId: 'bestSellPrice-sell',
 						flex: 1,
 						cellClass: 'text-error-100',
-						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.bestSellPrice)),
+						valueGetter: ({ data }) => data!.sell?.optionWatchlistData.bestSellPrice ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 
 					{
@@ -255,21 +269,25 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 							}
 						},
 						valueGetter: ({ data }) => data!.sell?.optionWatchlistData.iotm,
+						comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 					},
 
 					{
 						headerName: 'موقعیت‌های باز',
 						colId: 'openPositionCount-sell',
 						width: 144,
-						valueGetter: ({ data }) =>
-							sepNumbers(String(data!.sell?.optionWatchlistData.openPositionCount)),
+						valueGetter: ({ data }) => data!.sell?.optionWatchlistData.openPositionCount ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 
 					{
 						headerName: 'ارزش روز',
 						colId: 'tradeValue-sell',
 						width: 120,
-						valueGetter: ({ data }) => sepNumbers(String(data!.sell?.optionWatchlistData.tradeValue)),
+						valueGetter: ({ data }) => data!.sell?.optionWatchlistData.tradeValue ?? 0,
+						valueFormatter: ({ value }) => sepNumbers(String(value)),
+						comparator: (valueA, valueB) => valueA - valueB,
 					},
 
 					{
@@ -298,7 +316,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 	);
 
 	const modifiedData: ITableData[] = useMemo(() => {
-		if (!watchlistData) return [];
+		if (!Array.isArray(watchlistData)) return [];
 
 		const dataAsArray: ITableData[] = [];
 
@@ -325,11 +343,11 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 					sell: item?.sell,
 				});
 			}
-
-			return dataAsArray;
 		} catch (e) {
-			return dataAsArray;
+			//
 		}
+
+		return dataAsArray.filter((row) => row.buy !== undefined && row.sell !== undefined);
 	}, [watchlistData]);
 
 	useEffect(() => {
@@ -377,14 +395,14 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			//
 		}
 	}, [optionChainColumns]);
-
+	console.log(modifiedData);
 	return (
 		<>
 			<AgTable<ITableData>
 				gridId='option-chain'
 				ref={gridRef}
 				className='flex-1 rounded-0'
-				rowData={modifiedData ?? []}
+				rowData={modifiedData}
 				columnDefs={COLUMNS}
 				onCellMouseOver={(e) => setActiveRowId(e.node.rowIndex ?? -1)}
 				onCellMouseOut={() => setActiveRowId(-1)}

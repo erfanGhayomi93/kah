@@ -188,7 +188,15 @@ const config: Config = {
 			'24': '0 0 2.4rem',
 			'40': '0 0 4rem',
 			'48': '0 0 4.8rem',
+			'64': '0 0 6.4rem',
 			'328': '0 0 32.8rem',
+		},
+
+		extend: {
+			zIndex: {
+				99: '99',
+				999: '999',
+			},
 		},
 	},
 
@@ -746,12 +754,12 @@ const config: Config = {
 					'-webkit-transition': 'border-color 200ms ease-in-out',
 					'-moz-transition': 'border-color 200ms ease-in-out',
 
-					'&:not(.disabled,.error)': {
+					'&:not(.disabled,.error,.warning)': {
 						'&:focus-within,input:focus,textarea:focus,&.focus': {
-							'border-color': theme('colors.primary.100'),
+							'border-color': theme('colors.info.100'),
 
 							'.flexible-placeholder': {
-								color: theme('colors.primary.100'),
+								color: theme('colors.info.100'),
 								top: '0',
 								right: '1.25rem !important',
 								'font-size': '1.2rem',
@@ -760,7 +768,7 @@ const config: Config = {
 							},
 
 							'.flexible-fieldset': {
-								'border-color': theme('colors.primary.100'),
+								'border-color': theme('colors.info.100'),
 
 								legend: {
 									'font-size': '1.2rem',
@@ -780,7 +788,15 @@ const config: Config = {
 						},
 					},
 
-					'&:not(:focus-within,.disabled,.error):hover': {
+					'&.warning': {
+						'border-color': theme('colors.warning.100'),
+
+						'.flexible-fieldset': {
+							'border-color': theme('colors.warning.100'),
+						},
+					},
+
+					'&:not(:focus-within,.disabled,.warning,.error):hover': {
 						'border-color': theme('colors.gray.500'),
 
 						'.flexible-fieldset': {
@@ -877,7 +893,7 @@ const config: Config = {
 					animation: '750ms linear infinite spinner-border',
 				},
 
-				'html[data-theme="dark"]': {
+				':root:is([data-theme="dark"], [data-theme="darkBlue"])': {
 					'.btn-select': {
 						'background-color': theme('colors.secondary.200'),
 					},

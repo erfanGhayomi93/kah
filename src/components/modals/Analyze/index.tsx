@@ -48,7 +48,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			dispatch(setAnalyzeModal(null));
 		};
 
-		const handleContracts = (contracts: Option.Root[], baseSymbol: Symbol.Info | null) => {
+		const handleContracts = (contracts: ISelectedContract[], baseSymbol: Symbol.Info | null) => {
 			const l = contracts.length;
 
 			const result: TSymbolStrategy[] = [];
@@ -58,7 +58,11 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				let contractSize = 0;
 
 				for (let i = 0; i < l; i++) {
-					const item = convertSymbolWatchlistToSymbolBasket(contracts[i], 'buy');
+					const c = contracts[i];
+					const item = convertSymbolWatchlistToSymbolBasket(
+						{ optionWatchlistData: c.optionWatchlistData, symbolInfo: c.symbolInfo },
+						c.side,
+					);
 
 					contractSize = Math.max(contractSize, item.symbol.contractSize);
 					result.push(item);
@@ -93,20 +97,21 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 		};
 
 		const addNewContracts = () => {
-			const initialBaseSymbolISIN =
-				symbolContracts.find((item) => item.type === 'base')?.symbol.symbolISIN ?? undefined;
+			const initialBaseSymbol = symbolContracts.find((item) => item.type === 'base') ?? null;
 
-			const initialSelectedContracts = symbolContracts
+			const initialSelectedContracts: Array<[string, TBsSides]> = symbolContracts
 				.filter((item) => item.type === 'option')
-				.map((item) => item.symbol.symbolISIN);
+				.map((item) => [item.symbol.symbolISIN, item.side]);
 
 			dispatch(
 				setSelectSymbolContractsModal({
 					initialSelectedContracts,
 					suppressBaseSymbolChange: true,
 					suppressSendBaseSymbol: false,
-					initialBaseSymbolISIN,
-					initialSelectedBaseSymbol: Boolean(initialBaseSymbolISIN),
+					initialBaseSymbol: initialBaseSymbol
+						? [initialBaseSymbol.symbol.symbolISIN, initialBaseSymbol.side]
+						: undefined,
+					initialSelectedBaseSymbol: Boolean(initialBaseSymbol),
 					callback: handleContracts,
 				}),
 			);
@@ -169,7 +174,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				onClose={onCloseModal}
 				{...props}
 			>
-				<Div className='darkBlue:bg-gray-50 bg-white flex-column dark:bg-gray-50'>
+				<Div className='bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<Header label={t('analyze_modal.title')} onClose={onCloseModal} />
 
 					{symbolContracts.length > 0 ? (

@@ -1,11 +1,13 @@
+import { StarFillSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 
 interface WatchlistProps extends Option.WatchlistList {
+	star: boolean;
 	isActive: boolean;
 	onSelect: () => void;
 }
 
-const Watchlist = ({ onSelect, isActive, name, isHidden }: WatchlistProps) => {
+const Watchlist = ({ onSelect, star, isActive, name, isHidden }: WatchlistProps) => {
 	if (isHidden) return null;
 
 	return (
@@ -15,10 +17,11 @@ const Watchlist = ({ onSelect, isActive, name, isHidden }: WatchlistProps) => {
 				type='button'
 				style={{ maxWidth: '14rem', minWidth: '6.4rem' }}
 				className={cn(
-					'!block h-40 truncate rounded px-16 font-medium',
-					isActive ? 'btn-primary' : 'btn-primary-outline',
+					'h-40 gap-4 truncate rounded px-8 font-medium transition-colors flex-justify-center',
+					isActive ? 'no-hover btn-select' : 'bg-gray-100 text-gray-700 hover:btn-hover',
 				)}
 			>
+				{star && <StarFillSVG width='1.4rem' height='1.4rem' className='text-warning-100' />}
 				{name}
 			</button>
 		</li>

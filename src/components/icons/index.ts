@@ -120,6 +120,8 @@ import ShieldXSVG from './shield-x.svg';
 import SnowFlakeSVG from './snow-flake.svg';
 import SortSVG from './sort.svg';
 import SquareXSVG from './square-x.svg';
+import StarFillSVG from './star-fill.svg';
+import StarOutlineSVG from './star-outline.svg';
 import StraightLineSVG from './straight-line.svg';
 import StrategySVG from './strategy.svg';
 import SunSVG from './sun.svg';
@@ -262,6 +264,8 @@ export {
 	SnowFlakeSVG,
 	SortSVG,
 	SquareXSVG,
+	StarFillSVG,
+	StarOutlineSVG,
 	StraightLineSVG,
 	StrategySVG,
 	SunSVG,

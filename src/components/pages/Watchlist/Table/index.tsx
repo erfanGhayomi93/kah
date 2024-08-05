@@ -1,11 +1,10 @@
-import ipcMain from '@/classes/IpcMain';
-import Loading from '@/components/common/Loading';
-
 import axios from '@/api/axios';
 import { type IOptionWatchlistQuery } from '@/api/queries/optionQueries';
 import routes from '@/api/routes';
+import ipcMain from '@/classes/IpcMain';
+import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
-import { PlusSquareSVG } from '@/components/icons';
+import { PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
@@ -44,6 +43,8 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 		queryFn: async ({ queryKey, pageParam, signal }) => {
 			const [, props] = queryKey;
 			const params: Partial<IOptionWatchlistQuery> = {};
+
+			if (props.term) params.Term = props.term;
 
 			if (props.minimumTradesValue && Number(props.minimumTradesValue) >= 0)
 				params.MinimumTradeValue = props.minimumTradesValue;
@@ -100,7 +101,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 		dispatch(setAddSymbolToWatchlistModal({}));
 	};
 
-	const onFiltersChanged = (newFilters: IOptionWatchlistFilters) => {
+	const onFiltersChanged = (newFilters: Omit<IOptionWatchlistFilters, 'priceBasis' | 'term'>) => {
 		setFilters(newFilters);
 	};
 
@@ -122,9 +123,9 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 	return (
 		<>
 			<div
-				className='overflow-hidden flex-column'
+				className='gap-16 overflow-hidden flex-column'
 				style={{
-					height: 'calc(100dvh - 20rem)',
+					maxHeight: 'calc(100dvh - 20rem)',
 					transition: 'height 250ms ease',
 				}}
 			>
@@ -136,16 +137,16 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				/>
 
 				{!dataIsEmpty && !isLoading && watchlistId > -1 && (
-					<button
-						onClick={addSymbol}
-						className='min-h-48 gap-8 border-t border-t-gray-200 pr-24 font-medium text-primary-100 flex-items-center'
-						type='button'
-					>
-						<span className='size-16 rounded-sm text-current flex-justify-center'>
-							<PlusSquareSVG width='1.6rem' height='1.6rem' />
-						</span>
-						{t('add_symbol')}
-					</button>
+					<div>
+						<button
+							type='button'
+							onClick={addSymbol}
+							className='h-40 gap-8 rounded bg-gray-400 px-24 font-medium text-gray-700 flex-items-center'
+						>
+							<PlusSVG width='1.8rem' height='1.8rem' />
+							{t('add_symbol')}
+						</button>
+					</div>
 				)}
 			</div>
 

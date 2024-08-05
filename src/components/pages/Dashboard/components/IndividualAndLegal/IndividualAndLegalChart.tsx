@@ -1,4 +1,6 @@
 import { useGetIndividualLegalInfoQuery } from '@/api/queries/dashboardQueries';
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type SeriesSplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
@@ -11,6 +13,8 @@ interface IndividualAndLegalChartProps {
 
 const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const { data, isLoading } = useGetIndividualLegalInfoQuery({
 		queryKey: ['getIndividualLegalInfoQuery', symbolType, type],
@@ -103,6 +107,10 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 
 		chartRef.current.update({ series });
 	}, [data, symbolType, type]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

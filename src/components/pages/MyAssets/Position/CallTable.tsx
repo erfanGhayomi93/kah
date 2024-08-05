@@ -9,6 +9,7 @@ import { getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import { useMemo, useRef } from 'react';
+import SymbolTitleHeader from '../SymbolTitleHeader';
 import CallActionCell from './CallActionCell';
 
 interface CallTableProps {
@@ -27,21 +28,29 @@ const CallTable = ({ data, isLoading }: CallTableProps) => {
 		dispatch(setSymbolInfoPanel(symbolISIN));
 	};
 
+	const indexColumn = useMemo<ColDef<GLOptionOrder.BuyPosition>>(
+		() => ({
+			colId: 'index',
+			headerName: t('col_index'),
+			pinned: 'right',
+			minWidth: 72,
+			maxWidth: 72,
+			sortable: false,
+			valueGetter: ({ node }) => (node?.rowIndex ?? 0) + 1,
+		}),
+		[],
+	);
+
 	const columnDefs = useMemo<Array<ColDef<GLOptionOrder.BuyPosition>>>(
 		() => [
-			{
-				colId: 'index',
-				headerName: t('col_index'),
-				pinned: 'right',
-				minWidth: 72,
-				maxWidth: 72,
-				valueGetter: ({ node }) => (node?.rowIndex ?? 0) + 1,
-			},
+			indexColumn,
 			{
 				colId: 'symbol',
 				headerName: t('col_symbol'),
 				pinned: 'right',
 				cellClass: 'font-medium cursor-pointer',
+				maxWidth: 120,
+				headerComponent: SymbolTitleHeader,
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				valueGetter: ({ data }) => data!.symbolTitle,
 			},
@@ -237,7 +246,7 @@ const CallTable = ({ data, isLoading }: CallTableProps) => {
 
 	return (
 		<div className='flex-1 gap-16 flex-column'>
-			<h2 className='text-gray-700 text-base font-medium'>
+			<h2 className='text-base font-medium text-gray-700'>
 				{t('positions_title')} <span className='text-success-100'>{t('call')}</span>
 			</h2>
 
@@ -248,6 +257,12 @@ const CallTable = ({ data, isLoading }: CallTableProps) => {
 					columnDefs={columnDefs}
 					defaultColDef={defaultColDef}
 					className='border-call h-full border-0'
+					onSortChanged={({ api }) => {
+						const column = api.getColumn('index');
+						if (!column) return;
+
+						column.setColDef(indexColumn, indexColumn, 'api');
+					}}
 				/>
 
 				{isLoading && (

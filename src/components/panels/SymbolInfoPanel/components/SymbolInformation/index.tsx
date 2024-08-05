@@ -144,7 +144,7 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 					<div className='flex-1'>
 						<Button
 							type='button'
-							loading={isLoading}
+							loading={isOption && isLoading}
 							disabled={isSellDisabled}
 							onClick={() => openBsModal('sell')}
 							className='h-40 w-full rounded text-base font-medium btn-error'

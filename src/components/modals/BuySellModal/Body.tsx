@@ -28,6 +28,8 @@ const Wrapper = ({ children, className }: WrapperProps) => (
 
 interface BodyProps extends IBsModalInputs {
 	id: number | undefined;
+	orderingPurchasePower: number;
+	purchasePower: number;
 	symbolData: Symbol.Info | null;
 	symbolISIN: string;
 	symbolTitle: string;

@@ -20,7 +20,7 @@ interface SymbolContractsProps extends ISelectSymbolContractsModal {}
 
 interface ContractProps {
 	symbolTitle: string;
-	optionType?: TOptionSides;
+	side?: TBsSides;
 	onRemove: () => void;
 }
 
@@ -44,7 +44,8 @@ const Div = styled.div`
 const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 	(
 		{
-			initialBaseSymbolISIN,
+			initialBaseSymbol,
+			suppressRowActions = false,
 			suppressBaseSymbolChange = true,
 			suppressSendBaseSymbol = false,
 			initialSelectedBaseSymbol = false,
@@ -81,7 +82,13 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 		const { mutate: fetchInitialContracts, isPending: isFetchingInitialContracts } = useOptionInfoMutation({
 			onSuccess: (initialContracts) => {
-				setFieldValue('contracts', initialContracts);
+				setFieldValue(
+					'contracts',
+					initialContracts.map<ISelectedContract>((item) => ({
+						...item,
+						side: initialSelectedContracts.find((c) => c[0] === item.symbolInfo.symbolISIN)?.[1] ?? 'buy',
+					})),
+				);
 			},
 			onError: () => {
 				toast.error(t('alerts.fetch_symbol_failed'));
@@ -127,8 +134,9 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		};
 
 		useEffect(() => {
-			if (initialSelectedContracts.length > 0) fetchInitialContracts(initialSelectedContracts);
-			if (initialBaseSymbolISIN) fetchSymbolInfo({ symbolISIN: initialBaseSymbolISIN, type: 'initial' });
+			if (initialSelectedContracts.length > 0)
+				fetchInitialContracts(initialSelectedContracts.map((item) => item[0]));
+			if (initialBaseSymbol) fetchSymbolInfo({ symbolISIN: initialBaseSymbol[0], type: 'initial' });
 		}, []);
 
 		return (
@@ -158,6 +166,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 						/>
 
 						<ContractsTable
+							suppressRowActions={suppressRowActions}
 							contracts={inputs.contracts}
 							setContracts={(v) => setFieldValue('contracts', v)}
 							settlementDay={inputs.activeSettlement}
@@ -193,7 +202,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 									<Contract
 										key={item.symbolInfo.symbolISIN}
 										symbolTitle={item.symbolInfo.symbolTitle}
-										optionType={item.symbolInfo.optionType === 'Call' ? 'call' : 'put'}
+										side={item.side}
 										onRemove={() => removeContract(item.symbolInfo.symbolISIN)}
 									/>
 								))}
@@ -220,13 +229,13 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 	},
 );
 
-const Contract = ({ onRemove, symbolTitle, optionType }: ContractProps) => {
+const Contract = ({ onRemove, symbolTitle, side }: ContractProps) => {
 	return (
 		<li
 			style={{ flex: '0 0 10.4rem' }}
 			className={clsx(
 				'h-32 gap-8 rounded px-8 flex-justify-between',
-				optionType ? (optionType === 'call' ? 'bg-success-100/10' : 'bg-error-100/10') : 'bg-gray-300',
+				side ? (side === 'buy' ? 'bg-success-100/10' : 'bg-error-100/10') : 'bg-gray-300',
 			)}
 		>
 			<span className='text-base text-gray-800'>{symbolTitle}</span>

@@ -1,4 +1,6 @@
 import { useGetOptionTradeProcessQuery } from '@/api/queries/dashboardQueries';
+import { useTheme } from '@/hooks';
+import { getChartTheme } from '@/libs/highchart';
 import { dateFormatter, divide, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
@@ -11,6 +13,8 @@ interface OptionTradesValueChartProps {
 
 const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps) => {
 	const chartRef = useRef<Chart | null>(null);
+
+	const theme = useTheme();
 
 	const { data, isLoading } = useGetOptionTradeProcessQuery({
 		queryKey: ['getOptionTradeProcessQuery', interval],
@@ -48,7 +52,7 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 			},
 			yAxis: {
 				tickAmount: 4,
-				type: 'linear',
+				type: type === 'PutToCall' && (interval === 'Month' || interval === 'Year') ? 'logarithmic' : 'linear',
 				labels: {
 					formatter: ({ value }) => {
 						return numFormatter(Number(value));
@@ -151,7 +155,15 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 				},
 			},
 		});
+
+		chartRef.current.yAxis[0].update({
+			type: type === 'PutToCall' && (interval === 'Month' || interval === 'Year') ? 'logarithmic' : 'linear',
+		});
 	}, [interval]);
+
+	useEffect(() => {
+		chartRef.current?.update(getChartTheme(theme));
+	}, [theme]);
 
 	useEffect(
 		() => () => {

@@ -6,18 +6,20 @@ import { type ITableData } from '@/components/pages/OptionChain/Option/OptionTab
 import { sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import CellSymbolTitleRendererRenderer from './CellSymbolTitleRenderer';
+import CellSymbolTitleRendererRenderer from './TableComponents/CellSymbolTitleRenderer';
+import StrikePriceCellRenderer from './TableComponents/StrikePriceCellRenderer';
 
 interface ContractsTableProps {
 	symbolISIN?: string;
 	maxContractsLength?: number;
+	suppressRowActions: boolean;
 	isPending: boolean;
 	isFetchingInitialContracts: boolean;
 	settlementDay: Option.BaseSettlementDays | null;
-	contracts: Option.Root[];
-	setContracts: (v: Option.Root[]) => void;
+	contracts: ISelectedContract[];
+	setContracts: (v: ISelectedContract[]) => void;
 }
 
 const ContractsTable = ({
@@ -27,6 +29,7 @@ const ContractsTable = ({
 	settlementDay,
 	contracts = [],
 	maxContractsLength,
+	suppressRowActions,
 	setContracts,
 }: ContractsTableProps) => {
 	const t = useTranslations();
@@ -34,6 +37,8 @@ const ContractsTable = ({
 	const checkedRef = useRef<boolean>(false);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
+
+	const [activeRowId, setActiveRowId] = useState<number>(-1);
 
 	const { data: watchlistData, isFetching } = useWatchlistBySettlementDateQuery({
 		queryKey: [
@@ -43,14 +48,22 @@ const ContractsTable = ({
 		enabled: settlementDay !== null && Boolean(symbolISIN),
 	});
 
-	const toggleContract = (c: Option.Root) => {
+	const toggleContract = (c: Option.Root, side: TBsSides) => {
 		const newContracts = JSON.parse(JSON.stringify(contracts)) as typeof contracts;
 		const index = newContracts.findIndex((item) => item.symbolInfo.symbolISIN === c.symbolInfo.symbolISIN);
 
 		if (index > -1) {
-			newContracts.splice(index, 1);
+			if (suppressRowActions) {
+				newContracts.splice(index, 1);
+			} else {
+				newContracts[index].side = side;
+				setContracts(newContracts);
+			}
 		} else {
-			newContracts.push(c);
+			newContracts.push({
+				...c,
+				side,
+			});
 		}
 
 		if (typeof maxContractsLength === 'number') {
@@ -67,10 +80,6 @@ const ContractsTable = ({
 		setContracts(newContracts);
 	};
 
-	const isContractSelected = (symbolISIN: string) => {
-		return contracts.findIndex((item) => item.symbolInfo.symbolISIN === symbolISIN) > -1;
-	};
-
 	const onCellClicked = (e: CellClickedEvent<ITableData>) => {
 		if (isPending) return;
 
@@ -79,11 +88,40 @@ const ContractsTable = ({
 			const side = colId.split('-')[1];
 
 			const data = e.data![side === 'sell' ? 'sell' : 'buy'];
-			if (data) toggleContract(data);
+			if (data) toggleContract(data, 'buy');
 		} catch (e) {
 			//
 		}
 	};
+
+	const isContractSelected = useCallback(
+		(symbolISIN: string) => {
+			return contracts.findIndex((item) => item.symbolInfo.symbolISIN === symbolISIN) > -1;
+		},
+		[contracts],
+	);
+
+	const strikePriceColumn = useMemo<ColDef<ITableData>>(
+		() => ({
+			headerName: 'اعمال',
+			colId: 'strikePrice',
+			flex: 1,
+			cellClass: 'strike-price',
+			headerClass: 'strike-price',
+			valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
+			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			cellRenderer: suppressRowActions ? undefined : StrikePriceCellRenderer,
+			cellRendererParams: suppressRowActions
+				? undefined
+				: {
+						activeRowId,
+						disabled: isPending,
+						buy: (data: Option.Root) => toggleContract(data, 'buy'),
+						sell: (data: Option.Root) => toggleContract(data, 'sell'),
+					},
+		}),
+		[activeRowId],
+	);
 
 	const COLUMNS: Array<ColDef<ITableData> | ColGroupDef<ITableData>> = useMemo(
 		() => [
@@ -97,10 +135,11 @@ const ContractsTable = ({
 						colId: 'symbolTitle-buy',
 						minWidth: 132,
 						maxWidth: 132,
-						cellRenderer: CellSymbolTitleRendererRenderer,
 						valueGetter: ({ data }) => data!.buy,
+						cellRenderer: CellSymbolTitleRendererRenderer,
 						cellRendererParams: {
 							reverse: false,
+							checkbox: suppressRowActions,
 							disabled: isPending,
 							isSelected: isContractSelected,
 						},
@@ -140,17 +179,7 @@ const ContractsTable = ({
 				groupId: 'strike',
 				headerName: '',
 				headerClass: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
-				children: [
-					{
-						headerName: 'اعمال',
-						colId: 'strikePrice',
-						flex: 1,
-						cellClass: 'strike-price',
-						headerClass: 'strike-price',
-						valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
-						valueFormatter: ({ value }) => sepNumbers(String(value)),
-					},
-				],
+				children: [strikePriceColumn],
 			},
 
 			{
@@ -196,6 +225,7 @@ const ContractsTable = ({
 						valueGetter: ({ data }) => data!.sell,
 						cellRendererParams: {
 							reverse: true,
+							checkbox: suppressRowActions,
 							disabled: isPending,
 							isSelected: isContractSelected,
 						},
@@ -203,7 +233,7 @@ const ContractsTable = ({
 				],
 			},
 		],
-		[contracts, isPending],
+		[contracts, activeRowId, isPending],
 	);
 
 	const defaultColDef: ColDef<ITableData> = useMemo(
@@ -256,12 +286,22 @@ const ContractsTable = ({
 		if (!gridApi) return;
 
 		try {
-			gridApi.setGridOption('onCellClicked', onCellClicked);
+			if (suppressRowActions) gridApi.setGridOption('onCellClicked', onCellClicked);
 			gridApi.setGridOption('columnDefs', COLUMNS);
 		} catch (e) {
 			//
 		}
 	}, [contracts, isPending]);
+
+	useEffect(() => {
+		const gridApi = gridRef.current;
+		if (!gridApi) return;
+
+		const column = gridApi.getColumn('strikePrice');
+		if (!column) return;
+
+		column.setColDef(strikePriceColumn, strikePriceColumn, 'api');
+	}, [strikePriceColumn]);
 
 	useEffect(() => {
 		checkedRef.current = false;
@@ -270,13 +310,15 @@ const ContractsTable = ({
 	return (
 		<div className='relative flex-1'>
 			<AgTable<ITableData>
+				suppressRowVirtualisation
+				suppressColumnVirtualisation
 				ref={gridRef}
 				className='h-full'
 				rowData={modifiedData}
 				columnDefs={COLUMNS}
 				defaultColDef={defaultColDef}
-				suppressRowVirtualisation
-				suppressColumnVirtualisation
+				onCellMouseOver={(e) => setActiveRowId(e.node.rowIndex ?? -1)}
+				onCellMouseOut={() => setActiveRowId(-1)}
 			/>
 
 			{!isFetching && (!settlementDay || modifiedData.length === 0) && (
