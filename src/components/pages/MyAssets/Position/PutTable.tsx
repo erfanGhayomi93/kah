@@ -36,6 +36,7 @@ const PutTable = ({ data, isLoading }: PutTableProps) => {
 			minWidth: 72,
 			maxWidth: 72,
 			sortable: false,
+			resizable: false,
 			valueGetter: ({ node }) => (node?.rowIndex ?? 0) + 1,
 		}),
 		[],

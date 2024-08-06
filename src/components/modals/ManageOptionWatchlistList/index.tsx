@@ -3,7 +3,7 @@ import {
 	useUpdateCustomWatchlistHiddenMutation,
 	useUpdateCustomWatchlistNameMutation,
 	useUpdateCustomWatchlistOrderMutation,
-} from '@/api/mutations/optionMutations';
+} from '@/api/mutations/watchlistMutations';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import Checkbox from '@/components/common/Inputs/Checkbox';
 import { useAppDispatch } from '@/features/hooks';
@@ -53,16 +53,16 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 				newData.filter((wl) => !watchlistIds.includes(wl.id)),
 			);
 
-			toast.success(t('alerts.symbol_removed_successfully'), {
-				toastId: 'symbol_removed_successfully',
+			toast.success(t('alerts.watchlist_removed_successfully'), {
+				toastId: 'watchlist_removed_successfully',
 			});
 
 			setSelectedWatchlist([]);
 		},
 
 		onError: () => {
-			toast.error(t('alerts.symbol_removed_failed'), {
-				toastId: 'symbol_removed_failed',
+			toast.error(t('alerts.watchlist_removed_failed'), {
+				toastId: 'watchlist_removed_failed',
 			});
 		},
 	});

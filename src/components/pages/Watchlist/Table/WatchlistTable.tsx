@@ -1,4 +1,4 @@
-import { useDeleteCustomWatchlistSymbolMutation } from '@/api/mutations/optionMutations';
+import { useDeleteCustomWatchlistSymbolMutation } from '@/api/mutations/watchlistMutations';
 import lightStreamInstance from '@/classes/Lightstream';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
@@ -172,7 +172,34 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 		}
 	}, [watchlistColumns]);
 
-	const COLUMNS = useMemo(
+	const actionColumn = useMemo<ColDef<Option.Root>>(
+		() => ({
+			colId: 'action',
+			headerName: t('option_page.action'),
+			initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
+			minWidth: 80,
+			maxWidth: 80,
+			pinned: 'left',
+			hide: false,
+			resizable: false,
+			sortable: false,
+			cellRenderer: ActionColumn,
+			cellRendererParams: {
+				onAdd,
+				onDelete: (symbol: Option.Root) =>
+					deleteCustomWatchlistSymbol({
+						watchlistId: id,
+						symbolISIN: symbol.symbolInfo.symbolISIN,
+						symbolTitle: symbol.symbolInfo.symbolTitle,
+					}),
+				addable: true,
+				deletable: id > -1,
+			},
+		}),
+		[id],
+	);
+
+	const COLUMNS = useMemo<Array<ColDef<Option.Root>>>(
 		() =>
 			[
 				{
@@ -647,31 +674,9 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					valueGetter: ({ data }) => data?.symbolInfo.sectorName ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				},
-				{
-					colId: 'action',
-					headerName: t('option_page.action'),
-					initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? true),
-					minWidth: 80,
-					maxWidth: 80,
-					pinned: 'left',
-					hide: false,
-					resizable: false,
-					sortable: false,
-					cellRenderer: ActionColumn,
-					cellRendererParams: {
-						onAdd,
-						onDelete: (symbol: Option.Root) =>
-							deleteCustomWatchlistSymbol({
-								watchlistId: id,
-								symbolISIN: symbol.symbolInfo.symbolISIN,
-								symbolTitle: symbol.symbolInfo.symbolTitle,
-							}),
-						addable: true,
-						deletable: id > -1,
-					},
-				},
+				actionColumn,
 			] as Array<ColDef<Option.Root>>,
-		[watchlistCount],
+		[],
 	);
 
 	const defaultColDef: ColDef<Option.Root> = useMemo(
@@ -687,12 +692,10 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 
-		const actionColumn = gridApi.getColumn('action');
-		if (!actionColumn) return;
+		const col = gridApi.getColumn('action');
+		if (!col) return;
 
-		const newColDef = COLUMNS[COLUMNS.length - 1];
-
-		actionColumn.setColDef(newColDef, newColDef, 'api');
+		col.setColDef(actionColumn, actionColumn, 'api');
 	}, [isLoggedIn, watchlistCount, id]);
 
 	useEffect(() => {
@@ -776,7 +779,7 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 		if (!gridApi) return;
 
 		gridApi.setGridOption('onBodyScrollEnd', ({ api }) => {
-			if (data.length <= 20) return;
+			if (data.length < 20) return;
 
 			const lastRowIndex = api.getLastDisplayedRowIndex();
 			if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();

@@ -33,7 +33,7 @@ const WatchlistList = () => {
 
 	const { setDebounce } = useDebounce();
 
-	const { data: userCustomWatchlistList } = useGetAllCustomWatchlistQuery({
+	const { data: userCustomWatchlistList, isLoading } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
 		enabled: false,
 	});
@@ -88,7 +88,7 @@ const WatchlistList = () => {
 	return (
 		<div className='select-none gap-8 overflow-hidden flex-justify-start'>
 			<ul className='flex grow-0 gap-8 overflow-y-auto overflow-x-visible'>
-				{watchlistList.map((item, i) => (
+				{watchlistList.map((item) => (
 					<Watchlist
 						key={item.id}
 						{...item}
@@ -103,11 +103,16 @@ const WatchlistList = () => {
 				<li>
 					<Tooltip placement='top' content={t('tooltip.add_new_watchlist')}>
 						<button
+							disabled={isLoading}
 							type='button'
 							className='size-40 rounded border border-gray-200 text-gray-800 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
 							onClick={addNewWatchlist}
 						>
-							<PlusSVG width='1.8rem' height='1.8rem' />
+							{isLoading ? (
+								<div className='size-20 spinner' />
+							) : (
+								<PlusSVG width='1.8rem' height='1.8rem' />
+							)}
 						</button>
 					</Tooltip>
 				</li>
@@ -115,11 +120,16 @@ const WatchlistList = () => {
 				<li>
 					<Tooltip placement='top' content={t('tooltip.manage_watchlist_list')}>
 						<button
+							disabled={isLoading}
 							type='button'
 							onClick={manageWatchlistList}
 							className='size-40 rounded border border-gray-200 text-gray-800 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
 						>
-							<MoreOptionsSVG width='2.4rem' height='2.4rem' />
+							{isLoading ? (
+								<div className='size-20 spinner' />
+							) : (
+								<MoreOptionsSVG width='2.4rem' height='2.4rem' />
+							)}
 						</button>
 					</Tooltip>
 				</li>

@@ -1,12 +1,12 @@
-import axios from '@/api/axios';
+import { useCreateCustomWatchlistMutation } from '@/api/mutations/watchlistMutations';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
-import routes from '@/api/routes';
 import Button from '@/components/common/Button';
 import { useAppDispatch } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal } from '@/features/slices/modalSlice';
 import { cn } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 
@@ -26,39 +26,40 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 
 	const dispatch = useAppDispatch();
 
-	const [loading, setLoading] = useState(false);
-
 	const [name, setName] = useState('');
 
 	const { refetch: refetchWatchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
 	});
 
+	const { mutate: createNewWatchlist, isPending } = useCreateCustomWatchlistMutation({
+		onSuccess() {
+			refetchWatchlistList();
+
+			toast.success(t('alerts.watchlist_created_successfully'), {
+				toastId: 'watchlist_created_successfully',
+			});
+
+			onCloseModal();
+		},
+		onError() {
+			toast.error(t('alerts.watchlist_created_failed'), {
+				toastId: 'watchlist_created_failed',
+			});
+		},
+	});
+
 	const onCloseModal = () => {
 		dispatch(setAddNewOptionWatchlistModal(null));
 	};
 
+	const valueFormatter = (v: string) => {
+		return v.replace(/^\s*/g, '');
+	};
+
 	const onSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setLoading(true);
-		try {
-			const response = await axios.post(routes.optionWatchlist.CreateCustomWatchlist, {
-				name,
-			});
-			const data = response.data;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			try {
-				await refetchWatchlistList();
-			} catch (e) {
-				//
-			}
-
-			onCloseModal();
-		} catch (e) {
-			setLoading(false);
-		}
+		createNewWatchlist(name);
 	};
 
 	const placeholder = t('add_new_option_watchlist_modal.input_placeholder');
@@ -72,7 +73,7 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 			{...props}
 			ref={ref}
 		>
-			<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
+			<Div className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Header onClose={onCloseModal} label={t('add_new_option_watchlist_modal.title')} />
 
 				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 px-32 pb-24 flex-column'>
@@ -83,7 +84,7 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 							maxLength={36}
 							value={name}
 							className='h-40 w-full rounded px-16 text-base'
-							onChange={(e) => setName(e.target.value)}
+							onChange={(e) => setName(valueFormatter(e.target.value))}
 						/>
 
 						<span className={cn('flexible-placeholder', name && 'active')}>{placeholder}</span>
@@ -94,16 +95,8 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 					</label>
 
 					<div className='w-full gap-8 flex-justify-center'>
-						<button
-							type='button'
-							onClick={onCloseModal}
-							className='h-40 flex-1 rounded text-lg btn-disabled-outline'
-						>
-							{t('common.cancel')}
-						</button>
-
 						<Button
-							loading={loading}
+							loading={isPending}
 							disabled={name.length === 0}
 							type='submit'
 							className='h-40 flex-1 rounded text-lg font-medium btn-primary'

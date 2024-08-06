@@ -1,4 +1,4 @@
-import { cloneElement, forwardRef, useImperativeHandle, useLayoutEffect, useRef } from 'react';
+import { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 interface KeyDownProps {
 	keys: string[];
@@ -42,7 +42,7 @@ const KeyDown = forwardRef<HTMLElement, KeyDownProps>(
 			return controllerRef.current.signal;
 		};
 
-		useLayoutEffect(() => {
+		useEffect(() => {
 			abort();
 
 			if (enabled) {
@@ -54,8 +54,17 @@ const KeyDown = forwardRef<HTMLElement, KeyDownProps>(
 				});
 			}
 
-			return () => abort();
+			return () => {
+				abort();
+			};
 		}, [JSON.stringify({ enabled, dependencies })]);
+
+		useEffect(
+			() => () => {
+				abort();
+			},
+			[],
+		);
 
 		return cloneElement(children, { ref: childRef });
 	},

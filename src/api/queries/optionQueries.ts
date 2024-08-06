@@ -112,7 +112,6 @@ export const useCustomWatchlistSymbolSearch = createQuery<
 	Option.CustomWatchlistSearch[],
 	['customWatchlistSymbolSearch', { term: string; id: number }]
 >({
-	staleTime: 18e5,
 	queryKey: ['customWatchlistSymbolSearch', { term: '', id: -1 }],
 	queryFn: async ({ queryKey, signal }) => {
 		try {

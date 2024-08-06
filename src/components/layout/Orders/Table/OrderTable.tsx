@@ -150,6 +150,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.symbol_title'),
 				cellClass: 'justify-end text-right',
 				pinned: 'right',
+				filter: 'text',
 				maxWidth: 160,
 				headerComponent: SymbolTitleHeader,
 				cellRenderer: SymbolTitleCell,

@@ -110,6 +110,7 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 				cellRenderer: SymbolTitleCell,
 				checkboxSelection: true,
 				headerCheckboxSelection: true,
+				filter: 'text',
 				valueGetter: ({ data }) => data!.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 			},

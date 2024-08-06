@@ -1,11 +1,10 @@
-import brokerAxios from '@/api/brokerAxios';
+import { useFreezeMutation } from '@/api/mutations/freezeMutations';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useBrokerQueryClient } from '@/hooks';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { type FC, useEffect, useState } from 'react';
+import { type FC, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface FreezeTabProps {
@@ -19,9 +18,31 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 
 	const url = useAppSelector(getBrokerURLs);
 
-	const [isShowValidationSymbol, setIsShowValidationSymbol] = useState(false);
-
 	const queryClient = useBrokerQueryClient();
+
+	const { mutate: createFreezeRequest } = useFreezeMutation({
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
+
+			toast.success(t('alerts.freeze_request_succeeded'), {
+				toastId: 'freeze_request_succeeded',
+			});
+
+			onCloseModal();
+		},
+
+		onError: (e) => {
+			if (e.message === 'DuplicateRequest') {
+				toast.error(t('alerts.freeze_request_duplicated'), {
+					toastId: 'alerts.freeze_request_duplicated',
+				});
+			} else {
+				toast.error(t('alerts.freeze_request_failed'), {
+					toastId: 'alerts.freeze_request_failed',
+				});
+			}
+		},
+	});
 
 	const onChangeSymbol = (value: Symbol.Search) => {
 		if (value) setSymbol(value);
@@ -35,12 +56,7 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 	];
 
 	const handleSubmitFreeze = async () => {
-		if (!url) return;
-
-		if (!symbol) {
-			setIsShowValidationSymbol(true);
-			return;
-		}
+		if (!url || !symbol) return;
 
 		if (symbol.isOption) {
 			toast.warn('alerts.option_error_cant_freeze');
@@ -52,73 +68,30 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 			return;
 		}
 
-		try {
-			const payload = {
-				symbolISIN: symbol.symbolISIN,
-				type: 'freeze',
-			};
-
-			const response = await brokerAxios.post(url?.FreezeCreateFreeze, payload);
-			const data = response.data;
-
-			if (!data.succeeded) {
-				toast.error(t('alerts.freeze_request_failed'), {
-					toastId: 'alerts.freeze_request_failed',
-				});
-			} else {
-				toast.success(t('alerts.freeze_request_succeeded'), {
-					toastId: 'freeze_request_succeeded',
-				});
-
-				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
-
-				onCloseModal();
-			}
-		} catch (e) {
-			const { message } = e as Error;
-			toast.error(t('alerts.freeze_request_failed'), {
-				toastId: message,
-			});
-		}
+		createFreezeRequest({ symbolISIN: [symbol.symbolISIN], type: 'freeze' });
 	};
 
-	useEffect(() => {
-		!!symbol && isShowValidationSymbol && setIsShowValidationSymbol(false);
-	}, [symbol]);
-
 	return (
-		<div>
-			<div className='my-24'>
-				<SymbolSearch value={symbol} onChange={onChangeSymbol} />
+		<div className='gap-8 pt-24 flex-column'>
+			<SymbolSearch value={symbol} onChange={onChangeSymbol} classes={{ root: '!flex-48' }} />
 
-				<span
-					className={clsx('text-tiny text-error-100 opacity-0', {
-						'opacity-100': isShowValidationSymbol,
-						'opacity-0': !isShowValidationSymbol,
-					})}
-				>
-					{t('change_broker_modal.symbol_validation')}
-				</span>
-			</div>
-
-			<div className='flex flex-col gap-y-16'>
-				{contents.map((item, ind) => (
-					<div key={ind} className='grid grid-flow-col gap-x-8'>
-						<span className='mt-8 size-8 rounded-circle bg-info-100'></span>
-						<p className='text-gray-700'>{item}</p>
-					</div>
+			<ul className='flex flex-col gap-y-16'>
+				{contents.map((item, i) => (
+					<li key={i} className='gap-x-8 flex-items-start'>
+						<span className='mt-6 size-8 rounded-circle bg-info-100' />
+						<p className='flex-1 text-justify text-tiny leading-loose text-gray-700'>{item}</p>
+					</li>
 				))}
-			</div>
+			</ul>
 
-			<div className='mt-24'>
-				<button
-					className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
-					type='submit'
-					onClick={handleSubmitFreeze}
-				>
-					{t('deposit_modal.state_Request')}
-				</button>
-			</div>
+			<button
+				className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
+				type='submit'
+				disabled={!symbol}
+				onClick={handleSubmitFreeze}
+			>
+				{t('deposit_modal.state_Request')}
+			</button>
 		</div>
 	);
 };

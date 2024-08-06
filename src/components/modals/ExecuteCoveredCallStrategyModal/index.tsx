@@ -1,4 +1,4 @@
-import { useFreezeSymbolMutation } from '@/api/mutations/symbolMutations';
+import { useFreezeMutation } from '@/api/mutations/freezeMutations';
 import { useGlPositionExtraInfoQuery } from '@/api/queries/brokerPrivateQueries';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import lightStreamInstance from '@/classes/Lightstream';
@@ -41,7 +41,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 			queryKey: ['commissionQuery'],
 		});
 
-		const { mutate: createFreezeRequest } = useFreezeSymbolMutation();
+		const { mutate: createFreezeRequest } = useFreezeMutation();
 
 		const [step, setStep] = useState<CreateStrategy.TCoveredCallSteps>('base');
 
@@ -134,7 +134,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 			}
 
 			if (step === 'freeze') {
-				createFreezeRequest({ symbolISIN: baseSymbol.symbolISIN });
+				createFreezeRequest({ symbolISIN: [baseSymbol.symbolISIN], type: 'freeze' });
 				setStep('option');
 
 				return;

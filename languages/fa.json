@@ -68,8 +68,8 @@
 	},
 	"themes": {
 		"light": "روشن",
-		"dark": "شب",
-		"darkBlue": "تیره",
+		"dark": "تیره",
+		"darkBlue": "شب",
 		"system": "سیستم"
 	},
 	"header": {
@@ -324,7 +324,7 @@
 		"delete_multiple_question": "آیا از حذف دیده‌بان‌های انتخاب شده مطمئن هستید؟"
 	},
 	"move_symbol_to_watchlist": {
-		"title": "افزودن نماد {symbolTitle}",
+		"title": "افزودن نماد <symbolTitle></symbolTitle> به دیده‌بان",
 		"add_to_new_watchlist": "افزودن به دیده‌بان جدید"
 	},
 	"login_modal": {
@@ -1622,6 +1622,8 @@
 		"symbol_added_failed": "افزودن نماد به دید‌بان با خطا مواجه شد.",
 		"symbol_removed_successfully": "نماد با موفقیت از دیده‌بان حذف شد.",
 		"symbol_removed_failed": "حذف نماد از دیده‌بان با خطا مواجه شد.",
+		"watchlist_created_successfully": "دیده‌بان با موفقیت ایجاد شد.",
+		"watchlist_created_failed": "ایجاد دیده‌بان جدید با خطا مواجه شد.",
 		"watchlist_renamed_successfully": "تغییر نام دیده‌بان با موفقیت انجام شد",
 		"watchlist_renamed_failed": "تغییر نام دیده‌بان با خطا موجه شد",
 		"watchlist_removed_successfully": "دیده‌بان با موفقیت حذف شد.",
@@ -1639,6 +1641,7 @@
 		"symbol_not_found": "متاسفانه نماد مورد نظر یافت نشد",
 		"freeze_request_succeeded": "درخواست فریز با موفقیت ثبت شد",
 		"freeze_request_failed": "درخواست فریز با خطا مواجه شد",
+		"freeze_request_duplicated": "درخواست دیگری روی این نماد در جریان است.",
 		"unFreeze_request_succeeded": "درخواست رفع فریز با موفقیت ثبت شد",
 		"unFreeze_request_failed": "درخواست رفع فریز با خطا مواجه شد",
 		"freeze_request_deleted": "درخواست فریز با موفقیت حذف شد",

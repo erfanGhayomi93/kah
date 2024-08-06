@@ -1,4 +1,4 @@
-import { useResetOptionWatchlistMutation, useUpdateOptionWatchlistMutation } from '@/api/mutations/optionMutations';
+import { useResetOptionWatchlistMutation, useUpdateOptionWatchlistMutation } from '@/api/mutations/watchlistMutations';
 import { useDefaultOptionSymbolColumnsQuery, useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';

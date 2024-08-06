@@ -128,12 +128,22 @@ class SymbolTitleHeader implements IHeaderComp {
 
 	onClear() {
 		this.value = '';
-		this.params.api.setGridOption('quickFilterText', englishToPersian(this.value));
+		this.filter();
 	}
 
 	onChangeValue(value: string) {
 		this.value = value;
-		this.params.api.setGridOption('quickFilterText', englishToPersian(this.value));
+		this.filter();
+	}
+
+	filter() {
+		this.params.api.setFilterModel({
+			[this.params.column.getColId()]: {
+				filterType: 'text',
+				type: 'contains',
+				filter: englishToPersian(this.value),
+			},
+		});
 	}
 
 	onSubmitForm() {
