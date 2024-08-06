@@ -285,9 +285,12 @@ declare namespace Option {
 		baseSymbolISIN: string;
 		contractEndDate: string;
 		dueDays: number;
-		openPosition: number;
 		workingDaysLeftCount: number;
-		oneMonthTradeValue: number;
+		tradeValue: number;
+		openPosition: number;
+		maxCOP: number;
+		maxmop: number;
+		maxcaop: number;
 	}
 
 	export interface GetOpenPositionReport {
