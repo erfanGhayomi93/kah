@@ -17,7 +17,7 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 	}, [settlementDay]);
 
 	const [volume, volumeAsLetter] = useMemo(() => {
-		let num = settlementDay.oneMonthTradeValue;
+		let num = settlementDay.tradeValue;
 		let index = 0;
 
 		while (num >= 1e3 && index < letters.length - 1) {
@@ -31,7 +31,7 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 	return (
 		<div
 			style={{ flex: '0 0 4rem' }}
-			className='darkBlue:bg-gray-50 rounded bg-white px-16 flex-justify-between dark:bg-gray-50'
+			className='rounded bg-white px-16 flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
 		>
 			<div className='flex-1 gap-16 text-right flex-justify-start'>
 				<span className='gap-8 text-lg text-gray-700 flex-items-center'>

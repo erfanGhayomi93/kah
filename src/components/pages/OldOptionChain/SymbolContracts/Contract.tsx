@@ -16,7 +16,7 @@ const Contract = ({
 	contractEndDate,
 	dueDays,
 	workingDaysLeftCount,
-	oneMonthTradeValue,
+	tradeValue,
 	expand,
 	onToggle,
 }: ContractProps) => {
@@ -39,7 +39,7 @@ const Contract = ({
 	};
 
 	const [volume, volumeAsLetter] = useMemo(() => {
-		let num = oneMonthTradeValue;
+		let num = tradeValue;
 		let index = 0;
 
 		while (num >= 1e3 && index < letters.length - 1) {
@@ -70,7 +70,7 @@ const Contract = ({
 		<div
 			ref={wrapperRef}
 			className={cn(
-				'darkBlue:bg-gray-50 overflow-hidden rounded bg-white flex-column dark:bg-gray-50',
+				'overflow-hidden rounded bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50',
 				expand && 'border border-primary-100',
 			)}
 		>
