@@ -57,8 +57,7 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 					href={'/financial-reports/withdrawal-cash'}
 					onClick={() => onCloseModal()}
 				>
-					<SessionHistorySVG />
-
+					<SessionHistorySVG width='1.6rem' height='1.6rem' />
 					{t('deposit_modal.more_reports_deposit')}
 				</Link>
 			</div>

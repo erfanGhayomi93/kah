@@ -36,6 +36,10 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 				toast.error(t('alerts.freeze_request_duplicated'), {
 					toastId: 'alerts.freeze_request_duplicated',
 				});
+			} else if (e.message === 'OnlyPortfolioSymbolAllowed') {
+				toast.error(t('alerts.only_portfolio_symbol_allowed'), {
+					toastId: 'alerts.only_portfolio_symbol_allowed',
+				});
 			} else {
 				toast.error(t('alerts.freeze_request_failed'), {
 					toastId: 'alerts.freeze_request_failed',

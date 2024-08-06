@@ -10,7 +10,9 @@ import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters, 'pageNumber' | 'pageSize'>;
-	setFilters: Dispatch<SetStateAction<Omit<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters, 'pageNumber' | 'pageSize'>>>;
+	setFilters: Dispatch<
+		SetStateAction<Omit<FreezeUnFreezeReports.IFreezeUnFreezeReportsFilters, 'pageNumber' | 'pageSize'>>
+	>;
 }
 
 const Form = ({ filters, setFilters }: IFormProps) => {
@@ -53,11 +55,9 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 		setFilters({
 			...filters,
-			...calculateDateRange(filters.date)
+			...calculateDateRange(filters.date),
 		});
 	}, [filters.date]);
-
-
 
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
@@ -88,19 +88,14 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					</div>
 				</div>
 
-
 				<Select<FreezeUnFreezeReports.TFreezeRequestState>
 					onChange={(option) => setFilterValue('requestState', option)}
-					options={['Done', 'InProgress', 'FreezeFailed']}
+					options={['Done', 'InProgress', 'Deleted', 'NotApprove']}
 					getOptionId={(option) => option}
-					getOptionTitle={(option) => (
-						<span>{t(`freeze_and_unfreeze_reports_page.state_${option}`)}</span>
-					)}
+					getOptionTitle={(option) => <span>{t(`freeze_and_unfreeze_reports_page.state_${option}`)}</span>}
 					placeholder={t('freeze_and_unfreeze_reports_page.status_placeholder_filter')}
 					defaultValue={filters.requestState}
 				/>
-
-
 			</div>
 
 			<button type='submit' className='h-40 flex-1 rounded px-56 py-8 font-medium btn-primary'>

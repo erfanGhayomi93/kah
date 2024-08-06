@@ -84,6 +84,21 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 					row.requestState ? t('freeze_and_unfreeze_reports_page.state_' + row.requestState) : '',
 			},
 			{
+				colId: 'requestType',
+				headerName: t('freeze_and_unfreeze_reports_page.type_column'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestType')]?.hidden,
+				valueGetter: (row) => row.requestType,
+				valueFormatter: ({ value }) => t(`freeze_and_unfreeze_reports_page.${value}`),
+			},
+			{
+				colId: 'requestState',
+				headerName: t('freeze_and_unfreeze_reports_page.status_column'),
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestState')]
+					?.hidden,
+				valueGetter: (row) =>
+					row.requestState ? t('freeze_and_unfreeze_reports_page.state_' + row.requestState) : '',
+			},
+			{
 				colId: 'action',
 				headerName: t('freeze_and_unfreeze_reports_page.action_column'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'action')]?.hidden,
@@ -110,11 +125,7 @@ const FreezeUnFreezeReportsTable = ({ reports, columnsVisibility }: FreezeUnFree
 		}
 	}, [columnsVisibility]);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default FreezeUnFreezeReportsTable;

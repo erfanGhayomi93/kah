@@ -104,14 +104,13 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 						)}
 					</div>
 				),
-				cellClass: '!text-sm',
 			},
 		],
 		[tabSelected],
 	);
 
 	return (
-		<div className='flex h-full pr-24 flex-column'>
+		<div className='flex h-full gap-8 px-24 flex-column'>
 			<div className='flex-1 rounded-sm p-8 shadow-sm'>
 				<LightweightTable
 					rowData={(isFreeze ? dataFreeze : dataUnFreeze) || []}
@@ -121,12 +120,11 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
+				className='h-40 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
 				href={'/option-reports/freeze-and-unfreeze'}
 				onClick={() => onCloseModal()}
 			>
-				<SessionHistorySVG />
-
+				<SessionHistorySVG width='1.6rem' height='1.6rem' />
 				{t('deposit_modal.more_reports_deposit')}
 			</Link>
 		</div>

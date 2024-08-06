@@ -353,8 +353,8 @@ declare namespace Symbol {
 		companyName: string;
 		insCode: string;
 		lastTradedPrice: number;
-		buyQueueValue: number;
-		sellQueueValue: number;
+		supplyValueSum: number; // buy
+		demandValueSum: number; // sell
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
 		closingPrice: number;
@@ -1581,7 +1581,7 @@ declare namespace Payment {
 		| 'TokenRequired'
 		| 'TerminalNotFound';
 
-	type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+	type TFreezeRequestState = 'Deleted' | 'Done' | 'InProgress' | 'NotApprove';
 
 	type TDepositTab = 'receiptDepositTab' | 'liveDepositTab';
 
@@ -2206,8 +2206,8 @@ declare namespace Reports {
 		symbolISIN: string;
 		symbolTitle: string;
 		requestType: 'Freeze' | 'UnFreeze';
-		requestState: FreezeUnFreezeReports.TFreezeRequestState;
-		description: string;
+		requestState: string;
+		description: string | null;
 		confirmed: boolean;
 		confirmedOn: string;
 	}

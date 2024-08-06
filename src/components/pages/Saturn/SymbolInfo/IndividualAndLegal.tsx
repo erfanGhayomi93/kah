@@ -17,8 +17,8 @@ const IndividualAndLegal = ({
 		numberOfIndividualsBuyers,
 		numberOfIndividualsSellers,
 		numberOfLegalsSellers,
-		buyQueueValue,
-		sellQueueValue,
+		supplyValueSum,
+		demandValueSum,
 		closingPrice,
 	},
 }: IndividualAndLegalProps) => {
@@ -50,9 +50,9 @@ const IndividualAndLegal = ({
 
 			<div className='flex-1 justify-between gap-24 pr-8 flex-column'>
 				<QueueValueProgressbar
-					buyQueueValue={buyQueueValue}
-					sellQueueValue={sellQueueValue}
-					sum={buyQueueValue + sellQueueValue}
+					buyQueueValue={supplyValueSum}
+					sellQueueValue={demandValueSum}
+					sum={supplyValueSum + demandValueSum}
 				/>
 
 				<InflowAndOutflow value={inflowAndOutflow} />

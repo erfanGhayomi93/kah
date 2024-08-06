@@ -257,6 +257,12 @@ export const defaultFreezeUnFreezeReportsColumns: Array<
 		tag: 'FreezeUnFreezeReports',
 	},
 	{
+		id: 'requestType',
+		title: 'نوع',
+		hidden: false,
+		tag: 'FreezeUnFreezeReports',
+	},
+	{
 		id: 'action',
 		title: 'عملیات',
 		hidden: false,

@@ -162,8 +162,8 @@
 		"tab_trades_count": "تعداد معاملات",
 		"tab_changes_from_previous_day": "بیشترین درصد افزایش",
 		"tab_trades_volume": "حجم معاملات",
-		"tab_call_open_position": "موقعیت باز خرید",
-		"tab_put_open_position": "موقعیت باز فروش",
+		"tab_call_open_position": "موقعیت باز اختیارهای خرید",
+		"tab_put_open_position": "موقعیت باز  اختیارهای فروش",
 		"tab_trades_value": "ارزش معاملات",
 		"tab_contract_type": "نوع قرارداد",
 		"tab_in_profit": "در سود بودن",
@@ -1590,13 +1590,14 @@
 		"due_dates_section": "نمایش نزدیکترین سررسید‌های سهام پایه اختیار و جدیدترین قراردادهای منتشر شده بر روی سهام پایه اختیار"
 	},
 	"freeze_request_state": {
+		"Deleted": "حذف",
 		"Done": "تایید",
 		"InProgress": "در حال انجام",
-		"FreezeFailed": "ناموفق",
 		"NotApprove": "عدم تایید"
 	},
 	"alerts": {
 		"is_pending": "در حال دریافت اطلاعات",
+		"only_portfolio_symbol_allowed": "درخواست فریز فقط برای نمادهای موجود در پرتفوی امکان پذیر است",
 		"fetch_symbol_failed": "خطا در دریافت اطلاعات نماد",
 		"can_not_add_contracts": "امکان افزودن قرارداد بیشتری وجود ندارد.",
 		"can_not_remove_all_sections": "امکان حذف تمامی بخش‌ها وجود ندارد.",
@@ -1858,9 +1859,12 @@
 		"date_column": "تاریخ درخواست",
 		"status_column": "وضعیت",
 		"action_column": "عملیات",
+		"type_column": "نوع",
+		"Freeze": "فریز",
+		"UnFreeze": "رفع فریز",
+		"state_Deleted": "حذف",
 		"state_Done": "تایید",
 		"state_InProgress": "در حال انجام",
-		"state_FreezeFailed": "ناموفق",
 		"state_NotApprove": "عدم تایید"
 	},
 	"cash_settlement_reports_page": {

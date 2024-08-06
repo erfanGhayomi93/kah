@@ -72,8 +72,8 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 			queryClient.setQueryData(
 				['getAllCustomWatchlistQuery'],
 				data.map((wl) => {
-					if (wl.id === watchlistId) return wl;
-					return { ...wl, name };
+					if (wl.id === watchlistId) return { ...wl, name };
+					return wl;
 				}),
 			);
 

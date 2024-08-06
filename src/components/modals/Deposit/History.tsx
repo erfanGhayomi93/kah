@@ -54,8 +54,7 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 				href={'/financial-reports/instant-deposit'}
 				onClick={() => onCloseModal()}
 			>
-				<SessionHistorySVG />
-
+				<SessionHistorySVG width='1.6rem' height='1.6rem' />
 				{t('deposit_modal.more_reports_deposit')}
 			</Link>
 		</div>
