@@ -224,15 +224,6 @@ const Table = ({ data, loading }: TableProps) => {
 				columnDefs={columnDefs}
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
-				quickFilterMatcher={(value, rawText) => {
-					try {
-						console.log(rawText);
-						const symbolTitle = rawText.split('\n')[1];
-						return symbolTitle.includes(value[0]);
-					} catch (e) {
-						return true;
-					}
-				}}
 				onSortChanged={({ api }) => {
 					const column = api.getColumn('index');
 					if (!column) return;
