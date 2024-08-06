@@ -19,7 +19,7 @@ const SearchSymbol = () => {
 	const [isExpand, setIsExpand] = useState(false);
 
 	const { data: symbolsData, isFetching } = useSymbolSearchQuery({
-		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
+		queryKey: ['symbolSearchQuery', { term: term.length < 2 ? null : term }],
 	});
 
 	const setSymbol = (symbolISIN: string) => {

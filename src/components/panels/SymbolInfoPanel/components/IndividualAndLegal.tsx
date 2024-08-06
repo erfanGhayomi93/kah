@@ -18,8 +18,8 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 		numberOfIndividualsBuyers,
 		numberOfIndividualsSellers,
 		numberOfLegalsSellers,
-		buyQueueValue,
-		sellQueueValue,
+		supplyValueSum,
+		demandValueSum,
 	} = symbolData;
 
 	const t = useTranslations('symbol_info_panel');
@@ -39,9 +39,9 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 			<div className='gap-24 px-8 py-16 flex-column'>
 				{!symbolData?.isOption && (
 					<QueueValueProgressbar
-						buyQueueValue={buyQueueValue}
-						sellQueueValue={sellQueueValue}
-						sum={buyQueueValue + sellQueueValue}
+						buyQueueValue={supplyValueSum}
+						sellQueueValue={demandValueSum}
+						sum={supplyValueSum + demandValueSum}
 					/>
 				)}
 

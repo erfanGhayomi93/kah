@@ -650,7 +650,7 @@ declare namespace TradesReports {
 }
 
 declare namespace FreezeUnFreezeReports {
-	export type TFreezeRequestState = 'Done' | 'InProgress' | 'FreezeFailed';
+	export type TFreezeRequestState = 'Deleted' | 'Done' | 'InProgress' | 'NotApprove';
 
 	export interface IFreezeUnFreezeReportsFilters {
 		pageNumber: number;
@@ -668,7 +668,13 @@ declare namespace FreezeUnFreezeReports {
 		hidden: boolean;
 	}
 
-	export type TFreezeUnFreezeReportsColumns = 'id' | 'symbolTitle' | 'confirmedOn' | 'requestState' | 'action';
+	export type TFreezeUnFreezeReportsColumns =
+		| 'id'
+		| 'symbolTitle'
+		| 'confirmedOn'
+		| 'requestState'
+		| 'requestType'
+		| 'action';
 }
 
 declare namespace CashSettlementReports {

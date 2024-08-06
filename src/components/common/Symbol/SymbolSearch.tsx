@@ -43,7 +43,7 @@ const SymbolSearch = ({
 	const [term, setTerm] = useState('');
 
 	const { data: symbolsData, isFetching } = useSymbolSearchQuery({
-		queryKey: ['symbolSearchQuery', term.length < 2 ? null : term],
+		queryKey: ['symbolSearchQuery', { term: term.length < 2 ? null : term, type: 'NoOptionAndFuture' }],
 	});
 
 	const onSelect = (symbol: Symbol.Search) => {

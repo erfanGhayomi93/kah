@@ -3,7 +3,7 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import FreezeUnFreezeReportsTable from './FreezeUnFreezeReportsTable';
 
 interface TableProps {
@@ -27,7 +27,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 		setFieldsValue(newFilters);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		ipcMain.handle('set_freeze_and_unfreeze_filters', onFiltersChanged);
 
 		return () => {

@@ -22,7 +22,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 
 	const queryClient = useBrokerQueryClient();
 
-	const { data } = useHistoryChangeBrokerQuery({
+	const { data = [] } = useHistoryChangeBrokerQuery({
 		queryKey: ['LastHistoryChangeBroker'],
 	});
 
@@ -88,29 +88,29 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 						)}
 					</div>
 				),
-				cellClass: '!text-sm',
 			},
 		],
 		[],
 	);
 
 	return (
-		<div className='flex h-full overflow-auto pr-24 flex-column'>
+		<div className='flex h-full gap-8 overflow-auto px-24 flex-column'>
 			<div className='flex-1 rounded-sm p-8 shadow-sm'>
 				<LightweightTable
-					rowData={data || []}
+					headerHeight={40}
+					rowHeight={40}
+					rowData={data.slice(0, 4)}
 					columnDefs={columnDefs}
 					className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
 				/>
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
-				href={'/financial-reports/change-broker'}
+				className='h-40 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
+				href={'/change-broker-reports'}
 				onClick={() => onCloseModal()}
 			>
-				<SessionHistorySVG />
-
+				<SessionHistorySVG width='1.6rem' height='1.6rem' />
 				{t('deposit_modal.more_reports_deposit')}
 			</Link>
 		</div>
