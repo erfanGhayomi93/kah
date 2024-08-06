@@ -121,7 +121,7 @@ const ContractsTable = ({
 						sell: (data: Option.Root) => toggleContract(data, 'sell'),
 					},
 		}),
-		[activeRowId],
+		[activeRowId, contracts],
 	);
 
 	const COLUMNS: Array<ColDef<ITableData> | ColGroupDef<ITableData>> = useMemo(

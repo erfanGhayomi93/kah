@@ -36,6 +36,7 @@ const Table = ({ data, loading }: TableProps) => {
 			minWidth: 72,
 			maxWidth: 72,
 			sortable: false,
+			resizable: false,
 			valueGetter: ({ node }) => (node?.rowIndex ?? 0) + 1,
 		}),
 		[],
@@ -50,6 +51,7 @@ const Table = ({ data, loading }: TableProps) => {
 				pinned: 'right',
 				cellClass: 'font-medium cursor-pointer',
 				maxWidth: 120,
+				filter: 'text',
 				headerComponent: SymbolTitleHeader,
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				valueGetter: ({ data }) => data!.symbolTitle,
@@ -222,6 +224,15 @@ const Table = ({ data, loading }: TableProps) => {
 				columnDefs={columnDefs}
 				defaultColDef={defaultColDef}
 				className='h-full border-0'
+				quickFilterMatcher={(value, rawText) => {
+					try {
+						console.log(rawText);
+						const symbolTitle = rawText.split('\n')[1];
+						return symbolTitle.includes(value[0]);
+					} catch (e) {
+						return true;
+					}
+				}}
 				onSortChanged={({ api }) => {
 					const column = api.getColumn('index');
 					if (!column) return;

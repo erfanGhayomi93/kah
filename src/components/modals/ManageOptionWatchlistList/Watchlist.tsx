@@ -47,7 +47,14 @@ const Watchlist = ({
 			{editing ? (
 				<KeyDown keys={['Escape']} onKeyDown={cancelEdit}>
 					<Click onClickOutside={cancelEdit}>
-						<div className='flex flex-1 overflow-hidden rounded'>
+						<form
+							onSubmit={(e) => {
+								e.preventDefault();
+								applyEdit(term);
+							}}
+							method='get'
+							className='flex flex-1 overflow-hidden rounded'
+						>
 							<div className='h-48 flex-1 overflow-hidden rounded-r border border-l-0 flex-items-center input-group'>
 								<input
 									autoFocus
@@ -67,15 +74,15 @@ const Watchlist = ({
 									</button>
 								)}
 							</div>
+
 							<button
-								type='button'
+								type='submit'
 								disabled={!term.length}
-								onClick={() => applyEdit(term)}
 								className='size-48 flex-justify-center btn-success'
 							>
 								<CheckSVG width='32px' height='32px' />
 							</button>
-						</div>
+						</form>
 					</Click>
 				</KeyDown>
 			) : (

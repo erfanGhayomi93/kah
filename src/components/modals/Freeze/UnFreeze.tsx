@@ -1,4 +1,4 @@
-import brokerAxios from '@/api/brokerAxios';
+import { useFreezeMutation } from '@/api/mutations/freezeMutations';
 import { useCountFreezeQuery } from '@/api/queries/requests';
 import Radiobox from '@/components/common/Inputs/Radiobox';
 import { useAppSelector } from '@/features/hooks';
@@ -26,38 +26,29 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 		queryKey: ['CountFreezeList'],
 	});
 
-	const handleSubmitUnFreeze = async () => {
-		if (!url) return;
+	const { mutate: createFreezeRequest } = useFreezeMutation({
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
 
-		try {
-			const payload = {
-				symbolISIN: value,
-				type: 'UnFreeze',
-			};
+			toast.success(t('alerts.unFreeze_request_succeeded'), {
+				toastId: 'unFreeze_request_succeeded',
+			});
 
-			const response = await brokerAxios.post(url?.FreezeCreateFreeze, payload);
-			const data = response.data;
+			onCloseModal();
+		},
 
-			if (!data.succeeded) {
+		onError: (e) => {
+			if (e.message === 'hasIncreasingSellAccess') {
+				toast.error(t('order_errors.hasIncreasingSellAccess'), {
+					toastId: 'order_errors.hasIncreasingSellAccess',
+				});
+			} else {
 				toast.error(t('alerts.unFreeze_request_failed'), {
 					toastId: 'alerts.unFreeze_request_failed',
 				});
-			} else {
-				toast.success(t('alerts.unFreeze_request_succeeded'), {
-					toastId: 'unFreeze_request_succeeded',
-				});
-
-				queryClient.invalidateQueries({ queryKey: ['freezeUnFreezeReports'] });
-
-				onCloseModal();
 			}
-		} catch (e) {
-			const { message } = e as Error;
-			toast.error(t('alerts.unFreeze_request_failed'), {
-				toastId: message,
-			});
-		}
-	};
+		},
+	});
 
 	return (
 		<div className='flex h-full flex-col justify-between'>
@@ -88,7 +79,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 					className={'h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'}
 					type='submit'
 					disabled={!value}
-					onClick={handleSubmitUnFreeze}
+					onClick={() => createFreezeRequest({ symbolISIN: [value], type: 'unFreeze' })}
 				>
 					{t('deposit_modal.state_Request')}
 				</button>

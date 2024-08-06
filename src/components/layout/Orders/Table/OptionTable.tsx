@@ -59,6 +59,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				headerComponent: SymbolTitleHeader,
 				cellRenderer: SymbolTitleCell,
 				pinned: 'right',
+				filter: 'text',
 				checkboxSelection: false,
 				valueGetter: ({ data }) => data!.symbolTitle,
 				comparator: (valueA, valueB) => valueA.localeCompare(valueB),

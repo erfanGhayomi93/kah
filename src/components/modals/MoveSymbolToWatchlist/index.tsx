@@ -1,4 +1,4 @@
-import { useToggleCustomWatchlistSymbolMutation } from '@/api/mutations/symbolMutations';
+import { useToggleCustomWatchlistSymbolMutation } from '@/api/mutations/watchlistMutations';
 import { useGetAllCustomWatchlistQuery } from '@/api/queries/optionQueries';
 import { useSymbolWatchlistListQuery } from '@/api/queries/symbolQuery';
 import Loading from '@/components/common/Loading';
@@ -96,7 +96,12 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 				ref={ref}
 			>
 				<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
-					<Header label={t('move_symbol_to_watchlist.title', { symbolTitle })} onClose={onCloseModal} />
+					<Header
+						label={t.rich('move_symbol_to_watchlist.title', {
+							symbolTitle: () => <span className='font-medium text-primary-100'>{symbolTitle}</span>,
+						})}
+						onClose={onCloseModal}
+					/>
 
 					<div className='relative flex-1 overflow-hidden p-24 flex-column'>
 						{(isLoadingWatchlistList || isLoadingSymbolWatchlistList) && <Loading />}

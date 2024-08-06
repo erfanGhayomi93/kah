@@ -168,7 +168,6 @@ $nav-color: var(--c-secondary-400);
 	}
 }
 
-html[data-theme="darkBlue"],
 html[data-theme="dark"] {
 	.list {
 		&.expand {
@@ -177,6 +176,25 @@ html[data-theme="dark"] {
 			}
 		}
 
+		li.active {
+			& > a,
+			& > button {
+				span,
+				svg {
+					color: theme("colors.white") !important;
+				}
+
+				&::before {
+					background-color: theme("colors.white") !important;
+				}
+			}
+		}
+	}
+}
+
+html[data-theme="darkBlue"],
+html[data-theme="dark"] {
+	.list {
 		li.active {
 			& > a,
 			& > button {

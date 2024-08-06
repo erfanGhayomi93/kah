@@ -1,4 +1,4 @@
-import { useToggleCustomWatchlistSymbolMutation } from '@/api/mutations/symbolMutations';
+import { useToggleCustomWatchlistSymbolMutation } from '@/api/mutations/watchlistMutations';
 import { useCustomWatchlistSymbolSearch } from '@/api/queries/optionQueries';
 import NoData from '@/components/common/NoData';
 import { SearchSVG, TriangleWarningSVG, XCircleSVG } from '@/components/icons';

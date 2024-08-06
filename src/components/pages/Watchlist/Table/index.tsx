@@ -160,7 +160,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				<div className='absolute left-0 top-0 size-full flex-justify-center'>
 					<NoData
 						text={
-							filtersCount > 0
+							filtersCount > 0 || watchlistId === -1
 								? t('no_data_table')
 								: t.rich('add_symbol_to_table', {
 										symbol: (chunk) => (
