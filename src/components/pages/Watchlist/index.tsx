@@ -95,7 +95,6 @@ const Watchlist = () => {
 		<Main>
 			<div className='h-full rounded bg-white px-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Toolbar
-					setTerm={(v) => setFieldValue('term', v)}
 					setPriceBasis={(v) => setFieldValue('priceBasis', v)}
 					filters={filters}
 					filtersCount={filtersCount}

@@ -9,7 +9,7 @@ import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
-import { useOptionWatchlistColumns, useSubscription } from '@/hooks';
+import { useDebounce, useOptionWatchlistColumns, useSubscription } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type ColumnMovedEvent, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
@@ -19,11 +19,13 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 import ActionColumn from './ActionColumn';
+import SymbolTitleHeader from './SymbolTitleHeader';
 
 interface WatchlistTableProps {
 	id: number;
 	data: Option.Root[];
 	watchlistCount: number;
+	setTerm: (v: string) => void;
 	fetchNextPage: () => void;
 }
 
@@ -35,10 +37,12 @@ const getStates = createSelector(
 	}),
 );
 
-const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTableProps) => {
+const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const { subscribe } = useSubscription();
+
+	const { setDebounce } = useDebounce();
 
 	const queryClient = useQueryClient();
 
@@ -211,6 +215,10 @@ const WatchlistTable = ({ id, data, watchlistCount, fetchNextPage }: WatchlistTa
 					lockPosition: true,
 					suppressMovable: true,
 					cellClass: 'cursor-pointer font-medium',
+					headerComponent: SymbolTitleHeader,
+					headerComponentParams: {
+						onChangeValue: (v: string) => setDebounce(() => setTerm(v), 350),
+					},
 					onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.symbolISIN),
 					valueGetter: ({ data }) => data?.symbolInfo.symbolTitle ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
