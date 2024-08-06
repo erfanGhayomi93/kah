@@ -132,6 +132,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				<WatchlistTable
 					id={watchlistId}
 					data={data}
+					setTerm={(term) => setFilters({ term })}
 					fetchNextPage={fetchNextPage}
 					watchlistCount={watchlistCount}
 				/>

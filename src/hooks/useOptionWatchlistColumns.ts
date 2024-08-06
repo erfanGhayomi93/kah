@@ -1,4 +1,7 @@
-import { useResetOptionWatchlistMutation, useUpdateOptionWatchlistMutation } from '@/api/mutations/watchlistMutations';
+import {
+	useResetOptionWatchlistMutation,
+	useUpdateOptionWatchlistColumnsMutation,
+} from '@/api/mutations/watchlistMutations';
 import { useDefaultOptionSymbolColumnsQuery, useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
@@ -33,7 +36,7 @@ const useOptionWatchlistColumns = () => {
 
 	const { mutate: resetColumns } = useResetOptionWatchlistMutation();
 
-	const { mutate: hiddenWatchlistColumn } = useUpdateOptionWatchlistMutation();
+	const { mutate: hiddenWatchlistColumn } = useUpdateOptionWatchlistColumnsMutation();
 
 	const resetColumnsToDefault = () => {
 		if (isLoggedIn) resetColumns();
@@ -47,43 +50,60 @@ const useOptionWatchlistColumns = () => {
 	};
 
 	const hideSingleColumn = (id: number, isHidden: boolean) => {
-		if (isLoggedIn) {
-			hiddenWatchlistColumn({ id, isHidden });
+		try {
+			if (isLoggedIn) {
+				hiddenWatchlistColumn({ id: [id], isHidden });
+			}
+
+			const newColumnsData = [...columns];
+			const specifyColumnIndex = newColumnsData.findIndex((col) => col.id === id);
+
+			newColumnsData[specifyColumnIndex].isHidden = isHidden;
+			newColumnsData.sort((a, b) => a.order - b.order);
+
+			LocalstorageInstance.set('owc', newColumnsData);
+
+			ipcMain.send('set_option_watchlist_columns', newColumnsData);
+
+			setColumns(newColumnsData);
+			dispatch(setOptionWatchlistColumns(newColumnsData.map((item) => ({ colId: item.title }))));
+		} catch (e) {
+			//
 		}
-
-		const newColumnsData = [...columns];
-		const specifyColumnIndex = newColumnsData.findIndex((col) => col.id === id);
-
-		newColumnsData[specifyColumnIndex].isHidden = isHidden;
-		newColumnsData.sort((a, b) => a.order - b.order);
-
-		LocalstorageInstance.set('owc', newColumnsData);
-
-		ipcMain.send('set_option_watchlist_columns', newColumnsData);
-
-		setColumns(newColumnsData);
-		dispatch(setOptionWatchlistColumns(newColumnsData.map((item) => ({ colId: item.title }))));
 	};
 
 	const hideGroupColumns = (updatedColumns: IManageColumn[]) => {
-		const cols: Record<string, boolean> = {};
-		for (let i = 0; i < columns.length; i++) {
-			const col = updatedColumns[i];
-			cols[col.id] = col.hidden;
+		if (updatedColumns.length === 0) return;
+
+		try {
+			if (isLoggedIn) {
+				hiddenWatchlistColumn({
+					id: updatedColumns.map((col) => Number(col.id)),
+					isHidden: updatedColumns[0].hidden,
+				});
+			}
+
+			const cols: Record<string, boolean> = {};
+			for (let i = 0; i < columns.length; i++) {
+				const col = updatedColumns[i];
+				cols[col.id] = col.hidden;
+			}
+
+			const newColumnsData = [...columns];
+			for (let i = 0; i < newColumnsData.length; i++) {
+				const col = newColumnsData[i];
+				if (col.title in cols) newColumnsData[i].isHidden = Boolean(cols[col.title]);
+			}
+
+			LocalstorageInstance.set('owc', newColumnsData);
+
+			ipcMain.send('set_option_watchlist_columns', newColumnsData);
+
+			setColumns(newColumnsData);
+			dispatch(setOptionWatchlistColumns(newColumnsData.map((item) => ({ colId: item.title }))));
+		} catch (e) {
+			//
 		}
-
-		const newColumnsData = [...columns];
-		for (let i = 0; i < newColumnsData.length; i++) {
-			const col = newColumnsData[i];
-			if (col.title in cols) newColumnsData[i].isHidden = Boolean(cols[col.title]);
-		}
-
-		LocalstorageInstance.set('owc', newColumnsData);
-
-		ipcMain.send('set_option_watchlist_columns', newColumnsData);
-
-		setColumns(newColumnsData);
-		dispatch(setOptionWatchlistColumns(newColumnsData.map((item) => ({ colId: item.title }))));
 	};
 
 	const defaultOptionWatchlistColumns = useMemo<TOptionWatchlistColumnsState>(() => {

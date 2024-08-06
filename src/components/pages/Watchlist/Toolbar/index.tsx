@@ -8,17 +8,15 @@ import { type IOptionFiltersModal } from '@/features/slices/types/modalSlice.int
 import { useOptionWatchlistColumns } from '@/hooks';
 import { downloadFile } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import SearchSymbol from './SearchSymbol';
 import WatchlistList from './WatchlistList';
 
 interface ToolbarProps {
 	filtersCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
-	setTerm: (v: string) => void;
 	setPriceBasis: (v: TPriceBasis) => void;
 }
 
-const Toolbar = ({ setTerm, setPriceBasis, filters, filtersCount }: ToolbarProps) => {
+const Toolbar = ({ setPriceBasis, filters, filtersCount }: ToolbarProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -87,7 +85,7 @@ const Toolbar = ({ setTerm, setPriceBasis, filters, filtersCount }: ToolbarProps
 
 	const covertItemToManageColumnModel = (item: Option.Column) => ({
 		hidden: item.isHidden,
-		id: String(item.title),
+		id: String(item.id),
 		title: t(`manage_option_watchlist_columns.column_${item.title}`),
 		tag: item.category,
 	});
@@ -101,7 +99,7 @@ const Toolbar = ({ setTerm, setPriceBasis, filters, filtersCount }: ToolbarProps
 				initialColumns,
 				columns,
 				title: t('option_page.manage_columns'),
-				onColumnChanged: hideGroupColumns, // TODO: Talk to BackEnd - group hidden action
+				onColumnChanged: hideGroupColumns,
 				onReset: () => resetColumnsToDefault(),
 			}),
 		);
@@ -111,7 +109,6 @@ const Toolbar = ({ setTerm, setPriceBasis, filters, filtersCount }: ToolbarProps
 		<div className='h-72 gap-48 overflow-hidden flex-justify-between'>
 			<div className='gap-8 overflow-hidden flex-items-center'>
 				<WatchlistList />
-				<SearchSymbol setTerm={setTerm} />
 			</div>
 
 			<TableActions

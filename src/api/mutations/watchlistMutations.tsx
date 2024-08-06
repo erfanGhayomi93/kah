@@ -34,12 +34,15 @@ export const useResetOptionWatchlistMutation = createMutation({
 	},
 });
 
-export const useUpdateOptionWatchlistMutation = createMutation<
+export const useUpdateOptionWatchlistColumnsMutation = createMutation<
 	ServerResponse<boolean>,
-	{ id: number; isHidden: boolean }
+	{ id: number[]; isHidden: boolean }
 >({
-	mutationFn: async () => {
-		const response = await axios.get(routes.optionWatchlist.UpdateOptionSymbolColumns);
+	mutationFn: async ({ id, isHidden }) => {
+		const response = await axios.post(routes.optionWatchlist.UpdateOptionSymbolColumns, {
+			id,
+			isHidden,
+		});
 		const { data } = response;
 
 		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
