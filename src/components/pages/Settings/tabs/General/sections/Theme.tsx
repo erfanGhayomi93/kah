@@ -1,4 +1,4 @@
-import { MonitorSVG, MoonSVG, SunSVG } from '@/components/icons';
+import { MonitorSVG, MoonSVG, ShiningStarSVG, SunSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getTheme, setTheme } from '@/features/slices/uiSlice';
 import clsx from 'clsx';
@@ -17,10 +17,10 @@ const Theme = () => {
 	};
 
 	const buttons: Array<{ title: string; id: TTheme; icon: React.ReactNode }> = [
-		{ title: t('settings_page.light'), id: 'light', icon: <SunSVG width='2rem' height='2rem' /> },
-		{ title: t('settings_page.dark'), id: 'dark', icon: <MoonSVG /> },
-		{ title: t('settings_page.dark_blue'), id: 'darkBlue', icon: <MoonSVG /> },
-		{ title: t('settings_page.system'), id: 'system', icon: <MonitorSVG width='2rem' height='2rem' /> },
+		{ title: t('themes.light'), id: 'light', icon: <SunSVG width='2rem' height='2rem' /> },
+		{ title: t('themes.dark'), id: 'dark', icon: <ShiningStarSVG /> },
+		{ title: t('themes.darkBlue'), id: 'darkBlue', icon: <MoonSVG /> },
+		{ title: t('themes.system'), id: 'system', icon: <MonitorSVG width='2rem' height='2rem' /> },
 	];
 
 	return (

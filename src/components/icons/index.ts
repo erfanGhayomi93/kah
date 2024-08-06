@@ -117,6 +117,7 @@ import ShieldFillSVG from './shield-fill.svg';
 import ShieldInfoSVG from './shield-info.svg';
 import ShieldOutlineSVG from './shield-outline.svg';
 import ShieldXSVG from './shield-x.svg';
+import ShiningStarSVG from './shining-star.svg';
 import SnowFlakeSVG from './snow-flake.svg';
 import SortSVG from './sort.svg';
 import SquareXSVG from './square-x.svg';
@@ -261,6 +262,7 @@ export {
 	ShieldInfoSVG,
 	ShieldOutlineSVG,
 	ShieldXSVG,
+	ShiningStarSVG,
 	SnowFlakeSVG,
 	SortSVG,
 	SquareXSVG,
