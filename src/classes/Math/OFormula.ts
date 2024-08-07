@@ -49,7 +49,7 @@ class OFormula {
 	 * @returns number
 	 */
 	public static value(price: number, quantity: number): number {
-		const v = price * quantity + price * quantity * this.commission * this.contractSize + this.requiredMargin;
+		const v = price * quantity * (1 + this.commission * this.contractSize + this.requiredMargin);
 		return Math.abs(Math.ceil(v));
 	}
 
@@ -84,10 +84,7 @@ class OFormula {
 	}
 
 	private static get commission(): number {
-		let com = this._commission[this._side];
-		if (this._side === 'sell') com *= -1;
-
-		return com;
+		return this._commission[this._side];
 	}
 
 	private static get contractSize(): number {
