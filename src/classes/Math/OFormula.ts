@@ -3,8 +3,6 @@ type TCommission = Record<TBsSides, number>;
 class OFormula {
 	private static _contractSize = 0;
 
-	private static _requiredMargin = 0;
-
 	private static _initialRequiredMargin = 0;
 
 	private static _commission: TCommission = { buy: 0, sell: 0 };
@@ -49,7 +47,7 @@ class OFormula {
 	 * @returns number
 	 */
 	public static value(price: number, quantity: number): number {
-		const v = price * quantity * (1 + this.commission * this.contractSize + this.requiredMargin);
+		const v = price * quantity * (1 + this.commission * this.contractSize) + this.requiredMargin;
 		return Math.abs(Math.ceil(v));
 	}
 
@@ -73,11 +71,6 @@ class OFormula {
 		return this;
 	}
 
-	public static setRequiredMargin(v: number) {
-		this._requiredMargin = v;
-		return this;
-	}
-
 	public static setInitialRequiredMargin(v: number) {
 		this._initialRequiredMargin = v;
 		return this;
@@ -93,7 +86,7 @@ class OFormula {
 	}
 
 	private static get requiredMargin(): number {
-		if (this._side === 'sell' && this._type === 'option') return this._requiredMargin;
+		if (this._side === 'sell' && this._type === 'option') return this._initialRequiredMargin;
 		return 0;
 	}
 }
