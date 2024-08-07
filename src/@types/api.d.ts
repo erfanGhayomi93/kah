@@ -372,7 +372,6 @@ declare namespace Symbol {
 		cancellationNAV: number;
 		oneMonthAvgVolume: number;
 		initialMargin: number;
-		requiredMargin: number;
 		hv: number;
 		avgIV: number;
 		lastTradeDate: string;

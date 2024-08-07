@@ -89,8 +89,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 				.setSide(inputs.side)
 				.setCommission(commission)
 				.setContractSize(symbolData?.contractSize ?? 0)
-				.setInitialRequiredMargin(symbolData?.initialMargin ?? 0)
-				.setRequiredMargin(symbolData?.requiredMargin ?? 0);
+				.setInitialRequiredMargin(symbolData?.initialMargin ?? 0);
 		};
 
 		const setInputValue: TSetBsModalInputs = (arg1, arg2) => {
