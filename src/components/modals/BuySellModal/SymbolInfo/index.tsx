@@ -33,6 +33,7 @@ const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) =
 		yesterdayClosingPrice,
 		highPrice,
 		lowPrice,
+		isOption,
 	} = symbolData;
 
 	return (
@@ -41,7 +42,7 @@ const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) =
 				<div className='flex-1 gap-4 flex-column'>
 					<div className='gap-8 flex-items-center'>
 						<SymbolState state={symbolTradeState} />
-						<h1 className='whitespace-nowrap text-lg font-medium text-gray-800'>{symbolTitle}</h1>
+						<h1 className='whitespace-nowrap text-3xl font-medium text-gray-800'>{symbolTitle}</h1>
 					</div>
 					<h2 className='whitespace-nowrap pr-16 text-tiny text-gray-700'>{companyName}</h2>
 				</div>
@@ -66,26 +67,25 @@ const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) =
 				</div>
 			</div>
 
-			<div className='h-40 rounded bg-white px-8 shadow-sm flex-justify-between darkness:bg-gray-50'>
+			<div className='h-40 rounded bg-white px-8 text-base shadow-sm flex-justify-between darkness:bg-gray-50'>
 				<span className='text-gray-700'>{t('bs_modal.closing_price')}:</span>
-				<span
-					onClick={() => setInputValue('price', closingPrice)}
-					className='cursor-pointer text-tiny text-gray-700'
-				>
+				<span onClick={() => setInputValue('price', closingPrice)} className='cursor-pointer text-gray-700'>
 					{sepNumbers(String(closingPrice))}
-					<span className='text-gray-500'> {t('common.rial')}</span>
+					<span className='text-tiny text-gray-500'> {t('common.rial')}</span>
 				</span>
 			</div>
 
-			<div className='rounded bg-white px-8 py-16 shadow-sm darkness:bg-gray-50'>
-				<SymbolPriceSlider
-					yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
-					thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
-					exchangeData={[closingPrice ?? 0, lastTradedPrice ?? 0]}
-					boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
-					onClick={(price) => setInputValue('price', price)}
-				/>
-			</div>
+			{!isOption && (
+				<div className='rounded bg-white px-8 py-16 shadow-sm darkness:bg-gray-50'>
+					<SymbolPriceSlider
+						yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
+						thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}
+						exchangeData={[closingPrice ?? 0, lastTradedPrice ?? 0]}
+						boundaryData={[lowPrice ?? 0, highPrice ?? 0]}
+						onClick={(price) => setInputValue('price', price)}
+					/>
+				</div>
+			)}
 
 			<Grid
 				yesterdayClosingPrice={yesterdayClosingPrice}

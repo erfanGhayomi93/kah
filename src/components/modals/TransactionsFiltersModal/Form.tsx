@@ -96,10 +96,10 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 				<MultiSelect<{ id: Transaction.TransactionTypes; title: string }>
 					onChange={(options) => onChangeTransactionType(options)}
 					options={[
-						{ id: 'Buy', title: t('transactions_page.actions_type_Buy') },
-						{ id: 'Sell', title: t('transactions_page.actions_type_Sell') },
-						{ id: 'Deposit', title: t('transactions_page.actions_type_Deposit') },
-						{ id: 'Payment', title: t('transactions_page.actions_type_Payment') },
+						{ id: 'Buy', title: t('transactions_page.type_Buy') },
+						{ id: 'Sell', title: t('transactions_page.type_Sell') },
+						{ id: 'Deposit', title: t('transactions_page.type_Deposit') },
+						{ id: 'Payment', title: t('transactions_page.type_Payment') },
 					]}
 					getOptionId={(option) => option.id}
 					getOptionTitle={(option) => <span>{option.title}</span>}

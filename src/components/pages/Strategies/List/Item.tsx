@@ -1,15 +1,19 @@
 import StrategyTag from '@/components/common/Strategy/StrategyTag';
 import { AngleLeftSVG, PlusSVG } from '@/components/icons';
+import { useTheme } from '@/hooks';
 import { useRouter } from '@/navigation';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { useMemo } from 'react';
 
 interface StrategyItemProps extends Strategy.GetAll {}
 
-const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
+const StrategyItem = ({ title, type, tags }: StrategyItemProps) => {
+	const t = useTranslations();
+
 	const router = useRouter();
 
-	const t = useTranslations();
+	const theme = useTheme();
 
 	const onStrategyClick = () => {
 		router.push(`/strategy/${type}`);
@@ -44,7 +48,7 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 		<div className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12'>
 			<div
 				onClick={onStrategyClick}
-				className='darkBlue:bg-gray-50 h-328 cursor-pointer gap-16 overflow-hidden rounded border border-gray-200 bg-white p-16 flex-column dark:bg-gray-50'
+				className='h-328 cursor-pointer gap-16 overflow-hidden rounded border border-gray-200 bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
 			>
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
@@ -70,11 +74,11 @@ const StrategyItem = ({ imageUrl, title, type, tags }: StrategyItemProps) => {
 				</div>
 
 				<div className='flex-1 overflow-hidden flex-justify-center'>
-					<img
+					<Image
 						width='395'
 						height='170'
 						alt={title}
-						src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
+						src={`/static/images/strategies/${type}_${theme}.svg`}
 						style={{
 							width: '99%',
 							height: 'auto',

@@ -129,3 +129,12 @@
 	color: theme("colors.gray.700");
 	align-items: center;
 }
+
+html[data-theme="dark"],
+html[data-theme="darkBlue"] {
+	.list,
+	.box,
+	.alert {
+		background-color: theme("colors.gray.50");
+	}
+}

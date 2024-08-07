@@ -209,7 +209,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 			const amount = c.price * c.quantity;
 			const contractSize = c.symbol.contractSize ?? 0;
 			const tax = c.side === 'buy' ? commission.buyTax : commission.sellTax;
-			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : -commission.sellCommission) - tax;
+			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : commission.sellCommission) - tax;
 			const strikeCommission =
 				c.side === 'buy' ? commission.strikeBuyCommission : commission.strikeSellCommission;
 
