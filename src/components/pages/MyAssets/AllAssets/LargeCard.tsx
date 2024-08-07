@@ -26,7 +26,7 @@ const LargeCard = <T extends string>({ title, tabs, children, style, onTabChange
 						defaultActiveTab={tabs[0].id}
 						classes={{
 							root: '!h-40 bg-gray-100 !border-0 py-4 px-8',
-							rect: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 !h-32 rounded',
+							rect: 'bg-white darkness:bg-gray-50 !h-32 rounded',
 							tabs: 'gap-8',
 						}}
 						onChangeTab={(v) => onTabChange?.(v as T)}

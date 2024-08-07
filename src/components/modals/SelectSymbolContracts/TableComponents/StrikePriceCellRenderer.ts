@@ -72,7 +72,7 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		const btn = document.createElement('button');
 		btn.setAttribute(
 			'class',
-			'size-32 bg-white dark:bg-gray-50 darkBlue:bg-gray-50 rounded hover:bg-gray-100 text-base text-gray-700 flex-justify-center transition-colors',
+			'size-32 bg-white darkness:bg-gray-50 rounded hover:bg-gray-100 text-base text-gray-700 flex-justify-center transition-colors',
 		);
 
 		return btn;

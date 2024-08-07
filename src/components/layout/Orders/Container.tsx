@@ -36,7 +36,7 @@ const Container = () => {
 						className='fixed left-0 w-full rounded bg-gray-300 py-8'
 					>
 						<div className='size-full flex-column'>
-							<div className='relative flex-1 overflow-hidden rounded bg-white shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+							<div className='relative flex-1 overflow-hidden rounded bg-white shadow-sm flex-column darkness:bg-gray-50'>
 								<Header
 									selectedOrders={selectedOrders}
 									setSelectedOrders={setSelectedOrders}

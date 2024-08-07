@@ -60,7 +60,7 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 			{
 				colId: 'description',
 				headerName: t('description_column'),
-				flex: 1,
+				width: 200,
 				cellClass: 'text-right',
 				valueGetter: (row) => row.description,
 				valueFormatter: ({ row }) =>
@@ -89,10 +89,6 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 						? sepNumbers(String(valueAsNumber))
 						: `(${sepNumbers(String(valueAsNumber))})`;
 				},
-				cellClass: (row) =>
-					clsx('ltr', {
-						'text-error-100': row.debit < 0,
-					}),
 				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'debit')]?.hidden,
 			},
@@ -109,10 +105,6 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 						? sepNumbers(String(valueAsNumber))
 						: `(${sepNumbers(String(valueAsNumber))})`;
 				},
-				cellClass: (row) =>
-					clsx('ltr', {
-						'text-error-100': row.remaining < 0,
-					}),
 				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'credit')]?.hidden,
 			},
@@ -129,7 +121,6 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 						? `+${sepNumbers(String(valueAsNumber))}`
 						: `(${sepNumbers(String(Math.abs(valueAsNumber)))})`;
 				},
-				cellClass: (row) => clsx('ltr', row.remaining > 0 ? 'text-success-100' : 'text-error-100'),
 				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'remaining')]?.hidden,
 			},

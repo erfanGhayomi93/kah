@@ -217,11 +217,7 @@ const PhysicalSettlementReportsTable = ({ reports, columnsVisibility }: Physical
 		[columnsVisibility],
 	);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default PhysicalSettlementReportsTable;

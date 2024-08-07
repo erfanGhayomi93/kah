@@ -65,7 +65,7 @@ const OptionWatchlistFiltersModal = forwardRef<HTMLDivElement, OptionWatchlistFi
 
 	return (
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
-			<Div className='gap-40 bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<Div className='gap-40 bg-white flex-column darkness:bg-gray-50'>
 				<Header label={t('title')} onClose={onCloseModal} onClear={onClear} />
 
 				<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>

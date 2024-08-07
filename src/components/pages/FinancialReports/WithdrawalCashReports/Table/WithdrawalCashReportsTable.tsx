@@ -162,11 +162,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 		}
 	}, [columnsVisibility]);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default WithdrawalCashReportsTable;

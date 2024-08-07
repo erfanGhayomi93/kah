@@ -34,7 +34,7 @@ const Notifications = () => {
 	return (
 		<div
 			style={{ height: '80dvh', boxShadow: '0px 0px 12rem 0px rgba(0, 0, 0, 0.15)' }}
-			className='rounded-md bg-white px-16 pb-16 shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
+			className='rounded-md bg-white px-16 pb-16 shadow-sm flex-column darkness:bg-gray-50'
 		>
 			<div className='h-56 flex-justify-end'>
 				{activeTab === 'messages' && (

@@ -186,7 +186,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 			>
 				<div
 					style={{ width: isExpand ? '102.4rem' : '60rem' }}
-					className='overflow-hidden bg-white transition-width flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
+					className='overflow-hidden bg-white transition-width flex-column darkness:bg-gray-50'
 				>
 					<Header
 						label={t('create_strategy.strategy', {

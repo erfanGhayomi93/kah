@@ -23,7 +23,7 @@ const QueueValueProgressbar = ({ sum, buyQueueValue, sellQueueValue }: QueueValu
 			<div className='relative flex *:h-4'>
 				<div className='bg-success-100' style={{ width: `${buyQueuePercent}%` }} />
 				<div
-					className='absolute top-0 w-6 bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
+					className='absolute top-0 w-6 bg-white darkness:bg-gray-50'
 					style={{ transform: 'skew(45deg)', left: `calc(${sum === 0 ? 50 : sellQueuePercent}% - 3px)` }}
 				/>
 				<div className='bg-error-100' style={{ width: `${sellQueuePercent}%` }} />

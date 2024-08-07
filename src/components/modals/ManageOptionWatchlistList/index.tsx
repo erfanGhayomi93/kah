@@ -184,7 +184,7 @@ const ManageOptionWatchlistList = forwardRef<HTMLDivElement, ManageOptionWatchli
 			{...props}
 			ref={ref}
 		>
-			<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<Div className='justify-between bg-white flex-column darkness:bg-gray-50'>
 				<Header label={t('manage_option_watchlist_modal.title')} onClose={onCloseModal} />
 
 				<div className='flex-1 overflow-hidden px-24 pt-24 flex-column'>

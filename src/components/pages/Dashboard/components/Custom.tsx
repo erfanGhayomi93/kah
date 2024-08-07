@@ -96,7 +96,7 @@ const Custom = () => {
 	};
 
 	return (
-		<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center darkBlue:bg-gray-50 dark:bg-gray-50'>
+		<div className='size-full rounded bg-white px-8 pb-16 pt-8 flex-justify-center darkness:bg-gray-50'>
 			<button
 				type='button'
 				onClick={openDashboardLayoutManager}

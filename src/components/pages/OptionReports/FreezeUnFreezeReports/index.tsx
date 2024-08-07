@@ -129,7 +129,7 @@ const FreezeUnFreezeReports = () => {
 
 	return (
 		<Main>
-			<div className='h-full gap-16 rounded bg-white px-16 py-24 flex-column darkness:bg-gray-50'>
+			<div className='h-full gap-16 rounded bg-white px-24 pt-24 flex-column darkness:bg-gray-50'>
 				<div className='flex-justify-between'>
 					<Tabs />
 					<Toolbar
@@ -140,14 +140,12 @@ const FreezeUnFreezeReports = () => {
 					/>
 				</div>
 
-				<div className='relative flex-1 overflow-hidden'>
-					<Table
-						columnsVisibility={columnsVisibility}
-						filters={inputs}
-						setFilters={setFieldValue}
-						setFieldsValue={setFieldsValue}
-					/>
-				</div>
+				<Table
+					columnsVisibility={columnsVisibility}
+					filters={inputs}
+					setFilters={setFieldValue}
+					setFieldsValue={setFieldsValue}
+				/>
 			</div>
 		</Main>
 	);

@@ -111,7 +111,7 @@ const BuildStrategy = () => {
 	}, [selectedContracts, builtStrategyContracts]);
 
 	return (
-		<div className='relative flex-1 gap-16 overflow-auto rounded bg-white p-24 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+		<div className='relative flex-1 gap-16 overflow-auto rounded bg-white p-24 flex-column darkness:bg-gray-50'>
 			{builtStrategyContracts.length === 0 ? (
 				<div
 					style={{ width: '30rem', maxWidth: '90%', top: '7.2rem' }}

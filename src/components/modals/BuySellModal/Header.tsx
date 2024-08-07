@@ -12,7 +12,7 @@ const Header = ({ symbolTitle, expand, onToggle, onClose }: HeaderProps) => {
 	const t = useTranslations();
 
 	return (
-		<div className='moveable darkBlue:bg-gray-50 relative flex-48 border-b border-b-gray-200 bg-white flex-justify-center dark:bg-gray-50'>
+		<div className='moveable relative flex-48 border-b border-b-gray-200 bg-gray-100 flex-justify-center'>
 			<button type='button' className='absolute right-16 top-1/2 -translate-y-1/2' onClick={onToggle}>
 				<span className='size-24 text-gray-700 flex-justify-center'>
 					<AngleLeftCircleSVG

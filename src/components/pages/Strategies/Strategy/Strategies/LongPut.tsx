@@ -441,7 +441,7 @@ const LongPut = (strategy: LongPutProps) => {
 		<>
 			<StrategyDetails strategy={strategy} steps={[t(`${type}.step_1`)]} readMore={readMore} />
 
-			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkness:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

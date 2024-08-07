@@ -121,7 +121,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 	const dataIsEmpty = data.length === 0;
 
 	return (
-		<>
+		<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
 			<div
 				className='gap-16 overflow-hidden flex-column'
 				style={{
@@ -178,7 +178,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 					/>
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
 

@@ -204,10 +204,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 				ref={ref}
 				{...props}
 			>
-				<div
-					style={{ width: '70rem' }}
-					className='max-w-full bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
-				>
+				<div style={{ width: '70rem' }} className='max-w-full bg-white flex-column darkness:bg-gray-50'>
 					<Header label={t('title')} onClose={onCloseModal} onClear={onClear} />
 
 					<div className='gap-32 p-24 flex-column'>
@@ -228,10 +225,7 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 							)}
 						/>
 
-						<form
-							onSubmit={submit}
-							className='gap-24 bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
-						>
+						<form onSubmit={submit} className='gap-24 bg-white flex-column darkness:bg-gray-50'>
 							<ul className='gap-32 flex-column'>
 								{!loading && (
 									<>

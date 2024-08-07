@@ -16,10 +16,7 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 	}, [settlementDay]);
 
 	return (
-		<div
-			style={{ flex: '0 0 4rem' }}
-			className='rounded bg-white px-16 flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
-		>
+		<div style={{ flex: '0 0 4rem' }} className='rounded bg-white px-16 flex-justify-between darkness:bg-gray-50'>
 			<div className='flex-1 gap-16 text-right flex-justify-start'>
 				<span className='gap-8 text-lg text-gray-700 flex-items-center'>
 					<CalendarSVG />

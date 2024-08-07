@@ -210,7 +210,7 @@ const OrderDetails = forwardRef<HTMLDivElement, TOrderDetailsModal>(({ type, dat
 					{list.map((items, i) => (
 						<ul
 							key={i}
-							className='gap-24 rounded bg-white px-8 py-16 text-base shadow-sm ltr flex-column *:flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
+							className='gap-24 rounded bg-white px-8 py-16 text-base shadow-sm ltr flex-column *:flex-justify-between darkness:bg-gray-50'
 						>
 							{items.map((item, j) => (
 								<li key={j}>

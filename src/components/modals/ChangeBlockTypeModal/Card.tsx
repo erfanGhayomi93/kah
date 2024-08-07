@@ -18,7 +18,7 @@ const Card = ({ isActive, description, icon, value, title, prefix, children, err
 	<div
 		className={clsx(
 			'overflow-hidden pt-16 transition-bg flex-column',
-			isActive ? 'bg-white darkBlue:bg-gray-50 dark:bg-gray-50' : 'bg-gray-100',
+			isActive ? 'bg-white darkness:bg-gray-50' : 'bg-gray-100',
 			!children && 'pb-16',
 		)}
 	>
@@ -79,7 +79,7 @@ const Card = ({ isActive, description, icon, value, title, prefix, children, err
 				<div className='border-t border-t-gray-200 pt-16'>
 					<div
 						style={{ maxHeight: '20.8rem' }}
-						className='overflow-auto rounded bg-white shadow-sm darkBlue:bg-gray-50 dark:bg-gray-50'
+						className='overflow-auto rounded bg-white shadow-sm darkness:bg-gray-50'
 					>
 						{children}
 					</div>

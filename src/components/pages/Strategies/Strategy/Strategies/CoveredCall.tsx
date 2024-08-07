@@ -573,7 +573,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				readMore={readMore}
 			/>
 
-			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<div className='relative flex-1 gap-16 overflow-hidden rounded bg-white p-16 flex-column darkness:bg-gray-50'>
 				<Filters
 					type={type}
 					title={title}

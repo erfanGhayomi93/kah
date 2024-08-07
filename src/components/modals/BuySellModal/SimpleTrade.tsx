@@ -219,10 +219,12 @@ const SimpleTrade = ({
 	});
 
 	const isDisabled =
-		side === 'sell' &&
-		(!blockType ||
-			(blockType.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0)) ||
-			(blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0)));
+		!price ||
+		!quantity ||
+		(side === 'sell' &&
+			(!blockType ||
+				(blockType.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0)) ||
+				(blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0))));
 
 	return (
 		<form method='get' onSubmit={onSubmitForm} className='w-full flex-1 gap-24 flex-column'>

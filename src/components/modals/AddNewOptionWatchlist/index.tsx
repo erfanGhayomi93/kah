@@ -73,7 +73,7 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 			{...props}
 			ref={ref}
 		>
-			<Div className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<Div className='bg-white darkness:bg-gray-50'>
 				<Header onClose={onCloseModal} label={t('add_new_option_watchlist_modal.title')} />
 
 				<form method='get' onSubmit={onSubmit} className='w-full flex-1 gap-36 px-32 pb-24 flex-column'>

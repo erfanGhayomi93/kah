@@ -44,7 +44,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 	const dataIsEmpty = changeBrokerReportsData?.result.length === 0;
 
 	return (
-		<>
+		<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
 			<div
 				className='overflow-hidden rounded flex-column'
 				style={{
@@ -55,7 +55,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 				<ChangeBrokerReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 			</div>
 
-			<div className='py-22 flex-justify-end'>
+			<div className='border-t border-t-gray-200 py-16 flex-justify-end'>
 				<Pagination
 					hasNextPage={changeBrokerReportsData?.hasNextPage ?? false}
 					hasPreviousPage={changeBrokerReportsData?.hasPreviousPage ?? false}
@@ -74,12 +74,13 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 					<Loading />
 				</div>
 			)}
+
 			{dataIsEmpty && !isLoading && (
 				<div className='absolute center'>
 					<NoData />
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
 

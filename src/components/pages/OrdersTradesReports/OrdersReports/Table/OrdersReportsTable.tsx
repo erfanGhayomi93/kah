@@ -120,11 +120,7 @@ const OrdersReportsTable = ({ reports, columnsVisibility }: OrdersReportsTablePr
 		[columnsVisibility],
 	);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default OrdersReportsTable;

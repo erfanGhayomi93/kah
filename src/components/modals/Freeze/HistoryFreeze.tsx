@@ -115,7 +115,7 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 				<LightweightTable
 					rowData={(isFreeze ? dataFreeze : dataUnFreeze) || []}
 					columnDefs={columnDefs}
-					className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
+					className='bg-white darkness:bg-gray-50'
 				/>
 			</div>
 

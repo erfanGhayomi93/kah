@@ -63,10 +63,10 @@ const Toolbar = () => {
 						<Link
 							href={`${pathname}?type=${item.id}`}
 							className={clsx(
-								'h-40 w-96 rounded !border text-base transition-colors flex-justify-center',
+								'h-40 w-96 rounded text-base transition-colors flex-justify-center',
 								item.id === strategyTrend
 									? 'no-hover font-medium btn-select'
-									: 'border-gray-200 text-gray-700 hover:btn-hover',
+									: 'bg-gray-100 text-gray-700',
 							)}
 						>
 							<span className={item.id !== strategyTrend ? 'text-gray-800' : ''}>{item.title}</span>

@@ -136,7 +136,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 				ref={ref}
 				{...props}
 			>
-				<Wrapper onSubmit={onSubmit} className='gap-24 bg-white pb-24 darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<Wrapper onSubmit={onSubmit} className='gap-24 bg-white pb-24 darkness:bg-gray-50'>
 					<Header
 						label={t('manage_option_watchlist_columns.title')}
 						onClose={onClose}

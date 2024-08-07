@@ -18,17 +18,15 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 		<Main className='gap-8'>
 			<div
 				style={{ flex: '0 0 5.6rem' }}
-				className='darkBlue:bg-gray-50 gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start dark:bg-gray-50'
+				className='gap-24 overflow-hidden rounded bg-white px-16 flex-justify-start darkBlue:bg-gray-50 dark:bg-gray-50'
 			>
 				<ul className='flex gap-8'>
 					<li>
 						<Link
 							style={{ width: '14rem' }}
 							className={clsx(
-								'h-40 rounded !border transition-colors flex-justify-center',
-								!isBuilding
-									? 'no-hover font-medium btn-select'
-									: 'border-gray-100 bg-gray-100 text-gray-700',
+								'h-40 rounded transition-colors flex-justify-center',
+								!isBuilding ? 'no-hover font-medium btn-select' : 'bg-gray-100 text-gray-700',
 							)}
 							href='/strategy'
 						>
@@ -39,10 +37,8 @@ const StrategyLayout = ({ children, isBuilding = false, headerRenderer }: Strate
 						<Link
 							style={{ width: '14rem' }}
 							className={clsx(
-								'h-40 rounded !border transition-colors flex-justify-center',
-								isBuilding
-									? 'no-hover font-medium btn-select'
-									: 'border-gray-100 bg-gray-100 text-gray-700',
+								'h-40 rounded transition-colors flex-justify-center',
+								isBuilding ? 'no-hover font-medium btn-select' : 'bg-gray-100 text-gray-700',
 							)}
 							href='/strategy/build'
 						>

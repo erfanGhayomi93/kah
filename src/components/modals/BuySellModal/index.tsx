@@ -21,7 +21,7 @@ const SymbolInfo = dynamic(() => import('./SymbolInfo'), {
 });
 
 const Div = styled.div`
-	height: 62rem;
+	min-height: 632px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

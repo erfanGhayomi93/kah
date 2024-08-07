@@ -136,7 +136,7 @@ const Basket = () => {
 				}}
 				className='fixed'
 			>
-				<div className='overflow-hidden rounded bg-white shadow-sm darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<div className='overflow-hidden rounded bg-white shadow-sm darkness:bg-gray-50'>
 					<div className='relative h-56 w-full bg-gray-100 flex-justify-center'>
 						<h2 className='select-none text-xl font-medium'>{t('order_basket.title')}</h2>
 

@@ -80,7 +80,7 @@ const Filters = () => {
 				<Popup
 					defaultPopupWidth={232}
 					renderer={() => (
-						<ul className='gap-16 overflow-hidden rounded bg-white p-16 shadow-sm flex-column *:cursor-default *:flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'>
+						<ul className='gap-16 overflow-hidden rounded bg-white p-16 shadow-sm flex-column *:cursor-default *:flex-justify-between darkness:bg-gray-50'>
 							<li>
 								<span className='text-tiny font-medium'>{t('symbols_involved_in_strategy')}</span>
 								<Switch checked={showInvolvedInStrategy} onChange={(v) => onChangeSetting('str', v)} />

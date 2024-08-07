@@ -123,7 +123,7 @@ const Transactions = () => {
 
 	return (
 		<Main>
-			<div className='h-full gap-16 rounded bg-white px-16 pt-24 flex-column darkness:bg-gray-50'>
+			<div className='h-full gap-16 rounded bg-white px-24 pt-24 flex-column darkness:bg-gray-50'>
 				<div className='flex-justify-between'>
 					<Tabs />
 					<Toolbar

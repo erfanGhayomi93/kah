@@ -96,7 +96,7 @@ const Agreements = () => {
 	return (
 		<SettingCard title={t('agreements_settings')} className='h-3/5'>
 			<div
-				className='overflow-hidden bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
+				className='overflow-hidden bg-white darkness:bg-gray-50'
 				style={{ height: (agreements?.length || 0) * 40 + 40 }}
 			>
 				<LightweightTable<Settings.IAgreements[]> columnDefs={columnDef} rowData={agreements ?? []} />

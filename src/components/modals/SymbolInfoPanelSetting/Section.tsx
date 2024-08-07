@@ -16,7 +16,7 @@ const Section = ({ title, checked, imgSrc, onChecked }: SectionProps) => {
 			style={{ width: '132px', height: '124px' }}
 			className={clsx(
 				'cursor-pointer items-center justify-center gap-8 rounded shadow-sm transition-colors flex-column',
-				checked ? 'bg-white darkBlue:bg-gray-50 dark:bg-gray-50' : 'bg-gray-100',
+				checked ? 'bg-white darkness:bg-gray-50' : 'bg-gray-100',
 			)}
 		>
 			<div className='select-none gap-8 flex-items-center'>

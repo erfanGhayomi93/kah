@@ -104,7 +104,7 @@ const BlackScholes = forwardRef<HTMLDivElement, BlackScholesProps>(({ symbolISIN
 			onClose={onCloseModal}
 			{...props}
 		>
-			<Div className='bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<Div className='bg-white flex-column darkness:bg-gray-50'>
 				<Header label={t('black_scholes_modal.title')} onClose={onCloseModal} onClear={onClear} />
 
 				<div className='flex-1 gap-24 px-24 flex-column'>

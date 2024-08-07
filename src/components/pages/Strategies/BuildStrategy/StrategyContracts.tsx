@@ -209,7 +209,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 			const amount = c.price * c.quantity;
 			const contractSize = c.symbol.contractSize ?? 0;
 			const tax = c.side === 'buy' ? commission.buyTax : commission.sellTax;
-			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : -commission.sellCommission) - tax;
+			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : commission.sellCommission) - tax;
 			const strikeCommission =
 				c.side === 'buy' ? commission.strikeBuyCommission : commission.strikeSellCommission;
 
@@ -304,7 +304,7 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 					</div>
 				</div>
 
-				<div className='justify-between gap-16 bg-white px-16 pt-12 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<div className='justify-between gap-16 bg-white px-16 pt-12 flex-column darkness:bg-gray-50'>
 					<div className='relative h-24 border-t border-t-gray-200'>
 						<ul
 							style={{ top: '-1.2rem' }}
