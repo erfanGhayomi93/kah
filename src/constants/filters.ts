@@ -18,8 +18,6 @@ export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	date: 'dates.year',
 	fromDate: new Date().getTime() - DateAsMillisecond.Year,
 	toDate: new Date().getTime(),
-	fromPrice: 0,
-	toPrice: 0,
 	groupMode: 'Grouped',
 	transactionType: [],
 };
