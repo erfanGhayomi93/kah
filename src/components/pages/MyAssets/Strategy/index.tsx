@@ -8,7 +8,7 @@ const Strategy = () => {
 	const t = useTranslations();
 
 	return (
-		<div className='flex-1 gap-16 rounded bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-secondary-200'>
+		<div className='flex-1 gap-16 rounded bg-white p-16 flex-column darkness:bg-gray-50'>
 			<div className='h-64 rounded px-8 shadow-sm'>
 				<div className='size-full flex-justify-between xl:w-1/4'>
 					<span className='text-base text-gray-700'>{t('my_assets.total_value')}:</span>

@@ -95,7 +95,7 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 				{...props}
 				ref={ref}
 			>
-				<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<Div className='justify-between bg-white flex-column darkness:bg-gray-50'>
 					<Header
 						label={t.rich('move_symbol_to_watchlist.title', {
 							symbolTitle: () => <span className='font-medium text-primary-100'>{symbolTitle}</span>,

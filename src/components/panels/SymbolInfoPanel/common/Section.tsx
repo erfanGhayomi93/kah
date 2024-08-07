@@ -54,7 +54,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 	return (
 		<div
 			style={{ height: isExpand ? '100%' : '4rem' }}
-			className='size-full overflow-hidden rounded bg-white transition-height flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
+			className='size-full overflow-hidden rounded bg-white transition-height flex-column darkness:bg-gray-50'
 		>
 			<div
 				onClick={() => setIsExpand(true)}
@@ -72,7 +72,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 									'relative h-40 w-full rounded-t text-base transition-colors flex-justify-center',
 									tabs.length <= 2 ? 'px-16' : 'px-8',
 									isExpand && tab.id === activeTab
-										? 'bg-white font-medium text-gray-700 darkBlue:bg-gray-50 dark:bg-gray-50'
+										? 'bg-white font-medium text-gray-700 darkness:bg-gray-50'
 										: 'text-gray-500',
 								)}
 							>

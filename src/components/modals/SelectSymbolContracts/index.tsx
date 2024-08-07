@@ -147,7 +147,7 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 				ref={ref}
 				{...props}
 			>
-				<Div className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<Div className='bg-white darkness:bg-gray-50'>
 					<Header label={t('select_symbol_contracts_modal.title')} onClose={onCloseModal} />
 
 					<div className='relative flex-1 gap-16 p-24 flex-column'>
@@ -250,7 +250,7 @@ const BaseSymbolCheckbox = memo(
 	({ title, symbolTitle, checked, disabled, onChange }: BaseSymbolCheckboxProps) => (
 		<div
 			style={{ flex: '0 0 4rem' }}
-			className='rounded bg-white px-8 shadow-sm flex-items-center darkBlue:bg-gray-50 dark:bg-gray-50'
+			className='rounded bg-white px-8 shadow-sm flex-items-center darkness:bg-gray-50'
 		>
 			<Checkbox
 				label={

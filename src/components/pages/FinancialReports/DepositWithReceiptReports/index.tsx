@@ -136,18 +136,18 @@ const DepositWithReceiptReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
-			<div className='flex-justify-between'>
-				<Tabs />
-				<Toolbar
-					filtersCount={filtersCount}
-					onShowFilters={onShowFilters}
-					onExportExcel={() => setDebounce(onExportExcel, 500)}
-					onManageColumns={onManageColumns}
-				/>
-			</div>
+		<Main>
+			<div className='h-full gap-16 rounded bg-white px-24 pt-24 flex-column darkness:bg-gray-50'>
+				<div className='flex-justify-between'>
+					<Tabs />
+					<Toolbar
+						filtersCount={filtersCount}
+						onShowFilters={onShowFilters}
+						onExportExcel={() => setDebounce(onExportExcel, 500)}
+						onManageColumns={onManageColumns}
+					/>
+				</div>
 
-			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					filters={inputs}
 					setFilters={setFieldValue}

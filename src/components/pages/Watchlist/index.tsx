@@ -93,21 +93,19 @@ const Watchlist = () => {
 
 	return (
 		<Main>
-			<div className='h-full rounded bg-white px-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<div className='h-full gap-16 rounded bg-white px-24 pt-24 flex-column darkness:bg-gray-50'>
 				<Toolbar
 					setPriceBasis={(v) => setFieldValue('priceBasis', v)}
 					filters={filters}
 					filtersCount={filtersCount}
 				/>
 
-				<div className='relative flex-1 overflow-hidden'>
-					<Table
-						filters={filters}
-						filtersCount={filtersCount}
-						setFilters={setInputs}
-						watchlistCount={userCustomWatchlistList?.length ?? 0}
-					/>
-				</div>
+				<Table
+					filters={filters}
+					filtersCount={filtersCount}
+					setFilters={setInputs}
+					watchlistCount={userCustomWatchlistList?.length ?? 0}
+				/>
 			</div>
 		</Main>
 	);

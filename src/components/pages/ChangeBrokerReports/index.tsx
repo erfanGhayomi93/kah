@@ -128,18 +128,20 @@ const ChangeBrokerReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
-			<div className='flex-justify-between'>
-				<span className='text-xl font-medium text-gray-500'>{t('change_broker_reports_page.title_page')}</span>
-				<Toolbar
-					filtersCount={filtersCount}
-					onShowFilters={onShowFilters}
-					onExportExcel={() => setDebounce(onExportExcel, 500)}
-					onManageColumns={onManageColumns}
-				/>
-			</div>
+		<Main>
+			<div className='h-full gap-16 rounded bg-white px-24 pt-24 flex-column darkness:bg-gray-50'>
+				<div className='flex-justify-between'>
+					<span className='text-xl font-medium text-gray-500'>
+						{t('change_broker_reports_page.title_page')}
+					</span>
+					<Toolbar
+						filtersCount={filtersCount}
+						onShowFilters={onShowFilters}
+						onExportExcel={() => setDebounce(onExportExcel, 500)}
+						onManageColumns={onManageColumns}
+					/>
+				</div>
 
-			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
 					filters={inputs}

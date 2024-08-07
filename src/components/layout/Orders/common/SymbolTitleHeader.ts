@@ -93,7 +93,7 @@ class SymbolTitleHeader implements IHeaderComp {
 		this.eInput.placeholder = 'نام نماد';
 		this.eInput.setAttribute(
 			'class',
-			'input-group border bg-white dark:bg-gray-50 darkBlue:bg-gray-50 border-gray-200 rtl text-right w-full max-w-full font-normal bg-transparent rounded h-full px-8',
+			'input-group border bg-white darkness:bg-gray-50 border-gray-200 rtl text-right w-full max-w-full font-normal bg-transparent rounded h-full px-8',
 		);
 		this.eInput.addEventListener('input', (e) => this.onChangeValue((e.target as HTMLInputElement).value));
 

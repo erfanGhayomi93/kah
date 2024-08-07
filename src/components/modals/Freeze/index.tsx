@@ -49,7 +49,7 @@ const Freeze = forwardRef<HTMLDivElement, FreezeProps>((props, ref) => {
 				</div>
 
 				{isExpand && (
-					<div className='flex-1 bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+					<div className='flex-1 bg-white flex-column darkness:bg-gray-50'>
 						<HistoryFreeze tabSelected={tabSelected} onCloseModal={onCloseModal} />
 					</div>
 				)}

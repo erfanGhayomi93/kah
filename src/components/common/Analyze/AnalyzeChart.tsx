@@ -297,7 +297,7 @@ const AnalyzeChart = ({
 				<div ref={onLoad} />
 
 				{data.length <= 10 && (
-					<div className='absolute size-full bg-white center darkBlue:bg-gray-50 dark:bg-gray-50'>
+					<div className='absolute size-full bg-white center darkness:bg-gray-50'>
 						<NoData text={t('no_active_contract_found')} />
 					</div>
 				)}

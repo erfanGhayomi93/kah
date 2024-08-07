@@ -73,7 +73,7 @@ const UserDropdown = ({
 	const hasNotPassword = userData?.hasPassword === false;
 
 	return (
-		<div className='gap-16 rounded-md bg-white pb-16 shadow-sm flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+		<div className='gap-16 rounded-md bg-white pb-16 shadow-sm flex-column darkness:bg-gray-50'>
 			<Link target='_blank' href='/settings/general' className='px-16 pt-16 flex-justify-between'>
 				<div className='flex gap-12'>
 					<div className='size-40 flex-justify-center'>

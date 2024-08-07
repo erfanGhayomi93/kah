@@ -49,18 +49,10 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 	const dataIsEmpty = reports.length === 0;
 
 	return (
-		<>
-			<div
-				className='overflow-hidden rounded flex-column'
-				style={{
-					height: 'calc(100dvh - 23.2rem)',
-					transition: 'height 250ms ease',
-				}}
-			>
-				<InstantDepositReportsTable columnsVisibility={columnsVisibility} reports={reports} />
-			</div>
+		<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
+			<InstantDepositReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 
-			<div className='py-22 flex-justify-end'>
+			<div className='border-t border-t-gray-200 py-16 flex-justify-end'>
 				<Pagination
 					hasNextPage={instantDepositReportsData?.hasNextPage ?? false}
 					hasPreviousPage={instantDepositReportsData?.hasPreviousPage ?? false}
@@ -85,7 +77,7 @@ const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: Table
 					<NoData />
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
 

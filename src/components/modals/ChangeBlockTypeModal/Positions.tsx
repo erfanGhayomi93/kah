@@ -14,7 +14,7 @@ interface PositionProps extends IAvailableContractInfo {
 
 const Positions = ({ data, selectedPosition, setSelectedPosition }: PositionsProps) => (
 	<div className='relative overflow-hidden rounded px-16 shadow-sm'>
-		<ul className='bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+		<ul className='bg-white flex-column darkness:bg-gray-50'>
 			{data.map((item) => (
 				<Position
 					key={item.symbolISIN}

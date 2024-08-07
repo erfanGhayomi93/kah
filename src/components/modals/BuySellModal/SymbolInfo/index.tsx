@@ -36,7 +36,7 @@ const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) =
 	} = symbolData;
 
 	return (
-		<div className='h-full gap-16 bg-white px-16 pb-16 pt-8 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+		<div className='h-full gap-16 bg-white px-16 pb-16 pt-8 flex-column darkness:bg-gray-50'>
 			<div className='flex items-start justify-between'>
 				<div className='flex-1 gap-4 flex-column'>
 					<div className='gap-8 flex-items-center'>
@@ -66,7 +66,7 @@ const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) =
 				</div>
 			</div>
 
-			<div className='h-40 rounded bg-white px-8 shadow-sm flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<div className='h-40 rounded bg-white px-8 shadow-sm flex-justify-between darkness:bg-gray-50'>
 				<span className='text-gray-700'>{t('bs_modal.closing_price')}:</span>
 				<span
 					onClick={() => setInputValue('price', closingPrice)}
@@ -77,7 +77,7 @@ const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) =
 				</span>
 			</div>
 
-			<div className='rounded bg-white px-8 py-16 shadow-sm darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<div className='rounded bg-white px-8 py-16 shadow-sm darkness:bg-gray-50'>
 				<SymbolPriceSlider
 					yesterdayClosingPrice={yesterdayClosingPrice ?? 0}
 					thresholdData={[lowThreshold ?? 0, highThreshold ?? 0]}

@@ -201,7 +201,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			{
 				groupId: 'strike',
 				headerName: '',
-				headerClass: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50',
+				headerClass: 'bg-white darkness:bg-gray-50',
 				children: [
 					{
 						headerName: 'اعمال',
@@ -412,13 +412,13 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			/>
 
 			{isLoading && (
-				<div className='absolute left-0 top-0 size-full bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<div className='absolute left-0 top-0 size-full bg-white darkness:bg-gray-50'>
 					<Loading />
 				</div>
 			)}
 
 			{!isLoading && (!Array.isArray(watchlistData) || watchlistData.length === 0) && (
-				<div className='absolute left-0 top-0 size-full bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<div className='absolute left-0 top-0 size-full bg-white darkness:bg-gray-50'>
 					<NoData />
 				</div>
 			)}

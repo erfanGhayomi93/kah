@@ -67,7 +67,7 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 	return (
 		<div
 			style={{ flex: '0 0 5.6rem' }}
-			className='gap-36 rounded bg-white px-16 flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'
+			className='gap-36 rounded bg-white px-16 flex-justify-between darkness:bg-gray-50'
 		>
 			<div className='flex-1 gap-24 flex-items-center'>
 				<div style={{ flex: '0 0 25.6rem' }}>

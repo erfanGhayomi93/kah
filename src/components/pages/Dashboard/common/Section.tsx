@@ -50,7 +50,7 @@ const Section = <T extends string = string, B extends string = string>({
 	};
 
 	return (
-		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white pb-16 pl-8 pr-16 pt-8 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+		<div className='size-full flex-1 justify-between overflow-hidden rounded bg-white pb-16 pl-8 pr-16 pt-8 flex-column darkness:bg-gray-50'>
 			<div style={{ flex: '0 0 4rem' }} className='ltr flex-justify-between'>
 				<div className='flex h-full gap-8'>
 					<div
@@ -94,7 +94,7 @@ const Section = <T extends string = string, B extends string = string>({
 							defaultActiveTab={defaultTopActiveTab ?? tabs.top[0].id}
 							classes={{
 								root: '!h-40 bg-gray-100 rtl !border-0 py-4 px-8',
-								rect: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 !h-32 rounded',
+								rect: 'bg-white darkness:bg-gray-50 !h-32 rounded',
 								tabs: 'gap-8',
 							}}
 							onChangeTab={(v) => onTopTabChange?.(v as T)}

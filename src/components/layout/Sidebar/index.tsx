@@ -29,7 +29,7 @@ const Sidebar = () => {
 				zIndex: 99999,
 				boxShadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
 			}}
-			className='fixed right-0 top-0 h-full bg-gray-800 darkBlue:bg-gray-50 dark:bg-gray-50'
+			className='fixed right-0 top-0 h-full bg-gray-800 darkness:bg-gray-50'
 			onMouseLeave={closeSidebar}
 		>
 			<div className='relative h-full flex-column'>

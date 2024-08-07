@@ -45,7 +45,7 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ onCloseModal }) => {
 				<LightweightTable
 					rowData={data || []}
 					columnDefs={columnDefs}
-					className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
+					className='bg-white darkness:bg-gray-50'
 				/>
 			</div>
 

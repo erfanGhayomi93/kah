@@ -216,7 +216,7 @@ const Dashboard = () => {
 	}, [grid]);
 
 	return (
-		<Main className='gap-8 !py-0 !pl-0 !pr-8'>
+		<Main className='gap-8 !pl-0 !pr-8'>
 			<div className='size-full'>
 				<ResponsiveGridLayout
 					className='w-full ltr'
@@ -224,7 +224,7 @@ const Dashboard = () => {
 					layouts={getGridLayouts()}
 					margin={SECTIONS_MARGIN}
 					breakpoints={{ lg: 1366, sm: 0 }}
-					containerPadding={[8, 16]}
+					containerPadding={[8, 8]}
 					cols={{ lg: 3, sm: 1 }}
 					useCSSTransforms
 					isDraggable={false}

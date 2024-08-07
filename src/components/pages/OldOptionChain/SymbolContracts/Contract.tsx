@@ -70,7 +70,7 @@ const Contract = ({
 		<div
 			ref={wrapperRef}
 			className={cn(
-				'overflow-hidden rounded bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50',
+				'overflow-hidden rounded bg-white flex-column darkness:bg-gray-50',
 				expand && 'border border-primary-100',
 			)}
 		>

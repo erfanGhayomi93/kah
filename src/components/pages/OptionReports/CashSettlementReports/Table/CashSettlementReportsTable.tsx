@@ -194,11 +194,7 @@ const CashSettlementReportsTable = ({ reports, columnsVisibility }: CashSettleme
 		[columnsVisibility],
 	);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default CashSettlementReportsTable;

@@ -38,7 +38,7 @@ const ChangeBlockTypeModal = forwardRef<HTMLDivElement, ChangeBlockTypeModalProp
 				top='50%'
 				ref={ref}
 			>
-				<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<Div className='justify-between bg-white flex-column darkness:bg-gray-50'>
 					<Header
 						label={
 							<>

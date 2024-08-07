@@ -52,12 +52,7 @@ const Confirm = forwardRef<HTMLDivElement, ConfirmProps>(
 				onClose={onCloseModal}
 				{...props}
 			>
-				<Div
-					className={clsx(
-						'bg-white darkBlue:bg-gray-50 dark:bg-gray-50',
-						!title ? 'p-24' : 'px-24 pb-24 pt-16',
-					)}
-				>
+				<Div className={clsx('bg-white darkness:bg-gray-50', !title ? 'p-24' : 'px-24 pb-24 pt-16')}>
 					{title && <h2 className='text-center text-xl font-medium text-gray-800'>{title}</h2>}
 
 					<div className='pb-40 pt-32 text-center'>

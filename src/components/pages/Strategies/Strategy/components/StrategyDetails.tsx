@@ -71,7 +71,7 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 				style={{
 					height: isExpand ? `${sectionHeight}rem` : '9.6rem',
 				}}
-				className='flex justify-between rounded bg-white p-16 transition-height darkBlue:bg-gray-50 dark:bg-gray-50'
+				className='flex justify-between rounded bg-white p-16 transition-height darkness:bg-gray-50'
 			>
 				<div className='flex-1 justify-between overflow-hidden flex-column'>
 					<div className='flex-column'>
@@ -225,7 +225,7 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 				type='button'
 				onClick={() => setIsExpand(!isExpand)}
 				style={{ width: '6.6rem', height: '2.2rem' }}
-				className='absolute bottom-8 left-1/2 -translate-x-1/2 rounded bg-white text-gray-700 flex-justify-center darkBlue:bg-gray-50 dark:bg-gray-50'
+				className='absolute bottom-8 left-1/2 -translate-x-1/2 rounded bg-white text-gray-700 flex-justify-center darkness:bg-gray-50'
 			>
 				<ArrowDownSVG
 					width='1.8rem'

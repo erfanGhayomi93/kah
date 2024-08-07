@@ -160,11 +160,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 		}
 	}, [columnsVisibility]);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default DepositWithReceiptReportsTable;

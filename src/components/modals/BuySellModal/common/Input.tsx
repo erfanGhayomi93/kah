@@ -54,7 +54,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 		return (
 			<div
 				className={clsx(
-					'flex h-48 items-center rounded bg-white input-group darkBlue:bg-gray-50 dark:bg-gray-50',
+					'flex h-48 items-center rounded bg-white input-group darkness:bg-gray-50',
 					hasError && 'error',
 				)}
 			>

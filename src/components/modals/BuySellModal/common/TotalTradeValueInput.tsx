@@ -46,7 +46,7 @@ const TotalTradeValueInput = ({ value, max, setToMinimum, onChange }: TotalTrade
 
 	return (
 		<div className='gap-4 pb-16 flex-column'>
-			<label className='relative w-full flex-48 rounded bg-white flex-items-center input-group darkBlue:bg-gray-50 dark:bg-gray-50'>
+			<label className='relative w-full flex-48 rounded bg-white flex-items-center input-group darkness:bg-gray-50'>
 				<input
 					onCopy={(e) => copyNumberToClipboard(e, Number(value))}
 					type='text'

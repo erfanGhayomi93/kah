@@ -112,18 +112,18 @@ const CashSettlementReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='gap-16 bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
-			<div className='flex-justify-between'>
-				<Tabs />
-				<Toolbar
-					filtersCount={filtersCount}
-					onShowFilters={onShowFilters}
-					onExportExcel={() => setDebounce(onExportExcel, 500)}
-					onManageColumns={onManageColumns}
-				/>
-			</div>
+		<Main>
+			<div className='h-full gap-16 rounded bg-white px-24 pt-24 flex-column darkness:bg-gray-50'>
+				<div className='flex-justify-between'>
+					<Tabs />
+					<Toolbar
+						filtersCount={filtersCount}
+						onShowFilters={onShowFilters}
+						onExportExcel={() => setDebounce(onExportExcel, 500)}
+						onManageColumns={onManageColumns}
+					/>
+				</div>
 
-			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
 					filters={inputs}

@@ -103,11 +103,7 @@ const TradeReportsTable = ({ reports, columnsVisibility }: TradeReportsTableProp
 		}
 	}, [columnsVisibility]);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default TradeReportsTable;

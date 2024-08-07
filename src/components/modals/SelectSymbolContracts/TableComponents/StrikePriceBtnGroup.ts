@@ -36,7 +36,7 @@ class StrikePriceBtnGroup {
 		this.eGroup = document.createElement('div');
 		this.eGroup.setAttribute(
 			'class',
-			clsx('relative gap-8 flex-items-center', this.side === 'sell' && 'flex-row-reverse'),
+			clsx('relative gap-8 flex-items-center', this.side === 'buy' && 'flex-row-reverse'),
 		);
 
 		this.eGroup.appendChild(this._createBuyBtn());

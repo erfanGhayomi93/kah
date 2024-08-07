@@ -79,7 +79,7 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 			: `/saturn?contractISIN=${symbolISIN}&symbolISIN=${baseSymbolISIN}`;
 
 	return (
-		<div className='gap-8 overflow-hidden rounded bg-white px-8 py-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+		<div className='gap-8 overflow-hidden rounded bg-white px-8 py-16 flex-column darkness:bg-gray-50'>
 			<div className='flex items-start justify-between'>
 				<SymbolSearchToggler symbolData={symbolData} />
 

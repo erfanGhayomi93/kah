@@ -47,50 +47,52 @@ const Footer = () => {
 	const { isLoggedIn, lsStatus, ordersIsExpand } = useAppSelector(getStates);
 
 	return (
-		<div className='h-48 flex-column'>
+		<div className='h-56 flex-column'>
 			<Orders />
 
-			<footer className='z-10 h-48 bg-white pl-24 flex-justify-between darkness:bg-gray-50'>
-				<div className='h-full pr-16 flex-justify-start'>
-					{isLoggedIn ? (
-						<button
-							type='button'
-							onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
-							className={clsx(
-								'h-32 gap-8 rounded px-16 text-base text-gray-800 transition-colors flex-justify-center',
-								ordersIsExpand ? 'bg-secondary-200' : 'bg-gray-300',
+			<footer className='z-10 h-56 pt-8'>
+				<div className='h-48 bg-white pl-24 flex-justify-between darkness:bg-gray-50'>
+					<div className='h-full pr-16 flex-justify-start'>
+						{isLoggedIn ? (
+							<button
+								type='button'
+								onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
+								className={clsx(
+									'h-32 gap-8 rounded px-16 text-base text-gray-800 transition-colors flex-justify-center',
+									ordersIsExpand ? 'bg-secondary-200' : 'bg-gray-300',
+								)}
+							>
+								{t('orders')}
+								<ArrowDownSVG
+									style={{ transform: ordersIsExpand ? 'rotate(180deg)' : undefined }}
+									className='text-gray-700 transition-transform'
+								/>
+							</button>
+						) : (
+							<a
+								target='_blank'
+								href='https://ramandtech.com/'
+								className='text-tiny font-normal text-gray-800 transition-colors hover:text-secondary-300'
+							>
+								{t('copyright')}
+							</a>
+						)}
+					</div>
+
+					<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
+						<span
+							className={cn(
+								'flex items-center gap-8 transition-colors',
+								lsStatus === 'CONNECTING'
+									? 'text-warning-100'
+									: lsStatus === 'DISCONNECTED'
+										? 'text-error-100'
+										: 'text-success-100',
 							)}
 						>
-							{t('orders')}
-							<ArrowDownSVG
-								style={{ transform: ordersIsExpand ? 'rotate(180deg)' : undefined }}
-								className='text-gray-700 transition-transform'
-							/>
-						</button>
-					) : (
-						<a
-							target='_blank'
-							href='https://ramandtech.com/'
-							className='text-tiny font-normal text-gray-800 transition-colors hover:text-secondary-300'
-						>
-							{t('copyright')}
-						</a>
-					)}
-				</div>
-
-				<div style={{ gap: '2.8rem' }} className='h-full flex-justify-end'>
-					<span
-						className={cn(
-							'flex items-center gap-8 transition-colors',
-							lsStatus === 'CONNECTING'
-								? 'text-warning-100'
-								: lsStatus === 'DISCONNECTED'
-									? 'text-error-100'
-									: 'text-success-100',
-						)}
-					>
-						<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />
-					</span>
+							<WifiSVG full={!(lsStatus === 'CONNECTING' || lsStatus === 'DISCONNECTED')} />
+						</span>
+					</div>
 				</div>
 			</footer>
 		</div>

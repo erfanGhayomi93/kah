@@ -174,7 +174,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 				onClose={onCloseModal}
 				{...props}
 			>
-				<Div className='bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
+				<Div className='bg-white flex-column darkness:bg-gray-50'>
 					<Header label={t('analyze_modal.title')} onClose={onCloseModal} />
 
 					{symbolContracts.length > 0 ? (

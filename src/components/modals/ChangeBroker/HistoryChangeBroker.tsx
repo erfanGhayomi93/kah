@@ -101,7 +101,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 					rowHeight={40}
 					rowData={data.slice(0, 4)}
 					columnDefs={columnDefs}
-					className='bg-white darkBlue:bg-gray-50 dark:bg-gray-50'
+					className='bg-white darkness:bg-gray-50'
 				/>
 			</div>
 

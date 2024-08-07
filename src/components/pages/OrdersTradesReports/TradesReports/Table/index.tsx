@@ -42,18 +42,10 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 	const dataIsEmpty = tradesReportsData?.result.length === 0;
 
 	return (
-		<>
-			<div
-				className='overflow-hidden rounded flex-column'
-				style={{
-					height: 'calc(100dvh - 23.2rem)',
-					transition: 'height 250ms ease',
-				}}
-			>
-				<TradeReportsTable columnsVisibility={columnsVisibility} reports={reports} />
-			</div>
+		<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
+			<TradeReportsTable columnsVisibility={columnsVisibility} reports={reports} />
 
-			<div className='py-22 flex-justify-end'>
+			<div className='border-t border-t-gray-200 py-16 flex-justify-end'>
 				<Pagination
 					hasNextPage={tradesReportsData?.hasNextPage ?? false}
 					hasPreviousPage={tradesReportsData?.hasPreviousPage ?? false}
@@ -77,7 +69,7 @@ const Table = ({ filters, setFilters, setFieldsValue, columnsVisibility }: Table
 					<NoData />
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
 

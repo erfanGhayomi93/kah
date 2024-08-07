@@ -151,9 +151,8 @@ const Table = ({ baseSymbolISIN, contractEndDate, expanding }: TableProps) => {
 				headerName: 'اعمال',
 				colId: 'strikePrice',
 				minWidth: 96,
-				headerClass:
-					'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 hover:!bg-white dark:bg-gray-50 darkBlue:bg-gray-50 shadow',
-				cellClass: 'bg-white dark:bg-gray-50 darkBlue:bg-gray-50 shadow',
+				headerClass: 'bg-white darkness:bg-gray-50 hover:!bg-white darkness:bg-gray-50 shadow',
+				cellClass: 'bg-white darkness:bg-gray-50 shadow',
 				valueGetter: ({ data }) => sepNumbers(String(data!.buy?.symbolInfo.strikePrice)),
 			},
 
