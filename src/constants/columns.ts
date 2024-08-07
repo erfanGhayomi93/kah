@@ -1,18 +1,18 @@
 export const defaultTransactionColumns: Array<IManageColumn<Transaction.TTransactionColumns>> = [
 	{
-		id: 'id',
+		id: 'symbolISIN',
 		title: 'ردیف',
 		hidden: false,
 		tag: 'Transaction',
 	},
 	{
-		id: 'date',
-		title: 'زمان',
+		id: 'tradeDate',
+		title: 'تاریخ',
 		hidden: false,
 		tag: 'Transaction',
 	},
 	{
-		id: 'transactionType',
+		id: 'turnOverTransactionType',
 		title: 'عملیات',
 		hidden: false,
 		tag: 'Transaction',
@@ -42,7 +42,7 @@ export const defaultTransactionColumns: Array<IManageColumn<Transaction.TTransac
 		tag: 'Transaction',
 	},
 	{
-		id: 'station',
+		id: 'branchName',
 		title: 'ایستگاه معاملاتی',
 		hidden: false,
 		tag: 'Transaction',

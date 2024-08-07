@@ -192,25 +192,6 @@ html[data-theme="dark"] {
 	}
 }
 
-html[data-theme="darkBlue"],
-html[data-theme="dark"] {
-	.list {
-		li.active {
-			& > a,
-			& > button {
-				span,
-				svg {
-					color: theme("colors.white") !important;
-				}
-
-				&::before {
-					background-color: theme("colors.white") !important;
-				}
-			}
-		}
-	}
-}
-
 .toggler {
 	display: flex;
 	align-items: center;

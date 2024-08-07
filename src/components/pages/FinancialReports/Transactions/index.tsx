@@ -54,8 +54,6 @@ const Transactions = () => {
 		const params: Partial<Transaction.ITransactionsFilters> = {};
 
 		if (inputs.symbol) params.symbol = inputs.symbol;
-		if (inputs.fromPrice) params.fromPrice = inputs.fromPrice;
-		if (inputs.toPrice) params.toPrice = inputs.toPrice;
 		if (inputs.fromDate) params.fromDate = inputs.fromDate;
 		if (inputs.toDate) params.toDate = inputs.toDate;
 		if (inputs.groupMode) params.groupMode = inputs.groupMode;
@@ -69,10 +67,6 @@ const Transactions = () => {
 		let badgeCount = 0;
 
 		if (inputs.symbol) badgeCount++;
-
-		if (inputs.fromPrice) badgeCount++;
-
-		if (inputs.toPrice) badgeCount++;
 
 		if (Array.isArray(inputs.transactionType) && inputs.transactionType.length > 0) badgeCount++;
 
@@ -92,8 +86,6 @@ const Transactions = () => {
 			params.append('ToDate', toISOStringWithoutChangeTime(toDate));
 			params.append('GroupMode', String(inputs.groupMode));
 			if (inputs.symbol?.symbolISIN) params.append('SymbolISIN', inputs.symbol.symbolISIN);
-			if (inputs.fromPrice) params.append('FromPrice', String(inputs.fromPrice));
-			if (inputs.toPrice) params.append('ToPrice', String(inputs.toPrice));
 			inputs.transactionType.forEach(({ id }) => params.append('TransactionType', id));
 
 			if (!urls) throw new Error('broker_error');
@@ -114,7 +106,7 @@ const Transactions = () => {
 				initialColumns: defaultTransactionColumns,
 				columns: columnsVisibility,
 				title: t('transactions_page.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(columns as Array<IManageColumn<Transaction.TTransactionColumns>>),
 				onReset: () => setColumnsVisibility(defaultTransactionColumns),
 			}),
@@ -130,18 +122,18 @@ const Transactions = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
-			<div className='flex-justify-between'>
-				<Tabs />
-				<Toolbar
-					filtersCount={filtersCount}
-					onShowFilters={onShowFilters}
-					onExportExcel={() => setDebounce(onExportExcel, 500)}
-					onManageColumns={onManageColumns}
-				/>
-			</div>
+		<Main>
+			<div className='h-full gap-16 rounded bg-white px-16 pt-24 flex-column darkness:bg-gray-50'>
+				<div className='flex-justify-between'>
+					<Tabs />
+					<Toolbar
+						filtersCount={filtersCount}
+						onShowFilters={onShowFilters}
+						onExportExcel={() => setDebounce(onExportExcel, 500)}
+						onManageColumns={onManageColumns}
+					/>
+				</div>
 
-			<div className='relative flex-1 overflow-hidden'>
 				<Table
 					columnsVisibility={columnsVisibility}
 					filters={inputs}

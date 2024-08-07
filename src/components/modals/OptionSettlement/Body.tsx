@@ -13,45 +13,40 @@ interface BodyOptionSettlementProps {
 	setTabSelected: Dispatch<SetStateAction<string>>;
 }
 
-const Body: FC<BodyOptionSettlementProps> = (
-	{ onCloseModal,
-		modePage,
-		clickItemSettlement,
-		dataSecondaryDetails,
-		tabSelected,
-		setTabSelected
-	}) => {
+const Body: FC<BodyOptionSettlementProps> = ({
+	onCloseModal,
+	modePage,
+	clickItemSettlement,
+	dataSecondaryDetails,
+	tabSelected,
+	setTabSelected,
+}) => {
+	if (modePage === 'primary') {
+		return (
+			<PrimarySettlementTab
+				onCloseModal={onCloseModal}
+				clickItemSettlement={clickItemSettlement}
+				modePage={modePage}
+				tabSelected={tabSelected}
+				setTabSelected={setTabSelected}
+			/>
+		);
+	}
 
-	return (
-		<div className='h-full'>
-			{
-				modePage === 'primary' && <PrimarySettlementTab
-					onCloseModal={onCloseModal}
-					clickItemSettlement={clickItemSettlement}
-					modePage={modePage}
-					tabSelected={tabSelected}
-					setTabSelected={setTabSelected}
-				/>
-			}
+	if (modePage === 'secondary') {
+		return (
+			<SecondarySettlementDetail
+				dataSecondaryDetails={dataSecondaryDetails}
+				clickItemSettlement={clickItemSettlement}
+			/>
+		);
+	}
 
-			{
-				modePage === 'secondary' && <SecondarySettlementDetail
-					dataSecondaryDetails={dataSecondaryDetails}
-					clickItemSettlement={clickItemSettlement}
-				/>
-			}
+	if (modePage === 'tertiary') {
+		return <TertiarySettlementRequest dataSecondaryDetails={dataSecondaryDetails} onCloseModal={onCloseModal} />;
+	}
 
-			{
-				modePage === 'tertiary' && <TertiarySettlementRequest
-					dataSecondaryDetails={dataSecondaryDetails}
-					onCloseModal={onCloseModal}
-				/>
-			}
-		</div>
-	);
-
+	return null;
 };
-
-
 
 export default Body;

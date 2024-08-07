@@ -20,7 +20,7 @@ export const initialTransactionsFilters: Transaction.ITransactionsFilters = {
 	toDate: new Date().getTime(),
 	fromPrice: 0,
 	toPrice: 0,
-	groupMode: 'GreedyGrouped',
+	groupMode: 'Grouped',
 	transactionType: [],
 };
 

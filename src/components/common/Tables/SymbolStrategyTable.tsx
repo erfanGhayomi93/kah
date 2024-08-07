@@ -385,7 +385,7 @@ const SymbolStrategy = ({
 	const contractSize = contract.symbol.contractSize ?? 0;
 	const tax = contract.side === 'buy' ? commission?.buyTax ?? 0 : commission?.sellTax ?? 0;
 	const tradeCommission =
-		(contract.side === 'buy' ? commission?.buyCommission ?? 0 : commission?.sellCommission ?? 0) - tax;
+		(contract.side === 'buy' ? commission?.buyCommission ?? 0 : -(commission?.sellCommission ?? 0)) - tax;
 	const strikeCommission =
 		contract.side === 'buy' ? commission?.strikeBuyCommission ?? 0 : commission?.strikeSellCommission ?? 0;
 
@@ -506,7 +506,7 @@ const SymbolStrategy = ({
 						checked={Boolean(checkList?.tradeCommission)}
 						disabled={!checkList.symbol}
 						onChange={(v) => onChecked('tradeCommission', v)}
-						label={toFixed(Math.round(amount * tradeCommission * contractSize))}
+						label={toFixed(Math.abs(Math.round(amount * tradeCommission * contractSize)))}
 						classes={{ text: '!text-tiny' }}
 					/>
 				</td>
@@ -514,14 +514,20 @@ const SymbolStrategy = ({
 
 			{features?.strikeCommission && (
 				<td className={`${styles.td} ${styles.right} pr-8`}>
-					<OptionCheckbox
-						type={contract.type}
-						checked={Boolean(checkList?.strikeCommission)}
-						disabled={!checkList.symbol}
-						onChange={(v) => onChecked('strikeCommission', v)}
-						label={Math.round(amount * strikeCommission * contractSize)}
-						classes={{ text: '!text-tiny' }}
-					/>
+					{contract.type === 'base' ? (
+						'−'
+					) : (
+						<OptionCheckbox
+							type={contract.type}
+							checked={Boolean(checkList?.strikeCommission)}
+							disabled={!checkList.symbol}
+							onChange={(v) => onChecked('strikeCommission', v)}
+							label={Math.round(
+								contract.quantity * contract.symbol.strikePrice * strikeCommission * contractSize,
+							)}
+							classes={{ text: '!text-tiny' }}
+						/>
+					)}
 				</td>
 			)}
 
@@ -532,7 +538,7 @@ const SymbolStrategy = ({
 						checked={Boolean(checkList?.tax)}
 						disabled={!checkList.symbol}
 						onChange={(v) => onChecked('tax', v)}
-						label={tax}
+						label={Math.ceil(tax * amount * contractSize)}
 						classes={{ text: '!text-tiny' }}
 					/>
 				</td>

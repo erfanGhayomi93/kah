@@ -144,7 +144,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				initialColumns: initialColumnsProtectivePut,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(columns as Array<IManageColumn<TProtectivePutColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsProtectivePut),
 			}),

@@ -209,20 +209,22 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 			const amount = c.price * c.quantity;
 			const contractSize = c.symbol.contractSize ?? 0;
 			const tax = c.side === 'buy' ? commission.buyTax : commission.sellTax;
-			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : commission.sellCommission) - tax;
+			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : -commission.sellCommission) - tax;
 			const strikeCommission =
 				c.side === 'buy' ? commission.strikeBuyCommission : commission.strikeSellCommission;
 
 			if (commission && c.tradeCommission) {
 				result.tradeCommission += Math.round(amount * tradeCommission * contractSize);
 			}
-			if (commission && c.strikeCommission) {
-				result.strikeCommission += Math.round(amount * strikeCommission * contractSize);
+			if (commission && c.strikeCommission && c.type === 'option') {
+				result.strikeCommission += Math.round(
+					c.quantity * c.symbol.strikePrice * strikeCommission * contractSize,
+				);
 			}
 			if (c.requiredMargin && c.type === 'option' && c.side === 'sell') {
 				result.requiredMargin += c.symbol?.requiredMargin ?? 0;
 			}
-			if (commission && c.tax) result.tax += amount * tax * contractSize;
+			if (commission && c.tax) result.tax += Math.ceil(amount * tax * contractSize);
 			if (commission && c.vDefault) result.vDefault += 0;
 		}
 
@@ -356,7 +358,7 @@ const SumValue = ({ value }: SumValueProps) => {
 	const t = useTranslations('common');
 	return (
 		<li className='w-104 text-gray-500'>
-			<span className='text-gray-800 ltr'>{sepNumbers(String(value))}</span>
+			<span className='text-gray-800 ltr'>{sepNumbers(String(Math.abs(value)))}</span>
 			<span className='truncate'>{t('rial')}</span>
 		</li>
 	);

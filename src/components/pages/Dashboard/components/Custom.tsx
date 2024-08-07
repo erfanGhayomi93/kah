@@ -90,7 +90,7 @@ const Custom = () => {
 				title: t('home.manage_layout'),
 				initialColumns: initialDashboardLayout,
 				stream: false,
-				onColumnChanged: (cols) => onColumnChanged(cols as Array<IManageColumn<TDashboardSections>>),
+				onColumnsChanged: (cols) => onColumnChanged(cols as Array<IManageColumn<TDashboardSections>>),
 			}),
 		);
 	};

@@ -391,11 +391,11 @@ declare type TOrdersTradersTab = 'orders' | 'trades';
 declare type TMarketMapTab = 'market' | 'base_symbol_option' | 'contract' | 'call_option' | 'put_option';
 
 declare namespace Transaction {
-	export type TTransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
+	export type TTransactionGroupModes = 'Flat' | 'Grouped';
 
 	export type TransactionTypes = 'Buy' | 'Sell' | 'Deposit' | 'Payment';
 
-	type TransactionGroupModes = 'Flat' | 'GreedyGrouped' | 'Grouped';
+	type TransactionGroupModes = 'Flat' | 'Grouped';
 
 	export interface ITransactionsFilters {
 		pageNumber: number;
@@ -404,8 +404,6 @@ declare namespace Transaction {
 		date: TDateRange;
 		fromDate: number;
 		toDate: number;
-		fromPrice: number;
-		toPrice: number;
 		groupMode: TTransactionGroupModes;
 		transactionType: { id: TransactionTypes; title: string }[];
 	}
@@ -417,14 +415,14 @@ declare namespace Transaction {
 	}
 
 	export type TTransactionColumns =
-		| 'id'
-		| 'credit'
-		| 'date'
-		| 'debit'
+		| 'symbolISIN'
+		| 'tradeDate'
+		| 'turnOverTransactionType'
 		| 'description'
+		| 'debit'
+		| 'credit'
 		| 'remaining'
-		| 'station'
-		| 'transactionType';
+		| 'branchName';
 }
 
 declare namespace InstantDepositReports {

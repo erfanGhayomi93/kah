@@ -282,7 +282,9 @@ export interface IManageColumnsModal extends IBaseModalConfiguration {
 	columns: IManageColumn[];
 	stream?: boolean;
 	onReset?: () => void;
-	onColumnChanged: (columns: IManageColumn[]) => void;
+	onColumnChanged?: (column: IManageColumn) => void;
+	onCategoryChanged?: (columns: IManageColumn[]) => void;
+	onColumnsChanged?: (columns: IManageColumn[]) => void;
 }
 
 export interface IMarketStateModal extends IBaseModalConfiguration {}

@@ -149,7 +149,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				initialColumns: initialColumnsBearPutSpread,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(columns as Array<IManageColumn<TBearPutSpreadColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsBearPutSpread),
 			}),

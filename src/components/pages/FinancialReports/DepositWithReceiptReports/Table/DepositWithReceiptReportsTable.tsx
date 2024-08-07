@@ -82,17 +82,20 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				colId: 'id',
 				headerName: t('deposit_with_receipt_reports_page.id_column'),
 				width: 32,
-				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				valueGetter: (_r, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
+
 			/* زمان */
 			{
 				colId: 'receiptDate',
 				headerName: t('deposit_with_receipt_reports_page.date_column'),
 				cellClass: 'ltr',
-				valueGetter: (row) => dateFormatter(row.receiptDate ?? '', 'datetime'),
+				valueGetter: (row) => row.receiptDate,
+				valueFormatter: ({ value }) => dateFormatter(value as string, 'datetime'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'receiptDate')]?.hidden,
 			},
+
 			/* بانک کارگزاری */
 			{
 				colId: 'providerType',
@@ -101,6 +104,7 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'providerType')]
 					?.hidden,
 			},
+
 			/* شماره فیش */
 			{
 				colId: 'receiptNumber',
@@ -109,13 +113,16 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'receiptNumber')]
 					.hidden,
 			},
+
 			/* مبلغ */
 			{
 				colId: 'amount',
 				headerName: t('deposit_with_receipt_reports_page.price_column'),
-				valueGetter: (row) => sepNumbers(String(row.amount)),
+				valueGetter: (row) => row.amount,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'amount')]?.hidden,
 			},
+
 			/* وضعیت */
 			{
 				colId: 'state',
@@ -124,8 +131,8 @@ const DepositWithReceiptReportsTable = ({ reports, columnsVisibility }: DepositW
 				valueGetter: (row) => t(`states.state_${row.state}`),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'state')]?.hidden,
 			},
-			/* عملیات */
 
+			/* عملیات */
 			{
 				colId: 'action',
 				headerName: t('deposit_with_receipt_reports_page.operation_column'),

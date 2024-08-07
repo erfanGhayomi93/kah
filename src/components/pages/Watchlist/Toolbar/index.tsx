@@ -23,7 +23,8 @@ const Toolbar = ({ setPriceBasis, filters, filtersCount }: ToolbarProps) => {
 
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
-	const { watchlistColumns, defaultColumns, resetColumnsToDefault, hideGroupColumns } = useOptionWatchlistColumns();
+	const { watchlistColumns, defaultColumns, resetColumnsToDefault, hideSingleColumn, hideGroupColumns } =
+		useOptionWatchlistColumns();
 
 	const onShowFilters = () => {
 		const params: Partial<IOptionFiltersModal> = {};
@@ -99,7 +100,8 @@ const Toolbar = ({ setPriceBasis, filters, filtersCount }: ToolbarProps) => {
 				initialColumns,
 				columns,
 				title: t('option_page.manage_columns'),
-				onColumnChanged: hideGroupColumns,
+				onCategoryChanged: hideGroupColumns,
+				onColumnChanged: (col) => hideSingleColumn(Number(col.id), col.hidden),
 				onReset: () => resetColumnsToDefault(),
 			}),
 		);

@@ -148,7 +148,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				initialColumns: initialColumnsLongStraddle,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(columns as Array<IManageColumn<TLongStraddleColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsLongStraddle),
 			}),

@@ -1,9 +1,10 @@
+import KeyDown from '@/components/common/KeyDown';
 import { useAppDispatch } from '@/features/hooks';
 import { setConfirmModal } from '@/features/slices/modalSlice';
 import { type IConfirmModal } from '@/features/slices/types/modalSlice.interfaces';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Modal from '../Modal';
 
@@ -37,27 +38,10 @@ const Confirm = forwardRef<HTMLDivElement, ConfirmProps>(
 			onCloseModal();
 		};
 
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				onCloseModalAndNotify();
-				e.stopPropagation();
-				e.preventDefault();
-			} else if (e.key === 'Enter') {
-				onConfirm();
-				e.stopPropagation();
-				e.preventDefault();
-			}
+		const onKeyDown = (key: string) => {
+			if (key === 'Escape') onCloseModalAndNotify();
+			else if (key === 'Enter') onConfirm();
 		};
-
-		useEffect(() => {
-			const controller = new AbortController();
-
-			window.addEventListener('keydown', onKeyDown);
-
-			return () => {
-				controller.abort();
-			};
-		}, []);
 
 		return (
 			<Modal
@@ -80,25 +64,27 @@ const Confirm = forwardRef<HTMLDivElement, ConfirmProps>(
 						<p className='text-base text-gray-800'>{description}</p>
 					</div>
 
-					<div className='flex w-full justify-between gap-8 px-16'>
-						{onCancel && (
-							<button
-								onClick={onCloseModalAndNotify}
-								type='button'
-								className='h-40 flex-1 rounded text-lg btn-disabled-outline'
-							>
-								{t('common.cancel')}
-							</button>
-						)}
+					<KeyDown keys={['Enter', 'Escape']} onKeyDown={onKeyDown}>
+						<div className='flex w-full justify-between gap-8 px-16'>
+							{onCancel && (
+								<button
+									onClick={onCloseModalAndNotify}
+									type='button'
+									className='h-40 flex-1 rounded text-lg btn-disabled-outline'
+								>
+									{t('common.cancel')}
+								</button>
+							)}
 
-						<button
-							onClick={onConfirm}
-							type='button'
-							className={clsx('h-40 flex-1 rounded text-lg font-medium', `btn-${confirm.type}`)}
-						>
-							{confirm.label}
-						</button>
-					</div>
+							<button
+								onClick={onConfirm}
+								type='button'
+								className={clsx('h-40 flex-1 rounded text-lg font-medium', `btn-${confirm.type}`)}
+							>
+								{confirm.label}
+							</button>
+						</div>
+					</KeyDown>
 				</Div>
 			</Modal>
 		);

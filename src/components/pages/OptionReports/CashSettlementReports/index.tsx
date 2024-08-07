@@ -94,7 +94,7 @@ const CashSettlementReports = () => {
 				initialColumns: defaultCashSettlementReportsColumns,
 				columns: columnsVisibility,
 				title: t('cash_settlement_reports_page.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(
 						columns as Array<IManageColumn<CashSettlementReports.TCashSettlementReportsColumns>>,
 					),
@@ -112,7 +112,7 @@ const CashSettlementReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
+		<Main className='gap-16 bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<div className='flex-justify-between'>
 				<Tabs />
 				<Toolbar

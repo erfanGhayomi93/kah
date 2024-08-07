@@ -18,7 +18,7 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 				colId: 'id',
 				headerName: t('instant_deposit_reports_page.id_column'),
 				width: 32,
-				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				valueGetter: (_r, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			/* تاریخ */
@@ -26,7 +26,8 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 				colId: 'saveDate',
 				headerName: t('instant_deposit_reports_page.date_column'),
 				cellClass: 'ltr',
-				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'datetime'),
+				valueGetter: (row) => row.saveDate ?? '',
+				valueFormatter: ({ value }) => dateFormatter(value as string, 'datetime'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'saveDate')]?.hidden,
 			},
 			/* درگاه */
@@ -49,8 +50,8 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 			{
 				colId: 'amount',
 				headerName: t('instant_deposit_reports_page.price_column'),
-				// width: 220,
-				valueGetter: (row) => sepNumbers(String(row.amount)),
+				valueGetter: (row) => row.amount,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'amount')]?.hidden,
 			},
 			/* وضعیت */
@@ -58,18 +59,15 @@ const InstantDepositReportsTable = ({ reports, columnsVisibility }: InstantDepos
 				colId: 'state',
 				headerName: t('instant_deposit_reports_page.status_column'),
 				width: 200,
-				valueGetter: (row) => t('states.state_' + row.state),
+				valueGetter: (row) => row.state,
+				valueFormatter: ({ value }) => t('states.state_' + value),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'state')]?.hidden,
 			},
 		],
 		[columnsVisibility],
 	);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default InstantDepositReportsTable;

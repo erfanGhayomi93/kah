@@ -1,7 +1,6 @@
 import { CalendarSVG } from '@/components/icons';
 import dayjs from '@/libs/dayjs';
 import { sepNumbers } from '@/utils/helpers';
-import { letters } from '@/utils/num2persian';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -15,18 +14,6 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 	const calendar = useMemo(() => {
 		return dayjs(settlementDay.contractEndDate).calendar('jalali').format('YYYY/MM/DD');
 	}, [settlementDay]);
-
-	const [volume, volumeAsLetter] = useMemo(() => {
-		let num = settlementDay.tradeValue;
-		let index = 0;
-
-		while (num >= 1e3 && index < letters.length - 1) {
-			num /= 1e3;
-			index++;
-		}
-
-		return [`\u200e${num.toFixed(3).replace(/\.?0+$/, '')}`, `${letters[index]} ${t('common.toman')}`];
-	}, []);
 
 	return (
 		<div
@@ -55,11 +42,8 @@ const OptionInfo = ({ settlementDay }: OptionInfoProps) => {
 				</div>
 
 				<div className='flex items-center gap-8'>
-					<span className='text-base text-gray-700'>{t('old_option_chain.one_month_trade_volume')}:</span>
-					<span>
-						<span className='text-lg font-bold text-gray-800'>{volume}</span>
-						<span className='text-tiny text-gray-700'>{volumeAsLetter}</span>
-					</span>
+					<span className='text-base text-gray-700'>{t('option_chain.max_open_positions')}:</span>
+					<span className='font-medium text-gray-800'>{sepNumbers(String(settlementDay?.maxop ?? 0))}</span>
 				</div>
 			</div>
 		</div>

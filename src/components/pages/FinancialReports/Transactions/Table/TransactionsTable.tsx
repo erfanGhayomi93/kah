@@ -10,57 +10,62 @@ interface WatchlistTableProps {
 }
 
 const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) => {
-	const t = useTranslations();
+	const t = useTranslations('transactions_page');
 
 	const COLUMNS = useMemo<Array<IColDef<Reports.ITransactions>>>(
 		() => [
 			/* ردیف */
 			{
-				colId: 'id',
-				headerName: t('transactions_page.id_column'),
-				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
-				width: 40,
+				colId: 'symbolISIN',
+				headerName: t('id_column'),
+				maxWidth: 112,
+				minWidth: 112,
+				valueGetter: (_r, rowIndex) => rowIndex + 1,
 				sortable: false,
-				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'symbolISIN')]?.hidden,
 			},
-			/* زمان */
+
+			/* تاریخ */
 			{
-				colId: 'date',
-				headerName: t('transactions_page.date_column'),
+				colId: 'tradeDate',
+				headerName: t('date_column'),
+				maxWidth: 144,
+				minWidth: 144,
 				cellClass: 'ltr',
-				valueGetter: (row) => dateFormatter(row?.date ?? '', 'datetime'),
+				valueGetter: (row) => (row?.fcKey === '-1' ? '' : row?.tradeDate),
+				valueFormatter: ({ value }) => (!value ? '−' : dateFormatter(value as string, 'date')),
 				sortable: false,
-				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'date')]?.hidden,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'tradeDate')]?.hidden,
 			},
+
 			/* عملیات */
 			{
-				colId: 'transactionType',
-				headerName: t('transactions_page.operator_column'),
+				colId: 'turnOverTransactionType',
+				headerName: t('operation_column'),
+				maxWidth: 128,
+				valueGetter: (row) => row.turnOverTransactionType,
+				valueFormatter: ({ value }) => (value ? t('type_' + value) : '-'),
+				cellClass: ({ turnOverTransactionType }) =>
+					clsx({
+						'text-success-100': turnOverTransactionType === 'Buy',
+						'text-error-100': turnOverTransactionType === 'Sell',
+					}),
 				sortable: false,
-				valueGetter: (row) => t('transactions_page.operator_type_' + row?.transactionType),
-				cellClass: (row) => {
-					switch (row?.transactionType) {
-						case 'Buy':
-							return 'text-success-100';
-						case 'Sell':
-							return 'text-error-100';
-						default:
-							return 'text-text-100';
-					}
-				},
-				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'transactionType')]
-					.hidden,
+				hidden: columnsVisibility[
+					columnsVisibility.findIndex((column) => column.id === 'turnOverTransactionType')
+				]?.hidden,
 			},
+
 			/* شرح تراکنش */
 			{
 				colId: 'description',
-				headerName: t('transactions_page.description_column'),
-				sortable: false,
-				width: 200,
+				headerName: t('description_column'),
+				flex: 1,
+				cellClass: 'text-right',
 				valueGetter: (row) => row.description,
 				valueFormatter: ({ row }) =>
-					row.description === 'payfast-1561' ? (
-						t('transactions_page.payfast')
+					row.description === '-' ? (
+						row.turnOverTransactionTypeName
 					) : (
 						<span
 							dangerouslySetInnerHTML={{
@@ -68,64 +73,81 @@ const TransactionsTable = ({ reports, columnsVisibility }: WatchlistTableProps) 
 							}}
 						/>
 					),
+				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'description')]?.hidden,
 			},
+
 			/* بدهکار */
 			{
 				colId: 'debit',
-				headerName: t('transactions_page.debit_column'),
-				sortable: false,
-				cellClass: (row) =>
-					clsx(' ltr', {
-						'text-error-100': Number(row?.debit) < 0,
-					}),
+				headerName: t('withdraw_column'),
+				maxWidth: 160,
 				valueGetter: (row) => row.debit,
-				valueFormatter: ({ value }) =>
-					Number(value) >= 0 ? sepNumbers(String(value)) : `(${sepNumbers(String(value))})`,
+				valueFormatter: ({ value }) => {
+					const valueAsNumber = Number(value);
+					return valueAsNumber >= 0
+						? sepNumbers(String(valueAsNumber))
+						: `(${sepNumbers(String(valueAsNumber))})`;
+				},
+				cellClass: (row) =>
+					clsx('ltr', {
+						'text-error-100': row.debit < 0,
+					}),
+				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'debit')]?.hidden,
 			},
+
 			/* بستانکار */
 			{
 				colId: 'credit',
-				headerName: t('transactions_page.credit_column'),
-				sortable: false,
+				headerName: t('deposit_column'),
+				maxWidth: 160,
+				valueGetter: (row) => row.credit,
+				valueFormatter: ({ value }) => {
+					const valueAsNumber = Number(value);
+					return valueAsNumber >= 0
+						? sepNumbers(String(valueAsNumber))
+						: `(${sepNumbers(String(valueAsNumber))})`;
+				},
 				cellClass: (row) =>
 					clsx('ltr', {
-						'text-error-100': Number(row?.credit) < 0,
+						'text-error-100': row.remaining < 0,
 					}),
-				valueGetter: (row) =>
-					Number(row?.credit) >= 0 ? sepNumbers(String(row?.credit)) : `(${sepNumbers(String(row?.credit))})`,
+				sortable: false,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'credit')]?.hidden,
 			},
+
 			/* مانده */
 			{
 				colId: 'remaining',
-				headerName: t('transactions_page.remain_column'),
+				headerName: t('remain_column'),
+				maxWidth: 160,
+				valueGetter: (row) => row.remaining,
+				valueFormatter: ({ value }) => {
+					const valueAsNumber = Number(value);
+					return valueAsNumber > 0
+						? `+${sepNumbers(String(valueAsNumber))}`
+						: `(${sepNumbers(String(Math.abs(valueAsNumber)))})`;
+				},
+				cellClass: (row) => clsx('ltr', row.remaining > 0 ? 'text-success-100' : 'text-error-100'),
 				sortable: false,
-				cellClass: (row) => clsx('ltr', Number(row?.remaining) > 0 ? 'text-success-100' : 'text-error-100'),
-				valueGetter: (row) =>
-					Number(row?.remaining) >= 0
-						? sepNumbers(String(row?.remaining))
-						: `(${sepNumbers(String(row?.remaining))})`,
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'remaining')]?.hidden,
 			},
+
 			/* ایستگاه معاملاتی */
 			{
-				colId: 'station',
-				headerName: t('transactions_page.station_column'),
+				colId: 'branchName',
+				headerName: t('trades_situation'),
+				maxWidth: 160,
 				sortable: false,
-				valueGetter: (row) => row?.station,
-				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'station')]?.hidden,
+				valueGetter: (row) => row.branchName,
+				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'branchName')]?.hidden,
 			},
 		],
 		[columnsVisibility],
 	);
 
-	return (
-		<>
-			<LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />
-		</>
-	);
+	return <LightweightTable rowData={reports ?? []} columnDefs={COLUMNS} />;
 };
 
 export default TransactionsTable;

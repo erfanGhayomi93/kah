@@ -120,12 +120,10 @@ const Header = () => {
 	const userStatusIcon = useMemo(() => {
 		if (!userStatus?.remainStatus) return null;
 
-		if (userStatus.remainStatus === 'AtRisk')
-			return <ShieldInfoSVG fill='currentColor' fillOpacity='0.1' width='2.4rem' height='2.4rem' />;
-		if (userStatus.remainStatus === 'CallMargin')
-			return <ShieldXSVG fill='currentColor' fillOpacity='0.1' width='2.4rem' height='2.4rem' />;
+		if (userStatus.remainStatus === 'AtRisk') return <ShieldInfoSVG width='2.4rem' height='2.4rem' />;
+		if (userStatus.remainStatus === 'CallMargin') return <ShieldXSVG width='2.4rem' height='2.4rem' />;
 
-		return <ShieldCheckSVG fill='currentColor' fillOpacity='0.1' width='2.4rem' height='2.4rem' />;
+		return <ShieldCheckSVG width='2.4rem' height='2.4rem' />;
 	}, [userStatus]);
 
 	useEffect(() => {
@@ -133,9 +131,9 @@ const Header = () => {
 	}, [isLoggedIn]);
 
 	const COLORS: Record<Broker.TRemainStatus, string> = {
-		Normal: 'light-gray-600',
-		AtRisk: 'light-warning-100',
-		CallMargin: 'light-error-100',
+		Normal: 'text-gray-700',
+		AtRisk: 'text-warning-100',
+		CallMargin: 'text-error-100',
 	};
 
 	const customerTitle = userInfo?.customerTitle ?? t('common.app_user');
@@ -237,10 +235,7 @@ const Header = () => {
 						<span className='gap-8 flex-items-center'>
 							{t('header.status')}:
 							<span
-								className={clsx(
-									'h-32 gap-4 flex-items-center',
-									`text-${COLORS[userStatus.remainStatus]}`,
-								)}
+								className={clsx('h-32 gap-4 flex-items-center', `${COLORS[userStatus.remainStatus]}`)}
 							>
 								<span className='text-base text-gray-800'>
 									{t(`header.user_status_${userStatus.remainStatus}`)}

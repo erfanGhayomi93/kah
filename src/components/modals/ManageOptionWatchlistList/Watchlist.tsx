@@ -110,17 +110,16 @@ const Watchlist = ({
 					</button>
 				) : (
 					<>
-						<button onClick={onEdit} type='button' className={clsx(styles.btn, styles.visibility)}>
+						<div onClick={onEdit} className={clsx(styles.btn, styles.visibility)}>
 							<EditSVG width='18px' height='18px' />
-						</button>
+						</div>
 
-						<button onClick={onDelete} type='button' className={clsx(styles.btn, styles.visibility)}>
+						<div onClick={onDelete} className={clsx(styles.btn, styles.visibility)}>
 							<TrashSVG width='18px' height='18px' />
-						</button>
+						</div>
 
-						<button
+						<div
 							onClick={onToggleVisibility}
-							type='button'
 							className={clsx(styles.btn, styles.visibility, isHidden && styles.active)}
 						>
 							{isHidden ? (
@@ -128,7 +127,7 @@ const Watchlist = ({
 							) : (
 								<EyeSVG width='24px' height='24px' />
 							)}
-						</button>
+						</div>
 					</>
 				)}
 			</div>

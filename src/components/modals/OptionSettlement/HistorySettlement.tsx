@@ -63,10 +63,10 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 						'text-error-100': row.side === 'Sell',
 					}),
 			},
-			/* تاریخ تسویه نقدی */
+			/* تاریخ */
 			{
 				colId: 'cashSettlementDate',
-				headerName: t('cash_settlement_reports_page.cash_date_column'),
+				headerName: t('cash_settlement_reports_page.date'),
 				valueGetter: (row) => (row.cashSettlementDate ? dateFormatter(row.cashSettlementDate, 'date') : '-'),
 			},
 			/* وضعیت */
@@ -81,7 +81,7 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 	);
 
 	return (
-		<div className='flex h-full pr-24 flex-column'>
+		<div className='flex h-full gap-8 flex-column'>
 			<div className='flex-1 rounded-sm p-8 shadow-sm'>
 				<LightweightTable
 					rowData={(isCash ? cashHistory?.result : physicalHistory?.result) || []}
@@ -91,7 +91,7 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 			</div>
 
 			<Link
-				className='h-48 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
+				className='h-40 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
 				href={isCash ? '/option-reports/cash-settlement' : '/option-reports/physical-settlement'}
 				onClick={() => onCloseModal()}
 			>

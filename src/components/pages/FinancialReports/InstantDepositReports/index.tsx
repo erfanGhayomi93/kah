@@ -119,7 +119,7 @@ const InstantDepositReports = () => {
 				initialColumns: defaultInstantDepositReportsColumn,
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(
 						columns as Array<IManageColumn<InstantDepositReports.TInstantDepositReportsColumns>>,
 					),
@@ -137,7 +137,7 @@ const InstantDepositReports = () => {
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 
 	return (
-		<Main className='darkBlue:bg-gray-50 gap-16 bg-white dark:bg-gray-50'>
+		<Main className='gap-16 bg-white darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<div className='flex-justify-between'>
 				<Tabs />
 				<Toolbar

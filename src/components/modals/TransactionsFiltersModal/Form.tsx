@@ -1,12 +1,11 @@
 import ipcMain from '@/classes/IpcMain';
 import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
-import InputLegend from '@/components/common/Inputs/InputLegend';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
 import { useAppDispatch } from '@/features/hooks';
 import { setTransactionsFiltersModal } from '@/features/slices/modalSlice';
-import { calculateDateRange, convertStringToInteger } from '@/utils/helpers';
+import { calculateDateRange } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
@@ -110,30 +109,12 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 				<Select<Transaction.TransactionGroupModes>
 					onChange={(option) => setFilterValue('groupMode', option)}
-					options={['Flat', 'GreedyGrouped']}
+					options={['Flat', 'Grouped']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(`transactions_page.display_type_group_${option}`)}</span>}
 					placeholder={t('transactions_page.display_type_placeholder_filter')}
 					defaultValue={filters.groupMode}
 				/>
-
-				<div className=' gap-32 flex-justify-start'>
-					<InputLegend
-						value={filters.fromPrice}
-						onChange={(v) => setFilterValue('fromPrice', Number(convertStringToInteger(v)))}
-						placeholder={t('transactions_page.from_price_type_placeholder_filter')}
-						prefix={t('common.rial')}
-						maxLength={10}
-					/>
-
-					<InputLegend
-						value={filters.toPrice}
-						onChange={(v) => setFilterValue('toPrice', Number(convertStringToInteger(v)))}
-						placeholder={t('transactions_page.to_price_type_placeholder_filter')}
-						prefix={t('common.rial')}
-						maxLength={10}
-					/>
-				</div>
 			</div>
 
 			<button type='submit' className='h-40 flex-1 rounded px-56 py-8 font-medium btn-primary'>

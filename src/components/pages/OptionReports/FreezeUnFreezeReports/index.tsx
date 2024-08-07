@@ -110,7 +110,7 @@ const FreezeUnFreezeReports = () => {
 				initialColumns: defaultFreezeUnFreezeReportsColumns,
 				columns: columnsVisibility,
 				title: t('freeze_and_unfreeze_reports_page.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(
 						columns as Array<IManageColumn<FreezeUnFreezeReports.TFreezeUnFreezeReportsColumns>>,
 					),
