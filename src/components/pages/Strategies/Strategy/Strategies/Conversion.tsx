@@ -163,7 +163,8 @@ const Conversion = (strategy: ConversionProps) => {
 				initialColumns: initialColumnsConversion,
 				columns: columnsVisibility,
 				title: t('strategies.manage_columns'),
-				onColumnChanged: (columns) => setColumnsVisibility(columns as Array<IManageColumn<TConversionColumns>>),
+				onColumnsChanged: (columns) =>
+					setColumnsVisibility(columns as Array<IManageColumn<TConversionColumns>>),
 				onReset: () => setColumnsVisibility(initialColumnsConversion),
 			}),
 		);

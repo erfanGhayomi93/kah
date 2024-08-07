@@ -20,4 +20,20 @@ declare interface PaginationParams {
 	hasNextPage: boolean;
 }
 
+declare interface TransactionPaginationParams {
+	succeeded: boolean;
+	errors: string[];
+	customerWltRemain: number;
+	customerBond: number;
+	customerBondProfit: number;
+	customerLoan: number;
+	customerLoanInterest: number;
+	customerLastRemain: number;
+	result: Reports.ITransactions[];
+	pageSize: number;
+	pageNumber: number;
+	offset: number;
+	total: number;
+}
+
 declare type APIEndpoints = Record<'oauth' | 'rlc' | 'pushengine', string>;

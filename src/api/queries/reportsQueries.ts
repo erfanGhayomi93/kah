@@ -17,7 +17,7 @@ import { createBrokerQuery, setHours, toISOStringWithoutChangeTime } from '@/uti
 import brokerAxios from '../brokerAxios';
 
 export const useTransactionsReportsQuery = createBrokerQuery<
-	PaginationResponse<Reports.ITransactions[]> | null,
+	TransactionPaginationParams | null,
 	['transactionsReport', Transaction.ITransactionsFilters]
 >({
 	staleTime: 18e5,
@@ -27,31 +27,26 @@ export const useTransactionsReportsQuery = createBrokerQuery<
 			const url = getBrokerURLs(store.getState());
 			if (!url) return null;
 
-			const [
-				,
-				{ fromDate, fromPrice, groupMode, pageNumber, pageSize, symbol, toDate, toPrice, transactionType },
-			] = queryKey;
+			const [, { fromDate, groupMode, pageNumber, pageSize, symbol, toDate, transactionType }] = queryKey;
 
 			const params: Record<string, string | string[]> = {
-				'QueryOption.PageNumber': String(pageNumber),
-				'QueryOption.PageSize': String(pageSize),
-				fromDate: toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
-				toDate: toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
-				GroupMode: groupMode,
+				PageNumber: String(pageNumber),
+				PageSize: String(pageSize),
+				DateFrom: toISOStringWithoutChangeTime(setHours(new Date(fromDate), 0, 0)),
+				DateTo: toISOStringWithoutChangeTime(setHours(new Date(toDate), 23, 59, 59)),
+				groupMode,
 			};
 
-			if (symbol) params.symbolISIN = symbol.symbolISIN;
-			if (fromPrice) params.FromPrice = String(fromPrice);
-			if (toPrice) params.ToPrice = String(toPrice);
+			if (symbol) params.SymbolISIN = symbol.symbolISIN;
 
 			if (Array.isArray(transactionType) && transactionType.length > 0) {
-				params.TransactionType = [];
+				params.TransactionTypeInputs = [];
 				transactionType.forEach((type) => {
-					(params.TransactionType as string[]).push(type.id);
+					(params.TransactionTypeInputs as string[]).push(type.id);
 				});
 			}
 
-			const response = await brokerAxios.get(url.AccountTransactionsExcel, {
+			const response = await brokerAxios.get<TransactionPaginationParams>(url.AccountTransactionsGet, {
 				params,
 				signal,
 			});

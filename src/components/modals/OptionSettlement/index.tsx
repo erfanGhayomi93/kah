@@ -1,4 +1,3 @@
-import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import { ArrowRightSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setOptionSettlementModal } from '@/features/slices/modalSlice';
@@ -6,18 +5,9 @@ import { type IOptionSettlementModal } from '@/features/slices/types/modalSlice.
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import Body from './Body';
 import { HistorySettlement } from './HistorySettlement';
-
-const Div = styled.div`
-	width: 420px;
-	min-height: 430px;
-	max-height: 550px;
-	display: flex;
-	flex-direction: column;
-`;
 
 export type TModePage = 'primary' | 'secondary' | 'tertiary';
 
@@ -28,7 +18,7 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 
 	const { activeTab, data } = props;
 
-	const [isShowExpanded, setIsShowExpanded] = useState(false);
+	const [isExpand, setIsExpand] = useState(false);
 
 	const [modePage, setModePage] = useState<TModePage>('primary');
 
@@ -39,7 +29,7 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 	const dispatch = useAppDispatch();
 
 	const onExpanded = () => {
-		setIsShowExpanded((prev) => !prev);
+		setIsExpand((prev) => !prev);
 	};
 
 	const onCloseModal = () => {
@@ -106,11 +96,13 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 				</Header>
 			)}
 
-			<div className='darkBlue:bg-gray-50 flex bg-white p-24 dark:bg-gray-50'>
-				<Div
-					className={clsx('flex-column', {
-						'border-l border-gray-200 pl-24 pr-16': isShowExpanded,
-					})}
+			<div
+				style={{ width: isExpand ? '808px' : '400px', height: '574px' }}
+				className='flex bg-white py-24 transition-width darkness:bg-gray-50'
+			>
+				<div
+					style={{ flex: '0 0 400px' }}
+					className={clsx('h-full flex-column', isExpand && 'border-l border-gray-200 px-24')}
 				>
 					<Body
 						onCloseModal={onCloseModal}
@@ -120,15 +112,13 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 						tabSelected={tabSelected}
 						setTabSelected={setTabSelected}
 					/>
-				</Div>
+				</div>
 
-				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
-					{isShowExpanded && (
-						<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
-							<HistorySettlement tabSelected={tabSelected} onCloseModal={onCloseModal} />
-						</Div>
-					)}
-				</AnimatePresence>
+				{isExpand && (
+					<div className='darkness::bg-gray-50 flex-1 bg-white px-24 flex-column'>
+						<HistorySettlement tabSelected={tabSelected} onCloseModal={onCloseModal} />
+					</div>
+				)}
 			</div>
 		</Modal>
 	);

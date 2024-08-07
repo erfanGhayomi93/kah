@@ -3,6 +3,8 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useLayoutEffect, useMemo } from 'react';
 import DepositWithReceiptReportsTable from './DepositWithReceiptReportsTable';
 
@@ -17,8 +19,11 @@ interface TableProps {
 }
 
 const Table = ({ filters, setFilters, columnsVisibility, setFieldsValue }: TableProps) => {
+	const brokerUrls = useAppSelector(getBrokerURLs);
+
 	const { data: depositWithReceiptReportsData, isLoading } = useDepositWithReceiptReports({
 		queryKey: ['depositWithReceiptReports', filters],
+		enabled: Boolean(brokerUrls),
 	});
 
 	const onFiltersChanged = (

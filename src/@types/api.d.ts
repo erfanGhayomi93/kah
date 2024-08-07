@@ -289,7 +289,7 @@ declare namespace Option {
 		tradeValue: number;
 		openPosition: number;
 		maxCOP: number;
-		maxmop: number;
+		maxop: number;
 		maxcaop: number;
 	}
 
@@ -2128,14 +2128,22 @@ declare namespace Reports {
 		status: TstatusSettlement;
 	}
 	export interface ITransactions {
-		debit: string;
-		credit: string;
-		remaining: string;
+		tradeDate: string;
+		amount: number;
+		credit: number;
+		debit: number;
+		remaining: number;
+		branchName: string;
 		description: string;
-		date: string;
-		station: string;
-		symbolIsin: string;
-		transactionType: 'Withdrawal' | 'Deposit' | 'Charge' | 'Buy' | 'Sell';
+		quantity: number;
+		price: number;
+		symbolTitle: string;
+		branchId: number;
+		turnOverTransactionType: string;
+		turnOverTransactionTypeName: string;
+		symbolISIN: string;
+		rowOrder: string;
+		fcKey: string;
 	}
 
 	export interface IInstantDeposit {

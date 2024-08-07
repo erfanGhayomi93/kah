@@ -8,7 +8,7 @@ import { getOptionChainColumns, setOptionChainColumns } from '@/features/slices/
 import { setManageColumnsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
-import { sepNumbers } from '@/utils/helpers';
+import { persianNumFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
@@ -40,9 +40,12 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 		if (inputs.baseSymbol) dispatch(setSymbolInfoPanel(inputs.baseSymbol.symbolISIN));
 	};
 
-	const totalOpenPositionCount = useMemo(() => {
-		if (!Array.isArray(settlementDays)) return 0;
-		return settlementDays.reduce((total, current) => total + current.openPosition, 0);
+	const [totalOpenPositionCount, totalValue] = useMemo(() => {
+		if (!Array.isArray(settlementDays)) return [0, 0];
+		return settlementDays.reduce(
+			(total, current) => [total[0] + current.openPosition, total[1] + current.tradeValue],
+			[0, 0],
+		);
 	}, [settlementDays]);
 
 	const manageColumns = () => {
@@ -51,7 +54,7 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 				initialColumns: initialColumnsOptionChain,
 				columns: optionChainColumns,
 				title: t('option_chain.manage_columns'),
-				onColumnChanged: (columns) => dispatch(setOptionChainColumns(columns)),
+				onColumnsChanged: (columns) => dispatch(setOptionChainColumns(columns)),
 				onReset: () => dispatch(setOptionChainColumns(initialColumnsOptionChain)),
 			}),
 		);
@@ -99,12 +102,18 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 			<div className='gap-8 flex-items-center'>
 				{Boolean(inputs.baseSymbol) && (
 					<>
-						<div className='h-40 rounded bg-gray-100 px-8 flex-items-center'>
+						<div className='h-40 gap-24 rounded bg-gray-100 px-8 flex-items-center'>
 							<span className='gap-8 whitespace-nowrap text-base text-gray-700 flex-items-center'>
-								{t('option_chain.total_open_contracts')}:
+								{t('option_chain.total_open_contracts') + ' ' + inputs.baseSymbol?.symbolTitle}:
 								<span className='font-medium text-gray-800'>
 									{sepNumbers(String(totalOpenPositionCount))}
 								</span>
+							</span>
+
+							<span className='gap-8 whitespace-nowrap text-base text-gray-700 flex-items-center'>
+								{t('option_chain.value')}:
+								<span className='font-medium text-gray-800'>{persianNumFormatter(totalValue)}</span>
+								{totalValue > 0 && t('common.rial')}
 							</span>
 						</div>
 

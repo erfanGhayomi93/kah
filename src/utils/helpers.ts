@@ -56,6 +56,37 @@ export const numFormatter = (num: number, formatNavigateNumber = true) => {
 	}
 };
 
+export const persianNumFormatter = (num: number, formatNavigateNumber = true) => {
+	try {
+		if (isNaN(num)) return '−';
+
+		const suffixes = ['', ' هزار', ' میلیون', ' میلیارد', ' همت'];
+		const divisor = 1e3;
+		let index = 0;
+		let isNegative = false;
+
+		if (num < 0) {
+			isNegative = true;
+			num = Math.abs(num);
+		}
+
+		while (num >= divisor && index < suffixes.length - 1) {
+			num /= divisor;
+			index++;
+		}
+
+		let formattedNum = num.toFixed(3).replace(/\.?0+$/, '') + suffixes[index];
+
+		if (isNegative) {
+			formattedNum = formatNavigateNumber ? `(${formattedNum})` : `-${formattedNum}`;
+		}
+
+		return `\u200e${formattedNum}`;
+	} catch (e) {
+		return '−';
+	}
+};
+
 export const getDirection = (lang: string): 'rtl' | 'ltr' => {
 	if (['fa', 'ar', 'arc', 'ks', 'ku', 'ps'].includes(lang)) return 'rtl';
 	return 'ltr';

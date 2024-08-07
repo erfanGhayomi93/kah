@@ -118,7 +118,7 @@ const DepositWithReceiptReports = () => {
 				initialColumns: defaultDepositWithReceiptReportsColumn,
 				columns: columnsVisibility,
 				title: t('instant_deposit_reports_page.manage_columns'),
-				onColumnChanged: (columns) =>
+				onColumnsChanged: (columns) =>
 					setColumnsVisibility(
 						columns as Array<IManageColumn<DepositWithReceiptReports.TDepositWithReceiptColumns>>,
 					),

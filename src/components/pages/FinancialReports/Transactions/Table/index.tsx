@@ -3,9 +3,12 @@ import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import Pagination from '@/components/common/Pagination';
+import Separator from '@/components/common/Separator';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import TransactionsTable from './TransactionsTable';
 
 interface TableProps {
@@ -21,15 +24,18 @@ interface TableProps {
 const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: TableProps) => {
 	const t = useTranslations();
 
+	const brokerUrls = useAppSelector(getBrokerURLs);
+
 	const { data: transactionsReportData, isLoading } = useTransactionsReportsQuery({
 		queryKey: ['transactionsReport', filters],
+		enabled: Boolean(brokerUrls),
 	});
 
 	const onFiltersChanged = (newFilters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>) => {
 		setFieldsValue(newFilters);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		ipcMain.handle('set_transactions_filters', onFiltersChanged);
 
 		return () => {
@@ -45,54 +51,53 @@ const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: Ta
 		};
 
 		if (!transactionsReportData?.result) return response;
-		const lastData = transactionsReportData.result.splice(-2, 2);
 
-		if (lastData[0]) response.lastTrades = Number(lastData[0].remaining) ?? 0;
-		if (lastData[1]) response.finalRemain = Number(lastData[1].remaining) ?? 0;
+		response.lastTrades = transactionsReportData.customerWltRemain;
+		response.finalRemain = transactionsReportData.customerLastRemain;
 		response.reports = transactionsReportData.result;
 
 		return response;
 	}, [transactionsReportData]);
 
 	const dataIsEmpty = reports.length === 0;
+	const total = transactionsReportData?.total ?? 0;
+	const pageSize = filters.pageSize;
+	const pageNumber = filters.pageNumber;
+	const totalPages = Math.ceil(total / pageSize);
+	const hasNextPage = totalPages > pageNumber;
+	const hasPreviousPage = pageNumber > 1;
 
 	return (
-		<>
-			<div
-				className='overflow-hidden rounded flex-column'
-				style={{
-					height: 'calc(100dvh - 23.2rem)',
-					transition: 'height 250ms ease',
-				}}
-			>
-				<TransactionsTable columnsVisibility={columnsVisibility} reports={reports} />
-			</div>
+		<div className='relative flex-1 overflow-hidden flex-column'>
+			<TransactionsTable columnsVisibility={columnsVisibility} reports={reports} />
 
-			<div className='py-22 flex-justify-between'>
+			<div className='border-t border-t-gray-200 py-16 flex-justify-between'>
 				<div className='gap-40 text-base flex-justify-start'>
 					<div className='gap-8 flex-justify-start'>
-						<span className='text-gray-700 font-medium'>{t('transactions_page.final_remain')}: </span>
+						<span className='font-medium text-gray-700'>{t('transactions_page.final_remain')}: </span>
 						<div className='gap-4 flex-justify-start'>
-							<span className='text-gray-800 font-medium'>{`\u200E ${sepNumbers(String(finalRemain))}`}</span>
+							<span className='font-medium text-gray-800'>{`\u200E ${sepNumbers(String(finalRemain))}`}</span>
 							<span className=' text-gray-500'>{t('common.rial')}</span>
 						</div>
 					</div>
-					<div style={{ minWidth: '1px', minHeight: '16px' }} className='bg-gray-500' />
+
+					<Separator />
+
 					<div className='gap-8 flex-justify-start'>
-						<span className='text-gray-700 font-medium'>{t('transactions_page.last_remain')}: </span>
+						<span className='font-medium text-gray-700'>{t('transactions_page.last_remain')}: </span>
 						<div className='gap-4 flex-justify-start'>
-							<span className='text-gray-800 font-medium'>{`\u200E ${sepNumbers(String(lastTrades))}`}</span>
+							<span className='font-medium text-gray-800'>{`\u200E ${sepNumbers(String(lastTrades))}`}</span>
 							<span className=' text-gray-500'>{t('common.rial')}</span>
 						</div>
 					</div>
 				</div>
 
 				<Pagination
-					hasNextPage={transactionsReportData?.hasNextPage ?? false}
-					hasPreviousPage={transactionsReportData?.hasPreviousPage ?? false}
-					totalPages={transactionsReportData?.totalPages ?? 0}
-					totalCount={transactionsReportData?.totalCount ?? 0}
-					currentPage={filters?.pageNumber ?? 1}
+					hasNextPage={hasNextPage}
+					hasPreviousPage={hasPreviousPage}
+					totalPages={Math.ceil(total / pageSize)}
+					totalCount={transactionsReportData?.total ?? 0}
+					currentPage={pageNumber ?? 1}
 					pageSize={filters?.pageSize ?? 0}
 					onPageChange={(value) => setFieldValue('pageNumber', value)}
 					onPageSizeChange={(value) => setFieldValue('pageSize', value)}
@@ -105,12 +110,13 @@ const Table = ({ filters, setFieldValue, setFieldsValue, columnsVisibility }: Ta
 					<Loading />
 				</div>
 			)}
+
 			{dataIsEmpty && !isLoading && (
 				<div className='absolute center'>
 					<NoData />
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
 

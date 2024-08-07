@@ -26,8 +26,6 @@ const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersM
 		date: initialModalFilters?.date ?? initialTransactionsFilters.date,
 		fromDate: initialModalFilters?.fromDate ?? initialTransactionsFilters.fromDate,
 		toDate: initialModalFilters?.toDate ?? initialTransactionsFilters.toDate,
-		fromPrice: initialModalFilters?.fromPrice ?? initialTransactionsFilters.fromPrice,
-		toPrice: initialModalFilters?.toPrice ?? initialTransactionsFilters.toPrice,
 		groupMode: initialModalFilters?.groupMode ?? initialTransactionsFilters.groupMode,
 		transactionType: initialModalFilters?.transactionType ?? initialTransactionsFilters.transactionType,
 	});
@@ -42,7 +40,7 @@ const TransactionsFiltersModal = forwardRef<HTMLDivElement, TransactionsFiltersM
 
 	return (
 		<Modal transparent top='14%' onClose={onCloseModal} {...props} ref={ref}>
-			<Div className='darkBlue:bg-gray-50 gap-40 bg-white flex-column dark:bg-gray-50'>
+			<Div className='gap-40 bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Header label={t('transactions_page.filter_title_modal')} onClose={onCloseModal} onClear={onClear} />
 				<Form filters={filters} setFilters={setFilters} />
 			</Div>

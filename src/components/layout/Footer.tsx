@@ -50,18 +50,15 @@ const Footer = () => {
 		<div className='h-48 flex-column'>
 			<Orders />
 
-			<footer
-				style={{ boxShadow: '4px 0 4px rgba(0, 0, 0, 0.25)' }}
-				className='darkness:bg-gray-50 z-10 h-48 bg-white pl-24 flex-justify-between'
-			>
-				<div className='h-full flex-justify-start'>
+			<footer className='z-10 h-48 bg-white pl-24 flex-justify-between darkness:bg-gray-50'>
+				<div className='h-full pr-16 flex-justify-start'>
 					{isLoggedIn ? (
 						<button
 							type='button'
 							onClick={() => dispatch(setOrdersIsExpand(!ordersIsExpand))}
 							className={clsx(
-								'h-full gap-8 px-16 text-base text-gray-800 transition-colors flex-justify-center',
-								ordersIsExpand ? 'bg-secondary-200' : 'bg-gray-100',
+								'h-32 gap-8 rounded px-16 text-base text-gray-800 transition-colors flex-justify-center',
+								ordersIsExpand ? 'bg-secondary-200' : 'bg-gray-300',
 							)}
 						>
 							{t('orders')}
@@ -74,7 +71,7 @@ const Footer = () => {
 						<a
 							target='_blank'
 							href='https://ramandtech.com/'
-							className='pr-24 text-tiny font-normal text-gray-800 transition-colors hover:text-secondary-300'
+							className='text-tiny font-normal text-gray-800 transition-colors hover:text-secondary-300'
 						>
 							{t('copyright')}
 						</a>

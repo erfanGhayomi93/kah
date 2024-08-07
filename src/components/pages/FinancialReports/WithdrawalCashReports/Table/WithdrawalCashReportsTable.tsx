@@ -82,7 +82,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 				colId: 'id',
 				headerName: t('withdrawal_cash_reports_page.id_column'),
 				width: 32,
-				valueGetter: (row, rowIndex) => String((rowIndex ?? 0) + 1),
+				valueGetter: (_r, rowIndex) => String((rowIndex ?? 0) + 1),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'id')]?.hidden,
 			},
 			/* زمان درخواست */
@@ -90,14 +90,16 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 				colId: 'saveDate',
 				headerName: t('withdrawal_cash_reports_page.date_column'),
 				cellClass: 'ltr',
-				valueGetter: (row) => dateFormatter(row.saveDate ?? '', 'datetime'),
+				valueGetter: (row) => row.saveDate,
+				valueFormatter: ({ value }) => dateFormatter(value as string, 'datetime'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'saveDate')]?.hidden,
 			},
 			/* موعد پرداخت */
 			{
 				colId: 'requestDate',
 				headerName: t('withdrawal_cash_reports_page.time_column'),
-				valueGetter: (row) => dateFormatter(row.requestDate ?? '', 'date'),
+				valueGetter: (row) => row.requestDate,
+				valueFormatter: ({ value }) => dateFormatter(value as string, 'date'),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestDate')]?.hidden,
 			},
 			/* بانک */
@@ -112,7 +114,8 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 			{
 				colId: 'requestAmount',
 				headerName: t('withdrawal_cash_reports_page.amount_column'),
-				valueGetter: (row) => sepNumbers(String(row.requestAmount)),
+				valueGetter: (row) => row.requestAmount,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'requestAmount')]
 					?.hidden,
 			},

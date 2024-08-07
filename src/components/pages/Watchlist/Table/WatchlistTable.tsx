@@ -200,7 +200,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: Wa
 				deletable: id > -1,
 			},
 		}),
-		[id],
+		[id, watchlistCount],
 	);
 
 	const COLUMNS = useMemo<Array<ColDef<Option.Root>>>(
@@ -704,7 +704,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: Wa
 		if (!col) return;
 
 		col.setColDef(actionColumn, actionColumn, 'api');
-	}, [isLoggedIn, watchlistCount, id]);
+	}, [actionColumn]);
 
 	useEffect(() => {
 		const gridApi = gridRef.current;

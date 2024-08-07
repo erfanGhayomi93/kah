@@ -37,7 +37,9 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 			title,
 			stream = true,
 			columns: listOfColumns,
-			onColumnChanged: onColumnChangedCallBack,
+			onCategoryChanged,
+			onColumnChanged,
+			onColumnsChanged,
 			onReset,
 			...props
 		},
@@ -74,7 +76,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 			}
 		};
 
-		const onColumnChanged = (updatedCol: IManageColumn) => {
+		const onChangeColumn = (updatedCol: IManageColumn) => {
 			try {
 				const newColumns = columns.map((col) => ({
 					...col,
@@ -82,23 +84,33 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 				}));
 
 				setColumns(newColumns);
-				if (stream) onColumnChangedCallBack(newColumns);
+
+				onColumnChanged?.(updatedCol);
+				if (stream) onColumnsChanged?.(newColumns);
 			} catch (e) {
 				//
 			}
 		};
 
 		const onAllColumnSwitch = (show: boolean, tag: string) => {
-			const newColumns = columns.map((col) => {
-				if (col.disabled || tag !== col.tag) return col;
-				return {
-					...col,
-					hidden: !show,
-				};
-			});
+			try {
+				const categoryColumns: IManageColumn[] = [];
+				const newColumns = columns.map((col) => {
+					if (col.disabled || tag !== col.tag) return col;
 
-			setColumns(newColumns);
-			onColumnChangedCallBack(newColumns);
+					const newCol = { ...col, hidden: !show };
+					categoryColumns.push(newCol);
+
+					return newCol;
+				});
+
+				setColumns(newColumns);
+
+				onCategoryChanged?.(categoryColumns);
+				if (stream) onColumnsChanged?.(newColumns);
+			} catch (e) {
+				//
+			}
 		};
 
 		const onClose = () => {
@@ -106,10 +118,14 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 		};
 
 		const onSubmit = (e: React.FormEvent) => {
-			e.preventDefault();
+			try {
+				e.preventDefault();
 
-			onColumnChangedCallBack(columns);
-			onClose();
+				onColumnsChanged?.(columns);
+				onClose();
+			} catch (e) {
+				//
+			}
 		};
 
 		return (
@@ -134,7 +150,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 								tag={tag}
 								columns={dataMapper[tag]}
 								onAllColumnSwitch={onAllColumnSwitch}
-								onColumnSwitch={onColumnChanged}
+								onColumnSwitch={onChangeColumn}
 							/>
 						))}
 					</div>
