@@ -168,6 +168,7 @@ const config: Config = {
 			transform: 'transform',
 			width: 'width',
 			height: 'height',
+			size: 'width, height',
 		},
 
 		transitionDuration: {

@@ -57,6 +57,7 @@ interface LightweightTableProps<T extends unknown[], K extends unknown> {
 	rowHeight?: number;
 	headerHeight?: number;
 	reverseColors?: boolean;
+	transparent?: boolean;
 	onRowClick?: (row: K, e: React.MouseEvent) => void;
 	onHeaderClick?: (column: IColDef<K>, e: React.MouseEvent) => void;
 }
@@ -68,6 +69,7 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 	reverseColors,
 	headerClass,
 	cellClass,
+	transparent = false,
 	rowHeight = 48,
 	headerHeight = 48,
 	onRowClick,
@@ -143,7 +145,13 @@ const LightweightTable = <T extends unknown[], K = ElementType<T>>({
 	return (
 		<div className={styles.wrapper}>
 			<table
-				className={clsx('lightweight-table', styles.table, reverseColors && styles.reverseColors, className)}
+				className={clsx(
+					'lightweight-table',
+					styles.table,
+					reverseColors && styles.reverseColors,
+					transparent && styles.transparent,
+					className,
+				)}
 			>
 				<thead className={styles.thead}>
 					<tr style={{ height: `${headerHeight}px` }} className={styles.tr}>

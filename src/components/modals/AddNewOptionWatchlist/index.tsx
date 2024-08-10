@@ -33,7 +33,7 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 	});
 
 	const { mutate: createNewWatchlist, isPending } = useCreateCustomWatchlistMutation({
-		onSuccess() {
+		onSuccess: () => {
 			refetchWatchlistList();
 
 			toast.success(t('alerts.watchlist_created_successfully'), {
@@ -42,10 +42,17 @@ const AddNewOptionWatchlist = forwardRef<HTMLDivElement, AddNewOptionWatchlistPr
 
 			onCloseModal();
 		},
-		onError() {
-			toast.error(t('alerts.watchlist_created_failed'), {
-				toastId: 'watchlist_created_failed',
-			});
+		onError: (e) => {
+			toast.error(
+				t(
+					e.message === 'Duplicate Name'
+						? 'alerts.watchlist_name_duplicated'
+						: 'alerts.watchlist_created_failed',
+				),
+				{
+					toastId: 'watchlist_created_failed',
+				},
+			);
 		},
 	});
 

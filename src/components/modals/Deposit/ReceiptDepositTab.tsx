@@ -152,8 +152,8 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 	};
 
 	return (
-		<div className='mt-24'>
-			<form onSubmit={handleSubmit(onSubmit)}>
+		<form className='h-full justify-between flex-column' onSubmit={handleSubmit(onSubmit)}>
+			<div className='flex-column '>
 				<div>
 					<Input
 						{...register('receipt', {
@@ -220,7 +220,7 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 					</div>
 				</div>
 
-				<div className='my-24  border border-dashed border-gray-200' onClick={() => inputRef.current?.click()}>
+				<div className='my-24 border border-dashed border-gray-200' onClick={() => inputRef.current?.click()}>
 					<input
 						ref={inputRef}
 						onChange={onUploadFile}
@@ -232,12 +232,14 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 					{!watch('image') ? (
 						<div
 							style={{ height: '15.3rem' }}
-							className='flex cursor-pointer items-center gap-y-8 p-24 flex-column'
+							className='flex cursor-pointer items-center gap-y-8 px-16 py-24 flex-column'
 						>
 							<FileTextSVG />
 
 							<p className='text-tiny text-gray-700'>
-								تصویر فیش بانکی خود را اینجا رها کنید یا بارگذاری کنید(اختیاری)
+								{t.rich('deposit_modal.receipt_image_description', {
+									chunk: (v) => <span className='text-info-100'>{v}</span>,
+								})}
 							</p>
 
 							<p className='text-tiny text-gray-500'>{t('deposit_modal.receipt_upload_size')}</p>
@@ -256,16 +258,14 @@ export const ReceiptDepositTab: FC<ReceiptDepositTabProps> = ({ dataEdit }) => {
 						</div>
 					)}
 				</div>
+			</div>
 
-				<div>
-					<button
-						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
-						type='submit'
-					>
-						{t('deposit_modal.state_Request')}
-					</button>
-				</div>
-			</form>
-		</div>
+			<button
+				type='submit'
+				className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
+			>
+				{t('common.create_request')}
+			</button>
+		</form>
 	);
 };

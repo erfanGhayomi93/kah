@@ -42,7 +42,7 @@ export const LiveDepositTab = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmitForm)} className='flex h-full'>
-			<div className='mt-24 flex flex-1 flex-col justify-between'>
+			<div className='flex flex-1 flex-col justify-between'>
 				<Controller
 					name='value'
 					defaultValue=''
@@ -68,7 +68,7 @@ export const LiveDepositTab = () => {
 					)}
 				/>
 
-				<button className='h-48 w-full rounded btn-success' type='submit'>
+				<button className='h-40 w-full rounded btn-success' type='submit'>
 					{t('deposit_modal.submitDeposit')}
 				</button>
 			</div>

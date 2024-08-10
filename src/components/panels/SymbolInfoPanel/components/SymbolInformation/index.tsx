@@ -1,8 +1,5 @@
-import { useOptionOrdersQuery } from '@/api/queries/brokerPrivateQueries';
-import Button from '@/components/common/Button';
 import SymbolContextMenu from '@/components/common/Symbol/SymbolContextMenu';
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
-import Tooltip from '@/components/common/Tooltip';
 import { GalaxySVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
@@ -12,7 +9,6 @@ import { Link } from '@/navigation';
 import { getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo } from 'react';
 import SymbolSearchToggler from './SymbolSearchToggler';
 
 interface SymbolInformationProps {
@@ -44,15 +40,6 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 
 	const { addBuySellModal } = useTradingFeatures();
 
-	const {
-		data: optionOrdersData,
-		refetch: refetchOptionOrdersData,
-		isLoading,
-	} = useOptionOrdersQuery({
-		queryKey: ['optionOrdersQuery'],
-		enabled: false,
-	});
-
 	const openBsModal = (side: TBsSides) => {
 		addBuySellModal({
 			mode: 'create',
@@ -62,16 +49,6 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 			side,
 		});
 	};
-
-	const isSellDisabled = useMemo(() => {
-		if (!brokerURLs || !isOption || !Array.isArray(optionOrdersData)) return false;
-		return optionOrdersData.findIndex((item) => item.symbolISIN === symbolISIN) === -1;
-	}, [optionOrdersData, brokerURLs, isOption]);
-
-	useEffect(() => {
-		if (!brokerURLs || !isOption) return;
-		refetchOptionOrdersData();
-	}, [brokerURLs, isOption]);
 
 	const saturnUrl =
 		baseSymbolISIN === null
@@ -137,22 +114,16 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 					type='button'
 					className='h-40 flex-1 rounded text-base font-medium btn-success'
 				>
-					{t(isOption ? 'symbol_info_panel.new_position' : 'side.buy')}
+					{t('side.buy')}
 				</button>
 
-				<Tooltip disabled={!isSellDisabled} content={t('tooltip.can_not_close_position')} placement='bottom'>
-					<div className='flex-1'>
-						<Button
-							type='button'
-							loading={isOption && isLoading}
-							disabled={isSellDisabled}
-							onClick={() => openBsModal('sell')}
-							className='h-40 w-full rounded text-base font-medium btn-error'
-						>
-							{t(isOption ? 'symbol_info_panel.close_position' : 'side.sell')}
-						</Button>
-					</div>
-				</Tooltip>
+				<button
+					type='button'
+					onClick={() => openBsModal('sell')}
+					className='h-40 w-full rounded text-base font-medium btn-error'
+				>
+					{t('side.sell')}
+				</button>
 			</div>
 
 			{!isOption && (

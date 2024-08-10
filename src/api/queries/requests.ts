@@ -23,6 +23,26 @@ export const useDepositHistoryQuery = createBrokerQuery<Payment.IDepositHistoryL
 	},
 });
 
+export const useReceiptHistoryQuery = createBrokerQuery<Payment.IReceiptHistoryList[], ['receiptHistoryOnline']>({
+	queryKey: ['receiptHistoryOnline'],
+	queryFn: async ({ signal }) => {
+		const url = getBrokerURLs(store.getState());
+		if (!url) return [];
+
+		const response = await brokerAxios.get<ServerResponse<Payment.IReceiptHistoryList[]>>(
+			url.DepositOfflineHistory,
+			{
+				signal,
+			},
+		);
+		const data = response.data;
+
+		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+
+		return data.result;
+	},
+});
+
 export const useListBrokerBankAccountQuery = createBrokerQuery<Payment.IBrokerAccount[], ['brokerAccount']>({
 	queryKey: ['brokerAccount'],
 	queryFn: async ({ signal }) => {

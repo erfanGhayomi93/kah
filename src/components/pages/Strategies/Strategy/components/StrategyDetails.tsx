@@ -15,7 +15,7 @@ import {
 	RhombicCircleSVG,
 	TeachVideoSVG,
 } from '@/components/icons';
-import { useLocalstorage } from '@/hooks';
+import { useLocalstorage, useTheme } from '@/hooks';
 import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -35,9 +35,11 @@ interface StrategyDetailsProps {
 }
 
 const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }: StrategyDetailsProps) => {
-	const { title, type, imageUrl, tags } = strategy;
+	const { title, type, tags } = strategy;
 
 	const t = useTranslations();
+
+	const theme = useTheme();
 
 	const [isExpand, setIsExpand] = useLocalstorage(`${type}Expand`, true);
 
@@ -190,7 +192,7 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 								width='399'
 								height='176'
 								alt={title}
-								src={`${process.env.NEXT_PUBLIC_RLC_URL}/${imageUrl}`}
+								src={`/static/images/strategies/${type}_${theme}.svg`}
 								style={{
 									width: '100%',
 									height: 'auto',

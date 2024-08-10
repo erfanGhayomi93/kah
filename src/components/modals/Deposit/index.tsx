@@ -1,30 +1,25 @@
-import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import { useAppDispatch } from '@/features/hooks';
 import { setDepositModal } from '@/features/slices/modalSlice';
 import { type IDepositModal } from '@/features/slices/types/modalSlice.interfaces';
+import { useInputs } from '@/hooks';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useState } from 'react';
-import styled from 'styled-components';
+import { forwardRef } from 'react';
 import Modal, { Header } from '../Modal';
 import { Body } from './Body';
 import { HistoryDeposit } from './History';
-
-const Div = styled.div`
-	width: 420px;
-	min-height: 312px;
-	max-height: 532px;
-	display: flex;
-	flex-direction: column;
-`;
 
 interface DepositProps extends IDepositModal {}
 
 const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 	const t = useTranslations();
-	const [isShowExpanded, setIsShowExpanded] = useState(false);
 
 	const { data, activeTab } = props || {};
+
+	const { inputs, setFieldValue } = useInputs<{ isExpand: boolean; activeTab: Payment.TDepositTab }>({
+		isExpand: false,
+		activeTab: activeTab ?? 'liveDepositTab',
+	});
 
 	const dispatch = useAppDispatch();
 
@@ -33,7 +28,7 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 	};
 
 	const onExpanded = () => {
-		setIsShowExpanded((prev) => !prev);
+		setFieldValue('isExpand', !inputs.isExpand);
 	};
 
 	return (
@@ -46,22 +41,29 @@ const Deposit = forwardRef<HTMLDivElement, DepositProps>((props, ref) => {
 		>
 			<Header label={t('deposit_modal.title')} onClose={onCloseModal} onExpanded={onExpanded} />
 
-			<div className='darkBlue:bg-gray-50 flex bg-white p-24 dark:bg-gray-50'>
-				<Div
-					className={clsx('flex-column', {
-						'border-l border-gray-200 pl-24 pr-16': isShowExpanded,
-					})}
+			<div
+				style={{
+					width: inputs.isExpand ? '1048px' : '400px',
+					height: inputs.activeTab === 'liveDepositTab' ? '368px' : '608px',
+				}}
+				className='transition-size flex bg-white py-24 darkness:bg-gray-50'
+			>
+				<div
+					style={{ flex: '0 0 400px' }}
+					className={clsx('px-24 flex-column', inputs.isExpand && 'border-l border-gray-200')}
 				>
-					<Body dataEdit={data} activeTab={activeTab} />
-				</Div>
+					<Body
+						dataEdit={data}
+						activeTab={inputs.activeTab}
+						setActiveTab={(v) => setFieldValue('activeTab', v)}
+					/>
+				</div>
 
-				<AnimatePresence initial={{ animation: 'fadeInLeft' }} exit={{ animation: 'fadeOutLeft' }}>
-					{isShowExpanded && (
-						<Div className='darkBlue:bg-gray-50 bg-white dark:bg-gray-50'>
-							<HistoryDeposit onCloseModal={onCloseModal} />
-						</Div>
-					)}
-				</AnimatePresence>
+				{inputs.isExpand && (
+					<div className='flex-1 px-24 flex-column'>
+						<HistoryDeposit onCloseModal={onCloseModal} activeTab={inputs.activeTab} />
+					</div>
+				)}
 			</div>
 		</Modal>
 	);

@@ -14,7 +14,13 @@
 		--tb-row-odd-bg: var(--ag-background-color);
 	}
 
-	&:not(.reverseColors) {
+	&.transparent {
+		--tb-header-bg: transparent;
+		--tb-row-bg: transparent;
+		--tb-row-odd-bg: transparent;
+	}
+
+	&:not(.reverseColors, .transparent) {
 		--tb-header-bg: var(--ag-header-background-color);
 		--tb-row-bg: var(--ag-background-color);
 		--tb-row-odd-bg: var(--ag-odd-row-background-color);
@@ -70,12 +76,9 @@
 .tbody {
 	.tr {
 		background-color: var(--tb-row-bg);
+
 		&:nth-child(2n) {
 			background-color: var(--tb-row-odd-bg);
-		}
-
-		& > .td {
-			font-size: 1.2rem;
 		}
 	}
 }
@@ -86,5 +89,18 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: rgb(93, 96, 109);
+	color: var(--c-gray-700);
+}
+
+.transparent {
+	.thead {
+		.tr > .th {
+			font-weight: 400;
+		}
+	}
+}
+
+.td {
+	font-size: 1.2rem;
+	color: theme("colors.gray.800");
 }
