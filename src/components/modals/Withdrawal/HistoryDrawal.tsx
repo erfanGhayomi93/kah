@@ -45,6 +45,9 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 		<div className='flex h-full overflow-auto pr-24 flex-column'>
 			<div className='flex-1 overflow-auto rounded-sm p-8 shadow-sm'>
 				<LightweightTable
+					transparent
+					headerHeight={40}
+					rowHeight={40}
 					rowData={data || []}
 					columnDefs={columnDefs}
 					className='bg-white darkness:bg-gray-50'

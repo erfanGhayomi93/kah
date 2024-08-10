@@ -8,6 +8,7 @@ import { ReceiptDepositTab } from './ReceiptDepositTab';
 interface BodyDepositProps {
 	dataEdit?: Reports.IDepositWithReceipt | Reports.IInstantDeposit;
 	activeTab?: Payment.TDepositTab;
+	setActiveTab: (v: Payment.TDepositTab) => void;
 }
 
 function isReceiptDeposit(
@@ -16,7 +17,7 @@ function isReceiptDeposit(
 	return (dataEdit as Reports.IDepositWithReceipt)?.receiptNumber !== undefined;
 }
 
-export const Body: FC<BodyDepositProps> = ({ dataEdit, activeTab }) => {
+export const Body: FC<BodyDepositProps> = ({ dataEdit, activeTab, setActiveTab }) => {
 	const t = useTranslations();
 
 	const TABS = useMemo(
@@ -36,15 +37,16 @@ export const Body: FC<BodyDepositProps> = ({ dataEdit, activeTab }) => {
 	);
 
 	return (
-		<div className='flex h-full flex-column'>
+		<div className='h-full gap-24 flex-column'>
 			<Tabs
 				data={TABS}
 				defaultActiveTab={activeTab || 'liveDepositTab'}
+				onChange={(tab) => setActiveTab(tab as Payment.TDepositTab)}
 				renderTab={(item, activeTab) => (
 					<button
 						className={clsx(
 							'h-40 flex-1 px-16 text-center transition-colors flex-justify-center',
-							item.id === activeTab ? 'text-gray-700 font-medium' : 'text-gray-500',
+							item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
 						)}
 						type='button'
 					>

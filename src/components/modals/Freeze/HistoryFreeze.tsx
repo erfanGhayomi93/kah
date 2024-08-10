@@ -113,6 +113,9 @@ const HistoryFreeze: FC<HistoryFreezeProps> = ({ tabSelected, onCloseModal }) =>
 		<div className='flex h-full gap-8 px-24 flex-column'>
 			<div className='flex-1 rounded-sm p-8 shadow-sm'>
 				<LightweightTable
+					transparent
+					headerHeight={40}
+					rowHeight={40}
 					rowData={(isFreeze ? dataFreeze : dataUnFreeze) || []}
 					columnDefs={columnDefs}
 					className='bg-white darkness:bg-gray-50'

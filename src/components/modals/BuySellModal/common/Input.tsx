@@ -54,7 +54,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 		return (
 			<div
 				className={clsx(
-					'flex h-48 items-center overflow-hidden rounded bg-white input-group darkness:bg-gray-50',
+					'flex h-48 items-center rounded bg-white input-group darkness:bg-gray-50',
 					hasError && 'error',
 				)}
 			>
@@ -78,7 +78,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
 					<div
 						style={{ flex: '0 0 12rem' }}
-						className={clsx('h-full bg-gray-100 py-4 pr-8 flex-justify-between', prefix ? 'pl-8' : 'pl-16')}
+						className={clsx(
+							'h-full overflow-hidden rounded-l bg-gray-100 py-4 pr-8 flex-justify-between',
+							prefix ? 'pl-8' : 'pl-16',
+						)}
 					>
 						<div className='flex-column flex-justify-between'>
 							<button

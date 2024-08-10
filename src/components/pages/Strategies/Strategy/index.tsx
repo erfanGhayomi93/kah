@@ -5,12 +5,19 @@ import dynamic from 'next/dynamic';
 interface StrategyProps extends Strategy.GetAll {}
 
 const CoveredCall = dynamic(() => import('./Strategies/CoveredCall'));
+
 const LongCall = dynamic(() => import('./Strategies/LongCall'));
+
 const LongPut = dynamic(() => import('./Strategies/LongPut'));
+
 const ProtectivePut = dynamic(() => import('./Strategies/ProtectivePut'));
+
 const BullCallSpread = dynamic(() => import('./Strategies/BullCallSpread'));
+
 const LongStraddle = dynamic(() => import('./Strategies/LongStraddle'));
+
 const Conversion = dynamic(() => import('./Strategies/Conversion'));
+
 const BearPutSpread = dynamic(() => import('./Strategies/BearPutSpread'));
 
 const Strategy = (strategy: StrategyProps) => {

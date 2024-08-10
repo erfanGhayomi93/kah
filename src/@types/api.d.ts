@@ -1561,7 +1561,7 @@ declare namespace Settings {
 }
 
 declare namespace Payment {
-	export type ThistoryState =
+	export type THistoryState =
 		| 'Request'
 		| 'RequestBankToken'
 		| 'RequestBankTokenOk'
@@ -1613,7 +1613,23 @@ declare namespace Payment {
 		saveDate: string;
 		amount: number;
 		providerType: string;
-		state: ThistoryState;
+		state: THistoryState;
+	}
+
+	export interface IReceiptHistoryList {
+		id: number;
+		nationalCode: string;
+		customerISIN: string;
+		date: string;
+		bankAccountId: string;
+		amount: number;
+		receiptNumber: string;
+		base64Image: string;
+		comment: string;
+		receiptDate: string;
+		accountCode: string;
+		state: 'InOMSQueue' | 'OrderDone' | 'Error' | 'Modified' | 'Expired' | 'Canceled';
+		providerType: string;
 	}
 
 	export interface IChangeBrokerList {
@@ -1724,7 +1740,6 @@ declare namespace Strategy {
 		id: number;
 		title: string;
 		type: Type;
-		imageUrl: string;
 		tags: Cheap[];
 	}
 
