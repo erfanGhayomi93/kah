@@ -1,5 +1,5 @@
 import ipcMain from '@/classes/IpcMain';
-import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
+import RangeDatepicker from '@/components/common/Datepicker/RangeDatepicker';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
@@ -25,6 +25,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	) => {
 		setFilters((prev) => ({
 			...prev,
+			date: field === 'fromDate' || field === 'toDate' ? 'dates.custom' : filters.date,
 			[field]: value,
 		}));
 	};
@@ -76,22 +77,13 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					defaultValue={filters.date}
 				/>
 
-				<div className='flex-1 gap-16 flex-justify-start'>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.fromDate}
-							onChange={(v) => setFilterValue('fromDate', v.getTime())}
-							fixedPlaceholder={t('transactions_page.from_date_placeholder_filter')}
-						/>
-					</div>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.toDate}
-							onChange={(v) => setFilterValue('toDate', v.getTime())}
-							fixedPlaceholder={t('transactions_page.to_date_placeholder_filter')}
-						/>
-					</div>
-				</div>
+				<RangeDatepicker
+					suppressDisableToDate={false}
+					fromDate={filters.fromDate}
+					onChangeFromDate={(v) => setFilterValue('fromDate', v.getTime())}
+					toDate={filters.toDate}
+					onChangeToDate={(v) => setFilterValue('toDate', v.getTime())}
+				/>
 
 				<MultiSelect<{ id: Transaction.TransactionTypes; title: string }>
 					onChange={(options) => onChangeTransactionType(options)}

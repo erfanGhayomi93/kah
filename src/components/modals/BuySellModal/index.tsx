@@ -78,7 +78,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			collateral: collateral ?? null,
 			side: side ?? 'buy',
 			validity: initialValidity ?? 'Day',
-			validityDate: initialValidityDate ?? 0,
+			validityDate: initialValidityDate ?? Date.now(),
 			expand: expand ?? false,
 			priceLock: priceLock ?? false,
 			holdAfterOrder: holdAfterOrder ?? false,

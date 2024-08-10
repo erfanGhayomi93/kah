@@ -1,6 +1,8 @@
 import { useMarketMapQuery } from '@/api/queries/marketQueries';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
+import { useAppSelector } from '@/features/hooks';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useBrokerQueryClient, useDebounce } from '@/hooks';
 import { isBetween, numFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -19,6 +21,8 @@ const PADDING = { top: 24, left: 1, bottom: 4, right: 1, inner: 4 };
 
 const Map = ({ filters, setFilters }: MapPropsType) => {
 	const queryClient = useBrokerQueryClient();
+
+	const brokerUrls = useAppSelector(getBrokerURLs);
 
 	const mouseDebounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -52,6 +56,7 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 		refetch,
 	} = useMarketMapQuery({
 		queryKey: ['marketMapQuery'],
+		enabled: Boolean(brokerUrls),
 	});
 
 	const x = (value: number): number => {
@@ -553,10 +558,10 @@ const Map = ({ filters, setFilters }: MapPropsType) => {
 									if (percentage) {
 										const percentageAsNumber = Number(percentage);
 
-										if (percentageAsNumber === 0 && symbol.cpp === 0) fillableSector.s.push(symbol);
-										else if (percentageAsNumber > 0 && symbol.cpp >= percentageAsNumber)
+										if (percentageAsNumber === 0 && symbol.lpp === 0) fillableSector.s.push(symbol);
+										else if (percentageAsNumber > 0 && symbol.lpp >= percentageAsNumber)
 											fillableSector.s.push(symbol);
-										else if (percentageAsNumber < 0 && symbol.cpp <= percentageAsNumber)
+										else if (percentageAsNumber < 0 && symbol.lpp <= percentageAsNumber)
 											fillableSector.s.push(symbol);
 									} else {
 										fillableSector.s.push(symbol);

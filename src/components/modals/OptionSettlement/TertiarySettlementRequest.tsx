@@ -164,7 +164,7 @@ const TertiarySettlementRequest: FC<TertiarySettlementRequestProps> = ({ onClose
 						disabled={!isMaximumStrike && !desireNum}
 						onClick={handleSubmitNewSettlement}
 					>
-						{t('deposit_modal.state_Request')}
+						{t('common.create_request')}
 					</button>
 				</div>
 			</div>

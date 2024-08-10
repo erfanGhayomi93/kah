@@ -94,7 +94,7 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 				disabled={!symbol}
 				onClick={handleSubmitFreeze}
 			>
-				{t('deposit_modal.state_Request')}
+				{t('common.create_request')}
 			</button>
 		</div>
 	);

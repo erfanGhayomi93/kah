@@ -105,6 +105,13 @@ export const returnIfIsNaN = <T extends unknown>(value: number, defaultValue: T)
 	return value;
 };
 
+export const dayAsJalali = (v: dayjs.ConfigType) => {
+	return dayjs(v, {
+		// @ts-expect-error: dayjs does not recognize jalali
+		jalali: true,
+	});
+};
+
 export const isBetween = (min: number, value: number, max: number): boolean => value >= min && value <= max;
 
 export const getRndInteger = (min: number, max: number) => {

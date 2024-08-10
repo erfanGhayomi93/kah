@@ -50,9 +50,9 @@ export const initialDepositWithReceiptReportsFilters: DepositWithReceiptReports.
 export const initialWithdrawalCashReportsFilters: WithdrawalCashReports.WithdrawalCashReportsFilters = {
 	pageNumber: 1,
 	pageSize: 25,
-	date: 'dates.year',
+	date: 'dates.custom',
 	fromDate: new Date().getTime() - DateAsMillisecond.Year,
-	toDate: new Date().getTime(),
+	toDate: new Date().getTime() + DateAsMillisecond.Week,
 	status: [],
 	toPrice: 0,
 	fromPrice: 0,

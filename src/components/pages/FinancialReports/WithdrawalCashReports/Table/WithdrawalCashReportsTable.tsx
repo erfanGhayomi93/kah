@@ -3,22 +3,13 @@ import LightweightTable, { type IColDef } from '@/components/common/Tables/Light
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setWithdrawalModal } from '@/features/slices/modalSlice';
-import { type RootState } from '@/features/store';
 import { useBrokerQueryClient } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type GridApi } from '@ag-grid-community/core';
-import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef } from 'react';
 import { toast } from 'react-toastify';
 import WithdrawalCashReportsActionCell from './WithdrawalCashReportsActionCell';
-
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		urls: getBrokerURLs(state),
-	}),
-);
 
 interface WithdrawalCashReportsTableProps {
 	reports: Reports.IWithdrawal[] | null;
@@ -34,14 +25,14 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 
 	const dispatch = useAppDispatch();
 
-	const { urls } = useAppSelector(getStates);
+	const brokerUrls = useAppSelector(getBrokerURLs);
 
 	const onDeleteRow = (data: Reports.IWithdrawal | undefined) =>
 		new Promise<void>(async (resolve, reject) => {
-			if (!urls || !data) return;
+			if (!brokerUrls || !data) return;
 
 			try {
-				const response = await brokerAxios.post<ServerResponse<boolean>>(urls.AccountWithdrawalCancel, {
+				const response = await brokerAxios.post<ServerResponse<boolean>>(brokerUrls.AccountWithdrawalCancel, {
 					ids: [data?.id],
 				});
 
@@ -145,7 +136,7 @@ const WithdrawalCashReportsTable = ({ reports, columnsVisibility }: WithdrawalCa
 				hidden: columnsVisibility[columnsVisibility.findIndex((column) => column.id === 'action')]?.hidden,
 			},
 		],
-		[columnsVisibility],
+		[columnsVisibility, Boolean(brokerUrls)],
 	);
 
 	useEffect(() => {

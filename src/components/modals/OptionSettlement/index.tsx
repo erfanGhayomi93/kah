@@ -102,7 +102,7 @@ const OptionSettlement = forwardRef<HTMLDivElement, OptionSettlementProps>((prop
 			>
 				<div
 					style={{ flex: '0 0 400px' }}
-					className={clsx('h-full flex-column', isExpand && 'border-l border-gray-200 px-24')}
+					className={clsx('h-full px-24 flex-column', isExpand && 'border-l border-gray-200')}
 				>
 					<Body
 						onCloseModal={onCloseModal}

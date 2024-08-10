@@ -93,7 +93,7 @@ const Watchlist = () => {
 
 	return (
 		<Main>
-			<div className='h-full gap-16 rounded bg-white px-24 pt-24 flex-column darkness:bg-gray-50'>
+			<div className='h-full gap-16 rounded bg-white px-24 pb-16 flex-column darkness:bg-gray-50'>
 				<Toolbar
 					setPriceBasis={(v) => setFieldValue('priceBasis', v)}
 					filters={filters}

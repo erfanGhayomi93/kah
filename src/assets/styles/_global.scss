@@ -80,6 +80,10 @@ body {
 	}
 }
 
+button:disabled {
+	opacity: 0.5;
+}
+
 button,
 a,
 ul,

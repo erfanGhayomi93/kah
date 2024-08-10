@@ -82,16 +82,14 @@ export const HistorySettlement: FC<HistorySettlementProps> = ({ tabSelected, onC
 
 	return (
 		<div className='flex h-full gap-8 flex-column'>
-			<div className='flex-1 rounded-sm p-8 shadow-sm'>
-				<LightweightTable
-					transparent
-					headerHeight={40}
-					rowHeight={40}
-					rowData={(isCash ? cashHistory?.result : physicalHistory?.result) || []}
-					columnDefs={columnDefs}
-					className='bg-white darkness:bg-gray-50'
-				/>
-			</div>
+			<LightweightTable
+				transparent
+				headerHeight={40}
+				rowHeight={40}
+				rowData={(isCash ? cashHistory?.result : physicalHistory?.result) || []}
+				columnDefs={columnDefs}
+				className='bg-white darkness:bg-gray-50'
+			/>
 
 			<Link
 				className='h-40 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'

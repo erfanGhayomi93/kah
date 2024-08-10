@@ -58,19 +58,6 @@ const SymbolSearch = ({
 		setTerm('');
 	};
 
-	const onClearInput = () => {
-		if (!clearable) return;
-
-		try {
-			setTerm('');
-			onClear?.();
-
-			inputRef.current?.focus();
-		} catch (e) {
-			//
-		}
-	};
-
 	return (
 		<Popup
 			margin={{
@@ -131,8 +118,12 @@ const SymbolSearch = ({
 						onChange={(e) => setTerm(e.target.value)}
 					/>
 
-					{clearable && term.length > 1 && (
-						<button onClick={onClearInput} type='button' className={cn(styles.clear, classes?.clear)}>
+					{clearable && Boolean(value) && (
+						<button
+							onClick={() => onChange(null)}
+							type='button'
+							className={cn(styles.clear, classes?.clear)}
+						>
 							<XCircleSVG width='1.4rem' height='1.4rem' />
 						</button>
 					)}

@@ -1,6 +1,6 @@
 import { userOnlineDepositProvidersQuery, userOnlineDepositStatusesQuery } from '@/api/queries/reportsQueries';
 import ipcMain from '@/classes/IpcMain';
-import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
+import RangeDatepicker from '@/components/common/Datepicker/RangeDatepicker';
 import InputLegend from '@/components/common/Inputs/InputLegend';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
@@ -28,6 +28,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	) => {
 		setFilters((prev) => ({
 			...prev,
+			date: field === 'fromDate' || field === 'toDate' ? 'dates.custom' : filters.date,
 			[field]: value,
 		}));
 	};
@@ -67,7 +68,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 		setFilters({
 			...filters,
-			...calculateDateRange(filters.date)
+			...calculateDateRange(filters.date),
 		});
 	}, [filters.date]);
 
@@ -83,20 +84,12 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					defaultValue={filters.date}
 				/>
 
-				<div className='flex-1 gap-16 flex-justify-start'>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.fromDate}
-							onChange={(v) => setFilterValue('fromDate', v.getTime())}
-						/>
-					</div>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.toDate}
-							onChange={(v) => setFilterValue('toDate', v.getTime())}
-						/>
-					</div>
-				</div>
+				<RangeDatepicker
+					fromDate={filters.fromDate}
+					onChangeFromDate={(v) => setFilterValue('fromDate', v.getTime())}
+					toDate={filters.toDate}
+					onChangeToDate={(v) => setFilterValue('toDate', v.getTime())}
+				/>
 
 				<div className=' gap-32 flex-justify-start'>
 					<InputLegend

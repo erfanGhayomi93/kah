@@ -40,7 +40,7 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ activeTab, onCloseModal
 			{
 				colId: 'state',
 				headerName: t('deposit_modal.status_history'),
-				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
+				valueGetter: (row) => t('states.' + 'state_' + row.state),
 				cellClass: 'text-sm',
 			},
 		],
@@ -89,19 +89,17 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ activeTab, onCloseModal
 
 	return (
 		<div className='h-full gap-8 flex-column'>
-			<div className='flex-1 overflow-auto rounded-sm p-8'>
-				<LightweightTable<Payment.IDepositHistoryList[] | Payment.IReceiptHistoryList[]>
-					transparent
-					headerHeight={40}
-					rowHeight={40}
-					rowData={modifiedData}
-					columnDefs={
-						(activeTab === 'liveDepositTab' ? depositColumnDefs : receiptColumnDefs) as Array<
-							IColDef<Payment.IDepositHistoryList | Payment.IReceiptHistoryList>
-						>
-					}
-				/>
-			</div>
+			<LightweightTable<Payment.IDepositHistoryList[] | Payment.IReceiptHistoryList[]>
+				transparent
+				headerHeight={40}
+				rowHeight={40}
+				rowData={modifiedData}
+				columnDefs={
+					(activeTab === 'liveDepositTab' ? depositColumnDefs : receiptColumnDefs) as Array<
+						IColDef<Payment.IDepositHistoryList | Payment.IReceiptHistoryList>
+					>
+				}
+			/>
 
 			<Link
 				className='h-40 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
