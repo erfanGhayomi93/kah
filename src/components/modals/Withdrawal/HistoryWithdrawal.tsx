@@ -1,58 +1,58 @@
-import { useDrawalHistoryQuery } from '@/api/queries/requests';
+import { useWithdrawalHistoryQuery } from '@/api/queries/requests';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
 import { SessionHistorySVG } from '@/components/icons';
 import { Link } from '@/navigation';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useMemo, type FC } from 'react';
+import { useMemo } from 'react';
 
-interface historyDrawalProps {
+interface HistoryWithdrawalProps {
 	onCloseModal: () => void;
 }
 
-export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
+export const HistoryWithdrawal = ({ onCloseModal }: HistoryWithdrawalProps) => {
 	const t = useTranslations();
 
-	const { data } = useDrawalHistoryQuery({
-		queryKey: ['drawalHistoryOnline'],
+	const { data } = useWithdrawalHistoryQuery({
+		queryKey: ['withdrawalHistoryOnline'],
 	});
 
-	const columnDefs = useMemo<Array<IColDef<Payment.IDrawalHistoryList>>>(
+	const columnDefs = useMemo<Array<IColDef<Payment.IWithdrawalHistoryList>>>(
 		() => [
 			/* موعد پرداخت */
 			{
 				colId: 'requestDate',
 				headerName: t('withdrawal_modal.withdrawal_date_column'),
-				valueGetter: (row) => dateFormatter(row.requestDate),
+				valueGetter: (row) => dateFormatter(row.requestDate, 'date'),
 			},
+
 			/* مبلغ */
 			{
 				colId: 'requestAmount',
 				headerName: t('withdrawal_modal.amount_column'),
 				valueGetter: (row) => sepNumbers(String(row.requestAmount)),
 			},
+
 			/* وضعیت */
 			{
 				colId: 'state',
 				headerName: t('withdrawal_modal.status_column'),
-				valueGetter: (row) => t('deposit_modal.' + 'state_' + row.state),
+				valueGetter: (row) => t('states.' + 'state_' + row.state),
 			},
 		],
 		[],
 	);
 
 	return (
-		<div className='flex h-full overflow-auto pr-24 flex-column'>
-			<div className='flex-1 overflow-auto rounded-sm p-8 shadow-sm'>
-				<LightweightTable
-					transparent
-					headerHeight={40}
-					rowHeight={40}
-					rowData={data || []}
-					columnDefs={columnDefs}
-					className='bg-white darkness:bg-gray-50'
-				/>
-			</div>
+		<div className='h-full gap-8 flex-column'>
+			<LightweightTable
+				transparent
+				headerHeight={40}
+				rowHeight={40}
+				rowData={data || []}
+				columnDefs={columnDefs}
+				className='bg-white darkness:bg-gray-50'
+			/>
 
 			<div>
 				<Link
@@ -67,3 +67,5 @@ export const HistoryDrawal: FC<historyDrawalProps> = ({ onCloseModal }) => {
 		</div>
 	);
 };
+
+export default HistoryWithdrawal;

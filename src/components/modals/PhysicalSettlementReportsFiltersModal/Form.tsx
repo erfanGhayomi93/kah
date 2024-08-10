@@ -1,5 +1,5 @@
 import ipcMain from '@/classes/IpcMain';
-import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
+import RangeDatepicker from '@/components/common/Datepicker/RangeDatepicker';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
@@ -11,7 +11,9 @@ import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<CashSettlementReports.ICashSettlementReportsFilters, 'pageNumber' | 'pageSize'>;
-	setFilters: Dispatch<SetStateAction<Omit<CashSettlementReports.ICashSettlementReportsFilters, 'pageNumber' | 'pageSize'>>>;
+	setFilters: Dispatch<
+		SetStateAction<Omit<CashSettlementReports.ICashSettlementReportsFilters, 'pageNumber' | 'pageSize'>>
+	>;
 }
 
 const Form = ({ filters, setFilters }: IFormProps) => {
@@ -25,6 +27,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	) => {
 		setFilters((prev) => ({
 			...prev,
+			date: field === 'fromDate' || field === 'toDate' ? 'dates.custom' : filters.date,
 			[field]: value,
 		}));
 	};
@@ -49,17 +52,21 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		if (value) setFilterValue('symbol', value);
 	};
 
-	const onChangeRequestStatus = (options: Array<{
-		id: CashSettlementReports.TRequestStatusType;
-		title: string;
-	}>) => {
+	const onChangeRequestStatus = (
+		options: Array<{
+			id: CashSettlementReports.TRequestStatusType;
+			title: string;
+		}>,
+	) => {
 		setFilterValue('requestStatus', options);
 	};
 
-	const onChangeSettlementRequestType = (options: Array<{
-		id: CashSettlementReports.TSettlementRequestTypeCashType;
-		title: string;
-	}>) => {
+	const onChangeSettlementRequestType = (
+		options: Array<{
+			id: CashSettlementReports.TSettlementRequestTypeCashType;
+			title: string;
+		}>,
+	) => {
 		setFilterValue('settlementRequestType', options);
 	};
 
@@ -68,11 +75,9 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 		setFilters({
 			...filters,
-			...calculateDateRange(filters.date)
+			...calculateDateRange(filters.date),
 		});
 	}, [filters.date]);
-
-
 
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
@@ -88,20 +93,12 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					defaultValue={filters.date}
 				/>
 
-				<div className='flex-1 gap-16 flex-justify-start'>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.fromDate}
-							onChange={(v) => setFilterValue('fromDate', v.getTime())}
-						/>
-					</div>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.toDate}
-							onChange={(v) => setFilterValue('toDate', v.getTime())}
-						/>
-					</div>
-				</div>
+				<RangeDatepicker
+					fromDate={filters.fromDate}
+					onChangeFromDate={(v) => setFilterValue('fromDate', v.getTime())}
+					toDate={filters.toDate}
+					onChangeToDate={(v) => setFilterValue('toDate', v.getTime())}
+				/>
 
 				<Select<'Profit' | 'Loss' | 'Indifferent' | 'All'>
 					onChange={(option) => setFilterValue('contractStatus', option)}
@@ -114,30 +111,39 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					defaultValue={filters.contractStatus}
 				/>
 
-				<MultiSelect<{ id: CashSettlementReports.TSettlementRequestTypeCashType, title: string }>
+				<MultiSelect<{ id: CashSettlementReports.TSettlementRequestTypeCashType; title: string }>
 					onChange={(options) => onChangeSettlementRequestType(options)}
 					options={[
-						{ id: 'MaximumStrike', title: t('cash_settlement_reports_page.type_request_settlement_MaximumStrike') },
-						{ id: 'PartialStrike', title: t('cash_settlement_reports_page.type_request_settlement_PartialStrike') },
+						{
+							id: 'MaximumStrike',
+							title: t('cash_settlement_reports_page.type_request_settlement_MaximumStrike'),
+						},
+						{
+							id: 'PartialStrike',
+							title: t('cash_settlement_reports_page.type_request_settlement_PartialStrike'),
+						},
 					]}
 					getOptionId={(option) => option.id}
-					getOptionTitle={(option) => <span>{t(`cash_settlement_reports_page.type_request_settlement_${option.id}`)}</span>}
+					getOptionTitle={(option) => (
+						<span>{t(`cash_settlement_reports_page.type_request_settlement_${option.id}`)}</span>
+					)}
 					placeholder={t('cash_settlement_reports_page.request_type_placeholder_filter')}
 					defaultValues={filters.settlementRequestType}
 				/>
 
-				<MultiSelect<{ id: CashSettlementReports.TRequestStatusType, title: string }>
+				<MultiSelect<{ id: CashSettlementReports.TRequestStatusType; title: string }>
 					onChange={(options) => onChangeRequestStatus(options)}
 					options={[
 						{ id: 'Registered', title: t('cash_settlement_reports_page.type_status_Registered') },
-						{ id: 'Draft', title: t('cash_settlement_reports_page.type_status_Draft') }
+						{ id: 'Draft', title: t('cash_settlement_reports_page.type_status_Draft') },
 					]}
 					getOptionId={(option) => option.id}
-					getOptionTitle={(option) => <span>{t(`cash_settlement_reports_page.type_status_${option.id}`)}</span>}
+					getOptionTitle={(option) => (
+						<span>{t(`cash_settlement_reports_page.type_status_${option.id}`)}</span>
+					)}
 					placeholder={t('cash_settlement_reports_page.request_status_type_placeholder_filter')}
 					defaultValues={filters.requestStatus}
 				/>
-
 			</div>
 
 			<button type='submit' className='h-40 flex-1 rounded px-56 py-8 font-medium btn-primary'>

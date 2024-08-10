@@ -1,4 +1,3 @@
-import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import Tooltip from '@/components/common/Tooltip';
 import { EditSVG, TrashSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
@@ -19,46 +18,53 @@ const DepositWithReceiptReportsActionCell = ({
 
 	const [confirmDelete, setConfirmDelete] = useState(false);
 
+	const onDelete = () => {
+		onDeleteRow(data);
+		setConfirmDelete(false);
+	};
+
+	const isDisabled = data.state !== 'Registeration';
+
 	return (
 		<div className='gap-16 flex-justify-center'>
 			{!confirmDelete && (
-				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
-					<>
-						<Tooltip content={t('tooltip.edit')}>
+				<>
+					<Tooltip content={isDisabled ? 'tooltip.edit_disabled' : 'tooltip.edit'}>
+						<span>
 							<button
-								disabled={data.state !== 'Registeration'}
+								disabled={isDisabled}
 								type='button'
 								onClick={() => onEditRow(data)}
 								className='text-gray-700 disabled:text-gray-500'
 							>
 								<EditSVG width='2rem' height='2rem' />
 							</button>
-						</Tooltip>
-						<Tooltip content={t('tooltip.remove')}>
+						</span>
+					</Tooltip>
+					<Tooltip content={isDisabled ? 'tooltip.remove_disabled' : 'tooltip.remove'}>
+						<span>
 							<button
-								disabled={data.state !== 'Registeration'}
+								disabled={isDisabled}
 								type='button'
 								onClick={() => setConfirmDelete(true)}
 								className='text-gray-700 disabled:text-gray-500'
 							>
 								<TrashSVG width='2rem' height='2rem' />
 							</button>
-						</Tooltip>
-					</>
-				</AnimatePresence>
+						</span>
+					</Tooltip>
+				</>
 			)}
 
 			{confirmDelete && (
-				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
-					<div className='gap-16 flex-justify-start'>
-						<button className='text-gray-700' type='button' onClick={() => setConfirmDelete(false)}>
-							{t('common.cancel')}
-						</button>
-						<button className='text-error-100' type='button' onClick={() => onDeleteRow(data)}>
-							{t('common.delete')}
-						</button>
-					</div>
-				</AnimatePresence>
+				<div className='gap-16 flex-justify-start'>
+					<button className='text-gray-700' type='button' onClick={() => setConfirmDelete(false)}>
+						{t('common.cancel')}
+					</button>
+					<button className='text-error-100' type='button' onClick={onDelete}>
+						{t('common.delete')}
+					</button>
+				</div>
 			)}
 		</div>
 	);

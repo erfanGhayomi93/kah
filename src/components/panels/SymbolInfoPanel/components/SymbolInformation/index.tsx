@@ -1,8 +1,7 @@
 import SymbolContextMenu from '@/components/common/Symbol/SymbolContextMenu';
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import { GalaxySVG } from '@/components/icons';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
 import { Link } from '@/navigation';
@@ -35,8 +34,6 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
-
-	const brokerURLs = useAppSelector(getBrokerURLs);
 
 	const { addBuySellModal } = useTradingFeatures();
 
@@ -120,7 +117,7 @@ const SymbolInformation = ({ symbolData }: SymbolInformationProps) => {
 				<button
 					type='button'
 					onClick={() => openBsModal('sell')}
-					className='h-40 w-full rounded text-base font-medium btn-error'
+					className='h-40 w-full flex-1 rounded text-base font-medium btn-error'
 				>
 					{t('side.sell')}
 				</button>

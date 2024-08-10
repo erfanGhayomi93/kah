@@ -1,4 +1,3 @@
-import AnimatePresence from '@/components/common/animation/AnimatePresence';
 import Tooltip from '@/components/common/Tooltip';
 import { HandWriteSVG, TrashSVG } from '@/components/icons';
 import { useTranslations } from 'next-intl';
@@ -19,53 +18,60 @@ const CashSettlementReportsTableActionCell = ({
 
 	const [confirmDelete, setConfirmDelete] = useState(false);
 
+	const onDelete = () => {
+		onDeleteRow(data);
+		setConfirmDelete(false);
+	};
+
 	const isDisabled = !data?.enabled;
 
 	const cashSettlementStatus = data?.status ?? undefined;
 
+	const isDeleteDisabled =
+		isDisabled || !(cashSettlementStatus === 'InSendQueue' || cashSettlementStatus === 'Registered');
+
+	const isRequestDisabled = isDisabled || cashSettlementStatus !== 'Draft' || !data?.openPositionCount;
+
 	return (
 		<div className='gap-16 flex-justify-center'>
 			{!confirmDelete && (
-				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
-					<>
-						<Tooltip content={t('tooltip.request')}>
+				<>
+					<Tooltip content={t(isRequestDisabled ? 'tooltip.request_disabled' : 'tooltip.request')}>
+						<span>
 							<button
-								disabled={isDisabled || cashSettlementStatus !== 'Draft' || !data?.openPositionCount}
+								disabled={isRequestDisabled}
 								type='button'
 								className='text-gray-700 disabled:text-gray-500'
 								onClick={() => onRequest(data)}
 							>
 								<HandWriteSVG width='2rem' height='2rem' />
 							</button>
-						</Tooltip>
-						<Tooltip content={t('tooltip.remove')}>
+						</span>
+					</Tooltip>
+					<Tooltip content={t(isDeleteDisabled ? 'delete_disabled' : 'tooltip.delete')}>
+						<span>
 							<button
-								disabled={
-									isDisabled ||
-									!(cashSettlementStatus === 'InSendQueue' || cashSettlementStatus === 'Registered')
-								}
+								disabled={isDeleteDisabled}
 								type='button'
 								onClick={() => setConfirmDelete(true)}
 								className='text-gray-700 disabled:text-gray-500'
 							>
 								<TrashSVG width='2rem' height='2rem' />
 							</button>
-						</Tooltip>
-					</>
-				</AnimatePresence>
+						</span>
+					</Tooltip>
+				</>
 			)}
 
 			{confirmDelete && (
-				<AnimatePresence initial={{ animation: 'FadeIn' }} exit={{ animation: 'FadeOut' }}>
-					<div className='gap-16 flex-justify-start'>
-						<button className='text-gray-700' type='button' onClick={() => setConfirmDelete(false)}>
-							{t('common.cancel')}
-						</button>
-						<button className='text-error-100' type='button' onClick={() => onDeleteRow(data)}>
-							{t('common.delete')}
-						</button>
-					</div>
-				</AnimatePresence>
+				<div className='gap-16 flex-justify-start'>
+					<button className='text-gray-700' type='button' onClick={() => setConfirmDelete(false)}>
+						{t('common.cancel')}
+					</button>
+					<button className='text-error-100' type='button' onClick={onDelete}>
+						{t('common.delete')}
+					</button>
+				</div>
 			)}
 		</div>
 	);

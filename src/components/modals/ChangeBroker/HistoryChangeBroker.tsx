@@ -79,7 +79,7 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 				valueGetter: (row) => row.id,
 				valueFormatter: ({ row }) => (
 					<div className='flex-justify-center'>
-						<span className='min-w-80'>{t('deposit_modal.' + 'state_' + row.lastState)}</span>
+						<span className='min-w-80'>{t('states.' + 'state_' + row.lastState)}</span>
 
 						{row.lastState === 'Draft' && (
 							<span className='cursor-pointer' onClick={() => deleteChangeBroker(row.id)}>
@@ -95,16 +95,14 @@ export const HistoryChangeBroker: FC<HistoryChangeBrokerType> = ({ onCloseModal 
 
 	return (
 		<div className='flex h-full gap-8 overflow-auto px-24 flex-column'>
-			<div className='flex-1 rounded-sm p-8 shadow-sm'>
-				<LightweightTable
-					transparent
-					headerHeight={40}
-					rowHeight={40}
-					rowData={data.slice(0, 4)}
-					columnDefs={columnDefs}
-					className='bg-white darkness:bg-gray-50'
-				/>
-			</div>
+			<LightweightTable
+				transparent
+				headerHeight={40}
+				rowHeight={40}
+				rowData={data.slice(0, 4)}
+				columnDefs={columnDefs}
+				className='bg-white darkness:bg-gray-50'
+			/>
 
 			<Link
 				className='h-40 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'

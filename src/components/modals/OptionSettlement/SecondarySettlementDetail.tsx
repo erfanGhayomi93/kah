@@ -94,7 +94,7 @@ export const SecondarySettlementDetail: FC<SecondarySettlementDetailProps> = ({
 					onClick={clickItemSettlement}
 					disabled={isDisabled}
 				>
-					{t('deposit_modal.state_Request')}
+					{t('common.create_request')}
 				</button>
 			</div>
 		</div>

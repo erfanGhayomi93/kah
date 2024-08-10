@@ -81,7 +81,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 					disabled={!value}
 					onClick={() => createFreezeRequest({ symbolISIN: [value], type: 'unFreeze' })}
 				>
-					{t('deposit_modal.state_Request')}
+					{t('common.create_request')}
 				</button>
 			</div>
 		</div>

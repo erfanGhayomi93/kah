@@ -1,5 +1,5 @@
 import ipcMain from '@/classes/IpcMain';
-import AdvancedDatepicker from '@/components/common/AdvanceDatePicker';
+import RangeDatepicker from '@/components/common/Datepicker/RangeDatepicker';
 import MultiSelect from '@/components/common/Inputs/MultiSelect';
 import Select from '@/components/common/Inputs/Select';
 import SymbolSearch from '@/components/common/Symbol/SymbolSearch';
@@ -11,7 +11,9 @@ import { useEffect, type Dispatch, type SetStateAction } from 'react';
 
 interface IFormProps {
 	filters: Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>;
-	setFilters: Dispatch<SetStateAction<Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>>>
+	setFilters: Dispatch<
+		SetStateAction<Omit<ChangeBrokerReports.IChangeBrokerReportsFilters, 'pageNumber' | 'pageSize'>>
+	>;
 }
 
 const Form = ({ filters, setFilters }: IFormProps) => {
@@ -25,6 +27,7 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 	) => {
 		setFilters((prev) => ({
 			...prev,
+			date: field === 'fromDate' || field === 'toDate' ? 'dates.custom' : filters.date,
 			[field]: value,
 		}));
 	};
@@ -45,8 +48,8 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 		}
 	};
 
-	const onChangeSymbol = (value: Symbol.Search) => {
-		if (value) setFilterValue('symbol', value);
+	const onChangeSymbol = (value: Symbol.Search | null) => {
+		setFilterValue('symbol', value);
 	};
 
 	const onChangeStatus = (options: string[]) => {
@@ -58,14 +61,19 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 
 		setFilters({
 			...filters,
-			...calculateDateRange(filters.date)
+			...calculateDateRange(filters.date),
 		});
 	}, [filters.date]);
 
 	return (
 		<form onSubmit={onSubmit} method='get' className='gap-64 px-24 pb-24 flex-column'>
 			<div className='gap-32 flex-column'>
-				<SymbolSearch classes={{ root: 'py-12' }} value={filters.symbol} onChange={onChangeSymbol} />
+				<SymbolSearch
+					classes={{ root: '!flex-48' }}
+					value={filters.symbol}
+					onChange={onChangeSymbol}
+					clearable
+				/>
 
 				<Select<TDateRange>
 					onChange={(option) => setFilterValue('date', option)}
@@ -76,31 +84,16 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					defaultValue={filters.date}
 				/>
 
-				<div className='flex-1 gap-16 flex-justify-start'>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.fromDate}
-							onChange={(v) => setFilterValue('fromDate', v.getTime())}
-						/>
-					</div>
-					<div className='flex-1'>
-						<AdvancedDatepicker
-							value={filters.toDate}
-							onChange={(v) => setFilterValue('toDate', v.getTime())}
-						/>
-					</div>
-				</div>
+				<RangeDatepicker
+					fromDate={filters.fromDate}
+					onChangeFromDate={(v) => setFilterValue('fromDate', v.getTime())}
+					toDate={filters.toDate}
+					onChangeToDate={(v) => setFilterValue('toDate', v.getTime())}
+				/>
 
 				<MultiSelect<string>
 					onChange={(options) => onChangeStatus(options)}
-					options={[
-						'Reception',
-						'CancellByCustomer',
-						'InProgress',
-						'Done',
-						'BankingAction',
-						'Draft'
-					]}
+					options={['Reception', 'CancelByCustomer', 'InProgress', 'Done', 'BankingAction', 'Draft']}
 					getOptionId={(option) => option}
 					getOptionTitle={(option) => <span>{t(`states.state_${option}`)}</span>}
 					placeholder={t('change_broker_reports_page.status_placeholder_filter')}
@@ -120,7 +113,6 @@ const Form = ({ filters, setFilters }: IFormProps) => {
 					getOptionTitle={(option) => <span>{t(`change_broker_reports_page.${option.label}`)}</span>}
 					placeholder={t('change_broker_reports_page.attachment_placeholder_filter')}
 				/>
-
 			</div>
 
 			<button type='submit' className='h-40 flex-1 rounded px-56 py-8 font-medium btn-primary'>

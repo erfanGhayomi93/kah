@@ -1,7 +1,7 @@
 import { ArrowRightSVG, CalendarSVG, DoubleArrowLeftSVG, DoubleArrowRightSVG, XSVG } from '@/components/icons';
 import { getDateMilliseconds, weekDaysName, yearMonthsName } from '@/constants';
 import dayjs from '@/libs/dayjs';
-import { cn, isAfter, isBefore, isBetween, isSameOrAfter, isSameOrBefore } from '@/utils/helpers';
+import { cn, dayAsJalali, isBefore, isBetween, isSameOrAfter, isSameOrBefore } from '@/utils/helpers';
 import clsx from 'clsx';
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -120,8 +120,7 @@ const AdvancedDatepicker = ({
 	};
 
 	const isValidYear = (value: Date) => {
-		// @ts-expect-error: jalali dosn't infer type
-		const d = dayjs(value, { jalali: true }).calendar('jalali');
+		const d = dayAsJalali(value).calendar('jalali');
 		if (!d.isValid()) return;
 
 		const nYear = value.getFullYear();
@@ -134,7 +133,7 @@ const AdvancedDatepicker = ({
 		if (dateIsDisabled) return dateIsDisabled(d);
 		if (typeof disabledIsBefore === 'number') return isBefore(d, new Date(disabledIsBefore));
 		if (typeof disabledIsSameOrBefore === 'number') return isSameOrBefore(d, new Date(disabledIsSameOrBefore));
-		if (typeof disabledIsAfter === 'number') return isAfter(d, new Date(disabledIsAfter));
+		if (typeof disabledIsAfter === 'number') return d.getTime() > disabledIsAfter;
 		if (typeof disabledIsSameOrAfter === 'number') return isSameOrAfter(d, new Date(disabledIsSameOrAfter));
 
 		return false;
@@ -145,8 +144,7 @@ const AdvancedDatepicker = ({
 
 		value = value.replace(/\s/g, '');
 
-		// @ts-expect-error: jalali doesn't infer type
-		const d = dayjs(value, { jalali: true }).calendar('jalali');
+		const d = dayAsJalali(value).calendar('jalali');
 		if (!d.isValid()) return;
 
 		const asDate = d.toDate();
@@ -387,10 +385,9 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 			e.stopPropagation();
 			if (!day.enable) return;
 
-			if (isDisabledDate(dayjs(`${day.year}/${day.month}/${day.date}`).calendar('jalali').toDate())) return;
+			if (isDisabledDate(dayAsJalali(`${day.year}/${day.month}/${day.date}`).toDate())) return;
 
-			// @ts-expect-error: jalali type doesn't exists
-			const d = dayjs(`${day.year}/${day.month}/${day.date}`, { jalali: true }).calendar('jalali').toDate();
+			const d = dayAsJalali(`${day.year}/${day.month}/${day.date}`).toDate();
 
 			onChange(d);
 			onClose();
@@ -434,12 +431,12 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 		const daysInMonth = useMemo(() => {
 			if (!datepickerValue) return;
 			/* 
-		0: [0, 1, 2, 3, 4, 5, 6],
-		1: [7, 8, 9, 10, 11, 12, 13],
-		2: [14, 15, 16, 17, 18, 19, 20],
-		3: [21, 22, 23, 24, 25, 26, 27],
-		4: [28, 29, 30, 29 | 30 | 31]
-		*/
+			0: [0, 1, 2, 3, 4, 5, 6],
+			1: [7, 8, 9, 10, 11, 12, 13],
+			2: [14, 15, 16, 17, 18, 19, 20],
+			3: [21, 22, 23, 24, 25, 26, 27],
+			4: [28, 29, 30, 29 | 30 | 31]
+			*/
 
 			type WeekType = DayType[];
 			const weeks: [WeekType, WeekType, WeekType, WeekType, WeekType, WeekType] = [
@@ -579,9 +576,7 @@ const DialogBox = forwardRef<HTMLDivElement, DialogBoxProps>(
 											className={clsx(styles.day, classes?.day, {
 												[styles.holiday]: day.holiday,
 												[styles.disabled]: isDisabledDate(
-													dayjs(`${day.year}/${day.month}/${day.date}`)
-														.calendar('jalali')
-														.toDate(),
+													dayAsJalali(`${day.year}/${day.month}/${day.date}`).toDate(),
 												),
 												[styles.active]: dateIsEqual(`${day.year}/${day.month}/${day.date}`),
 											})}

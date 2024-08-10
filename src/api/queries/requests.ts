@@ -94,13 +94,16 @@ export const useRemainsWithDateQuery = createBrokerQuery<Payment.TRemainsWithDay
 	},
 });
 
-export const useDrawalHistoryQuery = createBrokerQuery<Payment.IDrawalHistoryList[], ['drawalHistoryOnline']>({
-	queryKey: ['drawalHistoryOnline'],
+export const useWithdrawalHistoryQuery = createBrokerQuery<
+	Payment.IWithdrawalHistoryList[],
+	['withdrawalHistoryOnline']
+>({
+	queryKey: ['withdrawalHistoryOnline'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return [];
 
-		const response = await brokerAxios.get<ServerResponse<Payment.IDrawalHistoryList[]>>(
+		const response = await brokerAxios.get<ServerResponse<Payment.IWithdrawalHistoryList[]>>(
 			url.AccountWithdrawalRecentHistory,
 			{
 				signal,

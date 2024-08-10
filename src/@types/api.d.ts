@@ -1666,7 +1666,7 @@ declare namespace Payment {
 		amount: string;
 	}
 
-	export interface IDrawalHistoryList {
+	export interface IWithdrawalHistoryList {
 		id: number;
 		accountNumber: string;
 		bankAccountId: number;

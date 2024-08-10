@@ -10,17 +10,17 @@ import { convertStringToInteger, sepNumbers, toISOStringWithoutChangeTime } from
 import num2persian from '@/utils/num2persian';
 import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { WithdrawalItem } from './WithdrawalItem';
 
-interface DrawalBodyProps {
+interface WithdrawalBodyProps {
 	onClose: () => void;
-	editData?: Payment.IDrawalHistoryList;
+	editData?: Payment.IWithdrawalHistoryList;
 }
 
-export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
+export const Body = ({ onClose, editData }: WithdrawalBodyProps) => {
 	const t = useTranslations();
 
 	const url = useAppSelector(getBrokerURLs);
@@ -122,7 +122,7 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 					: toast.success(t('alerts.drawal_offline_successFully_edited'));
 				onClose();
 
-				queryClient.invalidateQueries({ queryKey: ['withdrawalCashReports'] });
+				queryClient.refetchQueries({ queryKey: ['withdrawalCashReports'], exact: false });
 			}
 		} catch (err) {
 			toast.error(t('alerts.invalid_inputs'));
@@ -223,10 +223,10 @@ export const Body: FC<DrawalBodyProps> = ({ onClose, editData }) => {
 
 				<div className='mt-48'>
 					<button
-						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 						type='submit'
+						className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 					>
-						{!editData ? t('deposit_modal.state_Request') : t('deposit_modal.state_Edit')}
+						{!editData ? t('common.create_request') : t('common.edit')}
 					</button>
 				</div>
 			</div>

@@ -75,7 +75,7 @@ export const Body: FC<BodyProps> = ({ onCloseModal }) => {
 				className='text- h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'
 				onClick={handleSubmitChangeBroker}
 			>
-				{t('deposit_modal.state_Request')}
+				{t('common.create_request')}
 			</button>
 		</form>
 	);
