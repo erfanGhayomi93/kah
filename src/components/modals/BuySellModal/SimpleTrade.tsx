@@ -60,6 +60,7 @@ const SimpleTrade = ({
 	quantity,
 	symbolType,
 	validity,
+	validityDate,
 	switchable,
 	isLoadingBestLimit,
 	value,
@@ -355,7 +356,12 @@ const SimpleTrade = ({
 					{blockTypeErrorMessage()}
 
 					{symbolType === 'base' && (
-						<ValidityDate value={validity} onChange={(v) => setInputValue('validity', v)} />
+						<ValidityDate
+							date={validityDate}
+							onChangeDate={(v) => setInputValue('validityDate', v)}
+							value={validity}
+							onChange={(v) => setInputValue('validity', v)}
+						/>
 					)}
 				</div>
 

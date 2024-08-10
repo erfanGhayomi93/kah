@@ -43,6 +43,7 @@ interface AdvancedDatepickerProps {
 			| 'icon'
 			| 'dialogBox'
 			| 'switch'
+			| 'border'
 			| 'switchIcon'
 			| 'weekDays'
 			| 'days'
@@ -65,6 +66,7 @@ interface AdvancedDatepickerProps {
 const AdvancedDatepicker = ({
 	classes,
 	value,
+	clearable,
 	placement = 'bottom',
 	placeholder,
 	dateIsDisabled,
@@ -272,18 +274,22 @@ const AdvancedDatepicker = ({
 			className={clsx(
 				styles.datepicker,
 				classes?.datepicker,
-				'bg-white darkness:bg-gray-50',
+				!fixedPlaceholder && [styles.border, classes?.border],
 				visibleCalendar && [styles.opened, classes?.opened],
 				// theme === 'dark' && [styles.dark, classes?.dark],
 				nonBorder && styles.nonBorder,
 			)}
 		>
 			<div className={clsx(styles.container, classes?.container, 'relative input-group')}>
-				<span className={cn(' flexible-placeholder active')}>{fixedPlaceholder}</span>
+				{Boolean(fixedPlaceholder) && (
+					<>
+						<span className={cn(' flexible-placeholder active')}>{fixedPlaceholder}</span>
 
-				<fieldset className={cn('flexible-fieldset  active')}>
-					<legend>{fixedPlaceholder}</legend>
-				</fieldset>
+						<fieldset className={cn('flexible-fieldset  active')}>
+							<legend>{fixedPlaceholder}</legend>
+						</fieldset>
+					</>
+				)}
 
 				<input
 					type='text'
@@ -308,7 +314,7 @@ const AdvancedDatepicker = ({
 					{!inputValue ? (
 						<CalendarSVG width='1.6rem' height='1.6rem' />
 					) : (
-						<XSVG width='1.6rem' height='1.6rem' />
+						clearable && <XSVG width='1.6rem' height='1.6rem' />
 					)}
 				</span>
 			</div>
