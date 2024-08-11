@@ -88,11 +88,13 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 
 		if (data.length === 0) return;
 
-		newInputs.minPrice = config?.minPrice || Math.floor(config.baseAssets * 0);
-		newInputs.maxPrice = config?.maxPrice || Math.floor(Math.round(config.baseAssets * 0.2) * 10);
+		newInputs.minPrice = config?.minPrice ?? 0;
+		newInputs.maxPrice = config?.maxPrice ?? config.baseAssets * 2;
 
-		newInputs.minPrice = Math.max(0, Math.min(newInputs.minPrice, newInputs.maxPrice));
-		newInputs.maxPrice = Math.min(1e5, Math.max(newInputs.minPrice, newInputs.maxPrice));
+		if (newInputs.minPrice >= newInputs.maxPrice) {
+			newInputs.minPrice = 0;
+			newInputs.maxPrice = config.baseAssets * 2;
+		}
 
 		try {
 			const { baseAssets, useTradeCommission, useStrikeCommission, useRequiredMargin } = config;

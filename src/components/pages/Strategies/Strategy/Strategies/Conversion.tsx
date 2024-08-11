@@ -73,7 +73,7 @@ const Conversion = (strategy: ConversionProps) => {
 					type: 'base',
 					id: uuidv4(),
 					marketUnit: data.baseMarketUnit,
-					quantity: 1,
+					quantity: data.contractSize,
 					price: data.baseLastTradedPrice,
 					side: 'buy',
 					symbol: {

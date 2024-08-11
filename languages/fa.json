@@ -20,7 +20,7 @@
 		"codal": "کدال",
 		"read": "خواندم",
 		"symbol_not_found": "نماد مورد نظر یافت نشد",
-		"no_data": "اطلاعاتی برای نمایش موجود نیست!",
+		"no_data": "اطلاعاتی برای نمایش وجود ندارد!",
 		"searching": "در حال جستجو",
 		"needs_more_than_n_chars": "حداقل {n} حرف وارد نمایید",
 		"show_more": "مشاهده بیشتر",
@@ -986,7 +986,6 @@
 	"analyze_modal": {
 		"title": "آنالیز",
 		"with_calculation": "با احتساب",
-		"no_data": "قراردادی ",
 		"input_due_days": "روزهای مانده تا سررسید",
 		"make_your_own_strategy": "استراتژی دلخواه خود را بسازید",
 		"send_all": "ارسال همه",
@@ -1021,7 +1020,7 @@
 		"percent_efficiency": "بازده درصدی",
 		"cost": "وجه مورد نیاز",
 		"ytm": "YTM بازده موثر سالانه",
-		"no_active_contract_found": "هیچ قرارداد فعالی وجود ندارد"
+		"no_active_contract_found": "اطلاعاتی برای نمایش وجود ندارد!"
 	},
 	"pagination": {
 		"prev_page": "صفحه قبل",
