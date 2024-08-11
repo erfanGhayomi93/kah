@@ -1,8 +1,6 @@
 import { useFreezeMutation } from '@/api/mutations/freezeMutations';
 import { useCountFreezeQuery } from '@/api/queries/requests';
 import Radiobox from '@/components/common/Inputs/Radiobox';
-import { useAppSelector } from '@/features/hooks';
-import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { useBrokerQueryClient } from '@/hooks';
 import { sepNumbers } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
@@ -15,8 +13,6 @@ interface UnFreezeProps {
 
 const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 	const t = useTranslations();
-
-	const url = useAppSelector(getBrokerURLs);
 
 	const queryClient = useBrokerQueryClient();
 
