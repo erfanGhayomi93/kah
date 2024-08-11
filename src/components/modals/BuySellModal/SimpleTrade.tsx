@@ -14,19 +14,6 @@ import Input from './common/Input';
 import TotalTradeValueInput from './common/TotalTradeValueInput';
 import ValidityDate from './common/ValidityDate';
 
-interface IPortfolioBlockType {
-	type: 'Portfolio';
-}
-
-interface IAccountBlockType {
-	type: 'Account';
-}
-
-interface IPositionBlockType {
-	type: 'Position';
-	value: IAvailableContractInfo;
-}
-
 interface SummaryItemProps {
 	title: React.ReactNode;
 	value: React.ReactNode;
@@ -60,6 +47,7 @@ const SimpleTrade = ({
 	quantity,
 	symbolType,
 	validity,
+	blockType,
 	validityDate,
 	switchable,
 	isLoadingBestLimit,
@@ -84,10 +72,6 @@ const SimpleTrade = ({
 
 	const [error, setError] = useState<'price' | 'quantity' | null>(null);
 
-	const [blockType, setBlockType] = useState<IPortfolioBlockType | IAccountBlockType | IPositionBlockType | null>(
-		null,
-	);
-
 	const dispatch = useAppDispatch();
 
 	const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
@@ -107,9 +91,9 @@ const SimpleTrade = ({
 
 	const onBlockTypeChanged = (type: TBlockType, selectedPosition: IAvailableContractInfo | null) => {
 		if (type === 'Position') {
-			setBlockType({ type, value: selectedPosition! });
+			setInputValue('blockType', { type, value: selectedPosition! });
 		} else {
-			setBlockType({ type });
+			setInputValue('blockType', { type });
 		}
 	};
 
@@ -223,6 +207,7 @@ const SimpleTrade = ({
 		!price ||
 		!quantity ||
 		(side === 'sell' &&
+			symbolType === 'option' &&
 			(!blockType ||
 				(blockType.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0)) ||
 				(blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0))));

@@ -1,6 +1,6 @@
 import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsConversion, initialHiddenColumnsConversion } from '@/constants/strategies';
@@ -280,16 +280,8 @@ const Conversion = (strategy: ConversionProps) => {
 						initialValue: filters?.putLeastOpenPositions ?? null,
 					},
 					{
-						id: 'leastProfitPercent',
-						title: t('strategy_filters.least_profit_percent'),
-						mode: 'single',
-						type: 'percent',
-						placeholder: t('strategy_filters.value'),
-						initialValue: filters?.leastProfitPercent ?? null,
-					},
-					{
 						id: 'leastYTM',
-						title: t('strategy_filters.least_YTM_put'),
+						title: t('strategy_filters.ytm'),
 						mode: 'single',
 						type: 'percent',
 						placeholder: t('strategy_filters.value'),
@@ -372,11 +364,12 @@ const Conversion = (strategy: ConversionProps) => {
 				colId: 'callSymbolTitle',
 				headerName: 'کال',
 				initialHide: initialHiddenColumnsConversion.callSymbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.callSymbolISIN),
 				valueGetter: ({ data }) => data?.callSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.Conversion) => data!.callIOTM,
 				},
@@ -427,11 +420,12 @@ const Conversion = (strategy: ConversionProps) => {
 				colId: 'putSymbolTitle',
 				headerName: 'پوت',
 				initialHide: initialHiddenColumnsConversion.putSymbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.putSymbolISIN),
 				valueGetter: ({ data }) => data?.putSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.Conversion) => data!.putIOTM,
 				},
@@ -482,8 +476,13 @@ const Conversion = (strategy: ConversionProps) => {
 				colId: 'profit',
 				headerName: 'بازده',
 				initialHide: initialHiddenColumnsConversion.profit,
-				minWidth: 104,
-				valueFormatter: () => t('common.infinity'),
+				width: 192,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.Conversion>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.profit ?? 0, data?.profitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'inUseCapital',
@@ -494,29 +493,16 @@ const Conversion = (strategy: ConversionProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
-				colId: 'bestBuyYTM',
-				headerName: 'YTM سرخط خرید',
-				initialHide: initialHiddenColumnsConversion.bestBuyYTM,
-				width: 152,
-				headerComponent: HeaderHint,
-				headerComponentParams: {
-					tooltip: 'بازده موثر تا سررسید',
-				},
-				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
-				valueFormatter: ({ value }) => toFixed(value, 4),
-			},
-			{
-				colId: 'bestSellYTM',
+				colId: 'ytm',
 				headerName: 'YTM سرخط فروش',
-				initialHide: initialHiddenColumnsConversion.bestSellYTM,
+				initialHide: initialHiddenColumnsConversion.ytm,
 				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bestSellYTM ?? 0,
+				valueGetter: ({ data }) => data?.ytm ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
 			},
 			{
@@ -564,7 +550,7 @@ const Conversion = (strategy: ConversionProps) => {
 				headerName: 'آخرین معامله پایه',
 				initialHide: initialHiddenColumnsConversion.baseLastTradedDate,
 				width: 152,
-				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
+				valueGetter: ({ data }) => data?.baseLastTradeDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
 			{

@@ -2,7 +2,6 @@ import { useGetFirstTradedOptionSymbolQuery, useGetMostTradedOptionSymbolQuery }
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
-import { ChainSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
@@ -65,17 +64,6 @@ const NewAndOldTable = ({ type }: MeetingTableProps) => {
 						? new Date(row.firstTradeDate).getTime()
 						: String(row.workingDaysTradedCount),
 				valueFormatter: ({ value }) => (typeof value === 'number' ? fromNow(value) : value),
-			},
-			{
-				colId: 'detail',
-				headerName: t('home.detail'),
-				sortable: false,
-				valueGetter: (row) => row.symbolISIN,
-				valueFormatter: () => (
-					<button type='button' className='text-gray-700 mx-auto flex-justify-center'>
-						<ChainSVG width='2.4rem' height='2.4rem' />
-					</button>
-				),
 			},
 		],
 		[type],

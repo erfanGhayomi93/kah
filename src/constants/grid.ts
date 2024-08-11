@@ -1,8 +1,6 @@
 export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	{
 		id: 'option_detail',
-		// 328 > 468
-		// 328 > 628
 		height: 328,
 		expand: true,
 		hidden: false,
@@ -19,7 +17,6 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	},
 	{
 		id: 'symbol_detail',
-		// 328 > 808
 		height: 328,
 		expand: true,
 		hidden: false,

@@ -1,6 +1,6 @@
 import { useProtectivePutStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsProtectivePut, initialHiddenColumnsProtectivePut } from '@/constants/strategies';
@@ -277,11 +277,12 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				colId: 'symbolTitle',
 				headerName: 'پوت خرید',
 				initialHide: initialHiddenColumnsProtectivePut.symbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.ProtectivePut) => data?.iotm ?? 0,
 				},
@@ -312,7 +313,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				cellRendererParams: ({ value }: ICellRendererParams<Strategy.ProtectivePut>) => ({
 					percent: value[1] ?? 0,
 				}),
-				valueGetter: ({ data }) => [data?.premium ?? 0, data?.tradePriceVarPreviousTradePercent ?? 0],
+				valueGetter: ({ data }) => [data?.premium ?? 0, data?.premiumPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
@@ -379,8 +380,13 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				colId: 'profit',
 				headerName: 'بازده',
 				initialHide: initialHiddenColumnsProtectivePut.profit,
-				minWidth: 104,
-				valueFormatter: () => t('common.infinity'),
+				width: 192,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.ProtectivePut>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'profitPercent',

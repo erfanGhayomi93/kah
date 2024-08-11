@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useEffect, useMemo } from 'react';
 import SymbolContextMenu from '../../../common/Symbol/SymbolContextMenu';
+import SymbolChartData from '../SymbolInfo/SymbolChartData';
 
 const PriceInformation = dynamic(() => import('./Tabs/PriceInformation'), {
 	ssr: false,
@@ -130,6 +131,24 @@ const Contract = ({
 				id: 'market_depth',
 				title: t('saturn_page.tab_market_depth'),
 				render: () => <ContractMarketDepth symbol={contractInfo ?? null} />,
+			},
+			{
+				id: 'open_position',
+				title: t('saturn_page.tab_open_position'),
+				render: () => (
+					<div style={{ height: '23.6rem' }}>
+						<SymbolChartData symbolISIN={option!.symbolISIN} tab='open_positions' />
+					</div>
+				),
+			},
+			{
+				id: 'tab_chart',
+				title: t('saturn_page.tab_chart'),
+				render: () => (
+					<div style={{ height: '23.6rem' }}>
+						<SymbolChartData symbolISIN={option!.symbolISIN} tab='symbol_chart' />
+					</div>
+				),
 			},
 		],
 		[contractInfo],

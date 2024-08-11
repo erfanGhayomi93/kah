@@ -1,6 +1,6 @@
 import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsBearPutSpread } from '@/constants/strategies';
@@ -277,7 +277,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					},
 					{
 						id: 'leastYTM',
-						title: t('strategy_filters.least_YTM'),
+						title: t('strategy_filters.ytm'),
 						mode: 'single',
 						type: 'percent',
 						label: t('strategy_filters.from'),
@@ -325,11 +325,12 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			{
 				colId: 'hspSymbolTitle',
 				headerName: 'پوت خرید',
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.hspSymbolISIN),
 				valueGetter: ({ data }) => data?.hspSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.BearPutSpread) => data?.hspiotm ?? 0,
 				},
@@ -376,11 +377,12 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 			{
 				colId: 'lspSymbolTitle',
 				headerName: 'پوت فروش',
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.lspSymbolISIN),
 				valueGetter: ({ data }) => data?.lspSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.BearPutSpread) => data?.lspiotm ?? 0,
 				},

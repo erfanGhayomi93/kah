@@ -398,6 +398,7 @@ declare namespace Symbol {
 		contractEndDate: string;
 		openPosition: number;
 		contractSize: number;
+		strikePrice: null | number;
 		isOption: boolean;
 		oneMonthEfficiency: number;
 		threeMonthEfficiency: number;
@@ -632,7 +633,7 @@ declare namespace User {
 declare namespace Saturn {
 	type SymbolTab = 'tab_market_depth' | 'tab_chart' | 'tab_my_asset';
 
-	type OptionTab = 'price_information' | 'computing_information' | 'market_depth' | 'open_position';
+	type OptionTab = 'price_information' | 'computing_information' | 'market_depth' | 'open_position' | 'tab_chart';
 
 	interface Template {
 		id: number;
@@ -1014,7 +1015,7 @@ declare namespace Order {
 		positionBlockISIN: string;
 		canClosePosition: boolean;
 		availableClosePosition: number;
-		variationMargin: any;
+		variationMargin: null;
 		requiredMargin: number;
 		isFreeze: boolean;
 		isSwapped: boolean;
@@ -1747,8 +1748,6 @@ declare namespace Strategy {
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
-		nonExpiredYTM: number;
-		bepDifferencePercent: number;
 		baseTradePriceVarPreviousTradePercent: number;
 		dueDays: number;
 		symbolISIN: string;
@@ -1760,6 +1759,7 @@ declare namespace Strategy {
 		tradePriceVarPreviousTradePercent: number;
 		optionBestBuyLimitQuantity: number;
 		optionBestBuyLimitPrice: number;
+		contractSize: number;
 		baseBestSellLimitPrice: number;
 		baseBestBuyLimitPrice: number;
 		optionBestSellLimitPrice: number;
@@ -1774,20 +1774,18 @@ declare namespace Strategy {
 		maxProfit: number;
 		maxProfitPercent: number;
 		inUseCapital: number;
-		ytm: number;
-		bestBuyYTM: number;
-		bestSellYTM: number;
-		bepDifference: number;
-		riskCoverage: number;
 		nonExpiredProfit: number;
 		nonExpiredProfitPercent: number;
-		marketUnit: string;
+		ytm: number;
+		nonExpiredYTM: number;
+		bepDifference: number;
+		riskCoverage: number;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
 		requiredMargin: number;
 		contractEndDate: string;
-		contractSize: number;
-		requiredMargin: number;
+		withCommission: boolean;
 	}
 
 	export interface LongCall {
@@ -1819,13 +1817,13 @@ declare namespace Strategy {
 		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
-		ytm: number;
 		baseMarketUnit: string;
 		marketUnit: string;
 		historicalVolatility: number;
 		requiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
+		withCommission: boolean;
 	}
 
 	export interface LongPut {
@@ -1878,10 +1876,6 @@ declare namespace Strategy {
 		callSymbolTitle: string;
 		callBestSellLimitPrice: number;
 		callBestSellLimitQuantity: number;
-		callBestBuyLimitPrice: number;
-		callBestBuyLimitQuantity: number;
-		putBestBuyLimitPrice: number;
-		putBestBuyLimitQuantity: number;
 		putSymbolISIN: string;
 		putSymbolTitle: string;
 		putBestSellLimitPrice: number;
@@ -1904,17 +1898,22 @@ declare namespace Strategy {
 		putIntrinsicValue: number;
 		callTradeValue: number;
 		putTradeValue: number;
+		callBestBuyLimitPrice: number;
+		callBestBuyLimitQuantity: number;
+		putBestBuyLimitPrice: number;
+		putBestBuyLimitQuantity: number;
 		baseTradeValue: number;
 		baseTradeCount: number;
 		baseTradeVolume: number;
+		baseLastTradeDate: string;
 		baseMarketUnit: string;
 		marketUnit: string;
 		historicalVolatility: number;
 		callRequiredMargin: number;
 		putRequiredMargin: number;
 		contractEndDate: string;
-		baseLastTradedDate: string;
 		contractSize: number;
+		withCommission: boolean;
 	}
 
 	export interface Conversion {
@@ -1928,26 +1927,25 @@ declare namespace Strategy {
 		callSymbolTitle: string;
 		callBestSellLimitPrice: number;
 		callBestSellLimitQuantity: number;
+		callBestBuyLimitPrice: number;
+		callBestBuyLimitQuantity: number;
 		callPremium: number;
 		callPremiumPercent: number;
-		callIOTM: Option.IOTM;
+		callIOTM: string;
 		callOpenPositionCount: number;
 		putSymbolISIN: string;
 		putSymbolTitle: string;
 		putBestSellLimitPrice: number;
 		putBestSellLimitQuantity: number;
-		putOpenPositionCount: number;
-		callBestBuyLimitPrice: number;
-		callBestBuyLimitQuantity: number;
 		putBestBuyLimitPrice: number;
 		putBestBuyLimitQuantity: number;
-		putIOTM: Option.IOTM;
+		putOpenPositionCount: number;
+		putIOTM: string;
 		putPremium: number;
 		putPremiumPercent: number;
 		profit: number;
+		profitPercent: number;
 		inUseCapital: number;
-		bestBuyYTM: number;
-		bestSellYTM: number;
 		callTimeValue: number;
 		putTimeValue: number;
 		callIntrinsicValue: number;
@@ -1957,13 +1955,18 @@ declare namespace Strategy {
 		baseTradeValue: number;
 		baseTradeCount: number;
 		baseTradeVolume: number;
-		baseLastTradedDate: string;
-		marketUnit: string;
+		baseLastTradeDate: string;
 		baseMarketUnit: string;
+		marketUnit: string;
 		historicalVolatility: number;
+		callRequiredMargin: number;
+		putRequiredMargin: number;
 		contractEndDate: string;
-		contractSize: number;
+		ytm: number;
 		requiredMargin: number;
+		ytmWithCommission: number;
+		contractSize: number;
+		withCommission: boolean;
 	}
 
 	export interface BullCallSpread {
@@ -1972,7 +1975,6 @@ declare namespace Strategy {
 		baseLastTradedPrice: number;
 		baseTradePriceVarPreviousTradePercent: number;
 		dueDays: number;
-		// اعمال پایین
 		lspSymbolISIN: string;
 		lspSymbolTitle: string;
 		lspStrikePrice: number;
@@ -1980,7 +1982,6 @@ declare namespace Strategy {
 		lspBestSellLimitQuantity: number;
 		lspBestBuyLimitPrice: number;
 		lspBestBuyLimitQuantity: number;
-		// اعمال بالا
 		hspSymbolISIN: string;
 		hspSymbolTitle: string;
 		hspStrikePrice: number;
@@ -2004,7 +2005,6 @@ declare namespace Strategy {
 		lspTimeValue: number;
 		hspTimeValue: number;
 		lspIntrinsicValue: number;
-		historicalVolatility: number;
 		hspIntrinsicValue: number;
 		lspTradeValue: number;
 		hspTradeValue: number;
@@ -2013,11 +2013,15 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
 		ytm: number;
-		marketUnit: string;
 		baseMarketUnit: string;
+		marketUnit: string;
+		historicalVolatility: number;
+		lspRequiredMargin: number;
+		hspRequiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
 		requiredMargin: number;
+		withCommission: boolean;
 	}
 
 	export interface ProtectivePut {
@@ -2032,7 +2036,7 @@ declare namespace Strategy {
 		openPositionCount: number;
 		iotm: Option.IOTM;
 		premium: number;
-		tradePriceVarPreviousTradePercent: number;
+		premiumPercent: number;
 		optionBestBuyLimitQuantity: number;
 		optionBestBuyLimitPrice: number;
 		contractSize: number;
@@ -2053,7 +2057,6 @@ declare namespace Strategy {
 		requiredMargin: number;
 		contractEndDate: string;
 		timeValue: number;
-		blackScholes: number;
 		intrinsicValue: number;
 		optionBestLimitPrice: number;
 		optionBestLimitVolume: number;
@@ -2061,7 +2064,11 @@ declare namespace Strategy {
 		baseTradeValue: number;
 		baseTradeCount: number;
 		baseTradeVolume: number;
+		blackScholes: number;
 		baseLastTradedDate: string;
+		ytm: number;
+		ytmWithCommission: number;
+		withCommission: boolean;
 	}
 
 	export interface BearPutSpread {
@@ -2107,6 +2114,7 @@ declare namespace Strategy {
 		baseTradeCount: number;
 		baseTradeVolume: number;
 		baseLastTradedDate: string;
+		ytm: number;
 		baseMarketUnit: string;
 		marketUnit: string;
 		historicalVolatility: number;
@@ -2114,7 +2122,7 @@ declare namespace Strategy {
 		hspRequiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		ytm: number;
+		withCommission: boolean;
 	}
 }
 

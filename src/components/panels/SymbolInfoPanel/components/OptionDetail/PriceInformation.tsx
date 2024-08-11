@@ -35,10 +35,17 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 			openPosition,
 			notionalValue,
 			contractSize,
+			strikePrice = 0,
 			lastTradeDate,
 		} = symbolData;
 
 		return [
+			{
+				id: 'strikePrice',
+				title: t('symbol_info_panel.strike_price'),
+				value: bigNumFormatter(strikePrice ?? 0),
+			},
+
 			{
 				id: 'tradeVolume',
 				title: t('symbol_info_panel.trade_volume'),

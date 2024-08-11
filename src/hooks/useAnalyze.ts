@@ -59,7 +59,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		const transactionCommission = commissionData[marketUnit];
 		if (!transactionCommission) return 0;
 
-		const commissionValue = transactionCommission[side === 'buy' ? 'buyCommission' : 'sellCommission'];
+		const commissionValue = transactionCommission[side === 'buy' ? 'sellCommission' : 'buyCommission'];
 
 		if (side === 'sell') return -commissionValue;
 		return commissionValue;
@@ -127,7 +127,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					commission = getCommission(item.side, item.marketUnit) * amount * contractSize;
 				}
 				const tradeCommission = Math.ceil(Math.abs(amount + commission));
-				const cost = tax + commission + requiredMargin + income;
+				const cost = tax + Math.abs(commission) + requiredMargin + income;
 
 				if (type === 'base') newInputs.baseAssets = item.price;
 

@@ -85,7 +85,12 @@ const TotalTradeValueInput = ({ value, max, setToMinimum, onChange }: TotalTrade
 						</span>
 					</span>
 
-					<RangeSlider disabled={max === 0} max={max} value={value} onChange={(value) => onChange(value)} />
+					<RangeSlider
+						disabled={max === 0}
+						max={max}
+						value={max === 0 ? 0 : value}
+						onChange={(value) => onChange(value)}
+					/>
 				</div>
 			)}
 		</div>

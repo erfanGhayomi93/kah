@@ -1,6 +1,6 @@
 import { useLongCallStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsLongCall, initialHiddenColumnsLongCall } from '@/constants/strategies';
@@ -206,7 +206,7 @@ const LongCall = (strategy: LongCallProps) => {
 						type: 'integer',
 						label: [t('strategy_filters.from'), t('strategy_filters.to')],
 						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
-						initialValue: [filters.dueDays?.[0] ?? null, filters.dueDays?.[1] ?? null],
+						initialValue: [filters.bepDifference?.[0] ?? null, filters.bepDifference?.[1] ?? null],
 					},
 				],
 			}),
@@ -252,11 +252,12 @@ const LongCall = (strategy: LongCallProps) => {
 				colId: 'symbolTitle',
 				headerName: 'کال',
 				initialHide: initialHiddenColumnsLongCall.symbolTitle,
-				minWidth: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.LongCall) => data!.iotm,
 				},
