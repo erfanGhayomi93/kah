@@ -66,8 +66,8 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 								if (sort === 'asc') return valueA.localeCompare(valueB as string);
 								else return (valueB as string).localeCompare(valueA);
 							} else {
-								if (sort === 'asc') return (valueB as number) - valueA;
-								else return valueA - (valueB as number);
+								if (sort === 'asc') return (valueB as number) - (valueA as number);
+								else return (valueA as number) - (valueB as number);
 							}
 						} catch (e) {
 							return 0;

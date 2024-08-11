@@ -7,12 +7,9 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
-import { getIsLoggedIn } from '@/features/slices/userSlice';
-import { type RootState } from '@/features/store';
 import { useDebounce, useOptionWatchlistColumns, useSubscription } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type ColumnMovedEvent, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
-import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
@@ -29,14 +26,6 @@ interface WatchlistTableProps {
 	fetchNextPage: () => void;
 }
 
-const getStates = createSelector(
-	(state: RootState) => state,
-	(state) => ({
-		isLoggedIn: getIsLoggedIn(state),
-		watchlistColumnsIndex: getOptionWatchlistColumns(state),
-	}),
-);
-
 const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: WatchlistTableProps) => {
 	const t = useTranslations();
 
@@ -46,7 +35,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: Wa
 
 	const queryClient = useQueryClient();
 
-	const { isLoggedIn, watchlistColumnsIndex } = useAppSelector(getStates);
+	const watchlistColumnsIndex = useAppSelector(getOptionWatchlistColumns);
 
 	const visualData = useRef<Option.Root[]>([]);
 
