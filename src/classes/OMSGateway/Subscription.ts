@@ -92,8 +92,6 @@ class Subscription {
 		const orderMessageType = message[200];
 		const orderMessage = message[208];
 
-		console.log(orderStatus, orderMessageType, orderMessage);
-
 		if (['OnCanceling', 'OnSending', 'InOMSQueue'].includes(orderStatus)) return;
 
 		const messageType: 'success' | 'error' = orderStatus === 'Error' ? 'error' : 'success';

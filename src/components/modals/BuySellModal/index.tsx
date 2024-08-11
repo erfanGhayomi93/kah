@@ -38,7 +38,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			symbolISIN,
 			symbolTitle,
 			priceLock,
-			collateral,
+			blockType,
 			side,
 			switchable = true,
 			mode = 'create',
@@ -75,7 +75,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			price: initialPrice ?? 0,
 			quantity: initialQuantity ?? 0,
 			value: 0,
-			collateral: collateral ?? null,
+			blockType: blockType ?? null,
 			side: side ?? 'buy',
 			validity: initialValidity ?? 'Day',
 			validityDate: initialValidityDate ?? Date.now(),
@@ -247,7 +247,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 							type={type}
 							symbolISIN={symbolISIN}
 							symbolType={symbolType}
-							close={onCloseModal}
+							closeModal={onCloseModal}
 							setInputValue={setInputValue}
 							setMinimumValue={setMinimumValue}
 						/>

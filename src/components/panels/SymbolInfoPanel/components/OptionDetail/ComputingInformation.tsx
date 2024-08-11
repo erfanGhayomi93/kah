@@ -97,6 +97,12 @@ const ComputingInformation = ({ isExpand, symbolISIN }: ComputingInformationProp
 			},
 
 			{
+				id: 'rho',
+				title: t('old_option_chain.rho'),
+				value: sepNumbers('0'),
+			},
+
+			{
 				id: 'timeValue',
 				title: t('old_option_chain.time_value'),
 				value: sepNumbers(String(timeValue)),
@@ -141,7 +147,7 @@ const ComputingInformation = ({ isExpand, symbolISIN }: ComputingInformationProp
 				<li
 					key={row.id}
 					style={{ flex: '0 0 40px' }}
-					className='odd:bg-gray-100 rounded-sm px-8 text-base flex-justify-between'
+					className='rounded-sm px-8 text-base flex-justify-between odd:bg-gray-100'
 				>
 					<span className='text-gray-700'>{row.title}:</span>
 					<span className='text-gray-800 ltr'>{row.value}</span>

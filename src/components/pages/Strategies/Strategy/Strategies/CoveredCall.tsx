@@ -1,6 +1,6 @@
 import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsCoveredCall, initialHiddenColumnsCoveredCall } from '@/constants/strategies';
@@ -109,7 +109,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					type: 'base',
 					id: uuidv4(),
 					marketUnit: data.baseMarketUnit,
-					quantity: 1,
+					quantity: data.contractSize,
 					price: data.baseLastTradedPrice,
 					side: 'buy',
 					symbol: {
@@ -325,11 +325,12 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				colId: 'symbolTitle',
 				headerName: t('CoveredCall.symbolTitle'),
 				initialHide: initialHiddenColumnsCoveredCall.symbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.symbolISIN),
 				valueGetter: ({ data }) => data?.symbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.CoveredCall) => data!.iotm,
 				},
@@ -454,22 +455,13 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: t('CoveredCall.ytm'),
 				initialHide: initialHiddenColumnsCoveredCall.ytm,
 				width: 152,
-				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.ytm ?? 0,
-				valueFormatter: ({ value }) => toFixed(value, 4),
-			},
-			{
-				colId: 'bestBuyYTM',
-				headerName: t('CoveredCall.bestBuyYTM'),
-				initialHide: initialHiddenColumnsCoveredCall.bestBuyYTM,
-				width: 152,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'بازده موثر تا سررسید',
 				},
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bestBuyYTM ?? 0,
-				valueFormatter: ({ value }) => toFixed(value, 4),
+				valueGetter: ({ data }) => data?.ytm ?? 0,
+				valueFormatter: ({ value }) => `${toFixed(value, 4)}%`,
 			},
 			{
 				colId: 'nonExpiredYTM',

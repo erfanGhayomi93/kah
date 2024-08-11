@@ -37,7 +37,7 @@ export const createDraft = (order: IOFields) =>
 			refetchActiveOrderTab();
 			resolve(data.result);
 		} catch (e) {
-			reject();
+			reject(e);
 		}
 	});
 

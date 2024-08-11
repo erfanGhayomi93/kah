@@ -1,6 +1,6 @@
 import { useLongStraddleStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsLongStraddle, initialHiddenColumnsLongStraddle } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
@@ -289,11 +289,12 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				colId: 'callSymbolTitle',
 				headerName: 'کال',
 				initialHide: initialHiddenColumnsLongStraddle.callSymbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.callSymbolISIN),
 				valueGetter: ({ data }) => data?.callSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.LongStraddle) => data!.callIOTM,
 				},
@@ -318,11 +319,12 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				colId: 'putSymbolTitle',
 				headerName: 'پوت',
 				initialHide: initialHiddenColumnsLongStraddle.putSymbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.putSymbolISIN),
 				valueGetter: ({ data }) => data?.putSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.LongStraddle) => data!.putIOTM,
 				},
@@ -528,7 +530,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				headerName: 'آخرین معامله پایه',
 				initialHide: initialHiddenColumnsLongStraddle.baseLastTradedDate,
 				width: 152,
-				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
+				valueGetter: ({ data }) => data?.baseLastTradeDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 			},
 			{

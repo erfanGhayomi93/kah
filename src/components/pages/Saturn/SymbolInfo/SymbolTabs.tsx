@@ -49,11 +49,10 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 				title: t('tab_chart'),
 				render: () => (
 					<div style={{ height: '23rem' }} className='relative size-full'>
-						<SymbolChartData symbolISIN={symbol.symbolISIN} />
+						<SymbolChartData symbolISIN={symbol.symbolISIN} tab='symbol_chart' />
 					</div>
 				),
 			},
-			{ id: 'tab_my_asset', title: t('tab_my_asset'), disabled: true, render: null },
 		],
 		[symbol],
 	);
@@ -69,7 +68,7 @@ const SymbolTabs = ({ symbol, activeTab, setActiveTab }: SymbolTabsProps) => {
 					<button
 						className={cn(
 							'p-8 transition-colors',
-							item.id === activeTab ? 'text-gray-700 font-medium' : 'text-gray-500',
+							item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
 						)}
 						type='button'
 					>

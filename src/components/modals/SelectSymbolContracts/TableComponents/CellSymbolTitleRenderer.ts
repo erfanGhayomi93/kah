@@ -1,25 +1,25 @@
 import { type ITableData } from '@/components/pages/OptionChain/Option/OptionTable';
 import { type ICellRendererComp, type ICellRendererParams } from '@ag-grid-community/core';
 
-type CellSymbolTitleRendererRendererProps = ICellRendererParams<ITableData, Option.Root> & {
+type CellSymbolTitleRendererProps = ICellRendererParams<ITableData, Option.Root> & {
 	reverse: boolean;
 	disabled: boolean;
 	checkbox: boolean;
 	isSelected: (symbolISIN: string) => boolean;
 };
 
-class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
+class CellSymbolTitleRenderer implements ICellRendererComp<ITableData> {
 	eGui!: HTMLDivElement;
 
 	eTitle!: HTMLSpanElement;
 
-	params!: CellSymbolTitleRendererRendererProps;
+	params!: CellSymbolTitleRendererProps;
 
 	eIOTM!: HTMLSpanElement;
 
 	eCheckbox!: HTMLInputElement;
 
-	init(params: CellSymbolTitleRendererRendererProps) {
+	init(params: CellSymbolTitleRendererProps) {
 		this.params = params;
 
 		this.eGui = document.createElement('div');
@@ -45,7 +45,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
 		return this.eGui;
 	}
 
-	refresh(params: CellSymbolTitleRendererRendererProps) {
+	refresh(params: CellSymbolTitleRendererProps) {
 		this.params = params;
 
 		this.updateCheckbox();
@@ -120,4 +120,4 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<ITableData> {
 	}
 }
 
-export default CellSymbolTitleRendererRenderer;
+export default CellSymbolTitleRenderer;

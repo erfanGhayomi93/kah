@@ -16,7 +16,7 @@ import AnalyzeTabs from './AnalyzeTabs';
 
 const Div = styled.div`
 	width: 800px;
-	min-height: 60rem;
+	min-height: 79.2rem;
 	max-height: 90dvh;
 	display: flex;
 	flex-direction: column;
@@ -75,7 +75,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 						type: 'base',
 						id: baseSymbolId,
 						marketUnit: baseSymbol.marketUnit,
-						quantity: 1,
+						quantity: contractSize,
 						price: baseSymbol.lastTradedPrice,
 						side: 'buy',
 						symbol: {
@@ -106,7 +106,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			dispatch(
 				setSelectSymbolContractsModal({
 					initialSelectedContracts,
-					suppressBaseSymbolChange: true,
+					suppressBaseSymbolChange: symbolContracts.length > 0,
 					suppressSendBaseSymbol: false,
 					initialBaseSymbol: initialBaseSymbol
 						? [initialBaseSymbol.symbol.symbolISIN, initialBaseSymbol.side]
@@ -211,15 +211,21 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 								</div>
 							</div>
 
-							<div className='h-full overflow-auto px-16 pb-16 pt-12'>
-								<AnalyzeTabs
-									contracts={selectedContractsAsSymbol}
-									baseSymbolPrice={
-										selectedContractsAsSymbol.length > 0
-											? selectedContractsAsSymbol[0]?.symbol.baseSymbolPrice
-											: 0
-									}
-								/>
+							<div className='relative flex-1 overflow-y-auto overflow-x-hidden px-16 pb-16 pt-12'>
+								{selectedContractsAsSymbol.length > 0 ? (
+									<AnalyzeTabs
+										contracts={selectedContractsAsSymbol}
+										baseSymbolPrice={
+											selectedContractsAsSymbol.length > 0
+												? selectedContractsAsSymbol[0]?.symbol.baseSymbolPrice
+												: 0
+										}
+									/>
+								) : (
+									<div className='absolute top-0 z-99 size-full bg-white flex-justify-center darkness:bg-gray-50'>
+										<NoData />
+									</div>
+								)}
 							</div>
 						</div>
 					) : (
@@ -238,7 +244,7 @@ const NoContractExists = ({ addNewStrategy }: NoContractExistsProps) => {
 
 	return (
 		<div style={{ width: '30rem' }} className='gap-24 flex-column'>
-			<NoData text={t('analyze_modal.no_data')} />
+			<NoData text={t('common.no_data')} />
 
 			<button type='button' className='h-40 rounded text-base btn-primary' onClick={addNewStrategy}>
 				{t('analyze_modal.make_your_own_strategy')}

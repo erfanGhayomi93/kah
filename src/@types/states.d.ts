@@ -286,8 +286,21 @@ declare type TOptionWatchlistColumnsState = Array<{
 	flex?: number;
 }>;
 
+interface IPortfolioBlockType {
+	type: 'Portfolio';
+}
+
+interface IAccountBlockType {
+	type: 'Account';
+}
+
+interface IPositionBlockType {
+	type: 'Position';
+	value: IAvailableContractInfo;
+}
+
 declare interface IBsModalInputs {
-	collateral: TBsCollaterals | null;
+	blockType: IPortfolioBlockType | IAccountBlockType | IPositionBlockType | null;
 	validity: TBsValidityDates;
 	validityDate: number;
 	price: number;

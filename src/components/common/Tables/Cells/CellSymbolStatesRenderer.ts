@@ -1,22 +1,22 @@
 import { type ICellRendererComp, type ICellRendererParams } from '@ag-grid-community/core';
 
-type CellSymbolTitleRendererRendererProps = ICellRendererParams<unknown, string> & {
+type CellSymbolTitleRendererProps = ICellRendererParams<unknown, string> & {
 	reverse?: boolean;
 	getIOTM: (data: unknown) => string;
 };
 
-class CellSymbolTitleRendererRenderer implements ICellRendererComp<unknown> {
+class CellSymbolTitleRenderer implements ICellRendererComp<unknown> {
 	eGui!: HTMLDivElement;
 
 	eTitle!: HTMLSpanElement;
 
-	params!: CellSymbolTitleRendererRendererProps;
+	params!: CellSymbolTitleRendererProps;
 
 	eIOTM!: HTMLSpanElement;
 
 	eCheckbox!: HTMLInputElement;
 
-	init(params: CellSymbolTitleRendererRendererProps) {
+	init(params: CellSymbolTitleRendererProps) {
 		this.params = params;
 
 		this.eGui = document.createElement('div');
@@ -41,7 +41,7 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<unknown> {
 		return this.eGui;
 	}
 
-	refresh(params: CellSymbolTitleRendererRendererProps) {
+	refresh(params: CellSymbolTitleRendererProps) {
 		this.params = params;
 
 		this.updateIOTM();
@@ -68,7 +68,6 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<unknown> {
 	createTitle() {
 		this.eTitle = document.createElement('span');
 		this.eTitle.setAttribute('class', 'text-gray-800 text-right');
-		this.eTitle.style.width = '8rem';
 		this.updateTitle();
 	}
 
@@ -91,4 +90,4 @@ class CellSymbolTitleRendererRenderer implements ICellRendererComp<unknown> {
 	}
 }
 
-export default CellSymbolTitleRendererRenderer;
+export default CellSymbolTitleRenderer;

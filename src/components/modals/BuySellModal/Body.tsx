@@ -9,6 +9,7 @@ import { useBrokerQueryClient } from '@/hooks';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { dateConverter } from '@/utils/helpers';
 import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
+import { type AxiosError } from 'axios';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -38,7 +39,7 @@ interface BodyProps extends IBsModalInputs {
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
-	close: () => void;
+	closeModal: () => void;
 	setInputValue: TSetBsModalInputs;
 	setMinimumValue: () => void;
 }
@@ -75,7 +76,7 @@ const Body = (props: BodyProps) => {
 
 			if (!brokerUrls) throw new Error('broker_error');
 
-			const { price, quantity, validity, collateral, symbolType } = props;
+			const { price, quantity, validity, blockType, symbolType } = props;
 
 			if (!price) throw new Error('invalid_price');
 
@@ -83,7 +84,7 @@ const Body = (props: BodyProps) => {
 
 			if (symbolType === 'base' && !validity) throw new Error('invalid_validity_date');
 
-			if (symbolType === 'option' && props.side === 'sell' && !collateral) throw new Error('invalid_collateral');
+			if (symbolType === 'option' && props.side === 'sell' && !blockType) throw new Error('invalid_block_type');
 
 			cb();
 		} catch (e) {
@@ -113,7 +114,7 @@ const Body = (props: BodyProps) => {
 
 			setSubmitting(true);
 
-			const { price, quantity, validityDate, validity, symbolISIN, side } = props;
+			const { price, quantity, validityDate, validity, symbolISIN, holdAfterOrder, side, closeModal } = props;
 			const params: IOFields = {
 				symbolISIN,
 				quantity,
@@ -130,6 +131,8 @@ const Body = (props: BodyProps) => {
 
 			await createOrder(params);
 
+			if (!holdAfterOrder) closeModal();
+
 			setSubmitting(false);
 			dispatch(setOrdersIsExpand(true));
 			dispatch(setOrdersActiveTab(props.symbolType === 'option' ? 'option_orders' : 'today_orders'));
@@ -142,7 +145,7 @@ const Body = (props: BodyProps) => {
 		try {
 			if (!brokerUrls) return;
 
-			const { price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			const { price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, closeModal } = props;
 			const params: IOFields = {
 				symbolISIN,
 				quantity,
@@ -163,15 +166,22 @@ const Body = (props: BodyProps) => {
 				toastId: 'draft_successfully_created',
 			});
 
-			if (!holdAfterOrder) {
-				close();
-				dispatch(setOrdersIsExpand(true));
-				dispatch(setOrdersActiveTab('draft'));
-			}
+			if (!holdAfterOrder) closeModal();
+
+			dispatch(setOrdersIsExpand(true));
+			dispatch(setOrdersActiveTab('draft'));
 		} catch (e) {
-			toast.error(t('alerts.draft_unsuccessfully_created'), {
-				toastId: 'draft_unsuccessfully_created',
-			});
+			const { message } = e as AxiosError;
+			toast.error(
+				t(
+					message === 'HaveMoreThanMaximumSize'
+						? 'alerts.draft_limitation_error'
+						: 'alerts.draft_unsuccessfully_created',
+				),
+				{
+					toastId: 'draft_unsuccessfully_created',
+				},
+			);
 		}
 	};
 
@@ -179,7 +189,7 @@ const Body = (props: BodyProps) => {
 		try {
 			if (!brokerUrls) return;
 
-			const { id, price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			const { id, price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, closeModal } = props;
 			const params: IOFieldsWithID = {
 				id: id ?? -1,
 				symbolISIN,
@@ -199,11 +209,10 @@ const Body = (props: BodyProps) => {
 				toastId: 'order_successfully_edited',
 			});
 
-			if (!holdAfterOrder) {
-				close();
-				dispatch(setOrdersIsExpand(true));
-				dispatch(setOrdersActiveTab(props.symbolType === 'option' ? 'option_orders' : 'open_orders'));
-			}
+			if (!holdAfterOrder) closeModal();
+
+			dispatch(setOrdersIsExpand(true));
+			dispatch(setOrdersActiveTab(props.symbolType === 'option' ? 'option_orders' : 'open_orders'));
 		} catch (e) {
 			toast.error(t('alerts.order_unsuccessfully_edited'), {
 				toastId: 'order_unsuccessfully_edited',
@@ -215,7 +224,7 @@ const Body = (props: BodyProps) => {
 		if (!brokerUrls) return;
 
 		try {
-			const { id, price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, close } = props;
+			const { id, price, quantity, validityDate, validity, symbolISIN, side, holdAfterOrder, closeModal } = props;
 			const params: IOFieldsWithID = {
 				id: id ?? -1,
 				symbolISIN,
@@ -235,11 +244,10 @@ const Body = (props: BodyProps) => {
 				toastId: 'draft_successfully_edited',
 			});
 
-			if (!holdAfterOrder) {
-				close();
-				dispatch(setOrdersIsExpand(true));
-				dispatch(setOrdersActiveTab('draft'));
-			}
+			if (!holdAfterOrder) closeModal();
+
+			dispatch(setOrdersIsExpand(true));
+			dispatch(setOrdersActiveTab('draft'));
 		} catch (error) {
 			toast.error(t('alerts.draft_unsuccessfully_edited'), {
 				toastId: 'draft_unsuccessfully_edited',

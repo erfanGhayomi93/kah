@@ -1,6 +1,6 @@
 import { useBullCallSpreadStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import CellSymbolTitleRendererRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
+import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsBullCallSpread, initialHiddenColumnsBullCallSpread } from '@/constants/strategies';
@@ -277,7 +277,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					},
 					{
 						id: 'leastYTM',
-						title: t('strategy_filters.least_YTM'),
+						title: t('strategy_filters.ytm'),
 						mode: 'single',
 						type: 'integer',
 						label: t('strategy_filters.from'),
@@ -329,11 +329,12 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				colId: 'lspSymbolTitle',
 				headerName: 'کال خرید',
 				initialHide: initialHiddenColumnsBullCallSpread.lspSymbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.lspSymbolISIN),
 				valueGetter: ({ data }) => data?.lspSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.BullCallSpread) => data?.lspiotm ?? 0,
 				},
@@ -386,11 +387,12 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				colId: 'hspSymbolTitle',
 				headerName: 'کال فروش',
 				initialHide: initialHiddenColumnsBullCallSpread.hspSymbolTitle,
-				width: 128,
+				minWidth: 144,
+				maxWidth: 144,
 				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.hspSymbolISIN),
 				valueGetter: ({ data }) => data?.hspSymbolTitle ?? '−',
-				cellRenderer: CellSymbolTitleRendererRenderer,
+				cellRenderer: CellSymbolTitleRenderer,
 				cellRendererParams: {
 					getIOTM: (data: Strategy.BullCallSpread) => data?.hspiotm ?? 0,
 				},
@@ -606,7 +608,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 			},
 			{
 				colId: 'ytm',
-				headerName: 'YTM',
+				headerName: 'YTM (بازده موثر)',
 				initialHide: initialHiddenColumnsBullCallSpread.ytm,
 				width: 152,
 				headerComponent: HeaderHint,

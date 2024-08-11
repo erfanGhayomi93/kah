@@ -126,7 +126,7 @@ export interface IBuySellModal extends IBaseModalConfiguration {
 	symbolISIN: string;
 	side: TBsSides;
 	type?: TBsTypes;
-	collateral?: TBsCollaterals;
+	blockType?: IBsModalInputs['blockType'];
 	expand?: boolean;
 	priceLock?: boolean;
 	holdAfterOrder?: boolean;

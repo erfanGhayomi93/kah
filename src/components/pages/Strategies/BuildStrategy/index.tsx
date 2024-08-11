@@ -57,7 +57,7 @@ const BuildStrategy = () => {
 					type: 'base',
 					id: baseSymbolId,
 					marketUnit: baseSymbol.marketUnit,
-					quantity: 1,
+					quantity: contractSize,
 					price: baseSymbol.lastTradedPrice,
 					side: 'buy',
 					symbol: {

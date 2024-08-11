@@ -15,7 +15,6 @@ export const initialHiddenColumnsCoveredCall: Record<TCoveredCallColumns, boolea
 	maxProfitPercent: false,
 	nonExpiredProfitPercent: false,
 	inUseCapital: false,
-	bestBuyYTM: true,
 	bestSellYTM: true,
 	nonExpiredYTM: true,
 	bepDifference: true,
@@ -158,9 +157,9 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 		tag: 'PanelDetail',
 	},
 	{
-		id: 'bestBuyYTM',
+		id: 'ytm',
 		title: 'YTM (بازده موثر)',
-		hidden: initialHiddenColumnsCoveredCall.bestBuyYTM,
+		hidden: initialHiddenColumnsCoveredCall.ytm,
 		tag: 'Computational',
 	},
 	{
@@ -418,7 +417,7 @@ export const initialColumnsBullCallSpread: Array<IManageColumn<TBullCallSpreadCo
 	},
 	{
 		id: 'ytm',
-		title: 'YTM',
+		title: 'YTM (بازده موثر)',
 		hidden: initialHiddenColumnsBullCallSpread.ytm,
 		tag: 'Computational',
 	},
@@ -786,8 +785,7 @@ export const initialHiddenColumnsConversion: Record<TConversionColumns, boolean>
 	putBestBuyLimitQuantity: true,
 	profit: false,
 	inUseCapital: false,
-	bestBuyYTM: true,
-	bestSellYTM: true,
+	ytm: true,
 	callTradeValue: true,
 	putTradeValue: true,
 	baseTradeValue: true,
@@ -920,15 +918,9 @@ export const initialColumnsConversion: Array<IManageColumn<TConversionColumns>> 
 		tag: 'Computational',
 	},
 	{
-		id: 'bestBuyYTM',
-		title: 'YTM سرخط خرید',
-		hidden: initialHiddenColumnsConversion.bestBuyYTM,
-		tag: 'Computational',
-	},
-	{
-		id: 'bestSellYTM',
-		title: 'YTM سرخط فروش',
-		hidden: initialHiddenColumnsConversion.bestSellYTM,
+		id: 'ytm',
+		title: 'YTM (بازده موثر)',
+		hidden: initialHiddenColumnsConversion.ytm,
 		tag: 'Computational',
 	},
 	{
@@ -1627,7 +1619,7 @@ export const initialColumnsBearPutSpread: Array<IManageColumn<TBearPutSpreadColu
 	},
 	{
 		id: 'ytm',
-		title: 'YTM',
+		title: 'YTM (بازده موثر)',
 		hidden: initialHiddenColumnsBearPutSpread.ytm,
 		tag: 'Computational',
 	},

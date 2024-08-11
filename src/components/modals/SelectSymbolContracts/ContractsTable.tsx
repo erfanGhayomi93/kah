@@ -8,7 +8,7 @@ import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } fr
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import CellSymbolTitleRendererRenderer from './TableComponents/CellSymbolTitleRenderer';
+import CellSymbolTitleRenderer from './TableComponents/CellSymbolTitleRenderer';
 import StrikePriceCellRenderer from './TableComponents/StrikePriceCellRenderer';
 
 interface ContractsTableProps {
@@ -134,10 +134,10 @@ const ContractsTable = ({
 					{
 						headerName: 'نماد',
 						colId: 'symbolTitle-buy',
-						minWidth: 132,
-						maxWidth: 132,
+						minWidth: 144,
+						maxWidth: 144,
 						valueGetter: ({ data }) => data!.buy,
-						cellRenderer: CellSymbolTitleRendererRenderer,
+						cellRenderer: CellSymbolTitleRenderer,
 						cellRendererParams: {
 							reverse: false,
 							checkbox: suppressRowActions,
@@ -220,9 +220,9 @@ const ContractsTable = ({
 					{
 						headerName: 'نماد',
 						colId: 'symbolTitle-sell',
-						minWidth: 132,
-						maxWidth: 132,
-						cellRenderer: CellSymbolTitleRendererRenderer,
+						minWidth: 144,
+						maxWidth: 144,
+						cellRenderer: CellSymbolTitleRenderer,
 						valueGetter: ({ data }) => data!.sell,
 						cellRendererParams: {
 							reverse: true,
