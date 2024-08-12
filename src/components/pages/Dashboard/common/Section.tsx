@@ -125,7 +125,7 @@ const Section = <T extends string = string, B extends string = string>({
 					isModal && 'flex flex-col items-center justify-center',
 				)}
 			>
-				{children ?? <NoData className='absolute center' />}
+				{children ?? <NoData className='absolute rtl center' />}
 			</RenderOnViewportEntry>
 
 			{Array.isArray(tabs?.bottom) ? (

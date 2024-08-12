@@ -115,10 +115,10 @@ const ButtonOrAnchor = ({
 		return (
 			<Link
 				onClick={(e) => {
-					if (!shouldPrevent) return;
-
-					e.preventDefault();
-					loginFirstBeforeUse();
+					if (shouldPrevent) {
+						e.preventDefault();
+						loginFirstBeforeUse();
+					}
 				}}
 				href={props.to}
 				onMouseEnter={onMouseEnter}

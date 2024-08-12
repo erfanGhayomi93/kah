@@ -3,8 +3,6 @@ import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
-import { useAppDispatch } from '@/features/hooks';
-import { setChoiceCollateralModal } from '@/features/slices/modalSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
@@ -23,8 +21,6 @@ interface OptionTableProps {
 const OptionTable = ({ loading, data }: OptionTableProps) => {
 	const t = useTranslations();
 
-	const dispatch = useAppDispatch();
-
 	const gridRef = useRef<GridApi<Order.OptionOrder>>(null);
 
 	const { addBuySellModal } = useTradingFeatures();
@@ -40,14 +36,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 			switchable: false,
 			initialValidity: 'Day',
 		});
-	};
-
-	const onChangeCollateral = (order: Order.OptionOrder) => {
-		dispatch(
-			setChoiceCollateralModal({
-				order,
-			}),
-		);
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(
@@ -159,7 +147,6 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				cellRenderer: OptionActionCell,
 				cellRendererParams: {
 					onClosePosition,
-					onChangeCollateral,
 				},
 			},
 		],

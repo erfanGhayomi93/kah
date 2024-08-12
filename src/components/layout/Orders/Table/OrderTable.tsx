@@ -124,12 +124,13 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 			side: order.orderSide === 'Buy' ? 'buy' : 'sell',
 			type: 'order',
 			mode: 'edit',
+			switchable: false,
 			symbolISIN: order.symbolISIN,
 			symbolTitle: order.symbolTitle,
 			initialPrice: price,
 			initialQuantity: quantity,
 			initialValidity: validity,
-			initialValidityDate: validityDate,
+			initialValidityDate: validity === 'GoodTillDate' ? new Date(validityDate).getTime() : 0,
 		});
 	};
 

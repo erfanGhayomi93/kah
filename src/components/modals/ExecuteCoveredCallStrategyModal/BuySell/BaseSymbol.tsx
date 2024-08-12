@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-interface BuyBaseSymbolProps {
+interface BaseSymbolProps {
 	symbolTitle: string;
 	bestLimitPrice: number;
 	quantity: number;
@@ -17,7 +17,7 @@ interface BuyBaseSymbolProps {
 	onChangePrice: (v: number) => void;
 }
 
-const BuyBaseSymbol = ({
+const BaseSymbol = ({
 	symbolTitle,
 	bestLimitPrice,
 	price,
@@ -26,7 +26,7 @@ const BuyBaseSymbol = ({
 	marketUnit,
 	onSubmit,
 	onChangePrice,
-}: BuyBaseSymbolProps) => {
+}: BaseSymbolProps) => {
 	const t = useTranslations();
 
 	const { data: commission, isLoading } = useCommissionsQuery({
@@ -56,19 +56,19 @@ const BuyBaseSymbol = ({
 			className='flex-1 justify-between gap-24 pt-8 flex-column'
 		>
 			<div className='flex-1 gap-8 flex-column'>
-				<div className='border-gray-200 bg-gray-100 text-gray-700 h-40 cursor-default rounded border px-8 flex-justify-between'>
+				<div className='h-40 cursor-default rounded border border-gray-200 bg-gray-100 px-8 text-gray-700 flex-justify-between'>
 					<span>{t('create_strategy.quantity_input')}</span>
 					<span>{sepNumbers(String(quantity))}</span>
 				</div>
 
 				<div className='flex h-40 gap-8'>
-					<label className='border-gray-200 h-full flex-1 gap-8 rounded border px-8 flex-justify-center'>
+					<label className='h-full flex-1 gap-8 rounded border border-gray-200 px-8 flex-justify-center'>
 						<span className='text-gray-700'>{t('create_strategy.price_input')}</span>
 						<input
 							value={sepNumbers(String(price))}
 							type='text'
 							inputMode='numeric'
-							className='text-gray-800 flex-1 bg-transparent text-left ltr'
+							className='flex-1 bg-transparent text-left text-gray-800 ltr'
 							onChange={(e) => onChange(Number(convertStringToInteger(e.target.value)))}
 						/>
 					</label>
@@ -88,7 +88,7 @@ const BuyBaseSymbol = ({
 					</button>
 				</div>
 
-				<div className='border-gray-200 text-gray-700 h-40 cursor-default rounded border px-8 flex-justify-between'>
+				<div className='h-40 cursor-default rounded border border-gray-200 px-8 text-gray-700 flex-justify-between'>
 					<span>{t('create_strategy.validity_input')}</span>
 					<span className='no-hover h-24 w-40 rounded !border flex-justify-center btn-select'>
 						{t(`validity_date.${validityDate}`)}
@@ -98,7 +98,7 @@ const BuyBaseSymbol = ({
 
 			<div className='gap-16 flex-column'>
 				<div className='h-24 flex-justify-between'>
-					<div className='text-gray-700 gap-4 flex-items-center'>
+					<div className='gap-4 text-gray-700 flex-items-center'>
 						{t('create_strategy.order_value') + ':'}
 						<Tooltip content='ارزش سفارش' placement='top'>
 							<QuestionCircleOutlineSVG width='1.6rem' height='1.6rem' />
@@ -129,4 +129,4 @@ const BuyBaseSymbol = ({
 	);
 };
 
-export default BuyBaseSymbol;
+export default BaseSymbol;

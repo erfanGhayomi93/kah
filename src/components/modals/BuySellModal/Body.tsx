@@ -5,7 +5,6 @@ import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlic
 import { setOrdersActiveTab } from '@/features/slices/tabSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
 import { setBrokerIsSelected } from '@/features/slices/userSlice';
-import { useBrokerQueryClient } from '@/hooks';
 import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { dateConverter } from '@/utils/helpers';
 import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
@@ -53,8 +52,6 @@ const Body = (props: BodyProps) => {
 
 	const brokerUrls = useAppSelector(getBrokerURLs);
 
-	const queryClient = useBrokerQueryClient();
-
 	const { data: userRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
 	});
@@ -99,13 +96,6 @@ const Body = (props: BodyProps) => {
 		if (props.mode === 'create') sendOrder();
 		else if (props.mode === 'edit' && props.type === 'order') editOrder();
 		if (props.mode === 'edit' && props.type === 'draft') editDraft();
-	};
-
-	const refetchOrdersCount = () => {
-		queryClient.refetchQueries({
-			queryKey: ['brokerOrdersCountQuery'],
-			exact: true,
-		});
 	};
 
 	const sendOrder = async () => {
@@ -178,7 +168,6 @@ const Body = (props: BodyProps) => {
 
 			await createDraft(params);
 
-			refetchOrdersCount();
 			toast.success(t('alerts.draft_successfully_created'), {
 				toastId: 'draft_successfully_created',
 			});

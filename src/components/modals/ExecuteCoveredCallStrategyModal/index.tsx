@@ -16,10 +16,10 @@ import { useTranslations } from 'next-intl';
 import { forwardRef, useEffect, useState } from 'react';
 import Modal, { Header } from '../Modal';
 import AddConditionalAlarm from './AddConditionalAlarm';
-import BuyBaseSymbol from './BuyBaseSymbol';
+import OrderBaseSymbol from './BuySell/BaseSymbol';
+import OrderOption from './BuySell/Option';
 import StepForm from './CreateStrategy/StepForm';
 import Steps from './CreateStrategy/Steps';
-import OrderOption from './OrderOption';
 import StrategyChartDetails from './StrategyChartDetails';
 import SymbolInfo from './SymbolInfo';
 
@@ -232,7 +232,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 								{step === 'base' && (
 									<SymbolInfo symbolISIN={baseSymbol.symbolISIN}>
 										{(symbolData) => (
-											<BuyBaseSymbol
+											<OrderBaseSymbol
 												symbolTitle={symbolData.symbolTitle}
 												bestLimitPrice={baseSymbol.bestLimitPrice}
 												quantity={remainsQuantity}
@@ -252,7 +252,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 											<OrderOption
 												symbolTitle={symbolData.symbolTitle}
 												bestLimitPrice={option.bestLimitPrice}
-												quantity={inputs.quantity * contractSize}
+												quantity={inputs.quantity / contractSize}
 												price={inputs.optionPrice}
 												onSubmit={onSubmitOption}
 												onChangePrice={(v) => setFieldValue('optionPrice', v)}

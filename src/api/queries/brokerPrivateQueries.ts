@@ -52,7 +52,6 @@ export const useUserStatusQuery = createBrokerQuery<Broker.Status | null, ['user
 });
 
 export const useBrokerOrdersCountQuery = createBrokerQuery<Broker.OrdersCount, ['brokerOrdersCountQuery']>({
-	staleTime: 0,
 	queryKey: ['brokerOrdersCountQuery'],
 	queryFn: async ({ signal }) => {
 		try {
@@ -78,7 +77,6 @@ export const useBrokerOrdersCountQuery = createBrokerQuery<Broker.OrdersCount, [
 });
 
 export const useOpenOrdersQuery = createBrokerQuery<Order.OpenOrder[] | null, ['openOrdersQuery']>({
-	staleTime: 6e4,
 	queryKey: ['openOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -93,9 +91,8 @@ export const useOpenOrdersQuery = createBrokerQuery<Order.OpenOrder[] | null, ['
 	},
 });
 
-export const useTodayOrdersQuery = createBrokerQuery<Order.TodayOrder[] | null, ['openOrdersQuery']>({
-	staleTime: 6e4,
-	queryKey: ['openOrdersQuery'],
+export const useTodayOrdersQuery = createBrokerQuery<Order.TodayOrder[] | null, ['todayOrders']>({
+	queryKey: ['todayOrders'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
 		if (!url) return null;
@@ -110,7 +107,6 @@ export const useTodayOrdersQuery = createBrokerQuery<Order.TodayOrder[] | null, 
 });
 
 export const useExecutedOrdersQuery = createBrokerQuery<Order.ExecutedOrder[] | null, ['executedOrdersQuery']>({
-	staleTime: 6e4,
 	queryKey: ['executedOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -126,7 +122,6 @@ export const useExecutedOrdersQuery = createBrokerQuery<Order.ExecutedOrder[] | 
 });
 
 export const useDraftOrdersQuery = createBrokerQuery<Order.DraftOrder[] | null, ['draftOrdersQuery']>({
-	staleTime: 6e4,
 	queryKey: ['draftOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
@@ -142,7 +137,6 @@ export const useDraftOrdersQuery = createBrokerQuery<Order.DraftOrder[] | null, 
 });
 
 export const useOptionOrdersQuery = createBrokerQuery<Order.OptionOrder[] | null, ['optionOrdersQuery']>({
-	staleTime: 6e4,
 	queryKey: ['optionOrdersQuery'],
 	queryFn: async ({ signal }) => {
 		const url = getBrokerURLs(store.getState());
