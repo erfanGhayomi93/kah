@@ -43,7 +43,6 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 		minPrice,
 		contractSize,
 		neededRequiredMargin,
-		neededBudget,
 		dueDays,
 		cost,
 		baseAssets,
@@ -87,7 +86,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 						title={t('most_loss')}
 						value={maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
 					/>
-					<StrategyInfoItem title={t('required_budget')} value={sepNumbers(String(neededBudget))} />
+					<StrategyInfoItem title={t('required_budget')} value={sepNumbers(String(cost))} />
 					<StrategyInfoItem title={t('required_margin')} value={sepNumbers(String(neededRequiredMargin))} />
 				</ul>
 			</div>

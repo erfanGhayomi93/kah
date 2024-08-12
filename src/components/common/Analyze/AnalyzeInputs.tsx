@@ -15,7 +15,7 @@ const AnalyzeInputs = ({ maxPrice, minPrice, dueDays, onChange }: AnalyzeInputsP
 
 	const { setDebounce, clearDebounce } = useDebounce();
 
-	const { inputs, setFieldValue } = useInputs<TPriceRange>({
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<TPriceRange>({
 		minPrice,
 		dueDays,
 		maxPrice,
@@ -36,13 +36,8 @@ const AnalyzeInputs = ({ maxPrice, minPrice, dueDays, onChange }: AnalyzeInputsP
 
 	useEffect(() => {
 		clearDebounce();
-		setFieldValue('minPrice', minPrice);
-	}, [minPrice]);
-
-	useEffect(() => {
-		clearDebounce();
-		setFieldValue('maxPrice', maxPrice);
-	}, [maxPrice]);
+		setFieldsValue({ maxPrice, minPrice, dueDays });
+	}, [maxPrice, minPrice, dueDays]);
 
 	return (
 		<KeyDown keys={['Enter']} onKeyDown={onKeyDown} dependencies={[inputs]}>

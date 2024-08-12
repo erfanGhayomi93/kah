@@ -75,9 +75,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 								...baseSymbol,
 								bestLimitPrice: valueAsNumber,
 							};
-						}
-
-						if (symbolISIN === option.symbolISIN) {
+						} else if (symbolISIN === option.symbolISIN) {
 							updates.option = {
 								...option,
 								bestLimitPrice: valueAsNumber,
@@ -163,9 +161,7 @@ const ExecuteCoveredCallStrategyModal = forwardRef<HTMLDivElement, ExecuteCovere
 		}, []);
 
 		useEffect(() => {
-			if (inputs.useFreeStock && remainsQuantity === 0) {
-				setIsExpand(false);
-			}
+			if (inputs.useFreeStock && remainsQuantity === 0) setIsExpand(false);
 		}, [inputs.useFreeStock]);
 
 		const remainsQuantity = inputs.useFreeStock

@@ -54,6 +54,7 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ activeTab, onCloseModal
 				headerName: t('deposit_modal.time_history'),
 				valueGetter: (row) => row.date,
 				valueFormatter: ({ value }) => dateFormatter(value as string),
+				cellClass: 'ltr',
 			},
 			{
 				colId: 'amount',

@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { store } from '@/api/inject-store';
 import { brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
 import { refetchActiveOrderTab } from '@/utils/orders';
 import { subscribePrivateGateWay } from '@/utils/subscriptions';
@@ -106,7 +105,6 @@ class Subscription {
 		}
 
 		refetchActiveOrderTab();
-		store.dispatch({ payload: 'today_orders', type: 'tab/setOrdersActiveTab' });
 
 		toast[messageType](messageText, {
 			autoClose: 3500,
