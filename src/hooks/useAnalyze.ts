@@ -52,18 +52,6 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		return 1;
 	};
 
-	const getCommission = (side: TBsSides, marketUnit: string) => {
-		if (!commissionData) return 0;
-
-		const transactionCommission = commissionData[marketUnit];
-		if (!transactionCommission) return 0;
-
-		const commissionValue = transactionCommission[side === 'buy' ? 'sellCommission' : 'buyCommission'];
-
-		if (side === 'sell') return -commissionValue;
-		return commissionValue;
-	};
-
 	useEffect(() => {
 		if (config?.enabled === false) return;
 
@@ -108,8 +96,16 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					side,
 					price,
 					quantity,
+					marketUnit,
 					type,
 				} = item;
+				newInputs.contractSize = contractSize;
+				const commissionDetail = commissionData?.[marketUnit];
+				const tradeCommission =
+					(side === 'buy' ? commissionDetail?.sellCommission : commissionDetail?.buyCommission) ?? 0;
+				const strikeCommission =
+					(side === 'buy' ? commissionDetail?.strikeSellCommission : commissionDetail?.strikeBuyCommission) ??
+					0;
 				const amount = price * quantity;
 				const sideInt = side === 'sell' ? -1 : 1;
 				let income = amount * sideInt;
@@ -118,19 +114,23 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				if ((useRequiredMargin || item.requiredMargin) && side === 'sell' && type === 'option') {
 					requiredMargin = item.symbol.requiredMargin;
 				}
-				newInputs.contractSize = contractSize;
-
-				let commission = 0;
-				if (useTradeCommission || item.tradeCommission) {
-					commission = getCommission(item.side, item.marketUnit) * amount * contractSize;
-				}
-				const tradeCommission = Math.ceil(Math.abs(amount + commission));
 
 				if (type === 'base') newInputs.baseAssets = item.price;
 
 				if (useRequiredMargin || item.requiredMargin) {
 					if (type === 'option') newInputs.cost += requiredMargin;
 					newInputs.neededRequiredMargin += requiredMargin;
+				}
+
+				let strikeCommissionValue = 0;
+				if ((useStrikeCommission || item.strikeCommission) && commissionDetail && type === 'option') {
+					strikeCommissionValue = strikePrice! * strikeCommission * contractSize;
+				}
+
+				let tradeCommissionValue = 0;
+				if ((useTradeCommission || item.tradeCommission) && commissionDetail) {
+					tradeCommissionValue = price * item.quantity * tradeCommission;
+					if (type === 'option') tradeCommissionValue *= contractSize;
 				}
 
 				if (!config?.dueDays && type === 'option' && item.symbol.settlementDay) {
@@ -149,17 +149,14 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					if (type === 'base') {
 						y = (side === 'buy' ? j - baseAssets : baseAssets - j) * item.quantity;
 					} else {
-						let strikeCommission = 0;
-						if ((useStrikeCommission || item.strikeCommission) && side === 'buy') {
-							strikeCommission = (strikePrice ?? 0) * 0.0005;
-							if (optionType === 'call') strikeCommission *= -1;
-						}
+						let iv = intrinsicValue(strikePrice!, j, optionType ?? 'call');
+						iv *= item.quantity;
 
-						const iv =
-							intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call') *
-							item.quantity;
-						y = pnl(iv, tradeCommission, side) * contractSize;
+						y = pnl(iv, amount, side) * contractSize;
 					}
+
+					y -= strikeCommissionValue;
+					y -= tradeCommissionValue;
 
 					y += series[index]?.y ?? 0;
 					series[index] = {
