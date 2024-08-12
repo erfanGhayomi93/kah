@@ -10,7 +10,6 @@ import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-co
 import { useTranslations } from 'next-intl';
 import { useMemo, useRef } from 'react';
 import SymbolTitleHeader from '../SymbolTitleHeader';
-import ActionCell from './ActionCell';
 
 interface TableProps {
 	loading: boolean;
@@ -193,14 +192,14 @@ const Table = ({ data, loading }: TableProps) => {
 				valueGetter: ({ data }) => data!.lastDPS,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			{
+			/* {
 				colId: 'action',
 				headerName: t('col_action'),
 				pinned: 'left',
 				minWidth: 192,
 				maxWidth: 192,
 				cellRenderer: ActionCell,
-			},
+			}, */
 		],
 		[],
 	);

@@ -32,7 +32,6 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 		income,
 		dueDays,
 		baseAssets,
-		neededBudget,
 	} = useAnalyze(contracts, {
 		baseAssets: baseSymbolPrice,
 		maxPrice: inputs.maxPrice,
@@ -65,7 +64,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 					maxLoss={maxLoss}
 					maxProfit={maxProfit}
 					neededRequiredMargin={neededRequiredMargin}
-					neededBudget={neededBudget}
+					cost={cost}
 				/>
 			</ErrorBoundary>
 		</div>

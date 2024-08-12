@@ -10,7 +10,6 @@ import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-co
 import { useTranslations } from 'next-intl';
 import { useMemo, useRef } from 'react';
 import SymbolTitleHeader from '../SymbolTitleHeader';
-import PutActionCell from './PutActionCell';
 
 interface PutTableProps {
 	isLoading: boolean;
@@ -228,14 +227,14 @@ const PutTable = ({ data, isLoading }: PutTableProps) => {
 				headerName: t('col_block_type'),
 				valueGetter: ({ data }) => '−',
 			},
-			{
+			/* {
 				colId: 'action',
 				headerName: t('col_action'),
 				pinned: 'left',
 				minWidth: 208,
 				maxWidth: 208,
 				cellRenderer: PutActionCell,
-			},
+			}, */
 		],
 		[],
 	);

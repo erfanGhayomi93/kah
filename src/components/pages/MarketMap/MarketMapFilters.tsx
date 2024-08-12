@@ -109,7 +109,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 	const ListOfMarkets = useMemo<Array<IMarketMapFilters['market']>>(() => {
 		return [
 			{ id: 'all', label: t('market_map.market_type_all') },
-			{ id: 'baseSymbolOption', label: t('market_map.market_type_base_symbol_option') },
+			/* { id: 'baseSymbolOption', label: t('market_map.market_type_base_symbol_option') },
 			{ id: 'contract', label: t('market_map.market_type_contract') },
 			{
 				id: 'putOption',
@@ -118,7 +118,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 			{
 				id: 'callOption',
 				label: t('market_map.market_type_call_option'),
-			},
+			}, */
 		];
 	}, []);
 
@@ -149,7 +149,7 @@ const MarketMapFilters = ({ filters, setFilters }: IMarketMapFiltersProps) => {
 
 	return (
 		<div className=' p-8 '>
-			<div className=' darkBlue:bg-gray-50 flex w-full items-center justify-between  overflow-hidden rounded bg-white p-8 dark:bg-gray-50'>
+			<div className=' flex w-full items-center justify-between overflow-hidden  rounded bg-white p-8 darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<div className='flex items-center gap-10'>
 					<ul className='flex items-center gap-10'>
 						{ListOfMarkets.map(({ id, label }) => (

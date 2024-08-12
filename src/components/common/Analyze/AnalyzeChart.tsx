@@ -269,7 +269,7 @@ const AnalyzeChart = ({
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
 
-				const profit = y > 0 ? Math.abs((y * contractSize) / cost) : Math.abs((y * contractSize) / income) * -1;
+				const profit = y > 0 ? Math.abs(y / cost) : Math.abs(y / income) * -1;
 				let efficiency = Math.max(profit * 100, -100);
 				if (isNaN(efficiency)) efficiency = 0;
 
@@ -280,7 +280,7 @@ const AnalyzeChart = ({
 				const items = [
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`,
-					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y * contractSize))}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${efficiency.toFixed(2)}%`}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('cost')}:</span><span class="ltr">${sepNumbers(String(cost))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm === 1e9 || efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${sepNumbers(String(ytm))}%`}</span></li>`,
@@ -289,7 +289,7 @@ const AnalyzeChart = ({
 				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${items.join('')}</ul>`;
 			},
 		});
-	}, [baseAssets, contractSize, income, dueDays, cost]);
+	}, [baseAssets, contractSize, income, dueDays, cost, cost]);
 
 	return (
 		<ErrorBoundary>

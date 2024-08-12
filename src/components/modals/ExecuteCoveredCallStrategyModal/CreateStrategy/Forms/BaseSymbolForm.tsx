@@ -121,15 +121,18 @@ const BaseSymbolForm = ({
 							<InfoCircleSVG width='1.6rem' height='1.6rem' />
 							{t.rich('create_strategy.overall_amount', {
 								chunk: () => (
-									<span className='text-gray-800'>
+									<span className='text-gray-800 ltr'>
 										{sepNumbers(
 											String(
 												Math.ceil(
 													quantity *
-														(baseBestLimitPrice +
-															baseBestLimitPrice * baseSymbolCommission -
-															(optionBestLimitPrice +
-																optionBestLimitPrice * optionCommission)),
+														Math.max(
+															baseBestLimitPrice +
+																baseBestLimitPrice * baseSymbolCommission -
+																(optionBestLimitPrice +
+																	optionBestLimitPrice * optionCommission),
+															0,
+														),
 												),
 											),
 										)}

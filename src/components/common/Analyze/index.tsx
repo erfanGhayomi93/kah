@@ -83,7 +83,7 @@ const Analyze = ({
 				<button
 					className={clsx(
 						'h-48 px-16 transition-colors flex-justify-center',
-						item.id === activeTab ? 'text-gray-700 font-medium' : 'text-gray-500',
+						item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
 					)}
 					type='button'
 				>

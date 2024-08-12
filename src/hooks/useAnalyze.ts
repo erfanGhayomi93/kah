@@ -29,7 +29,6 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		cost: 0,
 		income: 0,
 		contractSize: 0,
-		neededBudget: 0,
 		neededRequiredMargin: 0,
 	});
 
@@ -82,7 +81,6 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 			baseAssets: config?.baseAssets ?? 0,
 			bep: [],
 			cost: 0,
-			neededBudget: 0,
 			neededRequiredMargin: 0,
 		};
 
@@ -114,25 +112,24 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				} = item;
 				const amount = price * quantity;
 				const sideInt = side === 'sell' ? -1 : 1;
-				const income = amount * contractSize * sideInt;
+				let income = amount * sideInt;
+				if (type === 'option') income *= contractSize;
 				let requiredMargin = 0;
 				if ((useRequiredMargin || item.requiredMargin) && side === 'sell' && type === 'option') {
 					requiredMargin = item.symbol.requiredMargin;
 				}
-				const tax = side === 'buy' || type === 'base' ? 0 : 0;
-				if (contractSize) newInputs.contractSize = contractSize;
+				newInputs.contractSize = contractSize;
 
 				let commission = 0;
 				if (useTradeCommission || item.tradeCommission) {
 					commission = getCommission(item.side, item.marketUnit) * amount * contractSize;
 				}
 				const tradeCommission = Math.ceil(Math.abs(amount + commission));
-				const cost = tax + Math.abs(commission) + requiredMargin + income;
 
 				if (type === 'base') newInputs.baseAssets = item.price;
 
 				if (useRequiredMargin || item.requiredMargin) {
-					if (type === 'option') newInputs.neededBudget += requiredMargin;
+					if (type === 'option') newInputs.cost += requiredMargin;
 					newInputs.neededRequiredMargin += requiredMargin;
 				}
 
@@ -161,7 +158,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 						const iv =
 							intrinsicValue((strikePrice ?? 0) + strikeCommission, j, optionType ?? 'call') *
 							item.quantity;
-						y = pnl(iv, tradeCommission, side);
+						y = pnl(iv, tradeCommission, side) * contractSize;
 					}
 
 					y += series[index]?.y ?? 0;
@@ -173,8 +170,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					index++;
 				}
 
-				newInputs.neededBudget += contractSize * (side === 'sell' ? -amount : amount);
-				newInputs.cost += cost;
+				newInputs.cost += (type === 'base' ? amount : amount * contractSize) * sideInt;
 				newInputs.income += income;
 			}
 

@@ -85,8 +85,8 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 
 		dispatch(
 			setConfirmModal({
-				title: t('orders.delete_draft'),
-				description: t('orders.delete_draft_confirm', { title: order.symbolTitle }),
+				title: t('orders.delete_order'),
+				description: t('orders.delete_order_confirm', { title: order.symbolTitle }),
 				onSubmit: () => deleteOrder([Number(orderId)]),
 				onCancel: () => dispatch(setConfirmModal(null)),
 				confirm: {

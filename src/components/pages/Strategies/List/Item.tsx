@@ -1,7 +1,7 @@
 import StrategyTag from '@/components/common/Strategy/StrategyTag';
 import { AngleLeftSVG, PlusSVG } from '@/components/icons';
 import { useTheme } from '@/hooks';
-import { useRouter } from '@/navigation';
+import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useMemo } from 'react';
@@ -11,13 +11,7 @@ interface StrategyItemProps extends Strategy.GetAll {}
 const StrategyItem = ({ title, type, tags }: StrategyItemProps) => {
 	const t = useTranslations();
 
-	const router = useRouter();
-
 	const theme = useTheme();
-
-	const onStrategyClick = () => {
-		router.push(`/strategy/${type}`);
-	};
 
 	const combinedTags = useMemo(() => {
 		const result: Array<[Strategy.Cheap, string]> = [
@@ -45,11 +39,8 @@ const StrategyItem = ({ title, type, tags }: StrategyItemProps) => {
 	}, []);
 
 	return (
-		<div className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12'>
-			<div
-				onClick={onStrategyClick}
-				className='h-328 cursor-pointer gap-16 overflow-hidden rounded border border-gray-200 bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'
-			>
+		<Link href={`/strategy/${type}`} className='w-full p-8 md:w-6/12 xl:w-4/12 2xl:w-3/12' target='_blank'>
+			<div className='h-328 cursor-pointer gap-16 overflow-hidden rounded border border-gray-200 bg-white p-16 flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<div className='gap-4 flex-column'>
 					<div className='h-32 flex-justify-between'>
 						<h1 className='text-base font-medium text-gray-700'>
@@ -92,7 +83,7 @@ const StrategyItem = ({ title, type, tags }: StrategyItemProps) => {
 					))}
 				</ul>
 			</div>
-		</div>
+		</Link>
 	);
 };
 

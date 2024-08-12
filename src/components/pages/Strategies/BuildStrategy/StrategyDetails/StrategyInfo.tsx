@@ -6,7 +6,7 @@ interface StrategyInfoProps {
 	maxLoss: number;
 	maxProfit: number;
 	neededRequiredMargin: number;
-	neededBudget: number;
+	cost: number;
 }
 
 interface StrategyInfoItemProps {
@@ -15,12 +15,12 @@ interface StrategyInfoItemProps {
 	value: React.ReactNode;
 }
 
-const StrategyInfo = ({ maxLoss, maxProfit, neededRequiredMargin, neededBudget }: StrategyInfoProps) => {
+const StrategyInfo = ({ maxLoss, maxProfit, neededRequiredMargin, cost }: StrategyInfoProps) => {
 	const t = useTranslations('build_strategy');
 
 	return (
-		<div className='border-gray-200 border-t pt-16'>
-			<div className='bg-gray-100 gap-16 rounded-md px-24 py-16 flex-column'>
+		<div className='border-t border-gray-200 pt-16'>
+			<div className='gap-16 rounded-md bg-gray-100 px-24 py-16 flex-column'>
 				<ul className='flex-justify-between'>
 					<StrategyInfoItem
 						type='success'
@@ -32,7 +32,7 @@ const StrategyInfo = ({ maxLoss, maxProfit, neededRequiredMargin, neededBudget }
 						title={t('most_loss')}
 						value={maxLoss === -Infinity ? t('infinity') : sepNumbers(String(maxLoss))}
 					/>
-					<StrategyInfoItem title={t('required_budget')} value={sepNumbers(String(neededBudget))} />
+					<StrategyInfoItem title={t('required_budget')} value={sepNumbers(String(cost))} />
 					<StrategyInfoItem title={t('required_margin')} value={sepNumbers(String(neededRequiredMargin))} />
 				</ul>
 			</div>
@@ -42,7 +42,7 @@ const StrategyInfo = ({ maxLoss, maxProfit, neededRequiredMargin, neededBudget }
 
 const StrategyInfoItem = ({ title, value, type }: StrategyInfoItemProps) => (
 	<li className='items-start gap-4 flex-items-center'>
-		<span style={{ width: '10.6rem' }} className='text-gray-700 whitespace-nowrap text-tiny'>
+		<span style={{ width: '10.6rem' }} className='whitespace-nowrap text-tiny text-gray-700'>
 			{title}:
 		</span>
 		<div

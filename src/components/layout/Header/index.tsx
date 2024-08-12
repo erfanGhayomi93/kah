@@ -26,16 +26,13 @@ import Popup from '../../common/Popup';
 import Tooltip from '../../common/Tooltip';
 import {
 	ArrowDownSVG,
-	BellSVG,
 	CalculatorSVG,
 	ShieldCheckSVG,
 	ShieldInfoSVG,
 	ShieldXSVG,
 	UserBoldSVG,
 	WalletSVG,
-	XSVG,
 } from '../../icons';
-import Notifications from './Notifications';
 import SearchSymbol from './SearchSymbol';
 import ServerDateTime from './ServerDateTime';
 import UserDropdown from './UserDropdown';
@@ -262,7 +259,7 @@ const Header = () => {
 							</button>
 						</Tooltip>
 
-						<Popup
+						{/* <Popup
 							margin={{
 								y: 6,
 							}}
@@ -287,7 +284,7 @@ const Header = () => {
 									</button>
 								</Tooltip>
 							)}
-						</Popup>
+						</Popup> */}
 
 						<Separator />
 					</div>
