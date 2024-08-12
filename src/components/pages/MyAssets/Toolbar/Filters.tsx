@@ -1,11 +1,9 @@
-import ExportExcelBtn from '@/components/common/Buttons/ExportExcelBtn';
-import OptionWatchlistManagerBtn from '@/components/common/Buttons/OptionWatchlistManagerBtn';
 import Select from '@/components/common/Inputs/Select';
 import Switch from '@/components/common/Inputs/Switch';
 import Popup from '@/components/common/Popup';
 import Separator from '@/components/common/Separator';
 import Tooltip from '@/components/common/Tooltip';
-import { ArrowDownSVG, DownloadDdnSVG, UploadDdnSVG, XiaomiSettingSVG } from '@/components/icons';
+import { ArrowDownSVG, XiaomiSettingSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
 import { usePathname, useRouter } from '@/navigation';
 import { comparePathname } from '@/utils/helpers';
@@ -34,22 +32,6 @@ const Filters = () => {
 		params.set(name, v ? 'true' : 'false');
 
 		router.replace(`${pathname}?${params.toString()}`);
-	};
-
-	const uploadDDN = () => {
-		//
-	};
-
-	const downloadDDN = () => {
-		//
-	};
-
-	const exportExcel = () => {
-		//
-	};
-
-	const manageColumns = () => {
-		//
 	};
 
 	const isNotTable = comparePathname('my-assets/all', pathname);
@@ -120,7 +102,7 @@ const Filters = () => {
 					)}
 				</Popup>
 
-				<li>
+				{/* <li>
 					<Tooltip placement='bottom' content={t('upload_ddn_tooltip')}>
 						<button onClick={uploadDDN} type='button' className='size-40 rounded btn-icon'>
 							<UploadDdnSVG />
@@ -147,7 +129,7 @@ const Filters = () => {
 							<OptionWatchlistManagerBtn disabled={isNotTable} onClick={manageColumns} />
 						</div>
 					</Tooltip>
-				</li>
+				</li> */}
 			</ul>
 		</div>
 	);

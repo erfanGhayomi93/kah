@@ -34,10 +34,16 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 		[],
 	);
 
+	const isOption = Boolean(symbolData?.isOption);
+
 	return (
-		<Section name='individual_and_legal' defaultActiveTab='individual_and_legal' tabs={tabs}>
+		<Section
+			name={isOption ? 'option_individual_and_legal' : 'individual_and_legal'}
+			defaultActiveTab='individual_and_legal'
+			tabs={tabs}
+		>
 			<div className='gap-24 px-8 py-16 flex-column'>
-				{!symbolData?.isOption && (
+				{!isOption && (
 					<QueueValueProgressbar
 						buyQueueValue={supplyValueSum}
 						sellQueueValue={demandValueSum}

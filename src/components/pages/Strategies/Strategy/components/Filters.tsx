@@ -36,15 +36,15 @@ const Filters = ({
 	return (
 		<div style={{ flex: '0 0 4rem' }} className='flex-justify-between'>
 			<div className='flex-1 flex-justify-start'>
-				<div className='text-gray-700 flex gap-4 font-medium'>
+				<div className='flex gap-4 font-medium text-gray-700'>
 					<h1 className='text-base'>{t(`${type}.title`)}</h1>
-					<h2 className='text-gray-500 text-base'>({title})</h2>
+					<h2 className='text-base text-gray-500'>({title})</h2>
 				</div>
 			</div>
 
 			<div className='flex-1 gap-24 flex-justify-end'>
 				<div className='h-40 gap-8 flex-items-center'>
-					<span className='text-gray-700 text-tiny font-medium'>{t('strategy.with_commission')}</span>
+					<span className='text-tiny font-medium text-gray-700'>{t('strategy.with_commission')}</span>
 					<Switch checked={useCommission} onChange={(v) => onCommissionChanged?.(v)} />
 				</div>
 
@@ -74,6 +74,8 @@ const Filters = ({
 					/>
 
 					<TableActions
+						showExcel={false}
+						showPlayAndPause={false}
 						filtersCount={filtersCount}
 						onExportExcel={onExportExcel}
 						onShowFilters={onShowFilters}

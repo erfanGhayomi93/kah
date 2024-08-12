@@ -77,7 +77,7 @@ const Section = <T extends string = string>({ name, defaultActiveTab, tabs, chil
 								)}
 							>
 								{tab.title}
-								{activeTab === tab.id && (
+								{isExpand && activeTab === tab.id && (
 									<>
 										{index > 0 && <RoundRightSVG style={{ left: '100%' }} />}
 										<RoundLeftSVG style={{ right: '100%' }} />

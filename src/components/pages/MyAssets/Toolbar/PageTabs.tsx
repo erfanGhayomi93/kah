@@ -34,7 +34,7 @@ const PageTabs = () => {
 				title: t('tab_position'),
 				href: '/my-assets/position',
 			},
-			{
+			/* {
 				id: 'strategy',
 				title: t('tab_strategy'),
 				href: '/my-assets/strategy',
@@ -43,14 +43,14 @@ const PageTabs = () => {
 				id: 'assets',
 				title: t('tab_all'),
 				href: '/my-assets/all',
-			},
+			}, */
 		],
 		[],
 	);
 
 	return (
 		<div className='flex-1 gap-24 flex-justify-start'>
-			<h1 className='text-gray-700 text-xl font-medium'>{t('title')}</h1>
+			<h1 className='text-xl font-medium text-gray-700'>{t('title')}</h1>
 
 			<ul className='gap-8 flex-items-center'>
 				{pages.map((item) => (

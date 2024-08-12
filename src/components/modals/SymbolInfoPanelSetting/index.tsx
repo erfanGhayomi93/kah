@@ -117,7 +117,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 					imgSrc: '/static/images/rbfs0K0Tqf.png',
 				},
 				{
-					id: 'individual_and_legal',
+					id: 'option_individual_and_legal',
 					title: t('symbol_info_panel_setting.individual_and_legal'),
 					imgSrc: '/static/images/9PlkNy6gfp.png',
 				},
@@ -133,7 +133,7 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 
 		return (
 			<Modal top='7%' transparent onClose={onCloseModal} {...props} ref={ref}>
-				<Div className='darkBlue:bg-gray-50 justify-between bg-white flex-column dark:bg-gray-50'>
+				<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
 					<Header label={t('symbol_info_panel_setting.title')} onClose={onCloseModal} />
 
 					<div className='flex-1 flex-column'>

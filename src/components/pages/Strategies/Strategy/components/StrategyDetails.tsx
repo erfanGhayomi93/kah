@@ -13,7 +13,6 @@ import {
 	PlaySVG,
 	PlusSVG,
 	RhombicCircleSVG,
-	TeachVideoSVG,
 } from '@/components/icons';
 import { useLocalstorage, useTheme } from '@/hooks';
 import { Link } from '@/navigation';
@@ -170,14 +169,14 @@ const StrategyDetails = ({ strategy, condition, steps, readMore, trainingVideo }
 								<MenuChocolateSVG width='2.4rem' height='2.4rem' />
 								{t('strategy.more_info')}
 							</button>
-							<button
+							{/* <button
 								onClick={trainingVideo}
 								type='button'
 								className='gap-8 text-base text-info-100 flex-items-center'
 							>
 								<TeachVideoSVG width='2.4rem' height='2.4rem' />
 								{t('strategy.teach_video')}
-							</button>
+							</button> */}
 						</div>
 					)}
 				</div>

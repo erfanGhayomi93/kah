@@ -10,7 +10,6 @@ import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-co
 import { useTranslations } from 'next-intl';
 import { useMemo, useRef } from 'react';
 import SymbolTitleHeader from '../SymbolTitleHeader';
-import CallActionCell from './CallActionCell';
 
 interface CallTableProps {
 	isLoading: boolean;
@@ -222,14 +221,14 @@ const CallTable = ({ data, isLoading }: CallTableProps) => {
 				valueGetter: ({ data }) => data!.baseSymbolPrice,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			{
+			/* {
 				colId: 'action',
 				headerName: t('col_action'),
 				pinned: 'left',
 				minWidth: 208,
 				maxWidth: 208,
 				cellRenderer: CallActionCell,
-			},
+			}, */
 		],
 		[],
 	);
