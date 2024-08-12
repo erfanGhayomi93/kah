@@ -5,7 +5,6 @@ import {
 	useOptionOrdersQuery,
 	useTodayOrdersQuery,
 } from '@/api/queries/brokerPrivateQueries';
-import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import { useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
@@ -35,58 +34,30 @@ interface BodyProps {
 const Body = ({ tab, setSelectedOrders }: BodyProps) => {
 	const queryClient = useQueryClient();
 
-	const {
-		data: openOrdersData,
-		refetch: refetchOpenOrders,
-		isLoading: isFetchingOpenOrders,
-	} = useOpenOrdersQuery({
+	const { data: openOrdersData, isLoading: isLoadingOpenOrders } = useOpenOrdersQuery({
 		queryKey: ['openOrdersQuery'],
-		enabled: false,
+		enabled: tab === 'open_orders',
 	});
 
-	const {
-		data: todayOrdersData,
-		refetch: refetchTodayOrders,
-		isLoading: isFetchingTodayOrders,
-	} = useTodayOrdersQuery({
-		queryKey: ['openOrdersQuery'],
-		enabled: false,
+	const { data: todayOrdersData, isLoading: isLoadingTodayOrders } = useTodayOrdersQuery({
+		queryKey: ['todayOrders'],
+		enabled: tab === 'today_orders',
 	});
 
-	const {
-		data: executedOrdersData,
-		refetch: refetchExecutedOrders,
-		isLoading: isFetchingExecutedOrders,
-	} = useExecutedOrdersQuery({
+	const { data: executedOrdersData, isLoading: isLoadingExecutedOrders } = useExecutedOrdersQuery({
 		queryKey: ['executedOrdersQuery'],
-		enabled: false,
+		enabled: tab === 'executed_orders',
 	});
 
-	const {
-		data: draftOrdersData,
-		refetch: refetchDraftOrders,
-		isLoading: isFetchingDraftOrders,
-	} = useDraftOrdersQuery({
+	const { data: draftOrdersData, isLoading: isLoadingDraftOrders } = useDraftOrdersQuery({
 		queryKey: ['draftOrdersQuery'],
-		enabled: false,
+		enabled: tab === 'draft',
 	});
 
-	const {
-		data: optionOrdersData,
-		refetch: refetchOptionOrders,
-		isLoading: isFetchingOptionOrders,
-	} = useOptionOrdersQuery({
+	const { data: optionOrdersData, isLoading: isLoadingOptionOrders } = useOptionOrdersQuery({
 		queryKey: ['optionOrdersQuery'],
-		enabled: false,
+		enabled: tab === 'option_orders',
 	});
-
-	const refetchActiveTab = () => {
-		if (tab === 'open_orders') refetchOpenOrders();
-		else if (tab === 'draft') refetchDraftOrders();
-		else if (tab === 'executed_orders') refetchExecutedOrders();
-		else if (tab === 'option_orders') refetchOptionOrders();
-		else if (tab === 'today_orders') refetchTodayOrders();
-	};
 
 	const updateOrdersCount = (data: Partial<Broker.OrdersCount>) => {
 		const queryKey = ['brokerOrdersCountQuery'];
@@ -123,31 +94,18 @@ const Body = ({ tab, setSelectedOrders }: BodyProps) => {
 		}
 	}, [tab, openOrdersData, todayOrdersData, executedOrdersData, draftOrdersData, optionOrdersData]);
 
-	useEffect(() => {
-		const removeHandler = ipcMain.handle('refetch_active_order_tab', refetchActiveTab);
-		return () => removeHandler();
-	}, [tab]);
-
-	useEffect(() => {
-		if (tab === 'open_orders') refetchOpenOrders();
-		else if (tab === 'draft') refetchDraftOrders();
-		else if (tab === 'executed_orders') refetchExecutedOrders();
-		else if (tab === 'option_orders') refetchOptionOrders();
-		else if (tab === 'today_orders') refetchTodayOrders();
-	}, [tab]);
-
 	return (
 		<div
 			style={{ height: '36rem' }}
-			className='darkBlue:bg-gray-50 relative flex-1 border-t border-t-gray-200 bg-white px-16 py-8 dark:bg-gray-50'
+			className='relative flex-1 border-t border-t-gray-200 bg-white px-16 py-8 darkBlue:bg-gray-50 dark:bg-gray-50'
 		>
 			{tab === 'option_orders' ? (
-				<OptionTable data={optionOrdersData ?? []} loading={isFetchingOptionOrders} />
+				<OptionTable data={optionOrdersData ?? []} loading={isLoadingOptionOrders} />
 			) : tab === 'draft' ? (
 				<DraftTable
 					setSelectedRows={setSelectedOrders}
 					data={draftOrdersData ?? []}
-					loading={isFetchingDraftOrders}
+					loading={isLoadingDraftOrders}
 				/>
 			) : (
 				<OrderTable
@@ -155,10 +113,10 @@ const Body = ({ tab, setSelectedOrders }: BodyProps) => {
 					{...ordersTableProps}
 					loading={
 						tab === 'executed_orders'
-							? isFetchingExecutedOrders
+							? isLoadingExecutedOrders
 							: tab === 'open_orders'
-								? isFetchingOpenOrders
-								: isFetchingTodayOrders
+								? isLoadingOpenOrders
+								: isLoadingTodayOrders
 					}
 				/>
 			)}

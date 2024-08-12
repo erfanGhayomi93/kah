@@ -6,7 +6,6 @@ declare interface IpcMainChannels {
 	order_sent: { id: string | undefined; response: Order.Response | 'error' };
 	set_option_watchlist_filters: Omit<IOptionWatchlistFilters, 'priceBasis' | 'term'>;
 	set_transactions_filters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>;
-	refetch_active_order_tab: undefined;
 	set_option_watchlist_columns: Option.Column[];
 	set_instant_deposit_reports_filters: Omit<
 		InstantDepositReports.IInstantDepositReportsFilters,

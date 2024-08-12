@@ -444,6 +444,7 @@
 		"Day": "روز",
 		"Today": "امروز",
 		"Tomorrow": "فردا",
+		"undefined": "تعریف نشده",
 		"Month": "ماه",
 		"Week": "هفته"
 	},
@@ -610,7 +611,7 @@
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
 		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
 		"symbol_search_placeholder": "جستجو نماد",
-		"no_data_found": "اطلاعاتی برای نمایش یافت نشد",
+		"no_data_found": "اطلاعاتی برای نمایش یافت نشد!",
 		"closing_price": "قیمت پایانی",
 		"trade_volume": "حجم معاملات ",
 		"trade_count": "تعداد معاملات",

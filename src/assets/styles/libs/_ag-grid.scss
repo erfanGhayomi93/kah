@@ -12,6 +12,12 @@
 	font-size: var(--ag-font-size);
 }
 
+.ag-selection-checkbox .ag-checkbox-input-wrapper::before,
+.ag-checkbox .ag-checkbox-input-wrapper::before {
+	border: 1px solid rgb(var(--c-gray-200));
+	background-color: theme("colors.white");
+}
+
 .ag-root-wrapper {
 	border-radius: 0;
 }
@@ -298,5 +304,10 @@ html[data-theme="dark"] {
 
 	.ag-header-group-cell {
 		border-bottom-color: theme("colors.gray.200");
+	}
+
+	.ag-selection-checkbox .ag-checkbox-input-wrapper::before,
+	.ag-checkbox .ag-checkbox-input-wrapper::before {
+		background-color: rgb(var(--c-gray-50));
 	}
 }

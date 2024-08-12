@@ -34,11 +34,7 @@ const Position = ({ symbolTitle, customersOpenPositions, isActive, onClick }: Po
 		<li className='flex-48 flex-justify-between'>
 			<Radiobox label={symbolTitle} checked={isActive} onChange={onClick} />
 
-			{customersOpenPositions === 0 ? (
-				<button type='button' className='font-medium text-success-100 transition-color hover:text-success-200'>
-					{t('side.buy')}
-				</button>
-			) : (
+			{customersOpenPositions > 0 && (
 				<span className='text-gray-500'>
 					{t('change_block_type_modal.free_position', { n: customersOpenPositions })}
 				</span>

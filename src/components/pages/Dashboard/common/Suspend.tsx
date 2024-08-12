@@ -9,14 +9,14 @@ interface SuspendProps {
 const Suspend = ({ isLoading, isEmpty }: SuspendProps) => {
 	if (isLoading)
 		return (
-			<div className='darkBlue:bg-gray-50 absolute size-full bg-white center dark:bg-gray-50'>
+			<div className='absolute size-full bg-white center darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Loading />
 			</div>
 		);
 
 	if (isEmpty)
 		return (
-			<div className='darkBlue:bg-gray-50 absolute size-full bg-white center dark:bg-gray-50'>
+			<div className='absolute size-full bg-white rtl center darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<NoData />
 			</div>
 		);

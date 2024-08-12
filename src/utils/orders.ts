@@ -1,20 +1,25 @@
 import brokerAxios from '@/api/brokerAxios';
 import { store } from '@/api/inject-store';
 import ipcMain from '@/classes/IpcMain';
+import { brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import { getOrdersActiveTab } from '@/features/slices/tabSlice';
+import { type QueryKey } from '@tanstack/react-query';
+import { toISOStringWithoutChangeTime } from './helpers';
 
-export const createOrder = (fields: IOFields) =>
-	new Promise<string | undefined>((resolve) => {
+export const createOrders = (orders: IOFields[]) => ipcMain.send('send_orders', orders);
+
+export const createOrder = (fields: IOFields) => {
+	return new Promise<string | undefined>((resolve) => {
 		return ipcMain
 			.sendAsync<string | undefined>('send_order', fields)
 			.then(resolve)
 			.catch(() => resolve(undefined));
 	});
+};
 
-export const createOrders = (orders: IOFields[]) => ipcMain.send('send_orders', orders);
-
-export const createDraft = (order: IOFields) =>
-	new Promise<number>(async (resolve, reject) => {
+export const createDraft = (order: IOFields) => {
+	return new Promise<number>(async (resolve, reject) => {
 		const urls = getBrokerURLs(store.getState());
 		if (!urls) {
 			reject();
@@ -28,21 +33,24 @@ export const createDraft = (order: IOFields) =>
 				side: order.orderSide,
 				symbolISIN: order.symbolISIN,
 				validity: order.validity,
-				validityDate: order.validityDate <= 0 ? undefined : order.validityDate,
+				validityDate:
+					order.validityDate <= 0 ? undefined : toISOStringWithoutChangeTime(new Date(order.validityDate)),
 			});
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			refetchActiveOrderTab();
+			refetchOrdersCount();
 			resolve(data.result);
 		} catch (e) {
 			reject(e);
 		}
 	});
+};
 
-export const updateDraft = (order: IOFieldsWithID) =>
-	new Promise<number>(async (resolve, reject) => {
+export const updateDraft = (order: IOFieldsWithID) => {
+	return new Promise<number>(async (resolve, reject) => {
 		const urls = getBrokerURLs(store.getState());
 		if (!urls) {
 			reject();
@@ -56,21 +64,23 @@ export const updateDraft = (order: IOFieldsWithID) =>
 				quantity: order.quantity,
 				side: order.orderSide,
 				validity: order.validity,
-				validityDate: order.validityDate <= 0 ? undefined : order.validityDate,
+				validityDate:
+					order.validityDate <= 0 ? undefined : toISOStringWithoutChangeTime(new Date(order.validityDate)),
 			});
 			const { data } = response;
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			refetchActiveOrderTab();
+			refetchDrafts();
 			resolve(data.result);
 		} catch (e) {
 			reject();
 		}
 	});
+};
 
-export const updateOrder = (order: IOFieldsWithID) =>
-	new Promise<number>(async (resolve, reject) => {
+export const updateOrder = (order: IOFieldsWithID) => {
+	return new Promise<number>(async (resolve, reject) => {
 		const urls = getBrokerURLs(store.getState());
 		if (!urls) {
 			reject();
@@ -84,7 +94,8 @@ export const updateOrder = (order: IOFieldsWithID) =>
 				quantity: order.quantity,
 				side: order.orderSide,
 				validity: order.validity,
-				validityDate: order.validityDate <= 0 ? undefined : order.validityDate,
+				validityDate:
+					order.validityDate <= 0 ? undefined : toISOStringWithoutChangeTime(new Date(order.validityDate)),
 			});
 			const { data } = response;
 
@@ -96,9 +107,10 @@ export const updateOrder = (order: IOFieldsWithID) =>
 			reject();
 		}
 	});
+};
 
-export const deleteOrder = (ids: number[]) =>
-	new Promise<boolean>(async (resolve, reject) => {
+export const deleteOrder = (ids: number[]) => {
+	return new Promise<boolean>(async (resolve, reject) => {
 		const urls = getBrokerURLs(store.getState());
 		if (!urls || ids.length === 0) {
 			reject();
@@ -117,14 +129,16 @@ export const deleteOrder = (ids: number[]) =>
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
 			refetchActiveOrderTab();
+			refetchOrdersCount();
 			resolve(data.result);
 		} catch (e) {
 			reject();
 		}
 	});
+};
 
-export const deleteDraft = (ids: number[]) =>
-	new Promise<boolean>(async (resolve, reject) => {
+export const deleteDraft = (ids: number[]) => {
+	return new Promise<boolean>(async (resolve, reject) => {
 		const urls = getBrokerURLs(store.getState());
 		if (!urls || ids.length === 0) {
 			reject();
@@ -142,11 +156,36 @@ export const deleteDraft = (ids: number[]) =>
 
 			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-			refetchActiveOrderTab();
+			refetchOrdersCount();
+			refetchDrafts();
 			resolve(data.result);
 		} catch (e) {
 			reject();
 		}
 	});
+};
 
-export const refetchActiveOrderTab = () => ipcMain.send('refetch_active_order_tab', undefined);
+export const refetchOrdersCount = () => {
+	brokerQueryClient!.refetchQueries({
+		queryKey: ['brokerOrdersCountQuery'],
+	});
+};
+
+export const refetchDrafts = () => {
+	brokerQueryClient!.refetchQueries({
+		queryKey: ['draftOrdersQuery'],
+	});
+};
+
+export const refetchActiveOrderTab = () => {
+	const activeTab = getOrdersActiveTab(store.getState());
+	let queryKey: QueryKey | undefined;
+
+	if (activeTab === 'open_orders') queryKey = ['openOrdersQuery'];
+	else if (activeTab === 'draft') queryKey = ['draftOrdersQuery'];
+	else if (activeTab === 'executed_orders') queryKey = ['executedOrdersQuery'];
+	else if (activeTab === 'option_orders') queryKey = ['optionOrdersQuery'];
+	else if (activeTab === 'today_orders') queryKey = ['todayOrders'];
+
+	brokerQueryClient!.refetchQueries({ queryKey });
+};
