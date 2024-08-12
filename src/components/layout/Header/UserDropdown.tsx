@@ -1,14 +1,5 @@
 import { useGetBrokersQuery } from '@/api/queries/brokerQueries';
-import {
-	AngleLeftSVG,
-	BuildingSVG,
-	LogoutSVG,
-	OffSVG,
-	SessionHistorySVG,
-	SettingSVG,
-	SunSVG,
-	UserCircleSVG,
-} from '@/components/icons';
+import { AngleLeftSVG, BuildingSVG, LogoutSVG, OffSVG, SettingSVG, SunSVG, UserCircleSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getTheme, setTheme } from '@/features/slices/uiSlice';
 import { useDebounce } from '@/hooks';
@@ -193,7 +184,7 @@ const UserDropdown = ({
 						</ul>
 					</li>
 
-					<li>
+					{/* <li>
 						<Link
 							onClick={() => close()}
 							href='/settings/sessions'
@@ -205,7 +196,7 @@ const UserDropdown = ({
 
 							<span>{t('header.session_history')}</span>
 						</Link>
-					</li>
+					</li> */}
 
 					<li>
 						<Link

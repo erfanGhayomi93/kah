@@ -37,11 +37,11 @@ const ToolBar = () => {
 				href: '/settings/agreements/',
 				isActive: Boolean(brokerURLs),
 			},
-			{
+			/* {
 				title: t('sessions_settings'),
 				href: '/settings/sessions/',
 				isActive: true,
-			},
+			}, */
 		],
 		[brokerURLs],
 	);
