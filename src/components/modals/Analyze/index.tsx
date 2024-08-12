@@ -106,7 +106,7 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			dispatch(
 				setSelectSymbolContractsModal({
 					initialSelectedContracts,
-					suppressBaseSymbolChange: symbolContracts.length > 0,
+					suppressBaseSymbolChange: false,
 					suppressSendBaseSymbol: false,
 					initialBaseSymbol: initialBaseSymbol
 						? [initialBaseSymbol.symbol.symbolISIN, initialBaseSymbol.side]

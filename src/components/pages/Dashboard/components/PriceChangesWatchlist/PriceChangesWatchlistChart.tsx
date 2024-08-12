@@ -89,8 +89,8 @@ const PriceChangesWatchlistChart = () => {
 	useEffect(() => {
 		if (!chartRef.current || !data?.length) return;
 
-		let maxValue = Math.max(...data.map((item) => item.count));
-		maxValue = Math.max(Math.ceil(maxValue / 100) * 100, 10);
+		let maxValue = data.reduce((total, item) => total + item.count, 0);
+		if (!maxValue) maxValue = 1;
 
 		const values = [
 			data[0]?.count ?? 0,

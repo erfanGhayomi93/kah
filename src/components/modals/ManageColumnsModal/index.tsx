@@ -85,7 +85,7 @@ const ManageColumnsModal = forwardRef<HTMLDivElement, ManageColumnsModalProps>(
 
 				setColumns(newColumns);
 
-				onColumnChanged?.(updatedCol);
+				onColumnChanged?.({ ...updatedCol, hidden: !updatedCol.hidden });
 				if (stream) onColumnsChanged?.(newColumns);
 			} catch (e) {
 				//

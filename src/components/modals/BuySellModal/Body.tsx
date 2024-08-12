@@ -114,7 +114,18 @@ const Body = (props: BodyProps) => {
 
 			setSubmitting(true);
 
-			const { price, quantity, validityDate, validity, symbolISIN, holdAfterOrder, side, closeModal } = props;
+			const {
+				price,
+				quantity,
+				blockType,
+				validityDate,
+				validity,
+				symbolType,
+				symbolISIN,
+				holdAfterOrder,
+				side,
+				closeModal,
+			} = props;
 			const params: IOFields = {
 				symbolISIN,
 				quantity,
@@ -125,7 +136,13 @@ const Body = (props: BodyProps) => {
 			};
 
 			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
-			else if (params.validity === 'Month' || params.validity === 'Week') {
+			if (side === 'sell' && symbolType === 'option') {
+				if (blockType!.type === 'Portfolio' || blockType!.type === 'Account') params.source = blockType!.type;
+				else {
+					params.source = 'Position';
+					params.positionSymbolISIN = blockType!.value.symbolISIN;
+				}
+			} else if (params.validity === 'Month' || params.validity === 'Week') {
 				params.validityDate = dateConverter(params.validity);
 			}
 

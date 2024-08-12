@@ -6,7 +6,7 @@ import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { getOptionWatchlistColumns, setOptionWatchlistColumns } from '@/features/slices/tableSlice';
+import { getOptionWatchlistColumnsState, setOptionWatchlistColumnsState } from '@/features/slices/tableSlice';
 import { useDebounce, useOptionWatchlistColumns, useSubscription } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
 import { type ColDef, type ColumnMovedEvent, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
@@ -35,7 +35,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: Wa
 
 	const queryClient = useQueryClient();
 
-	const watchlistColumnsIndex = useAppSelector(getOptionWatchlistColumns);
+	const watchlistColumnsState = useAppSelector(getOptionWatchlistColumnsState);
 
 	const visualData = useRef<Option.Root[]>([]);
 
@@ -89,7 +89,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: Wa
 				applyOrder: true,
 			});
 
-			dispatch(setOptionWatchlistColumns(columnState));
+			dispatch(setOptionWatchlistColumnsState(columnState));
 		} catch (e) {
 			//
 		}
@@ -699,15 +699,15 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, fetchNextPage }: Wa
 		const gridApi = gridRef.current;
 		if (!gridApi) return;
 
-		if (!Array.isArray(watchlistColumnsIndex) || watchlistColumnsIndex.length === 0) return;
+		if (!Array.isArray(watchlistColumnsState) || watchlistColumnsState.length === 0) return;
 
-		if (typeof watchlistColumnsIndex[0] === 'object' && 'colId' in watchlistColumnsIndex[0]) {
-			gridApi.applyColumnState({ state: watchlistColumnsIndex, applyOrder: true });
+		if (typeof watchlistColumnsState[0] === 'object' && 'colId' in watchlistColumnsState[0]) {
+			gridApi.applyColumnState({ state: watchlistColumnsState, applyOrder: true });
 		} else {
-			dispatch(setOptionWatchlistColumns(defaultOptionWatchlistColumns));
+			dispatch(setOptionWatchlistColumnsState(defaultOptionWatchlistColumns));
 			gridApi.applyColumnState({ state: defaultOptionWatchlistColumns, applyOrder: true });
 		}
-	}, [watchlistColumnsIndex]);
+	}, [watchlistColumnsState]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;

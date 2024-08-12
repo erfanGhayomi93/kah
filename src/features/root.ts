@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
 	user: userSlice,
 	ui: uiSlice,
 	modal: modalSlice,
-	columns: columnSlice,
+	column: columnSlice,
 	panel: panelSlice,
 	broker: brokerSlice,
 	table: tableSlice,
