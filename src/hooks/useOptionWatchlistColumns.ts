@@ -5,14 +5,11 @@ import {
 import { useDefaultOptionSymbolColumnsQuery, useOptionSymbolColumnsQuery } from '@/api/queries/optionQueries';
 import ipcMain from '@/classes/IpcMain';
 import LocalstorageInstance from '@/classes/Localstorage';
-import { useAppDispatch, useAppSelector } from '@/features/hooks';
-import { setOptionWatchlistColumns } from '@/features/slices/tableSlice';
+import { useAppSelector } from '@/features/hooks';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useEffect, useMemo, useState } from 'react';
 
 const useOptionWatchlistColumns = () => {
-	const dispatch = useAppDispatch();
-
 	const isLoggedIn = useAppSelector(getIsLoggedIn);
 
 	const [columns, setColumns] = useState<Option.Column[]>([]);
@@ -64,9 +61,7 @@ const useOptionWatchlistColumns = () => {
 			LocalstorageInstance.set('owc', newColumnsData);
 
 			ipcMain.send('set_option_watchlist_columns', newColumnsData);
-
 			setColumns(newColumnsData);
-			dispatch(setOptionWatchlistColumns(newColumnsData.map((item) => ({ colId: item.title }))));
 		} catch (e) {
 			//
 		}
@@ -84,23 +79,21 @@ const useOptionWatchlistColumns = () => {
 			}
 
 			const cols: Record<string, boolean> = {};
-			for (let i = 0; i < columns.length; i++) {
+			for (let i = 0; i < updatedColumns.length; i++) {
 				const col = updatedColumns[i];
-				cols[col.id] = col.hidden;
+				cols[Number(col.id)] = col.hidden;
 			}
 
 			const newColumnsData = [...columns];
 			for (let i = 0; i < newColumnsData.length; i++) {
 				const col = newColumnsData[i];
-				if (col.title in cols) newColumnsData[i].isHidden = Boolean(cols[col.title]);
+				if (col.id in cols) newColumnsData[i].isHidden = Boolean(cols[col.id]);
 			}
 
 			LocalstorageInstance.set('owc', newColumnsData);
 
 			ipcMain.send('set_option_watchlist_columns', newColumnsData);
-
 			setColumns(newColumnsData);
-			dispatch(setOptionWatchlistColumns(newColumnsData.map((item) => ({ colId: item.title }))));
 		} catch (e) {
 			//
 		}
@@ -119,9 +112,7 @@ const useOptionWatchlistColumns = () => {
 
 	useEffect(() => {
 		const removeHandler = ipcMain.handle('set_option_watchlist_columns', setColumns);
-		return () => {
-			removeHandler();
-		};
+		return () => removeHandler();
 	}, []);
 
 	useEffect(() => {

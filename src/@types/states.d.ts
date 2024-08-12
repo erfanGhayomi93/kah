@@ -84,6 +84,8 @@ declare interface IOFields {
 	symbolISIN: string;
 	quantity: number;
 	price: number;
+	positionSymbolISIN?: string;
+	source?: TBlockType;
 	orderSide: 'buy' | 'sell';
 	validity: TBsValidityDates;
 	validityDate: number;

@@ -3,26 +3,29 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type RootState } from '../store';
 
 export interface TableState {
-	optionWatchlistColumns: TOptionWatchlistColumnsState;
+	optionWatchlistColumnsState: TOptionWatchlistColumnsState;
 }
 
 const initialState: TableState = {
-	optionWatchlistColumns: LocalstorageInstance.get<TOptionWatchlistColumnsState>('owci', []),
+	optionWatchlistColumnsState: LocalstorageInstance.get<TOptionWatchlistColumnsState>('owcs', []),
 };
 
 const tableSlice = createSlice({
 	name: 'table',
 	initialState,
 	reducers: {
-		setOptionWatchlistColumns: (state, { payload }: PayloadAction<TableState['optionWatchlistColumns']>) => {
-			LocalstorageInstance.set('owci', payload);
-			state.optionWatchlistColumns = payload;
+		setOptionWatchlistColumnsState: (
+			state,
+			{ payload }: PayloadAction<TableState['optionWatchlistColumnsState']>,
+		) => {
+			LocalstorageInstance.set('owcs', payload);
+			state.optionWatchlistColumnsState = payload;
 		},
 	},
 });
 
-export const { setOptionWatchlistColumns } = tableSlice.actions;
+export const { setOptionWatchlistColumnsState } = tableSlice.actions;
 
-export const getOptionWatchlistColumns = (state: RootState) => state.table.optionWatchlistColumns;
+export const getOptionWatchlistColumnsState = (state: RootState) => state.table.optionWatchlistColumnsState;
 
 export default tableSlice.reducer;
