@@ -109,7 +109,7 @@ const ButtonOrAnchor = ({
 		dispatch(setChoiceBrokerModal({}));
 	};
 
-	const shouldPrevent = !brokerUrl && isBroker;
+	const shouldPrevent = Boolean(!brokerUrl && isBroker);
 
 	if ('to' in props) {
 		return (

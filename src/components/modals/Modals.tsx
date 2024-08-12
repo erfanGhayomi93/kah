@@ -233,7 +233,7 @@ const Modals = () => {
 		strategyFilters,
 	} = useAppSelector((state) => state.modal);
 
-	const closeLoginModalModal = () => {
+	const closeLoginModal = () => {
 		dispatch(setLoginModal(null));
 	};
 
@@ -269,7 +269,7 @@ const Modals = () => {
 		dispatch(setBuySellModal(null));
 	};
 
-	const closeChangeBlockTypeModalModal = () => {
+	const closeChangeBlockTypeModal = () => {
 		dispatch(setChangeBlockTypeModal(null));
 	};
 
@@ -373,7 +373,7 @@ const Modals = () => {
 		dispatch(setOrdersReportsFiltersModal(null));
 	};
 
-	const closeExecuteCoveredCallStrategyModalModal = () => {
+	const closeExecuteCoveredCallStrategyModal = () => {
 		dispatch(setExecuteCoveredCallStrategyModal(null));
 	};
 
@@ -451,7 +451,7 @@ const Modals = () => {
 
 	return (
 		<Fragment>
-			<ModalAnimatePresence fallback={closeLoginModalModal}>
+			<ModalAnimatePresence fallback={closeLoginModal}>
 				{loginModal && (
 					<ModalSuspense>
 						<LoginModal {...loginModal} />
@@ -467,7 +467,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeOptionFiltersModal}>
+			<ModalAnimatePresence fallback={closeAnalyzeModal}>
 				{analyze && (
 					<ModalSuspense>
 						<Analyze {...analyze} />
@@ -475,7 +475,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeForgetPasswordModal}>
+			<ModalAnimatePresence fallback={closeConfirmModal}>
 				{confirm && (
 					<ModalSuspense>
 						<Confirm {...confirm} />
@@ -483,7 +483,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeSelectSymbolContractsModal}>
+			<ModalAnimatePresence fallback={closeAcceptAgreementModal}>
 				{acceptAgreement && (
 					<ModalSuspense>
 						<AcceptAgreement {...acceptAgreement} />
@@ -491,7 +491,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeAddSaturnTemplateModal}>
+			<ModalAnimatePresence fallback={closeDescriptionModal}>
 				{description && (
 					<ModalSuspense>
 						<Description {...description} />
@@ -499,7 +499,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeAddNewOptionWatchlistModal}>
+			<ModalAnimatePresence fallback={closeSymbolInfoPanelSettingModal}>
 				{symbolInfoPanelSetting && (
 					<ModalSuspense>
 						<SymbolInfoPanelSetting {...symbolInfoPanelSetting} />
@@ -507,7 +507,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeManageOptionWatchlistListModal}>
+			<ModalAnimatePresence fallback={closeBlackScholesModal}>
 				{blackScholes && (
 					<ModalSuspense>
 						<BlackScholes {...blackScholes} />
@@ -515,7 +515,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeBuySellModal}>
+			<ModalAnimatePresence fallback={closeOptionFiltersModal}>
 				{optionFilters && (
 					<ModalSuspense>
 						<OptionWatchlistFiltersModal {...optionFilters} />
@@ -523,7 +523,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeChangeBlockTypeModalModal}>
+			<ModalAnimatePresence fallback={closeSelectSymbolContractsModal}>
 				{selectSymbolContracts && (
 					<ModalSuspense>
 						<SymbolContracts {...selectSymbolContracts} />
@@ -531,137 +531,137 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeAddSymbolToWatchlistModal}>
+			<ModalAnimatePresence fallback={closeChoiceBrokerModal}>
 				{choiceBroker && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeAddSymbolToWatchlistModal}>
+						<AuthorizeMiddleware callback={closeChoiceBrokerModal}>
 							<ChoiceBroker {...choiceBroker} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeChoiceBrokerModal}>
+			<ModalAnimatePresence fallback={closeChangeBrokerModal}>
 				{changeBroker && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeChoiceBrokerModal} broker>
+						<AuthorizeMiddleware callback={closeChangeBrokerModal} broker>
 							<ChangeBroker {...changeBroker} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeConfirmModal}>
+			<ModalAnimatePresence fallback={closeWithdrawalModal}>
 				{withdrawal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeConfirmModal} broker>
+						<AuthorizeMiddleware callback={closeWithdrawalModal} broker>
 							<Withdrawal {...withdrawal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeAcceptAgreementModal}>
+			<ModalAnimatePresence fallback={closeDepositModal}>
 				{deposit && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeAcceptAgreementModal} broker>
+						<AuthorizeMiddleware callback={closeDepositModal} broker>
 							<Deposit {...deposit} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeSymbolInfoPanelSettingModal}>
+			<ModalAnimatePresence fallback={closeFreezeModal}>
 				{freeze && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeSymbolInfoPanelSettingModal} broker>
+						<AuthorizeMiddleware callback={closeFreezeModal} broker>
 							<Freeze {...freeze} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeChoiceCollateralModal}>
+			<ModalAnimatePresence fallback={closeOptionSettlementModal}>
 				{optionSettlement && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeChoiceCollateralModal} broker>
+						<AuthorizeMiddleware callback={closeOptionSettlementModal} broker>
 							<OptionSettlement {...optionSettlement} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeBlackScholesModal}>
+			<ModalAnimatePresence fallback={closeAddSaturnTemplateModal}>
 				{addSaturnTemplate && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeBlackScholesModal}>
+						<AuthorizeMiddleware callback={closeAddSaturnTemplateModal}>
 							<AddSaturnTemplate {...addSaturnTemplate} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeMoveSymbolToWatchlistModal}>
+			<ModalAnimatePresence fallback={closeAddNewOptionWatchlistModal}>
 				{addNewOptionWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeMoveSymbolToWatchlistModal}>
+						<AuthorizeMiddleware callback={closeAddNewOptionWatchlistModal}>
 							<AddNewOptionWatchlist {...addNewOptionWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeOrderDetailsModal}>
+			<ModalAnimatePresence fallback={closeManageOptionWatchlistListModal}>
 				{manageOptionWatchlistList && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeOrderDetailsModal}>
+						<AuthorizeMiddleware callback={closeManageOptionWatchlistListModal}>
 							<ManageOptionWatchlistList {...manageOptionWatchlistList} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeChangeBrokerModal}>
+			<ModalAnimatePresence fallback={closeBuySellModal}>
 				{buySell && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeChangeBrokerModal} broker>
+						<AuthorizeMiddleware callback={closeBuySellModal} broker>
 							<BuySellModal {...buySell} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeDepositModal}>
+			<ModalAnimatePresence fallback={closeChangeBlockTypeModal}>
 				{changeBlockTypeModal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeDepositModal} broker>
+						<AuthorizeMiddleware callback={closeChangeBlockTypeModal} broker>
 							<ChangeBlockTypeModal {...changeBlockTypeModal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeFreezeModal}>
+			<ModalAnimatePresence fallback={closeAddSymbolToWatchlistModal}>
 				{addSymbolToWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeFreezeModal}>
+						<AuthorizeMiddleware callback={closeAddSymbolToWatchlistModal}>
 							<AddSymbolToWatchlist {...addSymbolToWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeOptionSettlementModal}>
+			<ModalAnimatePresence fallback={closeChoiceCollateralModal}>
 				{choiceCollateral && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeOptionSettlementModal}>
+						<AuthorizeMiddleware callback={closeChoiceCollateralModal}>
 							<ChoiceCollateral {...choiceCollateral} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeWithdrawalModal}>
+			<ModalAnimatePresence fallback={closeOrderDetailsModal}>
 				{orderDetails && (
 					<ModalSuspense>
 						<OrderDetails {...orderDetails} />
@@ -669,17 +669,17 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeAnalyzeModal}>
+			<ModalAnimatePresence fallback={closeMoveSymbolToWatchlistModal}>
 				{moveSymbolToWatchlist && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeAnalyzeModal}>
+						<AuthorizeMiddleware callback={closeMoveSymbolToWatchlistModal}>
 							<MoveSymbolToWatchlist {...moveSymbolToWatchlist} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeTransactionsFiltersModal}>
+			<ModalAnimatePresence fallback={closeForgetPasswordModal}>
 				{forgetPassword && (
 					<ModalSuspense>
 						<ForgetPasswordModal
@@ -693,7 +693,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeInstantDepositReportsFiltersModal}>
+			<ModalAnimatePresence fallback={closeTransactionsFiltersModal}>
 				{transactionsFilters && (
 					<ModalSuspense>
 						<TransactionsFiltersModal />
@@ -701,7 +701,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeDepositWithReceiptReportsFiltersModal}>
+			<ModalAnimatePresence fallback={closeInstantDepositReportsFiltersModal}>
 				{instantDepositReportsFilters && (
 					<ModalSuspense>
 						<InstantDepositReportsFiltersModal />
@@ -709,7 +709,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeWithdrawalCashReportsFiltersModal}>
+			<ModalAnimatePresence fallback={closeDepositWithReceiptReportsFiltersModal}>
 				{depositWithReceiptReportsFilters && (
 					<ModalSuspense>
 						<DepositWithReceiptFiltersModal />
@@ -717,7 +717,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeChangeBrokerReportsFiltersModal}>
+			<ModalAnimatePresence fallback={closeWithdrawalCashReportsFiltersModal}>
 				{withdrawalCashReportsFilters && (
 					<ModalSuspense>
 						<WithdrawalCashReportsFiltersModal />
@@ -725,7 +725,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeFreezeUnfreezeReportsFiltersModal}>
+			<ModalAnimatePresence fallback={closeChangeBrokerReportsFiltersModal}>
 				{changeBrokerReportsFilters && (
 					<ModalSuspense>
 						<ChangeBrokerReportsFiltersModal />
@@ -733,7 +733,7 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeDescriptionModal}>
+			<ModalAnimatePresence fallback={closeFreezeUnfreezeReportsFiltersModal}>
 				{freezeUnfreezeReportsFilters && (
 					<ModalSuspense>
 						<FreezeUnFreezeReportsModal />
@@ -765,10 +765,10 @@ const Modals = () => {
 				)}
 			</ModalAnimatePresence>
 
-			<ModalAnimatePresence fallback={closeExecuteCoveredCallStrategyModalModal}>
+			<ModalAnimatePresence fallback={closeExecuteCoveredCallStrategyModal}>
 				{executeCoveredCallStrategyModal && (
 					<ModalSuspense>
-						<AuthorizeMiddleware callback={closeExecuteCoveredCallStrategyModalModal} broker>
+						<AuthorizeMiddleware callback={closeExecuteCoveredCallStrategyModal} broker>
 							<ExecuteCoveredCallStrategyModal {...executeCoveredCallStrategyModal} />
 						</AuthorizeMiddleware>
 					</ModalSuspense>
