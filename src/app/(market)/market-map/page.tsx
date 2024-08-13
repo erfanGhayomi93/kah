@@ -1,7 +1,6 @@
 import Main from '@/components/layout/Main';
 import MarketMap from '@/components/pages/MarketMap';
 import { getMetadata } from '@/metadata';
-import auth from '@/utils/hoc/auth';
 import { getTranslations } from 'next-intl/server';
 
 const Page = () => {
@@ -22,4 +21,4 @@ const generateMetadata = async () => {
 
 export { generateMetadata };
 
-export default auth(Page);
+export default Page;

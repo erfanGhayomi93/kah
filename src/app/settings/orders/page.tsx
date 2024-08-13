@@ -1,6 +1,5 @@
 import Orders from '@/components/pages/Settings/tabs/Orders';
 import { getMetadata } from '@/metadata';
-import auth from '@/utils/hoc/auth';
 
 const Page = () => {
 	return <Orders />;
@@ -18,4 +17,4 @@ const generateMetadata = () => {
 
 export { generateMetadata };
 
-export default auth(Page);
+export default Page;
