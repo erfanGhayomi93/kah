@@ -4,7 +4,6 @@ import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
-import auth from '@/utils/hoc/auth';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -63,4 +62,4 @@ const MarketMap = () => {
 	);
 };
 
-export default auth(MarketMap);
+export default MarketMap;

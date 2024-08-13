@@ -9,7 +9,6 @@ import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import useDebounce from '@/hooks/useDebounce';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
-import auth from '@/utils/hoc/auth';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -190,4 +189,4 @@ const Orders = () => {
 	);
 };
 
-export default auth(Orders);
+export default Orders;

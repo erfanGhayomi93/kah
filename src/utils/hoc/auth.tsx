@@ -28,7 +28,11 @@ const auth = <T extends TProps>(Component: TComponent<T>, callbackUrl = '/', typ
 
 			redirect(callbackUrl);
 
-			ipcMain.send('broker:logged_out', undefined);
+			const rm = ipcMain.handle('broker:logged_out', () => {
+				redirect(callbackUrl);
+			});
+
+			return () => rm();
 		}, []);
 
 		if (!isAuthenticated) {
