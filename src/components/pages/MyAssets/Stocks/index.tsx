@@ -4,7 +4,6 @@ import { useGlPortfolioQuery } from '@/api/queries/brokerPrivateQueries';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import auth from '@/utils/hoc/auth';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
@@ -102,4 +101,4 @@ const Stocks = () => {
 	);
 };
 
-export default auth(Stocks);
+export default Stocks;
