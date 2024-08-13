@@ -1,7 +1,6 @@
 'use client';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
-import auth from '@/utils/hoc/auth';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
@@ -71,4 +70,4 @@ const Sessions = () => {
 	);
 };
 
-export default auth(Sessions);
+export default Sessions;

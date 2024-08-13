@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
 import { dateFormatter } from '@/utils/helpers';
-import auth from '@/utils/hoc/auth';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
@@ -101,4 +100,4 @@ const Agreements = () => {
 	);
 };
 
-export default auth(Agreements);
+export default Agreements;
