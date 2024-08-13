@@ -145,24 +145,28 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 	};
 
 	const updatePrice = () => {
-		dispatch(
-			setBuiltStrategy(
-				contracts.map((item) => {
-					const fieldName: keyof IUpdatedSymbolPriceInfo =
-						priceBasis === 'ClosingPrice'
-							? 'closingPrice'
-							: priceBasis === 'LastTradePrice'
-								? 'lastTradedPrice'
-								: item.side === 'buy'
-									? 'bestSellLimitPrice'
-									: 'bestBuyLimitPrice';
-					return {
-						...item,
-						price: contractsPriceRef.current[item.symbol.symbolISIN][fieldName] || item.price,
-					};
-				}),
-			),
-		);
+		try {
+			dispatch(
+				setBuiltStrategy(
+					contracts.map((item) => {
+						const fieldName: keyof IUpdatedSymbolPriceInfo =
+							priceBasis === 'ClosingPrice'
+								? 'closingPrice'
+								: priceBasis === 'LastTradePrice'
+									? 'lastTradedPrice'
+									: item.side === 'buy'
+										? 'bestSellLimitPrice'
+										: 'bestBuyLimitPrice';
+						return {
+							...item,
+							price: contractsPriceRef.current[item.symbol.symbolISIN][fieldName] || item.price,
+						};
+					}),
+				),
+			);
+		} catch (e) {
+			//
+		}
 	};
 
 	const unsubscribe = () => {

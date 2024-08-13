@@ -1,5 +1,6 @@
 import { useOptionCalculativeInfoQuery } from '@/api/queries/optionQueries';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { blackScholes } from '@/utils/math/black-scholes';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import Loading from '../../common/Loading';
@@ -12,14 +13,14 @@ interface IOptionItem {
 
 interface ComputingInformationProps {
 	isExpand: boolean;
-	symbolISIN: string;
+	symbolData: Symbol.Info;
 }
 
-const ComputingInformation = ({ isExpand, symbolISIN }: ComputingInformationProps) => {
+const ComputingInformation = ({ isExpand, symbolData }: ComputingInformationProps) => {
 	const t = useTranslations();
 
 	const { data, isLoading } = useOptionCalculativeInfoQuery({
-		queryKey: ['optionCalculativeInfoQuery', symbolISIN],
+		queryKey: ['optionCalculativeInfoQuery', symbolData.symbolISIN],
 	});
 
 	const items = useMemo<IOptionItem[]>(() => {
@@ -28,18 +29,31 @@ const ComputingInformation = ({ isExpand, symbolISIN }: ComputingInformationProp
 		const {
 			breakEvenPoint,
 			leverage,
-			delta,
 			historicalVolatility,
 			impliedVolatility,
-			theta,
 			intrinsicValue,
-			gamma,
 			timeValue,
-			vega,
 			iotm,
 			initialMargin,
 			requiredMargin,
 		} = data;
+
+		const isCall = symbolData?.contractType === 'Call';
+		const dueDays = Math.ceil(
+			Math.abs(Date.now() - new Date(symbolData.contractEndDate).getTime()) / 1e3 / 24 / 60 / 60,
+		);
+
+		const { vega, gamma, thetaCall, thetaPut, deltaPut, deltaCall, rhoCall, rhoPut } = blackScholes({
+			sharePrice: symbolData?.baseSymbolPrice ?? 0,
+			strikePrice: symbolData.strikePrice ?? 0,
+			rate: 0.3,
+			volatility: Number(historicalVolatility) / 100,
+			dueDays,
+		});
+
+		const theta = (isCall ? thetaCall : thetaPut) || 0;
+		const delta = (isCall ? deltaCall : deltaPut) || 0;
+		const rho = isCall ? rhoCall : rhoPut;
 
 		return [
 			{
@@ -99,7 +113,7 @@ const ComputingInformation = ({ isExpand, symbolISIN }: ComputingInformationProp
 			{
 				id: 'rho',
 				title: t('old_option_chain.rho'),
-				value: sepNumbers('0'),
+				value: sepNumbers(String(rho)),
 			},
 
 			{

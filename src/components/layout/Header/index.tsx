@@ -188,7 +188,7 @@ const Header = () => {
 								className='h-32 gap-8 rounded px-16 font-medium btn-primary'
 							>
 								{t('header.login')}
-								<span className='h-12 w-2 rounded bg-white darkness:bg-gray-50' />
+								<span className='h-12 w-2 rounded bg-white' />
 								{t('header.register')}
 							</button>
 						)}

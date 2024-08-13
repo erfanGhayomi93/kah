@@ -1,8 +1,8 @@
 import Orders from '@/components/pages/Settings/tabs/Orders';
 import { getMetadata } from '@/metadata';
-import type { NextPage } from 'next';
+import auth from '@/utils/hoc/auth';
 
-const Page: NextPage<INextProps> = () => {
+const Page = () => {
 	return <Orders />;
 };
 
@@ -18,4 +18,4 @@ const generateMetadata = () => {
 
 export { generateMetadata };
 
-export default Page;
+export default auth(Page);

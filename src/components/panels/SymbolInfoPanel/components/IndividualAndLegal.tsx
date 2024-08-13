@@ -45,8 +45,8 @@ const IndividualAndLegal = ({ symbolData }: IndividualAndLegalProps) => {
 			<div className='gap-24 px-8 py-16 flex-column'>
 				{!isOption && (
 					<QueueValueProgressbar
-						buyQueueValue={supplyValueSum}
-						sellQueueValue={demandValueSum}
+						buyQueueValue={demandValueSum}
+						sellQueueValue={supplyValueSum}
 						sum={supplyValueSum + demandValueSum}
 					/>
 				)}

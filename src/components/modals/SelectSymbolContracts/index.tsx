@@ -89,6 +89,8 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 						side: initialSelectedContracts.find((c) => c[0] === item.symbolInfo.symbolISIN)?.[1] ?? 'buy',
 					})),
 				);
+
+				fetchSymbolInfo({ symbolISIN: initialContracts[0].symbolInfo.baseSymbolISIN, type: 'initial' });
 			},
 			onError: () => {
 				toast.error(t('alerts.fetch_symbol_failed'));
@@ -134,9 +136,9 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		};
 
 		useEffect(() => {
-			if (initialSelectedContracts.length > 0)
+			if (initialSelectedContracts.length > 0) {
 				fetchInitialContracts(initialSelectedContracts.map((item) => item[0]));
-			if (initialBaseSymbol) fetchSymbolInfo({ symbolISIN: initialBaseSymbol[0], type: 'initial' });
+			}
 		}, []);
 
 		return (

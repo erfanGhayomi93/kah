@@ -53,7 +53,7 @@ const OptionDetail = ({ symbolData, setHeight }: OptionDetailProps) => {
 					{activeTab === 'price_information' ? (
 						<PriceInformation isExpand={isExpand} symbolData={symbolData} />
 					) : (
-						<ComputingInformation isExpand={isExpand} symbolISIN={symbolData.symbolISIN} />
+						<ComputingInformation isExpand={isExpand} symbolData={symbolData} />
 					)}
 				</div>
 

@@ -10,7 +10,7 @@ import type {
 	IRho,
 	ITheta,
 	IVega,
-} from './type.d';
+} from './type';
 
 const cnd = (z: number) => {
 	const t = 1 / (1 + 0.2316419 * Math.abs(z));

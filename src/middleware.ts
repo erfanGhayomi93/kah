@@ -1,30 +1,6 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-const brokerIdMatcher = [
-	'^/?settings/(agreements|send_order)/?$',
-	'^/?market-map',
-	'^/?my-assets',
-	'^/?(orders-and-trades-reports|option-reports|financial-reports|change-broker-reports)',
-];
-
-const middleware = (request: NextRequest) => {
-	try {
-		if (!request.cookies.get('br_client_id')) {
-			let redirection = false;
-			for (let i = 0; i < brokerIdMatcher.length; i++) {
-				const reg = new RegExp(brokerIdMatcher[i], 'ig');
-				if (reg.test(request.nextUrl.pathname)) {
-					redirection = true;
-					break;
-				}
-			}
-
-			if (redirection) return NextResponse.redirect(new URL('/', request.url));
-		}
-	} catch (e) {
-		//
-	}
-
+const middleware = () => {
 	return NextResponse.next();
 };
 

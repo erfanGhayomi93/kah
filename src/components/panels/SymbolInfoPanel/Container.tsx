@@ -1,4 +1,5 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import Error from '@/components/common/Error';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { SettingSliderSVG, XSVG } from '@/components/icons';
@@ -72,7 +73,12 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 	const { subscribe } = useSubscription();
 
-	const { data: symbolData, isLoading } = useSymbolInfoQuery({
+	const {
+		data: symbolData,
+		isLoading,
+		isError,
+		refetch: refetchSymbolData,
+	} = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', symbolISIN],
 	});
 
@@ -198,6 +204,14 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 	const isOption = Boolean(symbolData?.isOption);
 
+	if (isError) {
+		return (
+			<div className='size-full flex-justify-center'>
+				<Error action={refetchSymbolData} />
+			</div>
+		);
+	}
+
 	return (
 		<div className='h-full pl-8 pr-16 flex-column'>
 			<div style={{ flex: '0 0 4.8rem' }} className='flex-justify-between'>
@@ -246,17 +260,6 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 						>
 							{isOption
 								? [
-										!cells.option_detail && (
-											<div key='option_detail'>
-												<ErrorBoundary>
-													<OptionDetail
-														setHeight={(h) => setSectionHeight('option_detail', h)}
-														symbolData={symbolData}
-													/>
-												</ErrorBoundary>
-											</div>
-										),
-
 										!cells.market_depth && (
 											<div key='market_depth'>
 												<ErrorBoundary>
@@ -270,6 +273,25 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 											</div>
 										),
 
+										!cells.option_detail && (
+											<div key='option_detail'>
+												<ErrorBoundary>
+													<OptionDetail
+														setHeight={(h) => setSectionHeight('option_detail', h)}
+														symbolData={symbolData}
+													/>
+												</ErrorBoundary>
+											</div>
+										),
+
+										!cells.chart && (
+											<div key='chart'>
+												<ErrorBoundary>
+													<Chart isOption={isOption} symbolISIN={symbolISIN} />
+												</ErrorBoundary>
+											</div>
+										),
+
 										!cells.option_individual_and_legal && (
 											<div key='option_individual_and_legal'>
 												<ErrorBoundary>
@@ -279,6 +301,19 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 										),
 									]
 								: [
+										!cells.quotes && (
+											<div key='quotes'>
+												<ErrorBoundary>
+													<Quotes
+														symbolISIN={symbolISIN}
+														lowThreshold={symbolData.lowThreshold}
+														highThreshold={symbolData.highThreshold}
+														yesterdayClosingPrice={symbolData.yesterdayClosingPrice}
+													/>
+												</ErrorBoundary>
+											</div>
+										),
+
 										!cells.symbol_detail && (
 											<div key='symbol_detail'>
 												<ErrorBoundary>
@@ -306,19 +341,6 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 											</div>
 										),
 
-										!cells.quotes && (
-											<div key='quotes'>
-												<ErrorBoundary>
-													<Quotes
-														symbolISIN={symbolISIN}
-														lowThreshold={symbolData.lowThreshold}
-														highThreshold={symbolData.highThreshold}
-														yesterdayClosingPrice={symbolData.yesterdayClosingPrice}
-													/>
-												</ErrorBoundary>
-											</div>
-										),
-
 										!cells.individual_and_legal && (
 											<div key='individual_and_legal'>
 												<ErrorBoundary>
@@ -326,33 +348,31 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 												</ErrorBoundary>
 											</div>
 										),
+
+										!cells.chart && (
+											<div key='chart'>
+												<ErrorBoundary>
+													<Chart isOption={isOption} symbolISIN={symbolISIN} />
+												</ErrorBoundary>
+											</div>
+										),
+
+										!cells.same_sector_symbols && (
+											<div key='same_sector_symbols'>
+												<ErrorBoundary>
+													<SameSectorSymbol symbolISIN={symbolISIN} />
+												</ErrorBoundary>
+											</div>
+										),
+
+										!cells.supervisor_messages && (
+											<div key='supervisor_messages'>
+												<ErrorBoundary>
+													<Messages symbolISIN={symbolISIN} />
+												</ErrorBoundary>
+											</div>
+										),
 									]}
-
-							{!cells.chart && (
-								<div key='chart'>
-									<ErrorBoundary>
-										<Chart isOption={isOption} symbolISIN={symbolISIN} />
-									</ErrorBoundary>
-								</div>
-							)}
-
-							{!isOption && [
-								!cells.same_sector_symbols && (
-									<div key='same_sector_symbols'>
-										<ErrorBoundary>
-											<SameSectorSymbol symbolISIN={symbolISIN} />
-										</ErrorBoundary>
-									</div>
-								),
-
-								!cells.supervisor_messages && (
-									<div key='supervisor_messages'>
-										<ErrorBoundary>
-											<Messages symbolISIN={symbolISIN} />
-										</ErrorBoundary>
-									</div>
-								),
-							]}
 						</GridLayout>
 					</div>
 				</div>

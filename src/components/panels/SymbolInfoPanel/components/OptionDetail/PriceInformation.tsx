@@ -73,7 +73,7 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 			{
 				id: 'openPosition',
 				title: t('symbol_info_panel.open_positions'),
-				value: numFormatter(openPosition),
+				value: sepNumbers(String(openPosition ?? 0)),
 			},
 
 			{
@@ -109,7 +109,7 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 			{
 				id: 'contractSize',
 				title: t('symbol_info_panel.contract_size'),
-				value: numFormatter(contractSize),
+				value: sepNumbers(String(contractSize ?? 0)),
 			},
 
 			{

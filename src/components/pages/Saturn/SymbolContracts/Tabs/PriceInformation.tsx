@@ -92,7 +92,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'contractSize',
 						title: t('old_option_chain.contract_size'),
-						valueFormatter: numFormatter(contractSize),
+						valueFormatter: sepNumbers(String(contractSize ?? 0)),
 					},
 				],
 
@@ -100,7 +100,7 @@ const PriceInformation = ({ symbol }: PriceInformationProps) => {
 					{
 						id: 'openPosition',
 						title: t('old_option_chain.open_position'),
-						valueFormatter: numFormatter(openPosition),
+						valueFormatter: sepNumbers(String(openPosition ?? 0)),
 					},
 					{
 						id: 'lastTradeDate',

@@ -6,7 +6,6 @@ import Tooltip from '@/components/common/Tooltip';
 import { ArrowDownSVG, XiaomiSettingSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
 import { usePathname, useRouter } from '@/navigation';
-import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
@@ -34,9 +33,9 @@ const Filters = () => {
 		router.replace(`${pathname}?${params.toString()}`);
 	};
 
-	const isNotTable = comparePathname('my-assets/all', pathname);
+	// const isNotTable = comparePathname('my-assets/all', pathname);
 	const priceBasis = (searchParams.get('pb') as TPriceBasis) ?? 'LastTradePrice';
-	const showInvolvedInStrategy = (searchParams.get('str') ?? 'true') === 'true';
+	// const showInvolvedInStrategy = (searchParams.get('str') ?? 'true') === 'true';
 	const showSoldSymbols = (searchParams.get('ss') ?? 'true') === 'true';
 	const useCommissions = (searchParams.get('com') ?? 'true') === 'true';
 
@@ -63,10 +62,10 @@ const Filters = () => {
 					defaultPopupWidth={232}
 					renderer={() => (
 						<ul className='gap-16 overflow-hidden rounded bg-white p-16 shadow-sm flex-column *:cursor-default *:flex-justify-between darkness:bg-gray-50'>
-							<li>
+							{/* <li>
 								<span className='text-tiny font-medium'>{t('symbols_involved_in_strategy')}</span>
 								<Switch checked={showInvolvedInStrategy} onChange={(v) => onChangeSetting('str', v)} />
-							</li>
+							</li> */}
 							<li>
 								<span className='text-tiny font-medium'>{t('sold_symbols')}</span>
 								<Switch checked={showSoldSymbols} onChange={(v) => onChangeSetting('ss', v)} />

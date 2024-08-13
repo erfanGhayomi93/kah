@@ -63,7 +63,11 @@ const WatchlistList = () => {
 
 	const manageWatchlistList = () => {
 		if (!Array.isArray(userCustomWatchlistList) || userCustomWatchlistList.length === 0) {
-			toast.warning(t('alerts.add_watchlist'));
+			toast.warning(
+				t('alerts.add_watchlist', {
+					toastId: 'add_watchlist',
+				}),
+			);
 			return;
 		}
 		dispatch(setManageOptionWatchlistListModal({}));

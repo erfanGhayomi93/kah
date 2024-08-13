@@ -2,6 +2,7 @@
 
 import Main from '@/components/layout/Main';
 import Toolbar from '@/components/pages/MyAssets/Toolbar';
+import auth from '@/utils/hoc/auth';
 
 const Layout = ({ children }: { children: ReactNode }) => (
 	<Main className='gap-8'>
@@ -10,4 +11,4 @@ const Layout = ({ children }: { children: ReactNode }) => (
 	</Main>
 );
 
-export default Layout;
+export default auth(Layout);

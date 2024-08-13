@@ -1,10 +1,10 @@
 import Main from '@/components/layout/Main';
 import MarketMap from '@/components/pages/MarketMap';
 import { getMetadata } from '@/metadata';
-import { type NextPage } from 'next';
+import auth from '@/utils/hoc/auth';
 import { getTranslations } from 'next-intl/server';
 
-const Page: NextPage<INextProps> = () => {
+const Page = () => {
 	return (
 		<Main className='rounded-md'>
 			<MarketMap />
@@ -22,4 +22,4 @@ const generateMetadata = async () => {
 
 export { generateMetadata };
 
-export default Page;
+export default auth(Page);

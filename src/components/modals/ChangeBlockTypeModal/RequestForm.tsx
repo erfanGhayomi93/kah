@@ -5,7 +5,7 @@ import {
 } from '@/api/queries/brokerPrivateQueries';
 import { BoxSVG, PayMoneySVG, SnowFlakeSVG } from '@/components/icons';
 import { sepNumbers } from '@/utils/helpers';
-import { getAccountBlockTypeValue } from '@/utils/Math/order';
+import { getAccountBlockTypeValue } from '@/utils/math/order';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
