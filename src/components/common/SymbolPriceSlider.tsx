@@ -1,4 +1,4 @@
-import { isBetween, sepNumbers } from '@/utils/helpers';
+import { getColorBasedOnPercent, isBetween, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -291,11 +291,19 @@ const SymbolPriceSlider = ({
 					<div className={styles.inner}>
 						<Tooltip
 							className={config.firstTradedPriceAsPercent >= 0 ? 'text-success-100' : 'text-error-100'}
-							content={`${t('closing')}: ‎${sepNumbers(String(exchangeData[0] ?? 0))} (${config.firstTradedPriceAsPercent}%)`}
+							content={
+								<>
+									{t('closing') + ' '}:
+									<span className={getColorBasedOnPercent(config.firstTradedPriceAsPercent)}>
+										‎{sepNumbers(String(exchangeData[0] ?? 0))} ({config.firstTradedPriceAsPercent}
+										%)
+									</span>
+								</>
+							}
 						>
 							<div
 								style={{ transform: `translate(${config.firstTradedPrice}px, 32px)` }}
-								className={clsx('transition z-99 duration-300', styles.value)}
+								className={clsx('transition duration-300 z-99', styles.value)}
 								onClick={() => onClick?.(exchangeData[0])}
 							>
 								<svg
@@ -325,7 +333,14 @@ const SymbolPriceSlider = ({
 
 						<Tooltip
 							className={config.lastTradedPriceAsPercent >= 0 ? 'text-success-100' : 'text-error-100'}
-							content={`${t('last')}: ‎${sepNumbers(String(exchangeData[1] ?? 0))} (${config.lastTradedPriceAsPercent}%)`}
+							content={
+								<>
+									{t('last') + ' '}:
+									<span className={getColorBasedOnPercent(config.lastTradedPriceAsPercent)}>
+										‎{sepNumbers(String(exchangeData[1] ?? 0))} ({config.lastTradedPriceAsPercent}%)
+									</span>
+								</>
+							}
 						>
 							<div
 								onClick={() => onClick?.(exchangeData[1])}
@@ -372,7 +387,19 @@ const SymbolPriceSlider = ({
 							/>
 
 							<Tooltip
-								content={`${t('low')}: ‎${sepNumbers(String(boundaryData[0] ?? 0))} (${config.lowestTradePriceOfTradingDayAsPercent}%)`}
+								content={
+									<>
+										{t('low') + ' '}:
+										<span
+											className={getColorBasedOnPercent(
+												config.lowestTradePriceOfTradingDayAsPercent,
+											)}
+										>
+											‎{sepNumbers(String(boundaryData[0] ?? 0))} (
+											{config.lowestTradePriceOfTradingDayAsPercent}%)
+										</span>
+									</>
+								}
 							>
 								<div
 									onClick={() => onClick?.(boundaryData[0])}
@@ -398,7 +425,19 @@ const SymbolPriceSlider = ({
 							/>
 
 							<Tooltip
-								content={`${t('high')}: ‎${sepNumbers(String(boundaryData[1] ?? 0))} (${config.highestTradePriceOfTradingDayAsPercent}%)`}
+								content={
+									<>
+										{t('high') + ' '}:
+										<span
+											className={getColorBasedOnPercent(
+												config.highestTradePriceOfTradingDayAsPercent,
+											)}
+										>
+											‎{sepNumbers(String(boundaryData[1] ?? 0))} (
+											{config.highestTradePriceOfTradingDayAsPercent}%)
+										</span>
+									</>
+								}
 							>
 								<div
 									onClick={() => onClick?.(boundaryData[1])}

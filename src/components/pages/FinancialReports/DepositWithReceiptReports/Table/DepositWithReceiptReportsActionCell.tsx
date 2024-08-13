@@ -29,7 +29,7 @@ const DepositWithReceiptReportsActionCell = ({
 		<div className='gap-16 flex-justify-center'>
 			{!confirmDelete && (
 				<>
-					<Tooltip content={isDisabled ? 'tooltip.edit_disabled' : 'tooltip.edit'}>
+					<Tooltip content={t(isDisabled ? 'tooltip.edit_disabled' : 'tooltip.edit')}>
 						<span>
 							<button
 								disabled={isDisabled}
@@ -41,7 +41,7 @@ const DepositWithReceiptReportsActionCell = ({
 							</button>
 						</span>
 					</Tooltip>
-					<Tooltip content={isDisabled ? 'tooltip.remove_disabled' : 'tooltip.remove'}>
+					<Tooltip content={t(isDisabled ? 'tooltip.remove_disabled' : 'tooltip.remove')}>
 						<span>
 							<button
 								disabled={isDisabled}

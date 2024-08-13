@@ -9,6 +9,7 @@ interface IConfiguration {
 	useTradeCommission: boolean;
 	useStrikeCommission: boolean;
 	useRequiredMargin: boolean;
+	useTax: boolean;
 	dueDays?: number | null;
 	maxPrice?: number | null;
 	minPrice?: number | null;
@@ -83,7 +84,7 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		}
 
 		try {
-			const { baseAssets, useTradeCommission, useStrikeCommission, useRequiredMargin } = config;
+			const { baseAssets, useTradeCommission, useStrikeCommission, useRequiredMargin, useTax } = config;
 			const { maxPrice, minPrice } = newInputs;
 			const series: IAnalyzeInputs['data'] = [];
 
@@ -101,11 +102,15 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				} = item;
 				newInputs.contractSize = contractSize;
 				const commissionDetail = commissionData?.[marketUnit];
-				const tradeCommission =
+				const taxCommission = (side === 'buy' ? commissionDetail?.sellTax : commissionDetail?.buyTax) ?? 0;
+				let tradeCommission =
 					(side === 'buy' ? commissionDetail?.sellCommission : commissionDetail?.buyCommission) ?? 0;
 				const strikeCommission =
 					(side === 'buy' ? commissionDetail?.strikeSellCommission : commissionDetail?.strikeBuyCommission) ??
 					0;
+				if (commissionDetail && !useTax && !item.tax) {
+					tradeCommission -= taxCommission;
+				}
 				const amount = price * quantity;
 				const sideInt = side === 'sell' ? -1 : 1;
 				let income = amount * sideInt;
@@ -123,14 +128,17 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				}
 
 				let strikeCommissionValue = 0;
-				if ((useStrikeCommission || item.strikeCommission) && commissionDetail && type === 'option') {
-					strikeCommissionValue = strikePrice! * strikeCommission * contractSize;
-				}
-
 				let tradeCommissionValue = 0;
-				if ((useTradeCommission || item.tradeCommission) && commissionDetail) {
-					tradeCommissionValue = price * item.quantity * tradeCommission;
-					if (type === 'option') tradeCommissionValue *= contractSize;
+
+				if (commissionDetail) {
+					if ((useStrikeCommission || item.strikeCommission) && type === 'option') {
+						strikeCommissionValue = strikePrice! * strikeCommission * contractSize;
+					}
+
+					if (useTradeCommission || item.tradeCommission) {
+						tradeCommissionValue = price * item.quantity * tradeCommission;
+						if (type === 'option') tradeCommissionValue *= contractSize;
+					}
 				}
 
 				if (!config?.dueDays && type === 'option' && item.symbol.settlementDay) {
