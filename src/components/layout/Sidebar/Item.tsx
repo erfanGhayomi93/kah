@@ -7,7 +7,7 @@ import { toggleSidebar } from '@/features/slices/uiSlice';
 import { Link, usePathname } from '@/navigation';
 import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import styles from './Sidebar.module.scss';
 
 interface IListButton {
@@ -153,12 +153,4 @@ const ButtonOrAnchor = ({
 	);
 };
 
-export default memo(
-	Item,
-	(prev, next) =>
-		prev.sidebarIsExpand === next.sidebarIsExpand &&
-		prev.isBroker === next.isBroker &&
-		'isExpand' in prev &&
-		'isExpand' in next &&
-		prev.isExpand === next.isExpand,
-);
+export default Item;

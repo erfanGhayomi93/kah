@@ -37,6 +37,7 @@ const StrategyDetails = ({ contracts }: StrategyDetailsProps) => {
 		maxPrice: inputs.maxPrice,
 		minPrice: inputs.minPrice,
 		dueDays: inputs.dueDays,
+		useTax: false,
 		useRequiredMargin: false,
 		useStrikeCommission: false,
 		useTradeCommission: false,

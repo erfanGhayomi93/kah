@@ -2,7 +2,8 @@ import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import SymbolPriceSlider from '@/components/common/SymbolPriceSlider';
 import SymbolState from '@/components/common/SymbolState';
-import { sepNumbers } from '@/utils/helpers';
+import { getColorBasedOnPercent, sepNumbers } from '@/utils/helpers';
+import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Grid from './Grid';
 
@@ -48,7 +49,12 @@ const SymbolInfo = ({ symbolData, isLoading, setInputValue }: SymbolInfoProps) =
 				</div>
 
 				<div className='h-fit gap-8 flex-items-center'>
-					<span className='gap-4 text-base text-gray-800 ltr flex-items-center'>
+					<span
+						className={clsx(
+							'gap-4 text-base ltr flex-items-center',
+							getColorBasedOnPercent(closingPriceVarReferencePricePercent),
+						)}
+					>
 						{sepNumbers(String(closingPriceVarReferencePrice ?? 0))}
 						<span className='flex items-center ltr'>
 							({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)

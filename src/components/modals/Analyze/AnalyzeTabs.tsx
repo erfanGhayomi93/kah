@@ -50,6 +50,7 @@ const AnalyzeTabs = ({ contracts, baseSymbolPrice }: AnalyzeTabsProps) => {
 	} = useAnalyze(contracts, {
 		baseAssets: baseSymbolPrice,
 		maxPrice: inputs.maxPrice,
+		useTax: true,
 		minPrice: inputs.minPrice,
 		dueDays: inputs.dueDays,
 		useTradeCommission,

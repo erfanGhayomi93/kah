@@ -208,10 +208,10 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 
 			const amount = c.price * c.quantity;
 			const contractSize = c.symbol.contractSize ?? 0;
-			const tax = c.side === 'buy' ? commission.buyTax : commission.sellTax;
-			const tradeCommission = (c.side === 'buy' ? commission.buyCommission : commission.sellCommission) - tax;
+			const tax = c.side === 'buy' ? commission.sellTax : commission.buyTax;
+			const tradeCommission = (c.side === 'buy' ? commission.sellCommission : commission.buyCommission) - tax;
 			const strikeCommission =
-				c.side === 'buy' ? commission.strikeBuyCommission : commission.strikeSellCommission;
+				c.side === 'buy' ? commission.strikeSellCommission : commission.strikeBuyCommission;
 
 			if (commission && c.tradeCommission) {
 				result.tradeCommission += Math.round(amount * tradeCommission * contractSize);

@@ -68,6 +68,7 @@ const StrategyChartDetails = ({
 			minPrice,
 			maxPrice,
 			baseAssets: basePrice,
+			useTax: true,
 			useRequiredMargin: true,
 			useTradeCommission: true,
 			useStrikeCommission: true,

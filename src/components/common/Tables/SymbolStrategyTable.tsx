@@ -383,11 +383,11 @@ const SymbolStrategy = ({
 
 	const amount = contract.price * contract.quantity;
 	const contractSize = contract.symbol.contractSize ?? 0;
-	const tax = contract.side === 'buy' ? commission?.buyTax ?? 0 : commission?.sellTax ?? 0;
+	const tax = contract.side === 'buy' ? commission?.sellTax ?? 0 : commission?.buyTax ?? 0;
 	const tradeCommission =
-		(contract.side === 'buy' ? commission?.buyCommission ?? 0 : -(commission?.sellCommission ?? 0)) - tax;
+		(contract.side === 'buy' ? commission?.sellCommission ?? 0 : -(commission?.buyCommission ?? 0)) - tax;
 	const strikeCommission =
-		contract.side === 'buy' ? commission?.strikeBuyCommission ?? 0 : commission?.strikeSellCommission ?? 0;
+		contract.side === 'buy' ? commission?.strikeSellCommission ?? 0 : commission?.strikeBuyCommission ?? 0;
 
 	return (
 		<tr className={styles.tr}>
@@ -538,7 +538,7 @@ const SymbolStrategy = ({
 						checked={Boolean(checkList?.tax)}
 						disabled={!checkList.symbol}
 						onChange={(v) => onChecked('tax', v)}
-						label={Math.ceil(tax * amount * contractSize)}
+						label={sepNumbers(String(Math.ceil(tax * amount * contractSize)))}
 						classes={{ text: '!text-tiny' }}
 					/>
 				</td>
