@@ -4,7 +4,7 @@ import ipcMain from '@/classes/IpcMain';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { useAppDispatch } from '@/features/hooks';
 import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
-import { redirect } from '@/navigation';
+import { useRouter } from '@/navigation';
 import { useLayoutEffect } from 'react';
 import { getBrokerClientId, getClientId } from '../cookie';
 
@@ -16,6 +16,8 @@ const auth = <T extends TProps>(Component: TComponent<T>, callbackUrl = '/', typ
 	return (props: T) => {
 		const dispatch = useAppDispatch();
 
+		const router = useRouter();
+
 		const cookie = type === 'app' ? getClientId() : getBrokerClientId();
 
 		const isAuthenticated = Array.isArray(cookie) ? cookie[0] !== null && cookie[1] !== null : cookie !== null;
@@ -26,10 +28,10 @@ const auth = <T extends TProps>(Component: TComponent<T>, callbackUrl = '/', typ
 			if (type === 'broker') dispatch(setChoiceBrokerModal({}));
 			else dispatch(setLoginModal({}));
 
-			redirect(callbackUrl);
+			router.replace(callbackUrl);
 
 			const rm = ipcMain.handle('broker:logged_out', () => {
-				redirect(callbackUrl);
+				router.replace(callbackUrl);
 			});
 
 			return () => rm();

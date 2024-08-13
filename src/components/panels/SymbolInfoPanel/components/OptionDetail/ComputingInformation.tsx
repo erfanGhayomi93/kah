@@ -113,7 +113,7 @@ const ComputingInformation = ({ isExpand, symbolData }: ComputingInformationProp
 			{
 				id: 'rho',
 				title: t('old_option_chain.rho'),
-				value: sepNumbers(String(rho)),
+				value: rho.toFixed(3),
 			},
 
 			{
