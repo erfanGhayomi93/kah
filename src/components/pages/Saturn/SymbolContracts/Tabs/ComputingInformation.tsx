@@ -1,6 +1,7 @@
 import { useOptionCalculativeInfoQuery } from '@/api/queries/optionQueries';
 import SymbolSummary, { type ListItemProps } from '@/components/common/Symbol/SymbolSummary';
 import { numFormatter, sepNumbers } from '@/utils/helpers';
+import { blackScholes } from '@/utils/math/black-scholes';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -23,18 +24,31 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 			const {
 				breakEvenPoint,
 				leverage,
-				delta,
 				historicalVolatility,
 				impliedVolatility,
-				theta,
 				intrinsicValue,
-				gamma,
 				timeValue,
-				vega,
 				iotm,
 				initialMargin,
 				requiredMargin,
 			} = optionData;
+
+			const isCall = symbol?.contractType === 'Call';
+			const dueDays = Math.ceil(
+				Math.abs(Date.now() - new Date(symbol.contractEndDate).getTime()) / 1e3 / 24 / 60 / 60,
+			);
+
+			const { vega, gamma, thetaCall, thetaPut, deltaPut, deltaCall, rhoCall, rhoPut } = blackScholes({
+				sharePrice: symbol?.baseSymbolPrice ?? 0,
+				strikePrice: symbol.strikePrice ?? 0,
+				rate: 0.3,
+				volatility: Number(historicalVolatility) / 100,
+				dueDays,
+			});
+
+			const theta = (isCall ? thetaCall : thetaPut) || 0;
+			const delta = (isCall ? deltaCall : deltaPut) || 0;
+			const rho = isCall ? rhoCall : rhoPut;
 
 			return [
 				[

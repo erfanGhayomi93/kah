@@ -1,6 +1,5 @@
 'use client';
 
-import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultOrdersReportsColumns } from '@/constants/columns';
@@ -11,12 +10,11 @@ import { setManageColumnsModal, setOrdersReportsFiltersModal } from '@/features/
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
-import { useRouter } from '@/navigation';
 import { downloadFileQueryParams, toISOStringWithoutChangeTime } from '@/utils/helpers';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Tabs from '../common/Tabs';
 import Toolbar from '../common/Toolbar';
 
@@ -38,8 +36,6 @@ const OrdersReports = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
-
-	const router = useRouter();
 
 	const { inputs, setFieldValue, setFieldsValue } =
 		useInputs<OrdersReports.IOrdersReportsFilters>(initialOrdersReportsFilters);
@@ -119,12 +115,6 @@ const OrdersReports = () => {
 			}),
 		);
 	};
-
-	useEffect(() => {
-		ipcMain.handle('broker:logged_out', () => {
-			router.push('/');
-		});
-	}, []);
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 

@@ -6,21 +6,17 @@ import routes from '../routes';
 export const symbolInfoQueryFn: QueryFunction<Symbol.Info | null, ['symbolInfoQuery', string | null], never> = async ({
 	queryKey,
 }) => {
-	try {
-		const [, symbolIsin] = queryKey;
-		if (!symbolIsin) return null;
+	const [, symbolIsin] = queryKey;
+	if (!symbolIsin) return null;
 
-		const response = await axios.get<ServerResponse<Symbol.Info>>(routes.symbol.SymbolInfo, {
-			params: { symbolIsin },
-		});
-		const { data } = response;
+	const response = await axios.get<ServerResponse<Symbol.Info>>(routes.symbol.SymbolInfo, {
+		params: { symbolIsin },
+	});
+	const { data } = response;
 
-		if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+	if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
 
-		return data.result;
-	} catch (e) {
-		return null;
-	}
+	return data.result;
 };
 
 export const useSymbolInfoQuery = createQuery<Symbol.Info | null, ['symbolInfoQuery', string | null]>({

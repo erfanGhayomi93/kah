@@ -76,14 +76,6 @@ const Toolbar = ({ setPriceBasis, filters, filtersCount }: ToolbarProps) => {
 		}
 	};
 
-	const onPlayed = () => {
-		//
-	};
-
-	const onPaused = () => {
-		//
-	};
-
 	const covertItemToManageColumnModel = (item: Option.Column) => ({
 		hidden: item.isHidden,
 		id: String(item.id),
@@ -115,8 +107,7 @@ const Toolbar = ({ setPriceBasis, filters, filtersCount }: ToolbarProps) => {
 
 			<TableActions
 				className='flex-1 justify-end'
-				onPlayed={onPlayed}
-				onPaused={onPaused}
+				showPlayAndPause={false}
 				filtersCount={filtersCount}
 				onManageColumns={manageWatchlistColumns}
 				onShowFilters={onShowFilters}

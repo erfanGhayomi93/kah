@@ -351,16 +351,15 @@ declare namespace Symbol {
 
 	export interface Info {
 		symbolISIN: string;
-		companyISIN: string;
 		symbolTitle: string;
 		companyName: string;
+		companyISIN: string;
 		insCode: string;
 		lastTradedPrice: number;
-		supplyValueSum: number; // buy
-		demandValueSum: number; // sell
 		tradePriceVarPreviousTrade: number;
 		tradePriceVarPreviousTradePercent: number;
 		closingPrice: number;
+		strikePrice: null | number;
 		closingPriceVarReferencePrice: number;
 		closingPriceVarReferencePricePercent: number;
 		lowThreshold: number;
@@ -370,19 +369,16 @@ declare namespace Symbol {
 		tradeValue: number;
 		tradeVolume: number;
 		cancellationNAV: number;
-		oneMonthAvgVolume: number;
-		initialMargin: number;
-		hv: number;
-		avgIV: number;
+		oneMonthAvgVolume: null | number;
+		hv: null | number;
+		avgIV: null | number;
 		lastTradeDate: string;
 		openPrice: number;
 		baseVolume: number;
 		tradeCount: number;
-		eps: number;
-		pe: number;
-		ps: number;
-		orderPriceTickSize: number;
-		orderQuantityTickSize: number;
+		eps: null | number;
+		pe: null | number;
+		ps: null | number;
 		symbolTradeState: TradeState;
 		individualBuyVolume: number;
 		numberOfIndividualsBuyers: number;
@@ -398,15 +394,20 @@ declare namespace Symbol {
 		contractEndDate: string;
 		openPosition: number;
 		contractSize: number;
-		strikePrice: null | number;
 		isOption: boolean;
-		oneMonthEfficiency: number;
-		threeMonthEfficiency: number;
-		oneYearEfficiency: number;
+		oneMonthEfficiency: null | number;
+		threeMonthEfficiency: null | number;
+		oneYearEfficiency: null | number;
 		exchange: string;
 		yesterdayClosingPrice: number;
-		yesterdayClosingPrice: number;
-		baseSymbolTitle: string | null;
+		baseSymbolTitle: string;
+		demandValueSum: number;
+		supplyValueSum: number;
+		orderQuantityTickSize: number;
+		orderPriceTickSize: number;
+		initialMargin: number;
+		baseSymbolPrice: number;
+		contractType: 'Call' | 'Put';
 	}
 
 	export interface Search {

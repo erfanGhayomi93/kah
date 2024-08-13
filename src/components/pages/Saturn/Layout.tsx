@@ -201,7 +201,7 @@ const Layout = ({
 			<div style={{ flex: '7' }} className='gap-8 rounded flex-column'>
 				<Toolbar saveTemplate={saveTemplate} />
 
-				<div className='relative flex-1 gap-8 overflow-auto rounded flex-column'>
+				<div className='relative flex-1 gap-8 overflow-auto rounded pl-8 flex-column'>
 					<SymbolContracts
 						baseSymbol={baseSymbolInfo}
 						setBaseSymbol={(value) => onChangeSymbol(value)}

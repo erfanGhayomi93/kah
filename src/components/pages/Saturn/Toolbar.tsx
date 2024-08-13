@@ -17,19 +17,17 @@ const Toolbar = ({ saveTemplate }: ToolbarProps) => {
 	};
 
 	return (
-		<div className='pl-8'>
-			<div className='h-56 w-full gap-8 overflow-hidden rounded bg-white px-16 flex-justify-end darkness:bg-gray-50'>
-				<button onClick={saveTemplate} type='button' className='h-40 rounded px-32 btn-primary'>
-					{t('common.save')}
-				</button>
-				<button
-					type='button'
-					className='size-40 rounded border border-gray-200 bg-white text-primary-100 transition-colors flex-justify-center btn-primary-hover darkness:bg-gray-50'
-					onClick={openSavedTemplates}
-				>
-					<BookmarkSVG />
-				</button>
-			</div>
+		<div className='h-56 w-full gap-8 overflow-hidden rounded bg-white px-16 flex-justify-end darkness:bg-gray-50'>
+			<button onClick={saveTemplate} type='button' className='h-40 rounded px-32 btn-primary'>
+				{t('common.save')}
+			</button>
+			<button
+				type='button'
+				className='size-40 rounded border border-gray-200 bg-white text-primary-100 transition-colors flex-justify-center btn-primary-hover darkness:bg-gray-50'
+				onClick={openSavedTemplates}
+			>
+				<BookmarkSVG />
+			</button>
 		</div>
 	);
 };

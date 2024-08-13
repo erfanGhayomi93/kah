@@ -1,6 +1,5 @@
 'use client';
 import { useGetAgreementsQuery } from '@/api/queries/brokerPrivateQueries';
-import ipcMain from '@/classes/IpcMain';
 import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
@@ -9,10 +8,9 @@ import { DocSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setAcceptAgreementModal } from '@/features/slices/modalSlice';
-import { useRouter } from '@/navigation';
 import { dateFormatter } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import SettingCard from '../../components/SettingCard';
 
 const Agreements = () => {
@@ -20,7 +18,6 @@ const Agreements = () => {
 
 	const dispatch = useAppDispatch();
 	const brokerURLs = useAppSelector(getBrokerURLs);
-	const router = useRouter();
 
 	const {
 		data: agreements,
@@ -86,12 +83,6 @@ const Agreements = () => {
 		],
 		[],
 	);
-
-	useEffect(() => {
-		ipcMain.handle('broker:logged_out', () => {
-			router.push('/settings/general/');
-		});
-	}, []);
 
 	return (
 		<SettingCard title={t('agreements_settings')} className='h-3/5'>

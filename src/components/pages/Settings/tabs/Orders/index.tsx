@@ -2,14 +2,12 @@
 
 import brokerAxios from '@/api/brokerAxios';
 import { useGetCustomerSettingsQuery } from '@/api/queries/brokerPrivateQueries';
-import ipcMain from '@/classes/IpcMain';
 import Input from '@/components/common/Inputs/Input';
 import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
 import { useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import useDebounce from '@/hooks/useDebounce';
-import { useRouter } from '@/navigation';
 import { convertStringToInteger, sepNumbers } from '@/utils/helpers';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -35,8 +33,6 @@ const Orders = () => {
 	const [fieldValues, setFieldValues] = useState<Settings.IFormattedBrokerCustomerSettings>();
 
 	const brokerURLs = useAppSelector(getBrokerURLs);
-
-	const router = useRouter();
 
 	const { data: customerSettings, isFetching: customerSettingsLoading } = useGetCustomerSettingsQuery({
 		queryKey: ['GetCustomerSettings'],
@@ -179,12 +175,6 @@ const Orders = () => {
 		],
 		[fieldValues],
 	);
-
-	useEffect(() => {
-		ipcMain.handle('broker:logged_out', () => {
-			router.push('/settings/general/');
-		});
-	}, []);
 
 	return (
 		<SettingCard title={t('settings_page.orders_settings')}>

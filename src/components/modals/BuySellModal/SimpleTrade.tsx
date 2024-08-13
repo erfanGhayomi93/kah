@@ -6,7 +6,7 @@ import { LockSVG, UnlockSVG, XCircleSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setChangeBlockTypeModal } from '@/features/slices/modalSlice';
 import { cn, sepNumbers } from '@/utils/helpers';
-import { getAccountBlockTypeValue, getPortfolioBlockTypeValue } from '@/utils/Math/order';
+import { getAccountBlockTypeValue, getPortfolioBlockTypeValue } from '@/utils/math/order';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import React, { useMemo, useRef, useState } from 'react';

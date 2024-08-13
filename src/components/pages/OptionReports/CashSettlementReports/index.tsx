@@ -1,6 +1,5 @@
 'use client';
 
-import ipcMain from '@/classes/IpcMain';
 import Loading from '@/components/common/Loading';
 import Main from '@/components/layout/Main';
 import { defaultCashSettlementReportsColumns } from '@/constants/columns';
@@ -11,11 +10,10 @@ import { setCashSettlementReportsFiltersModal, setManageColumnsModal } from '@/f
 import { getBrokerIsSelected, getIsLoggedIn } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
 import { useDebounce, useInputs, useLocalstorage } from '@/hooks';
-import { useRouter } from '@/navigation';
 import { createSelector } from '@reduxjs/toolkit';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Tabs from '../common/Tabs';
 import Toolbar from '../common/Toolbar';
 
@@ -37,8 +35,6 @@ const CashSettlementReports = () => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
-
-	const router = useRouter();
 
 	const { inputs, setFieldValue, setFieldsValue } = useInputs<CashSettlementReports.ICashSettlementReportsFilters>(
 		initialCashSettlementReportsFilters,
@@ -102,12 +98,6 @@ const CashSettlementReports = () => {
 			}),
 		);
 	};
-
-	useEffect(() => {
-		ipcMain.handle('broker:logged_out', () => {
-			router.push('/');
-		});
-	}, []);
 
 	if (!isLoggedIn || !brokerIsSelected) return <Loading />;
 

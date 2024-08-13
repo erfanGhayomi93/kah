@@ -82,6 +82,7 @@ export const logoutBroker = () => {
 		/* Notification */
 		if (token) {
 			ipcMain.send('broker:logged_out', undefined);
+
 			toast.warning('از حساب کارگزاری خارج شدید.', {
 				toastId: 'broker_unauthorize',
 				autoClose: 5000,

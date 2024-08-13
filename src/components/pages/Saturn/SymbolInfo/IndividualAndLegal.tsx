@@ -50,8 +50,8 @@ const IndividualAndLegal = ({
 
 			<div className='flex-1 justify-between gap-24 pr-8 flex-column'>
 				<QueueValueProgressbar
-					buyQueueValue={supplyValueSum}
-					sellQueueValue={demandValueSum}
+					buyQueueValue={demandValueSum}
+					sellQueueValue={supplyValueSum}
 					sum={supplyValueSum + demandValueSum}
 				/>
 

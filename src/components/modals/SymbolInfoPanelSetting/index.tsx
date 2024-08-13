@@ -56,8 +56,13 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 		};
 
 		const data = useMemo<ISection[]>(() => {
-			if (!isOption)
+			if (!isOption) {
 				return [
+					{
+						id: 'quotes',
+						title: t('symbol_info_panel_setting.5_quotes'),
+						imgSrc: '/static/images/VhXKFwLTRr.png',
+					},
 					{
 						id: 'symbol_detail',
 						title: t('symbol_info_panel_setting.symbol_detail'),
@@ -72,11 +77,6 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 						id: 'user_open_positions',
 						title: t('symbol_info_panel_setting.user_open_positions'),
 						imgSrc: '/static/images/B8wsD6vJaH.png',
-					},
-					{
-						id: 'quotes',
-						title: t('symbol_info_panel_setting.5_quotes'),
-						imgSrc: '/static/images/VhXKFwLTRr.png',
 					},
 					{
 						id: 'individual_and_legal',
@@ -99,17 +99,18 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 						imgSrc: '/static/images/4GpkvmODwv.png',
 					},
 				];
+			}
 
 			return [
-				{
-					id: 'option_detail',
-					title: t('symbol_info_panel_setting.option_detail'),
-					imgSrc: '/static/images/weoXEM1DSq.png',
-				},
 				{
 					id: 'market_depth',
 					title: t('symbol_info_panel_setting.market_depth'),
 					imgSrc: '/static/images/q4WNQ4Oibv.png',
+				},
+				{
+					id: 'option_detail',
+					title: t('symbol_info_panel_setting.option_detail'),
+					imgSrc: '/static/images/weoXEM1DSq.png',
 				},
 				{
 					id: 'chart',

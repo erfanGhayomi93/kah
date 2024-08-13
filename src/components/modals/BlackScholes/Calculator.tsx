@@ -1,6 +1,6 @@
-import { blackScholes } from '@/utils/Math/black-scholes';
-import { type IBlackScholesResponse } from '@/utils/Math/type';
 import { cn, toFixed } from '@/utils/helpers';
+import { blackScholes } from '@/utils/math/black-scholes';
+import { type IBlackScholesResponse } from '@/utils/math/type';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect, useState } from 'react';
 import styles from './BlackScholes.module.scss';
@@ -85,7 +85,7 @@ const Calculator = (props: CalculatorProps) => {
 
 			<div
 				style={{ height: '5.4rem', boxShadow: '0px 2px 11px 0px rgba(0, 0, 0, 0.03)' }}
-				className='darkBlue:bg-gray-50 flex rounded bg-white text-base ltr dark:bg-gray-50'
+				className='flex rounded bg-white text-base ltr darkBlue:bg-gray-50 dark:bg-gray-50'
 			>
 				<div className={cn('h-full ltr flex-justify-center', styles.section)}>
 					<span className='font-bold text-error-100 ltr'>−</span>

@@ -1,9 +1,9 @@
 import Agreements from '@/components/pages/Settings/tabs/Agreements';
 import { getMetadata } from '@/metadata';
-import type { NextPage } from 'next';
+import auth from '@/utils/hoc/auth';
 import { getTranslations } from 'next-intl/server';
 
-const Page: NextPage<INextProps> = () => {
+const Page = () => {
 	return <Agreements />;
 };
 
@@ -21,4 +21,4 @@ const generateMetadata = async () => {
 
 export { generateMetadata };
 
-export default Page;
+export default auth(Page);
