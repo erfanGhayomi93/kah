@@ -1,6 +1,6 @@
-import { cn } from '@/utils/helpers';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry, createGrid, type GridApi, type GridOptions } from '@ag-grid-community/core';
+import clsx from 'clsx';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 
 ModuleRegistry.register(ClientSideRowModelModule);
@@ -95,7 +95,7 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 			[],
 		);
 
-		return <div ref={onTableLoad} className={cn(`ag-theme-${theme}`, className)} style={style} />;
+		return <div ref={onTableLoad} className={clsx(`ag-theme-${theme}`, className)} style={style} />;
 	},
 );
 

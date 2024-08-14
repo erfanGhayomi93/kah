@@ -7,11 +7,20 @@ import React, { useMemo } from 'react';
 interface TotalTradeValueInputProps {
 	value: number;
 	max: null | number;
+	purchasePower: number;
 	setToMinimum: undefined | (() => void);
 	onChange: (value: number) => void;
+	onBlur: () => void;
 }
 
-const TotalTradeValueInput = ({ value, max, setToMinimum, onChange }: TotalTradeValueInputProps) => {
+const TotalTradeValueInput = ({
+	value,
+	max,
+	purchasePower,
+	setToMinimum,
+	onBlur,
+	onChange,
+}: TotalTradeValueInputProps) => {
 	const t = useTranslations();
 
 	const setInputValue = (v: number) => {
@@ -53,6 +62,7 @@ const TotalTradeValueInput = ({ value, max, setToMinimum, onChange }: TotalTrade
 					inputMode='numeric'
 					value={!value ? '' : sepNumbers(String(value))}
 					onChange={onChangeValue}
+					onBlur={onBlur}
 					className='h-full flex-1 border-0 bg-transparent px-8 text-left ltr'
 				/>
 
@@ -80,7 +90,7 @@ const TotalTradeValueInput = ({ value, max, setToMinimum, onChange }: TotalTrade
 						<span className='text-gray-700'>{t('bs_modal.purchase_power')}:</span>
 
 						<span>
-							<span className='font-medium text-gray-800'>{sepNumbers(String(max))}</span>
+							<span className='font-medium text-gray-800'>{sepNumbers(String(purchasePower))}</span>
 							<span className='text-gray-700'>{' ' + t('common.rial')}</span>
 						</span>
 					</span>

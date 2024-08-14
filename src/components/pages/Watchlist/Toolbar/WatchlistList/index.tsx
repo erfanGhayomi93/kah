@@ -41,7 +41,7 @@ const WatchlistList = () => {
 	const onReloadMarketView = () => {
 		setDebounce(() => {
 			queryClient.refetchQueries({
-				queryKey: ['optionWatchlistQuery'],
+				queryKey: ['optionCustomWatchlistQuery'],
 				type: 'active',
 				exact: false,
 			});
