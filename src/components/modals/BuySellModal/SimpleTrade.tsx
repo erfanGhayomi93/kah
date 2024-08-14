@@ -37,6 +37,7 @@ interface SimpleTradeProps extends IBsModalInputs {
 	userRemain: Broker.Remain | null;
 	setInputValue: TSetBsModalInputs;
 	setMinimumValue: () => void;
+	rearrangeValue: () => void;
 	createDraft: () => void;
 	onSubmit: () => void;
 }
@@ -63,6 +64,7 @@ const SimpleTrade = ({
 	setMinimumValue,
 	createDraft,
 	onSubmit,
+	rearrangeValue,
 }: SimpleTradeProps) => {
 	const t = useTranslations();
 
@@ -132,22 +134,6 @@ const SimpleTrade = ({
 		}
 	};
 
-	const TABS = useMemo(
-		() => [
-			{
-				id: 'buy',
-				title: t('side.buy'),
-				disabled: !switchable && side === 'sell',
-			},
-			{
-				id: 'sell',
-				title: t('side.sell'),
-				disabled: !switchable && side === 'buy',
-			},
-		],
-		[],
-	);
-
 	const blockTypeTitle = () => {
 		if (!blockType) {
 			return t('bs_modal.select_block_type');
@@ -184,6 +170,22 @@ const SimpleTrade = ({
 
 		return null;
 	};
+
+	const TABS = useMemo(
+		() => [
+			{
+				id: 'buy',
+				title: t('side.buy'),
+				disabled: !switchable && side === 'sell',
+			},
+			{
+				id: 'sell',
+				title: t('side.sell'),
+				disabled: !switchable && side === 'buy',
+			},
+		],
+		[],
+	);
 
 	const symbolTitle = symbolData?.symbolTitle ?? '';
 
@@ -321,10 +323,12 @@ const SimpleTrade = ({
 					</div>
 
 					<TotalTradeValueInput
+						purchasePower={purchasePower}
 						max={side === 'buy' ? orderingPurchasePower : null}
 						value={value}
 						setToMinimum={isOption ? undefined : setMinimumValue}
 						onChange={(v) => setInputValue('value', v)}
+						onBlur={rearrangeValue}
 					/>
 
 					{side === 'sell' && symbolType === 'option' && (

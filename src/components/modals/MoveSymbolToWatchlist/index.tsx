@@ -64,7 +64,7 @@ const MoveSymbolToWatchlist = forwardRef<HTMLDivElement, MoveSymbolToWatchlistPr
 		const updateCache = (wl: Option.WatchlistList, action: 'add' | 'remove') => {
 			try {
 				queryClient.refetchQueries({
-					queryKey: ['optionWatchlistQuery', { watchlistId: wl.id }],
+					queryKey: ['optionCustomWatchlistQuery', { watchlistId: wl.id }],
 					exact: false,
 				});
 

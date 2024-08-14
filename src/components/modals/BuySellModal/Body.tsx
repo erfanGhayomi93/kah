@@ -39,6 +39,7 @@ interface BodyProps extends IBsModalInputs {
 	type: TBsTypes;
 	mode: TBsModes;
 	closeModal: () => void;
+	rearrangeValue: () => void;
 	setInputValue: TSetBsModalInputs;
 	setMinimumValue: () => void;
 }

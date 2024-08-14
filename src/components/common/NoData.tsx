@@ -17,8 +17,6 @@ const NoData = ({ text, imgName = 'no-data', imgExt = 'svg', width = 118, height
 
 	const theme = useTheme();
 
-	const pathname = '/static/images';
-
 	return (
 		<div className={clsx('size-full flex-justify-center', className)}>
 			<div className='items-center gap-4 flex-column'>
@@ -28,7 +26,7 @@ const NoData = ({ text, imgName = 'no-data', imgExt = 'svg', width = 118, height
 					height={height}
 					quality={90}
 					alt='no data'
-					src={`${pathname}/${imgName}-${theme}.${imgExt}`}
+					src={`/static/images/${imgName}-${theme}.${imgExt}`}
 				/>
 				{text !== null && <span className='text-base text-gray-700'>{text ?? t('no_data')}</span>}
 			</div>

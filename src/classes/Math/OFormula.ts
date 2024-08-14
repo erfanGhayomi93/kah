@@ -13,41 +13,41 @@ class OFormula {
 
 	/**
 	 * Calculate price based on quantity and value
-	 * Price = ( Value - InitialRequiredMargin ) / ( Quantity * ( 1 + ( Commission × ContractSize ) ) )
+	 * Price = ( Value - InitialRequiredMargin × Quantity ) / ( Quantity × ContractSize × ( 1 + Commission ) )
 	 * @param quantity number
 	 * @param value number
 	 * @returns number
 	 */
 	public static price(quantity: number, value: number): number {
-		const v = (value - this.requiredMargin) / (quantity * (1 + this.commission * this.contractSize));
-		if (v === Infinity || isNaN(v)) return 0;
+		const p = (value - this.requiredMargin * quantity) / (quantity * this.contractSize * (1 + this.commission));
+		if (p === Infinity || isNaN(p)) return 0;
 
-		return Math.abs(Math.ceil(v));
+		return Math.abs(Math.ceil(p));
 	}
 
 	/**
 	 * Calculate quantity based on price and value
-	 * Quantity = ( Value - InitialRequiredMargin ) / ( Price * ( 1 + ( Commission × ContractSize ) ) )
+	 * Quantity = Value / ( Price * ContractSize * ( 1 + Commission ) + InitialRequiredMargin )
 	 * @param price number
 	 * @param value number
 	 * @returns number
 	 */
 	public static quantity(price: number, value: number): number {
-		const v = (value - this.requiredMargin) / (price * (1 + this.commission * this.contractSize));
-		if (v === Infinity || isNaN(v)) return 0;
+		const q = value / (price * this.contractSize * (1 + this.commission) + this.requiredMargin);
+		if (q === Infinity || isNaN(q)) return 0;
 
-		return Math.abs(Math.floor(v));
+		return Math.abs(Math.floor(q));
 	}
 
 	/**
 	 * Calculate value based on price and quantity
-	 * Value = Price × Quantity + ( Price × Quantity × Commission × ContractSize ) + InitialRequiredMargin
+	 * Value = (Price × Quantity × ContractSize) + ( Price × Quantity × ContractSize × Commission ) + InitialRequiredMargin × Quantity
 	 * @param price number
 	 * @param quantity number
 	 * @returns number
 	 */
 	public static value(price: number, quantity: number): number {
-		const v = price * quantity * (1 + this.commission * this.contractSize) + this.requiredMargin;
+		const v = price * quantity * this.contractSize * (1 + this.commission) + this.requiredMargin * quantity;
 		return Math.abs(Math.ceil(v));
 	}
 
@@ -77,7 +77,10 @@ class OFormula {
 	}
 
 	private static get commission(): number {
-		return this._commission[this._side];
+		const v = this._commission[this._side];
+
+		if (this._side === 'sell') return -v;
+		return v;
 	}
 
 	private static get contractSize(): number {

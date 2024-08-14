@@ -24,46 +24,46 @@ export const useOptionWatchlistQuery = createQuery<
 	queryKey: ['optionCustomWatchlistQuery', { watchlistId: -1 }],
 	queryFn: async ({ queryKey, signal }) => {
 		const [, props] = queryKey;
-		try {
-			const params: Partial<IOptionWatchlistQuery> = {};
+		const params: Partial<IOptionWatchlistQuery> = {};
 
-			if (props.minimumTradesValue && Number(props.minimumTradesValue) >= 0)
-				params.MinimumTradeValue = props.minimumTradesValue;
+		if (props.term) params.Term = props.term;
 
-			if (Array.isArray(props.symbols) && props.symbols.length > 0)
-				params.BaseSymbolISINs = props.symbols.map((item) => item.symbolISIN);
+		if (props.minimumTradesValue && Number(props.minimumTradesValue) >= 0)
+			params.MinimumTradeValue = props.minimumTradesValue;
 
-			if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
+		if (Array.isArray(props.symbols) && props.symbols.length > 0)
+			params.BaseSymbolISINs = props.symbols.map((item) => item.symbolISIN);
 
-			if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
+		if (Array.isArray(props.type) && props.type.length > 0) params.OptionType = props.type;
 
-			if (props.dueDays && props.dueDays[1] >= props.dueDays[0]) {
-				if (props.dueDays[0] > 0) params.FromDueDays = String(props.dueDays[0]);
-				if (props.dueDays[1] < 365) params.ToDueDays = String(props.dueDays[1]);
-			}
+		if (Array.isArray(props.status) && props.status.length > 0) params.IOTM = props.status;
 
-			if (props.delta && props.delta[1] >= props.delta[0]) {
-				if (props.delta[0] > -1) params.FromDelta = String(props.delta[0]);
-				if (props.delta[1] < 1) params.ToDelta = String(props.delta[1]);
-			}
-
-			params.Id = String(props.watchlistId);
-
-			const response = await axios.get<PaginationResponse<Option.Root[]>>(
-				routes.optionWatchlist.GetCustomWatchlist,
-				{
-					params,
-					signal,
-				},
-			);
-			const { data } = response;
-
-			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
-
-			return data.result;
-		} catch (e) {
-			return [];
+		if (props.dueDays) {
+			params.FromDueDays = String(Math.min(props.dueDays[0], props.dueDays[1]));
+			params.ToDueDays = String(Math.max(props.dueDays[0], props.dueDays[1]));
 		}
+
+		if (props.delta && props.delta[1] >= props.delta[0]) {
+			params.FromDelta = String(Math.min(props.delta[0], props.delta[1]));
+			params.ToDelta = String(Math.max(props.delta[0], props.delta[1]));
+		}
+
+		if (props.watchlistId > -1) params.Id = String(props.watchlistId);
+
+		const response = await axios.get<PaginationResponse<Option.Root[]>>(
+			props.watchlistId > -1 ? routes.optionWatchlist.GetCustomWatchlist : routes.optionWatchlist.Watchlist,
+			{
+				params: {
+					...params,
+					'QueryOption.PageSize': 2e3,
+					'QueryOption.PageNumber': 1,
+				},
+				signal,
+			},
+		);
+		const { data } = response;
+
+		return data.result;
 	},
 });
 

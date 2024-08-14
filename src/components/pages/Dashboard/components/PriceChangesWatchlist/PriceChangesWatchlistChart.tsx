@@ -192,7 +192,15 @@ const PriceChangesWatchlistChart = () => {
 	}, [data]);
 
 	useEffect(() => {
-		chartRef.current?.update(getChartTheme(theme));
+		chartRef.current?.update({
+			...getChartTheme(theme),
+			xAxis: {
+				crosshair: false,
+			},
+			yAxis: {
+				crosshair: false,
+			},
+		});
 	}, [theme]);
 
 	useEffect(

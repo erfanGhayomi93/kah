@@ -39,9 +39,8 @@ const Grid = ({ symbolISIN, lowThreshold, highThreshold, yesterdayClosingPrice, 
 							lowThreshold={lowThreshold}
 							highThreshold={highThreshold}
 							yesterdayClosingPrice={yesterdayClosingPrice}
-							onPriceClick={(v, s) => {
+							onPriceClick={(v) => {
 								setInputValue('price', v);
-								setInputValue('side', s === 'buy' ? 'sell' : 'buy');
 							}}
 							onQuantityClick={(v) => setInputValue('quantity', v)}
 						/>

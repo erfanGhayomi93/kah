@@ -75,7 +75,7 @@ const AddSymbolToWatchlist = forwardRef<HTMLDivElement, AddSymbolToWatchlistProp
 			}));
 
 			queryClient.refetchQueries({
-				queryKey: ['optionWatchlistQuery', { watchlistId }],
+				queryKey: ['optionCustomWatchlistQuery', { watchlistId }],
 				exact: false,
 			});
 		} catch (e) {

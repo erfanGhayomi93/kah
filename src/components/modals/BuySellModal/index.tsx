@@ -127,6 +127,15 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 			}));
 		};
 
+		const rearrangeValue = () => {
+			if (!inputs.price || !inputs.quantity) return;
+
+			setInputs({
+				...inputs,
+				value: formula().value(inputs.price, inputs.quantity),
+			});
+		};
+
 		const onCloseModal = () => {
 			dispatch(setBuySellModal(null));
 		};
@@ -187,7 +196,12 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		}, [inputs.price, inputs.quantity, userRemain?.purchasePower ?? 0]);
 
 		useEffect(() => {
-			onChangeValue(formula().value(inputs.price, inputs.quantity));
+			if (!inputs.price || !inputs.quantity) return;
+
+			setInputs((values) => ({
+				...values,
+				value: formula().value(inputs.price, inputs.quantity),
+			}));
 		}, [inputs.side]);
 
 		useEffect(() => {
@@ -247,6 +261,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 							type={type}
 							symbolISIN={symbolISIN}
 							symbolType={symbolType}
+							rearrangeValue={rearrangeValue}
 							closeModal={onCloseModal}
 							setInputValue={setInputValue}
 							setMinimumValue={setMinimumValue}
