@@ -38,7 +38,7 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 				Math.abs(Date.now() - new Date(symbol.contractEndDate).getTime()) / 1e3 / 24 / 60 / 60,
 			);
 
-			const { vega, gamma, thetaCall, thetaPut, deltaPut, deltaCall, rhoCall, rhoPut } = blackScholes({
+			const { vega, gamma, thetaCall, thetaPut, deltaPut, deltaCall } = blackScholes({
 				sharePrice: symbol?.baseSymbolPrice ?? 0,
 				strikePrice: symbol.strikePrice ?? 0,
 				rate: 0.3,
@@ -48,7 +48,6 @@ const ComputingInformation = ({ symbol }: ComputingInformationProps) => {
 
 			const theta = (isCall ? thetaCall : thetaPut) || 0;
 			const delta = (isCall ? deltaCall : deltaPut) || 0;
-			const rho = isCall ? rhoCall : rhoPut;
 
 			return [
 				[

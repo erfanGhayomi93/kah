@@ -36,7 +36,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 		dispatch(setAddSymbolToWatchlistModal({}));
 	};
 
-	const onFiltersChanged = (newFilters: Omit<IOptionWatchlistFilters, 'priceBasis' | 'term'>) => {
+	const onFiltersChanged = (newFilters: Omit<IOptionWatchlistFilters, 'priceBasis' | 'term' | 'sort'>) => {
 		setFilters(newFilters);
 	};
 

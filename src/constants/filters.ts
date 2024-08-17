@@ -7,6 +7,7 @@ export const initialOptionWatchlistFilters: IOptionWatchlistFilters = {
 	dueDays: [0, 365],
 	delta: [-1, 1],
 	term: '',
+	sort: null,
 	priceBasis: 'LastTradePrice',
 	minimumTradesValue: '',
 };
