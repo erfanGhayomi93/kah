@@ -271,6 +271,7 @@ const SymbolPriceSlider = ({
 		if (!eRoot) return;
 
 		eRoot.addEventListener('resize', () => draw());
+		setTimeout(draw, 300);
 	}, []);
 
 	const dataIsAvailable = thresholdData[0] + thresholdData[1] > 0;
@@ -287,7 +288,7 @@ const SymbolPriceSlider = ({
 					onMouseLeave={onMouseLeave}
 				/>
 
-				<div className={styles.tradedValues}>
+				<div className={clsx('transition-transform', styles.tradedValues)}>
 					<div className={styles.inner}>
 						<Tooltip
 							className={config.firstTradedPriceAsPercent >= 0 ? 'text-success-100' : 'text-error-100'}
@@ -303,7 +304,7 @@ const SymbolPriceSlider = ({
 						>
 							<div
 								style={{ transform: `translate(${config.firstTradedPrice}px, 32px)` }}
-								className={clsx('transition duration-300 z-99', styles.value)}
+								className={clsx('z-99 transition-transform', styles.value)}
 								onClick={() => onClick?.(exchangeData[0])}
 							>
 								<svg
@@ -345,7 +346,7 @@ const SymbolPriceSlider = ({
 							<div
 								onClick={() => onClick?.(exchangeData[1])}
 								style={{ transform: `translate(${config.lastTradedPrice}px, 4px)` }}
-								className={clsx('transition duration-300', styles.value)}
+								className={clsx('transition-transform', styles.value)}
 							>
 								<svg
 									width='12px'
@@ -383,7 +384,7 @@ const SymbolPriceSlider = ({
 									width: `${config.sellSliderWidth}px`,
 									transform: `translateX(-${config.offsetRight}px)`,
 								}}
-								className={clsx('transition', styles.slider)}
+								className={clsx('transition-transform', styles.slider)}
 							/>
 
 							<Tooltip
@@ -407,7 +408,7 @@ const SymbolPriceSlider = ({
 										transform: `translateX(${boundaryData[0] > yesterdayClosingPrice ? config.offsetLeft : -(config.sellSliderWidth + Math.abs(config.offsetRight))}px)`,
 									}}
 									className={clsx(
-										'transition',
+										'transition-transform',
 										styles.mark,
 										boundaryData[0] > yesterdayClosingPrice && styles.buy,
 									)}
@@ -421,7 +422,7 @@ const SymbolPriceSlider = ({
 									width: `${config.buySliderWidth}px`,
 									transform: `translateX(${config.offsetLeft}px)`,
 								}}
-								className={clsx('transition', styles.slider)}
+								className={clsx('transition-transform', styles.slider)}
 							/>
 
 							<Tooltip
@@ -445,7 +446,7 @@ const SymbolPriceSlider = ({
 										transform: `translateX(${boundaryData[1] < yesterdayClosingPrice ? -config.offsetRight : config.buySliderWidth + Math.abs(config.offsetLeft)}px)`,
 									}}
 									className={clsx(
-										'transition',
+										'transition-transform',
 										styles.mark,
 										boundaryData[1] < yesterdayClosingPrice && styles.sell,
 									)}

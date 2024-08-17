@@ -29,7 +29,9 @@ const auth = <T extends TProps>(Component: TComponent<T>, callbackUrl = '/', typ
 			else dispatch(setLoginModal({}));
 
 			router.replace(callbackUrl);
+		}, []);
 
+		useLayoutEffect(() => {
 			const rm = ipcMain.handle('broker:logged_out', () => {
 				router.replace(callbackUrl);
 			});
