@@ -4,7 +4,7 @@ declare interface IpcMainChannels {
 	send_order: IOFields;
 	send_orders: IOFields[];
 	order_sent: { id: string | undefined; response: Order.Response | 'error' };
-	set_option_watchlist_filters: Omit<IOptionWatchlistFilters, 'priceBasis' | 'term'>;
+	set_option_watchlist_filters: Omit<IOptionWatchlistFilters, 'priceBasis' | 'term' | 'sort'>;
 	set_transactions_filters: Omit<Transaction.ITransactionsFilters, 'pageNumber' | 'pageSize'>;
 	set_option_watchlist_columns: Option.Column[];
 	set_instant_deposit_reports_filters: Omit<

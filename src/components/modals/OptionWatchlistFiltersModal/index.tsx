@@ -33,7 +33,7 @@ const OptionWatchlistFiltersModal = forwardRef<HTMLDivElement, OptionWatchlistFi
 		inputs: filters,
 		setFieldValue,
 		setInputs: setFilters,
-	} = useInputs<Omit<IOptionWatchlistFilters, 'priceBasis' | 'term'>>({
+	} = useInputs<Omit<IOptionWatchlistFilters, 'priceBasis' | 'term' | 'sort'>>({
 		symbols: initialModalFilters?.initialSymbols ?? initialOptionWatchlistFilters.symbols,
 		type: initialModalFilters?.initialType ?? initialOptionWatchlistFilters.type,
 		status: initialModalFilters?.initialStatus ?? initialOptionWatchlistFilters.status,
