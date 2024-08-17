@@ -276,6 +276,7 @@
 		"col_received_value": "ارزش دریافتی",
 		"col_quantity": "تعداد",
 		"col_remains_quantity": "تعداد مانده",
+		"col_blocked_position_count": "تعداد وثیقه",
 		"col_remains_quantity_tooltip": "تعداد دارایی فعلی",
 		"col_symbol": "نماد",
 		"col_base_symbol": "نماد پایه",

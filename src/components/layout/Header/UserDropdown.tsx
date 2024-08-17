@@ -143,8 +143,8 @@ const UserDropdown = ({
 					<li
 						className={styles.theme}
 						onMouseOver={() => {
-							setThemeIsOpen(true);
 							clearDebounce();
+							setDebounce(() => setThemeIsOpen(true), 200);
 						}}
 						onMouseLeave={() => setDebounce(() => setThemeIsOpen(false), 500)}
 					>

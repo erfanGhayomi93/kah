@@ -1,16 +1,21 @@
 import { cn, toFixed } from '@/utils/helpers';
-import { blackScholes } from '@/utils/math/black-scholes';
+import { blackScholes, impliedVolatility } from '@/utils/math/black-scholes';
 import { type IBlackScholesResponse } from '@/utils/math/type';
 import { useTranslations } from 'next-intl';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './BlackScholes.module.scss';
 
 interface CalculatorProps extends IBlackScholesModalStates {}
 
+interface IInputs extends IBlackScholesResponse {
+	ivCall: number;
+	ivPut: number;
+}
+
 const Calculator = (props: CalculatorProps) => {
 	const t = useTranslations();
 
-	const [values, setValues] = useState<IBlackScholesResponse>({
+	const [values, setValues] = useState<IInputs>({
 		call: 0,
 		put: 0,
 		deltaCall: 0,
@@ -23,20 +28,51 @@ const Calculator = (props: CalculatorProps) => {
 		lambdaCall: 0,
 		lambdaPut: 0,
 		gamma: 0,
+		ivCall: 0,
+		ivPut: 0,
 	});
 
-	useLayoutEffect(() => {
-		const { strikePrice, dueDays, volatility, riskFreeProfit, sharePrice } = props;
+	useEffect(() => {
+		const { strikePrice, dueDays, volatility, riskFreeProfit, sharePrice, premium } = props;
 
-		setValues(
-			blackScholes({
+		const rate = Number(riskFreeProfit) / 100;
+		const volatilityAsPercent = Number(volatility) / 100;
+
+		const ivCall = impliedVolatility({
+			optionPrice: premium,
+			rate,
+			strikePrice,
+			dueDays,
+			contractType: 'call',
+			sharePrice,
+			stepCount: 5,
+			volatility: volatilityAsPercent,
+			step: 1,
+		});
+
+		const ivPut = impliedVolatility({
+			optionPrice: premium,
+			rate,
+			strikePrice,
+			dueDays,
+			contractType: 'put',
+			sharePrice,
+			stepCount: 5,
+			volatility: volatilityAsPercent,
+			step: 1,
+		});
+
+		setValues({
+			...blackScholes({
 				sharePrice,
 				strikePrice,
-				rate: Number(riskFreeProfit) / 100,
-				volatility: Number(volatility) / 100,
+				rate,
+				volatility: volatilityAsPercent,
 				dueDays,
 			}),
-		);
+			ivCall,
+			ivPut,
+		});
 	}, [JSON.stringify(props)]);
 
 	return (
@@ -88,7 +124,9 @@ const Calculator = (props: CalculatorProps) => {
 				className='flex rounded bg-white text-base ltr darkBlue:bg-gray-50 dark:bg-gray-50'
 			>
 				<div className={cn('h-full ltr flex-justify-center', styles.section)}>
-					<span className='font-bold text-error-100 ltr'>−</span>
+					<span className='font-bold text-error-100 ltr'>
+						{Number((values.ivPut * 100).toFixed(4) || 0) * 1}%
+					</span>
 				</div>
 
 				<div className='h-full flex-1 flex-justify-center'>
@@ -96,7 +134,9 @@ const Calculator = (props: CalculatorProps) => {
 				</div>
 
 				<div className={cn('h-full ltr flex-justify-center', styles.section)}>
-					<span className='font-bold text-success-100'>−</span>
+					<span className='font-bold text-success-100'>
+						{Number((values.ivCall * 100).toFixed(4) || 0) * 1}%
+					</span>
 				</div>
 			</div>
 		</>

@@ -43,7 +43,7 @@ const PriceInformation = ({ isExpand, symbolData }: PriceInformationProps) => {
 			{
 				id: 'strikePrice',
 				title: t('symbol_info_panel.strike_price'),
-				value: bigNumFormatter(strikePrice ?? 0),
+				value: sepNumbers(String(strikePrice ?? 0)),
 			},
 
 			{

@@ -61,6 +61,12 @@ const PutTable = ({ data, isLoading }: PutTableProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'blocked_position_count',
+				headerName: t('col_blocked_position_count'),
+				valueGetter: ({ data }) => data?.blockedPositionCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
 				colId: 'received_value',
 				headerName: t('col_received_value'),
 				minWidth: 112,

@@ -8,9 +8,11 @@ import { getOptionChainColumns, setOptionChainColumns } from '@/features/slices/
 import { setManageColumnsModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import dayjs from '@/libs/dayjs';
+import { useRouter } from '@/navigation';
 import { persianNumFormatter, sepNumbers } from '@/utils/helpers';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 
 interface SettlementItemProps {
@@ -27,7 +29,11 @@ interface ToolbarProps {
 const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 	const t = useTranslations();
 
+	const router = useRouter();
+
 	const dispatch = useAppDispatch();
+
+	const searchParams = useSearchParams();
 
 	const optionChainColumns = useAppSelector(getOptionChainColumns);
 
@@ -61,8 +67,15 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 	};
 
 	useEffect(() => {
-		if (Array.isArray(settlementDays)) setFieldValue('settlementDay', settlementDays[0]);
-	}, [settlementDays, inputs.baseSymbol]);
+		if (!Array.isArray(settlementDays) || settlementDays.length === 0) return;
+
+		const initialSettlementDay = searchParams.get('settlementDay') ?? '';
+		setFieldValue(
+			'settlementDay',
+			settlementDays.find((item) => String(new Date(item.contractEndDate).getTime()) === initialSettlementDay) ??
+				settlementDays[0],
+		);
+	}, [settlementDays]);
 
 	return (
 		<div
@@ -74,7 +87,11 @@ const Toolbar = ({ inputs, setFieldValue }: ToolbarProps) => {
 					<BaseSymbolSearch
 						nullable={false}
 						value={inputs.baseSymbol}
-						onChange={(symbol) => setFieldValue('baseSymbol', symbol)}
+						defaultSymbolISIN={searchParams.get('symbolISIN')}
+						onChange={(symbol) => {
+							if (symbol) router.replace(`/option-chain/?symbolISIN=${symbol.symbolISIN}`);
+							setFieldValue('baseSymbol', symbol);
+						}}
 					/>
 				</div>
 

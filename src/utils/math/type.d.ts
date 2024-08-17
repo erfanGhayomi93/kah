@@ -82,3 +82,15 @@ export interface IBlackScholesResponse {
 	lambdaPut: number;
 	gamma: number;
 }
+
+export interface IImpliedVolatility {
+	optionPrice: number;
+	rate: number;
+	strikePrice: number;
+	dueDays: number;
+	contractType: TOptionSides;
+	sharePrice: number;
+	stepCount: number;
+	volatility: number;
+	step: number;
+}

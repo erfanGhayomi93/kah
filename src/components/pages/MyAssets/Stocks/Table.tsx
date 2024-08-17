@@ -66,6 +66,12 @@ const Table = ({ data, loading }: TableProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'blocked_position_count',
+				headerName: t('col_blocked_position_count'),
+				valueGetter: ({ data }) => data?.blockVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
 				colId: 'paid_value',
 				headerName: t('col_paid_value'),
 				minWidth: 112,

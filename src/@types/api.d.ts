@@ -2498,6 +2498,7 @@ declare namespace Portfolio {
 		todayPNLPercent: number;
 		previousPNL: number;
 		remainingPNL: number;
+		blockVolume: number;
 		remainingPNLPercent: number;
 		totalPNL: number;
 		totalPNLPercent: number;
@@ -2534,6 +2535,7 @@ declare namespace GLOptionOrder {
 		todayPNLPercent: number;
 		previousPNL: number;
 		remainingPNL: number;
+		blockedPositionCount: number;
 		remainingPNLPercent: number;
 		totalPNL: number;
 		totalPNLPercent: number;
@@ -2562,6 +2564,7 @@ declare namespace GLOptionOrder {
 		priceChangePercent: number;
 		buyNetValueWithoutCommission: number;
 		buyNetValue: number;
+		blockedPositionCount: number;
 		buyBEP: number;
 		todayPNL: number;
 		todayPNLPercent: number;

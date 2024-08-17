@@ -61,6 +61,12 @@ const CallTable = ({ data, isLoading }: CallTableProps) => {
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
 			{
+				colId: 'blocked_position_count',
+				headerName: t('col_blocked_position_count'),
+				valueGetter: ({ data }) => data?.blockedPositionCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+			},
+			{
 				colId: 'paid_value',
 				headerName: t('col_paid_value'),
 				minWidth: 112,
