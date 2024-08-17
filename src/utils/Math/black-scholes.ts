@@ -5,6 +5,7 @@ import type {
 	ID1,
 	ID2,
 	IGamma,
+	IImpliedVolatility,
 	ILambda,
 	IResult,
 	IRho,
@@ -125,6 +126,71 @@ export const blackScholes = (props: IBlackScholes): IBlackScholesResponse => {
 	return result;
 };
 
-export const impliedVolatility = () => {
-	return 0;
+export const impliedVolatility = ({
+	optionPrice,
+	rate,
+	strikePrice,
+	dueDays,
+	contractType,
+	sharePrice,
+	stepCount,
+	volatility = 0.1,
+	step = 1,
+}: IImpliedVolatility): number => {
+	const price = optionPrice;
+
+	if (optionPrice === 0) return 0;
+
+	if (step > stepCount) return volatility;
+
+	const x = Math.pow(10, step);
+	const precision = 1 / x;
+	let res = 0;
+	let diff = price;
+
+	for (let i = 0; ; i++) {
+		if (volatility === 0.0001) return 0;
+
+		const bs = blackScholes({ sharePrice, strikePrice, volatility, dueDays, rate });
+		const bsValue = bs[contractType];
+
+		if (i === 0 && bsValue > price) {
+			volatility /= 10;
+			res = volatility;
+			break;
+		}
+
+		if (bsValue > price) {
+			volatility -= precision;
+			break;
+		}
+
+		if (volatility > 1000) {
+			res = volatility;
+			break;
+		}
+
+		if (diff > Math.abs(price - bsValue)) {
+			diff = Math.abs(price - bsValue);
+			res = volatility;
+		}
+
+		volatility += precision;
+	}
+
+	if (res > 1000) {
+		return 1000;
+	}
+
+	return impliedVolatility({
+		optionPrice,
+		rate,
+		strikePrice,
+		dueDays,
+		contractType,
+		sharePrice,
+		stepCount,
+		volatility,
+		step: step + 1,
+	});
 };

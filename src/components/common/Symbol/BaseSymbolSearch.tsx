@@ -6,11 +6,12 @@ import { useEffect, useMemo, useState } from 'react';
 
 type BaseSymbolSearchProps = Partial<Omit<AsyncSelectProps<Option.BaseSearch>, 'value' | 'onChange'>> & {
 	nullable?: boolean;
+	defaultSymbolISIN?: string | null;
 	value: IBlackScholesModalStates['baseSymbol'];
 	onChange: (symbol: IBlackScholesModalStates['baseSymbol']) => void;
 };
 
-const BaseSymbolSearch = ({ value, nullable = true, onChange, ...props }: BaseSymbolSearchProps) => {
+const BaseSymbolSearch = ({ defaultSymbolISIN, value, nullable = true, onChange, ...props }: BaseSymbolSearchProps) => {
 	const t = useTranslations();
 
 	const [term, setTerm] = useState('');
@@ -36,7 +37,11 @@ const BaseSymbolSearch = ({ value, nullable = true, onChange, ...props }: BaseSy
 
 	useEffect(() => {
 		if (!nullable && !value && Array.isArray(symbolsData) && symbolsData.length > 0) {
-			onChange(symbolsData[0]);
+			onChange(
+				defaultSymbolISIN
+					? symbolsData.find((item) => item.symbolISIN === defaultSymbolISIN) ?? symbolsData[0]
+					: symbolsData[0],
+			);
 		}
 	}, [nullable, symbolsData]);
 
