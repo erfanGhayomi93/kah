@@ -100,9 +100,9 @@ export const initialDashboardGrid: IDashboardGrid[] = [
 	{ id: 'open_positions_process', w: 1, h: 384, hidden: false, i: 9 },
 	// { id: 'meetings', w: 1, h: 384, hidden: false, i: 11 },
 	{ id: 'new_and_old', w: 1, h: 384, hidden: false, i: 10 },
-	{ id: 'custom', w: 1, h: 384, hidden: false, i: 11 },
-	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 12 },
-	{ id: 'top_base_assets', w: 1, h: 384, hidden: false, i: 13 },
+	{ id: 'due_dates', w: 1, h: 384, hidden: false, i: 11 },
+	{ id: 'top_base_assets', w: 1, h: 384, hidden: false, i: 12 },
+	{ id: 'custom', w: 1, h: 384, hidden: false, i: 13 },
 	// { id: 'recent_activities', w: 1, h: 384, hidden: false, i: 15 },
 ];
 

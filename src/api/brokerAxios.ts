@@ -1,5 +1,6 @@
 import { store } from '@/api/inject-store';
 import ipcMain from '@/classes/IpcMain';
+import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
@@ -64,19 +65,25 @@ brokerAxios.interceptors.response.use(
 
 export const logoutBroker = () => {
 	try {
+		const [token] = getBrokerClientId();
+
 		/* Logout from broker */
-		/* try {
-			const brokerUrls = getBrokerURLs(store.getState());
+		try {
+			const url = getBrokerURLs(store.getState());
+			if (!url) return false;
+
+			brokerAxios.get<ServerResponse<Symbol.Info>>(url.Logout, {
+				params: { token },
+			});
 		} catch (e) {
 			//
-		} */
+		}
 
 		/* Clear redux cache */
 		store.dispatch({ payload: false, type: 'user/setBrokerIsSelected' });
 		store.dispatch({ payload: null, type: 'broker/setBrokerURLs' });
 
 		/* Delete cookie */
-		const [token] = getBrokerClientId();
 		deleteBrokerClientId();
 
 		/* Notification */

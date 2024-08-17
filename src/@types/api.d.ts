@@ -672,6 +672,7 @@ declare namespace Broker {
 		| 'AccountOfflineDepositPdf'
 		| 'TradeExport'
 		| 'TvChartSymbols'
+		| 'Logout'
 		| 'WatchListDefaultSymbols'
 		| 'AccountOnlineDepositStatus'
 		| 'PortfolioGetOptionBaseAsset'

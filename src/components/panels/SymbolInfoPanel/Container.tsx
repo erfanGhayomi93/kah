@@ -3,6 +3,7 @@ import Error from '@/components/common/Error';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Loading from '@/components/common/Loading';
 import { SettingSliderSVG, XSVG } from '@/components/icons';
+import { symbolInfoPanelLightstreamProperty } from '@/constants/ls-data-mapper';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setSymbolInfoPanelSettingModal } from '@/features/slices/modalSlice';
 import { getSymbolInfoPanelGridLayout, setSymbolInfoPanelGridLayout } from '@/features/slices/uiSlice';
@@ -136,26 +137,6 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 		dispatch(setSymbolInfoPanelGridLayout(layout));
 	};
 
-	const getFieldName = (n: string): keyof Symbol.Info | null => {
-		const keys: Record<string, keyof Symbol.Info> = {
-			totalTradeValue: 'tradeValue',
-			totalNumberOfSharesTraded: 'tradeVolume',
-			closingPriceVarReferencePrice: 'closingPriceVarReferencePrice',
-			baseVolume: 'baseVolume',
-			lastTradedPrice: 'lastTradedPrice',
-			totalNumberOfTrades: 'tradeCount',
-			lastTradedPriceVarPercent: 'tradePriceVarPreviousTradePercent',
-			closingPrice: 'closingPrice',
-			closingPriceVarPercent: 'closingPriceVarReferencePricePercent',
-			lastTradeDateTime: 'lastTradeDate',
-			lowestTradePriceOfTradingDay: 'lowPrice',
-			highestTradePriceOfTradingDay: 'highPrice',
-			symbolState: 'symbolTradeState',
-		};
-
-		return keys?.[n] ?? null;
-	};
-
 	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
 		try {
 			const queryKey = ['symbolInfoQuery', symbolISIN];
@@ -165,7 +146,7 @@ const Container = ({ symbolISIN, close }: ContainerProps) => {
 
 			updateInfo.forEachChangedField((fieldName, _b, value) => {
 				try {
-					const f = getFieldName(fieldName);
+					const f = symbolInfoPanelLightstreamProperty[fieldName];
 
 					if (value && f && f in visualData) {
 						const valueAsNumber = Number(value);

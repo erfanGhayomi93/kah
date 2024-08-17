@@ -1,17 +1,21 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
+import lightStreamInstance from '@/classes/Lightstream';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
+import { optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getOptionChainColumns } from '@/features/slices/columnSlice';
 import { setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOrderBasket, setOrderBasket } from '@/features/slices/userSlice';
 import { type RootState } from '@/features/store';
-import { useTradingFeatures } from '@/hooks';
+import { useSubscription } from '@/hooks';
 import { convertSymbolWatchlistToSymbolBasket, sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
 import { createSelector } from '@reduxjs/toolkit';
+import { useQueryClient } from '@tanstack/react-query';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import StrikePriceCellRenderer from './common/StrikePriceCellRenderer';
@@ -38,15 +42,17 @@ const getStates = createSelector(
 const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 	const t = useTranslations();
 
+	const queryClient = useQueryClient();
+
 	const dispatch = useAppDispatch();
+
+	const { subscribe } = useSubscription();
 
 	const { basket, optionChainColumns } = useAppSelector(getStates);
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
 	const [activeRowId, setActiveRowId] = useState<number>(-1);
-
-	const { addBuySellModal } = useTradingFeatures();
 
 	const { data: watchlistData = [], isLoading } = useWatchlistBySettlementDateQuery({
 		queryKey: [
@@ -68,6 +74,37 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 		} catch (e) {
 			//
 		}
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const queryKey = [
+			'watchlistBySettlementDateQuery',
+			{ baseSymbolISIN: baseSymbol.symbolISIN, settlementDate: settlementDay?.contractEndDate },
+		];
+
+		const data = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey) ?? [])) as Option.Root[];
+		const symbolISIN: string = updateInfo.getItemName();
+		const symbolIndex = data.findIndex((item) => item.symbolInfo.symbolISIN === symbolISIN);
+
+		if (symbolIndex === -1) return;
+
+		const symbolData = data[symbolIndex];
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				const fs = optionWatchlistLightstreamProperty[fieldName] as keyof Option.Watchlist;
+				if (fs && value && fs in symbolData.optionWatchlistData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			} catch (e) {
+				//
+			}
+		});
+
+		queryClient.setQueryData(queryKey, data);
 	};
 
 	const addSymbolToBasket = (data: Option.Root, side: TBsSides) => {
@@ -120,6 +157,33 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 	const goToTechnicalChart = (data: Option.Root) => {
 		//
 	};
+
+	const symbolsISIN = useMemo(() => watchlistData.map((item) => item.symbolInfo.symbolISIN), [watchlistData]);
+
+	const strikePriceColumn = useMemo<ColDef<ITableData>>(
+		() => ({
+			headerName: 'اعمال',
+			colId: 'strikePrice',
+			minWidth: 132,
+			maxWidth: 132,
+			resizable: false,
+			cellClass: 'strike-price',
+			headerClass: 'strike-price',
+			valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
+			valueFormatter: ({ value }) => sepNumbers(String(value)),
+			comparator: (valueA, valueB) => valueA - valueB,
+			cellRenderer: StrikePriceCellRenderer,
+			cellRendererParams: {
+				activeRowId,
+				basket: [],
+				addSymbolToBasket,
+				addSymbolToWatchlist,
+				addAlert,
+				goToTechnicalChart,
+			},
+		}),
+		[activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])],
+	);
 
 	const COLUMNS: Array<ColDef<ITableData> | ColGroupDef<ITableData>> = useMemo(
 		() => [
@@ -202,29 +266,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 				groupId: 'strike',
 				headerName: '',
 				headerClass: 'bg-white darkness:bg-gray-50',
-				children: [
-					{
-						headerName: 'اعمال',
-						colId: 'strikePrice',
-						minWidth: 132,
-						maxWidth: 132,
-						resizable: false,
-						cellClass: 'strike-price',
-						headerClass: 'strike-price',
-						valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
-						valueFormatter: ({ value }) => sepNumbers(String(value)),
-						comparator: (valueA, valueB) => valueA - valueB,
-						cellRenderer: StrikePriceCellRenderer,
-						cellRendererParams: {
-							activeRowId,
-							basket: [],
-							addSymbolToBasket,
-							addSymbolToWatchlist,
-							addAlert,
-							goToTechnicalChart,
-						},
-					},
-				],
+				children: [strikePriceColumn],
 			},
 
 			{
@@ -357,30 +399,8 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 		const column = gridApi.getColumn('strikePrice');
 		if (!column) return;
 
-		const colDef: ColDef<ITableData> = {
-			headerName: 'اعمال',
-			colId: 'strikePrice',
-			minWidth: 132,
-			maxWidth: 132,
-			resizable: false,
-			cellClass: 'strike-price',
-			headerClass: 'strike-price',
-			valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
-			valueFormatter: ({ value }) => sepNumbers(String(value)),
-			cellRenderer: StrikePriceCellRenderer,
-			cellRendererParams: {
-				activeRowId,
-				basket: basket?.orders ?? [],
-				addBuySellModal,
-				addSymbolToBasket,
-				addSymbolToWatchlist,
-				addAlert,
-				goToTechnicalChart,
-			},
-		};
-
-		column.setColDef(colDef, colDef, 'api');
-	}, [activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])]);
+		column.setColDef(strikePriceColumn, strikePriceColumn, 'api');
+	}, [strikePriceColumn]);
 
 	useEffect(() => {
 		const eGrid = gridRef.current;
@@ -395,6 +415,21 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			//
 		}
 	}, [optionChainColumns]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: symbolsISIN,
+			fields: ['bestBuyLimitPrice_1', 'bestSellLimitPrice_1', 'openPositionCount', 'totalTradeValue'],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [symbolsISIN.join(',')]);
 
 	return (
 		<>

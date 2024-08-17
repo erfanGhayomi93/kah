@@ -1,10 +1,15 @@
 import { useWatchlistBySettlementDateQuery } from '@/api/queries/optionQueries';
+import lightStreamInstance from '@/classes/Lightstream';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { type ITableData } from '@/components/pages/OptionChain/Option/OptionTable';
+import { optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
+import { useSubscription } from '@/hooks';
 import { sepNumbers } from '@/utils/helpers';
 import { type CellClickedEvent, type ColDef, type ColGroupDef, type GridApi } from '@ag-grid-community/core';
+import { useQueryClient } from '@tanstack/react-query';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -38,9 +43,13 @@ const ContractsTable = ({
 
 	const gridRef = useRef<GridApi<ITableData>>(null);
 
+	const queryClient = useQueryClient();
+
+	const { subscribe } = useSubscription();
+
 	const [activeRowId, setActiveRowId] = useState<number>(-1);
 
-	const { data: watchlistData, isFetching } = useWatchlistBySettlementDateQuery({
+	const { data: watchlistData = [], isFetching } = useWatchlistBySettlementDateQuery({
 		queryKey: [
 			'watchlistBySettlementDateQuery',
 			{ baseSymbolISIN: symbolISIN ?? '', settlementDate: settlementDay?.contractEndDate ?? '' },
@@ -94,12 +103,45 @@ const ContractsTable = ({
 		}
 	};
 
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const queryKey = [
+			'watchlistBySettlementDateQuery',
+			{ baseSymbolISIN: symbolISIN ?? '', settlementDate: settlementDay?.contractEndDate ?? '' },
+		];
+
+		const data = JSON.parse(JSON.stringify(queryClient.getQueryData(queryKey) ?? [])) as Option.Root[];
+		const updatedSymbolISIN: string = updateInfo.getItemName();
+		const symbolIndex = data.findIndex((item) => item.symbolInfo.symbolISIN === updatedSymbolISIN);
+
+		if (symbolIndex === -1) return;
+
+		const symbolData = data[symbolIndex];
+
+		updateInfo.forEachChangedField((fieldName, _b, value) => {
+			try {
+				const fs = optionWatchlistLightstreamProperty[fieldName] as keyof Option.Watchlist;
+				if (fs && value && fs in symbolData.optionWatchlistData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			} catch (e) {
+				//
+			}
+		});
+
+		queryClient.setQueryData(queryKey, data);
+	};
+
 	const isContractSelected = useCallback(
 		(symbolISIN: string) => {
 			return contracts.findIndex((item) => item.symbolInfo.symbolISIN === symbolISIN) > -1;
 		},
 		[contracts],
 	);
+
+	const symbolsISIN = useMemo(() => watchlistData.map((item) => item.symbolInfo.symbolISIN), [watchlistData]);
 
 	const strikePriceColumn = useMemo<ColDef<ITableData>>(
 		() => ({
@@ -307,6 +349,21 @@ const ContractsTable = ({
 	useEffect(() => {
 		checkedRef.current = false;
 	}, [settlementDay]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: symbolsISIN,
+			fields: ['bestBuyLimitPrice_1', 'bestSellLimitPrice_1', 'openPositionCount', 'totalTradeValue'],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.start();
+
+		subscribe(sub);
+	}, [symbolsISIN.join(',')]);
 
 	return (
 		<div className='relative flex-1'>
