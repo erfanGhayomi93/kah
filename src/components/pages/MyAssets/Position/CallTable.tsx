@@ -48,6 +48,7 @@ const CallTable = ({ data, isLoading }: CallTableProps) => {
 				colId: 'symbol',
 				headerName: t('col_symbol'),
 				pinned: 'right',
+				filter: 'text',
 				cellClass: 'font-medium cursor-pointer',
 				maxWidth: 120,
 				headerComponent: SymbolTitleHeader,

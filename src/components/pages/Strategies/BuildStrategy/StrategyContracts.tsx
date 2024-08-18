@@ -3,7 +3,10 @@ import lightStreamInstance from '@/classes/Lightstream';
 import type Subscribe from '@/classes/Subscribe';
 import Button from '@/components/common/Button';
 import Select from '@/components/common/Inputs/Select';
-import SymbolStrategyTable, { type TCheckboxes } from '@/components/common/Tables/SymbolStrategyTable';
+import SymbolStrategyTable, {
+	type IStrategyTableInput,
+	type TCheckboxes,
+} from '@/components/common/Tables/SymbolStrategyTable';
 import { BookmarkSVG, EraserSVG, RefreshSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
@@ -55,21 +58,26 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		queryKey: ['commissionQuery'],
 	});
 
-	const setContractProperties = (
-		id: string,
-		values: Partial<Pick<TSymbolStrategy, 'price' | 'quantity' | 'side'>>,
-	) => {
+	const setContractProperties = (id: string, values: IStrategyTableInput) => {
 		const data = JSON.parse(JSON.stringify(contracts)) as TSymbolStrategy[];
 
-		const orderIndex = data.findIndex((item) => item.id === id);
-		if (orderIndex === -1) return;
+		dispatch(
+			setBuiltStrategy(
+				data.map((c) => {
+					if (c.id !== id) return c;
 
-		data[orderIndex] = {
-			...data[orderIndex],
-			...values,
-		};
+					const newContract = {
+						...c,
+						price: values.price,
+						quantity: values.quantity,
+						side: values.side,
+					};
+					if (c.type === 'option') newContract.symbol.strikePrice = values.strikePrice;
 
-		dispatch(setBuiltStrategy(data));
+					return newContract;
+				}),
+			),
+		);
 	};
 
 	const deleteContract = (id: string) => {

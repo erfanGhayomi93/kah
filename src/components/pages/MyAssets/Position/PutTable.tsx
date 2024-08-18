@@ -49,6 +49,7 @@ const PutTable = ({ data, isLoading }: PutTableProps) => {
 				headerName: t('col_symbol'),
 				pinned: 'right',
 				cellClass: 'font-medium cursor-pointer',
+				filter: 'text',
 				maxWidth: 120,
 				headerComponent: SymbolTitleHeader,
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),

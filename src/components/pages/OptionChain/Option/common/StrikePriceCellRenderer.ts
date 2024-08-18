@@ -83,9 +83,9 @@ class StrikePriceCellRenderer implements ICellRendererComp<ITableData> {
 		const overlay = document.createElement('div');
 		overlay.style.backgroundColor = 'var(--ag-row-hover-color)';
 		overlay.style.zIndex = '99';
-		overlay.style.height = '48px';
+		overlay.style.height = '46px';
 		overlay.style.position = 'absolute';
-		overlay.style.top = '0';
+		overlay.style.bottom = '1px';
 		overlay.style.width = '192px';
 		overlay.style.display = 'flex';
 		overlay.style.justifyContent = 'center';

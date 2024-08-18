@@ -158,6 +158,16 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 		//
 	};
 
+	const closestStrikePriceToBaseSymbolPrice = useMemo<number>(() => {
+		if (!Array.isArray(watchlistData) || watchlistData.length === 0) return 0;
+
+		const baseSymbolPrice = watchlistData[0].optionWatchlistData.baseSymbolPrice;
+
+		return (
+			watchlistData.find((item) => baseSymbolPrice - item.symbolInfo.strikePrice > 0)?.symbolInfo.strikePrice ?? 0
+		);
+	}, [watchlistData]);
+
 	const symbolsISIN = useMemo(() => watchlistData.map((item) => item.symbolInfo.symbolISIN), [watchlistData]);
 
 	const strikePriceColumn = useMemo<ColDef<ITableData>>(
@@ -167,7 +177,16 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 			minWidth: 132,
 			maxWidth: 132,
 			resizable: false,
-			cellClass: 'strike-price',
+			cellClass: ({ data }) => {
+				if (!data) return 'strike-price';
+
+				const strikePrice = data.buy?.symbolInfo.strikePrice ?? data.sell?.symbolInfo.strikePrice ?? 0;
+				if (strikePrice === closestStrikePriceToBaseSymbolPrice) {
+					return 'strike-price highlight';
+				}
+
+				return 'strike-price';
+			},
 			headerClass: 'strike-price',
 			valueGetter: ({ data }) => data!.buy?.symbolInfo.strikePrice ?? 0,
 			valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -182,7 +201,7 @@ const OptionTable = ({ settlementDay, baseSymbol }: OptionTableProps) => {
 				goToTechnicalChart,
 			},
 		}),
-		[activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])],
+		[closestStrikePriceToBaseSymbolPrice, activeRowId, settlementDay, JSON.stringify(basket?.orders ?? [])],
 	);
 
 	const COLUMNS: Array<ColDef<ITableData> | ColGroupDef<ITableData>> = useMemo(

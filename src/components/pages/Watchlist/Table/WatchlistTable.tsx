@@ -660,7 +660,7 @@ const WatchlistTable = ({ id, data, watchlistCount, isLoading, setTerm }: Watchl
 						data?.optionWatchlistData.lastTradeDate
 							? new Date(data?.optionWatchlistData.lastTradeDate).getTime()
 							: new Date().getTime(),
-					valueFormatter: ({ value }) => dateFormatter(value, 'datetime'),
+					valueFormatter: ({ value }) => dateFormatter(value, 'date'),
 					comparator: (valueA, valueB) => valueA - valueB,
 				},
 				{
