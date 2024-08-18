@@ -60,7 +60,7 @@ const TotalTradeValueInput = ({
 					onCopy={(e) => copyNumberToClipboard(e, Number(value))}
 					type='text'
 					inputMode='numeric'
-					value={!value ? '' : sepNumbers(String(value))}
+					value={sepNumbers(String(value))}
 					onChange={onChangeValue}
 					onBlur={onBlur}
 					className='h-full flex-1 border-0 bg-transparent px-8 text-left ltr'

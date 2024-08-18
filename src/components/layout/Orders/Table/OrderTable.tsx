@@ -149,7 +149,7 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 			{
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
-				cellClass: 'justify-end text-right',
+				cellClass: 'ag-cell-checkbox justify-end text-right',
 				pinned: 'right',
 				filter: 'text',
 				maxWidth: 160,

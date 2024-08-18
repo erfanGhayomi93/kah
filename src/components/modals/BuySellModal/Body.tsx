@@ -30,6 +30,7 @@ interface BodyProps extends IBsModalInputs {
 	id: number | undefined;
 	orderingPurchasePower: number;
 	purchasePower: number;
+	symbolAssets: number;
 	symbolData: Symbol.Info | null;
 	symbolISIN: string;
 	symbolTitle: string;

@@ -1,4 +1,4 @@
-import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
+import { useGlPositionExtraInfoQuery, useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import { useCommissionsQuery } from '@/api/queries/commonQueries';
 import { useSymbolBestLimitQuery, useSymbolInfoQuery } from '@/api/queries/symbolQuery';
 import OFormula from '@/classes/Math/OFormula';
@@ -57,6 +57,11 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 		const { data: symbolData, isLoading } = useSymbolInfoQuery({
 			queryKey: ['symbolInfoQuery', symbolISIN],
+		});
+
+		const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
+			queryKey: ['glPositionExtraInfoQuery', symbolData?.symbolISIN ?? ''],
+			enabled: Boolean(symbolData),
 		});
 
 		const { data: bestLimitData, isLoading: isLoadingBestLimit } = useSymbolBestLimitQuery({
@@ -130,9 +135,12 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		const rearrangeValue = () => {
 			if (!inputs.price || !inputs.quantity) return;
 
+			const originalQuantity =
+				inputs.side === 'buy' ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
+
 			setInputs({
 				...inputs,
-				value: formula().value(inputs.price, inputs.quantity),
+				value: formula().value(inputs.price, originalQuantity),
 			});
 		};
 
@@ -141,7 +149,10 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		};
 
 		const onChangePrice = (price: number, checkIsLock: boolean): void => {
-			const value = formula().value(price, inputs.quantity);
+			const originalQuantity =
+				inputs.side === 'buy' ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
+
+			const value = formula().value(price, originalQuantity);
 
 			setInputs((values) => ({
 				...values,
@@ -152,7 +163,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		};
 
 		const onChangeQuantity = (quantity: number): void => {
-			const value = formula().value(inputs.price, quantity);
+			const originalQuantity = inputs.side === 'buy' ? quantity : Math.max(quantity - symbolAssets, 0);
+			const value = formula().value(inputs.price, originalQuantity);
 
 			setInputs((values) => ({
 				...values,
@@ -162,7 +174,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		};
 
 		const onChangeValue = (value: number): void => {
-			const quantity = formula().quantity(inputs.price, value);
+			const quantity = formula().quantity(inputs.price, value) + symbolAssets;
 
 			setInputs((values) => ({
 				...values,
@@ -198,9 +210,12 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		useEffect(() => {
 			if (!inputs.price || !inputs.quantity) return;
 
+			const originalQuantity =
+				inputs.side === 'buy' ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
+
 			setInputs((values) => ({
 				...values,
-				value: formula().value(inputs.price, inputs.quantity),
+				value: formula().value(inputs.price, originalQuantity),
 			}));
 		}, [inputs.side]);
 
@@ -211,6 +226,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 			onChangePrice(bestLimitPrice, false);
 		}, [inputs.priceLock, inputs.side, bestLimitData]);
+
+		const symbolAssets = Number(symbolExtraInfo?.asset ?? 0);
 
 		const symbolType = symbolData?.isOption ? 'option' : 'base';
 
@@ -250,6 +267,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 
 						<Body
 							{...inputs}
+							symbolAssets={symbolAssets}
 							orderingPurchasePower={purchasePower}
 							purchasePower={userRemain?.purchasePower ?? 0}
 							symbolData={symbolData ?? null}
