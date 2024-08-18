@@ -456,7 +456,11 @@ const SymbolStrategy = ({
 						if (contract.type === 'option') copyNumberToClipboard(e, contract.symbol.contractSize);
 					}}
 				>
-					<span className='text-gray-800'>{sepNumbers(String(contract.symbol.contractSize ?? 0))}</span>
+					{contract.type === 'base' ? (
+						'−'
+					) : (
+						<span className='text-gray-800'>{sepNumbers(String(contract.symbol.contractSize ?? 0))}</span>
+					)}
 				</td>
 			)}
 
