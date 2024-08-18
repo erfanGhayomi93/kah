@@ -175,7 +175,12 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 					index++;
 				}
 
-				newInputs.cost += (type === 'base' ? amount : amount * contractSize) * sideInt;
+				let cost = (type === 'base' ? amount : amount * contractSize) * sideInt;
+				if (useTradeCommission || item.tradeCommission) {
+					cost += Math.abs(cost * tradeCommission);
+				}
+
+				newInputs.cost += cost;
 				newInputs.income += income;
 			}
 

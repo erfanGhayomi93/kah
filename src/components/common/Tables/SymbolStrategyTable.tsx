@@ -384,7 +384,7 @@ const SymbolStrategy = ({
 	}, [JSON.stringify(inputs)]);
 
 	const amount = contract.price * contract.quantity;
-	const contractSize = contract.symbol.contractSize ?? 0;
+	const contractSize = contract.type === 'base' ? 1 : contract.symbol.contractSize ?? 0;
 	const tax = contract.side === 'buy' ? commission?.buyTax ?? 0 : commission?.sellTax ?? 0;
 	const tradeCommission =
 		(contract.side === 'buy' ? commission?.buyCommission ?? 0 : -(commission?.sellCommission ?? 0)) - tax;
