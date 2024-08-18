@@ -74,19 +74,10 @@ $warning: rgba(var(--c-warning-100) / 1);
 		&.strike-price {
 			overflow: visible;
 			background-color: var(--c-ag-strike-price-color);
-
-			&::before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				box-shadow:
-					0 -4px var(--c-ag-strike-price-shadow-bg),
-					0 4px var(--c-ag-strike-price-shadow-bg),
-					0 0 6px 0 var(--c-ag-strike-price-shadow-color);
-			}
+			box-shadow:
+				0 -4px var(--c-ag-strike-price-shadow-bg),
+				0 4px var(--c-ag-strike-price-shadow-bg),
+				0 0 6px 0 var(--c-ag-strike-price-shadow-color);
 		}
 	}
 }
