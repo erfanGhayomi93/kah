@@ -102,11 +102,11 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 				} = item;
 				newInputs.contractSize = contractSize;
 				const commissionDetail = commissionData?.[marketUnit];
-				const taxCommission = (side === 'buy' ? commissionDetail?.sellTax : commissionDetail?.buyTax) ?? 0;
+				const taxCommission = (side === 'buy' ? commissionDetail?.buyTax : commissionDetail?.sellTax) ?? 0;
 				let tradeCommission =
-					(side === 'buy' ? commissionDetail?.sellCommission : commissionDetail?.buyCommission) ?? 0;
+					(side === 'buy' ? commissionDetail?.buyCommission : commissionDetail?.sellCommission) ?? 0;
 				const strikeCommission =
-					(side === 'buy' ? commissionDetail?.strikeSellCommission : commissionDetail?.strikeBuyCommission) ??
+					(side === 'buy' ? commissionDetail?.strikeBuyCommission : commissionDetail?.strikeSellCommission) ??
 					0;
 				if (commissionDetail && !useTax && !item.tax) {
 					tradeCommission -= taxCommission;
