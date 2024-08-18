@@ -5,7 +5,7 @@ import SwitchTab from '@/components/common/Tabs/SwitchTab';
 import { LockSVG, UnlockSVG, XCircleSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setChangeBlockTypeModal } from '@/features/slices/modalSlice';
-import { cn, sepNumbers } from '@/utils/helpers';
+import { sepNumbers } from '@/utils/helpers';
 import { getAccountBlockTypeValue, getPortfolioBlockTypeValue } from '@/utils/math/order';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -27,6 +27,7 @@ interface SimpleTradeProps extends IBsModalInputs {
 	id: number | undefined;
 	orderingPurchasePower: number;
 	purchasePower: number;
+	symbolAssets: number;
 	symbolData: Symbol.Info | null;
 	submitting: boolean;
 	symbolType: TBsSymbolTypes;
@@ -55,6 +56,7 @@ const SimpleTrade = ({
 	value,
 	orderingPurchasePower,
 	purchasePower,
+	symbolAssets,
 	submitting,
 	side,
 	priceLock,
@@ -76,11 +78,6 @@ const SimpleTrade = ({
 
 	const dispatch = useAppDispatch();
 
-	const { data: symbolExtraInfo } = useGlPositionExtraInfoQuery({
-		queryKey: ['glPositionExtraInfoQuery', symbolData?.symbolISIN ?? ''],
-		enabled: Boolean(symbolData),
-	});
-
 	const { data: baseSymbolExtraInfo = null } = useGlPositionExtraInfoQuery({
 		queryKey: ['glPositionExtraInfoQuery', symbolData?.baseSymbolISIN ?? ''],
 		enabled: Boolean(symbolData) && blockType?.type === 'Portfolio',
@@ -88,6 +85,8 @@ const SimpleTrade = ({
 
 	const onSubmitForm = (e: React.FormEvent) => {
 		e.preventDefault();
+		if (isFormDisabled) return;
+
 		onSubmit();
 	};
 
@@ -117,14 +116,14 @@ const SimpleTrade = ({
 
 	const changeBlockType = () => {
 		try {
-			if (!symbolData || !symbolData.isOption) return;
+			if (!symbolData || !isOption || debtQuantity < 0) return;
 
 			validation();
 
 			dispatch(
 				setChangeBlockTypeModal({
 					price,
-					quantity,
+					quantity: debtQuantity,
 					symbolData,
 					callback: onBlockTypeChanged,
 				}),
@@ -191,28 +190,33 @@ const SimpleTrade = ({
 
 	const isOption = Boolean(symbolData?.isOption);
 
-	const assets = symbolExtraInfo?.asset ?? 0;
+	const isShortCall = side === 'sell' && symbolType === 'option';
+
+	const isClosingPosition = isShortCall && quantity - symbolAssets <= 0;
+
+	const debtQuantity = isShortCall ? quantity : Math.max(quantity - symbolAssets, 0);
 
 	const blockTypeAccountValue = getAccountBlockTypeValue({
 		initialRequiredMargin: symbolData?.initialMargin ?? 0,
 		contractSize: symbolData?.contractSize ?? 0,
+		quantity: debtQuantity,
 		price,
-		quantity,
 	});
 
 	const blockTypePortfolioValue = getPortfolioBlockTypeValue({
 		contractSize: symbolData?.contractSize ?? 0,
-		quantity,
+		quantity: debtQuantity,
 	});
 
-	const isDisabled =
-		!price ||
-		!quantity ||
-		(side === 'sell' &&
-			symbolType === 'option' &&
-			(!blockType ||
-				(blockType.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0)) ||
-				(blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0))));
+	const isAccountBlockTypeInvalid =
+		blockType?.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0);
+
+	const isPortfolioBlockTypeInvalid =
+		blockType?.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0);
+
+	const isBlockTypeInvalid = !blockType || isAccountBlockTypeInvalid || isPortfolioBlockTypeInvalid;
+
+	const isFormDisabled = !price || !quantity || (isShortCall && quantity - symbolAssets > 0 && isBlockTypeInvalid);
 
 	return (
 		<form method='get' onSubmit={onSubmitForm} className='w-full flex-1 gap-24 flex-column'>
@@ -261,10 +265,10 @@ const SimpleTrade = ({
 								<div className='text-tiny flex-justify-between'>
 									<span className='text-gray-700'>{t('bs_modal.assets')}:</span>
 									<span className='text-gray-800'>
-										{assets > 0 && (
-											<span className='text-tiny'>{sepNumbers(String(assets)) + ' '}</span>
+										{symbolAssets > 0 && (
+											<span className='text-tiny'>{sepNumbers(String(symbolAssets)) + ' '}</span>
 										)}
-										{assets === 0
+										{symbolAssets === 0
 											? isOption
 												? t('bs_modal.no_positions')
 												: t('bs_modal.no_stocks')
@@ -275,9 +279,9 @@ const SimpleTrade = ({
 								</div>
 
 								<RangeSlider
-									disabled={assets === 0}
-									max={assets}
-									value={assets === 0 ? 0 : quantity}
+									disabled={symbolAssets === 0}
+									max={symbolAssets}
+									value={symbolAssets === 0 ? 0 : quantity}
 									onChange={(value) => setInputValue('quantity', value)}
 								/>
 							</>
@@ -331,7 +335,7 @@ const SimpleTrade = ({
 						onBlur={rearrangeValue}
 					/>
 
-					{side === 'sell' && symbolType === 'option' && (
+					{isShortCall && quantity - symbolAssets > 0 && (
 						<SummaryItem
 							title={blockTypeTitle()}
 							value={
@@ -391,15 +395,15 @@ const SimpleTrade = ({
 						)}
 
 						<Button
-							disabled={isDisabled}
+							disabled={isFormDisabled}
 							type='submit'
-							className={cn(
+							className={clsx(
 								'not h-40 flex-1 rounded text-base font-medium',
 								side === 'buy' ? 'btn-success' : 'btn-error',
 							)}
 							loading={submitting}
 						>
-							{t(`bs_modal.${mode}_${type}_${side}`)}
+							{t(isClosingPosition ? 'bs_modal.close_position' : `bs_modal.${mode}_${type}_${side}`)}
 						</Button>
 					</div>
 				</div>

@@ -43,7 +43,7 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 			{
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
-				cellClass: 'justify-end text-right',
+				cellClass: 'ag-cell-checkbox justify-end text-right',
 				headerComponent: SymbolTitleHeader,
 				cellRenderer: SymbolTitleCell,
 				pinned: 'right',

@@ -432,6 +432,7 @@
 		"stock_collateral": "وثیقه با سهم",
 		"cash_collateral": "وثیقه با وجه‌نقد",
 		"validity_date_day": "یک روز",
+		"close_position": "بستن موقعیت",
 		"validity_date_week": "یک هفته",
 		"validity_date_month": "یک ماه",
 		"validity_date_good_till_date": "انتخاب تاریخ",

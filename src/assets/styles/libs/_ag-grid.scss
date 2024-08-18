@@ -79,6 +79,12 @@ $warning: rgba(var(--c-warning-100) / 1);
 				0 4px var(--c-ag-strike-price-shadow-bg),
 				0 0 6px 0 var(--c-ag-strike-price-shadow-color);
 		}
+
+		&-checkbox {
+			.ag-cell-wrapper {
+				flex-direction: row-reverse;
+			}
+		}
 	}
 }
 
@@ -129,7 +135,6 @@ $warning: rgba(var(--c-warning-100) / 1);
 .ag-checkbox,
 .ag-selection-checkbox {
 	cursor: pointer;
-	margin-left: 0;
 
 	&.ag-invisible {
 		pointer-events: none;
