@@ -79,10 +79,10 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 				colId: 'blockType',
 				headerName: t('orders.block_type'),
 				valueGetter: ({ data }) => data!.blockType,
-				valueFormatter: ({ value }) => {
-					if (value === 'Buy') return '-';
+				valueFormatter: ({ value, data }) => {
+					if (data?.side === 'Buy') return '−';
 					if (value) return t('option_block_type.' + value);
-					return '-';
+					return '−';
 				},
 			},
 			{
