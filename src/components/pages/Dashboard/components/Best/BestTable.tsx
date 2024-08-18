@@ -41,16 +41,19 @@ const BestTable = ({ symbolType, type, isModal = false }: TableProps) => {
 	const { data: optionTopSymbolsData, isLoading: isLoadingOptionTopSymbols } = useGetOptionTopSymbolsQuery({
 		queryKey: ['getOptionTopSymbolsQuery', type as Dashboard.GetTopSymbols.Option.Type, isModal ? 100 : 4],
 		enabled: symbolType === 'Option',
+		refetchInterval: 15e3,
 	});
 
 	const { data: baseTopSymbolsData, isLoading: isLoadingBaseTopSymbolsData } = useGetBaseTopSymbolsQuery({
 		queryKey: ['getBaseTopSymbolsQuery', type as Dashboard.GetTopSymbols.BaseSymbol.Type, isModal ? 100 : 4],
 		enabled: symbolType === 'BaseSymbol',
+		refetchInterval: 15e3,
 	});
 
 	const { data: topSymbolsData, isLoading: isLoadingTopSymbolsData } = useGetTopSymbolsQuery({
 		queryKey: ['getTopSymbolsQuery', type as Dashboard.GetTopSymbols.Symbol.Type, isModal ? 100 : 4],
 		enabled: symbolType === 'Symbol',
+		refetchInterval: 15e3,
 	});
 
 	const setSymbol = (symbolISIN: string) => {

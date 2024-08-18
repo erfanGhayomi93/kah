@@ -14,9 +14,10 @@ import Checkbox, { type ICheckboxProps } from '../Inputs/Checkbox';
 import Tooltip from '../Tooltip';
 import styles from './SymbolStrategyTable.module.scss';
 
-interface IInput {
+export interface IStrategyTableInput {
 	price: number;
 	quantity: number;
+	strikePrice: number;
 	side: TBsSides;
 }
 
@@ -54,7 +55,7 @@ type SymbolStrategyProps = ISharedProps & {
 	contract: TSymbolStrategy;
 	checkList: IContractCheckList;
 	commission?: Commission.Row;
-	onChange: (v: IInput) => void;
+	onChange: (v: IStrategyTableInput) => void;
 	onChecked: (name: TCheckboxes, value: boolean) => void;
 	onSelect: (checked: boolean) => void;
 };
@@ -64,7 +65,7 @@ interface SymbolStrategyTableProps extends ISharedProps {
 	selectedContracts: string[];
 	maxHeight?: string | number;
 	onSelectionChanged: (rows: string[]) => void;
-	onChange: (id: string, v: IInput) => void;
+	onChange: (id: string, v: IStrategyTableInput) => void;
 	onToggleAll?: (name: TCheckboxes, value: boolean) => void;
 	onChecked?: (id: string, name: TCheckboxes, value: boolean) => void;
 }
@@ -177,7 +178,7 @@ const SymbolStrategyTable = ({
 
 						<th className={styles.th}>{t('end_date')}</th>
 
-						<th className={styles.th}>{t('strike_price')}</th>
+						<th className={`${styles.th} w-96 min-w-88`}>{t('strike_price')}</th>
 
 						{features?.contractSize && <th className={styles.th}>{t('contract_size')}</th>}
 
@@ -311,10 +312,11 @@ const SymbolStrategy = ({
 
 	const dispatch = useAppDispatch();
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<IInput>({
+	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyTableInput>({
 		price: contract.price,
 		quantity: contract.quantity,
 		side: contract.side,
+		strikePrice: contract.symbol.strikePrice ?? 0,
 	});
 
 	const showInfo = () => {
@@ -431,16 +433,20 @@ const SymbolStrategy = ({
 			</td>
 
 			<td className={styles.td}>
-				<div
-					onCopy={(e) => {
-						if (contract.type === 'option') copyNumberToClipboard(e, contract.symbol.strikePrice);
-					}}
-					className='w-full flex-1 flex-justify-center'
-				>
-					<span className='text-gray-800'>
-						{contract.type === 'base' ? '−' : sepNumbers(String(contract.symbol.strikePrice ?? 0))}
-					</span>
-				</div>
+				{contract.type === 'base' ? (
+					'−'
+				) : (
+					<input
+						maxLength={16}
+						onCopy={(e) => copyNumberToClipboard(e, inputs.strikePrice)}
+						type='text'
+						name='price'
+						inputMode='numeric'
+						className='h-40 w-full rounded border border-gray-200 px-8 text-center ltr'
+						value={sepNumbers(String(inputs.strikePrice))}
+						onChange={(e) => setFieldValue('strikePrice', Number(convertStringToInteger(e.target.value)))}
+					/>
+				)}
 			</td>
 
 			{features?.contractSize && (

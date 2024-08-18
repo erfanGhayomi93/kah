@@ -27,9 +27,9 @@ const config: Config = {
 
 			inherit: 'inherit',
 
-			white: 'rgba(255, 255, 255, 1)',
+			white: 'rgb(var(--c-white))',
 
-			black: 'rgba(0, 0, 0, 1)',
+			black: 'rgb(var(--c-black))',
 
 			primary: {
 				100: 'rgb(var(--c-primary-100))',

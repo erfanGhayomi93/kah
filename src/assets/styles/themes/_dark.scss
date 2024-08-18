@@ -1,4 +1,4 @@
-html[data-theme="dark"] {
+html[data-theme='dark'] {
 	--c-primary-100: 114 142 201;
 
 	--c-secondary-100: 37 38 47;
@@ -47,5 +47,9 @@ html[data-theme="dark"] {
 		--ag-background-color: rgb(var(--c-gray-50));
 		--ag-cell-horizontal-border: rgb(var(--c-gray-50));
 		--ag-row-hover-color: rgb(52 54 72 / 1);
+
+		--c-ag-checkbox-color: rgba(var(--c-gray-50) / 1);
+		--c-ag-strike-price-color: rgba(var(--c-gray-50) / 1);
+		--c-ag-strike-price-shadow-bg: rgba(var(--c-gray-50) / 1);
 	}
 }
