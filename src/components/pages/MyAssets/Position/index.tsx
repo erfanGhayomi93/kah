@@ -21,7 +21,7 @@ const Position = () => {
 	return (
 		<div className='flex-1 gap-16 rounded bg-white p-16 flex-column darkBlue:bg-gray-50 darkness:bg-gray-50'>
 			<div className='flex gap-8'>
-				<PriceCard className='w-1/3' title={t('portfolio_total_value')} value={263e3} />
+				<PriceCard className='w-1/3' title={t('total_option_value')} value={263e3} />
 				<PriceCard className='w-1/3' title={t('total_profit_and_loss')} percent={22} value={263e3} />
 				<PriceCard className='w-1/3' title={t('today_profit_and_loss')} percent={22} value={263e3} />
 			</div>

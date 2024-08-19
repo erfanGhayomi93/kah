@@ -7,7 +7,7 @@ import SymbolStrategyTable, {
 	type IStrategyTableInput,
 	type TCheckboxes,
 } from '@/components/common/Tables/SymbolStrategyTable';
-import { BookmarkSVG, EraserSVG, RefreshSVG } from '@/components/icons';
+import { EraserSVG, RefreshSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuiltStrategy } from '@/features/slices/uiSlice';
@@ -140,16 +140,8 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 		});
 	};
 
-	const storeBuiltStrategy = () => {
-		//
-	};
-
 	const sendAllStrategyContracts = () => {
 		submit(contracts);
-	};
-
-	const addToVirtualPortfolio = () => {
-		//
 	};
 
 	const updatePrice = () => {
@@ -337,13 +329,13 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 						<Button onClick={upsert} type='button' className='rounded px-48 btn-primary-outline'>
 							{t('build_strategy.upsert')}
 						</Button>
-						<Button
+						{/* <Button
 							onClick={addToVirtualPortfolio}
 							type='button'
 							className='rounded px-40 btn-primary-outline'
 						>
 							{t('build_strategy.add_to_virtual_portfolio')}
-						</Button>
+						</Button> */}
 						<Button
 							onClick={sendAllStrategyContracts}
 							loading={submitting}
@@ -352,13 +344,13 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 						>
 							{t('build_strategy.send_all')}
 						</Button>
-						<Button
+						{/* <Button
 							onClick={storeBuiltStrategy}
 							type='button'
 							className='w-40 rounded border border-gray-200 text-primary-100 transition-colors flex-justify-center btn-primary-hover'
 						>
 							<BookmarkSVG />
-						</Button>
+						</Button> */}
 					</div>
 				</div>
 			</div>

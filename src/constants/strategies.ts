@@ -107,6 +107,7 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 		title: 'بازده عدم اعمال',
 		hidden: initialHiddenColumnsCoveredCall.nonExpiredProfitPercent,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'inUseCapital',
@@ -161,6 +162,7 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 		title: 'YTM (بازده موثر)',
 		hidden: initialHiddenColumnsCoveredCall.ytm,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'nonExpiredYTM',
@@ -1246,7 +1248,7 @@ export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColu
 	},
 	{
 		id: 'symbolTitle',
-		title: 'کال خرید',
+		title: 'اختیار فروش',
 		hidden: false,
 		tag: 'PanelDetail',
 	},

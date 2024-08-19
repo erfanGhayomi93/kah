@@ -273,7 +273,6 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 						label: t('strategy_filters.from'),
 						placeholder: t('strategy_filters.value'),
 						initialValue: filters?.leastMaxProfitPercent ?? null,
-						titleHint: t('strategy_filters.max_profit_tooltip'),
 					},
 					{
 						id: 'leastYTM',
