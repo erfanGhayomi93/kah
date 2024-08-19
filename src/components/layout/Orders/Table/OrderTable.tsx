@@ -249,13 +249,16 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 				headerName: t('orders.col_remain_orders'),
 				minWidth: 88,
 				hide: tab === 'executed_orders',
-				valueGetter: ({ data }) =>
-					Math.max(
-						(data as Order.TDataTab<'today_orders' | 'open_orders'>).quantity -
-							(data as Order.TDataTab<'today_orders' | 'open_orders'>).sumExecuted,
-						0,
-					) ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(value ?? 0),
+				valueGetter: ({ data }) => {
+					return (
+						Math.max(
+							(data as Order.TDataTab<'today_orders' | 'open_orders'>).quantity -
+								(data as Order.TDataTab<'today_orders' | 'open_orders'>).sumExecuted,
+							0,
+						) ?? 0
+					);
+				},
+				valueFormatter: ({ value }) => sepNumbers(String(value ?? 0)),
 			},
 
 			// کارمزد

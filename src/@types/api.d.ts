@@ -1781,6 +1781,7 @@ declare namespace Strategy {
 		ytm: number;
 		nonExpiredYTM: number;
 		bepDifference: number;
+		bepDifferencePercent: number;
 		riskCoverage: number;
 		baseMarketUnit: string;
 		marketUnit: string;

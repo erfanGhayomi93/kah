@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setConfirmModal } from '@/features/slices/modalSlice';
 import { getOrdersIsExpand, toggleOrdersIsExpand } from '@/features/slices/uiSlice';
 import { cn, dateConverter } from '@/utils/helpers';
-import { createOrders, deleteDraft, deleteOrder } from '@/utils/orders';
+import { createOrders } from '@/utils/orders';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
@@ -73,8 +73,9 @@ const Header = ({ isExpand, tab, selectedOrders, setSelectedOrders, setTab }: He
 	};
 
 	const deleteAll = (ids: number[]) => {
-		if (tab === 'draft') deleteDraft(ids);
-		else deleteOrder(ids);
+		// TODO: Uncomment
+		// if (tab === 'draft') deleteDraft(ids);
+		// else deleteOrder(ids);
 	};
 
 	const onDeleteAll = () => {
@@ -134,7 +135,7 @@ const Header = ({ isExpand, tab, selectedOrders, setSelectedOrders, setTab }: He
 	}, [tab]);
 
 	return (
-		<div className='darkBlue:bg-gray-50 h-56 bg-white px-8 flex-justify-between dark:bg-gray-50'>
+		<div className='h-56 bg-white px-8 flex-justify-between darkBlue:bg-gray-50 dark:bg-gray-50'>
 			<ul className='flex-1 flex-justify-start'>
 				{tabs.map((order, index) => (
 					<li key={index}>

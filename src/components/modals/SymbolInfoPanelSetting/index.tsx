@@ -135,7 +135,11 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 		return (
 			<Modal top='7%' transparent onClose={onCloseModal} {...props} ref={ref}>
 				<Div className='justify-between bg-white flex-column darkBlue:bg-gray-50 dark:bg-gray-50'>
-					<Header label={t('symbol_info_panel_setting.title')} onClose={onCloseModal} />
+					<Header
+						label={t('symbol_info_panel_setting.title')}
+						onClose={onCloseModal}
+						onReset={setToDefault}
+					/>
 
 					<div className='flex-1 flex-column'>
 						<div className='flex-1 gap-16 p-24 flex-column'>
@@ -154,14 +158,6 @@ const SymbolInfoPanelSetting = forwardRef<HTMLDivElement, SymbolInfoPanelSetting
 							</ul>
 						</div>
 						<div className='h-64 gap-8 border-t border-gray-200 px-16 flex-justify-end'>
-							<button
-								onClick={setToDefault}
-								style={{ width: '12rem' }}
-								type='button'
-								className='h-40 rounded btn-primary-outline'
-							>
-								{t('symbol_info_panel_setting.back_to_default')}
-							</button>
 							<button
 								onClick={onSubmit}
 								style={{ width: '12rem' }}
