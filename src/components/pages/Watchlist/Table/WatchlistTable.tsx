@@ -2,6 +2,7 @@ import { useDeleteCustomWatchlistSymbolMutation } from '@/api/mutations/watchlis
 import lightStreamInstance from '@/classes/Lightstream';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -16,25 +17,28 @@ import {
 	type GridApi,
 	type ICellRendererParams,
 	type IGetRowsParams,
+	type IRowNode,
 } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
 import { InfiniteRowModelModule } from 'ag-grid-community';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import ActionColumn from './ActionColumn';
 import SymbolTitleHeader from './SymbolTitleHeader';
+
+type TSort = IOptionWatchlistFilters['sort'];
 
 interface WatchlistTableProps {
 	id: number;
 	data: Option.Root[];
 	watchlistCount: number;
 	setTerm: (v: string) => void;
-	setSort: (sorting: IOptionWatchlistFilters['sort']) => void;
+	setSort: (sorting: TSort) => void;
 }
 
-const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTableProps) => {
+const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Option.Root> | null>(null);
@@ -48,8 +52,6 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 	const queryClient = useQueryClient();
 
 	const watchlistColumnsState = useAppSelector(getOptionWatchlistColumnsState);
-
-	const visualData = useRef<Option.Root[]>([]);
 
 	const dispatch = useAppDispatch();
 
@@ -74,6 +76,8 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 	});
 
 	const { watchlistColumns, defaultOptionWatchlistColumns } = useOptionWatchlistColumns();
+
+	const [lastRowIndex, setLastRowIndex] = useState(0);
 
 	const onColumnMoved = ({ finished, toIndex }: ColumnMovedEvent<Option.Root>) => {
 		try {
@@ -141,27 +145,49 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 
 	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
 		const symbolISIN: string = updateInfo.getItemName();
-		const symbolIndex = visualData.current.findIndex(({ symbolInfo }) => symbolInfo.symbolISIN === symbolISIN);
+		const rowNode = findRowNode(symbolISIN);
+		if (!rowNode?.data) return;
 
-		if (symbolIndex === -1) return;
+		const symbolData = rowNode.data;
 
 		updateInfo.forEachChangedField((fieldName, _b, value) => {
-			try {
-				const symbol = visualData.current[symbolIndex];
+			const fs = optionWatchlistLightstreamProperty[fieldName] as keyof Option.Watchlist;
 
-				if (value !== null && fieldName in symbol) {
-					// console.log(fieldName, value);
-				}
-			} catch (e) {
-				//
+			if (fs && value && fs in symbolData.optionWatchlistData) {
+				const valueAsNumber = Number(value);
+
+				// @ts-expect-error: Typescript can not detect lightstream types
+				symbolData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
 			}
 		});
 
-		queryClient.setQueryData(['sameSectorSymbolsQuery', symbolISIN], visualData.current);
+		rowNode.setData(symbolData);
 	};
 
 	const getRows = (params: IGetRowsParams) => {
-		const newData = dataRef.current;
+		const newData = [...dataRef.current];
+		const sortModel = params.sortModel[0];
+
+		if (sortModel) {
+			const { colId, sort } = sortModel;
+			newData.sort((a, b) => {
+				if (colId in a.symbolInfo && colId in b.symbolInfo) {
+					const valueA = a.symbolInfo[colId as keyof Option.SymbolInfo];
+					const valueB = b.symbolInfo[colId as keyof Option.SymbolInfo];
+
+					return compare(valueA, valueB, sort);
+				}
+
+				if (colId in a.optionWatchlistData && colId in b.optionWatchlistData) {
+					const valueA = a.optionWatchlistData[colId as keyof Option.Watchlist];
+					const valueB = b.optionWatchlistData[colId as keyof Option.Watchlist];
+
+					return compare(valueA, valueB, sort);
+				}
+
+				return 0;
+			});
+		}
 
 		const rowsThisPage = newData.slice(params.startRow, params.endRow);
 		let lastRow = -1;
@@ -169,6 +195,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 			lastRow = newData.length;
 		}
 
+		setLastRowIndex(params.endRow);
 		params.successCallback(rowsThisPage, lastRow);
 	};
 
@@ -179,10 +206,43 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 		});
 	};
 
+	const findRowNode = (symbolISIN: string) => {
+		let result: IRowNode<Option.Root> | undefined;
+
+		gridRef?.current?.forEachNode((rowNode) => {
+			const d = rowNode.data;
+			if (typeof d !== 'undefined' && d.symbolInfo.symbolISIN === symbolISIN) {
+				result = rowNode;
+				return;
+			}
+		});
+
+		return result;
+	};
+
+	const compare = (valueA: string | number, valueB: string | number, sorting: 'asc' | 'desc'): number => {
+		if (typeof valueA === 'string' && typeof valueB === 'string') {
+			if (sorting === 'asc') return valueA.localeCompare(valueB);
+			return valueB.localeCompare(valueA);
+		}
+
+		if (typeof valueA === 'number' && typeof valueB === 'number') {
+			if (sorting === 'asc') return valueB - valueA;
+			return valueA - valueB;
+		}
+
+		return 0;
+	};
+
 	const symbolsISIN = useMemo(() => {
 		if (!Array.isArray(data)) return [];
 		return data.map((item) => item.symbolInfo.symbolISIN);
 	}, [data]);
+
+	const slicedSymbolsISIN = useMemo(() => {
+		if (lastRowIndex === 0) return [];
+		return symbolsISIN.slice(0, lastRowIndex);
+	}, [symbolsISIN, lastRowIndex]);
 
 	const modifiedWatchlistColumns = useMemo(() => {
 		const result: Record<string, Option.Column> = {};
@@ -252,7 +312,6 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 					headerName: t('option_page.trade_value'),
 					initialHide: Boolean(modifiedWatchlistColumns?.tradeValue?.isHidden ?? false),
 					minWidth: 120,
-					initialSort: 'desc',
 					valueGetter: ({ data }) => data?.optionWatchlistData.tradeValue,
 					valueFormatter: ({ value }) => numFormatter(value),
 					comparator: (valueA, valueB) => valueA - valueB,
@@ -757,8 +816,21 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 					//
 				}
 			},
+			onSortChanged: ({ columns }) => {
+				const col = columns?.find((s) => s.getSort() != null);
+				const sorting = col?.getSort() ?? null;
+
+				if (!col || !sorting) {
+					setSort(null);
+					return;
+				}
+
+				setSort({
+					fieldName: col.getId(),
+					value: sorting,
+				});
+			},
 			defaultColDef: {
-				sortable: false,
 				resizable: false,
 				flex: 1,
 			},
@@ -820,50 +892,26 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 	useEffect(() => {
 		const sub = lightStreamInstance.subscribe({
 			mode: 'MERGE',
-			items: symbolsISIN,
+			items: slicedSymbolsISIN,
 			fields: [
-				'tradeValue',
-				'notionalValue',
-				'IntrinsicValue',
+				'bestBuyLimitPrice_1',
+				'bestSellLimitPrice_1',
+				'totalTradeValue',
+				'totalNumberOfSharesTraded',
+				'closingPriceVarReferencePrice',
+				'baseVolume',
+				'firstTradedPrice',
 				'lastTradedPrice',
-				'delta',
-				'baseSymbolPrice',
-				'breakEvenPoint',
-				'leverage',
-				'openPositionCount',
-				'impliedVolatility',
-				'iotm',
-				'blackScholes',
-				'tradeVolume',
-				'dueDays',
-				'strikePrice',
-				'bestBuyPrice',
-				'bestSellPrice',
-				'baseSymbolTitle',
+				'totalNumberOfTrades',
+				'lastTradedPriceVar',
+				'lastTradedPriceVarPercent',
 				'closingPrice',
-				'historicalVolatility',
-				'contractSize',
-				'timeValue',
-				'theta',
-				'tradeCount',
-				'contractEndDate',
-				'spread',
-				'blackScholesDifference',
-				'baseClosingPrice',
-				'gamma',
-				'optionType',
-				'requiredMargin',
-				'initialMargin',
-				'rho',
-				'vega',
-				'growth',
-				'contractValueType',
-				'highOpenPosition',
-				'lastTradeDate',
-				'legalBuyVolume',
-				'individualBuyVolume',
-				'legalSellVolume',
-				'individualSellVolume',
+				'closingPriceVar',
+				'closingPriceVarPercent',
+				'lastTradeDateTime',
+				'lowestTradePriceOfTradingDay',
+				'highestTradePriceOfTradingDay',
+				'symbolState',
 			],
 			dataAdapter: 'RamandRLCDData',
 			snapshot: true,
@@ -873,7 +921,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTablePro
 		sub.start();
 
 		subscribe(sub);
-	}, [symbolsISIN.join(',')]);
+	}, [slicedSymbolsISIN.join(',')]);
 
 	return <div ref={onTableLoad} className='ag-theme-alpine border-0' style={{ height: 'calc(100vh - 20rem)' }} />;
 };

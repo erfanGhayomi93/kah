@@ -713,3 +713,13 @@ export const getDeviceColorSchema = (): 'dark' | 'light' => {
 		return 'light';
 	}
 };
+
+export const except = <T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> => {
+	const result = JSON.parse(JSON.stringify(obj)) as T;
+
+	keys.forEach((key) => {
+		delete result[key];
+	});
+
+	return result;
+};
