@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
-import { brokerQueryClient } from '@/components/common/Registry/QueryClientRegistry';
-import { refetchActiveOrderTab } from '@/utils/orders';
 import { subscribePrivateGateWay } from '@/utils/subscriptions';
-import { toast } from 'react-toastify';
 import { type ItemUpdate, type Subscribe } from '../Subscribe';
+import OMSMessagesQueue from './OMSMessagesQueue';
 
 class Subscription {
 	private _sub: null | Subscribe = null;
@@ -12,16 +10,7 @@ class Subscription {
 
 	private _customerISIN: null | string = null;
 
-	private _orderStatus: Record<string, string> = {};
-
-	private _orderErrors: Record<string, string> = {};
-
-	constructor() {
-		import('../../../languages/fa.json').then((m) => {
-			this._orderStatus = m.default.order_status;
-			this._orderErrors = m.default.order_errors;
-		});
-	}
+	private readonly _omsMessageQueue = new OMSMessagesQueue();
 
 	setBrokerCode(v: string) {
 		this._brokerCode = v;
@@ -85,39 +74,7 @@ class Subscription {
 	}
 
 	private _OMSMessage(message: Record<number, string>) {
-		// 208 ? 208 : 22 + 200
-		// const clientKey = message[12];
-		const orderStatus = message[22];
-		const orderMessageType = message[200];
-		const orderMessage = message[208];
-
-		if (['OnCanceling', 'OnSending', 'InOMSQueue'].includes(orderStatus)) return;
-
-		const messageType: 'success' | 'error' = orderStatus === 'Error' ? 'error' : 'success';
-		let messageText = orderMessage ?? '';
-
-		if (!messageText) {
-			const orderStatusMessage = this._orderStatus?.[orderStatus] ?? orderStatus;
-			const orderErrorMessage = this._orderErrors?.[orderMessageType] ?? orderMessageType;
-
-			if (orderMessageType) messageText = orderStatusMessage + `: ${orderErrorMessage}`;
-			else messageText = orderStatusMessage;
-		}
-
-		refetchActiveOrderTab();
-
-		toast[messageType](messageText, {
-			autoClose: 3500,
-			toastId: orderStatus,
-		});
-
-		try {
-			brokerQueryClient!.refetchQueries({
-				queryKey: ['brokerOrdersCountQuery'],
-			});
-		} catch (e) {
-			//
-		}
+		this._omsMessageQueue.add(message);
 	}
 
 	private _AdminMessage(message: Record<number, string>) {

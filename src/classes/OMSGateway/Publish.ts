@@ -11,7 +11,7 @@ class Publish {
 
 	private _sending: boolean = false; // Queue is sending the orders
 
-	private readonly _debounce = 310; // time as milliseconds  between orders with same symbolISIN
+	private readonly _debounce = 320; // time as milliseconds  between orders with same symbolISIN
 
 	public start(): void {
 		if (this._sending || this.queue.length === 0) return;

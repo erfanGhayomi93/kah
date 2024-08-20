@@ -73,7 +73,6 @@ const Header = ({ isExpand, tab, selectedOrders, setSelectedOrders, setTab }: He
 	};
 
 	const deleteAll = (ids: number[]) => {
-		// TODO: Uncomment
 		// if (tab === 'draft') deleteDraft(ids);
 		// else deleteOrder(ids);
 	};
