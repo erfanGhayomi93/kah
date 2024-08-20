@@ -481,16 +481,19 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: t('CoveredCall.bepDifference'),
 				initialHide: initialHiddenColumnsCoveredCall.bepDifference,
 				width: 136,
-				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ value }) =>
-					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.bepDifference ?? 0, data?.bepDifferencePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'riskCoverage',
 				headerName: t('CoveredCall.riskCoverage'),
 				initialHide: initialHiddenColumnsCoveredCall.riskCoverage,
 				width: 152,
+				flex: 1,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip:

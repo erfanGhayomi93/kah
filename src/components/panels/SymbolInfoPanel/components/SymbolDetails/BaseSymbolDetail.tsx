@@ -49,12 +49,12 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 				value: numFormatter(symbolData.oneMonthAvgVolume),
 			},
 			{ id: 'hv', title: t('symbol_info_panel.hv'), value: numFormatter((symbolData.hv ?? 0).toFixed(2)) },
-			{
+			/* {
 				id: 'wiv',
 				title: t('symbol_info_panel.wiv'),
 				value: numFormatter((symbolData.avgIV ?? 0).toFixed(2)),
-			},
-			{ id: 'stock_price_estimate', title: t('symbol_info_panel.stock_price_estimate'), value: '−' },
+			}, */
+			// { id: 'stock_price_estimate', title: t('symbol_info_panel.stock_price_estimate'), value: '−' },
 			{
 				id: 'last_trade',
 				title: t('symbol_info_panel.last_trade_date'),
@@ -103,7 +103,7 @@ const BaseSymbolDetail = ({ symbolData, setHeight }: BaseSymbolDetailProps) => {
 	}, [items, isExpand]);
 
 	useEffect(() => {
-		setHeight(isExpand ? 328 : 808);
+		setHeight(isExpand ? 328 : 728);
 	}, [isExpand]);
 
 	return (

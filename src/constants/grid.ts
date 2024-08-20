@@ -1,15 +1,23 @@
 export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 	{
-		id: 'option_detail',
-		height: 328,
+		id: 'market_depth',
+		height: 200,
 		expand: true,
 		hidden: false,
 		isOption: true,
 		i: 0,
 	},
 	{
-		id: 'market_depth',
-		height: 200,
+		id: 'quotes',
+		height: 277,
+		expand: true,
+		hidden: false,
+		isOption: false,
+		i: 0,
+	},
+	{
+		id: 'option_detail',
+		height: 328,
 		expand: true,
 		hidden: false,
 		isOption: true,
@@ -21,7 +29,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		expand: true,
 		hidden: false,
 		isOption: false,
-		i: 2,
+		i: 1,
 	},
 	{
 		id: 'base_symbol_contracts',
@@ -29,7 +37,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		expand: true,
 		hidden: false,
 		isOption: false,
-		i: 1,
+		i: 2,
 	},
 	{
 		id: 'user_open_positions',
@@ -37,26 +45,18 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		expand: true,
 		hidden: false,
 		isOption: false,
-		i: 2,
-	},
-	{
-		id: 'quotes',
-		height: 277,
-		expand: true,
-		hidden: false,
-		isOption: false,
 		i: 3,
 	},
 	{
-		id: 'chart',
-		height: 320,
+		id: 'individual_and_legal',
+		height: 270,
 		expand: true,
 		hidden: false,
 		i: 4,
 	},
 	{
-		id: 'individual_and_legal',
-		height: 270,
+		id: 'chart',
+		height: 320,
 		expand: true,
 		hidden: false,
 		i: 5,
@@ -66,7 +66,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		height: 196,
 		expand: true,
 		hidden: false,
-		i: 5,
+		i: 6,
 	},
 	{
 		id: 'same_sector_symbols',
@@ -74,7 +74,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		expand: true,
 		hidden: false,
 		isOption: false,
-		i: 6,
+		i: 7,
 	},
 	{
 		id: 'supervisor_messages',
@@ -82,7 +82,7 @@ export const initialSymbolInfoPanelGrid: ISymbolInfoPanelGrid[] = [
 		expand: true,
 		hidden: false,
 		isOption: false,
-		i: 7,
+		i: 8,
 	},
 ];
 
