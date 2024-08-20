@@ -50,6 +50,8 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 
 	const dataIsEmpty = watchlistData.length === 0;
 
+	const isFilteredDataEmpty = filtersCount > 0 || watchlistId === -1 || (filters.term && filters.term.length > 0);
+
 	return (
 		<div className='relative flex-1 gap-16 overflow-hidden flex-column'>
 			<div
@@ -65,7 +67,6 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 					setTerm={(term) => setFilters({ term })}
 					setSort={setSort}
 					watchlistCount={watchlistCount}
-					isLoading={isLoading}
 				/>
 
 				{!dataIsEmpty && !isLoading && watchlistId > -1 && (
@@ -92,7 +93,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				<div className='absolute left-0 top-48 size-full bg-white flex-justify-center darkness:bg-gray-50'>
 					<NoData
 						text={
-							filtersCount > 0 || watchlistId === -1
+							isFilteredDataEmpty
 								? t('no_data_table')
 								: t.rich('add_symbol_to_table', {
 										symbol: (chunk) => (

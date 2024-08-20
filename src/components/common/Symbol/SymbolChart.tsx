@@ -1,4 +1,4 @@
-import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import {
 	type Chart,
 	chart,
@@ -169,7 +169,7 @@ const SymbolChart = ({ height, data, tab, type, interval = 'daily' }: SymbolChar
 				type: 'linear',
 				labels: {
 					formatter: ({ value }) => {
-						return numFormatter(Number(value));
+						return sepNumbers(String(value));
 					},
 				},
 			},

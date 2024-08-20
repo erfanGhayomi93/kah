@@ -15,35 +15,32 @@ const OMSRegistry = () => {
 
 	const { data: userInfo } = useUserInfo();
 
-	const createOrder = (fields: IpcMainChannels['send_order']) =>
-		new Promise<string | undefined>((resolve) => {
+	const createOrder = (fields: IpcMainChannels['send_order']) => {
+		return new Promise<string | undefined>((resolve) => {
 			try {
 				if (!brokerURLs) throw new Error();
 
 				const uuid = uuidv4();
-				const order = OMSGateway.createOrder()
-					.toQueue()
-					.setUUID(uuid)
-					.setFields(fields)
-					.setURL(brokerURLs.OrderCreate);
+				const order = OMSGateway.createOrder().setUUID(uuid).setFields(fields).setURL(brokerURLs.OrderCreate);
 
-				OMSGateway.publish().addAndStart([order]);
+				OMSGateway.publish().add([order]);
 
 				resolve(uuid);
 			} catch (e) {
 				resolve(undefined);
 			}
 		});
+	};
 
 	const createOrders = (fields: IpcMainChannels['send_orders']) => {
 		if (!brokerURLs) throw new Error();
 
 		const orders: Order[] = [];
 		for (let i = 0; i < fields.length; i++) {
-			orders.push(OMSGateway.createOrder().toQueue().setFields(fields[i]).setURL(brokerURLs.OrderCreate));
+			orders.push(OMSGateway.createOrder().setFields(fields[i]).setURL(brokerURLs.OrderCreate));
 		}
 
-		OMSGateway.publish().addAndStart(orders);
+		OMSGateway.publish().add(orders);
 	};
 
 	useEffect(() => {
@@ -63,9 +60,6 @@ const OMSRegistry = () => {
 		// Subscription
 		const [, brokerCode] = getBrokerClientId();
 		OMSGateway.subscription().setBrokerCode(String(brokerCode)).setCustomerISIN(userInfo.customerISIN).start();
-
-		// Publish
-		OMSGateway.publish().start();
 	}, [brokerURLs, userInfo]);
 
 	return null;

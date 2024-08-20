@@ -85,7 +85,7 @@ export const useUpdateCustomWatchlistNameMutation = createMutation<boolean, { wa
 	mutationFn: async ({ watchlistId, name }) => {
 		const response = await axios.post<ServerResponse<boolean>>(routes.optionWatchlist.UpdateCustomWatchlist, {
 			id: watchlistId,
-			name,
+			name: name.replace(/^\s+|\s+$/g, ''),
 		});
 		const { data } = response;
 

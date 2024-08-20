@@ -275,7 +275,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			},
 			{
 				colId: 'symbolTitle',
-				headerName: 'پوت خرید',
+				headerName: 'اختیار فروش',
 				initialHide: initialHiddenColumnsProtectivePut.symbolTitle,
 				minWidth: 144,
 				maxWidth: 144,

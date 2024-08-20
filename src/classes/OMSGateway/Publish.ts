@@ -1,88 +1,98 @@
 import { type TOrder } from './Order';
 
-interface IAddOrderConfiguration {
-	startSending: boolean;
-	type: 'push' | 'unshift';
-}
-
 class Publish {
 	private queue: TOrder[] = []; // QUEUE
 
-	private readonly sent = new Map<string, TOrder>(); // After-QUEUE
+	private readonly cache = new Map<string, TOrder>(); // AFTER-QUEUE
 
-	private _sendingIndex: number = -1;
+	private readonly _timing = new Map<string, number>(); // Order timing
 
-	private _isSending: boolean = false;
+	private _sendingIndex: number = -1; // Current order index in Queue
 
-	private readonly _debounce = 310;
+	private _sending: boolean = false; // Queue is sending the orders
 
-	start() {
-		if (this.queue.length === 0) return;
+	private readonly _debounce = 320; // time as milliseconds  between orders with same symbolISIN
 
-		if (this._isSending) return;
-		else this._isSending = true;
+	public start(): void {
+		if (this._sending || this.queue.length === 0) return;
 
-		this._delay(() => {
-			this._sendingIndex = 0;
-			this.send(this.order);
+		this._sending = true;
+		this._sendingIndex = 0;
+
+		this.send();
+	}
+
+	public send(): void {
+		const order = this.order;
+		if (!order) return this._onFindingOrderFailed();
+
+		const orderCreatedAt = this._timing.get(order.symbolISIN);
+		let updatedAt = Date.now();
+
+		if (!orderCreatedAt) {
+			this._sendOrder(order);
+		} else {
+			const diff = orderCreatedAt - Date.now();
+			let ms = diff + this._debounce;
+			ms = Math.max(0, ms);
+
+			updatedAt += ms;
+
+			this._delay(() => this._sendOrder(order), ms);
+		}
+
+		this._timing.set(order.symbolISIN, updatedAt);
+		this._sendNextOrder();
+	}
+
+	public add(orders: TOrder[]): void {
+		this._addOrders(orders);
+		this.start();
+	}
+
+	private _sendOrder(order: TOrder) {
+		order.send().then((response) => {
+			this.cache.set(response.clientKey, order);
 		});
-	}
-
-	send(order: TOrder | undefined) {
-		return new Promise<Order.Response>((resolve, reject) => {
-			if (!order) {
-				reject();
-				return;
-			}
-
-			order
-				.send()
-				.then((result) => {
-					this.sent.set(result.clientKey, order);
-					resolve(result);
-				})
-				.catch(reject)
-				.finally(() => this._sendNextOrder());
-		});
-	}
-
-	add(orders: TOrder[], options?: IAddOrderConfiguration) {
-		if (options?.type === 'unshift') this.queue.unshift(...orders);
-		else this.queue.push(...orders);
-
-		if (options?.startSending) this.start();
-	}
-
-	addAndStart(orders: TOrder[]) {
-		this.add(orders, { startSending: true, type: 'push' });
-	}
-
-	private _end() {
-		this._isSending = false;
-
-		if (this.queue.length > 0) this.start();
-		else this._reset();
 	}
 
 	private _sendNextOrder() {
-		this.queue.splice(this._sendingIndex, 1);
+		this._sendingIndex += 1;
 
-		this._sendingIndex++;
-		if (this.order) this._delay(() => this.order && this.send(this.order));
-		else this._end();
+		if (this.order === undefined) this._restart();
+		else this.send();
 	}
 
-	private _reset() {
+	private _restart() {
+		this._flush();
+		this.start();
+	}
+
+	private _onFindingOrderFailed(): void {
+		//
+	}
+
+	private _addOrders(orders: TOrder[]): void {
+		this.queue.push(...orders);
+	}
+
+	private _flush() {
 		this._sendingIndex = -1;
+		this._sending = false;
+		this._clearQueue();
+	}
+
+	private _clearQueue(): void {
 		this.queue = [];
 	}
 
-	private _delay(callback: () => void) {
-		setTimeout(() => callback(), this._debounce);
+	private _delay(cb: () => void, ms: number): void {
+		if (ms === 0) cb();
+		else setTimeout(() => cb(), ms);
 	}
 
-	get order() {
-		return this.queue[this._sendingIndex];
+	get order(): TOrder | undefined {
+		return this.queue[this._sendingIndex] ?? undefined;
 	}
 }
 

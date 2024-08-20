@@ -40,6 +40,10 @@ const Watchlist = ({
 		inputRef.current?.focus();
 	};
 
+	const valueFormatter = (v: string) => {
+		return v.replace(/^\s*/g, '');
+	};
+
 	useEffect(() => setTerm(name), [editing]);
 
 	return (
@@ -62,7 +66,7 @@ const Watchlist = ({
 									type='text'
 									className='flex-1 px-8 text-gray-800 darkness:text-white'
 									value={term}
-									onChange={(e) => setTerm(e.target.value)}
+									onChange={(e) => setTerm(valueFormatter(e.target.value))}
 								/>
 								{term.length > 1 && (
 									<button

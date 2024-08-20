@@ -426,7 +426,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueGetter: ({ data }) => [data?.maxProfit ?? 0, data?.maxProfitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
-			{
+			/* {
 				colId: 'nonExpiredProfitPercent',
 				headerName: t('CoveredCall.nonExpiredProfitPercent'),
 				initialHide: initialHiddenColumnsCoveredCall.nonExpiredProfitPercent,
@@ -441,7 +441,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.nonExpiredProfit ?? 0, data?.nonExpiredProfitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-			},
+			}, */
 			{
 				colId: 'inUseCapital',
 				headerName: t('CoveredCall.inUseCapital'),
@@ -450,7 +450,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			{
+			/* {
 				colId: 'ytm',
 				headerName: t('CoveredCall.ytm'),
 				initialHide: initialHiddenColumnsCoveredCall.ytm,
@@ -462,7 +462,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.ytm ?? 0,
 				valueFormatter: ({ value }) => `${toFixed(value, 4)}%`,
-			},
+			}, */
 			{
 				colId: 'nonExpiredYTM',
 				headerName: t('CoveredCall.nonExpiredYTM'),
@@ -481,16 +481,19 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: t('CoveredCall.bepDifference'),
 				initialHide: initialHiddenColumnsCoveredCall.bepDifference,
 				width: 136,
-				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ value }) =>
-					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.bepDifference ?? 0, data?.bepDifferencePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'riskCoverage',
 				headerName: t('CoveredCall.riskCoverage'),
 				initialHide: initialHiddenColumnsCoveredCall.riskCoverage,
 				width: 152,
+				flex: 1,
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip:

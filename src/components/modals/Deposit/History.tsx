@@ -88,6 +88,11 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ activeTab, onCloseModal
 		return receiptData.slice(0, 8);
 	}, [activeTab, depositData, receiptData]);
 
+	const reportPageUrl =
+		activeTab === 'liveDepositTab'
+			? '/financial-reports/instant-deposit'
+			: '/financial-reports/deposit-with-receipt';
+
 	return (
 		<div className='h-full gap-8 flex-column'>
 			<LightweightTable<Payment.IDepositHistoryList[] | Payment.IReceiptHistoryList[]>
@@ -104,7 +109,7 @@ export const HistoryDeposit: FC<HistoryDepositType> = ({ activeTab, onCloseModal
 
 			<Link
 				className='h-40 w-full gap-8 rounded font-medium text-info-100 flex-justify-center'
-				href={'/financial-reports/instant-deposit'}
+				href={reportPageUrl}
 				onClick={() => onCloseModal()}
 			>
 				<SessionHistorySVG width='1.6rem' height='1.6rem' />

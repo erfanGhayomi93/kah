@@ -28,14 +28,13 @@ import SymbolTitleHeader from './SymbolTitleHeader';
 
 interface WatchlistTableProps {
 	id: number;
-	isLoading: boolean;
 	data: Option.Root[];
 	watchlistCount: number;
 	setTerm: (v: string) => void;
 	setSort: (sorting: IOptionWatchlistFilters['sort']) => void;
 }
 
-const WatchlistTable = ({ id, data, watchlistCount, isLoading, setTerm }: WatchlistTableProps) => {
+const WatchlistTable = ({ id, data, watchlistCount, setTerm }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Option.Root> | null>(null);
@@ -702,7 +701,7 @@ const WatchlistTable = ({ id, data, watchlistCount, isLoading, setTerm }: Watchl
 				{
 					colId: 'sectorName',
 					headerName: t('option_page.sector_name'),
-					minWidth: 136,
+					minWidth: 264,
 					initialHide: Boolean(modifiedWatchlistColumns?.sectorName?.isHidden ?? false),
 					valueGetter: ({ data }) => data?.symbolInfo.sectorName ?? '',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),

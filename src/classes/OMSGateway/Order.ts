@@ -2,10 +2,8 @@ import brokerAxios from '@/api/brokerAxios';
 import { toISOStringWithoutChangeTime } from '@/utils/helpers';
 import ipcMain from '../IpcMain';
 
-type TOrderState = 'QUEUE' | 'SENDING' | 'SENT' | 'INITIAL';
-
 class Order {
-	private _state: TOrderState = 'INITIAL';
+	private _symbolISIN: string = '';
 
 	private _uuid: string | undefined = undefined;
 
@@ -15,13 +13,10 @@ class Order {
 
 	private _clientKey: string | null = null;
 
-	toQueue() {
-		this._state = 'QUEUE';
-		return this;
-	}
-
 	setFields(fields: IOFields) {
+		this._symbolISIN = fields.symbolISIN;
 		this._fields = fields;
+
 		if (['Week', 'Month'].includes(this._fields.validity)) {
 			this._fields.validity = 'GoodTillDate';
 		}
@@ -42,8 +37,6 @@ class Order {
 	}
 
 	send() {
-		this._state = 'SENDING';
-
 		return new Promise<Order.Response>(async (resolve, reject) => {
 			try {
 				if (!this._url || !this._fields) {
@@ -74,8 +67,6 @@ class Order {
 			} catch (e) {
 				this._pushToIpcMain('error');
 				reject();
-			} finally {
-				this._state = 'SENT';
 			}
 		});
 	}
@@ -87,12 +78,12 @@ class Order {
 		});
 	}
 
-	get state() {
-		return this._state;
-	}
-
 	get clientKey() {
 		return this._clientKey;
+	}
+
+	get symbolISIN() {
+		return this._symbolISIN;
 	}
 }
 

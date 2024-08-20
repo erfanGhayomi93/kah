@@ -1,13 +1,11 @@
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import BaseSymbolAdvanceSearch from '@/components/common/Symbol/BaseSymbolAdvanceSearch';
-import Tabs from '@/components/common/Tabs/Tabs';
 import { useAppDispatch } from '@/features/hooks';
 import { setStrategyFiltersModal } from '@/features/slices/modalSlice';
 import { type NStrategyFilter } from '@/features/slices/types/modalSlice.interfaces';
 import { useInputs } from '@/hooks';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
-import { forwardRef, useEffect, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import Modal, { Header } from '../Modal';
 import ArrayString from './components/ArrayString';
 import Filter from './components/Filter';
@@ -163,23 +161,6 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 			return null;
 		};
 
-		const TABS = useMemo(
-			() => [
-				{
-					id: 'simple',
-					title: t('simple_filters'),
-					render: null,
-				},
-				{
-					id: 'conditional',
-					title: t('conditional_filters'),
-					render: null,
-					disabled: true,
-				},
-			],
-			[],
-		);
-
 		useEffect(() => {
 			const values: TInput = {
 				baseSymbols: [],
@@ -208,23 +189,6 @@ const StrategyFilters = forwardRef<HTMLDivElement, StrategyFiltersProps>(
 					<Header label={t('title')} onClose={onCloseModal} onClear={onClear} />
 
 					<div className='gap-32 p-24 flex-column'>
-						<Tabs
-							data={TABS}
-							defaultActiveTab='simple'
-							renderTab={(item, activeTab) => (
-								<button
-									className={clsx(
-										'h-40 flex-1 transition-colors',
-										item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
-									)}
-									type='button'
-									disabled={item?.disabled}
-								>
-									{item.title}
-								</button>
-							)}
-						/>
-
 						<form onSubmit={submit} className='gap-24 bg-white flex-column darkness:bg-gray-50'>
 							<ul className='gap-32 flex-column'>
 								{!loading && (
