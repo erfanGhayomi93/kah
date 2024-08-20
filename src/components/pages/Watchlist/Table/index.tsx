@@ -6,6 +6,7 @@ import { PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
+import { except } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import WatchlistTable from './WatchlistTable';
@@ -25,12 +26,8 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
 	const { data: watchlistData = [], isLoading } = useOptionWatchlistQuery({
-		queryKey: ['optionCustomWatchlistQuery', { ...filters, watchlistId: watchlistId ?? -1 }],
+		queryKey: ['optionCustomWatchlistQuery', except({ ...filters, watchlistId: watchlistId ?? -1 }, ['sort'])],
 	});
-
-	const setSort = (sorting: IOptionWatchlistFilters['sort']) => {
-		//
-	};
 
 	const addSymbol = () => {
 		dispatch(setAddSymbolToWatchlistModal({}));
@@ -64,8 +61,8 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				<WatchlistTable
 					id={watchlistId}
 					data={watchlistData}
-					setTerm={(term) => setFilters({ term })}
-					setSort={setSort}
+					setTerm={(term) => setFilters({ ...filters, term })}
+					setSort={(sort) => setFilters({ ...filters, sort })}
 					watchlistCount={watchlistCount}
 				/>
 

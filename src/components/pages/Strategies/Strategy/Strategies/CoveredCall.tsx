@@ -450,7 +450,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueGetter: ({ data }) => data?.inUseCapital ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			/* {
+			{
 				colId: 'ytm',
 				headerName: t('CoveredCall.ytm'),
 				initialHide: initialHiddenColumnsCoveredCall.ytm,
@@ -462,8 +462,8 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.ytm ?? 0,
 				valueFormatter: ({ value }) => `${toFixed(value, 4)}%`,
-			}, */
-			{
+			},
+			/* {
 				colId: 'nonExpiredYTM',
 				headerName: t('CoveredCall.nonExpiredYTM'),
 				initialHide: initialHiddenColumnsCoveredCall.nonExpiredYTM,
@@ -475,7 +475,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
 				valueFormatter: ({ value }) => `${toFixed(value, 4)}%`,
-			},
+			}, */
 			{
 				colId: 'bepDifference',
 				headerName: t('CoveredCall.bepDifference'),
