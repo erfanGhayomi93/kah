@@ -13,10 +13,13 @@ import WatchlistList from './WatchlistList';
 interface ToolbarProps {
 	filtersCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
+	isSubscribing: boolean;
 	setPriceBasis: (v: TPriceBasis) => void;
+	onPauseSubscribing: () => void;
+	onPlaySubscribing: () => void;
 }
 
-const Toolbar = ({ setPriceBasis, filters, filtersCount }: ToolbarProps) => {
+const Toolbar = ({ isSubscribing, filters, filtersCount, onPauseSubscribing, onPlaySubscribing }: ToolbarProps) => {
 	const t = useTranslations();
 
 	const dispatch = useAppDispatch();
@@ -107,11 +110,13 @@ const Toolbar = ({ setPriceBasis, filters, filtersCount }: ToolbarProps) => {
 
 			<TableActions
 				className='flex-1 justify-end'
-				showPlayAndPause={false}
 				filtersCount={filtersCount}
+				isInitialPaused={!isSubscribing}
 				onManageColumns={manageWatchlistColumns}
 				onShowFilters={onShowFilters}
 				onExportExcel={onExportExcel}
+				onPaused={onPauseSubscribing}
+				onPlayed={onPlaySubscribing}
 			>
 				<div style={{ flex: '0 0 15.2rem' }}>
 					{/* <Select<TPriceBasis>

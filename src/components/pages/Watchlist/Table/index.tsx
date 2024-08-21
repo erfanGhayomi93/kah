@@ -13,12 +13,13 @@ import WatchlistTable from './WatchlistTable';
 
 interface TableProps {
 	filtersCount: number;
+	isSubscribing: boolean;
 	watchlistCount: number;
 	filters: Partial<IOptionWatchlistFilters>;
 	setFilters: React.Dispatch<React.SetStateAction<Partial<IOptionWatchlistFilters>>>;
 }
 
-const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps) => {
+const Table = ({ filters, filtersCount, watchlistCount, isSubscribing, setFilters }: TableProps) => {
 	const t = useTranslations('option_page');
 
 	const dispatch = useAppDispatch();
@@ -61,6 +62,7 @@ const Table = ({ filters, filtersCount, watchlistCount, setFilters }: TableProps
 				<WatchlistTable
 					id={watchlistId}
 					data={watchlistData}
+					isSubscribing={isSubscribing}
 					setTerm={(term) => setFilters({ ...filters, term })}
 					setSort={(sort) => setFilters({ ...filters, sort })}
 					watchlistCount={watchlistCount}

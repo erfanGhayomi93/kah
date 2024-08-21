@@ -44,7 +44,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		initialColumnsLongStraddle,
 	);
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+	const { inputs, setFieldValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
@@ -134,12 +134,6 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
-	};
-
-	const goToTheNextPage = () => {
-		setFieldsValue((prev) => ({
-			pageNumber: prev.pageNumber + 1,
-		}));
 	};
 
 	const showColumnsManagementModal = () => {
@@ -250,7 +244,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				width: 104,
 				maxWidth: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer justify-end',
+				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -577,10 +571,8 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
-					fetchNextPage={goToTheNextPage}
-					pageNumber={inputs.pageNumber}
-					pageSize={inputs.pageSize}
 					columnsVisibility={columnsVisibility}
+					dependencies={[useCommission]}
 				/>
 			</div>
 		</>

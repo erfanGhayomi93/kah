@@ -10,7 +10,7 @@ import { setOptionWatchlistTabId } from '@/features/slices/tabSlice';
 import { getIsLoggedIn } from '@/features/slices/userSlice';
 import { useInputs } from '@/hooks';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Toolbar from './Toolbar';
 
 const Table = dynamic(() => import('./Table'), {
@@ -28,6 +28,8 @@ const Watchlist = () => {
 		setFieldValue,
 		setInputs,
 	} = useInputs<Partial<IOptionWatchlistFilters>>(initialOptionWatchlistFilters);
+
+	const [isSubscribing, setIsSubscribing] = useState(true);
 
 	const { data: userCustomWatchlistList } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
@@ -98,9 +100,13 @@ const Watchlist = () => {
 					setPriceBasis={(v) => setFieldValue('priceBasis', v)}
 					filters={filters}
 					filtersCount={filtersCount}
+					isSubscribing={isSubscribing}
+					onPauseSubscribing={() => setIsSubscribing(false)}
+					onPlaySubscribing={() => setIsSubscribing(true)}
 				/>
 
 				<Table
+					isSubscribing={isSubscribing}
 					filters={filters}
 					filtersCount={filtersCount}
 					setFilters={setInputs}

@@ -46,7 +46,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		initialColumnsCoveredCall,
 	);
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+	const { inputs, setFieldValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
@@ -181,12 +181,6 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		);
 	};
 
-	const goToTheNextPage = () => {
-		setFieldsValue((prev) => ({
-			pageNumber: prev.pageNumber + 1,
-		}));
-	};
-
 	const showFilters = () => {
 		dispatch(
 			setStrategyFiltersModal({
@@ -295,7 +289,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				width: 104,
 				maxWidth: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer justify-end',
+				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -587,10 +581,8 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
-					fetchNextPage={goToTheNextPage}
-					pageNumber={inputs.pageNumber}
-					pageSize={inputs.pageSize}
 					columnsVisibility={columnsVisibility}
+					dependencies={[useCommission]}
 				/>
 			</div>
 		</>

@@ -90,7 +90,7 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 
 				series.data = data.map((item) => ({
 					x: new Date(item.intervalDateTime).getTime(),
-					y: divide(item.putValue, item.callValue) * 100,
+					y: Number((divide(item.putValue, item.callValue) * 100).toFixed(3)),
 				}));
 
 				chartRef.current.series[0].update(series);

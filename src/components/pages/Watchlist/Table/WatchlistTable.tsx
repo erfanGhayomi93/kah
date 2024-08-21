@@ -1,17 +1,17 @@
 import { useDeleteCustomWatchlistSymbolMutation } from '@/api/mutations/watchlistMutations';
 import lightStreamInstance from '@/classes/Lightstream';
+import AgInfiniteTable from '@/components/common/Tables/AgInfiniteTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
+import { baseSymbolWatchlistLightstreamProperty, optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumnsState, setOptionWatchlistColumnsState } from '@/features/slices/tableSlice';
 import { useDebounce, useOptionWatchlistColumns, useSubscription } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
+import { blackScholes, impliedVolatility } from '@/utils/math/black-scholes';
 import {
-	createGrid,
-	ModuleRegistry,
 	type ColDef,
 	type ColumnMovedEvent,
 	type GridApi,
@@ -20,10 +20,9 @@ import {
 	type IRowNode,
 } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
-import { InfiniteRowModelModule } from 'ag-grid-community';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import ActionColumn from './ActionColumn';
 import SymbolTitleHeader from './SymbolTitleHeader';
@@ -34,18 +33,23 @@ interface WatchlistTableProps {
 	id: number;
 	data: Option.Root[];
 	watchlistCount: number;
+	isSubscribing: boolean;
 	setTerm: (v: string) => void;
 	setSort: (sorting: TSort) => void;
 }
 
-const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: WatchlistTableProps) => {
+type TColDef = Omit<ColDef<Option.Root>, 'colId'> & { colId: keyof (Option.Watchlist & Option.SymbolInfo) };
+
+const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm, setSort }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Option.Root> | null>(null);
 
 	const dataRef = useRef<Option.Root[]>([]);
 
-	const { subscribe } = useSubscription();
+	const { subscribe: subscribeOptions, unsubscribe: unsubscribeOptions } = useSubscription();
+
+	const { subscribe: subscribeBaseSymbols, unsubscribe: unsubscribeBaseSymbols } = useSubscription();
 
 	const { setDebounce } = useDebounce();
 
@@ -143,25 +147,96 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 		}
 	};
 
-	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+	const onOptionUpdate = (updateInfo: ItemUpdate) => {
 		const symbolISIN: string = updateInfo.getItemName();
+
 		const rowNode = findRowNode(symbolISIN);
-		if (!rowNode?.data) return;
+		if (!rowNode) return;
 
-		const symbolData = rowNode.data;
-
+		const symbolData = { ...rowNode.data! };
 		updateInfo.forEachChangedField((fieldName, _b, value) => {
-			const fs = optionWatchlistLightstreamProperty[fieldName] as keyof Option.Watchlist;
-
-			if (fs && value && fs in symbolData.optionWatchlistData) {
+			if (value && fieldName in optionWatchlistLightstreamProperty) {
+				const fs = optionWatchlistLightstreamProperty[fieldName];
 				const valueAsNumber = Number(value);
 
-				// @ts-expect-error: Typescript can not detect lightstream types
-				symbolData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				if (fs in symbolData.optionWatchlistData) {
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
 			}
 		});
 
+		symbolData.optionWatchlistData = {
+			...symbolData.optionWatchlistData,
+			...updateBlackScholes(symbolData),
+		};
+
 		rowNode.setData(symbolData);
+	};
+
+	const onBaseSymbolUpdate = (updateInfo: ItemUpdate) => {
+		const symbolISIN: string = updateInfo.getItemName();
+
+		const rowNodes = findRowNodes(symbolISIN);
+		if (rowNodes.length === 0) return;
+
+		rowNodes.forEach((rowNode) => {
+			const rowData = rowNode.data!;
+
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				if (value && fieldName in optionWatchlistLightstreamProperty) {
+					const fs = baseSymbolWatchlistLightstreamProperty[fieldName];
+					const valueAsNumber = Number(value);
+
+					if (fs in rowData.optionWatchlistData) {
+						// @ts-expect-error: Typescript can not detect lightstream types
+						rowData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
+					}
+				}
+			});
+
+			rowNode.data!.optionWatchlistData = {
+				...rowData.optionWatchlistData,
+				...updateBlackScholes(rowData),
+			};
+
+			rowNode.setData(rowData);
+		});
+	};
+
+	const updateBlackScholes = ({ symbolInfo, optionWatchlistData }: Option.Root) => {
+		const isCall = symbolInfo.optionType === 'Call';
+		const dueDays = Math.ceil(
+			Math.abs(Date.now() - new Date(symbolInfo.contractEndDate).getTime()) / 1e3 / 24 / 60 / 60,
+		);
+		const rate = 0.3;
+		const volatility = Number(optionWatchlistData.historicalVolatility) / 100;
+
+		const { thetaCall, thetaPut, deltaCall, deltaPut, rhoCall, rhoPut, gamma, vega, call, put } = blackScholes({
+			sharePrice: optionWatchlistData.baseSymbolPrice ?? 0,
+			strikePrice: symbolInfo.strikePrice ?? 0,
+			rate: 0.3,
+			volatility,
+			dueDays,
+		});
+
+		const iv = impliedVolatility({
+			optionPrice: optionWatchlistData.premium,
+			rate,
+			strikePrice: symbolInfo.strikePrice,
+			dueDays,
+			contractType: 'put',
+			sharePrice: optionWatchlistData.baseSymbolPrice ?? 0,
+			stepCount: 5,
+			volatility,
+			step: 1,
+		});
+
+		const theta = isCall ? thetaCall : thetaPut;
+		const delta = isCall ? deltaCall : deltaPut;
+		const rho = isCall ? rhoCall : rhoPut;
+
+		return { theta, delta, rho, gamma, vega, blackScholes: isCall ? call : put, impliedVolatility: iv };
 	};
 
 	const getRows = (params: IGetRowsParams) => {
@@ -206,18 +281,37 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 		});
 	};
 
-	const findRowNode = (symbolISIN: string) => {
+	const findRowNode = (symbolISIN: string): IRowNode<Option.Root> | undefined => {
 		let result: IRowNode<Option.Root> | undefined;
 
-		gridRef?.current?.forEachNode((rowNode) => {
-			const d = rowNode.data;
-			if (typeof d !== 'undefined' && d.symbolInfo.symbolISIN === symbolISIN) {
+		forEachRowNode((rowNode) => {
+			const d = rowNode.data!;
+			if (d.symbolInfo.symbolISIN === symbolISIN) {
 				result = rowNode;
 				return;
 			}
 		});
 
 		return result;
+	};
+
+	const findRowNodes = (symbolISIN: string): Array<IRowNode<Option.Root>> => {
+		const result: Array<IRowNode<Option.Root>> = [];
+
+		forEachRowNode((rowNode) => {
+			const d = rowNode.data!;
+			if (d.symbolInfo.baseSymbolISIN === symbolISIN) {
+				result.push(rowNode);
+			}
+		});
+
+		return result;
+	};
+
+	const forEachRowNode = (cb: (rowNode: IRowNode<Option.Root>) => void) => {
+		gridRef?.current?.forEachNode((rowNode) => {
+			if (rowNode?.data) cb(rowNode);
+		});
 	};
 
 	const compare = (valueA: string | number, valueB: string | number, sorting: 'asc' | 'desc'): number => {
@@ -234,15 +328,69 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 		return 0;
 	};
 
+	const startOptionsSubscription = () => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: optionsSymbolsISIN,
+			fields: [
+				'bestBuyLimitPrice_1',
+				'bestSellLimitPrice_1',
+				'totalTradeValue',
+				'totalNumberOfSharesTraded',
+				'closingPriceVarReferencePrice',
+				'baseVolume',
+				'firstTradedPrice',
+				'lastTradedPrice',
+				'totalNumberOfTrades',
+				'lastTradedPriceVar',
+				'lastTradedPriceVarPercent',
+				'closingPrice',
+				'closingPriceVar',
+				'closingPriceVarPercent',
+				'lastTradeDateTime',
+				'lowestTradePriceOfTradingDay',
+				'highestTradePriceOfTradingDay',
+				'symbolState',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onOptionUpdate);
+		subscribeOptions(sub, isSubscribing);
+	};
+
+	const startBaseSymbolSubscription = () => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: baseSymbolsISIN,
+			fields: ['lastTradedPriceVarPercent', 'closingPriceVarPercent', 'lastTradedPrice', 'closingPrice'],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onBaseSymbolUpdate);
+		subscribeBaseSymbols(sub, isSubscribing);
+	};
+
 	const symbolsISIN = useMemo(() => {
 		if (!Array.isArray(data)) return [];
 		return data.map((item) => item.symbolInfo.symbolISIN);
 	}, [data]);
 
-	const slicedSymbolsISIN = useMemo(() => {
-		if (lastRowIndex === 0) return [];
-		return symbolsISIN.slice(0, lastRowIndex);
-	}, [symbolsISIN, lastRowIndex]);
+	const [optionsSymbolsISIN, baseSymbolsISIN] = useMemo(() => {
+		if (lastRowIndex === 0) return [[], []];
+
+		const optionsSymbolsISIN = new Set<string>();
+		const baseSymbolsISIN = new Set<string>();
+
+		data.slice(0, lastRowIndex).forEach((s) => {
+			baseSymbolsISIN.add(s.symbolInfo.baseSymbolISIN);
+			optionsSymbolsISIN.add(s.symbolInfo.symbolISIN);
+		});
+
+		return [Array.from(optionsSymbolsISIN), Array.from(baseSymbolsISIN)];
+	}, [data, lastRowIndex]);
 
 	const modifiedWatchlistColumns = useMemo(() => {
 		const result: Record<string, Option.Column> = {};
@@ -260,9 +408,9 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 		}
 	}, [watchlistColumns]);
 
-	const actionColumn = useMemo<ColDef<Option.Root>>(
+	const actionColumn = useMemo<TColDef>(
 		() => ({
-			colId: 'action',
+			colId: 'insCode',
 			headerName: t('option_page.action'),
 			initialHide: Boolean(modifiedWatchlistColumns?.action?.isHidden ?? false),
 			minWidth: 80,
@@ -287,403 +435,402 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 		[id, watchlistCount],
 	);
 
-	const COLUMNS = useMemo<Array<ColDef<Option.Root>>>(
-		() =>
-			[
-				{
-					colId: 'symbolTitle',
-					headerName: t('option_page.symbol_title'),
-					initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden ?? false),
-					minWidth: 96,
-					pinned: 'right',
-					lockPosition: true,
-					suppressMovable: true,
-					cellClass: 'cursor-pointer font-medium',
-					headerComponent: SymbolTitleHeader,
-					headerComponentParams: {
-						onChangeValue: (v: string) => setDebounce(() => setTerm(v), 350),
-					},
-					onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.symbolISIN),
-					valueGetter: ({ data }) => data?.symbolInfo.symbolTitle ?? '−',
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
+	const COLUMNS = useMemo<TColDef[]>(
+		() => [
+			{
+				colId: 'symbolTitle',
+				headerName: t('option_page.symbol_title'),
+				initialHide: Boolean(modifiedWatchlistColumns?.symbolTitle?.isHidden ?? false),
+				minWidth: 96,
+				pinned: 'right',
+				lockPosition: true,
+				suppressMovable: true,
+				cellClass: 'cursor-pointer font-medium',
+				headerComponent: SymbolTitleHeader,
+				headerComponentParams: {
+					onChangeValue: (v: string) => setDebounce(() => setTerm(v), 350),
 				},
-				{
-					colId: 'tradeValue',
-					headerName: t('option_page.trade_value'),
-					initialHide: Boolean(modifiedWatchlistColumns?.tradeValue?.isHidden ?? false),
-					minWidth: 120,
-					valueGetter: ({ data }) => data?.optionWatchlistData.tradeValue,
-					valueFormatter: ({ value }) => numFormatter(value),
-					comparator: (valueA, valueB) => valueA - valueB,
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.symbolISIN),
+				valueGetter: ({ data }) => data?.symbolInfo.symbolTitle ?? '−',
+				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
+			},
+			{
+				colId: 'tradeValue',
+				headerName: t('option_page.trade_value'),
+				initialHide: Boolean(modifiedWatchlistColumns?.tradeValue?.isHidden ?? false),
+				minWidth: 120,
+				valueGetter: ({ data }) => data?.optionWatchlistData.tradeValue,
+				valueFormatter: ({ value }) => numFormatter(value),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'notionalValue',
+				headerName: t('option_page.notional_value'),
+				minWidth: 160,
+				initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.notionalValue ?? 0,
+				valueFormatter: ({ value }) => numFormatter(value),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'intrinsicValue',
+				headerName: t('option_page.intrinsic_value'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.IntrinsicValue?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.intrinsicValue ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'tradePriceVarPreviousTradePercent',
+				headerName: t('option_page.premium'),
+				initialHide: Boolean(modifiedWatchlistColumns?.premium?.isHidden ?? false),
+				minWidth: 128,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [
+					data?.optionWatchlistData.premium ?? 0,
+					data?.optionWatchlistData.tradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
+			},
+			{
+				colId: 'delta',
+				headerName: t('option_page.delta'),
+				initialHide: Boolean(modifiedWatchlistColumns?.delta?.isHidden ?? false),
+				minWidth: 72,
+				valueGetter: ({ data }) => data?.optionWatchlistData.delta ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'baseTradePriceVarPreviousTradePercent',
+				headerName: t('option_page.base_symbol_price'),
+				initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolPrice?.isHidden ?? false),
+				minWidth: 136,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [
+					data?.optionWatchlistData.baseSymbolPrice ?? 0,
+					data?.optionWatchlistData.baseTradePriceVarPreviousTradePercent ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
+			},
+			{
+				colId: 'breakEvenPoint',
+				headerName: t('option_page.break_even_point'),
+				initialHide: Boolean(modifiedWatchlistColumns?.breakEvenPoint?.isHidden ?? false),
+				minWidth: 96,
+				valueGetter: ({ data }) => data?.optionWatchlistData.breakEvenPoint ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'leverage',
+				headerName: t('option_page.leverage'),
+				initialHide: Boolean(modifiedWatchlistColumns?.leverage?.isHidden ?? false),
+				minWidth: 64,
+				valueGetter: ({ data }) => data?.optionWatchlistData.leverage ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'openPositionCount',
+				headerName: t('option_page.open_position_count'),
+				initialHide: Boolean(modifiedWatchlistColumns?.openPositionCount?.isHidden ?? false),
+				minWidth: 128,
+				valueGetter: ({ data }) => data?.optionWatchlistData.openPositionCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'impliedVolatility',
+				headerName: t('option_page.implied_volatility'),
+				initialHide: Boolean(modifiedWatchlistColumns?.impliedVolatility?.isHidden ?? false),
+				minWidth: 96,
+				valueGetter: ({ data }) => data?.optionWatchlistData.impliedVolatility ?? 0,
+				valueFormatter: ({ value }) => {
+					if (isNaN(value)) return '−';
+					return value.toFixed(2);
 				},
-				{
-					colId: 'notionalValue',
-					headerName: t('option_page.notional_value'),
-					minWidth: 160,
-					initialHide: Boolean(modifiedWatchlistColumns?.notionalValue?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.notionalValue ?? 0,
-					valueFormatter: ({ value }) => numFormatter(value),
-					comparator: (valueA, valueB) => valueA - valueB,
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'iotm',
+				headerName: t('option_page.iotm'),
+				initialHide: Boolean(modifiedWatchlistColumns?.iotm?.isHidden ?? false),
+				minWidth: 96,
+				cellClass: ({ value }) => {
+					switch (value) {
+						case 'ITM':
+							return 'text-success-100';
+						case 'OTM':
+							return 'text-error-100';
+						case 'ATM':
+							return 'text-secondary-300';
+						default:
+							return '';
+					}
 				},
-				{
-					colId: 'IntrinsicValue',
-					headerName: t('option_page.intrinsic_value'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.IntrinsicValue?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.intrinsicValue ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
+				valueGetter: ({ data }) => data?.optionWatchlistData.iotm ?? 'ATM',
+				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
+			},
+			{
+				colId: 'blackScholes',
+				headerName: t('option_page.black_scholes'),
+				initialHide: Boolean(modifiedWatchlistColumns?.blackScholes?.isHidden ?? false),
+				minWidth: 144,
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: t('option_page.black_scholes_tooltip'),
 				},
-				{
-					colId: 'premium',
-					headerName: t('option_page.premium'),
-					initialHide: Boolean(modifiedWatchlistColumns?.premium?.isHidden ?? false),
-					minWidth: 128,
-					cellRenderer: CellPercentRenderer,
-					cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
-						percent: value[1] ?? 0,
-					}),
-					valueGetter: ({ data }) => [
-						data?.optionWatchlistData.premium ?? 0,
-						data?.optionWatchlistData.tradePriceVarPreviousTradePercent ?? 0,
-					],
-					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-					comparator: (valueA, valueB) => valueA[1] - valueB[1],
+				valueGetter: ({ data }) => data?.optionWatchlistData.blackScholes ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'tradeVolume',
+				headerName: t('option_page.trade_volume'),
+				initialHide: Boolean(modifiedWatchlistColumns?.tradeVolume?.isHidden ?? false),
+				minWidth: 104,
+				valueGetter: ({ data }) => data?.optionWatchlistData.tradeVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'dueDays',
+				headerName: t('option_page.due_days'),
+				initialHide: Boolean(modifiedWatchlistColumns?.dueDays?.isHidden ?? false),
+				minWidth: 96,
+				valueGetter: ({ data }) => Math.max(0, data?.symbolInfo.dueDays ?? 0),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'strikePrice',
+				headerName: t('option_page.strike_price'),
+				initialHide: Boolean(modifiedWatchlistColumns?.strikePrice?.isHidden ?? false),
+				minWidth: 112,
+				valueGetter: ({ data }) => data?.symbolInfo.strikePrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'bestBuyPrice',
+				headerName: t('option_page.best_buy_price'),
+				initialHide: Boolean(modifiedWatchlistColumns?.bestBuyPrice?.isHidden ?? false),
+				minWidth: 112,
+				cellClass: 'buy',
+				valueGetter: ({ data }) => data?.optionWatchlistData.bestBuyPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'bestSellPrice',
+				headerName: t('option_page.best_sell_price'),
+				initialHide: Boolean(modifiedWatchlistColumns?.bestSellPrice?.isHidden ?? false),
+				minWidth: 120,
+				cellClass: 'sell',
+				valueGetter: ({ data }) => data?.optionWatchlistData.bestSellPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'baseSymbolTitle',
+				headerName: t('option_page.base_symbol_title'),
+				cellClass: 'cursor-pointer',
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolTitle?.isHidden ?? false),
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.baseSymbolISIN),
+				valueGetter: ({ data }) => data?.symbolInfo.baseSymbolTitle ?? '−',
+				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
+			},
+			{
+				colId: 'closingPrice',
+				headerName: t('option_page.closing_price'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.closingPrice?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.closingPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'historicalVolatility',
+				headerName: t('option_page.historical_volatility'),
+				minWidth: 144,
+				initialHide: Boolean(modifiedWatchlistColumns?.historicalVolatility?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.historicalVolatility ?? 0,
+				valueFormatter: ({ value }) => {
+					if (isNaN(value)) return '−';
+					return value.toFixed(2);
 				},
-				{
-					colId: 'delta',
-					headerName: t('option_page.delta'),
-					initialHide: Boolean(modifiedWatchlistColumns?.delta?.isHidden ?? false),
-					minWidth: 72,
-					valueGetter: ({ data }) => data?.optionWatchlistData.delta ?? 0,
-					valueFormatter: ({ value }) => toFixed(value, 4),
-					comparator: (valueA, valueB) => valueA - valueB,
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'contractSize',
+				headerName: t('option_page.contract_size'),
+				minWidth: 112,
+				initialHide: Boolean(modifiedWatchlistColumns?.contractSize?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.symbolInfo.contractSize ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'timeValue',
+				headerName: t('option_page.time_value'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.timeValue?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.timeValue ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'theta',
+				headerName: t('option_page.theta'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.theta?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.theta ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'tradeCount',
+				headerName: t('option_page.trade_count'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.tradeCount?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.tradeCount ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'contractEndDate',
+				headerName: t('option_page.contract_end_date'),
+				minWidth: 120,
+				initialHide: Boolean(modifiedWatchlistColumns?.contractEndDate?.isHidden ?? false),
+				valueGetter: ({ data }) =>
+					data?.symbolInfo.contractEndDate
+						? new Date(data?.symbolInfo.contractEndDate).getTime()
+						: new Date().getTime(),
+				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'spread',
+				headerName: t('option_page.spread'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.spread?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.spread ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'blackScholesDifference',
+				headerName: t('option_page.black_scholes_difference'),
+				minWidth: 200,
+				initialHide: Boolean(modifiedWatchlistColumns?.blackScholesDifference?.isHidden ?? false),
+				headerComponent: HeaderHint,
+				headerComponentParams: {
+					tooltip: t('option_page.black_scholes_hint'),
 				},
-				{
-					colId: 'baseSymbolPrice',
-					headerName: t('option_page.base_symbol_price'),
-					initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolPrice?.isHidden ?? false),
-					minWidth: 136,
-					cellRenderer: CellPercentRenderer,
-					cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
-						percent: value[1] ?? 0,
-					}),
-					valueGetter: ({ data }) => [
-						data?.optionWatchlistData.baseSymbolPrice ?? 0,
-						data?.optionWatchlistData.baseTradePriceVarPreviousTradePercent ?? 0,
-					],
-					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-					comparator: (valueA, valueB) => valueA[1] - valueB[1],
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [
+					data?.optionWatchlistData.blackScholes ?? 0,
+					data?.optionWatchlistData.blackScholesDifference ?? 0,
+				],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				comparator: (valueA, valueB) => valueA[1] - valueB[1],
+			},
+			{
+				colId: 'baseClosingPrice',
+				headerName: t('option_page.base_closing_price'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.baseClosingPrice?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.baseClosingPrice ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'gamma',
+				headerName: t('option_page.gamma'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.gamma?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.gamma ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'optionType',
+				headerName: t('option_page.option_type'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.optionType?.isHidden ?? false),
+				cellClass: ({ value }) => {
+					switch (value) {
+						case 'Call':
+							return 'text-success-100';
+						case 'Put':
+							return 'text-error-100';
+						default:
+							return 'text-gray-700';
+					}
 				},
-				{
-					colId: 'breakEvenPoint',
-					headerName: t('option_page.break_even_point'),
-					initialHide: Boolean(modifiedWatchlistColumns?.breakEvenPoint?.isHidden ?? false),
-					minWidth: 96,
-					valueGetter: ({ data }) => data?.optionWatchlistData.breakEvenPoint ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
+				valueGetter: ({ data }) => data?.symbolInfo.optionType ?? 'Call',
+				valueFormatter: ({ value }) => {
+					switch (value) {
+						case 'Call':
+							return t('side.buy');
+						case 'Put':
+							return t('side.sell');
+						default:
+							return '−';
+					}
 				},
-				{
-					colId: 'leverage',
-					headerName: t('option_page.leverage'),
-					initialHide: Boolean(modifiedWatchlistColumns?.leverage?.isHidden ?? false),
-					minWidth: 64,
-					valueGetter: ({ data }) => data?.optionWatchlistData.leverage ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'openPositionCount',
-					headerName: t('option_page.open_position_count'),
-					initialHide: Boolean(modifiedWatchlistColumns?.openPositionCount?.isHidden ?? false),
-					minWidth: 128,
-					valueGetter: ({ data }) => data?.optionWatchlistData.openPositionCount ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'impliedVolatility',
-					headerName: t('option_page.implied_volatility'),
-					initialHide: Boolean(modifiedWatchlistColumns?.impliedVolatility?.isHidden ?? false),
-					minWidth: 96,
-					valueGetter: ({ data }) => data?.optionWatchlistData.impliedVolatility ?? 0,
-					valueFormatter: ({ value }) => {
-						if (isNaN(value)) return '−';
-						return value.toFixed(2);
-					},
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'iotm',
-					headerName: t('option_page.iotm'),
-					initialHide: Boolean(modifiedWatchlistColumns?.iotm?.isHidden ?? false),
-					minWidth: 96,
-					cellClass: ({ value }) => {
-						switch (value) {
-							case 'ITM':
-								return 'text-success-100';
-							case 'OTM':
-								return 'text-error-100';
-							case 'ATM':
-								return 'text-secondary-300';
-							default:
-								return '';
-						}
-					},
-					valueGetter: ({ data }) => data?.optionWatchlistData.iotm ?? 'ATM',
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
-				},
-				{
-					colId: 'blackScholes',
-					headerName: t('option_page.black_scholes'),
-					initialHide: Boolean(modifiedWatchlistColumns?.blackScholes?.isHidden ?? false),
-					minWidth: 144,
-					headerComponent: HeaderHint,
-					headerComponentParams: {
-						tooltip: t('option_page.black_scholes_tooltip'),
-					},
-					valueGetter: ({ data }) => data?.optionWatchlistData.blackScholes ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'tradeVolume',
-					headerName: t('option_page.trade_volume'),
-					initialHide: Boolean(modifiedWatchlistColumns?.tradeVolume?.isHidden ?? false),
-					minWidth: 104,
-					valueGetter: ({ data }) => data?.optionWatchlistData.tradeVolume ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'dueDays',
-					headerName: t('option_page.due_days'),
-					initialHide: Boolean(modifiedWatchlistColumns?.dueDays?.isHidden ?? false),
-					minWidth: 96,
-					valueGetter: ({ data }) => Math.max(0, data?.symbolInfo.dueDays ?? 0),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'strikePrice',
-					headerName: t('option_page.strike_price'),
-					initialHide: Boolean(modifiedWatchlistColumns?.strikePrice?.isHidden ?? false),
-					minWidth: 112,
-					valueGetter: ({ data }) => data?.symbolInfo.strikePrice ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'bestBuyPrice',
-					headerName: t('option_page.best_buy_price'),
-					initialHide: Boolean(modifiedWatchlistColumns?.bestBuyPrice?.isHidden ?? false),
-					minWidth: 112,
-					cellClass: 'buy',
-					valueGetter: ({ data }) => data?.optionWatchlistData.bestBuyPrice ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'bestSellPrice',
-					headerName: t('option_page.best_sell_price'),
-					initialHide: Boolean(modifiedWatchlistColumns?.bestSellPrice?.isHidden ?? false),
-					minWidth: 120,
-					cellClass: 'sell',
-					valueGetter: ({ data }) => data?.optionWatchlistData.bestSellPrice ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'baseSymbolTitle',
-					headerName: t('option_page.base_symbol_title'),
-					cellClass: 'cursor-pointer',
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.baseSymbolTitle?.isHidden ?? false),
-					onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolInfo.baseSymbolISIN),
-					valueGetter: ({ data }) => data?.symbolInfo.baseSymbolTitle ?? '−',
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
-				},
-				{
-					colId: 'closingPrice',
-					headerName: t('option_page.closing_price'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.closingPrice?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.closingPrice ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'historicalVolatility',
-					headerName: t('option_page.historical_volatility'),
-					minWidth: 144,
-					initialHide: Boolean(modifiedWatchlistColumns?.historicalVolatility?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.historicalVolatility ?? 0,
-					valueFormatter: ({ value }) => {
-						if (isNaN(value)) return '−';
-						return value.toFixed(2);
-					},
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'contractSize',
-					headerName: t('option_page.contract_size'),
-					minWidth: 112,
-					initialHide: Boolean(modifiedWatchlistColumns?.contractSize?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.symbolInfo.contractSize ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'timeValue',
-					headerName: t('option_page.time_value'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.timeValue?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.timeValue ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'theta',
-					headerName: t('option_page.theta'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.theta?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.theta ?? 0,
-					valueFormatter: ({ value }) => toFixed(value, 4),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'tradeCount',
-					headerName: t('option_page.trade_count'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.tradeCount?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.tradeCount ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'contractEndDate',
-					headerName: t('option_page.contract_end_date'),
-					minWidth: 120,
-					initialHide: Boolean(modifiedWatchlistColumns?.contractEndDate?.isHidden ?? false),
-					valueGetter: ({ data }) =>
-						data?.symbolInfo.contractEndDate
-							? new Date(data?.symbolInfo.contractEndDate).getTime()
-							: new Date().getTime(),
-					valueFormatter: ({ value }) => dateFormatter(value, 'date'),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'spread',
-					headerName: t('option_page.spread'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.spread?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.spread ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'blackScholesDifference',
-					headerName: t('option_page.black_scholes_difference'),
-					minWidth: 200,
-					initialHide: Boolean(modifiedWatchlistColumns?.blackScholesDifference?.isHidden ?? false),
-					headerComponent: HeaderHint,
-					headerComponentParams: {
-						tooltip: t('option_page.black_scholes_hint'),
-					},
-					cellRenderer: CellPercentRenderer,
-					cellRendererParams: ({ value }: ICellRendererParams<Option.Root>) => ({
-						percent: value[1] ?? 0,
-					}),
-					valueGetter: ({ data }) => [
-						data?.optionWatchlistData.blackScholes ?? 0,
-						data?.optionWatchlistData.blackScholesDifference ?? 0,
-					],
-					valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-					comparator: (valueA, valueB) => valueA[1] - valueB[1],
-				},
-				{
-					colId: 'baseClosingPrice',
-					headerName: t('option_page.base_closing_price'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.baseClosingPrice?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.baseClosingPrice ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'gamma',
-					headerName: t('option_page.gamma'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.gamma?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.gamma ?? 0,
-					valueFormatter: ({ value }) => toFixed(value, 4),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'optionType',
-					headerName: t('option_page.option_type'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.optionType?.isHidden ?? false),
-					cellClass: ({ value }) => {
-						switch (value) {
-							case 'Call':
-								return 'text-success-100';
-							case 'Put':
-								return 'text-error-100';
-							default:
-								return 'text-gray-700';
-						}
-					},
-					valueGetter: ({ data }) => data?.symbolInfo.optionType ?? 'Call',
-					valueFormatter: ({ value }) => {
-						switch (value) {
-							case 'Call':
-								return t('side.buy');
-							case 'Put':
-								return t('side.sell');
-							default:
-								return '−';
-						}
-					},
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
-				},
-				{
-					colId: 'requiredMargin',
-					headerName: t('option_page.required_margin'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.requiredMargin?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.requiredMargin ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'initialMargin',
-					headerName: t('option_page.initial_margin'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.initialMargin?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.symbolInfo.initialMargin ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'rho',
-					headerName: t('option_page.rho'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.rho?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.rho ?? 0,
-					valueFormatter: ({ value }) => toFixed(value, 4),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'vega',
-					headerName: t('option_page.vega'),
-					minWidth: 96,
-					initialHide: Boolean(modifiedWatchlistColumns?.vega?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.vega ?? 0,
-					valueFormatter: ({ value }) => toFixed(value, 4),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				/* {
+				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
+			},
+			{
+				colId: 'requiredMargin',
+				headerName: t('option_page.required_margin'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.requiredMargin?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.requiredMargin ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'initialMargin',
+				headerName: t('option_page.initial_margin'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.initialMargin?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.symbolInfo.initialMargin ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'rho',
+				headerName: t('option_page.rho'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.rho?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.rho ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'vega',
+				headerName: t('option_page.vega'),
+				minWidth: 96,
+				initialHide: Boolean(modifiedWatchlistColumns?.vega?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.vega ?? 0,
+				valueFormatter: ({ value }) => toFixed(value, 4),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			/* {
 					colId: 'growth',
 					headerName: t('option_page.growth'),
 					minWidth: 96,
@@ -692,7 +839,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 					valueFormatter: ({ value }) => sepNumbers(String(value)),
 					comparator: (valueA, valueB) => valueA - valueB,
 				}, */
-				/* {
+			/* {
 					colId: 'contractValueType',
 					headerName: t('option_page.contract_value_type'),
 					minWidth: 96,
@@ -700,7 +847,7 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 					valueGetter: ({ data }) => data?.optionWatchlistData.contractValueType ?? 'LIQ',
 					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
 				}, */
-				/* {
+			/* {
 					colId: 'highOpenPosition',
 					headerName: t('option_page.high_open_position'),
 					minWidth: 136,
@@ -709,139 +856,66 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 					valueFormatter: ({ value }) => sepNumbers(String(value)),
 					comparator: (valueA, valueB) => valueA - valueB,
 				}, */
-				{
-					colId: 'lastTradeDate',
-					headerName: t('option_page.last_trade_date'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.lastTradeDate?.isHidden ?? false),
-					valueGetter: ({ data }) =>
-						data?.optionWatchlistData.lastTradeDate
-							? new Date(data?.optionWatchlistData.lastTradeDate).getTime()
-							: new Date().getTime(),
-					valueFormatter: ({ value }) => dateFormatter(value, 'date'),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'legalBuyVolume',
-					headerName: t('option_page.legal_buy_volume'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.legalBuyVolume?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.legalBuyVolume ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'individualBuyVolume',
-					headerName: t('option_page.individual_buy_volume'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.individualBuyVolume?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.individualBuyVolume ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'legalSellVolume',
-					headerName: t('option_page.legalSell_volume'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.legalSellVolume?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.legalSellVolume ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'individualSellVolume',
-					headerName: t('option_page.individual_sell_volume'),
-					minWidth: 136,
-					initialHide: Boolean(modifiedWatchlistColumns?.individualSellVolume?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.optionWatchlistData.individualSellVolume ?? 0,
-					valueFormatter: ({ value }) => sepNumbers(String(value)),
-					comparator: (valueA, valueB) => valueA - valueB,
-				},
-				{
-					colId: 'sectorName',
-					headerName: t('option_page.sector_name'),
-					minWidth: 264,
-					initialHide: Boolean(modifiedWatchlistColumns?.sectorName?.isHidden ?? false),
-					valueGetter: ({ data }) => data?.symbolInfo.sectorName ?? '',
-					comparator: (valueA, valueB) => valueA.localeCompare(valueB),
-				},
-				actionColumn,
-			] as Array<ColDef<Option.Root>>,
+			{
+				colId: 'lastTradeDate',
+				headerName: t('option_page.last_trade_date'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.lastTradeDate?.isHidden ?? false),
+				valueGetter: ({ data }) =>
+					data?.optionWatchlistData.lastTradeDate
+						? new Date(data?.optionWatchlistData.lastTradeDate).getTime()
+						: new Date().getTime(),
+				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'legalBuyVolume',
+				headerName: t('option_page.legal_buy_volume'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.legalBuyVolume?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.legalBuyVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'individualBuyVolume',
+				headerName: t('option_page.individual_buy_volume'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.individualBuyVolume?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.individualBuyVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'legalSellVolume',
+				headerName: t('option_page.legalSell_volume'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.legalSellVolume?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.legalSellVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'individualSellVolume',
+				headerName: t('option_page.individual_sell_volume'),
+				minWidth: 136,
+				initialHide: Boolean(modifiedWatchlistColumns?.individualSellVolume?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.optionWatchlistData.individualSellVolume ?? 0,
+				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				comparator: (valueA, valueB) => valueA - valueB,
+			},
+			{
+				colId: 'sectorName',
+				headerName: t('option_page.sector_name'),
+				minWidth: 264,
+				initialHide: Boolean(modifiedWatchlistColumns?.sectorName?.isHidden ?? false),
+				valueGetter: ({ data }) => data?.symbolInfo.sectorName ?? '',
+				comparator: (valueA, valueB) => valueA.localeCompare(valueB),
+			},
+			actionColumn,
+		],
 		[],
 	);
-
-	const onTableLoad = useCallback((eGridDiv: HTMLDivElement | null) => {
-		if (!eGridDiv) return;
-
-		ModuleRegistry.registerModules([InfiniteRowModelModule]);
-
-		gridRef.current = createGrid<Option.Root>(eGridDiv, {
-			rowModelType: 'infinite',
-			suppressColumnVirtualisation: true,
-			suppressCellFocus: true,
-			suppressMultiSort: true,
-			enableCellTextSelection: true,
-			suppressAnimationFrame: true,
-			suppressScrollOnNewData: true,
-			suppressLoadingOverlay: true,
-			suppressNoRowsOverlay: true,
-			suppressColumnMoveAnimation: true,
-			suppressDragLeaveHidesColumns: true,
-			animateRows: true,
-			enableRtl: true,
-			domLayout: 'normal',
-			rowBuffer: 0,
-			rowHeight: 48,
-			headerHeight: 48,
-			scrollbarWidth: 12,
-			infiniteInitialRowCount: 0,
-			maxBlocksInCache: 10,
-			maxConcurrentDatasourceRequests: 1,
-			cacheOverflowSize: 2,
-			cacheBlockSize: 50,
-			columnDefs: COLUMNS,
-			datasource: {
-				rowCount: 0,
-				getRows,
-			},
-			onColumnMoved,
-			onColumnVisible: ({ api, column }) => {
-				try {
-					if (!column) return;
-
-					api.flashCells({
-						columns: [column.getColId()],
-					});
-				} catch (e) {
-					//
-				}
-			},
-			onSortChanged: ({ columns }) => {
-				const col = columns?.find((s) => s.getSort() != null);
-				const sorting = col?.getSort() ?? null;
-
-				if (!col || !sorting) {
-					setSort(null);
-					return;
-				}
-
-				setSort({
-					fieldName: col.getId(),
-					value: sorting,
-				});
-			},
-			defaultColDef: {
-				resizable: false,
-				flex: 1,
-			},
-			icons: {
-				sortAscending:
-					'<svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="36" d="M112 244l144-144 144 144M256 120v292" /></svg>',
-				sortDescending:
-					'<svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="36" d="M112 268l144 144 144-144M256 392V100" /></svg>',
-			},
-		});
-	}, []);
 
 	useEffect(() => {
 		const gridApi = gridRef.current;
@@ -889,41 +963,53 @@ const WatchlistTable = ({ id, data, watchlistCount, setTerm, setSort }: Watchlis
 		updateDatasource();
 	}, [symbolsISIN.join(',')]);
 
+	useEffect(() => startOptionsSubscription(), [optionsSymbolsISIN.join(',')]);
+
+	useEffect(() => startBaseSymbolSubscription(), [baseSymbolsISIN.join(',')]);
+
 	useEffect(() => {
-		const sub = lightStreamInstance.subscribe({
-			mode: 'MERGE',
-			items: slicedSymbolsISIN,
-			fields: [
-				'bestBuyLimitPrice_1',
-				'bestSellLimitPrice_1',
-				'totalTradeValue',
-				'totalNumberOfSharesTraded',
-				'closingPriceVarReferencePrice',
-				'baseVolume',
-				'firstTradedPrice',
-				'lastTradedPrice',
-				'totalNumberOfTrades',
-				'lastTradedPriceVar',
-				'lastTradedPriceVarPercent',
-				'closingPrice',
-				'closingPriceVar',
-				'closingPriceVarPercent',
-				'lastTradeDateTime',
-				'lowestTradePriceOfTradingDay',
-				'highestTradePriceOfTradingDay',
-				'symbolState',
-			],
-			dataAdapter: 'RamandRLCDData',
-			snapshot: true,
-		});
+		if (isSubscribing) {
+			subscribeOptions();
+			subscribeBaseSymbols();
+		} else {
+			unsubscribeOptions();
+			unsubscribeBaseSymbols();
+		}
+	}, [isSubscribing]);
 
-		sub.addEventListener('onItemUpdate', onSymbolUpdate);
-		sub.start();
+	return (
+		<AgInfiniteTable
+			ref={gridRef}
+			className='border-0'
+			style={{
+				height: 'calc(100vh - 20rem)',
+			}}
+			columnDefs={COLUMNS}
+			datasource={{
+				rowCount: 0,
+				getRows,
+			}}
+			defaultColDef={{
+				sortable: true,
+				flex: 1,
+			}}
+			onColumnMoved={onColumnMoved}
+			onSortChanged={({ columns }) => {
+				const col = columns?.find((s) => s.getSort() != null);
+				const sorting = col?.getSort() ?? null;
 
-		subscribe(sub);
-	}, [slicedSymbolsISIN.join(',')]);
+				if (!col || !sorting) {
+					setSort(null);
+					return;
+				}
 
-	return <div ref={onTableLoad} className='ag-theme-alpine border-0' style={{ height: 'calc(100vh - 20rem)' }} />;
+				setSort({
+					fieldName: col.getId(),
+					value: sorting,
+				});
+			}}
+		/>
+	);
 };
 
 export default WatchlistTable;

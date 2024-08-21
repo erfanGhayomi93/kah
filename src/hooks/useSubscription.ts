@@ -4,12 +4,12 @@ import { useLayoutEffect, useRef } from 'react';
 const useSubscription = () => {
 	const subscription = useRef<Subscribe | null>(null);
 
-	const subscribe = (sub?: Subscribe) => {
+	const subscribe = (sub?: Subscribe, start = true) => {
 		try {
 			unsubscribe();
 
 			if (sub) {
-				sub.start();
+				if (start) sub.start();
 				subscription.current = sub;
 			} else if (subscription.current) {
 				subscription.current.start();

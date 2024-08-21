@@ -14,10 +14,10 @@ const PlayAndPauseBtn = forwardRef<HTMLButtonElement, PlayAndPauseBtnProps>(
 			ref={ref}
 			className={
 				className ??
-				'border-gray-200 text-gray-700 hover:border-primary-100 hover:bg-primary-100 relative size-40 rounded border transition-colors flex-justify-center hover:text-white'
+				'relative size-40 rounded border border-gray-200 text-gray-700 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
 			}
 		>
-			<span className={clsx(styles.pp, isPaused && styles.paused)} />
+			<span className={clsx(styles.pp, !isPaused && styles.paused)} />
 		</button>
 	),
 );

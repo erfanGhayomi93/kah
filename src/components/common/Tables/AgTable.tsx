@@ -1,3 +1,4 @@
+import { onBodyScroll } from '@/utils/table';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry, createGrid, type GridApi, type GridOptions } from '@ag-grid-community/core';
 import clsx from 'clsx';
@@ -54,6 +55,7 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 						//
 					}
 				},
+				onBodyScroll,
 				defaultColDef: {
 					suppressMovable: true,
 					sortable: false,

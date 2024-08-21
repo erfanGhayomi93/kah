@@ -47,7 +47,7 @@ const Conversion = (strategy: ConversionProps) => {
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<IConversionFiltersModalState>>({});
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+	const { inputs, setFieldValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
@@ -149,12 +149,6 @@ const Conversion = (strategy: ConversionProps) => {
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
-	};
-
-	const goToTheNextPage = () => {
-		setFieldsValue((prev) => ({
-			pageNumber: prev.pageNumber + 1,
-		}));
 	};
 
 	const showColumnsManagementModal = () => {
@@ -301,7 +295,7 @@ const Conversion = (strategy: ConversionProps) => {
 				width: 104,
 				maxWidth: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer justify-end',
+				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -597,10 +591,8 @@ const Conversion = (strategy: ConversionProps) => {
 					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
-					fetchNextPage={goToTheNextPage}
-					pageNumber={inputs.pageNumber}
-					pageSize={inputs.pageSize}
 					columnsVisibility={columnsVisibility}
+					dependencies={[useCommission]}
 				/>
 			</div>
 		</>

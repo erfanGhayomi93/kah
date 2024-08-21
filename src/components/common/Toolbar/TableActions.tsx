@@ -15,6 +15,7 @@ interface TableActionsProps {
 	showFilter?: boolean;
 	showColumns?: boolean;
 	showPlayAndPause?: boolean;
+	isInitialPaused?: boolean;
 	children?: React.ReactNode;
 	onPlayed?: () => void;
 	onPaused?: () => void;
@@ -40,6 +41,7 @@ const TableActions = ({
 	showExcel = true,
 	showFilter = true,
 	showPlayAndPause = true,
+	isInitialPaused = false,
 	children,
 	className,
 	onPlayed,
@@ -50,7 +52,7 @@ const TableActions = ({
 }: TableActionsProps) => {
 	const t = useTranslations('tooltip');
 
-	const [isPaused, setIsPaused] = useState(false);
+	const [isPaused, setIsPaused] = useState(isInitialPaused);
 
 	const toggle = () => {
 		setIsPaused(!isPaused);

@@ -47,7 +47,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<IBullCallSpreadFiltersModalState>>({});
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+	const { inputs, setFieldValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
@@ -135,12 +135,6 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
-	};
-
-	const goToTheNextPage = () => {
-		setFieldsValue((prev) => ({
-			pageNumber: prev.pageNumber + 1,
-		}));
 	};
 
 	const showColumnsManagementModal = () => {
@@ -297,7 +291,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				width: 104,
 				maxWidth: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer justify-end',
+				cellClass: 'cursor-pointer',
 				onCellClicked: (api) => onSymbolTitleClicked(api.data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -666,10 +660,8 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
-					fetchNextPage={goToTheNextPage}
-					pageNumber={inputs.pageNumber}
-					pageSize={inputs.pageSize}
 					columnsVisibility={columnsVisibility}
+					dependencies={[useCommission]}
 				/>
 			</div>
 		</>

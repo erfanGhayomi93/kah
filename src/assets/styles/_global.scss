@@ -1,13 +1,13 @@
 html {
 	--scrollbar-size: 8px;
-	--scrollbar-thumb: rgb(226, 231, 237);
-	--scrollbar-track: rgb(248, 250, 253);
+	--scrollbar-thumb: rgb(var(--c-gray-400) / 1);
+	--scrollbar-track: rgb(var(--c-gray-100) / 1);
 	--skeleton-from-bg: rgb(243, 245, 247);
 	--skeleton-to-bg: rgb(224, 230, 235);
 	--skeleton-bg: rgb(226, 231, 237);
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark'] {
 	--scrollbar-thumb: rgb(55, 57, 69);
 	--scrollbar-track: rgb(28, 30, 38);
 	--skeleton-from-bg: rgb(55, 57, 69);
@@ -15,7 +15,7 @@ html[data-theme="dark"] {
 	--skeleton-bg: rgb(55, 57, 69);
 }
 
-html[data-theme="darkBlue"] {
+html[data-theme='darkBlue'] {
 	--scrollbar-thumb: rgb(34, 44, 63);
 	--scrollbar-track: rgb(21, 29, 43);
 	--skeleton-from-bg: rgb(55, 57, 69);
@@ -23,8 +23,8 @@ html[data-theme="darkBlue"] {
 	--skeleton-bg: rgb(55, 57, 69);
 }
 
-html[data-theme="dark"],
-html[data-theme="darkBlue"] {
+html[data-theme='dark'],
+html[data-theme='darkBlue'] {
 	button,
 	a,
 	input,
@@ -34,13 +34,13 @@ html[data-theme="darkBlue"] {
 }
 
 ::selection {
-	background-color: theme("colors.secondary.200");
-	color: theme("colors.gray.800") !important;
+	background-color: theme('colors.secondary.200');
+	color: theme('colors.gray.800') !important;
 }
 
 ::-moz-selection {
-	background-color: theme("colors.secondary.200");
-	color: theme("colors.gray.800") !important;
+	background-color: theme('colors.secondary.200');
+	color: theme('colors.gray.800') !important;
 }
 
 html {
@@ -48,7 +48,7 @@ html {
 }
 
 body {
-	font-family: "IRANSans";
+	font-family: 'IRANSans';
 	font-size: 1.4rem;
 	min-height: 100dvh;
 	max-height: 100dvh;
@@ -56,8 +56,8 @@ body {
 	max-width: 100dvw;
 	font-weight: 400;
 	overflow: hidden;
-	color: theme("colors.gray.700");
-	background-color: theme("colors.gray.300");
+	color: theme('colors.gray.700');
+	background-color: theme('colors.gray.300');
 
 	&.ew-resize {
 		cursor: ew-resize;
@@ -90,7 +90,7 @@ ul,
 input,
 div,
 textarea {
-	font-family: "IRANSans";
+	font-family: 'IRANSans';
 	outline: none !important;
 }
 
@@ -98,19 +98,19 @@ input,
 textarea {
 	background-color: transparent;
 	font-weight: 400;
-	color: theme("colors.gray.800");
-	caret-color: theme("colors.gray.700");
+	color: theme('colors.gray.800');
+	caret-color: theme('colors.gray.700');
 	transition: border-color 250ms ease-in-out;
 	-webkit-transition: border-color 250ms ease-in-out;
 	-moz-transition: border-color 250ms ease-in-out;
 
 	&::placeholder {
 		font-weight: 300;
-		color: theme("colors.gray.500");
+		color: theme('colors.gray.500');
 	}
 
 	&:focus {
-		border-color: theme("colors.primary.100");
+		border-color: theme('colors.primary.100');
 	}
 }
 
@@ -142,7 +142,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
 	-moz-appearance: textfield;
 }
 

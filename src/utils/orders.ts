@@ -63,7 +63,7 @@ export const updateDraft = (order: IOFieldsWithID) => {
 				price: order.price,
 				quantity: order.quantity,
 				side: order.orderSide,
-				validity: order.validity,
+				validity: ['Week', 'Month'].includes(order.validity) ? 'GoodTillDate' : order.validity,
 				validityDate:
 					order.validityDate <= 0 ? undefined : toISOStringWithoutChangeTime(new Date(order.validityDate)),
 			});
@@ -93,7 +93,7 @@ export const updateOrder = (order: IOFieldsWithID) => {
 				price: order.price,
 				quantity: order.quantity,
 				side: order.orderSide,
-				validity: order.validity,
+				validity: ['Week', 'Month'].includes(order.validity) ? 'GoodTillDate' : order.validity,
 				validityDate:
 					order.validityDate <= 0 ? undefined : toISOStringWithoutChangeTime(new Date(order.validityDate)),
 			});
