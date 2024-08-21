@@ -135,8 +135,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		const rearrangeValue = () => {
 			if (!inputs.price || !inputs.quantity) return;
 
-			const originalQuantity =
-				inputs.side === 'buy' ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
+			const originalQuantity = !isShortCall ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
 
 			setInputs({
 				...inputs,
@@ -149,8 +148,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		};
 
 		const onChangePrice = (price: number, checkIsLock: boolean): void => {
-			const originalQuantity =
-				inputs.side === 'buy' ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
+			const originalQuantity = !isShortCall ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
 
 			const value = formula().value(price, originalQuantity);
 
@@ -163,7 +161,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		};
 
 		const onChangeQuantity = (quantity: number): void => {
-			const originalQuantity = inputs.side === 'buy' ? quantity : Math.max(quantity - symbolAssets, 0);
+			const originalQuantity = !isShortCall ? quantity : Math.max(quantity - symbolAssets, 0);
 			const value = formula().value(inputs.price, originalQuantity);
 
 			setInputs((values) => ({
@@ -210,8 +208,7 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		useEffect(() => {
 			if (!inputs.price || !inputs.quantity) return;
 
-			const originalQuantity =
-				inputs.side === 'buy' ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
+			const originalQuantity = !isShortCall ? inputs.quantity : Math.max(inputs.quantity - symbolAssets, 0);
 
 			setInputs((values) => ({
 				...values,
@@ -230,6 +227,8 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 		const symbolAssets = Number(symbolExtraInfo?.asset ?? 0);
 
 		const symbolType = symbolData?.isOption ? 'option' : 'base';
+
+		const isShortCall = side === 'sell' && symbolType === 'option';
 
 		return (
 			<Modal

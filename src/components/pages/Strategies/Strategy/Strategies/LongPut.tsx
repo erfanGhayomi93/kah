@@ -47,7 +47,7 @@ const LongPut = (strategy: LongPutProps) => {
 		initialColumnsLongPut,
 	);
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+	const { inputs, setFieldValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
@@ -116,12 +116,6 @@ const LongPut = (strategy: LongPutProps) => {
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
-	};
-
-	const goToTheNextPage = () => {
-		setFieldsValue((prev) => ({
-			pageNumber: prev.pageNumber + 1,
-		}));
 	};
 
 	const showColumnsManagementModal = () => {
@@ -222,7 +216,7 @@ const LongPut = (strategy: LongPutProps) => {
 				width: 104,
 				maxWidth: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer justify-end',
+				cellClass: 'cursor-pointer',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -461,10 +455,8 @@ const LongPut = (strategy: LongPutProps) => {
 					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
-					fetchNextPage={goToTheNextPage}
-					pageNumber={inputs.pageNumber}
-					pageSize={inputs.pageSize}
 					columnsVisibility={columnsVisibility}
+					dependencies={[useCommission]}
 				/>
 			</div>
 		</>

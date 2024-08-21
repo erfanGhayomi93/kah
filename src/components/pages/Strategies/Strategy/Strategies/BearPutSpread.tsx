@@ -47,7 +47,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<IBearPutSpreadSpreadFiltersModalState>>({});
 
-	const { inputs, setFieldValue, setFieldsValue } = useInputs<IStrategyFilter>({
+	const { inputs, setFieldValue } = useInputs<IStrategyFilter>({
 		priceBasis: 'BestLimitPrice',
 		symbolBasis: 'BestLimit',
 		pageSize: 20,
@@ -135,12 +135,6 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				onRead: () => dispatch(setDescriptionModal(null)),
 			}),
 		);
-	};
-
-	const goToTheNextPage = () => {
-		setFieldsValue((prev) => ({
-			pageNumber: prev.pageNumber + 1,
-		}));
 	};
 
 	const showColumnsManagementModal = () => {
@@ -297,7 +291,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				width: 104,
 				maxWidth: 104,
 				pinned: 'right',
-				cellClass: 'cursor-pointer justify-end',
+				cellClass: 'cursor-pointer',
 				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.baseSymbolISIN),
 				valueGetter: ({ data }) => data?.baseSymbolTitle ?? '−',
 			},
@@ -631,10 +625,8 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 					rowData={data ?? []}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
-					fetchNextPage={goToTheNextPage}
-					pageNumber={inputs.pageNumber}
-					pageSize={inputs.pageSize}
 					columnsVisibility={columnsVisibility}
+					dependencies={[useCommission]}
 				/>
 			</div>
 		</>

@@ -16,6 +16,7 @@ $buy: var(--c-success-100);
 $sell: var(--c-error-100);
 $gray: var(--c-gray-600);
 $warning: rgba(var(--c-warning-100) / 1);
+$highlight-color: rgb(var(--c-info-100) / 1);
 
 /* Header Styles */
 .ag-header {
@@ -74,10 +75,32 @@ $warning: rgba(var(--c-warning-100) / 1);
 		&.strike-price {
 			overflow: visible;
 			background-color: var(--c-ag-strike-price-color);
-			box-shadow:
-				0 -4px var(--c-ag-strike-price-shadow-bg),
-				0 4px var(--c-ag-strike-price-shadow-bg),
-				0 0 6px 0 var(--c-ag-strike-price-shadow-color);
+
+			&::after {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				box-shadow: 0 0 6px 0 var(--c-ag-strike-price-shadow-color);
+				clip-path: inset(0px -8px 0px -8px);
+			}
+
+			&.highlight {
+				border-bottom: 1px solid $highlight-color;
+
+				&::before {
+					content: '';
+					position: absolute;
+					width: 12px;
+					height: 8px;
+					right: 0;
+					bottom: -8px;
+					border: 8px solid transparent;
+					border-right-width: 12px;
+					border-right-color: $highlight-color;
+					clip-path: inset(0 0 8px 0);
+				}
+			}
 		}
 
 		&-checkbox {
@@ -231,4 +254,43 @@ $warning: rgba(var(--c-warning-100) / 1);
 .ag-rtl .ag-cell:not(.ltr, .rtl) {
 	direction: ltr;
 	border-left-width: 0;
+}
+
+.ag-horizontal-right-spacer,
+.ag-horizontal-left-spacer {
+	opacity: 0;
+}
+
+.ag-pinned-left-cols-container,
+.ag-pinned-right-cols-container {
+	&::after {
+		content: '';
+		position: absolute;
+		height: 100%;
+		width: 1px;
+		top: 0;
+		z-index: 99;
+		background-color: $gray-200;
+		opacity: 100;
+		transition: opacity 250ms;
+		-webkit-transition: opacity 250ms;
+	}
+
+	&.scroll-end {
+		&::after {
+			opacity: 0;
+		}
+	}
+}
+
+.ag-pinned-left-cols-container::after {
+	left: 100%;
+	box-shadow: 16px 0 48px 40px var(--ag-background-color);
+	clip-path: inset(0 -90px 0 0);
+}
+
+.ag-pinned-right-cols-container::after {
+	right: 100%;
+	box-shadow: -16px 0 48px 40px var(--ag-background-color);
+	clip-path: inset(0 0 0 -90px);
 }

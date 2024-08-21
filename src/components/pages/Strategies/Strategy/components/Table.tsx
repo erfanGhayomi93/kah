@@ -1,85 +1,52 @@
-import AgTable, { type AgTableProps } from '@/components/common/Tables/AgTable';
-import { type GridApi, type SortChangedEvent } from '@ag-grid-community/core';
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import AgInfiniteTable from '@/components/common/Tables/AgInfiniteTable';
+import { type AgTableProps } from '@/components/common/Tables/AgTable';
+import { type GridApi, type IGetRowsParams } from '@ag-grid-community/core';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import NoTableData from './NoTableData';
 
-interface PaginationProps {
-	fetchNextPage: () => void;
-	pageSize: number;
-	pageNumber: number;
-}
-
-interface TableProps<T> extends AgTableProps<T>, PaginationProps {
+interface TableProps<T> extends AgTableProps<T> {
 	columnsVisibility: IManageColumn[];
 	isFetching?: boolean;
+	dependencies?: unknown[];
 }
 
 type TableRow = Strategy.AllStrategies;
 
 const Table = forwardRef<GridApi, TableProps<TableRow>>(
-	(
-		{
-			isFetching,
-			pageSize,
-			pageNumber,
-			columnsVisibility,
-			rowData = [],
-			fetchNextPage,
-			defaultColDef = {},
-			...props
-		},
-		ref,
-	) => {
+	({ isFetching, columnsVisibility, rowData = [], defaultColDef = {}, dependencies = [], ...props }, ref) => {
 		const gridRef = useRef<GridApi<TableRow>>(null);
 
-		const [sorting, setSorting] = useState<{ colId: string; sort: TSortingMethods } | null>(null);
+		const dataRef = useRef<Strategy.AllStrategies[]>(rowData ?? []);
 
-		const onSortChanged = ({ columns }: SortChangedEvent<TableRow>) => {
-			try {
-				if (!Array.isArray(columns) || columns.length < 1) return;
+		const getRows = (params: IGetRowsParams) => {
+			const newData = [...dataRef.current];
 
-				const col = columns[0];
-				const colId = col.getColId();
-				const sort = col.getSort();
-
-				setSorting(sort ? { colId, sort } : null);
-			} catch (e) {
-				//
+			const rowsThisPage = newData.slice(params.startRow, params.endRow);
+			let lastRow = -1;
+			if (newData.length <= params.endRow) {
+				lastRow = newData.length;
 			}
+
+			params.successCallback(rowsThisPage, lastRow);
+		};
+
+		const updateDatasource = () => {
+			gridRef.current?.setGridOption('datasource', {
+				rowCount: rowData?.length,
+				getRows,
+			});
 		};
 
 		useImperativeHandle(ref, () => gridRef.current!);
 
-		const data = useMemo<TableRow[]>(() => {
-			try {
-				if (!Array.isArray(rowData)) return [];
-				const rows = JSON.parse(JSON.stringify(rowData)) as typeof rowData;
+		const datasourceDependencies = useMemo(() => {
+			if (!Array.isArray(rowData) || rowData.length === 0) return [];
 
-				if (sorting) {
-					rows.sort((a, b) => {
-						try {
-							const { colId, sort } = sorting;
-							const valueA = a[colId as keyof Strategy.AllStrategies];
-							const valueB = b[colId as keyof Strategy.AllStrategies];
+			const result = rowData.map((item) => item.marketUnit);
+			result.sort((a, b) => b.localeCompare(a));
 
-							if (typeof valueA === 'string') {
-								if (sort === 'asc') return valueA.localeCompare(valueB as string);
-								else return (valueB as string).localeCompare(valueA);
-							} else {
-								if (sort === 'asc') return (valueB as number) - (valueA as number);
-								else return (valueA as number) - (valueB as number);
-							}
-						} catch (e) {
-							return 0;
-						}
-					});
-				}
-
-				return rows.slice(0, pageNumber * pageSize);
-			} catch (e) {
-				return rowData!;
-			}
-		}, [rowData, sorting, pageNumber, pageSize]);
+			return result;
+		}, [rowData]);
 
 		useEffect(() => {
 			const eGrid = gridRef.current;
@@ -95,27 +62,27 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 			}
 		}, [columnsVisibility]);
 
+		useEffect(() => {
+			dataRef.current = rowData ?? [];
+		}, [rowData]);
+
+		useEffect(() => {
+			updateDatasource();
+		}, [datasourceDependencies.join(',')]);
+
 		return (
 			<div className='relative flex-1'>
-				<AgTable<TableRow>
+				<AgInfiniteTable
 					ref={gridRef}
-					className='h-full border-0'
 					suppressColumnVirtualisation={false}
-					rowHeight={48}
-					headerHeight={40}
-					rowData={data}
-					onSortChanged={onSortChanged}
+					className='h-full border-0'
 					defaultColDef={{
 						suppressMovable: true,
-						sortable: true,
+						sortable: false,
 						resizable: false,
 						minWidth: 104,
 						comparator: (_a, _b) => 0,
 						...defaultColDef,
-					}}
-					onBodyScrollEnd={({ api }) => {
-						const lastRowIndex = api.getLastDisplayedRowIndex();
-						if ((lastRowIndex + 1) % 20 <= 1) fetchNextPage();
 					}}
 					{...props}
 				/>
@@ -128,7 +95,8 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 						<div className='size-48 spinner' />
 					</div>
 				)}
-				{data.length === 0 && !isFetching && <NoTableData />}
+
+				{!rowData?.length && !isFetching && <NoTableData />}
 			</div>
 		);
 	},

@@ -11,6 +11,13 @@ export const optionWatchlistLightstreamProperty: Record<string, keyof (Option.Wa
 	lastTradedPriceVarPercent: 'tradePriceVarPreviousTradePercent',
 };
 
+export const baseSymbolWatchlistLightstreamProperty: Record<string, keyof (Option.Watchlist & Option.SymbolInfo)> = {
+	lastTradedPriceVarPercent: 'baseTradePriceVarPreviousTradePercent',
+	closingPriceVarPercent: 'baseClosingPriceVarReferencePricePercent',
+	lastTradedPrice: 'baseSymbolPrice',
+	closingPrice: 'baseClosingPrice',
+};
+
 export const symbolInfoPanelLightstreamProperty: Record<string, keyof Symbol.Info> = {
 	totalTradeValue: 'tradeValue',
 	totalNumberOfSharesTraded: 'tradeVolume',

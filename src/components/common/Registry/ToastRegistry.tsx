@@ -25,7 +25,7 @@ const ToastRegistry = ({ children }: ToastRegistryProps) => {
 				closeButton={false}
 				pauseOnFocusLoss={false}
 				autoClose={2500}
-				limit={10}
+				limit={7}
 			/>
 			{children}
 		</>
