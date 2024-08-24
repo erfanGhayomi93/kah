@@ -597,6 +597,13 @@
 		"column_growth": "رشد",
 		"column_blackScholesDifference": "اختلاف تا قیمت منصفانه",
 		"column_highOpenPosition": "موقعیت‌های باز زیاد",
+		"column_legalBuyVolume": "حجم خرید حقوقی",
+		"column_individualBuyVolume": "حجم خرید حقیقی",
+		"column_legalSellVolume": "حجم فروش حقوقی",
+		"column_individualSellVolume": "حجم فروش حقیقی",
+		"column_tradePriceVarPreviousTradePercent": "آخرین قیمت",
+		"column_baseTradePriceVarPreviousTradePercent": "آخرین قیمت پایه",
+		"column_sectorName": "صنعت",
 		"column_gamma": "گاما",
 		"column_rho": "رو",
 		"column_vega": "وگا"
