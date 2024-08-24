@@ -16,6 +16,8 @@ class AgSort {
 
 	update() {
 		try {
+			if (!this.params.enableSorting) return;
+
 			if (!this.eSort) throw new Error('"eSort" element not found!');
 
 			const sorting = this.sorting;
