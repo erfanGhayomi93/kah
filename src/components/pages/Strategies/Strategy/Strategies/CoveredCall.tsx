@@ -486,7 +486,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				colId: 'riskCoverage',
 				headerName: t('CoveredCall.riskCoverage'),
 				initialHide: initialHiddenColumnsCoveredCall.riskCoverage,
-				width: 152,
+				minWidth: 152,
 				flex: 1,
 				headerComponent: HeaderHint,
 				headerComponentParams: {

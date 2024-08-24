@@ -1,5 +1,6 @@
 import { addTooltip } from '@/utils/helpers';
 import { type IHeaderComp, type IHeaderParams } from '@ag-grid-community/core';
+import clsx from 'clsx';
 import AgSort from '../classes/AgSort';
 
 interface HeaderHintProps extends IHeaderParams {
@@ -18,10 +19,12 @@ class HeaderHint implements IHeaderComp {
 	eventListener!: () => void;
 
 	init(params: HeaderHintProps) {
+		const enableSorting = params.enableSorting;
+
 		this.params = params;
 
 		this.eGui = document.createElement('div');
-		this.eGui.setAttribute('class', 'flex-justify-center cursor-pointer w-full gap-8');
+		this.eGui.setAttribute('class', clsx('w-full gap-8 flex-justify-center', enableSorting && 'cursor-pointer'));
 		this.eGui.textContent = params.displayName;
 
 		this.agSort = new AgSort(this.params);
@@ -33,7 +36,7 @@ class HeaderHint implements IHeaderComp {
 			this.agSort.update();
 		});
 
-		this.eGui.addEventListener('click', () => this.agSort.sort());
+		if (enableSorting) this.eGui.addEventListener('click', () => this.agSort.sort());
 		this.eGui.appendChild(this.eHint);
 		this.eGui.appendChild(this.agSort.eSort!);
 	}
