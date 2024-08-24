@@ -111,6 +111,7 @@ const useBasketOrderingSystem = ({ onSent, onSingleSent, onRemoved }: IOptions =
 				quantity: item.quantity,
 				price: item.price,
 				orderSide: item.side,
+				source: item.type === 'option' && item.side === 'sell' ? 'Portfolio' : undefined,
 				validity: 'Day',
 				validityDate: 0,
 			});
