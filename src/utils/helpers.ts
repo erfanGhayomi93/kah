@@ -723,3 +723,8 @@ export const except = <T extends Record<string, unknown>, K extends keyof T>(obj
 
 	return result;
 };
+
+export const isSymbolISINValid = (v: string): boolean => {
+	const rgx = /^(IR[A-Z]{1,2}[0-9]{1,2}[A-Z]{2,5}[0-9]{2,5})$/gi;
+	return rgx.test(v);
+};

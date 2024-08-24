@@ -266,6 +266,8 @@ const AnalyzeChart = ({
 			useHTML: true,
 			split: true,
 			formatter: function () {
+				const MAX_YTM = 1e4;
+
 				const x = Number(this.x ?? 0);
 				const y = Number(this.y ?? 0);
 
@@ -274,16 +276,16 @@ const AnalyzeChart = ({
 				if (isNaN(efficiency)) efficiency = 0;
 
 				let ytm = isNaN(profit) || Math.abs(profit) === Infinity ? 0 : getYtm(profit);
-				ytm = Math.floor(Math.max(Math.min(ytm, 1e9), -1e2));
+				ytm = Math.floor(Math.max(Math.min(ytm, MAX_YTM), -1e2));
 				if (isNaN(ytm)) efficiency = 0;
 
 				const items = [
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('base_symbol_price')}:</span><span class="ltr">${sepNumbers(String(x))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('current_base_price_distance')}:</span><span class="ltr">${sepNumbers(String(Math.abs(baseAssets - x)))}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('rial_efficiency')}:</span><span class="ltr">${sepNumbers(String(y))}</span></li>`,
-					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${efficiency.toFixed(2)}%`}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('percent_efficiency')}:</span><span class="ltr">${efficiency >= Number.MAX_SAFE_INTEGER ? `${sepNumbers(String(MAX_YTM))}%` : `${efficiency.toFixed(2)}%`}</span></li>`,
 					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('cost')}:</span><span class="ltr">${sepNumbers(String(cost))}</span></li>`,
-					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm === 1e9 || efficiency >= Number.MAX_SAFE_INTEGER ? t('infinity') : `${sepNumbers(String(ytm))}%`}</span></li>`,
+					`<li style="height:18px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;"><span>${t('ytm')}:</span><span class="ltr">${ytm === MAX_YTM || efficiency >= Number.MAX_SAFE_INTEGER ? `${sepNumbers(String(MAX_YTM))}%` : `${sepNumbers(String(ytm))}%`}</span></li>`,
 				];
 
 				return `<ul style="display:flex;flex-direction:column;gap:8px;direction:rtl">${items.join('')}</ul>`;
