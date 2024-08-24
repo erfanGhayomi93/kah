@@ -269,7 +269,7 @@ $highlight-color: rgb(var(--c-info-100) / 1);
 		height: 100%;
 		width: 1px;
 		top: 0;
-		z-index: 99;
+		z-index: 1;
 		background-color: $gray-200;
 		opacity: 100;
 		transition: opacity 250ms;
