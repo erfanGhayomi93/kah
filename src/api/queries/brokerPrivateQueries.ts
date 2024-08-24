@@ -236,7 +236,6 @@ export const useGlPositionExtraInfoQuery = createBrokerQuery<
 	GlPositionExtraInfo | null,
 	['glPositionExtraInfoQuery', string]
 >({
-	staleTime: 1e5,
 	queryKey: ['glPositionExtraInfoQuery', ''],
 	queryFn: async ({ signal, queryKey }) => {
 		const url = getBrokerURLs(store.getState());

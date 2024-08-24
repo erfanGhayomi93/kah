@@ -3,7 +3,6 @@ import { ArrowDownSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
 import { setChoiceBrokerModal } from '@/features/slices/modalSlice';
-import { toggleSidebar } from '@/features/slices/uiSlice';
 import { Link, usePathname } from '@/navigation';
 import { comparePathname } from '@/utils/helpers';
 import clsx from 'clsx';
@@ -100,11 +99,6 @@ const ButtonOrAnchor = ({
 
 	const brokerUrl = useAppSelector(getBrokerURLs);
 
-	const onMouseEnter = () => {
-		if (sidebarIsExpand) return;
-		dispatch(toggleSidebar(true));
-	};
-
 	const loginFirstBeforeUse = () => {
 		dispatch(setChoiceBrokerModal({}));
 	};
@@ -121,7 +115,6 @@ const ButtonOrAnchor = ({
 					}
 				}}
 				href={props.to}
-				onMouseEnter={onMouseEnter}
 			>
 				{icon}
 				<span>{label}</span>
@@ -132,7 +125,6 @@ const ButtonOrAnchor = ({
 	return (
 		<button
 			type='button'
-			onMouseEnter={onMouseEnter}
 			onClick={(e) => {
 				if (shouldPrevent) {
 					e.preventDefault();

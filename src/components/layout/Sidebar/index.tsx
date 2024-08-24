@@ -21,6 +21,10 @@ const Sidebar = () => {
 		setExpandId(null);
 	};
 
+	const openSidebar = () => {
+		dispatch(toggleSidebar(true));
+	};
+
 	return (
 		<div
 			style={{
@@ -31,6 +35,7 @@ const Sidebar = () => {
 			}}
 			className='fixed right-0 top-0 h-full bg-gray-800 darkness:bg-gray-50'
 			onMouseLeave={closeSidebar}
+			onMouseEnter={openSidebar}
 		>
 			<div className='relative h-full flex-column'>
 				<div className='z-10 flex-1 select-none overflow-hidden flex-column'>

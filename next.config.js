@@ -9,7 +9,8 @@ const nextConfig = withBundleAnalyzer(
 		reactStrictMode: false,
 		trailingSlash: true,
 		experimental: {
-			optimizePackageImports: ['@ag-grid-community', '@ag-grid-community/core', 'ag-grid-community', 'react-apexcharts']
+			optimizePackageImports: ['@ag-grid-community', '@ag-grid-community/core', 'ag-grid-community', 'react-apexcharts'],
+			typedRoutes: true
 		},
 		webpack(config) {
 			config.module.rules.push({
