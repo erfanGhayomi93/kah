@@ -142,6 +142,7 @@ const RequestForm = ({ symbolData, price, quantity, onSubmit }: RequestFormProps
 						data={data}
 						selectedPosition={selectedPosition}
 						setSelectedPosition={setSelectedPosition}
+						quantity={quantity}
 					/>
 				</Card>
 			</div>

@@ -410,7 +410,7 @@
 		"position_block_type": "تضمین <v></v> موقعیت <n></n>",
 		"change_block_type": "تغییر روش تضمین",
 		"account_block_type_error": "وجه نقد کافی نمی‌باشد.",
-		"portfolio_block_type_error": "تعداد سهام پایه کافی نمی‌باشد.",
+		"position_block_type_error": "تعداد موقعیت‌ها کافی نمی‌باشد.",
 		"create_order_buy": "ارسال خرید",
 		"create_draft_buy": "پیش‌نویس خرید",
 		"create_order_sell": "ارسال فروش",

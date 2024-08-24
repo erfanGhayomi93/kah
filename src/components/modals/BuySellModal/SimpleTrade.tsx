@@ -152,19 +152,23 @@ const SimpleTrade = ({
 
 		return t.rich('bs_modal.position_block_type', {
 			n: () => <span className='text-gray-800'>{blockType.value.symbolTitle}</span>,
-			v: () => <span className='text-gray-800'>{sepNumbers(String(blockTypePortfolioValue))}</span>,
+			v: () => <span className='text-gray-800'>{sepNumbers(String(quantity))}</span>,
 		});
 	};
 
 	const blockTypeErrorMessage = () => {
-		if (side === 'buy' || !blockType || blockType.type === 'Position') return null;
+		if (side === 'buy' || !blockType) return null;
 
-		if (blockType.type === 'Account' && blockTypeAccountValue > Number(purchasePower ?? 0)) {
+		if (isAccountBlockTypeInvalid) {
 			return <ErrorMessage>{t('bs_modal.account_block_type_error')}</ErrorMessage>;
 		}
 
-		if (blockType.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0)) {
+		if (isPortfolioBlockTypeInvalid) {
 			return <ErrorMessage>{t('bs_modal.portfolio_block_type_error')}</ErrorMessage>;
+		}
+
+		if (isPositionBlockTypeInvalid) {
+			return <ErrorMessage>{t('bs_modal.position_block_type_error')}</ErrorMessage>;
 		}
 
 		return null;
@@ -214,7 +218,11 @@ const SimpleTrade = ({
 	const isPortfolioBlockTypeInvalid =
 		blockType?.type === 'Portfolio' && blockTypePortfolioValue > Number(baseSymbolExtraInfo?.asset ?? 0);
 
-	const isBlockTypeInvalid = !blockType || isAccountBlockTypeInvalid || isPortfolioBlockTypeInvalid;
+	const isPositionBlockTypeInvalid =
+		blockType?.type === 'Position' && quantity > Number(blockType.value.customersOpenPositions ?? 0);
+
+	const isBlockTypeInvalid =
+		!blockType || isAccountBlockTypeInvalid || isPortfolioBlockTypeInvalid || isPositionBlockTypeInvalid;
 
 	const isFormDisabled = !price || !quantity || (isShortCall && quantity - symbolAssets > 0 && isBlockTypeInvalid);
 
