@@ -1,6 +1,7 @@
 import { store } from '@/api/inject-store';
 import ipcMain from '@/classes/IpcMain';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
+import broadcast from '@/utils/broadcast';
 import { deleteBrokerClientId, getBrokerClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
@@ -63,7 +64,7 @@ brokerAxios.interceptors.response.use(
 	},
 );
 
-export const logoutBroker = () => {
+export const logoutBroker = (broadcasting = true) => {
 	try {
 		const [token] = getBrokerClientId();
 
@@ -95,6 +96,12 @@ export const logoutBroker = () => {
 				autoClose: 5000,
 			});
 		}
+	} catch (e) {
+		//
+	}
+
+	try {
+		if (broadcasting) broadcast.postMessage(JSON.stringify({ type: 'broker_logout', payload: null }));
 	} catch (e) {
 		//
 	}

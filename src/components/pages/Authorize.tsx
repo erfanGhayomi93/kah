@@ -1,6 +1,6 @@
 'use client';
 
-import { broadcastChannel } from '@/constants';
+import broadcast from '@/utils/broadcast';
 import { setBrokerClientId } from '@/utils/cookie';
 import { useEffect } from 'react';
 import Loading from '../common/Loading';
@@ -21,8 +21,7 @@ const Authorize = () => {
 					setBrokerClientId(`${clientId}^${brokerCode}`);
 
 					if (process.env.NODE_ENV === 'production') {
-						const channel = new BroadcastChannel(broadcastChannel);
-						channel.postMessage(JSON.stringify({ type: 'broker_registered', payload: clientId }));
+						broadcast.postMessage(JSON.stringify({ type: 'broker_logged_in', payload: clientId }));
 					}
 				} catch (e) {
 					//
@@ -37,7 +36,7 @@ const Authorize = () => {
 
 	return (
 		<div className='p-8'>
-			<div className='darkBlue:bg-gray-50 size-full rounded bg-white flex-justify-center dark:bg-gray-50'>
+			<div className='size-full rounded bg-white flex-justify-center darkBlue:bg-gray-50 dark:bg-gray-50'>
 				<Loading />
 			</div>
 		</div>
