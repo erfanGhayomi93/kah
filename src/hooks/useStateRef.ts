@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const useStateWithRef = <T>(state: T) => {
+const useStateRef = <T>(state: T) => {
 	const stateRef = useRef(state);
 
 	useEffect(() => {
@@ -10,4 +10,4 @@ const useStateWithRef = <T>(state: T) => {
 	return stateRef;
 };
 
-export default useStateWithRef;
+export default useStateRef;

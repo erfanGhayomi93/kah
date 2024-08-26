@@ -1,5 +1,6 @@
 import LocalstorageInstance from '@/classes/Localstorage';
 import { initialDashboardGrid, initialSymbolInfoPanelGrid } from '@/constants/grid';
+import broadcast from '@/utils/broadcast';
 import { setCookieTheme } from '@/utils/cookie';
 import { getDeviceColorSchema } from '@/utils/helpers';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
@@ -91,6 +92,8 @@ const uiSlice = createSlice({
 
 		setTheme: (state, { payload }: PayloadAction<UIState['theme']>) => {
 			try {
+				broadcast.postMessage(JSON.stringify({ type: 'theme_changed', payload }));
+
 				document.documentElement.setAttribute(
 					'data-theme',
 					payload === 'system' ? getDeviceColorSchema() : payload,
