@@ -1,5 +1,6 @@
 import { store } from '@/api/inject-store';
 import ipcMain from '@/classes/IpcMain';
+import broadcast from '@/utils/broadcast';
 import { deleteBrokerClientId, deleteClientId, getClientId } from '@/utils/cookie';
 import AXIOS, { AxiosError, type AxiosResponse } from 'axios';
 
@@ -55,7 +56,7 @@ axios.interceptors.response.use(
 	},
 );
 
-const logoutUser = () => {
+const logoutUser = (broadcasting = true) => {
 	try {
 		store.dispatch({ payload: false, type: 'user/setIsLoggedIn' });
 		store.dispatch({ payload: false, type: 'user/setBrokerIsSelected' });
@@ -65,6 +66,12 @@ const logoutUser = () => {
 
 		deleteBrokerClientId();
 		deleteClientId();
+	} catch (e) {
+		//
+	}
+
+	try {
+		if (broadcasting) broadcast.postMessage(JSON.stringify({ type: 'app_logout', payload: null }));
 	} catch (e) {
 		//
 	}

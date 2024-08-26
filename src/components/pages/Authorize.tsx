@@ -21,7 +21,7 @@ const Authorize = () => {
 					setBrokerClientId(`${clientId}^${brokerCode}`);
 
 					if (process.env.NODE_ENV === 'production') {
-						broadcast.postMessage(JSON.stringify({ type: 'broker_registered', payload: clientId }));
+						broadcast.postMessage(JSON.stringify({ type: 'broker_logged_in', payload: clientId }));
 					}
 				} catch (e) {
 					//

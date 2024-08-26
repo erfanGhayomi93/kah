@@ -1,11 +1,13 @@
 'use client';
 
+import { logoutUser } from '@/api/axios';
+import { logoutBroker } from '@/api/brokerAxios';
 import { store } from '@/api/inject-store';
 import { broadcastChannel } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
-import { setChoiceBrokerModal } from '@/features/slices/modalSlice';
+import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
 import { getTheme } from '@/features/slices/uiSlice';
-import { setBrokerIsSelected } from '@/features/slices/userSlice';
+import { setBrokerIsSelected, setIsLoggedIn } from '@/features/slices/userSlice';
 import { useTranslations } from 'next-intl';
 import { useLayoutEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -24,12 +26,21 @@ const BroadcastChannelRegistry = ({ children }: BroadcastChannelRegistryProps) =
 
 	const dispatch = useAppDispatch();
 
-	const onBrokerRegistered = () => {
+	const onBrokerLoggedIn = () => {
 		try {
 			dispatch(setChoiceBrokerModal(null));
 			dispatch(setBrokerIsSelected(true));
 
 			toast.success(t('alerts.logged_in_successfully_to_broker_account'));
+		} catch (e) {
+			//
+		}
+	};
+
+	const onAppLoggedIn = () => {
+		try {
+			dispatch(setLoginModal(null));
+			dispatch(setIsLoggedIn(true));
 		} catch (e) {
 			//
 		}
@@ -53,11 +64,20 @@ const BroadcastChannelRegistry = ({ children }: BroadcastChannelRegistryProps) =
 
 			const realData = JSON.parse(data) as IBroadcastMessage;
 			switch (realData.type) {
-				case 'broker_registered':
-					onBrokerRegistered();
+				case 'broker_logged_in':
+					onBrokerLoggedIn();
+					break;
+				case 'app_logged_in':
+					onAppLoggedIn();
 					break;
 				case 'theme_changed':
 					onThemeChanged(realData.payload);
+					break;
+				case 'app_logout':
+					logoutUser(false);
+					break;
+				case 'broker_logout':
+					logoutBroker(false);
 					break;
 			}
 		} catch (e) {

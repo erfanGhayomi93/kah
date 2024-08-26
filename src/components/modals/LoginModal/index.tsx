@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setLoginModal } from '@/features/slices/modalSlice';
 import { type ILoginModal } from '@/features/slices/types/modalSlice.interfaces';
 import { getIsLoggedIn, setIsLoggedIn } from '@/features/slices/userSlice';
+import broadcast from '@/utils/broadcast';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { forwardRef, useMemo, useState } from 'react';
@@ -51,6 +52,7 @@ const LoginModal = forwardRef<HTMLDivElement, LoginModalProps>(
 
 		const onLoggedIn = () => {
 			dispatch(setIsLoggedIn(true));
+			broadcast.postMessage(JSON.stringify({ type: 'app_logged_in', payload: undefined }));
 		};
 
 		const sendOTP = (pNumber?: string) => {
