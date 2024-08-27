@@ -84,11 +84,13 @@ const useAnalyze = (contracts: TSymbolStrategy[], config: IConfiguration) => {
 		}
 
 		try {
-			const { baseAssets, useTradeCommission, useStrikeCommission, useRequiredMargin, useTax } = config;
+			const { useTradeCommission, useStrikeCommission, useRequiredMargin, useTax } = config;
 			const { maxPrice, minPrice } = newInputs;
 			const series: IAnalyzeInputs['data'] = [];
 
 			const now = Date.now();
+			const baseAssets =
+				contracts.find((c) => c.type === 'base')?.price ?? config?.baseAssets ?? inputs?.baseAssets ?? 0;
 
 			for (let i = 0; i < data.length; i++) {
 				const item = data[i];
