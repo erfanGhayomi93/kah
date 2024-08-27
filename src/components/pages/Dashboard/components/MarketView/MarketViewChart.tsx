@@ -1,6 +1,6 @@
 import { useTheme } from '@/hooks';
 import { getChartTheme } from '@/libs/highchart';
-import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, getTickPositions, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
@@ -45,37 +45,33 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 		return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
 	};
 
-	const series: SeriesAreasplineOptions = useMemo(() => {
-		const result: SeriesAreasplineOptions = {
-			color: COLORS[type].line,
-			lineColor: COLORS[type].line,
-			fillColor: {
-				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-				stops: COLORS[type].steps,
-			},
-			threshold: null,
-			type: 'areaspline',
-			lineWidth: 1.5,
-			connectNulls: true,
-			data: [],
-		};
-
-		if (!data) return result;
-
+	const seriesData = useMemo(() => {
 		if (Array.isArray(data)) {
-			result.data = data.map((item) => ({
+			return data.map((item) => ({
 				x: new Date(item.dateTime).getTime(),
 				y: item.lastIndexValueInDay ?? 0,
 			}));
-		} else {
-			result.data = Object.keys(data).map((datetime) => ({
-				x: new Date(datetime).getTime(),
-				y: (data as Dashboard.GetIndex.RetailTrades)[datetime],
-			}));
 		}
 
-		return result;
-	}, [interval, type, data]);
+		return Object.keys(data).map((datetime) => ({
+			x: new Date(datetime).getTime(),
+			y: (data as Dashboard.GetIndex.RetailTrades)[datetime],
+		}));
+	}, [interval, data]);
+
+	const getSeries = (): SeriesAreasplineOptions => ({
+		color: COLORS[type].line,
+		lineColor: COLORS[type].line,
+		fillColor: {
+			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+			stops: COLORS[type].steps,
+		},
+		threshold: null,
+		type: 'areaspline',
+		lineWidth: 1.5,
+		connectNulls: true,
+		data: seriesData,
+	});
 
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
@@ -94,6 +90,7 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 			},
 			xAxis: {
 				type: 'datetime',
+				tickPositions: [],
 				crosshair: {
 					label: {
 						formatter: (value) => xAxisFormatter(value),
@@ -115,15 +112,16 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 					},
 				},
 			},
-			series: [series],
+			series: [getSeries()],
 		});
 	}, []);
 
 	useEffect(() => {
 		if (!chartRef.current) return;
 
-		chartRef.current.series[0].update(series);
-	}, [series]);
+		chartRef.current.series[0].update(getSeries());
+		chartRef.current.series[0].xAxis.update({ tickPositions: getTickPositions(seriesData) });
+	}, [seriesData, type]);
 
 	useEffect(() => {
 		if (!chartRef.current) return;

@@ -728,3 +728,23 @@ export const isSymbolISINValid = (v: string): boolean => {
 	const rgx = /^(IR[A-Z]{1,2}[0-9]{1,2}[A-Z]{2,5}[0-9]{2,5})$/gi;
 	return rgx.test(v);
 };
+
+export const getTickPositions = (seriesData: TSeriesData, maxLength = 9): number[] => {
+	const tickPositions: number[] = [];
+
+	try {
+		const length = Math.min(seriesData.length + 1, maxLength);
+		const d = seriesData.length / (length - 1);
+
+		if (d > 0) {
+			for (let i = 1; i <= length; i++) {
+				const n = Math.max(0, Math.round((i - 1) * d) - 1);
+				if (seriesData[n]) tickPositions.push(seriesData[n].x);
+			}
+		}
+	} catch (e) {
+		//
+	}
+
+	return tickPositions;
+};

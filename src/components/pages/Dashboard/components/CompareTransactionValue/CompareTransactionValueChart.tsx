@@ -1,7 +1,7 @@
 import { useGetOptionMarketComparisonQuery } from '@/api/queries/dashboardQueries';
 import { useTheme } from '@/hooks';
 import { getChartTheme } from '@/libs/highchart';
-import { dateFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, getTickPositions, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import Suspend from '../../common/Suspend';
@@ -53,33 +53,31 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 		return dateFormatter(v, interval === 'Today' ? 'time' : 'date');
 	};
 
-	const series: SeriesAreasplineOptions = useMemo(() => {
-		const result: SeriesAreasplineOptions = {
-			color: COLORS[type].line,
-			lineColor: COLORS[type].line,
-			fillColor: {
-				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-				stops: COLORS[type].steps,
-			},
-			threshold: null,
-			type: 'areaspline',
-			lineWidth: 1.5,
-			connectNulls: true,
-			data: [],
-		};
-
-		if (!data) return result;
+	const seriesData = useMemo(() => {
+		if (!data) return [];
 
 		const keys = Object.keys(data);
-		if (keys.length === 0) return result;
+		if (keys.length === 0) return [];
 
-		result.data = keys.map((d) => ({
+		return keys.map((d) => ({
 			x: new Date(d).getTime(),
 			y: data[d],
 		}));
+	}, [interval, data]);
 
-		return result;
-	}, [interval, type, data]);
+	const getSeries = (): SeriesAreasplineOptions => ({
+		color: COLORS[type].line,
+		lineColor: COLORS[type].line,
+		fillColor: {
+			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+			stops: COLORS[type].steps,
+		},
+		threshold: null,
+		type: 'areaspline',
+		lineWidth: 1.5,
+		connectNulls: true,
+		data: seriesData,
+	});
 
 	const onLoad = useCallback((el: HTMLDivElement | null) => {
 		if (!el) return;
@@ -116,15 +114,16 @@ const CompareTransactionValueChart = ({ interval, type }: CompareTransactionValu
 					},
 				},
 			},
-			series: [series],
+			series: [getSeries()],
 		});
 	}, []);
 
 	useEffect(() => {
 		if (!chartRef.current) return;
 
-		chartRef.current.series[0].update(series);
-	}, [series]);
+		chartRef.current.series[0].update(getSeries());
+		chartRef.current.series[0].xAxis.update({ tickPositions: getTickPositions(seriesData) });
+	}, [seriesData, type]);
 
 	useEffect(() => {
 		if (!chartRef.current) return;

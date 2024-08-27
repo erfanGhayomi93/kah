@@ -1,7 +1,7 @@
 import { useGetOpenPositionProcessQuery } from '@/api/queries/dashboardQueries';
 import { useTheme } from '@/hooks';
 import { getChartTheme } from '@/libs/highchart';
-import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, getTickPositions, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type SeriesSplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
@@ -117,6 +117,15 @@ const OpenPositionsProcessChart = ({ interval, type }: OpenPositionsProcessChart
 
 		chartRef.current.series[0].update(series[0]);
 		chartRef.current.series[1].update(series[1]);
+		chartRef.current.series[0].xAxis.update({
+			tickPositions: getTickPositions(series[0].data as TSeriesData, 5),
+		});
+
+		if (series[1].data?.length) {
+			chartRef.current.series[1].xAxis.update({
+				tickPositions: getTickPositions(series[1].data as TSeriesData, 5),
+			});
+		}
 	}, [data, type]);
 
 	useEffect(() => {

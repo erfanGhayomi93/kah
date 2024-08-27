@@ -1,7 +1,7 @@
 import { useGetIndividualLegalInfoQuery } from '@/api/queries/dashboardQueries';
 import { useTheme } from '@/hooks';
 import { getChartTheme } from '@/libs/highchart';
-import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, getTickPositions, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type SeriesSplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
@@ -105,7 +105,11 @@ const IndividualAndLegalChart = ({ symbolType, type }: IndividualAndLegalChartPr
 			});
 		}
 
+		const tickPositions = getTickPositions(series[0].data as TSeriesData, 12);
+
 		chartRef.current.update({ series });
+		chartRef.current.series[0].xAxis.update({ tickPositions });
+		chartRef.current.series[1].xAxis.update({ tickPositions });
 	}, [data, symbolType, type]);
 
 	useEffect(() => {
