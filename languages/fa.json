@@ -94,7 +94,11 @@
 		"user_status_AtRisk": "در خطر",
 		"user_status_CallMargin": "اخطار وجه تضمین",
 		"logout": "خروج از حساب کاربری کهکشان",
-		"theme": "رنگ زمینه"
+		"theme": "رنگ زمینه",
+		"t1_remain": "مانده قابل برداشت T1",
+		"t2_remain": "مانده قابل برداشت T2",
+		"blocked_amount": "مبلغ بلوکه شده",
+		"amount": "اعتبار"
 	},
 	"header_notifications": {
 		"notifications": "اعلان‌ها",

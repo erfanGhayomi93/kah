@@ -36,6 +36,7 @@ import {
 import SearchSymbol from './SearchSymbol';
 import ServerDateTime from './ServerDateTime';
 import UserDropdown from './UserDropdown';
+import UserRemainTooltip from './UserRemainTooltip';
 
 const getStates = createSelector(
 	(state: RootState) => state,
@@ -110,7 +111,7 @@ const Header = () => {
 		dispatch(setBlackScholesModal({}));
 	};
 
-	const handleShowDepositModal = () => {
+	const showDepositModal = () => {
 		dispatch(setDepositModal({}));
 	};
 
@@ -195,19 +196,29 @@ const Header = () => {
 					</div>
 
 					{isLoggedIn && userRemain && (
-						<span className='gap-8 whitespace-nowrap text-base flex-items-center'>
-							{t('header.purchase_power')}:
-							<span className='gap-4 flex-items-center'>
-								<span
-									className='select-all font-medium text-gray-800 ltr'
-									onCopy={(e) => copyNumberToClipboard(e, userRemain.purchasePower ?? 0)}
-								>
-									{sepNumbers(String(userRemain.purchasePower ?? 0))}
+						<Tooltip
+							className='!bg-transparent'
+							arrow={false}
+							placement='bottom'
+							content={<UserRemainTooltip data={userRemain} />}
+						>
+							<span
+								onClick={showDepositModal}
+								className='cursor-pointer gap-8 whitespace-nowrap text-base flex-items-center'
+							>
+								{t('header.purchase_power')}:
+								<span className='gap-4 flex-items-center'>
+									<span
+										className='select-all font-medium text-gray-800 ltr'
+										onCopy={(e) => copyNumberToClipboard(e, userRemain.purchasePower ?? 0)}
+									>
+										{sepNumbers(String(userRemain.purchasePower ?? 0))}
+									</span>
+									<span className='text-tiny text-gray-500'>{t('common.rial')}</span>
 								</span>
-								<span className='text-tiny text-gray-500'>{t('common.rial')}</span>
+								<WalletSVG className='text-success-100' />
 							</span>
-							<WalletSVG className='text-success-100' onClick={handleShowDepositModal} />
-						</span>
+						</Tooltip>
 					)}
 
 					{isLoggedIn && userStatus?.remainStatus && (

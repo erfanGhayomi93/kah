@@ -63,7 +63,7 @@ const Section = <T extends string = string, B extends string = string>({
 							<button
 								onClick={expandable ? onClose : onExpand}
 								type='button'
-								className='text-gray-500 transition-colors flex-justify-center hover:text-error-100 darkBlue:text-gray-500/40 dark:text-gray-500/40'
+								className='text-gray-500 transition-colors flex-justify-center hover:!text-error-100 darkness:text-gray-500/40'
 							>
 								<XCircleSVG width='1.8rem' height='1.8rem' />
 							</button>
@@ -73,7 +73,7 @@ const Section = <T extends string = string, B extends string = string>({
 							<button
 								onClick={onExpand}
 								type='button'
-								className='size-18 rounded-circle bg-gray-500 text-white transition-colors flex-justify-center hover:bg-success-100 darkBlue:bg-gray-500/40 darkBlue:text-gray-50 dark:bg-gray-500/40 dark:text-gray-50'
+								className='size-18 rounded-circle bg-gray-500 text-white transition-colors flex-justify-center hover:bg-success-100 darkBlue:bg-gray-500/40 darkBlue:text-gray-50 darkness:text-gray-500/40'
 							>
 								<ExpandSVG width='1.4rem' height='1.4rem' />
 							</button>
@@ -81,7 +81,7 @@ const Section = <T extends string = string, B extends string = string>({
 
 						{info && (
 							<Tooltip className='text-tiny font-medium' content={info ?? ''}>
-								<div className='size-18 rounded-circle text-gray-500 transition-colors flex-justify-center hover:text-info-100 darkBlue:text-gray-500/40 dark:text-gray-500/40'>
+								<div className='size-18 rounded-circle text-gray-500 transition-colors flex-justify-center hover:!text-info-100 darkness:text-gray-500/40'>
 									<InfoCircleSVG width='1.8rem' height='1.8rem' />
 								</div>
 							</Tooltip>
