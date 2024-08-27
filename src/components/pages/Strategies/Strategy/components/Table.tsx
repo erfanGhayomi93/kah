@@ -20,6 +20,32 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 
 		const getRows = (params: IGetRowsParams) => {
 			const newData = [...dataRef.current];
+			const sortModel = params.sortModel[0];
+
+			try {
+				if (sortModel) {
+					const { colId, sort } = sortModel;
+					newData.sort((a, b) => {
+						if (colId in a && colId in b) {
+							const valueA = a[colId as keyof typeof a];
+							const valueB = b[colId as keyof typeof b];
+
+							return compare(valueA, valueB, sort);
+						}
+
+						if (colId in a && colId in b) {
+							const valueA = a[colId as keyof typeof a];
+							const valueB = b[colId as keyof typeof b];
+
+							return compare(valueA, valueB, sort);
+						}
+
+						return 0;
+					});
+				}
+			} catch (e) {
+				//
+			}
 
 			const rowsThisPage = newData.slice(params.startRow, params.endRow);
 			let lastRow = -1;
@@ -37,7 +63,27 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 			});
 		};
 
-		useImperativeHandle(ref, () => gridRef.current!);
+		const compare = (
+			valueA: string | number | boolean,
+			valueB: string | number | boolean,
+			sorting: 'asc' | 'desc',
+		): number => {
+			try {
+				if (typeof valueA === 'string' && typeof valueB === 'string') {
+					if (sorting === 'asc') return valueA.localeCompare(valueB);
+					return valueB.localeCompare(valueA);
+				}
+
+				if (typeof valueA === 'number' && typeof valueB === 'number') {
+					if (sorting === 'asc') return valueB - valueA;
+					return valueA - valueB;
+				}
+			} catch (e) {
+				//
+			}
+
+			return 0;
+		};
 
 		const datasourceDependencies = useMemo(() => {
 			if (!Array.isArray(rowData) || rowData.length === 0) return [];
@@ -70,6 +116,8 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 			updateDatasource();
 		}, [datasourceDependencies.join(',')]);
 
+		useImperativeHandle(ref, () => gridRef.current!);
+
 		return (
 			<div className='relative flex-1'>
 				<AgInfiniteTable
@@ -78,7 +126,6 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 					className='h-full border-0'
 					defaultColDef={{
 						suppressMovable: true,
-						sortable: false,
 						resizable: false,
 						minWidth: 104,
 						comparator: (_a, _b) => 0,
