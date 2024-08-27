@@ -70,7 +70,7 @@ const TableActions = ({
 			{children}
 
 			{showPlayAndPause && (
-				<Tooltip placement='bottom' content={t(isPaused ? 'stop_lightstream' : 'start_lightstream')}>
+				<Tooltip placement='bottom' content={t(isPaused ? 'start_lightstream' : 'stop_lightstream')}>
 					<PlayAndPauseBtn isPaused={isPaused} onClick={toggle} />
 				</Tooltip>
 			)}

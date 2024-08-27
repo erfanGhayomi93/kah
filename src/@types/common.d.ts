@@ -33,6 +33,8 @@ declare type RequiredK<T, K extends PropertyKey = PropertyKey> = Required<Pick<T
 
 declare type Nullable<T> = null | T;
 
+declare type TSeriesData = Array<Record<'x' | 'y', number>>;
+
 declare interface IBaseModalConfiguration {
 	moveable?: boolean;
 	animation?:

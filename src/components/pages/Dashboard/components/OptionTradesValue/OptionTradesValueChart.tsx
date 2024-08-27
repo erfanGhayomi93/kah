@@ -1,7 +1,7 @@
 import { useGetOptionTradeProcessQuery } from '@/api/queries/dashboardQueries';
 import { useTheme } from '@/hooks';
 import { getChartTheme } from '@/libs/highchart';
-import { dateFormatter, divide, numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, divide, getTickPositions, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
@@ -94,6 +94,9 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 				}));
 
 				chartRef.current.series[0].update(series);
+				chartRef.current.series[0].xAxis.update({
+					tickPositions: getTickPositions(series.data as TSeriesData, 12),
+				});
 			} else {
 				const series: SeriesAreasplineOptions[] = [
 					{
@@ -136,6 +139,13 @@ const OptionTradesValueChart = ({ interval, type }: OptionTradesValueChartProps)
 				chartRef.current.series[0].update(series[0]);
 				if (chartRef.current.series[1]) chartRef.current.series[1].update(series[1]);
 				else chartRef.current.addSeries(series[1]);
+
+				chartRef.current.series[0].xAxis.update({
+					tickPositions: getTickPositions(series[0].data as TSeriesData),
+				});
+				chartRef.current.series[1].xAxis.update({
+					tickPositions: getTickPositions(series[1].data as TSeriesData),
+				});
 			}
 		} catch (e) {
 			//

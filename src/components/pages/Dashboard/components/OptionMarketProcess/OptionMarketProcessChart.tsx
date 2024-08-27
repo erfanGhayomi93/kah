@@ -1,7 +1,7 @@
 import { useGetMarketProcessChartQuery } from '@/api/queries/dashboardQueries';
 import { useTheme } from '@/hooks';
 import { getChartTheme } from '@/libs/highchart';
-import { dateFormatter, numFormatter, sepNumbers } from '@/utils/helpers';
+import { dateFormatter, getTickPositions, numFormatter, sepNumbers } from '@/utils/helpers';
 import { chart, type Chart, type GradientColorStopObject, type SeriesAreasplineOptions } from 'highcharts/highstock';
 import { useCallback, useEffect, useRef } from 'react';
 import Suspend from '../../common/Suspend';
@@ -122,12 +122,14 @@ const OptionMarketProcessChart = ({ interval, type }: OptionMarketProcessChartPr
 
 		const keys = Object.keys(data);
 
-		result.data = keys.map((d) => ({
+		const seriesData: TSeriesData = keys.map((d) => ({
 			x: new Date(d).getTime(),
 			y: data[d],
 		}));
 
+		result.data = seriesData;
 		chartRef.current.series[0].update(result);
+		chartRef.current?.series[0].xAxis.update({ tickPositions: getTickPositions(seriesData, 7) });
 	}, [data, type]);
 
 	useEffect(() => {

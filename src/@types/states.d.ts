@@ -315,7 +315,7 @@ declare interface IBsModalInputs {
 }
 
 declare interface IAnalyzeInputs {
-	data: Array<Record<'x' | 'y', number>>;
+	data: TSeriesData;
 	maxPrice: number | null;
 	minPrice: number | null;
 	baseAssets: number;
