@@ -532,6 +532,7 @@ export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 		title: 'حداکثر بازده',
 		hidden: initialHiddenColumnsLongCall.profitPercent,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'blackScholes',
@@ -703,6 +704,7 @@ export const initialColumnsLongPut: Array<IManageColumn<TLongPutColumns>> = [
 		title: 'حداکثر بازده',
 		hidden: initialHiddenColumnsLongPut.profitPercent,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'blackScholes',
@@ -1317,9 +1319,10 @@ export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColu
 	},
 	{
 		id: 'profitPercent',
-		title: 'درصد بازده تا سررسید',
+		title: 'حداکثر بازده',
 		hidden: false,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'inUseCapital',

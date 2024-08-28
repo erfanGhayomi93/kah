@@ -384,7 +384,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			}, */
 			/* {
 				colId: 'profitPercent',
-				headerName: 'درصد بازده تا سررسید',
+				headerName: 'حداکثر بازده',
 				initialHide: initialHiddenColumnsProtectivePut.profitPercent,
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.profitPercent ?? 0,
