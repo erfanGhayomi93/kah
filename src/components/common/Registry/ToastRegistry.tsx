@@ -24,6 +24,7 @@ const ToastRegistry = ({ children }: ToastRegistryProps) => {
 				newestOnTop={false}
 				closeButton={false}
 				pauseOnFocusLoss={false}
+				pauseOnHover={false}
 				autoClose={2500}
 				limit={7}
 			/>
