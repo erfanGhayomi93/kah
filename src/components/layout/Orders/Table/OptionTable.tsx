@@ -3,6 +3,8 @@ import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
+import { useAppDispatch } from '@/features/hooks';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, sepNumbers } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
@@ -21,9 +23,11 @@ interface OptionTableProps {
 const OptionTable = ({ loading, data }: OptionTableProps) => {
 	const t = useTranslations();
 
-	const gridRef = useRef<GridApi<Order.OptionOrder>>(null);
+	const dispatch = useAppDispatch();
 
 	const { addBuySellModal } = useTradingFeatures();
+
+	const gridRef = useRef<GridApi<Order.OptionOrder>>(null);
 
 	const onClosePosition = (order: Order.OptionOrder) => {
 		addBuySellModal({
@@ -38,12 +42,17 @@ const OptionTable = ({ loading, data }: OptionTableProps) => {
 		});
 	};
 
+	const onSymbolTitleClicked = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
 	const columnDefs = useMemo<Array<ColDef<Order.OptionOrder>>>(
 		() => [
 			{
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
-				cellClass: 'ag-cell-checkbox justify-end text-right',
+				cellClass: 'ag-cell-checkbox justify-end cursor-pointer text-right',
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				headerComponent: SymbolTitleHeader,
 				cellRenderer: SymbolTitleCell,
 				pinned: 'right',

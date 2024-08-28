@@ -1,7 +1,6 @@
 import { useLongCallStrategyQuery } from '@/api/queries/strategyQuery';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
-import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
 import { initialColumnsLongCall, initialHiddenColumnsLongCall } from '@/constants/strategies';
 import { useAppDispatch } from '@/features/hooks';
@@ -331,7 +330,7 @@ const LongCall = (strategy: LongCallProps) => {
 				valueGetter: ({ data }) => data?.longCallBEP ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			{
+			/* {
 				colId: 'profitPercent',
 				headerName: 'حداکثر بازده',
 				initialHide: initialHiddenColumnsLongCall.profitPercent,
@@ -346,17 +345,17 @@ const LongCall = (strategy: LongCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-			},
-			// {
-			// 	colId: 'profit',
-			// 	headerName: 'بازده',
-			// 	initialHide: initialHiddenColumnsLongCall.profit,
-			// 	minWidth: 104,
-			// 	valueFormatter: () => t('common.infinity'),
-			// },
+			}, */
+			/* {
+				colId: 'profit',
+				headerName: 'بازده',
+				initialHide: initialHiddenColumnsLongCall.profit,
+				minWidth: 104,
+				valueFormatter: () => t('common.infinity'),
+			}, */
 			{
 				colId: 'blackScholes',
-				headerName: 'بلک شولز',
+				headerName: 'قیمت منصفانه',
 				initialHide: initialHiddenColumnsLongCall.blackScholes,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.blackScholes ?? 0,
@@ -382,11 +381,13 @@ const LongCall = (strategy: LongCallProps) => {
 				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
 				initialHide: initialHiddenColumnsLongCall.bepDifference,
-				minWidth: 136,
-				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ value }) =>
-					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
+				width: 136,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.bepDifference ?? 0, data?.bepDifferencePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'tradeValue',

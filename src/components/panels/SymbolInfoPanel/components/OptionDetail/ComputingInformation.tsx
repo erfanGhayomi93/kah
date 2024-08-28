@@ -86,11 +86,11 @@ const ComputingInformation = ({ isExpand, symbolData }: ComputingInformationProp
 				value: delta.toFixed(3),
 			},
 
-			{
+			/* {
 				id: 'w_implied_volatility',
 				title: t('old_option_chain.w_implied_volatility'),
 				value: sepNumbers(intrinsicValue.toFixed(3)),
-			},
+			}, */
 
 			{
 				id: 'theta',

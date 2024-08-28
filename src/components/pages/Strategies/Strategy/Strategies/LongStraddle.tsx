@@ -296,6 +296,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 			{
 				colId: 'callBestSellLimitPrice',
 				headerName: 'قیمت فروشنده کال',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsLongStraddle.callBestSellLimitPrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.callBestSellLimitPrice ?? 0,
@@ -304,6 +305,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 			{
 				colId: 'callBestSellLimitQuantity',
 				headerName: 'حجم فروشنده کال',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsLongStraddle.callBestSellLimitQuantity,
 				width: 176,
 				valueGetter: ({ data }) => data?.callBestSellLimitQuantity ?? 0,
@@ -326,6 +328,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 			{
 				colId: 'putBestSellLimitPrice',
 				headerName: 'قیمت فروشنده پوت',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsLongStraddle.putBestSellLimitPrice,
 				width: 176,
 				valueGetter: ({ data }) => data?.putBestSellLimitPrice ?? 0,
@@ -334,6 +337,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 			{
 				colId: 'putBestSellLimitQuantity',
 				headerName: 'حجم فروشنده پوت',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsLongStraddle.putBestSellLimitQuantity,
 				width: 176,
 				valueGetter: ({ data }) => data?.putBestSellLimitQuantity ?? 0,
@@ -466,7 +470,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				headerName: 'بهترین خریدار پوت',
 				initialHide: initialHiddenColumnsLongStraddle.putBestBuyLimitPrice,
 				width: 176,
-				cellClass: 'sell',
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.putBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -475,7 +479,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				headerName: 'حجم سرخط خرید پوت',
 				initialHide: initialHiddenColumnsLongStraddle.putBestBuyLimitQuantity,
 				width: 152,
-				cellClass: 'sell',
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.putBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},

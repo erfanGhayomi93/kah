@@ -6,6 +6,7 @@ import RialTemplate from '@/components/common/Tables/Headers/RialTemplate';
 import { editableOrdersStatus } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
 import { setConfirmModal, setOrderDetailsModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { deleteOrder } from '@/utils/orders';
@@ -97,6 +98,10 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 		);
 	};
 
+	const onSymbolTitleClicked = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
 	const onEdit = (order: Order.TDataTab) => {
 		const orderId =
 			tab === 'executed_orders'
@@ -149,10 +154,11 @@ const OrderTable = ({ tab, data, loading, setSelectedRows }: OrderTableProps) =>
 			{
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
-				cellClass: 'ag-cell-checkbox justify-end text-right',
+				cellClass: 'ag-cell-checkbox justify-end cursor-pointer text-right',
 				pinned: 'right',
 				filter: 'text',
 				maxWidth: 160,
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				headerComponent: SymbolTitleHeader,
 				cellRenderer: SymbolTitleCell,
 				checkboxSelection: ({ data }) =>

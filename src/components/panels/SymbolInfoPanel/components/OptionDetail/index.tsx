@@ -42,7 +42,7 @@ const OptionDetail = ({ symbolData, setHeight }: OptionDetailProps) => {
 		if (activeTab === 'price_information') {
 			setHeight(isExpand ? 328 : 532);
 		} else if (activeTab === 'computing_information') {
-			setHeight(isExpand ? 328 : 692);
+			setHeight(isExpand ? 328 : 652);
 		}
 	}, [activeTab, isExpand]);
 

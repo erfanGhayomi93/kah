@@ -19,7 +19,7 @@ const NoData = ({ text, imgName = 'no-data', imgExt = 'svg', width = 118, height
 
 	return (
 		<div className={clsx('size-full flex-justify-center', className)}>
-			<div className='items-center gap-4 flex-column'>
+			<div className='items-center gap-4 rtl flex-column'>
 				<Image
 					priority
 					width={width}

@@ -397,6 +397,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callBestSellLimitPrice',
 				headerName: 'بهترین فروشنده کال',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsConversion.callBestSellLimitPrice,
 				width: 204,
 				valueGetter: ({ data }) => data?.callBestSellLimitPrice ?? 0,
@@ -405,6 +406,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'callBestSellLimitQuantity',
 				headerName: 'حجم سرخط فروش کال',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsConversion.callBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.callBestSellLimitQuantity ?? 0,
@@ -427,6 +429,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putBestSellLimitPrice',
 				headerName: 'بهترین فروشنده پوت',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsConversion.putBestSellLimitPrice,
 				width: 204,
 				valueGetter: ({ data }) => data?.putBestSellLimitPrice ?? 0,
@@ -435,6 +438,7 @@ const Conversion = (strategy: ConversionProps) => {
 			{
 				colId: 'putBestSellLimitQuantity',
 				headerName: 'حجم سرخط فروش پوت',
+				cellClass: 'sell',
 				initialHide: initialHiddenColumnsConversion.putBestSellLimitQuantity,
 				width: 192,
 				valueGetter: ({ data }) => data?.putBestSellLimitQuantity ?? 0,
@@ -453,7 +457,7 @@ const Conversion = (strategy: ConversionProps) => {
 				headerName: 'بهترین خریدار پوت',
 				initialHide: initialHiddenColumnsConversion.putBestBuyLimitPrice,
 				width: 176,
-				cellClass: 'sell',
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.putBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -462,7 +466,7 @@ const Conversion = (strategy: ConversionProps) => {
 				headerName: 'حجم سرخط خرید پوت',
 				initialHide: initialHiddenColumnsConversion.putBestBuyLimitQuantity,
 				width: 152,
-				cellClass: 'sell',
+				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.putBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
@@ -488,7 +492,7 @@ const Conversion = (strategy: ConversionProps) => {
 			},
 			{
 				colId: 'ytm',
-				headerName: 'YTM سرخط فروش',
+				headerName: 'ytm (بازده موثر)',
 				initialHide: initialHiddenColumnsConversion.ytm,
 				width: 152,
 				headerComponent: HeaderHint,
