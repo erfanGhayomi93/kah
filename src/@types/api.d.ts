@@ -1811,6 +1811,7 @@ declare namespace Strategy {
 		profitPercent: number;
 		blackScholes: number;
 		bepDifference: number;
+		bepDifferencePercent: number;
 		timeValue: number;
 		intrinsicValue: number;
 		optionBestBuyLimitPrice: number;
@@ -1849,6 +1850,7 @@ declare namespace Strategy {
 		profitPercent: number;
 		blackScholes: number;
 		bepDifference: number;
+		bepDifferencePercent: number;
 		timeValue: number;
 		intrinsicValue: number;
 		optionBestBuyLimitPrice: number;
@@ -2054,6 +2056,7 @@ declare namespace Strategy {
 		profitPercent: number;
 		inUseCapital: number;
 		bepDifference: number;
+		bepDifferencePercent: number;
 		baseMarketUnit: string;
 		marketUnit: string;
 		historicalVolatility: number;

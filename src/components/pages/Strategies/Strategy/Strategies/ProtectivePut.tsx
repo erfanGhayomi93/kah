@@ -13,7 +13,7 @@ import {
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage } from '@/hooks';
-import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
+import { dateFormatter, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -370,7 +370,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				valueGetter: ({ data }) => [data?.maxLoss ?? 0, data?.maxLossPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
-			{
+			/* {
 				colId: 'profit',
 				headerName: 'بازده',
 				initialHide: initialHiddenColumnsProtectivePut.profit,
@@ -381,15 +381,15 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.profitAmount ?? 0, data?.profitPercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-			},
-			{
+			}, */
+			/* {
 				colId: 'profitPercent',
 				headerName: 'درصد بازده تا سررسید',
 				initialHide: initialHiddenColumnsProtectivePut.profitPercent,
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.profitPercent ?? 0,
 				valueFormatter: ({ value }) => `${toFixed(value, 6)}%`,
-			},
+			}, */
 			{
 				colId: 'inUseCapital',
 				headerName: 'سرمایه درگیر',
@@ -400,7 +400,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 			},
 			{
 				colId: 'blackScholes',
-				headerName: 'بلک شولز',
+				headerName: 'قیمت منصفانه',
 				initialHide: initialHiddenColumnsProtectivePut.blackScholes,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.blackScholes ?? 0,
@@ -426,11 +426,13 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				colId: 'bepDifference',
 				headerName: 'اختلاف تا سر به سر',
 				initialHide: initialHiddenColumnsProtectivePut.bepDifference,
-				minWidth: 136,
-				cellClass: ({ value }) => getColorBasedOnPercent(value),
-				valueGetter: ({ data }) => data?.bepDifference ?? 0,
-				valueFormatter: ({ value }) =>
-					value < 0 ? `(%${sepNumbers(String(Math.abs(value)))})` : `%${sepNumbers(String(value))}`,
+				width: 136,
+				cellRenderer: CellPercentRenderer,
+				cellRendererParams: ({ value }: ICellRendererParams<Strategy.CoveredCall>) => ({
+					percent: value[1] ?? 0,
+				}),
+				valueGetter: ({ data }) => [data?.bepDifference ?? 0, data?.bepDifferencePercent ?? 0],
+				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
 			},
 			{
 				colId: 'tradeValue',

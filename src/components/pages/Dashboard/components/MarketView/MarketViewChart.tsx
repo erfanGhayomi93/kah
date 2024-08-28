@@ -89,7 +89,7 @@ const MarketViewChart = ({ interval, type, data }: MarketViewChartProps) => {
 				},
 			},
 			xAxis: {
-				type: 'datetime',
+				type: 'linear',
 				tickPositions: [],
 				crosshair: {
 					label: {

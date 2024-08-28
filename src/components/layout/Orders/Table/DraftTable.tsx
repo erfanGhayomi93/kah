@@ -4,6 +4,7 @@ import NoData from '@/components/common/NoData';
 import AgTable from '@/components/common/Tables/AgTable';
 import { useAppDispatch } from '@/features/hooks';
 import { setConfirmModal } from '@/features/slices/modalSlice';
+import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useTradingFeatures } from '@/hooks';
 import { dateConverter, dateFormatter, days, sepNumbers } from '@/utils/helpers';
 import { createOrder, deleteDraft } from '@/utils/orders';
@@ -100,12 +101,17 @@ const DraftTable = ({ setSelectedRows, loading, data }: DraftTableProps) => {
 		});
 	};
 
+	const onSymbolTitleClicked = (symbolISIN: string) => {
+		dispatch(setSymbolInfoPanel(symbolISIN));
+	};
+
 	const columnDefs = useMemo<Array<ColDef<Order.DraftOrder>>>(
 		() => [
 			{
 				colId: 'symbol_title',
 				headerName: t('orders.symbol_title'),
-				cellClass: 'ag-cell-checkbox justify-end text-right',
+				cellClass: 'ag-cell-checkbox cursor-pointer justify-end text-right',
+				onCellClicked: ({ data }) => onSymbolTitleClicked(data!.symbolISIN),
 				headerComponent: SymbolTitleHeader,
 				cellRenderer: SymbolTitleCell,
 				checkboxSelection: true,

@@ -162,13 +162,13 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 		title: 'YTM (بازده موثر)',
 		hidden: initialHiddenColumnsCoveredCall.ytm,
 		tag: 'Computational',
-		disabled: true,
 	},
 	{
 		id: 'nonExpiredYTM',
 		title: 'YTM (بازده موثر) عدم اعمال',
 		hidden: initialHiddenColumnsCoveredCall.nonExpiredYTM,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'riskCoverage',
@@ -535,7 +535,7 @@ export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 	},
 	{
 		id: 'blackScholes',
-		title: 'بلک شولز',
+		title: 'قیمت منصفانه',
 		hidden: initialHiddenColumnsLongCall.blackScholes,
 		tag: 'Computational',
 	},
@@ -556,6 +556,7 @@ export const initialColumnsLongCall: Array<IManageColumn<TLongCallColumns>> = [
 		title: 'بازده',
 		hidden: initialHiddenColumnsLongCall.profit,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'bepDifference',
@@ -705,7 +706,7 @@ export const initialColumnsLongPut: Array<IManageColumn<TLongPutColumns>> = [
 	},
 	{
 		id: 'blackScholes',
-		title: 'بلک شولز',
+		title: 'قیمت منصفانه',
 		hidden: initialHiddenColumnsLongPut.blackScholes,
 		tag: 'Computational',
 	},
@@ -726,6 +727,7 @@ export const initialColumnsLongPut: Array<IManageColumn<TLongPutColumns>> = [
 		title: 'بازده',
 		hidden: initialHiddenColumnsLongPut.profit,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'bepDifference',
@@ -1311,6 +1313,7 @@ export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColu
 		title: 'بازده',
 		hidden: false,
 		tag: 'Computational',
+		disabled: true,
 	},
 	{
 		id: 'profitPercent',
@@ -1326,7 +1329,7 @@ export const initialColumnsProtectivePut: Array<IManageColumn<TProtectivePutColu
 	},
 	{
 		id: 'blackScholes',
-		title: 'بلک شولز',
+		title: 'قیمت منصفانه',
 		hidden: false,
 		tag: 'Computational',
 	},
