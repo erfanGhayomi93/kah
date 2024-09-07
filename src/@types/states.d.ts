@@ -366,7 +366,6 @@ declare interface IOptionWatchlistFilters {
 	dueDays: [number, number];
 	delta: [number, number];
 	term: string;
-	sort: null | { fieldName: string; value: 'asc' | 'desc' };
 	priceBasis: TPriceBasis;
 	minimumTradesValue: string;
 }

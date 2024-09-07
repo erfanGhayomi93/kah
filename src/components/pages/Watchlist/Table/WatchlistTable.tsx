@@ -27,20 +27,17 @@ import { toast } from 'react-toastify';
 import ActionColumn from './ActionColumn';
 import SymbolTitleHeader from './SymbolTitleHeader';
 
-type TSort = IOptionWatchlistFilters['sort'];
-
 interface WatchlistTableProps {
 	id: number;
 	data: Option.Root[];
 	watchlistCount: number;
 	isSubscribing: boolean;
 	setTerm: (v: string) => void;
-	setSort: (sorting: TSort) => void;
 }
 
 type TColDef = Omit<ColDef<Option.Root>, 'colId'> & { colId: keyof (Option.Watchlist & Option.SymbolInfo) };
 
-const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm, setSort }: WatchlistTableProps) => {
+const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: WatchlistTableProps) => {
 	const t = useTranslations();
 
 	const gridRef = useRef<GridApi<Option.Root> | null>(null);
@@ -459,6 +456,7 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm, setS
 				headerName: t('option_page.trade_value'),
 				initialHide: Boolean(modifiedWatchlistColumns?.tradeValue?.isHidden ?? false),
 				minWidth: 120,
+				initialSort: 'asc',
 				valueGetter: ({ data }) => data?.optionWatchlistData.tradeValue,
 				valueFormatter: ({ value }) => numFormatter(value),
 				comparator: (valueA, valueB) => valueA - valueB,
@@ -994,20 +992,6 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm, setS
 				flex: 1,
 			}}
 			onColumnMoved={onColumnMoved}
-			onSortChanged={({ columns }) => {
-				const col = columns?.find((s) => s.getSort() != null);
-				const sorting = col?.getSort() ?? null;
-
-				if (!col || !sorting) {
-					setSort(null);
-					return;
-				}
-
-				setSort({
-					fieldName: col.getId(),
-					value: sorting,
-				});
-			}}
 		/>
 	);
 };

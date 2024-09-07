@@ -382,6 +382,7 @@ const LongPut = (strategy: LongPutProps) => {
 				headerName: 'ارزش معاملات آپشن',
 				tradeValue: initialHiddenColumnsLongPut.tradeValue,
 				minWidth: 136,
+				initialSort: 'asc',
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},

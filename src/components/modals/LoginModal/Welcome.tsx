@@ -17,7 +17,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword, onCloseModal }: Welcom
 
 		const timer = setTimeout(() => {
 			onCloseModal();
-		}, 1500);
+		}, 3e3);
 
 		return () => {
 			clearTimeout(timer);
@@ -39,12 +39,12 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword, onCloseModal }: Welcom
 					quality='1'
 					src='/static/images/welcome.svg'
 				/>
-				<h2 className='text-gray-800 text-center text-4xl font-bold'>{t('login_modal.welcome')}</h2>
+				<h2 className='text-center text-4xl font-bold text-gray-800'>{t('login_modal.welcome')}</h2>
 			</div>
 
 			{isNeedsToSetPassword && (
 				<div className='w-full gap-56 px-64 flex-column'>
-					<p className='text-gray-800 text-center text-base font-bold'>
+					<p className='text-center text-base font-bold text-gray-800'>
 						{t('login_modal.set_password_description')}
 					</p>
 
@@ -57,7 +57,7 @@ const Welcome = ({ isNeedsToSetPassword, goToSetPassword, onCloseModal }: Welcom
 							{t('login_modal.set_password_btn')}
 						</button>
 
-						<button onClick={onCloseModal} type='button' className='text-primary-100 h-40 font-medium'>
+						<button onClick={onCloseModal} type='button' className='h-40 font-medium text-primary-100'>
 							{t('login_modal.skip_set_password')}
 						</button>
 					</div>

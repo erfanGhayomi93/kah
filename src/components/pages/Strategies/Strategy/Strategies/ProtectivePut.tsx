@@ -439,6 +439,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 				headerName: 'ارزش معاملات آپشن',
 				initialHide: initialHiddenColumnsProtectivePut.tradeValue,
 				minWidth: 136,
+				initialSort: 'asc',
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},

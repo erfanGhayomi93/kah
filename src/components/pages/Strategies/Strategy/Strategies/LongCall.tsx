@@ -394,6 +394,7 @@ const LongCall = (strategy: LongCallProps) => {
 				headerName: 'ارزش معاملات آپشن',
 				initialHide: initialHiddenColumnsLongCall.tradeValue,
 				minWidth: 136,
+				initialSort: 'asc',
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},

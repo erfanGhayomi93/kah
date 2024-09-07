@@ -249,7 +249,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 						label: t('strategy_filters.from'),
 						initialValue: filters?.maxProfit ?? null,
 					},
-					{
+					/* {
 						id: 'nonExpiredProfit',
 						title: t('strategy_filters.non_expired_profit'),
 						titleHint: t('strategy_filters.non_expired_profit_tooltip'),
@@ -257,7 +257,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 						type: 'percent',
 						label: t('strategy_filters.from'),
 						initialValue: filters?.nonExpiredProfit ?? null,
-					},
+					}, */
 					{
 						id: 'bepDifference',
 						title: t('strategy_filters.bep_difference'),
@@ -409,6 +409,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				headerName: t('CoveredCall.maxProfitPercent'),
 				initialHide: initialHiddenColumnsCoveredCall.maxProfitPercent,
 				width: 184,
+				initialSort: 'asc',
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',
@@ -509,7 +510,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				colId: 'baseTradeValue',
 				headerName: t('CoveredCall.baseTradeValue'),
 				initialHide: initialHiddenColumnsCoveredCall.baseTradeValue,
-				width: 152,
+				width: 176,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},
