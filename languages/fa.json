@@ -625,6 +625,7 @@
 		"no_data": "قالب ذخیره شده‌ای برای نمایش وجود ندارد!"
 	},
 	"old_option_chain": {
+		"black_scholes": "قیمت منصفانه",
 		"select_symbol_from_right_list": "از لیست سمت راست یک نماد انتخاب کنید!",
 		"select_symbol_from_top_list": "از لیست بالا یک نماد انتخاب کنید!",
 		"symbol_search_placeholder": "جستجو نماد",

@@ -491,6 +491,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 				headerName: 'حداکثر بازده',
 				initialHide: initialHiddenColumnsBullCallSpread.maxProfitPercent,
 				width: 184,
+				initialSort: 'asc',
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',

@@ -40,9 +40,9 @@ const OptionDetail = ({ symbolData, setHeight }: OptionDetailProps) => {
 
 	useEffect(() => {
 		if (activeTab === 'price_information') {
-			setHeight(isExpand ? 328 : 532);
+			setHeight(isExpand ? 328 : 572);
 		} else if (activeTab === 'computing_information') {
-			setHeight(isExpand ? 328 : 652);
+			setHeight(isExpand ? 328 : 692);
 		}
 	}, [activeTab, isExpand]);
 

@@ -6,7 +6,6 @@ import { PlusSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { getOptionWatchlistTabId } from '@/features/slices/tabSlice';
-import { except } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import WatchlistTable from './WatchlistTable';
@@ -27,7 +26,7 @@ const Table = ({ filters, filtersCount, watchlistCount, isSubscribing, setFilter
 	const watchlistId = useAppSelector(getOptionWatchlistTabId);
 
 	const { data: watchlistData = [], isLoading } = useOptionWatchlistQuery({
-		queryKey: ['optionCustomWatchlistQuery', except({ ...filters, watchlistId: watchlistId ?? -1 }, ['sort'])],
+		queryKey: ['optionCustomWatchlistQuery', { ...filters, watchlistId: watchlistId ?? -1 }],
 	});
 
 	const addSymbol = () => {
@@ -64,7 +63,6 @@ const Table = ({ filters, filtersCount, watchlistCount, isSubscribing, setFilter
 					data={watchlistData}
 					isSubscribing={isSubscribing}
 					setTerm={(term) => setFilters({ ...filters, term })}
-					setSort={(sort) => setFilters({ ...filters, sort })}
 					watchlistCount={watchlistCount}
 				/>
 

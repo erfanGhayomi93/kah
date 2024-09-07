@@ -471,6 +471,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 				colId: 'maxProfitPercent',
 				headerName: 'حداکثر بازده',
 				width: 184,
+				initialSort: 'asc',
 				headerComponent: HeaderHint,
 				headerComponentParams: {
 					tooltip: 'سود در صورت اعمال به ازای یک قرارداد آپشن',

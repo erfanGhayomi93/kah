@@ -43,7 +43,7 @@ const ComputingInformation = ({ isExpand, symbolData }: ComputingInformationProp
 			Math.abs(Date.now() - new Date(symbolData.contractEndDate).getTime()) / 1e3 / 24 / 60 / 60,
 		);
 
-		const { vega, gamma, thetaCall, thetaPut, deltaPut, deltaCall, rhoCall, rhoPut } = blackScholes({
+		const { vega, gamma, thetaCall, thetaPut, deltaPut, deltaCall, rhoCall, rhoPut, call, put } = blackScholes({
 			sharePrice: symbolData?.baseSymbolPrice ?? 0,
 			strikePrice: symbolData.strikePrice ?? 0,
 			rate: 0.3,
@@ -51,6 +51,7 @@ const ComputingInformation = ({ isExpand, symbolData }: ComputingInformationProp
 			dueDays,
 		});
 
+		const bs = (isCall ? call : put) || 0;
 		const theta = (isCall ? thetaCall : thetaPut) || 0;
 		const delta = (isCall ? deltaCall : deltaPut) || 0;
 		const rho = isCall ? rhoCall : rhoPut;
@@ -60,6 +61,12 @@ const ComputingInformation = ({ isExpand, symbolData }: ComputingInformationProp
 				id: 'breakEvenPoint',
 				title: t('old_option_chain.break_even_point'),
 				value: numFormatter(breakEvenPoint),
+			},
+
+			{
+				id: 'blackScholes',
+				title: t('old_option_chain.black_scholes'),
+				value: bs.toFixed(3),
 			},
 
 			{

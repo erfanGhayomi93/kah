@@ -475,6 +475,7 @@ const Conversion = (strategy: ConversionProps) => {
 				headerName: 'بازده',
 				initialHide: initialHiddenColumnsConversion.profit,
 				width: 192,
+				initialSort: 'asc',
 				cellRenderer: CellPercentRenderer,
 				cellRendererParams: ({ value }: ICellRendererParams<Strategy.Conversion>) => ({
 					percent: value[1] ?? 0,

@@ -488,6 +488,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				headerName: 'ارزش معاملات کال',
 				initialHide: initialHiddenColumnsLongStraddle.callTradeValue,
 				width: 160,
+				initialSort: 'asc',
 				valueGetter: ({ data }) => data?.callTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
 			},

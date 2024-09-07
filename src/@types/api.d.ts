@@ -1747,6 +1747,7 @@ declare namespace Strategy {
 	}
 
 	export interface CoveredCall {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
@@ -1792,6 +1793,7 @@ declare namespace Strategy {
 	}
 
 	export interface LongCall {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
@@ -1831,6 +1833,7 @@ declare namespace Strategy {
 	}
 
 	export interface LongPut {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
@@ -1871,6 +1874,7 @@ declare namespace Strategy {
 	}
 
 	export interface LongStraddle {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
@@ -1922,6 +1926,7 @@ declare namespace Strategy {
 	}
 
 	export interface Conversion {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
@@ -1975,6 +1980,7 @@ declare namespace Strategy {
 	}
 
 	export interface BullCallSpread {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
@@ -2030,6 +2036,7 @@ declare namespace Strategy {
 	}
 
 	export interface ProtectivePut {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
@@ -2078,6 +2085,7 @@ declare namespace Strategy {
 	}
 
 	export interface BearPutSpread {
+		key: string;
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
