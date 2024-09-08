@@ -473,7 +473,7 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 					tooltip: t('option_page.black_scholes_tooltip'),
 				},
 				valueGetter: ({ data }) => data?.optionWatchlistData.blackScholes ?? 0,
-				valueFormatter: ({ value }) => sepNumbers(String(value)),
+				valueFormatter: ({ value }) => sepNumbers(String(Math.ceil(value))),
 				comparator: (valueA, valueB) => valueA - valueB,
 			},
 			{
