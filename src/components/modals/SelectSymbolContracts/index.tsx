@@ -82,20 +82,33 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 
 		const { mutate: fetchInitialContracts, isPending: isFetchingInitialContracts } = useOptionInfoMutation({
 			onSuccess: (initialContracts) => {
-				setFieldValue(
-					'contracts',
-					initialContracts.map<ISelectedContract>((item) => ({
-						...item,
-						side: initialSelectedContracts.find((c) => c[0] === item.symbolInfo.symbolISIN)?.[1] ?? 'buy',
-					})),
-				);
+				try {
+					setFieldValue(
+						'contracts',
+						initialContracts.map<ISelectedContract>((item) => ({
+							...item,
+							side:
+								initialSelectedContracts.find((c) => c[0] === item.symbolInfo.symbolISIN)?.[1] ?? 'buy',
+						})),
+					);
+				} catch (e) {
+					//
+				}
 
-				fetchSymbolInfo({ symbolISIN: initialContracts[0].symbolInfo.baseSymbolISIN, type: 'initial' });
+				if (initialContracts.length > 0) {
+					fetchSymbolInfo({ symbolISIN: initialContracts[0].symbolInfo.baseSymbolISIN });
+				} else if (initialBaseSymbol) {
+					fetchInitialBaseSymbol(initialBaseSymbol[0]);
+				}
 			},
 			onError: () => {
 				toast.error(t('alerts.fetch_symbol_failed'));
 			},
 		});
+
+		const fetchInitialBaseSymbol = (symbolISIN: string) => {
+			fetchSymbolInfo({ symbolISIN, type: 'initial' });
+		};
 
 		const onCloseModal = () => {
 			dispatch(setSelectSymbolContractsModal(null));
@@ -138,6 +151,8 @@ const SelectSymbolContracts = forwardRef<HTMLDivElement, SymbolContractsProps>(
 		useEffect(() => {
 			if (initialSelectedContracts.length > 0) {
 				fetchInitialContracts(initialSelectedContracts.map((item) => item[0]));
+			} else if (initialBaseSymbol) {
+				fetchInitialBaseSymbol(initialBaseSymbol[0]);
 			}
 		}, []);
 
