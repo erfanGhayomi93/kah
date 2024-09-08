@@ -33,7 +33,7 @@ const Button = styled.button`
 interface ExportExcelBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const ExportExcelBtn = forwardRef<HTMLButtonElement, ExportExcelBtnProps>((props, ref) => (
-	<Button ref={ref} className='size-40 rounded btn-icon' type='button' {...props}>
+	<Button ref={ref} className='h-40 flex-40 rounded btn-icon' type='button' {...props}>
 		<ExcelSVG />
 	</Button>
 ));

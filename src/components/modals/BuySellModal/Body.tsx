@@ -39,6 +39,7 @@ interface BodyProps extends IBsModalInputs {
 	symbolType: TBsSymbolTypes;
 	type: TBsTypes;
 	mode: TBsModes;
+	totalAmountTooltip: Record<'requiredMargin' | 'commission' | 'netValue', number>;
 	closeModal: () => void;
 	rearrangeValue: () => void;
 	setInputValue: TSetBsModalInputs;

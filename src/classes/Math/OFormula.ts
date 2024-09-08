@@ -19,7 +19,9 @@ class OFormula {
 	 * @returns number
 	 */
 	public static price(quantity: number, value: number): number {
-		const p = (value - this.requiredMargin * quantity) / (quantity * this.contractSize * (1 + this.commission));
+		const p =
+			(value - this.initialRequiredMargin * quantity) /
+			(quantity * this.contractSize * (1 + this.optionCommission));
 		if (p === Infinity || isNaN(p)) return 0;
 
 		return Math.abs(Math.ceil(p));
@@ -33,7 +35,7 @@ class OFormula {
 	 * @returns number
 	 */
 	public static quantity(price: number, value: number): number {
-		const q = value / (price * this.contractSize * (1 + this.commission) + this.requiredMargin);
+		const q = value / (price * this.contractSize * (1 + this.optionCommission) + this.initialRequiredMargin);
 		if (q === Infinity || isNaN(q)) return 0;
 
 		return Math.abs(Math.floor(q));
@@ -47,7 +49,8 @@ class OFormula {
 	 * @returns number
 	 */
 	public static value(price: number, quantity: number): number {
-		const v = price * quantity * this.contractSize * (1 + this.commission) + this.requiredMargin * quantity;
+		const v =
+			price * quantity * this.contractSize * (1 + this.optionCommission) + this.initialRequiredMargin * quantity;
 		return Math.abs(Math.ceil(v));
 	}
 
@@ -76,6 +79,19 @@ class OFormula {
 		return this;
 	}
 
+	public static tradeCommission(price: number, quantity: number): number {
+		return Math.abs(Math.ceil(price * quantity * this.contractSize * this.commission));
+	}
+
+	public static netValue(price: number, quantity: number): number {
+		const v = price * quantity * this.contractSize;
+		return Math.abs(Math.ceil(v));
+	}
+
+	public static requiredMargin(quantity: number): number {
+		return Math.abs(Math.ceil(this.initialRequiredMargin * quantity));
+	}
+
 	private static get commission(): number {
 		const v = this._commission[this._side];
 
@@ -83,12 +99,17 @@ class OFormula {
 		return v;
 	}
 
+	private static get optionCommission(): number {
+		if (this._type === 'option' && this._side === 'sell') return 0;
+		return this.commission;
+	}
+
 	private static get contractSize(): number {
 		if (this._type === 'option') return this._contractSize;
 		return 1;
 	}
 
-	private static get requiredMargin(): number {
+	private static get initialRequiredMargin(): number {
 		if (this._side === 'sell' && this._type === 'option') return this._initialRequiredMargin;
 		return 0;
 	}

@@ -10,6 +10,7 @@ import Tooltip from '../Tooltip';
 
 interface TableActionsProps {
 	className?: ClassesValue;
+	style?: React.CSSProperties;
 	filtersCount?: number;
 	showExcel?: boolean;
 	showFilter?: boolean;
@@ -44,6 +45,7 @@ const TableActions = ({
 	isInitialPaused = false,
 	children,
 	className,
+	style,
 	onPlayed,
 	onPaused,
 	onExportExcel,
@@ -66,7 +68,7 @@ const TableActions = ({
 	};
 
 	return (
-		<div className={clsx('flex gap-8', className)}>
+		<div style={style} className={clsx('flex gap-8', className)}>
 			{children}
 
 			{showPlayAndPause && (
@@ -85,7 +87,7 @@ const TableActions = ({
 				<Tooltip placement='bottom' content={t('filters')}>
 					<button
 						onClick={onShowFilters}
-						className='relative size-40 rounded border border-gray-200 text-gray-700 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
+						className='relative h-40 flex-40 rounded border border-gray-200 text-gray-700 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
 						type='button'
 					>
 						{filtersCount > 0 && <Badge className='bg-primary-100 text-white'>{filtersCount}</Badge>}
@@ -98,7 +100,7 @@ const TableActions = ({
 				<Tooltip placement='bottom' content={t('manage_columns')}>
 					<OptionWatchlistManagerBtn
 						onClick={onManageColumns}
-						className='size-40 rounded border border-gray-200 bg-transparent text-gray-700 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100'
+						className='h-40 flex-40 rounded border border-gray-200 bg-transparent text-gray-700 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100'
 						type='button'
 					/>
 				</Tooltip>

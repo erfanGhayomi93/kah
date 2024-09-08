@@ -3,7 +3,7 @@ import lightStreamInstance from '@/classes/Lightstream';
 import AgInfiniteTable from '@/components/common/Tables/AgInfiniteTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { baseSymbolWatchlistLightstreamProperty, optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
+import { optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -17,7 +17,6 @@ import {
 	type GridApi,
 	type ICellRendererParams,
 	type IGetRowsParams,
-	type IRowNode,
 } from '@ag-grid-community/core';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ItemUpdate } from 'lightstreamer-client-web';
@@ -144,61 +143,34 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 		}
 	};
 
-	const onOptionUpdate = (updateInfo: ItemUpdate) => {
-		const symbolISIN: string = updateInfo.getItemName();
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const symbolISIN: string = updateInfo.getItemName();
 
-		const rowNode = findRowNode(symbolISIN);
-		if (!rowNode) return;
+			const rowNode = gridRef.current?.getRowNode(symbolISIN);
+			if (!rowNode) return;
 
-		const symbolData = { ...rowNode.data! };
-		updateInfo.forEachChangedField((fieldName, _b, value) => {
-			if (value && fieldName in optionWatchlistLightstreamProperty) {
-				const fs = optionWatchlistLightstreamProperty[fieldName];
-				const valueAsNumber = Number(value);
-
-				if (fs in symbolData.optionWatchlistData) {
-					// @ts-expect-error: Typescript can not detect lightstream types
-					symbolData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
-				}
-			}
-		});
-
-		symbolData.optionWatchlistData = {
-			...symbolData.optionWatchlistData,
-			...updateBlackScholes(symbolData),
-		};
-
-		rowNode.setData(symbolData);
-	};
-
-	const onBaseSymbolUpdate = (updateInfo: ItemUpdate) => {
-		const symbolISIN: string = updateInfo.getItemName();
-
-		const rowNodes = findRowNodes(symbolISIN);
-		if (rowNodes.length === 0) return;
-
-		rowNodes.forEach((rowNode) => {
-			const rowData = rowNode.data!;
-
+			const symbolData = { ...rowNode.data! };
 			updateInfo.forEachChangedField((fieldName, _b, value) => {
 				if (value && fieldName in optionWatchlistLightstreamProperty) {
-					const fs = baseSymbolWatchlistLightstreamProperty[fieldName];
 					const valueAsNumber = Number(value);
 
-					if (fs in rowData.optionWatchlistData) {
+					if (fieldName in symbolData.optionWatchlistData) {
 						// @ts-expect-error: Typescript can not detect lightstream types
-						rowData.optionWatchlistData[fs] = isNaN(valueAsNumber) ? value : valueAsNumber;
+						symbolData.optionWatchlistData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
 					}
 				}
 			});
 
-			rowNode.data!.optionWatchlistData = {
-				...rowData.optionWatchlistData,
-				...updateBlackScholes(rowData),
+			symbolData.optionWatchlistData = {
+				...symbolData.optionWatchlistData,
+				...updateBlackScholes(symbolData),
 			};
 
-			rowNode.setData(rowData);
-		});
+			rowNode.setData(symbolData);
+		} catch (e) {
+			//
+		}
 	};
 
 	const updateBlackScholes = ({ symbolInfo, optionWatchlistData }: Option.Root) => {
@@ -278,39 +250,6 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 		});
 	};
 
-	const findRowNode = (symbolISIN: string): IRowNode<Option.Root> | undefined => {
-		let result: IRowNode<Option.Root> | undefined;
-
-		forEachRowNode((rowNode) => {
-			const d = rowNode.data!;
-			if (d.symbolInfo.symbolISIN === symbolISIN) {
-				result = rowNode;
-				return;
-			}
-		});
-
-		return result;
-	};
-
-	const findRowNodes = (symbolISIN: string): Array<IRowNode<Option.Root>> => {
-		const result: Array<IRowNode<Option.Root>> = [];
-
-		forEachRowNode((rowNode) => {
-			const d = rowNode.data!;
-			if (d.symbolInfo.baseSymbolISIN === symbolISIN) {
-				result.push(rowNode);
-			}
-		});
-
-		return result;
-	};
-
-	const forEachRowNode = (cb: (rowNode: IRowNode<Option.Root>) => void) => {
-		gridRef?.current?.forEachNode((rowNode) => {
-			if (rowNode?.data) cb(rowNode);
-		});
-	};
-
 	const compare = (valueA: string | number, valueB: string | number, sorting: 'asc' | 'desc'): number => {
 		if (typeof valueA === 'string' && typeof valueB === 'string') {
 			if (sorting === 'asc') return valueA.localeCompare(valueB);
@@ -325,68 +264,13 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 		return 0;
 	};
 
-	const startOptionsSubscription = () => {
-		const sub = lightStreamInstance.subscribe({
-			mode: 'MERGE',
-			items: optionsSymbolsISIN,
-			fields: [
-				'bestBuyLimitPrice_1',
-				'bestSellLimitPrice_1',
-				'totalTradeValue',
-				'totalNumberOfSharesTraded',
-				'closingPriceVarReferencePrice',
-				'baseVolume',
-				'firstTradedPrice',
-				'lastTradedPrice',
-				'totalNumberOfTrades',
-				'lastTradedPriceVar',
-				'lastTradedPriceVarPercent',
-				'closingPrice',
-				'closingPriceVar',
-				'closingPriceVarPercent',
-				'lastTradeDateTime',
-				'lowestTradePriceOfTradingDay',
-				'highestTradePriceOfTradingDay',
-				'symbolState',
-			],
-			dataAdapter: 'RamandRLCDData',
-			snapshot: true,
-		});
-
-		sub.addEventListener('onItemUpdate', onOptionUpdate);
-		subscribeOptions(sub, isSubscribing);
-	};
-
-	const startBaseSymbolSubscription = () => {
-		const sub = lightStreamInstance.subscribe({
-			mode: 'MERGE',
-			items: baseSymbolsISIN,
-			fields: ['lastTradedPriceVarPercent', 'closingPriceVarPercent', 'lastTradedPrice', 'closingPrice'],
-			dataAdapter: 'RamandRLCDData',
-			snapshot: true,
-		});
-
-		sub.addEventListener('onItemUpdate', onBaseSymbolUpdate);
-		subscribeBaseSymbols(sub, isSubscribing);
-	};
-
 	const symbolsISIN = useMemo(() => {
 		if (!Array.isArray(data)) return [];
 		return data.map((item) => item.symbolInfo.symbolISIN);
 	}, [data]);
 
-	const [optionsSymbolsISIN, baseSymbolsISIN] = useMemo(() => {
-		if (lastRowIndex === 0) return [[], []];
-
-		const optionsSymbolsISIN = new Set<string>();
-		const baseSymbolsISIN = new Set<string>();
-
-		data.slice(0, lastRowIndex).forEach((s) => {
-			baseSymbolsISIN.add(s.symbolInfo.baseSymbolISIN);
-			optionsSymbolsISIN.add(s.symbolInfo.symbolISIN);
-		});
-
-		return [Array.from(optionsSymbolsISIN), Array.from(baseSymbolsISIN)];
+	const visibleSymbolsISIN = useMemo(() => {
+		return data.slice(0, lastRowIndex).map((s) => s.symbolInfo.symbolISIN);
 	}, [data, lastRowIndex]);
 
 	const modifiedWatchlistColumns = useMemo(() => {
@@ -961,9 +845,47 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 		updateDatasource();
 	}, [symbolsISIN.join(',')]);
 
-	useEffect(() => startOptionsSubscription(), [optionsSymbolsISIN.join(',')]);
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: visibleSymbolsISIN,
+			fields: [
+				'openPositionCount',
+				'highOpenPositionType',
+				'requiredMargin',
+				'tradeValue',
+				'tradeVolume',
+				'tradeCount',
+				'closingPrice',
+				'closingPriceVarReferencePricePercent',
+				'premium',
+				'tradePriceVarPreviousTradePercent',
+				'breakEvenPoint',
+				'lastTradeDateTime',
+				'impliedVolatility',
+				'timeValue',
+				'notionalValueDividedByOptionVolume',
+				'intrinsicValue',
+				'delta',
+				'baseLastTradedPrice',
+				'baseTradePriceVarPreviousTradePercent',
+				'iotm',
+				'blackScholes',
+				'theta',
+				'blackScholesDifference',
+				'gamma',
+				'rho',
+				'vega',
+				'baseClosingPrice',
+				'baseClosingPriceVarReferencePricePercent',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
 
-	useEffect(() => startBaseSymbolSubscription(), [baseSymbolsISIN.join(',')]);
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		subscribeOptions(sub, isSubscribing);
+	}, [visibleSymbolsISIN.join(',')]);
 
 	useEffect(() => {
 		if (isSubscribing) {
@@ -991,6 +913,7 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 				sortable: true,
 				flex: 1,
 			}}
+			getRowId={({ data }) => data.symbolInfo.symbolISIN}
 			onColumnMoved={onColumnMoved}
 		/>
 	);
