@@ -278,6 +278,11 @@ const BuySellModal = forwardRef<HTMLDivElement, BuySellModalProps>(
 							type={type}
 							symbolISIN={symbolISIN}
 							symbolType={symbolType}
+							totalAmountTooltip={{
+								commission: OFormula.tradeCommission(inputs.price, inputs.quantity),
+								netValue: OFormula.netValue(inputs.price, inputs.quantity),
+								requiredMargin: OFormula.requiredMargin(inputs.quantity),
+							}}
 							rearrangeValue={rearrangeValue}
 							closeModal={onCloseModal}
 							setInputValue={setInputValue}

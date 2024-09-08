@@ -2,7 +2,8 @@ import { useGlPositionExtraInfoQuery } from '@/api/queries/brokerPrivateQueries'
 import Button from '@/components/common/Button';
 import RangeSlider from '@/components/common/Slider/RangeSlider';
 import SwitchTab from '@/components/common/Tabs/SwitchTab';
-import { LockSVG, UnlockSVG, XCircleSVG } from '@/components/icons';
+import Tooltip from '@/components/common/Tooltip';
+import { InfoCircleSVG, LockSVG, UnlockSVG, XCircleSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setChangeBlockTypeModal } from '@/features/slices/modalSlice';
 import { sepNumbers } from '@/utils/helpers';
@@ -16,6 +17,7 @@ import ValidityDate from './common/ValidityDate';
 
 interface SummaryItemProps {
 	title: React.ReactNode;
+	tooltip?: React.ReactNode;
 	value: React.ReactNode;
 }
 
@@ -36,6 +38,7 @@ interface SimpleTradeProps extends IBsModalInputs {
 	switchable: boolean;
 	isLoadingBestLimit: boolean;
 	userRemain: Broker.Remain | null;
+	totalAmountTooltip: Record<'requiredMargin' | 'commission' | 'netValue', number>;
 	setInputValue: TSetBsModalInputs;
 	setMinimumValue: () => void;
 	rearrangeValue: () => void;
@@ -62,6 +65,7 @@ const SimpleTrade = ({
 	priceLock,
 	type,
 	mode,
+	totalAmountTooltip,
 	setInputValue,
 	setMinimumValue,
 	createDraft,
@@ -388,6 +392,47 @@ const SimpleTrade = ({
 									<span className='text-gray-700'>{' ' + t('common.rial')}</span>
 								</span>
 							}
+							tooltip={
+								<div
+									style={{ width: '280px' }}
+									className='bg-tooltip gap-8 rounded p-8 flex-column *:flex-wrap *:text-white'
+								>
+									{isOption && side === 'sell' && (
+										<div className='flex-justify-between *:text-tiny'>
+											<span>{t('bs_modal.required_margin')}:</span>
+											<span className='flex-1 text-left'>
+												{sepNumbers(String(totalAmountTooltip.requiredMargin))}
+											</span>
+										</div>
+									)}
+									<div className='flex-justify-between *:text-tiny'>
+										<span>{t('bs_modal.commission')}:</span>
+										<span className='flex-1 text-left'>
+											{sepNumbers(String(totalAmountTooltip.commission))}
+										</span>
+									</div>
+									<div className='flex-justify-between *:text-tiny'>
+										<span>
+											{t(
+												isOption
+													? 'bs_modal.option_net_value_label'
+													: 'bs_modal.base_net_value_label',
+											)}
+											:
+										</span>
+										<span className='flex-1 text-left'>
+											{sepNumbers(String(totalAmountTooltip.netValue))}
+										</span>
+									</div>
+
+									<span className='h-1 bg-white' />
+
+									<div className='flex-justify-between *:text-tiny'>
+										<span>{t('bs_modal.total_amount')}:</span>
+										<span className='flex-1 text-left'>{sepNumbers(String(value))}</span>
+									</div>
+								</div>
+							}
 						/>
 					</div>
 
@@ -420,9 +465,18 @@ const SimpleTrade = ({
 	);
 };
 
-const SummaryItem = ({ title, value }: SummaryItemProps) => (
+const SummaryItem = ({ tooltip, title, value }: SummaryItemProps) => (
 	<div className='h-20 flex-justify-between *:text-tiny'>
-		<span className='text-gray-700'>{title}</span>
+		<div className='gap-4 flex-items-center'>
+			<span className='text-gray-700'>{title}</span>
+			{Boolean(tooltip) && (
+				<Tooltip arrow={false} className='!bg-transparent !p-0' placement='bottom' content={tooltip}>
+					<span className='text-info-100'>
+						<InfoCircleSVG width='1.6rem' height='1.6rem' />
+					</span>
+				</Tooltip>
+			)}
+		</div>
 
 		{value}
 	</div>

@@ -31,6 +31,8 @@ const config: Config = {
 
 			black: 'rgb(var(--c-black))',
 
+			tooltip: 'rgba(24, 28, 47, 1)',
+
 			primary: {
 				100: 'rgb(var(--c-primary-100))',
 			},

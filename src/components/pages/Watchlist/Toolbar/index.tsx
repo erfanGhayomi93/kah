@@ -103,13 +103,14 @@ const Toolbar = ({ isSubscribing, filters, filtersCount, onPauseSubscribing, onP
 	};
 
 	return (
-		<div className='h-72 gap-48 overflow-hidden flex-justify-between'>
+		<div className='h-72 gap-32 overflow-hidden flex-justify-between'>
 			<div className='gap-8 overflow-hidden flex-items-center'>
 				<WatchlistList />
 			</div>
 
 			<TableActions
-				className='flex-1 justify-end'
+				style={{ flex: '0 0 192px' }}
+				className='justify-end overflow-hidden'
 				filtersCount={filtersCount}
 				isInitialPaused={!isSubscribing}
 				onManageColumns={manageWatchlistColumns}
@@ -117,21 +118,7 @@ const Toolbar = ({ isSubscribing, filters, filtersCount, onPauseSubscribing, onP
 				onExportExcel={onExportExcel}
 				onPaused={onPauseSubscribing}
 				onPlayed={onPlaySubscribing}
-			>
-				<div style={{ flex: '0 0 15.2rem' }}>
-					{/* <Select<TPriceBasis>
-						defaultValue={filters.priceBasis}
-						options={watchlistPriceBasis}
-						placeholder={t('strategy.price_basis')}
-						onChange={(v) => setPriceBasis(v)}
-						getOptionId={(id) => id}
-						getOptionTitle={(id) => t(`strategy.price_${id}`)}
-						classes={{
-							root: '!h-40',
-						}}
-					/> */}
-				</div>
-			</TableActions>
+			/>
 		</div>
 	);
 };

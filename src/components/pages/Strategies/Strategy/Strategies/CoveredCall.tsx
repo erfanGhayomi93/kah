@@ -1,4 +1,5 @@
 import { useCoveredCallStrategyQuery } from '@/api/queries/strategyQuery';
+import lightStreamInstance from '@/classes/Lightstream';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
@@ -13,12 +14,13 @@ import {
 	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useInputs, useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage, useSubscription } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -27,6 +29,8 @@ import Table from '../components/Table';
 const CoveredCallDescription = dynamic(() => import('../Descriptions/CoveredCallDescription'), {
 	ssr: false,
 });
+
+type THashTable = Record<string, number>;
 
 interface CoveredCallProps extends Strategy.GetAll {}
 
@@ -38,6 +42,10 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.CoveredCall>>(null);
+
+	const symbolsHashTableRef = useRef<THashTable>({});
+
+	const { subscribe } = useSubscription();
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -55,7 +63,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ICoveredCallFiltersModalStates>>({});
 
-	const { data, isFetching } = useCoveredCallStrategyQuery({
+	const { data = [], isFetching } = useCoveredCallStrategyQuery({
 		queryKey: [
 			'coveredCallQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
@@ -278,6 +286,26 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				],
 			}),
 		);
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const key: string = updateInfo.getItemName();
+			const rowNode = gridRef.current!.getRowNode(key);
+
+			if (!rowNode) return;
+
+			const symbolData = { ...rowNode.data! };
+			console.log(rowNode, key, symbolData);
+
+			/* updateInfo.forEachChangedField((fieldName, _b, value) => {
+				console.log(fieldName, value);
+			}); */
+
+			// rowNode.setData(symbolData);
+		} catch (e) {
+			//
+		}
 	};
 
 	const columnDefs = useMemo<Array<ColDef<Strategy.CoveredCall> & { colId: TCoveredCallColumns }>>(
@@ -555,6 +583,78 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 		[],
 	);
 
+	const symbolsHashTable = useMemo(() => {
+		const hashTable: THashTable = {};
+
+		try {
+			const l = data.length;
+			for (let i = 0; i < l; i++) {
+				hashTable[data[i].key] = i;
+			}
+		} catch (e) {
+			//
+		}
+
+		symbolsHashTableRef.current = hashTable;
+		return hashTable;
+	}, [data]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: Object.keys(symbolsHashTable),
+			fields: [
+				'baseSymbolISIN',
+				'baseSymbolTitle',
+				'baseLastTradedPrice',
+				'baseTradePriceVarPreviousTradePercent',
+				'dueDays',
+				'symbolISIN',
+				'symbolTitle',
+				'strikePrice',
+				'openPositionCount',
+				'iotm',
+				'premium',
+				'tradePriceVarPreviousTradePercent',
+				'optionBestBuyLimitQuantity',
+				'optionBestBuyLimitPrice',
+				'contractSize',
+				'baseBestSellLimitPrice',
+				'baseBestBuyLimitPrice',
+				'optionBestSellLimitPrice',
+				'optionBestSellLimitQuantity',
+				'baseClosingPrice',
+				'tradeValue',
+				'baseTradeValue',
+				'baseTradeCount',
+				'baseTradeVolume',
+				'baseLastTradedDate',
+				'coveredCallBEP',
+				'maxProfit',
+				'maxProfitPercent',
+				'inUseCapital',
+				'nonExpiredProfit',
+				'nonExpiredProfitPercent',
+				'ytm',
+				'nonExpiredYTM',
+				'bepDifference',
+				'bepDifferencePercent',
+				'riskCoverage',
+				'baseMarketUnit',
+				'marketUnit',
+				'historicalVolatility',
+				'requiredMargin',
+				'contractEndDate',
+				'withCommission',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		subscribe(sub);
+	}, [JSON.stringify(symbolsHashTable)]);
+
 	return (
 		<>
 			<StrategyDetails
@@ -579,11 +679,12 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 				<Table<Strategy.CoveredCall>
 					ref={gridRef}
-					rowData={data ?? []}
+					rowData={data}
 					columnDefs={columnDefs}
 					isFetching={isFetching}
 					columnsVisibility={columnsVisibility}
 					dependencies={[useCommission]}
+					getRowId={({ data }) => data.key}
 				/>
 			</div>
 		</>
