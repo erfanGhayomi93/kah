@@ -30,9 +30,9 @@ const Error = ({ text, width = 118, height = 118, className, action }: ErrorProp
 
 				<div className='gap-8 flex-column'>
 					{text !== null && <span className='text-base text-gray-700'>{text ?? t('an_error_occurred')}</span>}
-					{(typeof action === 'function') !== null && (
+					{typeof action === 'function' && (
 						<button onClick={action} type='button' className='text-base text-info-100'>
-							{text ?? t('try_again')}
+							{t('try_again')}
 						</button>
 					)}
 				</div>

@@ -1,4 +1,5 @@
 import { useSymbolInfoQuery } from '@/api/queries/symbolQuery';
+import Error from '@/components/common/Error';
 import Loading from '@/components/common/Loading';
 import Tabs, { type ITabIem } from '@/components/common/Tabs/Tabs';
 import { GrowDownSVG, GrowUpSVG, XSVG } from '@/components/icons';
@@ -63,7 +64,11 @@ const Contract = ({
 
 	const { subscribe, unsubscribe } = useSubscription();
 
-	const { data: contractInfo, isLoading } = useSymbolInfoQuery({
+	const {
+		data: contractInfo,
+		isLoading,
+		isError,
+	} = useSymbolInfoQuery({
 		queryKey: ['symbolInfoQuery', option === null ? null : option.symbolISIN],
 		enabled: option !== null,
 	});
@@ -171,7 +176,7 @@ const Contract = ({
 		onLoadContract(contractInfo);
 	}, [contractInfo]);
 
-	if (!option)
+	if (!option) {
 		return (
 			<Wrapper>
 				<div
@@ -192,80 +197,97 @@ const Contract = ({
 				</div>
 			</Wrapper>
 		);
+	}
 
-	if (isLoading)
+	if (isLoading) {
 		return (
 			<Wrapper>
 				<Loading />
 			</Wrapper>
 		);
+	}
 
-	const closingPriceVarReferencePrice = contractInfo?.closingPriceVarReferencePrice ?? 0;
-	const closingPriceVarReferencePricePercent = contractInfo?.closingPriceVarReferencePricePercent ?? 0;
+	if (isError || !contractInfo) {
+		return (
+			<Wrapper>
+				<Error />
+			</Wrapper>
+		);
+	}
+
+	const contractHasExpired = new Date(contractInfo.contractEndDate).getTime() < Date.now();
+
+	const closingPriceVarReferencePrice = contractInfo.closingPriceVarReferencePrice ?? 0;
+
+	const closingPriceVarReferencePricePercent = contractInfo.closingPriceVarReferencePricePercent ?? 0;
 
 	return (
 		<Wrapper>
 			<div className='justify-start pb-8 flex-column'>
 				<div className='flex items-start justify-between'>
-					<div className='flex flex-1 justify-between gap-16'>
-						<div className='cursor-pointer flex-column flex-items-start'>
-							<div className='flex items-center gap-8'>
-								<SymbolContextMenu symbol={contractInfo ?? null} />
-								<h1 onClick={openSymbolInfoPanel} className='text-3xl font-medium text-gray-800'>
-									{contractInfo?.symbolTitle ?? '−'}
-								</h1>
+					{!contractHasExpired && (
+						<div className='flex flex-1 justify-between gap-16'>
+							<div className='cursor-pointer flex-column flex-items-start'>
+								<div className='flex items-center gap-8'>
+									<SymbolContextMenu symbol={contractInfo ?? null} />
+									<h1 onClick={openSymbolInfoPanel} className='text-3xl font-medium text-gray-800'>
+										{contractInfo?.symbolTitle ?? '−'}
+									</h1>
+								</div>
+								<h4 className='whitespace-nowrap pr-32 text-tiny text-gray-800'>
+									{contractInfo?.companyName ?? '−'}
+								</h4>
 							</div>
-							<h4 className='whitespace-nowrap pr-32 text-tiny text-gray-800'>
-								{contractInfo?.companyName ?? '−'}
-							</h4>
-						</div>
 
-						<div className='h-fit gap-8 text-base flex-items-center'>
-							<span
-								className={cn(
-									'gap-4 ltr flex-items-center',
-									getColorBasedOnPercent(closingPriceVarReferencePricePercent),
-								)}
-							>
-								{sepNumbers(String(closingPriceVarReferencePrice))}
-								<span className='flex items-center'>
-									({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
-									{closingPriceVarReferencePricePercent > 0 && (
-										<GrowUpSVG width='1rem' height='1rem' />
+							<div className='h-fit gap-8 text-base flex-items-center'>
+								<span
+									className={cn(
+										'gap-4 ltr flex-items-center',
+										getColorBasedOnPercent(closingPriceVarReferencePricePercent),
 									)}
-									{closingPriceVarReferencePricePercent < 0 && (
-										<GrowDownSVG width='1rem' height='1rem' />
-									)}
+								>
+									{sepNumbers(String(closingPriceVarReferencePrice))}
+									<span className='flex items-center'>
+										({(closingPriceVarReferencePricePercent ?? 0).toFixed(2)} %)
+										{closingPriceVarReferencePricePercent > 0 && (
+											<GrowUpSVG width='1rem' height='1rem' />
+										)}
+										{closingPriceVarReferencePricePercent < 0 && (
+											<GrowDownSVG width='1rem' height='1rem' />
+										)}
+									</span>
 								</span>
-							</span>
 
-							<span className={clsx('flex items-center gap-4 text-2xl font-bold text-gray-800 ltr')}>
-								<span className='text-base font-normal text-gray-700'>{t('common.rial')}</span>
-								{sepNumbers(String(contractInfo?.lastTradedPrice ?? 0))}
-							</span>
+								<span className={clsx('flex items-center gap-4 text-2xl font-bold text-gray-800 ltr')}>
+									<span className='text-base font-normal text-gray-700'>{t('common.rial')}</span>
+									{sepNumbers(String(contractInfo?.lastTradedPrice ?? 0))}
+								</span>
+							</div>
 						</div>
-					</div>
+					)}
 
 					<div className='flex-1 gap-16 pt-4 flex-justify-end'>
-						<div className='gap-8 flex-items-center'>
-							<button
-								style={{ width: '11rem' }}
-								type='button'
-								onClick={() => addBsModal('buy')}
-								className='size-32 rounded !border text-tiny flex-justify-center btn-success-outline'
-							>
-								{t('saturn_page.new_position')}
-							</button>
+						{!contractHasExpired && (
+							<div className='gap-8 flex-items-center'>
+								<button
+									style={{ width: '9.6rem' }}
+									type='button'
+									onClick={() => addBsModal('buy')}
+									className='size-32 rounded !border text-tiny flex-justify-center btn-success-outline'
+								>
+									{t('side.buy')}
+								</button>
 
-							<button
-								style={{ width: '11rem' }}
-								type='button'
-								onClick={() => addBsModal('sell')}
-								className='size-32 rounded !border text-tiny flex-justify-center btn-error-outline'
-							>
-								{t('saturn_page.close_position')}
-							</button>
-						</div>
+								<button
+									style={{ width: '9.6rem' }}
+									type='button'
+									onClick={() => addBsModal('sell')}
+									className='size-32 rounded !border text-tiny flex-justify-center btn-error-outline'
+								>
+									{t('side.sell')}
+								</button>
+							</div>
+						)}
 
 						<button onClick={close} type='button' className='size-24 icon-hover'>
 							<XSVG width='2rem' height='2rem' />
@@ -274,7 +296,7 @@ const Contract = ({
 				</div>
 			</div>
 
-			{contractInfo ? (
+			{!contractHasExpired && contractInfo && (
 				<Tabs
 					defaultActiveTab={option.activeTab}
 					data={tabs}
@@ -292,9 +314,11 @@ const Contract = ({
 						</button>
 					)}
 				/>
-			) : (
+			)}
+
+			{contractHasExpired && (
 				<div className='relative flex-1'>
-					<span className='absolute font-medium center'>{t('common.an_error_occurred')}</span>
+					<Error text={t('saturn_page.symbol_has_expired', { symbolTitle: contractInfo.symbolTitle })} />
 				</div>
 			)}
 		</Wrapper>

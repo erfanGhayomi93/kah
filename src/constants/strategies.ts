@@ -1144,24 +1144,24 @@ export const initialColumnsLongStraddle: Array<IManageColumn<TLongStraddleColumn
 		hidden: initialHiddenColumnsLongStraddle.callBestBuyLimitPrice,
 		tag: 'PanelDetail',
 	},
-	{
+	/* {
 		id: 'callBestBuyLimitQuantity',
 		title: 'حجم سرخط خرید کال',
 		hidden: initialHiddenColumnsLongStraddle.callBestBuyLimitQuantity,
 		tag: 'PanelDetail',
-	},
+	}, */
 	{
 		id: 'putBestBuyLimitPrice',
 		title: 'بهترین خریدار پوت',
 		hidden: initialHiddenColumnsLongStraddle.putBestBuyLimitPrice,
 		tag: 'PanelDetail',
 	},
-	{
+	/* {
 		id: 'putBestBuyLimitQuantity',
 		title: 'حجم سرخط خرید پوت',
 		hidden: initialHiddenColumnsLongStraddle.putBestBuyLimitQuantity,
 		tag: 'PanelDetail',
-	},
+	}, */
 	{
 		id: 'callTradeValue',
 		title: 'ارزش معاملات کال',
