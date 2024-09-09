@@ -110,7 +110,7 @@ const Toolbar = ({ isSubscribing, filters, filtersCount, onPauseSubscribing, onP
 
 			<TableActions
 				style={{ flex: '0 0 192px' }}
-				className='justify-end overflow-hidden'
+				className='justify-end'
 				filtersCount={filtersCount}
 				isInitialPaused={!isSubscribing}
 				onManageColumns={manageWatchlistColumns}

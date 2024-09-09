@@ -10,7 +10,6 @@ import { useDebounce } from '@/hooks';
 import { createSelector } from '@reduxjs/toolkit';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
 import { toast } from 'react-toastify';
 import Watchlist from './Watchlist';
 
@@ -29,11 +28,11 @@ const WatchlistList = () => {
 
 	const queryClient = useQueryClient();
 
-	const { optionWatchlistTabId, isLoggedIn } = useAppSelector(getStates);
+	const { optionWatchlistTabId } = useAppSelector(getStates);
 
 	const { setDebounce } = useDebounce();
 
-	const { data: userCustomWatchlistList, isLoading } = useGetAllCustomWatchlistQuery({
+	const { data: userCustomWatchlistList = [], isLoading } = useGetAllCustomWatchlistQuery({
 		queryKey: ['getAllCustomWatchlistQuery'],
 		enabled: false,
 	});
@@ -73,35 +72,35 @@ const WatchlistList = () => {
 		dispatch(setManageOptionWatchlistListModal({}));
 	};
 
-	const watchlistList = useMemo(() => {
-		const defaultWatchlist: Option.WatchlistList = {
-			id: -1,
-			name: t('option_page.market_overview'),
-			isHidden: false,
-		};
-
-		try {
-			if (!isLoggedIn || !Array.isArray(userCustomWatchlistList)) return [defaultWatchlist];
-
-			return [defaultWatchlist, ...userCustomWatchlistList];
-		} catch (e) {
-			return [defaultWatchlist];
-		}
-	}, [userCustomWatchlistList, isLoggedIn]);
+	const defaultWatchlist: Option.WatchlistList = {
+		id: -1,
+		name: t('option_page.market_overview'),
+		isHidden: false,
+	};
 
 	return (
 		<div className='select-none gap-8 overflow-hidden flex-justify-start'>
-			<ul className='flex grow-0 gap-8 overflow-y-auto overflow-x-visible'>
-				{watchlistList.map((item) => (
+			<div className='flex gap-8 overflow-hidden'>
+				<ul className='flex grow-0'>
 					<Watchlist
-						key={item.id}
-						{...item}
-						star={item.id === -1}
-						isActive={optionWatchlistTabId === item.id}
-						onSelect={() => onSelectWatchlist(item)}
+						{...defaultWatchlist}
+						star
+						isActive={optionWatchlistTabId === defaultWatchlist.id}
+						onSelect={() => onSelectWatchlist(defaultWatchlist)}
 					/>
-				))}
-			</ul>
+				</ul>
+				<ul className='flex grow-0 gap-8 overflow-y-auto overflow-x-visible'>
+					{userCustomWatchlistList.map((item) => (
+						<Watchlist
+							key={item.id}
+							{...item}
+							star={false}
+							isActive={optionWatchlistTabId === item.id}
+							onSelect={() => onSelectWatchlist(item)}
+						/>
+					))}
+				</ul>
+			</div>
 
 			<ul className='flex grow-0 gap-8'>
 				<li>

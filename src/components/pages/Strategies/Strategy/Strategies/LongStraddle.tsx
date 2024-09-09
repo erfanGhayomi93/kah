@@ -456,7 +456,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				valueGetter: ({ data }) => data?.callBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			{
+			/* {
 				colId: 'callBestBuyLimitQuantity',
 				headerName: 'حجم سرخط خرید کال',
 				initialHide: initialHiddenColumnsLongStraddle.callBestBuyLimitQuantity,
@@ -464,7 +464,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.callBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
-			},
+			}, */
 			{
 				colId: 'putBestBuyLimitPrice',
 				headerName: 'بهترین خریدار پوت',
@@ -474,7 +474,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				valueGetter: ({ data }) => data?.putBestBuyLimitPrice ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
 			},
-			{
+			/* {
 				colId: 'putBestBuyLimitQuantity',
 				headerName: 'حجم سرخط خرید پوت',
 				initialHide: initialHiddenColumnsLongStraddle.putBestBuyLimitQuantity,
@@ -482,7 +482,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				cellClass: 'buy',
 				valueGetter: ({ data }) => data?.putBestBuyLimitQuantity ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
-			},
+			}, */
 			{
 				colId: 'callTradeValue',
 				headerName: 'ارزش معاملات کال',

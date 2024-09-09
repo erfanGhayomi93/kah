@@ -3,14 +3,12 @@ import lightStreamInstance from '@/classes/Lightstream';
 import AgInfiniteTable from '@/components/common/Tables/AgInfiniteTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
-import { optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { getOptionWatchlistColumnsState, setOptionWatchlistColumnsState } from '@/features/slices/tableSlice';
 import { useDebounce, useOptionWatchlistColumns, useSubscription } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, toFixed } from '@/utils/helpers';
-import { blackScholes, impliedVolatility } from '@/utils/math/black-scholes';
 import {
 	type ColDef,
 	type ColumnMovedEvent,
@@ -152,60 +150,18 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 
 			const symbolData = { ...rowNode.data! };
 			updateInfo.forEachChangedField((fieldName, _b, value) => {
-				if (value && fieldName in optionWatchlistLightstreamProperty) {
+				if (value && fieldName in symbolData.optionWatchlistData) {
 					const valueAsNumber = Number(value);
 
-					if (fieldName in symbolData.optionWatchlistData) {
-						// @ts-expect-error: Typescript can not detect lightstream types
-						symbolData.optionWatchlistData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
-					}
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData.optionWatchlistData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
 				}
 			});
-
-			symbolData.optionWatchlistData = {
-				...symbolData.optionWatchlistData,
-				...updateBlackScholes(symbolData),
-			};
 
 			rowNode.setData(symbolData);
 		} catch (e) {
 			//
 		}
-	};
-
-	const updateBlackScholes = ({ symbolInfo, optionWatchlistData }: Option.Root) => {
-		const isCall = symbolInfo.optionType === 'Call';
-		const dueDays = Math.ceil(
-			Math.abs(Date.now() - new Date(symbolInfo.contractEndDate).getTime()) / 1e3 / 24 / 60 / 60,
-		);
-		const rate = 0.3;
-		const volatility = Number(optionWatchlistData.historicalVolatility) / 100;
-
-		const { thetaCall, thetaPut, deltaCall, deltaPut, rhoCall, rhoPut, gamma, vega, call, put } = blackScholes({
-			sharePrice: optionWatchlistData.baseSymbolPrice ?? 0,
-			strikePrice: symbolInfo.strikePrice ?? 0,
-			rate: 0.3,
-			volatility,
-			dueDays,
-		});
-
-		const iv = impliedVolatility({
-			optionPrice: optionWatchlistData.premium,
-			rate,
-			strikePrice: symbolInfo.strikePrice,
-			dueDays,
-			contractType: 'put',
-			sharePrice: optionWatchlistData.baseSymbolPrice ?? 0,
-			stepCount: 5,
-			volatility,
-			step: 1,
-		});
-
-		const theta = isCall ? thetaCall : thetaPut;
-		const delta = isCall ? deltaCall : deltaPut;
-		const rho = isCall ? rhoCall : rhoPut;
-
-		return { theta, delta, rho, gamma, vega, blackScholes: isCall ? call : put, impliedVolatility: iv };
 	};
 
 	const getRows = (params: IGetRowsParams) => {
@@ -627,7 +583,7 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 					data?.optionWatchlistData.blackScholes ?? 0,
 					data?.optionWatchlistData.blackScholesDifference ?? 0,
 				],
-				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
+				valueFormatter: ({ value }) => sepNumbers(String(Math.ceil(value[0]))),
 				comparator: (valueA, valueB) => valueA[1] - valueB[1],
 			},
 			{

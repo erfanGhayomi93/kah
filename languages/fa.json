@@ -707,6 +707,7 @@
 	},
 	"saturn_page": {
 		"click_to_add_contract": "برای <add>افزودن</add> قرارداد {symbolTitle} کلیک کنید",
+		"symbol_has_expired": "تاریخ سررسید نماد \"{symbolTitle}\" منقضی شده است.",
 		"save": "ذخیره",
 		"individual": "حقیقی",
 		"legal": "حقوقی",
