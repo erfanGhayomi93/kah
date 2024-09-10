@@ -187,6 +187,10 @@ declare namespace Option {
 		 */
 		blackScholesDifference: number;
 		/**
+		 * درصد اختلاف بلک شولز
+		 */
+		blackScholesDifferencePercent: number;
+		/**
 		 * قیمت پایانی پایه
 		 */
 		baseClosingPrice: number;

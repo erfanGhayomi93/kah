@@ -3,6 +3,7 @@ import lightStreamInstance from '@/classes/Lightstream';
 import AgInfiniteTable from '@/components/common/Tables/AgInfiniteTable';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
+import { optionWatchlistLightstreamProperty } from '@/constants/ls-data-mapper';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { setAddNewOptionWatchlistModal, setMoveSymbolToWatchlistModal } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
@@ -150,15 +151,23 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 
 			const symbolData = { ...rowNode.data! };
 			updateInfo.forEachChangedField((fieldName, _b, value) => {
-				if (value && fieldName in symbolData.optionWatchlistData) {
+				const fn = optionWatchlistLightstreamProperty[fieldName] || fieldName;
+				if (value && fn in symbolData.optionWatchlistData) {
 					const valueAsNumber = Number(value);
 
 					// @ts-expect-error: Typescript can not detect lightstream types
-					symbolData.optionWatchlistData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
+					symbolData.optionWatchlistData[fn] = isNaN(valueAsNumber) ? value : valueAsNumber;
 				}
 			});
 
-			rowNode.setData(symbolData);
+			const { optionWatchlistData } = symbolData;
+			rowNode.setData({
+				...symbolData,
+				optionWatchlistData: {
+					...optionWatchlistData,
+					spread: Math.abs(optionWatchlistData.bestSellPrice - optionWatchlistData.bestBuyPrice),
+				},
+			});
 		} catch (e) {
 			//
 		}
@@ -580,8 +589,8 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 					percent: value[1] ?? 0,
 				}),
 				valueGetter: ({ data }) => [
-					data?.optionWatchlistData.blackScholes ?? 0,
-					data?.optionWatchlistData.blackScholesDifference ?? 0,
+					data?.optionWatchlistData?.blackScholesDifference ?? 0,
+					data?.optionWatchlistData?.blackScholesDifferencePercent ?? 0,
 				],
 				valueFormatter: ({ value }) => sepNumbers(String(Math.ceil(value[0]))),
 				comparator: (valueA, valueB) => valueA[1] - valueB[1],
@@ -806,6 +815,8 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 			mode: 'MERGE',
 			items: visibleSymbolsISIN,
 			fields: [
+				'bestBuyLimitPrice_1',
+				'bestSellLimitPrice_1',
 				'openPositionCount',
 				'highOpenPositionType',
 				'requiredMargin',
@@ -829,6 +840,7 @@ const WatchlistTable = ({ id, data, watchlistCount, isSubscribing, setTerm }: Wa
 				'blackScholes',
 				'theta',
 				'blackScholesDifference',
+				'blackScholesDifferencePercent',
 				'gamma',
 				'rho',
 				'vega',
