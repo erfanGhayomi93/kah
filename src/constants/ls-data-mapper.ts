@@ -1,14 +1,6 @@
 export const optionWatchlistLightstreamProperty: Record<string, keyof (Option.Watchlist & Option.SymbolInfo)> = {
 	bestBuyLimitPrice_1: 'bestBuyPrice',
 	bestSellLimitPrice_1: 'bestSellPrice',
-	totalTradeValue: 'tradeValue',
-	totalNumberOfSharesTraded: 'tradeVolume',
-	lastTradedPrice: 'premium',
-	totalNumberOfTrades: 'tradeCount',
-	closingPrice: 'closingPrice',
-	closingPriceVarPercent: 'closingPriceVarReferencePricePercent',
-	lastTradeDateTime: 'lastTradeDate',
-	lastTradedPriceVarPercent: 'tradePriceVarPreviousTradePercent',
 };
 
 export const baseSymbolWatchlistLightstreamProperty: Record<string, keyof (Option.Watchlist & Option.SymbolInfo)> = {
