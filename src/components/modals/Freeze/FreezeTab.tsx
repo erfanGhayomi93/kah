@@ -76,7 +76,7 @@ const FreezeTab: FC<FreezeTabProps> = ({ onCloseModal }) => {
 	};
 
 	return (
-		<div className='gap-8 pt-24 flex-column'>
+		<div className='gap-8 px-24 pt-24 flex-column'>
 			<SymbolSearch value={symbol} onChange={onChangeSymbol} classes={{ root: '!flex-48' }} />
 
 			<ul className='flex flex-col gap-y-16'>

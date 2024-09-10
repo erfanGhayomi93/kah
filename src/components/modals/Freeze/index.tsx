@@ -43,7 +43,7 @@ const Freeze = forwardRef<HTMLDivElement, FreezeProps>((props, ref) => {
 			>
 				<div
 					style={{ flex: '0 0 400px' }}
-					className={clsx('px-24 flex-column', isExpand && 'border-l border-gray-200')}
+					className={clsx('flex-column', isExpand && 'border-l border-gray-200')}
 				>
 					<Body onCloseModal={onCloseModal} setTabSelected={setTabSelected} />
 				</div>

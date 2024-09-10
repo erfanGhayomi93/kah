@@ -35,11 +35,14 @@ export const Body: FC<BodyProps> = ({ onCloseModal, setTabSelected }) => {
 				data={TABS}
 				defaultActiveTab='freezeModalTab'
 				onChange={(id) => setTabSelected(id)}
+				classes={{
+					container: 'px-24',
+				}}
 				renderTab={(item, activeTab) => (
 					<button
 						className={clsx(
 							'h-40 flex-1 px-16 text-center transition-colors flex-justify-center',
-							item.id === activeTab ? 'text-gray-700 font-medium' : 'text-gray-500',
+							item.id === activeTab ? 'font-medium text-gray-700' : 'text-gray-500',
 						)}
 						type='button'
 					>

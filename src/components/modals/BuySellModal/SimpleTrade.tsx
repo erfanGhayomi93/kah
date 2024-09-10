@@ -202,7 +202,7 @@ const SimpleTrade = ({
 
 	const isClosingPosition = isShortCall && quantity - symbolAssets <= 0;
 
-	const debtQuantity = isShortCall ? quantity : Math.max(quantity - symbolAssets, 0);
+	const debtQuantity = isShortCall ? Math.max(quantity - symbolAssets, 0) : quantity;
 
 	const blockTypeAccountValue = getAccountBlockTypeValue({
 		initialRequiredMargin: symbolData?.initialMargin ?? 0,
@@ -395,7 +395,7 @@ const SimpleTrade = ({
 							tooltip={
 								<div
 									style={{ width: '280px' }}
-									className='bg-tooltip gap-8 rounded p-8 flex-column *:flex-wrap *:text-white'
+									className='gap-8 rounded bg-tooltip p-8 flex-column *:flex-wrap *:text-white'
 								>
 									{isOption && side === 'sell' && (
 										<div className='flex-justify-between *:text-tiny'>
