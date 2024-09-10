@@ -295,8 +295,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 			if (!rowNode) return;
 
-			const symbolData = { ...rowNode.data! };
-			console.log(rowNode, key, symbolData);
+			// const symbolData = { ...rowNode.data! };
 
 			/* updateInfo.forEachChangedField((fieldName, _b, value) => {
 				console.log(fieldName, value);
