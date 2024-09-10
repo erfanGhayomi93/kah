@@ -40,7 +40,7 @@ const Actions = ({
 			{showFilter && (
 				<button
 					onClick={onShowFilters}
-					className='border-gray-200 text-gray-700 hover:border-primary-100 hover:bg-primary-100 relative size-40 rounded border transition-colors flex-justify-center hover:text-white'
+					className='relative w-40 flex-40 rounded border border-gray-200 text-gray-700 transition-colors flex-justify-center hover:border-primary-100 hover:bg-primary-100 hover:text-white'
 					type='button'
 				>
 					{(filtersCount ?? 0) > 0 && <Badge className='bg-primary-100 text-white'>{filtersCount}</Badge>}

@@ -1,5 +1,6 @@
 import { useDebounce } from '@/hooks';
 import { cn } from '@/utils/helpers';
+import clsx from 'clsx';
 import { Fragment, cloneElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Tabs.module.scss';
 
@@ -12,7 +13,7 @@ export type ITabIem<ID extends string | number, T extends object> = T & {
 interface TabsProps<ID extends string | number, T extends object> {
 	defaultActiveTab: ID;
 	data: Array<ITabIem<ID, T>>;
-	classes?: RecordClasses<'list' | 'indicator'>;
+	classes?: RecordClasses<'list' | 'container' | 'indicator'>;
 	wrapper?: ({ children }: { children: React.ReactNode }) => React.ReactElement;
 	renderTab: (item: ITabIem<ID, T>, activeTab: ID) => React.ReactElement;
 	onChange?: (tab: ID) => void;
@@ -99,20 +100,22 @@ const Tabs = <ID extends string | number, T extends object>({
 
 	return (
 		<Fragment>
-			<div ref={rootRef} className={cn(styles.list, classes?.list)}>
-				{data.map((item) => (
-					<Fragment key={item.id}>
-						{cloneElement(renderTab(item, activeTab), {
-							onClick: () => {
-								if (!item.disabled) setActiveTab(item.id);
-							},
-							ref: activeTab === item.id ? onTabChange : undefined,
-							'data-active': activeTab === item.id ? 'true' : 'false',
-						})}
-					</Fragment>
-				))}
+			<div ref={rootRef} className={clsx(classes?.container)}>
+				<div className={clsx(styles.list, classes?.list)}>
+					{data.map((item) => (
+						<Fragment key={item.id}>
+							{cloneElement(renderTab(item, activeTab), {
+								onClick: () => {
+									if (!item.disabled) setActiveTab(item.id);
+								},
+								ref: activeTab === item.id ? onTabChange : undefined,
+								'data-active': activeTab === item.id ? 'true' : 'false',
+							})}
+						</Fragment>
+					))}
 
-				<div ref={indicatorRef} className={cn(styles.indicator, classes?.indicator)} />
+					<div ref={indicatorRef} className={cn(styles.indicator, classes?.indicator)} />
+				</div>
 			</div>
 
 			{wrapper ? wrapper({ children: render?.() }) : render?.()}

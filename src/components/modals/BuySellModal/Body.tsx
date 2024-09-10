@@ -1,11 +1,8 @@
 import { useUserRemainQuery } from '@/api/queries/brokerPrivateQueries';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
-import { setChoiceBrokerModal, setLoginModal } from '@/features/slices/modalSlice';
 import { setOrdersActiveTab } from '@/features/slices/tabSlice';
 import { setOrdersIsExpand } from '@/features/slices/uiSlice';
-import { setBrokerIsSelected } from '@/features/slices/userSlice';
-import { getBrokerClientId, getClientId } from '@/utils/cookie';
 import { dateConverter } from '@/utils/helpers';
 import { createDraft, createOrder, updateDraft, updateOrder } from '@/utils/orders';
 import { type AxiosError } from 'axios';
@@ -58,42 +55,6 @@ const Body = (props: BodyProps) => {
 	const { data: userRemain } = useUserRemainQuery({
 		queryKey: ['userRemainQuery'],
 	});
-
-	const validation = (cb: () => void) => () => {
-		try {
-			const clientId = getClientId();
-			if (!clientId) {
-				dispatch(setLoginModal({ showForceLoginAlert: true }));
-				throw new Error('login_to_your_account');
-			}
-
-			const bClientId = getBrokerClientId();
-			if (!bClientId[0]) {
-				dispatch(setBrokerIsSelected(false));
-				dispatch(setChoiceBrokerModal({}));
-				throw new Error('broker_error');
-			}
-
-			if (!brokerUrls) throw new Error('broker_error');
-
-			const { price, quantity, validity, blockType, symbolType } = props;
-
-			if (!price) throw new Error('invalid_price');
-
-			if (!quantity) throw new Error('invalid_quantity');
-
-			if (symbolType === 'base' && !validity) throw new Error('invalid_validity_date');
-
-			if (symbolType === 'option' && props.side === 'sell' && !blockType) throw new Error('invalid_block_type');
-
-			cb();
-		} catch (e) {
-			const { message } = e as Error;
-			toast.error(t(`alerts.${message}`), {
-				toastId: message,
-			});
-		}
-	};
 
 	const onSubmit = () => {
 		if (props.mode === 'create') sendOrder();
@@ -271,7 +232,7 @@ const Body = (props: BodyProps) => {
 				submitting={submitting}
 				userRemain={userRemain ?? null}
 				createDraft={sendDraft}
-				onSubmit={validation(onSubmit)}
+				onSubmit={onSubmit}
 			/>
 		</Wrapper>
 	);

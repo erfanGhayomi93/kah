@@ -18,7 +18,7 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 
 	const [value, setValue] = useState('');
 
-	const { data } = useCountFreezeQuery({
+	const { data = [] } = useCountFreezeQuery({
 		queryKey: ['CountFreezeList'],
 	});
 
@@ -47,15 +47,15 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 	});
 
 	return (
-		<div className='flex h-full flex-col justify-between'>
-			<div className='mb-16 mt-24 flex-1 p-8 shadow-sm'>
-				<div className='mb-24 flex'>
+		<div className='h-full justify-between gap-16 overflow-hidden px-24 pt-24 flex-column'>
+			<div className='flex-1 gap-24 overflow-hidden p-8 shadow-sm flex-column'>
+				<div className='flex'>
 					<span className='flex-1 text-center text-gray-700'>{t('freeze_modal.symbol_title')}</span>
 					<span className='flex-1 text-center text-gray-700'>{t('freeze_modal.guaranted_number')}</span>
 				</div>
 
 				<div className='flex flex-col gap-y-16 overflow-auto' style={{ maxHeight: 300 }}>
-					{data?.map((item, ind) => (
+					{[...data, ...data, ...data, ...data, ...data, ...data, ...data].map((item, ind) => (
 						<div className='flex' key={ind}>
 							<Radiobox
 								checked={value === item.symbolISIN}
@@ -70,16 +70,14 @@ const UnFreezeTab: FC<UnFreezeProps> = ({ onCloseModal }) => {
 				</div>
 			</div>
 
-			<div className=''>
-				<button
-					className={'h-48 w-full gap-8 rounded font-medium flex-justify-center btn-primary'}
-					type='submit'
-					disabled={!value}
-					onClick={() => createFreezeRequest({ symbolISIN: [value], type: 'unFreeze' })}
-				>
-					{t('common.create_request')}
-				</button>
-			</div>
+			<button
+				className='w-full flex-48 gap-8 rounded font-medium flex-justify-center btn-primary'
+				type='submit'
+				disabled={!value}
+				onClick={() => createFreezeRequest({ symbolISIN: [value], type: 'unFreeze' })}
+			>
+				{t('common.create_request')}
+			</button>
 		</div>
 	);
 };
