@@ -1,15 +1,20 @@
-import { DragSVG, PinSVG } from '@/components/icons';
+import Tooltip from '@/components/common/Tooltip';
+import { PinSVG, TrashSVG } from '@/components/icons';
 import { cn } from '@/utils/helpers';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 interface TemplateProps extends Saturn.Template {
 	isActive: boolean;
 	onPin: () => void;
+	onDelete: () => void;
 	onSelect: () => void;
 }
 
-const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: TemplateProps) => {
+const Template = ({ name, content, isActive, isPinned, onSelect, onDelete, onPin }: TemplateProps) => {
+	const t = useTranslations('tooltip');
+
 	const symbols: string[] = useMemo(() => {
 		const symbolsAsString: string[] = [];
 
@@ -29,9 +34,9 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 
 	return (
 		<li className='w-full gap-12 overflow-hidden flex-justify-between'>
-			<button className='text-gray-200'>
+			{/* <button className='text-gray-200'>
 				<DragSVG width='2.4rem' height='2.4rem' />
-			</button>
+			</button> */}
 
 			<div
 				onClick={onSelect}
@@ -57,23 +62,43 @@ const Template = ({ name, content, isActive, isPinned, onSelect, onPin }: Templa
 					)}
 				</div>
 
-				<button
-					onClick={(e) => {
-						e.stopPropagation();
-						onPin();
-					}}
-					type='button'
-					style={{
-						transform: isPinned ? 'rotate(45deg)' : 'rotate(0deg)',
-						transition: 'border-color 250ms, background-color 250ms, color 250ms, transform 250ms',
-					}}
-					className={clsx(
-						'size-20 rounded-circle border border-current transition-colors flex-justify-center',
-						isActive ? 'text-white ' : 'text-gray-700',
-					)}
-				>
-					<PinSVG width='1rem' height='1rem' />
-				</button>
+				<div className='flex gap-8'>
+					<Tooltip placement='bottom' content={t('delete')}>
+						<button
+							onClick={(e) => {
+								e.stopPropagation();
+								onDelete();
+							}}
+							type='button'
+							className={clsx(
+								'size-20 rounded-circle border border-current transition-colors flex-justify-center',
+								isActive ? 'text-white ' : 'text-gray-700',
+							)}
+						>
+							<TrashSVG width='1rem' height='1rem' />
+						</button>
+					</Tooltip>
+
+					<Tooltip placement='bottom' content={t('pin')}>
+						<button
+							onClick={(e) => {
+								e.stopPropagation();
+								onPin();
+							}}
+							type='button'
+							style={{
+								transform: isPinned ? 'rotate(45deg)' : 'rotate(0deg)',
+								transition: 'border-color 250ms, background-color 250ms, color 250ms, transform 250ms',
+							}}
+							className={clsx(
+								'size-20 rounded-circle border border-current flex-justify-center',
+								isActive ? 'text-white ' : 'text-gray-700',
+							)}
+						>
+							<PinSVG width='1rem' height='1rem' />
+						</button>
+					</Tooltip>
+				</div>
 			</div>
 		</li>
 	);

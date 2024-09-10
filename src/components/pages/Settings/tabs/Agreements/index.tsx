@@ -4,6 +4,7 @@ import Switch from '@/components/common/Inputs/Switch';
 import Loading from '@/components/common/Loading';
 import NoData from '@/components/common/NoData';
 import LightweightTable, { type IColDef } from '@/components/common/Tables/LightweightTable';
+import Tooltip from '@/components/common/Tooltip';
 import { DocSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
 import { getBrokerURLs } from '@/features/slices/brokerSlice';
@@ -32,16 +33,19 @@ const Agreements = () => {
 		() => [
 			{
 				colId: 'agreement_title',
-				headerName: t('agreement_title'),
 				cellClass: 'text-primary',
+				headerName: t('agreement_title'),
+				width: 200,
 				valueGetter: (row) => row.title,
 				valueFormatter: ({ value }) => (
-					<div className='gap-8 px-12 text-base text-gray-800 flex-justify-start'>
-						<span className='text-gray-700'>
-							<DocSVG />
-						</span>
-						{value}
-					</div>
+					<Tooltip placement='right' content={value}>
+						<div className='gap-8 px-12 text-base text-gray-800 flex-justify-start'>
+							<span className='text-gray-700'>
+								<DocSVG />
+							</span>
+							<span className='truncate'>{value}</span>
+						</div>
+					</Tooltip>
 				),
 			},
 			{

@@ -1541,6 +1541,8 @@
 	},
 	"tooltip": {
 		"edit": "ویرایش",
+		"delete": "حذف",
+		"pin": "سنجاق",
 		"edit_disabled": "غیرقابل ویرایش",
 		"remove_disabled": "غیرقابل حذف",
 		"stop_lightstream": "توقف بروزرسانی خودکار",

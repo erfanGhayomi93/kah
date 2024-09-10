@@ -59,12 +59,13 @@ const Templates = () => {
 				const data = response.data;
 
 				if (savedTemplates) {
-					const templates = (JSON.parse(JSON.stringify(savedTemplates)) as Saturn.Template[]).map((item) => {
-						if (template.id === item.id) item.isPinned = isPinned;
-						return item;
-					});
-
-					queryClient.setQueryData(['useAllSavedTemplates'], templates);
+					queryClient.setQueryData(
+						['useAllSavedTemplates'],
+						savedTemplates.map((item) => {
+							if (template.id === item.id) item.isPinned = isPinned;
+							return item;
+						}),
+					);
 				}
 
 				if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
@@ -72,6 +73,26 @@ const Templates = () => {
 				//
 			}
 		}, 100);
+	};
+
+	const onDelete = async (template: Saturn.Template) => {
+		try {
+			const response = await axios.post(routes.saturn.Delete, {
+				id: template.id,
+			});
+			const data = response.data;
+
+			if (savedTemplates) {
+				queryClient.setQueryData(
+					['useAllSavedTemplates'],
+					savedTemplates.filter((item) => template.id !== item.id),
+				);
+			}
+
+			if (response.status !== 200 || !data.succeeded) throw new Error(data.errors?.[0] ?? '');
+		} catch (e) {
+			//
+		}
 	};
 
 	const onSelect = async (item: Saturn.Template) => {
@@ -106,19 +127,20 @@ const Templates = () => {
 		refetchSavedTemplates();
 	}, [isLoggedIn]);
 
-	if (isFetching)
+	if (isFetching) {
 		return (
 			<div className='relative flex-1'>
 				<Loading />
 			</div>
 		);
+	}
 
 	if (!isLoggedIn || !Array.isArray(savedTemplates) || savedTemplates.length === 0)
 		return (
 			<div className='relative flex-1'>
 				<div className='absolute flex-col gap-16 flex-justify-center center'>
 					<Image priority width='120' height='120' alt='profile' src='/static/images/no-template-found.png' />
-					<span className='text-gray-700 whitespace-nowrap text-base font-medium'>
+					<span className='whitespace-nowrap text-base font-medium text-gray-700'>
 						{t('saved_saturn_templates.no_data')}
 					</span>
 				</div>
@@ -133,6 +155,7 @@ const Templates = () => {
 					{...item}
 					isActive={Boolean(saturnActiveTemplate && saturnActiveTemplate.id === item.id)}
 					onPin={() => onPin(item)}
+					onDelete={() => onDelete(item)}
 					onSelect={() => onSelect(item)}
 				/>
 			))}
