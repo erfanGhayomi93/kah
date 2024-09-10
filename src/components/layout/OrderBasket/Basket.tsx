@@ -1,4 +1,3 @@
-import Button from '@/components/common/Button';
 import Moveable from '@/components/common/Moveable';
 import { ArrowDownSVG, MaximizeSVG, MinimizeSVG, XSVG } from '@/components/icons';
 import { useAppDispatch, useAppSelector } from '@/features/hooks';
@@ -9,13 +8,9 @@ import {
 	setOrderBasket,
 	setOrderBasketOrders,
 } from '@/features/slices/userSlice';
-import { useBasketOrderingSystem } from '@/hooks';
-import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 const SymbolStrategyTable = dynamic(() => import('@/components/common/Tables/SymbolStrategyTable'), {
 	ssr: false,
@@ -32,12 +27,6 @@ const Basket = () => {
 	const { baseSymbol, orders: basketOrders } = useAppSelector(getOrderBasket)!;
 
 	const dispatch = useAppDispatch();
-
-	const { submit, submitting } = useBasketOrderingSystem({
-		onSent: ({ failedOrders, sentOrders }) => {
-			toast.success(t(getBasketAlertMessage(failedOrders.length, sentOrders.length)));
-		},
-	});
 
 	const [isMaximized, setIsMaximized] = useState(true);
 
@@ -57,18 +46,6 @@ const Basket = () => {
 				contracts: basketOrders ?? [],
 			}),
 		);
-	};
-
-	const getSelectedContracts = () => {
-		const result: OrderBasket.Order[] = [];
-
-		for (let i = 0; i < selectedContracts.length; i++) {
-			const orderId = selectedContracts[i];
-			const order = basketOrders.find((order) => order.id === orderId);
-			if (order) result.push(order);
-		}
-
-		return result;
 	};
 
 	const onClose = () => {
@@ -91,10 +68,6 @@ const Basket = () => {
 
 	const onExpand = () => {
 		setIsMaximized(!isMaximized);
-	};
-
-	const onSubmit = () => {
-		submit(getSelectedContracts());
 	};
 
 	const removeOrder = (id: string) => {
@@ -179,17 +152,6 @@ const Basket = () => {
 								>
 									{t('order_basket.analyze')}
 								</button>
-
-								<Button
-									onClick={onSubmit}
-									type='button'
-									style={{ width: '9.6rem' }}
-									className={clsx('rounded btn-primary', submitting && 'not')}
-									disabled={selectedContracts.length === 0}
-									loading={submitting}
-								>
-									{t('order_basket.trade')}
-								</Button>
 							</div>
 						</div>
 
