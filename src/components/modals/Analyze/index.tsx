@@ -4,12 +4,9 @@ import { PlusSVG } from '@/components/icons';
 import { useAppDispatch } from '@/features/hooks';
 import { setAnalyzeModal, setSelectSymbolContractsModal } from '@/features/slices/modalSlice';
 import { type IAnalyzeModal } from '@/features/slices/types/modalSlice.interfaces';
-import { useBasketOrderingSystem } from '@/hooks';
-import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
 import { convertSymbolWatchlistToSymbolBasket, uuidv4 } from '@/utils/helpers';
 import { useTranslations } from 'next-intl';
 import { forwardRef, useMemo, useState } from 'react';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Modal, { Header } from '../Modal';
 import AnalyzeTabs from './AnalyzeTabs';
@@ -33,12 +30,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 		const t = useTranslations();
 
 		const dispatch = useAppDispatch();
-
-		const { submit, submitting } = useBasketOrderingSystem({
-			onSent: ({ failedOrders, sentOrders }) => {
-				toast.success(t(getBasketAlertMessage(failedOrders.length, sentOrders.length)));
-			},
-		});
 
 		const [symbolContracts, setSymbolContracts] = useState([...contracts]);
 
@@ -148,10 +139,6 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 			}
 		};
 
-		const onSubmit = () => {
-			submit(selectedContractsAsSymbol);
-		};
-
 		const selectedContractsAsSymbol = useMemo<OrderBasket.Order[]>(() => {
 			const result: OrderBasket.Order[] = [];
 
@@ -191,22 +178,11 @@ const Analyze = forwardRef<HTMLDivElement, AnalyzeProps>(
 
 								<div className='flex pl-8 pr-28 flex-justify-between'>
 									<button
-										disabled={submitting}
 										type='button'
 										onClick={addNewContracts}
 										className='size-40 rounded btn-primary'
 									>
 										<PlusSVG width='2rem' height='2rem' />
-									</button>
-
-									<button
-										disabled={submitting}
-										style={{ flex: '0 0 14.4rem' }}
-										type='button'
-										onClick={onSubmit}
-										className='h-40 rounded btn-primary'
-									>
-										{t('analyze_modal.send_all')}
 									</button>
 								</div>
 							</div>
