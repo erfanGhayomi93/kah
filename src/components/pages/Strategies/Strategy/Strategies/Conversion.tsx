@@ -16,6 +16,7 @@ import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
 import { useInputs, useLocalstorage, useSubscription } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef } from 'react';
@@ -173,6 +174,30 @@ const Conversion = (strategy: ConversionProps) => {
 
 	const onFiltersChanged = (newFilters: Partial<ILongPutFiltersModalState>) => {
 		setFilters(newFilters);
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const key: string = updateInfo.getItemName();
+			const rowNode = gridRef.current!.getRowNode(key);
+
+			if (!rowNode) return;
+
+			const symbolData = { ...rowNode.data! };
+
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				if (value && fieldName in symbolData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			});
+
+			rowNode.setData(symbolData);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showFilters = () => {
@@ -652,7 +677,7 @@ const Conversion = (strategy: ConversionProps) => {
 			snapshot: true,
 		});
 
-		// sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
 		subscribe(sub);
 	}, [JSON.stringify(symbolsHashTable)]);
 
