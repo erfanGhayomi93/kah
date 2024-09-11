@@ -369,14 +369,14 @@ const LongPut = (strategy: LongPutProps) => {
 			/* {
 				colId: 'profit',
 				headerName: 'بازده',
-				profit: initialHiddenColumnsLongPut.profit,
+				initialHide: initialHiddenColumnsLongPut.profit,
 				minWidth: 104,
 				valueFormatter: () => t('common.infinity'),
 			}, */
 			{
 				colId: 'blackScholes',
 				headerName: 'قیمت منصفانه',
-				blackScholes: initialHiddenColumnsLongPut.blackScholes,
+				initialHide: initialHiddenColumnsLongPut.blackScholes,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.blackScholes ?? 0,
 				valueFormatter: ({ value }) => toFixed(value, 4),
@@ -384,7 +384,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'timeValue',
 				headerName: 'ارزش زمانی',
-				timeValue: initialHiddenColumnsLongPut.timeValue,
+				initialHide: initialHiddenColumnsLongPut.timeValue,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.timeValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -392,7 +392,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'intrinsicValue',
 				headerName: 'ارزش ذاتی',
-				intrinsicValue: initialHiddenColumnsLongPut.intrinsicValue,
+				initialHide: initialHiddenColumnsLongPut.intrinsicValue,
 				minWidth: 96,
 				valueGetter: ({ data }) => data?.intrinsicValue ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -412,7 +412,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'tradeValue',
 				headerName: 'ارزش معاملات آپشن',
-				tradeValue: initialHiddenColumnsLongPut.tradeValue,
+				initialHide: initialHiddenColumnsLongPut.tradeValue,
 				minWidth: 136,
 				initialSort: 'asc',
 				valueGetter: ({ data }) => data?.tradeValue ?? 0,
@@ -421,7 +421,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradeValue',
 				headerName: 'ارزش معاملات سهم پایه',
-				baseTradeValue: initialHiddenColumnsLongPut.baseTradeValue,
+				initialHide: initialHiddenColumnsLongPut.baseTradeValue,
 				minWidth: 152,
 				valueGetter: ({ data }) => data?.baseTradeValue ?? 0,
 				valueFormatter: ({ value }) => numFormatter(value),
@@ -429,7 +429,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradeCount',
 				headerName: 'تعداد معاملات پایه',
-				baseTradeCount: initialHiddenColumnsLongPut.baseTradeCount,
+				initialHide: initialHiddenColumnsLongPut.baseTradeCount,
 				minWidth: 128,
 				valueGetter: ({ data }) => data?.baseTradeCount ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -437,7 +437,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseTradeVolume',
 				headerName: 'حجم معاملات پایه',
-				baseTradeVolume: initialHiddenColumnsLongPut.baseTradeVolume,
+				initialHide: initialHiddenColumnsLongPut.baseTradeVolume,
 				minWidth: 136,
 				valueGetter: ({ data }) => data?.baseTradeVolume ?? 0,
 				valueFormatter: ({ value }) => sepNumbers(String(value)),
@@ -445,7 +445,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'baseLastTradedDate',
 				headerName: 'آخرین معامله پایه',
-				baseLastTradedDate: initialHiddenColumnsLongPut.baseLastTradedDate,
+				initialHide: initialHiddenColumnsLongPut.baseLastTradedDate,
 				minWidth: 120,
 				valueGetter: ({ data }) => data?.baseLastTradedDate ?? 0,
 				valueFormatter: ({ value }) => dateFormatter(value, 'date'),
@@ -453,7 +453,7 @@ const LongPut = (strategy: LongPutProps) => {
 			{
 				colId: 'actions',
 				headerName: 'عملیات',
-				actions: initialHiddenColumnsLongPut.actions,
+				initialHide: initialHiddenColumnsLongPut.actions,
 				width: 80,
 				sortable: false,
 				pinned: 'left',
