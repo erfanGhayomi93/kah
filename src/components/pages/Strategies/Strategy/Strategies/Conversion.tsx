@@ -1,4 +1,5 @@
 import { useConversionStrategyQuery } from '@/api/queries/strategyQuery';
+import lightStreamInstance from '@/classes/Lightstream';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
@@ -12,12 +13,13 @@ import {
 	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useInputs, useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage, useSubscription } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -26,6 +28,8 @@ import Table from '../components/Table';
 const ConversionDescription = dynamic(() => import('../Descriptions/ConversionDescription'), {
 	ssr: false,
 });
+
+type THashTable = Record<string, number>;
 
 interface ConversionProps extends Strategy.GetAll {}
 
@@ -37,6 +41,10 @@ const Conversion = (strategy: ConversionProps) => {
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.Conversion>>(null);
+
+	const symbolsHashTableRef = useRef<THashTable>({});
+
+	const { subscribe } = useSubscription();
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -54,7 +62,7 @@ const Conversion = (strategy: ConversionProps) => {
 		pageNumber: 1,
 	});
 
-	const { data, isFetching } = useConversionStrategyQuery({
+	const { data = [], isFetching } = useConversionStrategyQuery({
 		queryKey: [
 			'conversionQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
@@ -95,12 +103,12 @@ const Conversion = (strategy: ConversionProps) => {
 						contractSize: data.contractSize,
 						settlementDay: new Date(data.contractEndDate),
 						strikePrice: data.strikePrice,
-						requiredMargin: data.requiredMargin,
+						requiredMargin: data.putRequiredMargin,
 					},
 					price: data.putPremium || 1,
 					quantity: 1,
 					side: 'buy',
-					marketUnit: data.marketUnit,
+					marketUnit: data.putMarketUnit,
 				},
 				{
 					type: 'option',
@@ -114,12 +122,12 @@ const Conversion = (strategy: ConversionProps) => {
 						contractSize: data.contractSize,
 						settlementDay: new Date(data.contractEndDate),
 						strikePrice: data.strikePrice,
-						requiredMargin: data.requiredMargin,
+						requiredMargin: data.callRequiredMargin,
 					},
 					price: data.callPremium || 1,
 					quantity: 1,
 					side: 'sell',
-					marketUnit: data.marketUnit,
+					marketUnit: data.callMarketUnit,
 				},
 			];
 
@@ -166,6 +174,30 @@ const Conversion = (strategy: ConversionProps) => {
 
 	const onFiltersChanged = (newFilters: Partial<ILongPutFiltersModalState>) => {
 		setFilters(newFilters);
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const key: string = updateInfo.getItemName();
+			const rowNode = gridRef.current!.getRowNode(key);
+
+			if (!rowNode) return;
+
+			const symbolData = { ...rowNode.data! };
+
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				if (value && fieldName in symbolData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			});
+
+			rowNode.setData(symbolData);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showFilters = () => {
@@ -567,6 +599,87 @@ const Conversion = (strategy: ConversionProps) => {
 		],
 		[],
 	);
+
+	const symbolsHashTable = useMemo(() => {
+		const hashTable: THashTable = {};
+
+		try {
+			const l = data.length;
+			for (let i = 0; i < l; i++) {
+				hashTable[data[i].key] = i;
+			}
+		} catch (e) {
+			//
+		}
+
+		symbolsHashTableRef.current = hashTable;
+		return hashTable;
+	}, [data]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: Object.keys(symbolsHashTable),
+			fields: [
+				'baseSymbolISIN',
+				'baseSymbolTitle',
+				'baseLastTradedPrice',
+				'baseTradePriceVarPreviousTradePercent',
+				'dueDays',
+				'strikePrice',
+				'callSymbolISIN',
+				'callSymbolTitle',
+				'callBestSellLimitPrice',
+				'callBestSellLimitQuantity',
+				'callBestBuyLimitPrice',
+				'callBestBuyLimitQuantity',
+				'callPremium',
+				'callPremiumPercent',
+				'callIOTM',
+				'callOpenPositionCount',
+				'putSymbolISIN',
+				'putSymbolTitle',
+				'putBestSellLimitPrice',
+				'putBestSellLimitQuantity',
+				'putBestBuyLimitPrice',
+				'putBestBuyLimitQuantity',
+				'putOpenPositionCount',
+				'putIOTM',
+				'putPremium',
+				'putPremiumPercent',
+				'profit',
+				'profitPercent',
+				'inUseCapital',
+				'callTimeValue',
+				'putTimeValue',
+				'callIntrinsicValue',
+				'putIntrinsicValue',
+				'callTradeValue',
+				'putTradeValue',
+				'baseTradeValue',
+				'baseTradeCount',
+				'baseTradeVolume',
+				'baseLastTradeDate',
+				'baseMarketUnit',
+				'callMarketUnit',
+				'putMarketUnit',
+				'historicalVolatility',
+				'callRequiredMargin',
+				'putRequiredMargin',
+				'contractEndDate',
+				'ytm',
+				'ytmWithCommission',
+				'contractSize',
+				'withCommission',
+				'priceType',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		subscribe(sub);
+	}, [JSON.stringify(symbolsHashTable)]);
 
 	return (
 		<>

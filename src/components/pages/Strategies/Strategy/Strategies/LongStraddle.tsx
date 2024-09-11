@@ -1,4 +1,5 @@
 import { useLongStraddleStrategyQuery } from '@/api/queries/strategyQuery';
+import lightStreamInstance from '@/classes/Lightstream';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
@@ -11,12 +12,13 @@ import {
 	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useInputs, useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage, useSubscription } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -25,6 +27,8 @@ import Table from '../components/Table';
 const LongStraddleDescription = dynamic(() => import('../Descriptions/LongStraddleDescription'), {
 	ssr: false,
 });
+
+type THashTable = Record<string, number>;
 
 interface LongStraddleProps extends Strategy.GetAll {}
 
@@ -36,6 +40,10 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.LongStraddle>>(null);
+
+	const symbolsHashTableRef = useRef<THashTable>({});
+
+	const { subscribe } = useSubscription();
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -53,7 +61,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<ILongStraddleFiltersModalStates>>({});
 
-	const { data, isFetching } = useLongStraddleStrategyQuery({
+	const { data = [], isFetching } = useLongStraddleStrategyQuery({
 		queryKey: [
 			'longStraddleQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
@@ -67,6 +75,30 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 
 	const onFiltersChanged = (newFilters: Partial<ILongStraddleFiltersModalStates>) => {
 		setFilters(newFilters);
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const key: string = updateInfo.getItemName();
+			const rowNode = gridRef.current!.getRowNode(key);
+
+			if (!rowNode) return;
+
+			const symbolData = { ...rowNode.data! };
+
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				if (value && fieldName in symbolData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			});
+
+			rowNode.setData(symbolData);
+		} catch (e) {
+			//
+		}
 	};
 
 	const analyze = (data: Strategy.LongStraddle) => {
@@ -88,7 +120,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				price: data.callPremium || 1,
 				quantity: 1,
 				side: 'buy',
-				marketUnit: data.marketUnit,
+				marketUnit: data.callMarketUnit,
 			},
 			{
 				type: 'option',
@@ -107,7 +139,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				price: data.putPremium || 1,
 				quantity: 1,
 				side: 'buy',
-				marketUnit: data.marketUnit,
+				marketUnit: data.putMarketUnit,
 			},
 		];
 
@@ -547,6 +579,86 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 		],
 		[],
 	);
+
+	const symbolsHashTable = useMemo(() => {
+		const hashTable: THashTable = {};
+
+		try {
+			const l = data.length;
+			for (let i = 0; i < l; i++) {
+				hashTable[data[i].key] = i;
+			}
+		} catch (e) {
+			//
+		}
+
+		symbolsHashTableRef.current = hashTable;
+		return hashTable;
+	}, [data]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: Object.keys(symbolsHashTable),
+			fields: [
+				'baseSymbolISIN',
+				'baseSymbolTitle',
+				'baseLastTradedPrice',
+				'baseTradePriceVarPreviousTradePercent',
+				'dueDays',
+				'strikePrice',
+				'callSymbolISIN',
+				'callSymbolTitle',
+				'callBestSellLimitPrice',
+				'callBestSellLimitQuantity',
+				'putSymbolISIN',
+				'putSymbolTitle',
+				'putBestSellLimitPrice',
+				'putBestSellLimitQuantity',
+				'callOpenPositionCount',
+				'putOpenPositionCount',
+				'callIOTM',
+				'putIOTM',
+				'callPremium',
+				'callPremiumPercent',
+				'putPremium',
+				'putPremiumPercent',
+				'lowBEP',
+				'highBEP',
+				'maxLoss',
+				'inUseCapital',
+				'callTimeValue',
+				'putTimeValue',
+				'callIntrinsicValue',
+				'putIntrinsicValue',
+				'callTradeValue',
+				'putTradeValue',
+				'callBestBuyLimitPrice',
+				'callBestBuyLimitQuantity',
+				'putBestBuyLimitPrice',
+				'putBestBuyLimitQuantity',
+				'baseTradeValue',
+				'baseTradeCount',
+				'baseTradeVolume',
+				'baseLastTradeDate',
+				'baseMarketUnit',
+				'callMarketUnit',
+				'putMarketUnit',
+				'historicalVolatility',
+				'callRequiredMargin',
+				'putRequiredMargin',
+				'contractEndDate',
+				'contractSize',
+				'withCommission',
+				'priceType',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		subscribe(sub);
+	}, [JSON.stringify(symbolsHashTable)]);
 
 	return (
 		<>

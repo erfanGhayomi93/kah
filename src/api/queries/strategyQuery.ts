@@ -64,16 +64,15 @@ export const useCoveredCallStrategyQuery = createQuery<
 				if (typeof filters.dueDays[1] === 'number') params.ToDueDays = filters.dueDays[1];
 			}
 
-			if (filters?.bepDifference) {
-				if (typeof filters.bepDifference[0] === 'number') params.LeastBEPDifference = filters.bepDifference[0];
-				if (typeof filters.bepDifference[1] === 'number') params.MostBEPDifference = filters.bepDifference[1];
-			}
-
 			if (filters?.openPosition) params.LeastOpenPositions = filters.openPosition;
 
 			if (filters?.maxProfit && filters.maxProfit) params.LeastMaxProfitPercent = filters.maxProfit;
 
 			if (filters?.nonExpiredProfit) params.LeastNonExpiredProfitPercent = filters.nonExpiredProfit;
+
+			if (filters?.riskCoverage) params.LeastRiskCoverage = filters.riskCoverage;
+
+			if (filters?.ytm) params.LeastYTM = filters.ytm;
 
 			const response = await axios.get<ServerResponse<Strategy.CoveredCall[]>>(routes.strategy.CoveredCall, {
 				signal,

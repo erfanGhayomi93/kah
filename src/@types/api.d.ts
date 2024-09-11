@@ -1794,6 +1794,7 @@ declare namespace Strategy {
 		requiredMargin: number;
 		contractEndDate: string;
 		withCommission: boolean;
+		priceType: string;
 	}
 
 	export interface LongCall {
@@ -1834,6 +1835,7 @@ declare namespace Strategy {
 		contractEndDate: string;
 		contractSize: number;
 		withCommission: boolean;
+		priceType: string;
 	}
 
 	export interface LongPut {
@@ -1841,13 +1843,14 @@ declare namespace Strategy {
 		baseSymbolISIN: string;
 		baseSymbolTitle: string;
 		baseLastTradedPrice: number;
+		bepDifferencePercent: number;
 		baseTradePriceVarPreviousTradePercent: number;
 		dueDays: number;
 		symbolISIN: string;
 		symbolTitle: string;
 		strikePrice: number;
 		openPositionCount: number;
-		iotm: Option.IOTM;
+		iotm: string;
 		premium: number;
 		tradePriceVarPreviousTradePercent: number;
 		optionBestSellLimitPrice: number;
@@ -1857,7 +1860,6 @@ declare namespace Strategy {
 		profitPercent: number;
 		blackScholes: number;
 		bepDifference: number;
-		bepDifferencePercent: number;
 		timeValue: number;
 		intrinsicValue: number;
 		optionBestBuyLimitPrice: number;
@@ -1875,6 +1877,7 @@ declare namespace Strategy {
 		contractEndDate: string;
 		contractSize: number;
 		withCommission: boolean;
+		priceType: string;
 	}
 
 	export interface LongStraddle {
@@ -1920,13 +1923,15 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradeDate: string;
 		baseMarketUnit: string;
-		marketUnit: string;
+		callMarketUnit: string;
+		putMarketUnit: string;
 		historicalVolatility: number;
 		callRequiredMargin: number;
 		putRequiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
 		withCommission: boolean;
+		priceType: string;
 	}
 
 	export interface Conversion {
@@ -1971,16 +1976,17 @@ declare namespace Strategy {
 		baseTradeVolume: number;
 		baseLastTradeDate: string;
 		baseMarketUnit: string;
-		marketUnit: string;
+		callMarketUnit: string;
+		putMarketUnit: string;
 		historicalVolatility: number;
 		callRequiredMargin: number;
 		putRequiredMargin: number;
 		contractEndDate: string;
 		ytm: number;
-		requiredMargin: number;
 		ytmWithCommission: number;
 		contractSize: number;
 		withCommission: boolean;
+		priceType: string;
 	}
 
 	export interface BullCallSpread {
@@ -2006,13 +2012,15 @@ declare namespace Strategy {
 		hspBestSellLimitQuantity: number;
 		lspOpenPositionCount: number;
 		hspOpenPositionCount: number;
-		lspiotm: Option.IOTM;
-		hspiotm: Option.IOTM;
+		lspiotm: string;
+		hspiotm: string;
 		lspPremium: number;
 		lspPremiumPercent: number;
 		hspPremium: number;
 		hspPremiumPercent: number;
 		bullCallSpreadBEP: number;
+		bepDifference: number;
+		bepDifferencePercent: number;
 		maxProfit: number;
 		maxProfitPercent: number;
 		maxLoss: number;
@@ -2035,8 +2043,8 @@ declare namespace Strategy {
 		hspRequiredMargin: number;
 		contractEndDate: string;
 		contractSize: number;
-		requiredMargin: number;
 		withCommission: boolean;
+		priceType: string;
 	}
 
 	export interface ProtectivePut {
@@ -2050,7 +2058,7 @@ declare namespace Strategy {
 		symbolTitle: string;
 		strikePrice: number;
 		openPositionCount: number;
-		iotm: Option.IOTM;
+		iotm: string;
 		premium: number;
 		premiumPercent: number;
 		optionBestBuyLimitQuantity: number;
@@ -2086,6 +2094,7 @@ declare namespace Strategy {
 		ytm: number;
 		ytmWithCommission: number;
 		withCommission: boolean;
+		priceType: string;
 	}
 
 	export interface BearPutSpread {
@@ -2111,13 +2120,15 @@ declare namespace Strategy {
 		hspBestSellLimitQuantity: number;
 		lspOpenPositionCount: number;
 		hspOpenPositionCount: number;
-		lspiotm: Option.IOTM;
-		hspiotm: Option.IOTM;
+		lspiotm: string;
+		hspiotm: string;
 		lspPremium: number;
 		lspPremiumPercent: number;
 		hspPremium: number;
 		hspPremiumPercent: number;
 		bearPutSpreadBEP: number;
+		bepDifference: number;
+		bepDifferencePercent: number;
 		maxProfit: number;
 		maxProfitPercent: number;
 		maxLoss: number;
@@ -2141,6 +2152,7 @@ declare namespace Strategy {
 		contractEndDate: string;
 		contractSize: number;
 		withCommission: boolean;
+		priceType: string;
 	}
 }
 

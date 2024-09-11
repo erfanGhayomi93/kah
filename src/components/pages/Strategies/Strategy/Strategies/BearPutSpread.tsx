@@ -1,4 +1,5 @@
 import { useBearPutSpreadStrategyQuery } from '@/api/queries/strategyQuery';
+import lightStreamInstance from '@/classes/Lightstream';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
@@ -12,12 +13,13 @@ import {
 	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useInputs, useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage, useSubscription } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
+import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -26,6 +28,8 @@ import Table from '../components/Table';
 const BearPutSpreadDescription = dynamic(() => import('../Descriptions/BearPutSpreadDescription'), {
 	ssr: false,
 });
+
+type THashTable = Record<string, number>;
 
 interface BearPutSpreadProps extends Strategy.GetAll {}
 
@@ -37,6 +41,10 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.BearPutSpread>>(null);
+
+	const symbolsHashTableRef = useRef<THashTable>({});
+
+	const { subscribe } = useSubscription();
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -54,7 +62,7 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		pageNumber: 1,
 	});
 
-	const { data, isFetching } = useBearPutSpreadStrategyQuery({
+	const { data = [], isFetching } = useBearPutSpreadStrategyQuery({
 		queryKey: [
 			'bearPutSpreadQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
@@ -152,6 +160,30 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 
 	const onFiltersChanged = (newFilters: Partial<ILongCallFiltersModalState>) => {
 		setFilters(newFilters);
+	};
+
+	const onSymbolUpdate = (updateInfo: ItemUpdate) => {
+		try {
+			const key: string = updateInfo.getItemName();
+			const rowNode = gridRef.current!.getRowNode(key);
+
+			if (!rowNode) return;
+
+			const symbolData = { ...rowNode.data! };
+
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				if (value && fieldName in symbolData) {
+					const valueAsNumber = Number(value);
+
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			});
+
+			rowNode.setData(symbolData);
+		} catch (e) {
+			//
+		}
 	};
 
 	const showFilters = () => {
@@ -597,6 +629,90 @@ const BearPutSpread = (strategy: BearPutSpreadProps) => {
 		],
 		[],
 	);
+
+	const symbolsHashTable = useMemo(() => {
+		const hashTable: THashTable = {};
+
+		try {
+			const l = data.length;
+			for (let i = 0; i < l; i++) {
+				hashTable[data[i].key] = i;
+			}
+		} catch (e) {
+			//
+		}
+
+		symbolsHashTableRef.current = hashTable;
+		return hashTable;
+	}, [data]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: Object.keys(symbolsHashTable),
+			fields: [
+				'baseSymbolISIN',
+				'baseSymbolTitle',
+				'baseLastTradedPrice',
+				'baseTradePriceVarPreviousTradePercent',
+				'dueDays',
+				'lspSymbolISIN',
+				'lspSymbolTitle',
+				'lspStrikePrice',
+				'lspBestSellLimitPrice',
+				'lspBestSellLimitQuantity',
+				'lspBestBuyLimitPrice',
+				'lspBestBuyLimitQuantity',
+				'hspSymbolISIN',
+				'hspSymbolTitle',
+				'hspStrikePrice',
+				'hspBestBuyLimitPrice',
+				'hspBestBuyLimitQuantity',
+				'hspBestSellLimitPrice',
+				'hspBestSellLimitQuantity',
+				'lspOpenPositionCount',
+				'hspOpenPositionCount',
+				'lspiotm',
+				'hspiotm',
+				'lspPremium',
+				'lspPremiumPercent',
+				'hspPremium',
+				'hspPremiumPercent',
+				'bearPutSpreadBEP',
+				'bepDifference',
+				'bepDifferencePercent',
+				'maxProfit',
+				'maxProfitPercent',
+				'maxLoss',
+				'inUseCapital',
+				'lspTimeValue',
+				'hspTimeValue',
+				'lspIntrinsicValue',
+				'hspIntrinsicValue',
+				'lspTradeValue',
+				'hspTradeValue',
+				'baseTradeValue',
+				'baseTradeCount',
+				'baseTradeVolume',
+				'baseLastTradedDate',
+				'ytm',
+				'baseMarketUnit',
+				'marketUnit',
+				'historicalVolatility',
+				'lspRequiredMargin',
+				'hspRequiredMargin',
+				'contractEndDate',
+				'contractSize',
+				'withCommission',
+				'priceType',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		subscribe(sub);
+	}, [JSON.stringify(symbolsHashTable)]);
 
 	return (
 		<>

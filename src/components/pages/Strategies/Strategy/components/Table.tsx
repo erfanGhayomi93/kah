@@ -88,7 +88,7 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 		const datasourceDependencies = useMemo(() => {
 			if (!Array.isArray(rowData) || rowData.length === 0) return [];
 
-			const result = rowData.map((item) => item.marketUnit);
+			const result = rowData.map((item) => item.baseMarketUnit);
 			result.sort((a, b) => b.localeCompare(a));
 
 			return result;
