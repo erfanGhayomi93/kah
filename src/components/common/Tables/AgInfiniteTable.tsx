@@ -1,4 +1,4 @@
-import { onBodyScroll } from '@/utils/table';
+import { handleTableShadow } from '@/utils/table';
 import { createGrid, ModuleRegistry, type GridApi, type GridOptions } from '@ag-grid-community/core';
 import { type FetchNextPageOptions, type InfiniteData, type InfiniteQueryObserverResult } from '@tanstack/react-query';
 import { InfiniteRowModelModule } from 'ag-grid-community';
@@ -48,18 +48,18 @@ const AgInfiniteTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<un
 				maxConcurrentDatasourceRequests: 1,
 				cacheOverflowSize: 2,
 				cacheBlockSize: 50,
-				onColumnVisible: ({ api, column }) => {
+				onColumnVisible: (params) => {
 					try {
-						if (!column) return;
+						handleTableShadow(params);
+						if (!params.column) return;
 
-						api.flashCells({
-							columns: [column.getColId()],
+						params.api.flashCells({
+							columns: [params.column.getColId()],
 						});
 					} catch (e) {
 						//
 					}
 				},
-				onBodyScroll,
 				defaultColDef: {
 					suppressMovable: true,
 					sortable: false,
@@ -72,6 +72,22 @@ const AgInfiniteTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<un
 						'<svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="36" d="M112 268l144 144 144-144M256 392V100" /></svg>',
 				},
 				...gridOptions,
+				onGridReady: (params) => {
+					try {
+						gridOptions?.onGridReady?.(params);
+						setTimeout(() => handleTableShadow(params), 1000);
+					} catch (e) {
+						//
+					}
+				},
+				onBodyScrollEnd: (params) => {
+					try {
+						gridOptions?.onBodyScrollEnd?.(params);
+						handleTableShadow(params);
+					} catch (e) {
+						//
+					}
+				},
 			});
 		}, []);
 
