@@ -11,10 +11,13 @@ import { EraserSVG, RefreshSVG } from '@/components/icons';
 import { watchlistPriceBasis } from '@/constants';
 import { useAppDispatch } from '@/features/hooks';
 import { setBuiltStrategy } from '@/features/slices/uiSlice';
+import { useBasketOrderingSystem } from '@/hooks';
+import { getBasketAlertMessage } from '@/hooks/useBasketOrderingSystem';
 import { sepNumbers } from '@/utils/helpers';
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface StrategyContractsProps {
 	contracts: TSymbolStrategy[];
@@ -42,6 +45,12 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 	const contractsPriceRef = useRef<Record<string, IUpdatedSymbolPriceInfo>>({});
 
 	const subscriptionRef = useRef<Subscribe | null>(null);
+
+	const { submit, submitting } = useBasketOrderingSystem({
+		onSent: ({ failedOrders, sentOrders }) => {
+			toast.success(t(getBasketAlertMessage(failedOrders.length, sentOrders.length)));
+		},
+	});
 
 	const [priceBasis, setPriceBasis] = useState<TPriceBasis>('LastTradePrice');
 
@@ -129,6 +138,10 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 				//
 			}
 		});
+	};
+
+	const sendAllStrategyContracts = () => {
+		submit(contracts);
 	};
 
 	const updatePrice = () => {
@@ -316,6 +329,28 @@ const StrategyContracts = ({ contracts, selectedContracts, upsert, setSelectedCo
 						<Button onClick={upsert} type='button' className='rounded px-48 btn-primary-outline'>
 							{t('build_strategy.upsert')}
 						</Button>
+						{/* <Button
+							onClick={addToVirtualPortfolio}
+							type='button'
+							className='rounded px-40 btn-primary-outline'
+						>
+							{t('build_strategy.add_to_virtual_portfolio')}
+						</Button> */}
+						<Button
+							onClick={sendAllStrategyContracts}
+							loading={submitting}
+							type='button'
+							className='rounded px-24 btn-primary'
+						>
+							{t('build_strategy.send_all')}
+						</Button>
+						{/* <Button
+							onClick={storeBuiltStrategy}
+							type='button'
+							className='w-40 rounded border border-gray-200 text-primary-100 transition-colors flex-justify-center btn-primary-hover'
+						>
+							<BookmarkSVG />
+						</Button> */}
 					</div>
 				</div>
 			</div>

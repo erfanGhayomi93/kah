@@ -1,4 +1,4 @@
-import { onBodyScroll } from '@/utils/table';
+import { handleTableShadow } from '@/utils/table';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry, createGrid, type GridApi, type GridOptions } from '@ag-grid-community/core';
 import clsx from 'clsx';
@@ -41,21 +41,18 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 				headerHeight: 48,
 				scrollbarWidth: 12,
 				rowData: rowData ?? [],
-				onColumnVisible: ({ api, column }) => {
+				onColumnVisible: (params) => {
 					try {
-						if (!column) return;
+						handleTableShadow(params);
+						if (!params.column) return;
 
-						const colId = column.getColId();
-
-						// api.ensureColumnVisible(colId);
-						api.flashCells({
-							columns: [colId],
+						params.api.flashCells({
+							columns: [params.column.getColId()],
 						});
 					} catch (e) {
 						//
 					}
 				},
-				onBodyScroll,
 				defaultColDef: {
 					suppressMovable: true,
 					sortable: false,
@@ -68,6 +65,22 @@ const AgTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<unknown>>(
 						'<svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="36" d="M112 268l144 144 144-144M256 392V100" /></svg>',
 				},
 				...gridOptions,
+				onGridReady: (params) => {
+					try {
+						gridOptions?.onGridReady?.(params);
+						setTimeout(() => handleTableShadow(params), 100);
+					} catch (e) {
+						//
+					}
+				},
+				onBodyScrollEnd: (params) => {
+					try {
+						gridOptions?.onBodyScrollEnd?.(params);
+						handleTableShadow(params);
+					} catch (e) {
+						//
+					}
+				},
 			});
 		}, []);
 
