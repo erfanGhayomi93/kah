@@ -83,7 +83,6 @@ declare type TCoveredCallColumns =
 	| 'ytm'
 	| 'bestSellYTM'
 	| 'nonExpiredYTM'
-	| 'bepDifference'
 	| 'riskCoverage'
 	| 'tradeValue'
 	| 'baseTradeValue'
@@ -335,11 +334,11 @@ interface ICoveredCallFiltersModalStates {
 	baseSymbols: Option.BaseSearch[];
 	iotm: Option.IOTM[];
 	dueDays: [null | number, null | number];
-	bepDifference: [null | number, null | number];
 	openPosition: null | number;
 	maxProfit: null | number;
 	nonExpiredProfit: null | number;
 	ytm: null | number;
+	riskCoverage: null | number;
 }
 
 interface ILongStraddleFiltersModalStates {

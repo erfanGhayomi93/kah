@@ -257,30 +257,20 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 						label: t('strategy_filters.from'),
 						initialValue: filters?.maxProfit ?? null,
 					},
-					/* {
-						id: 'nonExpiredProfit',
-						title: t('strategy_filters.non_expired_profit'),
-						titleHint: t('strategy_filters.non_expired_profit_tooltip'),
-						mode: 'single',
-						type: 'percent',
-						label: t('strategy_filters.from'),
-						initialValue: filters?.nonExpiredProfit ?? null,
-					}, */
-					{
-						id: 'bepDifference',
-						title: t('strategy_filters.bep_difference'),
-						mode: 'range',
-						type: 'percent',
-						label: [t('strategy_filters.from'), t('strategy_filters.to')],
-						placeholder: [t('strategy_filters.first_value'), t('strategy_filters.second_value')],
-						initialValue: [filters.bepDifference?.[0] ?? null, filters.bepDifference?.[1] ?? null],
-					},
 					{
 						id: 'ytm',
 						title: t('strategy_filters.ytm'),
 						mode: 'single',
 						type: 'percent',
 						initialValue: filters?.ytm ?? null,
+						label: t('strategy_filters.from'),
+					},
+					{
+						id: 'riskCoverage',
+						title: t('strategy_filters.risk_coverage'),
+						mode: 'single',
+						type: 'percent',
+						initialValue: filters?.riskCoverage ?? null,
 						label: t('strategy_filters.from'),
 					},
 				],
@@ -295,13 +285,18 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 
 			if (!rowNode) return;
 
-			// const symbolData = { ...rowNode.data! };
+			const symbolData = { ...rowNode.data! };
 
-			/* updateInfo.forEachChangedField((fieldName, _b, value) => {
-				console.log(fieldName, value);
-			}); */
+			updateInfo.forEachChangedField((fieldName, _b, value) => {
+				if (value && fieldName in symbolData) {
+					const valueAsNumber = Number(value);
 
-			// rowNode.setData(symbolData);
+					// @ts-expect-error: Typescript can not detect lightstream types
+					symbolData[fieldName] = isNaN(valueAsNumber) ? value : valueAsNumber;
+				}
+			});
+
+			rowNode.setData(symbolData);
 		} catch (e) {
 			//
 		}
@@ -483,7 +478,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				},
 				cellClass: ({ value }) => getColorBasedOnPercent(value),
 				valueGetter: ({ data }) => data?.ytm ?? 0,
-				valueFormatter: ({ value }) => `${toFixed(value, 4)}%`,
+				valueFormatter: ({ value }) => (value >= 1e4 ? '+10,000' : toFixed(value, 2)) + '%',
 			},
 			/* {
 				colId: 'nonExpiredYTM',
@@ -498,7 +493,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				valueGetter: ({ data }) => data?.nonExpiredYTM ?? 0,
 				valueFormatter: ({ value }) => `${toFixed(value, 4)}%`,
 			}, */
-			{
+			/* {
 				colId: 'bepDifference',
 				headerName: t('CoveredCall.bepDifference'),
 				initialHide: initialHiddenColumnsCoveredCall.bepDifference,
@@ -509,7 +504,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				}),
 				valueGetter: ({ data }) => [data?.bepDifference ?? 0, data?.bepDifferencePercent ?? 0],
 				valueFormatter: ({ value }) => sepNumbers(String(value[0])),
-			},
+			}, */
 			{
 				colId: 'riskCoverage',
 				headerName: t('CoveredCall.riskCoverage'),
@@ -645,6 +640,7 @@ const CoveredCall = (strategy: CoveredCallProps) => {
 				'requiredMargin',
 				'contractEndDate',
 				'withCommission',
+				'priceType',
 			],
 			dataAdapter: 'RamandRLCDData',
 			snapshot: true,

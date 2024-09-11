@@ -88,7 +88,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				price: data.callPremium || 1,
 				quantity: 1,
 				side: 'buy',
-				marketUnit: data.marketUnit,
+				marketUnit: data.callMarketUnit,
 			},
 			{
 				type: 'option',
@@ -107,7 +107,7 @@ const LongStraddle = (strategy: LongStraddleProps) => {
 				price: data.putPremium || 1,
 				quantity: 1,
 				side: 'buy',
-				marketUnit: data.marketUnit,
+				marketUnit: data.putMarketUnit,
 			},
 		];
 

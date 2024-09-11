@@ -17,7 +17,6 @@ export const initialHiddenColumnsCoveredCall: Record<TCoveredCallColumns, boolea
 	inUseCapital: false,
 	bestSellYTM: true,
 	nonExpiredYTM: true,
-	bepDifference: true,
 	riskCoverage: false,
 	tradeValue: true,
 	baseTradeValue: true,
@@ -120,12 +119,6 @@ export const initialColumnsCoveredCall: Array<IManageColumn<TCoveredCallColumns>
 		title: 'قیمت نماد آپشن',
 		hidden: initialHiddenColumnsCoveredCall.tradePriceVarPreviousTradePercent,
 		tag: 'PanelDetail',
-	},
-	{
-		id: 'bepDifference',
-		title: 'اختلاف تا سر به سر',
-		hidden: initialHiddenColumnsCoveredCall.bepDifference,
-		tag: 'Computational',
 	},
 	{
 		id: 'tradeValue',
