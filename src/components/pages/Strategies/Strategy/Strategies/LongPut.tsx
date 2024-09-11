@@ -1,4 +1,5 @@
 import { useLongPutStrategyQuery } from '@/api/queries/strategyQuery';
+import lightStreamInstance from '@/classes/Lightstream';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import { ChartDownSVG, ChartUpSVG, StraightLineSVG } from '@/components/icons';
@@ -11,12 +12,12 @@ import {
 	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useInputs, useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage, useSubscription } from '@/hooks';
 import { dateFormatter, getColorBasedOnPercent, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -25,6 +26,8 @@ import Table from '../components/Table';
 const LongPutDescription = dynamic(() => import('../Descriptions/LongPutDescription'), {
 	ssr: false,
 });
+
+type THashTable = Record<string, number>;
 
 interface LongPutProps extends Strategy.GetAll {}
 
@@ -36,6 +39,10 @@ const LongPut = (strategy: LongPutProps) => {
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.LongPut>>(null);
+
+	const symbolsHashTableRef = useRef<THashTable>({});
+
+	const { subscribe } = useSubscription();
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -53,7 +60,7 @@ const LongPut = (strategy: LongPutProps) => {
 		pageNumber: 1,
 	});
 
-	const { data, isFetching } = useLongPutStrategyQuery({
+	const { data = [], isFetching } = useLongPutStrategyQuery({
 		queryKey: [
 			'longPutQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
@@ -433,6 +440,74 @@ const LongPut = (strategy: LongPutProps) => {
 		],
 		[],
 	);
+
+	const symbolsHashTable = useMemo(() => {
+		const hashTable: THashTable = {};
+
+		try {
+			const l = data.length;
+			for (let i = 0; i < l; i++) {
+				hashTable[data[i].key] = i;
+			}
+		} catch (e) {
+			//
+		}
+
+		symbolsHashTableRef.current = hashTable;
+		return hashTable;
+	}, [data]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: Object.keys(symbolsHashTable),
+			fields: [
+				'baseSymbolISIN',
+				'baseSymbolTitle',
+				'baseLastTradedPrice',
+				'bepDifferencePercent',
+				'baseTradePriceVarPreviousTradePercent',
+				'dueDays',
+				'symbolISIN',
+				'symbolTitle',
+				'strikePrice',
+				'openPositionCount',
+				'iotm',
+				'premium',
+				'tradePriceVarPreviousTradePercent',
+				'optionBestSellLimitPrice',
+				'optionBestSellLimitQuantity',
+				'longPutBEP',
+				'profitAmount',
+				'profitPercent',
+				'blackScholes',
+				'bepDifference',
+				'timeValue',
+				'intrinsicValue',
+				'optionBestBuyLimitPrice',
+				'optionBestBuyLimitQuantity',
+				'tradeValue',
+				'baseTradeValue',
+				'baseTradeCount',
+				'baseTradeVolume',
+				'baseLastTradedDate',
+				'ytm',
+				'baseMarketUnit',
+				'marketUnit',
+				'historicalVolatility',
+				'requiredMargin',
+				'contractEndDate',
+				'contractSize',
+				'withCommission',
+				'priceType',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		// sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		subscribe(sub);
+	}, [JSON.stringify(symbolsHashTable)]);
 
 	return (
 		<>

@@ -1,4 +1,5 @@
 import { useProtectivePutStrategyQuery } from '@/api/queries/strategyQuery';
+import lightStreamInstance from '@/classes/Lightstream';
 import CellPercentRenderer from '@/components/common/Tables/Cells/CellPercentRenderer';
 import CellSymbolTitleRenderer from '@/components/common/Tables/Cells/CellSymbolStatesRenderer';
 import HeaderHint from '@/components/common/Tables/Headers/HeaderHint';
@@ -12,12 +13,12 @@ import {
 	setStrategyFiltersModal,
 } from '@/features/slices/modalSlice';
 import { setSymbolInfoPanel } from '@/features/slices/panelSlice';
-import { useInputs, useLocalstorage } from '@/hooks';
+import { useInputs, useLocalstorage, useSubscription } from '@/hooks';
 import { dateFormatter, numFormatter, sepNumbers, toFixed, uuidv4 } from '@/utils/helpers';
 import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-community/core';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -26,6 +27,8 @@ import Table from '../components/Table';
 const ProtectivePutDescription = dynamic(() => import('../Descriptions/ProtectivePutDescription'), {
 	ssr: false,
 });
+
+type THashTable = Record<string, number>;
 
 interface ProtectivePutProps extends Strategy.GetAll {}
 
@@ -37,6 +40,10 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 	const dispatch = useAppDispatch();
 
 	const gridRef = useRef<GridApi<Strategy.ProtectivePut>>(null);
+
+	const symbolsHashTableRef = useRef<THashTable>({});
+
+	const { subscribe } = useSubscription();
 
 	const { inputs: filters, setInputs: setFilters } = useInputs<Partial<IProtectivePutFiltersModalState>>({});
 
@@ -54,7 +61,7 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 		pageNumber: 1,
 	});
 
-	const { data, isFetching } = useProtectivePutStrategyQuery({
+	const { data = [], isFetching } = useProtectivePutStrategyQuery({
 		queryKey: [
 			'protectivePutQuery',
 			{ priceBasis: inputs.priceBasis, symbolBasis: inputs.symbolBasis, withCommission: useCommission },
@@ -490,6 +497,80 @@ const ProtectivePut = (strategy: ProtectivePutProps) => {
 		],
 		[],
 	);
+
+	const symbolsHashTable = useMemo(() => {
+		const hashTable: THashTable = {};
+
+		try {
+			const l = data.length;
+			for (let i = 0; i < l; i++) {
+				hashTable[data[i].key] = i;
+			}
+		} catch (e) {
+			//
+		}
+
+		symbolsHashTableRef.current = hashTable;
+		return hashTable;
+	}, [data]);
+
+	useEffect(() => {
+		const sub = lightStreamInstance.subscribe({
+			mode: 'MERGE',
+			items: Object.keys(symbolsHashTable),
+			fields: [
+				'baseSymbolISIN',
+				'baseSymbolTitle',
+				'baseLastTradedPrice',
+				'baseTradePriceVarPreviousTradePercent',
+				'dueDays',
+				'symbolISIN',
+				'symbolTitle',
+				'strikePrice',
+				'openPositionCount',
+				'iotm',
+				'premium',
+				'premiumPercent',
+				'optionBestBuyLimitQuantity',
+				'optionBestBuyLimitPrice',
+				'contractSize',
+				'baseBestSellLimitPrice',
+				'baseBestBuyLimitPrice',
+				'optionBestSellLimitPrice',
+				'optionBestSellLimitQuantity',
+				'protectivePutBEP',
+				'maxLoss',
+				'maxLossPercent',
+				'profitAmount',
+				'profitPercent',
+				'inUseCapital',
+				'bepDifference',
+				'bepDifferencePercent',
+				'baseMarketUnit',
+				'marketUnit',
+				'historicalVolatility',
+				'requiredMargin',
+				'contractEndDate',
+				'timeValue',
+				'intrinsicValue',
+				'optionBestLimitPrice',
+				'optionBestLimitVolume',
+				'tradeValue',
+				'baseTradeValue',
+				'baseTradeCount',
+				'baseTradeVolume',
+				'blackScholes',
+				'baseLastTradedDate',
+				'ytm',
+				'priceType',
+			],
+			dataAdapter: 'RamandRLCDData',
+			snapshot: true,
+		});
+
+		// sub.addEventListener('onItemUpdate', onSymbolUpdate);
+		subscribe(sub);
+	}, [JSON.stringify(symbolsHashTable)]);
 
 	return (
 		<>
