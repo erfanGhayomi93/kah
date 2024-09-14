@@ -19,7 +19,7 @@ import { type ColDef, type GridApi, type ICellRendererParams } from '@ag-grid-co
 import { type ItemUpdate } from 'lightstreamer-client-web';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Filters from '../components/Filters';
 import StrategyActionCell from '../components/StrategyActionCell';
 import StrategyDetails from '../components/StrategyDetails';
@@ -28,8 +28,6 @@ import Table from '../components/Table';
 const BullCallSpreadDescription = dynamic(() => import('../Descriptions/BullCallSpreadDescription'), {
 	ssr: false,
 });
-
-type THashTable = Record<string, number>;
 
 interface BullCallSpreadProps extends Strategy.GetAll {}
 
@@ -42,9 +40,9 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 
 	const gridRef = useRef<GridApi<Strategy.BullCallSpread>>(null);
 
-	const symbolsHashTableRef = useRef<THashTable>({});
-
 	const { subscribe } = useSubscription();
+
+	const [lastRowIndex, setLastRowIndex] = useState(0);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -666,25 +664,24 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 	);
 
 	const symbolsHashTable = useMemo(() => {
-		const hashTable: THashTable = {};
+		const hashTable: string[] = [];
 
 		try {
-			const l = data.length;
+			const l = Math.min(lastRowIndex, data.length);
 			for (let i = 0; i < l; i++) {
-				hashTable[data[i].key] = i;
+				hashTable.push(data[i].key);
 			}
 		} catch (e) {
 			//
 		}
 
-		symbolsHashTableRef.current = hashTable;
 		return hashTable;
-	}, [data]);
+	}, [data, lastRowIndex]);
 
 	useEffect(() => {
 		const sub = lightStreamInstance.subscribe({
 			mode: 'MERGE',
-			items: Object.keys(symbolsHashTable),
+			items: symbolsHashTable,
 			fields: [
 				'baseSymbolISIN',
 				'baseSymbolTitle',
@@ -747,7 +744,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
 		subscribe(sub);
-	}, [JSON.stringify(symbolsHashTable)]);
+	}, [symbolsHashTable.join(',')]);
 
 	return (
 		<>
@@ -779,6 +776,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					isFetching={isFetching}
 					columnsVisibility={columnsVisibility}
 					dependencies={[useCommission]}
+					setLastRowIndex={setLastRowIndex}
 				/>
 			</div>
 		</>
