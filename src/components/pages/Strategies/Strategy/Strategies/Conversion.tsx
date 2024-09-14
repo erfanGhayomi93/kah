@@ -42,7 +42,7 @@ const Conversion = (strategy: ConversionProps) => {
 
 	const { subscribe } = useSubscription();
 
-	const [lastRowIndex, setLastRowIndex] = useState(0);
+	const [hashTable, setHashTable] = useState<string[]>([]);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -598,25 +598,10 @@ const Conversion = (strategy: ConversionProps) => {
 		[],
 	);
 
-	const symbolsHashTable = useMemo(() => {
-		const hashTable: string[] = [];
-
-		try {
-			const l = Math.min(lastRowIndex, data.length);
-			for (let i = 0; i < l; i++) {
-				hashTable.push(data[i].key);
-			}
-		} catch (e) {
-			//
-		}
-
-		return hashTable;
-	}, [data, lastRowIndex]);
-
 	useEffect(() => {
 		const sub = lightStreamInstance.subscribe({
 			mode: 'MERGE',
-			items: symbolsHashTable,
+			items: hashTable,
 			fields: [
 				'baseSymbolISIN',
 				'baseSymbolTitle',
@@ -676,7 +661,7 @@ const Conversion = (strategy: ConversionProps) => {
 
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
 		subscribe(sub);
-	}, [symbolsHashTable.join(',')]);
+	}, [hashTable.join(',')]);
 
 	return (
 		<>
@@ -708,7 +693,7 @@ const Conversion = (strategy: ConversionProps) => {
 					isFetching={isFetching}
 					columnsVisibility={columnsVisibility}
 					dependencies={[useCommission]}
-					setLastRowIndex={setLastRowIndex}
+					setHashTable={setHashTable}
 				/>
 			</div>
 		</>

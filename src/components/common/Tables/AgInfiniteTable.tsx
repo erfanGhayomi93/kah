@@ -80,9 +80,9 @@ const AgInfiniteTable = forwardRef<undefined | GridApi<unknown>, AgTableProps<un
 						//
 					}
 				},
-				onBodyScrollEnd: (params) => {
+				onBodyScroll: (params) => {
 					try {
-						gridOptions?.onBodyScrollEnd?.(params);
+						gridOptions?.onBodyScroll?.(params);
 						handleTableShadow(params);
 					} catch (e) {
 						//

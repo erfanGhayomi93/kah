@@ -17,20 +17,22 @@ export const handleTableShadow = (
 		const eCenterColsViewport = eGrid.querySelector<HTMLDivElement>('.ag-center-cols-viewport')!;
 		const eLeftScrollbar = eGrid.querySelector<HTMLDivElement>('.ag-pinned-left-cols-container')!;
 
-		const offsetLeft = Math.max('direction' in params ? params.left : eHorizontalScrollbar.scrollLeft);
-		const offsetRight = Math.max(
+		const offsetRight = Math.max('direction' in params ? params.left : eHorizontalScrollbar.scrollLeft);
+		const offsetLeft = Math.max(
 			0,
-			eHorizontalScrollbar.scrollWidth - (offsetLeft + eCenterColsViewport.offsetWidth),
+			eHorizontalScrollbar.scrollWidth - (offsetRight + eCenterColsViewport.offsetWidth),
 		);
 
 		if (offsetLeft === 0) {
-			eRightScrollbar.classList.add('scroll-end');
-			if (offsetRight > 0) eLeftScrollbar.classList.remove('scroll-end');
+			eLeftScrollbar.classList.add('scroll-end');
+		} else {
+			eLeftScrollbar.classList.remove('scroll-end');
 		}
 
 		if (offsetRight === 0) {
-			eLeftScrollbar.classList.add('scroll-end');
-			if (offsetLeft > 0) eRightScrollbar.classList.remove('scroll-end');
+			eRightScrollbar.classList.add('scroll-end');
+		} else {
+			eRightScrollbar.classList.remove('scroll-end');
 		}
 	} catch (e) {
 		//
