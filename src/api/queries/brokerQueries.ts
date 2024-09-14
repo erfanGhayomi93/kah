@@ -16,6 +16,7 @@ export const useGetBrokerUrlQuery = createQuery<IBrokerUrls | null, ['getBrokerU
 			const response = await axios.get<ServerResponse<Broker.URL>>(routes.common.GetBrokerApiUrls, {
 				params: {
 					brokerCode: brokerCode ?? 189,
+					env: process.env.NEXT_PUBLIC_APP_TYPE,
 				},
 				signal,
 			});
