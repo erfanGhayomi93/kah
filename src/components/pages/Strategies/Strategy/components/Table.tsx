@@ -8,22 +8,14 @@ interface TableProps<T> extends AgTableProps<T> {
 	columnsVisibility: IManageColumn[];
 	isFetching?: boolean;
 	dependencies?: unknown[];
-	setLastRowIndex: (roIndex: number) => void;
+	setHashTable?: (data: string[]) => void;
 }
 
 type TableRow = Strategy.AllStrategies;
 
 const Table = forwardRef<GridApi, TableProps<TableRow>>(
 	(
-		{
-			isFetching,
-			columnsVisibility,
-			rowData = [],
-			defaultColDef = {},
-			dependencies = [],
-			setLastRowIndex,
-			...props
-		},
+		{ isFetching, columnsVisibility, setHashTable, rowData = [], defaultColDef = {}, dependencies = [], ...props },
 		ref,
 	) => {
 		const gridRef = useRef<GridApi<TableRow>>(null);
@@ -65,7 +57,7 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 				lastRow = newData.length;
 			}
 
-			setLastRowIndex(params.endRow);
+			setHashTable?.(newData.slice(0, params.endRow).map((item) => item.key));
 			params.successCallback(rowsThisPage, lastRow);
 		};
 
@@ -137,6 +129,7 @@ const Table = forwardRef<GridApi, TableProps<TableRow>>(
 					ref={gridRef}
 					suppressColumnVirtualisation={false}
 					className='h-full border-0'
+					getRowId={({ data }) => data.key}
 					defaultColDef={{
 						suppressMovable: true,
 						resizable: false,

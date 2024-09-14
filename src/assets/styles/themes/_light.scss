@@ -40,6 +40,13 @@ html {
 	--shadow-lg: 0px 2px 11px 0px rgba(0, 0, 0, 0.15);
 	--shadow-xl: 0px 2px 11px 0px rgba(0, 0, 0, 0.2);
 
+	--skeleton-from-bg: rgb(243, 245, 247);
+	--skeleton-to-bg: rgb(224, 230, 235);
+	--skeleton-bg: rgb(226, 231, 237);
+
+	--scrollbar-thumb: rgb(196, 200, 205);
+	--scrollbar-track: rgb(var(--c-gray-200) / 1);
+
 	--c-white: 255 255 255;
 
 	--c-black: 0 0 0;

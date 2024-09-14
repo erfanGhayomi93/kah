@@ -1,26 +1,5 @@
 html {
-	--scrollbar-size: 8px;
-	--scrollbar-thumb: rgb(var(--c-gray-400) / 1);
-	--scrollbar-track: rgb(var(--c-gray-100) / 1);
-	--skeleton-from-bg: rgb(243, 245, 247);
-	--skeleton-to-bg: rgb(224, 230, 235);
-	--skeleton-bg: rgb(226, 231, 237);
-}
-
-html[data-theme='dark'] {
-	--scrollbar-thumb: rgb(55, 57, 69);
-	--scrollbar-track: rgb(28, 30, 38);
-	--skeleton-from-bg: rgb(55, 57, 69);
-	--skeleton-to-bg: rgb(55, 57, 69);
-	--skeleton-bg: rgb(55, 57, 69);
-}
-
-html[data-theme='darkBlue'] {
-	--scrollbar-thumb: rgb(34, 44, 63);
-	--scrollbar-track: rgb(21, 29, 43);
-	--skeleton-from-bg: rgb(55, 57, 69);
-	--skeleton-to-bg: rgb(55, 57, 69);
-	--skeleton-bg: rgb(55, 57, 69);
+	--scrollbar-size: 10px;
 }
 
 html[data-theme='dark'],

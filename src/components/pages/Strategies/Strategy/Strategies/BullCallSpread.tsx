@@ -42,7 +42,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 
 	const { subscribe } = useSubscription();
 
-	const [lastRowIndex, setLastRowIndex] = useState(0);
+	const [hashTable, setHashTable] = useState<string[]>([]);
 
 	const [useCommission, setUseCommission] = useLocalstorage('use_trade_commission', true);
 
@@ -663,25 +663,10 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 		[],
 	);
 
-	const symbolsHashTable = useMemo(() => {
-		const hashTable: string[] = [];
-
-		try {
-			const l = Math.min(lastRowIndex, data.length);
-			for (let i = 0; i < l; i++) {
-				hashTable.push(data[i].key);
-			}
-		} catch (e) {
-			//
-		}
-
-		return hashTable;
-	}, [data, lastRowIndex]);
-
 	useEffect(() => {
 		const sub = lightStreamInstance.subscribe({
 			mode: 'MERGE',
-			items: symbolsHashTable,
+			items: hashTable,
 			fields: [
 				'baseSymbolISIN',
 				'baseSymbolTitle',
@@ -744,7 +729,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 
 		sub.addEventListener('onItemUpdate', onSymbolUpdate);
 		subscribe(sub);
-	}, [symbolsHashTable.join(',')]);
+	}, [hashTable.join(',')]);
 
 	return (
 		<>
@@ -776,7 +761,7 @@ const BullCallSpread = (strategy: BullCallSpreadProps) => {
 					isFetching={isFetching}
 					columnsVisibility={columnsVisibility}
 					dependencies={[useCommission]}
-					setLastRowIndex={setLastRowIndex}
+					setHashTable={setHashTable}
 				/>
 			</div>
 		</>
