@@ -78,6 +78,7 @@ const Body = (props: BodyProps) => {
 				symbolISIN,
 				holdAfterOrder,
 				side,
+				symbolAssets,
 				closeModal,
 			} = props;
 			const params: IOFields = {
@@ -90,13 +91,16 @@ const Body = (props: BodyProps) => {
 			};
 
 			if (params.validity === 'GoodTillDate') params.validityDate = new Date(validityDate).getTime();
-			if (side === 'sell' && symbolType === 'option') {
+
+			if (side === 'sell' && symbolType === 'option' && quantity - symbolAssets < 0) {
 				if (blockType!.type === 'Portfolio' || blockType!.type === 'Account') params.source = blockType!.type;
 				else {
 					params.source = 'Position';
 					params.positionSymbolISIN = blockType!.value.symbolISIN;
 				}
-			} else if (params.validity === 'Month' || params.validity === 'Week') {
+			}
+
+			if (params.validity === 'Month' || params.validity === 'Week') {
 				params.validityDate = dateConverter(params.validity);
 			}
 
